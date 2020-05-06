@@ -1,0 +1,366 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+@form-field__vertical-indent__desktop: 15px;
+@form-calendar-icon__color: @primary__color;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .fieldset {
+        .lib-form-fieldset();
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        > .field,
+        > .fields > .field {
+            .lib-form-field();
+
+            &.no-label {
+                > .label {
+                    &:extend(.abs-visually-hidden all);
+                }
+            }
+
+            &.choice {
+                .label {
+                    display: inline;
+                    font-weight: normal;
+                }
+            }
+
+            .label {
+                .column:not(.main) & {
+                    font-weight: normal;
+                }
+            }
+
+            .field.choice {
+                margin-bottom: @indent__s;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+
+            input[type=file] {
+                margin: @indent__xs 0;
+            }
+        }
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="url"],
+    input[type="tel"],
+    input[type="search"],
+    input[type="number"],
+    input[type="datetime"],
+    input[type="email"],
+    textarea {
+        &:active,
+        &:focus,
+        &:hover {
+            border-color: @primary__color__dark
+        }
+
+        &[disabled=disabled],
+        &:disabled,
+        &._disabled {
+            border-color: @form-element-input__border-color;
+        }
+    }
+
+    .legend + .fieldset,
+    .legend + div {
+        clear: both;
+    }
+
+    .legend {
+        border-bottom: 1px solid @primary__color__light;
+        text-transform: uppercase;
+        font-family: 'buri', @font-family__sans-serif;
+
+        > * {
+            font-weight: @font-weight__semibold;
+        }
+    }
+
+    fieldset.field {
+        border: 0;
+        padding: 0;
+    }
+
+    .field {
+        &.date {
+            &:extend(.abs-field-date all);
+
+            .time-picker {
+                display: inline-block;
+                margin-top: @indent__s;
+                white-space: nowrap;
+            }
+        }
+
+        .message {
+            &.warning {
+                margin-top: @indent__s;
+            }
+        }
+    }
+
+    .fieldset {
+        > .field {
+            .lib-form-field-type-revert();
+            &:not(.choice) > .label {
+                height: 0;
+                overflow: hidden;
+            }
+
+            &.note {
+                .lib-font-size(12);
+                color: @secondary__color;
+                margin-bottom: @indent__s;
+            }
+        }
+    }
+
+    .field-error,
+    div.mage-error[generated] {
+        margin-top: 7px;
+    }
+
+    .field-error {
+        .lib-form-validation-note();
+    }
+
+    .product-options-wrapper {
+        .date {
+            &.required {
+                div[for*='options'] {
+                    &.mage-error {
+                        display: none !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .field .tooltip {
+        .lib-tooltip(right);
+        .tooltip-content {
+            min-width: 200px;
+            white-space: normal;
+        }
+    }
+
+    input:focus ~ .tooltip .tooltip-content,
+    select:focus ~ .tooltip .tooltip-content {
+        display: block;
+    }
+
+    .select-styling() {
+        .lib-css(appearance, none, 1);
+        appearance: none;
+        background-size: @indent__m;
+        text-indent: .01em;
+        text-overflow: '';
+
+        &::-ms-expand {
+            display: none;
+        }
+    }
+
+    select {
+        .select-styling();
+        border-left: none;
+        border-right: none;
+        border-top: none;
+
+        &:focus {
+            border-left: none;
+            border-right: none;
+            border-top: none;
+        }
+    }
+
+    input[type="checkbox"]{
+        -webkit-appearance: none;
+        background-color: @color-white;
+        border: 1px solid @form-element-input__border-color;
+        cursor: pointer;
+        display: inline-block;
+        height: 20px;
+        top: 0;
+        width: 20px;
+        vertical-align: top;
+
+        & + label {
+            color: @primary__color;
+            cursor: pointer;
+            font-size: 15px;
+            vertical-align: middle;
+            display: inline;
+            position: relative;
+        }
+    }
+
+    input[type="checkbox"]:checked{
+        background: @form-element-input__border-color;
+        border-color: @form-element-input__border-color;
+
+        .lib-icon-font(
+                @icon-checkmark,
+            @_icon-font-color: @color-white,
+            @_icon-font-size: 14px,
+            @_icon-font-line-height: 18px,
+            @_icon-font-margin: 0,
+            @_icon-font-position: after
+        );
+
+        &:after {
+            width: 18px;
+        }
+    }
+
+    input[type="radio"] {
+        -webkit-appearance: none;
+        border: 1px solid @form-element-input__border-color;
+        box-sizing: border-box;
+        border-radius: 50%;
+        cursor: pointer;
+        display: inline-block;
+        height: 20px;
+        top: 0;
+        width: 20px;
+        vertical-align: top;
+
+        + label {
+            color: @primary__color;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: @font-weight__regular;
+            vertical-align: top;
+            display: inline;
+            position: relative;
+        }
+
+        &:after {
+            width: 18px;
+            cursor: pointer;
+            content: '';
+            display: inline-block;
+            position: relative;
+            visibility: visible;
+        }
+
+        &:checked {
+            background-color: @form-element-input__border-color;
+            box-shadow: 0 0 0 1px @form-element-input__border-color;
+
+            .lib-icon-font(
+                    @icon-checkmark,
+                @_icon-font-color: @color-white,
+                @_icon-font-size: 14px,
+                @_icon-font-line-height: 19px,
+                @_icon-font-margin: 0,
+                @_icon-font-position: after
+            );
+
+            + label {
+                cursor: default;
+            }
+
+            &:after {
+                cursor: default;
+            }
+        }
+    }
+
+    ._has-datepicker {
+        ~ .ui-datepicker-trigger {
+            .lib-button-reset();
+            .lib-icon-font(
+                @_icon-font-content: @icon-calendar,
+                @_icon-font-color: @primary__color__lighter,
+                @_icon-font-size: @icon-calendar__font-size,
+                @_icon-font-line-height: @icon-calendar__font-size,
+                @_icon-font-display: block,
+                @_icon-font-text-hide: true
+            );
+            display: inline-block;
+            vertical-align: middle;
+
+            &:focus {
+                box-shadow: none;
+                outline: 0;
+            }
+        }
+    }
+
+    //
+    //  Sidebar forms
+    //  -----------------------------------------
+
+    .sidebar {
+        .fieldset {
+            margin: 0;
+
+            > .field:not(.choice) >,
+            .fields > .field {
+                &:not(:last-child) {
+                    margin: 0 0 @form-field__vertical-indent;
+                }
+
+                .label {
+                    margin: 0 0 4px;
+                    padding: 0 0 @indent__xs;
+                    text-align: left;
+                    width: 100%;
+                }
+
+                .control {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .fieldset {
+        input[type="text"],
+        input[type="password"],
+        input[type="url"],
+        input[type="tel"],
+        input[type="search"],
+        input[type="number"],
+        input[type="datetime"],
+        input[type="email"] {
+            height: @indent__xl;
+        }
+
+        > .field {
+            .lib-form-field(
+                @_label-font-size: 14px;
+            );
+        }
+
+        .lib-form-fieldset(
+            @_legend-font-size: 18px
+        )
+    }
+}

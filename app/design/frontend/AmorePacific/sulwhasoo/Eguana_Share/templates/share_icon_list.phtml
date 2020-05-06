@@ -1,0 +1,74 @@
+<?php
+/** @var \Eguana\Share\Helper\Data $helper */
+
+try {
+    $helper = $this->helper('Eguana\Share\Helper\Data');
+}catch (\Exception $e){
+    $result = false;
+}
+?>
+<?php if($result != false):
+    $share_enabled = $helper->getShareIconEnabled();
+    $url = $helper->getCurrentUrl();
+?>
+<?php if($share_enabled): ?>
+    <div class="info_shares_wrap">
+        <div class="info_shares">
+            <div class="toggle">
+                <a href="javascript: void(0);" class="toggle_btn" type="button"><span><?= __('Show Button');?></span></a>
+                <div class="toggle_shares">
+                    <ul class="social-links">
+                        <?php if($helper->getFacebookEnable()):?>
+                            <li class="shares">
+                                <a class="link icon facebook" href="#" title="<?= __('Opens new window');?>" onclick="window.open('<?php echo $helper->getFacebookUrl().$url;?>','Facebook','width=1030,height=650');" target="_blank">
+                                    <span><?= __('Facebook')?></span>
+                                </a>
+                            </li>
+                        <?php endif;?>
+                        <?php if($helper->getTwitterEnable()):?>
+                            <li class="shares">
+                                <a class="link icon twitter" href="<?php echo $helper->getTwitterUrl().$url;?>" target="_blank" title="<?= __('Opens new window');?>">
+                                    <span><?= __('Twitter')?></span>
+                                </a>
+                            </li>
+                        <?php endif;?>
+                        <?php if($helper->getPinterestEnable()):?>
+                            <li class="shares">
+                                <a class="link icon pinterest" id="pinterest_share" href="<?php echo $helper->getPinterestUrl().$url;?>" target="_blank" title="<?= __('Opens new window');?>">
+                                    <span><?= __('Pinterest')?></span>
+                                </a>
+                            </li>
+                        <?php endif;?>
+                        <?php if($helper->getGoogleEnable()): ?>
+                            <li class="shares">
+                                <a class="link icon google" href="<?php echo $helper->getGoogleUrl().$url;?>" target="_blank" title="<?= __('Opens new window');?>">
+                                    <span><?= __('Google')?></span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Eguana_Share/js/detail_shares": {}
+            }
+        }
+    </script>
+    <script type="text/javascript" xml="space">
+    require(['jquery'],function($){
+        $(document).ready(function() {
+            var pinterest_url = $('#pinterest_share').attr('href');
+            var productImgSrc = $( 'meta[property="og:image"]' ).attr( 'content' );
+
+            if(pinterest_url.indexOf('&media=') == -1) {
+                $('#pinterest_share').attr('href',pinterest_url+'&media='+productImgSrc);
+            }
+        });
+    });
+</script>
+<?php endif;?>
+<?php endif;?>

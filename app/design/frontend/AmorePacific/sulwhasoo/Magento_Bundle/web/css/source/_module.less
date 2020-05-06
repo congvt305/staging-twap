@@ -1,0 +1,289 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    .bundle-actions {
+        &:extend(.abs-box-tocart all);
+        .action.primary {
+            &:extend(.abs-button-l all);
+            line-height: 38px;
+        }
+    }
+
+    .bundle-options-container {
+        clear: both;
+
+        .legend.title {
+            .lib-heading(h2);
+            display: none;
+        }
+
+        .product-add-form {
+            display: none;
+        }
+
+        .fieldset-bundle-options {
+            margin-bottom: @indent__xs;
+
+            .field.option {
+                > .label {
+                    display: none;
+                }
+
+                .choice {
+                    .control {
+                        > .qty-disabled {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        .input-text.qty {
+            &:extend(.abs-input-qty all);
+        }
+
+        .input-text.bundle.option {
+            &[disabled='disabled'] {
+                & + .bundle-qty {
+                    cursor: default !important;
+                    opacity: 0.5;
+                }
+            }
+        }
+
+        .action.back {
+            display: none;
+        }
+
+        .price-box {
+            .price {
+                font-size: @font-size__l;
+                font-weight: @font-weight__bold;
+            }
+        }
+
+        .price-notice {
+            &:extend(.abs-adjustment-incl-excl-tax all);
+        }
+
+        .block-bundle-summary {
+            &:extend(.abs-add-box-sizing all);
+            .lib-css(background, transparent);
+
+            > .title {
+                display: none;
+            }
+
+            > .title > strong {
+                .lib-heading(h2);
+            }
+
+            .product-image-container {
+                display: none;
+            }
+
+            .bundle-info {
+                .product.name {
+                    display: none;
+                }
+            }
+
+            .bundle-summary {
+                &.empty {
+                    display: none;
+                }
+
+                > .subtitle {
+                    .lib-heading(h3);
+                    display: block;
+                    border-bottom: 1px solid #ddd;
+                    margin-bottom: @indent__s;
+                    padding-bottom: @indent__s;
+                }
+            }
+
+            .bundle.items {
+                &:extend(.abs-reset-list all);
+
+                > li {
+                    margin-bottom: @indent__s;
+
+                    > strong {
+                        display: none;
+                    }
+                }
+            }
+
+            .price-box {
+                margin-top: @indent__s;
+            }
+
+            .box-tocart {
+                .fieldset {
+                    &:after {
+                        display: block;
+                        content: '';
+                        clear: both;
+                    }
+                }
+
+                .actions {
+                    display: inline-block;
+                    margin-bottom: @indent__s;
+
+                    .tocart,
+                    .instant-purchase {
+                        line-height: 38px !important;
+                    }
+                }
+
+                .action.primary {
+                    &:extend(.abs-button-l all);
+                }
+            }
+
+            .product-addto-links {
+                display: none;
+
+                > .action {
+                    &:extend(.abs-action-addto-product all);
+                    vertical-align: top;
+                }
+            }
+        }
+        .nested {
+            .field.qty {
+                .label {
+                    .lib-css(font-weight, @form-field-label__font-weight);
+                    .lib-css(margin, 0 0 @indent__xs);
+                    display: none;
+                }
+
+                .lib-css(margin-top, 0);
+            }
+        }
+
+        p.required {
+            .lib-css(color, @form-field-label-asterisk__color);
+        }
+
+        .product-options-bottom {
+            clear: left;
+        }
+    }
+
+    .instant-purchase-active {
+        .bundle-options-container {
+            .block-bundle-summary {
+                .box-tocart {
+                    .actions {
+                        .tocart {
+                            margin-top: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .bundle-actions {
+        .action.primary {
+            width: 100%;
+        }
+    }
+
+    .bundle-options-container {
+        .bundle-options-wrapper {
+            margin-bottom: @indent__m;
+        }
+
+        .legend.title {
+            font-size: 18px;
+            border: 0;
+        }
+
+        .block-bundle-summary {
+            .box-tocart {
+                .field-wrapper,
+                .actions {
+                    width: 100%;
+                    padding: 0;
+                    float: none;
+                }
+
+                .actions {
+                    .tocart {
+                        margin-top: @indent__s;
+                    }
+                }
+            }
+        }
+
+        .nested {
+            margin-top: @indent__base;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .bundle-options-container {
+        .legend.title {
+            &:extend(.abs-reset-left-margin-desktop all);
+        }
+
+        .bundle-options-wrapper,
+        .product-options-wrapper {
+            margin-bottom: @indent__l;
+        }
+
+        .block-bundle-summary {
+            position: relative;
+
+            .box-tocart {
+                .actions {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .bundle-options-wrapper,
+        .block-bundle-summary {
+            .page-layout-2columns-left &,
+            .page-layout-2columns-right &,
+            .page-layout-3columns & {
+                width: 48%;
+            }
+        }
+
+        .nested {
+            width: 50%;
+            margin-top: @indent__base;
+            box-sizing: border-box;
+
+            &.options-list {
+                width: 100%;
+                margin-top: 0;
+                padding-left: 1px;
+            }
+        }
+    }
+}

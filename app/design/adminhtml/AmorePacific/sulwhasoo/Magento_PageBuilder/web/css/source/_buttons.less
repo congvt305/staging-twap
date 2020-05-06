@@ -1,0 +1,86 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  _buttons contains less for generic buttons
+//  _____________________________________________
+
+@pagebuilder-button__margin: 0 10px 10px 0;
+@pagebuilder-button__font-size: 15px;
+@pagebuilder-button__line-height: 38px;
+@pagebuilder-button__padding: 0 24px;
+
+.pagebuilder-button-primary {
+    .lib-link-as-button();
+    .lib-button-primary(
+        @_button-margin: @pagebuilder-button__margin,
+        @_button-padding: @pagebuilder-button__padding,
+        @_button-background: #333,
+        @_button-border: 1px solid #333,
+        @_button-border-hover: 1px solid #333,
+        @_button-border-active: 1px solid #333,
+        @_button-background-hover: @color-white,
+        @_button-background-active: @color-white,
+        @_button-color: @color-white,
+        @_button-color-hover: #333,
+        @_button-color-active: #333
+    );
+    .lib-button-l(
+        @_button-l-font-size: @pagebuilder-button__font-size,
+        @_button-l-height: @pagebuilder-button__line-height,
+        @_button-l-padding: @pagebuilder-button__padding
+    );
+    .lib-css(border-radius, 0);
+    .lib-css(font-weight, @font-weight__bold);
+}
+
+.pagebuilder-button-secondary {
+    .lib-link-as-button();
+    .lib-button(
+        @_button-margin: @pagebuilder-button__margin,
+        @_button-padding: @pagebuilder-button__padding,
+        @_button-background: @color-white,
+        @_button-border: 1px solid #333,
+        @_button-border-hover: 1px solid #333,
+        @_button-border-active: 1px solid #333,
+        @_button-background-hover: #333,
+        @_button-background-active: #333,
+        @_button-color: #333,
+        @_button-color-hover: @color-white,
+        @_button-color-active: @color-white
+    );
+    .lib-button-l(
+        @_button-l-font-size: @pagebuilder-button__font-size,
+        @_button-l-height: @pagebuilder-button__line-height,
+        @_button-l-padding: @pagebuilder-button__padding
+    );
+    .lib-css(border-radius, 0);
+    .lib-css(font-weight, @font-weight__bold);
+}
+
+.pagebuilder-button-link {
+    .lib-link-as-button();
+    .lib-button(
+        @_button-margin: @pagebuilder-button__margin,
+        @_button-padding: @pagebuilder-button__padding,
+        @_button-background: transparent,
+        @_button-border: 1px solid @color-white,
+        @_button-border-hover: 1px solid @color-white,
+        @_button-border-active: 1px solid @color-white,
+        @_button-background-hover: transparent,
+        @_button-background-active: transparent,
+        @_button-color: @color-white,
+        @_button-color-hover: @color-white,
+        @_button-color-active: @color-white
+    );
+    .lib-button-l(
+        @_button-l-font-size: @pagebuilder-button__font-size,
+        @_button-l-height: @pagebuilder-button__line-height,
+        @_button-l-padding: @pagebuilder-button__padding
+    );
+    .lib-css(font-weight, @font-weight__bold);
+    .lib-css(border-radius, 0);
+    display: inline-block;
+}

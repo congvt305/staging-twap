@@ -1,0 +1,50 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<div data-bind="scope: 'messages'">
+    <div class="message-visible">
+        <!-- ko if: cookieMessages && cookieMessages.length > 0 -->
+        <div role="alert" data-bind="foreach: { data: cookieMessages, as: 'message' }" class="messages">
+            <div data-bind="attr: {
+                class: 'message-' + message.type + ' ' + message.type + ' message',
+                'data-ui-id': 'message-' + message.type
+            }">
+                <div data-bind="html: message.text"></div>
+                <div class="remove"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: messages().messages && messages().messages.length > 0 -->
+        <!-- ko foreach: { data: messages().messages, as: 'message'}  -->
+        <!-- ko if: message.type != undefined -->
+        <div role="alert" class="messages">
+            <div data-bind="attr: {
+                            class: 'message-' + message.type + ' ' + message.type + ' message',
+                            'data-ui-id': 'message-' + message.type
+                        }">
+                <div data-bind="html: message.text"></div>
+                <div class="remove"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                        "messages": {
+                            "component": "Magento_Theme/js/view/messages"
+                        }
+                    }
+                }
+            }
+    }
+</script>
