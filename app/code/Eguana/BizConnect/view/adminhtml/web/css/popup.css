@@ -1,0 +1,17 @@
+/*
+ * @author Eguana Commerce
+ * @copyright Copyright (c) 2020 Eguana {https://eguanacommerce.com}
+ *  Created by PhpStorm
+ *  User: Sonia Park
+ *  Date: 3/14/20, 4:04 PM
+ *
+ */
+
+.bootbox-body p {
+    background-color: cornsilk;
+    overflow: scroll;
+    padding: 20px 25px;
+}
+.bootbox-body p.clickable {
+    cursor: pointer;
+}
