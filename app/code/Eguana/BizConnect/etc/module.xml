@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author Eguana Commerce
+  ~ @copyright Copyright (c) 2020 Eguana {https://eguanacommerce.com}
+  ~  Created by PhpStorm
+  ~  User: Sonia Park
+  ~  Date: 3/13/20, 7:49 AM
+  ~
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Eguana_BizConnect">
+        <sequence>
+            <module name="Magento_Amqp"/>
+        </sequence>
+    </module>
+</config>
