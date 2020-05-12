@@ -25,7 +25,7 @@ Core Source Rewrite List
  for first 2 modules I use Exception to check if module is enable or not,
  and for the third module I add the CustomCheckout's plugin in the default Theme module,
  now there is only one module.
- 
+
  ##Taiwan Language
  For Taiwan language pack the translation is in progress by Magento 1500 lines or words are translated out of 16400 lines and words
 
