@@ -1,0 +1,328 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+@autocomplete__background-color: @color-white;
+@autocomplete__border: 1px solid @form-element-input__border-color;
+@autocomplete-item__border: 1px solid @color-gray90;
+@autocomplete-item__hover__color: @color-gray91;
+@autocomplete-item-amount__color: @color-gray60;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .block-search {
+        display: inline-block;
+        margin-bottom: 0;
+
+        .block {
+            &-title {
+                display: none;
+            }
+        }
+
+        .block-content {
+            margin-bottom: 0;
+        }
+
+        .label {
+            .lib-icon-font(
+            @_icon-font-content: @icon-search,
+            @_icon-font-size: 22px,
+            @_icon-font-line-height: 1.1,
+            @_icon-font-color: @header-icons-color,
+            @_icon-font-color-hover: @header-icons-color-hover,
+            @_icon-font-color-active: @header-icons-color-hover,
+            @_icon-font-text-hide: true
+            );
+            cursor: pointer;
+            display: inline-block;
+            float: right;
+
+            &:before {
+                width: 24px;
+                line-height: 28px;
+            }
+        }
+
+        .action.search {
+            .lib-button-icon(
+                @_icon-font-content: @icon-search,
+                @_icon-font-size: 24px,
+                @_icon-font-line-height: @form-element-input__height,
+                @_icon-font-text-hide: true,
+                @_icon-font-color: @header-icons-color
+            );
+            .lib-button-reset();
+            position: absolute;
+            right: @indent__s;
+            display: none;
+            z-index: 10;
+
+            &:before {
+                font-weight: @font-weight__bold;
+                width: 28px;
+            }
+        }
+
+        .action.close {
+            .lib-button-icon(
+                @_icon-font-content: @icon-remove,
+                @_icon-font-size: 24px,
+                @_icon-font-line-height: @form-element-input__height,
+                @_icon-font-text-hide: true,
+                @_icon-font-color: @primary__color__lighter
+            );
+            .lib-button-reset();
+            position: absolute;
+            right: -35px;
+            z-index: 10;
+            display: none;
+        }
+
+        .nested {
+            display: none;
+        }
+
+        input {
+            box-sizing: border-box;
+            z-index: 5;
+        }
+
+        .active {
+            input {
+                padding: @form-element-input__padding;
+            }
+
+            .action.search {
+                display: inline-block;
+            }
+        }
+    }
+
+    .search-autocomplete {
+        &:extend(.abs-add-box-sizing all);
+        display: none;
+        margin-top: 50px;
+        overflow: hidden;
+        position: absolute;
+        z-index: 5;
+        right: 0;
+
+        ul {
+            .lib-list-reset-styles();
+
+            li {
+                cursor: pointer;
+                margin: 0;
+                padding: @indent__xs @indent__xl @indent__xs @indent__s;
+                position: relative;
+                text-align: left;
+                white-space: normal;
+
+                &:not(:empty) {
+                    .lib-css(border, @autocomplete__border);
+                    border-top: none;
+                    .lib-css(background, @autocomplete__background-color);
+                }
+
+                &:first-child {
+                    border-top: none;
+                }
+
+                &:hover,
+                &.selected {
+                    .lib-css(background, @autocomplete-item__hover__color);
+                }
+
+                .amount {
+                    .lib-css(color, @autocomplete-item-amount__color);
+                    position: absolute;
+                    right: 7px;
+                    top: @indent__xs;
+                }
+            }
+        }
+    }
+
+    .form.search.advanced {
+        .fields.range {
+            .field {
+                &:first-child {
+                    position: relative;
+
+                    .control {
+                        padding-right: 25px;
+
+                        &:after {
+                            content: ' \2013 ';
+                            display: inline-block;
+                            position: absolute;
+                            right: 0;
+                            text-align: center;
+                            top: 6px;
+                            width: 25px;
+                        }
+                    }
+                }
+
+                &:last-child {
+                    position: relative;
+
+                    div.mage-error[generated] {
+                        left: 0;
+                        position: absolute;
+                        top: 32px;
+                    }
+                }
+
+                &.with-addon {
+                    .control {
+                        padding-right: 45px;
+                    }
+                }
+            }
+        }
+
+        .group.price {
+            .addon {
+                .addafter {
+                    background: none;
+                    border: 0;
+                    padding-top: 6px;
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                }
+            }
+        }
+    }
+
+    .search.summary {
+        margin-bottom: @indent__s;
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .block-search {
+        .block-content {
+            margin-bottom: 0;
+        }
+
+        input {
+            left: -2000%;
+            position: absolute;
+        }
+
+        .active {
+            .control {
+                background: @color-white;
+                position: fixed;
+                left: 0;
+                right: 0;
+                top: 0;
+                padding: @indent__s;
+
+                &:after {
+                    background: rgba(0, 0, 0, @overlay__opacity);
+                    content: '';
+                    display: block;
+                    height: 100%;
+                    position: fixed;
+                    right: 0;
+                    top: 70px;
+                    width: 100%;
+                    z-index: 1;
+                }
+            }
+
+            input {
+                width: 100%;
+                left: 0;
+                position: static;
+            }
+
+            .action.search {
+                position: fixed;
+                right: @indent__base;
+            }
+        }
+    }
+
+    .search-autocomplete {
+        margin-top: 0;
+        left: @indent__s;
+        right: @indent__s;
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .block-search {
+        vertical-align: middle;
+        z-index: 4;
+
+        .minicart-wrapper + & {
+            .abs-bar(before,@border-color__base,0 @indent__s 0 7px,@font-weight__regular);
+
+            &:before {
+                font-size: 11px;
+            }
+        }
+
+        .header.links + & {
+            margin-left: -4px;
+        }
+
+        .block-content {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .label {
+            .lib-icon-font-size(
+                @_icon-font-size: 16px,
+                @_icon-font-position: before
+            );
+
+            &:before {
+                font-weight: @font-weight__bold;
+                width: 20px;
+            }
+        }
+
+        input {
+            position: absolute;
+            padding: 0;
+            right: 0;
+            opacity: 0;
+            width: 0;
+        }
+
+        .nested {
+            display: block;
+            padding-top: 5px;
+            position: absolute;
+        }
+
+        .active {
+            .action.close {
+                display: block;
+            }
+        }
+    }
+}

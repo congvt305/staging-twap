@@ -1,0 +1,286 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .table-wrapper {
+        margin-bottom: @indent__base;
+    }
+
+    table,
+    .table {
+        .lib-table-caption();
+        .lib-table-typography();
+
+        &:not(.cart) {
+            &:not(.totals):not(.toggle-table) {
+                > tbody {
+                    border-bottom: @table__border-width @table__border-style @table__border-color;
+                }
+
+                > tfoot {
+                    > tr {
+                        &:first-child {
+                            > th,
+                            > td {
+                                border-top: @table__border-width @table__border-style @primary__color;
+                                padding-top: @indent__base !important;
+                            }
+                        }
+                    }
+
+                    .mark {
+                        font-weight: @font-weight__regular;
+                        text-align: right;
+                    }
+                }
+            }
+        }
+
+        td {
+            a {
+                .lib-link(
+                    @_link-color: @table-td__color,
+                    @_link-text-decoration: none,
+                    @_link-color-visited: @table-td__color,
+                    @_link-text-decoration-visited: none,
+                    @_link-color-hover: @table-td__color,
+                    @_link-text-decoration-hover: none,
+                    @_link-color-active: @table-td__color,
+                    @_link-text-decoration-active: none
+                )
+            }
+
+            &.actions,
+            &.data-grid-actions-cell {
+                a {
+                    .lib-link(
+                        @_link-color: @active__color,
+                        @_link-text-decoration: underline,
+                        @_link-color-visited: @active__color,
+                        @_link-text-decoration-visited: underline,
+                        @_link-color-hover: @theme__color__primary-alt,
+                        @_link-text-decoration-hover: underline,
+                        @_link-color-active: @theme__color__primary-alt,
+                        @_link-text-decoration-active: underline
+                    );
+
+                    &:not(:first-child) {
+                        margin-left: @indent__s;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .table-wrapper {
+        .lib-table-overflow();
+        position: relative; // To hide unnecessary horizontal scrollbar in Safari
+    }
+
+    .table {
+        &:not(.cart) {
+            &:not(.totals) {
+                &:not(.table-comparison):not(.toggle-table) {
+                    &:not(.tracking) {
+                        .lib-table-responsive();
+                    }
+                }
+            }
+        }
+    }
+
+    table,
+    .table {
+        &:not(.cart) {
+            &:not(.totals) {
+                &:not(.table-comparison):not(.toggle-table) {
+                    > tbody {
+                        > tr {
+                            &:not(:first-child) {
+                                border-top: @table__border-width @table__border-style @table__border-color;
+                            }
+
+                            > td:first-child {
+                                padding-top: @indent__s;
+                            }
+
+                            > td:last-child {
+                                padding-bottom: @indent__s;
+                            }
+
+                            > td,
+                            > th {
+                                text-align: right;
+                                overflow: hidden;
+                                padding-left: @indent__s;
+                                padding-right: @indent__s;
+
+                                &[data-th]:before {
+                                    box-sizing: border-box;
+                                    float: left;
+                                    text-align: left;
+                                    width: 30%;
+                                }
+                            }
+
+                            > td {
+                                > * {
+                                    width: 70%;
+                                }
+
+                                &:not(.actions) > * {
+                                    float: right;
+                                }
+                            }
+                        }
+                    }
+
+                    &.additional-attributes {
+                        > tbody {
+                            th {
+                                &:extend(.abs-no-display-s all);
+                            }
+
+                            td {
+                                &:last-child {
+                                    border: none;
+                                    padding: 0 0 @indent__xs;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &:not(.table-balance-history) {
+                & > tbody {
+                    & > tr {
+                        td {
+                            &.col.actions, &.data-grid-actions-cell {
+                                &:before {
+                                    display: none !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &:not(.totals) {
+            &:not(.table-comparison):not(.toggle-table) {
+                > tfoot {
+                    display: block;
+
+                    > tr {
+                        display: block;
+                        &:extend(.abs-add-clearfix-mobile all);
+
+                        &:first-child {
+                            > th,
+                            > td {
+                                padding-top: @indent__base !important;
+                            }
+                        }
+
+                        > th {
+                            box-sizing: border-box;
+                            float: left;
+                            padding-left: 0;
+                            padding-right: 0;
+                            text-align: left;
+                            width: 70%;
+                        }
+
+                        > td {
+                            box-sizing: border-box;
+                            float: left;
+                            padding-left: 0;
+                            padding-right: 0;
+                            text-align: right;
+                            width: 30%;
+                        }
+                    }
+                }
+            }
+        }
+
+        td {
+            .product-item-name,
+            .price {
+                .lib-font-size(14);
+                margin: 0;
+            }
+        }
+    }
+
+    .data-table-definition-list {
+        thead {
+            display: none;
+        }
+
+        tbody th {
+            padding-bottom: 0;
+        }
+
+        tbody th,
+        tbody td {
+            display: block;
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    table,
+    .table {
+        .lib-table-typography(
+            @_table-td-font-size: 16px,
+            @_table-th-font-size: 16px
+        );
+
+        &:not(.totals) {
+            &:not(.table-comparison):not(.toggle-table) {
+                .lib-table-bordered(
+                    @_table_type: horizontal,
+                    @_table_border-width: 1px
+                );
+
+                th, td {
+                    &:not(.item):not(.name):not(.mark):not(.amount) {
+                        text-align: center;
+                    }
+                }
+            }
+        }
+
+        td {
+            .product-item-name {
+                .lib-font-size(16);
+            }
+
+            &.actions {
+                a {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}

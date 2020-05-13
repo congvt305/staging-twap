@@ -1,0 +1,33 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .breadcrumbs {
+        .lib-breadcrumbs();
+
+        .items > li {
+            font-weight: @breadcrumbs-current__font-weight;
+            text-transform: uppercase;
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .breadcrumbs {
+        text-align: center;
+
+        .lib-breadcrumbs(
+            @_breadcrumbs-container-margin: 0 0 @indent__s
+        );
+    }
+}

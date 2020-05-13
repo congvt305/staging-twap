@@ -1,0 +1,51 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .pages {
+        .lib-pager();
+
+        .action {
+            width: 40px;
+            .lib-css(transition, background-color .2s ease-out);
+
+            &.previous,
+            &.next {
+                margin-left: 5px;
+
+                &:before {
+                    font-weight: @font-weight__bold;
+                }
+            }
+
+            &.next {
+                &:before {
+                    margin: 0 0 0 3px;
+                }
+            }
+        }
+
+        .page {
+            &.last {
+                cursor: default;
+                pointer-events: none;
+            }
+        }
+
+        .page-text {
+            font-family: 'buri', @font-family__sans-serif;
+            .lib-css(color, @pager__color);
+            margin-left: 2px;
+        }
+
+        .items {
+            text-align: center;
+        }
+    }
+}

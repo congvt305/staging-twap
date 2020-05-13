@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="header" remove="true"/>
+        <referenceContainer name="header.panel">
+            <block class="Magento\Framework\View\Element\Html\Links" name="header.links">
+                <arguments>
+                    <argument name="css_class" xsi:type="string">header links</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="footer">
+            <block class="Magento\Cms\Block\Block" name="social_links" after="footer_links">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">footer-social-links</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Store\Block\Switcher" name="footer.settings.language" template="Magento_Store::switch/languages.phtml">
+                <arguments>
+                    <argument name="id_modifier" xsi:type="string">footer</argument>
+                    <argument name="view_model" xsi:type="object">Magento\Store\ViewModel\SwitcherUrlProvider</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="page.bottom">
+            <block class="Magento\Framework\View\Element\Text" name="back">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[<div class="back-top"><span>back</span></div>]]></argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="navigation.sections">
+            <arguments>
+                <argument name="group_behaviour" xsi:type="string">{"accordion":{"collapsible": true, "animate": {"duration": 300}, "active": false, "multipleCollapsible": true}}</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="store.links">
+            <arguments>
+                <argument name="title" translate="true" xsi:type="string">My Account</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="store.settings">
+            <block class="Magento\Framework\View\Element\Text" name="logo.m" before="-">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[<span class="mobile-logo"></span>]]></argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

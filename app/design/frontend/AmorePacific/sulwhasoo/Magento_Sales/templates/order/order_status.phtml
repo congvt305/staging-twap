@@ -1,0 +1,12 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php /** @var $block \Magento\Sales\Block\Order\Info */ ?>
+<div class="order-info">
+    <span class="order-id"><?= ('Order #')./* @escapeNotVerified */ $block->getOrder()->getRealOrderId() ?></span>
+    <span class="order-status"><?= /* @escapeNotVerified */ $block->getOrder()->getStatusLabel() ?></span>
+    <?= $block->getChildHtml();?>
+</div>
