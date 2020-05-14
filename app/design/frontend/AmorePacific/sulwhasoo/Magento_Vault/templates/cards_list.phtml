@@ -1,0 +1,38 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+/** @var \Magento\Vault\Block\Customer\CreditCards $block */
+$tokens = $block->getPaymentTokens();
+?>
+<div class="table-wrapper my-credit-cards">
+    <table class="data table table-credit-cards" id="my-orders-table">
+        <caption class="table-caption"><?= /* @noEscape */ __('Stored Payment Methods') ?></caption>
+        <thead>
+        <tr>
+            <th scope="col" class="col card-number"><?= /* @noEscape */ __('Card Number') ?></th>
+            <th scope="col" class="col expire"><?= /* @noEscape */ __('Expiration Date') ?></th>
+            <th scope="col" class="col card-type"><?= /* @noEscape */ __('Type') ?></th>
+            <th scope="col" class="col actions"><?= /* @escapeNotVerified */ __('Action') ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (count($tokens) !== 0): ?>
+        <?php
+        foreach ($tokens as $token) {
+            echo $block->renderTokenHtml($token);
+        }
+        ?>
+        <?php elseif (!$block->isExistsCustomerTokens()): ?>
+            <tr>
+                <td colspan="4" class="empty">
+                    <?= /* @escapeNotVerified */ __('You have no stored payment methods.') ?>
+                </td>
+            </tr>
+        <?php endif ?>
+        </tbody>
+    </table>
+</div>

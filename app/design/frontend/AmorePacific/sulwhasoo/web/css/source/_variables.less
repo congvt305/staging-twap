@@ -1,0 +1,129 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Blank theme variables
+//  _____________________________________________
+
+@layout__max-width-secondary: 1440px;
+
+//
+//  Typography
+//  ---------------------------------------------
+
+//  Fonts
+@font-family-name__base: 'Noto Sans';
+@font-family__base: @font-family-name__base, @font-family__sans-serif;
+@font-family__sans-serif: sans-serif;
+
+//
+//  Color nesting
+//  ---------------------------------------------
+
+@theme__color__primary: #b17c5c;
+@theme__color__primary-alt: #6a481b;
+@theme__color__secondary: #caa58e;
+
+@primary__color: @color-gray20; //#333
+@primary__color__dark: darken(@primary__color, 35%); // #000
+@primary__color__darker: darken(@primary__color, 10.25%); // #191919
+@primary__color__lighter: lighten(@primary__color, 13.5%); // #555
+@primary__color__light: lighten(@primary__color, 40%); // #999
+
+@secondary__color: #767676;
+@secondary__color__light: #eee;
+
+@page__background-color: @color-white;
+@panel__background-color: @page__background-color;
+
+@active__color: @theme__color__primary;
+@error__color: #ff0000;
+
+//  Heading
+@h2__font-size-desktop: 36px;
+@h3__font-size-desktop: 30px;
+@h4__font-size-desktop: 28px;
+@h5__font-size-desktop: 26px;
+
+//
+//  Icons
+//  ---------------------------------------------
+@icon-requisition-empty: "\e917";
+@icon-requisition-full: "\e918";
+@icon-checkmark: "\e916";
+@icon-compare-empty: "\e912";
+@icon-wishlist-empty: "\e913";
+@icon-compare-full: "\e914";
+@icon-wishlist-full: "\e915";
+@icon-trash: "\e910";
+@icon-edit: "\e911";
+@icon-pause: "\e90e";
+@icon-play: "\e90f";
+@icon-search: "\e90d";
+@icon-pinterest: "\e90c";
+@icon-arrow-up: "\e901";
+@icon-arrow-down: "\e900";
+@icon-facebook: "\e902";
+@icon-google: "\e903";
+@icon-instagram: "\e904";
+@icon-next: "\e905";
+@icon-up: "\e90a";
+@icon-down: "\e90b";
+@icon-prev: "\e909";
+@icon-cart: "\e906";
+@icon-twitter: "\e907";
+@icon-youtube: "\e908";
+@icon-arrow-up-thin: "\e633";
+@icon-arrow-right-thin: "\e62c";
+@icon-arrow-left-thin: "\e62d";
+@icon-arrow-down-thin: "\e62e";
+@icon-comment-reflected: "\e611";
+@icon-private: "\e629";
+@icon-gift-registry: "\e62b";
+@icon-present: "\e62a";
+@icon-star-empty: "\e625";
+@icon-download: "\e626";
+@icon-undo: "\e628";
+@icon-print: "\e624";
+@icon-help: "\e623";
+@icon-success: "\e60e";
+@icon-error: "\e61f";
+@icon-account: "\e627";
+@icon-warning: "\e602";
+@icon-update: "\e603";
+@icon-star: "\e605";
+@icon-settings: "\e606";
+@icon-pointer-down: "\e607";
+@icon-menu: "\e609";
+@icon-location: "\e60a";
+@icon-list: "\e60b";
+@icon-info: "\e60c";
+@icon-grid: "\e60d";
+@icon-minus: "\e60f";
+@icon-calendar: "\e612";
+@icon-remove: "\e616";
+@icon-pointer-up: "\e618";
+@icon-pointer-right: "\e619";
+@icon-pointer-left: "\e61a";
+@icon-flag: "\e61b";
+@icon-expand: "\e61c";
+@icon-envelope: "\e61d";
+@icon-comment: "\e620";
+
+//
+//  Sections variables
+//  _____________________________________________
+
+//
+//  Tabs
+//  ---------------------------------------------
+@tab-content__border-top-status: true;
+@tab-content-margin-bottom: 60px;
+
+//
+//  Sidebar
+//  ---------------------------------------------
+
+@sidebar__background-color: @color-white-smoke; // Used in cart sidebar, Checkout sidebar, Tier Prices, My account navigation, Rating block background

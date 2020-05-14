@@ -1,0 +1,55 @@
+<?php
+/** @var \Eguana\Share\Helper\Data $helper */
+$helper = $this->helper('Eguana\Share\Helper\Data');
+$share_enabled = $helper->getShareIconEnabled();
+$url = $helper->getCurrentUrl();
+?>
+
+<?php if($share_enabled): ?>
+    <div class="info_shares_wrap">
+        <div class="info_shares">
+            <div class="toggle">
+                <a href="javascript: void(0);" class="toggle_btn" type="button"><span><?= __('Show Button');?></span></a>
+                <div class="toggle_shares">
+                    <ul>
+                        <?php if($helper->getFacebookEnable()):?>
+                            <li class="shares">
+                                <a class="link f" href="#" title="<?= __('Opens new window');?>" onclick="window.open('<?php echo $helper->getFacebookUrl().$url;?>','Facebook','width=1030,height=650');" target="_blank">
+                                    <span><?= __('Facebook')?></span>
+                                </a>
+                            </li>
+                        <?php endif;?>
+                        <?php if($helper->getTwitterEnable()):?>
+                            <li class="shares">
+                                <a class="link t" href="<?php echo $helper->getTwitterUrl().$url;?>" target="_blank" title="<?= __('Opens new window');?>">
+                                    <span><?= __('Twitter')?></span>
+                                </a>
+                            </li>
+                        <?php endif;?>
+                        <?php if($helper->getPinterestEnable()):?>
+                            <li class="shares">
+                                <a class="link p" href="<?php echo $helper->getPinterestUrl().$url;?>" target="_blank" title="<?= __('Opens new window');?>">
+                                    <span><?= __('Pinterest')?></span>
+                                </a>
+                            </li>
+                        <?php endif;?>
+                        <?php if($helper->getGoogleEnable()): ?>
+                            <li class="shares">
+                                <a class="link g" href="<?php echo $helper->getGoogleUrl().$url;?>" target="_blank" title="<?= __('Opens new window');?>">
+                                    <span><?= __('Google')?></span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Eguana_Share/js/detail_shares": {}
+            }
+        }
+    </script>
+<?php endif;?>

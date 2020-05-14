@@ -1,0 +1,128 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .page.messages {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        z-index: 20;
+
+        .message {
+            box-shadow: 0 3px 6px rgba(100,100,100,.5);
+            margin: 0;
+
+            > *:first-child {
+                padding: 0;
+                max-width: @layout__max-width;
+                margin: 0 auto;
+                position: relative;
+                text-align: center;
+                box-sizing: border-box;
+                line-height: 1.5;
+            }
+        }
+
+        > .messages,
+        .message-visible {
+            position: relative;
+        }
+
+        .remove {
+            .lib-icon-font(
+                    @icon-expand,
+                @_icon-font: @icon-font,
+                @_icon-font-size: 20px,
+                @_icon-font-line-height: 20px,
+                @_icon-font-color: @color-white,
+                @_icon-font-color-hover: @color-white,
+                @_icon-font-color-active: @color-white,
+                @_icon-font-margin: 0,
+                @_icon-font-vertical-align: middle,
+                @_icon-font-position: before,
+                @_icon-font-display: none
+            );
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+
+            &:before {
+                transform: rotate(45deg);
+            }
+        }
+    }
+
+    .message {
+        word-break: break-all;
+
+        .price {
+            color: @color-white;
+        }
+    }
+
+    .message.info:not(.empty) {
+        .lib-message-icon-inner(info);
+    }
+
+    .message.error {
+        .lib-message-icon-inner(error);
+    }
+
+    .message.warning {
+        .lib-message-icon-inner(warning);
+    }
+
+    .message.notice {
+        .lib-message-icon-inner(notice);
+    }
+
+    .message.success {
+        .lib-message-icon-inner(success);
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .page.messages {
+        .message {
+            padding: 20px 30px;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .page.messages {
+        .message {
+            padding: 30px 0;
+
+            > *:first-child {
+                padding: 0 55px;
+            }
+        }
+
+        .remove {
+            transform: translate(-100%, -50%);
+
+            &:before {
+                font-size: 28px;
+                line-height: 28px;
+            }
+        }
+    }
+}
