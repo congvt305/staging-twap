@@ -50,7 +50,7 @@
     .page-header .header.panel,
     .header.content,
     .footer.content,
-    .page-main,
+    body:not(.customer-account-login) .page-main,
     .page-wrapper > .widget,
     .page-wrapper > .page-bottom,
     .block.category.event,
@@ -78,7 +78,7 @@
     .page-wrapper > .page-bottom,
     .block.category.event,
     .top-container,
-    .page-main {
+    body:not(.cms-home):not(.customer-account-login) .page-main {
         box-sizing: border-box;
         margin-left: auto;
         margin-right: auto;
