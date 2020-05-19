@@ -15,7 +15,7 @@
 
 & when (@media-common = true) {
 
-    .panel.header {
+    .content.header {
         .links,
         .switcher {
             display: none;
@@ -309,7 +309,7 @@
 
     .lib-main-navigation-desktop();
 
-    .panel.header {
+    .content.header {
         .links,
         .switcher {
             display: inline-block;
@@ -339,9 +339,9 @@
                     width: 0%;
                     bottom: 0;
                     z-index: 102;
-                    height: 3px;
+                    height: 2px;
                     margin: 0 auto;
-                    background-color: #000;
+                    background-color: @navigation-desktop-level0-item__color;
                     -webkit-transition: width .36s ease;
                     -o-transition: width .36s ease;
                     transition: width .36s ease;
