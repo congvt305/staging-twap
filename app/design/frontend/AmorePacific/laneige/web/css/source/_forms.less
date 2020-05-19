@@ -1,0 +1,318 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+@form-field__vertical-indent__desktop: 29px;
+@form-calendar-icon__color: @primary__color;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .fieldset {
+        .lib-form-fieldset();
+        &:last-child {
+            margin-bottom: @indent__base;
+        }
+
+        > .field,
+        > .fields > .field {
+            .lib-form-field(@_type: block);
+
+            &.no-label {
+                > .label {
+                    &:extend(.abs-visually-hidden all);
+                }
+            }
+
+            &.choice {
+                .label {
+                    display: inline;
+                    font-weight: normal;
+                }
+            }
+
+            .label {
+                .column:not(.main) & {
+                    font-weight: normal;
+                }
+            }
+
+            .field.choice {
+                margin-bottom: @indent__s;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+
+            input[type=file] {
+                margin: @indent__xs 0;
+            }
+        }
+    }
+
+    .legend + .fieldset,
+    .legend + div {
+        clear: both;
+    }
+
+    .legend {
+        border-bottom: 1px solid @primary__color__dark;
+        font-weight: @font-weight__bold;
+        width: 100%;
+
+        strong {
+            margin-left: @indent__xs;
+        }
+    }
+
+    .field.choice {
+        margin-bottom: 12px !important;
+    }
+
+    input[type="checkbox"]{
+        -webkit-appearance: none;
+        background-color: #f7f7f7;
+        border: 1px solid @secondary__color;
+        border-radius: 2px;
+        display: inline-block;
+        cursor: pointer;
+        height: 24px;
+        top: 0;
+        width: 24px;
+        vertical-align: middle;
+
+        &:checked{
+            background: @theme__color__secondary;
+            border-color: @theme__color__secondary;
+
+            .lib-icon-font(
+                    @icon-checkmark,
+                @_icon-font-color: @color-white,
+                @_icon-font-size: 22px,
+                @_icon-font-line-height: 22px,
+                @_icon-font-margin: 0,
+                @_icon-font-position: after
+            );
+
+            &:after {
+                width: 22px;
+            }
+        }
+
+        & + .label,
+        & + label {
+            word-break: break-all;
+        }
+    }
+
+    .select-styling() {
+        .lib-css(appearance, none, 1);
+        appearance: none;
+        background-size: @indent__m;
+        text-indent: .01em;
+        text-overflow: '';
+
+        &::-ms-expand {
+            display: none;
+        }
+    }
+
+    select {
+        .select-styling();
+        .lib-font-size(16) !important;
+
+        &:focus {
+            border: 1px solid @form-element-input__border-color !important;
+            color: @primary__color__darker !important;
+        }
+    }
+
+    input[type="radio"] {
+        -webkit-appearance: none;
+        border: 2px solid @secondary__color;
+        border-radius: 50%;
+        box-sizing: border-box;
+        cursor: pointer;
+        display: inline-block;
+        height: 24px;
+        top: 0;
+        vertical-align: middle;
+        width: 24px;
+
+        & + .label,
+        & + label {
+            cursor: pointer;
+            display: inline !important;
+            font-weight: @font-weight__regular !important;
+            line-height: 24px;
+            vertical-align: middle;
+            word-break: break-all;
+        }
+
+        &:checked {
+            background-color: #f7f7f7;
+            border-color: @theme__color__secondary;
+
+            + label {
+                cursor: default;
+            }
+
+            &:after {
+                background-color: @theme__color__secondary;
+                border-radius: 50%;
+                content: '';
+                cursor: default;
+                display: inline-block;
+                height: @indent__s;
+                left: @indent__xs;
+                width: @indent__s;
+                position: relative;
+                top: 3px;
+            }
+        }
+
+        &:after {
+            width: 18px;
+        }
+    }
+
+    fieldset.field {
+        border: 0;
+        padding: 0;
+    }
+
+    .field {
+        &.date {
+            &:extend(.abs-field-date all);
+
+            .time-picker {
+                display: inline-block;
+                margin-top: @indent__s;
+                white-space: nowrap;
+            }
+        }
+
+        .message {
+            &.warning {
+                margin-top: @indent__s;
+            }
+        }
+    }
+
+    .field-error,
+    div.mage-error[generated] {
+        margin-top: 1px;
+        text-align: right;
+    }
+
+    .field-error {
+        .lib-form-validation-note();
+    }
+
+    .product-options-wrapper {
+        .date {
+            &.required {
+                div[for*='options'] {
+                    &.mage-error {
+                        display: none !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .field .tooltip {
+        .lib-tooltip(right);
+        .tooltip-content {
+            min-width: 200px;
+            white-space: normal;
+        }
+    }
+
+    input:focus ~ .tooltip .tooltip-content,
+    select:focus ~ .tooltip .tooltip-content {
+        display: block;
+    }
+
+    ._has-datepicker {
+        ~ .ui-datepicker-trigger {
+            .lib-button-reset();
+            .lib-icon-font(
+            @_icon-font-content: @icon-calendar,
+            @_icon-font-color: @primary__color__lighter,
+            @_icon-font-size: @icon-calendar__font-size,
+            @_icon-font-line-height: @icon-calendar__font-size,
+            @_icon-font-display: block,
+            @_icon-font-text-hide: true
+            );
+            display: inline-block;
+            vertical-align: middle;
+
+            &:focus {
+                box-shadow: none;
+                outline: 0;
+            }
+        }
+    }
+
+    //
+    //  Sidebar forms
+    //  -----------------------------------------
+
+    .sidebar {
+        .fieldset {
+            margin: 0;
+
+            > .field:not(.choice) >,
+            .fields > .field {
+                &:not(:last-child) {
+                    margin: 0 0 @form-field__vertical-indent;
+                }
+
+                .label {
+                    margin: 0 0 4px;
+                    padding: 0 0 @indent__xs;
+                    text-align: left;
+                    width: 100%;
+                }
+
+                .control {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .legend {
+        .lib-font-size(20) !important;
+        border-bottom-width: 2px;
+        margin-bottom: 24px !important;
+        padding-bottom: 14px !important;
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .fieldset {
+        > .field {
+            margin: 0 0 @form-field__vertical-indent__desktop;
+        }
+    }
+}
