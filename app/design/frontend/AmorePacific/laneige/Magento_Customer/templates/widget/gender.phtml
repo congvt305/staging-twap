@@ -1,0 +1,25 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Customer\Block\Widget\Gender $block */
+?>
+<div class="field gender<?= $block->isRequired() ? ' required' : ''?>">
+    <label class="label" for="<?= $block->escapeHtmlAttr($block->getFieldId('gender')) ?>"><span><?= $block->escapeHtml($block->getStoreLabel('gender')) ?></span></label>
+    <?php $options = $block->getGenderOptions(); ?>
+    <?php $value = $block->getGender(); ?>
+    <?php foreach ($options as $option) : ?>
+        <?php if (!empty($option->getValue()) && $option->getValue() != 3) : ?>
+            <input type="radio"
+                   id="<?= $block->escapeHtmlAttr($block->getFieldId('gender')) ?>"
+                   value="<?= $block->escapeHtmlAttr($option->getValue()) ?>"
+                   title="<?= $block->escapeHtmlAttr($option->getLabel()) ?>"
+                   name="<?= $block->escapeHtmlAttr($block->getFieldName('gender')) ?>"
+                   class="radio"
+            <?= ($option->getValue() == $value) ? ' checked="checked"' : '' ?>>
+            <label class="label" for="<?= $block->escapeHtmlAttr($option->getValue()) ?>"><span><?= $block->escapeHtml(__($option->getLabel())) ?></span></label>
+        <?php endif; ?>
+    <?php endforeach;?>
+</div>

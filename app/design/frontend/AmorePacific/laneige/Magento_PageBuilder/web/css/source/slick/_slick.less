@@ -1,0 +1,281 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+@b3: #b3b3b3;
+@color-pagebuilder-darkest-gray: #1c1918;
+
+//
+//  Slick slider styles
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .slick-slider {
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-touch-action: pan-y;
+        -ms-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        box-sizing: border-box;
+        display: block;
+        position: relative;
+        touch-action: pan-y;
+        user-select: none;
+    }
+    .slick-list {
+        display: block;
+        margin: 0;
+        overflow: hidden;
+        padding: 0;
+        position: relative;
+
+        &:focus {
+            outline: none;
+        }
+
+        &.dragging {
+            cursor: pointer;
+            cursor: hand;
+        }
+    }
+
+    .slick-track {
+        display: block;
+        left: 0;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        top: 0;
+
+        &:before,
+        &:after {
+            content: '';
+            display: table;
+        }
+
+        &:after {
+            clear: both;
+        }
+
+        .slick-loading & {
+            visibility: hidden;
+        }
+    }
+
+    .slick-button {
+        bottom: 0;
+        display: inline-block;
+        left: 0;
+        right: 0;
+        width: 100%;
+
+        .slick-dots,
+        .slick-pause {
+            display: inline-block;
+        }
+
+        .slick-pause {
+            border: none;
+            background: transparent;
+            padding-left: 0;
+            padding-right: 0;
+            position: relative;
+
+            span {
+                &:extend(.abs-visually-hidden all);
+            }
+        }
+    }
+
+    .slick-pause {
+        .lib-icon-font(
+            @icon-pointer-right,
+            @_icon-font-color: @primary__color__dark,
+            @_icon-font-size: 52px,
+            @_icon-font-line-height: 21px,
+            @_icon-font-margin: 0,
+            @_icon-font-position: after
+        );
+
+        &:after {
+            margin-left: -14px;
+            width: 38px;
+        }
+
+        &.active {
+            .lib-icon-font(
+                @icon-stop,
+                @_icon-font-color: @primary__color__dark,
+                @_icon-font-size: 24px,
+                @_icon-font-line-height: 18px,
+                @_icon-font-margin: 0,
+                @_icon-font-position: after
+            );
+
+            &:after {
+                width: auto;
+            }
+        }
+    }
+
+    .slick-slide {
+        display: none;
+        float: left;
+        height: 100%;
+        min-height: 1px;
+        [dir='rtl'] & {
+            float: right;
+        }
+        img {
+            display: block;
+        }
+        &.slick-loading img {
+            display: none;
+        }
+
+        &.dragging img {
+            pointer-events: none;
+        }
+
+        .slick-initialized & {
+            display: block;
+        }
+
+        .slick-loading & {
+            visibility: hidden;
+        }
+
+        .slick-vertical & {
+            border: 1px solid transparent;
+            display: block;
+            height: auto;
+        }
+    }
+
+    .slick-slider .slick-track,
+    .slick-slider .slick-list {
+        -moz-transform: translate3d(0, 0, 0);
+        -ms-transform: translate3d(0, 0, 0);
+        -o-transform: translate3d(0, 0, 0);
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    .slick-arrow.slick-hidden {
+        display: none;
+    }
+
+    .slick-prev {
+        .lib-icon-font(
+                @icon-prev,
+            @_icon-font-color: @primary__color__lighter,
+            @_icon-font-size: @indent__xl,
+            @_icon-font-line-height: @indent__xl,
+            @_icon-font-margin: 0,
+            @_icon-font-position: before
+        );
+        left: 2rem;
+    }
+
+    .slick-next {
+        .lib-icon-font(
+                @icon-next,
+            @_icon-font-color: @primary__color__lighter,
+            @_icon-font-size: @indent__xl,
+            @_icon-font-line-height: @indent__xl,
+            @_icon-font-margin: 0,
+            @_icon-font-position: before
+        );
+
+        right: 2rem;
+    }
+
+    .slick-prev,
+    .slick-next {
+        -ms-transform: translate(0, -50%);
+        -webkit-transform: translate(0, -50%);
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        color: transparent;
+        cursor: pointer;
+        display: block;
+        font-size: 0;
+        height: 60px;
+        line-height: 0;
+        outline: none;
+        padding: 0;
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        width: 60px;
+        z-index: 101;
+
+        &:active,
+        &:focus,
+        &:not(.primary) {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+
+            &:active {
+                box-shadow: none;
+            }
+        }
+    }
+
+    .slick-dots {
+        .lib-inline-block-space-item();
+        display: block;
+        list-style: none;
+        margin: 0;
+        padding: 15px 0;
+        text-align: center;
+
+        li {
+            cursor: pointer;
+            display: inline-block;
+            height: 8px;
+            margin: 0 8px;
+            padding: 0;
+            position: relative;
+            vertical-align: middle;
+            width: 8px;
+
+            button {
+                background-color: rgba(0, 0, 0, 0.5);
+                border: none;
+                border-radius: 10px;
+                box-shadow: none;
+                cursor: pointer;
+                display: block;
+                height: 8px;
+                padding: 0;
+                text-indent: -99999px;
+                transition: .3s;
+                width: 8px;
+
+                &:active,
+                &:focus,
+                &:not(.primary) {
+                    box-shadow: none;
+                }
+            }
+
+            &.slick-active {
+                height: 12px;
+                width: 12px;
+
+                button {
+                    background: transparent;
+                    border: 2px solid @primary__color__dark;
+                    height: 12px;
+                    width: 12px;
+                }
+            }
+        }
+    }
+}
