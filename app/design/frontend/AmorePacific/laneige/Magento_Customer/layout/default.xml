@@ -9,5 +9,10 @@
     <body>
         <referenceBlock name="register-link" remove="true"/>
         <referenceBlock name="authentication-popup" remove="true"/>
+        <referenceBlock name="my-account-link">
+            <arguments>
+                <argument name="class" xsi:type="string" translate="true">account</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>

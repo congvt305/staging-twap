@@ -37,7 +37,7 @@ define([
         });
     });
 
-    $('.panel.header > .header.links').clone().appendTo('#store\\.links');
+    $('.content.header > .header.links').clone().appendTo('#store\\.links');
 
     keyboardHandler.apply();
 });

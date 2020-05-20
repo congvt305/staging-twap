@@ -26,8 +26,8 @@
 
 //  Header
 @header__background-color: false;
-@header-icons-color: @color-gray56;
-@header-icons-color-hover: @color-gray20;
+@header-icons-color: @theme__color__secondary;
+@header-icons-color-hover: @theme__color__primary-alt;
 
 @addto-color: @text__color__muted;
 @addto-hover-color: @primary__color;
@@ -422,14 +422,18 @@
     .header {
         &.content {
             > .header.links {
-                float: right;
+                float: left;
                 font-size: 0;
                 .lib-list-inline();
                 margin-left: auto;
 
                 > li {
                     font-size: @font-size__base;
-                    margin: 0 0 0 15px;
+                    margin-bottom: 0;
+
+                    &:not(.authorization-link) {
+                        margin: 0 @indent__s;
+                    }
 
                     &.welcome,
                     a {
@@ -439,6 +443,50 @@
                     &.welcome {
                         a {
                             .lib-css(padding-left, @indent__xs);
+                        }
+                    }
+
+                    a {
+                        font-size: 0;
+
+                        &.account {
+                            .lib-icon-font(
+                                @_icon-font-content: @icon-account,
+                                @_icon-font-color: @header-icons-color,
+                                @_icon-font-color-hover: @header-icons-color-hover,
+                                @_icon-font-color-active: @header-icons-color-hover,
+                                @_icon-font-size: 24px,
+                                @_icon-font-line-height: 60px,
+                                @_icon-font-text-hide: true,
+                                @_icon-font-position: after
+                            );
+                        }
+
+                        &.logout {
+                            .lib-icon-font(
+                                @_icon-font-content: @icon-logout,
+                                @_icon-font-color: @header-icons-color,
+                                @_icon-font-color-hover: @header-icons-color-hover,
+                                @_icon-font-color-active: @header-icons-color-hover,
+                                @_icon-font-size: 24px,
+                                @_icon-font-line-height: 60px,
+                                @_icon-font-text-hide: true,
+                                @_icon-font-position: after
+                            );
+                            margin: 0 @indent__s;
+                        }
+
+                        &.location {
+                            .lib-icon-font(
+                                @_icon-font-content: @icon-location,
+                                @_icon-font-color: @header-icons-color,
+                                @_icon-font-color-hover: @header-icons-color-hover,
+                                @_icon-font-color-active: @header-icons-color-hover,
+                                @_icon-font-size: 24px,
+                                @_icon-font-line-height: 60px,
+                                @_icon-font-text-hide: true,
+                                @_icon-font-position: after
+                            );
                         }
                     }
                 }
