@@ -81,11 +81,8 @@
     }
 
     .logo {
-        float: left;
-        margin: 0 0 @indent__s @indent__xl;
-        max-width: 50%;
-        position: relative;
-        z-index: 5;
+        position: absolute;
+        left: 50%;
 
         img {
             display: block;
@@ -305,6 +302,11 @@
     //  Social
     //  ---------------------------------------------
 
+    .socials.links {
+        &:extend(.abs-reset-list all);
+        .lib-list-inline();
+    }
+
     .social {
         .lib-icon-font(
             @_icon-font-content: @icon-facebook,
@@ -402,6 +404,19 @@
                 }
             }
         }
+    }
+
+    .logo {
+        margin-left: -50px;
+        top: 23px;
+
+        img {
+            max-width: 100px;
+        }
+    }
+
+    .socials.links {
+        padding: 80px @layout__width-xs-indent 60px;
     }
 }
 
@@ -532,8 +547,6 @@
 
     .logo {
         margin: 20px 0 0 50px;
-        max-width: 100%;
-        position: absolute;
         left: 0;
 
         img {

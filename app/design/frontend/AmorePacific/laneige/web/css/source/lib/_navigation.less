@@ -72,7 +72,6 @@
             .lib-css(padding-top, @_submenu-item__padding-top);
             .lib-css(padding-right, @_submenu-item__padding-right);
             .lib-css(padding-bottom, @_submenu-item__padding-bottom);
-            .lib-css(padding-left, @_submenu-item__padding-left);
         }
 
         a,
@@ -92,9 +91,6 @@
                 .lib-css(padding, @_nav-level0-item-padding);
                 .lib-css(text-transform, @_nav-level0-text-transform);
                 word-wrap: break-word;
-                &:hover {
-                    .lib-css(color, @navigation-level0-item__hover__color);
-                }
             }
 
             &.active {
@@ -110,10 +106,6 @@
                         display: inline-block;
                     }
                 }
-            }
-
-            > .level1 {
-                .lib-css(font-weight, @font-weight__semibold);
             }
 
             &.active,
@@ -157,7 +149,6 @@
                 .lib-css(line-height, @_submenu-line-height);
                 left: auto !important;
                 overflow-x: hidden;
-                padding: 0;
                 position: relative;
                 top: auto !important;
                 transition: left .3s ease-out;
@@ -174,7 +165,6 @@
 
                 ul {
                     display: block;
-                    .lib-css(padding-left, @_submenu-item__padding-left);
 
                     > li {
                         margin: 0;

@@ -23,6 +23,18 @@ define([
         }
     }
 
+    if ($('.navigation').offset()) {
+        mediaCheck({
+            media: '(max-width: 768px)',
+            entry: function () {
+                $('.navigation .parent > a').click(function () {
+                    $(this).next().slideToggle(300);
+                    $(this).toggleClass('ui-state-active');
+                });
+            }
+        });
+    }
+
     $('.cart-summary').mage('sticky', {
         container: '#maincontent'
     });
@@ -37,6 +49,7 @@ define([
         });
     });
 
+    $('.content.footer  .links.socials').clone().appendTo('#store\\.menu');
     $('.content.header > .header.links').clone().appendTo('#store\\.links');
 
     keyboardHandler.apply();

@@ -428,7 +428,7 @@ define([
         _toggleMobileMode: function () {
             var subMenus;
 
-            $(this.element).off('mouseenter mouseleave');
+            $(this.element).off('click mouseenter mouseleave');
             this._on({
 
                 /**
@@ -439,18 +439,10 @@ define([
 
                     event.preventDefault();
                     target = $(event.target).closest('.category-item');
-                    target.get(0).scrollIntoView();
 
-                    if (!target.hasClass('level-top') || !target.has('.ui-menu').length) {
+                    if (!target.hasClass('parent')) {
                         window.location.href = target.find('> a').attr('href');
                     }
-                },
-
-                /**
-                 * @param {jQuery.Event} event
-                 */
-                'click .ui-menu-item:has(.ui-state-active)': function (event) {
-                    this.collapseAll(event, true);
                 }
             });
 
@@ -458,18 +450,18 @@ define([
             $.each(subMenus, $.proxy(function (index, item) {
                 var category = $(item).find('> a span').not('.ui-menu-icon').text(),
                     categoryUrl = $(item).find('> a').attr('href'),
-                    menu = $(item).find('> .ui-menu');
+                    menu = $(item).find('> .ui-menu > .submenu > .first.parent');
 
                 this.categoryLink = $('<a>')
                     .attr('href', categoryUrl)
-                    .text($.mage.__('All %1').replace('%1', category));
+                    .text($.mage.__('All'));
 
                 this.categoryParent = $('<li>')
-                    .addClass('ui-menu-item category-item all-category')
+                    .addClass('level1 ui-menu-item category-item all-category')
                     .html(this.categoryLink);
 
                 if (menu.find('.all-category').length === 0) {
-                    menu.prepend(this.categoryParent);
+                    menu.before(this.categoryParent);
                 }
 
             }, this));
@@ -646,14 +638,14 @@ define([
                 }
 
                 // remove the active state class from the siblings
-                this.active.siblings().children('.ui-state-active').removeClass('ui-state-active');
+                //this.active.siblings().children('.ui-state-active').removeClass('ui-state-active');
 
-                this._open(newItem.parent());
+                //this._open(newItem.parent());
 
                 // Delay so Firefox will not hide activedescendant change in expanding submenu from AT
-                this._delay(function () {
-                    this.focus(event, newItem);
-                });
+                //this._delay(function () {
+                //    this.focus(event, newItem);
+                //});
             }
         },
 
