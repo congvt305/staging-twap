@@ -1,0 +1,60 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Default appearance styles
+//  _____________________________________________
+
+& when (@media-common = true) {
+    [data-content-type='products'][data-appearance='carousel'] {
+        .slick-initialized {
+            li.product-item {
+                display: block;
+
+                &:first-child {
+                    visibility: visible;
+                }
+
+            }
+        }
+
+        .product-item {
+            &-name {
+                font-size: 20px;
+            }
+
+            &-details {
+                max-width: 320px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        li.product-item {
+            display: none;
+            width: 33.3333%;
+
+            &:first-child {
+                display: block;
+                visibility: hidden;
+            }
+        }
+
+        &.center-mode {
+            .product-item {
+                opacity: .5;
+                transition: all 300ms ease;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+
+            .slick-current .product-item {
+                opacity: 1;
+            }
+        }
+    }
+}
