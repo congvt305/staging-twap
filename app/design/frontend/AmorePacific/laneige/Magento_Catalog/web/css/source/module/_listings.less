@@ -197,6 +197,23 @@
                 white-space: nowrap;
             }
         }
+
+        &.overview {
+            .lib-icon-font(
+                @_icon-font-content: @icon-quotation,
+                @_icon-font-color: @primary__color__lighter,
+                @_icon-font-size: 24px,
+                @_icon-font-position: before,
+                @_icon-font-vertical-align: middle,
+                @_icon-font-display: block
+            );
+            color: #787878;
+            font-size: 16px;
+
+            &:before {
+                .lib-css(opacity, 0.5);
+            }
+        }
     }
 
     .price-container {
@@ -329,7 +346,7 @@
                  margin-left: 0;
              }
          }
-     }
+    }
 
     .page-products.page-layout-3columns {
         .products-grid {
