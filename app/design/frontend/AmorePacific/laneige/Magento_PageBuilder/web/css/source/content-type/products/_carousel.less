@@ -20,6 +20,23 @@
             }
         }
 
+        .slick-prev,
+        .slick-next {
+            top: 40%;
+        }
+
+        .slick-prev {
+            .lib-icon-font-symbol(@icon-prev-thin);
+            left: -10px;
+            text-align: left;
+        }
+
+        .slick-next {
+            .lib-icon-font-symbol(@icon-next-thin);
+            right: -10px;
+            text-align: right;
+        }
+
         .product-item {
             &-name {
                 font-size: 20px;
@@ -55,6 +72,22 @@
             .slick-current .product-item {
                 opacity: 1;
             }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    [data-content-type='products'][data-appearance='carousel'] {
+        .slick-prev {
+            left: -50px;
+        }
+
+        .slick-next {
+            right: -50px;
         }
     }
 }
