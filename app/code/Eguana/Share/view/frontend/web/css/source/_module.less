@@ -1,0 +1,93 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .info_shares_wrap {
+        display: inline-block;
+        width: 88%;
+
+        .toggle {
+            position: relative;
+
+            .toggle_shares {
+                display: none;
+            }
+
+            &.on {
+                .toggle_shares {
+                    display: block;
+                }
+            }
+        }
+
+        .toggle_btn {
+            .lib-link-as-button();
+            display: block;
+            text-align: right;
+        }
+
+        .toggle_shares {
+            position: absolute;
+            right: 42px;
+            top: 0;
+
+            &:after {
+                background: #f6f6f6;
+                border-right: 1px solid @secondary__color;
+                border-top: 1px solid @secondary__color;
+                content: '';
+                display: inline-block;
+                height: 6px;
+                position: absolute;
+                right: -3px;
+                transform: rotate(45deg);
+                top: 15px;
+                width: 6px;
+            }
+
+            ul {
+                background: #f6f6f6;
+                border: 1px solid @secondary__color;
+                border-right: none;
+                list-style-type: none;
+                margin: 0;
+                overflow: hidden;
+                padding: 0;
+
+                li {
+                    border-right: 1px solid @secondary__color;
+                    display: inline-block;
+                    float: left;
+                    margin: 0;
+                    width: @indent__xl;
+
+                    a {
+                        .lib-link-as-button();
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+}
