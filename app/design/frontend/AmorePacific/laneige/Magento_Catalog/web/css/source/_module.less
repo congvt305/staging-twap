@@ -707,6 +707,13 @@
     .product-add-form {
         &:extend(.abs-revert-field-type-desktop all);
     }
+
+    .fotorama__stage__frame {
+        .fotorama__img {
+            left: 55% !important;
+            top: 41% !important;
+        }
+    }
 }
 
 //
@@ -760,6 +767,22 @@
         .product.media {
             width: 47%;
             max-width: 550px;
+        }
+
+        &.catalog-product-view main.page-main {
+            max-width: 100% !important;
+            padding: 0 !important;
+        }
+
+        .product-info-top-wrapper,
+        .product-detail-content {
+            box-sizing: border-box;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: @layout__max-width;
+            padding-left: @layout-indent__width;
+            padding-right: @layout-indent__width;
+            width: auto;
         }
     }
 
