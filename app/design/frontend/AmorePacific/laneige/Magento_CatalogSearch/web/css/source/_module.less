@@ -19,7 +19,9 @@
 
 & when (@media-common = true) {
     .block-search {
+        display: inline-block;
         margin-bottom: 0;
+        vertical-align: top;
 
         .block {
             &-title {
@@ -43,49 +45,71 @@
             );
             cursor: pointer;
             display: inline-block;
-            float: right;
 
             &.active {
                 + .control {
+                    border-top: 1px solid @border-color__base;
+                    position: absolute;
+                    top: 60px;
+                    left: 0;
+                    right: 0;
+                    z-index: 5;
+
                     input {
-                        position: static;
+                        max-width: 520px;
                     }
+                }
+
+                &:after {
+                    background: rgba(0, 0, 0, @overlay__opacity);
+                    content: '';
+                    display: block;
+                    height: 100%;
+                    position: fixed;
+                    right: 0;
+                    top: 60px;
+                    width: 100%;
+                    z-index: 1;
                 }
             }
         }
 
         .control {
-            border-top: 1px solid @border-color__base;
             clear: both;
-            margin: 0 -@layout__width-xs-indent -1px;
-            padding: 0 @layout__width-xs-indent;
-        }
-
-        input {
+            background: @submenu-desktop__background;
+            padding: 36px 0 36px @layout__width-xs-indent;
             left: -9999%;
-            margin: 15px 0;
             position: absolute;
+            text-align: center;
+
+            input {
+                &,
+                &:focus {
+                    background: transparent;
+                }
+            }
+
+            .actions {
+                display: inline-block;
+                vertical-align: top;
+            }
+
+            .remove {
+                .lib-button-icon(
+                    @_icon-font-content: @icon-remove,
+                    @_icon-font-size: 40px,
+                    @_icon-font-line-height: 55px,
+                    @_icon-font-color: @primary__color__dark,
+                    @_icon-font-text-hide: true
+                );
+                cursor: pointer;
+                margin-left: -50px;
+                vertical-align: top;
+            }
         }
 
         .action.search {
-            .lib-button-icon(
-                @_icon-font-content: @icon-search,
-                @_icon-font-text-hide: true,
-                @_icon-font-color: @header-icons-color
-            );
-            .lib-button-reset();
-            padding: @indent__xs 0;
-            position: absolute;
-            right: 10px;
-            top: 0;
-            z-index: 1;
-            display: none;
-
-            &:focus {
-                &:before {
-                    .lib-css(color, @color-gray20);
-                }
-            }
+            &:extend(.abs-button-l all);
         }
 
         .nested {
@@ -205,6 +229,32 @@
         .block-content {
             margin-bottom: 0;
         }
+
+        .actions {
+            position: absolute;
+            right: @layout__width-xs-indent;
+        }
+
+        .remove {
+            position: absolute;
+            right: 80px;
+        }
+
+        .action.search {
+            .lib-button-icon(
+                @_icon-font-content: @icon-search,
+                @_icon-font-size: 40px,
+                @_icon-font-color: @color-white,
+                @_icon-font-line-height: 50px,
+                @_icon-font-text-hide: true
+            );
+            padding: 0 @indent__xs;
+        }
+
+        input {
+            padding-left: 0;
+            padding-right: 120px;
+        }
     }
 }
 
@@ -214,15 +264,32 @@
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
     .block-search {
-        float: right;
         margin: 0 @indent__s;
-        position: relative;
         z-index: 4;
 
         .control {
-            border-top: 0;
-            margin: 0;
-            padding: 0;
+            .lib-icon-font(
+                @_icon-font-content: @icon-search,
+                @_icon-font-size: 40px,
+                @_icon-font-line-height: 55px,
+                @_icon-font-vertical-align: top,
+                @_icon-font-position: before
+            );
+            padding: 90px 0;
+
+            &:before {
+                position: relative;
+                left: 45px;
+            }
+
+            .actions {
+                margin-left: 15px;
+            }
+        }
+
+        .action.search {
+            padding-left: @indent__l*2;
+            padding-right: @indent__l*2;
         }
 
         .nested {
@@ -232,8 +299,8 @@
         }
 
         input {
-            .lib-input-placeholder(@form-element-input-placeholder__color);
             margin: 0;
+            padding-left: @indent__l*2;
             padding-right: 35px;
         }
     }
