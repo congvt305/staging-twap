@@ -13,7 +13,7 @@
  */
 ?>
 <div class="gallery-placeholder" data-gallery-role="gallery-placeholder">
-    <div data-role="loader" style="text-align: center; max-width: <?php /* @escapeNotVerified */ echo $block->getImageAttribute('product_page_image_medium', 'width'); ?>px; max-height: <?php /* @escapeNotVerified */ echo $block->getImageAttribute('product_page_image_medium', 'height'); ?>px">
+    <div data-role="loader" style="margin-left: auto; max-width: <?php /* @escapeNotVerified */ echo $block->getImageAttribute('product_page_image_medium', 'width'); ?>px; max-height: <?php /* @escapeNotVerified */ echo $block->getImageAttribute('product_page_image_medium', 'height'); ?>px">
         <div class="loader" style="display: inline-block; max-width: <?php /* @escapeNotVerified */ echo $block->getImageAttribute('product_page_image_medium', 'width'); ?>px; max-height: <?php /* @escapeNotVerified */ echo $block->getImageAttribute('product_page_image_medium', 'height'); ?>px">
             <img src="<?php echo $block->getGalleryImages()->getFirstItem()->getData('medium_image_url') ?>" style="position:static; display: block; margin: auto; max-width: 100%; max-height: 100%">
         </div>
