@@ -8,6 +8,10 @@
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <move element="page.main.title" destination="product.info.main" before="-"/>
+        <move element="product.info.review" destination="product.info.main" after="page.main.title"/>
+        <move element="product.info.overview" destination="product.info.main" after="product.info.review"/>
+        <move element="product.info.price" destination="product.info.addtocart"/>
         <referenceBlock name="view.addto.compare" remove="true"/>
+        <referenceBlock name="product.info.stock.sku" remove="true"/>
     </body>
 </page>
