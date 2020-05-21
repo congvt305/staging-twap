@@ -1,0 +1,148 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .info_shares_wrap {
+        display: inline-block;
+        width: 88%;
+
+        .toggle {
+            position: relative;
+
+            .toggle_shares {
+                display: none;
+            }
+
+            &.on {
+                .toggle_shares {
+                    display: block;
+                }
+            }
+        }
+
+        .toggle_btn {
+            .lib-link-as-button();
+            .lib-button(
+                @_button-icon-use: true,
+                @_button-padding: 0,
+                @_button-background: transparent,
+                @_button-border: none,
+                @_button-background-hover: transparent,
+                @_button-color-hover: @primary__color__dark,
+                @_button-border-hover: none,
+                @_button-background-active: transparent,
+                @_button-color-active: @primary__color__dark,
+                @_button-border-active: none,
+                @_button-font-content: @icon-share,
+                @_button-icon-font-size: 24px,
+                @_button-line-height: @indent__xl,
+                @_button-icon-font-text-hide: true,
+                @_button-icon-font-line-height: @indent__xl
+            );
+            display: block;
+            text-align: right;
+        }
+
+        .toggle_shares {
+            position: absolute;
+            right: 42px;
+            top: 0;
+
+            &:after {
+                background: #f6f6f6;
+                border-right: 1px solid @secondary__color;
+                border-top: 1px solid @secondary__color;
+                content: '';
+                display: inline-block;
+                height: 6px;
+                position: absolute;
+                right: -3px;
+                transform: rotate(45deg);
+                top: 15px;
+                width: 6px;
+            }
+
+            ul {
+                background: #f6f6f6;
+                border: 1px solid @secondary__color;
+                border-right: none;
+                list-style-type: none;
+                margin: 0;
+                overflow: hidden;
+                padding: 0;
+
+                li {
+                    border-right: 1px solid @secondary__color;
+                    display: inline-block;
+                    float: left;
+                    margin: 0;
+                    width: @indent__xl;
+
+                    a {
+                        .lib-link-as-button();
+                        .lib-button(
+                            @_button-icon-use: true,
+                            @_button-padding: 0,
+                            @_button-background: transparent,
+                            @_button-border: none,
+                            @_button-background-hover: transparent,
+                            @_button-color-hover: @primary__color__dark,
+                            @_button-border-hover: none,
+                            @_button-background-active: transparent,
+                            @_button-color-active: @primary__color__dark,
+                            @_button-border-active: none,
+                            @_button-font-content: @icon-facebook,
+                            @_button-icon-font-size: 24px,
+                            @_button-line-height: 38px,
+                            @_button-icon-font-text-hide: true,
+                            @_button-icon-font-line-height: 38px
+                        );
+
+                        &.t {
+                            .lib-icon-font-symbol(
+                                @_icon-font-content: @icon-twitter,
+                                @_icon-font-position: before
+                            );
+                        }
+
+                        &.p {
+                            .lib-icon-font-symbol(
+                                @_icon-font-content: @icon-pinterest,
+                                @_icon-font-position: before
+                            );
+                        }
+
+                        &.g {
+                            .lib-icon-font-symbol(
+                                @_icon-font-content: @icon-twitter,
+                                @_icon-font-position: before
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+}

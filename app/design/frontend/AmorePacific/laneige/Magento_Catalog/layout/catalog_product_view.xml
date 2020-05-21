@@ -7,7 +7,17 @@
 -->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <move element="page.main.title" destination="product.info.main" before="-"/>
         <referenceBlock name="view.addto.compare" remove="true"/>
+        <referenceBlock name="product.info.stock.sku" remove="true"/>
+        <referenceBlock name="content">
+            <container name="product.info.top.wrapper" before="-" htmlTag="div" htmlClass="product-info-top-wrapper"/>
+        </referenceBlock>
+        <move element="page.main.title" destination="product.info.top.wrapper" before="-"/>
+        <move element="product.info.main" destination="product.info.top.wrapper" after="page.main.title"/>
+        <move element="product.info.media" destination="product.info.top.wrapper" after="product.info.main"/>
+        <move element="product.info.overview" destination="product.info.top.wrapper" before="page.main.title"/>
+        <move element="product.info.review" destination="page.main.title" after="-"/>
+        <move element="product.info.overview" destination="product.info.main" before="-"/>
+        <move element="product.info.price" destination="product.info.addtocart"/>
     </body>
 </page>
