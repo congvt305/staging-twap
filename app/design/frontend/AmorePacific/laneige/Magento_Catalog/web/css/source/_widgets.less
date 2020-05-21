@@ -12,7 +12,6 @@
     .block-category-link {
         &.widget {
             display: block;
-            margin-bottom: @indent__base;
         }
     }
 
@@ -63,11 +62,11 @@
             }
         }
     }
-}
 
-.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
-    .block.widget .products-grid .product-items {
-        margin: 0;
+    .widget-product-carousel {
+        .product-item {
+            width: 100%/3;
+        }
     }
 }
 
