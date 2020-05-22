@@ -389,7 +389,7 @@
 
         .box-tocart {
             .field.qty {
-                padding-right: .75 * @indent__base;
+                margin-bottom: 0;
             }
 
             .input-text.qty {
@@ -722,6 +722,47 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .product-options-wrapper {
+        .options-toggle {
+            .lib-icon-font(
+                    @icon-expand,
+                @_icon-font: @icon-font,
+                @_icon-font-size: 20px,
+                @_icon-font-line-height: 26px,
+                @_icon-font-color: @primary__color__lighter,
+                @_icon-font-color-hover: @primary__color__lighter,
+                @_icon-font-color-active: @primary__color__lighter,
+                @_icon-font-margin: 0,
+                @_icon-font-vertical-align: middle,
+                @_icon-font-position: after,
+                @_icon-font-display: block
+            );
+            .lib-font-size(16);
+            color: @primary__color__lighter;
+            position: absolute;
+            right: @layout__width-xs-indent;
+
+            &:after {
+                position: relative;
+                top: -2px;
+            }
+
+            &.active {
+                .lib-icon-font-symbol(
+                    @_icon-font-content: @icon-collapse,
+                    @_icon-font-position: after
+                );
+
+                & + .fieldset {
+                    .swatch-attribute-options {
+                        display: block;
+                        height: auto;
+                    }
+                }
+            }
+        }
+    }
+
     .page-title-wrapper.product {
         text-align: center;
 
@@ -879,6 +920,11 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .product-options-wrapper {
+        .options-toggle {
+            display: none;
+        }
+    }
     .product-info-main,
     .product-options-bottom {
         .box-tocart {
@@ -1009,8 +1055,10 @@
         }
     }
 
-    .product.info.detailed {
-        margin-top: -5.5%;
+    .catalog-product-view:not(.page-product-configurable) {
+        .product.info.detailed {
+            margin-top: -3.5%;
+        }
     }
 }
 
