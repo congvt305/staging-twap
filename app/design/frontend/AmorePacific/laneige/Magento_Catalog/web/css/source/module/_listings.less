@@ -472,9 +472,17 @@
                 display: block;
                 width: 100%;
                 margin-bottom: @indent__base;
+                padding-left: 15px;
+                padding-right: 15px;
             }
 
             &-actions {
+                .action {
+                    &:before {
+                        margin-right: @indent__s;
+                    }
+                }
+
                 .actions-secondary {
                     > .action {
                         .lib-button(
@@ -482,7 +490,9 @@
                             @_button-margin: 0 0 @indent__base,
                             @_button-display: block
                         );
-                        .lib-button-l();
+                        .lib-button-l(
+                            @_button-l-padding: 15px
+                        );
                         font-weight: @font-weight__semibold;
                         text-align: left;
                         display: block !important;

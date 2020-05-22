@@ -121,6 +121,14 @@
     .category-image,
     .category-description {
         margin-bottom: @indent__base;
+
+        [data-content-type='row'][data-appearance='contained'] {
+            max-width: 100%;
+
+            [data-element='inner'] {
+                padding: 0 !important;
+            }
+        }
     }
 
     //
@@ -590,6 +598,22 @@
     //  ---------------------------------------------
 
     .catalog-category-view.page-layout-1column {
+        .category-view {
+            h2[data-content-type='heading'] {
+                padding: 82px 0;
+            }
+
+            &  ~ .page-main {
+                .page-title-wrapper {
+                    display: none;
+                }
+            }
+        }
+
+        .page-title-wrapper {
+            text-align: center;
+        }
+
         .column.main {
             min-height: inherit;
         }
@@ -970,6 +994,14 @@
 
     .product-add-form {
         &:extend(.abs-revert-field-type-desktop all);
+    }
+
+    .catalog-category-view.page-layout-1column {
+        .category-view {
+            h2[data-content-type='heading'] {
+                padding: 137px 0;
+            }
+        }
     }
 
     .fotorama__stage__frame {
