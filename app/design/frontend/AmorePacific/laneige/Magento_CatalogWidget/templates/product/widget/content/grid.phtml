@@ -16,9 +16,9 @@ use Magento\Framework\App\Action\Action;
     $image = 'new_products_content_widget_grid';
     $items = $block->getProductCollection()->getItems();
 
-    $showWishlist = false;
+    $showWishlist = true;
     $showCompare = false;
-    $showCart = false;
+    $showCart = true;
     $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
     $description = false;
     ?>
@@ -83,6 +83,10 @@ use Magento\Framework\App\Action\Action;
                                             <?php endif; ?>
                                             <?php if ($showWishlist || $showCompare) : ?>
                                                 <div class="actions-secondary" data-role="add-to-links">
+                                                    <a class="action product-item-link todetail"
+                                                       href="<?= $block->escapeUrl($_item->getProductUrl()) ?>">
+                                                        <?= $block->escapeHtml(__('Detail')) ?>
+                                                    </a>
                                                     <?php //phpcs:disable ?>
                                                     <?php if ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist) : ?>
                                                     <?php //phpcs:enable ?>
