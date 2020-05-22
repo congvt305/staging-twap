@@ -26,7 +26,8 @@ class Response extends Action implements CsrfAwareActionInterface
     public function execute()
     {
         try {
-            $this->ecpayHelper->getPaymentResult();
+            $paymentData = $this->getRequest()->getParams();
+            $this->ecpayHelper->getPaymentResult($paymentData);
 
             $this->_redirect('checkout/onepage/success');
         } catch (\Exception $e) {
