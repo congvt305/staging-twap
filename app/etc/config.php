@@ -331,6 +331,7 @@ return [
         'Amazon_Login' => 1,
         'Amazon_Payment' => 1,
         'Amore_Base' => 1,
+        'Amore_CustomerRegistration' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_Enterprise' => 1,
