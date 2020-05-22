@@ -12,6 +12,10 @@
         <referenceBlock name="content">
             <container name="product.info.top.wrapper" before="-" htmlTag="div" htmlClass="product-info-top-wrapper"/>
         </referenceBlock>
+        <referenceContainer name="page.main.title">
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.default.name"
+                   template="Magento_Catalog::product/view/default-name.phtml" before="-" />
+        </referenceContainer>
         <move element="page.main.title" destination="product.info.top.wrapper" before="-"/>
         <move element="product.info.main" destination="product.info.top.wrapper" after="page.main.title"/>
         <move element="product.info.media" destination="product.info.top.wrapper" after="product.info.main"/>

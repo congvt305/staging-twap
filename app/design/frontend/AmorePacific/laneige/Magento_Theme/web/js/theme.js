@@ -53,30 +53,32 @@ define([
     $('.content.header > .header.links').clone().appendTo('#store\\.links');
 
     var stickyNav = function () {
-        $('.product.data.items').removeClass('sticky');
-        $('.product.data.items >.data.item.title').removeClass('active');
+        if ($('.product.data.items').offset()) {
+            $('.product.data.items').removeClass('sticky');
+            $('.product.data.items >.data.item.title').removeClass('active');
 
-        var scrollTop = $(window).scrollTop();
-        var stickyNavTop = $('.product.data.items').offset().top;
+            var scrollTop = $(window).scrollTop();
+            var stickyNavTop = $('.product.data.items').offset().top;
 
-        if (scrollTop > stickyNavTop) {
-            $('.product.data.items').addClass('sticky');
-        }
-
-        $('.product.data.items >.data.item.title:first-child').addClass('active');
-
-        $('.tab-contents >.data.item.content').each(function(index,element){
-            var offset = $(element).offset();
-            var offsetTop = offset.top;
-            var stickyHeight = $('.product.data.items').height();
-            var top = offsetTop - stickyHeight - 10;
-
-            if(scrollTop > top && scrollTop > 0) {
-                var id = $(element).attr('id');
-                $('.product.data.items >.data.item.title').removeClass('active');
-                $("a[href='#"+id+"']").parent().addClass('active');
+            if (scrollTop > stickyNavTop) {
+                $('.product.data.items').addClass('sticky');
             }
-        });
+
+            $('.product.data.items >.data.item.title:first-child').addClass('active');
+
+            $('.tab-contents >.data.item.content').each(function(index,element){
+                var offset = $(element).offset();
+                var offsetTop = offset.top;
+                var stickyHeight = $('.product.data.items').height();
+                var top = offsetTop - stickyHeight - 10;
+
+                if(scrollTop > top && scrollTop > 0) {
+                    var id = $(element).attr('id');
+                    $('.product.data.items >.data.item.title').removeClass('active');
+                    $("a[href='#"+id+"']").parent().addClass('active');
+                }
+            });
+        }
     };
     stickyNav();
 
