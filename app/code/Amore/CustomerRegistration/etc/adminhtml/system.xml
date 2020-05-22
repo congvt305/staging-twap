@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2019 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: Abbas
+ * Date: 05/18/20
+ * Time: 11:32 AM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="customerregistraion" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+
+            <class>separator-top</class>
+            <label>Customer Registration</label>
+            <tab>amore_extensions_tab</tab>
+            <resource>Amore_CustomerRegistration::configuration</resource>
+
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" >
+                <label>General Configuration</label>
+
+                <field id="active" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1"  showInStore="1">
+                    <label>Enable Extension</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="terms_cms_block_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Terms CMS Block Id</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
