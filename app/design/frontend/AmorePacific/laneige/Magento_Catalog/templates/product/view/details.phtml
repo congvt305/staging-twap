@@ -42,7 +42,7 @@
                     ?>
                     <div class="data item content"
                          aria-labelledby="tab-label-<?= $block->escapeHtmlAttr($alias) ?>-title" id="<?= $block->escapeHtmlAttr($alias) ?>">
-                        <?= /* @noEscape */ $label ?>
+                        <div class="content-title"><?= /* @noEscape */ $label ?></div>
                         <?= /* @noEscape */ $html ?>
                     </div>
                 <?php endforeach;?>

@@ -79,6 +79,22 @@ define([
                 }
             });
         }
+
+        if ($('.catalog-product-view').offset()) {
+            mediaCheck({
+                media: '(max-width: 768px)',
+                entry: function () {
+                    $('.box-tocart .actions').removeClass('sticky');
+
+                    var scrollTop = $(window).scrollTop();
+                    var stickyNavTop = $('.box-tocart .actions').offset().top;
+
+                    if (scrollTop > stickyNavTop) {
+                        $('.box-tocart .actions').addClass('sticky');
+                    }
+                }
+            });
+        }
     };
     stickyNav();
 

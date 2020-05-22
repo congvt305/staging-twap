@@ -11,6 +11,7 @@
 <?php if ($_product->isSaleable()) :?>
 <div class="box-tocart">
     <div class="fieldset">
+        <?= $block->getChildHtml('product.info.size', true) ?>
         <?php if ($block->shouldRenderQuantity()) :?>
         <div class="field qty">
             <div class="control">
@@ -40,6 +41,12 @@
                     id="product-addtocart-button" disabled>
                 <span><?= $block->escapeHtml($buttonTitle) ?></span>
             </button>
+            <button type="submit"
+                    title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+                    class="action primary tocheckout"
+                    id="product-addtocheckout-button" onclick="return setCheckoutURL()">
+                <span><?php /* @escapeNotVerified */ echo __('Checkout'); ?></span>
+            </button>
         </div>
     </div>
 </div>
@@ -49,5 +56,12 @@
         "#product_addtocart_form": {
             "Magento_Catalog/js/validate-product": {}
         }
+    }
+</script>
+<script type="text/javascript">
+    function setCheckoutURL()
+    {
+        document.product_addtocart_form.return_url.value = '<?php echo $this->getUrl('checkout/cart');?>';
+        return true;
     }
 </script>
