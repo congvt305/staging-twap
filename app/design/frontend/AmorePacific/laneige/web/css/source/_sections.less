@@ -87,7 +87,13 @@
 
             > .switch {
                 .lib-vendor-prefix-display(flex);
-                .lib-vendor-box-align (center);
+                .lib-vendor-prefix-flex-direction(column);
+                .lib-vendor-box-align(center);
+                -webkit-justify-content: center;
+                -ms-flex: 1;
+                -webkit-flex: 1;
+                flex: 1;
+                justify-content: center;
                 padding: 0;
             }
         }
