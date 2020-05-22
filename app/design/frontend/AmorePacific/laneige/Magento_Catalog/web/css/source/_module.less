@@ -649,8 +649,6 @@
 
             [data-content-type='row'][data-appearance='contained'] [data-element='inner'] {
                 margin-bottom: 0 !important;
-                padding-left: 24px !important;
-                padding-right: 24px !important;
 
                 p {
                     .lib-font-size(14);
@@ -678,6 +676,20 @@
         height: 8px !important;
         top: @indent__s !important;
         width: 8px !important;
+    }
+
+    .tab-contents {
+        .data.item.content[aria-labelledby=tab-label-description-title] {
+            .content-title {
+                display: none;
+            }
+        }
+
+        .content-title {
+            letter-spacing: -0.4px;
+            margin-bottom: @indent__xl;
+            text-align: center;
+        }
     }
 }
 
@@ -818,6 +830,24 @@
         .lib-vendor-prefix-display(flex);
         .lib-vendor-prefix-flex-direction(column);
     }
+
+    .tab-contents {
+        padding-top: 24px;
+
+        .content-title {
+            .lib-font-size(26);
+            line-height: 38px;
+            margin-bottom: @indent__xl;
+        }
+    }
+
+    .product.info.detailed {
+        .data.item.content[aria-labelledby=tab-label-reviews-title],
+        [data-content-type=row][data-appearance=contained] [data-element=inner] {
+            padding-left: @layout__width-xs-indent !important;
+            padding-right: @layout__width-xs-indent !important;
+        }
+    }
 }
 
 //
@@ -908,18 +938,18 @@
     }
 
     .tab-contents {
-        .data.item.content[aria-labelledby=tab-label-description-title] {
-            .content-title {
-                display: none;
-            }
-        }
-
         .content-title {
             .lib-font-size(28);
-            letter-spacing: -0.4px;
             line-height: 36px;
-            margin-bottom: @indent__xl;
-            text-align: center;
+        }
+    }
+
+    .product.info.detailed {
+        .attribute-content {
+            [data-content-type=row][data-appearance=contained] [data-element=inner] {
+                padding-left: 24px !important;
+                padding-right: 24px !important;
+            }
         }
     }
 }
@@ -1000,9 +1030,10 @@
             box-sizing: border-box;
             margin-left: auto;
             margin-right: auto;
-            max-width: 900px;
+            max-width: 1040px;
             padding-left: @layout-indent__width;
             padding-right: @layout-indent__width;
+            padding-top: 13px;
             width: auto;
         }
     }
