@@ -65,7 +65,42 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+    .page-product-configurable {
+        .product-options-wrapper {
+            border-bottom: 1px solid @secondary__color;
 
+            .fieldset {
+                margin-bottom: 0;
+            }
+        }
+
+        .swatch-opt {
+            margin: @indent__s 0 0 0;
+        }
+
+        .swatch-option {
+            &.color {
+                height: 36px;
+                min-width: 34px;
+                margin-bottom: 16px;
+            }
+
+            &-tooltip {
+                display: none !important;
+            }
+        }
+
+        .swatch-attribute {
+            &-label,
+            &-selected-option {
+                color: @primary__color__dark;
+            }
+
+            &-options {
+                margin: 15px 0 -@indent__xs 0;
+            }
+        }
+    }
     .swatch {
         &-attribute {
             &-label {
@@ -352,5 +387,22 @@
         display: block;
         height: 0;
         visibility: hidden;
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .page-product-configurable {
+        .swatch-attribute-options {
+            .lib-vendor-prefix-display(flex);
+            height: 56px;
+            overflow-y: overlay;
+            overflow: auto;
+            padding-top: 2px;
+            padding-left: 2px;
+        }
     }
 }
