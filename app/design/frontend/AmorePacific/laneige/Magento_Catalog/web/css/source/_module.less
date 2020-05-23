@@ -27,7 +27,10 @@
 @product-name-text-decoration: none;
 @product-name-text-decoration-hover: @link__hover__text-decoration;
 
-@toolbar-mode-icon-font-size: 26px;
+@toolbar-mode-icon-font-size: 16px;
+@toolbar-background: transparent;
+@toolbar-element-background: @color-gray94;
+@toolbar-element__color: @color-gray37;
 @product-h1-margin-bottom-desktop: @indent__base;
 
 @import 'module/_listings.less';
@@ -120,7 +123,7 @@
 
     .category-image,
     .category-description {
-        margin-bottom: @indent__base;
+        margin-bottom: @indent__l;
 
         [data-content-type='row'][data-appearance='contained'] {
             max-width: 100%;
@@ -1067,6 +1070,11 @@
 //  ---------------------------------------------
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .category-image,
+    .category-description {
+        margin-bottom: @indent__xl;
+    }
+
     .product-info-main {
         clear: right;
         float: right;

@@ -27,10 +27,10 @@
     }
 
     .toolbar-amount {
+        color: @primary__color__lighter;
         display: block;
         line-height: @toolbar-mode-icon-font-size + 2;
         margin: 0;
-        padding: 8px 0 0;
         vertical-align: middle;
 
         .products.wrapper ~ .toolbar & {
@@ -39,7 +39,7 @@
     }
 
     .toolbar-products {
-        margin-bottom: @indent__xl;
+        margin-bottom: @indent__base;
         &:extend(.abs-add-clearfix all);
 
         .pages {
@@ -61,7 +61,7 @@
         padding: 4px 0 0;
 
         &-label {
-            &:extend(.abs-hidden);
+            display: none;
         }
 
         &-options {
@@ -126,8 +126,16 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .sorter {
         &-options {
-            width: 50%;
+            float: right;
+            width: 48.5%;
+            top: 0;
+            right: 0;
+            position: absolute;
         }
+    }
+
+    .toolbar-amount {
+        margin-top: @indent__s;
     }
 }
 
@@ -144,12 +152,9 @@
         }
     }
 
-    .toolbar-amount {
-        float: left;
-    }
-
     .sorter {
         float: right;
+        padding-top: 15px;
     }
 
     .modes {
