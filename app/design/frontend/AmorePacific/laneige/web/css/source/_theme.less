@@ -48,6 +48,11 @@
 @border-color__base: @secondary__color;
 
 //
+//  Headings
+//  ---------------------------------------------
+@heading__font-weight__base: @font-weight__semibold;
+
+//
 //  Buttons
 //  ---------------------------------------------
 @button__font-weight: @font-weight__regular;
@@ -77,7 +82,7 @@
 
 @breadcrumbs__font-size: 15px;
 @breadcrumbs-link__color: @primary__color__darker;
-@breadcrumbs__container-margin: 0 0 @indent__xl;
+@breadcrumbs__container-margin: @indent__base 0 @indent__xl;
 @breadcrumbs-link__visited__color: @breadcrumbs-link__color;
 @breadcrumbs-link__hover__color: @breadcrumbs-link__color;
 @breadcrumbs-link__hover__text-decoration: none;
@@ -98,6 +103,46 @@
 @pager-item__padding: 0px 12px;
 @pager-current__background: @primary__color;
 @pager-current__color: @color-white;
+@pager-action__border: none;
+@pager-icon__font-size: 24px;
+@pager-action__color: @primary__color__lighter;
+
+//
+//  Navigation variables
+//  _____________________________________________
+
+@navigation__background: @color-white;
+@navigation-level0-item__font-size: 18px;
+@navigation-level0-item__font-weight: @font-weight__regular;
+@navigation-level0-item__active__border-width: false;
+@navigation-level0-item__active__border-style: false;
+@navigation-level0-item__border: 1px solid @border-color__base;
+@navigation-level0-item__color: @primary__color__dark;
+@navigation-level0-item__padding: @indent__base @layout__width-xs-indent;
+@submenu-item__background: #f7f7f7;
+@submenu-item__active__border: 0;
+@submenu__padding-left: @layout__width-xs-indent;
+@submenu__font-size: 16px;
+@submenu-item__color: @primary__color__darker;
+@navigation-desktop__background: @color-white;
+@navigation-desktop__font-size: 16px;
+@navigation-desktop__font-weight: @font-weight__regular;
+@navigation-desktop-level0-item__color: @primary__color__dark;
+@navigation-desktop-level0-item__line-height: 60px;
+@navigation-desktop-level0-item__hover__color: @navigation-desktop-level0-item__color;
+@navigation-desktop-level0-item__active__border-style: false;
+@navigation-desktop-level0-item__padding: 0 @indent__base;
+@navigation-desktop-level0-item__margin: 0;
+@submenu-desktop__background: #f7f7f7;
+@submenu-desktop__border-width: 0;
+@submenu-desktop__font-weight: @font-weight__regular;
+@submenu-desktop__min-width: 100%;
+@submenu-desktop__padding: 12px 0;
+@submenu-desktop-item__padding: 4px @indent__l 4px 0;
+@submenu-desktop-item__hover__background: @submenu-desktop-item__background;
+@submenu-desktop-item__active__border-width: 0;
+
+
 
 //
 //  Form variables

@@ -434,11 +434,11 @@ define([
                 /**
                  * @param {jQuery.Event} event
                  */
-                'click .ui-menu-item:has(a)': function (event) {
+                'click .category-item:has(a)': function (event) {
                     var target;
 
                     event.preventDefault();
-                    target = $(event.target).closest('.ui-menu-item');
+                    target = $(event.target).closest('.category-item');
                     //target.get(0).scrollIntoView();
 
                     if (!target.hasClass('level-top') || !target.has('.ui-menu').length) {

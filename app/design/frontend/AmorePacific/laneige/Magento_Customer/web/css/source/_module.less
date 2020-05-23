@@ -336,6 +336,13 @@
         }
     }
 
+    .form-login {
+        input:not(.checkbox) {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+    }
+
     .form-login,
     .form.minisearch {
         input:not(.checkbox) {
@@ -343,29 +350,11 @@
             border-left: none !important;
             border-right: none !important;
             border-top: none !important;
-            font-weight: @font-weight__bold;
             height: 55px !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-
-            &::-moz-placeholder {
-                .lib-css(color, #a0a0a0) !important;
-                font-weight: @font-weight__regular !important;
-            }
-
-            &::-webkit-input-placeholder {
-                .lib-css(color, #a0a0a0) !important;
-                font-weight: @font-weight__regular !important;
-            }
-
-            &:-ms-input-placeholder {
-                .lib-css(color, #a0a0a0) !important;
-                font-weight: @font-weight__regular !important;
-            }
+            .lib-input-placeholder(#a0a0a0);
 
             &:focus {
-                background: @color-white !important;
-                border-bottom: 2px solid @theme__color__secondary !important;
+                background: transparent !important;
             }
         }
     }
@@ -415,6 +404,11 @@
     }
 
     .customer-account-login {
+        main.page-main {
+            max-width: 100% !important;
+            padding: 0 !important;
+        }
+
         .columns {
             background-color: @color-white;
         }
@@ -443,12 +437,6 @@
         .columns {
             margin-bottom: 24px !important;
             padding: 24px @layout__width-xs-indent;
-        }
-    }
-
-    .form-login {
-        .actions-toolbar .secondary {
-            text-align: left;
         }
     }
 

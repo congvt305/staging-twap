@@ -1,0 +1,135 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //  Prices
+    .price-style-1() {
+        .price {
+            &-tier_price .price-excluding-tax,
+            &-tier_price .price-including-tax {
+                display: inline;
+            }
+        }
+    }
+
+    .price-style-2() {
+        .price {
+            &-including-tax,
+            &-excluding-tax {
+                display: inline !important;
+            }
+
+            &-including-tax:before {
+                content: ' / ';
+            }
+
+            &-including-tax:after {
+                content: '('attr(data-label)')';
+            }
+        }
+    }
+
+    .price-style-3() {
+        .price-including-tax,
+        .price-excluding-tax {
+            display: block;
+            .lib-font-size(18);
+            line-height: 1;
+
+            .price {
+                font-weight: @font-weight__bold;
+            }
+
+            .cart-tax-total {
+                &:extend(.abs-tax-total all);
+                &-expanded {
+                    &:extend(.abs-tax-total-expanded all);
+                }
+            }
+        }
+
+        .price-including-tax + .price-excluding-tax,
+        .weee[data-label] {
+            display: block;
+            .lib-font-size(18);
+
+            &:before {
+                content: attr(data-label) ': ';
+                .lib-font-size(11);
+            }
+
+            .price {
+                .lib-font-size(11);
+            }
+        }
+    }
+
+    .price-style-1();
+    .price-style-3();
+
+    .old-price,
+    .old.price {
+        color: @primary__color__lighter;
+
+        .price {
+            text-decoration: line-through;
+        }
+
+        .discount-label {
+            color: @theme__color__secondary;
+            font-weight: @font-weight__bold;
+            font-size: 16px;
+            margin-right: @indent__xs;
+        }
+    }
+
+    .price-box {
+        .lib-vendor-prefix-display();
+        .lib-vendor-box-align (center);
+        .lib-vendor-prefix-flex-direction (column);
+        justify-content: center;
+
+        .price-label {
+            &:extend(.abs-visually-hidden all);
+        }
+
+        > .special-price {
+            order: 2;
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .price-box {
+        > .special-price {
+            margin-top: @indent__xs;
+        }
+    }
+}
+
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .price-box {
+        .lib-vendor-prefix-flex-direction (row);
+    }
+
+    .old-price,
+    .old.price {
+        margin-right: @indent__xs;
+    }
+}

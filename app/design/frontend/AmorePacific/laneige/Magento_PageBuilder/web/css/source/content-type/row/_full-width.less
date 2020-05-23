@@ -1,0 +1,44 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Full Width row appearance styles
+//  _____________________________________________
+
+& when (@media-common = true) {
+    [data-content-type='row'][data-appearance='full-width'] {
+        box-sizing: border-box;
+
+        > .row-full-width-inner {
+            box-sizing: border-box;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: @layout__max-width;
+            width: 100%;
+
+            .column.main .block.widget & {
+                padding-left: @layout-indent__width;
+                padding-right: @layout-indent__width;
+            }
+        }
+    }
+}
+
+//
+//  Mobile (style-m.css)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    [data-content-type='row'][data-appearance='full-width'] {
+        background-attachment: scroll !important;
+
+        > .row-full-width-inner {
+            .column.main .block.widget & {
+                padding-left: @layout__width-xs-indent !important;
+                padding-right: @layout__width-xs-indent !important;
+            }
+        }
+    }
+}
