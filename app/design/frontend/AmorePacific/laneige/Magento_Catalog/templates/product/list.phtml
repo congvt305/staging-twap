@@ -58,6 +58,14 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                     <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
                        class="product photo product-item-photo"
                        tabindex="-1">
+                        <span class="flags">
+                        <?php if($_product->getData('new')):?>
+                            <span class="flag new"><?= $_product->getResource()->getAttribute('new')->getStoreLabel();?></span>
+                        <?php endif;?>
+                        <?php if($_product->getData('best')):?>
+                            <span class="flag best"><?= $_product->getResource()->getAttribute('best')->getStoreLabel(); ?></span>
+                        <?php endif;?>
+                        </span>
                         <?= $productImage->toHtml() ?>
                     </a>
                     <div class="product details product-item-details">
