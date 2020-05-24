@@ -8,6 +8,8 @@
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="view.addto.compare" remove="true"/>
+        <referenceBlock name="related.product.addto.compare" remove="true"/>
+        <referenceBlock name="upsell.product.addto.compare" remove="true"/>
         <referenceBlock name="product.info.stock.sku" remove="true"/>
         <referenceBlock name="content">
             <container name="product.info.top.wrapper" before="-" htmlTag="div" htmlClass="product-info-top-wrapper"/>
