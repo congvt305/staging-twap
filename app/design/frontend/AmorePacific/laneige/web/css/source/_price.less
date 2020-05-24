@@ -96,13 +96,16 @@
         .lib-vendor-prefix-flex-direction (column);
         justify-content: center;
 
-        .price-label {
-            &:extend(.abs-visually-hidden all);
-        }
-
         .normal-price,
         .special-price {
             order: 2;
+        }
+
+        .special-price,
+        .old-price {
+            .price-label {
+                &:extend(.abs-visually-hidden all);
+            }
         }
     }
 }
