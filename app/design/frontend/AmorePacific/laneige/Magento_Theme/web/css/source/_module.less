@@ -140,6 +140,13 @@
 
     .page-main {
         > .page-title-wrapper {
+            .page-title {
+                text-align: center;
+                
+                .page-layout-1column & {
+                    .lib-heading(h2);
+                }
+            }
             .page-title + .action {
                 margin-top: @indent__l;
             }
@@ -563,6 +570,11 @@
         > .page-title-wrapper {
             .page-title {
                 display: inline-block;
+
+                .page-layout-1column & {
+                    display: block;
+                    font-size: @h2__font-size-desktop;
+                }
             }
 
             .page-title + .action {
