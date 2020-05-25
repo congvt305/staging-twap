@@ -68,11 +68,6 @@
                     <span class="value" data-bind="i18n: 'See price before order confirmation.'"></span>
                 </div>
                 <!-- /ko -->
-                <!-- ko ifnot: canApplyMsrp -->
-                <!-- ko foreach: $parent.getRegion('priceSidebar') -->
-                    <!-- ko template: {name: getTemplate(), data: item.product_price, as: 'price'} --><!-- /ko -->
-                <!-- /ko -->
-                <!-- /ko -->
 
                 <div class="details-qty qty">
                     <label class="label" data-bind="i18n: 'Qty', attr: {
@@ -82,9 +77,14 @@
                            'data-item-qty': qty,
                            'data-cart-item-id': product_sku
                            }, text: qty"
-                           class="item-qty cart-item-qty"/>
+                          class="item-qty cart-item-qty"/>
 
                 </div>
+                <!-- ko ifnot: canApplyMsrp -->
+                <!-- ko foreach: $parent.getRegion('priceSidebar') -->
+                    <!-- ko template: {name: getTemplate(), data: item.product_price, as: 'price'} --><!-- /ko -->
+                <!-- /ko -->
+                <!-- /ko -->
             </div>
 
             <div class="product actions">
