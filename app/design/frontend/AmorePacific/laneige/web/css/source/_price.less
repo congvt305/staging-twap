@@ -43,10 +43,6 @@
             .lib-font-size(18);
             line-height: 1;
 
-            .price {
-                font-weight: @font-weight__bold;
-            }
-
             .cart-tax-total {
                 &:extend(.abs-tax-total all);
                 &-expanded {
@@ -96,14 +92,17 @@
         .lib-vendor-prefix-flex-direction (column);
         justify-content: center;
 
-        .price-label {
-            &:extend(.abs-visually-hidden all);
-        }
-
         .price-final_price,
         .normal-price,
         .special-price {
             order: 2;
+        }
+
+        .special-price,
+        .old-price {
+            .price-label {
+                &:extend(.abs-visually-hidden all);
+            }
         }
     }
 }

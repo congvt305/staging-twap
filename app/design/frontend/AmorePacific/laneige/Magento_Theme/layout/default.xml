@@ -17,7 +17,13 @@
         <move element="footer" destination="footer-container" after="-"/>
         <referenceBlock name="header" remove="true"/>
         <move element="logo" destination="header.panel.wrapper"/>
-        <move element="top.links" destination="header-wrapper" before="-"/>
         <move element="navigation.sections" destination="header.container" after="header.panel.wrapper" />
+        <referenceContainer name="header-wrapper">
+            <block class="Magento\Framework\View\Element\Html\Links" name="header.links" before="-">
+                <arguments>
+                    <argument name="css_class" xsi:type="string">header links</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
     </body>
 </page>
