@@ -13,7 +13,7 @@ define([
      * @param {HTMLElement} $loader - Loader DOM element.
      */
     function hideLoader($loader) {
-        $loader.parentNode.removeChild($loader);
+        $loader.remove();
     }
 
     /**
