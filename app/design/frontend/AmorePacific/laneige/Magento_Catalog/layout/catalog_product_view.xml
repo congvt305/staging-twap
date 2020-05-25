@@ -28,6 +28,13 @@
                 </arguments>
             </block>
         </referenceBlock>
+        <referenceBlock name="product.info.description">
+            <arguments>
+                <argument name="data" xsi:type="array">
+                    <item name="alias" xsi:type="string">feature</item>
+                </argument>
+            </arguments>
+        </referenceBlock>
         <referenceBlock name="product.info.addtocart">
             <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.size" template="Magento_Catalog::product/view/attribute.phtml">
                 <arguments>
@@ -46,7 +53,6 @@
         <move element="page.main.title" destination="product.info.top.wrapper" before="-"/>
         <move element="product.info.main" destination="product.info.top.wrapper" after="page.main.title"/>
         <move element="product.info.media" destination="product.info.top.wrapper" after="product.info.main"/>
-        <move element="product.info.overview" destination="product.info.top.wrapper" before="page.main.title"/>
         <move element="product.info.review" destination="page.main.title" after="-"/>
         <move element="product.info.overview" destination="product.info.main" before="-"/>
         <move element="product.info.price" destination="product.info.addtocart"/>

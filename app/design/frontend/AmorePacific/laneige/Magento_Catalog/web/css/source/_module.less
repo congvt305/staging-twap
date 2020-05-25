@@ -332,10 +332,6 @@
             .price-including-tax + .price-excluding-tax,
             .weee + .price-excluding-tax,
             .weee {
-                .lib-font-size(20);
-                line-height: @indent__l;
-                margin-bottom: @indent__xs;
-
                 .price {
                     .lib-font-size(20);
                     line-height: @indent__l;
@@ -406,8 +402,11 @@
                 width: 35px;
             }
 
-            .actions {
+            .product-info-price + .actions {
                 padding-top: 15px;
+            }
+
+            .actions {
                 text-align: center;
 
                 button {
@@ -852,6 +851,10 @@
                     .lib-button-primary(
                         @_button-padding: 22px 0
                     );
+
+                    &.disabled {
+                        width: 100% !important;
+                    }
                 }
 
                 .tocheckout {

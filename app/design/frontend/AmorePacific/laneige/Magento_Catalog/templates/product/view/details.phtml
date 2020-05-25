@@ -19,6 +19,10 @@
                     }
                     $alias = $layout->getElementAlias($name);
                     $label = $block->getChildData($alias, 'title');
+
+                    if ($alias == 'description') {
+                        $alias = 'feature';
+                    }
                     ?>
                     <li class="data item title"
                         id="tab-label-<?= $block->escapeHtmlAttr($alias) ?>">
@@ -39,6 +43,10 @@
                     }
                     $alias = $layout->getElementAlias($name);
                     $label = $block->getChildData($alias, 'title');
+
+                    if ($alias == 'description') {
+                        $alias = 'feature';
+                    }
                     ?>
                     <div class="data item content"
                          aria-labelledby="tab-label-<?= $block->escapeHtmlAttr($alias) ?>-title" id="<?= $block->escapeHtmlAttr($alias) ?>">

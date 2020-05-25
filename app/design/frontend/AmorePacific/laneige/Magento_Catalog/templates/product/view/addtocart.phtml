@@ -8,8 +8,8 @@
 ?>
 <?php $_product = $block->getProduct(); ?>
 <?php $buttonTitle = __('Add to Cart'); ?>
-<?php if ($_product->isSaleable()) :?>
 <div class="box-tocart">
+    <?php if ($_product->isSaleable()) :?>
     <div class="fieldset">
         <?= $block->getChildHtml('product.info.size', true) ?>
         <?php if ($block->shouldRenderQuantity()) :?>
@@ -38,8 +38,8 @@
             <button type="submit"
                     title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
                     class="action tocart"
-                    id="product-addtocart-button" disabled>
-                <span><?= $block->escapeHtml($buttonTitle) ?></span>
+                    id="product-addtocart-button">
+                <span><?php /* @escapeNotVerified */ echo __('Add to Cart'); ?></span>
             </button>
             <button type="submit"
                     title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
@@ -49,8 +49,17 @@
             </button>
         </div>
     </div>
+    <?php else :?>
+        <div class="actions">
+            <button type="submit"
+                    title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                    class="action tocart disabled"
+                    id="product-addtocart-button" disabled>
+                <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
+            </button>
+        </div>
+    <?php endif; ?>
 </div>
-<?php endif; ?>
 <script type="text/x-magento-init">
     {
         "#product_addtocart_form": {
@@ -58,6 +67,17 @@
         }
     }
 </script>
+<?php if (!$block->isRedirectToCartEnabled()) : ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "catalogAddToCart": {
+                "bindSubmit": false
+            }
+        }
+    }
+</script>
+<?php endif; ?>
 <script type="text/javascript">
     function setCheckoutURL()
     {

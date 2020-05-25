@@ -100,6 +100,7 @@
             &:extend(.abs-visually-hidden all);
         }
 
+        .price-final_price,
         .normal-price,
         .special-price {
             order: 2;
@@ -115,6 +116,13 @@
     .price-box {
         > .special-price {
             margin-top: @indent__xs;
+        }
+    }
+
+    .product-info-main {
+        .old-price,
+        .old.price {
+            margin-right: @indent__xs;
         }
     }
 }
