@@ -281,10 +281,6 @@ $_item = null;
                                                     <?php if ($showAddTo):?>
                                                         <div class="secondary-addto-links actions-secondary"
                                                              data-role="add-to-links">
-                                                            <a class="action product-item-link todetail"
-                                                               href="<?= $block->escapeUrl($_item->getProductUrl()) ?>">
-                                                                <?= $block->escapeHtml(__('Detail')) ?>
-                                                            </a>
                                                             <?php if ($addToBlock = $block->getChildBlock('addto')):?>
                                                                 <?= $addToBlock->setProduct($_item)->getChildHtml() ?>
                                                             <?php endif; ?>
