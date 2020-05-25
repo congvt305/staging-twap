@@ -111,10 +111,6 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                                     <?php endif; ?>
                                 </div>
                                 <div data-role="add-to-links" class="actions-secondary"<?= strpos($pos, $viewMode . '-secondary') ? $block->escapeHtmlAttr($position) : '' ?>>
-                                    <a class="action product-item-link todetail"
-                                       href="<?= $block->escapeUrl($_product->getProductUrl()) ?>">
-                                        <?= $block->escapeHtml(__('Detail')) ?>
-                                    </a>
                                     <?php if ($addToBlock = $block->getChildBlock('addto')) :?>
                                         <?= $addToBlock->setProduct($_product)->getChildHtml() ?>
                                     <?php endif; ?>
