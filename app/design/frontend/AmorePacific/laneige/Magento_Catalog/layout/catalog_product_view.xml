@@ -8,14 +8,51 @@
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="view.addto.compare" remove="true"/>
+        <referenceBlock name="related.product.addto.compare" remove="true"/>
+        <referenceBlock name="upsell.product.addto.compare" remove="true"/>
         <referenceBlock name="product.info.stock.sku" remove="true"/>
         <referenceBlock name="content">
             <container name="product.info.top.wrapper" before="-" htmlTag="div" htmlClass="product-info-top-wrapper"/>
         </referenceBlock>
+        <referenceBlock name="page.main.title">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Magento_Catalog::product/view/title.phtml</argument>
+            </action>
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.default.name"
+                   template="Magento_Catalog::product/view/default-name.phtml" />
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.tag" template="Magento_Catalog::product/view/attribute.phtml">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getHashTag</argument>
+                    <argument name="at_code" xsi:type="string">hash_tag</argument>
+                    <argument name="css_class" xsi:type="string">hash-tag</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceBlock name="product.info.description">
+            <arguments>
+                <argument name="data" xsi:type="array">
+                    <item name="alias" xsi:type="string">feature</item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="product.info.addtocart">
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.size" template="Magento_Catalog::product/view/attribute.phtml">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getLaneigeSize</argument>
+                    <argument name="at_code" xsi:type="string">laneige_size</argument>
+                    <argument name="css_class" xsi:type="string">laneige-size</argument>
+                    <argument name="at_type" xsi:type="string">text</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceBlock name="product.attributes">
+            <arguments>
+                <argument translate="true" name="title" xsi:type="string">All Ingredients / Precautions</argument>
+            </arguments>
+        </referenceBlock>
         <move element="page.main.title" destination="product.info.top.wrapper" before="-"/>
         <move element="product.info.main" destination="product.info.top.wrapper" after="page.main.title"/>
         <move element="product.info.media" destination="product.info.top.wrapper" after="product.info.main"/>
-        <move element="product.info.overview" destination="product.info.top.wrapper" before="page.main.title"/>
         <move element="product.info.review" destination="page.main.title" after="-"/>
         <move element="product.info.overview" destination="product.info.main" before="-"/>
         <move element="product.info.price" destination="product.info.addtocart"/>

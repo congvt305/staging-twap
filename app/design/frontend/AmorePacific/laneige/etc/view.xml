@@ -49,8 +49,8 @@
                 <height>100</height>
             </image>
             <image id="mini_cart_product_thumbnail" type="thumbnail">
-                <width>78</width>
-                <height>78</height>
+                <width>82</width>
+                <height>82</height>
             </image>
             <image id="new_products_content_widget_grid" type="small_image">
                 <width>320</width>
@@ -147,8 +147,8 @@
                 <height>270</height>
             </image>
             <image id="related_products_list" type="small_image">
-                <width>140</width>
-                <height>140</height>
+                <width>280</width>
+                <height>336</height>
             </image>
             <image id="review_page_product_image" type="small_image">
                 <width>285</width>
@@ -171,8 +171,8 @@
                 <height>90</height>
             </image>
             <image id="upsell_products_list" type="small_image">
-                <width>140</width>
-                <height>140</height>
+                <width>280</width>
+                <height>336</height>
             </image>
             <image id="wishlist_sidebar_block" type="thumbnail">
                 <width>75</width>

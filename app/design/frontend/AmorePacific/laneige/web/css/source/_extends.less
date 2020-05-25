@@ -286,9 +286,9 @@
             @_icon-font-size: 26px,
             @_icon-font-line-height: 15px,
             @_icon-font-text-hide: true,
-            @_icon-font-color: @color-gray19,
-            @_icon-font-color-hover: @color-gray19,
-            @_icon-font-color-active: @color-gray19
+            @_icon-font-color: @primary__color__dark,
+            @_icon-font-color-hover: @primary__color__dark,
+            @_icon-font-color-active: @primary__color__dark
         );
     }
 }
@@ -663,17 +663,15 @@
 & when (@media-common = true) {
     .abs-action-addto-product {
         &:extend(.abs-action-link-button all);
-        .lib-button-s();
     }
 
     .abs-actions-addto-gridlist {
         .lib-icon-font(
             @_icon-font-content: '',
-            @_icon-font-size: 29px,
+            @_icon-font-size: 24px,
             @_icon-font-color: @addto-color,
             @_icon-font-color-hover: @addto-hover-color,
-            @_icon-font-text-hide: true,
-            @_icon-font-vertical-align: middle,
+            @_icon-font-vertical-align: top,
             @_icon-font-line-height: 24px
         );
     }
@@ -714,6 +712,36 @@
 & when (@media-common = true) {
     .abs-revert-secondary-color {
         .lib-button-revert-secondary-color();
+    }
+
+    .abs-revert-secondary-blue-color {
+        .lib-button-revert-secondary-color(
+            @_button-color: @color-white,
+            @_button-background: @theme__color__primary-alt,
+            @_button-border: 1px solid @theme__color__primary-alt,
+            @_button-color-hover: @color-white,
+            @_button-background-hover: @primary__color,
+            @_button-border-hover: 1px solid @primary__color,
+            @_button-color-active: @button__active__color,
+            @_button-background-active: @primary__color,
+            @_button-border-active: 1px solid @primary__color
+        );
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .abs-revert-secondary-blue-color-mobile {
+        .lib-button-revert-secondary-color(
+            @_button-color: @color-white,
+            @_button-background: @theme__color__primary-alt,
+            @_button-border: 1px solid @theme__color__primary-alt,
+            @_button-color-hover: @color-white,
+            @_button-background-hover: @primary__color,
+            @_button-border-hover: 1px solid @primary__color,
+            @_button-color-active: @button__active__color,
+            @_button-background-active: @primary__color,
+            @_button-border-active: 1px solid @primary__color
+        );
     }
 }
 
