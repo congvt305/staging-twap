@@ -688,6 +688,14 @@
     }
 }
 
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .abs-button-l-mobile {
+        .lib-button-l(
+            @_button-l-padding: @indent__base @indent__l
+        );
+    }
+}
+
 //
 //  Button as a link
 //  ---------------------------------------------
