@@ -30,17 +30,16 @@
                     <!-- ko text: product_name --><!-- /ko -->
                 <!-- /ko -->
             </strong>
-            <div class="product options">
+            <div class="options">
                 <div data-role="content" class="content">
+                    <dl class="product options list">
                     <!-- ko if: laneige_size -->
-                    <dl>
+                        <dt class="label" data-bind="i18n: 'size'"></dt>
                         <dd>
                             <span data-bind="text: laneige_size"/>
                         </dd>
-                    </dl>
                     <!-- /ko -->
-                <!-- ko if: options.length -->
-                    <dl class="product options list">
+                    <!-- ko if: options.length -->
                         <!-- ko foreach: { data: options, as: 'option' } -->
                         <dt class="label"><!-- ko text: option.label --><!-- /ko --></dt>
                         <dd class="values">
@@ -55,8 +54,8 @@
                             <!-- /ko -->
                         </dd>
                         <!-- /ko -->
+                    <!-- /ko -->
                     </dl>
-                <!-- /ko -->
                 </div>
             </div>
 
