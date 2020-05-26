@@ -50,20 +50,15 @@
 //  ---------------------------------------------
 
 @abs-product-options-list: {
-    dt {
-        clear: left;
-        float: left;
-        margin: 0 @indent__s @indent__xs 0;
+    color: @primary__color__lighter;
+    font-size: 13px;
 
-        &:after {
-            content: ': ';
-        }
+    dt {
+        display: none;
     }
 
     dd {
         display: inline-block;
-        float: left;
-        margin: 0 0 @indent__xs;
     }
 };
 
@@ -260,8 +255,12 @@
 
 & when (@media-common = true) {
     .abs-input-qty {
+        float: left;
         text-align: center;
-        width: 47px;
+        width: 35px;
+        height: 35px;
+        padding: 0;
+        margin: 0 -1px;
     }
 }
 
