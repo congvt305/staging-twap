@@ -415,6 +415,16 @@
             .actions-toolbar .secondary {
                 display: none;
             }
+
+            button.action {
+                &:extend(.abs-button-l all);
+            }
+        }
+
+        .fieldset.create {
+            input[title=Female] {
+                margin-left: 35px;
+            }
         }
     }
 
@@ -557,6 +567,56 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .customer-account-create {
+        .page-title-wrapper {
+            float: left;
+            width: 50%;
+
+            .page-title {
+                margin-top: 0 !important;
+                text-align: left;
+            }
+        }
+
+        main.page-main {
+            margin-bottom: 100px;
+            position: relative;
+        }
+
+        .columns {
+            clear: right;
+            float: right;
+            padding-top: @indent__s;
+            width: 50%;
+
+            .column.main {
+                margin-bottom: 70px;
+            }
+        }
+
+        .form-create-account {
+            .fieldset.create {
+                .field.note {
+                    left: @layout-indent__width;
+                    position: absolute;
+                    top: 65px;
+                }
+            }
+
+            .actions-toolbar {
+                bottom: 0;
+                left: 0;
+                position: absolute;
+                right: 0;
+                width: 100%;
+
+                button {
+                    width: 380px;
+                };
+            }
+        }
+    }
+
     .customer-account-forgotpassword,
     .customer-account-createpassword {
         .page-title {
