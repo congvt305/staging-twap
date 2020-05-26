@@ -10,11 +10,10 @@
 & when (@media-common = true) {
     .info_shares_wrap {
         display: inline-block;
-        width: 88%;
+        padding-right: 12px;
+        vertical-align: middle;
 
         .toggle {
-            position: relative;
-
             .toggle_shares {
                 display: none;
             }
@@ -51,9 +50,9 @@
         }
 
         .toggle_shares {
+            bottom: 0;
             position: absolute;
-            right: 42px;
-            top: 0;
+            right: 90px;
 
             &:after {
                 background: #f6f6f6;
@@ -83,6 +82,7 @@
                     display: inline-block;
                     float: left;
                     margin: 0;
+                    text-align: center;
                     width: @indent__xl;
 
                     a {
