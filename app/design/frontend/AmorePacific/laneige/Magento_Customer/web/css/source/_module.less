@@ -258,71 +258,58 @@
     //
     //  Password Strength Meter
     //  ---------------------------------------------
+    div[data-role=password-strength-meter] {
+        margin-top: @indent__base;
 
-    .field.password {
-        .control {
-            .lib-vendor-prefix-display();
-            .lib-vendor-prefix-flex-direction();
-
-            .mage-error {
-                .lib-vendor-prefix-order(2);
+        &.password-weak {
+            span.password-weak {
+                background-color: #e82b24;
             }
+        }
 
-            .input-text {
-                .lib-vendor-prefix-order(0);
+        &.password-medium {
+            span.password-weak,
+            span.password-medium {
+                background-color: #e82b24;
             }
+        }
+
+        &.password-strong {
+            span.password-weak,
+            span.password-medium,
+            span.password-strong {
+                background-color: #e82b24;
+            }
+        }
+
+        &.password-very-strong {
+            span.password-weak,
+            span.password-medium,
+            span.password-strong,
+            span.password-very-strong {
+                background-color: #e82b24;
+            }
+        }
+
+        .password-strength-meter {
+            color: @primary__color__darker;
         }
     }
 
-    .password-strength-meter {
-        background-color: @_password-default;
-        height: @form-element-input__height;
-        line-height: @form-element-input__height;
-        padding: @form-element-input__padding;
-        position: relative;
-        z-index: 1;
+    .password-strength-meter-status {
+        .lib-vendor-prefix-display(flex);
+        margin-top: 8px;
+        -webkit-justify-content: space-between;
+        justify-content: space-between;
 
-        &:before {
-            content: '';
-            height: 100%;
-            left: 0;
-            position: absolute;
-            top: 0;
-            z-index: -1;
-        }
+        span {
+            background-color: @secondary__color;
+            height: 4px;
+            margin: 0 4px 0 0;
+            width: 25%;
 
-        .password-none & {
-            &:before {
-                background-color: @_password-default;
-                width: 100%;
-            }
-        }
-
-        .password-weak & {
-            &:before {
-                background-color: @_password-weak;
-                width: 25%;
-            }
-        }
-
-        .password-medium & {
-            &:before {
-                background-color: @_password-medium;
-                width: 50%;
-            }
-        }
-
-        .password-strong & {
-            &:before {
-                background-color: @_password-strong;
-                width: 75%;
-            }
-        }
-
-        .password-very-strong & {
-            &:before {
-                background-color: @_password-very-strong;
-                width: 100%;
+            &:last-child {
+                margin-right: 0;
             }
         }
     }
@@ -420,6 +407,14 @@
 
         .column.main {
             padding-bottom: 0 !important;
+        }
+    }
+
+    .customer-account-create {
+        .form-create-account {
+            .actions-toolbar .secondary {
+                display: none;
+            }
         }
     }
 
