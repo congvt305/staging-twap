@@ -16,6 +16,16 @@
 
     table {
         .lib-table-caption();
+
+        > tbody {
+            > tr {
+                > td {
+                    &:not(.item) {
+                        text-align: center;
+                    }
+                }
+            }
+        }
     }
 
     .table {
