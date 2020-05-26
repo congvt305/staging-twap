@@ -855,7 +855,7 @@
 
                 .tocart {
                     .lib-button-primary(
-                        @_button-padding: 22px 0
+                        @_button-padding: @indent__base 0
                     );
 
                     &.disabled {
@@ -864,9 +864,7 @@
                 }
 
                 .tocheckout {
-                    .lib-button-l(
-                        @_button-l-padding: 22px 0
-                    );
+                    &:extend(.abs-button-l-mobile all);
                     &:extend(.abs-revert-secondary-blue-color-mobile all);
                 }
             }
