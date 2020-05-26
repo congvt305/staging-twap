@@ -12,7 +12,7 @@
     <?php if ($_product->isSaleable()) :?>
     <div class="fieldset">
         <?= $block->getChildHtml('product.info.size', true) ?>
-        <?php if ($block->shouldRenderQuantity()) :?>
+        <?php if ($block->shouldRenderQuantity() && !$_product->getData('offline')) :?>
         <div class="field qty">
             <div class="control">
                 <button onclick="var qty_el = document.getElementById('qty'); var qty = qty_el.value; if( !isNaN( qty ) &amp;&amp; qty > 1 ) qty_el.value--; return false;" class="qty-decrease qty-selector" >
@@ -35,18 +35,26 @@
         <?php endif; ?>
         <?= $block->getChildHtml('product.info.price', true) ?>
         <div class="actions">
-            <button type="submit"
-                    title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
-                    class="action tocart"
-                    id="product-addtocart-button">
-                <span><?php /* @escapeNotVerified */ echo __('Add to Cart'); ?></span>
-            </button>
-            <button type="submit"
-                    title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
-                    class="action primary tocheckout"
-                    id="product-addtocheckout-button" onclick="return setCheckoutURL()">
-                <span><?php /* @escapeNotVerified */ echo __('Checkout'); ?></span>
-            </button>
+            <?php if($_product->getData('offline')):?>
+                <a href="<?= $block->escapeUrl($block->getUrl()) ?>"
+                   title="<?= $block->escapeHtml(__('Find a store')) ?>"
+                   class="action action-offline">
+                    <span><?= $block->escapeHtml(__('Find a store')) ?></span>
+                </a>
+            <?php else :?>
+                <button type="submit"
+                        title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                        class="action tocart"
+                        id="product-addtocart-button">
+                    <span><?php /* @escapeNotVerified */ echo __('Add to Cart'); ?></span>
+                </button>
+                <button type="submit"
+                        title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+                        class="action primary tocheckout"
+                        id="product-addtocheckout-button" onclick="return setCheckoutURL()">
+                    <span><?php /* @escapeNotVerified */ echo __('Checkout'); ?></span>
+                </button>
+            <?php endif; ?>
         </div>
     </div>
     <?php else :?>
