@@ -403,6 +403,12 @@
     }
 
     .customer-account-login {
+        .page-title-wrapper {
+            .page-title {
+                text-transform: uppercase;
+            }
+        }
+
         main.page-main {
             max-width: 100% !important;
             padding: 0 !important;
@@ -416,6 +422,44 @@
             padding-bottom: 0 !important;
         }
     }
+
+    .customer-account-forgotpassword,
+    .customer-account-createpassword {
+        .page-title {
+            line-height: 36px;
+            margin-bottom: @indent__s;
+        }
+
+        form {
+            .email {
+                border-top: 2px solid @primary__color__dark;
+                margin-bottom: 36px;
+                padding-top: 24px;
+            }
+
+            .action {
+                &.submit {
+                    &:extend(.abs-button-xl all);
+                    margin: 0;
+                }
+
+                &.back {
+                    display: none !important;
+                }
+            }
+
+            .note {
+                text-align: center;
+            }
+
+            &.reset {
+                .field.password {
+                    border-top: 2px solid @primary__color__dark;
+                    padding-top: 24px;
+                }
+            }
+        }
+    }
 }
 
 //
@@ -424,6 +468,12 @@
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .customer-account-login {
+        .page-title-wrapper {
+            .page-title {
+                margin-bottom: @indent__base !important;
+            }
+        }
+
         main.page-main {
             background: url('../images/login-bg-mb.png') no-repeat 100% 50%;
             background-size: cover;
@@ -445,6 +495,11 @@
                 text-align: center;
             }
         }
+    }
+
+    .field.persistent {
+        padding-top: 17px;
+        padding-left: 8px;
     }
 
     .account {
@@ -480,6 +535,26 @@
             }
         }
     }
+
+    .customer-account-forgotpassword,
+    .customer-account-createpassword {
+        .page-title {
+            .lib-font-size(26) !important;
+        }
+
+        .column.main {
+            .note {
+                margin-bottom: @indent__base;
+            }
+
+            .actions-toolbar {
+                bottom: 0;
+                left: -@layout__width-xs-indent;
+                position: fixed;
+                right: -@layout__width-xs-indent;
+            }
+        }
+    }
 }
 
 //
@@ -487,7 +562,41 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .customer-account-forgotpassword,
+    .customer-account-createpassword {
+        .page-title {
+            .lib-font-size(28) !important;
+        }
+
+        .column.main {
+            margin-bottom: 150px;
+
+            form {
+                margin: 0 auto;
+                max-width: 580px;
+
+                .fieldset {
+                    margin-bottom: 100px;
+                }
+            }
+
+            .note {
+                margin-bottom: 24px;
+            }
+
+            .action {
+                width: 380px;
+            }
+        }
+    }
+
     .customer-account-login {
+        .page-title-wrapper {
+            .page-title {
+                margin-bottom: 64px !important;
+            }
+        }
+
         main.page-main {
             background: url('../images/login-bg.png') no-repeat 100% 50%;
             background-size: cover;
@@ -538,16 +647,6 @@
                 }
             }
         }
-    }
-
-    .form.password.reset,
-    .form.send.confirmation,
-    .form.password.forget,
-    .form.create.account,
-    .form.search.advanced,
-    .form.form-orders-search {
-        min-width: 600px;
-        width: 50%;
     }
 
     //
