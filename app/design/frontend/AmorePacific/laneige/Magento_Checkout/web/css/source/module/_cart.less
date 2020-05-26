@@ -16,9 +16,6 @@
     //  Summary block
     .cart-summary {
         &:extend(.abs-add-box-sizing all);
-        .lib-css(background, @sidebar__background-color);
-        margin-bottom: @indent__m;
-        padding: 1px 15px @indent__m;
 
         > .title {
             display: block;
@@ -72,8 +69,8 @@
 
     //  Totals block
     .cart-totals {
-        border-top: 1px solid @border-color__base;
-        padding-top: @indent__s;
+        background: @sidebar__background-color;
+        border-bottom: 1px solid @primary__color__dark;
         &:extend(.abs-sidebar-totals all);
 
         .table-wrapper {
@@ -89,8 +86,12 @@
     //  Products table
     .cart.table-wrapper {
         .items {
+            thead {
+                display: none;
+            }
+
             thead + .item {
-                border-top: @border-width__base solid @border-color__base;
+                border-top: 2px solid @primary__color__dark;
             }
 
             > .item {
@@ -104,7 +105,6 @@
 
             &.qty {
                 .input-text {
-                    margin-top: -5px;
                     &:extend(.abs-input-qty all);
                 }
 
@@ -135,13 +135,17 @@
             &:extend(.abs-add-clearfix all);
 
             > .action {
-                &:extend(button all);
-                .lib-link-as-button();
-                margin-bottom: @indent__s;
-                margin-right: @indent__s;
 
-                &:last-child {
-                    margin-right: 0;
+                &.action-delete {
+                    .lib-icon-font(
+                        @icon-remove,
+                        @_icon-font-size: 40px,
+                        @_icon-font-line-height: 28px,
+                        @_icon-font-text-hide: true,
+                        @_icon-font-color: @primary__color__lighter,
+                        @_icon-font-color-hover: @primary__color__lighter,
+                        @_icon-font-color-active: @primary__color__lighter
+                    );
                 }
             }
         }
@@ -183,8 +187,6 @@
 
         //  Product options
         .item-options {
-            font-size: @font-size__s;
-            margin-bottom: @indent__s;
             &:extend(.abs-product-options-list all);
             &:extend(.abs-add-clearfix all);
         }
@@ -210,7 +212,6 @@
 
         .checkout-methods-items {
             &:extend(.abs-reset-list all);
-            margin-top: @indent__base;
             text-align: center;
 
             .action.primary {
@@ -229,9 +230,7 @@
     //  Products pager
     .cart-products-toolbar {
         .toolbar-amount {
-            margin: @indent__m 0 15px;
-            padding: 0;
-            text-align: center;
+            display: none;
         }
 
         .pages {
@@ -246,8 +245,8 @@
         }
     }
 
-    .cart-products-toolbar-top {
-        border-bottom: @border-width__base solid @border-color__base;
+    .cart-products-toolbar-bottom {
+        display: none;
     }
 
     //
@@ -270,13 +269,21 @@
         }
     }
 
-    .cart.table-wrapper,
-    .order-items.table-wrapper {
-        .col.price,
-        .col.qty,
-        .col.subtotal,
-        .col.msrp {
-            text-align: right;
+    .cart-empty {
+        text-align: center;
+        margin-top: 80px;
+
+        p {
+            color: #787878;
+            font-size: 16px;
+            margin-bottom: @indent__xl;
+        }
+
+        > a {
+            .lib-button();
+            .lib-button-l(
+                @_button-l-padding: 12px @indent__xl
+            );
         }
     }
 }
@@ -289,14 +296,6 @@
     .cart {
         &.table-wrapper {
             overflow: inherit;
-
-            thead {
-                .col {
-                    &:not(.item) {
-                        display: none;
-                    }
-                }
-            }
 
             .col {
                 &.qty,
@@ -336,6 +335,12 @@
             &:extend(.abs-shopping-cart-items-mobile all);
         }
     }
+
+    .cart-empty {
+        > a {
+            &:extend(.abs-button-l-mobile all);
+        }
+    }
 }
 
 //
@@ -345,10 +350,6 @@
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
     .cart-container {
         &:extend(.abs-add-clearfix-desktop all);
-        .form-cart {
-            &:extend(.abs-shopping-cart-items-desktop all);
-        }
-
         .widget {
             float: left;
             
@@ -356,13 +357,29 @@
                 margin-bottom: @indent__base;
             }
         }
+
+        .checkout-methods-items {
+            margin-top: @indent__xl*2;
+
+            .action.primary {
+                max-width: 380px;
+            }
+        }
+    }
+
+    .cart-totals {
+        padding: @indent__base 100px @indent__s;
+
+        .mark {
+            padding-left: 100px;
+        }
+
+        .amount {
+            padding-right: 100px !important;
+        }
     }
 
     .cart-summary {
-        float: right;
-        position: relative;
-        width: 23%;
-
         .actions-toolbar {
             .column.main & {
                 &:extend(.abs-reset-left-margin-desktop all);
@@ -407,7 +424,7 @@
                 &-item-photo {
                     display: table-cell;
                     max-width: 100%;
-                    padding-right: @indent__base;
+                    padding-right: @indent__s;
                     position: static;
                     vertical-align: top;
                     width: 1%;
@@ -415,9 +432,13 @@
 
                 &-item-details {
                     display: table-cell;
-                    vertical-align: top;
+                    vertical-align: middle;
                     white-space: normal;
                     width: 99%;
+                }
+
+                &-item-name {
+                    font-size: 20px;
                 }
             }
 
@@ -436,11 +457,6 @@
 
     //  Products pager
     .cart-products-toolbar {
-        .toolbar-amount {
-            line-height: 30px;
-            margin: 0;
-        }
-
         .pages {
             float: right;
             margin: 0 0 1px;
@@ -474,9 +490,16 @@
         }
     }
 
+    .cart-empty {
+        margin-top: 100px;
+    }
+
     .block.crosssell {
+        border-top: 1px solid @border-color__base;
+        margin-top: 120px;
+
         h2 {
-            margin-bottom: 60px;
+            margin: 60px 0;
         }
     }
 }
