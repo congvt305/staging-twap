@@ -352,6 +352,13 @@
             }
         }
 
+        .action-offline {
+            &:extend(.abs-action-link-button all);
+            &:extend(.abs-button-l all);
+            .lib-button-primary();
+            width: 100%;
+        }
+
         .field.qty {
             display: inline-block;
             margin-bottom: 0;
@@ -805,6 +812,10 @@
             top: -147px;
         }
 
+        .action-offline {
+            margin-top: -6px;
+        }
+
         .box-tocart {
             margin: @indent__s 0;
 
@@ -942,6 +953,10 @@
     }
     .product-info-main,
     .product-options-bottom {
+        .action-offline {
+            margin-top: @indent__base;
+        }
+
         .box-tocart {
             margin: @indent__base 0 29px 0;
             overflow: hidden;
