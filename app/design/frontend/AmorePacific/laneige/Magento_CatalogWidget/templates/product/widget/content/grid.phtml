@@ -68,7 +68,7 @@ use Magento\Framework\App\Action\Action;
                                         <div class="product-item-actions">
                                             <?php if ($showCart) : ?>
                                                 <div class="actions-primary">
-                                                    <?php if ($_item->isSaleable()) : ?>
+                                                    <?php if ($_item->isSaleable() && $_item->getData('offline')) : ?>
                                                         <?php $postParams = $block->getAddToCartPostParams($_item); ?>
                                                         <form data-role="tocart-form" data-product-sku="<?= $block->escapeHtmlAttr($_item->getSku()) ?>" action="<?= $block->escapeUrl($postParams['action']) ?>" method="post">
                                                             <input type="hidden" name="product" value="<?= $block->escapeHtmlAttr($postParams['data']['product']) ?>">
