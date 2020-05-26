@@ -238,34 +238,34 @@ $_item = null;
                                                                 <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
                                                                 </button>
                                                             <?php else :?>
-                                                        <?php
-                                                        /** @var $viewModel PreparePostData */
-                                                        $viewModel = $block->getViewModel();
-                                                        $postArray = $viewModel->getPostData(
-                                                            $block->escapeUrl($block->getAddToCartUrl($_item)),
-                                                            ['product' => $_item->getEntityId()]
-                                                        );
-                                                        $value = $postArray['data'][ActionInterface::PARAM_NAME_URL_ENCODED];
-                                                        ?>
-                                                        <form data-role="tocart-form"
-                                                            data-product-sku="<?= $block->escapeHtmlAttr($_item->getSku()) ?>"
-                                                            action="<?= $block->escapeUrl($block->getAddToCartUrl($_item)) ?>"
-                                                            method="post">
-                                                        <input type="hidden" name="product"
-                                                            value="<?= /* @noEscape */ (int)$_item->getEntityId() ?>">
-                                                        <input type="hidden"
-                                                            name="<?= /* @noEscape */ ActionInterface::PARAM_NAME_URL_ENCODED?>"
-                                                            value="<?= /* @noEscape */ $value ?>">
-                                                        <?= $block->getBlockHtml('formkey') ?>
-                                                        <button type="submit"
-                                                            title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
-                                                            class="action tocart primary">
-                                                        <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
-                                                        </button>
-                                                        </form>
+                                                                <?php
+                                                                /** @var $viewModel PreparePostData */
+                                                                $viewModel = $block->getViewModel();
+                                                                $postArray = $viewModel->getPostData(
+                                                                    $block->escapeUrl($block->getAddToCartUrl($_item)),
+                                                                    ['product' => $_item->getEntityId()]
+                                                                );
+                                                                $value = $postArray['data'][ActionInterface::PARAM_NAME_URL_ENCODED];
+                                                                ?>
+                                                                <form data-role="tocart-form"
+                                                                    data-product-sku="<?= $block->escapeHtmlAttr($_item->getSku()) ?>"
+                                                                    action="<?= $block->escapeUrl($block->getAddToCartUrl($_item)) ?>"
+                                                                    method="post">
+                                                                    <input type="hidden" name="product"
+                                                                        value="<?= /* @noEscape */ (int)$_item->getEntityId() ?>">
+                                                                    <input type="hidden"
+                                                                        name="<?= /* @noEscape */ ActionInterface::PARAM_NAME_URL_ENCODED?>"
+                                                                        value="<?= /* @noEscape */ $value ?>">
+                                                                    <?= $block->getBlockHtml('formkey') ?>
+                                                                    <button type="submit"
+                                                                        title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                                                                        class="action tocart primary">
+                                                                        <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                                                    </button>
+                                                                </form>
                                                             <?php endif; ?>
+                                                            </div>
                                                         <?php endif; ?>
-                                                        </div>
                                                     <?php endif; ?>
 
                                                     <?php if ($showAddTo):?>
