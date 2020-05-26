@@ -142,7 +142,7 @@
         > .page-title-wrapper {
             .page-title {
                 text-align: center;
-                
+
                 .page-layout-1column & {
                     .lib-heading(h2);
                 }
@@ -452,6 +452,16 @@
             > li {
                 &:not(:last-child) {
                     margin: 0 25px @indent__base 0;
+                }
+            }
+        }
+    }
+
+    .page-main {
+        > .page-title-wrapper {
+            .page-title {
+                .page-layout-1column & {
+                    margin-top: 0;
                 }
             }
         }
