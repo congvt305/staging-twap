@@ -87,7 +87,7 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                         <div class="product-item-inner">
                             <div class="product actions product-item-actions"<?= strpos($pos, $viewMode . '-actions') ? $block->escapeHtmlAttr($position) : '' ?>>
                                 <div class="actions-primary"<?= strpos($pos, $viewMode . '-primary') ? $block->escapeHtmlAttr($position) : '' ?>>
-                                    <?php if ($_product->isSaleable()) :?>
+                                    <?php if ($_product->isSaleable() && $_product->getData('offline')) :?>
                                         <?php $postParams = $block->getAddToCartPostParams($_product); ?>
                                         <form data-role="tocart-form"
                                               data-product-sku="<?= $block->escapeHtmlAttr($_product->getSku()) ?>"
@@ -105,12 +105,6 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                                                 <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
                                             </button>
                                         </form>
-                                    <?php else :?>
-                                        <?php if ($_product->isAvailable()) :?>
-                                            <div class="stock available"><span><?= $block->escapeHtml(__('In stock')) ?></span></div>
-                                        <?php else :?>
-                                            <div class="stock unavailable"><span><?= $block->escapeHtml(__('Out of stock')) ?></span></div>
-                                        <?php endif; ?>
                                     <?php endif; ?>
                                 </div>
                                 <div data-role="add-to-links" class="actions-secondary"<?= strpos($pos, $viewMode . '-secondary') ? $block->escapeHtmlAttr($position) : '' ?>>

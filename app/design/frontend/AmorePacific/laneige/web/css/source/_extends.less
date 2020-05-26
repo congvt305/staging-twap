@@ -58,7 +58,11 @@
     }
 
     dd {
-        display: inline-block;
+        display: block;
+        
+        &:not(:last-child) {
+            margin-bottom: 0;
+        }
     }
 };
 
@@ -255,12 +259,13 @@
 
 & when (@media-common = true) {
     .abs-input-qty {
+        border-left: none;
+        border-right: none;
         float: left;
         text-align: center;
         width: 35px;
         height: 35px;
         padding: 0;
-        margin: 0 -1px;
     }
 }
 
@@ -1356,9 +1361,16 @@
 
 & when (@media-common = true) {
     .abs-sidebar-totals {
+        .mark,
+        .amount {
+            padding: 0 @indent__base @indent__base;
+        }
+
         .mark {
+            color: @primary__color__lighter;
             font-weight: @font-weight__regular;
             padding-left: 4px;
+            text-align: left;
 
             strong {
                 font-weight: @font-weight__regular;
@@ -1366,6 +1378,7 @@
         }
 
         .amount {
+            color: @primary__color__lighter;
             padding-right: 4px;
             text-align: right;
             white-space: nowrap;
@@ -1378,16 +1391,24 @@
         .grand {
             .mark,
             .amount {
-                padding-top: @indent__base;
+                border-top: 1px solid @border-color__base;
+                color: @primary__color__dark;
+                padding-top: 25px;
+                padding-bottom: 25px;
+            }
+
+            .mark {
+                strong {
+                    font-size: 16px;
+                    font-weight: @font-weight__bold;
+                    text-transform: uppercase;
+                }
             }
 
             .amount {
+                font-size: 20px;
                 padding-right: 4px;
                 text-align: right;
-
-                strong {
-                    font-weight: @font-weight__bold;
-                }
             }
         }
 

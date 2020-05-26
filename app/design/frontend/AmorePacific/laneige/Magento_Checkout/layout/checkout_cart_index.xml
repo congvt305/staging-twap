@@ -8,5 +8,68 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="crosssell.product.addto.compare" remove="true"/>
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Shopping Cart</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Shopping Cart</item>
+                    <item name="label" xsi:type="string" translate="true">Shopping Cart</item>
+                </argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="checkout.cart.items">
+            <block class="Magento\Framework\View\Element\Template" name="cart.ajax.qty.update"  template="Magento_Checkout::cart/js/update.phtml" after="-"/>
+        </referenceContainer>
+        <move element="cart.summary" destination="checkout.cart.container" after="checkout.cart.form"/>
+        <referenceBlock name="checkout.cart.summary.title" remove="true"/>
+        <referenceBlock name="checkout.cart.coupon" remove="true"/>
+        <referenceBlock name="checkout.cart.shipping">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="block-summary" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="block-rates" xsi:type="array">
+                                    <item name="config" xsi:type="array">
+                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                    </item>
+                                </item>
+                                <item name="block-shipping" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="address-fieldsets" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="region_id" xsi:type="array">
+                                                    <item name="config" xsi:type="array">
+                                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                    </item>
+                                                </item>
+                                                <item name="postcode" xsi:type="array">
+                                                    <item name="config" xsi:type="array">
+                                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                    </item>
+                                                </item>
+                                                <item name="country_id" xsi:type="array">
+                                                    <item name="config" xsi:type="array">
+                                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>
