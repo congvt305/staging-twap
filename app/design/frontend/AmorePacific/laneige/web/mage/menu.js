@@ -460,7 +460,7 @@ define([
                     .addClass('level1 ui-menu-item category-item all-category')
                     .html(this.categoryLink);
 
-                if (menu.find('.all-category').length === 0) {
+                if (menu.parent().find('.all-category').length === 0) {
                     menu.before(this.categoryParent);
                 }
 
@@ -585,7 +585,7 @@ define([
                     .addClass('ui-menu-item category-item all-category')
                     .html(this.categoryLink);
 
-                if (menu.find('.all-category').length === 0) {
+                if (menu.parent().find('.all-category').length === 0) {
                     menu.before(this.categoryParent);
                 }
 
