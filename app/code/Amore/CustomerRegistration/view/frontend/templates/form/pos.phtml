@@ -16,7 +16,7 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
         <legend class="legend"><span><?= $block->escapeHtml(__('POS Information')) ?></span></legend><br>
         <div class="terms">
             <?=
-               $block->getLayout()
+            $block->getLayout()
                 ->createBlock('Magento\Cms\Block\Block')
                 ->setBlockId($viewModel->getTermsCmsBlockId())
                 ->toHtml();

@@ -62,7 +62,7 @@
                             <?php $_streetValidationClass = trim(str_replace('required-entry', '', $_streetValidationClass)); ?>
                             <?php //phpcs:disable ?>
                             <?php for ($_i = 2, $_n = $this->helper(\Magento\Customer\Helper\Address::class)->getStreetLines(); $_i <= $_n; $_i++) : ?>
-                            <?php //phpcs:enable ?>
+                                <?php //phpcs:enable ?>
                                 <div class="field additional">
                                     <label class="label" for="street_<?= /* @noEscape */ $_i ?>">
                                         <span><?= $block->escapeHtml(__('Address')) ?></span>
@@ -196,38 +196,38 @@
     </form>
 </div>
 <script>
-require([
-    'jquery',
-    'mage/mage'
-], function($){
+    require([
+        'jquery',
+        'mage/mage'
+    ], function($){
 
-    var dataForm = $('#form-validate');
-    var ignore = <?= /* @noEscape */ $_dob->isEnabled() ? '\'input[id$="full"]\'' : 'null' ?>;
+        var dataForm = $('#form-validate');
+        var ignore = <?= /* @noEscape */ $_dob->isEnabled() ? '\'input[id$="full"]\'' : 'null' ?>;
 
-    dataForm.mage('validation', {
-    <?php if ($_dob->isEnabled()) : ?>
-        errorPlacement: function(error, element) {
-            if (element.prop('id').search('full') !== -1) {
-                var dobElement = $(element).parents('.customer-dob'),
-                    errorClass = error.prop('class');
-                error.insertAfter(element.parent());
-                dobElement.find('.validate-custom').addClass(errorClass)
-                    .after('<div class="' + errorClass + '"></div>');
-            }
-            else {
-                error.insertAfter(element);
-            }
-        },
-        ignore: ':hidden:not(' + ignore + ')'
-    <?php else : ?>
-        ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
-    <?php endif ?>
-    }).find('input:text').attr('autocomplete', 'off');
+        dataForm.mage('validation', {
+            <?php if ($_dob->isEnabled()) : ?>
+            errorPlacement: function(error, element) {
+                if (element.prop('id').search('full') !== -1) {
+                    var dobElement = $(element).parents('.customer-dob'),
+                        errorClass = error.prop('class');
+                    error.insertAfter(element.parent());
+                    dobElement.find('.validate-custom').addClass(errorClass)
+                        .after('<div class="' + errorClass + '"></div>');
+                }
+                else {
+                    error.insertAfter(element);
+                }
+            },
+            ignore: ':hidden:not(' + ignore + ')'
+            <?php else : ?>
+            ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
+            <?php endif ?>
+        }).find('input:text').attr('autocomplete', 'off');
 
-});
+    });
 </script>
 <?php if ($block->getShowAddressFields()) : ?>
-<script type="text/x-magento-init">
+    <script type="text/x-magento-init">
     {
         "#country": {
             "regionUpdater": {

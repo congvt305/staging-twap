@@ -72,4 +72,5 @@ class POS implements ArgumentInterface
     {
         return $this->configHelper->getMaximumMobileNumberDigits();
     }
+
 }

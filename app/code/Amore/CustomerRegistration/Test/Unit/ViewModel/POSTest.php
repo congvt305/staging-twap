@@ -27,11 +27,11 @@ class POSTest extends TestCase
     private $object;
 
 
+
     protected function setUp() : void
     {
         $this->helper = $this->getMockBuilder(Data::class)
-                            ->disableOriginalConstructor()->getMock();
-
+            ->disableOriginalConstructor()->getMock();
 
         $this->object = new POS(
             $this->helper
@@ -49,4 +49,8 @@ class POSTest extends TestCase
         $this->assertInstanceOf(POS::class, $this->object);
     }
 
+    public function testGetTermsCmsBlockId()
+    {
+       $this->assertNotEmpty($this->object->getTermsCmsBlockId());
+    }
 }
