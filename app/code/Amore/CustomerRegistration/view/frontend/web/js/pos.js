@@ -5,69 +5,192 @@
 
 define([
     'jquery',
-    'jquery-ui-modules/widget'
+    'jquery-ui-modules/widget',
+    'mage/validation'
 ], function ($) {
     'use strict';
-
+    var timer2 = '1:00';
+    var refreshIntervalId;
     /**
      * @api
      */
     $.widget('mage.pos', {
         options: {
-            refreshClass: 'refreshing',
-            reloadSelector: '.captcha-reload',
-            imageSelector: '.captcha-img',
-            imageLoader: ''
+            getCodeSelector : '.sms-link',
+            verifyCodeSelector : '.verify-link',
+            verifyPosSelector : '.verify-registration-link',
+            firstNameSelector : '.first_name',
+            lastNameSelector : '.last_name',
+            mobileNumberSelector : '.mobile_number',
+            codeSelector : '.code',
+
+
         },
 
         _init: function() {
-            $('.form-create-account').hide();
+            //$('.form-create-account').hide();
         },
         /**
-         * Method binds click event to reload image
+         * Method binds click event to get SMS, verify code and timer value
          * @private
          */
         _create: function () {
 
-           // this.element.on('click', this.options.reloadSelector, $.proxy(this.refresh, this));
+            $('.form-create-account-pos').on('click', this.options.getCodeSelector, $.proxy(this.getCode, this));
+            $('.form-create-account-pos').on('click', this.options.verifyCodeSelector, $.proxy(this.verifyCode, this));
+            $('.form-create-account-pos').on('click', this.options.verifyPosSelector, $.proxy(this.posVerification, this));
+            timer2 = this.options.codeExpirationMinutes;
+
+            $('.form-create-account-pos').hide();
+            $('.customer-registration-form-create-account').show();
+            $('.customer-registration-form-create-account .form-create-account').show();
         },
 
-        /**
-         * Method triggers an AJAX request to refresh the CAPTCHA image
-         */
-        refresh: function () {
-            var imageLoader = this.options.imageLoader;
+        getCode: function() {
 
-            if (imageLoader) {
-                this.element.find(this.options.imageSelector).attr('src', imageLoader);
-            }
-            this.element.addClass(this.options.refreshClass);
+            var firstNameIsValid = this.isFieldValid('first_name');
+            var lastNameIsValid = this.isFieldValid('last_name');
+            var mobileNumberIsValid = this.isFieldValid('mobile_number');
 
-            $.ajax({
-                url: this.options.url,
-                type: 'post',
-                async: false,
-                dataType: 'json',
-                context: this,
-                data: {
-                    'formId': this.options.type
-                },
+            if(firstNameIsValid && lastNameIsValid && mobileNumberIsValid){
+                $.ajax({
+                    url: this.options.sendCodeUrl,
+                    type: 'post',
+                    showLoader: true,
+                    dataType: 'json',
+                    context: this,
+                    cache: false,
+                    data: {
+                        'mobileNumber':$(this.options.mobileNumberSelector).val()
+                    },
 
-                /**
-                 * @param {Object} response
-                 */
-                success: function (response) {
-                    if (response.imgSrc) {
-                        this.element.find(this.options.imageSelector).attr('src', response.imgSrc);
+                    /**
+                     * @param {Object} response
+                     */
+                    success: function (response) {
+
+                        if (response.send) {
+                            timer2 = this.options.codeExpirationMinutes;
+                            $('.code').prop( "disabled", false );
+                            $('.verify-link').removeAttr( "disabled");
+                            refreshIntervalId = setInterval(this.timer, 1000);
+                            $('.countdown').html('');
+                            $('.countdown').show();
+                        }
+                        $('.code-send-message').html(response.message);
+                        $('.code-send-message').show();
+                    },
+
+                    /** Complete callback. */
+                    complete: function () {
+                        this.element.removeClass(this.options.refreshClass);
                     }
-                },
+                });
 
-                /** Complete callback. */
-                complete: function () {
-                    this.element.removeClass(this.options.refreshClass);
+            }
+        },
+        verifyCode: function() {
+            var codeIsValid = this.isFieldValid('code');
+
+            if(codeIsValid){
+                var mobileNumberIsValid = this.isFieldValid('mobile_number');
+                if(codeIsValid && mobileNumberIsValid){
+                    $.ajax({
+                        url: this.options.verifyCodeUrl,
+                        type: 'post',
+                        showLoader: true,
+                        dataType: 'json',
+                        context: this,
+                        cache: false,
+                        data: {
+                            'mobileNumber':$(this.options.mobileNumberSelector).val(),
+                            'code':$(this.options.codeSelector).val()
+                        },
+
+                        /**
+                         * @param {Object} response
+                         */
+                        success: function (response) {
+
+                            if (response.verify) {
+                                $('.verify-registration-link').removeAttr( "disabled");
+                                $('.code-send-message').hide();
+                                $('.code').prop( "disabled", true );
+                                $('.verify-link').attr( "disabled",'true');
+                                $('.countdown').hide();
+                                clearInterval(refreshIntervalId);
+                            }
+                            $('.verification-message').html(response.message);
+                            $('.verification-message').show();
+                        }
+                    });
                 }
-            });
-        }
+            }
+        },
+        posVerification: function() {
+            var codeIsValid = this.isFieldValid('code');
+            var mobileNumberIsValid = this.isFieldValid('mobile_number');
+            var firstNameIsValid = this.isFieldValid('first_name');
+            var lastNameIsValid = this.isFieldValid('last_name');
+
+            if(codeIsValid && mobileNumberIsValid && firstNameIsValid && lastNameIsValid){
+                $.ajax({
+                    url: this.options.POSVerificationUrl,
+                    type: 'post',
+                    showLoader: true,
+                    dataType: 'json',
+                    context: this,
+                    cache: false,
+                    data: {
+                        'firstName':$(this.options.firstNameSelector).val(),
+                        'lastName':$(this.options.lastNameSelector).val(),
+                        'mobileNumber':$(this.options.mobileNumberSelector).val(),
+                        'code':$(this.options.codeSelector).val()
+                    },
+
+                    /**
+                     * @param {Object} response
+                     */
+                    success: function (response) {
+
+                        if (response.verify) {
+                            $('.form-create-account-pos').hide();
+                            $('.customer-registration-form-create-account').show();
+                            $('.customer-registration-form-create-account .form-create-account').show();
+                        }else {
+                            $('.pos-verification-message').html(response.message);
+                            $('.pos-verification-message').show();
+                        }
+                    }
+                });
+            }
+
+        },
+        isFieldValid: function(fieldName) {
+            $('input[name='+fieldName+"]").validation();
+            return $('input[name='+fieldName+"]").validation('isValid')?true:false;
+        },
+        timer: function(){
+            var timer = timer2.split(':');
+            //by parsing integer, I avoid all extra string processing
+            var minutes = parseInt(timer[0], 10);
+            var seconds = parseInt(timer[1], 10);
+            --seconds;
+            minutes = (seconds < 0) ? --minutes : minutes;
+            if (minutes < 0) {
+                $('.code-send-message').hide();
+                $('.code').prop( "disabled", true );
+                $('.verify-link').attr( "disabled",'true');
+                $('.countdown').hide();
+                clearInterval(refreshIntervalId);
+            }
+            seconds = (seconds < 0) ? 59 : seconds;
+            seconds = (seconds < 10) ? '0' + seconds : seconds;
+            //minutes = (minutes < 10) ?  minutes : minutes;
+            $('.countdown').html(minutes + ':' + seconds);
+            timer2 = minutes + ':' + seconds;
+        },
+
     });
 
     return $.mage.pos;

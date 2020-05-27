@@ -165,6 +165,13 @@ interface CustomerInterface
     public function getReffererCode();
 
     /**
+     * get the locale of customer
+     * It will get the locale of the customer who is going to the update
+     * @return string | null
+     */
+    public function getLocale();
+
+    /**
      * Set the customer id
      * It will set the customer id who is going to update
      * @param $id
@@ -315,5 +322,12 @@ interface CustomerInterface
      * @return $this
      */
     public function setReffererCode($reffererCode);
+
+    /**
+     * set the locale of customer
+     * It will set the locale of the customer who is going to the update
+     * @return string | null
+     */
+    public function setLocale($locale);
 
 }

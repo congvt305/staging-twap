@@ -42,4 +42,34 @@ class POS implements ArgumentInterface
     {
         return $this->configHelper->getTermsCMSBlockId();
     }
+
+    /**
+     * Get CODE EXPIRATION TIME IN MINUTES
+     * Get code expiration time in munites set in setting from admin setting
+     * @return null|int
+     */
+    public function getCodeExpirationTimeInMinutes()
+    {
+        return $this->configHelper->getCodeExpirationTimeInMinutes();
+    }
+
+    /**
+     * Get minimum mobile number digits
+     * Get minimum mobile number digits set in setting from admin setting
+     * @return null|int
+     */
+    public function getMinimumMobileNumberDigits()
+    {
+        return $this->configHelper->getMinimumMobileNumberDigits();
+    }
+
+    /**
+     * Get maximum mobile number digits
+     * Get maximum mobile number digits set in setting from admin setting
+     * @return null|int
+     */
+    public function getMaximumMobileNumberDigits()
+    {
+        return $this->configHelper->getMaximumMobileNumberDigits();
+    }
 }

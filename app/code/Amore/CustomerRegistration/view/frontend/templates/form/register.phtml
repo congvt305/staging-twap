@@ -27,19 +27,9 @@
                 <?= $block->getChildHtml('customer.form.register.newsletter') ?>
             <?php endif ?>
 
-            <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
-            <?php if ($_dob->isEnabled()) : ?>
-                <?= $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>
-            <?php endif ?>
-
             <?php $_taxvat = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Taxvat::class) ?>
             <?php if ($_taxvat->isEnabled()) : ?>
                 <?= $_taxvat->setTaxvat($block->getFormData()->getTaxvat())->toHtml() ?>
-            <?php endif ?>
-
-            <?php $_gender = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Gender::class) ?>
-            <?php if ($_gender->isEnabled()) : ?>
-                <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
             <?php endif ?>
         </fieldset>
         <?php if ($block->getShowAddressFields()) : ?>
@@ -170,6 +160,30 @@
                 </div>
             </div>
             <?= $block->getChildHtml('form_additional_info') ?>
+        </fieldset>
+        <fieldset class="fieldset extra-info">
+
+            <?php $_mobile = $block->getLayout()->createBlock(\Magento\CustomAttributeManagement\Block\Form\Renderer\Text::class) ?>
+            <?php if ($_dob->isEnabled()) : ?>
+                <?= $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>
+            <?php endif ?>
+
+            <?php /*$customerAttributes = $block->getChildBlock('customer_form_user_attributes');*/?><!--
+            <?php /*if ($customerAttributes): */?>
+                <?php /*$customerAttributes->setObject($block->getFormData())->setEntityType('customer')->setShowContainer(false);*/?>
+                <?php /*$block->restoreSessionData($customerAttributes->getMetadataForm());*/?>
+                <?/*= $customerAttributes->toHtml() */?>
+            --><?php /*endif;*/?>
+
+            <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
+            <?php if ($_dob->isEnabled()) : ?>
+                <?= $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>
+            <?php endif ?>
+
+            <?php $_gender = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Gender::class) ?>
+            <?php if ($_gender->isEnabled()) : ?>
+                <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
+            <?php endif ?>
         </fieldset>
         <div class="actions-toolbar">
             <div class="primary">
