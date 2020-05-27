@@ -29,6 +29,11 @@
         &-items {
             font-size: 0;
             &:extend(.abs-reset-list all);
+
+            .wishlist &,
+            .page-products & {
+                border-bottom: 1px solid #eaeaea;
+            }
         }
 
         &-item {
@@ -36,6 +41,7 @@
             vertical-align: top;
             text-align: center;
 
+            .wishlist &,
             .page-products .products-grid & {
                 &:nth-child(2n + 1) {
                     &:not(:first-child):before {
@@ -387,6 +393,7 @@
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__s) {
     .product {
         &-item {
+            .wishlist .product-items &,
             .page-products .products-grid & {
                 &:nth-child(3) {
                     &:before {
@@ -437,14 +444,20 @@
              margin-bottom: @indent__l;
              width: calc(~'(100% - @{indent__base}*3) / 4');
 
-             &:nth-child(3n + 1) {
-                 margin-left: @indent__base;
+             .page-layout-2columns-left & {
+                 width: calc(~'(100% - @{indent__base}*2) / 3');
              }
 
-             &:nth-child(4) {
-                 &:before {
-                     display: none;
+             body:not(.page-layout-2columns-left) & {
+                 &:nth-child(3n + 1):not(:first-child) {
+                     margin-left: @indent__base;
                  }
+
+               &:nth-child(4) {
+                   &:before {
+                       display: none;
+                   }
+               }
              }
 
              &:nth-child(4n + 1) {
@@ -495,10 +508,11 @@
                 .lib-button-primary(
                     @_button-width: @product-link__width,
                     @_button-font-weight: @font-weight__semibold,
-                    @_button-padding: 20px 7px
+                    @_button-padding: 20px 0
                 );
                 border-radius: 50%;
                 display: inline-block;
+                text-align: center;
 
                 &:before {
                     display: block !important;
