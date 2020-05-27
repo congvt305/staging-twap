@@ -46,6 +46,19 @@
 }
 
 //
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .pagebuilder-column {
+        .widget-product-grid {
+            margin-left: @layout__width-xs-indent;
+            margin-right: @layout__width-xs-indent;
+        }
+    }
+}
+
+//
 //  Desktop
 //  _____________________________________________
 
