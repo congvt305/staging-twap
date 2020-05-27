@@ -25,6 +25,9 @@ class Data extends AbstractHelper
      * store constants
      */
     const POS_TERMS_CMS_BLOCK_ID = 'customerregistraion/general/terms_cms_block_id';
+    const CODE_EXPIRATION_TIME_IN_MINUTES = 'customerregistraion/general/code_expiration_time_in_minutes';
+    const MINIMUM_MOBILE_NUMBER_DIGITS = 'customerregistraion/general/minimum_mobile_number_digits';
+    const MAXIMUM_MOBILE_NUMBER_DIGITS = 'customerregistraion/general/maximum_mobile_number_digits';
 
     /**
      * Get cms block id set in setting
@@ -39,7 +42,43 @@ class Data extends AbstractHelper
             );
     }
 
+    /**
+     * Get CODE EXPIRATION TIME IN MINUTES
+     * Get code expiration time in munites set in setting from admin setting
+     * @return null|int
+     */
+    public function getCodeExpirationTimeInMinutes()
+    {
+        return $this->scopeConfig->getValue(
+            self::CODE_EXPIRATION_TIME_IN_MINUTES,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
 
+    /**
+     * Get minimum mobile number digits allowed
+     * Get minimum mobile number digits allowed set in setting from admin setting
+     * @return null|int
+     */
+    public function getMinimumMobileNumberDigits()
+    {
+        return $this->scopeConfig->getValue(
+            self::MINIMUM_MOBILE_NUMBER_DIGITS,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
 
+    /**
+     * Get maximum mobile number digits allowed
+     * Get maximum mobile number digits allowed set in setting from admin setting
+     * @return null|int
+     */
+    public function getMaximumMobileNumberDigits()
+    {
+        return $this->scopeConfig->getValue(
+            self::MAXIMUM_MOBILE_NUMBER_DIGITS,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
 
 }
