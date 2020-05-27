@@ -126,6 +126,8 @@
     }
 
     .products-grid.wishlist {
+        position: relative;
+
         .product {
             &-item {
                 .comment-box {
@@ -155,39 +157,13 @@
 //  Mobile
 //  _____________________________________________
 
-.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
-    .products-grid.wishlist {
-        .product-item {
-            border-bottom: 1px solid @secondary__color;
-            &:first-child {
-                border-top: 1px solid @secondary__color;
-            }
-        }
-    }
-}
-
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .products-grid.wishlist {
         margin-bottom: @indent__l;
         margin-right: 0;
         .product {
             &-item {
-                padding: @indent__base 0 @indent__base 0;
-                position: relative;
-
-                &-photo {
-                    float: left;
-                    margin-right: @indent__base;
-                }
-
-                &-name {
-                    .lib-font-size(16);
-                }
-
                 &-actions {
-                    display: block;
-                    float: left;
-
                     .action {
                         margin-right: 15px;
 
@@ -210,13 +186,6 @@
                     }
                 }
 
-                &-name,
-                &-description,
-                .price-box,
-                &-tooltip {
-                    margin-left: 95px;
-                }
-
                 .box-tocart {
                     float: left;
                     margin-right: @indent__base;
@@ -237,36 +206,8 @@
             }
         }
     }
-
-    //
-    //  Grid view for wishlist
-    //  -----------------------------------------
-
-    .wishlist-index-index {
-        .product {
-            &-item {
-                width: 100%;
-                &-info {
-                    width: auto;
-                }
-            }
-        }
-    }
 }
 
-.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__s) {
-    .wishlist-index-index {
-        .products-grid {
-            .product-item {
-                margin-bottom: @indent__base;
-            }
-
-            .product-item-actions {
-                margin: 0;
-            }
-        }
-    }
-}
 
 //
 //  Desktop
@@ -297,7 +238,9 @@
 
                 .box-tocart {
                     .actions-primary {
-                        margin: 0;
+                        .action {
+                            margin: 0;
+                        }
                     }
 
                     .stock {
@@ -309,14 +252,6 @@
     }
 
     .wishlist-index-index {
-        .product {
-            &-item {
-                &-info {
-                    width: 240px;
-                }
-            }
-        }
-
         .main {
             .form-wishlist-items {
                 .actions-toolbar {
