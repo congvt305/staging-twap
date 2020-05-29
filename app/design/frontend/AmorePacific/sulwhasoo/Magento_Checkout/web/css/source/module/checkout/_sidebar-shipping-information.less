@@ -1,0 +1,86 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+@checkout-sidebar-shipping-information__padding: @indent__l;
+@checkout-sidebar-shipping-information__line-height: @checkout-billing-address-details__line-height;
+
+@checkout-sidebar-shipping-information-edit-icon__color: @minicart-icons-color;
+@checkout-sidebar-shipping-information-edit-icon__content: @icon-edit;
+@checkout-sidebar-shipping-information-edit-icon__font-size: 20px;
+@checkout-sidebar-shipping-information-edit-icon__line-height: 24px;
+@checkout-sidebar-shipping-information-edit-icon__top: 13px;
+@checkout-sidebar-shipping-information-edit-icon__hover__color: @primary__color;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //
+    //  Shipping Information
+    //  ---------------------------------------------
+
+    .opc-block-shipping-information {
+        .lib-css(padding, 0 @checkout-sidebar-shipping-information__padding);
+        .lib-css(background, @sidebar__background-color);
+
+        .shipping-information-title {
+            .lib-css(border-bottom, 1px solid @primary__color);
+            padding: 0 0 15px;
+            margin: 0 0 @indent__base;
+            position: relative;
+
+            > span {
+                .lib-font-size(16);
+                font-weight: @font-weight__regular;
+            }
+
+            .action-edit {
+                &:extend(.abs-action-button-as-link all);
+                .lib-css(bottom, @checkout-sidebar-shipping-information-edit-icon__top);
+                .lib-icon-font(
+                    @checkout-sidebar-shipping-information-edit-icon__content,
+                    @_icon-font-size: @checkout-sidebar-shipping-information-edit-icon__font-size,
+                    @_icon-font-line-height: @checkout-sidebar-shipping-information-edit-icon__line-height,
+                    @_icon-font-text-hide: true,
+                    @_icon-font-color: @checkout-sidebar-shipping-information-edit-icon__color,
+                    @_icon-font-color-hover: @checkout-sidebar-shipping-information-edit-icon__hover__color,
+                    @_icon-font-color-active: @checkout-sidebar-shipping-information-edit-icon__color
+                );
+                margin: 0;
+                position: absolute;
+                right: 0;
+            }
+        }
+
+        .shipping-information-content {
+            .lib-css(line-height, @checkout-sidebar-shipping-information__line-height);
+            color: @link__color;
+            .actions-toolbar {
+                margin-left: 0;
+            }
+        }
+
+        .ship-to,
+        .ship-via {
+            padding-bottom: @checkout-sidebar-shipping-information__padding;
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .opc-block-shipping-information {
+        .lib-css(padding, 0 @layout__width-xs-indent);
+    }
+}

@@ -1,0 +1,324 @@
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+@color-white: #fff;
+@color-grey: #ccc;
+@color-dark-grey: #777;
+@color-light-grey: #eee;
+@button-background-color: #006bb7;
+@button-border-color: #006bb4;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .checkout-container {
+        .change-shipping-address-button,
+        .change-billing-address-button {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .edit-shipping-address-button,
+        .edit-billing-address-button {
+            display: block;
+        }
+
+        .action-additional {
+            &:extend(.abs-action-button-as-link all);
+        }
+
+        .checkout-shipping-address,
+        .checkout-payment-method {
+            div.new-address-popup {
+                margin: 0 0 20px 0;
+                position: relative;
+            }
+
+            div.change-address-popup,
+            div.edit-address-popup {
+                > .action {
+                    &:extend(.abs-action-button-as-link all);
+                    display: block;
+                    position: absolute;
+                    right: @indent__s;
+                    bottom: @indent__s;
+
+                    .lib-link(
+                        @_link-color: @active__color,
+                        @_link-text-decoration: underline,
+                        @_link-color-visited: @active__color,
+                        @_link-text-decoration-visited: underline,
+                        @_link-color-hover: @theme__color__primary-alt,
+                        @_link-text-decoration-hover: underline,
+                        @_link-color-active: @theme__color__primary-alt,
+                        @_link-text-decoration-active: underline
+                    );
+                }
+            }
+
+            div.change-address-popup {
+                > .action {
+                    left: @indent__base;
+                    right: auto;
+                }
+            }
+
+            div.shipping-address-item.selected,
+            .checkout-billing-address {
+                border-left: 0;
+            }
+
+            .new-billing-address-button {
+                display: block;
+                margin: 20px 0 0 0;
+                position: relative;
+            }
+        }
+    }
+
+    .shipping-address-modal.modal-popup.modal-slide,
+    .billing-address-modal.modal-popup.modal-slide {
+        .modal-inner-wrap[class] {
+            background-color: @color-white;
+        }
+    }
+
+    .shipping-address-modal,
+    .billing-address-modal {
+
+        .modal-inner-wrap {
+            .block.block-search {
+                left: 20px;
+                position: absolute;
+                top: 81px;
+            }
+
+            .admin__action-select-shipping-addressmultiselect-search-count {
+                border-bottom: 1px solid @form-element-input__border-color;
+                padding: @indent__s 0;
+            }
+
+            .admin__action-multiselect-empty-area {
+                padding-top: 5px;
+            }
+
+            .admin__action-multiselect-menu-inner ._root {
+                border-bottom: 1px solid @border-color__base;
+                clear: both;
+                float: left;
+                margin-bottom: @indent__base;
+                padding-bottom: @indent__base;
+                position: relative;
+                width: 100%;
+
+                .edit-address,
+                .ship-here,
+                .select-address,
+                .address-selected {
+                    float: right;
+                    margin-right: 0;
+                    margin-top: 22px;
+
+                    button {
+                        .lib-button-primary();
+                    }
+                }
+
+                .address-selected button {
+                    .lib-button-reset();
+                    .lib-link(
+                        @_link-color: @active__color,
+                        @_link-text-decoration: none,
+                        @_link-color-visited: @active__color,
+                        @_link-text-decoration-visited: none,
+                        @_link-color-hover: @active__color,
+                        @_link-text-decoration-hover: none,
+                        @_link-color-active: @active__color,
+                        @_link-text-decoration-active: none
+                    );
+                }
+
+                .default-address,
+                .edit-address {
+                    float: right;
+                    margin-right: @indent__base;
+                    margin-top: 22px;
+
+                    button {
+                        .lib-button-reset();
+                        .lib-link();
+                    }
+                }
+
+                .ship-here {
+                    & + .default-address,
+                    & + .edit-address {
+                        margin-top: 29px;
+                    }
+                }
+
+                .default-address button.action-primary {
+                    .lib-link(
+                        @_link-color: @link__color,
+                        @_link-text-decoration: none,
+                        @_link-color-visited: @link__color,
+                        @_link-text-decoration-visited: none,
+                        @_link-color-hover: @link__color,
+                        @_link-text-decoration-hover: none,
+                        @_link-color-active: @link__color,
+                        @_link-text-decoration-active: none
+                    );
+
+                    &:hover {
+                        cursor: auto;
+                    }
+                }
+            }
+
+            .admin__action-multiselect-menu-inner {
+                margin-top: @indent__base;
+                overflow-y: auto;
+            }
+
+            ul {
+                list-style-type: none;
+                padding-left: 0;
+            }
+        }
+    }
+
+    .admin__data-grid-loading-mask {
+        background: rgba(255, 255, 255, .5);
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 100%;
+        z-index: 4;
+
+        .spinner {
+            background: url('@{baseDir}images/loader-2.gif') 50% 50% no-repeat;
+            display: inline-block;
+            font-size: 4rem;
+            height: 1em;
+            left: 50%;
+            margin-left: -2rem;
+            margin-right: 1.5rem;
+            position: absolute;
+            top: 50%;
+            width: 1em;
+
+            .ie9 & {
+                background: url('@{baseDir}images/loader-2.gif') 50% 50% no-repeat;
+                bottom: 0;
+                height: 149px;
+                left: 0;
+                margin: auto;
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: 218px;
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________________
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+
+    .shipping-address-modal.modal-popup.modal-slide,
+    .billing-address-modal.modal-popup.modal-slide {
+        left: 0;
+    }
+
+    .shipping-address-modal,
+    .billing-address-modal {
+        .modal-inner-wrap {
+            .admin__action-multiselect-menu-inner ._root {
+                .edit-address,
+                .ship-here,
+                .select-address {
+                    clear: left;
+                    float: left;
+                    margin-top: 5px;
+                    position: relative;
+                    top: 5px;
+                    width: 100%;
+                }
+
+                .address-selected {
+                    display: inline-block;
+                    float: none;
+                    margin-top: @indent__xs;
+
+                    & + .edit-address {
+                        display: inline-block;
+                        float: none;
+                        margin-top: 0 !important;
+                        width: auto;
+                        vertical-align: top;
+                    }
+                }
+
+                .edit-address {
+                    text-align: center;
+                    margin-top: 15px !important;
+                }
+
+                .ship-here {
+                    button {
+                        width: 100%;
+                    }
+                }
+
+                .default-address {
+                    margin-top: 0 !important;
+                    margin-right: 0;
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                }
+            }
+        }
+    }
+
+    .address-loading-mask {
+        top: 105px;
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    .shipping-address-modal,
+    .billing-address-modal {
+
+        .modal-inner-wrap {
+            min-height: 620px;
+
+            .admin__action-multiselect-menu-inner {
+                max-height: 438px;
+            }
+
+            .admin__action-multiselect-menu-inner ._root {
+                .address-details {
+                    float: left;
+                }
+            }
+        }
+    }
+
+    .address-loading-mask {
+        top: 115px;
+    }
+}

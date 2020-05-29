@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">My Account</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">My Account</item>
+                    <item name="label" xsi:type="string" translate="true">My Account</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}customer/account/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">My Quotes</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">My Quotes</item>
+                    <item name="label" xsi:type="string" translate="true">My Quotes</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}negotiable_quote/quote/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">My Quotes View</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">My Quotes View</item>
+                    <item name="label" xsi:type="string" translate="true">My Quotes View</item>
+                </argument>
+            </action>
+        </referenceBlock>
+        <move element="quote.status" destination="content" before="-"/>
+        <move element="quote.date" destination="quote.status" after="-"/>
+        <move element="negotiable.quote.info.links" destination="content" after="quote.status"/>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="label" xsi:type="string">My Quotes View</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,14 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php // @codingStandardsIgnoreFile ?>
+<?php /** @var $block \Magento\Company\Block\Company\Login\Info */ ?>
+<?php if ($block->getRegistration()->isAllowed()): ?>
+    <a href="<?= $block->escapeUrl($block->getCreateCompanyAccountUrl()) ?>"
+       class="action create">
+        <span><?= /* @noEscape */ __('Create a Company Account') ?></span>
+    </a>
+<?php endif; ?>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Theme\Block\Html\Topmenu" type="Eguana\Theme\Block\Html\Topmenu" />
+    <type name="Magento\Checkout\Block\Checkout\AttributeMerger">
+        <plugin name="eguana_custom_checkout_attribute_plugin" type="Eguana\Theme\Plugin\Checkout\Block\Checkout\Plugin" sortOrder="100"/>
+    </type>
+</config>

@@ -1,0 +1,356 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Blank theme overrides
+//  _____________________________________________
+
+//  Theme file should contain declarations (overrides) ONLY OF EXISTING variables
+//  Otherwise this theme won't be available for parent nesting
+//  All new variables should be placed in local theme lib or local theme files
+
+//
+//  Layout variables
+//  _____________________________________________
+
+@layout__max-width: 1140px;
+@layout-column__sidebar-width: 3;
+
+//
+//  Typography
+//  ---------------------------------------------
+
+//  Fonts
+@icons__font-path: '@{baseDir}fonts/Icons/Icon';
+@icons__font-name: 'icons';
+
+//  Colors
+@text__color__intense: @text__color;
+@text__color__muted: @text__color;
+
+//  Borders
+@border-color__base: @secondary__color__light;
+
+//
+//  Paragraphs
+//  ---------------------------------------------
+
+@p__margin-bottom: 0;
+
+//
+//  Headings
+//  ---------------------------------------------
+
+@heading__font-family__base: 'buri';
+@heading__font-weight__base: @font-weight__regular;
+@heading__color__base: @primary__color__darker;
+@heading__margin-top__base: 0;
+@heading__margin-bottom__base: @indent__base;
+
+@h1__margin-bottom__desktop: @heading__margin-bottom__base;
+
+@h2__font-size: 25px;
+@h2__margin-top: @heading__margin-top__base;
+
+@h3__margin-top: 0;
+@h3__margin-bottom: @heading__margin-bottom__base;
+
+@h4__font-size: 18px;
+@h4__font-weight: @font-weight__regular;
+
+@h5__font-size: 18px;
+@h5__font-weight: @font-weight__regular;
+
+@h6__font-size: 18px;
+
+//
+//  Links
+//  ---------------------------------------------
+
+@link__color: @secondary__color;
+@link__hover__color: @primary__color__dark;
+@link__active__color: @link__hover__color;
+
+//
+//  Buttons variables
+//  _____________________________________________
+
+@button__shadow: none;
+@button__font-size: 15px;
+@button__line-height: 38px;
+@button__border-radius: 0;
+@button__padding: 0 24px;
+@button__background: @color-white;
+@button__border: 1px solid @button__color;
+@button__hover__color: @color-white;
+@button__hover__background: @button__color;
+@button__active__color: @button__hover__color;
+@button-icon__hover__font-color: @primary__color__dark;
+@button-icon__active__font-color: @primary__color__dark;
+
+//  Primary button
+@button-primary__line-height: @button__line-height;
+@button-primary__background: @button__color;
+@button-primary__border: @button__border;
+@button-primary__hover__background: @button__background;
+@button-primary__hover__border: @button-primary__border;
+@button-primary__hover__color: @button__color;
+@button-primary__active__color: @button-primary__hover__color;
+
+//  Large button
+@button__font-size__l: @font-size__base;
+@button__line-height__l: 54px;
+@button__padding__l: 0 24px;
+
+
+//
+//  Breadcrumbs
+//  _____________________________________________
+
+@breadcrumbs-link__color: @secondary__color;
+@breadcrumbs-link__visited__color: @breadcrumbs-link__color;
+@breadcrumbs-current__color: @primary__color;
+@breadcrumbs-current__font-weight: @font-weight__semibold;
+@breadcrumbs-link__hover__text-decoration: none;
+@breadcrumbs-link__visited__text-decoration: none;
+@breadcrumbs-link__active__text-decoration: none;
+@breadcrumbs-icon__font-size: 10px;
+
+//
+//  Navigation variables
+//  _____________________________________________
+@navigation__background: @primary__color;
+@navigation-level0-item__color: #d5d5d5;
+@navigation-level0-item__border: 1px solid #414141;
+@navigation-level0-item__padding: 12px @indent__xl 12px 15px;
+@navigation-level0-item__active__border-style: none;
+@navigation-level0-item__active__border-width: 0;
+@navigation-level0-item__active__color: @navigation-level0-item__hover__color;
+@navigation-level0-item__hover__color: @navigation-level0-item__color;
+@navigation-desktop__background: @color-white;
+@navigation-desktop__font-size: @font-size__base;
+@navigation-desktop__font-weight: @font-weight__regular;
+@navigation-desktop-level0-item__line-height: 44px;
+@navigation-desktop-level0-item__padding: 0 15px;
+@navigation-desktop-level0-item__margin: 0 @indent__s;
+@navigation-desktop-level0-item__color: @primary__color__lighter;
+@navigation-desktop-level0-item__hover__color: @primary__color__dark;
+@navigation-desktop-level0-item__active__border-style: none;
+@navigation-desktop-level0-item__active__border-width: 0;
+@submenu-item__active__border: 0;
+@submenu-item__active__border-color: #414141;
+@submenu-item__active__border-width: 0 0 1px 0;
+@submenu__font-size: @font-size__base;
+@submenu__font-weight: @font-weight__semibold;
+@submenu__padding-top: 12px;
+@submenu__padding-bottom: 12px;
+@submenu__padding-left: 0;
+@submenu-desktop__min-width: 100%;
+@submenu-desktop__padding: 0 @layout-indent__width;
+@submenu-desktop__border-width: 0;
+@submenu-desktop__box-shadow: false;
+@submenu-desktop__font-weight: @font-weight__regular;
+@submenu-desktop-item__hover__background: @submenu-desktop-item__background;
+@submenu-desktop-item__active__border-width: 0;
+@submenu-desktop__font-size: @font-size__s;
+@submenu-desktop-item__padding: @indent__s;
+
+//
+//  Pager
+//  _____________________________________________
+
+@pager__color: @secondary__color;
+@pager__line-height: 40px;
+@pager__font-size: 16px;
+@pager__font-weight: @font-weight__light;
+@pager__visited__color: @pager__color;
+@pager__hover__color: @primary__color;
+@pager__active__color: @primary__color;
+@pager-item__padding: 0 5px;
+@pager-action__border: 0;
+@pager-action__color: @color-white;
+@pager-action__background: #dbdbda;
+@pager-action__hover__background: @pager__hover__color;
+@pager-action__active__background: @pager__active__color;
+@pager-icon__font-margin: 0 0 0 -3px;
+@pager-icon__font-size: 14px;
+
+//
+//  Rating
+//  _____________________________________________
+
+@rating-icon__content: @icon-star;
+@rating-icon__font-size: 18px;
+@rating-icon__letter-spacing: 3px;
+@rating-icon__active__color: @theme__color__secondary;
+
+//
+//  Form variables
+//  _____________________________________________
+@form-element-input__height: 50px;
+@form-element-input__border-color: #ccc;
+@form-element-input-placeholder__color: @form-element-input__border-color;
+@form-element-input__color: @primary__color__lighter;
+@form-element-input__font-size: 14px;
+@form-element-input__padding: 0 @indent__s;
+@form-element-input__disabled__background: @secondary__color__light;
+@form-field-label__font-weight: @font-weight__regular;
+@form-field-label__color: @primary__color__lighter;
+@form-field-type-label-inline__padding: 0;
+@form-field-type-label-inline__width: 0;
+@form-field-type-control-inline__width: 100%;
+@form-field-label-asterisk__font-size: 0;
+@form-field-label-asterisk__color: @error__color;
+@form-field-note-icon-font__content: false;
+@form-field-note__color: @secondary__color;
+@form-validation-note__font-size: 13px;
+@form-fieldset__margin: 0 0 @indent__l;
+@form-fieldset-legend__margin: 0 0 @indent__base 0;
+@form-fieldset-legend__padding: 0 0 @indent__s 0;
+@form-fieldset-legend__font-size: 20px;
+@form-fieldset-legend__width: 100%;
+@form-fieldset-legend__color: @primary__color__lighter;
+@form-element-input__background-clip: border-box;
+@select__background: transparent url('../images/select-bg-silver.svg') no-repeat 100% 60%;
+@select__padding: 0 @indent__m 0 0;
+@select__border: 2px solid @primary__color;
+@select__height: 35px;
+@select__width: 100%;
+
+//
+//  Dropdowns variables
+//  _____________________________________________
+
+@dropdown-toggle-icon__font-vertical-align: middle;
+@dropdown-toggle-icon__font-size: 10px;
+@dropdown-toggle-icon__font-color: @secondary__color;
+@dropdown-toggle-icon__font-color-hover: @primary__color__dark;
+@dropdown-toggle-icon__font-color-active: @dropdown-toggle-icon__font-color-hover;
+@dropdown-toggle-icon__font-margin: 0 0 0 @indent__xs;
+@dropdown-toggle-icon__active__content: @icon-up;
+@dropdown-toggle-icon__content: @icon-down;
+@dropdown-list-pointer__position: right;
+@dropdown-list-item__hover: transparent;
+@dropdown-list__border: 1px solid @border-color__base;
+@dropdown-list-pointer__border: @border-color__base;
+
+
+//
+//  Messages
+//  _____________________________________________
+
+@message__margin: 0 0 @indent__l 0;
+@message__font-size: 16px;
+@message-icon__font-size: 20px;
+@message-icon__inner-padding-left: false;
+@message-icon__left: false;
+@message-icon__top: false;
+@message-icon__right: 0;
+
+//  Information message
+@message-info-icon: false;
+@message-info__color: @color-white;
+@message-info__background: rgba(177, 124, 92, 0.9);
+@message-info-link__color: @color-white;
+@message-info-link__color-hover: @color-white;
+@message-info-link__color-active: @color-white;
+
+//  Error message
+@message-error-icon: false;
+@message-error__color: @color-white;
+@message-error__background: rgba(207,158,153,.9);
+@message-error-link__color: @color-white;
+@message-error-link__color-hover: @color-white;
+@message-error-link__color-active: @color-white;
+
+//  Success message
+@message-success-icon: false;
+@message-success__color: @color-white;
+@message-success__background: rgba(103,138,132,.9);
+@message-success-link__color: @color-white;
+@message-success-link__color-hover: @color-white;
+@message-success-link__color-active: @color-white;
+
+//
+//  Popup
+//  _____________________________________________
+@popup-icon-font__size: 18px;
+@popup-icon-font__line-height: 23px;
+@popup-icon-font__color: @secondary__color;
+@popup-icon-font__color-hover: @secondary__color;
+@popup__padding: @indent__l;
+@popup-header__margin: 0 0 @indent__base;
+@popup__width: 88%;
+@popup__position-bottom: auto;
+
+//  Window overlay variables
+@overlay__opacity: .3;
+
+//
+//  Tab
+//  _____________________________________________
+
+@tab-content__border: 2px solid #e6e6e6;
+@tab-control__color: @secondary__color;
+@tab-control__margin-right: 0;
+@tab-control__padding-bottom: 11px;
+@tab-control__background-color: @color-white;
+@tab-control__font-size: 17px;
+@tab-control__font-weight: @font-weight__regular;
+@tab-control__padding-top: 0;
+@tab-control__padding-right: 0;
+@tab-control__padding-bottom: 0;
+@tab-control__padding-left: 0;
+@tab-control__active__background-color: transparent;
+@tab-control__active__color: @theme__color__primary;
+@tab-content__padding-top: 0;
+@tab-content__padding-left: 0;
+@tab-content__padding-right: 0;
+@tab-content__padding-bottom: 60px;
+@tab-content__margin-top: 55px;
+@tab-content__background-color: @color-white;
+
+//
+//  Accordion
+//  _____________________________________________
+
+@accordion-control__font-size: 14px;
+@accordion-control__margin-bottom: 0;
+@accordion-control__border-top: 0;
+@accordion-control__border-left: 0;
+@accordion-control__border-right: 0;
+@accordion-control__border-bottom: 1px solid @secondary__color__light;
+@accordion-control__padding-top: 0;
+@accordion-control__padding-bottom: 0;
+@accordion-control__padding-right: @layout__width-xs-indent;
+@accordion-control__padding-left: @layout__width-xs-indent;
+@accordion-control__background-color: @color-white;
+@accordion-control__height: 40px;
+@accordion-control__border-top: 0;
+@accordion-content__background-color: @color-white;
+@accordion-content__border: 0;
+@accordion-content__margin: 0;
+@accordion-content__padding: 30px 15px;
+@accordion-control__active__background-color: @theme__color__secondary;
+@accordion-control__active__color: @color-white;
+
+
+//
+//  Table
+//  _____________________________________________
+@table__border-color: @form-element-input__border-color;
+@table-td__color: @secondary__color;
+@table-td__font-size: 14px;
+@table-th__color: @primary__color;
+@table-th__font-weight: @font-weight__semibold;
+@table-th__font-size: 14px;
+@table-cell__padding-vertical: 14px;
+@table-responsive-cell__padding: @indent__xs @indent__s;
+
+//
+//  Dropdown
+//  _____________________________________________
+@dropdown-list__shadow: none;
+@dropdown-list-item__padding: @indent__xs @indent__s;

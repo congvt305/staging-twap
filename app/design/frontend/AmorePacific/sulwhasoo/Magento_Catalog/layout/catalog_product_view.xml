@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <container name="product.info.container" htmlTag="div" htmlClass="product-info-container"  before="-">
+                <container name="product.info.wrapper" htmlTag="div" htmlClass="product-info-wrapper"  before="-">
+                    <container name="product.info.content" htmlTag="div" htmlClass="product-info-content"  before="-" />
+                    <container name="product.info.meida.wrapper" htmlTag="div" htmlClass="product-info-media"  after="product.info.content">
+                        <container name="product.info.product.background" htmlTag="div" htmlClass="product-background"  before="-">
+                            <block class="Magento\Framework\View\Element\Text" name="product.image.background" before="-">
+                                <action method="setText">
+                                    <argument name="text" translate="true" xsi:type="string"><![CDATA[<span>Product Background</span>]]></argument>
+                                </action>
+                            </block>
+                        </container>
+                    </container>
+                    <container name="product.info.main.wrapper" htmlTag="div" htmlClass="product-info-main-wrapper"  after="product.info.meida.wrapper">
+                        <container name="product.info.main.attribute" htmlTag="div" htmlClass="product-info-main-attribute"  before="-">
+                            <container name="product.info.attribute.social.wrapper" htmlTag="div" htmlClass="product-social-links"  before="-">
+                                <block class="Magento\Framework\View\Element\Template" name="product.info.attribute.social" template="Eguana_Share::share_icon_list.phtml" before="-"/>
+                            </container>
+                        </container>
+                    </container>
+                </container>
+            </container>
+            <container name="product.review.container" htmlTag="div" htmlClass="product-reviews-container" after="-">
+                <container name="product.review.wrapper" htmlTag="div" htmlClass="product-reviews-wrapper" after="-">
+                    <container name="product.review.title.wrapper" htmlTag="p" htmlClass="reviews-title" before="-">
+                        <block class="Magento\Framework\View\Element\Text" name="product.review.title" before="-">
+                            <action method="setText">
+                                <argument name="text" translate="true" xsi:type="string">Reviews</argument>
+                            </action>
+                        </block>
+                    </container>
+                </container>
+            </container>
+            <container name="product.config.items" htmlTag="div" htmlClass="product-config-items" after="-" />
+        </referenceContainer>
+
+        <referenceBlock name="product.info.content">
+            <block class="Magento\Catalog\Block\Product\View\Description"
+                   name="product.info.flag" as="flag"
+                   template="Magento_Catalog::product/view/attribute.phtml"
+                   group="detailed_info" before="page.main.title">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getFlag</argument>
+                    <argument name="at_code" xsi:type="string">flag</argument>
+                    <argument name="css_class" xsi:type="string">flag</argument>
+                    <argument name="at_label" xsi:type="string">none</argument>
+                    <argument name="title" translate="true" xsi:type="string">Flag</argument>
+                    <argument name="at_type" xsi:type="string">text</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Framework\View\Element\Text" name="product.see.info">
+                <action method="setText">
+                    <argument name="text" translate="true" xsi:type="string"><![CDATA[<span>See More</span>]]></argument>
+                </action>
+            </block>
+        </referenceBlock>
+
+        <move element="page.main.title" destination="product.info.content" after="product.info.flag"/>
+        <move element="product.info.main" destination="product.info.main.wrapper" before="product.info.main.attribute" />
+        <move element="product.info.media" destination="product.info.meida.wrapper" after="-" />
+        <move element="product.info.social" destination="product.info.main" before="-" />
+        <move element="product.info.addto" destination="product.info.main" after="product.info" />
+        <move element="product.info.review" destination="product.info.content" after="page.main.title" />
+        <move element="reviews.tab" destination="product.review.wrapper" after="-" />
+        <move element="content.aside" destination="product.config.items" after="-" />
+
+        <referenceBlock name="product.info.type" remove="true" />
+        <referenceBlock name="product.info.stock.sku" remove="true" />
+        <referenceBlock name="product.info.overview" remove="true" />
+
+        <referenceContainer name="product.info.main">
+            <block class="Magento\Catalog\Block\Product\View\Description"
+                   name="product.info.ingredient" as="ingredient"
+                   template="Magento_Catalog::product/view/attribute.phtml"
+                   group="detailed_info" before="-">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getIngredients</argument>
+                    <argument name="at_code" xsi:type="string">ingredients</argument>
+                    <argument name="css_class" xsi:type="string">ingredients</argument>
+                    <argument name="at_label" xsi:type="string">default</argument>
+                    <argument name="title" translate="true" xsi:type="string">Ingredients</argument>
+                    <argument name="sort_order" xsi:type="string">40</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="product.info.main.attribute">
+            <block class="Magento\Catalog\Block\Product\View\Description"
+                   name="product.info.skinconcern" as="skinconcern"
+                   template="Magento_Catalog::product/view/attribute.phtml"
+                   group="detailed_info" after="product.info.attribute.social.wrapper">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getSkinConcern</argument>
+                    <argument name="at_code" xsi:type="string">skin_concern</argument>
+                    <argument name="css_class" xsi:type="string">skin-concern</argument>
+                    <argument name="at_label" xsi:type="string">default</argument>
+                    <argument name="title" translate="true" xsi:type="string">Skin concern</argument>
+                    <argument name="at_type" xsi:type="string">text</argument>
+                    <argument name="sort_order" xsi:type="string">20</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Catalog\Block\Product\View\Description"
+                   name="product.info.size" as="size"
+                   template="Magento_Catalog::product/view/attribute.phtml"
+                   group="detailed_info" after="product.info.skinconcern">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getSize</argument>
+                    <argument name="at_code" xsi:type="string">size</argument>
+                    <argument name="css_class" xsi:type="string">size</argument>
+                    <argument name="at_label" xsi:type="string">default</argument>
+                    <argument name="title" translate="true" xsi:type="string">Size</argument>
+                    <argument name="at_type" xsi:type="string">text</argument>
+                    <argument name="sort_order" xsi:type="string">40</argument>
+                </arguments>
+            </block>
+            <container name="product.info.content.price" htmlTag="div" htmlClass="product attribute price"  after="-" >
+                <container name="product.info.content.price.title" htmlTag="p" htmlClass="price-title" before="-">
+                    <block class="Magento\Framework\View\Element\Text" name="product.info.price.label">
+                        <action method="setText">
+                            <argument name="text" translate="true" xsi:type="string">Price</argument>
+                        </action>
+                    </block>
+                </container>
+                <block class="Magento\Catalog\Pricing\Render" name="product.price.info.final">
+                    <arguments>
+                        <argument name="price_render" xsi:type="string">product.price.render.default</argument>
+                        <argument name="price_type_code" xsi:type="string">final_price</argument>
+                        <argument name="zone" xsi:type="string">item_view</argument>
+                    </arguments>
+                </block>
+            </container>
+        </referenceContainer>
+        <referenceBlock name="product.info.description">
+            <arguments>
+                <argument name="title" translate="true" xsi:type="string">Product Characteristics</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="product.info.details">
+            <block class="Magento\Catalog\Block\Product\View\Description"
+                   name="product.info.proven.results" as="proven-results"
+                   template="Magento_Catalog::product/view/attribute.phtml"
+                    group="detailed_info" after="product.info.description">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getProvenResults</argument>
+                    <argument name="at_code" xsi:type="string">proven_results</argument>
+                    <argument name="css_class" xsi:type="string">proven-results</argument>
+                    <argument name="at_label" xsi:type="string">none</argument>
+                    <argument name="title" translate="true" xsi:type="string">Proven Results</argument>
+                    <argument name="sort_order" xsi:type="string">40</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Catalog\Block\Product\View\Description"
+                   name="product.info.color.shades" as="color-shades"
+                   template="Magento_Catalog::product/view/attribute.phtml"
+                   group="detailed_info" after="product.info.proven.results">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getColorShades</argument>
+                    <argument name="at_code" xsi:type="string">color_shades</argument>
+                    <argument name="css_class" xsi:type="string">color-shades</argument>
+                    <argument name="at_label" xsi:type="string">none</argument>
+                    <argument name="title" translate="true" xsi:type="string">Color Shades</argument>
+                    <argument name="sort_order" xsi:type="string">60</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Catalog\Block\Product\View\Description"
+                   name="product.info.howtouse" as="howtouse"
+                   template="Magento_Catalog::product/view/attribute.phtml"
+                   group="detailed_info" after="product.info.color.shades">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getHowToUse</argument>
+                    <argument name="at_code" xsi:type="string">how_to_use</argument>
+                    <argument name="css_class" xsi:type="string">howtouse</argument>
+                    <argument name="at_label" xsi:type="string">default</argument>
+                    <argument name="title" translate="true" xsi:type="string">How to Use</argument>
+                    <argument name="sort_order" xsi:type="string">80</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceContainer name="product.info.media">
+            <block class="Magento\Framework\View\Element\Text" name="product.media.caption">
+                <action method="setText">
+                    <argument name="text" xsi:type="string"><![CDATA[<span>Mouse over to zoom</span>]]></argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

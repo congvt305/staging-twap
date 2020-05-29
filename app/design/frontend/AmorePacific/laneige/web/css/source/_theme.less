@@ -1,0 +1,171 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Blank theme overrides
+//  _____________________________________________
+
+//  Theme file should contain declarations (overrides) ONLY OF EXISTING variables
+//  Otherwise this theme won't be available for parent nesting
+//  All new variables should be placed in local theme lib or local theme files
+
+//
+//  Layout variables
+//  _____________________________________________
+
+@layout__max-width: 1240px;
+@layout-indent__width: 30px;
+@layout__width-xs-indent: 20px;
+
+//
+//  Typography variables
+//  _____________________________________________
+
+//  Fonts
+@icons__font-path: '@{baseDir}fonts/Icons/Laneige';
+@icons__font-name: 'icons';
+
+//  Colors
+@text__color: @primary__color__dark;
+@text__color__intense: @text__color;
+@text__color__muted: @text__color;
+
+//
+//  Links
+//  ---------------------------------------------
+
+@link__color: @primary__color__darker;
+@link__text-decoration: none;
+
+@link__hover__color: @primary__color__darker;
+@link__hover__text-decoration: @link__text-decoration;
+
+@link__active__color: @theme__color__primary-alt;
+@link__active__text-decoration: @link__text-decoration;
+
+@border-color__base: @secondary__color;
+
+//
+//  Headings
+//  ---------------------------------------------
+@heading__font-weight__base: @font-weight__semibold;
+
+//
+//  Buttons
+//  ---------------------------------------------
+@button__font-weight: @font-weight__regular;
+@button__border-radius: false;
+@button__color: @primary__color;
+@button__background: @color-white;
+@button__disabled__opacity: false;
+@button__padding: 4px 15px;
+@button__border: 1px solid @button__color;
+@button__hover__color: @button__background;
+@button__hover__background: @theme__color__primary-alt;
+@button__hover__border: 1px solid @button__active__background;;
+@button__active__color: @button__hover__color;
+@button__active__background: @button__hover__background;
+@button__active__border: @button__hover__border;
+@button-primary__font-size: 16px;
+@button-primary__padding: 11px 25px;
+
+//  Large button
+@button__font-size__l: 16px;
+@button__line-height__l: @font-size__l + 5;
+@button__padding__l: 15px @indent__s;
+
+//
+//  Breadcrumbs variables
+//  _____________________________________________
+
+@breadcrumbs__font-size: 15px;
+@breadcrumbs-link__color: @primary__color__darker;
+@breadcrumbs__container-margin: @indent__base 0 @indent__xl;
+@breadcrumbs-link__visited__color: @breadcrumbs-link__color;
+@breadcrumbs-link__hover__color: @breadcrumbs-link__color;
+@breadcrumbs-link__hover__text-decoration: none;
+@breadcrumbs-link__active__color: @theme__color__primary-alt;
+@breadcrumbs-current__color: @breadcrumbs-link__color;
+@breadcrumbs-current__font-weight: @font-weight__bold;
+@breadcrumbs-icon__font-size: 16px;
+
+//
+//  Pager variables
+//  _____________________________________________
+
+@pager__font-size: @font-size__base;
+@pager__font-weight: @font-weight__regular;
+@pager__hover__color: @primary__color__dark;
+@pager__active__color: @pager__hover__color;
+@pager-item__margin: 0 4px;
+@pager-item__padding: 0px 12px;
+@pager-current__background: @primary__color;
+@pager-current__color: @color-white;
+@pager-action__border: none;
+@pager-icon__font-size: 24px;
+@pager-action__color: @primary__color__lighter;
+
+//
+//  Navigation variables
+//  _____________________________________________
+
+@navigation__background: @color-white;
+@navigation-level0-item__font-size: 18px;
+@navigation-level0-item__font-weight: @font-weight__regular;
+@navigation-level0-item__active__border-width: false;
+@navigation-level0-item__active__border-style: false;
+@navigation-level0-item__border: 1px solid @border-color__base;
+@navigation-level0-item__color: @primary__color__dark;
+@navigation-level0-item__padding: @indent__base @layout__width-xs-indent;
+@submenu-item__background: #f7f7f7;
+@submenu-item__active__border: 0;
+@submenu__padding-left: @layout__width-xs-indent;
+@submenu__font-size: 16px;
+@submenu-item__color: @primary__color__darker;
+@navigation-desktop__background: @color-white;
+@navigation-desktop__font-size: 16px;
+@navigation-desktop__font-weight: @font-weight__regular;
+@navigation-desktop-level0-item__color: @primary__color__dark;
+@navigation-desktop-level0-item__line-height: 60px;
+@navigation-desktop-level0-item__hover__color: @navigation-desktop-level0-item__color;
+@navigation-desktop-level0-item__active__border-style: false;
+@navigation-desktop-level0-item__padding: 0 @indent__base;
+@navigation-desktop-level0-item__margin: 0;
+@submenu-desktop__background: #f7f7f7;
+@submenu-desktop__border-width: 0;
+@submenu-desktop__font-weight: @font-weight__regular;
+@submenu-desktop__min-width: 100%;
+@submenu-desktop__padding: 12px 0;
+@submenu-desktop-item__padding: 4px @indent__l 4px 0;
+@submenu-desktop-item__hover__background: @submenu-desktop-item__background;
+@submenu-desktop-item__active__border-width: 0;
+
+
+
+//
+//  Form variables
+//  _____________________________________________
+@form-element-input__height: @indent__xl;
+@form-element-input__padding: @indent__s 15px;
+@form-element-input__font-size: 15px;
+@form-element-input__border-color: #e0e0e0;
+@form-element-input__focus__border: 2px solid #5e5e5e;
+@form-element-input__focus__background: #5e5e5e;
+@form-element-input__focus__color: @primary__color__light;
+@form-element-input-placeholder__color: @primary__color__light;
+@form-element-validation__border-error: @error__color;
+@form-validation-note__font-size: 14px;
+@form-field-label__font-size: 16px;
+@form-field-label__font-weight: @font-weight__bold;
+@form-field-type-label-block__margin: 0 0 8px 0;
+@form-fieldset-legend__font-size: 16px;
+@form-fieldset-legend__padding: 0 0 16px;
+@input-checkbox__margin: 0 8px 0 0;
+@input-radio__margin: 0 8px 0 0;
+@select__background: transparent url('../images/select-bg-black.svg') no-repeat 99% 60%;
+@select__padding: 0 36px 0 12px;
+@select__height: @indent__xl;
+@select__color: @primary__color__darker;
+@form-field-label-asterisk__color: #ff0000;
