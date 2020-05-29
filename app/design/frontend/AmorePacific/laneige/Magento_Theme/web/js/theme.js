@@ -102,5 +102,19 @@ define([
         stickyNav();
     });
 
+    var accountNav = function () {
+        var currentNav = $('.account-nav .nav.items .current').html();
+        var navTitle = $('.nav.items').parents().closest('div.block').find('.title');
+        navTitle.append(currentNav);
+
+        $('.account-nav > .title').click(function () {
+            $(this).next().slideToggle('slow');
+        });
+    };
+
+    if ($('.account-nav').offset()) {
+        accountNav();
+    }
+
     keyboardHandler.apply();
 });

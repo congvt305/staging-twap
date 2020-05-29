@@ -5,11 +5,11 @@
  * See COPYING.txt for license details.
  */
 -->
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="page.main.title">
             <action method="setPageTitle">
-                <argument translate="true" name="title" xsi:type="string">Create an Account</argument>
+                <argument translate="true" name="title" xsi:type="string">My Dashboard</argument>
             </action>
         </referenceBlock>
         <referenceBlock name="breadcrumbs">
@@ -22,13 +22,17 @@
                 </argument>
             </action>
             <action method="addCrumb">
-                <argument name="crumbName" xsi:type="string">Create an Account</argument>
+                <argument name="crumbName" xsi:type="string">My Dashboard</argument>
                 <argument name="crumbInfo" xsi:type="array">
-                    <item name="title" xsi:type="string">Create an Account</item>
-                    <item name="label" xsi:type="string" translate="true">Create an Account</item>
+                    <item name="title" xsi:type="string">My Dashboard</item>
+                    <item name="label" xsi:type="string" translate="true">My Dashboard</item>
                 </argument>
             </action>
         </referenceBlock>
-        <move element="customer.form.register.fields.before" destination="page.messages" after="-"/>
+        <referenceBlock name="customer-account-navigation-account-link">
+            <arguments>
+                <argument name="is_highlighted" xsi:type="boolean">true</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>

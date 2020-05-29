@@ -20,10 +20,6 @@
     <?= /* @noEscape */ $block->getChildHtml('form_fields_before_in_form') ?>
     <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
     <fieldset class="fieldset create info">
-        <div class="field note">
-            <?= $block->escapeHtml(__('Please provide the information below to create your account.')) ?>
-        </div>
-        <legend class="legend"><span><?= $block->escapeHtml(__('Personal Information')) ?></span></legend>
         <input type="hidden" name="success_url" value="<?= $block->escapeUrl($block->getSuccessUrl()) ?>"/>
         <input type="hidden" name="error_url" value="<?= $block->escapeUrl($block->getErrorUrl()) ?>"/>
         <?= $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Name::class)->setObject($block->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
@@ -38,19 +34,9 @@
             <?= $block->getChildHtml('customer.form.register.newsletter') ?>
         <?php endif ?>
 
-        <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
-        <?php if ($_dob->isEnabled()) : ?>
-            <?= $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>
-        <?php endif ?>
-
         <?php $_taxvat = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Taxvat::class) ?>
         <?php if ($_taxvat->isEnabled()) : ?>
             <?= $_taxvat->setTaxvat($block->getFormData()->getTaxvat())->toHtml() ?>
-        <?php endif ?>
-
-        <?php $_gender = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Gender::class) ?>
-        <?php if ($_gender->isEnabled()) : ?>
-            <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
         <?php endif ?>
 
         <?php $customerAttributes = $block->getChildBlock('customer_form_user_attributes');?>
@@ -64,7 +50,6 @@
 
 <?php if ($block->getShowAddressFields()) : ?>
     <fieldset class="fieldset address">
-        <legend class="legend"><span><?= $block->escapeHtml(__('Address Information')) ?></span></legend><br>
         <input type="hidden" name="create_address" value="1"/>
         <div class="field company">
             <label for="company" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('company') ?></span></label>
@@ -144,7 +129,6 @@
 
 <?php endif; ?>
     <fieldset class="fieldset create account" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>">
-        <legend class="legend"><span><?= $block->escapeHtml(__('Sign-in Information')) ?></span></legend>
         <div class="field required">
             <label for="email_address" class="label"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
             <div class="control">
@@ -183,11 +167,20 @@
                 <input type="password" name="password_confirmation" title="<?= $block->escapeHtmlAttr(__('Confirm Password')) ?>" id="password-confirmation" class="input-text" data-validate="{required:true, equalTo:'#password'}"/>
             </div>
         </div>
+        <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
+        <?php if ($_dob->isEnabled()) : ?>
+            <?= $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>
+        <?php endif ?>
+
+        <?php $_gender = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Gender::class) ?>
+        <?php if ($_gender->isEnabled()) : ?>
+            <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
+        <?php endif ?>
         <?= $block->getChildHtml('form_additional_info') ?>
     </fieldset>
     <div class="actions-toolbar">
         <div class="primary">
-            <button type="submit" class="action submit primary" title="<?= $block->escapeHtmlAttr(__('Create an Account')) ?>"><span><?= $block->escapeHtml(__('Create an Account')) ?></span></button>
+            <button type="submit" class="action submit primary" title="<?= $block->escapeHtmlAttr(__('Continue')) ?>"><span><?= $block->escapeHtml(__('Continue')) ?></span></button>
         </div>
         <div class="secondary">
             <a class="action back" href="<?= $block->escapeUrl($block->getBackUrl()) ?>"><span><?= $block->escapeHtml(__('Back')) ?></span></a>
