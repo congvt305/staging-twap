@@ -87,7 +87,7 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                         <div class="product-item-inner">
                             <div class="product actions product-item-actions"<?= strpos($pos, $viewMode . '-actions') ? $block->escapeHtmlAttr($position) : '' ?>>
                                 <div class="actions-primary"<?= strpos($pos, $viewMode . '-primary') ? $block->escapeHtmlAttr($position) : '' ?>>
-                                    <?php if ($_product->isSaleable() && $_product->getData('offline')) :?>
+                                    <?php if ($_product->isSaleable() && !$_product->getData('offline')) :?>
                                         <?php $postParams = $block->getAddToCartPostParams($_product); ?>
                                         <form data-role="tocart-form"
                                               data-product-sku="<?= $block->escapeHtmlAttr($_product->getSku()) ?>"
