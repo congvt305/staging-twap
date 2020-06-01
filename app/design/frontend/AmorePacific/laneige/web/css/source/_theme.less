@@ -242,16 +242,28 @@
 @message__font-size: 14px;
 @message__padding: 12px @indent__base;
 @message__margin: 0 0 8px;
+@message-icon__inner-padding-left: 55px;
+@message-icon__top: 12px;
+@message-icon__font-size: 22px;
+@message-icon__font-line-height: 24px;
 
 //  Information message
+@message-info-icon: @icon-info;
+@message-info-icon__color-inner: @color-white;
+@message-info-icon__background: #e1a220;
 @message-info__color: #e1a220;
 @message-info__background: #fcf4d1;
 
 //  Error message
+@message-error-icon: @icon-info;
+@message-error-icon__color-inner: @color-white;
+@message-error-icon__background: #e82b24;
 @message-error__color: #e82b24;
 @message-error__background: #fcd1d1;
 
 //  Success message
+@message-success-icon__color-inner: @color-white;
+@message-success-icon__background: @theme__color__primary-alt;
 @message-success__color: @theme__color__primary-alt;
 @message-success__background: #d1e2fc;
 

@@ -28,6 +28,34 @@
     .message.success {
         .lib-message-icon-inner(success);
     }
+
+    .message {
+        & > *:first-child:before {
+            border-radius: 50%;
+            margin: -3px 0 0 16px !important;
+            height: 24px;
+            width: 24px;
+        }
+
+        &.error {
+            & > *:first-child:before {
+                background-color: @message-error-icon__background;
+            }
+        }
+
+        &.info,
+        &.warning {
+            & > *:first-child:before {
+                background-color: @message-info-icon__background;
+            }
+        }
+
+        &.success {
+            & > *:first-child:before {
+                background-color: @message-success-icon__background;
+            }
+        }
+    }
 }
 
 //
