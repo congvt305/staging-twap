@@ -1430,7 +1430,7 @@
 & when (@media-common = true) {
     .abs-checkout-title {
         .lib-css(border-bottom, @checkout-step-title__border);
-        .lib-css(padding-bottom, @checkout-step-title__padding);
+        .lib-css(padding, @checkout-step-title__padding 0 @checkout-step-title__padding @indent__base);
         .lib-typography(
             @_font-size: @checkout-step-title__font-size,
             @_font-weight: @checkout-step-title__font-weight,
