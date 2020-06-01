@@ -52,5 +52,69 @@ define([
     $('.content.footer  .links.socials').clone().appendTo('#store\\.menu');
     $('.content.header > .header.links').clone().appendTo('#store\\.links');
 
+    var stickyNav = function () {
+        if ($('.product.data.items').offset()) {
+            $('.product.data.items').removeClass('sticky');
+            $('.product.data.items >.data.item.title').removeClass('active');
+
+            var scrollTop = $(window).scrollTop();
+            var stickyNavTop = $('.product.data.items').offset().top;
+
+            if (scrollTop > stickyNavTop) {
+                $('.product.data.items').addClass('sticky');
+            }
+
+            $('.product.data.items >.data.item.title:first-child').addClass('active');
+
+            $('.tab-contents >.data.item.content').each(function(index,element){
+                var offset = $(element).offset();
+                var offsetTop = offset.top;
+                var stickyHeight = $('.product.data.items').height();
+                var top = offsetTop - stickyHeight - 10;
+
+                if(scrollTop > top && scrollTop > 0) {
+                    var id = $(element).attr('id');
+                    $('.product.data.items >.data.item.title').removeClass('active');
+                    $("a[href='#"+id+"']").parent().addClass('active');
+                }
+            });
+        }
+
+        if ($('.catalog-product-view').offset()) {
+            mediaCheck({
+                media: '(max-width: 768px)',
+                entry: function () {
+                    $('.box-tocart .actions').removeClass('sticky');
+
+                    var scrollTop = $(window).scrollTop();
+                    var stickyNavTop = $('.box-tocart .actions').offset().top;
+
+                    if (scrollTop > stickyNavTop) {
+                        $('.box-tocart .actions').addClass('sticky');
+                    }
+                }
+            });
+        }
+    };
+    stickyNav();
+
+    $(window).scroll(function () {
+        stickyNav();
+    });
+
+    var accountNav = function () {
+        var currentNav = $('.account-nav .nav.items .current').html();
+        var navTitle = $('.nav.items').parents().closest('div.block').find('.title');
+        navTitle.append(currentNav);
+
+        $('.account-nav > .title').click(function () {
+            $(this).next().slideToggle('slow');
+        });
+    };
+
+    if ($('.account-nav').offset()) {
+        accountNav();
+    }
+
     keyboardHandler.apply();
 });

@@ -121,24 +121,36 @@
                 box-sizing: border-box;
                 font-size: 1.6rem;
                 margin: 0;
-                width: 50%;
                 float: left;
 
+                &.customer-welcome,
                 &.authorization-link {
-                    border-left: 1px solid #767676;
                     float: right;
+                    width: calc(~'100% - 65px');
                 }
 
-                &.greet.welcome {
-                    border-top: 1px solid @color-gray82;
-                    font-weight: @font-weight__bold;
-                    padding: .8rem @indent__base;
+                &.customer-welcome {
+                    border-left: 1px solid #767676;
                 }
 
-                > a {
-                    .lib-button-primary();
+                > a:not(.location):not(.account) {
+                    .lib-button-primary(
+                        @_button-padding: 20.5px @indent__s
+                    );
                     .lib-button-responsive();
                     text-align: center;
+                }
+
+                a {
+                    &.location,
+                    &.account {
+                        background: #646464;
+                        padding: 2.5px 20.5px;
+
+                        &:after {
+                            color: @color-white;
+                        }
+                    }
                 }
             }
 
@@ -185,11 +197,13 @@
             left: 0;
             z-index: 99;
 
-            .header.links {
-                position: fixed;
-                bottom: 0;
-                right: 0;
-                left: 0;
+            .section-item-content {
+                > .header.links {
+                    position: fixed;
+                    bottom: 0;
+                    right: 0;
+                    left: 0;
+                }
             }
         }
 
