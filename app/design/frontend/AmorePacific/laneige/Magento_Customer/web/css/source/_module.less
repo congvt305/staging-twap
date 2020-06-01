@@ -33,7 +33,55 @@
 & when (@media-common = true) {
     .block-dashboard-info {
         .box-actions .action {
-            &:extend(.abs-action-button-as-link all);
+            .lib-button(
+                @_button-font-size: 16px,
+                @_button-line-height: 24px,
+                @_button-padding: 11px 15px
+            );
+            .lib-link-as-button();
+            text-align: center;
+        }
+    }
+
+    .block-dashboard-addresses {
+        .box {
+            border-bottom: 1px solid @border-color__base;
+        }
+
+        .block-content {
+            .action.edit {
+                .lib-icon-font(
+                        @icon-settings,
+                    @_icon-font: @icon-font,
+                    @_icon-font-size: 34px,
+                    @_icon-font-line-height: 36px,
+                    @_icon-font-color: @primary__color__darker,
+                    @_icon-font-color-hover: @primary__color__dark,
+                    @_icon-font-color-active: @primary__color__dark,
+                    @_icon-font-margin: 0,
+                    @_icon-font-text-hide: true,
+                    @_icon-font-vertical-align: middle,
+                    @_icon-font-position: before
+                );
+            }
+        }
+
+        .box-content {
+            .lib-vendor-prefix-display(flex);
+            .lib-vendor-box-align(center);
+            -ms-flex-item-align: center;
+            -webkit-align-self: center;
+            align-self: center;
+        }
+
+        .box-actions {
+            text-align: right;
+        }
+    }
+
+    .block-dashboard-orders {
+        .block-content {
+            padding-top: 0 !important;
         }
     }
 
@@ -133,6 +181,10 @@
 
             .block:not(.widget) {
                 &:extend(.abs-account-blocks all);
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
             }
 
             .action.back {
@@ -147,14 +199,6 @@
         .table-wrapper {
             &:last-child {
                 margin-bottom: 0;
-            }
-
-            .action {
-                margin-right: 15px;
-
-                &:last-child {
-                    margin-right: 0;
-                }
             }
         }
 
@@ -433,8 +477,27 @@
                 padding: 0;
                 text-align: center;
 
-                span:before {
-                    display: none;
+                span {
+                    .lib-icon-font(
+                            @icon-information,
+                        @_icon-font: @icon-font,
+                        @_icon-font-size: 40px,
+                        @_icon-font-line-height: @indent__xl,
+                        @_icon-font-color: @primary__color__lighter,
+                        @_icon-font-color-hover: @primary__color__lighter,
+                        @_icon-font-color-active: @primary__color__lighter,
+                        @_icon-font-margin: 0,
+                        @_icon-font-vertical-align: middle,
+                        @_icon-font-position: before
+                    );
+
+                    &:before {
+                        display: block;
+                        margin-bottom: @indent__s;
+                        position: relative;
+                        top: 0;
+                        width: 100%;
+                    }
                 }
             }
         }
@@ -575,6 +638,52 @@
             }
         }
     }
+
+    .block-dashboard-info {
+        .box-information .box-content {
+            padding: 8px 0 24px 0;
+        }
+
+        .box-actions {
+            .lib-vendor-prefix-display(flex);
+            .lib-vendor-box-align(center);
+            margin-left: -@indent__s;
+
+            .action {
+                margin-left: @indent__s;
+                padding: 8px 0;
+                width: 50%;
+            }
+        }
+    }
+
+    .block-dashboard-addresses {
+        .box {
+            padding-bottom: 24px;
+            overflow: hidden;
+
+            &.box-shipping-address {
+                padding-top: 24px;
+            }
+        }
+
+        address {
+            width: 74.375%;
+        }
+
+        .box-actions {
+            padding-right: @indent__xs;
+            width: 25.625%;
+        }
+    }
+
+    .account {
+        .column.main {
+            .block:not(.widget) {
+                margin-bottom: 64px;
+            }
+        }
+    }
 }
 
 //
@@ -582,6 +691,58 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .block-dashboard-info {
+        .box-actions .action {
+            min-width: 180px;
+        }
+
+        .box-information {
+            .lib-vendor-prefix-display(flex);
+            .lib-vendor-box-align(center);
+
+            > div {
+                width: 50%;
+
+                &.box-actions {
+                    padding: 24px 0;
+                    text-align: right;
+
+                    .change-password {
+                        margin-left: @indent__base;
+                    }
+                }
+            }
+        }
+    }
+
+    .block-dashboard-addresses {
+        .block-content .box {
+            .lib-vendor-prefix-display(flex);
+            padding-bottom: 16px;
+
+            &.box-shipping-address {
+                padding-top: 16px;
+            }
+
+            .box-title {
+                padding-right: @indent__base;
+                width: 22.72%;
+            }
+
+            .box-content {
+                width: 77.28%;
+            }
+
+            address {
+                width: 70.58%;
+            }
+
+            .box-actions {
+                width: 29.42%;
+            }
+        }
+    }
+
     .customer-account-index {
         .sidebar-main {
             padding-top: 33px;
@@ -724,17 +885,21 @@
     .account {
         .column.main {
             .block:not(.widget) {
+                margin-bottom: 56px;
+
                 .block-content {
                     &:extend(.abs-add-clearfix-desktop all);
-
-                    .box {
-                        &:extend(.abs-blocks-2columns all);
-                    }
                 }
             }
 
             .message.empty {
                 margin: 100px 0 0 0;
+            }
+
+            .table-wrapper {
+                .actions {
+                    width: 12%;
+                }
             }
         }
 

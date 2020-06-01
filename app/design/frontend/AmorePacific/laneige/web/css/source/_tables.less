@@ -52,6 +52,46 @@
                         text-align: right;
                     }
                 }
+
+                &:not(.table-totals) {
+                    &:not(.table-comparison) {
+                        tbody {
+                            tr {
+                                border-bottom: 1px solid @table__border-color;
+
+                                td {
+                                    .action {
+                                        display: block;
+                                        margin-bottom: @indent__xs;
+
+                                        &:last-child {
+                                            margin-bottom: 0;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        th {
+            text-align: center;
+        }
+
+        tbody {
+            a.action {
+                .lib-link(
+                    @_link-color: @theme__color__primary-alt,
+                    @_link-text-decoration: underline,
+                    @_link-color-visited: @theme__color__primary-alt,
+                    @_link-text-decoration-visited: underline,
+                    @_link-color-hover: @theme__color__primary-alt,
+                    @_link-text-decoration-hover: underline,
+                    @_link-color-active: @theme__color__primary-alt,
+                    @_link-text-decoration-active: underline
+                );
             }
         }
     }
@@ -72,13 +112,38 @@
                     &:not(.table-comparison) {
                         .lib-table-responsive();
 
-                        tbody > tr {
-                            > td:first-child {
-                                padding-top: @indent__base;
-                            }
+                        &:not(.table-totals) {
+                            tbody > tr {
+                                > td {
+                                    &[data-th]:before {
+                                        width: 31.25%;
+                                    }
 
-                            > td:last-child {
-                                padding-bottom: @indent__base;
+                                    .action {
+                                        display: inline-block;
+                                        margin-bottom: 0;
+                                        margin-left: -@indent__xs;
+                                        margin-right: @indent__s;
+
+                                        &:last-child {
+                                            margin-right: 0;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        tbody > tr {
+                            > td {
+                                text-align: left;
+
+                                &:first-child {
+                                    padding-top: @indent__m;
+                                }
+
+                                &:last-child {
+                                    padding-bottom: @indent__l;
+                                }
                             }
                         }
 

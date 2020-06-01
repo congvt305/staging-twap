@@ -47,15 +47,16 @@
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .abs-nav-blocks {
-        border-left: 1px solid @border-color__base;
-        border-right: 1px solid @border-color__base;
-        margin-bottom: 22px;
+        border-left: 1px solid #cccccc;
+        border-right: 1px solid #cccccc;
+        margin-bottom: @indent__xl;
 
         .title {
             &:extend(.abs-toggling-title-mobile all);
             margin-bottom: 0;
 
             > * {
+                color: #444444;
                 display: none;
                 text-decoration: none;
 
@@ -82,10 +83,10 @@
 
         .item {
             margin: 0;
-            padding: 18.5px 36px 0 12px;
+            padding: 8.5px 36px 0 12px;
 
             &:last-child {
-                padding-bottom: 18.5px;
+                padding-bottom: 8.5px;
             }
 
             a,
@@ -301,20 +302,41 @@
             border-bottom: 2px solid @primary__color__dark;
             font-weight: @font-weight__regular;
             line-height: 26px;
-            padding-bottom: 7px;
+            padding-bottom: 9px;
             text-transform: uppercase;
 
             > a {
+                .lib-icon-font(
+                        @icon-next,
+                    @_icon-font: @icon-font,
+                    @_icon-font-size: 18px,
+                    @_icon-font-line-height: 20px,
+                    @_icon-font-color: @primary__color__dark,
+                    @_icon-font-color-hover: @primary__color__dark,
+                    @_icon-font-color-active: @primary__color__dark,
+                    @_icon-font-margin: 0,
+                    @_icon-font-vertical-align: middle,
+                    @_icon-font-position: after
+                );
                 color: @primary__color__dark;
+
+                &:after {
+                    font-weight: @font-weight__bold;
+                    padding-left: 18px;
+                    position: relative;
+                    top: -3px;
+                }
             }
         }
 
         .box-title {
-            display: inline-block;
-            margin: 0 0 @indent__xs;
+            word-break: break-word;
 
-            > span {
-                .lib-heading(h4);
+            span {
+                .lib-font-size(14);
+                color: @primary__color__lighter;
+                font-weight: @font-weight__bold;
+                line-height: 24px;
             }
 
             > .action {
@@ -323,16 +345,34 @@
             }
         }
 
+        .box-content {
+            color: @primary__color;
+        }
+
         .block-content {
             padding-top: 24px;
+            word-break: break-all;
 
             p:last-child {
                 margin-bottom: 0;
             }
 
-            .box {
-                margin-bottom: @indent__base;
+            strong {
+                .lib-font-size(16);
             }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .abs-account-blocks {
+        .box-title {
+            display: block;
+            margin-bottom: 8px;
         }
     }
 }
@@ -1127,18 +1167,18 @@
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .abs-toggling-title-mobile {
-        border-bottom: @border-width__base solid @border-color__base;
-        border-top: @border-width__base solid @border-color__base;
+        border-bottom: @border-width__base solid #cccccc;
+        border-top: @border-width__base solid #cccccc;
         cursor: pointer;
         margin-bottom: 0;
-        padding: 18.5px 36px 18.5px 12px;
+        padding: 8.5px 36px 8.5px 12px;
         position: relative;
 
         .lib-icon-font(
             @_icon-font-content: @icon-down,
             @_icon-font-color: @primary__color__darker,
             @_icon-font-size: 20px,
-            @_icon-font-line-height: 58px,
+            @_icon-font-line-height: 38px,
             @_icon-font-text-hide: false,
             @_icon-font-position: after,
             @_icon-font-display: block
