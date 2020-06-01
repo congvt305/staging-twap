@@ -324,12 +324,6 @@
             }
         }
     }
-
-    .toolbar {
-        &:not(.wishlist-toolbar-top) {
-            padding-top: 52px;
-        }
-    }
 }
 
 
@@ -338,12 +332,6 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    .toolbar {
-        &:not(.wishlist-toolbar-top) {
-            padding-top: @indent__m;
-        }
-    }
-
     .wishlist-index-index {
         .sidebar-main {
             padding-top: 34px;
@@ -423,8 +411,8 @@
             padding-right: @indent__xs;
             text-align: right;
 
-            button.share {
-                padding-right: @indent__l;
+            button.tocart {
+                padding-left: @indent__l;
             }
         }
     }

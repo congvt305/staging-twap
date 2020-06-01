@@ -142,6 +142,20 @@
     .toolbar-amount {
         margin-top: @indent__s;
     }
+
+    .toolbar {
+        &:not(.wishlist-toolbar-top):not(.toolbar-products) {
+            padding-top: 52px;
+        }
+
+        &.toolbar-products {
+            .pages {
+                .products.wrapper ~ & {
+                    margin-top: 60px;
+                }
+            }
+        }
+    }
 }
 
 //
@@ -212,5 +226,19 @@
 
     .mode-list {
         .lib-icon-font-symbol(@icon-list);
+    }
+
+    .toolbar {
+        &:not(.wishlist-toolbar-top):not(.toolbar-products) {
+            padding-top: @indent__m;
+        }
+
+        &.toolbar-products {
+            .pages {
+                .products.wrapper ~ & {
+                    margin-top: 65px;
+                }
+            }
+        }
     }
 }
