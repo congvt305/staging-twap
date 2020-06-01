@@ -1,5 +1,146 @@
 <?php
 return [
+    'scopes' => [
+        'websites' => [
+            'admin' => [
+                'website_id' => '0',
+                'code' => 'admin',
+                'name' => 'Admin',
+                'sort_order' => '0',
+                'default_group_id' => '0',
+                'is_default' => '0'
+            ],
+            'base' => [
+                'website_id' => '1',
+                'code' => 'base',
+                'name' => 'TW Sulwhasoo Website',
+                'sort_order' => '0',
+                'default_group_id' => '1',
+                'is_default' => '1'
+            ],
+            'tw_lageige_website' => [
+                'website_id' => '4',
+                'code' => 'tw_lageige_website',
+                'name' => 'TW Laneige Website',
+                'sort_order' => '0',
+                'default_group_id' => '4',
+                'is_default' => '0'
+            ]
+        ],
+        'groups' => [
+            0 => [
+                'group_id' => '0',
+                'website_id' => '0',
+                'name' => 'Default',
+                'root_category_id' => '0',
+                'default_store_id' => '0',
+                'code' => 'default'
+            ],
+            1 => [
+                'group_id' => '1',
+                'website_id' => '1',
+                'name' => 'TW Sulwhasoo Website Store',
+                'root_category_id' => '2',
+                'default_store_id' => '1',
+                'code' => 'main_website_store'
+            ],
+            4 => [
+                'group_id' => '4',
+                'website_id' => '4',
+                'name' => 'TW Laneige Website Store',
+                'root_category_id' => '4',
+                'default_store_id' => '4',
+                'code' => 'tw_laneige_website_store'
+            ]
+        ],
+        'stores' => [
+            'admin' => [
+                'store_id' => '0',
+                'code' => 'admin',
+                'website_id' => '0',
+                'group_id' => '0',
+                'name' => 'Admin',
+                'sort_order' => '0',
+                'is_active' => '1'
+            ],
+            'default' => [
+                'store_id' => '1',
+                'code' => 'default',
+                'website_id' => '1',
+                'group_id' => '1',
+                'name' => 'TW Sulwhasoo Store View',
+                'sort_order' => '0',
+                'is_active' => '1'
+            ],
+            'tw_laneige' => [
+                'store_id' => '4',
+                'code' => 'tw_laneige',
+                'website_id' => '4',
+                'group_id' => '4',
+                'name' => 'TW Laneige Store View',
+                'sort_order' => '0',
+                'is_active' => '1'
+            ]
+        ]
+    ],
+    'system' => [
+        'default' => [
+            'general' => [
+                'locale' => [
+                    'code' => 'en_US'
+                ]
+            ],
+            'dev' => [
+                'static' => [
+                    'sign' => '1'
+                ],
+                'front_end_development_workflow' => [
+                    'type' => 'server_side_compilation'
+                ],
+                'template' => [
+                    'minify_html' => '0'
+                ],
+                'js' => [
+                    'merge_files' => '0',
+                    'minify_files' => '0',
+                    'minify_exclude' => [
+                        'tiny_mce' => '/tiny_mce/',
+                        'cardinal_commerce' => '/v1/songbird',
+                        'authorizenet_acceptjs' => '\\.authorize\\.net/v1/Accept'
+                    ],
+                    'move_script_to_bottom' => '0',
+                    'session_storage_logging' => '0',
+                    'translate_strategy' => 'dictionary'
+                ],
+                'css' => [
+                    'minify_files' => '0',
+                    'minify_exclude' => [
+                        'tiny_mce' => '/tiny_mce/'
+                    ],
+                    'use_css_critical_path' => '0'
+                ]
+            ]
+        ],
+        'stores' => [
+
+        ],
+        'websites' => [
+            'base' => [
+                'general' => [
+                    'locale' => [
+                        'code' => 'zh_Hant_TW'
+                    ]
+                ]
+            ],
+            'tw_lageige_website' => [
+                'general' => [
+                    'locale' => [
+                        'code' => 'zh_Hant_TW'
+                    ]
+                ]
+            ]
+        ]
+    ],
     'modules' => [
         'Magento_AdminAnalytics' => 1,
         'Magento_Store' => 1,
@@ -355,5 +496,12 @@ return [
         'Vertex_Tax' => 1,
         'Vertex_AddressValidation' => 1,
         'Yotpo_Yotpo' => 1
+    ],
+    'admin_user' => [
+        'locale' => [
+            'code' => [
+                'en_US'
+            ]
+        ]
     ]
 ];
