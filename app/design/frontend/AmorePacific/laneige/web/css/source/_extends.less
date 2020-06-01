@@ -8,11 +8,15 @@
 //  _____________________________________________
 
 //
-//  Address
+//  Common Address
 //  ---------------------------------------------
 & when (@media-common = true) {
     .abs-address-blocks {
         .lib-css(line-height, @checkout-shipping-item__line-height);
+
+        br {
+            display: none;
+        }
 
         strong {
             font-size: 16px;
