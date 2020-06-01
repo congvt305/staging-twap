@@ -3,7 +3,7 @@
 //  * See COPYING.txt for license details.
 //  */
 
-@layout-column-main__sidebar-offset: 2%;
+@layout-column-main__sidebar-offset: 9.5%;
 @layout-column__additional-sidebar-offset: @layout-column-main__sidebar-offset;
 
 //
@@ -59,11 +59,15 @@
         padding-right: @layout__width-xs-indent;
     }
 
-    .page-main {
-        .account &,
-        .cms-privacy-policy & {
-            padding-top: 41px;
-            position: relative;
+    .columns {
+        .sidebar-main {
+            .lib-vendor-prefix-order(0);
+        }
+    }
+
+    .page-layout-2columns-left {
+        .column.main {
+            margin-bottom: 80px;
         }
     }
 }
@@ -79,6 +83,7 @@
     .page-wrapper > .page-bottom,
     .block.category.event,
     .top-container,
+    .block.upsell,
     .page-main {
         box-sizing: border-box;
         margin-left: auto;
@@ -132,14 +137,14 @@
     }
 
     .page-layout-2columns-left {
-        .main {
-            padding-left: @layout-column__additional-sidebar-offset
-        }
-
         .sidebar-additional {
             clear: left;
             float: left;
             padding-left: 0;
+        }
+
+        .column.main {
+            margin-bottom: 120px;
         }
     }
 }

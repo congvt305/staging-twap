@@ -477,6 +477,7 @@ return [
         'Dotdigitalgroup_Enterprise' => 1,
         'Ecpay_Ecpaypayment' => 1,
         'Eguana_BizConnect' => 1,
+        'Eguana_CustomCheckout' => 1,
         'Eguana_EInvoice' => 1,
         'Eguana_GWLogistics' => 1,
         'Eguana_Login' => 1,

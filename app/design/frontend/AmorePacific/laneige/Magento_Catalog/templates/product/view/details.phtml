@@ -9,8 +9,8 @@
 <?php if ($detailedInfoGroup = $block->getGroupSortedChildNames('detailed_info', 'getChildHtml')) :?>
     <div class="product info detailed">
         <?php $layout = $block->getLayout(); ?>
-        <div class="product-details">
-            <ul class="tab-items product data items">
+        <div class="tab-container">
+            <ul class="product data items">
                 <?php foreach ($detailedInfoGroup as $name) :?>
                     <?php
                     $html = $layout->renderElement($name);
@@ -19,8 +19,12 @@
                     }
                     $alias = $layout->getElementAlias($name);
                     $label = $block->getChildData($alias, 'title');
+
+                    if ($alias == 'description') {
+                        $alias = 'feature';
+                    }
                     ?>
-                    <li class="tab-item data item title"
+                    <li class="data item title"
                         id="tab-label-<?= $block->escapeHtmlAttr($alias) ?>">
                         <a class="data switch"
                            href="#<?= $block->escapeUrl($alias) ?>"
@@ -30,7 +34,7 @@
                     </li>
                 <?php endforeach;?>
             </ul>
-            <div class="product-detail-content">
+            <div class="tab-contents">
                 <?php foreach ($detailedInfoGroup as $name) :?>
                     <?php
                     $html = $layout->renderElement($name);
@@ -39,9 +43,14 @@
                     }
                     $alias = $layout->getElementAlias($name);
                     $label = $block->getChildData($alias, 'title');
+
+                    if ($alias == 'description') {
+                        $alias = 'feature';
+                    }
                     ?>
-                    <div aria-labelledby="tab-label-<?= $block->escapeHtmlAttr($alias) ?>-title" id="<?= $block->escapeHtmlAttr($alias) ?>">
-                        <?= /* @noEscape */ $label ?>
+                    <div class="data item content"
+                         aria-labelledby="tab-label-<?= $block->escapeHtmlAttr($alias) ?>-title" id="<?= $block->escapeHtmlAttr($alias) ?>">
+                        <div class="content-title"><?= /* @noEscape */ $label ?></div>
                         <?= /* @noEscape */ $html ?>
                     </div>
                 <?php endforeach;?>

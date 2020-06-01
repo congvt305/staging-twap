@@ -52,8 +52,24 @@
                 }
             }
 
+            &.note {
+                .lib-font-size(16);
+                color: #787878;
+                line-height: 24px;
+            }
+
             input[type=file] {
                 margin: @indent__xs 0;
+            }
+
+            &.date {
+                input {
+                    padding-right: @indent__xl;
+                }
+            }
+
+            &.gender label {
+                display: block;
             }
         }
     }
@@ -153,6 +169,8 @@
             display: inline !important;
             font-weight: @font-weight__regular !important;
             line-height: 24px;
+            position: relative;
+            top: -2px;
             vertical-align: middle;
             word-break: break-all;
         }
@@ -249,11 +267,13 @@
             @_icon-font-content: @icon-calendar,
             @_icon-font-color: @primary__color__lighter,
             @_icon-font-size: @icon-calendar__font-size,
-            @_icon-font-line-height: @icon-calendar__font-size,
+            @_icon-font-line-height: @form-element-input__height,
             @_icon-font-display: block,
             @_icon-font-text-hide: true
             );
             display: inline-block;
+            position: absolute;
+            right: 16px;
             vertical-align: middle;
 
             &:focus {
@@ -302,17 +322,5 @@
         border-bottom-width: 2px;
         margin-bottom: 24px !important;
         padding-bottom: 14px !important;
-    }
-}
-
-//
-//  Desktop
-//  _____________________________________________
-
-.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    .fieldset {
-        > .field {
-            margin: 0 0 @form-field__vertical-indent__desktop;
-        }
     }
 }

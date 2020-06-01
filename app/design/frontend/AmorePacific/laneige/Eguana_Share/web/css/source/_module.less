@@ -10,11 +10,10 @@
 & when (@media-common = true) {
     .info_shares_wrap {
         display: inline-block;
-        width: 88%;
+        padding-right: 12px;
+        vertical-align: middle;
 
         .toggle {
-            position: relative;
-
             .toggle_shares {
                 display: none;
             }
@@ -33,6 +32,7 @@
                 @_button-padding: 0,
                 @_button-background: transparent,
                 @_button-border: none,
+                @_button-color: @primary__color__lighter,
                 @_button-background-hover: transparent,
                 @_button-color-hover: @primary__color__dark,
                 @_button-border-hover: none,
@@ -50,9 +50,9 @@
         }
 
         .toggle_shares {
+            bottom: 0;
             position: absolute;
-            right: 42px;
-            top: 0;
+            right: 90px;
 
             &:after {
                 background: #f6f6f6;
@@ -82,6 +82,7 @@
                     display: inline-block;
                     float: left;
                     margin: 0;
+                    text-align: center;
                     width: @indent__xl;
 
                     a {
@@ -98,7 +99,7 @@
                             @_button-color-active: @primary__color__dark,
                             @_button-border-active: none,
                             @_button-font-content: @icon-facebook,
-                            @_button-icon-font-size: 24px,
+                            @_button-icon-font-size: 35px,
                             @_button-line-height: 38px,
                             @_button-icon-font-text-hide: true,
                             @_button-icon-font-line-height: 38px
@@ -120,9 +121,13 @@
 
                         &.g {
                             .lib-icon-font-symbol(
-                                @_icon-font-content: @icon-twitter,
+                                @_icon-font-content: @icon-google,
                                 @_icon-font-position: before
                             );
+
+                            &:before {
+                                .lib-font-size(26) !important;
+                            }
                         }
                     }
                 }
