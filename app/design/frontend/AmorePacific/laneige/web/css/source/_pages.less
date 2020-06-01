@@ -12,8 +12,6 @@
         .lib-pager();
 
         .action {
-            width: 34px;
-
             &:before {
                 position: relative;
                 top: 1px;
@@ -26,6 +24,20 @@
                 &:active,
                 &:focus {
                     text-decoration: underline !important;
+                }
+            }
+        }
+
+        .item {
+            &:first-child {
+                &.current {
+                    padding-left: 6px;
+                }
+            }
+
+            &:last-child {
+                &.current {
+                    padding-right: 6px;
                 }
             }
         }

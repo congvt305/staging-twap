@@ -7,11 +7,6 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="page.main.title">
-            <action method="setPageTitle">
-                <argument translate="true" name="title" xsi:type="string">My Wish List</argument>
-            </action>
-        </referenceBlock>
         <referenceBlock name="breadcrumbs">
             <action method="addCrumb">
                 <argument name="crumbName" xsi:type="string">Home</argument>
@@ -34,11 +29,21 @@
                 <argument name="crumbInfo" xsi:type="array">
                     <item name="title" xsi:type="string">My Wish List</item>
                     <item name="label" xsi:type="string" translate="true">My Wish List</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}wishlist/index/index/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Wish List Sharing</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Wish List Sharing</item>
+                    <item name="label" xsi:type="string" translate="true">Wish List Sharing</item>
                 </argument>
             </action>
         </referenceBlock>
-        <referenceBlock name="customer.wishlist.button.update" remove="true"/>
-        <referenceBlock name="customer.wishlist.item.edit" remove="true"/>
-        <move element="customer.wishlist.item.cart" destination="customer.wishlist.item.inner" after="-"/>
+        <referenceBlock name="customer-account-navigation-wish-list-link">
+            <arguments>
+                <argument name="is_highlighted" xsi:type="boolean">true</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>
