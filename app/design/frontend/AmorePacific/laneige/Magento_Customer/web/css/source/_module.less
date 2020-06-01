@@ -31,6 +31,12 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+    .block-dashboard-info {
+        .box-actions .action {
+            &:extend(.abs-action-button-as-link all);
+        }
+    }
+
     .login-container {
         .block {
             &-new-customer {
@@ -192,10 +198,6 @@
 
         p:last-child {
             margin: 0;
-        }
-
-        .box-actions {
-            margin-top: @indent__xs;
         }
     }
 
@@ -580,6 +582,12 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .customer-account-index {
+        .sidebar-main {
+            padding-top: 33px;
+        }
+    }
+
     .customer-account-login,
     .customer-account-forgotpassword,
     .customer-account-createpassword,

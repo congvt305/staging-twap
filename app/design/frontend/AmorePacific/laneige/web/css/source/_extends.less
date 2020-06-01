@@ -297,10 +297,15 @@
 & when (@media-common = true) {
     .abs-account-blocks {
         .block-title {
-            &:extend(.abs-block-title all);
+            .lib-font-size(20);
+            border-bottom: 2px solid @primary__color__dark;
+            font-weight: @font-weight__regular;
+            line-height: 26px;
+            padding-bottom: 7px;
+            text-transform: uppercase;
 
-            > .action {
-                margin-left: 15px;
+            > a {
+                color: @primary__color__dark;
             }
         }
 
@@ -319,6 +324,8 @@
         }
 
         .block-content {
+            padding-top: 24px;
+
             p:last-child {
                 margin-bottom: 0;
             }
