@@ -102,8 +102,6 @@
         }
 
         .col {
-            padding-top: @indent__xs;
-
             &.qty {
                 .input-text {
                     &:extend(.abs-input-qty all);
@@ -146,6 +144,7 @@
                         @_icon-font-color-hover: @primary__color__lighter,
                         @_icon-font-color-active: @primary__color__lighter
                     );
+                    margin-bottom: 0;
 
                     &:before {
                         width: 30px;
@@ -179,7 +178,7 @@
             &-item-name {
                 display: inline-block;
                 font-weight: @font-weight__regular;
-                margin-top: -6px;
+                margin-top: 0;
             }
         }
 
