@@ -1,0 +1,80 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Wishlist\Block\Share\Wishlist $block */
+?>
+
+<?php if ($block->hasWishlistItems()) : ?>
+    <form class="form shared wishlist" action="<?= $block->escapeUrl($block->getUrl('wishlist/index/update')) ?>" method="post">
+        <div class="wishlist products wrapper grid products-grid">
+            <ol class="products list items product-items" id="wishlist-table">
+                <?php foreach ($block->getWishlistItems() as $item) : ?>
+                    <?php
+                    $product = $item->getProduct();
+                    $isVisibleProduct = $product->isVisibleInSiteVisibility();
+                    ?>
+                    <li class="item product product-item">
+                        <div class="product-item-info">
+                            <a class="product photo" href="<?= $block->escapeUrl($block->getProductUrl($item)) ?>" title="<?= $block->escapeHtmlAttr($product->getName()) ?>">
+                                <?= $block->getImage($product, 'customer_shared_wishlist')->toHtml() ?>
+                            </a>
+                            <div class="product details product-item-details">
+                                <strong class="product name product-item-name">
+                                    <a href="<?= $block->escapeUrl($block->getProductUrl($item)) ?>">
+                                        <?= $block->escapeHtml($product->getName()) ?>
+                                    </a>
+                                </strong>
+                                <?=
+                                $block->getProductPriceHtml(
+                                    $product,
+                                    'wishlist_configured_price',
+                                    \Magento\Framework\Pricing\Render::ZONE_ITEM_LIST,
+                                    ['item' => $item]
+                                );
+                                ?>
+                                <?= $block->getDetailsHtml($item) ?>
+                                <div class="product-item-inner">
+                                    <div class="product actions product-item-actions">
+                                        <?php if ($product->isSaleable()) : ?>
+                                            <?php if ($isVisibleProduct) : ?>
+                                                <button type="button"
+                                                        title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                                                        data-post='<?= /* @noEscape */ $block->getSharedItemAddToCartUrl($item) ?>'
+                                                        class="action tocart">
+                                                    <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                                </button>
+                                            <?php endif ?>
+                                        <?php endif; ?>
+                                        <div class="actions-secondary">
+                                            <a href="#" data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($item) ?>'  onclick="location.assign(this.href); return false;" class="action towishlist" data-action="add-to-wishlist">
+                                                <span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                <?php endforeach ?>
+            </ol>
+        </div>
+
+        <div class="actions-toolbar">
+            <?php if ($block->isSaleable()) : ?>
+                <div class="primary">
+                    <button type="button"
+                            title="<?= $block->escapeHtmlAttr(__('Add All to Cart')) ?>"
+                            data-post='<?= $block->escapeUrl($block->getSharedAddAllToCartUrl()) ?>'
+                            class="action tocart primary">
+                        <span><?= $block->escapeHtml(__('Add All to Cart')) ?></span>
+                    </button>
+                </div>
+            <?php endif;?>
+        </div>
+    </form>
+<?php else : ?>
+    <div class="message info empty"><div><?= $block->escapeHtml(__('Wish List is empty now.')) ?></div></div>
+<?php endif ?>

@@ -37,8 +37,8 @@
                 <height>285</height>
             </image>
             <image id="customer_shared_wishlist" type="small_image">
-                <width>113</width>
-                <height>113</height>
+                <width>280</width>
+                <height>336</height>
             </image>
             <image id="gift_messages_checkout_small_image" type="small_image">
                 <width>75</width>
@@ -183,8 +183,8 @@
                 <height>113</height>
             </image>
             <image id="wishlist_thumbnail" type="small_image">
-                <width>240</width>
-                <height>300</height>
+                <width>280</width>
+                <height>336</height>
             </image>
         </images>
     </media>
