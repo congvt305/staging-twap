@@ -83,7 +83,7 @@ use Magento\Framework\App\Action\Action;
                                                     <?php endif; ?>
                                                 </div>
                                             <?php endif; ?>
-                                            <?php if ($showWishlist || $showCompare) : ?>
+                                            <?php if (($showWishlist && !$_item->getData('offline')) || $showCompare) : ?>
                                                 <div class="actions-secondary" data-role="add-to-links">
                                                     <?php //phpcs:disable ?>
                                                     <?php if ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist) : ?>

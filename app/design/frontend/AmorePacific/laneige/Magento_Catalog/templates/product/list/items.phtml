@@ -268,7 +268,7 @@ $_item = null;
                                                         <?php endif; ?>
                                                     <?php endif; ?>
 
-                                                    <?php if ($showAddTo):?>
+                                                    <?php if ($showAddTo && !$_item->getData('offline')):?>
                                                         <div class="secondary-addto-links actions-secondary"
                                                              data-role="add-to-links">
                                                             <?php if ($addToBlock = $block->getChildBlock('addto')):?>
