@@ -29,8 +29,8 @@
 @header-icons-color: @theme__color__secondary;
 @header-icons-color-hover: @theme__color__primary-alt;
 
-@addto-color: @text__color__muted;
-@addto-hover-color: @primary__color;
+@addto-color: @color-white;
+@addto-hover-color: @color-white;
 
 @minicart-icons-color: @header-icons-color;
 @minicart-icons-color-hover: @header-icons-color-hover;
@@ -40,7 +40,7 @@
 @h1__margin-bottom__desktop: @indent__xl;
 
 //  Footer
-@footer__background-color: false;
+@footer__background-color: @color-white;
 
 //
 //  Common
@@ -77,6 +77,51 @@
             &:extend(.abs-add-clearfix all);
             float: right;
         }
+
+        &.links {
+            .lib-list-inline();
+
+            > li {
+                margin-bottom: 0;
+
+                &.customer-welcome {
+                    .customer-name,
+                    & + .authorization-link {
+                        display: none;
+                    }
+                }
+
+                a {
+                    font-size: 0;
+
+                    &.account {
+                        .lib-icon-font(
+                            @_icon-font-content: @icon-account,
+                            @_icon-font-color: @header-icons-color,
+                            @_icon-font-color-hover: @header-icons-color-hover,
+                            @_icon-font-color-active: @header-icons-color-hover,
+                            @_icon-font-size: 24px,
+                            @_icon-font-line-height: 60px,
+                            @_icon-font-text-hide: true,
+                            @_icon-font-position: after
+                        );
+                    }
+
+                    &.location {
+                        .lib-icon-font(
+                            @_icon-font-content: @icon-location,
+                            @_icon-font-color: @header-icons-color,
+                            @_icon-font-color-hover: @header-icons-color-hover,
+                            @_icon-font-color-active: @header-icons-color-hover,
+                            @_icon-font-size: 24px,
+                            @_icon-font-line-height: 60px,
+                            @_icon-font-text-hide: true,
+                            @_icon-font-position: after
+                        );
+                    }
+                }
+            }
+        }
     }
 
     .logo {
@@ -95,6 +140,14 @@
 
     .page-main {
         > .page-title-wrapper {
+            .page-title {
+                text-align: center;
+
+                .page-layout-checkout &,
+                .page-layout-1column & {
+                    .lib-heading(h2);
+                }
+            }
             .page-title + .action {
                 margin-top: @indent__l;
             }
@@ -405,6 +458,16 @@
         }
     }
 
+    .page-main {
+        > .page-title-wrapper {
+            .page-title {
+                .page-layout-1column & {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+
     .logo {
         margin-left: -50px;
         top: 23px;
@@ -438,16 +501,10 @@
             > .header.links {
                 float: left;
                 font-size: 0;
-                .lib-list-inline();
                 margin-left: auto;
 
-                > li {
+                > li:not(.authorization-link) {
                     font-size: @font-size__base;
-                    margin-bottom: 0;
-
-                    &:not(.authorization-link) {
-                        margin: 0 @indent__s;
-                    }
 
                     &.welcome,
                     a {
@@ -459,49 +516,41 @@
                             .lib-css(padding-left, @indent__xs);
                         }
                     }
+                }
 
-                    a {
-                        font-size: 0;
+                a {
+                    font-size: 0;
 
-                        &.account {
-                            .lib-icon-font(
-                                @_icon-font-content: @icon-account,
-                                @_icon-font-color: @header-icons-color,
-                                @_icon-font-color-hover: @header-icons-color-hover,
-                                @_icon-font-color-active: @header-icons-color-hover,
-                                @_icon-font-size: 24px,
-                                @_icon-font-line-height: 60px,
-                                @_icon-font-text-hide: true,
-                                @_icon-font-position: after
-                            );
-                        }
+                    &.login {
+                        .lib-icon-font(
+                            @_icon-font-content: @icon-account,
+                            @_icon-font-color: @header-icons-color,
+                            @_icon-font-color-hover: @header-icons-color-hover,
+                            @_icon-font-color-active: @header-icons-color-hover,
+                            @_icon-font-size: 24px,
+                            @_icon-font-line-height: 60px,
+                            @_icon-font-text-hide: true,
+                            @_icon-font-position: after
+                        );
+                        margin-right: @indent__s;
+                    }
 
-                        &.logout {
-                            .lib-icon-font(
-                                @_icon-font-content: @icon-logout,
-                                @_icon-font-color: @header-icons-color,
-                                @_icon-font-color-hover: @header-icons-color-hover,
-                                @_icon-font-color-active: @header-icons-color-hover,
-                                @_icon-font-size: 24px,
-                                @_icon-font-line-height: 60px,
-                                @_icon-font-text-hide: true,
-                                @_icon-font-position: after
-                            );
-                            margin: 0 @indent__s;
-                        }
+                    &.logout {
+                        .lib-icon-font(
+                            @_icon-font-content: @icon-logout,
+                            @_icon-font-color: @header-icons-color,
+                            @_icon-font-color-hover: @header-icons-color-hover,
+                            @_icon-font-color-active: @header-icons-color-hover,
+                            @_icon-font-size: 24px,
+                            @_icon-font-line-height: 60px,
+                            @_icon-font-text-hide: true,
+                            @_icon-font-position: after
+                        );
+                        margin: 0 @indent__s 0 @indent__base;
+                    }
 
-                        &.location {
-                            .lib-icon-font(
-                                @_icon-font-content: @icon-location,
-                                @_icon-font-color: @header-icons-color,
-                                @_icon-font-color-hover: @header-icons-color-hover,
-                                @_icon-font-color-active: @header-icons-color-hover,
-                                @_icon-font-size: 24px,
-                                @_icon-font-line-height: 60px,
-                                @_icon-font-text-hide: true,
-                                @_icon-font-position: after
-                            );
-                        }
+                    &.location {
+                        margin: 0 @indent__s;
                     }
                 }
             }
@@ -532,6 +581,12 @@
         > .page-title-wrapper {
             .page-title {
                 display: inline-block;
+
+                .page-layout-checkout &,
+                .page-layout-1column & {
+                    display: block;
+                    font-size: @h2__font-size-desktop;
+                }
             }
 
             .page-title + .action {

@@ -1,0 +1,103 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .tab-container {
+        position: relative;
+    }
+
+    .product.data.items {
+        .lib-data-tabs();
+        .lib-vendor-prefix-display(flex);
+        .lib-vendor-box-align (center);
+        background-color: @color-white;
+        border-bottom: 1px solid @secondary__color;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        .data.item.title {
+            border-bottom: 2px solid transparent;
+
+            &.active {
+                border-bottom: 2px solid @primary__color__dark;
+
+                a {
+                    font-weight: @font-weight__bold;
+                }
+            }
+        }
+
+        &.sticky {
+            position: fixed;
+            z-index: 4;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .data.item.content {
+        margin-bottom: 80px;
+        padding-top: 80px;
+    }
+
+    .product.data.items {
+        border-top: 1px solid @secondary__color;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .tab-container {
+        margin-left: -@layout__width-xs-indent;
+        margin-right: -@layout__width-xs-indent;
+        margin-bottom: @indent__xl * 2;
+    }
+
+    .product.data.items {
+        .lib-vendor-box-align (stretch);
+
+        .data.item {
+            display: block;
+        }
+
+        .item.title {
+            padding: 17px 5%;
+            text-align: center;
+            width: 100%;
+
+            > .switch {
+                .lib-vendor-prefix-display(flex);
+                .lib-vendor-box-align(center);
+                -webkit-justify-content: center;
+                justify-content: center;
+                padding: 0;
+            }
+        }
+    }
+
+    .data.item.content {
+        margin-bottom: 0;
+        padding-top: @indent__xl * 2;
+    }
+}

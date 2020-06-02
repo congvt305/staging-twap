@@ -40,12 +40,8 @@
         .price-including-tax,
         .price-excluding-tax {
             display: block;
-            .lib-font-size(18);
+            .lib-font-size(20);
             line-height: 1;
-
-            .price {
-                font-weight: @font-weight__bold;
-            }
 
             .cart-tax-total {
                 &:extend(.abs-tax-total all);
@@ -90,18 +86,25 @@
         }
     }
 
-    .price-box {
+    .price-box,
+    .price-as-configured {
         .lib-vendor-prefix-display();
         .lib-vendor-box-align (center);
         .lib-vendor-prefix-flex-direction (column);
         justify-content: center;
 
-        .price-label {
-            &:extend(.abs-visually-hidden all);
+        .price-final_price,
+        .normal-price,
+        .special-price {
+            order: 2;
         }
 
-        > .special-price {
-            order: 2;
+        .normal-price,
+        .special-price,
+        .old-price {
+            .price-label {
+                &:extend(.abs-visually-hidden all);
+            }
         }
     }
 }
@@ -111,9 +114,17 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-    .price-box {
+    .price-box,
+    .price-as-configured {
         > .special-price {
             margin-top: @indent__xs;
+        }
+    }
+
+    .product-info-main {
+        .old-price,
+        .old.price {
+            margin-right: @indent__xs;
         }
     }
 }
@@ -124,7 +135,7 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    .price-box {
+    .price-box, .price-as-configured {
         .lib-vendor-prefix-flex-direction (row);
     }
 

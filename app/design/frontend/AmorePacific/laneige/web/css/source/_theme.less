@@ -18,6 +18,7 @@
 @layout__max-width: 1240px;
 @layout-indent__width: 30px;
 @layout__width-xs-indent: 20px;
+@layout-column__sidebar-width: 3;
 
 //
 //  Typography variables
@@ -47,20 +48,47 @@
 
 @border-color__base: @secondary__color;
 
+@dl__margin-bottom: @indent__xs;
+@dd__margin-bottom: @indent__xs;
+
 //
 //  Headings
 //  ---------------------------------------------
 @heading__font-weight__base: @font-weight__semibold;
+@h1__font-size: 28px;
+@h1__line-height: 40px;
+@h1__font-size-desktop: 46px;
+
+@h2__font-weight: @heading__font-weight__base;
+@h2__line-height: 38px;
+
+@h3__font-size: 26px;
+@h3__font-weight: @font-weight__regular;
+@h3__margin-top: @indent__s;
+@h3__line-height: 36px;
+
+@h4__font-size: 22px; // 14px
+@h4__font-weight: @font-weight__regular;
+@h4__line-height: 33px;
+
+@h5__font-size: 20px;
+@h5__font-weight: @heading__font-weight__base;
+@h5__line-height: 26px;
+
+@h6__font-size: 20px;
+@h6__font-weight: @font-weight__regular;
+@h6__line-height: 26px;
 
 //
 //  Buttons
 //  ---------------------------------------------
+@button__font-size: 16px;
 @button__font-weight: @font-weight__regular;
 @button__border-radius: false;
 @button__color: @primary__color;
 @button__background: @color-white;
 @button__disabled__opacity: false;
-@button__padding: 4px 15px;
+@button__padding: 11px 15px;
 @button__border: 1px solid @button__color;
 @button__hover__color: @button__background;
 @button__hover__background: @theme__color__primary-alt;
@@ -70,6 +98,8 @@
 @button__active__border: @button__hover__border;
 @button-primary__font-size: 16px;
 @button-primary__padding: 11px 25px;
+@button-icon__font-size: 24px;
+@button-icon__line-height: 24px;
 
 //  Large button
 @button__font-size__l: 16px;
@@ -77,12 +107,18 @@
 @button__padding__l: 15px @indent__s;
 
 //
+//  Dropdowns variables
+//  _____________________________________________
+
+@dropdown-list__border: 1px solid @primary__color__lighter;
+
+//
 //  Breadcrumbs variables
 //  _____________________________________________
 
 @breadcrumbs__font-size: 15px;
 @breadcrumbs-link__color: @primary__color__darker;
-@breadcrumbs__container-margin: @indent__base 0 @indent__xl;
+@breadcrumbs__container-margin: @indent__base 0 @indent__l;
 @breadcrumbs-link__visited__color: @breadcrumbs-link__color;
 @breadcrumbs-link__hover__color: @breadcrumbs-link__color;
 @breadcrumbs-link__hover__text-decoration: none;
@@ -106,6 +142,7 @@
 @pager-action__border: none;
 @pager-icon__font-size: 24px;
 @pager-action__color: @primary__color__lighter;
+@pager-icon__font-margin: 0;
 
 //
 //  Navigation variables
@@ -162,10 +199,83 @@
 @form-field-type-label-block__margin: 0 0 8px 0;
 @form-fieldset-legend__font-size: 16px;
 @form-fieldset-legend__padding: 0 0 16px;
-@input-checkbox__margin: 0 8px 0 0;
-@input-radio__margin: 0 8px 0 0;
+@input-checkbox__margin: 0 @indent__xs 0 0;
+@input-radio__margin: 0 @indent__xs 0 0;
 @select__background: transparent url('../images/select-bg-black.svg') no-repeat 99% 60%;
 @select__padding: 0 36px 0 12px;
 @select__height: @indent__xl;
 @select__color: @primary__color__darker;
 @form-field-label-asterisk__color: #ff0000;
+
+//
+//  Tabs
+//  ---------------------------------------------
+@tab-content__border: none;
+@tab-control__font-size: 16px;
+@tab-control__font-weight: @font-weight__regular;
+@tab-control__line-height: 24px;
+@tab-control__margin-right: 0;
+@tab-control__padding-top: 15.5px;
+@tab-control__padding-right: 13px;
+@tab-control__padding-bottom: 15.5px;
+@tab-control__padding-left: 13px;
+@tab-control__height: 100%;
+
+//
+//  Accordion
+//  _____________________________________________
+@accordion-control__height: 100%;
+
+//
+//  Actions-toolbar
+//  _____________________________________________
+@actions-toolbar-actions-primary__margin: 0;
+@actions-toolbar-actions__position: center;
+
+//
+//  Icons
+//  _____________________________________________
+@icon-calendar__font-size: 26px;
+
+//
+//  Messages
+//  _____________________________________________
+@message__font-size: 14px;
+@message__padding: 12px @indent__base;
+@message__margin: 0 0 8px;
+@message-icon__inner-padding-left: 55px;
+@message-icon__top: 12px;
+@message-icon__font-size: 22px;
+@message-icon__font-line-height: 24px;
+
+//  Information message
+@message-info-icon: @icon-info;
+@message-info-icon__color-inner: @color-white;
+@message-info-icon__background: #e1a220;
+@message-info__color: #e1a220;
+@message-info__background: #fcf4d1;
+
+//  Error message
+@message-error-icon: @icon-info;
+@message-error-icon__color-inner: @color-white;
+@message-error-icon__background: #e82b24;
+@message-error__color: #e82b24;
+@message-error__background: #fcd1d1;
+
+//  Success message
+@message-success-icon__color-inner: @color-white;
+@message-success-icon__background: @theme__color__primary-alt;
+@message-success__color: @theme__color__primary-alt;
+@message-success__background: #d1e2fc;
+
+//
+//  Table
+//  _____________________________________________
+@table-th__color: @primary__color;
+@table-th__font-weight: @font-weight__semibold;
+@table-th__font-size: 14px;
+@table-td__color: @primary__color;
+@table__border-color: @border-color__base;
+@table-cell__padding-vertical: 18px;
+@table-responsive-cell__padding: 0 0 14px 0;
+
