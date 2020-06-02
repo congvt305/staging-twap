@@ -56,7 +56,8 @@ if (isHttpHost("tw.sulwhasoo.com")
     || isHttpHost("mcstaging.tw.laneige.com")) {
     $_SERVER["MAGE_RUN_CODE"] = "default";
     $_SERVER["MAGE_RUN_TYPE"] = "store";
-} elseif (isAdminBackendUri($_SERVER['REQUEST_URI'])) {
+}
+if (isAdminBackendUri($_SERVER['REQUEST_URI'])) {
     $_SERVER["MAGE_RUN_CODE"] = "default";
     $_SERVER["MAGE_RUN_TYPE"] = "store";
 }
