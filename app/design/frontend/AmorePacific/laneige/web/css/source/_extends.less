@@ -13,6 +13,7 @@
 & when (@media-common = true) {
     .abs-address-blocks {
         .lib-css(line-height, @checkout-shipping-item__line-height);
+        position: relative;
 
         br {
             display: none;
@@ -25,6 +26,26 @@
         strong,
         a {
             display: block;
+        }
+
+        .action {
+            &.edit-address-link,
+            &.action-edit-address {
+                .lib-icon-font(
+                    @icon-settings,
+                    @_icon-font-size: 32px,
+                    @_icon-font-line-height: 32px,
+                    @_icon-font-color: #ccc,
+                    @_icon-font-color-hover: @icon-font__color-hover,
+                    @_icon-font-color-active: @icon-font__color-active,
+                    @_icon-font-text-hide: true,
+                    @_icon-font-position: before
+                );
+                position: absolute;
+                right: 100px;
+                top: 50%;
+                margin-top: -16px;
+            }
         }
     }
 }
