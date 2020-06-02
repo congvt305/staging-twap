@@ -16,7 +16,6 @@ $allowedQty = $viewModel->setItem($item)->getMinMaxQty();
 <?php foreach ($block->getChildNames() as $childName) : ?>
     <?= /* @noEscape */ $block->getLayout()->renderElement($childName, false) ?>
 <?php endforeach;?>
-<?php if (!($product->getData('offline'))) : ?>
 <div class="box-tocart">
     <fieldset class="fieldset">
     <?php if ($item->canHaveQty() && $product->isVisibleInSiteVisibility()) : ?>
@@ -39,4 +38,3 @@ $allowedQty = $viewModel->setItem($item)->getMinMaxQty();
     <?php endif; ?>
     </fieldset>
 </div>
-<?php endif; ?>
