@@ -65,6 +65,10 @@
                 display: block;
             }
         }
+
+        .legend + br {
+            display: none;
+        }
     }
 
     .legend + .fieldset,
@@ -73,7 +77,7 @@
     }
 
     .legend {
-        border-bottom: 1px solid @primary__color__dark;
+        border-bottom: 2px solid @primary__color__dark;
         font-weight: @font-weight__bold;
         width: 100%;
 
@@ -320,10 +324,7 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-    .legend {
-        .lib-font-size(20) !important;
-        border-bottom-width: 2px;
-        margin-bottom: 24px !important;
-        padding-bottom: 14px !important;
+    .fieldset .legend {
+        margin-bottom: @indent__base;
     }
 }
