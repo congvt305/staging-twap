@@ -73,6 +73,10 @@
         .box-actions {
             text-align: right;
         }
+
+        address {
+            &:extend(.abs-address-blocks all);
+        }
     }
 
     .block-dashboard-orders {
@@ -93,6 +97,10 @@
                 &:extend(.abs-login-block-title all);
                 .lib-font-size(18);
             }
+        }
+
+        .field.choice {
+            margin-bottom: 12px !important;
         }
     }
 
@@ -177,6 +185,7 @@
 
             .block:not(.widget) {
                 &:extend(.abs-account-blocks all);
+                margin-bottom: 100px;
 
                 &:last-child {
                     margin-bottom: 0;
@@ -548,7 +557,7 @@
         }
 
         .message.empty {
-            margin: @indent__xl 0 0 0;
+            margin: 65px 0 0 0;
         }
     }
 
@@ -883,15 +892,13 @@
     .account {
         .column.main {
             .block:not(.widget) {
-                margin-bottom: 56px;
-
                 .block-content {
                     &:extend(.abs-add-clearfix-desktop all);
                 }
             }
 
             .message.empty {
-                margin: 100px 0 0 0;
+                margin: 100px 0 165px 0;
             }
 
             .table-wrapper {
