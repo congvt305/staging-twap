@@ -39,6 +39,7 @@
         }
     }
 
+    .block-addresses-default,
     .block-dashboard-addresses {
         .box {
             border-bottom: 1px solid @border-color__base;
@@ -51,7 +52,7 @@
                     @_icon-font: @icon-font,
                     @_icon-font-size: 34px,
                     @_icon-font-line-height: 36px,
-                    @_icon-font-color: @primary__color__darker,
+                    @_icon-font-color: #ccc,
                     @_icon-font-color-hover: @primary__color__dark,
                     @_icon-font-color-active: @primary__color__dark,
                     @_icon-font-margin: 0,
@@ -474,36 +475,39 @@
 
     .account {
         .column.main {
-            .message.empty {
+            .empty {
                 .lib-font-size(16);
-                background: none;
                 color: #787878;
                 line-height: 24px;
-                padding: 0;
-                text-align: center;
 
-                span {
-                    .lib-icon-font(
-                            @icon-information,
-                        @_icon-font: @icon-font,
-                        @_icon-font-size: 40px,
-                        @_icon-font-line-height: @indent__xl,
-                        @_icon-font-color: @primary__color__lighter,
-                        @_icon-font-color-hover: @primary__color__lighter,
-                        @_icon-font-color-active: @primary__color__lighter,
-                        @_icon-font-margin: 0,
-                        @_icon-font-vertical-align: middle,
-                        @_icon-font-position: before
-                    );
+                &.message {
+                    background: none;
+                    padding: 0;
+                    text-align: center;
 
-                    &:before {
-                        background-color: transparent;
-                        display: block;
-                        margin: 0 0 @indent__s 0 !important;
-                        height: @indent__xl;
-                        position: relative;
-                        top: 0;
-                        width: 100%;
+                    span {
+                        .lib-icon-font(
+                                @icon-information,
+                            @_icon-font: @icon-font,
+                            @_icon-font-size: 40px,
+                            @_icon-font-line-height: @indent__xl,
+                            @_icon-font-color: @primary__color__lighter,
+                            @_icon-font-color-hover: @primary__color__lighter,
+                            @_icon-font-color-active: @primary__color__lighter,
+                            @_icon-font-margin: 0,
+                            @_icon-font-vertical-align: middle,
+                            @_icon-font-position: before
+                        );
+
+                        &:before {
+                            background-color: transparent;
+                            display: block;
+                            margin: 0 0 @indent__s 0 !important;
+                            height: @indent__xl;
+                            position: relative;
+                            top: 0;
+                            width: 100%;
+                        }
                     }
                 }
             }
@@ -664,11 +668,13 @@
         }
     }
 
+    .block-addresses-default,
     .block-dashboard-addresses {
         .box {
             padding-bottom: 24px;
             overflow: hidden;
 
+            &.box-address-shipping,
             &.box-shipping-address {
                 padding-top: 24px;
             }
@@ -689,6 +695,12 @@
             .block:not(.widget) {
                 margin-bottom: 64px;
             }
+        }
+    }
+
+    .block-addresses-list {
+        .empty {
+            margin-bottom: 48px;
         }
     }
 }
@@ -722,11 +734,13 @@
         }
     }
 
+    .block-addresses-default,
     .block-dashboard-addresses {
         .block-content .box {
             .lib-vendor-prefix-display(flex);
             padding-bottom: 16px;
 
+            &.box-address-shipping,
             &.box-shipping-address {
                 padding-top: 16px;
             }
@@ -860,6 +874,29 @@
             .action.login {
                 margin-right: 0 !important;
                 width: 100% !important;
+            }
+        }
+    }
+
+    .block-addresses-list {
+        .block-content {
+            position: relative;
+
+            .empty {
+                margin-bottom: 0;
+                padding-top: 32px;
+                padding-right: 180px;
+
+                & + .actions-toolbar {
+                    display: inline-block;
+                    position: absolute;
+                    top: 48px;
+                    right: 0;
+                }
+            }
+
+            .actions-toolbar .secondary {
+                display: none;
             }
         }
     }
