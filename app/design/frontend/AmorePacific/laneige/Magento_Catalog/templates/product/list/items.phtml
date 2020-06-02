@@ -229,7 +229,7 @@ $_item = null;
                                             <div class="product-item-inner">
                                                 <div class="product actions product-item-actions">
                                                     <?php if ($showCart):?>
-                                                        <?php if ($_item->isSaleable() && !$_item->getData('offline')):?>
+                                                        <?php if ($_item->isSaleable()):?>
                                                             <div class="actions-primary">
                                                             <?php if (!$_item->getTypeInstance()->isPossibleBuyFromList($_item)):?>
                                                                 <button
@@ -268,7 +268,7 @@ $_item = null;
                                                         <?php endif; ?>
                                                     <?php endif; ?>
 
-                                                    <?php if ($showAddTo):?>
+                                                    <?php if ($showAddTo && !$_item->getData('offline')):?>
                                                         <div class="secondary-addto-links actions-secondary"
                                                              data-role="add-to-links">
                                                             <?php if ($addToBlock = $block->getChildBlock('addto')):?>
