@@ -121,10 +121,6 @@
         .region_id {
             display: none;
         }
-
-        .actions-toolbar .action.primary {
-            &:extend(.abs-button-l all);
-        }
     }
 
     .form-edit-account {
@@ -513,6 +509,17 @@
             }
         }
     }
+
+    .form-address-edit {
+        .actions-toolbar .action {
+            &:extend(.abs-button-l all);
+        }
+
+        .choice .label {
+            .lib-font-size(14);
+            color: @primary__color;
+        }
+    }
 }
 
 //
@@ -696,11 +703,44 @@
                 margin-bottom: 64px;
             }
         }
+
+        .page-title-wrapper .page-title {
+            margin-bottom: @indent__xl;
+        }
     }
 
     .block-addresses-list {
         .empty {
             margin-bottom: 48px;
+        }
+    }
+
+    .customer-address-form {
+        .column.main {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+    }
+
+    .form-address-edit {
+        .actions-toolbar {
+            margin-top: 100px;
+            margin-left: -@layout__width-xs-indent;
+            margin-right: -@layout__width-xs-indent;
+
+            .action {
+                &:extend(.abs-button-l-mobile all);
+            }
+        }
+
+        .field.country {
+            & + div {
+                margin-top: @indent__xl;
+
+                &.message.info {
+                    margin-bottom: @indent__base;
+                }
+            }
         }
     }
 }
@@ -764,6 +804,15 @@
         }
     }
 
+    .customer-address-form,
+    .wishlist-index-share,
+    .wishlist-index-index {
+        .sidebar-main {
+            padding-top: 34px;
+        }
+    }
+
+    .customer-address-index,
     .customer-account-index {
         .sidebar-main {
             padding-top: 35px;
@@ -958,6 +1007,26 @@
 
         .toolbar {
             &:extend(.abs-pager-toolbar all);
+        }
+    }
+
+    .form-address-edit {
+        .actions-toolbar .action {
+            width: 380px;
+        }
+
+        > .fieldset {
+            margin-bottom: 84px;
+        }
+
+        .field.country {
+            & + div {
+                margin-top: 24px;
+
+                &.message.info {
+                    margin-bottom: @indent__base;
+                }
+            }
         }
     }
 
