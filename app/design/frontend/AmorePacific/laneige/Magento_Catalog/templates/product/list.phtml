@@ -60,10 +60,10 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                        tabindex="-1">
                         <span class="flags">
                         <?php if($_product->getData('new')):?>
-                            <span class="flag new"><?= $_product->getResource()->getAttribute('new')->getStoreLabel();?></span>
+                            <span class="flag new"><?= $block->escapeHtml($_product->getResource()->getAttribute('new')->getStoreLabel());?></span>
                         <?php endif;?>
                         <?php if($_product->getData('best')):?>
-                            <span class="flag best"><?= $_product->getResource()->getAttribute('best')->getStoreLabel(); ?></span>
+                            <span class="flag best"><?= $block->escapeHtml($_product->getResource()->getAttribute('best')->getStoreLabel()); ?></span>
                         <?php endif;?>
                         </span>
                         <?= $productImage->toHtml() ?>
