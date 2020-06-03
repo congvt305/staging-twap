@@ -41,9 +41,9 @@ define([
             $('.form-create-account-pos').on('click', this.options.verifyPosSelector, $.proxy(this.posVerification, this));
             timer2 = this.options.codeExpirationMinutes;
 
-            $('.form-create-account-pos').hide();
+            /*$('.form-create-account-pos').hide();
             $('.customer-registration-form-create-account').show();
-            $('.customer-registration-form-create-account .form-create-account').show();
+            $('.customer-registration-form-create-account .form-create-account').show();*/
         },
 
         getCode: function() {

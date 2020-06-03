@@ -5,6 +5,9 @@
  */
 
 /** @var \Magento\Customer\Block\Form\Register $block */
+
+/** @var \Amore\CustomerRegistration\ViewModel\Register $viewModel */
+$viewModel = $block->getData('view_model');
 ?>
 <!-- This div is added by Abbas so in first step to hide all the content of registration and secnodly in case of disable module from admin panel to not effect the css -->
 <div class="customer-registration-form-create-account">
@@ -195,17 +198,39 @@
             <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
                 <?= $_dmSubscriptionStatus->setDate($block->getFormData()->getDmSubscriptionStatus())->toHtml() ?>
             <?php endif ?>
-            <div class="dm-address">
-                <div class="field dm_city required">
-                    <label for="dm_city" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_city') ?></span></label>
-                    <div class="control">
-                        <?php //phpcs:disable ?>
-                        <input type="text" name="dm_city" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmCity()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_city') ?>" id="dm_city" class="input-text validate-zip-international <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_city')) ?>">
-                        <?php //phpcs:enable ?>
-                    </div>
-                </div>
+            <div class="dm-address" style="display: none">
+                <?php $_dmCtiy = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_city', ['data'=>['attribute_code'=>'dm_city']]) ?>
+                <?php if ($_dmCtiy->isEnabled()) : ?>
+                    <?= $_dmCtiy->setDate($block->getFormData()->getDmCity())->toHtml() ?>
+                <?php endif ?>
+
+                <?php $_dmState = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_state', ['data'=>['attribute_code'=>'dm_state']]) ?>
+                <?php if ($_dmState->isEnabled()) : ?>
+                    <?= $_dmState->setDate($block->getFormData()->getDmState())->toHtml() ?>
+                <?php endif ?>
+
+                <?php $_dmDetailedAddress = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_detailed_address', ['data'=>['attribute_code'=>'dm_detailed_address']]) ?>
+                <?php if ($_dmDetailedAddress->isEnabled()) : ?>
+                    <?= $_dmDetailedAddress->setDate($block->getFormData()->getDmDetailedAddress())->toHtml() ?>
+                <?php endif ?>
+
+                <?php $_dmZipcode = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_zipcode', ['data'=>['attribute_code'=>'dm_zipcode']]) ?>
+                <?php if ($_dmZipcode->isEnabled()) : ?>
+                    <?= $_dmZipcode->setDate($block->getFormData()->getDmZipcode())->toHtml() ?>
+                <?php endif ?>
             </div>
         </fieldset>
+        <div class="store-info" style="display: none">
+            <input type="hidden"
+                   name="favorite_store"
+                   id="favorite_store"
+                   value="<?= $block->escapeHtml($viewModel->getFavoriteStore()) ?>">
+
+            <input type="hidden"
+                   name="referrer_code"
+                   id="referrer_code"
+                   value="<?= $block->escapeHtml($viewModel->getReferrerCode()) ?>">
+        </div>
         <div class="actions-toolbar">
             <div class="primary">
                 <button type="submit" class="action submit primary" title="<?= $block->escapeHtmlAttr(__('Create an Account')) ?>"><span><?= $block->escapeHtml(__('Create an Account')) ?></span></button>

@@ -18,6 +18,9 @@
             <action method="setTemplate" ifconfig="customerregistraion/general/active">
                 <argument name="template" xsi:type="string">Amore_CustomerRegistration::form/register.phtml</argument>
             </action>
+            <arguments>
+                <argument name="view_model" xsi:type="object">Amore\CustomerRegistration\ViewModel\Register</argument>
+            </arguments>
         </referenceBlock>
     </body>
 </page>

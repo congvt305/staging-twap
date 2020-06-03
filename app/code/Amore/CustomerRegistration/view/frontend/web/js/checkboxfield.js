@@ -9,6 +9,11 @@ define(['jquery', 'domReady!'], function($){
                 } else {
                     $("#"+config.attributeCode).val(0);
                 }
+
+                if(config.attributeCode+'_checkbox' == 'dm_subscription_status_checkbox')
+                {
+                    $('.dm-address').toggle();
+                }
             });
         });
 

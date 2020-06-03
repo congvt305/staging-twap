@@ -100,7 +100,7 @@ class AddCustomerAttributes implements DataPatchInterface
                                     ['code'=>'referrer_code','label'=>'Referrer Code', 'type' => 'varchar', 'validation'=>'{"input_validation":"alphanum-with-spaces","max_text_length":255,"min_text_length":1}', 'requried' => 0]
                                 ];
         $yesNoAttributes = [
-                                ['code'=>'email_subscription_status','label'=>'Email Marketing'],
+//                                ['code'=>'email_subscription_status','label'=>'Email Marketing'],
                                 ['code'=>'sms_subscription_status','label'=>'SMS Marketing'],
                                 ['code'=>'dm_subscription_status','label'=>'DM Marketing']
                             ];
