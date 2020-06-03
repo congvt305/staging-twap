@@ -1,0 +1,28 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Amore\CustomerRegistration\Block\Widget\MobileNumber $block */
+?>
+
+<div class="field <?= $block->getAttributeCode() ?> <?= $block->isRequired() ? 'required' : '' ?>">
+    <label for="<?= $block->getAttributeCode() ?>" class="label">
+        <span>
+            <?= $block->getStoreLabel() ?>
+        </span>
+    </label>
+    <div class="control">
+            <?php
+            $_validationClass = $block->getFrontendClasses();
+            ?>
+        <input type="text"
+               name="<?= $block->getAttributeCode() ?>"
+               id="<?= $block->getAttributeCode() ?>"
+               value="<?= $block->escapeHtmlAttr($block->getAttributeValue()) ?>"
+               title="<?= $block->getStoreLabel() ?>"
+               class="input-text <?= $_validationClass ?: '' ?>"
+        >
+    </div>
+</div>
