@@ -536,6 +536,19 @@
                 -ms-flex-pack: end;
                 justify-content: flex-end;
             }
+
+            &.nav-1,
+            &.nav-2 {
+                .level0 {
+                    > ul.submenu {
+                        padding-right: @layout-indent__width;
+                        -webkit-box-pack: center;
+                        -ms-flex-pack: center;
+                        justify-content: center;
+                        max-width: 100%;
+                    }
+                }
+            }
         }
 
         .level1 {
