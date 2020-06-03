@@ -1,0 +1,238 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+@checkout-summary__background-color: @color-white;
+@checkout-summary__padding: @indent__base;
+
+@checkout-summary-title__margin: @indent__s;
+@checkout-summary-mark-value__color: @primary__color__lighter;
+
+@checkout-summary-items__max-height: 370px;
+@checkout-summary-items__padding: 15px;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //
+    //  Order Summary
+    //  ---------------------------------------------
+
+    .opc-block-summary {
+        &:extend(.abs-add-box-sizing all);
+        .lib-css(background, @checkout-summary__background-color);
+
+        > .title {
+            .lib-css(font-size, @checkout-step-title__font-size);
+            .lib-css(font-weight, @checkout-step-title__font-weight);
+            display: block;
+            padding: 15px @checkout-summary__padding 0;
+        }
+
+        //  Totals table
+        .table-totals {
+            &:extend(.abs-sidebar-totals all);
+
+            .mark {
+                .value {
+                    &:before {
+                        content: '(';
+                    }
+
+                    &:after {
+                        content: ')';
+                    }
+                }
+            }
+
+            tbody {
+                border-top: 1px solid @border-color__base;
+
+                tr:first-child {
+                    th,
+                    td {
+                        padding-top: @indent__m;
+                    }
+                }
+            }
+        }
+
+        .discount.coupon {
+            display: none;
+        }
+
+        .grand.incl {
+            & + .grand.excl {
+                .mark,
+                .amount {
+                    border-top: 0;
+                    .lib-font-size(14);
+                    padding-top: 0;
+
+                    strong {
+                        font-weight: @font-weight__regular;
+                    }
+                }
+            }
+        }
+
+        .not-calculated {
+            font-style: italic;
+        }
+
+        //
+        //  Items list
+        //  ---------------------------------------------
+
+        //  Block title
+        .items-in-cart {
+            margin-bottom: 0;
+
+            > .title {
+                border-bottom: 2px solid @primary__color__dark;
+                margin-bottom: 0;
+                position: relative;
+                padding-bottom: 15px;
+                .lib-icon-font(
+                    @icon-down,
+                    @_icon-font-size: 18px,
+                    @_icon-font-line-height: 12px,
+                    @_icon-font-text-hide: true,
+                    @_icon-font-position: after,
+                    @_icon-font-display: block
+                );
+
+                &:after {
+                    cursor: pointer;
+                    position: absolute;
+                    right: 25px;
+                    top: -@indent__s;
+                }
+
+                strong {
+                    color: @primary__color__darker;
+                    font-size: @font-size__base !important;
+                    font-weight: @font-weight__regular;
+                    margin: 0;
+                    padding: 0 @checkout-summary__padding;
+                }
+            }
+
+            &.open {
+                > .title {
+                    .lib-icon-font-symbol(
+                        @_icon-font-content: @icon-up,
+                        @_icon-font-position: after
+                    );
+                }
+            }
+
+            .product {
+                .item-options {
+                    &:extend(.abs-product-options-list all);
+                    &:extend(.abs-add-clearfix all);
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        //  Cart items
+        .minicart-items-wrapper {
+            .lib-css(max-height, @checkout-summary-items__max-height);
+            .lib-css(padding, @checkout-summary-items__padding 0 @checkout-summary-items__padding 0);
+            border: 0;
+        }
+
+        .column.main & {
+            .product-item {
+                margin: 0;
+                padding-left: 6px;
+                padding-right: @indent__base;
+            }
+        }
+
+        .product-item {
+            .product-item-details {
+                padding-right: 0;
+            }
+
+            .product-item-name-block {
+                text-align: left;
+            }
+
+            .details-qty {
+                margin-top: 7px;
+            }
+
+            .subtotal {
+                float: right;
+            }
+        }
+
+        .actions-toolbar {
+            position: relative;
+            z-index: 1;
+
+            .secondary {
+                border-top: @border-width__base solid @border-color__base;
+                display: block;
+                float: none;
+                margin: -1px 0 0;
+                padding: 15px 0 0;
+                text-align: left;
+
+                .action {
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .opc-block-summary {
+        > .title {
+            border-bottom: 1px solid @border-color__base;
+            font-size: 16px;
+            text-align: center;
+            line-height: 30px;
+            padding-bottom:  15px;
+        }
+
+        .items-in-cart {
+            margin-top: 50px;
+
+            > .title {
+                &:after {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .opc-summary-wrapper {
+        .modal-header {
+            .action-close {
+                display: none;
+            }
+        }
+    }
+}
