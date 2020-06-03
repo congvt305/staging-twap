@@ -537,8 +537,7 @@
                 justify-content: flex-end;
             }
 
-            &.nav-1,
-            &.nav-2 {
+            &:not(.nav-3):not(.nav-4):not(.nav-5) {
                 .level0 {
                     > ul.submenu {
                         padding-right: @layout-indent__width;
@@ -547,6 +546,14 @@
                         justify-content: center;
                         max-width: 100%;
                     }
+                }
+            }
+
+            &.nav-3,
+            &.nav-4,
+            &.nav-5 {
+                div.submenu {
+                    min-height: 416px;
                 }
             }
         }
