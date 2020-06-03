@@ -144,7 +144,7 @@
                 text-align: center;
 
                 .page-layout-checkout &,
-                .page-layout-1column & {
+                .page-layout-1column:not(.checkout-onepage-success) & {
                     .lib-heading(h2);
                 }
             }
@@ -461,7 +461,7 @@
     .page-main {
         > .page-title-wrapper {
             .page-title {
-                .page-layout-1column & {
+                .page-layout-1column:not(.checkout-onepage-success) & {
                     margin-top: 0;
                 }
             }

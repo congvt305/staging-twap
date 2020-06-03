@@ -202,10 +202,10 @@ $_item = null;
                                    class="product photo product-item-photo">
                                     <span class="flags">
                                         <?php if($_item->getData('new')):?>
-                                            <span class="flag new"><?= $_item->getResource()->getAttribute('new')->getStoreLabel();?></span>
+                                            <span class="flag new"><?= $block->escapeHtml($_item->getResource()->getAttribute('new')->getStoreLabel());?></span>
                                         <?php endif;?>
                                         <?php if($_item->getData('best')):?>
-                                            <span class="flag best"><?= $_item->getResource()->getAttribute('best')->getStoreLabel(); ?></span>
+                                            <span class="flag best"><?= $block->escapeHtml($_item->getResource()->getAttribute('best')->getStoreLabel()); ?></span>
                                         <?php endif;?>
                                 </span>
                                     <?= $block->getImage($_item, $image)->toHtml() ?>

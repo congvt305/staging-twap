@@ -24,7 +24,7 @@
                 <width>280</width>
                 <height>336</height>
             </image>
-            <image id="category_page_list" type="small_image">
+            <image id="category_page_list" type="thumbnail">
                 <width>280</width>
                 <height>336</height>
             </image>
@@ -48,7 +48,7 @@
                 <width>100</width>
                 <height>100</height>
             </image>
-            <image id="mini_cart_product_thumbnail" type="thumbnail">
+            <image id="mini_cart_product_thumbnail" type="small_image">
                 <width>82</width>
                 <height>82</height>
             </image>
@@ -166,7 +166,7 @@
                 <width>135</width>
                 <height>135</height>
             </image>
-            <image id="side_column_widget_product_thumbnail" type="thumbnail">
+            <image id="side_column_widget_product_thumbnail" type="small_image">
                 <width>75</width>
                 <height>90</height>
             </image>
@@ -174,7 +174,7 @@
                 <width>280</width>
                 <height>336</height>
             </image>
-            <image id="wishlist_sidebar_block" type="thumbnail">
+            <image id="wishlist_sidebar_block" type="small_image">
                 <width>75</width>
                 <height>90</height>
             </image>
