@@ -8,10 +8,13 @@
 
 namespace Eguana\CustomCheckout\Plugin\Checkout\Model;
 
+use Magento\Checkout\Model\DefaultConfigProvider;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Catalog\Model\ProductRepository as ProductRepository;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Model\AbstractModel;
 
-class DefaultConfigProviderPlugin extends \Magento\Framework\Model\AbstractModel
+class DefaultConfigProviderPlugin extends AbstractModel
 {
     protected $checkoutSession;
 
@@ -31,13 +34,13 @@ class DefaultConfigProviderPlugin extends \Magento\Framework\Model\AbstractModel
     }
 
     /**
-     * @param \Magento\Checkout\Model\DefaultConfigProvider $subject
+     * @param DefaultConfigProvider $subject
      * @param array $result
      * @return array
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function afterGetConfig(
-        \Magento\Checkout\Model\DefaultConfigProvider $subject,
+        DefaultConfigProvider $subject,
         array $result
     ) {
         $items = $result['totalsData']['items'];
