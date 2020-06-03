@@ -182,9 +182,16 @@
 
             .block:not(.widget) {
                 &:extend(.abs-account-blocks all);
-                margin-bottom: 100px;
+
+                &:not(.block-orders-history) {
+                    margin-bottom: 100px;
+                }
 
                 &:last-child {
+                    margin-bottom: 0;
+                }
+
+                &.block-orders-history {
                     margin-bottom: 0;
                 }
             }
@@ -520,6 +527,14 @@
             color: @primary__color;
         }
     }
+
+    .customer-account-logoutsuccess {
+        .column.main {
+            .lib-font-size(16);
+            line-height: 24px;
+            text-align: center;
+        }
+    }
 }
 
 //
@@ -700,7 +715,9 @@
     .account {
         .column.main {
             .block:not(.widget) {
-                margin-bottom: 64px;
+                &:not(.block-orders-history) {
+                    margin-bottom: 64px;
+                }
             }
         }
 
@@ -812,6 +829,7 @@
         }
     }
 
+    .sales-order-history,
     .customer-address-index,
     .customer-account-index {
         .sidebar-main {
@@ -989,7 +1007,7 @@
 
             .table-wrapper {
                 .actions {
-                    width: 12%;
+                    width: 25%;
                 }
             }
         }
@@ -1075,6 +1093,12 @@
     .control.captcha-image {
         .captcha-img {
             margin: 0 @indent__s @indent__s 0;
+        }
+    }
+
+    .customer-account-logoutsuccess {
+        .column.main {
+            margin-top: @indent__l;
         }
     }
 }
