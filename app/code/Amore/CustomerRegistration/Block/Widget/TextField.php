@@ -14,20 +14,15 @@ use Magento\Customer\Model\Options;
 use Magento\Framework\View\Element\Template\Context;
 
 /**
- * Widget for showing mobile number.
+ * Widget for showing custom attributes.
  *
  * @method CustomerInterface getObject()
  * @method Name setObject(CustomerInterface $customer)
  *
  * @SuppressWarnings(PHPMD.DepthOfInheritance)
  */
-class MobileNumber extends AbstractWidget
+class TextField extends \Magento\Customer\Block\Widget\AbstractWidget
 {
-
-    /**
-     * the attribute code
-     */
-    const ATTRIBUTE_CODE = 'mobile_number';
 
     /**
      * @var AddressMetadataInterface
@@ -69,7 +64,7 @@ class MobileNumber extends AbstractWidget
         parent::_construct();
 
         // default template location
-        $this->setTemplate('Magento_Customer::widget/fax.phtml');
+        $this->setTemplate('Amore_CustomerRegistration::widget/textfield.phtml');
     }
 
     /**
@@ -89,59 +84,22 @@ class MobileNumber extends AbstractWidget
      *
      * @return bool
      */
-    public function showFax()
+    public function showAttribute()
     {
-        return $this->_isAttributeVisible(self::ATTRIBUTE_CODE);
+        return $this->_isAttributeVisible($this->getAttributeCode());
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function _getAttribute($attributeCode)
-    {
-        if ($this->getForceUseCustomerAttributes() || $this->getObject() instanceof CustomerInterface) {
-            return parent::_getAttribute($attributeCode);
-        }
-
-        try {
-            $attribute = $this->addressMetadata->getAttributeMetadata($attributeCode);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
-            return null;
-        }
-
-        if ($this->getForceUseCustomerRequiredAttributes() && $attribute && !$attribute->isRequired()) {
-            $customerAttribute = parent::_getAttribute($attributeCode);
-            if ($customerAttribute && $customerAttribute->isRequired()) {
-                $attribute = $customerAttribute;
-            }
-        }
-
-        return $attribute;
-    }
 
     /**
      * Retrieve store attribute label
      *
-     * @param string $attributeCode
      *
      * @return string
      */
-    public function getStoreLabel($attributeCode)
+    public function getStoreLabel()
     {
-        $attribute = $this->_getAttribute($attributeCode);
+        $attribute = $this->_getAttribute($this->getAttributeCode());
         return $attribute ? __($attribute->getStoreLabel()) : '';
-    }
-
-    /**
-     * Get string with frontend validation classes for attribute
-     *
-     * @param string $attributeCode
-     *
-     * @return string
-     */
-    public function getAttributeValidationClass($attributeCode)
-    {
-        return $this->_addressHelper->getAttributeValidationClass($attributeCode);
     }
 
     /**
@@ -162,7 +120,7 @@ class MobileNumber extends AbstractWidget
      */
     public function isEnabled()
     {
-        return $this->_getAttribute(self::ATTRIBUTE_CODE) ? (bool)$this->_getAttribute(self::ATTRIBUTE_CODE)->isVisible(
+        return $this->_getAttribute($this->getAttributeCode()) ? (bool)$this->_getAttribute($this->getAttributeCode())->isVisible(
         ) : false;
     }
 
@@ -173,7 +131,18 @@ class MobileNumber extends AbstractWidget
      */
     public function isRequired()
     {
-        return $this->_getAttribute(self::ATTRIBUTE_CODE) ? (bool)$this->_getAttribute(self::ATTRIBUTE_CODE)
+        return $this->_getAttribute($this->getAttributeCode()) ? (bool)$this->_getAttribute($this->getAttributeCode())
             ->isRequired() : false;
+    }
+
+    public function getFrontendClasses()
+    {
+        return $this->_getAttribute($this->getAttributeCode()) ? (string)$this->_getAttribute($this->getAttributeCode())
+            ->getFrontendClass() : '';
+    }
+
+    public function getAttributeValue()
+    {
+        return $this->getData($this->getAttributeCode());
     }
 }

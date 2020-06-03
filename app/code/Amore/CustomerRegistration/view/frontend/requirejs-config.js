@@ -5,7 +5,8 @@
 var config = {
     "map": {
         '*': {
-            posform: 'Amore_CustomerRegistration/js/pos'
+            posform: 'Amore_CustomerRegistration/js/pos',
+            checkboxfield: 'Amore_CustomerRegistration/js/checkboxfield',
         }
     }
 };

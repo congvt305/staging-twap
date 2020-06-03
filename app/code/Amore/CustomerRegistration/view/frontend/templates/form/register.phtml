@@ -18,14 +18,6 @@
             <input type="hidden" name="success_url" value="<?= $block->escapeUrl($block->getSuccessUrl()) ?>">
             <input type="hidden" name="error_url" value="<?= $block->escapeUrl($block->getErrorUrl()) ?>">
             <?= $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Name::class)->setObject($block->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
-            <?php if ($block->isNewsletterEnabled()) : ?>
-                <div class="field choice newsletter">
-                    <input type="checkbox" name="is_subscribed" title="<?= $block->escapeHtmlAttr(__('Sign Up for Newsletter')) ?>" value="1" id="is_subscribed"<?php if ($block->getFormData()->getIsSubscribed()) : ?> checked="checked"<?php endif; ?> class="checkbox">
-                    <label for="is_subscribed" class="label"><span><?= $block->escapeHtml(__('Sign Up for Newsletter')) ?></span></label>
-                </div>
-                <?php /* Extensions placeholder */ ?>
-                <?= $block->getChildHtml('customer.form.register.newsletter') ?>
-            <?php endif ?>
 
             <?php $_taxvat = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Taxvat::class) ?>
             <?php if ($_taxvat->isEnabled()) : ?>
@@ -163,9 +155,9 @@
         </fieldset>
         <fieldset class="fieldset extra-info">
 
-            <?php $_mobile = $block->getLayout()->createBlock(\Magento\CustomAttributeManagement\Block\Form\Renderer\Text::class) ?>
-            <?php if ($_dob->isEnabled()) : ?>
-                <?= $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>
+            <?php $_mobile = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'mobile_number', ['data'=>['attribute_code'=>'mobile_number']]) ?>
+            <?php if ($_mobile->isEnabled()) : ?>
+                <?= $_mobile->setDate($block->getFormData()->getMobileNumber())->toHtml() ?>
             <?php endif ?>
 
             <?php /*$customerAttributes = $block->getChildBlock('customer_form_user_attributes');*/?><!--
@@ -184,6 +176,35 @@
             <?php if ($_gender->isEnabled()) : ?>
                 <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
             <?php endif ?>
+
+            <?php if ($block->isNewsletterEnabled()) : ?>
+                <div class="field choice newsletter">
+                    <input type="checkbox" name="is_subscribed" title="<?= $block->escapeHtmlAttr(__('Sign Up for Newsletter')) ?>" value="1" id="is_subscribed"<?php if ($block->getFormData()->getIsSubscribed()) : ?> checked="checked"<?php endif; ?> class="checkbox">
+                    <label for="is_subscribed" class="label"><span><?= $block->escapeHtml(__('Sign Up for Newsletter')) ?></span></label>
+                </div>
+                <?php /* Extensions placeholder */ ?>
+                <?= $block->getChildHtml('customer.form.register.newsletter') ?>
+            <?php endif ?>
+
+            <?php $_smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status']]) ?>
+            <?php if ($_smsSubscriptionStatus->isEnabled()) : ?>
+                <?= $_smsSubscriptionStatus->setDate($block->getFormData()->getSmsSubscriptionStatus())->toHtml() ?>
+            <?php endif ?>
+
+            <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status']]) ?>
+            <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
+                <?= $_dmSubscriptionStatus->setDate($block->getFormData()->getDmSubscriptionStatus())->toHtml() ?>
+            <?php endif ?>
+            <div class="dm-address">
+                <div class="field dm_city required">
+                    <label for="dm_city" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_city') ?></span></label>
+                    <div class="control">
+                        <?php //phpcs:disable ?>
+                        <input type="text" name="dm_city" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmCity()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_city') ?>" id="dm_city" class="input-text validate-zip-international <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_city')) ?>">
+                        <?php //phpcs:enable ?>
+                    </div>
+                </div>
+            </div>
         </fieldset>
         <div class="actions-toolbar">
             <div class="primary">
