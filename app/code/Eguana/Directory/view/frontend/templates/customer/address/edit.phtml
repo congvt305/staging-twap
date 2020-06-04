@@ -35,7 +35,7 @@ $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked'
         <?php if ($addressHelper->isAttributeVisible('telephone')) : ?>
             <div class="field telephone <?php if (in_array('telephone', $requiredAttributesPrechecked)) :
                 ?>required<?php endif; ?>">
-            <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
+            <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Phone Number')) ?>eguana</span></label>
             <div class="control">
                 <input type="text" name="telephone" value="<?= $block->escapeHtmlAttr($block->getAddress()->getTelephone()) ?>" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" class="input-text <?= /* @noEscape */ $addressHelper->getAttributeValidationClass('telephone') ?>" id="telephone"/>
             </div>
