@@ -13,6 +13,7 @@
 & when (@media-common = true) {
     .abs-address-blocks {
         .lib-css(line-height, @checkout-shipping-item__line-height);
+        position: relative;
 
         br {
             display: none;
@@ -25,6 +26,26 @@
         strong,
         a {
             display: block;
+        }
+
+        .action {
+            &.edit-address-link,
+            &.action-edit-address {
+                .lib-icon-font(
+                    @icon-settings,
+                    @_icon-font-size: 32px,
+                    @_icon-font-line-height: 32px,
+                    @_icon-font-color: #ccc,
+                    @_icon-font-color-hover: @icon-font__color-hover,
+                    @_icon-font-color-active: @icon-font__color-active,
+                    @_icon-font-text-hide: true,
+                    @_icon-font-position: before
+                );
+                position: absolute;
+                right: 100px;
+                top: 50%;
+                margin-top: -16px;
+            }
         }
     }
 }
@@ -39,13 +60,12 @@
         }
 
         .item {
-            margin: 16px 0 0;
+            margin: 18px 0 0;
 
             a,
             > strong {
-                .lib-css(color, @account-nav-color);
+                .lib-css(color, @primary__color);
                 display: block;
-                color: @link__color;
                 padding: 3px 0 3px 8px;
             }
 
@@ -71,7 +91,7 @@
     .abs-nav-blocks {
         border-left: 1px solid #cccccc;
         border-right: 1px solid #cccccc;
-        margin-bottom: @indent__xl;
+        margin-bottom: 46px;
 
         .title {
             &:extend(.abs-toggling-title-mobile all);
@@ -325,7 +345,6 @@
             font-weight: @font-weight__regular;
             line-height: 26px;
             padding-bottom: 9px;
-            text-transform: uppercase;
 
             > a {
                 .lib-icon-font(
@@ -1207,6 +1226,7 @@
         );
 
         &:after {
+            font-weight: @font-weight__bold;
             position: absolute;
             right: 12px;
             top: 0;

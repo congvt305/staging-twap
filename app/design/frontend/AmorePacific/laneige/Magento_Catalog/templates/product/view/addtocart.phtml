@@ -35,6 +35,23 @@
         <?php endif; ?>
         <?= $block->getChildHtml('product.info.price', true) ?>
         <div class="actions">
+            <button type="submit"
+                    title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                    class="action tocart"
+                    id="product-addtocart-button">
+                <span><?php /* @escapeNotVerified */ echo __('Add to Cart'); ?></span>
+            </button>
+            <button type="submit"
+                    title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+                    class="action primary tocheckout"
+                    id="product-addtocheckout-button" onclick="return setCheckoutURL()">
+                <span><?php /* @escapeNotVerified */ echo __('Checkout'); ?></span>
+            </button>
+        </div>
+    </div>
+    <?php else :?>
+        <?= $block->getChildHtml('product.info.price', true) ?>
+        <div class="actions">
             <?php if($_product->getData('offline')):?>
                 <a href="<?= $block->escapeUrl($block->getUrl()) ?>"
                    title="<?= $block->escapeHtml(__('Find a store')) ?>"
@@ -44,27 +61,11 @@
             <?php else :?>
                 <button type="submit"
                         title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
-                        class="action tocart"
-                        id="product-addtocart-button">
-                    <span><?php /* @escapeNotVerified */ echo __('Add to Cart'); ?></span>
-                </button>
-                <button type="submit"
-                        title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
-                        class="action primary tocheckout"
-                        id="product-addtocheckout-button" onclick="return setCheckoutURL()">
-                    <span><?php /* @escapeNotVerified */ echo __('Checkout'); ?></span>
+                        class="action tocart disabled"
+                        id="product-addtocart-button" disabled>
+                    <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
                 </button>
             <?php endif; ?>
-        </div>
-    </div>
-    <?php else :?>
-        <div class="actions">
-            <button type="submit"
-                    title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
-                    class="action tocart disabled"
-                    id="product-addtocart-button" disabled>
-                <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
-            </button>
         </div>
     <?php endif; ?>
 </div>
