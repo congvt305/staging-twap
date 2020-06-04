@@ -26,7 +26,7 @@ $customerAddressView = $block->getData('customer_address');
                         <th scope="col" class="col state"><?= $block->escapeHtml(__('State')) ?></th>
                         <th scope="col" class="col zip"><?= $block->escapeHtml(__('Zip/Postal Code')) ?></th>
                         <th scope="col" class="col phone"><?= $block->escapeHtml(__('Phone')) ?></th>
-                        <th scope="col" class="col actions"> </th>
+                        <th scope="col" class="col actions"><?= $block->escapeHtml(__('Actions')) ?></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -49,20 +49,22 @@ $customerAddressView = $block->getData('customer_address');
                     </tbody>
                 </table>
             </div>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="button" role="add-address" title="<?= $block->escapeHtmlAttr(__('Add New Address')) ?>" class="action add"><span><?= $block->escapeHtml(__('Add New Address')) ?></span></button>
+                </div>
+            </div>
             <?php if ($block->getChildHtml('pager')) : ?>
                 <div class="customer-addresses-toolbar toolbar bottom"><?= $block->getChildHtml('pager') ?></div>
             <?php endif ?>
         <?php else : ?>
             <p class="empty"><?= $block->escapeHtml(__('You have no other address entries in your address book.')) ?></p>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="button" role="add-address" title="<?= $block->escapeHtmlAttr(__('Add New Address')) ?>" class="action add"><span><?= $block->escapeHtml(__('Add New Address')) ?></span></button>
+                </div>
+            </div>
         <?php endif ?>
-        <div class="actions-toolbar">
-            <div class="primary">
-                <button type="button" role="add-address" title="<?= $block->escapeHtmlAttr(__('Add New Address')) ?>" class="action add"><span><?= $block->escapeHtml(__('Add New Address')) ?></span></button>
-            </div>
-            <div class="secondary">
-                <a class="action back" href="<?= $block->escapeUrl($block->getUrl('customer/account')) ?>"><span><?= $block->escapeHtml(__('Back')) ?></span></a>
-            </div>
-        </div>
     </div>
 </div>
 <script type="text/x-magento-init">

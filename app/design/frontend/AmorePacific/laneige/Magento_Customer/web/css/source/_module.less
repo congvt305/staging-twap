@@ -39,28 +39,58 @@
         }
     }
 
+    .customer-address-index .column.main {
+        .block {
+            .block-content {
+                .action {
+                    &.edit {
+                        .lib-icon-font(
+                                @icon-settings,
+                            @_icon-font: @icon-font,
+                            @_icon-font-size: 34px,
+                            @_icon-font-line-height: 36px,
+                            @_icon-font-color: #ccc,
+                            @_icon-font-color-hover: @primary__color__dark,
+                            @_icon-font-color-active: @primary__color__dark,
+                            @_icon-font-margin: 0,
+                            @_icon-font-text-hide: true,
+                            @_icon-font-vertical-align: middle,
+                            @_icon-font-position: before
+                        );
+
+                        margin-right: 8px;
+                    }
+
+                    &.delete {
+                        .lib-icon-font(
+                                @icon-trash,
+                            @_icon-font: @icon-font,
+                            @_icon-font-size: 25px,
+                            @_icon-font-line-height: 36px,
+                            @_icon-font-color: #ccc,
+                            @_icon-font-color-hover: @primary__color__dark,
+                            @_icon-font-color-active: @primary__color__dark,
+                            @_icon-font-margin: 0,
+                            @_icon-font-text-hide: true,
+                            @_icon-font-vertical-align: middle,
+                            @_icon-font-position: before
+                        );
+                    }
+                }
+            }
+
+            &.block-addresses-list {
+                .action:before {
+                    line-height: 24px !important;
+                }
+            }
+        }
+    }
+
     .block-addresses-default,
     .block-dashboard-addresses {
         .box {
             border-bottom: 1px solid @border-color__base;
-        }
-
-        .block-content {
-            .action.edit {
-                .lib-icon-font(
-                        @icon-settings,
-                    @_icon-font: @icon-font,
-                    @_icon-font-size: 34px,
-                    @_icon-font-line-height: 36px,
-                    @_icon-font-color: #ccc,
-                    @_icon-font-color-hover: @primary__color__dark,
-                    @_icon-font-color-active: @primary__color__dark,
-                    @_icon-font-margin: 0,
-                    @_icon-font-text-hide: true,
-                    @_icon-font-vertical-align: middle,
-                    @_icon-font-position: before
-                );
-            }
         }
 
         .box-content {
@@ -114,6 +144,14 @@
                     margin-bottom: 0;
                 }
             }
+        }
+
+        .block-content {
+            padding-top: 0 !important;
+        }
+
+        .additional-addresses + .actions-toolbar {
+            margin-top: 50px;
         }
     }
 
@@ -188,7 +226,7 @@
                 }
 
                 &:last-child {
-                    margin-bottom: 0;
+                    margin-bottom: 0 !important;
                 }
 
                 &.block-orders-history {
@@ -760,6 +798,28 @@
             }
         }
     }
+
+    .block-addresses-list {
+        .table {
+            td.actions {
+                .edit {
+                    margin-left: -@indent__xs !important;
+                }
+            }
+
+            tr > td {
+                min-height: 24px;
+            }
+        }
+
+        .block-content {
+            position: relative;
+
+            .empty {
+                padding-top: 24px;
+            }
+        }
+    }
 }
 
 //
@@ -787,6 +847,35 @@
                         margin-left: @indent__base;
                     }
                 }
+            }
+        }
+    }
+
+    .block-addresses-list {
+        .table {
+            th, td {
+                text-align: left !important;
+                vertical-align: top !important;
+
+                &:first-child {
+                    padding-left: 0;
+                }
+
+                &:last-child {
+                    padding-right: 0;
+                }
+
+                &.actions {
+                    width: 12% !important;
+                }
+
+                &.streetaddress {
+                    width: 21%;
+                }
+            }
+
+            td.actions {
+                text-align: right !important;
             }
         }
     }
@@ -951,7 +1040,7 @@
 
             .empty {
                 margin-bottom: 0;
-                padding-top: 32px;
+                padding-top: 56px;
                 padding-right: 180px;
 
                 & + .actions-toolbar {
@@ -1099,6 +1188,18 @@
     .customer-account-logoutsuccess {
         .column.main {
             margin-top: @indent__l;
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    .block-addresses-list {
+        .table {
+            th, td {
+                &.actions {
+                    width: 10% !important;
+                }
+            }
         }
     }
 }

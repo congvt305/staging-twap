@@ -97,7 +97,7 @@
 //  Mobile
 //  _____________________________________________
 
-.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .table-wrapper {
         .lib-table-overflow();
         position: relative; // To hide unnecessary horizontal scrollbar in Safari
@@ -111,8 +111,20 @@
                         &:not(.table-totals) {
                             tbody > tr {
                                 > td {
+                                    padding-left: 31.25%;
+                                    position: relative;
+
                                     &[data-th]:before {
+                                        position: absolute;
+                                        left: 0;
+                                        top: 0;
                                         width: 31.25%;
+                                    }
+
+                                    &:first-child {
+                                        &[data-th]:before {
+                                            top: 25px;
+                                        }
                                     }
 
                                     .action {
