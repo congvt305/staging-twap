@@ -21,7 +21,7 @@ use Magento\Framework\View\Element\Template\Context;
  *
  * @SuppressWarnings(PHPMD.DepthOfInheritance)
  */
-class MobileNumber extends AbstractWidget
+class MobileNumber extends \Magento\Customer\Block\Widget\AbstractWidget
 {
 
     /**
