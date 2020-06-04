@@ -167,6 +167,7 @@ $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked'
         },
         "#country": {
             "regionUpdater": {
+                "isMultipleCountriesAllowed": false,
                 "optionalRegionAllowed": <?= /* @noEscape */ ($block->getConfig('general/region/display_all') ? 'true' : 'false') ?>,
                 "regionListId": "#region_id",
                 "regionInputId": "#region",
