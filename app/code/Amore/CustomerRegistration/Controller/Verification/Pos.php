@@ -14,7 +14,6 @@ use Magento\Framework\App\ActionInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\App\Action\Context;
 use Amore\CustomerRegistration\Model\Verification;
-use Magento\Framework\Controller\ResultFactory;
 
 /**
  * To verify the customer with the POS system
@@ -40,21 +39,16 @@ class Pos implements ActionInterface
      * @var Verification
      */
     private $verification;
-    /**
-     * @var ResultFactory
-     */
-    private $redirectResult;
+
 
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        Verification $verification,
-        ResultFactory $redirectResult)
+        Verification $verification)
     {
         $this->request = $context->getRequest();
         $this->resultJsonFactory = $resultJsonFactory;
         $this->verification = $verification;
-        $this->redirectResult = $redirectResult;
     }
 
     /**
@@ -69,7 +63,7 @@ class Pos implements ActionInterface
         $mobileNumber = $this->request->getParam('mobileNumber');
         $verificationCode = $this->request->getParam('code');
         $firstName = $this->request->getParam('firstName');
-        $lastName = $this->request->getParam('firstName');
+        $lastName = $this->request->getParam('lastName');
 
 
         try {
@@ -84,10 +78,8 @@ class Pos implements ActionInterface
                 $result['verify'] = false;
             }else if(in_array($verificationResult['code'],[4,5]))
             {
-                $resultRedirect = $this->resultRedirect->create(ResultFactory::TYPE_REDIRECT);
-               // $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-                $resultRedirect->setUrl($verificationResult['url']);
-                return $resultRedirect;
+                $result = $verificationResult;
+                $result['verify'] = false;
             }else{
                 $result['message'] = $verificationResult;
             }

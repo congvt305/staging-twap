@@ -28,6 +28,8 @@ class Data extends AbstractHelper
     const CODE_EXPIRATION_TIME_IN_MINUTES = 'customerregistraion/general/code_expiration_time_in_minutes';
     const MINIMUM_MOBILE_NUMBER_DIGITS = 'customerregistraion/general/minimum_mobile_number_digits';
     const MAXIMUM_MOBILE_NUMBER_DIGITS = 'customerregistraion/general/maximum_mobile_number_digits';
+    const MEMBERSHIP_ERROR_CMS_PAGE = 'customerregistraion/general/membership_error_cms_page';
+    const DUPLICATE_MEMBERSHIP_CMS_PAGE = 'customerregistraion/general/duplicate_membership_cms_page';
 
     /**
      * Get cms block id set in setting
@@ -77,6 +79,35 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::MAXIMUM_MOBILE_NUMBER_DIGITS,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
+     * get membership error cms page
+     * It will return cms page id to show a message
+     * that other customer alreay using the mobile number
+     * @return mixed
+     */
+    public function getMembershipErrorCmsPage()
+    {
+        return $this->scopeConfig->getValue(
+            self::MEMBERSHIP_ERROR_CMS_PAGE,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+
+    /**
+     * get membership error cms page
+     * It will return cms page id to show a message
+     * that customer with same information already exist
+     * @return mixed
+     */
+    public function getDuplicateMembershipCmsPage()
+    {
+        return $this->scopeConfig->getValue(
+            self::DUPLICATE_MEMBERSHIP_CMS_PAGE,
             ScopeInterface::SCOPE_WEBSITE
         );
     }

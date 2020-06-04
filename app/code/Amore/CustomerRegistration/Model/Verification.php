@@ -13,6 +13,9 @@ namespace Amore\CustomerRegistration\Model;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Math\Random;
 use Amore\CustomerRegistration\Helper\Data;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * It will have main functions for Code verification
@@ -29,12 +32,30 @@ class Verification
      * @var SessionManagerInterface
      */
     private $sessionManager;
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
+    /**
+     * @var CustomerRepositoryInterface
+     */
+    private $customerRepositoryInterface;
+    /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
 
     public function __construct(Data $configHelper,
-                                SessionManagerInterface $sessionManager)
+                                SessionManagerInterface $sessionManager,
+                                SearchCriteriaBuilder $searchCriteriaBuilder,
+                                CustomerRepositoryInterface $customerRepositoryInterface,
+                                StoreManagerInterface $storeManager)
     {
         $this->configHelper = $configHelper;
         $this->sessionManager = $sessionManager;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->customerRepositoryInterface = $customerRepositoryInterface;
+        $this->storeManager = $storeManager;
     }
 
     public function sendVerificationCode($mobileNumber)
@@ -70,8 +91,13 @@ class Verification
     }
 
     /**
-     * SHORT DESCRIPTION
-     * LONG DESCRIPTION LINE BY LINE
+     * Final verification of the whole customer information
+     * This function will preform the final verification of the customer information. And return following code
+     * 1: If mobile number format is correct or not
+     * 2: Verification Code format is correct or not
+     * 3: Verification code is wrong
+     * 4: If customer with same name and phone number exist
+     * 5: If mobile number is used by any other member
      * @param $firstName
      * @param $lastName
      * @param $mobileNumber
@@ -100,21 +126,31 @@ class Verification
         if($this->verifySMSCode($mobileNumber,$code) === false)
         {
             $response['code'] = 3;
-            $result['message'] = __('Verification code is wrong');
+            $response['message'] = __('Verification code is wrong');
             return $response;
         }
 
         if($this->isCustomerExist($firstName, $lastName, $mobileNumber) === true)
         {
             $response['code'] = 4;
-            $result['url'] = 'https://www.google.com';
+            $cmsPage = $this->configHelper->getDuplicateMembershipCmsPage();
+            if($cmsPage) {
+                $response['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
+            }else{
+                $response['message'] = __('The requested membership information is already registered.');
+            }
             return $response;
         }
 
         if($this->isMobileExist($mobileNumber) === true)
         {
             $response['code'] = 5;
-            $result['url'] = 'https://www.yahoo.com';
+            $cmsPage = $this->configHelper->getMembershipErrorCmsPage();
+            if($cmsPage) {
+                $response['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
+            }else{
+                $response['message'] = __('There is a problem with the requested subscription information. Please contact our CS Center for registration.');
+            }
             return $response;
         }
 
@@ -143,6 +179,12 @@ class Verification
         return false;
     }
 
+    /**
+     * Check whether mobile number is correct or not
+     *Check whether mobile number is correct or not
+     * @param $mobileNumber
+     * @return bool|\Magento\Framework\Phrase
+     */
     private function validateMobileNumber($mobileNumber)
     {
         $mobileNumber = trim($mobileNumber);
@@ -164,6 +206,12 @@ class Verification
         return true;
     }
 
+    /**
+     * Verification Code format is correct or not
+     * Verification Code format is correct or not
+     * @param $verificationCode
+     * @return bool|\Magento\Framework\Phrase
+     */
     private function validateVerificationCode($verificationCode)
     {
         $verificationCodeLength = strlen($verificationCode);
@@ -179,6 +227,14 @@ class Verification
         return true;
     }
 
+    /**
+     * Link the verfication code with the mobile number
+     * It will link the verfication code with the mobile number
+     * so that customer while moving to next step will not change the mobile number and code
+     * @param $mobileNumber
+     * @param $verificationCode
+     * @return bool
+     */
     private function setVerificationCode($mobileNumber, $verificationCode)
     {
         $this->sessionManager->start();
@@ -187,18 +243,56 @@ class Verification
         return true;
     }
 
+    /**
+     * Send SMS to the specified mobile number
+     * Send SMS to the specified mobile number
+     * @param $mobileNumber
+     * @param $verificationCode
+     * @return bool
+     */
     private function sendSMS($mobileNumber, $verificationCode)
     {
         return true;
     }
 
+    /**
+     * Check whether the customer with the same information exist or not
+     * Check whether the customer with the same information exist or not
+     * It verify the customer on based of mobile number, first name and last name
+     * @param $firstName
+     * @param $lastName
+     * @param $mobileNumber
+     * @return bool
+     */
     private function isCustomerExist($firstName, $lastName, $mobileNumber)
     {
-        return false;
+        $websiteId = $this->storeManager->getWebsite()->getId();
+        $searchCriteria = $this->searchCriteriaBuilder
+                                ->addFilter('website_id', $websiteId)
+                                ->addFilter('firstname', $firstName)
+                                ->addFilter('lastname', $lastName)
+                                ->addFilter('mobile_number', $mobileNumber)
+                                ->create();
+        $customers = $this->customerRepositoryInterface->getList($searchCriteria)->getItems();
+        return count($customers)?true:false;
+
     }
 
+    /**
+     * Check whether mobile number is using by any other customer or not
+     * if mobile number is using by any other customer then return false
+     * else it wil return true
+     * @param $mobileNumber
+     * @return bool
+     */
     private function isMobileExist($mobileNumber)
     {
-        return false;
+        $websiteId = $this->storeManager->getWebsite()->getId();
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('website_id', $websiteId)
+            ->addFilter('mobile_number', $mobileNumber)
+            ->create();
+        $customers = $this->customerRepositoryInterface->getList($searchCriteria)->getItems();
+        return count($customers)?true:false;
     }
 }
