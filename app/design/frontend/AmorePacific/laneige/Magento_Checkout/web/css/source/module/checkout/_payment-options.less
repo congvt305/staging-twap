@@ -1,0 +1,193 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+@checkout-payment-option-title__border: @checkout-payment-method-title__border;
+@checkout-payment-option-title__color: @link__color;
+@checkout-payment-option-title__padding: @checkout-payment-method-title__padding;
+@checkout-payment-option-title-mobile__padding: @indent__s @layout__width-xs-indent @indent__base;
+
+@checkout-payment-option-title-icon__font-size: 32px;
+@checkout-payment-option-title-icon__line-height: 16px;
+@checkout-payment-option-title-icon__margin: 0;
+@checkout-payment-option-title-icon__color: @minicart-icons-color;
+@checkout-payment-option-title-icon__hover__color: @primary__color;
+
+@checkout-payment-option-content__padding__xl: @checkout-payment-method-content__padding__xl;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .checkout-payment-method {
+        .payment-option {
+            padding-bottom: 52px;
+        }
+
+        .payment-option-title {
+            .lib-css(padding, 10px 0 @checkout-payment-option-title__padding);
+            font-size: @font-size__l;
+            font-weight: @font-weight__bold;
+        }
+
+        .payment-option-content {
+            form {
+                display: table;
+                width: 100%;
+            }
+        }
+
+        .payment-option-inner {
+            display: table-cell;
+            vertical-align: top;
+
+            & + .actions-toolbar {
+                display: table-cell;
+                vertical-align: top;
+
+                .primary {
+                    width: 100%;
+                }
+
+                .action {
+                    .lib-button-revert-secondary-color(
+                        @_button-border: 1px solid @form-element-input__border-color
+                    );
+                    border-left-color: transparent;
+                    width: 100%;
+                }
+            }
+        }
+
+        .credit-card-types {
+            padding: 0;
+
+            .item {
+                display: inline-block;
+                list-style: none;
+                margin: 0 @indent__xs 0 0;
+                vertical-align: top;
+
+                &._active {
+                    font-weight: @font-weight__bold;
+
+                    img {
+                        -webkit-filter: grayscale(0%);
+                    }
+                }
+
+                &._inactive {
+                    opacity: .4;
+                }
+
+                span {
+                    display: inline-block;
+                    padding-top: 6px;
+                    vertical-align: top;
+                }
+            }
+
+            img {
+                -webkit-filter: grayscale(100%); // For Webkit browsers
+                -webkit-transition: all .6s ease; // Fade to color for Chrome and Safari
+            }
+        }
+
+        .ccard {
+            .legend {
+                &:extend(.abs-visually-hidden all);
+            }
+
+            .fields {
+                > .year {
+                    padding-left: @indent__xs;
+                }
+
+                .select {
+                    padding-left: @indent__xs;
+                    padding-right: @indent__xs;
+                }
+            }
+
+            .month {
+                .select {
+                    width: 140px;
+                }
+            }
+
+            .year {
+                .select {
+                    width: 80px;
+                }
+            }
+
+            .captcha,
+            .number {
+                .input-text {
+                    width: 225px;
+                }
+            }
+
+            > .field.cvv {
+                > .control {
+                    padding-right: @indent__base;
+                    width: auto;
+                }
+            }
+
+            .cvv {
+                .input-text {
+                    width: 55px;
+                }
+            }
+
+            &.fieldset {
+                > .field {
+                    .fields.group.group-2 {
+                        .field {
+                            width: auto !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .checkout-payment-method {
+        .payment-option {
+            .payment-option-title {
+                .lib-css(padding, @checkout-payment-option-title-mobile__padding)
+            }
+
+            .payment-option-content {
+                .lib-css(padding, 0 @layout__width-xs-indent);
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .checkout-payment-method {
+        .payment-option {
+            .lib-css(max-width, @checkout-shipping-address__max-width);
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+}

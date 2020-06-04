@@ -1,4 +1,4 @@
-Eguana_TWDirectory v2.0.0
+Eguana_Directory v2.0.0
 
 Website: Amore
 
