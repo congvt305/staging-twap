@@ -159,13 +159,18 @@ define([
             this._clearError();
             this._checkCityRequired(region);
 
+            //for when address is not empty
+            console.log('region: ', region);
+            console.log('default region: ', this.options.defaultRegion);
+            if (region === '' && this.options.defaultRegion !== 0) {
+                region = this.options.defaultRegion;
+            }
+
             // $(cityList).find('option:selected').removeAttr('selected');
             // cityInput.val('');
 
-            //for when address is not empty
-            // if (region === '' && this.options.defaultRegion !== 0) {
-            //     region = this.options.defaultRegion;
-            // }
+
+
 
             // Populate state/province dropdown list if available or use input box
             if (this.options.cityJson[region]) {
