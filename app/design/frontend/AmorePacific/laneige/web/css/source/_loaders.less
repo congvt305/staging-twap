@@ -49,3 +49,17 @@
         display: none;
     }
 }
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    body {
+        > .loading-mask {
+            .loader > img {
+                width: 80px;
+            }
+        }
+    }
+}
