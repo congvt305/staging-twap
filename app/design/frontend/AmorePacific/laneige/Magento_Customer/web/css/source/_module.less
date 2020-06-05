@@ -31,6 +31,16 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+    .form-edit-account {
+        .field:not(.choice) + .choice {
+            margin-top: 32px;
+        }
+
+        .actions-toolbar .action {
+            &:extend(.abs-button-l all);
+        }
+    }
+
     .block-dashboard-info {
         .box-actions .action {
             .lib-button();
@@ -87,12 +97,20 @@
         }
     }
 
+    .block-order-details-view,
     .block-addresses-default,
     .block-dashboard-addresses {
         .box {
             border-bottom: 1px solid @border-color__base;
         }
 
+        address {
+            &:extend(.abs-address-blocks all);
+        }
+    }
+
+    .block-addresses-default,
+    .block-dashboard-addresses {
         .box-content {
             .lib-vendor-prefix-display(flex);
             .lib-vendor-box-align(center);
@@ -103,10 +121,6 @@
 
         .box-actions {
             text-align: right;
-        }
-
-        address {
-            &:extend(.abs-address-blocks all);
         }
     }
 
@@ -221,7 +235,7 @@
             .block:not(.widget) {
                 &:extend(.abs-account-blocks all);
 
-                &:not(.block-orders-history) {
+                &:not(.block-orders-history):not(.block-order-details-view) {
                     margin-bottom: 100px;
                 }
 
@@ -728,18 +742,21 @@
         }
     }
 
+    .block-order-details-view,
     .block-addresses-default,
     .block-dashboard-addresses {
         .box {
             padding-bottom: 24px;
             overflow: hidden;
 
-            &.box-address-shipping,
-            &.box-shipping-address {
+            &:not(:first-child) {
                 padding-top: 24px;
             }
         }
+    }
 
+    .block-addresses-default,
+    .block-dashboard-addresses {
         address {
             width: 74.375%;
         }
@@ -770,6 +787,7 @@
         }
     }
 
+    .customer-account-edit,
     .customer-address-form {
         .column.main {
             margin-bottom: 0;
@@ -777,6 +795,7 @@
         }
     }
 
+    .form-edit-account,
     .form-address-edit {
         .actions-toolbar {
             margin-top: 100px;
@@ -820,6 +839,12 @@
             }
         }
     }
+
+    .form-edit-account {
+        .fieldset:first-child {
+            margin-bottom: 100px;
+        }
+    }
 }
 
 //
@@ -827,6 +852,16 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .form-edit-account {
+        .fieldset {
+            margin-bottom: 100px;
+        }
+
+        .actions-toolbar .action {
+            width: 280px;
+        }
+    }
+
     .block-dashboard-info {
         .box-actions .action {
             min-width: 180px;
@@ -878,8 +913,13 @@
                 text-align: right !important;
             }
         }
+
+        .actions-toolbar .action {
+            width: 180px;
+        }
     }
 
+    .block-order-details-view,
     .block-addresses-default,
     .block-dashboard-addresses {
         .block-content .box {
@@ -899,7 +939,12 @@
             .box-content {
                 width: 77.28%;
             }
+        }
+    }
 
+    .block-addresses-default,
+    .block-dashboard-addresses {
+        .block-content .box {
             address {
                 width: 70.58%;
             }
@@ -910,6 +955,7 @@
         }
     }
 
+    .customer-account-edit,
     .customer-address-form,
     .wishlist-index-share,
     .wishlist-index-index {
@@ -918,7 +964,7 @@
         }
     }
 
-    .sales-order-history,
+    [class*="sales-order-"],
     .customer-address-index,
     .customer-account-index {
         .sidebar-main {

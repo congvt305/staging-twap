@@ -1,0 +1,48 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php $_order = $block->getOrder() ?>
+<?php foreach ($_order->getCreditmemosCollection() as $_creditmemo) : ?>
+    <div class="order-title">
+        <div class="order-actions">
+            <a href="<?= $block->escapeUrl($block->getPrintAllCreditmemosUrl($_creditmemo)) ?>"
+               class="action print"
+               target="_blank"
+               rel="noopener">
+                <span><?= $block->escapeHtml(__('Print Refund')) ?></span>
+            </a>
+        </div>
+        <strong><?= $block->escapeHtml(__('Refund #')) ?></strong><?= $block->escapeHtml($_creditmemo->getIncrementId()) ?>
+    </div>
+
+    <div class="table-wrapper order-items-creditmemo">
+        <table class="data table table-order-items creditmemo" id="my-refund-table-<?= (int) $_creditmemo->getId() ?>">
+            <caption class="table-caption"><?= $block->escapeHtml(__('Items Refunded')) ?></caption>
+            <thead>
+                <tr>
+                    <th class="col name"><?= $block->escapeHtml(__('Product Name')) ?></th>
+                    <th class="col price"><?= $block->escapeHtml(__('Price')) ?></th>
+                    <th class="col qty"><?= $block->escapeHtml(__('Qty')) ?></th>
+                    <th class="col subtotal"><?= $block->escapeHtml(__('Subtotal')) ?></th>
+                    <th class="col discount"><?= $block->escapeHtml(__('Discount Amount')) ?></th>
+                    <th class="col total"><?= $block->escapeHtml(__('Row Total')) ?></th>
+                </tr>
+            </thead>
+            <?php $_items = $_creditmemo->getAllItems(); ?>
+            <?php foreach ($_items as $_item) : ?>
+                <?php if (!$_item->getOrderItem()->getParentItem()) : ?>
+                    <tbody>
+                        <?= $block->getItemHtml($_item) ?>
+                    </tbody>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <tfoot>
+                <?= $block->getTotalsHtml($_creditmemo) ?>
+            </tfoot>
+        </table>
+    </div>
+    <?= $block->getCommentsHtml($_creditmemo) ?>
+<?php endforeach; ?>
