@@ -1,28 +1,52 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Created by PhpStorm.
+ * User: abbas
+ * Date: 2020-05-21
+ * Time: 오후 5:09
+ *
+ * PHP version 7.3
+ *
+ * @category PHP_FILE
+ * @package  Eguana
+ * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
+ * @license  https://www.eguaancommerce.com Code Licence
+ * @link     https://www.eguaancommerce.com
  */
+
 namespace Amore\CustomerRegistration\Block\Widget;
 
 use Magento\Customer\Api\CustomerMetadataInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Api\Data\OptionInterface;
+use Magento\Customer\Helper\Address;
+use Magento\Customer\Model\Session;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Block to render customer's Checkbox attribute
  *
- * @SuppressWarnings(PHPMD.DepthOfInheritance)
+ * @category PHP_FILE
+ * @package  Eguana
+ * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
+ * @license  https://www.eguaancommerce.com Code Licence
+ * @link     https://www.eguaancommerce.com
  */
 class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
 {
     /**
-     * @var \Magento\Customer\Model\Session
+     * To save customer session
+     *
+     * @var Session $customerSession customer session
      */
-    protected $_customerSession;
+    protected $customerSession;
 
     /**
+     * To get customer session values
+     *
      * @var CustomerRepositoryInterface
      */
     protected $customerRepository;
@@ -30,22 +54,22 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
     /**
      * Create an instance of the Checkbox widget
      *
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Customer\Helper\Address $addressHelper
-     * @param CustomerMetadataInterface $customerMetadata
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param array $data
+     * @param Context                     $context            Context
+     * @param Address                     $addressHelper      address helper
+     * @param CustomerMetadataInterface   $customerMetadata   Customer Meta data
+     * @param CustomerRepositoryInterface $customerRepository Customer repository
+     * @param Session                     $customerSession    Customer Session
+     * @param array                       $data               Data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Customer\Helper\Address $addressHelper,
+        Context $context,
+        Address $addressHelper,
         CustomerMetadataInterface $customerMetadata,
         CustomerRepositoryInterface $customerRepository,
-        \Magento\Customer\Model\Session $customerSession,
+        Session $customerSession,
         array $data = []
     ) {
-        $this->_customerSession = $customerSession;
+        $this->customerSession = $customerSession;
         $this->customerRepository = $customerRepository;
         parent::__construct($context, $addressHelper, $customerMetadata, $data);
         $this->_isScopePrivate = true;
@@ -53,8 +77,11 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
 
     /**
      * Initialize block
+     * Initialize the block
      *
      * @return void
+     *
+     *  phpcs:disable Magento2.CodeAnalysis.EmptyBlock
      */
     public function _construct()
     {
@@ -69,7 +96,9 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
      */
     public function isEnabled()
     {
-        return $this->_getAttribute($this->getAttributeCode()) ? (bool)$this->_getAttribute($this->getAttributeCode())->isVisible() : false;
+        return $this->_getAttribute($this->getAttributeCode())
+            ? (bool)$this->_getAttribute($this->getAttributeCode())->isVisible()
+            : false;
     }
 
     /**
@@ -79,13 +108,15 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
      */
     public function isRequired()
     {
-        return $this->_getAttribute($this->getAttributeCode()) ? (bool)$this->_getAttribute($this->getAttributeCode())->isRequired() : false;
+        return $this->_getAttribute($this->getAttributeCode())
+            ? (bool)$this->_getAttribute($this->getAttributeCode())->isRequired()
+            : false;
     }
 
     /**
      * Retrieve store attribute label
      *
-     * @param string $attributeCode
+     * @param string $attributeCode attribute code
      *
      * @return string
      */
@@ -99,10 +130,14 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
      * Get current customer from session
      *
      * @return CustomerInterface
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function getCustomer()
     {
-        return $this->customerRepository->getById($this->_customerSession->getCustomerId());
+        return $this->customerRepository->getById(
+            $this->customerSession->getCustomerId()
+        );
     }
 
     /**

@@ -1,46 +1,66 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Created by PhpStorm.
+ * User: abbas
+ * Date: 2020-05-21
+ * Time: 오후 5:09
+ *
+ * PHP version 7.3.18
+ *
+ * @category PHP_FILE
+ * @package  Eguana
+ * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
+ * @license  https://www.eguaancommerce.com Code Licence
+ * @link     https://www.eguaancommerce.com
  */
 
 namespace Amore\CustomerRegistration\Block\Widget;
 
 use Magento\Customer\Api\AddressMetadataInterface;
 use Magento\Customer\Api\CustomerMetadataInterface;
-use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Customer\Block\Widget\AbstractWidget;
 use Magento\Customer\Helper\Address as AddressHelper;
 use Magento\Customer\Model\Options;
 use Magento\Framework\View\Element\Template\Context;
 
 /**
- * Widget for showing custom attributes.
+ * Block to render custom attribute
  *
- * @method CustomerInterface getObject()
- * @method Name setObject(CustomerInterface $customer)
+ * @category PHP_FILE
+ * @package  Eguana
+ * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
+ * @license  https://www.eguaancommerce.com Code Licence
+ * @link     https://www.eguaancommerce.com
  *
  * @SuppressWarnings(PHPMD.DepthOfInheritance)
  */
-class TextField extends \Magento\Customer\Block\Widget\AbstractWidget
+
+class TextField extends AbstractWidget
 {
 
     /**
+     * Address meta data
+     *
      * @var AddressMetadataInterface
      */
     protected $addressMetadata;
 
     /**
+     * Options
+     *
      * @var Options
      */
     protected $options;
 
     /**
-     * @param Context $context
-     * @param AddressHelper $addressHelper
-     * @param CustomerMetadataInterface $customerMetadata
-     * @param Options $options
-     * @param AddressMetadataInterface $addressMetadata
-     * @param array $data
+     * Constructor
+     *
+     * @param Context                   $context          Context
+     * @param AddressHelper             $addressHelper    Address Helper
+     * @param CustomerMetadataInterface $customerMetadata Customer Meta Data
+     * @param Options                   $options          Options
+     * @param AddressMetadataInterface  $addressMetadata  Address Meta Data
+     * @param array                     $data             Data
      */
     public function __construct(
         Context $context,
@@ -57,6 +77,8 @@ class TextField extends \Magento\Customer\Block\Widget\AbstractWidget
     }
 
     /**
+     * Constructor
+     *
      * @return void
      */
     public function _construct()
@@ -70,7 +92,7 @@ class TextField extends \Magento\Customer\Block\Widget\AbstractWidget
     /**
      * Can show config value
      *
-     * @param string $key
+     * @param string $key Key
      *
      * @return bool
      */
@@ -93,7 +115,6 @@ class TextField extends \Magento\Customer\Block\Widget\AbstractWidget
     /**
      * Retrieve store attribute label
      *
-     *
      * @return string
      */
     public function getStoreLabel()
@@ -103,7 +124,9 @@ class TextField extends \Magento\Customer\Block\Widget\AbstractWidget
     }
 
     /**
-     * @param string $attributeCode
+     * Attribute is visible or not
+     *
+     * @param string $attributeCode Attribute Code
      *
      * @return bool
      */
@@ -120,8 +143,9 @@ class TextField extends \Magento\Customer\Block\Widget\AbstractWidget
      */
     public function isEnabled()
     {
-        return $this->_getAttribute($this->getAttributeCode()) ? (bool)$this->_getAttribute($this->getAttributeCode())->isVisible(
-        ) : false;
+        return $this->_getAttribute($this->getAttributeCode())
+            ? (bool)$this->_getAttribute($this->getAttributeCode())->isVisible()
+            : false;
     }
 
     /**
@@ -131,16 +155,28 @@ class TextField extends \Magento\Customer\Block\Widget\AbstractWidget
      */
     public function isRequired()
     {
-        return $this->_getAttribute($this->getAttributeCode()) ? (bool)$this->_getAttribute($this->getAttributeCode())
+        return $this->_getAttribute($this->getAttributeCode())
+            ? (bool)$this->_getAttribute($this->getAttributeCode())
             ->isRequired() : false;
     }
 
+    /**
+     * Get frontend classes of the attribute
+     *
+     * @return string
+     */
     public function getFrontendClasses()
     {
-        return $this->_getAttribute($this->getAttributeCode()) ? (string)$this->_getAttribute($this->getAttributeCode())
+        return $this->_getAttribute($this->getAttributeCode())
+            ? (string)$this->_getAttribute($this->getAttributeCode())
             ->getFrontendClass() : '';
     }
 
+    /**
+     * Get the attribute value
+     *
+     * @return mixed
+     */
     public function getAttributeValue()
     {
         return $this->getData($this->getAttributeCode());

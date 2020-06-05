@@ -1,35 +1,50 @@
 <?php
 /**
- * @author Eguana Team
- * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  * Created by PhpStorm
  * User: abbas
  * Date: 20. 5. 19
  * Time: 오후 5:00
+ *
+ * PHP version 7.3.18
+ *
+ * @category PHP_FILE
+ * @package  Eguana
+ * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
+ * @license  https://www.eguaancommerce.com Code Licence
+ * @link     https://www.eguaancommerce.com
  */
 
 namespace Amore\CustomerRegistration\ViewModel;
 
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 /**
  * It will use for the register step during registration
  * Class Register
- * @package Amore\CustomerRegistration\ViewModel
+ *
+ * @category PHP_FILE
+ * @package  Amore\CustomerRegistration\ViewModel
+ * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
+ * @license  https://www.eguaancommerce.com Code Licence
+ * @link     https://www.eguaancommerce.com
  */
 class Register implements ArgumentInterface
 {
 
     /**
-     * @var \Magento\Framework\App\Request\Http
+     * Http
+     *
+     * @var Http
      */
     private $request;
 
     /**
      * Register constructor.
-     * @param \Magento\Framework\App\Request\Http $request
+     *
+     * @param Http $request request
      */
-    public function __construct(\Magento\Framework\App\Request\Http $request)
+    public function __construct(Http $request)
     {
         $this->request = $request;
     }
@@ -37,6 +52,7 @@ class Register implements ArgumentInterface
     /**
      * Get the referrer code
      * It will return the referrer code from the get parameter
+     *
      * @return mixed
      */
     public function getReferrerCode()
@@ -47,6 +63,7 @@ class Register implements ArgumentInterface
     /**
      * Get the favorite store
      * It will return the favorite store from the get parameter
+     *
      * @return mixed
      */
     public function getFavoriteStore()

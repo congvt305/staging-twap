@@ -1,21 +1,34 @@
 <?php
 /**
- * @author Eguana Team
- * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  * Created by PhpStorm
  * User: abbas
  * Date: 20. 5. 22
  * Time: 오후 2:25
+ *
+ * PHP version 7.3.18
+ *
+ * @category PHP_FILE
+ * @package  Eguana
+ * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
+ * @license  https://www.eguaancommerce.com Code Licence
+ * @link     https://www.eguaancommerce.com
  */
 
 namespace Amore\CustomerRegistration\Block;
 
+use Magento\Framework\View\Element\Template;
+
 /**
- * Block class for POS setp during registration
+ * Block class for POS setup during registration
  * Class POS
- * @package Amore\CustomerRegistration\Block
+ *
+ * @category PHP_FILE
+ * @package  Amore\CustomerRegistration\Block
+ * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
+ * @license  https://www.eguaancommerce.com Code Licence
+ * @link     https://www.eguaancommerce.com
  */
-class POS extends \Magento\Framework\View\Element\Template
+class POS extends Template
 {
     /**
      * Retrieve SMS code action url and set "secure" param to avoid confirm
@@ -25,7 +38,10 @@ class POS extends \Magento\Framework\View\Element\Template
      */
     public function getSendCodeUrl()
     {
-        return $this->getUrl('customerregistration/verification/code', ['_secure' => true]);
+        return $this->getUrl(
+            'customerregistration/verification/code',
+            ['_secure' => true]
+        );
     }
 
     /**
@@ -36,17 +52,23 @@ class POS extends \Magento\Framework\View\Element\Template
      */
     public function getVerifyCodeUrl()
     {
-        return $this->getUrl('customerregistration/verification/verify', ['_secure' => true]);
+        return $this->getUrl(
+            'customerregistration/verification/verify',
+            ['_secure' => true]
+        );
     }
 
     /**
-     * Reterive POS Verification URL
+     * Retrieve POS Verification URL
      *
      * @return string
      */
     public function getPOSVerificationUrl()
     {
-        return $this->getUrl('customerregistration/verification/pos', ['_secure' => true]);
+        return $this->getUrl(
+            'customerregistration/verification/pos',
+            ['_secure' => true]
+        );
     }
 
 
