@@ -1,0 +1,54 @@
+<div id="cvs-map-load"
+     class="cvs-map-load"
+     data-role="cvs-map-load"
+     role="cvs-map-load"
+     aria-hidden="false">
+    <form id="cvs-map-load-form"
+          name="cvsMapForm"
+          target="cvsMapFormGw"
+          class="form cvs-map"
+          action="https://logistics-stage.ecpay.com.tw/Express/map"
+          method="POST"
+          novalidate="novalidate">
+        <input type="text"
+               name="MerchantID"
+               class="input-text"
+               value="2000132">
+        <input type="text"
+               name="MerchantTradeNo"
+               class="input-text"
+               value=""
+               data-bind="value: getMerchantTradeNo()">
+        <input type="text"
+               name="ServerReplyURL"
+               class="input-text"
+               data-bind="value: ServerReplyURL">
+        <input type="text"
+               name="LogisticsType"
+               class="input-text"
+               data-bind="value: LogisticsType">
+        <input type="text"
+               name="LogisticsSubType"
+               class="input-text"
+               data-bind="value: LogisticsSubType">
+        <input type="text"
+               name="IsCollection"
+               class="input-text"
+               value="N">
+        <input type="text"
+               name="ExtraData"
+               class="input-text"
+               value="">
+        <input type="text"
+               name="Device"
+               class="input-text"
+               data-bind="value: isMobile()">
+
+        <button data-role="cvs-map-open" type="submit" class="button action">
+            <span translate="'Select CVS Store in the Map'" />
+        </button>
+    </form>
+    <!--<div class="no-quotes-block"
+         ifnot="rates().length > 0"
+         translate="'Sorry, no quotes are available for this order at this time'" />-->
+</div>
