@@ -481,7 +481,6 @@ return [
         'Eguana_Theme' => 1,
         'Eguana_Directory' => 1,
         'Eguana_EInvoice' => 1,
-        'Eguana_GWLogistics' => 1,
         'Eguana_Login' => 1,
         'Eguana_Share' => 1,
         'Eguana_SocialLogin' => 1,
