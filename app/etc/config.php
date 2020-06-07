@@ -486,7 +486,7 @@ return [
         'Eguana_SocialLogin' => 1,
         'Eguana_StoreLocator' => 1,
         'Eguana_StoreSms' => 1,
-        'Eguana_CustomCheckout' => 0,
+        'Eguana_CustomCheckout' => 1,
         'Fastly_Cdn' => 1,
         'Klarna_Core' => 1,
         'Klarna_Ordermanagement' => 1,
