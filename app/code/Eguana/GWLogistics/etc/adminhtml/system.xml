@@ -24,14 +24,6 @@
                 <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Title</label>
                 </field>
-                <field id="userid" translate="label" type="obscure" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>User ID</label>
-                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-                </field>
-                <field id="password" translate="label" type="obscure" sortOrder="53" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Password</label>
-                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-                </field>
                 <field id="mode" translate="label" type="select" sortOrder="54" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Mode</label>
                     <source_model>Magento\Shipping\Model\Config\Source\Online\Mode</source_model>
@@ -42,25 +34,6 @@
                 <field id="shipping_cost" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>Shipping Cost</label>
                     <validate>validate-number validate-zero-or-greater</validate>
-                </field>
-<!--                <field id="allowed_methods" translate="label" type="multiselect" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">-->
-<!--                    <label>Allowed Methods</label>-->
-<!--                    <source_model>Magento\Usps\Model\Source\Method</source_model>-->
-<!--                    <can_be_empty>1</can_be_empty>-->
-<!--                </field>-->
-                <field id="sallowspecific" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Ship to Applicable Countries</label>
-                    <frontend_class>shipping-applicable-country</frontend_class>
-                    <source_model>Magento\Shipping\Model\Config\Source\Allspecificcountries</source_model>
-                </field>
-                <field id="specificcountry" translate="label" type="multiselect" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Ship to Specific Countries</label>
-                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
-                    <can_be_empty>1</can_be_empty>
-                </field>
-                <field id="debug" translate="label" type="select" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Debug</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="showmethod" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Show Method if Not Applicable</label>

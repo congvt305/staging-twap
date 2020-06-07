@@ -3,23 +3,17 @@
     <default>
         <carriers>
             <eguana_gwlogistics>
-                <active>0</active>
+                <active>1</active>
                 <gateway_url>http://production.shippingapis.com/ShippingAPI.dll</gateway_url>
                 <gateway_secure_url>https://secure.shippingapis.com/ShippingAPI.dll</gateway_secure_url>
                 <map_url>http://production.shippingapis.com/ShippingAPI.dll</map_url>
                 <map_secure_url>https://secure.shippingapis.com/ShippingAPI.dll</map_secure_url>
                 <model>Eguana\GWLogistics\Model\Carrier\CvsStorePickup</model>
                 <title>Green World Logistics</title>
-                <userid backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
-                <password backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
-                <isproduction>0</isproduction>
                 <name>Convenience Store Pickup</name>
                 <shipping_cost>10</shipping_cost>
-                <sallowspecific>0</sallowspecific>
-<!--                <allowed_methods>CVS,HILIE,UNIMART,FAMI</allowed_methods>-->
-<!--                <methods>CVS</methods>-->
                 <sort_order>15</sort_order>
-                <active_rma>0</active_rma>
+                <active_rma>1</active_rma>
                 <is_online>1</is_online>
             </eguana_gwlogistics>
         </carriers>
