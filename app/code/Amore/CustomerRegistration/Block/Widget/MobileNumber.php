@@ -5,13 +5,6 @@
  * Date: 2020-05-21
  * Time: 오후 5:09
  *
- * PHP version 7.3
- *
- * @category PHP_FILE
- * @package  Eguana
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
  */
 
 namespace Amore\CustomerRegistration\Block\Widget;
@@ -33,12 +26,6 @@ use Magento\Framework\View\Element\Template\Context;
  *
  * @method CustomerInterface getObject()
  * @method Name setObject(CustomerInterface $customer)
- *
- * @category PHP_FILE
- * @package  Eguana
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
  *
  * @SuppressWarnings(PHPMD.DepthOfInheritance)
  */

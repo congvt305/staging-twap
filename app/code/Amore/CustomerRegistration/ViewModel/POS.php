@@ -4,14 +4,6 @@
  * User: abbas
  * Date: 20. 5. 19
  * Time: 오후 5:00
- *
- * PHP version 7.3.18
- *
- * @category PHP_FILE
- * @package  Eguana
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
  */
 
 namespace Amore\CustomerRegistration\ViewModel;
@@ -22,16 +14,9 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 /**
  * It will use for the pos step during registration
  * Class POS
- *
- * @category PHP_FILE
- * @package  Amore\CustomerRegistration\ViewModel
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
  */
 class POS implements ArgumentInterface
 {
-
 
     /**
      * Data
@@ -39,7 +24,6 @@ class POS implements ArgumentInterface
      * @var Data
      */
     private $configHelper;
-
 
     /**
      * POS constructor.

@@ -4,15 +4,6 @@
  * User: Abbas
  * Date: 05/20/20
  * Time: 12:11 PM
- *
- * PHP version 7.3.18
- *
- * @category PHP_FILE
- * @package  Eguana
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
- * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  */
 namespace Amore\CustomerRegistration\Setup\Patch\Data;
 
@@ -28,12 +19,6 @@ use Psr\Log\LoggerInterface;
  * This class is responsible for add attribute in customer
  *
  * Class AddTelephoneAttribute
- *
- * @category PHP_FILE
- * @package  Amore\CustomerRegistration\Setup\Patch\Data
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
  */
 class AddCustomerAttributes implements DataPatchInterface
 {
@@ -175,11 +160,9 @@ class AddCustomerAttributes implements DataPatchInterface
                                     ]
                                 ];
         $yesNoAttributes = [
-            //['code'=>'email_subscription_status','label'=>'Email Marketing'],
             ['code'=>'sms_subscription_status','label'=>'SMS Marketing'],
             ['code'=>'dm_subscription_status','label'=>'DM Marketing']
                             ];
-
 
         foreach ($textFieldAttributes as $textFieldAttribute) {
 
@@ -214,7 +197,8 @@ class AddCustomerAttributes implements DataPatchInterface
     {
         $attribute = $this->customerAttributeResource
             ->getIdByCode(
-                CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, $code
+                CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
+                $code
             );
 
         if (!$attribute) {
@@ -268,7 +252,7 @@ class AddCustomerAttributes implements DataPatchInterface
                         'label' => $label,
                         'type' => 'int',
                         'input' => 'select',
-                        'source' => 'Magento\Eav\Model\Entity\Attribute\Source\Boolean',
+                        'source' => Magento\Eav\Model\Entity\Attribute\Source\Boolean::class,
                         'required' => 0,
                         'system' => 0,
                         'sort_order' => 100,

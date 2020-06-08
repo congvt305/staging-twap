@@ -4,14 +4,6 @@
  * User: abbas
  * Date: 20. 5. 22
  * Time: 오후 2:25
- *
- * PHP version 7.3.18
- *
- * @category PHP_FILE
- * @package  Eguana
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
  */
 
 namespace Amore\CustomerRegistration\Block;
@@ -22,11 +14,6 @@ use Magento\Framework\View\Element\Template;
  * Block class for POS setup during registration
  * Class POS
  *
- * @category PHP_FILE
- * @package  Amore\CustomerRegistration\Block
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
  */
 class POS extends Template
 {
@@ -70,6 +57,4 @@ class POS extends Template
             ['_secure' => true]
         );
     }
-
-
 }

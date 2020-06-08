@@ -4,15 +4,6 @@
  * User: abbas
  * Date: 20. 5. 25
  * Time: 오후 5:45
- *
- * PHP version 7.3.18
- *
- * @category PHP_FILE
- * @package  Eguana
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
- * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  */
 
 namespace Amore\CustomerRegistration\Model;
@@ -30,12 +21,6 @@ use Magento\Store\Model\StoreManagerInterface;
 /**
  * It will have main functions for Code verification
  * Class Verification
- *
- * @category PHP_FILE
- * @package  Amore\CustomerRegistration\Model
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
  */
 class Verification
 {

@@ -4,15 +4,6 @@
  * User: abbas
  * Date: 20. 5. 25
  * Time: 오전 11:33
- *
- * PHP version 7.3.18
- *
- * @category PHP_FILE
- * @package  Eguana
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
- * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  */
 
 namespace Amore\CustomerRegistration\Controller\Verification;
@@ -29,12 +20,6 @@ use Magento\Framework\Controller\ResultInterface;
 /**
  * To verify code of the customer
  * Class Verify
- *
- * @category PHP_FILE
- * @package  Amore\CustomerRegistration\Controller\Verification
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
  */
 class Verify implements ActionInterface
 {
@@ -97,13 +82,13 @@ class Verify implements ActionInterface
                     'Code has been verified please move to the next step'
                 );
                 $result['verify'] = true;
-            } else if ($verificationResult === false) {
+            } elseif ($verificationResult === false) {
                 $result['message'] = __('Verification code is wrong');
             } else {
                 $result['message'] = $verificationResult;
             }
 
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $result['message'] = $e->getMessage();
         }
 
@@ -116,6 +101,4 @@ class Verify implements ActionInterface
         $jsonResult->setData($result);
         return $jsonResult;
     }
-
-
 }

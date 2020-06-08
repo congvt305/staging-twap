@@ -4,15 +4,6 @@
  * User: Abbas
  * Date: 05/18/20
  * Time: 9:02 PM
- *
- * PHP version 7.3.18
- *
- * @category PHP_FILE
- * @package  Eguana
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
- * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  */
 
 namespace Amore\CustomerRegistration\Helper;
@@ -24,12 +15,6 @@ use Magento\Store\Model\ScopeInterface;
  * This class is used for StoreSms configuration data
  *
  * Class Data
- *
- * @category PHP_FILE
- * @package  Amore\CustomerRegistration\Controller\Verification
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
  */
 class Data extends AbstractHelper
 {
@@ -119,7 +104,6 @@ class Data extends AbstractHelper
         );
     }
 
-
     /**
      * Get membership error cms page
      * It will return cms page id to show a message
@@ -134,5 +118,4 @@ class Data extends AbstractHelper
             ScopeInterface::SCOPE_WEBSITE
         );
     }
-
 }

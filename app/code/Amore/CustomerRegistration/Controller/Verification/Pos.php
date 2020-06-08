@@ -4,15 +4,6 @@
  * User: abbas
  * Date: 20. 5. 25
  * Time: 오전 11:33
- *
- * PHP version 7.3.18
- *
- * @category PHP_FILE
- * @package  Eguana
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
- * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  */
 
 namespace Amore\CustomerRegistration\Controller\Verification;
@@ -29,12 +20,6 @@ use Magento\Framework\Controller\ResultInterface;
 /**
  * To verify the customer with the POS system
  * Class Pos
- *
- * @category PHP_FILE
- * @package  Amore\CustomerRegistration\Controller\Verification
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
  */
 class Pos implements ActionInterface
 {
@@ -58,7 +43,6 @@ class Pos implements ActionInterface
      * @var Verification
      */
     private $verification;
-
 
     /**
      * Pos constructor.
@@ -92,7 +76,6 @@ class Pos implements ActionInterface
         $firstName = $this->request->getParam('firstName');
         $lastName = $this->request->getParam('lastName');
 
-
         try {
             $verificationResult = $this->verification
                 ->customerVerification(
@@ -107,18 +90,18 @@ class Pos implements ActionInterface
                     'Code has been verified please move to the next step'
                 );
                 $result['verify'] = true;
-            } else if (in_array($verificationResult['code'], [1,2,3])) {
+            } elseif (in_array($verificationResult['code'], [1,2,3])) {
 
                 $result['message'] = $verificationResult['message'];
                 $result['verify'] = false;
-            } else if (in_array($verificationResult['code'], [4,5])) {
+            } elseif (in_array($verificationResult['code'], [4,5])) {
                 $result = $verificationResult;
                 $result['verify'] = false;
             } else {
                 $result['message'] = $verificationResult;
             }
 
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $result['message'] = $e->getMessage();
         }
         /**
@@ -130,5 +113,4 @@ class Pos implements ActionInterface
         $jsonResult->setData($result);
         return $jsonResult;
     }
-
 }

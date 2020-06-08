@@ -5,13 +5,6 @@
  * Date: 20. 5. 25
  * Time: 오전 11:33
  *
- * PHP version 7.3.18
- *
- * @category PHP_FILE
- * @package  Eguana
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
  */
 
 namespace Amore\CustomerRegistration\Controller\Verification;
@@ -28,12 +21,6 @@ use Magento\Framework\Controller\ResultInterface;
 /**
  * To send the verification code to the customer
  * Class Code
- *
- * @category PHP_FILE
- * @package  Amore\CustomerRegistration\Controller\Code
- * @author   Abbas Ali Butt <bangji@eguanacommerce.com>
- * @license  https://www.eguaancommerce.com Code Licence
- * @link     https://www.eguaancommerce.com
  */
 class Code implements ActionInterface
 {
@@ -95,7 +82,7 @@ class Code implements ActionInterface
             } else {
                 $result['message'] = $sendVerificationCodeResult;
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $result['message'] = $e->getMessage();
         }
         /**
