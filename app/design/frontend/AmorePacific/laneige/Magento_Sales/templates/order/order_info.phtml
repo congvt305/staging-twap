@@ -9,7 +9,7 @@
 /** @var \Magento\Sales\Block\Order\History $block */
 ?>
 <div class="block block-orders-history">
-    <div class="block-title"><?= $block->escapeHtml(__('View Order')) ?></div>
+    <div class="block-title"><strong><?= $block->escapeHtml(__('View Order')) ?></strong></div>
     <div class="order-info">
         <?= $block->getChildHtml('order.status') ?>
         <?= $block->getChildHtml('order.date') ?>

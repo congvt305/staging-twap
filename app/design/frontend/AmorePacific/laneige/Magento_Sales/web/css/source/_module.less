@@ -110,6 +110,10 @@
         margin-bottom: 100px;
         padding: @indent__xs 50px @indent__l;
 
+        > .actions-toolbar .secondary {
+            display: none;
+        }
+
         .order-actions {
             padding-right: 7px;
             text-align: right;
@@ -172,6 +176,10 @@
             .col:not(.name) {
                 width: 12%;
             }
+
+            & + .block-order-details-view {
+                display: none;
+            }
         }
 
         &.invoice {
@@ -232,13 +240,7 @@
         }
 
         .item-options {
-            dt {
-                margin: 0;
-            }
-
-            dd {
-                margin: 0 0 15px;
-            }
+            &:extend(.abs-product-options-list all);
 
             &.links {
                 dt {
@@ -390,10 +392,25 @@
         }
     }
 
+    .sales-guest-form {
+        .column.main {
+            .fieldset {
+                margin-bottom: 0;
+            }
+
+            .actions-toolbar {
+                .action {
+                    &:extend(.abs-button-l all);
+                }
+            }
+        }
+    }
+
     //
     //  Guest order view page
     //  ---------------------------------------------
 
+    [class^='magento_rma-guest-'],
     [class^='sales-guest-'],
     .sales-guest-view {
         .column.main {
@@ -560,6 +577,23 @@
             margin: 0;
         }
     }
+
+    .sales-guest-form {
+        .column.main {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .form-orders-search > .actions-toolbar {
+            margin-top: 100px;
+            margin-left: -@layout__width-xs-indent;
+            margin-right: -@layout__width-xs-indent;
+
+            .action {
+                &:extend(.abs-button-l-mobile all);
+            }
+        }
+    }
 }
 
 //
@@ -567,6 +601,26 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .sales-guest-form {
+        .column.main {
+            margin-bottom: 120px;
+
+            .actions-toolbar {
+                margin-top: 80px;
+
+                .action {
+                    width: 380px;
+                }
+            }
+        }
+    }
+
+    .order-details-items {
+        .item-options {
+            margin-top: @indent__s;
+        }
+    }
+
     .order-links {
         .lib-vendor-prefix-display(flex);
         .lib-vendor-box-align(stretch);
@@ -635,26 +689,6 @@
         .order-date {
             @order-status-indent: ceil(@h1__margin-bottom__desktop/2);
             .lib-css(margin-top, -@order-status-indent);
-        }
-    }
-
-    //
-    //  Guest order view page
-    //  ---------------------------------------------
-
-    [class^='sales-guest-'],
-    .sales-guest-view {
-        .column.main {
-            .block:not(.widget) {
-                .block-content {
-                    &:extend(.abs-add-clearfix-desktop all);
-
-                    .box {
-                        &:extend(.abs-blocks-2columns all);
-                        margin-bottom: @indent__base;
-                    }
-                }
-            }
         }
     }
 }

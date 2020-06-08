@@ -11,7 +11,7 @@
 <?php $_orders = $block->getOrders(); ?>
 <?= $block->getChildHtml('info') ?>
 <div class="block block-orders-history">
-    <div class="block-title"><?= $block->escapeHtml(__('Order History')) ?></div>
+    <div class="block-title"><strong><?= $block->escapeHtml(__('Order History')) ?></strong></div>
     <div class="table-wrapper orders-history">
         <table class="data table table-order-items history" id="my-orders-table">
             <caption class="table-caption"><?= $block->escapeHtml(__('Orders')) ?></caption>

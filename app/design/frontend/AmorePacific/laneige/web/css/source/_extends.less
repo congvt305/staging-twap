@@ -373,6 +373,7 @@
         .box-title {
             word-break: break-word;
 
+            strong,
             span {
                 .lib-font-size(14);
                 color: @primary__color__lighter;
@@ -559,12 +560,14 @@
 & when (@media-common = true) {
     .abs-add-fields {
         .fieldset {
-            margin-bottom: 50px;
-
             .field {
-                &:not(.choice) {
-                    .control {
-                        width: 70%;
+                width: 100%;
+            }
+
+            .fields {
+                &.additional {
+                    > .fieldset {
+                        margin-bottom: @indent__xl;
                     }
                 }
             }
@@ -574,12 +577,6 @@
                     &:extend(.abs-add-clearfix all);
 
                     > .secondary {
-                        .action {
-                            &.add {
-                                margin-top: @indent__l;
-                            }
-                        }
-
                         float: left;
                     }
                 }
@@ -587,7 +584,17 @@
 
             .fields {
                 .actions-toolbar {
-                    margin: 0;
+                    margin: 0 7px 3px 0;
+
+                    .secondary {
+                        display: block;
+                    }
+
+                    .action {
+                        display: block;
+                        text-align: right;
+                        width: 100%;
+                    }
                 }
             }
         }
@@ -599,13 +606,28 @@
         }
 
         .additional {
-            margin-top: 55px;
-            position: relative;
+            &.row {
+                border-top: 1px solid @border-color__base;
+                margin-top: @indent__xl;
+                padding-top: 17px;
+                position: relative;
+            }
         }
 
         .action {
             &.remove {
-                &:extend(.abs-action-remove all);
+                .lib-button-as-link(
+                    @_link-color: @theme__color__primary-alt,
+                    @_margin: false
+                );
+                border-radius: 0;
+                font-size: inherit;
+                font-weight: @font-weight__regular;
+
+                &:active,
+                &:not(:focus) {
+                    box-shadow: none;
+                }
             }
         }
     }
@@ -619,17 +641,9 @@
     .abs-add-fields-desktop {
         .fieldset {
             .field {
-                &:not(.choice) {
+                &:not(.choice):not(.comment):not(.contact) {
                     .control {
-                        width: 50%;
-                    }
-                }
-            }
-
-            .additional {
-                .action {
-                    &.remove {
-                        &:extend(.abs-action-remove-desktop all);
+                        width: 65.5%;
                     }
                 }
             }

@@ -13,7 +13,7 @@
 <?php foreach ($_order->getShipmentsCollection() as $_shipment) : ?>
     <div class="order-title">
         <div class="order-actions">
-            <a href="<?= $block->escapeUrl($block->getPrintAllShipmentsUrl($_shipment)) ?>"
+            <a href="<?= $block->escapeUrl($block->getPrintAllShipmentsUrl($_order)) ?>"
                class="action print"
                target="_blank"
                rel="noopener">

@@ -97,6 +97,7 @@
         }
     }
 
+    .block-return-details,
     .block-order-details-view,
     .block-addresses-default,
     .block-dashboard-addresses {
@@ -742,6 +743,7 @@
         }
     }
 
+    .block-return-details,
     .block-order-details-view,
     .block-addresses-default,
     .block-dashboard-addresses {
@@ -919,6 +921,7 @@
         }
     }
 
+    .block-return-details,
     .block-order-details-view,
     .block-addresses-default,
     .block-dashboard-addresses {
@@ -926,6 +929,7 @@
             .lib-vendor-prefix-display(flex);
             padding-bottom: 16px;
 
+            &.box-returns-shipping,
             &.box-address-shipping,
             &.box-shipping-address {
                 padding-top: 16px;
@@ -955,20 +959,27 @@
         }
     }
 
+    .magento_rma-returns-create,
     .customer-account-edit,
     .customer-address-form,
     .wishlist-index-share,
     .wishlist-index-index {
-        .sidebar-main {
-            padding-top: 34px;
+        &.page-layout-2columns-left {
+            .sidebar-main {
+                padding-top: 34px;
+            }
         }
     }
 
+    .magento_rma-returns-view,
+    .magento_rma-returns-history,
     [class*="sales-order-"],
     .customer-address-index,
     .customer-account-index {
-        .sidebar-main {
-            padding-top: 35px;
+        &.page-layout-2columns-left {
+            .sidebar-main {
+                padding-top: 35px;
+            }
         }
     }
 
@@ -1147,14 +1158,21 @@
             }
         }
 
+        &.page-layout-2columns-left {
+            .page-title-wrapper {
+                .page-title {
+                    float: right;
+                    width: 75%;
+                }
+            }
+        }
+
         .page-title-wrapper {
             overflow: hidden;
 
             .page-title {
                 .lib-font-size(42) !important;
-                float: right;
                 margin: 0 0 62px 0!important;
-                width: 75%;
             }
         }
 
