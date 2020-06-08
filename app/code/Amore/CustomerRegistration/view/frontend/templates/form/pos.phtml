@@ -26,7 +26,7 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
             <label for="first_name" class="label"><span><?= /* @noEscape */ $block->escapeHtml(__('First Name')) ?></span></label>
             <div class="control">
                 <?php //phpcs:disable ?>
-                <input type="text" name="first_name" data-validate='{"required":true, "maxlength":255}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('First Name')) ?>" class="input-text" id="first_name">
+                <input type="text" name="first_name" data-validate='{"required":true, "maxlength":255}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('First Name')) ?>" class="input-text first-name" id="first_name">
                 <?php //phpcs:enable ?>
             </div>
         </div>
@@ -34,7 +34,7 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
             <label for="last_name" class="label"><span><?= /* @noEscape */ $block->escapeHtml(__('Last Name')) ?></span></label>
             <div class="control">
                 <?php //phpcs:disable ?>
-                <input type="text" name="last_name" data-validate='{"required":true, "maxlength":255}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('Last Name')) ?>" class="input-text" id="last_name">
+                <input type="text" name="last_name" data-validate='{"required":true, "maxlength":255}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('Last Name')) ?>" class="input-text last-name" id="last_name">
                 <?php //phpcs:enable ?>
             </div>
         </div>
@@ -42,13 +42,13 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
             <label for="mobile_number" class="label"><span><?= /* @noEscape */ 'telephone' ?></span></label>
             <div class="control">
                 <?php //phpcs:disable ?>
-                <input type="text" name="mobile_number" data-validate='{"required":true, "validate-number":true, "minlength":<?= $minimumMobileNumberDigits; ?>, "maxlength":<?= $maximumMobileNumberDigits; ?>}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('Telephone')) ?>" class="input-text mobile_number" id="mobile_number">
+                <input type="text" name="mobile_number" data-validate='{"required":true, "validate-number":true, "minlength":<?= $minimumMobileNumberDigits; ?>, "maxlength":<?= $maximumMobileNumberDigits; ?>}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('Telephone')) ?>" class="input-text mobile-number" id="mobile_number">
                 <a class="action primary sms-link">
                     <span><?= $block->escapeHtml(__('Get Code')) ?></span>
                 </a>
                 <?php //phpcs:enable ?>
             </div>
-            <span class="code-send-message" style="display: none"><?= $block->escapeHtml(__('Verfication code has been sent to your mobile')); ?></span>
+            <span class="code-send-message" style="display: none"><?= $block->escapeHtml(__('Verification code has been sent to your mobile')); ?></span>
         </div>
         <div class="field verification-code required">
             <label for="code" class="label"><span><?= /* @noEscape */ 'code' ?></span></label>

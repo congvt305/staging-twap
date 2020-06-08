@@ -1,7 +1,5 @@
 <?php
 /**
- * @author Eguana Team
- * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  * Created by PhpStorm
  * User: abbas
  * Date: 20. 5. 19
@@ -10,26 +8,29 @@
 
 namespace Amore\CustomerRegistration\ViewModel;
 
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 /**
  * It will use for the register step during registration
  * Class Register
- * @package Amore\CustomerRegistration\ViewModel
  */
 class Register implements ArgumentInterface
 {
 
     /**
-     * @var \Magento\Framework\App\Request\Http
+     * Http
+     *
+     * @var Http
      */
     private $request;
 
     /**
      * Register constructor.
-     * @param \Magento\Framework\App\Request\Http $request
+     *
+     * @param Http $request request
      */
-    public function __construct(\Magento\Framework\App\Request\Http $request)
+    public function __construct(Http $request)
     {
         $this->request = $request;
     }
@@ -37,6 +38,7 @@ class Register implements ArgumentInterface
     /**
      * Get the referrer code
      * It will return the referrer code from the get parameter
+     *
      * @return mixed
      */
     public function getReferrerCode()
@@ -47,6 +49,7 @@ class Register implements ArgumentInterface
     /**
      * Get the favorite store
      * It will return the favorite store from the get parameter
+     *
      * @return mixed
      */
     public function getFavoriteStore()

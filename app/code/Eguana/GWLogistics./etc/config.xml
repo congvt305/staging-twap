@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <eguana_gwlogistics>
+                <active>1</active>
+                <gateway_url>http://production.shippingapis.com/ShippingAPI.dll</gateway_url>
+                <gateway_secure_url>https://secure.shippingapis.com/ShippingAPI.dll</gateway_secure_url>
+                <map_url>http://production.shippingapis.com/ShippingAPI.dll</map_url>
+                <map_secure_url>https://secure.shippingapis.com/ShippingAPI.dll</map_secure_url>
+                <model>Eguana\GWLogistics\Model\Carrier\CvsStorePickup</model>
+                <title>Green World Logistics</title>
+                <name>Convenience Store Pickup</name>
+                <shipping_cost>10</shipping_cost>
+                <sort_order>15</sort_order>
+                <active_rma>1</active_rma>
+                <is_online>1</is_online>
+            </eguana_gwlogistics>
+        </carriers>
+    </default>
+</config>

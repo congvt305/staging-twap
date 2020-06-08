@@ -1,7 +1,5 @@
 <?php
 /**
- * @author Eguana Team
- * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  * Created by PhpStorm
  * User: abbas
  * Date: 20. 5. 25
@@ -11,56 +9,63 @@
 namespace Amore\CustomerRegistration\Controller\Verification;
 
 use Magento\Framework\App\ActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\App\Action\Context;
 use Amore\CustomerRegistration\Model\Verification;
-use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface;
 
 /**
  * To verify the customer with the POS system
  * Class Pos
- * @package Amore\CustomerRegistration\Controller\Verification
  */
 class Pos implements ActionInterface
 {
     /**
+     * Json Factory
+     *
      * @var JsonFactory
      */
     private $resultJsonFactory;
 
     /**
-     * @var \Magento\Framework\App\RequestInterface
+     * Request interface
+     *
+     * @var RequestInterface
      */
     private $request;
+
     /**
-     * @var SessionManagerInterface
-     */
-    private $sessionManager;
-    /**
+     * Verification
+     *
      * @var Verification
      */
     private $verification;
-    /**
-     * @var ResultFactory
-     */
-    private $redirectResult;
 
+    /**
+     * Pos constructor.
+     *
+     * @param Context      $context           Context
+     * @param JsonFactory  $resultJsonFactory Result Factory
+     * @param Verification $verification      Verfication
+     */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        Verification $verification,
-        ResultFactory $redirectResult)
-    {
+        Verification $verification
+    ) {
         $this->request = $context->getRequest();
         $this->resultJsonFactory = $resultJsonFactory;
         $this->verification = $verification;
-        $this->redirectResult = $redirectResult;
     }
 
     /**
      * To verify the code send to the customer against the mobile number
      * It wil verify the code send to the customer against the mobile number
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface
+     *
+     * @return ResponseInterface|Json|ResultInterface
      */
     public function execute()
     {
@@ -69,36 +74,43 @@ class Pos implements ActionInterface
         $mobileNumber = $this->request->getParam('mobileNumber');
         $verificationCode = $this->request->getParam('code');
         $firstName = $this->request->getParam('firstName');
-        $lastName = $this->request->getParam('firstName');
-
+        $lastName = $this->request->getParam('lastName');
 
         try {
-            $verificationResult = $this->verification->customerVerification($firstName, $lastName, $mobileNumber, $verificationCode);
-            if($verificationResult['code'] === 6)
-            {
-                $result['message'] = __('Code has been verified please move to the next step');
+            $verificationResult = $this->verification
+                ->customerVerification(
+                    $firstName,
+                    $lastName,
+                    $mobileNumber,
+                    $verificationCode
+                );
+
+            if ($verificationResult['code'] === 6) {
+                $result['message'] = __(
+                    'Code has been verified please move to the next step'
+                );
                 $result['verify'] = true;
-            }else if(in_array($verificationResult['code'],[1,2,3]))
-            {
+            } elseif (in_array($verificationResult['code'], [1,2,3])) {
+
                 $result['message'] = $verificationResult['message'];
                 $result['verify'] = false;
-            }else if(in_array($verificationResult['code'],[4,5]))
-            {
-                $resultRedirect = $this->resultRedirect->create(ResultFactory::TYPE_REDIRECT);
-               // $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-                $resultRedirect->setUrl($verificationResult['url']);
-                return $resultRedirect;
-            }else{
+            } elseif (in_array($verificationResult['code'], [4,5])) {
+                $result = $verificationResult;
+                $result['verify'] = false;
+            } else {
                 $result['message'] = $verificationResult;
             }
 
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $result['message'] = $e->getMessage();
         }
-        /** @var  \Magento\Framework\Controller\Result\Json $jsonResult */
+        /**
+         *Json Result
+         *
+         * @var Json $jsonResult
+         */
         $jsonResult = $this->resultJsonFactory->create();
         $jsonResult->setData($result);
         return $jsonResult;
     }
-
 }

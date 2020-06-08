@@ -1,7 +1,5 @@
 <?php
 /**
- * @author Eguana Team
- * @copyright Copyright (c) 2019 Eguana {http://eguanacommerce.com}
  * Created by PhpStorm
  * User: Abbas
  * Date: 05/20/20
@@ -21,43 +19,53 @@ use Psr\Log\LoggerInterface;
  * This class is responsible for add attribute in customer
  *
  * Class AddTelephoneAttribute
- *
  */
 class AddCustomerAttributes implements DataPatchInterface
 {
 
     /**
+     * Eav config
+     *
      * @var EavConfig
      */
     private $eavConfig;
 
     /**
+     * Eav Setup
+     *
      * @var EavSetup
      */
     private $eavSetup;
 
     /**
+     * Customer attribute resource
+     *
      * @var CustomerAttributeResource
      */
     private $customerAttributeResource;
 
     /**
+     * Attribute repository interface
+     *
      * @var AttributeRepositoryInterface
      */
     private $attributeRepositoryInterface;
 
     /**
+     * Logger interface
+     *
      * @var LoggerInterface
      */
     private $logger;
 
     /**
      * AddTelephoneAttribute constructor.
-     * @param EavSetup $eavSetup
-     * @param EavConfig $eavConfig
-     * @param CustomerAttributeResource $customerAttributeResource
-     * @param AttributeRepositoryInterface $attributeRepositoryInterface
-     * @param LoggerInterface $logger
+     *
+     * @param EavSetup                     $eavSetup                     setup
+     * @param EavConfig                    $eavConfig                    conf
+     * @param CustomerAttributeResource    $customerAttributeResource    resource
+     * @param AttributeRepositoryInterface $attributeRepositoryInterface repo
+     * @param LoggerInterface              $logger                       logger
      */
     public function __construct(
         EavSetup $eavSetup,
@@ -73,11 +81,21 @@ class AddCustomerAttributes implements DataPatchInterface
         $this->logger = $logger;
     }
 
+    /**
+     * Get dependencies
+     *
+     * @return array|string[]
+     */
     public static function getDependencies()
     {
         return [];
     }
 
+    /**
+     * Get aliases
+     *
+     * @return array|string[]
+     */
     public function getAliases()
     {
         return [];
@@ -91,54 +109,98 @@ class AddCustomerAttributes implements DataPatchInterface
     public function apply()
     {
         $textFieldAttributes = [
-                                    ['code'=>'mobile_number','label'=>'Mobile number', 'type' => 'int', 'validation'=>'{"input_validation":"alphanumeric","max_text_length":20,"min_text_length":5}', 'requried' => 1],
-                                    ['code'=>'dm_city','label'=>'DM City', 'type' => 'varchar', 'validation'=>'{"input_validation":"alphanum-with-spaces","max_text_length":255,"min_text_length":1}', 'requried' => 0],
-                                    ['code'=>'dm_state','label'=>'DM State', 'type' => 'varchar', 'validation'=>'{"input_validation":"alphanum-with-spaces","max_text_length":255,"min_text_length":1}', 'requried' => 0],
-                                    ['code'=>'dm_detailed_address','label'=>'DM Detailed Address', 'type' => 'varchar', 'validation'=>'{"input_validation":"alphanum-with-spaces","max_text_length":255,"min_text_length":1}', 'requried' => 0],
-                                    ['code'=>'dm_zipcode','label'=>'DM Zipcode', 'type' => 'int', 'validation'=>'{"input_validation":"numeric","max_text_length":20,"min_text_length":1}', 'requried' => 0],
-                                    ['code'=>'favorite_store','label'=>'Favorite Store', 'type' => 'varchar', 'validation'=>'{"input_validation":"alphanum-with-spaces","max_text_length":255,"min_text_length":1}', 'requried' => 0],
-                                    ['code'=>'referrer_code','label'=>'Referrer Code', 'type' => 'varchar', 'validation'=>'{"input_validation":"alphanum-with-spaces","max_text_length":255,"min_text_length":1}', 'requried' => 0]
+                                    [
+                                        'code'=>'mobile_number',
+                                        'label'=>'Mobile number',
+                                        'type' => 'int',
+                                        'validation'=>'{"input_validation":"alphanumeric","max_text_length":20,"min_text_length":5}',
+                                        'required' => 1
+                                    ],
+                                    [
+                                        'code'=>'dm_city',
+                                        'label'=>'DM City',
+                                        'type' => 'varchar',
+                                        'validation'=>'{"input_validation":"alphanum-with-spaces","max_text_length":255,"min_text_length":1}',
+                                        'required' => 0
+                                    ],
+                                    [
+                                        'code'=>'dm_state',
+                                        'label'=>'DM State',
+                                        'type' => 'varchar',
+                                        'validation'=>'{"input_validation":"alphanum-with-spaces","max_text_length":255,"min_text_length":1}',
+                                        'required' => 0
+                                    ],
+                                    [
+                                        'code'=>'dm_detailed_address',
+                                        'label'=>'DM Detailed Address',
+                                        'type' => 'varchar',
+                                        'validation'=>'{"input_validation":"alphanum-with-spaces","max_text_length":255,"min_text_length":1}',
+                                        'required' => 0
+                                    ],
+                                    [
+                                        'code'=>'dm_zipcode',
+                                        'label'=>'DM Zipcode',
+                                        'type' => 'int',
+                                        'validation'=>'{"input_validation":"numeric","max_text_length":20,"min_text_length":1}',
+                                        'required' => 0
+                                    ],
+                                    [
+                                        'code'=>'favorite_store',
+                                        'label'=>'Favorite Store',
+                                        'type' => 'varchar',
+                                        'validation'=>'{"input_validation":"alphanum-with-spaces","max_text_length":255,"min_text_length":1}',
+                                        'required' => 0
+                                    ],
+                                    [
+                                        'code'=>'referrer_code',
+                                        'label'=>'Referrer Code',
+                                        'type' => 'varchar',
+                                        'validation'=>'{"input_validation":"alphanum-with-spaces","max_text_length":255,"min_text_length":1}',
+                                        'required' => 0
+                                    ]
                                 ];
         $yesNoAttributes = [
-//                                ['code'=>'email_subscription_status','label'=>'Email Marketing'],
-                                ['code'=>'sms_subscription_status','label'=>'SMS Marketing'],
-                                ['code'=>'dm_subscription_status','label'=>'DM Marketing']
+            ['code'=>'sms_subscription_status','label'=>'SMS Marketing'],
+            ['code'=>'dm_subscription_status','label'=>'DM Marketing']
                             ];
 
+        foreach ($textFieldAttributes as $textFieldAttribute) {
 
-        foreach ($textFieldAttributes as $textFieldAttribute)
-        {
-            $this->addCustomerAttributeTextFiled($textFieldAttribute['code'],
-                                                 $textFieldAttribute['label'],
-                                                 $textFieldAttribute['type'],
-                                                 $textFieldAttribute['validation'],
-                                                 $textFieldAttribute['requried'],
-                                                );
+            $this->addCustomerAttributeTextFiled(
+                $textFieldAttribute['code'],
+                $textFieldAttribute['label'],
+                $textFieldAttribute['type'],
+                $textFieldAttribute['validation'],
+                $textFieldAttribute['required']
+            );
         }
 
-        foreach ($yesNoAttributes as $yesNoAttribute)
-        {
-            $this->addCustomerAttributeBoolean($yesNoAttribute['code'],
-                                                 $yesNoAttribute['label']
-                                                );
+        foreach ($yesNoAttributes as $yesNoAttribute) {
+            $this->addCustomerAttributeBoolean(
+                $yesNoAttribute['code'],
+                $yesNoAttribute['label']
+            );
         }
     }
 
     /**
      * To create a text field attribute for customer
      * This function will create a text field customer attribute based on code, label, type, validation and required
-     * @param $code
-     * @param $label
-     * @param $type
-     * @param $validation
+     *
+     * @param string $code       code
+     * @param string $label      label
+     * @param string $type       type
+     * @param int    $validation validation
+     * @param string $required   required
      */
     private function addCustomerAttributeTextFiled($code, $label, $type, $validation, $required)
     {
-        $attribute = $this->customerAttributeResource->
-        getIdByCode(
-            CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
-            $code
-        );
+        $attribute = $this->customerAttributeResource
+            ->getIdByCode(
+                CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
+                $code
+            );
+
         if (!$attribute) {
             try {
                 $this->eavSetup->addAttribute(
@@ -167,16 +229,20 @@ class AddCustomerAttributes implements DataPatchInterface
     /**
      * To create a boolean field attribute for customer
      * This function will create a boolean customer attribute based on code and label
-     * @param $code
-     * @param $label
+     *
+     * @param string $code  code
+     * @param string $label label
+     *
+     * @return void
      */
     private function addCustomerAttributeBoolean($code, $label)
     {
-        $attribute = $this->customerAttributeResource->
-        getIdByCode(
-            CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
-            $code
-        );
+        $attribute = $this->customerAttributeResource
+            ->getIdByCode(
+                CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
+                $code
+            );
+
         if (!$attribute) {
             try {
                 $this->eavSetup->addAttribute(
@@ -186,7 +252,7 @@ class AddCustomerAttributes implements DataPatchInterface
                         'label' => $label,
                         'type' => 'int',
                         'input' => 'select',
-                        'source' => 'Magento\Eav\Model\Entity\Attribute\Source\Boolean',
+                        'source' => Magento\Eav\Model\Entity\Attribute\Source\Boolean::class,
                         'required' => 0,
                         'system' => 0,
                         'sort_order' => 100,
@@ -205,6 +271,9 @@ class AddCustomerAttributes implements DataPatchInterface
     /**
      * This function is responsible for add attribute to create account page
      *
+     * @param string $code code
+     *
+     * @return void
      */
     private function assignAttributeToForms($code)
     {
@@ -213,10 +282,13 @@ class AddCustomerAttributes implements DataPatchInterface
                 CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
                 $code
             );
-            $attribute->setData('used_in_forms', [
+            $attribute->setData(
+                'used_in_forms',
+                [
                 'adminhtml_customer',
                 'customer_account_create'
-            ]);
+                ]
+            );
 
             $this->customerAttributeResource->save($attribute);
         } catch (\Exception $e) {

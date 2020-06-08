@@ -1,7 +1,5 @@
 <?php
 /**
- * @author Eguana Team
- * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  * Created by PhpStorm
  * User: abbas
  * Date: 20. 5. 22
@@ -10,12 +8,14 @@
 
 namespace Amore\CustomerRegistration\Block;
 
+use Magento\Framework\View\Element\Template;
+
 /**
- * Block class for POS setp during registration
+ * Block class for POS setup during registration
  * Class POS
- * @package Amore\CustomerRegistration\Block
+ *
  */
-class POS extends \Magento\Framework\View\Element\Template
+class POS extends Template
 {
     /**
      * Retrieve SMS code action url and set "secure" param to avoid confirm
@@ -25,7 +25,10 @@ class POS extends \Magento\Framework\View\Element\Template
      */
     public function getSendCodeUrl()
     {
-        return $this->getUrl('customerregistration/verification/code', ['_secure' => true]);
+        return $this->getUrl(
+            'customerregistration/verification/code',
+            ['_secure' => true]
+        );
     }
 
     /**
@@ -36,18 +39,22 @@ class POS extends \Magento\Framework\View\Element\Template
      */
     public function getVerifyCodeUrl()
     {
-        return $this->getUrl('customerregistration/verification/verify', ['_secure' => true]);
+        return $this->getUrl(
+            'customerregistration/verification/verify',
+            ['_secure' => true]
+        );
     }
 
     /**
-     * Reterive POS Verification URL
+     * Retrieve POS Verification URL
      *
      * @return string
      */
     public function getPOSVerificationUrl()
     {
-        return $this->getUrl('customerregistration/verification/pos', ['_secure' => true]);
+        return $this->getUrl(
+            'customerregistration/verification/pos',
+            ['_secure' => true]
+        );
     }
-
-
 }

@@ -51,11 +51,39 @@
         .form-login,
         .form-shipping-address {
             .lib-css(margin-top, @checkout-shipping-address__margin-top);
+        }
 
-            .fieldset {
-                .note {
-                    font-size: @font-size__base;
-                    margin-top: @indent__s;
+        .form-login {
+            border-bottom: 1px solid @border-color__base;
+
+            > .fieldset {
+                margin-bottom: @indent__s;
+            }
+
+            .actions-toolbar {
+                .lib-actions-toolbar(
+                    @_actions-toolbar-actions-position: justify,
+                    @_actions-toolbar-actions-reverse: false,
+                    @_actions-toolbar-margin: @indent__l 0 0,
+                    @_actions-toolbar-secondary-actions-links-margin-top: 9px
+                );
+
+                .primary {
+                    .action {
+                        width: 155px;
+                    }
+                }
+
+                .secondary {
+                    .action {
+                        .lib-link(
+                            @_link-color: @theme__color__primary-alt,
+                            @_link-color-visited: @theme__color__primary-alt,
+                            @_link-color-hover: @theme__color__primary-alt,
+                            @_link-color-active: @theme__color__primary-alt
+                        );
+                        .abs-action-link(@theme__color__primary-alt);
+                    }
                 }
             }
         }
@@ -227,14 +255,8 @@
 //  Mobile
 //  _____________________________________________
 
-.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .opc-wrapper {
-        .form-login {
-            .lib-css(border-bottom, 1px solid @checkout-shipping-item-before__border-color);
-            .lib-css(margin, @checkout-shipping-item-mobile__padding);
-            .lib-css(padding, @checkout-shipping-item-mobile__padding);
-        }
-
         .shipping-address-item {
             .lib-css(border-bottom, 1px solid @checkout-shipping-item-before__border-color);
             .lib-css(margin, @checkout-shipping-item-mobile__margin);
@@ -252,7 +274,7 @@
 
         .form-login,
         .form-shipping-address {
-            .lib-css(margin-top, @checkout-shipping-address__margin-top);
+            .lib-css(margin, @checkout-shipping-address__margin-top @layout__width-xs-indent 0);
         }
 
         .action-select-shipping-item {
@@ -320,6 +342,21 @@
 
         .shipping-address-item {
             padding-right: 150px;
+        }
+
+        .form-login {
+            .actions-toolbar {
+                .primary {
+                    .action {
+                        width: 180px;
+                    }
+                }
+
+                .secondary {
+                    float: left;
+                    margin-left: 50px;
+                }
+            }
         }
     }
 

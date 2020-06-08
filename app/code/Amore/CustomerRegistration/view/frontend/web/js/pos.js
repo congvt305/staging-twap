@@ -7,7 +7,7 @@ define([
     'jquery',
     'jquery-ui-modules/widget',
     'mage/validation'
-], function ($) {
+], function ($, customerData) {
     'use strict';
     var timer2 = '1:00';
     var refreshIntervalId;
@@ -19,9 +19,9 @@ define([
             getCodeSelector : '.sms-link',
             verifyCodeSelector : '.verify-link',
             verifyPosSelector : '.verify-registration-link',
-            firstNameSelector : '.first_name',
-            lastNameSelector : '.last_name',
-            mobileNumberSelector : '.mobile_number',
+            firstNameSelector : '.first-name',
+            lastNameSelector : '.last-name',
+            mobileNumberSelector : '.mobile-number',
             codeSelector : '.code',
 
 
@@ -48,6 +48,7 @@ define([
 
         getCode: function() {
 
+            $('.pos-verification-message').hide();
             var firstNameIsValid = this.isFieldValid('first_name');
             var lastNameIsValid = this.isFieldValid('last_name');
             var mobileNumberIsValid = this.isFieldValid('mobile_number');
@@ -157,7 +158,17 @@ define([
                             $('.form-create-account-pos').hide();
                             $('.customer-registration-form-create-account').show();
                             $('.customer-registration-form-create-account .form-create-account').show();
-                        }else {
+                        }else if(!response.verify && (response.code == 5 || response.code == 4)){
+
+                            if(response.url)
+                            {
+                                window.location.replace(response.url);
+                            }else {
+                                $('.pos-verification-message').html(response.message);
+                                $('.pos-verification-message').show();
+                            }
+                        }
+                        else {
                             $('.pos-verification-message').html(response.message);
                             $('.pos-verification-message').show();
                         }

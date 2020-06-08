@@ -2,7 +2,6 @@
 <!--
 /**
  * @author Eguana Team
- * @copyright Copyright (c) 2019 Eguana {http://eguanacommerce.com}
  * Created by PhpStorm
  * User: Abbas
  * Date: 05/18/20
@@ -50,6 +49,20 @@
 
                 <field id="maximum_mobile_number_digits" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
                     <label>Maximum Mobile Number Digits</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
+                <field id="membership_error_cms_page" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
+                    <label>Membership Error CMS Page</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
+                <field id="duplicate_membership_cms_page" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
+                    <label>Duplicate Membership CMS Page</label>
                     <depends>
                         <field id="active">1</field>
                     </depends>

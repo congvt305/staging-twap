@@ -1,7 +1,5 @@
 <?php
 /**
- * @author Eguana Team
- * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  * Created by PhpStorm
  * User: abbas
  * Date: 20. 5. 21
@@ -10,21 +8,23 @@
 
 namespace Amore\CustomerRegistration\Model;
 
+use Amore\CustomerRegistration\Api\Data\CustomerInterface;
+
 /**
- * PLEASE ENTER ONE LINE SHORT DESCRIPTION OF CLASS
+ * Implement the API module interface
  * Class POSIntegration
- * @package Amore\CustomerRegistration\Model
  */
 class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationInterface
 {
 
     /**
-     * SHORT DESCRIPTION
-     * LONG DESCRIPTION LINE BY LINE
-     * @param \Amore\CustomerRegistration\Api\Data\CustomerInterface $customer
+     * Implement the API module interface
+     *
+     * @param CustomerInterface $customer Customer
+     *
      * @return bool|void
      */
-    public function update(\Amore\CustomerRegistration\Api\Data\CustomerInterface $customer)
+    public function update(CustomerInterface $customer)
     {
         // TODO: Implement update() method.
     }

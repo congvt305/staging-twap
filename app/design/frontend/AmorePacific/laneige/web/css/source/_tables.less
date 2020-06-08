@@ -30,20 +30,75 @@
                 @_table_border-width: @table__border-width
                 );
 
-                tfoot {
-                    > tr {
-                        &:first-child {
-                            th,
-                            td {
+                &:not(.rma-track-info-table) {
+                    tfoot {
+                        > tr {
+                            &:first-child {
+                                th,
+                                td {
+                                    border-top: @table__border-width @table__border-style @table__border-color;
+                                    padding-top: @indent__base;
+                                }
+                            }
+
+                            &:nth-last-child(2) {
+                                th, td {
+                                    padding-bottom: @indent__base;
+                                }
+                            }
+
+                            &:last-child {
                                 border-top: @table__border-width @table__border-style @table__border-color;
-                                padding-top: @indent__base;
+
+                                th, td {
+                                    padding-top: @indent__base;
+                                }
+                            }
+
+                            &:not(.grand_total) {
+                                th,
+                                td {
+                                    color: #787878 !important;
+
+                                    span,
+                                    strong {
+                                        color: #787878 !important;
+                                        font-weight: @font-weight__bold;
+                                    }
+                                }
+                            }
+
+                            &.grand_total {
+                                th, td {
+                                    color: @primary__color__dark !important;
+                                }
+
+                                th {
+                                    .lib-font-size(16) !important;
+                                }
+
+                                td {
+                                    .lib-font-size(20) !important;;
+                                }
                             }
                         }
-                    }
 
-                    .mark {
-                        font-weight: @font-weight__regular;
-                        text-align: right;
+                        th,
+                        td {
+                            box-sizing: border-box;
+                            padding-top: 4px;
+                            padding-bottom: 4px;
+                            width: 50%;
+                        }
+
+                        th {
+                            padding-left: 19.5%;
+                            text-align: left;
+                        }
+
+                        td {
+                            padding-right: 19%;
+                        }
                     }
                 }
 
@@ -176,38 +231,48 @@
 
         .table {
             &:not(.totals) {
-                &:not(.table-comparison) {
+                &:not(.table-comparison):not(.rma-track-info-table) {
                     tfoot {
                         display: block;
 
                         tr {
+                            clear: both;
                             display: block;
                             &:extend(.abs-add-clearfix-mobile all);
 
                             &:first-child {
                                 th,
                                 td {
+                                    border: none;
                                     padding-top: @indent__base;
+                                }
+                            }
+
+                            &:last-child {
+                                th,
+                                td {
+                                    padding-top: 27px;
+                                    padding-bottom: 35px;
                                 }
                             }
                         }
 
-                        th {
+                        th,
+                        td {
                             box-sizing: border-box;
-                            float: left;
                             padding-left: 0;
                             padding-right: 0;
+                            width: auto;
+                        }
+
+                        th {
+                            float: left;
                             text-align: left;
-                            width: 70%;
                         }
 
                         td {
-                            box-sizing: border-box;
-                            float: left;
-                            padding-left: 0;
-                            padding-right: 0;
+                            float: right;
                             text-align: right;
-                            width: 30%;
                         }
                     }
                 }

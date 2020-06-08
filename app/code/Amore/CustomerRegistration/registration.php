@@ -1,14 +1,15 @@
 <?php
 /**
- * @author Eguana Team
- * @copyright Copyright (c) 2019 Eguana {http://eguanacommerce.com}
  * Created by PhpStorm
- * User: Abbas
- * Date: 05/18/20
- * Time: 11:32 AM
+ * User: abbas
+ * Date: 20. 5. 19
+ * Time: 오후 5:00
  */
-\Magento\Framework\Component\ComponentRegistrar::register(
-    \Magento\Framework\Component\ComponentRegistrar::MODULE,
+
+use Magento\Framework\Component\ComponentRegistrar;
+
+ComponentRegistrar::register(
+    ComponentRegistrar::MODULE,
     'Amore_CustomerRegistration',
     __DIR__
 );
