@@ -24,6 +24,18 @@
 
     .toolbar {
         &:extend(.abs-add-clearfix all);
+
+        .table-wrapper ~ & {
+            .toolbar-amount,
+            .limiter {
+                display: none !important;
+            }
+        }
+
+        &:not(.wishlist-toolbar):not(.toolbar-products) .pages {
+            margin-top: 80px;
+            text-align: center;
+        }
     }
 
     .toolbar-amount {
@@ -145,15 +157,18 @@
     }
 
     .toolbar {
-        &:not(.wishlist-toolbar-top):not(.toolbar-products) {
-            padding-top: 52px;
-        }
-
         &.toolbar-products {
             .pages {
                 .products.wrapper ~ & {
                     margin-top: 60px;
                 }
+            }
+        }
+
+        &.wishlist-toolbar {
+            .pages {
+                padding-top: 52px;
+                padding-bottom: @indent__base;
             }
         }
     }
@@ -230,15 +245,17 @@
     }
 
     .toolbar {
-        &:not(.wishlist-toolbar-top):not(.toolbar-products) {
-            padding-top: @indent__m;
-        }
-
         &.toolbar-products {
             .pages {
                 .products.wrapper ~ & {
                     margin-top: 65px;
                 }
+            }
+        }
+
+        &.wishlist-toolbar {
+            .pages {
+                margin-top: @indent__m;
             }
         }
     }

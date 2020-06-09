@@ -25,7 +25,7 @@
 @message-global-caution-link__color-active: @link__active__color;
 
 //  Header
-@header__background-color: false;
+@header__background-color: @color-white;
 @header-icons-color: @theme__color__secondary;
 @header-icons-color-hover: @theme__color__primary-alt;
 
@@ -134,7 +134,10 @@
         }
 
         .page-print & {
+            display: block;
             float: none;
+            margin: @indent__l 0 0 0;
+            position: relative;
         }
     }
 
@@ -144,7 +147,7 @@
                 text-align: center;
 
                 .page-layout-checkout &,
-                .page-layout-1column & {
+                .page-layout-1column:not(.checkout-onepage-success) & {
                     .lib-heading(h2);
                 }
             }
@@ -461,7 +464,7 @@
     .page-main {
         > .page-title-wrapper {
             .page-title {
-                .page-layout-1column & {
+                .page-layout-1column:not(.checkout-onepage-success) & {
                     margin-top: 0;
                 }
             }
@@ -583,7 +586,7 @@
                 display: inline-block;
 
                 .page-layout-checkout &,
-                .page-layout-1column & {
+                .page-layout-1column:not(.checkout-onepage-success) & {
                     display: block;
                     font-size: @h2__font-size-desktop;
                 }

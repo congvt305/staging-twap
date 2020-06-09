@@ -352,6 +352,10 @@
             }
         }
 
+        .action.tocart.disabled {
+            width: 100%;
+        }
+
         .action-offline {
             &:extend(.abs-action-link-button all);
             &:extend(.abs-button-l all);
@@ -974,6 +978,10 @@
 
                     &:nth-child(even) {
                         float: right;
+                    }
+
+                    &.tocart.disabled {
+                        margin-top: @indent__base;
                     }
                 }
             }

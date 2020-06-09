@@ -1,0 +1,89 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Amore\CustomerRegistration\ViewModel\POS $viewModel */
+$viewModel = $block->getData('view_model');
+$minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
+$maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
+/** @var \Amore\CustomerRegistration\Block\POS $block */
+
+?>
+<form class="form create account form-create-account-pos" data-mage-init='{"validation":{}}' method="post" id="form-pos" enctype="multipart/form-data" autocomplete="off">
+    <fieldset class="fieldset pos">
+        <legend class="legend"><span><?= $block->escapeHtml(__('POS Information')) ?></span></legend><br>
+        <div class="terms">
+            <?=
+               $block->getLayout()
+                ->createBlock('Magento\Cms\Block\Block')
+                ->setBlockId($viewModel->getTermsCmsBlockId())
+                ->toHtml();
+            ?>
+        </div>
+        <div class="field first_name required">
+            <label for="first_name" class="label"><span><?= /* @noEscape */ $block->escapeHtml(__('First Name')) ?></span></label>
+            <div class="control">
+                <?php //phpcs:disable ?>
+                <input type="text" name="first_name" data-validate='{"required":true, "maxlength":255}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('First Name')) ?>" class="input-text first-name" id="first_name">
+                <?php //phpcs:enable ?>
+            </div>
+        </div>
+        <div class="field last_name required">
+            <label for="last_name" class="label"><span><?= /* @noEscape */ $block->escapeHtml(__('Last Name')) ?></span></label>
+            <div class="control">
+                <?php //phpcs:disable ?>
+                <input type="text" name="last_name" data-validate='{"required":true, "maxlength":255}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('Last Name')) ?>" class="input-text last-name" id="last_name">
+                <?php //phpcs:enable ?>
+            </div>
+        </div>
+        <div class="field mobile required">
+            <label for="mobile_number" class="label"><span><?= /* @noEscape */ 'telephone' ?></span></label>
+            <div class="control">
+                <?php //phpcs:disable ?>
+                <input type="text" name="mobile_number" data-validate='{"required":true, "validate-number":true, "minlength":<?= $minimumMobileNumberDigits; ?>, "maxlength":<?= $maximumMobileNumberDigits; ?>}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('Telephone')) ?>" class="input-text mobile-number" id="mobile_number">
+                <a class="action primary sms-link">
+                    <span><?= $block->escapeHtml(__('Get Code')) ?></span>
+                </a>
+                <?php //phpcs:enable ?>
+            </div>
+            <span class="code-send-message" style="display: none"><?= $block->escapeHtml(__('Verification code has been sent to your mobile')); ?></span>
+        </div>
+        <div class="field verification-code required">
+            <label for="code" class="label"><span><?= /* @noEscape */ 'code' ?></span></label>
+            <div class="control">
+                <?php //phpcs:disable ?>
+                <input type="text" name="code" value="" disabled data-validate='{"required":true, "validate-number":true, "minlength":4, "maxlength":4}' title="<?= /* @noEscape */ $block->escapeHtml(__('Input 4 digit verification code')) ?>" class="input-text code" id="code">
+                <a disabled class="action primary verify-link">
+                    <span><?= $block->escapeHtml(__('Verify')) ?></span>
+                </a>
+                <span class="countdown"></span><br/><br/>
+                <span class="verification-message" style="display: none"><?= $block->escapeHtml(__('Code has been verified please move to the next step')); ?></span>
+                <?php //phpcs:enable ?>
+            </div>
+        </div>
+        <?php echo $block->getChildHtml('form.additional.info'); ?>
+    </fieldset>
+    <span class="pos-verification-message" style="display: none"></span>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <a disabled class="action primary verify-registration-link">
+                <span><?= $block->escapeHtml(__('Verify Registration')) ?></span>
+            </a>
+            <!--<button type="submit" disabled class="action submit primary" title="<?/*= $block->escapeHtmlAttr(__('Registration Verification')) */?>"><span><?/*= $block->escapeHtml(__('Registration Verification')) */?></span></button>-->
+        </div>
+    </div>
+</form>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "posform":{
+                "sendCodeUrl": "<?= $block->getSendCodeUrl(); ?>",
+                "verifyCodeUrl": "<?= $block->getVerifyCodeUrl(); ?>",
+                "POSVerificationUrl": "<?= $block->getPOSVerificationUrl(); ?>",
+                "codeExpirationMinutes": "<?= $viewModel->getCodeExpirationTimeInMinutes()?$viewModel->getCodeExpirationTimeInMinutes():'2:00'; ?>"
+            }
+        }
+    }
+</script>

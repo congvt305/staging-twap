@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * Created by PhpStorm
+ * User: Abbas
+ * Date: 05/18/20
+ * Time: 11:32 AM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="customerregistraion" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1">
+
+            <class>separator-top</class>
+            <label>Customer Registration</label>
+            <tab>amore_extensions_tab</tab>
+            <resource>Amore_CustomerRegistration::configuration</resource>
+
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
+                <label>General Configuration</label>
+
+                <field id="active" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" >
+                    <label>Enable Extension</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="terms_cms_block_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1">
+                    <label>Terms CMS Block Id</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
+                <field id="code_expiration_time_in_minutes" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1">
+                    <label>Expiration time in minutes</label>
+                    <comment>It's format is minutes:seconds. For example 1:00 for one minute zero seconds.</comment>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
+                <field id="minimum_mobile_number_digits" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1">
+                    <label>Minimum Mobile Number Digits</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
+                <field id="maximum_mobile_number_digits" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
+                    <label>Maximum Mobile Number Digits</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
+                <field id="membership_error_cms_page" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
+                    <label>Membership Error CMS Page</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
+                <field id="duplicate_membership_cms_page" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
+                    <label>Duplicate Membership CMS Page</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

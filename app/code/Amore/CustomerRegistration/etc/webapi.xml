@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * Created by PhpStorm
+ * User: Abbas
+ * Date: 05/18/20
+ * Time: 11:32 AM
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <!-- Customer Account -->
+    <route url="/V1/customerupdate/:customerId" method="PUT">
+        <service class="Amore\CustomerRegistration\Api\POSIntegrationInterface" method="update"/>
+        <resources>
+            <resource ref="Amore_CustomerRegistration::api"/>
+        </resources>
+    </route>
+
+</routes>

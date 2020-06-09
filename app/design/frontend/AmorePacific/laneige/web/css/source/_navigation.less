@@ -536,6 +536,26 @@
                 -ms-flex-pack: end;
                 justify-content: flex-end;
             }
+
+            &:not(.nav-3):not(.nav-4):not(.nav-5) {
+                .level0 {
+                    > ul.submenu {
+                        padding-right: @layout-indent__width;
+                        -webkit-box-pack: center;
+                        -ms-flex-pack: center;
+                        justify-content: center;
+                        max-width: 100%;
+                    }
+                }
+            }
+
+            &.nav-3,
+            &.nav-4,
+            &.nav-5 {
+                div.submenu {
+                    min-height: 385px;
+                }
+            }
         }
 
         .level1 {

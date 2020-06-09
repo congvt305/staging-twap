@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * Created by PhpStorm
+ * User: Abbas
+ * Date: 05/18/20
+ * Time: 11:32 AM
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block name="customer_form_pos" class="Amore\CustomerRegistration\Block\POS" template="Amore_CustomerRegistration::form/pos.phtml" before="-" ifconfig="customerregistraion/general/active">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Amore\CustomerRegistration\ViewModel\POS</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="customer_form_register">
+            <action method="setTemplate" ifconfig="customerregistraion/general/active">
+                <argument name="template" xsi:type="string">Amore_CustomerRegistration::form/register.phtml</argument>
+            </action>
+            <arguments>
+                <argument name="view_model" xsi:type="object">Amore\CustomerRegistration\ViewModel\Register</argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

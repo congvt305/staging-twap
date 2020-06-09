@@ -31,13 +31,6 @@
                 }
             }
 
-            &.choice {
-                .label {
-                    display: inline;
-                    font-weight: normal;
-                }
-            }
-
             .label {
                 .column:not(.main) & {
                     font-weight: normal;
@@ -58,6 +51,11 @@
                 line-height: 24px;
             }
 
+            .note {
+                display: block;
+                text-align: right;
+            }
+
             input[type=file] {
                 margin: @indent__xs 0;
             }
@@ -72,6 +70,14 @@
                 display: block;
             }
         }
+
+        .legend + br {
+            display: none;
+        }
+    }
+
+    textarea {
+        min-height: 160px;
     }
 
     .legend + .fieldset,
@@ -80,7 +86,7 @@
     }
 
     .legend {
-        border-bottom: 1px solid @primary__color__dark;
+        border-bottom: 2px solid @primary__color__dark;
         font-weight: @font-weight__bold;
         width: 100%;
 
@@ -90,7 +96,17 @@
     }
 
     .field.choice {
-        margin-bottom: 12px !important;
+        .lib-vendor-prefix-display(flex);
+        .lib-vendor-box-align(center);
+        -ms-flex-item-align: center;
+        -webkit-align-self: center;
+        align-self: center;
+
+        .label {
+            display: inline;
+            font-weight: normal;
+            margin-bottom: 0;
+        }
     }
 
     input[type="checkbox"]{
@@ -317,10 +333,7 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-    .legend {
-        .lib-font-size(20) !important;
-        border-bottom-width: 2px;
-        margin-bottom: 24px !important;
-        padding-bottom: 14px !important;
+    .fieldset .legend {
+        margin-bottom: @indent__base;
     }
 }

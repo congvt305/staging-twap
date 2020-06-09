@@ -13,6 +13,7 @@
 & when (@media-common = true) {
     .abs-address-blocks {
         .lib-css(line-height, @checkout-shipping-item__line-height);
+        position: relative;
 
         br {
             display: none;
@@ -25,6 +26,26 @@
         strong,
         a {
             display: block;
+        }
+
+        .action {
+            &.edit-address-link,
+            &.action-edit-address {
+                .lib-icon-font(
+                    @icon-settings,
+                    @_icon-font-size: 32px,
+                    @_icon-font-line-height: 32px,
+                    @_icon-font-color: #ccc,
+                    @_icon-font-color-hover: @icon-font__color-hover,
+                    @_icon-font-color-active: @icon-font__color-active,
+                    @_icon-font-text-hide: true,
+                    @_icon-font-position: before
+                );
+                position: absolute;
+                right: 100px;
+                top: 50%;
+                margin-top: -16px;
+            }
         }
     }
 }
@@ -39,13 +60,12 @@
         }
 
         .item {
-            margin: 16px 0 0;
+            margin: 18px 0 0;
 
             a,
             > strong {
-                .lib-css(color, @account-nav-color);
+                .lib-css(color, @primary__color);
                 display: block;
-                color: @link__color;
                 padding: 3px 0 3px 8px;
             }
 
@@ -71,7 +91,7 @@
     .abs-nav-blocks {
         border-left: 1px solid #cccccc;
         border-right: 1px solid #cccccc;
-        margin-bottom: @indent__xl;
+        margin-bottom: 46px;
 
         .title {
             &:extend(.abs-toggling-title-mobile all);
@@ -325,7 +345,6 @@
             font-weight: @font-weight__regular;
             line-height: 26px;
             padding-bottom: 9px;
-            text-transform: uppercase;
 
             > a {
                 .lib-icon-font(
@@ -354,6 +373,7 @@
         .box-title {
             word-break: break-word;
 
+            strong,
             span {
                 .lib-font-size(14);
                 color: @primary__color__lighter;
@@ -540,12 +560,14 @@
 & when (@media-common = true) {
     .abs-add-fields {
         .fieldset {
-            margin-bottom: 50px;
-
             .field {
-                &:not(.choice) {
-                    .control {
-                        width: 70%;
+                width: 100%;
+            }
+
+            .fields {
+                &.additional {
+                    > .fieldset {
+                        margin-bottom: @indent__xl;
                     }
                 }
             }
@@ -555,12 +577,6 @@
                     &:extend(.abs-add-clearfix all);
 
                     > .secondary {
-                        .action {
-                            &.add {
-                                margin-top: @indent__l;
-                            }
-                        }
-
                         float: left;
                     }
                 }
@@ -568,7 +584,17 @@
 
             .fields {
                 .actions-toolbar {
-                    margin: 0;
+                    margin: 0 7px 3px 0;
+
+                    .secondary {
+                        display: block;
+                    }
+
+                    .action {
+                        display: block;
+                        text-align: right;
+                        width: 100%;
+                    }
                 }
             }
         }
@@ -580,13 +606,28 @@
         }
 
         .additional {
-            margin-top: 55px;
-            position: relative;
+            &.row {
+                border-top: 1px solid @border-color__base;
+                margin-top: @indent__xl;
+                padding-top: 17px;
+                position: relative;
+            }
         }
 
         .action {
             &.remove {
-                &:extend(.abs-action-remove all);
+                .lib-button-as-link(
+                    @_link-color: @theme__color__primary-alt,
+                    @_margin: false
+                );
+                border-radius: 0;
+                font-size: inherit;
+                font-weight: @font-weight__regular;
+
+                &:active,
+                &:not(:focus) {
+                    box-shadow: none;
+                }
             }
         }
     }
@@ -600,17 +641,9 @@
     .abs-add-fields-desktop {
         .fieldset {
             .field {
-                &:not(.choice) {
+                &:not(.choice):not(.comment):not(.contact) {
                     .control {
-                        width: 50%;
-                    }
-                }
-            }
-
-            .additional {
-                .action {
-                    &.remove {
-                        &:extend(.abs-action-remove-desktop all);
+                        width: 65.5%;
                     }
                 }
             }
@@ -1207,6 +1240,7 @@
         );
 
         &:after {
+            font-weight: @font-weight__bold;
             position: absolute;
             right: 12px;
             top: 0;
@@ -1253,8 +1287,12 @@
 
 & when (@media-common = true) {
     .abs-status {
+        .lib-font-size(16);
+        border: 1px solid @border-color__base;
+        color: @primary__color__lighter;
         display: inline-block;
-        margin-bottom: @indent__base;
+        margin-left: 16px;
+        padding: 1px 15px;
     }
 }
 

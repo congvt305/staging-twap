@@ -1,0 +1,17 @@
+{
+    "eguana_directory_region_city": {
+        "column": {
+            "city_id": true,
+            "region_id": true,
+            "code": true,
+            "default_name": true
+        },
+        "index": {
+            "EGUANA_DIRECTORY_REGION_CITY_REGION_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "EGUANA_DIR_REGION_CITY_REGION_ID_DIR_COUNTRY_REGION_REGION_ID": true
+        }
+    }
+}

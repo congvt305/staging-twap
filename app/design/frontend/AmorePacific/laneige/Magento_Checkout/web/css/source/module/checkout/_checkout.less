@@ -1,0 +1,271 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+@checkout-wrapper__margin: 0;
+@checkout-wrapper__columns: 8;
+
+@checkout-step-title__border: 2px solid @primary__color__dark;
+@checkout-step-title__font-size: 20px;
+@checkout-step-title__font-weight: @font-weight__semibold;
+@checkout-step-title__padding: @indent__m;
+
+@checkout-step-title-mobile__font-size: 16px;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    .checkout-index-index {
+        .page-wrapper {
+            background: @sidebar__background-color;
+        }
+
+        .page-title-wrapper {
+            text-align: center;
+        }
+    }
+
+    .checkout-container {
+        &:extend(.abs-add-clearfix all);
+        .lib-css(margin, 0 0 @checkout-wrapper__margin);
+    }
+
+    .opc-wrapper {
+        .lib-css(margin, 0 0 @checkout-wrapper__margin);
+
+        .opc {
+            &:extend(.abs-reset-list all);
+
+            li {
+                .lib-css(background, @checkout-summary__background-color);
+            }
+        }
+
+        .step-title {
+            &:extend(.abs-checkout-title all);
+        }
+    }
+
+    .checkout-onepage-success,
+    .page-layout-checkout {
+        .page-header {
+            .lib-css(background, @checkout-summary__background-color);
+            text-align: center;
+        }
+
+        .header.content,
+        .nav-sections,
+        .nav-toggle {
+            display: none;
+        }
+
+        .logo {
+            display: inline-block;
+            margin: @indent__base 0 15px;
+            position: static;
+        }
+    }
+
+    .checkout-onepage-success {
+        &:extend(.abs-add-clearfix all);
+
+        .page-title-wrapper  {
+            .page-title {
+                display: block !important;
+                margin-bottom: @indent__l*2;
+                margin-top: @indent__xl*2;
+            }
+        }
+
+        .print {
+            display: none;
+        }
+
+        #registration,
+        .checkout-success {
+            text-align: center;
+
+            p {
+                color: #787878;
+                font-size: 16px;
+                margin-bottom: @indent__base;
+
+                &:first-child {
+                    color: @primary__color__dark;
+                }
+
+                span,
+                a {
+                    font-size: @font-size__l;
+                    .lib-link(
+                        @_link-color: @primary__color__dark,
+                        @_link-color-visited: @primary__color__dark,
+                        @_link-color-hover: @primary__color__dark,
+                        @_link-color-active: @primary__color__dark
+                    );
+                }
+
+                span {
+                    &:last-child {
+                        font-weight: @font-weight__semibold;
+                    }
+                }
+            }
+
+            .action.primary {
+                &:extend(.abs-button-l all);
+                max-width: 300px;
+                margin-top: @indent__xl*2;
+                width: 100%;
+            }
+
+            .actions-toolbar {
+                .primary {
+                    display: block;
+                    max-width: 300px;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+            }
+        }
+
+        #registration {
+            .action.primary {
+                .lib-button-revert-secondary-color();
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .opc-wrapper {
+        margin-left: -@layout__width-xs-indent;
+        margin-right: -@layout__width-xs-indent;
+    }
+
+    .checkout-index-index {
+        .columns .column.main {
+            padding: 0;
+        }
+    }
+
+    .checkout-onepage-success {
+        .checkout-success {
+            padding-bottom: @indent__m;
+
+            .actions-toolbar {
+                .primary {
+                    max-width: 50%;
+                }
+
+                .action {
+                    &.primary {
+                        &.continue {
+                            position: fixed;
+                            bottom: 0;
+                            left: 0;
+                            width: 100%;
+                            z-index: 2;
+                        }
+                    }
+                }
+            }
+        }
+
+        #registration {
+            border-top: 1px solid @border-color__base;
+
+            .action.primary {
+                &:extend(.abs-revert-secondary-blue-color-mobile all);
+                position: fixed;
+                bottom: 0;
+                left: 50%;
+                width: 50%;
+                z-index: 2;
+
+            }
+        }
+
+        .column.main {
+            div:last-child {
+                .actions-toolbar {
+                    .primary {
+                        max-width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .opc-wrapper {
+        &:extend(.abs-add-box-sizing-desktop-m all);
+        .lib-layout-column(2, 1, @checkout-wrapper__columns);
+        padding-right: @indent__base;
+
+        .step-content {
+            margin: 0;
+        }
+    }
+
+    .checkout-index-index {
+        .page-main > .page-title-wrapper {
+            .page-title {
+                margin-top: 70px;
+            }
+        }
+    }
+
+    .checkout-onepage-success {
+        .page-title-wrapper {
+            .page-title {
+                margin-top: 110px;
+            }
+        }
+
+        .print {
+            display: block;
+            float: right;
+            margin: 22px 0 0;
+        }
+
+        .column.main {
+            text-align: center;
+            padding-bottom: 24%;
+        }
+
+        #registration,
+        .checkout-success {
+            display: inline-block;
+            vertical-align: top;
+            max-width: 380px;
+        }
+
+        #registration {
+            border-left: 1px solid @border-color__base;
+            padding-left: 50px;
+            margin-left: 50px;
+
+            br {
+                display: none;
+            }
+        }
+    }
+}
