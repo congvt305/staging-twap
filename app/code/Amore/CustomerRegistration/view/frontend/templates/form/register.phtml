@@ -163,13 +163,6 @@ $viewModel = $block->getData('view_model');
                 <?= $_mobile->setDate($block->getFormData()->getMobileNumber())->toHtml() ?>
             <?php endif ?>
 
-            <?php /*$customerAttributes = $block->getChildBlock('customer_form_user_attributes');*/?><!--
-            <?php /*if ($customerAttributes): */?>
-                <?php /*$customerAttributes->setObject($block->getFormData())->setEntityType('customer')->setShowContainer(false);*/?>
-                <?php /*$block->restoreSessionData($customerAttributes->getMetadataForm());*/?>
-                <?/*= $customerAttributes->toHtml() */?>
-            --><?php /*endif;*/?>
-
             <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
             <?php if ($_dob->isEnabled()) : ?>
                 <?= $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>

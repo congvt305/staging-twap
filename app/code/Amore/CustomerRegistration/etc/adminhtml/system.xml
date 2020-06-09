@@ -68,6 +68,25 @@
                     </depends>
                 </field>
             </group>
+
+            <group id="pos" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
+                <label>POS System</label>
+                <depends>
+                    <field id="customerregistraion/general/active">1</field>
+                </depends>
+
+                <field id="base_url" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1">
+                    <label>Base URL</label>
+                </field>
+
+                <field id="member_info" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1">
+                    <label>Memeber Information</label>
+                </field>
+
+                <field id="member_join" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1">
+                    <label>Memeber Join</label>
+                </field>
+            </group>
         </section>
     </system>
 </config>

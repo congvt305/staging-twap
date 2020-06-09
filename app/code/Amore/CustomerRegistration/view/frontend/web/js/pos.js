@@ -155,6 +155,35 @@ define([
                     success: function (response) {
 
                         if (response.verify) {
+                            $('.form-create-account #firstname').prop("readonly", true);
+                            $('.form-create-account #lastname').prop("readonly", true);
+                            $('.form-create-account #mobile_number').prop("readonly", true);
+                            if(response.pos.firstName){
+                                $('.form-create-account #firstname').val(response.pos.firstName);
+                                $('.form-create-account #lastname').val(response.pos.lastName);
+                                $('.form-create-account #mobile_number').val(response.pos.mobileNo);
+                                $('.form-create-account #email_address').val(response.pos.email);
+                                $('.form-create-account #gender').val(response.pos.sex == 'M'?1:2);
+                                $('.form-create-account #dob').val(response.pos.birthDay);
+                                $('.form-create-account #is_subscribed').prop('checked',response.pos.emailYN == 'Y'?true:false);
+                                $('.form-create-account .sms_subscription_status_checkbox').prop('checked',response.pos.smsYN == 'Y'?true:false);
+                                $('.form-create-account #sms_subscription_status').val(response.pos.smsYN == 'Y'?1:0);
+                                $('.form-create-account .dm_subscription_status_checkbox').prop('checked',response.pos.dmYN == 'Y'?true:false);
+                                $('.form-create-account #dm_subscription_status').val(response.pos.dmYN == 'Y'?1:0);
+                                $('.form-create-account #dm_city').val(response.pos.homeCity);
+                                $('.form-create-account #dm_state').val(response.pos.homeState);
+                                $('.form-create-account #dm_detailed_address').val(response.pos.homeAddr1);
+                                $('.form-create-account #dm_zipcode').val(response.pos.homeZip);
+                                if(response.pos.dmYN == 'Y')
+                                {
+                                    $('.dm-address').toggle();
+                                }
+
+                            }else {
+                                $('.form-create-account #firstname').val($(this.options.firstNameSelector).val());
+                                $('.form-create-account #lastname').val($(this.options.lastNameSelector).val());
+                                $('.form-create-account #mobile_number').val($(this.options.mobileNumberSelector).val());
+                            }
                             $('.form-create-account-pos').hide();
                             $('.customer-registration-form-create-account').show();
                             $('.customer-registration-form-create-account .form-create-account').show();
