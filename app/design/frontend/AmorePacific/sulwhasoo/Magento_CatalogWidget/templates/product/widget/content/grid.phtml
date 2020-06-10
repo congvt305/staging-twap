@@ -76,9 +76,11 @@ try {
                                 </div>
                             </div>
                             <div class="product-item-details">
-                                <span class="product-item-flag">
-                                    <?php echo $_item->getAttributeText('flag');?>
-                                </span>
+                                <?php if ($_item->hasData('flag')): ?>
+                                    <span class="product-item-flag">
+                                        <?= $_item->getAttributeText('flag'); ?>
+                                    </span>
+                                <?php endif; ?>
                                 <strong class="product-item-name">
                                     <a title="<?= $block->escapeHtml($_item->getName()) ?>"
                                        href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
