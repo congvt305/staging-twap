@@ -14,6 +14,16 @@ use Magento\Framework\HTTP\ZendClient;
 use Magento\Framework\HTTP\ZendClientFactory;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Amore\CustomerRegistration\Helper\Data;
+use Magento\Customer\Model\Data\Customer;
+use Magento\Newsletter\Model\SubscriberFactory;
+use Magento\Newsletter\Model\Subscriber;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientFactory;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\ResponseFactory;
+use Magento\Framework\Webapi\Rest\Request;
+use Magento\Customer\Api\CustomerRepositoryInterface;
 
 /**
  * In this class we will call the POS API
@@ -35,26 +45,42 @@ class POSSystem
      * @var Data
      */
     private $confg;
+    /**
+     * @var SubscriberFactory
+     */
+    private $subscriberFactory;
+    /**
+     * @var CustomerRepositoryInterface
+     */
+    private $customerRepository;
 
-    public function __construct(ZendClientFactory $httpClientFactory,
-                                Data $confg,
-                                DateTime $date)
-    {
+    public function __construct(
+        ZendClientFactory $httpClientFactory,
+        Data $confg,
+        SubscriberFactory $subscriberFactory,
+        CustomerRepositoryInterface $customerRepository,
+        DateTime $date
+    ) {
         $this->httpClientFactory = $httpClientFactory;
         $this->date = $date;
         $this->confg = $confg;
+        $this->subscriberFactory = $subscriberFactory;
+        $this->customerRepository = $customerRepository;
     }
 
     public function getMemberInfo($firstName, $lastName, $mobileNumber)
     {
         $posData = $this->callPOSInfoAPI($firstName, $lastName, $mobileNumber);
-        $posData['birthDay'] =  substr_replace($posData['birthDay'], '/', 4, 0);
-        $posData['birthDay'] =  substr_replace($posData['birthDay'], '/', 7, 0);
+        if(isset($posData['birthDay'])) {
+            $posData['birthDay'] = substr_replace($posData['birthDay'], '/', 4, 0);
+            $posData['birthDay'] = substr_replace($posData['birthDay'], '/', 7, 0);
+        }
         return $posData;
     }
 
     private function callPOSInfoAPI($firstName, $lastName, $mobileNumber)
     {
+        return [];
         $result = [];
 
         $result = [
@@ -80,7 +106,7 @@ class POSSystem
 
         /** @var ZendClient $client */
         /*$client = $this->httpClientFactory->create();
-        $client->setUri($this->confg->getMemberJoinURL());
+        $client->setUri($this->confg->getMemberInfoURL());
         $client->setMethod(\Zend_Http_Client::POST);
         $client->setHeaders(\Zend_Http_Client::CONTENT_TYPE, 'application/json');
         $client->setHeaders('Accept','application/json');
@@ -106,8 +132,142 @@ class POSSystem
         return $result;*/
     }
 
-    public function callMemberJoin($customer, $action)
+    /**
+     * It will call the POS API join
+     * Whenever customer will update or register this function will call and it will sync with the POS system
+     *
+     * @param Customer $customer
+     * @param string   $action
+     */
+    public function syncMember($customer, $action)
     {
+        try {
+            $parameters = [];
+            $parameters['cstmIntgSeq'] = 'TW1020000012345';
+            $parameters['if_flag'] = 'I';
+            $parameters['firstName'] = $customer->getFirstname();
+            $parameters['lastName'] = $customer->getLastname();
+            $parameters['birthDay'] = $customer->getDob();
+            $parameters['mobileNo'] = $customer->getCustomAttribute('mobile_number');
+            $parameters['email'] = $customer->getEmail();
+            $parameters['sex'] = $customer->getGender() == '1' ? 'M' : 'F';
+            $parameters['emailYN'] = $this->isCustomerSubscribToNewsLetters($customer->getId()) ? 'Y' : 'N';
+            $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+            $parameters['callYN'] = 'N';
+            $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+            $parameters['homeCity'] = $customer->getCustomAttribute('dm_city');
+            $parameters['homeState'] = $customer->getCustomAttribute('dm_state');
+            $parameters['homeAddr1'] = $customer->getCustomAttribute('dm_detailed_address');
+            $parameters['homeZip'] = $customer->getCustomAttribute('dm_zipcode');
+            $parameters['statusCD'] = $action == 'register' ? '01' : '02';
 
+            $response = $this->callJoinAPI($parameters);
+            $this->savePOSSyncReport($customer, $response);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    private function callJoinAPI($parameters)
+    {
+        return true;
+
+        $response = $this->doRequest(
+            $this->confg->getMemberJoinURL(),
+            $parameters,
+            Request::HTTP_METHOD_POST
+        );
+
+        return $response;
+        /** @var ZendClient $client */
+       /* $client = $this->httpClientFactory->create();
+        $client->setUri($this->confg->getMemberJoinURL());
+        $client->setMethod(\Zend_Http_Client::POST);
+        $client->setHeaders(\Zend_Http_Client::CONTENT_TYPE, 'application/json');
+        $client->setHeaders('Accept', 'application/json');
+        $client->setHeaders("Authorization", "Bearer yourvalue");
+        $client->setParameterPost($parameters);
+
+        try {
+            $response = $client->request();
+
+            $responseArray = [];
+            parse_str(strstr($response->getBody(), 'RESULT'), $responseArray);
+
+            $result->setData(array_change_key_case($responseArray, CASE_LOWER));
+            $result->setData('result_code', $result->getData('result'));
+        } catch (\Zend_Http_Client_Exception $e) {
+            return $e->getMessage();
+        }
+
+        return $result;*/
+    }
+
+    /**
+     * To check whether customer is subscribed to the news letters or not
+     *
+     * @param int $customerId
+     *
+     * @return bool
+     */
+    private function isCustomerSubscribToNewsLetters($customerId) {
+        /**
+         * @var Subscriber $subscriber
+         */
+        $subscriber = $this->subscriberFactory->create();
+        $status = $subscriber->loadByCustomerId((int)$customerId)->isSubscribed();
+
+        return (bool)$status;
+    }
+
+    /**
+     * To save the POS API response with the customer
+     *
+     * @param Customer $customer
+     * @param $syncResult
+     */
+    private function savePOSSyncReport($customer, $syncResult)
+    {
+        $customer->setCustomAttribute('pos_synced_report', 'Done');
+        $customer->setCustomAttribute('pos_synced_successfully', 1);
+        $this->customerRepository->save($customer);
+    }
+
+    /**
+     * Do API request with provided params.
+     * I follow the way recommended at https://devdocs.magento.com/guides/v2.4/ext-best-practices/tutorials/create-integration-with-api.html
+     * to call external APIs
+     *
+     * @param string $uriEndpoint
+     * @param array $params
+     * @param string $requestMethod
+     *
+     * @return Response
+     */
+    private function doRequest(
+        string $uriEndpoint,
+        array $params = [],
+        string $requestMethod = Request::HTTP_METHOD_GET
+    ): Response {
+        /** @var Client $client */
+        $client = $this->clientFactory->create(['config' => [
+            'base_uri' => self::API_REQUEST_URI
+        ]]);
+
+        try {
+            $response = $client->request(
+                $requestMethod,
+                $uriEndpoint,
+                $params
+            );
+        } catch (GuzzleException $exception) {
+            /** @var Response $response */
+            $response = $this->responseFactory->create([
+                'status' => $exception->getCode(),
+                'reason' => $exception->getMessage()
+            ]);
+        }
+
+        return $response;
     }
 }

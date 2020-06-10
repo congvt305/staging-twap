@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * Created by PhpStorm
+ * User: Abbas
+ * Date: 06/09/20
+ * Time: 11:32 AM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- Add this event the global events so that admin created customers and frontend created customer can sync with POS system -->
+    <event name="customer_register_success">
+        <observer instance="Amore\CustomerRegistration\Observer\Customer\RegisterSuccess" name="customer_register_succes"/>
+    </event>
+</config>
