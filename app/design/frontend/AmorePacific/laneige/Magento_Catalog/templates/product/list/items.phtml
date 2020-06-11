@@ -201,10 +201,10 @@ $_item = null;
                                 <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
                                    class="product photo product-item-photo">
                                     <span class="flags">
-                                        <?php if($_item->getData('new')):?>
+                                        <?php if($_item->hasData('new')):?>
                                             <span class="flag new"><?= $block->escapeHtml($_item->getResource()->getAttribute('new')->getStoreLabel());?></span>
                                         <?php endif;?>
-                                        <?php if($_item->getData('best')):?>
+                                        <?php if($_item->hasData('best')):?>
                                             <span class="flag best"><?= $block->escapeHtml($_item->getResource()->getAttribute('best')->getStoreLabel()); ?></span>
                                         <?php endif;?>
                                 </span>
@@ -268,7 +268,7 @@ $_item = null;
                                                         <?php endif; ?>
                                                     <?php endif; ?>
 
-                                                    <?php if ($showAddTo && !$_item->getData('offline')):?>
+                                                    <?php if ($showAddTo && !$_item->hasData('offline')):?>
                                                         <div class="secondary-addto-links actions-secondary"
                                                              data-role="add-to-links">
                                                             <?php if ($addToBlock = $block->getChildBlock('addto')):?>
