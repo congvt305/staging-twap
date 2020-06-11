@@ -1,0 +1,26 @@
+{
+    "eguana_magazine": {
+        "column": {
+            "entity_id": true,
+            "store_id": true,
+            "title": true,
+            "content": true,
+            "thumbnail_image": true,
+            "thumbnail_alt": true,
+            "created_at": true,
+            "updated_at": true,
+            "is_active": true,
+            "sort_order": true,
+            "city": true,
+            "country_id": true,
+            "coming_soon": true,
+            "urlkey": true
+        },
+        "index": {
+            "EGUANA_MAGAZINE_TITLE_CONTENT": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}
