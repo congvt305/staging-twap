@@ -84,6 +84,13 @@ define([
             }.bind(this));
 
             this.searchLabel.on('click', function (e) {
+                if ($('html').hasClass('nav-open')) {
+                    $('html').removeClass('nav-open');
+                    setTimeout(function () {
+                        $('html').removeClass('nav-before-open');
+                    }, 300);
+                }
+
                 // allow input to lose its' focus when clicking on label
                 if (this.isActive()) {
                     e.preventDefault();
