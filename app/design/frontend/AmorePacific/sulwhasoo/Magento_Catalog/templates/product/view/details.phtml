@@ -23,13 +23,13 @@
                     $label = $block->getChildData($alias, 'title');
                     ?>
                     <div class="data item title"
-                         aria-labelledby="tab-label-<?= /* @escapeNotVerified */ $alias ?>-title"
-                         id="tab-label-<?= /* @escapeNotVerified */ $alias ?>">
+                         aria-labelledby="tab-label-<?= $block->escapeHtmlAttr($alias) ?>-title"
+                         id="tab-label-<?= $block->escapeHtmlAttr($alias) ?>">
                         <a class="data switch"
                            tabindex="-1"
-                           href="#<?= /* @escapeNotVerified */ $alias ?>"
-                           id="tab-label-<?= /* @escapeNotVerified */ $alias ?>-title">
-                            <?= /* @escapeNotVerified */ $label ?>
+                           href="#<?= $block->escapeUrl($alias) ?>"
+                           id="tab-label-<?= $block->escapeHtmlAttr($alias) ?>-title">
+                            <?= /* @noEscape */ $label ?>
                         </a>
                     </div>
                 <?php endforeach;?>
@@ -44,8 +44,8 @@
                     $alias = $layout->getElementAlias($name);
                     $label = $block->getChildData($alias, 'title');
                     ?>
-                    <div class="data item content" id="<?= /* @escapeNotVerified */ $alias ?>">
-                        <?= /* @escapeNotVerified */ $html ?>
+                    <div class="data item content" id="<?= $block->escapeHtmlAttr($alias) ?>">
+                        <?= /* @noEscape */ $html ?>
                     </div>
                 <?php endforeach;?>
             </div>

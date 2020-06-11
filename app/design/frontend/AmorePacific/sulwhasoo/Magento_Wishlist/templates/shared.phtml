@@ -38,8 +38,8 @@
                                         <?= $block->escapeHtml($product->getName()) ?>
                                     </a>
                                 </strong>
-                                <?php
-                                echo $block->getProductPriceHtml(
+                                <?=
+                                $block->getProductPriceHtml(
                                     $product,
                                     'wishlist_configured_price',
                                     \Magento\Framework\Pricing\Render::ZONE_ITEM_LIST,

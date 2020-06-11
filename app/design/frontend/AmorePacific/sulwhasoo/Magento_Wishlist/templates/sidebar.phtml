@@ -9,9 +9,9 @@
 /** @var \Magento\Wishlist\Block\Customer\Sidebar $block */
 ?>
 <?php
-$wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
+$wishlistHelper = $this->helper(\Magento\Wishlist\Helper\Data::class);
 try {
-    $ecommerceStatus = $this->helper('Eguana\EcommerceStatus\Helper\Data')->getECommerceStatus();
+    $ecommerceStatus = $this->helper(\Eguana\EcommerceStatus\Helper\Data::class)->getECommerceStatus();
 }catch (\Exception $e){
     $ecommerceStatus = 1;
 }
@@ -27,22 +27,22 @@ try {
         <div class="block-content">
             <strong class="subtitle"><?= $block->escapeHtml(__('Last Added Items')) ?></strong>
             <!-- ko if: wishlist().counter -->
-                <ol class="product-items no-display" id="wishlist-sidebar" data-bind="foreach: wishlist().items, css: {'no-display': null}">
-                    <li class="product-item">
-                        <div class="product-item-info">
-                            <a class="product-item-photo" data-bind="attr: { href: product_url, title: product_name }">
-                                <!-- ko template: {name: $data.image.template, data: $data.image} --><!-- /ko -->
-                            </a>
-                            <div class="product-item-details">
-                                <strong class="product-item-name">
-                                    <a data-bind="attr: { href: product_url }" class="product-item-link">
-                                        <span data-bind="html: product_name"></span>
-                                    </a>
-                                </strong>
-                                <div data-bind="html: product_price"></div>
-                            </div>
-                            <div class="product-item-actions">
-                                <?php if($ecommerceStatus):?>
+            <ol class="product-items no-display" id="wishlist-sidebar" data-bind="foreach: wishlist().items, css: {'no-display': null}">
+                <li class="product-item">
+                    <div class="product-item-info">
+                        <a class="product-item-photo" data-bind="attr: { href: product_url, title: product_name }">
+                            <!-- ko template: {name: $data.image.template, data: $data.image} --><!-- /ko -->
+                        </a>
+                        <div class="product-item-details">
+                            <strong class="product-item-name">
+                                <a data-bind="attr: { href: product_url }" class="product-item-link">
+                                    <span data-bind="html: product_name"></span>
+                                </a>
+                            </strong>
+                            <div data-bind="html: product_price"></div>
+                        </div>
+                        <div class="product-item-actions">
+                            <?php if($ecommerceStatus):?>
                                 <!-- ko if: product_is_saleable_and_visible -->
                                 <div class="actions-primary">
                                     <!-- ko if: product_has_required_options -->
@@ -53,32 +53,32 @@ try {
                                     <!-- /ko -->
                                 </div>
                                 <!-- /ko -->
-                                <?php endif;?>
-                                <div class="actions-secondary">
-                                    <a href="#"  data-bind="attr: {'data-post': delete_item_params}"
-                                       title="<?= $block->escapeHtmlAttr(__('Remove')) ?>"
-                                       class="btn-remove action delete">
-                                        <span><?= $block->escapeHtml(__('Remove')) ?></span>
-                                    </a>
-                                </div>
+                            <?php endif;?>
+                            <div class="actions-secondary">
+                                <a href="#"  data-bind="attr: {'data-post': delete_item_params}"
+                                   title="<?= $block->escapeHtmlAttr(__('Remove')) ?>"
+                                   class="btn-remove action delete">
+                                    <span><?= $block->escapeHtml(__('Remove')) ?></span>
+                                </a>
                             </div>
                         </div>
-                    </li>
-                </ol>
-                <div class="actions-toolbar no-display" data-bind="css: {'no-display': null}">
-                    <div class="primary">
-                        <a class="action details"
-                           href="<?= $block->escapeUrl($this->helper('Magento\Wishlist\Helper\Data')->getListUrl()) ?>"
-                           title="<?= $block->escapeHtmlAttr(__('Go to Wish List')) ?>"><span><?= $block->escapeHtml(__('Go to Wish List')) ?></span></a>
                     </div>
+                </li>
+            </ol>
+            <div class="actions-toolbar no-display" data-bind="css: {'no-display': null}">
+                <div class="primary">
+                    <a class="action details"
+                       href="<?= $block->escapeUrl($this->helper(\Magento\Wishlist\Helper\Data::class)->getListUrl()) ?>"
+                       title="<?= $block->escapeHtmlAttr(__('Go to Wish List')) ?>"><span><?= $block->escapeHtml(__('Go to Wish List')) ?></span></a>
                 </div>
+            </div>
             <!-- /ko -->
             <!-- ko ifnot: wishlist().counter -->
-                <div class="empty"><?= $block->escapeHtml(__('You have no items in your wish list.')) ?></div>
+            <div class="empty"><?= $block->escapeHtml(__('You have no items in your wish list.')) ?></div>
             <!-- /ko -->
         </div>
     </div>
-<script type="text/x-magento-init">
+    <script type="text/x-magento-init">
     {
         "*": {
             "Magento_Ui/js/core/app": {

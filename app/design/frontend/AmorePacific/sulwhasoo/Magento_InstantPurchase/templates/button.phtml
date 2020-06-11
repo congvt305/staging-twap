@@ -8,13 +8,13 @@
 ?>
 
 <?php if ($block->isEnabled()) : ?>
-<div id="instant-purchase" class="instant-purchase-wrapper" data-bind="scope:'instant-purchase'">
-    <!-- ko template: getTemplate() --><!-- /ko -->
-</div>
-<script type="text/x-magento-init">
+    <div id="instant-purchase" class="instant-purchase-wrapper" data-bind="scope:'instant-purchase'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
+    <script type="text/x-magento-init">
     {
         "#instant-purchase": {
-            "Magento_Ui/js/core/app": <?= /* @escapeNotVerified */ $block->getJsLayout();?>
+            "Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout();?>
         }
     }
 </script>
