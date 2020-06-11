@@ -1,0 +1,58 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+use Magento\Framework\App\Action\Action;
+
+?>
+<?php
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+
+/**
+ * Product list template
+ *
+ * @var $block \Magento\Catalog\Block\Product\ListProduct
+ */
+?>
+<?php
+$_productCollection = $block->getLoadedProductCollection();
+$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+?>
+<?php if (!$_productCollection->count()) :?>
+    <div class="message info empty"><div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div></div>
+<?php else :?>
+    <div class="bestseller-products">
+            <div class="bestseller-container intro  pp-scrollable"><?= /* @noEscape */ $block->getChildHtml('bestseller-intro');?></div>
+            <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
+            <?php $i = 1;?>
+            <?php foreach ($_productCollection as $_product) :?>
+                <div class="bestseller-container product-list  pp-scrollable">
+                    <div class="product-div">
+                        <?php $productImage = $block->getImage($_product, 'category_page_list'); ?>
+                        <div class="product-image" style="background-image: url(<?= $block->escapeUrl($productImage->getImageUrl())?>);"></div>
+                        <div class="product-info">
+                            <?php
+                            $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                            ?>
+                            <label class="product-item-count"><?= $block->escapeHtml($i);?></label>
+                            <h2 class="product name">
+                                <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
+                            </h2>
+                            <strong class="product-item-name-en">
+                                <?= $block->escapeHtml($_product->getResource()->getAttributeRawValue($_product->getId(),'name',0));?>
+                            </strong>
+                            <?= /* @noEscape */ $block->getProductPrice($_product) ?>
+                            <div class="product attribute overview">
+                                <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                            </div>
+                            <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
+                               title="<?= /* @noEscape */ $_productNameStripped ?>"
+                               class="action more"><?= $block->escapeHtml(__('View Detail')) ?></a>
+                        </div>
+                    </div>
+                </div>
+                <?php $i++;?>
+            <?php endforeach;?>
+    </div>
+<?php endif; ?>
