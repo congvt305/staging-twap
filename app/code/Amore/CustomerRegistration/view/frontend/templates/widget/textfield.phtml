@@ -4,7 +4,7 @@
  * See COPYING.txt for license details.
  */
 
-/** @var \Amore\CustomerRegistration\Block\Widget\MobileNumber $block */
+/** @var \Amore\CustomerRegistration\Block\Widget\TextField $block */
 ?>
 
 <div class="field <?= $block->getAttributeCode() ?> <?= $block->isRequired() ? 'required' : '' ?>">
@@ -22,6 +22,7 @@
                id="<?= $block->getAttributeCode() ?>"
                value="<?= $block->escapeHtmlAttr($block->getAttributeValue()) ?>"
                title="<?= $block->getStoreLabel() ?>"
+               <?= $block->isReadOnly()?'readonly':''; ?>
                class="input-text <?= $_validationClass ?: '' ?>"
         >
     </div>

@@ -85,7 +85,7 @@ class MobileNumber extends AbstractWidget
         parent::_construct();
 
         // default template location
-        $this->setTemplate('Magento_Customer::widget/fax.phtml');
+        $this->setTemplate('Amore_CustomerRegistration::widget/mobilenumber.phtml');
     }
 
     /**

@@ -28,7 +28,16 @@ define([
         },
 
         _init: function() {
-            //$('.form-create-account').hide();
+            if(this.options.currentStep == 2)
+            {
+                if ($('.form-create-account #firstname').val()) {
+                    $('.form-create-account-pos').hide();
+                    $('.customer-registration-form-create-account').show();
+                    $('.customer-registration-form-create-account .form-create-account').show();
+                    $('.form-create-account #firstname').prop("readonly", true);
+                    $('.form-create-account #lastname').prop("readonly", true);
+                }
+            }
         },
         /**
          * Method binds click event to get SMS, verify code and timer value
@@ -40,10 +49,6 @@ define([
             $('.form-create-account-pos').on('click', this.options.verifyCodeSelector, $.proxy(this.verifyCode, this));
             $('.form-create-account-pos').on('click', this.options.verifyPosSelector, $.proxy(this.posVerification, this));
             timer2 = this.options.codeExpirationMinutes;
-
-            /*$('.form-create-account-pos').hide();
-            $('.customer-registration-form-create-account').show();
-            $('.customer-registration-form-create-account .form-create-account').show();*/
         },
 
         getCode: function() {

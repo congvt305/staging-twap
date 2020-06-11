@@ -4,27 +4,27 @@
  * See COPYING.txt for license details.
  */
 
-/** @var \Magento\Customer\Block\Widget\Fax $block */
+/** @var \Amore\CustomerRegistration\Block\Widget\MobileNumber $block */
 ?>
 
 <div class="field fax <?= $block->isRequired() ? 'required' : '' ?>">
     <label for="fax" class="label">
         <span>
-            <?= $block->escapeHtml(__('Fax')) ?>
+            <?= $block->escapeHtml(__('Mobile Number')) ?>
         </span>
     </label>
     <div class="control">
             <?php
             $_validationClass = $block->escapeHtmlAttr(
                 $this->helper(\Magento\Customer\Helper\Address::class)
-                     ->getAttributeValidationClass('fax')
+                     ->getAttributeValidationClass('mobile_number')
             );
             ?>
         <input type="text"
                name="fax"
                id="fax"
                value="<?= $block->escapeHtmlAttr($block->getFax()) ?>"
-               title="<?= $block->escapeHtmlAttr(__('Fax')) ?>"
+               title="<?= $block->escapeHtmlAttr(__('Mobile Number')) ?>"
                class="input-text <?= $_validationClass ?: '' ?>"
         >
     </div>
