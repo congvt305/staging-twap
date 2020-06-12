@@ -223,6 +223,11 @@ $viewModel = $block->getData('view_model');
                    name="referrer_code"
                    id="referrer_code"
                    value="<?= $block->escapeHtml($viewModel->getReferrerCode()) ?>">
+
+            <input type="hidden"
+                   name="imported_from_pos"
+                   id="imported_from_pos"
+                   value="0">
         </div>
         <div class="actions-toolbar">
             <div class="primary">

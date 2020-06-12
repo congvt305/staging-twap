@@ -24,6 +24,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ResponseFactory;
 use Magento\Framework\Webapi\Rest\Request;
 use Magento\Customer\Api\CustomerRepositoryInterface;
+use Amore\CustomerRegistration\Model\Sequence;
 
 /**
  * In this class we will call the POS API
@@ -53,19 +54,25 @@ class POSSystem
      * @var CustomerRepositoryInterface
      */
     private $customerRepository;
+    /**
+     * @var \Amore\CustomerRegistration\Model\Sequence
+     */
+    private $sequence;
 
     public function __construct(
         ZendClientFactory $httpClientFactory,
         Data $confg,
         SubscriberFactory $subscriberFactory,
         CustomerRepositoryInterface $customerRepository,
-        DateTime $date
+        DateTime $date,
+        Sequence $sequence
     ) {
         $this->httpClientFactory = $httpClientFactory;
         $this->date = $date;
         $this->confg = $confg;
         $this->subscriberFactory = $subscriberFactory;
         $this->customerRepository = $customerRepository;
+        $this->sequence = $sequence;
     }
 
     public function getMemberInfo($firstName, $lastName, $mobileNumber)
@@ -80,28 +87,28 @@ class POSSystem
 
     private function callPOSInfoAPI($firstName, $lastName, $mobileNumber)
     {
-        return [];
         $result = [];
-
-        $result = [
-            'cstmIntgSeq' => 'TW10210000001',
-            'cstmNO'=>'TW1020000012345',
-            'cstmSeq'=>'tw10119130',
-            'firstName'=>'學榮',
-            'lastName'=>'金',
-            'birthDay'=>'20000101',
-            'mobileNo'=>'0912345678',
-            'email'=>'xxxx@gmail.com',
-            'sex'=>'F',
-            'emailYN'=>'Y',
-            'smsYN'=>'Y',
-            'callYN'=>'N',
-            'dmYN'=>'N',
-            'homeCity'=>'T001',
-            'homeState'=>'100',
-            'homeAddr1'=>'1-1',
-            'homeZip'=>'406'
-         ];
+        if($lastName == 'Ali') {
+            $result = [
+                'cstmIntgSeq' => 'TW10210000001',
+                'cstmNO' => 'TW1020000012345',
+                'cstmSeq' => 'tw10119130',
+                'firstName' => '學榮',
+                'lastName' => '金',
+                'birthDay' => '20000101',
+                'mobileNo' => $mobileNumber,
+                'email' => $mobileNumber.'@gmail.com',
+                'sex' => 'F',
+                'emailYN' => 'Y',
+                'smsYN' => 'Y',
+                'callYN' => 'N',
+                'dmYN' => 'N',
+                'homeCity' => 'T001',
+                'homeState' => '100',
+                'homeAddr1' => '1-1',
+                'homeZip' => '406'
+            ];
+        }
         return $result;
 
         /** @var ZendClient $client */
@@ -142,8 +149,9 @@ class POSSystem
     public function syncMember($customer, $action)
     {
         try {
+            $customer = $this->assignIntegrationNumber($customer);
             $parameters = [];
-            $parameters['cstmIntgSeq'] = 'TW1020000012345';
+            $parameters['cstmIntgSeq'] = $customer->getCustomAttribute('integration_number');
             $parameters['if_flag'] = 'I';
             $parameters['firstName'] = $customer->getFirstname();
             $parameters['lastName'] = $customer->getLastname();
@@ -166,6 +174,15 @@ class POSSystem
         } catch (\Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    private function assignIntegrationNumber($customer)
+    {
+        $posOrOnline = $customer->getCustomAttribute('imported_from_pos')->getValue()==1?'pos':'online';
+        $this->sequence->setCustomerType($posOrOnline);
+        $secquenceNumber = $this->sequence->getNextValue();
+        $customer->setCustomAttribute('integration_number', $secquenceNumber);
+        return $this->customerRepository->save($customer);
     }
 
     private function callJoinAPI($parameters)

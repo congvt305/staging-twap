@@ -139,6 +139,15 @@ class AddUpdateCustomerAttributesSecond implements DataPatchInterface
                                         "max_text_length":255,
                                         "min_text_length":1}',
                                         'required' => 0
+                                    ],
+                                    [
+                                        'code'=>'integration_number',
+                                        'label'=>'Inetgration Number',
+                                        'type' => 'varchar',
+                                        'validation'=>'{"input_validation":"length",
+                                                                "max_text_length":30,
+                                                                "min_text_length":30}',
+                                        'required' => 0
                                     ]
                                 ];
 
@@ -152,7 +161,8 @@ class AddUpdateCustomerAttributesSecond implements DataPatchInterface
         ];
 
         $yesNoAttributes = [
-            ['code'=>'pos_synced_successfully','label'=>'Successfully Synced to POS']
+            ['code'=>'pos_synced_successfully','label'=>'Successfully Synced to POS'],
+            ['code'=>'imported_from_pos','label'=>'Imported from POS']
                             ];
 
         foreach ($textFieldAttributes as $textFieldAttribute) {
@@ -331,7 +341,7 @@ class AddUpdateCustomerAttributesSecond implements DataPatchInterface
                 'adminhtml_customer',
                 'customer_account_create'
             ];
-            if (in_array($code, ['pos_synced_successfully', 'pos_synced_report'])) {
+            if (in_array($code, ['pos_synced_successfully', 'pos_synced_report', 'customer_integration_number'])) {
                 $forms = [
                     'adminhtml_customer'
                 ];
