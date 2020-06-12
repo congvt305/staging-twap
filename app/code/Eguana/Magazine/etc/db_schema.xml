@@ -16,30 +16,26 @@
                 comment="Entity id"/>
         <column xsi:type="varchar" name="store_id" nullable="false" length="30"
                 comment="Store ID"/>
-        <column xsi:type="varchar" name="title" nullable="false"
+        <column xsi:type="varchar" name="title" nullable="false" length="50"
                 comment="Title"/>
-        <column xsi:type="text" name="content" nullable="true"
-                comment="Content"/>
+        <column xsi:type="varchar" name="content" nullable="true" length="255"
+                comment="Short Description"/>
+        <column xsi:type="text" name="description" nullable="true"
+                comment="Long Description"/>
         <column xsi:type="text" name="thumbnail_image" nullable="true"
                 comment="Thumbnail Image"/>
         <column xsi:type="text" name="thumbnail_alt" nullable="true"
                 comment="Thumbnail Alt"/>
+        <column xsi:type="smallint" name="type" nullable="false" default="1"
+                comment="Type"/>
+        <column xsi:type="smallint" name="sort_order" padding="6" unsigned="true" nullable="false" default="0"
+                comment="Magazine display order"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Created At"/>
         <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Updated At"/>
-        <column xsi:type="smallint" name="is_active" nullable="false" default="1"
+        <column xsi:type="smallint" name="is_active" nullable="false" default="0"
                 comment="Is active"/>
-        <column xsi:type="smallint" name="sort_order" padding="6" unsigned="true" nullable="false" default="0"
-                comment="Magazine display order"/>
-        <column xsi:type="text" name="city" nullable="true"
-                comment="City"/>
-        <column xsi:type="varchar" name="country_id" nullable="true" length="35"
-                comment="Country"/>
-        <column xsi:type="smallint" name="coming_soon" nullable="false" default="0"
-                comment="Coming soon"/>
-        <column xsi:type="text" name="urlkey" nullable="true"
-                comment="Url Key"/>
 
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
