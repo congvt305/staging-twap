@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: yasir
+* Date: 6/12/20
+* Time: 3:39 AM
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ecommerce_status>
+            <general>
+                <ecommerce_enabled>1</ecommerce_enabled>
+            </general>
+        </ecommerce_status>
+    </default>
+</config>
