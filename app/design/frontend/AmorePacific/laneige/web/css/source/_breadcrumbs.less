@@ -10,6 +10,8 @@
 & when (@media-common = true) {
     .breadcrumbs {
         .lib-breadcrumbs();
+        position: relative;
+        z-index: 1;
 
         a {
             .abs-action-link(@theme__color__primary-alt);
@@ -21,9 +23,10 @@
             vertical-align: middle;
         }
 
-        .category-view ~ & {
-            position: absolute;
-            top: 61px;
+        & ~ .category-view {
+            .category-description {
+                margin-top: -73px;
+            }
         }
     }
 }
