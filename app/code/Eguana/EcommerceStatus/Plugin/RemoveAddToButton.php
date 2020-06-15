@@ -14,9 +14,10 @@ use Eguana\EcommerceStatus\Helper\Data;
 use Magento\Catalog\Model\Product;
 
 /**
- * PLEASE ENTER ONE LINE SHORT DESCRIPTION OF CLASS
+ * this class is used for Remove cart button
  *
  * Class RemoveAddToButton
+ * Eguana\EcommerceStatus\Plugin
  */
 class RemoveAddToButton
 {
@@ -37,8 +38,7 @@ class RemoveAddToButton
     }
 
     /**
-     * SHORT DESCRIPTION
-     * LONG DESCRIPTION LINE BY LINE
+     * this after plugin is used to get config store value
      * @param Product $product
      * @param $result
      * @return array
@@ -46,7 +46,7 @@ class RemoveAddToButton
     public function afterIsSaleable(Product $product, $result)
     {
         if (!$this->helperData->getECommerceStatus()) {
-            return [];
+            return false;
         }
         return $result;
     }

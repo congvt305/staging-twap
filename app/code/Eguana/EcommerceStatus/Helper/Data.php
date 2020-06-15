@@ -15,9 +15,10 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\ScopeInterface;
 
 /**
- * PLEASE ENTER ONE LINE SHORT DESCRIPTION OF CLASS
+ * Helper class data
  *
  * Class Data
+ * Eguana\EcommerceStatus\Helper
  */
 class Data extends AbstractHelper
 {
