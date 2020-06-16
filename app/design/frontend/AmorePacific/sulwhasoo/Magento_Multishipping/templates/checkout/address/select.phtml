@@ -14,37 +14,37 @@
             <strong><?= $block->escapeHtml(__('Billing Address')); ?></strong>
         </div>
         <?php $i = 1;?>
-    <?php foreach ($block->getAddress() as $address): ?>
-        <div class="box box-billing-address">
-            <?php if ($block->isAddressDefaultBilling($address) && $block->isAddressDefaultShipping($address)): ?>
-                <strong class="box-title"><span><?= $block->escapeHtml(__('Default Billing & Sipping Address')); ?></span></strong>
-            <?php elseif($block->isAddressDefaultBilling($address)):?>
-                <strong class="box-title"><span><?= $block->escapeHtml(__('Default Billing Address')); ?></span></strong>
-            <?php elseif($block->isAddressDefaultShipping($address)):?>
-                <strong class="box-title"><span><?= $block->escapeHtml(__('Default Shipping Address')); ?></span></strong>
-            <?php else:?>
-                <strong class="box-title"><span><?= $block->escapeHtml(__('Address %1',$i)); ?></span></strong>
-                <?php $i++;?>
-            <?php endif; ?>
-            <div class="box-content">
-                <address>
-                    <?= $block->getAddressAsHtml($address) ?>
-                </address>
+        <?php foreach ($block->getAddress() as $address): ?>
+            <div class="box box-billing-address">
+                <?php if ($block->isAddressDefaultBilling($address) && $block->isAddressDefaultShipping($address)): ?>
+                    <strong class="box-title"><span><?= $block->escapeHtml(__('Default Billing & Sipping Address')); ?></span></strong>
+                <?php elseif($block->isAddressDefaultBilling($address)):?>
+                    <strong class="box-title"><span><?= $block->escapeHtml(__('Default Billing Address')); ?></span></strong>
+                <?php elseif($block->isAddressDefaultShipping($address)):?>
+                    <strong class="box-title"><span><?= $block->escapeHtml(__('Default Shipping Address')); ?></span></strong>
+                <?php else:?>
+                    <strong class="box-title"><span><?= $block->escapeHtml(__('Address %1',$i)); ?></span></strong>
+                    <?php $i++;?>
+                <?php endif; ?>
+                <div class="box-content">
+                    <address>
+                        <?= $block->getAddressAsHtml($address) ?>
+                    </address>
+                </div>
+                <div class="box-actions">
+                    <a href="<?= $block->escapeUrl($block->getEditAddressUrl($address)); ?>" class="action edit">
+                        <span><?= $block->escapeHtml(__('Edit Address')); ?></span>
+                    </a>
+                    <a href="<?= $block->escapeUrl($block->getSetAddressUrl($address)); ?>" class="action select">
+                        <span><?= $block->escapeHtml(__('Select Address')); ?></span>
+                    </a>
+                </div>
             </div>
-            <div class="box-actions">
-                <a href="<?= $block->escapeUrl($block->getEditAddressUrl($address)); ?>" class="action edit">
-                    <span><?= $block->escapeHtml(__('Edit Address')); ?></span>
-                </a>
-                <a href="<?= $block->escapeUrl($block->getSetAddressUrl($address)); ?>" class="action select">
-                    <span><?= $block->escapeHtml(__('Select Address')); ?></span>
-                </a>
-            </div>
-        </div>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
     </div>
     <div class="actions-toolbar">
         <div class="primary">
-            <button type="button" class="action add primary" role="add-address" title="<?= $block->escapeHtml(__('Add New Address')); ?>">
+            <button type="button" class="action add primary" role="add-address" title="<?= $block->escapeHtmlAttr(__('Add New Address')); ?>">
                 <span><?= $block->escapeHtml(__('Add New Address')); ?></span>
             </button>
         </div>

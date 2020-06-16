@@ -9,19 +9,19 @@
 /* @var $block \Magento\Reward\Block\Checkout\Payment\Additional */
 ?>
 <?php if ($block->getCanUseRewardPoints()): ?>
-<div class="checkout multishipping payment additional rewardpoints" id="reward-block">
-    <div class="field choice payment">
-        <input type="checkbox" name="payment[use_reward_points]" value="1"
-               id="use-reward-points"
-               data-mage-init='{"checkoutBalance":{
+    <div class="checkout multishipping payment additional rewardpoints" id="reward-block">
+        <div class="field choice payment">
+            <input type="checkbox" name="payment[use_reward_points]" value="1"
+                   id="use-reward-points"
+                   data-mage-init='{"checkoutBalance":{
                     "balance":<?= (float)$block->getCurrencyAmount() ?>,
-                    "amountSubstracted":<?php if ($block->useRewardPoints()): ?>true<?php else: ?>false<?php endif; ?>,
+                    "amountSubstracted":<?= /* @noEscape */ ($block->useRewardPoints()) ? 'true' : 'false' ?>,
                     "usedAmount":<?= (float)$block->getQuote()->getBaseRewardCurrencyAmount() ?>
                }}'
                 <?= $block->useRewardPoints() ? ' checked="checked"' : '' ?> class="checkbox" />
-        <label for="use-reward-points" class="label">
-            <span><?= /* @escapeNotVerified */ __('Use your reward points (%1 available)', $this->helper('Magento\Reward\Helper\Data')->formatReward($block->getPointsBalance(), $block->getCurrencyAmount())) ?></span>
-        </label>
+            <label for="use-reward-points" class="label">
+                <span><?= $block->escapeHtml(__('Use your reward points (%1 available)', $this->helper(\Magento\Reward\Helper\Data::class)->formatReward($block->getPointsBalance(), $block->getCurrencyAmount())), ['span']) ?></span>
+            </label>
+        </div>
     </div>
-</div>
 <?php endif; ?>

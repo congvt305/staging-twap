@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+
+<!--    <preference for="Eguana\Directory\Api\Data\CityInterface" type="Eguana\Directory\Model\Data\City" />-->
+<!--    <preference for="Eguana\Directory\Api\Data\CityInformationInterface" type="Eguana\Directory\Model\Data\CityInformation" />-->
+<!--    <type name="Magento\Eav\Model\TypeLocator\ComplexType">-->
+<!--        <arguments>-->
+<!--            <argument name="backendModelToAttributeTypeMap" xsi:type="array">-->
+<!--                <item name="Eguana\Directory\Model\ResourceModel\Address\Backend\City" xsi:type="string">Eguana\Directory\Api\Data\CityInterface</item>-->
+<!--            </argument>-->
+<!--        </arguments>-->
+<!--    </type>-->
+<!--    <type name="Magento\Eav\Model\Config">-->
+<!--        <arguments>-->
+<!--            <argument name="attributesForPreload" xsi:type="array">-->
+<!--                <item name="customer_address" xsi:type="array">-->
+<!--                    <item name="city_id" xsi:type="string">customer_address</item>-->
+<!--                </item>-->
+<!--            </argument>-->
+<!--        </arguments>-->
+<!--    </type>-->
+
+<!--    <type name="Magento\Customer\Api\AddressRepositoryInterface">-->
+<!--        <plugin name="eguana_directory_city_id_setter_for_address"-->
+<!--                type="Eguana\Directory\Plugin\AddressRepository" sortOrder="10"/>-->
+<!--    </type>-->
+</config>

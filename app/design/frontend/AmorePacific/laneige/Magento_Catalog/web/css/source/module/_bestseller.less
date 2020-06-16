@@ -1,0 +1,208 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  ---------------------------------------------
+
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .bestseller-parallax {
+
+        //reset style
+        .page-header {
+            display: none;
+
+            &.sticky {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 2;
+            }
+        }
+
+        .page-footer {
+            display: none;
+        }
+
+        .page-wrapper {
+            height: 100%;
+        }
+
+        .columns {
+            height: 100%;
+
+            .column.main {
+                position: relative;
+                height: 100%;
+                padding: 0;
+            }
+        }
+
+        .page-main {
+            max-width: 100%;
+            padding: 0;
+            height: 100%;
+        }
+
+        .bestseller-container {
+            background-color: @color-white;
+        }
+
+        .product-div {
+            .product-image {
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+            }
+
+            .product-item {
+                &-count {
+                    color: fade(@theme__color__primary-alt, 60%);
+                    font-size: 100px;
+                }
+
+                &-name-en {
+                    display: block;
+                    margin-bottom: @indent__base;
+                }
+            }
+
+            .product.name {
+                margin-top: 0;
+                margin-bottom: 15px;
+            }
+
+            .product.overview {
+                margin-top: @indent__l;
+                margin-bottom: 15px;
+            }
+
+            .price-box {
+                .lib-vendor-prefix-flex-direction (row);
+                justify-content: left;
+
+                .price {
+                    font-size: 20px;
+                }
+
+                .old-price {
+                    .price {
+                        font-size: @font-size__base;
+                    }
+                }
+
+                .normal-price,
+                .special-price {
+                    margin-top: 0 !important;
+                }
+            }
+
+            .action {
+                .lib-link(
+                    @_link-color: @theme__color__primary,
+                    @_link-color-visited: @theme__color__primary,
+                    @_link-color-hover: @theme__color__primary,
+                    @_link-color-active: @theme__color__primary
+                );
+                border-bottom: 1px solid;
+            }
+        }
+
+        #pp-nav {
+            right: 40px;
+
+            ul {
+                li {
+                    margin: @indent__s;
+
+                    &:first-child {
+                        display: none;
+                    }
+                }
+            }
+
+            span {
+                background: #999;
+                border-color: #999;
+                width: 4px;
+                height: 4px;
+            }
+
+            .active  {
+                span {
+                    border-color: @primary__color !important;
+                    background: transparent;
+                    left: 0;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .bestseller-parallax {
+        .product-div {
+            overflow-y: scroll;
+
+            .product-image {
+                position: relative;
+                padding-bottom: 115.2778%;
+                overflow: hidden;
+                height: 0;
+            }
+
+            .product-info {
+                position: relative;
+                padding: 0 @layout__width-xs-indent @indent__xl*2;
+                margin-top: -100px;
+            }
+        }
+
+        #pp-nav {
+            display: none !important;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .bestseller-parallax {
+        .product-div {
+            display: table;
+            width: 100%;
+            height: 100%;
+
+            .product-image {
+                display: table-cell;
+                vertical-align: middle;
+                width: 48%;
+            }
+
+            .product-info {
+                display: table-cell;
+                vertical-align: middle;
+                padding: 0 @indent__l*2;
+            }
+        }
+
+        .pp-scrollable {
+            overflow-y: hidden;
+        }
+    }
+}

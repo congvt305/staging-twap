@@ -10,7 +10,7 @@
     <div class="multicheckout success">
         <p><?= $block->escapeHtml(__('For successfully order items, you\'ll receive a confirmation email including '.
                 'order numbers, tracking information and more details.')) ?></p>
-        <?php if ($orderIds = $block->getOrderIds()) : ?>
+        <?php if ($orderIds = $block->getOrderIds()): ?>
             <div class="block">
                 <div class="block-title">
                     <strong><?= $block->escapeHtml(__('Successfully ordered'))?></strong>
@@ -18,21 +18,19 @@
                 <div class="block-content">
                     <div class="orders-succeed">
                         <ul class="orders-list">
-                            <?php foreach ($orderIds as $orderId => $incrementId) : ?>
+                            <?php foreach ($orderIds as $orderId => $incrementId): ?>
                                 <li class="shipping-list">
                                     <div class="order-id"><a href="<?= $block->escapeUrl($block->getViewOrderUrl($orderId)); ?>">
                                             <?= $block->escapeHtml($incrementId); ?></a>
                                     </div>
                                     <?php $shippingAddress = $block->getCheckoutData()->getOrderShippingAddress($orderId); ?>
                                     <div class="shipping-item">
-                                        <?php if ($shippingAddress) : ?>
+                                        <?php if ($shippingAddress): ?>
                                             <span class="shipping-label"><?= $block->escapeHtml(__('Ship to:')); ?></span>
                                             <span class="shipping-address">
-                            <?= $block->escapeHtml(
-                                $block->getCheckoutData()->formatOrderShippingAddress($shippingAddress)
-                            ); ?>
+                            <?= $block->escapeHtml($block->getCheckoutData()->formatOrderShippingAddress($shippingAddress)); ?>
                         </span>
-                                        <?php else : ?>
+                                        <?php else: ?>
                                             <span class="shipping-address">
                                 <?= $block->escapeHtml(__('No shipping required.')); ?>
                             </span>

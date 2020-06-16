@@ -52,6 +52,10 @@
         .lib-css(background-color, @page__background-color);
     }
 
+    br {
+        font-size: 0;
+    }
+
     .page-wrapper {
         .lib-vendor-prefix-display(flex);
         .lib-vendor-prefix-flex-direction(column);
@@ -70,6 +74,7 @@
         .lib-css(background-color, @header__background-color);
         border-bottom: 1px solid @border-color__base;
         position: relative;
+        height: @navigation-desktop-level0-item__line-height + 1px;
     }
 
     .header {
@@ -442,12 +447,6 @@
                 border-top: 1px solid @border-color__base;
                 padding-top: @indent__base;
             }
-
-            &.widget {
-                figure[data-content-type='image'] {
-                    display: none;
-                }
-            }
         }
     }
 
@@ -627,7 +626,7 @@
             }
 
             & + .content {
-                margin-top: -@indent__l;
+                margin-top: @indent__xs;
                 margin-bottom: 110px;
             }
         }
