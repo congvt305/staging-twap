@@ -39,7 +39,7 @@ define([
         mediaCheck({
             media: '(max-width: 768px)',
             entry: function () {
-                $(this).toggleClass('active');
+                $('.footer.content').toggleClass('active');
                 $('.page-footer .widget ,.page-footer .top').slideToggle();
             }
         });
