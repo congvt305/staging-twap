@@ -9,7 +9,6 @@
  */
 namespace Eguana\EcommerceStatus\Test\Unit\Plugin\RemoveAddToButtonTest;
 
-use Eguana\EcommerceStatus\Helper\Data;
 use Eguana\EcommerceStatus\Plugin\RemoveAddToButton;
 use PHPUnit\Framework\TestCase;
 use Magento\Catalog\Model\Product;
