@@ -21,9 +21,9 @@
                     <span><?= $block->escapeHtml(__('Edit')) ?></span>
                 </a>
             </th>
-            <th class="col price" scope="col"><?= $block->escapeHtml(__('Price')) ?></th>
-            <th class="col qty" scope="col"><?= $block->escapeHtml(__('Qty')) ?></th>
-            <th class="col subtotal" scope="col"><?= $block->escapeHtml(__('Subtotal')) ?></th>
+            <th class="col price" scope="col"><?= $block->escapeHtmlAttr(__('Price')) ?></th>
+            <th class="col qty" scope="col"><?= $block->escapeHtmlAttr(__('Qty')) ?></th>
+            <th class="col subtotal" scope="col"><?= $block->escapeHtmlAttr(__('Subtotal')) ?></th>
         </tr>
         </thead>
             <?php foreach ($block->getItems() as $item): ?>

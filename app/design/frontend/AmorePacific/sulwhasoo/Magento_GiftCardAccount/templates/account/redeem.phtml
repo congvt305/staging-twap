@@ -12,11 +12,11 @@
 ?>
 <div class="giftcard-account">
     <span id="gc-please-wait" class="please-wait load indicator"
-          data-text="<?= $block->escapeHtml(__('This won\'t take long . . .')) ?>" style="display: none;">
+          data-text="<?= $block->escapeHtmlAttr(__('This won\'t take long . . .')) ?>" style="display: none;">
         <span><?= $block->escapeHtml(__('This won\'t take long . . .')) ?></span>
     </span>
     <form class="form form-giftcard-redeem" id="giftcard-form" action="<?= $block->escapeUrl($block->getUrl('*/*/*')) ?>" method="post"
-        data-mage-init='{
+          data-mage-init='{
             "giftCard": {
                 "giftCardCodeSelector": "#giftcard-code",
                 "checkStatus": ".action.check",
@@ -34,7 +34,7 @@
                 <div class="control">
                     <input class="input-text" id="giftcard-code" type="text" name="giftcard_code"
                            data-validate="{required:true}"
-                           placeholder="<?= $block->escapeHtml(__('Enter gift card code')) ?>"
+                           placeholder="<?= $block->escapeHtmlAttr(__('Enter gift card code')) ?>"
                            value="<?= /* @noEscape */ $block->getCurrentGiftcard() ?>" />
                 </div>
             </div>
@@ -43,14 +43,14 @@
         <div class="actions-toolbar">
             <?php if ($block->canRedeem()): ?>
                 <div class="primary">
-                    <button class="action redeem primary" type="submit" value="<?= $block->escapeHtml(__('Redeem Gift Card')) ?>">
+                    <button class="action redeem primary" type="submit" value="<?= $block->escapeHtmlAttr(__('Redeem Gift Card')) ?>">
                         <span><?= $block->escapeHtml(__('Redeem Gift Card')) ?></span>
                     </button>
                 </div>
             <?php endif; ?>
             <div class="secondary">
                 <button class="action check" id="gca_balance_button" type="button"
-                        value="<?= $block->escapeHtml(__('Check status and balance')) ?>">
+                        value="<?= $block->escapeHtmlAttr(__('Check status and balance')) ?>">
                     <span><?= $block->escapeHtml(__('Check status and balance')) ?></span>
                 </button>
             </div>

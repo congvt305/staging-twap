@@ -13,7 +13,7 @@
  */
 ?>
 <?php
-$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
 $_product = $block->getProduct();
 
 if (!$_product instanceof \Magento\Catalog\Model\Product) {
@@ -46,15 +46,13 @@ if ($_attributeType && $_attributeType == 'text') {
 ?>
 
 <?php if ($_attributeValue): ?>
-<div class="product attribute <?= /* @escapeNotVerified */ $_className ?>">
-    <?php if ($renderLabel): ?><strong class="type"><?= /* @escapeNotVerified */ $_attributeLabel ?></strong><?php endif; ?>
-    <?php if($_className == 'ingredients'):?>
-        <div class="attribute title">
-            <span><?= $_attributeLabel?></span>
-        </div>
-    <?php endif?>
-        <div class="value" <?= /* @escapeNotVerified */ $_attributeAddAttribute ?>>
-            <?= /* @escapeNotVerified */ $_attributeValue ?>
-        </div>
-</div>
+    <div class="product attribute <?= $block->escapeHtmlAttr($_className) ?>">
+        <?php if ($renderLabel): ?><strong class="type"><?= $block->escapeHtml($_attributeLabel) ?></strong><?php endif; ?>
+        <?php if($_className == 'ingredients'):?>
+            <div class="attribute title">
+                <span><?= $_attributeLabel?></span>
+            </div>
+        <?php endif?>
+        <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_attributeValue ?></div>
+    </div>
 <?php endif; ?>
