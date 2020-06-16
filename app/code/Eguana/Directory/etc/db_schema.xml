@@ -24,4 +24,12 @@
             <column name="region_id"/>
         </index>
     </table>
+<!--    <table name="customer_address_entity" resource="default" engine="innodb" comment="Customer Address Entity">-->
+<!--        <column xsi:type="int" name="city_id" padding="10" unsigned="true" nullable="true" identity="false"-->
+<!--                comment="City/District"/>-->
+<!--    </table>-->
+<!--    <table name="quote_address" resource="checkout" engine="innodb" comment="Sales Flat Quote Address">-->
+<!--        <column xsi:type="int" name="city_id" padding="10" unsigned="true" nullable="true" identity="false"-->
+<!--                comment="City ID"/>-->
+<!--    </table>-->
 </schema>
