@@ -9,5 +9,6 @@
     <body>
         <referenceBlock name="category.product.addto.compare" remove="true"/>
         <move element="category.view.container" destination="page.wrapper" before="page.top"/>
+        <move element="breadcrumbs" destination="page.wrapper" before="page.top"/>
     </body>
 </page>

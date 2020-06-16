@@ -25,8 +25,9 @@
                 <height>336</height>
             </image>
             <image id="category_page_list" type="thumbnail">
-                <width>280</width>
-                <height>336</height>
+                <width>1000</width>
+                <height>1200</height>
+                <constrain>false</constrain>
             </image>
             <image id="customer_account_my_tags_tag_view" type="small_image">
                 <width>100</width>

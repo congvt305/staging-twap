@@ -428,7 +428,7 @@ define([
         _toggleMobileMode: function () {
             var subMenus;
 
-            $(this.element).off('click mouseenter mouseleave');
+            $(this.element).off('click mouseenter mouseleave focus');
             this._on({
 
                 /**

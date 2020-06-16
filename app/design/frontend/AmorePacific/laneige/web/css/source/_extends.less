@@ -1768,16 +1768,26 @@
 }
 
 .abs-action-link(@underline-color) {
-    background-image: -o-linear-gradient(transparent calc(~'100% - 1px'), @underline-color 1px);
-    background-image: linear-gradient(transparent calc(~'100% - 1px'), @underline-color 1px);
-    background-repeat: no-repeat;
-    background-size: 0% 100%;
-    -webkit-transition: background-size .3s;
-    -o-transition: background-size .3s;
-    transition: background-size .3s;
+    position: relative;
+    display: inline-block;
+
+    &:before {
+        background: @underline-color;
+        bottom: 0;
+        content: '';
+        display: inline-block;
+        width: 0;
+        height: 1px;
+        -webkit-transition: width .3s ease-in-out;
+        -o-transition: width .3s ease-in-out;
+        transition: width .3s ease-in-out;
+        position: absolute;
+    }
 
     &:focus,
     &:hover {
-        background-size: 100% 100%;
+        &:before {
+            width: 100%;
+        }
     }
 }
