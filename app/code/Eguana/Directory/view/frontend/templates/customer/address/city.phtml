@@ -1,0 +1,43 @@
+<?php
+/**
+ * Created by Eguana Team.
+ * User: sonia
+ * Date: 6/16/20
+ * Time: 1:18 PM
+ */
+?>
+<?php
+/**
+ * Edit customer address template
+ *
+ * @var $block \Magento\Customer\Block\Address\Edit
+ */
+?>
+<div class="city-html" style="display: none">
+    <div class="field city required">
+        <label class="label" for="city"><span>City</span></label>
+        <div class="control">
+            <select id="city_id" name="city_id" title="City" class="validate-select region_id">
+                <option value="">Please select a city, city or district.</option>
+            </select>
+            <input type="text" name="customCity" value="" title="city" class="input-text" id="customCity"/>
+        </div>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "#region_id": {
+            "cityUpdater": {
+                "optionalCityAllowed": <?= /* @noEscape need to do config*/ ($block->getConfig('general/region/display_all') ? 'true' : 'false') ?>,
+                "cityListId": "#city_id",
+                "cityInputId": "#customCity",
+                "postcodeId": "#zip",
+                "form": "#form-validate",
+                "cityJson": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityJson() ?>,
+                "defaultRegion": "<?= /* @noEscape */ $block->getRegionId() ?>",
+                "defaultCity": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityCodeByRegionName((int)$block->getRegionId(), $block->getAddress()->getCity()) ?>
+            }
+        }
+    }
+</script>
+

@@ -29,20 +29,34 @@ define([
             this.cityTmpl = mageTemplate(this.options.cityTemplate);
             this._updateCity(this.element.find('option:selected').val());
             this._initZipcodeElement();
+            console.log('city-update created');
+
+            //try later
+            // var cityHtml = $('.city-html').html();
+            // $(cityHtml).insertBefore('#company');
+            // $(cityHtml).insertBefore('.field.region.required');
+            // $('#city').parent().parent().children().hide();
+            // console.log(cityHtml);
 
             $(this.options.cityListId).on('change', $.proxy(function (e) {
                 this.setOption = false;
                 this.currentCityOption = $(e.target).val(); //city id
-                console.log('target selected: ', $(e.target).find('option:selected').text());
-                console.log('target: ',$(e.target));
-                console.log('city input: ', $(this.options.cityInputId).val());
-
+                // console.log('target selected: ', $(e.target).find('option:selected').text());
+                // console.log('target: ',$(e.target));
+                // console.log('city input: ', $(this.options.cityInputId).val());
                 $(this.options.cityInputId).val($(e.target).find('option:selected').text());
                 this._updateZipcode(this.currentCityOption);
             }, this));
 
             $(this.options.cityInputId).on('focusout', $.proxy(function () {
+                // console.log('clicked');
                 this.setOption = true;
+            }, this));
+
+            $(this.options.cityInputId).on('focus', $.proxy(function () {
+                // console.log('clicked');
+                this._updateCity(this.currentCityOption);
+                // this._renderSelectOption($(cityListId), this.currentCityOption, );
             }, this));
         },
 
@@ -159,21 +173,9 @@ define([
             this._clearError();
             this._checkCityRequired(region);
 
-            //for when address is not empty
-            console.log('region: ', region);
-            console.log('default region: ', this.options.defaultRegion);
-            if (region === '' && this.options.defaultRegion !== 0) {
-                region = this.options.defaultRegion;
-            }
-
-            // $(cityList).find('option:selected').removeAttr('selected');
-            // cityInput.val('');
-
-
-
-
             // Populate state/province dropdown list if available or use input box
             if (this.options.cityJson[region]) {
+                console.log(this.options.cityJson[region]);
                 this._removeSelectOptions(cityList);
                 $.each(this.options.cityJson[region], $.proxy(function (key, value) {
                     this._renderSelectOption(cityList, key, value);

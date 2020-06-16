@@ -20,7 +20,7 @@
     <div data-role="content" class="content" aria-labelledby="block-giftcard-heading">
         <div id="giftcard-balance-lookup"></div>
         <span id="gc-please-wait" class="please-wait load indicator" style="display: none;"
-              data-text="<?= $block->escapeHtml(__('This won\'t take long . . .')) ?>">
+              data-text="<?= $block->escapeHtmlAttr(__('This won\'t take long . . .')) ?>">
             <span><?= $block->escapeHtml(__('This won\'t take long . . .')) ?></span>
         </span>
         <form class="form giftcard add" id="giftcard-form"
@@ -42,17 +42,17 @@
                     <div class="control">
                         <input class="input-text" type="text" id="giftcard-code" name="giftcard_code"
                                data-validate="{'required-entry':true}" value=""
-                               placeholder="<?= $block->escapeHtml(__('Enter the gift card code')) ?>" />
+                               placeholder="<?= $block->escapeHtmlAttr(__('Enter the gift card code')) ?>" />
                     </div>
                 </div>
                 <div class="actions-toolbar">
                     <div class="primary">
-                        <button class="action add primary" type="submit" value="<?= $block->escapeHtml(__('Apply')) ?>">
+                        <button class="action add primary" type="submit" value="<?= $block->escapeHtmlAttr(__('Apply')) ?>">
                             <span><?= $block->escapeHtml(__('Apply')) ?></span>
                         </button>
                     </div>
                     <div class="secondary">
-                        <button class="action check" type="button" value="<?= $block->escapeHtml(__('Check Gift Card status and balance')) ?>">
+                        <button class="action check" type="button" value="<?= $block->escapeHtmlAttr(__('Check Gift Card status and balance')) ?>">
                             <span><?= $block->escapeHtml(__('Check Gift Card status and balance')) ?></span>
                         </button>
                     </div>

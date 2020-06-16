@@ -13,7 +13,9 @@ define([
      * @param {HTMLElement} $loader - Loader DOM element.
      */
     function hideLoader($loader) {
-        $loader.remove();
+        if($loader.offsetWidth) {
+            $loader.parentNode.removeChild($loader);
+        }
     }
 
     /**

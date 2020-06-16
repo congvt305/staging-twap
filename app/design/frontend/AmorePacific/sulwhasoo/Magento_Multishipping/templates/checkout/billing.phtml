@@ -13,7 +13,7 @@
 <div id="checkout-loader" data-role="checkout-loader" class="loading-mask" data-mage-init='{"billingLoader": {}}'>
     <div class="loader">
         <img src="<?= $block->escapeUrl($block->getViewFileUrl('images/loader-1.gif')); ?>"
-             alt="<?= $block->escapeHtml(__('Loading...')); ?>"
+             alt="<?= $block->escapeHtmlAttr(__('Loading...')); ?>"
              style="position: absolute;">
     </div>
 </div>
@@ -81,8 +81,8 @@
                         $methodsForms = $block->hasFormTemplates() ? $block->getFormTemplates(): [];
 
                         foreach ($methods as $_method) :
-                                $code = $_method->getCode();
-                                $checked = $block->getSelectedMethodCode() === $code;
+                            $code = $_method->getCode();
+                            $checked = $block->getSelectedMethodCode() === $code;
 
                             if (isset($methodsForms[$code])) {
                                 $block->setMethodFormTemplate($code, $methodsForms[$code]);
@@ -93,9 +93,9 @@
                                     <?php if ($methodsCount > 1) : ?>
                                         <input type="radio"
                                                id="p_method_<?= $block->escapeHtml($code); ?>"
-                                               value="<?= $block->escapeHtml($code); ?>"
+                                               value="<?= $block->escapeHtmlAttr($code); ?>"
                                                name="payment[method]"
-                                               title="<?= $block->escapeHtml($_method->getTitle()) ?>"
+                                               title="<?= $block->escapeHtmlAttr($_method->getTitle()) ?>"
                                                data-bind="
                                                    value: getCode(),
                                                    checked: isChecked,
@@ -108,7 +108,7 @@
                                     <?php else : ?>
                                         <input type="radio"
                                                id="p_method_<?= $block->escapeHtml($code); ?>"
-                                               value="<?= $block->escapeHtml($code); ?>"
+                                               value="<?= $block->escapeHtmlAttr($code); ?>"
                                                name="payment[method]"
                                                data-bind="
                                                    value: getCode(),
@@ -135,7 +135,7 @@
         </div>
     </div>
     <div class="actions-toolbar">
-        <div class="primary">
+        <div class="primary"  id="parent-payment-continue">
             <button id="payment-continue"
                     type="button"
                     class="action primary continue">

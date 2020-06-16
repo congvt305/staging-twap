@@ -13,13 +13,15 @@
  *
  * @var $block \Magento\Theme\Block\Html\Topmenu
  */
+
+$columnsLimit = $block->getColumnsLimit() ?: 0;
+$_menuHtml = $block->getHtml('level-top', 'submenu', $columnsLimit)
+
 ?>
-<?php $columnsLimit = $block->getColumnsLimit() ?: 0; ?>
-<?php $_menu = $block->getHtml('level-top', 'submenu', $columnsLimit) ?>
 
 <nav class="navigation" data-action="navigation">
     <ul data-mage-init='{"menu":{"responsive":true, "expanded":true, "menus":"div.submenu", "position":{"of":".navigation","at":"left bottom"}}}'>
-        <?= /* @escapeNotVerified */ $_menu ?>
-        <?= /* @escapeNotVerified */ $block->getChildHtml() ?>
+        <?= /* @noEscape */ $_menuHtml ?>
+        <?= $block->getChildHtml() ?>
     </ul>
 </nav>

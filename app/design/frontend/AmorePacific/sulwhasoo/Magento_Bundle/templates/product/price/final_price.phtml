@@ -25,14 +25,14 @@ $minimalRegularPrice = $regularPriceModel->getMinimalPrice();
 <?php if ($block->getSaleableItem()->getPriceView()): ?>
     <p class="minimal-price">
         <?php /* @escapeNotVerified */ echo $block->renderAmount($minimalPrice, [
-            'display_label'     => __('As low as'),
+            'display_label'     => $block->escapeHtml(__('As low as')),
             'price_id'          => $block->getPriceId('from-'),
             'include_container' => true
         ]); ?>
         <?php if ($minimalPrice < $minimalRegularPrice): ?>
             <span class="old-price">
                 <?php /* @escapeNotVerified */ echo $block->renderAmount($minimalRegularPrice, [
-                    'display_label'     => __('Regular Price'),
+                    'display_label'     => $block->escapeHtml(__('Regular Price')),
                     'price_id'          => $block->getPriceId('old-price-' . $idSuffix),
                     'include_container' => true,
                     'skip_adjustments'  => true
@@ -43,11 +43,11 @@ $minimalRegularPrice = $regularPriceModel->getMinimalPrice();
 <?php else: ?>
     <?php if ($block->showRangePrice()): ?>
         <p class="price-from">
-            <span class="price-label"><?= __('From')?></span>
+            <span class="price-label"><?= $block->escapeHtml(__('From'))?></span>
             <?php if ($minimalPrice < $minimalRegularPrice): ?>
                 <span class="old-price">
                     <?php /* @escapeNotVerified */ echo $block->renderAmount($minimalRegularPrice, [
-                        'display_label'     => __('Regular Price'),
+                        'display_label'     => $block->escapeHtml(__('Regular Price')),
                         'price_id'          => $block->getPriceId('old-price-' . $idSuffix),
                         'include_container' => true,
                         'skip_adjustments'  => true
@@ -65,7 +65,7 @@ $minimalRegularPrice = $regularPriceModel->getMinimalPrice();
             <?php if ($maximalPrice < $maximalRegularPrice): ?>
                 <span class="old-price">
                     <?php /* @escapeNotVerified */ echo $block->renderAmount($maximalRegularPrice, [
-                        'display_label'     => __('Regular Price'),
+                        'display_label'     => $block->escapeHtml(__('Regular Price')),
                         'price_id'          => $block->getPriceId('old-price-' . $idSuffix),
                         'include_container' => true,
                         'skip_adjustments'  => true
@@ -79,11 +79,11 @@ $minimalRegularPrice = $regularPriceModel->getMinimalPrice();
             ]); ?>
         </p>
     <?php else: ?>
-    <p class="bundle-regular-price">
+        <p class="bundle-regular-price">
         <?php if ($minimalPrice < $minimalRegularPrice): ?>
             <span class="old-price">
                 <?php /* @escapeNotVerified */ echo $block->renderAmount($minimalRegularPrice, [
-                    'display_label'     => __('Regular Price'),
+                    'display_label'     => $block->escapeHtml(__('Regular Price')),
                     'price_id'          => $block->getPriceId('old-price-' . $idSuffix),
                     'include_container' => true,
                     'skip_adjustments'  => true

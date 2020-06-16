@@ -39,4 +39,12 @@ class City extends \Magento\Framework\Model\AbstractModel
         }
         return $name;
     }
+
+    public function loadByCode($code, $regionId)
+    {
+        if ($code) {
+            $this->_getResource()->loadByCode($this, $code, $regionId);
+        }
+        return $this;
+    }
 }

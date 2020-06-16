@@ -97,7 +97,8 @@ class Data extends \Magento\Directory\Helper\Data
 
         /** @var \Eguana\Directory\Model\ResourceModel\City\Collection $collection */
         $collection = $this->cityCollectionFactory->create();
-        $collection->addFieldToFilter('region_id', ['in' => $regionIds])->load();
+//        $collection->addFieldToFilter('region_id', ['in' => $regionIds])->load();
+        $collection->addAllowedCountriesFilter();
         //Todo system config
         $cities = [
             'config' => [

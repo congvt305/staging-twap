@@ -7,7 +7,7 @@
 /** @var \Magento\Multishipping\Block\Checkout\Overview $block */
 ?>
 <?php $errors = $block->getCheckoutData()->getAddressErrors(); ?>
-<?php foreach ($errors as $addressId => $error) : ?>
+<?php foreach ($errors as $addressId => $error): ?>
     <div class="message message-error error">
         <?= $block->escapeHtml($error); ?>
         <?= $block->escapeHtml(__('Please see')); ?>
@@ -46,10 +46,10 @@
                 <div class="box-content">
                     <input type="hidden"
                            name="payment[cc_number]"
-                           value="<?= $block->escapeHtml($block->getPayment()->getCcNumber()) ?>" />
+                           value="<?= $block->escapeHtmlAttr($block->getPayment()->getCcNumber()) ?>" />
                     <input type="hidden"
                            name="payment[cc_cid]"
-                           value="<?= $block->escapeHtml($block->getPayment()->getCcCid()) ?>" />
+                           value="<?= $block->escapeHtmlAttr($block->getPayment()->getCcCid()) ?>" />
                     <?= /* @noEscape */ $block->getPaymentHtml() ?>
                 </div>
                 <div class="box-actions">
@@ -62,9 +62,9 @@
     <div class="block block-shipping">
         <div class="block-title"><strong><?= $block->escapeHtml(__('Shipping Information')); ?></strong></div>
         <?php $mergedCells = ($this->helper(Magento\Tax\Helper\Data::class)->displayCartBothPrices() ? 2 : 1); ?>
-        <?php foreach ($block->getShippingAddresses() as $index => $address) : ?>
+        <?php foreach ($block->getShippingAddresses() as $index => $address): ?>
             <div class="block-content">
-                <a name="<?= $block->escapeHtml($block->getCheckoutData()
+                <a name="<?= $block->escapeHtmlAttr($block->getCheckoutData()
                     ->getAddressAnchorName($address->getId())); ?>"></a>
                 <div class="title">
                     <strong><?= $block->escapeHtml(__('Address')); ?> <?= $block->escapeHtml($index + 1); ?>
@@ -74,7 +74,7 @@
                         </span>
                     </strong>
                 </div>
-                <?php if ($error = $block->getCheckoutData()->getAddressError($address)) : ?>
+                <?php if ($error = $block->getCheckoutData()->getAddressError($address)): ?>
                     <div class="error-description"><?= $block->escapeHtml($error); ?></div>
                 <?php endif;?>
                 <div class="box box-shipping-address">
@@ -95,7 +95,7 @@
                     <strong class="box-title">
                         <span><?= $block->escapeHtml(__('Shipping Method')); ?></span>
                     </strong>
-                    <?php if ($_rate = $block->getShippingAddressRate($address)) : ?>
+                    <?php if ($_rate = $block->getShippingAddressRate($address)): ?>
                         <div class="box-content">
                             <?= $block->escapeHtml($_rate->getCarrierTitle()) ?>
                             (<?= $block->escapeHtml($_rate->getMethodTitle()) ?>)
@@ -103,18 +103,18 @@
                             $exclTax = $block->getShippingPriceExclTax($address);
                             $inclTax = $block->getShippingPriceInclTax($address);
                             $displayBothPrices = $this->helper(Magento\Tax\Helper\Data::class)
-                                ->displayShippingBothPrices() && $inclTax !== $exclTax;
+                                    ->displayShippingBothPrices() && $inclTax !== $exclTax;
                             ?>
-                            <?php if ($displayBothPrices) : ?>
+                            <?php if ($displayBothPrices): ?>
                                 <span class="price-including-tax"
-                                      data-label="<?= $block->escapeHtml(__('Incl. Tax')); ?>">
+                                      data-label="<?= $block->escapeHtmlAttr(__('Incl. Tax')); ?>">
                                     <?= /* @noEscape */ $inclTax ?>
                                 </span>
                                 <span class="price-excluding-tax"
-                                      data-label="<?= $block->escapeHtml(__('Excl. Tax')); ?>">
+                                      data-label="<?= $block->escapeHtmlAttr(__('Excl. Tax')); ?>">
                                     <?= /* @noEscape */ $exclTax; ?>
                                 </span>
-                            <?php else : ?>
+                            <?php else: ?>
                                 <?= /* @noEscape */ $inclTax ?>
                             <?php  endif; ?>
                         </div>
@@ -144,14 +144,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <?php foreach ($block->getShippingAddressItems($address) as $item) : ?>
+                                <?php foreach ($block->getShippingAddressItems($address) as $item): ?>
                                     <?= /* @noEscape */ $block->getRowItemHtml($item) ?>
                                 <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
-                                    <?= /* @noEscape */ $block->renderTotals(
-                                        $block->getShippingAddressTotals($address)
-                                    ); ?>
+                                <?= /* @noEscape */ $block->renderTotals(
+                                    $block->getShippingAddressTotals($address)
+                                ); ?>
                                 </tfoot>
                             </table>
                         </div>
@@ -161,45 +161,46 @@
         <?php endforeach; ?>
     </div>
 
-    <?php if ($block->getQuote()->hasVirtualItems()) : ?>
-    <div class="block block-other">
-        <?php $billingAddress = $block->getQuote()->getBillingAddress(); ?>
-        <a name="<?= $block->escapeHtml($block->getCheckoutData()
-            ->getAddressAnchorName($billingAddress->getId())); ?>"></a>
-        <div class="block-title"><strong><?= $block->escapeHtml(__('Other items in your order')); ?></strong></div>
-        <?php if ($error = $block->getCheckoutData()->getAddressError($billingAddress)) :?>
+    <?php if ($block->getQuote()->hasVirtualItems()): ?>
+        <div class="block block-other">
+            <?php $billingAddress = $block->getQuote()->getBillingAddress(); ?>
+            <a name="<?= $block->escapeHtmlAttr($block->getCheckoutData()
+                ->getAddressAnchorName($billingAddress->getId())); ?>"></a>
+            <div class="block-title"><strong><?= $block->escapeHtml(__('Other items in your order')); ?></strong></div>
+            <?php if ($error = $block->getCheckoutData()->getAddressError($billingAddress)):?>
                 <div class="error-description"><?= $block->escapeHtml($error); ?></div>
-        <?php endif;?>
-        <div class="block-content">
-            <strong class="subtitle">
-                <span><?= $block->escapeHtml(__('Items')); ?></span>
-                <a href="<?= $block->escapeUrl($block->getVirtualProductEditUrl()); ?>"
-                   class="action edit"><span><?= $block->escapeHtml(__('Edit Items')); ?></span></a>
-            </strong>
-            <?php $mergedCells = ($this->helper(Magento\Tax\Helper\Data::class)->displayCartBothPrices() ? 2 : 1); ?>
-            <div class="order-review-wrapper table-wrapper">
-                <table class="items data table table-order-review" id="virtual-overview-table">
-                    <caption class="table-caption"><?= $block->escapeHtml(__('Items')); ?></caption>
-                    <thead>
+            <?php endif;?>
+            <div class="block-content">
+                <strong class="subtitle">
+                    <span><?= $block->escapeHtml(__('Items')); ?></span>
+                    <a href="<?= $block->escapeUrl($block->getVirtualProductEditUrl()); ?>"
+                       class="action edit"><span><?= $block->escapeHtml(__('Edit Items')); ?></span></a>
+                </strong>
+                <?php $mergedCells = ($this->helper(Magento\Tax\Helper\Data::class)
+                    ->displayCartBothPrices() ? 2 : 1); ?>
+                <div class="order-review-wrapper table-wrapper">
+                    <table class="items data table table-order-review" id="virtual-overview-table">
+                        <caption class="table-caption"><?= $block->escapeHtml(__('Items')); ?></caption>
+                        <thead>
                         <tr>
                             <th class="col item" scope="col"><?= $block->escapeHtml(__('Product Name')); ?></th>
                             <th class="col price" scope="col"><?= $block->escapeHtml(__('Price')); ?></th>
                             <th class="col qty" scope="col"><?= $block->escapeHtml(__('Qty')); ?></th>
                             <th class="col subtotal" scope="col"><?= $block->escapeHtml(__('Subtotal')); ?></th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($block->getVirtualItems() as $_item) : ?>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($block->getVirtualItems() as $_item): ?>
                             <?= /* @noEscape */ $block->getRowItemHtml($_item) ?>
                         <?php endforeach; ?>
-                    </tbody>
-                    <tfoot>
-                    <?= /* @noEscape */ $block->renderTotals($block->getBillingAddressTotals()); ?>
-                    </tfoot>
-                </table>
+                        </tbody>
+                        <tfoot>
+                        <?= /* @noEscape */ $block->renderTotals($block->getBillingAddressTotals()); ?>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
     <?php endif; ?>
 
     <?= /* @noEscape */ $block->getChildHtml('items_after') ?>
@@ -228,7 +229,7 @@
             <span id="review-please-wait"
                   class="please-wait load indicator"
                   style="display: none;"
-                  data-text="<?= $block->escapeHtml(__('Submitting order information...')); ?>">
+                  data-text="<?= $block->escapeHtmlAttr(__('Submitting order information...')); ?>">
                 <span><?= $block->escapeHtml(__('Submitting order information...')); ?></span>
             </span>
         </div>

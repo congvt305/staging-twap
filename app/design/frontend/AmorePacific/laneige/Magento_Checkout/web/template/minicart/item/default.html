@@ -30,33 +30,33 @@
                     <!-- ko text: product_name --><!-- /ko -->
                 <!-- /ko -->
             </strong>
-            <div class="options">
-                <div data-role="content" class="content">
-                    <dl class="product options list">
-                    <!-- ko if: laneige_size -->
-                        <dt class="label" data-bind="i18n: 'size'"></dt>
-                        <dd>
-                            <span data-bind="text: laneige_size"/>
-                        </dd>
-                    <!-- /ko -->
-                    <!-- ko if: options.length -->
-                        <!-- ko foreach: { data: options, as: 'option' } -->
-                        <dt class="label"><!-- ko text: option.label --><!-- /ko --></dt>
-                        <dd class="values">
-                            <!-- ko if: Array.isArray(option.value) -->
-                            <span data-bind="html: option.value.join('<br>')"></span>
-                            <!-- /ko -->
-                            <!-- ko if: (!Array.isArray(option.value) && option.option_type == 'file') -->
-                            <span data-bind="html: option.value"></span>
-                            <!-- /ko -->
-                            <!-- ko if: (!Array.isArray(option.value) && option.option_type != 'file') -->
-                            <span data-bind="text: option.value"></span>
-                            <!-- /ko -->
-                        </dd>
+
+
+            <div  class="product-options">
+                <dl>
+                <!-- ko if: laneige_size -->
+                    <dt class="label" data-bind="i18n: 'size'"></dt>
+                    <dd>
+                        <span data-bind="text: laneige_size"/>
+                    </dd>
+                <!-- /ko -->
+                <!-- ko if: options.length -->
+                    <!-- ko foreach: { data: options, as: 'option' } -->
+                    <dt class="label"><!-- ko text: option.label --><!-- /ko --></dt>
+                    <dd class="values">
+                        <!-- ko if: Array.isArray(option.value) -->
+                        <span data-bind="html: option.value.join('<br>')"></span>
                         <!-- /ko -->
+                        <!-- ko if: (!Array.isArray(option.value) && option.option_type == 'file') -->
+                        <span data-bind="html: option.value"></span>
+                        <!-- /ko -->
+                        <!-- ko if: (!Array.isArray(option.value) && option.option_type != 'file') -->
+                        <span data-bind="text: option.value"></span>
+                        <!-- /ko -->
+                    </dd>
                     <!-- /ko -->
-                    </dl>
-                </div>
+                <!-- /ko -->
+                </dl>
             </div>
 
             <div class="product-item-pricing">
