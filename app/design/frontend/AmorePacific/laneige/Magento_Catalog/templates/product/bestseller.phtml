@@ -44,7 +44,9 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                             </strong>
                             <?= /* @noEscape */ $block->getProductPrice($_product) ?>
                             <div class="product attribute overview">
-                                <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                <div class="value" itemprop="<?=$block->escapeHtml(__('description'));?>">
+                                    <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                </div>
                             </div>
                             <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
                                title="<?= /* @noEscape */ $_productNameStripped ?>"

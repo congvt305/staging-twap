@@ -36,7 +36,7 @@ use Magento\Framework\App\Action\Action;
                         <a title="<?= $block->escapeHtml($_item->getName()) ?>"
                            href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
                            class="product-item-link">
-                            <?= $block->escapeHtml($_item->getResource()->getAttributeRawValue($_item->getId(),'name',0));?>
+                            <?= $block->escapeHtml($_item->getAttributeDefaultValue('name'));?>
                         </a>
                     </strong>
                     <strong class="product-item-name">
@@ -47,7 +47,9 @@ use Magento\Framework\App\Action\Action;
                         </a>
                     </strong>
                     <div class="product attribute overview">
-                        <?= /* @noEscape */ $_helper->productAttribute($_item, $_item->getShortDescription(), 'short_description') ?>
+                        <div class="value" itemprop="<?=$block->escapeHtml(__('description'));?>">
+                            <?= /* @noEscape */ $_helper->productAttribute($_item, $_item->getShortDescription(), 'short_description') ?>
+                        </div>
                     </div>
                     <?php if ($templateType) : ?>
                         <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
