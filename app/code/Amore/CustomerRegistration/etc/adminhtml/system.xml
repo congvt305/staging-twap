@@ -79,12 +79,20 @@
                     <label>Base URL</label>
                 </field>
 
-                <field id="member_info" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1">
+                <field id="member_info" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1">
                     <label>Memeber Information</label>
                 </field>
 
-                <field id="member_join" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1">
+                <field id="member_join" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1">
                     <label>Memeber Join</label>
+                </field>
+
+                <field id="sales_organization_code" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1">
+                    <label>Sales Organization Code</label>
+                </field>
+
+                <field id="sales_office_code" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
+                    <label>Sales Office Code</label>
                 </field>
             </group>
         </section>
