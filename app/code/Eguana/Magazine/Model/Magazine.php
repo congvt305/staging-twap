@@ -79,8 +79,8 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
             'entity_id',
             'store_id',
             'title',
+            'content_short',
             'content',
-            'description',
             'thumbnail_image',
             'thumbnail_alt',
             'type',
@@ -173,8 +173,25 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
     }
 
     /**
-     * @param string $content
+     * @param string $contentshort
      * @return $this
+     */
+    public function setContentShort($contentshort)
+    {
+        return $this->setData(self::CONTENT_SHORT, $content);
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentShort()
+    {
+        return $this->getData(self::CONTENT_SHORT);
+    }
+
+    /**
+     * @param $content
+     * @return Magazine
      */
     public function setContent($content)
     {
@@ -187,23 +204,6 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
     public function getContent()
     {
         return $this->getData(self::CONTENT);
-    }
-
-    /**
-     * @param $description
-     * @return Magazine
-     */
-    public function setDescription($description)
-    {
-        return $this->setData(self::DESCRIPTION, $description);
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->getData(self::DESCRIPTION);
     }
 
     /**

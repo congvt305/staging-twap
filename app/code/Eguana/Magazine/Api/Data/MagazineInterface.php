@@ -22,9 +22,9 @@ interface MagazineInterface
 
     const TITLE = 'title';
 
-    const CONTENT = 'content';
+    const CONTENT_SHORT = 'content_short';
 
-    const DESCRIPTION = 'description';
+    const CONTENT = 'content';
 
     const TYPE = 'type';
 
@@ -97,6 +97,17 @@ interface MagazineInterface
     public function getTitle();
 
     /**
+     * @param string $contentshort
+     * @return $this
+     */
+    public function setContentShort($contentshort);
+
+    /**
+     * @return string
+     */
+    public function getContentShort();
+
+    /**
      * @param string $content
      * @return $this
      */
@@ -106,17 +117,6 @@ interface MagazineInterface
      * @return string
      */
     public function getContent();
-
-    /**
-     * @param string $description
-     * @return $this
-     */
-    public function setDescription($description);
-
-    /**
-     * @return string
-     */
-    public function getDescription();
 
     /**
      * Set Thumbnail Image

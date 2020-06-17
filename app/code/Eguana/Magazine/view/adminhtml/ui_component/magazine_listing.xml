@@ -172,10 +172,10 @@
                 <label translate="true">Alt</label>
             </settings>
         </column>
-        <column name="content">
+        <column name="content_short">
             <settings>
                 <filter>text</filter>
-                <label translate="true">Content</label>
+                <label translate="true">Short Description</label>
             </settings>
         </column>
         <column name="type">

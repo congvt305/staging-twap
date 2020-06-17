@@ -18,10 +18,10 @@
                 comment="Store ID"/>
         <column xsi:type="varchar" name="title" nullable="false" length="50"
                 comment="Title"/>
-        <column xsi:type="varchar" name="content" nullable="true" length="255"
+        <column xsi:type="varchar" name="content_short" nullable="true" length="255"
                 comment="Short Description"/>
-        <column xsi:type="text" name="description" nullable="true"
-                comment="Long Description"/>
+        <column xsi:type="text" name="content" nullable="true"
+                comment="Long Desciption"/>
         <column xsi:type="text" name="thumbnail_image" nullable="true"
                 comment="Thumbnail Image"/>
         <column xsi:type="text" name="thumbnail_alt" nullable="true"
