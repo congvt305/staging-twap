@@ -10,8 +10,7 @@
 
 namespace Amore\CustomerRegistration\Model;
 
-use Magento\Framework\HTTP\ZendClient;
-use Magento\Framework\HTTP\ZendClientFactory;
+use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Amore\CustomerRegistration\Helper\Data;
 use Magento\Customer\Model\Data\Customer;
@@ -35,10 +34,6 @@ class POSSystem
 {
 
     /**
-     * @var \Magento\Framework\HTTP\ZendClientFactory
-     */
-    private $httpClientFactory;
-    /**
      * @var DateTime
      */
     private $date;
@@ -58,21 +53,25 @@ class POSSystem
      * @var \Amore\CustomerRegistration\Model\Sequence
      */
     private $sequence;
+    /**
+     * @var Curl
+     */
+    private $curlClient;
 
     public function __construct(
-        ZendClientFactory $httpClientFactory,
+        Curl $curl,
         Data $confg,
         SubscriberFactory $subscriberFactory,
         CustomerRepositoryInterface $customerRepository,
         DateTime $date,
         Sequence $sequence
     ) {
-        $this->httpClientFactory = $httpClientFactory;
         $this->date = $date;
         $this->confg = $confg;
         $this->subscriberFactory = $subscriberFactory;
         $this->customerRepository = $customerRepository;
         $this->sequence = $sequence;
+        $this->curlClient = $curl;
     }
 
     public function getMemberInfo($firstName, $lastName, $mobileNumber)
@@ -87,7 +86,9 @@ class POSSystem
 
     private function callPOSInfoAPI($firstName, $lastName, $mobileNumber)
     {
-        $result = [];
+
+
+        /*$result = [];
         if($lastName == 'Ali') {
             $result = [
                 'cstmIntgSeq' => 'TW10210000001',
@@ -109,34 +110,30 @@ class POSSystem
                 'homeZip' => '406'
             ];
         }
-        return $result;
-
-        /** @var ZendClient $client */
-        /*$client = $this->httpClientFactory->create();
-        $client->setUri($this->confg->getMemberInfoURL());
-        $client->setMethod(\Zend_Http_Client::POST);
-        $client->setHeaders(\Zend_Http_Client::CONTENT_TYPE, 'application/json');
-        $client->setHeaders('Accept','application/json');
-        $client->setHeaders("Authorization","Bearer yourvalue");
-        $client->setParameterPost([
-            'firstName' => $firstName,
-            'lastName' => $lastName,
-            'mobileNumber' => $mobileNumber,
-        ]);
-
+        return $result;*/
+        $response = [];
         try {
-            $response = $client->request();
+            $params = [
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'mobileNumber' => $mobileNumber,
+            ];
 
-            $responseArray = [];
-            parse_str(strstr($response->getBody(), 'RESULT'), $responseArray);
+            $getUrl = $this->confg->getMemberInfoURL().'/firstName/'.$firstName.'/lastName/'.$lastName.'/mobileNumber/'.$mobileNumber;
+            $url = $this->confg->getMemberInfoURL();
 
-            $result->setData(array_change_key_case($responseArray, CASE_LOWER));
-            $result->setData('result_code', $result->getData('result'));
-        } catch (\Zend_Http_Client_Exception $e) {
-            return $e->getMessage();
+            $headers = ["Content-Type" => "application/json"];
+            $this->curlClient->setHeaders($headers);
+            //$this->curlClient->post($this->confg->getMemberInfoURL());
+            $this->curlClient->get($getUrl);
+            //response will contain the output in form of JSON string
+            $response = $this->curlClient->getBody();
+        } catch (\Exception $e) {
+          $t = $e->getMessage();
         }
 
-        return $result;*/
+        return $response;
+
     }
 
     /**
