@@ -137,4 +137,15 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
     {
         return $this->_getAttribute($this->getAttributeCode())->getOptions();
     }
+
+    /**
+     * Get the attribute value
+     *
+     * @return mixed
+     */
+    public function getFormValue()
+    {
+        $formValue = $this->getData('form_value');
+        return $formValue == 1 ? $formValue:0;
+    }
 }

@@ -146,6 +146,8 @@
                     &.account {
                         background: #646464;
                         padding: 2.5px 20.5px;
+                        box-sizing: border-box;
+                        height: 65px;
 
                         &:after {
                             color: @color-white;
@@ -359,10 +361,6 @@
         .level2 {
             display: inline-block;
             width: 50%;
-
-            a {
-                .abs-action-link(@theme__color__primary-alt);
-            }
         }
     }
 }
@@ -577,6 +575,16 @@
                     margin-bottom: @indent__xs;
                     padding-bottom: @indent__s;
                 }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    .navigation {
+        .level0 {
+            > .level-top {
+                padding: 0 @indent__base;
             }
         }
     }

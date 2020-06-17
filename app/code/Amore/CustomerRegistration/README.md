@@ -62,3 +62,8 @@ Navigate to **Stores ⇾ Configuration** and the module **Curstomer Registration
 **Configuration**
 
 1. Navigate to **Stores ⇾ Configuration** and click on **Curstomer Registration** under Amore tab in the left panel.
+
+
+Get the customer website based on the sales office orgarnization code (salOffCd) parameter.
+Not to chagne the string value give it as ''
+customer will be get based on the inegration number

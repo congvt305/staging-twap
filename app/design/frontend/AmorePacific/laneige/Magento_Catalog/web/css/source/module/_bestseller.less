@@ -64,6 +64,11 @@
                 background-repeat: no-repeat;
             }
 
+            .product-info {
+                text-align: left;
+                font-size: 16px;
+            }
+
             .product-item {
                 &-count {
                     color: fade(@theme__color__primary-alt, 60%);
@@ -88,7 +93,7 @@
 
             .price-box {
                 .lib-vendor-prefix-flex-direction (row);
-                justify-content: left;
+                justify-content: flex-start;
 
                 .price {
                     font-size: 20px;
@@ -117,31 +122,28 @@
             }
         }
 
-        #pp-nav {
+        .swiper-pagination {
+            bottom: auto !important;
             right: 40px;
 
-            ul {
-                li {
-                    margin: @indent__s;
-
-                    &:first-child {
-                        display: none;
-                    }
-                }
-            }
-
-            span {
+            .swiper-pagination-bullet {
                 background: #999;
-                border-color: #999;
+                border: 2px solid #999;
                 width: 4px;
                 height: 4px;
-            }
+                margin: @indent__s;
+                opacity: 1;
 
-            .active  {
-                span {
-                    border-color: @primary__color !important;
+                &:first-child {
+                    display: none;
+                }
+
+                &.swiper-pagination-bullet-active {
+                    border-color: @primary__color;
                     background: transparent;
-                    left: 0;
+                    width: 8px;
+                    height: 8px;
+                    margin-left: 8px;
                 }
             }
         }
@@ -155,8 +157,6 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .bestseller-parallax {
         .product-div {
-            overflow-y: scroll;
-
             .product-image {
                 position: relative;
                 padding-bottom: 115.2778%;
@@ -169,10 +169,6 @@
                 padding: 0 @layout__width-xs-indent @indent__xl*2;
                 margin-top: -100px;
             }
-        }
-
-        #pp-nav {
-            display: none !important;
         }
     }
 }

@@ -84,6 +84,7 @@ define([
             }.bind(this));
 
             this.searchLabel.on('click', function (e) {
+                $('html').addClass('search-open');
                 if ($('html').hasClass('nav-open')) {
                     $('html').removeClass('nav-open');
                     setTimeout(function () {
@@ -94,11 +95,13 @@ define([
                 // allow input to lose its' focus when clicking on label
                 if (this.isActive()) {
                     e.preventDefault();
+                    $('html').removeClass('search-open');
                     setTimeout($.proxy(function () {
                         if (this.autoComplete.is(':hidden')) {
                             this.setActiveState(false);
                         } else {
                             this.element.trigger('focus');
+
                         }
                         this.autoComplete.hide();
                         this._updateAriaHasPopup(false);
