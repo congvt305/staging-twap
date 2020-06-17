@@ -215,31 +215,6 @@ class InfoList extends Template
     }
 
     /**
-     * This function will return stores collection after types filters
-     * @param $type
-     * @param $types
-     * @param $storeCollection
-     * @return StoreCollectionFactory
-     */
-    /*private function addTypesFiters($type, $types, $storeCollection)
-    {
-        if ($types['shop'] || $type == 'shop') {
-            $storeCollection->addFilter('type', 'shop', 'eq');
-        }
-        if ($types['outlet'] || $type == 'outlet') {
-            $storeCollection->addFilter('type', 'outlet', 'eq');
-        }
-        if ($types['retail'] || $type == 'retail') {
-            $storeCollection->addFilter('type', 'retail', 'eq');
-        }
-        if ($types['dutyfree'] || $type == 'dutyfree') {
-            $storeCollection->addFilter('type', 'dutyfree', 'eq');
-        }
-
-        return $storeCollection;
-    }*/
-
-    /**
      * Check city name in collection if exists or not
      * @param $city
      * @return bool
@@ -359,20 +334,6 @@ class InfoList extends Template
     {
         return $this->getRequest()->getParam('location');
     }
-
-    /**
-     * Take parameters from request
-     * @return mixed
-     */
-    /*public function getSelectedStoreTypes()
-    {
-        $shop =  $this->getRequest()->getParam('shop');
-        $outlet =  $this->getRequest()->getParam('outlet');
-        $retail =  $this->getRequest()->getParam('retail');
-        $dutyfree =  $this->getRequest()->getParam('dutyfree');
-        $types = ['shop' => $shop, 'outlet' => $outlet, 'retail' => $retail, 'dutyfree' => $dutyfree];
-        return $types;
-    }*/
 
     /**
      * Take parameter of search
@@ -550,43 +511,6 @@ class InfoList extends Template
     }
 
     /**
-     * get location name from lat long
-     * @param $search
-     * @return bool|mixed
-     */
-    /*public function getLocationFromApiNaver($lat, $lng)
-    {
-
-        $clientId = $this->storesHelper->getNaverClientId();
-        $secretKey = $this->storesHelper->getNaverSecretId();
-        $key = '&key=';
-        $key = $key . $this->storesHelper->getApiKey();
-        //this accept long lat instead of lat long as google maps
-        $latlng = $lng . ','. $lat;
-        $naverApiUlr = "https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc";
-        $apiUrl = $naverApiUlr . "?coords=" . $latlng. '&output=json';
-        $header = [
-            "accept: application/json",
-            "X-NCP-APIGW-API-KEY-ID: " . $clientId,
-            "X-NCP-APIGW-API-KEY: ". $secretKey
-        ];
-        $this->curl->setOption(CURLOPT_RETURNTRANSFER, true);
-        $this->curl->setOption(CURLOPT_HTTPHEADER, $header);
-        $this->curl->get($apiUrl);
-
-        $response = $this->curl->getBody();
-        $response = $this->json->unserialize($response);
-        if (isset($response['error'])) {
-            return false;
-        }
-        if ($response['status']['name'] == 'ok' && count($response['results']) > 0) {
-            return $response['results'][0]['region']['area1']['name'];
-        } else {
-            return false;
-        }
-    }*/
-
-    /**
      * get radius for fetching stores in this radius of location
      * @return mixed
      */
@@ -649,46 +573,6 @@ class InfoList extends Template
         $code = $this->getStoreCountryCode();
         return $this->countryFactory->create()->loadByCode($code)->getName();
     }
-
-    /**
-     * get lat long of search term
-     * @param $search
-     * @return array|bool|string
-     */
-    /*public function getLatLongFromApiNaver($search)
-    {
-        $clientId = $this->storesHelper->getNaverClientId();
-        $secretKey = $this->storesHelper->getNaverSecretId();
-        $search = str_replace('%20', '+', $search);
-        $search = str_replace(',', '+', $search);
-        $data = [
-            'query' => $search
-        ];
-        $naverApiUlr = "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode";
-        $apiUrl =  $naverApiUlr . "?" . http_build_query($data, '');
-        $header = [
-            "accept: application/json",
-            "X-NCP-APIGW-API-KEY-ID: " . $clientId,
-            "X-NCP-APIGW-API-KEY: ". $secretKey
-        ];
-        $this->curl->setOption(CURLOPT_RETURNTRANSFER, true);
-        $this->curl->setOption(CURLOPT_HTTPHEADER, $header);
-        $this->curl->get($apiUrl);
-        $response = $this->curl->getBody();
-        $response = $this->json->unserialize($response);
-        if (isset($response['error'])) {
-
-            return "error";
-        }
-        if ($response['status'] == 'OK' && $response['meta']['totalCount'] > 0) {
-            return [
-                'lng' => $response['addresses'][0]['x'],
-                'lat' => $response['addresses'][0]['y']
-            ];
-        } else {
-            return false;
-        }
-    }*/
 
     /**
      * this function will return code of website
