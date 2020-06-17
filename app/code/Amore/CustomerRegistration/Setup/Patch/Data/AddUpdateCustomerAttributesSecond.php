@@ -178,7 +178,7 @@ class AddUpdateCustomerAttributesSecond implements DataPatchInterface
             ['code'=>'pos_synced_successfully','label'=>'Successfully Synced to POS'],
             ['code'=>'imported_from_pos','label'=>'Imported from POS'],
             ['code'=>'call_subscription_status','label'=>'Call Marketing'],
-            ['code'=>'status','label'=>'Status']
+            ['code'=>'status_code','label'=>'Status Code']
                             ];
 
         foreach ($textFieldAttributes as $textFieldAttribute) {
@@ -357,7 +357,7 @@ class AddUpdateCustomerAttributesSecond implements DataPatchInterface
                 'adminhtml_customer',
                 'customer_account_create'
             ];
-            if (in_array($code, ['pos_synced_successfully', 'pos_synced_report', 'customer_integration_number'])) {
+            if (in_array($code, ['pos_synced_successfully', 'pos_synced_report', 'customer_integration_number', 'status_code'])) {
                 $forms = [
                     'adminhtml_customer'
                 ];
