@@ -158,17 +158,10 @@ $viewModel = $block->getData('view_model');
         </fieldset>
         <fieldset class="fieldset extra-info">
 
-            <?php $_mobile = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'mobile_number', ['data'=>['attribute_code'=>'mobile_number']]) ?>
+            <?php $_mobile = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'mobile_number', ['data'=>['attribute_code'=>'mobile_number', 'read_only' => 1, 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getMobileNumber())]]) ?>
             <?php if ($_mobile->isEnabled()) : ?>
                 <?= $_mobile->setDate($block->getFormData()->getMobileNumber())->toHtml() ?>
             <?php endif ?>
-
-            <?php /*$customerAttributes = $block->getChildBlock('customer_form_user_attributes');*/?><!--
-            <?php /*if ($customerAttributes): */?>
-                <?php /*$customerAttributes->setObject($block->getFormData())->setEntityType('customer')->setShowContainer(false);*/?>
-                <?php /*$block->restoreSessionData($customerAttributes->getMetadataForm());*/?>
-                <?/*= $customerAttributes->toHtml() */?>
-            --><?php /*endif;*/?>
 
             <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
             <?php if ($_dob->isEnabled()) : ?>
@@ -189,32 +182,32 @@ $viewModel = $block->getData('view_model');
                 <?= $block->getChildHtml('customer.form.register.newsletter') ?>
             <?php endif ?>
 
-            <?php $_smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status']]) ?>
+            <?php $_smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getSmsSubscriptionStatus())]]) ?>
             <?php if ($_smsSubscriptionStatus->isEnabled()) : ?>
                 <?= $_smsSubscriptionStatus->setDate($block->getFormData()->getSmsSubscriptionStatus())->toHtml() ?>
             <?php endif ?>
 
-            <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status']]) ?>
+            <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus())]]) ?>
             <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
                 <?= $_dmSubscriptionStatus->setDate($block->getFormData()->getDmSubscriptionStatus())->toHtml() ?>
             <?php endif ?>
-            <div class="dm-address" style="display: none">
-                <?php $_dmCtiy = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_city', ['data'=>['attribute_code'=>'dm_city']]) ?>
+            <div class="dm-address" style="<?= $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus()) == 1?'':'display: none'; ?>">
+                <?php $_dmCtiy = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_city', ['data'=>['attribute_code'=>'dm_city', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmCity())]]) ?>
                 <?php if ($_dmCtiy->isEnabled()) : ?>
                     <?= $_dmCtiy->setDate($block->getFormData()->getDmCity())->toHtml() ?>
                 <?php endif ?>
 
-                <?php $_dmState = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_state', ['data'=>['attribute_code'=>'dm_state']]) ?>
+                <?php $_dmState = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_state', ['data'=>['attribute_code'=>'dm_state', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmState())]]) ?>
                 <?php if ($_dmState->isEnabled()) : ?>
                     <?= $_dmState->setDate($block->getFormData()->getDmState())->toHtml() ?>
                 <?php endif ?>
 
-                <?php $_dmDetailedAddress = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_detailed_address', ['data'=>['attribute_code'=>'dm_detailed_address']]) ?>
+                <?php $_dmDetailedAddress = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_detailed_address', ['data'=>['attribute_code'=>'dm_detailed_address', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmDetailedAddress())]]) ?>
                 <?php if ($_dmDetailedAddress->isEnabled()) : ?>
                     <?= $_dmDetailedAddress->setDate($block->getFormData()->getDmDetailedAddress())->toHtml() ?>
                 <?php endif ?>
 
-                <?php $_dmZipcode = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_zipcode', ['data'=>['attribute_code'=>'dm_zipcode']]) ?>
+                <?php $_dmZipcode = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_zipcode', ['data'=>['attribute_code'=>'dm_zipcode', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmZipcode())]]) ?>
                 <?php if ($_dmZipcode->isEnabled()) : ?>
                     <?= $_dmZipcode->setDate($block->getFormData()->getDmZipcode())->toHtml() ?>
                 <?php endif ?>
@@ -230,6 +223,11 @@ $viewModel = $block->getData('view_model');
                    name="referrer_code"
                    id="referrer_code"
                    value="<?= $block->escapeHtml($viewModel->getReferrerCode()) ?>">
+
+            <input type="hidden"
+                   name="imported_from_pos"
+                   id="imported_from_pos"
+                   value="0">
         </div>
         <div class="actions-toolbar">
             <div class="primary">

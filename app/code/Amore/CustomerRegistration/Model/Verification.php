@@ -354,4 +354,18 @@ class Verification
         $customers = $this->customerRepositoryInterface->getList($searchCriteria)->getItems();
         return count($customers)?true:false;
     }
+
+    public function currentRegistrationStep($stepNumber)
+    {
+        $this->sessionManager->setCurrentStep($stepNumber);
+    }
+
+    public function getCurrentRegistrationStep()
+    {
+        if ($this->sessionManager->getCurrentStep()) {
+            return $this->sessionManager->getCurrentStep();
+        } else {
+            return 1;
+        }
+    }
 }
