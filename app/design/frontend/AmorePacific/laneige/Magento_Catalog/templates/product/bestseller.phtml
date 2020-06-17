@@ -22,12 +22,14 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
 <?php if (!$_productCollection->count()) :?>
     <div class="message info empty"><div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div></div>
 <?php else :?>
-    <div class="bestseller-products">
-            <div class="bestseller-container intro  pp-scrollable"><?= /* @noEscape */ $block->getChildHtml('bestseller-intro');?></div>
+    <div class="bestseller-products swiper-container bestseller-slider">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide bestseller-container intro"><div class="slide-bgimg"><?= /* @noEscape */ $block->getChildHtml('bestseller-intro');?></div></div>
             <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
             <?php $i = 1;?>
             <?php foreach ($_productCollection as $_product) :?>
-                <div class="bestseller-container product-list  pp-scrollable">
+                <div class="swiper-slide bestseller-container product-list">
+                    <div class="slide-bgimg">
                     <div class="product-div">
                         <?php $productImage = $block->getImage($_product, 'category_page_list'); ?>
                         <div class="product-image" style="background-image: url(<?= $block->escapeUrl($productImage->getImageUrl())?>);"></div>
@@ -53,8 +55,12 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                                class="action more"><?= $block->escapeHtml(__('View Detail')) ?></a>
                         </div>
                     </div>
+                    </div>
                 </div>
                 <?php $i++;?>
             <?php endforeach;?>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
     </div>
 <?php endif; ?>
