@@ -108,9 +108,9 @@ class AddUpdateCustomerAttributesSecond implements DataPatchInterface
      */
     public function apply()
     {
-        $this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'dm_detailed_address');
-        $this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'favorite_store');
-        $this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'referrer_code');
+        //$this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'dm_detailed_address');
+        //$this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'favorite_store');
+        //$this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'referrer_code');
 
         $textFieldAttributes = [
                                     [
@@ -145,8 +145,22 @@ class AddUpdateCustomerAttributesSecond implements DataPatchInterface
                                         'label'=>'Inetgration Number',
                                         'type' => 'varchar',
                                         'validation'=>'{"input_validation":"length",
-                                                                "max_text_length":30,
-                                                                "min_text_length":30}',
+                                        "max_text_length":30,
+                                        "min_text_length":13}',
+                                        'required' => 0
+                                    ],
+                                    [
+                                        'code'=>'sales_organization_code',
+                                        'label'=>'Sales Organization Code',
+                                        'type' => 'varchar',
+                                        'validation'=>'',
+                                        'required' => 0
+                                    ],
+                                    [
+                                        'code'=>'sales_office_code',
+                                        'label'=>'Sales Office Code',
+                                        'type' => 'varchar',
+                                        'validation'=>'',
                                         'required' => 0
                                     ]
                                 ];
@@ -162,7 +176,9 @@ class AddUpdateCustomerAttributesSecond implements DataPatchInterface
 
         $yesNoAttributes = [
             ['code'=>'pos_synced_successfully','label'=>'Successfully Synced to POS'],
-            ['code'=>'imported_from_pos','label'=>'Imported from POS']
+            ['code'=>'imported_from_pos','label'=>'Imported from POS'],
+            ['code'=>'call_subscription_status','label'=>'Call Marketing'],
+            ['code'=>'status','label'=>'Status']
                             ];
 
         foreach ($textFieldAttributes as $textFieldAttribute) {
