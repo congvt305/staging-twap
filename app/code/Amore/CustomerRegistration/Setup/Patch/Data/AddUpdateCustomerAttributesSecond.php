@@ -155,30 +155,30 @@ class AddUpdateCustomerAttributesSecond implements DataPatchInterface
         );
 
         $textFieldAttributes = [
-                                    [
-                                        'code'=>'integration_number',
-                                        'label'=>'Inetgration Number',
-                                        'type' => 'varchar',
-                                        'validation'=>'{"input_validation":"length",
+            [
+                'code'=>'integration_number',
+                'label'=>'Inetgration Number',
+                'type' => 'varchar',
+                'validation'=>'{"input_validation":"length",
                                         "max_text_length":30,
                                         "min_text_length":13}',
-                                        'required' => 0
-                                    ],
-                                    [
-                                        'code'=>'sales_organization_code',
-                                        'label'=>'Sales Organization Code',
-                                        'type' => 'varchar',
-                                        'validation'=>'',
-                                        'required' => 0
-                                    ],
-                                    [
-                                        'code'=>'sales_office_code',
-                                        'label'=>'Sales Office Code',
-                                        'type' => 'varchar',
-                                        'validation'=>'',
-                                        'required' => 0
-                                    ]
-                                ];
+                'required' => 0
+            ],
+            [
+                'code'=>'sales_organization_code',
+                'label'=>'Sales Organization Code',
+                'type' => 'varchar',
+                'validation'=>'',
+                'required' => 0
+            ],
+            [
+                'code'=>'sales_office_code',
+                'label'=>'Sales Office Code',
+                'type' => 'varchar',
+                'validation'=>'',
+                'required' => 0
+            ]
+        ];
 
         $textAreaAttributes = [
             [
@@ -194,7 +194,7 @@ class AddUpdateCustomerAttributesSecond implements DataPatchInterface
             ['code'=>'imported_from_pos','label'=>'Imported from POS'],
             ['code'=>'call_subscription_status','label'=>'Call Marketing'],
             ['code'=>'status_code','label'=>'Status Code']
-                            ];
+        ];
 
         foreach ($textFieldAttributes as $textFieldAttribute) {
 
