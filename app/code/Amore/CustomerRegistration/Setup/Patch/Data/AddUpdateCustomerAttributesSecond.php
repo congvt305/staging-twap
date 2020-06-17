@@ -108,9 +108,9 @@ class AddUpdateCustomerAttributesSecond implements DataPatchInterface
      */
     public function apply()
     {
-        //$this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'dm_detailed_address');
-        //$this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'favorite_store');
-        //$this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'referrer_code');
+        $this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'dm_detailed_address');
+        $this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'favorite_store');
+        $this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'referrer_code');
 
         $textFieldAttributes = [
                                     [
