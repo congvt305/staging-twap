@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: yasir
+* Date: 6/17/20
+* Time: 1:36 AM
+*/
+-->
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/PageObject.xsd">
+    <page name="EcommerceStatusPage" url="admin_eguana/admin/dashboard/" area="admin" module="EcommerceStatus">
+        <section name="EcommerceStatusSection"/>
+    </page>
+</pages>
