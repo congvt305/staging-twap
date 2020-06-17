@@ -108,38 +108,38 @@ class AddUpdateCustomerAttributesSecond implements DataPatchInterface
      */
     public function apply()
     {
-        $this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'dm_detailed_address');
-        $this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'favorite_store');
-        $this->eavSetup->removeAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'referrer_code');
+        $this->eavSetup->updateAttribute(
+            CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
+            'dm_zipcode',
+            'backend_type',
+            'varchar'
+        );
+        $this->eavSetup->updateAttribute(
+            CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
+            'dm_zipcode',
+            'validate_rules',
+            '{"input_validation":"length", "min_text_length":1,"max_text_length":20}'
+        );
+        $this->eavSetup->updateAttribute(
+            CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
+            'dm_detailed_address',
+            'validate_rules',
+            '{"input_validation":"length", "min_text_length":1,"max_text_length":255}'
+        );
+        $this->eavSetup->updateAttribute(
+            CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
+            'favorite_store',
+            'validate_rules',
+            '{"input_validation":"length", "min_text_length":1,"max_text_length":255}'
+        );
+        $this->eavSetup->updateAttribute(
+            CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
+            'referrer_code',
+            'validate_rules',
+            '{"input_validation":"length", "min_text_length":1,"max_text_length":255}'
+        );
 
         $textFieldAttributes = [
-                                    [
-                                        'code'=>'dm_detailed_address',
-                                        'label'=>'DM Detailed Address',
-                                        'type' => 'varchar',
-                                        'validation'=>'{"input_validation":"length",
-                                        "max_text_length":255,
-                                        "min_text_length":1}',
-                                        'required' => 0
-                                    ],
-                                    [
-                                        'code'=>'favorite_store',
-                                        'label'=>'Favorite Store',
-                                        'type' => 'varchar',
-                                        'validation'=>'{"input_validation":"length",
-                                        "max_text_length":255,
-                                        "min_text_length":1}',
-                                        'required' => 0
-                                    ],
-                                    [
-                                        'code'=>'referrer_code',
-                                        'label'=>'Referrer Code',
-                                        'type' => 'varchar',
-                                        'validation'=>'{"input_validation":"length",
-                                        "max_text_length":255,
-                                        "min_text_length":1}',
-                                        'required' => 0
-                                    ],
                                     [
                                         'code'=>'integration_number',
                                         'label'=>'Inetgration Number',

@@ -177,8 +177,9 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
             trim($homeAddr1)?$customer->setCustomAttribute('dm_detailed_address', $homeAddr1):'';
             trim($homeZip)?$customer->setCustomAttribute('dm_zipcode', $homeZip):'';
             trim($statusCD)?$customer->setCustomAttribute('status_code', $statusCD == '1' ? 1 : 0):'';
-            trim($salOrgCd)? $customer->setCustomAttribute('sales_organization_code', $salOrgCd):'';
-            trim($salOffCd)?$customer->setCustomAttribute('sales_office_code', $salOffCd):'';
+            //Confiremd with Client sales office and organization code will never change
+            //trim($salOrgCd)? $customer->setCustomAttribute('sales_organization_code', $salOrgCd):'';
+            //trim($salOffCd)?$customer->setCustomAttribute('sales_office_code', $salOffCd):'';
 
             $customer = $this->customerRepositoryInterface->save($customer);
             if (trim($emailYN) == 'Y') {
