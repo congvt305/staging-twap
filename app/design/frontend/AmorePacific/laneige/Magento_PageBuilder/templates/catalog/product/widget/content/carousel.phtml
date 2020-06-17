@@ -47,7 +47,9 @@ use Magento\Framework\App\Action\Action;
                         </a>
                     </strong>
                     <div class="product attribute overview">
-                        <?= /* @noEscape */ $_helper->productAttribute($_item, $_item->getShortDescription(), 'short_description') ?>
+                        <div class="value" itemprop="<?=$block->escapeHtml(__('description'));?>">
+                            <?= /* @noEscape */ $_helper->productAttribute($_item, $_item->getShortDescription(), 'short_description') ?>
+                        </div>
                     </div>
                     <?php if ($templateType) : ?>
                         <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
