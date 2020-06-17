@@ -16,6 +16,7 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\App\Action\Context;
 use Amore\CustomerRegistration\Model\Verification;
 use Magento\Framework\Controller\ResultInterface;
+use Amore\CustomerRegistration\Model\POSSystem;
 
 /**
  * To verify the customer with the POS system
@@ -43,6 +44,10 @@ class Pos implements ActionInterface
      * @var Verification
      */
     private $verification;
+    /**
+     * @var Amore\CustomerRegistration\Model\POSSystem
+     */
+    private $posSystem;
 
     /**
      * Pos constructor.
@@ -54,11 +59,13 @@ class Pos implements ActionInterface
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        Verification $verification
+        Verification $verification,
+        POSSystem $posSystem
     ) {
         $this->request = $context->getRequest();
         $this->resultJsonFactory = $resultJsonFactory;
         $this->verification = $verification;
+        $this->posSystem = $posSystem;
     }
 
     /**
@@ -86,10 +93,9 @@ class Pos implements ActionInterface
                 );
 
             if ($verificationResult['code'] === 6) {
-                $result['message'] = __(
-                    'Code has been verified please move to the next step'
-                );
+                $result['pos'] = $this->posSystem->getMemberInfo($firstName, $lastName, $mobileNumber);
                 $result['verify'] = true;
+                $this->verification->currentRegistrationStep(2);
             } elseif (in_array($verificationResult['code'], [1,2,3])) {
 
                 $result['message'] = $verificationResult['message'];

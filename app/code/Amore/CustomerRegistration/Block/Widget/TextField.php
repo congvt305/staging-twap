@@ -164,6 +164,11 @@ class TextField extends AbstractWidget
      */
     public function getAttributeValue()
     {
-        return $this->getData($this->getAttributeCode());
+        return $this->getFormValue()?$this->getFormValue():$this->getData($this->getAttributeCode());
+    }
+
+    public function isReadOnly()
+    {
+        return $this->getReadOnly() == 1?true:false;
     }
 }

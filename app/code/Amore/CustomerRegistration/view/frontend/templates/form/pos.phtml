@@ -82,7 +82,8 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
                 "sendCodeUrl": "<?= $block->getSendCodeUrl(); ?>",
                 "verifyCodeUrl": "<?= $block->getVerifyCodeUrl(); ?>",
                 "POSVerificationUrl": "<?= $block->getPOSVerificationUrl(); ?>",
-                "codeExpirationMinutes": "<?= $viewModel->getCodeExpirationTimeInMinutes()?$viewModel->getCodeExpirationTimeInMinutes():'2:00'; ?>"
+                "codeExpirationMinutes": "<?= $viewModel->getCodeExpirationTimeInMinutes()?$viewModel->getCodeExpirationTimeInMinutes():'2:00'; ?>",
+                "currentStep": "<?= $viewModel->getCurrentStep(); ?>"
             }
         }
     }

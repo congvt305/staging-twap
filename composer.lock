@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de9cfd03833a774805d6e24209e879f4",
+    "content-hash": "c852acbd90016bd82f72bbd8380215de",
     "packages": [
         {
             "name": "amzn/amazon-pay-and-login-magento-2-module",
@@ -1093,11 +1093,17 @@
         },
         {
             "name": "dotmailer/dotmailer-magento2-extension",
-            "version": "4.4.0",
+            "version": "4.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dotmailer/dotmailer-magento2-extension.git",
+                "reference": "e4b57cc3e51edf4e5b6a71da95b7031dd6abbe35"
+            },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.magento.com/archives/dotmailer/dotmailer-magento2-extension/dotmailer-dotmailer-magento2-extension-4.4.0.0.zip",
-                "shasum": "2ce54820044685bc127ec0c6bdc73d0c8c0984cd"
+                "url": "https://api.github.com/repos/dotmailer/dotmailer-magento2-extension/zipball/e4b57cc3e51edf4e5b6a71da95b7031dd6abbe35",
+                "reference": "e4b57cc3e51edf4e5b6a71da95b7031dd6abbe35",
+                "shasum": ""
             },
             "require": {
                 "magento/framework": ">=101 <103",
@@ -1144,10 +1150,12 @@
                     "Dotdigitalgroup\\Email\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "dotmailer integration for magento 2"
+            "description": "dotmailer integration for magento 2",
+            "time": "2020-04-07T15:58:22+00:00"
         },
         {
             "name": "dotmailer/dotmailer-magento2-extension-chat",
@@ -21558,7 +21566,14 @@
         }
     ],
     "packages-dev": [],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "4.4.0",
+            "alias_normalized": "4.4.0.0",
+            "version": "4.5.1.0",
+            "package": "dotmailer/dotmailer-magento2-extension"
+        }
+    ],
     "minimum-stability": "alpha",
     "stability-flags": [],
     "prefer-stable": true,

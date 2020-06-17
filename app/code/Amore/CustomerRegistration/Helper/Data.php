@@ -32,6 +32,16 @@ class Data extends AbstractHelper
         = 'customerregistraion/general/membership_error_cms_page';
     const DUPLICATE_MEMBERSHIP_CMS_PAGE
         = 'customerregistraion/general/duplicate_membership_cms_page';
+    const POS_BASE_URL
+        = 'customerregistraion/pos/base_url';
+    const POS_MEMBER_INFO_URL
+        = 'customerregistraion/pos/member_info';
+    const POS_MEMBER_JOIN_URL
+        = 'customerregistraion/pos/member_join';
+    const SALES_ORGANIZATION_CODE
+        = 'customerregistraion/pos/sales_organization_code';
+    const SALES_OFFICE_CODE
+        = 'customerregistraion/pos/sales_office_code';
 
     /**
      * Get cms block id set in setting
@@ -115,6 +125,80 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::DUPLICATE_MEMBERSHIP_CMS_PAGE,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
+     * It will return the full url of the POS API to get the customer information
+     * @return string
+     */
+    public function getMemberInfoURL()
+    {
+        $baseURL = $this->getPOSBaseURL();
+        $memberInfoURL = $this->scopeConfig->getValue(
+            self::POS_MEMBER_INFO_URL,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+
+        return $baseURL.$memberInfoURL;
+    }
+
+    /**
+     * It will return the POS System URL for join customer
+     * @return string
+     */
+    public function getMemberJoinURL()
+    {
+        $baseURL = $this->getPOSBaseURL();
+        $memberJoinURL = $this->scopeConfig->getValue(
+            self::POS_MEMBER_JOIN_URL,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+
+        return $baseURL.$memberInfoURL;
+    }
+
+    /**
+     * Get the base url of the POS system
+     * @return mixed
+     */
+    private function getPOSBaseURL()
+    {
+        return $this->scopeConfig->getValue(
+            self::POS_BASE_URL,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    public function getOrganizationSalesCode($websiteId = null)
+    {
+        if($websiteId) {
+            return $this->scopeConfig->getValue(
+                self::SALES_ORGANIZATION_CODE,
+                ScopeInterface::SCOPE_WEBSITE,
+                $websiteId
+            );
+        }
+
+        return $this->scopeConfig->getValue(
+            self::SALES_ORGANIZATION_CODE,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    public function getOfficeSalesCode($websiteId = null)
+    {
+        if($websiteId) {
+            return $this->scopeConfig->getValue(
+                self::SALES_OFFICE_CODE,
+                ScopeInterface::SCOPE_WEBSITE,
+                $websiteId
+            );
+        }
+
+        return $this->scopeConfig->getValue(
+            self::SALES_OFFICE_CODE,
             ScopeInterface::SCOPE_WEBSITE
         );
     }

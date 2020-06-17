@@ -23,14 +23,49 @@ use Magento\Framework\Exception\State\InputMismatchException;
 interface POSIntegrationInterface
 {
     /**
-     * Update a customer.
+     * To Update a customer.
      *
-     * @param CustomerInterface $customer customer data interface
-     *
+     * @param string $cstmIntgSeq
+     * @param string $firstName
+     * @param string $lastName
+     * @param string $birthDay
+     * @param string $mobileNo
+     * @param string $email
+     * @param string $sex
+     * @param string $emailYN
+     * @param string $smsYN
+     * @param string $callYN
+     * @param string $dmYN
+     * @param string $homeCity
+     * @param string $homeState
+     * @param string $homeAddr1
+     * @param string $homeZip
+     * @param string $statusCD
+     * @param string $salOrgCd
+     * @param string $salOffCd
      * @return boolean
      * @throws InputException If bad input is provided
      * @throws InputMismatchException If the provided email is already used
      * @throws LocalizedException if localized exception occurs
      */
-    public function update(CustomerInterface $customer);
+    public function update(
+        $cstmIntgSeq,
+        $firstName,
+        $lastName,
+        $birthDay,
+        $mobileNo,
+        $email,
+        $sex,
+        $emailYN,
+        $smsYN,
+        $callYN,
+        $dmYN,
+        $homeCity,
+        $homeState,
+        $homeAddr1,
+        $homeZip,
+        $statusCD,
+        $salOrgCd,
+        $salOffCd
+    );
 }

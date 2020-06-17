@@ -10,6 +10,7 @@ namespace Amore\CustomerRegistration\ViewModel;
 
 use Amore\CustomerRegistration\Helper\Data;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Amore\CustomerRegistration\Model\Verification;
 
 /**
  * It will use for the pos step during registration
@@ -26,13 +27,19 @@ class POS implements ArgumentInterface
     private $configHelper;
 
     /**
+     * @var Verification
+     */
+    private $verification;
+
+    /**
      * POS constructor.
      *
      * @param Data $configHelper config helper
      */
-    public function __construct(Data $configHelper)
+    public function __construct(Data $configHelper, Verification $verification)
     {
         $this->configHelper = $configHelper;
+        $this->verification = $verification;
     }
 
     /**
@@ -78,5 +85,10 @@ class POS implements ArgumentInterface
     public function getMaximumMobileNumberDigits()
     {
         return $this->configHelper->getMaximumMobileNumberDigits();
+    }
+
+    public function getCurrentStep()
+    {
+        return $this->verification->getCurrentRegistrationStep();
     }
 }
