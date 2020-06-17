@@ -579,3 +579,13 @@
         }
     }
 }
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    .navigation {
+        .level0 {
+            > .level-top {
+                padding: 0 @indent__base;
+            }
+        }
+    }
+}
