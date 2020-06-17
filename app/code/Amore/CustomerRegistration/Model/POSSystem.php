@@ -88,7 +88,7 @@ class POSSystem
     {
 
 
-        /*$result = [];
+        $result = [];
         if($lastName == 'Ali') {
             $result = [
                 'cstmIntgSeq' => 'TW10210000001',
@@ -110,8 +110,8 @@ class POSSystem
                 'homeZip' => '406'
             ];
         }
-        return $result;*/
-        $response = [];
+        return $result;
+        /*$response = [];
         try {
             $params = [
                 'firstName' => $firstName,
@@ -132,7 +132,7 @@ class POSSystem
           $t = $e->getMessage();
         }
 
-        return $response;
+        return $response;*/
 
     }
 
