@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: shahroz
+ * Date: 28/1/20
+ * Time: 2:42 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <stores_board>
+            <general_stores>
+                <enabled>1</enabled>
+                <media_directory_path>stores</media_directory_path>
+                <azimuth_orientation>EAST STORE,WEST STORE</azimuth_orientation>
+                <map_radius_limit>50</map_radius_limit>
+            </general_stores>
+            <frontend_stores>
+                <main_title>Store</main_title>
+                <sub_title>Nature Collection</sub_title>
+                <map_height>420px</map_height>
+                <map_zoom>19</map_zoom>
+            </frontend_stores>
+            <admin_stores>
+                <default_location>34.025347738147936,-118.25820922851562</default_location>
+                <map_height>300px</map_height>
+                <info_window_weight>50</info_window_weight>
+                <info_window_height>50</info_window_height>
+                <icon_content>copy</icon_content>
+                <map_zoom>19</map_zoom>
+            </admin_stores>
+            <admin_stores_pagination>
+                <stores_pagination_per_page>5</stores_pagination_per_page>
+            </admin_stores_pagination>
+        </stores_board>
+    </default>
+</config>

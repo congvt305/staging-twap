@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /**
+  ~ * @author Eguana Team
+  ~ * @copyriht Copyright (c) ${YEAR} Eguana {http://eguanacommerce.com}
+  ~ * Created byPhpStorm
+  ~ * User:  umer
+  ~ * Date: 06/08/20
+  ~ * Time: 01:06 pm
+  ~ */
+  -->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AdminStoreLocatorManageStoreLocations">
+        <annotations>
+            <features value="Store Locator Manage Stores Locations"/>
+            <stories value="Add new store locations via the Admin"/>
+            <title value="You should be able to add new store locations"/>
+            <description value="You should be able to add new store locations."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="VTN-00002"/>
+            <group value="ManageStoreLocations"/>
+        </annotations>
+        <before>
+            <actionGroup ref="LoginAsAdmin" stepKey="loginToAdminPanel"/>
+        </before>
+        <actionGroup stepKey="navigateToManageStoreLocationsPage" ref="AdminManageStoreLocationsActionGroup">
+            <argument name="manageStore" value="AdminManageStoreEntityOne"/>
+        </actionGroup>
+    </test>
+</tests>

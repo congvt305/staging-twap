@@ -1,0 +1,49 @@
+{
+    "storeinfo": {
+        "column": {
+            "entity_id": true,
+            "title": true,
+            "image": true,
+            "address": true,
+            "telephone": true,
+            "location": true,
+            "created_at": true,
+            "store_id": true,
+            "area": true,
+            "event_url": true,
+            "azimuth_orientation": true,
+            "detail_url": true,
+            "store_sale": true,
+            "city": true,
+            "type": true,
+            "email": true,
+            "start_time": true,
+            "end_time": true,
+            "timing": true
+        },
+        "index": {
+            "STOREINFO_STORE_ID": true,
+            "STOREINFO_ENTITY_ID": true,
+            "STOREINFO_STORE_ID_TITLE_ADDRESS": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "storeinfo_work_time": {
+        "column": {
+            "entity_id": true,
+            "store_info_id": true,
+            "label": true,
+            "work_time": true,
+            "sort": true
+        },
+        "index": {
+            "STOREINFO_WORK_TIME_STORE_INFO_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "STOREINFO_WORK_TIME_STORE_INFO_ID_STOREINFO_ENTITY_ID": true
+        }
+    }
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /**
+  ~ * @author Eguana Team
+  ~ * @copyriht Copyright (c) ${YEAR} Eguana {http://eguanacommerce.com}
+  ~ * Created byPhpStorm
+  ~ * User:  umer
+  ~ * Date: 06/08/20
+  ~ * Time: 01:06 pm
+  ~ */
+  -->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="StorefrontStoreLocatorStoreSearchActionGroup">
+        <arguments>
+            <argument name="store" />
+        </arguments>
+        <amOnPage stepKey="storeLocatorStoreSearchPage" url="{{StorefrontStoreLocatorStoreSearchPage.url}}"/>
+        <waitForPageLoad stepKey="pageLoadBeforeStoreSearch"/>
+        <click selector="{{StorefrontStoreLocatorStoreSearchSection.storeSelect}}" stepKey="clickOnStoreSelect"/>
+        <waitForPageLoad stepKey="pageLoadBeforeStoreSearchSelection"/>
+        <fillField stepKey="fillLocation" userInput="{{store.location}}" selector="{{StorefrontStoreLocatorStoreSearchSection.locationField}}"/>
+        <click selector="{{StorefrontStoreLocatorStoreSearchSection.storeTypeField}}" stepKey="clickOnStoreTypeField"/>
+        <click selector="{{StorefrontStoreLocatorStoreSearchSection.storeSubmitField}}" stepKey="clickOnStoreSubmitField"/>
+        <waitForPageLoad stepKey="pageLoadBeforeStoreSubmitFieldSelection"/>
+        <click selector="{{StorefrontStoreLocatorStoreSearchSection.storeSelectFirstField}}" stepKey="clickOnStoreSelectFirstField"/>
+        <click selector="{{StorefrontStoreLocatorStoreSearchSection.storeSelectSecondField}}" stepKey="clickOnStoreSelectSecondField"/>
+        <click selector="{{StorefrontStoreLocatorStoreSearchSection.storeSelectThirdField}}" stepKey="clickOnStoreSelectThirdField"/>
+        <waitForPageLoad stepKey="pageLoadBeforeStoreSelectThirdFieldSelection"/>
+        <click selector="{{StorefrontStoreLocatorStoreSearchSection.storeSelectThirdFieldOpenMap}}" stepKey="clickOnStoreSelectThirdFieldOpenMap"/>
+    </actionGroup>
+</actionGroups>
