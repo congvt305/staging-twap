@@ -199,12 +199,12 @@ define([
                             {
                                 window.location.replace(response.url);
                             }else {
-                                $('.pos-verification-message').html(response.message);
+                                $('.pos-verification-message span').html(response.message);
                                 $('.pos-verification-message').show();
                             }
                         }
                         else {
-                            $('.pos-verification-message').html(response.message);
+                            $('.pos-verification-message span').html(response.message);
                             $('.pos-verification-message').show();
                         }
                     }

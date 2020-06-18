@@ -466,7 +466,7 @@
             overflow: hidden;
         }
 
-        .form-create-account {
+        .form.create.account {
             border-top: 2px solid @primary__color__dark;
 
             .actions-toolbar {
@@ -477,10 +477,21 @@
                 button {
                     text-transform: uppercase;
                 }
-            }
 
-            button.action {
-                &:extend(.abs-button-l all);
+                .action {
+                    &:extend(.abs-button-l all);
+                    .lib-button-revert-secondary-color(
+                        @_button-color: @color-white,
+                        @_button-background: #79a3dc,
+                        @_button-border: 1px solid #79a3dc,
+                        @_button-color-hover: @color-white,
+                        @_button-background-hover: #4477be,
+                        @_button-border-hover: 1px solid #4477be,
+                        @_button-color-active: #4477be,
+                        @_button-background-active: #4477be,
+                        @_button-border-active: 1px solid #4477be
+                    );
+                }
             }
         }
 
@@ -700,13 +711,19 @@
     }
 
     .customer-account-create {
-        .form-create-account {
-            margin-bottom: @indent__xl;
+        main.page-main {
+            position: relative;
+        }
+        
+        .column.main {
+            padding-bottom: 75px;
+        }
 
+        .form.create.account {
             .actions-toolbar {
                 bottom: 0;
                 left: 0;
-                position: fixed;
+                position: absolute;
                 right: 0;
 
                 button {
@@ -1006,14 +1023,14 @@
     }
 
     .customer-account-create {
-        .form-create-account {
+        .form.create.account {
             margin-bottom: 120px;
 
             .actions-toolbar {
                 margin-top: 80px;
                 width: 100%;
 
-                button {
+                .action {
                     width: 380px;
                 };
             }
