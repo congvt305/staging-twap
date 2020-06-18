@@ -38,10 +38,10 @@ use Magento\Framework\App\Action\Action;
                         <div class="product-item-info">
                             <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>" class="product-item-photo">
                                 <span class="flags">
-                                    <?php if($_item->hasData('new')):?>
+                                    <?php if($_item->getData('new')):?>
                                         <span class="flag new"><?= $block->escapeHtml($_item->getResource()->getAttribute('new')->getStoreLabel());?></span>
                                     <?php endif;?>
-                                    <?php if($_item->hasData('best')):?>
+                                    <?php if($_item->getData('best')):?>
                                         <span class="flag best"><?= $block->escapeHtml($_item->getResource()->getAttribute('best')->getStoreLabel()); ?></span>
                                     <?php endif;?>
                                 </span>
@@ -85,7 +85,7 @@ use Magento\Framework\App\Action\Action;
                                                     <?php endif; ?>
                                                 </div>
                                             <?php endif; ?>
-                                            <?php if (($showWishlist && !$_item->hasData('offline')) || $showCompare) : ?>
+                                            <?php if (($showWishlist && !$_item->getData('offline')) || $showCompare) : ?>
                                                 <div class="actions-secondary" data-role="add-to-links">
                                                     <?php //phpcs:disable ?>
                                                     <?php if ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist) : ?>
