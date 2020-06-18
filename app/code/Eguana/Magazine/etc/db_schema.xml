@@ -18,7 +18,7 @@
                 comment="Store ID"/>
         <column xsi:type="varchar" name="title" nullable="false" length="50"
                 comment="Title"/>
-        <column xsi:type="varchar" name="content_short" nullable="true" length="255"
+        <column xsi:type="text" name="content_short" nullable="true"
                 comment="Short Description"/>
         <column xsi:type="text" name="content" nullable="true"
                 comment="Long Desciption"/>
@@ -41,7 +41,7 @@
             <column name="entity_id"/>
             <column name="store_id"/>
         </constraint>
-        <index referenceId="EGUANA_MAGAZINE_TITLE_DESCRIPTION" indexType="fulltext">
+        <index referenceId="EGUANA_MAGAZINE_TITLE_CONTENT" indexType="fulltext">
             <column name="title"/>
             <column name="content"/>
         </index>

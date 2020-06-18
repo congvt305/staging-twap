@@ -1,0 +1,15 @@
+<?php
+
+/** @var \Eguana\Magazine\ViewModel\Magazine $viewModel */
+$viewModel = $block->getData('view_model');
+$topBlockId = $viewModel->getDetailTopBlockValue();
+?>
+<div class="magazine-top-content">
+    <?php if (isset($topBlockId)): ?>
+        <?= $block->getLayout()
+            ->createBlock(Magento\Cms\Block\Block::class)
+            ->setBlockId($topBlockId)
+            ->toHtml();
+        ?>
+    <?php endif;?>
+</div>

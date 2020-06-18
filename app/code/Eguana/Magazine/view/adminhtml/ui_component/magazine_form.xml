@@ -145,7 +145,7 @@
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Short Description</item>
-                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
                     <item name="source" xsi:type="string">magazine</item>
                     <item name="dataScope" xsi:type="string">content_short</item>
                     <item name="validation" xsi:type="array">

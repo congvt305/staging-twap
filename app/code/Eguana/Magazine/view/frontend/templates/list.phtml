@@ -1,0 +1,49 @@
+<?php
+
+/** @var \Eguana\Magazine\Block\ListBlock $block */
+$magazineList = $block->getCollection();
+$url = $block->getUrl();
+$magazineSize = $magazineList->getTotalCount();
+$count = 0;
+?>
+<div class="magazine-list-wrapper" data-mage-init='{"magazineSlide":{}}'>
+    <?php if ($magazineList->getTotalCount() == 0): ?>
+        <div class="magazine-empty">
+            <?= $block->escapeHtml(__('It does not exist.')); ?>
+        </div>
+    <?php else: ?>
+        <?php foreach ($magazineList as $magazineItem):?>
+            <?php if ($count === 0):?>
+                <div class="magazine-list">
+            <?php endif;?>
+            <?php $count++; ?>
+            <?php $magazineSize--; ?>
+            <div class="magazine-item">
+                <div class="magazine-item-content">
+                    <div class="magazine-photo">
+                        <a class="action view"
+                           href="<?= $block->escapeUrl($block->getMagazineUrl($magazineItem->getId())) ?>">
+                                <span>
+                                    <img src="<?= $block->escapeHtml($magazineItem->getThumbnailImageURL());?>"
+                                         alt="<?= $block->escapeHtml($magazineItem->getThumbnailAlt());?>" />
+                                </span>
+                        </a>
+                        <?= $magazineItem->getTitle();?>
+                        <?= $magazineItem->getContentShort();?>
+                        <?= $magazineItem->getUpdatedAt();?>
+                    </div>
+                    <div class="magazine-location">
+                        <a class="action view" type="button"
+                           href="<?= $block->escapeUrl($block->getMagazineUrl($magazineItem->getId())) ?>">
+                            <span><?= $block->escapeHtml(__('Discover More')) ?></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <?php if ($magazineSize === 0 || $count === 4):?>
+                </div>
+                <?php $count = 0; ?>
+            <?php endif;?>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
