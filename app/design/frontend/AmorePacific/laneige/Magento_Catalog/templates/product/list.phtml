@@ -83,6 +83,7 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                         <?php if ($_product->isAvailable()) :?>
                             <?= $block->getProductDetailsHtml($_product) ?>
                         <?php endif; ?>
+                        <?= $this->helper('Yotpo\Yotpo\Helper\Data')->showBottomline($block, $_product) ?>
 
                         <div class="product-item-inner">
                             <div class="product actions product-item-actions"<?= strpos($pos, $viewMode . '-actions') ? $block->escapeHtmlAttr($position) : '' ?>>

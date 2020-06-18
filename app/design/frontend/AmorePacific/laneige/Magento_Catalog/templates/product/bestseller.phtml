@@ -30,51 +30,51 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
             <?php foreach ($_productCollection as $_product) :?>
                 <div class="swiper-slide bestseller-container product-list">
                     <div class="slide-bgimg">
-                    <div class="product-div">
-                        <?php $productImage = $block->getImage($_product, 'category_page_list'); ?>
-                        <div class="product-image" style="background-image: url(<?= $block->escapeUrl($productImage->getImageUrl())?>);"></div>
-                        <div class="product-info">
-                            <?php
-                            $_productNameStripped = $block->stripTags($_product->getName(), null, true);
-                            ?>
-                            <label class="product-item-count"><?= $block->escapeHtml($i);?></label>
-                            <h2 class="product name">
-                                <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
-                            </h2>
-                            <strong class="product-item-name-en">
-                                <?= $block->escapeHtml($_product->getResource()->getAttributeRawValue($_product->getId(),'name',0));?>
-                            </strong>
-                            <?= /* @noEscape */ $block->getProductPrice($_product) ?>
-                            <div class="product attribute overview">
-                                <div class="value" itemprop="<?=$block->escapeHtml(__('description'));?>">
-                                    <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                        <div class="product-div">
+                            <?php $productImage = $block->getImage($_product, 'category_page_list'); ?>
+                            <div class="product-image" style="background-image: url(<?= $block->escapeUrl($productImage->getImageUrl())?>);"></div>
+                            <div class="product-info">
+                                <?php
+                                $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                                ?>
+                                <label class="product-item-count"><?= $block->escapeHtml($i);?></label>
+                                <h2 class="product name">
+                                    <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
+                                </h2>
+                                <strong class="product-item-name-en">
+                                    <?= $block->escapeHtml($_product->getResource()->getAttributeRawValue($_product->getId(),'name',0));?>
+                                </strong>
+                                <?= /* @noEscape */ $block->getProductPrice($_product) ?>
+                                <div class="product attribute overview">
+                                    <div class="value" itemprop="<?=$block->escapeHtml(__('description'));?>">
+                                        <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                    </div>
                                 </div>
+                                <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
+                                   title="<?= /* @noEscape */ $_productNameStripped ?>"
+                                   class="action more"><?= $block->escapeHtml(__('View Detail')) ?></a>
+                                <?php
+                                $helper = $this->helper(Pixlee\Pixlee\Helper\Data::class);
+                                $websiteId = $helper->getWebsiteId();
+                                $helper->initializePixleeAPI($websiteId);
+                                ?>
+                                <?php if ($helper->isActive() && $helper->getPDPWidgetId() != "") : ?>
+                                    <div id="pixlee_container"></div>
+                                    <div id="pixlee_widget_master_container"></div>
+                                    <script id="pixlee_script" type="text/javascript">
+                                        require(['https://assets.pxlecdn.com/assets/pixlee_widget_1_0_0.js'], function (pixlee) {
+                                            Pixlee.init({apiKey: '<?= /* @noEscape */ $helper->getApiKey(); ?>'});
+                                            Pixlee.addProductWidget({
+                                                widgetId: <?= /* @noEscape */ $helper->getPDPWidgetId(); ?>,
+                                                skuId: '<?= /* @noEscape */ $_product->getSku(); ?>',
+                                                accountId:<?= /* @noEscape */ $helper->getAccountId(); ?>
+                                            });
+                                            Pixlee.resizeWidget();
+                                        });
+                                    </script>
+                                <?php endif; ?>
                             </div>
-                            <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
-                               title="<?= /* @noEscape */ $_productNameStripped ?>"
-                               class="action more"><?= $block->escapeHtml(__('View Detail')) ?></a>
                         </div>
-                        <?php
-                            $helper = $this->helper(Pixlee\Pixlee\Helper\Data::class);
-                            $websiteId = $helper->getWebsiteId();
-                            $helper->initializePixleeAPI($websiteId);
-                        ?>
-                        <?php if ($helper->isActive() && $helper->getPDPWidgetId() != "") : ?>
-                            <div id="pixlee_container"></div>
-                            <div id="pixlee_widget_master_container"></div>
-                            <script id="pixlee_script" type="text/javascript">
-                                require(['https://assets.pxlecdn.com/assets/pixlee_widget_1_0_0.js'], function (pixlee) {
-                                    Pixlee.init({apiKey: '<?= /* @noEscape */ $helper->getApiKey(); ?>'});
-                                    Pixlee.addProductWidget({
-                                        widgetId: <?= /* @noEscape */ $helper->getPDPWidgetId(); ?>,
-                                        skuId: '<?= /* @noEscape */ $_product->getSku(); ?>',
-                                        accountId:<?= /* @noEscape */ $helper->getAccountId(); ?>
-                                    });
-                                    Pixlee.resizeWidget();
-                                });
-                            </script>
-                        <?php endif; ?>
-                    </div>
                     </div>
                 </div>
                 <?php $i++;?>
