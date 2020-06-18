@@ -69,7 +69,9 @@
         bottom: 0;
         display: inline-block;
         left: 0;
+        position: absolute;
         right: 0;
+        text-align: center;
         width: 100%;
 
         .slick-dots,
@@ -86,6 +88,25 @@
 
             span {
                 &:extend(.abs-visually-hidden all);
+            }
+        }
+
+        .slick-arrow {
+            width: auto;
+            height: auto;
+            display: inline-block;
+            position: relative;
+            top: auto;
+            bottom: auto;
+            transform: none;
+            left: auto;
+            right: auto;
+
+            &:before {
+                font-size: 24px !important;
+                line-height: 24px !important;
+                color: rgba(0, 0, 0, 0.51) !important;
+                font-weight: bold !important;
             }
         }
     }
@@ -277,5 +298,25 @@
                 }
             }
         }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .slick-button {
+        bottom: @indent__m;
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .slick-button {
+        bottom: @indent__base;
     }
 }
