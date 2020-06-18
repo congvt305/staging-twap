@@ -61,6 +61,8 @@ use Magento\Framework\App\Action\Action;
 
                                 <?= $block->getProductPriceHtml($_item, $type) ?>
 
+                                <?= $this->helper('Yotpo\Yotpo\Helper\Data')->showBottomline($block, $_item) ?>
+
                                 <?= $block->getProductDetailsHtml($_item) ?>
 
                                 <?php if ($showWishlist || $showCompare || $showCart) : ?>

@@ -224,6 +224,8 @@ $_item = null;
                                         <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
                                     <?php endif; ?>
 
+                                    <?= $this->helper('Yotpo\Yotpo\Helper\Data')->showBottomline($block, $_item) ?>
+
                                     <?php if ($showAddTo || $showCart):?>
                                         <?php // phpcs:disable ?>
                                             <div class="product-item-inner">
