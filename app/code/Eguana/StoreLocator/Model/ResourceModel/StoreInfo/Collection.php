@@ -148,7 +148,6 @@ class Collection extends AbstractCollection implements SearchResultInterface
                     'longitude'=>$currentLocationPoint['long']
                 ]
             );
-            $select->having("distance <= ?", 50);
         }
     }
 

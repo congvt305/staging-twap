@@ -215,18 +215,4 @@ class ConfigData extends AbstractHelper
             ScopeInterface::SCOPE_STORE
         );
     }
-
-    /**
-     * This function will return stores per page
-     * @param null $scopeCode
-     * @return int
-     */
-    public function getPaginationLimit($scopeCode = null)
-    {
-        return $this->scopeConfig->getValue(
-            self::ADMIN_STORES_PAGIANTION,
-            ScopeInterface::SCOPE_STORE,
-            $scopeCode
-        );
-    }
 }

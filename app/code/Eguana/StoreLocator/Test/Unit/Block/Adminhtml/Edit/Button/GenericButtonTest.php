@@ -10,9 +10,9 @@
 
 namespace Eguana\StoreLocator\Test\Unit\Block\Adminhtml\Edit\Button;
 
-use PHPUnit\Framework\TestCase;
 use Eguana\StoreLocator\Block\Adminhtml\Edit\Button\GenericButton;
 use Magento\Backend\Block\Widget\Context;
+use PHPUnit\Framework\TestCase;
 
 /**
  * test class for generic button

@@ -10,15 +10,15 @@
 
 namespace Eguana\StoreLocator\Test\Unit\Block;
 
-use Eguana\StoreLocator\Model\StoreInfoRepository;
-use Magento\Directory\Model\ResourceModel\Region\CollectionFactory as RegionCollection;
-use Magento\Framework\View\Element\Template\Context;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Eguana\StoreLocator\Api\StoreInfoRepositoryInterface;
 use Eguana\StoreLocator\Api\WorkTimeRepositoryInterface;
-use Magento\Framework\Api\SortOrderBuilder;
-use Eguana\StoreLocator\Helper\ConfigData;
 use Eguana\StoreLocator\Block\InfoList;
+use Eguana\StoreLocator\Helper\ConfigData;
+use Eguana\StoreLocator\Model\StoreInfoRepository;
+use Magento\Directory\Model\ResourceModel\Region\CollectionFactory as RegionCollection;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SortOrderBuilder;
+use Magento\Framework\View\Element\Template\Context;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +30,6 @@ use PHPUnit\Framework\TestCase;
  */
 class InfoListTest extends TestCase
 {
-
     private $contextMock;
 
     /**

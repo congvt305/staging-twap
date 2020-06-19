@@ -10,14 +10,14 @@
 
 namespace Eguana\StoreLocator\Test\Unit\Block;
 
-use Eguana\StoreLocator\Model\StoreInfoRepository;
-use Magento\Framework\View\Element\Template\Context;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Eguana\StoreLocator\Api\StoreInfoRepositoryInterface;
 use Eguana\StoreLocator\Api\WorkTimeRepositoryInterface;
-use Magento\Framework\Api\SortOrderBuilder;
-use Eguana\StoreLocator\Helper\ConfigData;
 use Eguana\StoreLocator\Block\InfoView;
+use Eguana\StoreLocator\Helper\ConfigData;
+use Eguana\StoreLocator\Model\StoreInfoRepository;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SortOrderBuilder;
+use Magento\Framework\View\Element\Template\Context;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;

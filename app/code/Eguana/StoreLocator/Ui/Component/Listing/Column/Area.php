@@ -9,10 +9,10 @@
  */
 namespace Eguana\StoreLocator\Ui\Component\Listing\Column;
 
-use Magento\Directory\Model\ResourceModel\Region\Collection;
+use Magento\Directory\Model\CountryFactory;
 //use Magento\Directory\Model\ResourceModel\Region\CollectionFactory;
 use Magento\Directory\Model\ResourceModel\Country\CollectionFactory;
-use Magento\Directory\Model\CountryFactory;
+use Magento\Directory\Model\ResourceModel\Region\Collection;
 use Magento\Framework\Data\OptionSourceInterface;
 
 /**
@@ -23,7 +23,6 @@ use Magento\Framework\Data\OptionSourceInterface;
  */
 class Area implements OptionSourceInterface
 {
-
     protected $_regionCollection;
 
     protected $_options;

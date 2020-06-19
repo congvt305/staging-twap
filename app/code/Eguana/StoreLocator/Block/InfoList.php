@@ -9,6 +9,7 @@
  */
 namespace Eguana\StoreLocator\Block;
 
+use Eguana\StoreLocator\Api\StoreInfo;
 use Eguana\StoreLocator\Api\StoreInfoRepositoryInterface;
 use Eguana\StoreLocator\Helper\ConfigData;
 use Eguana\StoreLocator\Model\ResourceModel\StoreInfo\CollectionFactory as StoreCollectionFactory;
@@ -26,7 +27,6 @@ use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Theme\Block\Html\Pager;
 
 /**
  * InfoList block
@@ -204,6 +204,10 @@ class InfoList extends Template
         return $storeCollection;
     }
 
+    /**
+     * Get store cities
+     * @return array
+     */
     public function getCitiesFromStores()
     {
         $cities = [];
@@ -233,15 +237,6 @@ class InfoList extends Template
     }
 
     /**
-     * This function is used too get native pager
-     * @return string
-     */
-    public function getPagerHtml()
-    {
-        return $this->getChildHtml('pager');
-    }
-
-    /**
      * This function will return location point of customer
      * @return array
      */
@@ -258,9 +253,6 @@ class InfoList extends Template
                 $search = str_replace(' ', '%20', $search);
                 //this is for calculating distance between searced term and stores
                 $latLong = $this->getLatLongFromApi($search);
-                /*                if ($this->getStoreCountryCode() == 'KR') {
-                                    $latLong = $this->getLatLongFromApiNaver($search);
-                                }*/
                 //if Api response fails due to wrong api key
                 if ($latLong == 'error') {
                     $this->messageManager->addErrorMessage(__('your Api key is not valid'));
@@ -311,22 +303,6 @@ class InfoList extends Template
     }
 
     /**
-     * This function return number of stores per page
-     * @return int
-     */
-    public function getStoresPerPageLimit()
-    {
-        $limit = 0;
-        try {
-            $storeId =$this->_storeManager->getStore()->getId();
-            $limit = $this->storesHelper->getPaginationLimit($storeId);
-        } catch (\Exception $exception) {
-            $this->_logger->error($e->getMessage());
-        }
-
-        return $limit;
-    }
-    /**
      * Take parameters from request
      * @return mixed
      */
@@ -342,9 +318,6 @@ class InfoList extends Template
     public function getSelectedSearchTerm()
     {
         if ($this->getUseMyLocation()) {
-            /*if ($this->getStoreCountryCode() == 'KR') {
-                return $this->getLocationFromApiNaver($this->getSelectedLat(), $this->getSelectedLng());
-            }*/
             return $this->getLocationFromApi($this->getSelectedLat(), $this->getSelectedLng());
         }
         return  $this->getRequest()->getParam('search');
@@ -409,26 +382,8 @@ class InfoList extends Template
     }
 
     /**
-     * get api key from config field
-     * @return mixed
-     */
-    public function getNaverClientId()
-    {
-        return $this->storesHelper->getNaverClientId();
-    }
-
-    /**
-     * get api secret key from config field
-     * @return mixed
-     */
-    public function getNaverSecretKey()
-    {
-        return $this->storesHelper->getNaverSecretId();
-    }
-
-    /**
      * get id of store which will be used to get individual store
-     * @return \Eguana\StoreLocator\Api\StoreInfo
+     * @return StoreInfo
      */
     public function getStore()
     {
@@ -511,15 +466,6 @@ class InfoList extends Template
     }
 
     /**
-     * get radius for fetching stores in this radius of location
-     * @return mixed
-     */
-    public function getRadiusLimit()
-    {
-        return $this->storesHelper->getRadiusLimit();
-    }
-
-    /**
      * get selected latitude
      * @return mixed
      */
@@ -547,16 +493,7 @@ class InfoList extends Template
     }
 
     /**
-     * get radius from param
-     * @return mixed
-     */
-    public function getradius()
-    {
-        return $this->_request->getParam('radius');
-    }
-
-    /**
-     * get radius from param
+     * get city name from param
      * @return mixed
      */
     public function getSelectedCityName()

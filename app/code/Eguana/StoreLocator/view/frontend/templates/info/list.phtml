@@ -1,37 +1,37 @@
 <?php
 /** @var  \Eguana\StoreLocator\Block\InfoList $block */
- $country = $block->getDefaultCountryName();
- $locations = [];
- $selectedAreaOption = $block->getSelectedAreaOption();
- $selectedAzimuthOption = $block->getSelectedAzimuthOption();
- $selectedStoreTypes = $block->getSelectedStoreTypes();
- $selectedSearch = $block->getSelectedSearchTerm();
- $naverdestination = '';
- $googledestination = '';
- $googleApiUrl = '';
- $store_view_url = '';
-    //get default country for passing region parameter to change sea of japan to east sea
- $defaultCountry = $block->getStoreCountryCode();
- $apiKeyAndRegion = $block->getApiKey();
- $storeSize = $block->getStoresCollection()->getSize();
- $storesCollection = $block->getStoresCollection();
- $searchLocationPoints = $block->getCustomerLocationPoints();
- if ($block->isCustomerSearchLocation() == 1 && $searchLocationPoints['lat'] == null) {
-     $storeSize = 0;
- }
- $markerImages = [
-         $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg'),
-        $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg'),
-        $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg'),
-        $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg')
-        ];
-    $markerOnIcon = $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_on.svg');
- if ($defaultCountry != null) {
-     $apiKeyAndRegion = $apiKeyAndRegion . '&region=' . $defaultCountry;
- }
- $cities = $block->getCitiesFromStores();
- ?>
-    <div class="stores mian-content">
+$country = $block->getDefaultCountryName();
+$locations = [];
+$selectedAreaOption = $block->getSelectedAreaOption();
+$selectedAzimuthOption = $block->getSelectedAzimuthOption();
+$selectedStoreTypes = $block->getSelectedStoreTypes();
+$selectedSearch = $block->getSelectedSearchTerm();
+$naverdestination = '';
+$googledestination = '';
+$googleApiUrl = '';
+$store_view_url = '';
+//get default country for passing region parameter to change sea of japan to east sea
+$defaultCountry = $block->getStoreCountryCode();
+$apiKeyAndRegion = $block->getApiKey();
+$storeSize = $block->getStoresCollection()->getSize();
+$storesCollection = $block->getStoresCollection();
+$searchLocationPoints = $block->getCustomerLocationPoints();
+if ($block->isCustomerSearchLocation() == 1 && $searchLocationPoints['lat'] == null) {
+    $storeSize = 0;
+}
+$markerImages = [
+    $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg'),
+    $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg'),
+    $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg'),
+    $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg')
+];
+$markerOnIcon = $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_on.svg');
+if ($defaultCountry != null) {
+    $apiKeyAndRegion = $apiKeyAndRegion . '&region=' . $defaultCountry;
+}
+$cities = $block->getCitiesFromStores();
+?>
+<div class="stores mian-content">
     <form action="" target="_self" id="filter-form" method="get">
         <fieldset class="fieldset">
             <div class="field note"><?= $block->escapeHtml($country) ?></div>
@@ -91,15 +91,19 @@
                     <?= $block->escapeHtml(__('Search')); ?>
                 </button>
             </div>
-            <p class="location-error mage-error" style="display: none;color: #f32836;"><?= $block->escapeHtml(__('Please enter your current location')); ?></p>
+            <p class="location-error mage-error" style="display: none;color: #f32836;">
+                <?= $block->escapeHtml(__('Please enter your current location')); ?>
+            </p>
         </fieldset>
     </form>
     <div class="stores-result">
-            <h3 class="pc">
-                <?= /* @noEscape */ __('We found <strong>%1 stores</strong> near your location', $storeSize) ?>
-            </h3>
-            <h3 class="mobile"><?= /* @noEscape */ __('<strong>%1</strong> result', $storeSize) ?></h3>
-        <a class="action link" id="use-my-current-location"><span><?= $block->escapeHtml(__('A store around my location')) ?></span></a>
+        <h3 class="pc">
+            <?= /* @noEscape */ __('We found <strong>%1 stores</strong> near your location', $storeSize) ?>
+        </h3>
+        <h3 class="mobile"><?= /* @noEscape */ __('<strong>%1</strong> result', $storeSize) ?></h3>
+        <a class="action link" id="use-my-current-location">
+            <span><?= $block->escapeHtml(__('A store around my location')) ?></span>
+        </a>
     </div>
     <div class="stores-content">
         <?php if ($storeSize > 0): ?>
@@ -120,14 +124,14 @@
                     <?php foreach ($storesCollection as $storeItem):?>
 
                         <?php
-                            $location = explode(',', $storeItem->getLocation());
-                            $storeType = $storeItem['type'];
-                            $imgSourceForType = '';
-                            $naverApiUrl = "https://map.naver.com/v5/directions/";
-    //                        $googleApiUrl = "http://maps.google.com/maps?daddr=";
-                            $googleApiUrl = "https://www.google.com/maps/dir/?api=1&origin=";
-                            $imgSourceForType = $block->
-                            getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg');
+                        $location = explode(',', $storeItem->getLocation());
+                        $storeType = $storeItem['type'];
+                        $imgSourceForType = '';
+                        $naverApiUrl = "https://map.naver.com/v5/directions/";
+                        //                        $googleApiUrl = "http://maps.google.com/maps?daddr=";
+                        $googleApiUrl = "https://www.google.com/maps/dir/?api=1&origin=";
+                        $imgSourceForType = $block->
+                        getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg');
                         if ($storeType == 'shop') {
                             $imgSourceForType = $markerImages[0];
                         } elseif ($storeType == 'outlet') {

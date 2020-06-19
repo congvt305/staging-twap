@@ -10,13 +10,13 @@
 
 namespace Eguana\StoreLocator\Test\Unit\Controller\Info;
 
-use PHPUnit\Framework\TestCase;
 use Eguana\StoreLocator\Controller\Info\ListAction;
-use Magento\Framework\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
-use Magento\Framework\Controller\Result\ForwardFactory;
-use PHPUnit\Framework\MockObject\MockObject;
 use Eguana\StoreLocator\Helper\ConfigData;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\Controller\Result\ForwardFactory;
+use Magento\Framework\View\Result\PageFactory;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for testing controller

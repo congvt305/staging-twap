@@ -10,21 +10,21 @@
 
 namespace Eguana\StoreLocator\Test\Unit\Controller\Adminhtml\Edit;
 
+use Eguana\StoreLocator\Api\StoreInfoRepositoryInterface;
 use Eguana\StoreLocator\Controller\Adminhtml\Edit\Form;
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
-use Magento\Framework\Controller\Result\JsonFactory;
+use Eguana\StoreLocator\Helper\ConfigData;
+use Eguana\StoreLocator\Model\ResourceModel\StoreInfo as StoreInfoResource;
 use Eguana\StoreLocator\Model\StoreInfo;
 use Eguana\StoreLocator\Model\WorkTimeFactory;
-use PHPUnit\Framework\MockObject\MockObject;
-use Psr\Log\LoggerInterface;
-use Magento\Framework\Filesystem\Driver\File;
-use Magento\Framework\Filesystem;
-use Eguana\StoreLocator\Helper\ConfigData;
+use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\SessionFactory;
-use Eguana\StoreLocator\Api\StoreInfoRepositoryInterface;
-use Eguana\StoreLocator\Model\ResourceModel\StoreInfo as StoreInfoResource;
+use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Filesystem;
+use Magento\Framework\Filesystem\Driver\File;
+use Magento\Framework\View\Result\PageFactory;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 /**
  * TestCase for Form class
