@@ -78,12 +78,13 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                                 <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a>
                         </strong>
-                        <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
+
                         <?= /* @noEscape */ $block->getProductPrice($_product) ?>
                         <?php if ($_product->isAvailable()) :?>
                             <?= $block->getProductDetailsHtml($_product) ?>
                         <?php endif; ?>
-                        <?= $this->helper('Yotpo\Yotpo\Helper\Data')->showBottomline($block, $_product) ?>
+
+                        <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
 
                         <div class="product-item-inner">
                             <div class="product actions product-item-actions"<?= strpos($pos, $viewMode . '-actions') ? $block->escapeHtmlAttr($position) : '' ?>>

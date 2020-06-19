@@ -55,13 +55,12 @@ use Magento\Framework\App\Action\Action;
                                         <?= $block->escapeHtml($_item->getName()) ?>
                                     </a>
                                 </strong>
-                                <?php if ($templateType) : ?>
-                                    <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
-                                <?php endif; ?>
 
                                 <?= $block->getProductPriceHtml($_item, $type) ?>
 
-                                <?= $this->helper('Yotpo\Yotpo\Helper\Data')->showBottomline($block, $_item) ?>
+                                <?php if ($templateType) : ?>
+                                    <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
+                                <?php endif; ?>
 
                                 <?= $block->getProductDetailsHtml($_item) ?>
 
