@@ -156,7 +156,7 @@ class Data extends AbstractHelper
             ScopeInterface::SCOPE_WEBSITE
         );
 
-        return $baseURL.$memberInfoURL;
+        return $baseURL.$memberJoinURL;
     }
 
     /**
