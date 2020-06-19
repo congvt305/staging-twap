@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: umer
+* Date: 19/6/20
+* Time: 12:27 PM
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <SocialLogin>
+            <general>
+                <sociallogin_mod_enable>1</sociallogin_mod_enable>
+            </general>
+            <line>
+                <line_enable>1</line_enable>
+            </line>
+            <facebook>
+                <facebook_enable>1</facebook_enable>
+            </facebook>
+            <google>
+                <google_enable>1</google_enable>
+            </google>
+        </SocialLogin>
+    </default>
+</config>
