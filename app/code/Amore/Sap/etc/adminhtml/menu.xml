@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Amore_Sap::sap" title="Sap Integration" module="Amore_Sap" sortOrder="10" parent="Magento_Backend::system" resource="Amore_Sap::sap"/>
+        <add id="Amore_Sap::order" title="Order Confirm" module="Amore_Sap" sortOrder="1" parent="Amore_Sap::sap" action="sap/publishmessage/publisher" resource="Amore_Sap::order"/>
+    </menu>
+</config>
