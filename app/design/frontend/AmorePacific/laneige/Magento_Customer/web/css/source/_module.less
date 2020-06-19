@@ -711,19 +711,11 @@
     }
 
     .customer-account-create {
-        main.page-main {
-            position: relative;
-        }
-        
-        .column.main {
-            padding-bottom: 75px;
-        }
-
         .form.create.account {
             .actions-toolbar {
                 bottom: 0;
                 left: 0;
-                position: absolute;
+                position: fixed;
                 right: 0;
 
                 button {
@@ -806,8 +798,7 @@
         }
     }
 
-    .customer-account-edit,
-    .customer-address-form {
+    .customer-account-edit {
         .column.main {
             margin-bottom: 0;
             padding-bottom: 0;
@@ -817,9 +808,10 @@
     .form-edit-account,
     .form-address-edit {
         .actions-toolbar {
-            margin-top: 100px;
-            margin-left: -@layout__width-xs-indent;
-            margin-right: -@layout__width-xs-indent;
+            bottom: 0;
+            left: 0;
+            position: fixed;
+            right: 0;
 
             .action {
                 &:extend(.abs-button-l-mobile all);
@@ -860,7 +852,7 @@
     }
 
     .form-edit-account {
-        .fieldset:first-child {
+        .fieldset {
             margin-bottom: 100px;
         }
     }

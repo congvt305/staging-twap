@@ -212,9 +212,10 @@
     .form-returns-comments,
     .form-create-return {
         > .actions-toolbar {
-            margin-top: 100px;
-            margin-left: -@layout__width-xs-indent;
-            margin-right: -@layout__width-xs-indent;
+            bottom: 0;
+            left: 0;
+            position: fixed;
+            right: 0;
 
             .action {
                 &:extend(.abs-button-l-mobile all);
@@ -235,16 +236,6 @@
                     }
                 }
             }
-        }
-    }
-
-    .magento_rma-guest-view,
-    .magento_rma-guest-create,
-    .magento_rma-returns-view,
-    .magento_rma-returns-create {
-        .column.main {
-            margin-bottom: 0;
-            padding-bottom: 0;
         }
     }
 }
