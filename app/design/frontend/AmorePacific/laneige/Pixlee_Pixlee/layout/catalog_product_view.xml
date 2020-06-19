@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<body>
+    <!--
+    If you want to move the PDP widget around, change the referenceContainer name here,
+    along with the "after" inside the block tags.
+    The names are a little opaque, but if you're reading this you probably know what you're doing.
+    -->
+    <move element="product.view.community_gallery" destination="yotpo.reviews.tab" before="="/>
+</body>
