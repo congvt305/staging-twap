@@ -30,7 +30,7 @@ switch ($type = $block->getType()) {
 
             $showAddTo = true;
             $showCart = true;
-            $templateType = null;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
             $description = false;
         }
         break;
@@ -50,7 +50,7 @@ switch ($type = $block->getType()) {
 
             $showAddTo = true;
             $showCart = true;
-            $templateType = null;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
             $description = false;
         }
         break;
@@ -66,9 +66,9 @@ switch ($type = $block->getType()) {
             $limit = $block->getPositionLimit();
             $shuffle = (int) $block->isShuffled();
 
-            $showAddTo = false;
-            $showCart = false;
-            $templateType = null;
+            $showAddTo = true;
+            $showCart = true;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
             $description = false;
             $canItemsAddToCart = false;
         }
@@ -86,9 +86,9 @@ switch ($type = $block->getType()) {
             $limit = $block->getItemLimit('upsell');
             $shuffle = 0;
 
-            $showAddTo = false;
-            $showCart = false;
-            $templateType = null;
+            $showAddTo = true;
+            $showCart = true;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
             $description = false;
             $canItemsAddToCart = false;
         }
@@ -220,9 +220,7 @@ $_item = null;
 
                                     <?= /* @noEscape */ $block->getProductPrice($_item) ?>
 
-                                    <?php if ($templateType):?>
-                                        <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
-                                    <?php endif; ?>
+                                    <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
 
                                     <?php if ($showAddTo || $showCart):?>
                                         <?php // phpcs:disable ?>
