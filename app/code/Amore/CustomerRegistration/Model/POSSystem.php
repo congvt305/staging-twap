@@ -179,11 +179,23 @@ class POSSystem
 
     private function assignIntegrationNumber($customer)
     {
-        $posOrOnline = $customer->getCustomAttribute('imported_from_pos')->getValue()==1?'pos':'online';
-        $this->sequence->setCustomerType($posOrOnline);
-        $secquenceNumber = $this->sequence->getNextValue();
-        $customer->setCustomAttribute('integration_number', $secquenceNumber);
-        return $this->customerRepository->save($customer);
+        try {
+            $posOrOnline = 'online';
+            if ($customer->getCustomAttribute('referrer_code')) {
+                $posOrOnline = 'pos';
+            }
+            if ($posOrOnline == 'online') {
+                $posOrOnline = $customer->getCustomAttribute('imported_from_pos')->getValue() == 1 ? 'pos' : 'online';
+            }
+
+            $this->sequence->setCustomerType($posOrOnline);
+            $secquenceNumber = $this->sequence->getNextValue();
+            $customer->setCustomAttribute('integration_number', $secquenceNumber);
+            return $this->customerRepository->save($customer);
+        } catch (\Exception $e) {
+            $e->getMessage();
+            return $customer;
+        }
     }
 
     private function callJoinAPI($parameters)
