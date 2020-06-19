@@ -2,10 +2,7 @@ Eguana_EcommerceStatus v1.0.0
 
 Website: Amore
 
-Author: Muhammad Yasir
-
-DB Table Name :
- 
+Author: Muhammad Yasir 
 Explanation: This module will Enable/Disable ecommerce functionalities process according to the Amore requirements
 
 # E-Commerce Enable/Disable
@@ -15,9 +12,6 @@ Description:
 Register module will be mainly used to Enable/Disable ecommerce functionalities
 
 Requirements:
-
-    - 
-
 
 Key features:
 
@@ -37,12 +31,12 @@ Execute the following commands respectively:
 
 Refresh the Cache under System ⇾ Cache Management
 
-Navigate to **Stores ⇾ Configuration** and the module **E-commerce Status** under Eguana tab.
+Navigate to **Stores ⇾ Configuration** Eguana Extension **E-commerce Status
 
 
 **Configuration**
 
-1. Navigate to **Stores ⇾ Configuration** and click on **E-commerce Status** under Eguana tab in the left panel.
+1. Navigate to **Stores ⇾ Configuration** Eguana Extension  **E-commerce Status**
 
 
 ![](https://i.ibb.co/Bs2pmMk/Screenshot-2.png)
