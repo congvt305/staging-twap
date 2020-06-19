@@ -18,8 +18,5 @@
 <!--        <click selector="{{EcommerceStatusSection.enable}}" stepKey="clickOnEnable"/>-->
         <click selector="{{EcommerceStatusSection.disable}}" stepKey="clickOnDisable"/>
         <click selector="{{EcommerceStatusSection.save}}" stepKey="clickOnSave"/>
-
-
-
     </actionGroup>
 </actionGroups>

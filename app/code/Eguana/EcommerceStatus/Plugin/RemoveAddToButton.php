@@ -7,7 +7,6 @@
  * Date: 6/12/20
  * Time: 6:11 AM
  */
-
 namespace Eguana\EcommerceStatus\Plugin;
 
 use Eguana\EcommerceStatus\Helper\Data;

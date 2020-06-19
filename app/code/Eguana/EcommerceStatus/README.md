@@ -44,3 +44,6 @@ Navigate to **Stores ⇾ Configuration** and the module **E-commerce Status** un
 
 1. Navigate to **Stores ⇾ Configuration** and click on **E-commerce Status** under Eguana tab in the left panel.
 
+
+![](https://i.ibb.co/Bs2pmMk/Screenshot-2.png)
+

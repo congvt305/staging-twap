@@ -7,7 +7,6 @@
  * Date: 6/12/20
  * Time: 6:31 AM
  */
-
 namespace Eguana\EcommerceStatus\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;

@@ -8,7 +8,6 @@
  * Time: 2:40 AM
  */
 
-
 \Magento\Framework\Component\ComponentRegistrar::register(
     \Magento\Framework\Component\ComponentRegistrar::MODULE,
     'Eguana_EcommerceStatus',

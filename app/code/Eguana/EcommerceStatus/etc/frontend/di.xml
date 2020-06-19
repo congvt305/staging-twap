@@ -1,4 +1,14 @@
 <?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: yasir
+* Date: 6/12/20
+* Time: 2:48 AM
+*/
+-->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\Catalog\Model\Product">
         <plugin name="hidebutton" type="Eguana\EcommerceStatus\Plugin\RemoveAddToButton" sortOrder="1"/>
