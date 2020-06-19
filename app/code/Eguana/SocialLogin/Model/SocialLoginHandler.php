@@ -12,19 +12,14 @@ namespace Eguana\SocialLogin\Model;
 use Eguana\SocialLogin\Model\ResourceModel\SocialLogin\CollectionFactory as LineCollectionFactory;
 use Eguana\SocialLogin\Model\SocialLoginFactory as LineModelFactory;
 use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Customer\Api\Data\CustomerInterface as CustomerInterfaceAlias;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session;
 use Magento\Customer\Model\Visitor;
 use Magento\Framework\Event\ManagerInterface as ManagerInterfaceAlias1;
-use Magento\Framework\Exception\InputException as InputExceptionAlias;
-use Magento\Framework\Exception\LocalizedException as LocalizedExceptionAlias;
-use Magento\Framework\Exception\NoSuchEntityException as NoSuchEntityExceptionAlias;
 use Magento\Framework\Message\ManagerInterface as ManagerInterfaceAlias;
 use Magento\Framework\Session\SessionManagerInterface as SessionManagerInterfaceAlias;
 use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
-use Magento\Framework\Stdlib\Cookie\FailureToSendException as FailureToSendExceptionAlias;
 use Magento\Framework\Stdlib\CookieManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime as DateTimeAlias;
 use Magento\Framework\View\Result\PageFactory;
@@ -49,7 +44,7 @@ class SocialLoginHandler
     /**
      * @var CookieManagerInterface
      */
-    private $_cookieManager;
+    private $cookieManager;
     /**
      * @var CookieMetadataFactory
      */
@@ -69,7 +64,7 @@ class SocialLoginHandler
     /**
      * @var CustomerRepositoryInterface
      */
-    protected $_customerRepositoryInterface;
+    protected $customerRepositoryInterface;
     /**
      * @var LineCollectionFactory
      */
@@ -82,7 +77,7 @@ class SocialLoginHandler
     /**
      * @var ManagerInterfaceAlias1
      */
-    protected $_eventManager;
+    protected $eventManager;
 
     /**
      * @var DateTimeAlias
@@ -93,6 +88,11 @@ class SocialLoginHandler
      * @var SocialLoginRepository
      */
     private $socialLoginRepository;
+
+    /**
+     * @var PageFactory
+     */
+    protected $resultPageFactory;
 
     /**
      * SocialLoginHandler constructor.
@@ -131,11 +131,11 @@ class SocialLoginHandler
         DateTimeAlias $dateTime,
         SocialLoginRepository $socialLoginRepository
     ) {
-        $this->_customerRepositoryInterface      = $customerRepositoryInterface;
+        $this->customerRepositoryInterface       = $customerRepositoryInterface;
         $this->customerFactory                   = $customerFactory;
         $this->messageManager                    = $messageManager;
         $this->cookieMetadataFactory             = $cookieMetadataFactory;
-        $this->_cookieManager                    = $cookieManager;
+        $this->cookieManager                     = $cookieManager;
         $this->session                           = $customerSession;
         $this->visitor                           = $visitor;
         $this->customerModel                     = $customerModel;
@@ -143,8 +143,8 @@ class SocialLoginHandler
         $this->lineCustomerCollectionFactory     = $lineCustomerCollectionFactory;
         $this->lineCustomerModelFactory          = $lineCustomerModelFactory;
         $this->coreSession                       = $coreSession;
-        $this->_resultPageFactory                = $resultPageFactory;
-        $this->_eventManager                     = $eventManager;
+        $this->resultPageFactory                 = $resultPageFactory;
+        $this->eventManager                      = $eventManager;
         $this->dateTime                          = $dateTime;
         $this->socialLoginRepository             = $socialLoginRepository;
     }
@@ -197,42 +197,6 @@ class SocialLoginHandler
     }
 
     /**
-     * SHORT DESCRIPTION
-     * LONG DESCRIPTION LINE BY LINE
-     * @param $email
-     * @param null $websiteId
-     * @return bool|CustomerInterfaceAlias
-     * @throws LocalizedExceptionAlias
-     * @throws NoSuchEntityExceptionAlias
-     */
-    public function getCustomerByEmail($email, $websiteId = null)
-    {
-        $customer = null;
-        $this->customerModel->setWebsiteId($this->storeManager->getWebsite()->getId());
-        if (!$websiteId) {
-            $this->customerModel->setWebsiteId($this->storeManager->getWebsite()->getId());
-        } else {
-            $this->customerModel->setWebsiteId($websiteId);
-        }
-        try {
-            $customer = $this->customerModel->loadByEmail($email);
-        } catch (LocalizedException $e) {
-            $this->logger->error($e->getMessage());
-        }
-        try {
-            $customerId = $customer->getId();
-            if ($customer->getId()) {
-                $customer = $this->_customerRepositoryInterface->getById($customerId);
-                return $customer;
-            }
-        } catch (LocalizedException $e) {
-            $this->logger->error($e->getMessage());
-        }
-
-        return false;
-    }
-
-    /**
      * Save social media customer data
      * @param $lineId
      * @param $customerId
@@ -259,11 +223,7 @@ class SocialLoginHandler
      * @param $customerId
      * @param $dataUser
      * @param $userid
-     * @param $socialMediaType`
-     * @throws InputExceptionAlias
-     * @throws LocalizedExceptionAlias
-     * @throws NoSuchEntityExceptionAlias
-     * @throws FailureToSendExceptionAlias
+     * @param $socialMediaType
      */
     public function redirectCustomer($customerId, $dataUser, $userid, $socialMediaType)
     {
@@ -281,35 +241,35 @@ class SocialLoginHandler
     /**
      * Check if customer exists
      * @param $customerId
-     * @throws InputExceptionAlias
-     * @throws LocalizedExceptionAlias
-     * @throws NoSuchEntityExceptionAlias
-     * @throws FailureToSendExceptionAlias
      */
     private function checkIfCustomerExists($customerId)
     {
-        $customer = $this->_customerRepositoryInterface->getById($customerId);
-        if ($customer->getConfirmation()) {
-            try {
-                $customer1->setConfirmation(null);
-                $this->_customerRepositoryInterface->save($customer);
-            } catch (\Exception $e) {
-                $this->messageManager->addError(
-                    __('We can\'t process your request right now. Sorry, that\'s all we know.')
-                );
+        try {
+            $customer = $this->customerRepositoryInterface->getById($customerId);
+            if ($customer->getConfirmation()) {
+                try {
+                    $customer1->setConfirmation(null);
+                    $this->customerRepositoryInterface->save($customer);
+                } catch (\Exception $e) {
+                    $this->messageManager->addError(
+                        __('We can\'t process your request right now. Sorry, that\'s all we know.')
+                    );
+                }
             }
+            if ($this->cookieManager->getCookie('mage-cache-sessid')) {
+                $metadata = $this->cookieMetadataFactory->createCookieMetadata();
+                $metadata->setPath('/');
+                $this->cookieManager->deleteCookie('mage-cache-sessid', $metadata);
+            }
+            $this->session->setCustomerDataAsLoggedIn($customer);
+            $this->messageManager->addSuccess(__('Login successful.'));
+            $this->session->regenerateId();
+            $this->eventManager->dispatch('customer_data_object_login', ['customer' => $customer]);
+            $this->eventManager->dispatch('customer_login', ['customer' => $customer]);
+            $this->saveVisitor();
+        } catch (\Exception $e) {
+            $this->logger->info($exception->getMessage());
         }
-        if ($this->_cookieManager->getCookie('mage-cache-sessid')) {
-            $metadata = $this->cookieMetadataFactory->createCookieMetadata();
-            $metadata->setPath('/');
-            $this->_cookieManager->deleteCookie('mage-cache-sessid', $metadata);
-        }
-        $this->session->setCustomerDataAsLoggedIn($customer);
-        $this->messageManager->addSuccess(__('Login successful.'));
-        $this->session->regenerateId();
-        $this->_eventManager->dispatch('customer_data_object_login', ['customer' => $customer]);
-        $this->_eventManager->dispatch('customer_login', ['customer' => $customer]);
-        $this->saveVisitor();
     }
 
     /**
@@ -327,7 +287,7 @@ class SocialLoginHandler
         } catch (\Exception $exception) {
             $this->logger->info($exception->getMessage());
         }
-        $this->_eventManager->dispatch('visitor_init', ['visitor' => $visitor]);
-        $this->_eventManager->dispatch('visitor_activity_save', ['visitor' => $visitor]);
+        $this->eventManager->dispatch('visitor_init', ['visitor' => $visitor]);
+        $this->eventManager->dispatch('visitor_activity_save', ['visitor' => $visitor]);
     }
 }

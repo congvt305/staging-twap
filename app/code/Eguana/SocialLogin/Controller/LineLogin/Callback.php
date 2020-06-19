@@ -18,11 +18,7 @@ use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\HTTP\Client\Curl;
-use Magento\Framework\Stdlib\Cookie\FailureToSendException;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
@@ -94,11 +90,7 @@ class Callback extends Action
 
     /**
      * Line callback
-     * @return ResponseInterface|Forward|Redirect|ResultInterface
-     * @throws InputException
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
-     * @throws FailureToSendException
+     * @return ResponseInterface|ResultInterface|null
      */
     public function execute()
     {
@@ -157,13 +149,11 @@ class Callback extends Action
         $response = null;
         try {
             $apiUrl = "https://api.line.me/oauth2/v2.1/token";
-
             $request = 'client_id=' . $client_id;
             $request .= '&client_secret=' . $client_secret;
             $request .= '&redirect_uri=' . $redirect_uri;
             $request .= '&code=' . $code;
             $request .= '&grant_type=authorization_code';
-
             $this->getCurlClient()->setOptions(
                 [
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -179,7 +169,6 @@ class Callback extends Action
                     ]
                 ]
             );
-
             $this->getCurlClient()->post($apiUrl, []);
             $status = $this->getCurlClient()->getStatus();
             if (($status == 400 || $status == 401)) {
@@ -248,7 +237,6 @@ class Callback extends Action
             $verifyUrl = 'https://api.line.me/oauth2/v2.1/verify' . '?' . http_build_query([
                     'scope' => 'profile openid email'
                 ]);
-
             $this->getCurlClient()->setOptions(
                 [
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -262,7 +250,6 @@ class Callback extends Action
                     ]
                 ]
             );
-
             $this->getCurlClient()->post($verifyUrl, []);
             $status = $this->getCurlClient()->getStatus();
             if (($status == 400 || $status == 401)) {

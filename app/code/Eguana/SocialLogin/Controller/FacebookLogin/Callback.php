@@ -74,13 +74,8 @@ class Callback extends Action
     }
 
     /**
-     * SHORT DESCRIPTION
-     * LONG DESCRIPTION LINE BY LINE
+     * Facebook callback function
      * @return ResponseInterface|Controller\ResultInterface|null
-     * @throws FailureToSendException
-     * @throws InputException
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
      */
     public function execute()
     {
@@ -100,7 +95,6 @@ class Callback extends Action
         }
         $this->socialLoginModel->getCoreSession()->unsLineLoginState();
         $response = $this->getAccessToken($client_id, $client_secret, $redirect_uri, $code);
-
         try {
             $access_token = $response['access_token'];
             $response = $this->verifyAccessToken($access_token);
@@ -112,7 +106,6 @@ class Callback extends Action
             $this->getResponse()->setBody(__($e->getMessage()));
             return null;
         }
-
         try {
             $response = $this->getFbUserProfile($access_token, $client_id, $redirect_uri);
         } catch (\Exception $e) {
@@ -147,12 +140,10 @@ class Callback extends Action
         $response = null;
         try {
             $apiUrl = "https://graph.facebook.com/v7.0/oauth/access_token";
-
             $request = 'client_id=' . $client_id;
             $request .= '&client_secret=' . $client_secret;
             $request .= '&redirect_uri=' . $redirect_uri;
             $request .= '&code=' . $code;
-
             $this->getCurlClient()->setOptions(
                 [
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -168,7 +159,6 @@ class Callback extends Action
                     ]
                 ]
             );
-
             $this->getCurlClient()->get($apiUrl, []);
             $status = $this->getCurlClient()->getStatus();
             if (($status == 400 || $status == 401)) {
@@ -194,7 +184,6 @@ class Callback extends Action
         $response = null;
         try {
             $apiUrl = "https://graph.facebook.com/me";
-
             $request = 'access_token=' . $access_token;
             $this->getCurlClient()->setOptions(
                 [
@@ -211,7 +200,6 @@ class Callback extends Action
                     ]
                 ]
             );
-
             $this->getCurlClient()->get($apiUrl, []);
             $status = $this->getCurlClient()->getStatus();
             if (($status == 400 || $status == 401)) {
@@ -239,13 +227,10 @@ class Callback extends Action
         $response = null;
         try {
             $apiUrl = "https://graph.facebook.com/v7.0/me?access_token=" . $access_token . "&fields=id,name,email";
-
             $request = 'access_token=' . $access_token;
             $request = 'fields=id,name,email';
-
             $this->getCurlClient()->get($apiUrl, []);
             $status = $this->getCurlClient()->getStatus();
-
             if (($status == 400 || $status == 401)) {
                 $message = __('Unspecified OAuth error occurred.');
                 $this->getResponse()->setBody(__($message));

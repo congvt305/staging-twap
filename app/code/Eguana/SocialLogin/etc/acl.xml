@@ -16,7 +16,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Eguana_SocialLogin::sociallogin_configuration" title="Eguana Social Login" />
+                            <resource id="Eguana_SocialLogin::sociallogin_configuration" title="Eguana Social Login Config" />
                         </resource>
                     </resource>
                 </resource>

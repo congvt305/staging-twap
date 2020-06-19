@@ -79,16 +79,13 @@ class Callback extends Action
         $clientId = $this->helper->getGoogleClientId();
         $clientSecret = $this->helper->getGoogleClientSecret();
         $clientRedirectUrl = $this->helper->getGoogleCallbackUrl();
-
         // Google passes a parameter 'code' in the Redirect Url
         if (isset($params['code'])) {
             try {
                 // Get the access token
                 $data = $this->getAccessToken($clientId, $clientRedirectUrl, $clientSecret, $params['code']);
-
                 // Access Token
                 $access_token = $data['access_token'];
-
                 // Get user information
                 $user_info = $this->getUserProfileInfo($access_token);
                 $userid = $user_info['id'];
@@ -117,7 +114,6 @@ class Callback extends Action
         try {
             $curlPost = 'client_id=' . $client_id . '&redirect_uri=' . $redirect_uri . '&client_secret=';
             $curlPost = $curlPost . $client_secret . '&code=' . $code . '&grant_type=authorization_code';
-
             $this->getCurlClient()->setOptions(
                 [
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -128,7 +124,6 @@ class Callback extends Action
                     CURLOPT_POSTFIELDS => $curlPost
                 ]
             );
-
             $this->getCurlClient()->post($url, []);
             $status = $this->getCurlClient()->getStatus();
             if ($status != 200) {
@@ -165,7 +160,6 @@ class Callback extends Action
                     ]
                 ]
             );
-
             $this->getCurlClient()->get($url, []);
             $status = $this->getCurlClient()->getStatus();
             if ($status != 200) {
