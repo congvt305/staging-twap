@@ -57,6 +57,14 @@ class POSSystem
      * @var Curl
      */
     private $curlClient;
+    /**
+     * @var \Magento\Framework\HTTP\ZendClientFactory
+     */
+    private $httpClientFactory;
+    /**
+     * @var \Zend\Http\Client
+     */
+    private $zendClient;
 
     public function __construct(
         Curl $curl,
@@ -64,7 +72,9 @@ class POSSystem
         SubscriberFactory $subscriberFactory,
         CustomerRepositoryInterface $customerRepository,
         DateTime $date,
-        Sequence $sequence
+        Sequence $sequence,
+        \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory,
+        \Zend\Http\Client $zendClient
     ) {
         $this->date = $date;
         $this->confg = $confg;
@@ -72,6 +82,8 @@ class POSSystem
         $this->customerRepository = $customerRepository;
         $this->sequence = $sequence;
         $this->curlClient = $curl;
+        $this->httpClientFactory = $httpClientFactory;
+        $this->zendClient = $zendClient;
     }
 
     public function getMemberInfo($firstName, $lastName, $mobileNumber)
@@ -86,53 +98,45 @@ class POSSystem
 
     private function callPOSInfoAPI($firstName, $lastName, $mobileNumber)
     {
-
-
         $result = [];
-        if($lastName == 'Ali') {
-            $result = [
-                'cstmIntgSeq' => 'TW10210000001',
-                'cstmNO' => 'TW1020000012345',
-                'cstmSeq' => 'tw10119130',
-                'firstName' => '學榮',
-                'lastName' => '金',
-                'birthDay' => '20000101',
-                'mobileNo' => $mobileNumber,
-                'email' => $mobileNumber.'@gmail.com',
-                'sex' => 'F',
-                'emailYN' => 'Y',
-                'smsYN' => 'Y',
-                'callYN' => 'N',
-                'dmYN' => 'N',
-                'homeCity' => 'T001',
-                'homeState' => '100',
-                'homeAddr1' => '1-1',
-                'homeZip' => '406'
-            ];
-        }
-        return $result;
-        /*$response = [];
         try {
-            $params = [
+            $url = $this->confg->getMemberInfoURL();
+
+            $parameters = [
                 'firstName' => $firstName,
                 'lastName' => $lastName,
                 'mobileNumber' => $mobileNumber,
             ];
+            $jsonEncodedData = json_encode($parameters);
 
-            $getUrl = $this->confg->getMemberInfoURL().'/firstName/'.$firstName.'/lastName/'.$lastName.'/mobileNumber/'.$mobileNumber;
-            $url = $this->confg->getMemberInfoURL();
+            $this->curlClient->setOptions(array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => $jsonEncodedData,
+                CURLOPT_HTTPHEADER => array(
+                    'Content-type: application/json'
+                ),
+            ));
+            $this->curlClient->post($url, $parameters);
+            $apiRespone = $this->curlClient->getBody();
+            $response = json_decode($apiRespone, true);
+            if ($response['message'] == 'SUCCESS') {
+                $result = $response['data']['customerInfo'];
+            } else {
+                $result['message'] = $response['message'];
+            }
 
-            $headers = ["Content-Type" => "application/json"];
-            $this->curlClient->setHeaders($headers);
-            //$this->curlClient->post($this->confg->getMemberInfoURL());
-            $this->curlClient->get($getUrl);
-            //response will contain the output in form of JSON string
-            $response = $this->curlClient->getBody();
         } catch (\Exception $e) {
-          $t = $e->getMessage();
+            $result['message'] = $e->getMessage();
         }
 
-        return $response;*/
+        return $result;
 
     }
 
