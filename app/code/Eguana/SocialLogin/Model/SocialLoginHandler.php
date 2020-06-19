@@ -155,7 +155,7 @@ class SocialLoginHandler
      */
     public function getCoreSession()
     {
-        return $this->session;
+        return $this->coreSession;
     }
 
     /**
@@ -227,67 +227,9 @@ class SocialLoginHandler
      */
     public function redirectCustomer($customerId, $dataUser, $userid, $socialMediaType)
     {
-        if ($customerId) {
-            $this->checkIfCustomerExists($customerId);
-        } else {
-            $customerData = $this->getCustomerData($dataUser, $userid, $socialMediaType);
-
-            if ($customerData) {
-                $this->setDataInSession($customerData);
-            }
+        $customerData = $this->getCustomerData($dataUser, $userid, $socialMediaType);
+        if ($customerData) {
+            $this->setDataInSession($customerData);
         }
-    }
-
-    /**
-     * Check if customer exists
-     * @param $customerId
-     */
-    private function checkIfCustomerExists($customerId)
-    {
-        try {
-            $customer = $this->customerRepositoryInterface->getById($customerId);
-            if ($customer->getConfirmation()) {
-                try {
-                    $customer1->setConfirmation(null);
-                    $this->customerRepositoryInterface->save($customer);
-                } catch (\Exception $e) {
-                    $this->messageManager->addError(
-                        __('We can\'t process your request right now. Sorry, that\'s all we know.')
-                    );
-                }
-            }
-            if ($this->cookieManager->getCookie('mage-cache-sessid')) {
-                $metadata = $this->cookieMetadataFactory->createCookieMetadata();
-                $metadata->setPath('/');
-                $this->cookieManager->deleteCookie('mage-cache-sessid', $metadata);
-            }
-            $this->session->setCustomerDataAsLoggedIn($customer);
-            $this->messageManager->addSuccess(__('Login successful.'));
-            $this->session->regenerateId();
-            $this->eventManager->dispatch('customer_data_object_login', ['customer' => $customer]);
-            $this->eventManager->dispatch('customer_login', ['customer' => $customer]);
-            $this->saveVisitor();
-        } catch (\Exception $e) {
-            $this->logger->info($exception->getMessage());
-        }
-    }
-
-    /**
-     * Save visitor data
-     */
-    public function saveVisitor()
-    {
-        /** VISITOR */
-        $visitor = $this->visitor;
-        $visitor->setData($this->session->getVisitorData());
-        $visitor->setLastVisitAt($this->dateTime->gmtDate());
-        $visitor->setSessionId($this->session->getSessionId());
-        try {
-            $visitor->save();
-        } catch (\Exception $exception) {
-            $this->logger->info($exception->getMessage());
-        }
-        $this->eventManager->dispatch('visitor_init', ['visitor' => $visitor]);
-        $this->eventManager->dispatch('visitor_activity_save', ['visitor' => $visitor]);
     }
 }

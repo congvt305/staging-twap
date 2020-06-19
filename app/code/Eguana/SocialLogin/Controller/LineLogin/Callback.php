@@ -12,14 +12,21 @@ namespace Eguana\SocialLogin\Controller\LineLogin;
 use Eguana\SocialLogin\Helper\Data as Helper;
 use Eguana\SocialLogin\Model\SocialLoginHandler as SocialLoginModel;
 use Eguana\SocialLogin\Model\SocialLoginRepository;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Model\Session;
+use Magento\Customer\Model\Visitor;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Event\ManagerInterface as ManagerInterfaceAlias1;
 use Magento\Framework\HTTP\Client\Curl;
+use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
+use Magento\Framework\Stdlib\CookieManagerInterface;
 use Magento\Framework\View\Result\PageFactory;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Callback
@@ -61,6 +68,36 @@ class Callback extends Action
     private $socialLoginRepository;
 
     /**
+     * @var CustomerRepositoryInterface
+     */
+    protected $customerRepositoryInterface;
+
+    /**
+     * @var CookieManagerInterface
+     */
+    private $cookieManager;
+
+    /**
+     * @var CookieMetadataFactory
+     */
+    private $cookieMetadataFactory;
+
+    /**
+     * @var ManagerInterfaceAlias1
+     */
+    protected $eventManager;
+
+    /**
+     * @var Visitor
+     */
+    protected $visitor;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * Callback constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
@@ -77,7 +114,14 @@ class Callback extends Action
         RedirectFactory $resultRedirectFactory,
         Curl $curl,
         SocialLoginModel $socialLoginModel,
-        SocialLoginRepository $socialLoginRepository
+        SocialLoginRepository $socialLoginRepository,
+        CustomerRepositoryInterface $customerRepositoryInterface,
+        CookieManagerInterface $cookieManager,
+        CookieMetadataFactory $cookieMetadataFactory,
+        Session $customerSession,
+        ManagerInterfaceAlias1 $eventManager,
+        Visitor $visitor,
+        LoggerInterface $logger
     ) {
         parent::__construct($context);
         $this->resultPageFactory                 = $resultPageFactory;
@@ -86,6 +130,13 @@ class Callback extends Action
         $this->curlClient                        = $curl;
         $this->socialLoginModel                  = $socialLoginModel;
         $this->socialLoginRepository             = $socialLoginRepository;
+        $this->customerRepositoryInterface       = $customerRepositoryInterface;
+        $this->cookieManager                     = $cookieManager;
+        $this->cookieMetadataFactory             = $cookieMetadataFactory;
+        $this->session                           = $customerSession;
+        $this->eventManager                      = $eventManager;
+        $this->visitor                           = $visitor;
+        $this->logger                            = $logger;
     }
 
     /**
@@ -124,8 +175,67 @@ class Callback extends Action
         $userid = $dataUser['sub'];
         $customerId = $this->socialLoginRepository->getSocialMediaCustomer($userid, $socialMediaType);
         //If customer exists then login and close popup else close pop and redirect to social login page
-        $this->socialLoginModel->redirectCustomer($customerId, $dataUser, $userid, $socialMediaType);
+        if ($customerId) {
+            $this->redirectToLogin($customerId);
+        } else {
+            $this->socialLoginModel->redirectCustomer($customerId, $dataUser, $userid, $socialMediaType);
+        }
         $this->helper->closePopUpWindow($this);
+    }
+
+    /**
+     * Login already exist customer
+     * @param $customerId
+     */
+    private function redirectToLogin($customerId)
+    {
+        try {
+            $customer = $this->customerRepositoryInterface->getById($customerId);
+            if ($customer->getConfirmation()) {
+                try {
+                    $customer1->setConfirmation(null);
+                    $this->customerRepositoryInterface->save($customer);
+                } catch (\Exception $e) {
+                    $this->messageManager->addError(
+                        __('We can\'t process your request right now. Sorry, that\'s all we know.')
+                    );
+                }
+            }
+            if ($this->cookieManager->getCookie('mage-cache-sessid')) {
+                $metadata = $this->cookieMetadataFactory->createCookieMetadata();
+                $metadata->setPath('/');
+                $this->cookieManager->deleteCookie('mage-cache-sessid', $metadata);
+            }
+            $this->session->setCustomerDataAsLoggedIn($customer);
+            $this->messageManager->addSuccess(__('Login successful.'));
+            $this->session->regenerateId();
+            $this->eventManager->dispatch('customer_data_object_login', ['customer' => $customer]);
+            $this->eventManager->dispatch('customer_login', ['customer' => $customer]);
+            $this->saveVisitor();
+        } catch (\Exception $e) {
+            $this->messageManager->addError(
+                __('We can\'t process your request right now. Sorry, that\'s all we know.')
+            );
+        }
+    }
+
+    /**
+     * Save visitor data
+     */
+    private function saveVisitor()
+    {
+        /** VISITOR */
+        $visitor = $this->visitor;
+        $visitor->setData($this->session->getVisitorData());
+        $visitor->setLastVisitAt($this->dateTime->gmtDate());
+        $visitor->setSessionId($this->session->getSessionId());
+        try {
+            $visitor->save();
+        } catch (\Exception $exception) {
+            $this->logger->info($exception->getMessage());
+        }
+        $this->eventManager->dispatch('visitor_init', ['visitor' => $visitor]);
+        $this->eventManager->dispatch('visitor_activity_save', ['visitor' => $visitor]);
     }
 
     /**
