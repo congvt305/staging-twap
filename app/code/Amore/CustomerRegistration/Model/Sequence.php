@@ -14,6 +14,7 @@ use Magento\Framework\App\ResourceConnection as AppResource;
 use Magento\Framework\DB\Sequence\SequenceInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Store\Model\StoreManagerInterface;
+use Amore\CustomerRegistration\Helper\Data;
 
 /**
  * To create a customer sequence number like an incrmement id
@@ -26,7 +27,7 @@ class Sequence implements SequenceInterface
     /**
      * Default pattern for Sequence
      */
-    const DEFAULT_PATTERN  = "%s%'.08d%s";
+    const DEFAULT_PATTERN  = "%s%'.08d";
 
     const DEFAULT_CUSTOMER_TYPE  = "online";
 
@@ -59,12 +60,17 @@ class Sequence implements SequenceInterface
      * @var StoreManagerInterface
      */
     private $storeManager;
+    /**
+     * @var Data
+     */
+    private $configHelper;
 
     /**
      * @param AppResource $resource
      * @param string $pattern
      */
     public function __construct(
+        Data $configHelper,
         AppResource $resource,
         StoreManagerInterface $storeManager,
         $pattern = self::DEFAULT_PATTERN,
@@ -74,6 +80,7 @@ class Sequence implements SequenceInterface
         $this->pattern = $pattern;
         $this->customerType = $customerType;
         $this->storeManager = $storeManager;
+        $this->configHelper = $configHelper;
     }
 
     /**
@@ -87,11 +94,13 @@ class Sequence implements SequenceInterface
             return null;
         }
 
+        $channel = $this->customerType == 'online'?'2':'1';
+
         return sprintf(
             $this->pattern,
-            'PK',
+            $this->configHelper->getOfficeSalesCode().$channel,
             $this->calculateCurrentValue(),
-            'PO'
+            ''
         );
     }
 
