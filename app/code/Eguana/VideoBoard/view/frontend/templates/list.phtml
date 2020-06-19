@@ -1,0 +1,59 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 16/6/20
+ * Time: 01:20 PM
+ */
+
+/** @var \Eguana\VideoBoard\Block\ListBlock $block */
+$videoBlockList = $block->getCollection();
+$videoBlockSize = $videoBlockList->getTotalCount();
+
+$count = 0;
+?>
+<div class="video-board-list-wrapper">
+    <?php if ($videoBlockList->getTotalCount() == 0): ?>
+        <div class="video-board-empty">
+            <?= $block->escapeHtml(__('Video does not exist.')); ?>
+        </div>
+    <?php else: ?>
+        <?php foreach ($videoBlockList as $videoBlockItem):?>
+            <?php if ($count === 0):?>
+                <div class="video-board-list">
+            <?php endif;?>
+            <?php $count++; ?>
+            <?php $videoBlockSize--; ?>
+                <div class="video-board-item">
+                    <div class="video-board-item-content">
+                        <div class="video-board-photo">
+                            <a class="action view"
+                               href="<?=$block->escapeUrl($block->getVideoBoardUrl($videoBlockItem->getEntityId())) ?>">
+                                <p><b>Video Title:</b> <?= $block->escapeHtml($videoBlockItem->getTitle());?></p>
+                            <br>
+                            </a>
+
+                            <iframe
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                                frameborder="0"
+                                height="300"
+                                src="<?= $block->escapeUrl($videoBlockItem->getUrl());?>"
+                                width="500"></iframe>
+                            <br>
+
+                            <br>
+                            <p>Date: <?= $block->escapeHtml($block->formatDate($videoBlockItem->getCreatedAt()));?></p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            <?php if ($videoBlockSize === 0 || $count === 4):?>
+                </div>
+                <?php $count = 0; ?>
+            <?php endif;?>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>

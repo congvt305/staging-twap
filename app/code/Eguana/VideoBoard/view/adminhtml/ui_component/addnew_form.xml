@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 10/6/20
+* Time: 6:15 PM
+*/
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">addnew_form.addnew_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">New Video</item>
+        <!--<item name="template" xsi:type="string">templates/form/collapsible</item>-->
+        <item name="layout" xsi:type="array">
+            <item name="type" xsi:type="string">tabs</item>
+        </item>
+    </argument>
+
+    <settings>
+        <buttons>
+            <button name="back" class="Eguana\VideoBoard\Block\Adminhtml\Edit\BackButton"/>
+            <button name="delete" class="Eguana\VideoBoard\Block\Adminhtml\Edit\DeleteButton"/>
+            <button name="save" class="Eguana\VideoBoard\Block\Adminhtml\Edit\SaveButton"/>
+        </buttons>
+        <namespace>addnew_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>addnew_form.addnew_form_data_source</dep>
+        </deps>
+    </settings>
+
+    <dataSource name="addnew_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="videoboard/howto/save"/>
+        </settings>
+        <aclResource>Magento_VideoBoard::videoboard</aclResource>
+        <dataProvider class="Eguana\VideoBoard\Model\DataProvider" name="addnew_form_data_source">
+            <settings>
+                <primaryFieldName>entity_id</primaryFieldName>
+                <requestFieldName>entity_id</requestFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+
+    <fieldset name="video_information">
+        <settings>
+            <label translate="true">Video Information</label>
+            <dataScope/>
+        </settings>
+
+        <!-- This field represents form id and is hidden -->
+        <field name="entity_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">eguana_video_board</item>
+                    <item name="dataScope" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="is_active">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">boolean</item>
+                    <item name="label" xsi:type="string" translate="true">Enable Video</item>
+                    <item name="formElement" xsi:type="string">checkbox</item>
+                    <item name="source" xsi:type="string">eguana_video_board</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                    <item name="dataScope" xsi:type="string">is_active</item>
+                    <item name="prefer" xsi:type="string">toggle</item>
+                    <item name="valueMap" xsi:type="array">
+                        <item name="true" xsi:type="number">1</item>
+                        <item name="false" xsi:type="number">0</item>
+                    </item>
+                    <item name="default" xsi:type="number">1</item>
+                </item>
+            </argument>
+        </field>
+
+        <!-- This field has data type 'text' and required 'input' form element and looks like input -->
+        <field name="video_title">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Video Title</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="source" xsi:type="string">eguana_video_board</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="video_url">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Video URL</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="source" xsi:type="string">eguana_video_board</item>
+                </item>
+            </argument>
+        </field>
+        <field name="thumbnail_image">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Thumbnail Image</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="formElement" xsi:type="string">fileUploader</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
+                    <item name="previewTmpl" xsi:type="string">Eguana_VideoBoard/image-preview</item>
+                    <item name="uploaderConfig" xsi:type="array">
+                        <item name="url" xsi:type="url" path="videoboard/howTo/uploadImage"/>
+                    </item>
+                    <item name="source" xsi:type="string">eguana_video_board</item>
+<!--                    <item name="validation" xsi:type="array">-->
+<!--                        <item name="required-entry" xsi:type="boolean">true</item>-->
+<!--                    </item>-->
+                </item>
+            </argument>
+        </field>
+        <field name="store_id" formElement="multiselect">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">block</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <tooltip>
+                    <link>https://docs.magento.com/m2/ce/user_guide/configuration/scope.html</link>
+                    <description>What is this?</description>
+                </tooltip>
+                <label translate="true">Store View</label>
+                <dataScope>store_id</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Eguana\VideoBoard\Ui\Component\Listing\Column\StoreOptions"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+        <field name="description" formElement="wysiwyg">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Description</item>
+                    <item name="source" xsi:type="string">eguana_video_board</item>
+                    <item name="rows" xsi:type="number">8</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                </validation>
+                <label/>
+                <dataScope>description</dataScope>
+            </settings>
+            <formElements>
+                <wysiwyg>
+                    <settings>
+                        <wysiwyg>true</wysiwyg>
+                    </settings>
+                </wysiwyg>
+            </formElements>
+        </field>
+    </fieldset>
+</form>

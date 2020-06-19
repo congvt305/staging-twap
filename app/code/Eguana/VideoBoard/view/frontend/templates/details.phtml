@@ -1,0 +1,43 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 16/6/20
+ * Time: 05:18 PM
+ */
+
+/** @var \Eguana\VideoBoard\Block\View $block */
+$videoBlock = $block->getVideoBoard();
+$videoBlockList = $block->getCollection();
+$url = $block->getUrl();
+
+?>
+<div class="block block-video-board-details">
+    <div class="block-content">
+        <div class="video-board-item">
+            <div class="video-board-item-content">
+                <div class="video-board-photo">
+                    <h2>Video URL:</h2>
+                    <iframe
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        frameborder="0"
+                        height="632"
+                        src="<?= $block->escapeUrl($videoBlock->getUrl());?>" width="1124">
+                    </iframe>
+                    <br>
+                    <br>
+                    <p>Date: <?= $block->escapeHtml($block->formatDate($videoBlock->getCreatedAt()));?></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="video-board-detail">
+            <h2>Video Description:</h2>
+
+            <?= /* @noEscape */  $block->contentFiltering($videoBlock->getDescription()); ?>
+        </div>
+    </div>
+</div>
