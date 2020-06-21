@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: yasir
+* Date: 6/17/20
+* Time: 1:39 AM
+*/
+-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="EcommerceStatusTest">
+        <annotations>
+            <title value="EcommerceStatus test"/>
+            <stories value="MAGETWO-61480: Enable and disable ecommerce functionality"/>
+            <description value="Verify Enable and disable ecommerce functionality"/>
+            <features value="EcommerceStatus"/>
+            <severity value="MAJOR"/>
+            <testCaseId value="ES_1"/>
+            <group value="EcommerceStatus"/>
+        </annotations>
+        <before>
+            <actionGroup ref="LoginAsAdmin" stepKey="loginToAdminPanel"/>
+        </before>
+        <actionGroup ref="EcommerceStatusActionGroup" stepKey="openEcommerceStatus"/>
+    </test>
+</tests>
