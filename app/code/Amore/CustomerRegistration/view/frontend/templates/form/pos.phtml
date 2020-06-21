@@ -8,6 +8,7 @@
 $viewModel = $block->getData('view_model');
 $minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
 $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
+
 /** @var \Amore\CustomerRegistration\Block\POS $block */
 
 ?>
@@ -26,7 +27,7 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
             <label for="first_name" class="label"><span><?= /* @noEscape */ $block->escapeHtml(__('First Name')) ?></span></label>
             <div class="control">
                 <?php //phpcs:disable ?>
-                <input type="text" name="first_name" data-validate='{"required":true, "maxlength":255}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('First Name')) ?>" class="input-text first-name" id="first_name">
+                <input type="text" name="first_name" data-validate='{"required":true, "maxlength":255}' value="<?= $viewModel->getSocialMediaName(); ?>" title="<?= /* @noEscape */ $block->escapeHtml(__('First Name')) ?>" class="input-text first-name" id="first_name">
                 <?php //phpcs:enable ?>
             </div>
         </div>

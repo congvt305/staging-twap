@@ -49,3 +49,63 @@ Navigate to **Stores ⇾ Configuration** and the module **Social Login** under E
 **Configuration**
 
 1. Navigate to **Stores ⇾ Configuration** and click on **Social Login** under Eguana tab in the left panel.
+
+**General Setting**
+
+* Enable Module
+
+This is module main enable/disable button. This will decide either module is enable or disabled
+
+**LINE**
+
+* Enable
+
+This is LINE enable/disable button. This will decide either LINE Login is enable or disabled
+
+* Channel ID
+
+Here you will enter the channel id. You will get this info by creating developer account on line.
+
+* Channel Secret
+
+Here you will enter channel secret
+
+* Callback URL
+
+This is the callback url for LINE Login
+
+**Facebook**
+
+* Enable
+
+This is Facebook enable/disable button. This will decide either Facebook Login is enable or disabled
+
+* App ID
+
+Here you will enter the app id. You will get this info by creating developer account on facebook.
+
+* App Secret
+
+Here you will enter app secret
+
+* OAuth Redirect URI
+
+This is the callback url for Facebook Login
+
+**Google**
+
+* Enable
+
+This is Google enable/disable button. This will decide either Google Login is enable or disabled
+
+* Client ID
+
+Here you will enter the client id. You will get this info by creating developer account on google.
+
+* Client Secret
+
+Here you will enter app secret
+
+* OAuth Redirect URI
+
+This is the callback url for Google Login

@@ -1,0 +1,62 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: umer
+ * Date: 12/6/20
+ * Time: 10:59 PM
+ */
+/**
+ * @var $block \Eguana\SocialLogin\Block\SocialLogin\Login
+ */
+$helper = $block->getHelper();
+$block->unSetSession();
+?>
+<?php if ($helper->isEnabledInFrontend()):?>
+    <?php
+        $state = $block->getState();
+        $clientId = $helper->getSecretId();
+        $callbackUrl = $helper->getCallbackUrl();
+        $lineUrl = "https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=" . $clientId;
+        $lineUrl = $lineUrl . "&redirect_uri=" . $callbackUrl;
+        $lineUrl = $lineUrl . "&state=" . $state . "&scope=profile%20openid%20email&nonce=09876xyz";
+        $fbUrl = $block->getFacebookLoginUrl();
+        $googleClientId = $helper->getGoogleClientId();
+        $googleClientSecret = $helper->getGoogleClientSecret();
+        $googleCallback = $helper->getGoogleCallbackUrl();
+        $googleUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=';
+        $googleUrl = $googleUrl . urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
+        $googleUrl = $googleUrl . '&redirect_uri=' . $googleCallback . '&response_type=code&client_id=';
+        $googleUrl = $googleUrl . $googleClientId . '&access_type=online';
+        $fbAppId = $helper->getAppId();
+        $fbRedirectUrl = $helper->getFbCallbackUrl();
+        $facebookUrl = "https://www.facebook.com/v7.0/dialog/oauth?client_id=";
+        $facebookUrl = $facebookUrl . $fbAppId . "&redirect_uri=" . $fbRedirectUrl . "&state=" . $state; ?>
+<div class="socialloginlogin-login">
+    <?php if ($helper->isEnabledLine()):?>
+        <a class="socialloginlogin-button-link"
+           rel="nofollow" href="javascript:void(0);"
+           data-role="eguana_sociallogin" data-href="<?= $block->escapeUrl($lineUrl) ?>">
+        </a>
+    <?php endif; ?>
+    <?php if ($helper->isEnabledFacebook()):?>
+        <a href="javascript:void(0);" rel="nofollow"
+           class="sociallogin fb connect" data-role="eguana_sociallogin"
+           data-href="<?= $block->escapeUrl($facebookUrl) ?>"><?= $block->escapeHtml(__('Sign in with Facebook')) ?></a>
+    <?php endif; ?>
+    <?php if ($helper->isEnabledGoogle()):?>
+        <a class="sociallogin-button button-google" rel="nofollow"
+           href="javascript:void(0);" data-role="eguana_sociallogin" data-href="<?= $block->escapeUrl($googleUrl) ?>">
+            <span class="sociallogin-icon sl-google"></span>
+        </a>
+    <?php endif; ?>
+</div>
+<?php endif; ?>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "socialLoginJs": {}
+    }
+}
+</script>
