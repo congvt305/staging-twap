@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <!-- Orders -->
+    <route method="POST" url="/V1/sap/orders/:incrementId/statuses">
+        <service class="Amore\Sap\Api\SapOrderManagementInterface" method="orderStatus"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route method="POST" url="/V1/sap/orders/:incrementId/confirm">
+        <service class="Amore\Sap\Api\SapOrderManagementInterface" method="orderConfirm"/>
+        <resources>
+            <resource ref="Amore_Sap::token"/>
+        </resources>
+    </route>
+
+    <!-- Product -->
+    <route url="/V1/sap/inventory/stocks/source/:source" method="POST">
+        <service class="Amore\Sap\Api\SapProductManagementInterface" method="inventoryStockUpdate"/>
+        <resources>
+            <resource ref="Amore_Sap::token"/>
+        </resources>
+    </route>
+    <route url="/V1/sap/products" method="POST">
+        <service class="Amore\Sap\Api\SapProductManagementInterface" method="productDetailUpdate"/>
+        <resources>
+            <resource ref="Amore_Sap::token"/>
+        </resources>
+    </route>
+    <route url="/V1/sap/product/prices" method="POST">
+        <service class="Amore\Sap\Api\SapProductManagementInterface" method="productPriceUpdate"/>
+        <resources>
+            <resource ref="Amore_Sap::token"/>
+        </resources>
+    </route>
+</routes>

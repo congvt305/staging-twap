@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+    <settings>
+        <buttons>
+            <button name="sap_order_confirm">
+                <url path="sap/publishmessage/saporderconfirmpublisher"/>
+                <label translate="true">Confirm Order</label>
+                <class>primary</class>
+            </button>
+        </buttons>
+        <spinner>log_columns</spinner>
+    </settings>
+</listing>
