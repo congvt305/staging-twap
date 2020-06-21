@@ -59,10 +59,10 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                        class="product photo product-item-photo"
                        tabindex="-1">
                         <span class="flags">
-                        <?php if($_product->hasData('new')):?>
+                        <?php if($_product->getData('new')):?>
                             <span class="flag new"><?= $block->escapeHtml($_product->getResource()->getAttribute('new')->getStoreLabel());?></span>
                         <?php endif;?>
-                        <?php if($_product->hasData('best')):?>
+                        <?php if($_product->getData('best')):?>
                             <span class="flag best"><?= $block->escapeHtml($_product->getResource()->getAttribute('best')->getStoreLabel()); ?></span>
                         <?php endif;?>
                         </span>
@@ -78,11 +78,13 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                                 <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a>
                         </strong>
-                        <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
+
                         <?= /* @noEscape */ $block->getProductPrice($_product) ?>
                         <?php if ($_product->isAvailable()) :?>
                             <?= $block->getProductDetailsHtml($_product) ?>
                         <?php endif; ?>
+
+                        <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
 
                         <div class="product-item-inner">
                             <div class="product actions product-item-actions"<?= strpos($pos, $viewMode . '-actions') ? $block->escapeHtmlAttr($position) : '' ?>>
@@ -107,7 +109,7 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                                         </form>
                                     <?php endif; ?>
                                 </div>
-                                <?php if(!$_product->hasData('offline')):?>
+                                <?php if(!$_product->getData('offline')):?>
                                 <div data-role="add-to-links" class="actions-secondary"<?= strpos($pos, $viewMode . '-secondary') ? $block->escapeHtmlAttr($position) : '' ?>>
                                     <?php if ($addToBlock = $block->getChildBlock('addto')) :?>
                                         <?= $addToBlock->setProduct($_product)->getChildHtml() ?>

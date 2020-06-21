@@ -466,7 +466,7 @@
             overflow: hidden;
         }
 
-        .form-create-account {
+        .form.create.account {
             border-top: 2px solid @primary__color__dark;
 
             .actions-toolbar {
@@ -477,10 +477,21 @@
                 button {
                     text-transform: uppercase;
                 }
-            }
 
-            button.action {
-                &:extend(.abs-button-l all);
+                .action {
+                    &:extend(.abs-button-l all);
+                    .lib-button-revert-secondary-color(
+                        @_button-color: @color-white,
+                        @_button-background: #79a3dc,
+                        @_button-border: 1px solid #79a3dc,
+                        @_button-color-hover: @color-white,
+                        @_button-background-hover: #4477be,
+                        @_button-border-hover: 1px solid #4477be,
+                        @_button-color-active: #4477be,
+                        @_button-background-active: #4477be,
+                        @_button-border-active: 1px solid #4477be
+                    );
+                }
             }
         }
 
@@ -700,9 +711,7 @@
     }
 
     .customer-account-create {
-        .form-create-account {
-            margin-bottom: @indent__xl;
-
+        .form.create.account {
             .actions-toolbar {
                 bottom: 0;
                 left: 0;
@@ -789,8 +798,7 @@
         }
     }
 
-    .customer-account-edit,
-    .customer-address-form {
+    .customer-account-edit {
         .column.main {
             margin-bottom: 0;
             padding-bottom: 0;
@@ -800,9 +808,10 @@
     .form-edit-account,
     .form-address-edit {
         .actions-toolbar {
-            margin-top: 100px;
-            margin-left: -@layout__width-xs-indent;
-            margin-right: -@layout__width-xs-indent;
+            bottom: 0;
+            left: 0;
+            position: fixed;
+            right: 0;
 
             .action {
                 &:extend(.abs-button-l-mobile all);
@@ -843,7 +852,7 @@
     }
 
     .form-edit-account {
-        .fieldset:first-child {
+        .fieldset {
             margin-bottom: 100px;
         }
     }
@@ -1006,14 +1015,12 @@
     }
 
     .customer-account-create {
-        .form-create-account {
-            margin-bottom: 120px;
-
+        .form.create.account {
             .actions-toolbar {
                 margin-top: 80px;
                 width: 100%;
 
-                button {
+                .action {
                     width: 380px;
                 };
             }
@@ -1037,8 +1044,6 @@
         }
 
         .column.main {
-            margin-bottom: 150px;
-
             form {
                 margin: 0 auto;
                 max-width: 580px;
