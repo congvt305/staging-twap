@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /**
+  ~ * @author Eguana Team
+  ~ * @copyriht Copyright (c) ${YEAR} Eguana {http://eguanacommerce.com}
+  ~ * Created byPhpStorm
+  ~ * User:  umer
+  ~ * Date: 06/08/20
+  ~ * Time: 01:06 pm
+  ~ */
+  -->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="AdminManageStoreLocationsActionGroup">
+        <arguments>
+            <argument name="manageStore" />
+        </arguments>
+        <click selector="{{AdminStoreLocatorManageStoreLocationsSection.selectStoreMenu}}" stepKey="clickOnSelectStoreMenu"/>
+        <click selector="{{AdminStoreLocatorManageStoreLocationsSection.selectManageStoreLocations}}" stepKey="clickOnSelectManageStoreLocations"/>
+        <click selector="{{AdminStoreLocatorManageStoreLocationsSection.selectAddNewStore}}" stepKey="clickOnAddNewStore"/>
+        <selectOption stepKey="storeViews" parameterArray= "['All Store Views','Korean Store View','Default Store View','Japanese Store View']"  selector="{{AdminStoreLocatorManageStoreLocationsSection.storeViews}}"/>
+        <fillField stepKey="fillName" userInput="{{manageStore.name}}" selector="{{AdminStoreLocatorManageStoreLocationsSection.nameField}}"/>
+        <fillField stepKey="fillAddress" userInput="{{manageStore.address}}" selector="{{AdminStoreLocatorManageStoreLocationsSection.addressField}}"/>
+        <fillField stepKey="fillTelephone" userInput="{{manageStore.telephone}}" selector="{{AdminStoreLocatorManageStoreLocationsSection.telephoneField}}"/>
+        <fillField stepKey="fillEmail" userInput="{{manageStore.email}}" selector="{{AdminStoreLocatorManageStoreLocationsSection.emailField}}"/>
+        <fillField stepKey="fillStoreTiming" userInput="{{manageStore.timing}}" selector="{{AdminStoreLocatorManageStoreLocationsSection.storeTimingField}}"/>
+        <fillField stepKey="fillCity" userInput="{{manageStore.city}}" selector="{{AdminStoreLocatorManageStoreLocationsSection.cityField}}"/>
+        <fillField stepKey="mapLocationField" userInput="{{manageStore.map}}" selector="{{AdminStoreLocatorManageStoreLocationsSection.mapLocationField}}"/>
+        <click selector="{{AdminStoreLocatorManageStoreLocationsSection.countryField}}" stepKey="clickOnCountrySelect"/>
+        <click selector="{{AdminStoreLocatorManageStoreLocationsSection.storeTypeField}}" stepKey="clickOnStoreTypeSelect"/>
+        <click selector="{{AdminStoreLocatorManageStoreLocationsSection.saveStore}}" stepKey="clickOnSaveStore"/>
+        <waitForPageLoad stepKey="pageLoadBeforeSaveStore"/>
+    </actionGroup>
+</actionGroups>
