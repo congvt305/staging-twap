@@ -1,0 +1,67 @@
+<td class="col col-error" id="cvs-fields" colspan="4" data-bind="visible: isVisible">
+    <!--    <input type="text"-->
+    <!--           name="MerchantTradeNo"-->
+    <!--           id="MerchantTradeNo"-->
+    <!--           class="input-text"-->
+    <!--           value="">-->
+    <!--    <label for="MerchantTradeNo" class="label">-->
+    <!--        <span>MerchantTradeNo</span>-->
+    <!--    </label>-->
+    <label for="LogisticsSubType" class="label">
+        <span>CVS Type</span>
+    </label>
+    <input type="text"
+           name="LogisticsSubType"
+           id="LogisticsSubType"
+           class="input-text"
+           disabled="disabled"
+           data-bind="value: LogisticsSubType">
+    <label for="CVSStoreID" class="label">
+        <span>CVS Store ID</span>
+    </label>
+    <input type="text"
+           name="CVSStoreID"
+           id="CVSStoreID"
+           class="input-text"
+           disabled="disabled"
+           data-bind="value: CVSStoreID">
+    <label for="CVSStoreName" class="label">
+        <span>CVS Store Name</span>
+    </label>
+    <input type="text"
+           name="CVSStoreName"
+           id="CVSStoreName"
+           class="input-text"
+           disabled="disabled"
+           data-bind="value: CVSStoreName">
+    <label for="CVSAddress" class="label">
+        <span>CVS Store Address</span>
+    </label>
+    <input type="text"
+           name="CVSAddress"
+           id="CVSAddress"
+           class="input-text"
+           disabled="disabled"
+           data-bind="value: CVSAddress">
+    <label for="CVSTelephone" class="label">
+        <span>CVS Store Telephone</span>
+    </label>
+    <input type="text"
+           name="CVSTelephone"
+           id="CVSTelephone"
+           class="input-text"
+           disabled="disabled"
+           data-bind="value: CVSTelephone">
+
+<!--    <button data-role="cvs-map-open" type="button" data-bind="'value': $t('Apply'), click: openCvsMap" class="button action">-->
+<!--        <span translate="'Select 711 CVS Store in the Map'" />-->
+<!--    </button>-->
+
+    <render args="cvsMapFormTemplate"/>
+</td>
+
+
+
+
+
+
