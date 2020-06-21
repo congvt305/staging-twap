@@ -15,12 +15,13 @@ class DefaultItem
 {
     public function afterGetItemData(AbstractItem $subject, $result, Item $item)
     {
-        if ($item->getProduct()->hasCustomAttribute('laneige_size')) {
+        if ($item->getProduct()->getCustomAttribute('laneige_size')) {
             $data['laneige_size'] = $item->getProduct()->getAttributeText('laneige_size');
             return array_merge(
                 $result,
                 $data
             );
         }
+        return $result;
     }
 }
