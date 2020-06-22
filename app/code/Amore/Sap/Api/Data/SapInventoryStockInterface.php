@@ -17,6 +17,7 @@ interface SapInventoryStockInterface
 
     /**
      * @param string $matnr
+     * @return $this
      */
     public function setMatnr($matnr);
 
@@ -27,6 +28,7 @@ interface SapInventoryStockInterface
 
     /**
      * @param string $labst
+     * @return $this
      */
     public function setLabst($labst);
 
@@ -37,6 +39,7 @@ interface SapInventoryStockInterface
 
     /**
      * @param string $mallId
+     * @return $this
      */
     public function setMallId($mallId);
 
