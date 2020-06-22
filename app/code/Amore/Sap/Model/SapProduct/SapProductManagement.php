@@ -160,7 +160,7 @@ class SapProductManagement implements SapProductManagementInterface
     {
         $result = [];
 
-        $source = $this->request->getParam('source');
+//        $source = $this->request->getParam('source');
         $storeId = $this->getStore($stockData['mallId'])->getId();
 
 //        foreach ($stockData as $stockDatum) {
