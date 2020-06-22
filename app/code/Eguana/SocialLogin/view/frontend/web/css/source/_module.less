@@ -1,4 +1,12 @@
 //
+//  Variables
+//  _____________________________________________
+
+@social-line-color: #51b501;
+@social-facebook-color: #3b5998;
+@social-google-color: #ea4335;
+
+//
 //  Common
 //  _____________________________________________
 
@@ -8,12 +16,12 @@
             .eguanasociallogin-form-legend{
                 margin: 15px 0 20px !important;
             }
+
             .msg{
-                padding: 0px 0px 10px 0px;
-                font-family: 'buri', sans-serif;
+                padding: 0 0 10px 0;
             }
+
             .member-legend{
-                margin: 0 0 20px 0;
                 padding: 0 0 10px 0;
                 width: 100%;
                 box-sizing: border-box;
@@ -23,119 +31,115 @@
                 font-size: 1.4rem;
                 margin: 15px 0 20px !important;
                 border-bottom: 1px solid #999999;
-                font-family: 'buri', sans-serif;
                 display: block;
             }
         }
     }
+
     .socialloginlogin-login{
-        .socialloginlogin-button-link{
-            display:block;
-            background-image: url('@{baseDir}Eguana_SocialLogin/images/btn_login_base.png');
-            float: left;
-            width:151px;
-            height: 44px;
+        text-align: center;
+
+        a {
+            .lib-link-as-button();
+            &:extend(.abs-button-l all);
             display: block;
-            margin-bottom: 10px;
+
+            &:not(:last-child) {
+                margin-bottom: 12px;
+            }
+
+            &.line-button-link {
+                .lib-button-revert-secondary-color(
+                    @_button-color: @color-white,
+                    @_button-background: @social-line-color,
+                    @_button-border: 1px solid @social-line-color,
+                    @_button-color-hover: @color-white,
+                    @_button-background-hover: @social-line-color,
+                    @_button-border-hover: 1px solid @social-line-color,
+                    @_button-color-active: @color-white,
+                    @_button-background-active: @social-line-color,
+                    @_button-border-active: 1px solid @social-line-color
+                );
+            }
+
+            &.facebook-button-link {
+                .lib-button-revert-secondary-color(
+                    @_button-color: @color-white,
+                    @_button-background: @social-facebook-color,
+                    @_button-border: 1px solid @social-facebook-color,
+                    @_button-color-hover: @color-white,
+                    @_button-background-hover: @social-facebook-color,
+                    @_button-border-hover: 1px solid @social-facebook-color,
+                    @_button-color-active: @color-white,
+                    @_button-background-active: @social-facebook-color,
+                    @_button-border-active: 1px solid @social-facebook-color
+                );
+            }
+
+            &.google-button-link {
+                .lib-button-revert-secondary-color(
+                    @_button-color: @color-white,
+                    @_button-background: @social-google-color,
+                    @_button-border: 1px solid @social-google-color,
+                    @_button-color-hover: @color-white,
+                    @_button-background-hover: @social-google-color,
+                    @_button-border-hover: 1px solid @social-google-color,
+                    @_button-color-active: @color-white,
+                    @_button-background-active: @social-google-color,
+                    @_button-border-active: 1px solid @social-google-color
+                );
+            }
         }
-        .socialloginlogin-button-link:hover {
-            background: url('@{baseDir}Eguana_SocialLogin/images/btn_login_hover.png') no-repeat;
-        }
-        .socialloginlogin-button-link:active{
-            background: url('@{baseDir}Eguana_SocialLogin/images/btn_login_press.png') no-repeat;
-        }
-        a{
-            margin-left: 10px;
-        }
-        a.fb {
-            font-family: Lucida Grande, Helvetica Neue, Helvetica, Arial, sans-serif;
+
+        > p {
+            .lib-font-size(16);
+            color: #c7c7c7;
             display: inline-block;
-            font-size: 14px;
-            padding: 13px 30px 15px 44px;
-            background: #3A5A97;
-            color: #fff;
-            text-shadow: 0 -1px 0 rgba(0,0,20,.4);
-            text-decoration: none;
-            line-height: 1;
+            font-weight: @font-weight__bold;
+            margin-bottom: @indent__m;
             position: relative;
-            border-radius: 5px;
-            margin-bottom: 10px;
+
+            &:before,
+            &:after {
+                border-bottom: 1px solid;
+                content: '';
+                display: inline-block;
+                position: absolute;
+                top: 50%;
+                width: @indent__s;
+            }
+
+            &:before {
+                left: -@indent__base;
+            }
+
+            &:after {
+                right: -@indent__base;
+            }
         }
-        .connect:before {
-            display: inline-block;
-            position: relative;
-            background-image: url('@{baseDir}Eguana_SocialLogin/images/facebook.png');
-            height: 23px;
-            background-repeat: no-repeat;
-            background-position: 0px 3px;
-            text-indent: -9999px;
-            text-align: center;
-            width: 29px;
-            line-height: 23px;
-            margin: -8px 7px -7px -30px;
-            padding: 2px 25px 0 0;
-            content: "f";
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .socialloginlogin-login {
+        margin-top: 75px;
+
+        a {
+            padding: 10.5px 0 !important;
         }
-        a.sociallogin-button {
-            line-height: 1;
-            position: relative;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            transition: all .2s ease;
-            text-decoration: none;
-            box-shadow: 0 0 5px #999;
-            color: #fff;
-            font-family: Lucida Grande, Helvetica Neue, Helvetica, Arial, sans-serif;
-            display: inline-block;
-            font-size: 14px;
-            padding: 1px 15px 3px 8px;
-        }
-        a.sociallogin-button span.sl-google {
-            background-color: #fff;
-        }
-        a.sociallogin-button span.sociallogin-icon {
-            height: 34px;
-            cursor: pointer;
-            display: block;
-            position: relative;
-            z-index: 1;
-            outline: 0;
-            margin: 0 auto;
-            padding: 0 5px;
-            transition: all .2s ease;
-            border-radius: 2px;
-            font-size: inherit;
-            text-align: left;
-            line-height: 34px;
-            color: #fff;
-            vertical-align: middle;
-            font-family: inherit;
-        }
-        a.sociallogin-button span.sociallogin-icon:before {
-            display: inline-block;
-            height: 100%;
-            width: 34px;
-            border-radius: 2px;
-            font-size: 100%;
-            position: absolute;
-            left: 0;
-            text-align: center;
-            font-family: font-icons;
-            content: "";
-            border-right: 1px solid #fff;
-        }
-        a.sociallogin-button span.sl-google:before {
-            background-image: url('@{baseDir}Eguana_SocialLogin/images/google.svg');
-            border-right: 1px solid #e7e7e7;
-        }
-        a.sociallogin-button span.sl-google:after {
-            content: 'Sign in with Google';
-            color: #212121;
-        }
-        a.sociallogin-button span.sociallogin-icon:after {
-            font-family: inherit;
-            font-size: inherit;
-            margin-left: 42px;
-        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .socialloginlogin-login {
+        margin-top: @indent__xl;
     }
 }
