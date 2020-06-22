@@ -2,8 +2,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="Eguana\SocialLogin\Block\SocialLogin\Login" before="customer.login.container" name="social_media_login" template="Eguana_SocialLogin::social/login.phtml">
-            </block>
+            <block class="Eguana\SocialLogin\Block\SocialLogin\Login" after="customer.login.container" name="social_media_login" template="Eguana_SocialLogin::social/login.phtml"/>
         </referenceContainer>
     </body>
 </page>

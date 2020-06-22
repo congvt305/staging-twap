@@ -112,5 +112,9 @@ define([
         accountNav();
     }
 
+    $(document).on('click touchend', '.ui-datepicker-trigger', function (event) {
+        $(event.target).find('._has-datepicker').trigger('focus');
+    });
+
     keyboardHandler.apply();
 });
