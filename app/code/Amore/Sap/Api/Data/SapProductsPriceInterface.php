@@ -10,63 +10,48 @@ namespace Amore\Sap\Api\Data;
 
 interface SapProductsPriceInterface
 {
-    const SKU = 'sku';
+    /**
+     * @return string
+     */
+    public function getMatnr();
 
-    const PRICE = 'price';
-
-    const SPECIAL_PRICE = 'special_price';
-
-    const WEBSITE_ID = 'website_id';
-
-    const CURRENCY_CODE = 'currency_code';
+    /**
+     * @param string $matnr
+     * @return $this
+     */
+    public function setMatnr($matnr);
 
     /**
      * @return string
      */
-    public function getSku();
+    public function getPltyp();
 
     /**
-     * @param string $sku
+     * @param string $pltyp
+     * @return $this
      */
-    public function setSku($sku);
-
-    /**
-     * @return float
-     */
-    public function getPrice();
-
-    /**
-     * @param float $price
-     */
-    public function setPrice($price);
-
-    /**
-     * @return float
-     */
-    public function getSpecialPrice();
-
-    /**
-     * @param float $specialPrice
-     */
-    public function setSpecialPrice($specialPrice);
-
-    /**
-     * @return int
-     */
-    public function getWebsiteId();
-
-    /**
-     * @param int $websiteId
-     */
-    public function setWebsiteId($websiteId);
+    public function setPltyp($pltyp);
 
     /**
      * @return string
      */
-    public function getCurrencyCode();
+    public function getWaerk();
 
     /**
-     * @param string $currencyCode
+     * @param string $waerk
+     * @return $this
      */
-    public function setCurrencyCode($currencyCode);
+    public function setWaerk($waerk);
+
+    /**
+     * @return float
+     */
+    public function getKbetrInv();
+
+    /**
+     * @param float $kbetrInv
+     * @return $this
+     */
+    public function setKbetrInv($kbetrInv);
+
 }

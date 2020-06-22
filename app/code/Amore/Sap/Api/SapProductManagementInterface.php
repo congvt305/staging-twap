@@ -25,34 +25,22 @@ interface SapProductManagementInterface
     public function inventoryStockUpdate(\Amore\Sap\Api\Data\SapInventoryStockInterface $stockData);
 
     /**
-     * @param string $sku
+     * @param \Amore\Sap\Api\Data\SapProductsDetailInterface $productData
      * @return \Amore\Sap\Api\Data\SapProductsDetailInterface
      * @throws \UnexpectedValueException
      * @throws \Exception
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function productDetailUpdate($sku);
+    public function productDetailUpdate($productData);
 
     /**
-     * @param string $source
-     * @param string $mallId
-     * @param mixed $priceData
+     * @param \Amore\Sap\Api\Data\SapProductsPriceInterface $priceData
      * @return \Amore\Sap\Api\Data\SapProductsPriceInterface
      * @throws \UnexpectedValueException
      * @throws \Exception
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function productPriceUpdate($source, $mallId, $priceData);
-
-    /**
-     * @param \Amore\Sap\Api\Data\SapInventoryStockInterface $stockData
-     * @return \Amore\Sap\Api\Data\SapInventoryStockInterface
-     * @throws \UnexpectedValueException
-     * @throws \Exception
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
-    public function inventoryStockUpdateTest(\Amore\Sap\Api\Data\SapInventoryStockInterface $stockData);
+    public function productPriceUpdate($priceData);
 }

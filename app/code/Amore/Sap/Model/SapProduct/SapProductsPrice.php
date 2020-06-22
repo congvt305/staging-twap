@@ -13,53 +13,43 @@ use Magento\Framework\Model\AbstractExtensibleModel;
 
 class SapProductsPrice extends AbstractExtensibleModel implements SapProductsPriceInterface
 {
-    public function getSku()
+    public function getMatnr()
     {
-        // TODO: Implement getSku() method.
+        return $this->getData('matnr');
     }
 
-    public function setSku($sku)
+    public function setMatnr($matnr)
     {
-        // TODO: Implement setSku() method.
+        return $this->setData('matnr', $matnr);
     }
 
-    public function getPrice()
+    public function getPltyp()
     {
-        // TODO: Implement getPrice() method.
+        return $this->getData('pltyp');
     }
 
-    public function setPrice($price)
+    public function setPltyp($pltyp)
     {
-        // TODO: Implement setPrice() method.
+        return $this->setData('pltyp', $pltyp);
     }
 
-    public function getSpecialPrice()
+    public function getWaerk()
     {
-        // TODO: Implement getSpecialPrice() method.
+        return $this->getData('waerk');
     }
 
-    public function setSpecialPrice($specialPrice)
+    public function setWaerk($waerk)
     {
-        // TODO: Implement setSpecialPrice() method.
+        return $this->setData('waerk', $waerk);
     }
 
-    public function getWebsiteId()
+    public function getKbetrInv()
     {
-        // TODO: Implement getWebsiteId() method.
+        return $this->getData('kbetrInv');
     }
 
-    public function setWebsiteId($websiteId)
+    public function setKbetrInv($kbetrInv)
     {
-        // TODO: Implement setWebsiteId() method.
-    }
-
-    public function getCurrencyCode()
-    {
-        // TODO: Implement getCurrencyCode() method.
-    }
-
-    public function setCurrencyCode($currencyCode)
-    {
-        // TODO: Implement setCurrencyCode() method.
+        return $this->setData('kbetrInv', $kbetrInv);
     }
 }

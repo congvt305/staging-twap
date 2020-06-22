@@ -10,7 +10,7 @@
     <route method="POST" url="/V1/sap/orders/:incrementId/statuses">
         <service class="Amore\Sap\Api\SapOrderManagementInterface" method="orderStatus"/>
         <resources>
-            <resource ref="anonymous"/>
+            <resource ref="Amore_Sap::token"/>
         </resources>
     </route>
     <route method="POST" url="/V1/sap/orders/:incrementId/confirm">
@@ -21,7 +21,7 @@
     </route>
 
     <!-- Product -->
-    <route url="/V1/sap/inventory/stocks/source/:source" method="POST">
+    <route url="/V1/sap/inventory/stocks" method="POST">
         <service class="Amore\Sap\Api\SapProductManagementInterface" method="inventoryStockUpdate"/>
         <resources>
             <resource ref="Amore_Sap::token"/>
