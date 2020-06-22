@@ -12,22 +12,31 @@ namespace Eguana\SocialLogin\Controller\FacebookLogin;
 use Eguana\SocialLogin\Helper\Data as Helper;
 use Eguana\SocialLogin\Model\SocialLoginHandler as SocialLoginModel;
 use Eguana\SocialLogin\Model\SocialLoginRepository;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Model\Session;
+use Magento\Customer\Model\Visitor;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\HTTP\Client\Curl;
+use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
 use Magento\Framework\Stdlib\Cookie\FailureToSendException;
+use Eguana\SocialLogin\Controller\AbstractSocialLogin;
+use Magento\Framework\Stdlib\CookieManagerInterface;
+use Magento\Framework\Stdlib\DateTime\DateTime as DateTimeAlias;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Callback
  *
  * Callback class for facebook login
  */
-class Callback extends Action
+class Callback extends AbstractSocialLogin
 {
     const SOCIAL_MEDIA_TYPE = 'facebook';
 
@@ -54,6 +63,14 @@ class Callback extends Action
     /**
      * Callback constructor.
      * @param Context $context
+     * @param CustomerRepositoryInterface $customerRepositoryInterface
+     * @param CookieManagerInterface $cookieManager
+     * @param CookieMetadataFactory $cookieMetadataFactory
+     * @param Session $customerSession
+     * @param ManagerInterface $eventManager
+     * @param Visitor $visitor
+     * @param DateTimeAlias $dateTime
+     * @param LoggerInterface $logger
      * @param Helper $helper
      * @param SocialLoginModel $socialLoginModel
      * @param Curl $curl
@@ -61,12 +78,30 @@ class Callback extends Action
      */
     public function __construct(
         Context $context,
+        CustomerRepositoryInterface $customerRepositoryInterface,
+        CookieManagerInterface $cookieManager,
+        CookieMetadataFactory $cookieMetadataFactory,
+        Session $customerSession,
+        ManagerInterface $eventManager,
+        Visitor $visitor,
+        DateTimeAlias $dateTime,
+        LoggerInterface $logger,
         Helper $helper,
         SocialLoginModel $socialLoginModel,
         Curl $curl,
         SocialLoginRepository $socialLoginRepository
     ) {
-        parent::__construct($context);
+        parent::__construct(
+            $context,
+            $customerRepositoryInterface,
+            $cookieManager,
+            $cookieMetadataFactory,
+            $customerSession,
+            $eventManager,
+            $visitor,
+            $logger,
+            $dateTime
+        );
         $this->helper                           = $helper;
         $this->socialLoginModel                 = $socialLoginModel;
         $this->curlClient                       = $curl;
@@ -115,7 +150,11 @@ class Callback extends Action
         $userid = $response['id'];
         $customerId = $this->socialLoginRepository->getSocialMediaCustomer($userid, $socialMediaType);
         //If customer exists then login and close popup else close pop and redirect to social login page
-        $this->socialLoginModel->redirectCustomer($customerId, $response, $userid, $socialMediaType);
+        if ($customerId) {
+            $this->redirectToLogin($customerId);
+        } else {
+            $this->socialLoginModel->redirectCustomer($customerId, $response, $userid, $socialMediaType);
+        }
         $this->helper->closePopUpWindow($this);
     }
 

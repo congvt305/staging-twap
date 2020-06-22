@@ -15,13 +15,8 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session;
-use Magento\Customer\Model\Visitor;
-use Magento\Framework\Event\ManagerInterface as ManagerInterfaceAlias1;
 use Magento\Framework\Message\ManagerInterface as ManagerInterfaceAlias;
 use Magento\Framework\Session\SessionManagerInterface as SessionManagerInterfaceAlias;
-use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
-use Magento\Framework\Stdlib\CookieManagerInterface;
-use Magento\Framework\Stdlib\DateTime\DateTime as DateTimeAlias;
 use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
 
@@ -46,14 +41,6 @@ class SocialLoginHandler
      */
     private $cookieManager;
     /**
-     * @var CookieMetadataFactory
-     */
-    private $cookieMetadataFactory;
-    /**
-     * @var Visitor
-     */
-    protected $visitor;
-    /**
      * @var Customer
      */
     protected $customerModel;
@@ -73,22 +60,10 @@ class SocialLoginHandler
      * @var LineModelFactory
      */
     protected $lineCustomerModelFactory;
-
-    /**
-     * @var ManagerInterfaceAlias1
-     */
-    protected $eventManager;
-
-    /**
-     * @var DateTimeAlias
-     */
-    private $dateTime;
-
     /**
      * @var SocialLoginRepository
      */
     private $socialLoginRepository;
-
     /**
      * @var PageFactory
      */
@@ -98,10 +73,7 @@ class SocialLoginHandler
      * SocialLoginHandler constructor.
      * @param CustomerFactory $customerFactory
      * @param ManagerInterfaceAlias $messageManager
-     * @param CookieManagerInterface $cookieManager
-     * @param CookieMetadataFactory $cookieMetadataFactory
      * @param Session $customerSession
-     * @param Visitor $visitor
      * @param Customer $customerModel
      * @param LoggerInterface $logger
      * @param CustomerRepositoryInterface $customerRepositoryInterface
@@ -109,17 +81,12 @@ class SocialLoginHandler
      * @param SocialLoginFactory $lineCustomerModelFactory
      * @param SessionManagerInterfaceAlias $coreSession
      * @param PageFactory $resultPageFactory
-     * @param ManagerInterfaceAlias1 $eventManager
-     * @param DateTimeAlias $dateTime
      * @param SocialLoginRepository $socialLoginRepository
      */
     public function __construct(
         CustomerFactory $customerFactory,
         ManagerInterfaceAlias $messageManager,
-        CookieManagerInterface $cookieManager,
-        CookieMetadataFactory $cookieMetadataFactory,
         Session $customerSession,
-        Visitor $visitor,
         Customer $customerModel,
         LoggerInterface $logger,
         CustomerRepositoryInterface $customerRepositoryInterface,
@@ -127,25 +94,18 @@ class SocialLoginHandler
         LineModelFactory $lineCustomerModelFactory,
         SessionManagerInterfaceAlias $coreSession,
         PageFactory $resultPageFactory,
-        ManagerInterfaceAlias1 $eventManager,
-        DateTimeAlias $dateTime,
         SocialLoginRepository $socialLoginRepository
     ) {
         $this->customerRepositoryInterface       = $customerRepositoryInterface;
         $this->customerFactory                   = $customerFactory;
         $this->messageManager                    = $messageManager;
-        $this->cookieMetadataFactory             = $cookieMetadataFactory;
-        $this->cookieManager                     = $cookieManager;
         $this->session                           = $customerSession;
-        $this->visitor                           = $visitor;
         $this->customerModel                     = $customerModel;
         $this->logger                            = $logger;
         $this->lineCustomerCollectionFactory     = $lineCustomerCollectionFactory;
         $this->lineCustomerModelFactory          = $lineCustomerModelFactory;
         $this->coreSession                       = $coreSession;
         $this->resultPageFactory                 = $resultPageFactory;
-        $this->eventManager                      = $eventManager;
-        $this->dateTime                          = $dateTime;
         $this->socialLoginRepository             = $socialLoginRepository;
     }
 
