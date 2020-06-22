@@ -57,6 +57,24 @@
                     <label>指定國家</label>
                     <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                 </field>
+                <group id="ecpay_invoice" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>ECPay E-Invoice</label>
+                    <field id="ecpay_invoice_hash_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>金鑰</label>
+                        <comment>測試用E-InvoiceHashKey=ejCk326UnaZWKisg</comment>
+                        <can_be_empty>1</can_be_empty>
+                    </field>
+                    <field id="ecpay_invoice_hash_iv" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>向量</label>
+                        <comment>測試用E-InvoiceHashIV=q9jcZX8Ib9LM8wYk</comment>
+                        <can_be_empty>1</can_be_empty>
+                    </field>
+                    <field id="ecpay_invoice_love_code" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Love Code</label>
+                        <comment><![CDATA[<strong>Recommendation donation code]]><![CDATA[<br>]]><![CDATA[<font color="red">168001</font>]]><![CDATA[<br>]]><![CDATA[OMG Charitable Foundation for Social Care</strong>]]><![CDATA[<br>]]><![CDATA[Setup up in 2009 with the goal of gathering the support of web users to deliver love and care to every corner of the society.]]><![CDATA[<br>]]><![CDATA[Our Foundation strives to: Support the schooling of students under the poverty line or that lack education resources,]]><![CDATA[<br>]]><![CDATA[protection of strays and animals in general, support of the elderly and minority, emergency support, humanitarian aid, social]]><![CDATA[<br>]]><![CDATA[charity events and ad support...and others.]]></comment>
+                        <can_be_empty>1</can_be_empty>
+                    </field>
+                </group>
     		</group>
     	</section>
 	</system>
