@@ -136,7 +136,8 @@ class SapProductManagement implements SapProductManagementInterface
         \Magento\Framework\Webapi\Rest\Request $request,
         Json $json,
         PublisherInterface $publisher
-    ) {
+    )
+    {
         $this->scopeConfig = $scopeConfig;
         $this->productRepository = $productRepository;
         $this->sourceItemInterface = $sourceItemInterface;
@@ -157,18 +158,10 @@ class SapProductManagement implements SapProductManagementInterface
 
     public function inventoryStockUpdate(\Amore\Sap\Api\Data\SapInventoryStockInterface $stockData)
     {
-        $writer = new \Zend\Log\Writer\Stream(BP . sprintf('/var/log/%s_inventory_stock.log',date('Ymd')));
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info(__METHOD__);
-
-        $logger->info(print_r($stockData->getData(), true));
         $result = [];
 
         $source = $this->request->getParam('source');
         $storeId = $this->getStore($stockData['mallId'])->getId();
-
-        $logger->info($storeId);
 
 //        foreach ($stockData as $stockDatum) {
 //            /**
@@ -226,7 +219,6 @@ class SapProductManagement implements SapProductManagementInterface
         }
 
         return $result;
-//        return $stockData;
     }
 
     public function productDetailUpdate($productsDetail)
@@ -240,86 +232,55 @@ class SapProductManagement implements SapProductManagementInterface
 
         if (gettype($product) == 'string') {
             $result[$productsDetail['matnr']] = ['code' => "0001", 'message' => $product];
+        } else {
+            $product->setWeight((float)$productsDetail['brgew']);
+//            $product->addAttributeUpdate('bismt', $productsDetail['bismt'], 0);
+            // 중량단위
+//            $product->addAttributeUpdate('gewei', $productsDetail['gewei'], 0);
+//            $product->addAttributeUpdate('brand', $productsDetail['brand'], 0);
+            $product->addAttributeUpdate('bctxtKo', $productsDetail['bctxtKo'], 0);
+//            $product->addAttributeUpdate('meins', $productsDetail['meins'], 0);
+            $product->addAttributeUpdate('mstav', $productsDetail['mstav'], 0);
+//            $product->addAttributeUpdate('spart', $productsDetail['spart'], 0);
+            $product->addAttributeUpdate('maxlz', $productsDetail['maxlz'], 0);
+            $product->addAttributeUpdate('breit', $productsDetail['breit'], 0);
+            $product->addAttributeUpdate('hoehe', $productsDetail['hoehe'], 0);
+            $product->addAttributeUpdate('laeng', $productsDetail['laeng'], 0);
+            // 세액구분코드
+//            $product->addAttributeUpdate('kondm', $productsDetail['kondm'], 0);
+//            $product->addAttributeUpdate('mvgr1', $productsDetail['mvgr1'], 0);
+//            $product->addAttributeUpdate('mvgr2', $productsDetail['mvgr2'], 0);
+            $product->addAttributeUpdate('prodh', $productsDetail['prodh'], 0);
+//            $product->addAttributeUpdate('vmsta', $productsDetail['vmsta'], 0);
+//            $product->addAttributeUpdate('matnr2', $productsDetail['matnr2'], 0);
+//            $product->addAttributeUpdate('setid', $productsDetail['setid'], 0);
+//            $product->addAttributeUpdate('bline', $productsDetail['bline'], 0);
+//            $product->addAttributeUpdate('csmtp', $productsDetail['csmtp'], 0);
+            $product->addAttributeUpdate('setdi', $productsDetail['setdi'], 0);
+            $product->addAttributeUpdate('matshinsun', $productsDetail['matshinsun'], 0);
+//            $product->addAttributeUpdate('matvessel', $productsDetail['matvessel'], 0);
+            // 용량
+//            $product->addAttributeUpdate('prdvl', $productsDetail['prdvl'], 0);
+//            $product->addAttributeUpdate('vlunt', $productsDetail['vlunt'], 0);
+//            $product->addAttributeUpdate('cpiap', $productsDetail['cpiap'], 0);
+//            $product->addAttributeUpdate('prdtp', $productsDetail['prdtp'], 0);
+//            $product->addAttributeUpdate('rpfut', $productsDetail['rpfut'], 0);
+            $product->addAttributeUpdate('maktxEn', $productsDetail['maktxEn'], 0);
+            $product->addAttributeUpdate('maktxZh', $productsDetail['maktxZh'], 0);
+            $product->addAttributeUpdate('bctxtEn', $productsDetail['bctxtEn'], 0);
+            $product->addAttributeUpdate('bctxtZh', $productsDetail['bctxtZh'], 0);
+            $product->addAttributeUpdate('refill', $productsDetail['refill'], 0);
+
+            try {
+                $this->productRepository->save($product);
+
+                $result[$productsDetail['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
+            } catch (\Exception $e) {
+                $result[$productsDetail['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+            }
         }
 
-//        $attributeData = [
-//            'bismt' => $productsDetail['bismt'],
-//            'gewei' => $productsDetail['gewei'],
-//            'brand' => $productsDetail['brand'],
-//            'bctxtKo' => $productsDetail['bctxtKo'],
-//            'meins' => $productsDetail['meins'],
-//            'mstav' => $productsDetail['mstav'],
-//            'spart' => $productsDetail['spart'],
-//            'maxlz' => $productsDetail['maxlz'],
-//            'breit' => $productsDetail['breit'],
-//            'hoehe' => $productsDetail['hoehe'],
-//            'laeng' => $productsDetail['laeng'],
-//            'kondm' => $productsDetail['kondm'],
-//            'mvgr1' => $productsDetail['mvgr1'],
-//            'mvgr2' => $productsDetail['mvgr2'],
-//            'prodh' => $productsDetail['prodh'],
-//            'vmsta' => $productsDetail['vmsta'],
-//            'matnr2' => $productsDetail['matnr2'],
-//            'setid' => $productsDetail['setid'],
-//            'bline' => $productsDetail['bline'],
-//            'csmtp' => $productsDetail['csmtp'],
-//            'setdi' => $productsDetail['setdi'],
-//            'matshinsun' => $productsDetail['matshinsun'],
-//            'matvessel' => $productsDetail['matvessel'],
-//            'prdvl' => $productsDetail['prdvl'],
-//            'vlunt' => $productsDetail['vlunt'],
-//            'cpiap' => $productsDetail['cpiap'],
-//            'prdtp' => $productsDetail['prdtp'],
-//            'rpfut' => $productsDetail['rpfut'],
-//            'maktxEn' => $productsDetail['maktxEn'],
-//            'maktxZh' => $productsDetail['maktxZh'],
-//            'bctxEn' => $productsDetail['bctxEn'],
-//            'bctxZh' => $productsDetail['bctxZh'],
-//            'refill' => $productsDetail['refill']
-//        ];
-
-        $product->setCustomAttribute('bismt', $productsDetail['bismt']);
-        $product->setCustomAttribute('gewei', $productsDetail['gewei']);
-        $product->setCustomAttribute('brand', $productsDetail['brand']);
-        $product->setCustomAttribute('bctxtKo', $productsDetail['bctxtKo']);
-        $product->setCustomAttribute('meins', $productsDetail['meins']);
-        $product->setCustomAttribute('mstav', $productsDetail['mstav']);
-        $product->setCustomAttribute('spart', $productsDetail['spart']);
-        $product->setCustomAttribute('maxlz', $productsDetail['maxlz']);
-        $product->setCustomAttribute('breit', $productsDetail['breit']);
-        $product->setCustomAttribute('hoehe', $productsDetail['hoehe']);
-        $product->setCustomAttribute('laeng', $productsDetail['laeng']);
-        $product->setCustomAttribute('kondm', $productsDetail['kondm']);
-        $product->setCustomAttribute('mvgr1', $productsDetail['mvgr1']);
-        $product->setCustomAttribute('mvgr2', $productsDetail['mvgr2']);
-        $product->setCustomAttribute('prodh', $productsDetail['prodh']);
-        $product->setCustomAttribute('vmsta', $productsDetail['vmsta']);
-        $product->setCustomAttribute('matnr2', $productsDetail['matnr2']);
-        $product->setCustomAttribute('setid', $productsDetail['setid']);
-        $product->setCustomAttribute('bline', $productsDetail['bline']);
-        $product->setCustomAttribute('csmtp', $productsDetail['csmtp']);
-        $product->setCustomAttribute('setdi', $productsDetail['setdi']);
-        $product->setCustomAttribute('matshinsun', $productsDetail['matshinsun']);
-        $product->setCustomAttribute('matvessel', $productsDetail['matvessel']);
-        $product->setCustomAttribute('prdvl', $productsDetail['prdvl']);
-        $product->setCustomAttribute('vlunt', $productsDetail['vlunt']);
-        $product->setCustomAttribute('cpiap', $productsDetail['cpiap']);
-        $product->setCustomAttribute('prdtp', $productsDetail['prdtp']);
-        $product->setCustomAttribute('rpfut', $productsDetail['rpfut']);
-        $product->setCustomAttribute('maktxEn', $productsDetail['maktxEn']);
-        $product->setCustomAttribute('maktxZh', $productsDetail['maktxZh']);
-        $product->setCustomAttribute('bctxEn', $productsDetail['bctxEn']);
-        $product->setCustomAttribute('bctxZh', $productsDetail['bctxZh']);
-        $product->setCustomAttribute('refill', $productsDetail['refill']);
-        $product->setWeight($productsDetail['brgew']);
-
-        try {
-            $this->productRepository->save($product);
-
-            $result[$productsDetail['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
-        } catch (\Exception $e) {
-            $result[$productsDetail['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-        }
+        return $result;
     }
 
     public function productPriceUpdate($priceData)
@@ -351,14 +312,7 @@ class SapProductManagement implements SapProductManagementInterface
 
     public function getProductBySku($sku, $storeId = null)
     {
-        $writer = new \Zend\Log\Writer\Stream(BP . sprintf('/var/log/%s_inventory_stock.log',date('Ymd')));
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info(__METHOD__);
-
         try {
-            $logger->info($storeId);
-            $logger->info($this->productRepository->get($sku, false, $storeId)->getSku());
             return $this->productRepository->get($sku, false, $storeId);
         } catch (NoSuchEntityException $e) {
             return $e->getMessage();
@@ -454,24 +408,65 @@ class SapProductManagement implements SapProductManagementInterface
         return $storeCode;
     }
 
-    public function inventoryStockUpdateTest(\Amore\Sap\Api\Data\SapInventoryStockInterface $stockData)
+    public function productDetailUpdateTest(\Amore\Sap\Api\Data\SapProductsDetailTest $productsDetail)
     {
-        $writer = new \Zend\Log\Writer\Stream(BP . sprintf('/var/log/%s_mq_test.log',date('Ymd')));
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info(__METHOD__);
-
-        $logger->info(print_r($stockData->getData(), true));
         $result = [];
 
-        $source = $this->request->getParam('source');
-        $storeId = $this->getStore($stockData['mallId'])->getId();
+        /**
+         * @var $product \Magento\Catalog\Model\Product
+         */
+        $product = $this->getProductBySku($productsDetail['matnr'], null);
 
-        $logger->info($storeId);
+        if (gettype($product) == 'string') {
+            $result[$productsDetail['matnr']] = ['code' => "0001", 'message' => $product];
+        } else {
+            $product->setWeight((float)$productsDetail['brgew']);
+//            $product->addAttributeUpdate('bismt', $productsDetail['bismt'], 0);
+            // 중량단위
+//            $product->addAttributeUpdate('gewei', $productsDetail['gewei'], 0);
+//            $product->addAttributeUpdate('brand', $productsDetail['brand'], 0);
+            $product->addAttributeUpdate('bctxtKo', $productsDetail['bctxtKo'], 0);
+//            $product->addAttributeUpdate('meins', $productsDetail['meins'], 0);
+            $product->addAttributeUpdate('mstav', $productsDetail['mstav'], 0);
+//            $product->addAttributeUpdate('spart', $productsDetail['spart'], 0);
+            $product->addAttributeUpdate('maxlz', $productsDetail['maxlz'], 0);
+            $product->addAttributeUpdate('breit', $productsDetail['breit'], 0);
+            $product->addAttributeUpdate('hoehe', $productsDetail['hoehe'], 0);
+            $product->addAttributeUpdate('laeng', $productsDetail['laeng'], 0);
+            // 세액구분코드
+//            $product->addAttributeUpdate('kondm', $productsDetail['kondm'], 0);
+//            $product->addAttributeUpdate('mvgr1', $productsDetail['mvgr1'], 0);
+//            $product->addAttributeUpdate('mvgr2', $productsDetail['mvgr2'], 0);
+            $product->addAttributeUpdate('prodh', $productsDetail['prodh'], 0);
+//            $product->addAttributeUpdate('vmsta', $productsDetail['vmsta'], 0);
+//            $product->addAttributeUpdate('matnr2', $productsDetail['matnr2'], 0);
+//            $product->addAttributeUpdate('setid', $productsDetail['setid'], 0);
+//            $product->addAttributeUpdate('bline', $productsDetail['bline'], 0);
+//            $product->addAttributeUpdate('csmtp', $productsDetail['csmtp'], 0);
+            $product->addAttributeUpdate('setdi', $productsDetail['setdi'], 0);
+            $product->addAttributeUpdate('matshinsun', $productsDetail['matshinsun'], 0);
+//            $product->addAttributeUpdate('matvessel', $productsDetail['matvessel'], 0);
+            // 용량
+//            $product->addAttributeUpdate('prdvl', $productsDetail['prdvl'], 0);
+//            $product->addAttributeUpdate('vlunt', $productsDetail['vlunt'], 0);
+//            $product->addAttributeUpdate('cpiap', $productsDetail['cpiap'], 0);
+//            $product->addAttributeUpdate('prdtp', $productsDetail['prdtp'], 0);
+//            $product->addAttributeUpdate('rpfut', $productsDetail['rpfut'], 0);
+            $product->addAttributeUpdate('maktxEn', $productsDetail['maktxEn'], 0);
+            $product->addAttributeUpdate('maktxZh', $productsDetail['maktxZh'], 0);
+            $product->addAttributeUpdate('bctxtEn', $productsDetail['bctxtEn'], 0);
+            $product->addAttributeUpdate('bctxtZh', $productsDetail['bctxtZh'], 0);
+            $product->addAttributeUpdate('refill', $productsDetail['refill'], 0);
 
-        $jsonData = $this->json->serialize($stockData->getData());
+            try {
+                $this->productRepository->save($product);
 
-        $this->publisher->publish('sap.inventory.stock.topic', $jsonData);
+                $result[$productsDetail['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
+            } catch (\Exception $e) {
+                $result[$productsDetail['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+            }
+        }
 
+        return $result;
     }
 }
