@@ -10,6 +10,7 @@
 
 namespace Eguana\Magazine\ViewModel;
 
+use Eguana\Magazine\Model\MagazineRepository;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 /**
@@ -23,15 +24,17 @@ class Magazine implements ArgumentInterface
      * @var \Eguana\Magazine\Helper\Data
      */
     private $helperData;
-
+    private $magazinerepository;
     /**
      * Magazine constructor.
      * @param \Eguana\Magazine\Helper\Data $helperData
      */
     public function __construct(
-        \Eguana\Magazine\Helper\Data $helperData
+        \Eguana\Magazine\Helper\Data $helperData,
+        MagazineRepository $magazinerepository
     ) {
         $this->helperData= $helperData;
+        $this->magazinerepository=$magazinerepository;
     }
 
     /**
@@ -77,5 +80,10 @@ class Magazine implements ArgumentInterface
     public function getSortOrderDirectionValue()
     {
         return $this->helperData->getConfig('magazine/general/sort_direction');
+    }
+
+    public function getBanner()
+    {
+        return $this->magazinerepository->getFirstBanner();
     }
 }

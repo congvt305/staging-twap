@@ -10,8 +10,8 @@
 
 namespace Eguana\Magazine\Model;
 
-use Eguana\Magazine\Api\MagazineRepositoryInterface;
 use Eguana\Magazine\Api\Data;
+use Eguana\Magazine\Api\MagazineRepositoryInterface;
 use Eguana\Magazine\Model\ResourceModel\Magazine as ResourceMagazine;
 use Eguana\Magazine\Model\ResourceModel\Magazine\CollectionFactory as MagazineCollectionFactory;
 use Magento\Framework\Api\DataObjectHelper;
@@ -169,5 +169,20 @@ class MagazineRepository implements MagazineRepositoryInterface
     public function deleteById($magazineId)
     {
         return $this->delete($this->getById($magazineId));
+    }
+
+    public function getFirstBanner()
+    {
+        $magazine = $this->magazineCollectionFactory->create();
+        $magazine = $magazine->addFieldToFilter('type', 1)
+            ->setOrder(
+                'sort_order',
+                'ASC'
+            )->getFirstItem();
+        if ($magazine && $magazine->getId()) {
+            return $magazine;
+        } else {
+            return null;
+        }
     }
 }

@@ -33,7 +33,7 @@ class ListBlock extends AbstractBlock
                     'link' => $this->_storeManager->getStore()->getBaseUrl()
                 ]
             );
-            $this->pageConfig->getTitle()->set(__('Magazine'));
+            $this->pageConfig->getTitle()->set(__('LANEIGE'));
 
             $breadcrumbsBlock->addCrumb(
                 'explore',

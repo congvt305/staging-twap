@@ -8,10 +8,10 @@
  * Time: 6:45 AM
  */
 $magazine = $block->getMagazine();
-$magazineList = $block->getCollection();
+$magazineList = $block->getCollection($block->getMazineType());
+
 $url = $block->getUrl();
 ?>
-<div class="block block-magazine-details" data-mage-init='{"magazineSlide":{}}'>
     <div class="block-title">
         <strong><?= $block->escapeHtml($magazine->getTitle()) ?></strong>
     </div>
@@ -20,31 +20,25 @@ $url = $block->getUrl();
             <?= /* @noEscape */  $block->contentFiltering($magazine->getContent()); ?>
         </div>
         <div class="magazine-list">
-            <?php if ($magazineList->getTotalCount()== 0) : ?>
+            <?php if ($magazineList->getTotalCount() == 0): ?>
                 <div class="magazine-empty">
                     <?= $block->escapeHtml(__('It does not exist.')); ?>
                 </div>
             <?php else: ?>
-                <?php foreach ($magazineList as $magazineItem):?>
-                        <div class="magazine-item">
-                            <div class="magazine-item-content">
-                                <div class="magazine-photo">
-                                    <a class="action view" href="<?= $block->escapeUrl($magazineItem->getId()) ?>">
-                                <span>
-                                    <img src="<?= $block->escapeHtml($magazineItem->getThumbnailImageURL());?>"
-                                         alt="<?= $block->escapeHtml($magazineItem->getThumbnailAlt());?>" />
-                                </span>
-                                    </a>
-                                </div>
-                                <div class="magazine-location">
-                                    <a class="action view" type="button"
-                                       href="<?= $block->escapeUrl($block->getMagazineUrl($magazineItem->getId())) ?>">
-                                        <span><?= $block->escapeHtml(__('Discover More')) ?></span>
-                                    </a>
-                                </div>
+                <?php if ($block->getMazineType() != 3): ?>
+                    <div class="magazine-item">
+                        <div class="magazine-item-content">
+                            <div class="magazine-photo">
+                                <a class="action view" href="<?= $block->escapeUrl($magazine->getId()) ?>">
+                            <span>
+                                <img src="<?= $block->escapeHtml($magazine->getThumbnailImageURL());?>"
+                                     alt="<?= $block->escapeHtml($magazine->getThumbnailAlt());?>" />
+                            </span>
+                                </a>
                             </div>
                         </div>
-                <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>

@@ -1,16 +1,18 @@
 <?php
 
-
 /** @var \Eguana\Magazine\ViewModel\Magazine $viewModel */
 $viewModel = $block->getData('view_model');
-$topBlockId = $viewModel->getListingTopBlockValue();
+$banner = $viewModel->getBanner();
 ?>
-<div class="magazine-top-content"
-<?php if (isset($topBlockId)): ?>
-         <?= $block->getLayout()
-            ->createBlock(Magento\Cms\Block\Block::class)
-            ->setBlockId($topBlockId)
-            ->toHtml();
-            ?>
-    <?php endif;?>
+<div>
+    <?php if ($banner): ?>
+        <a
+           href="<?= $block->escapeUrl($block->getMagazineUrl($banner->getId())); ?>">
+            <span>
+                <img src="<?=$block->escapeUrl($banner->getThumbnailImageURL());?>"
+                     alt="<?=
+                        $block->escapeHtml($banner->getThumbnailAlt());?>" />
+            </span>
+        </a>
+    <?php endif; ?>
 </div>

@@ -80,7 +80,7 @@ class View extends AbstractBlock
                 [
                     'label' => __('Magazine'),
                     'title' => __('Magazine'),
-                    'link' => $this->_storeManager->getStore()->getBaseUrl() . 'Magzine'
+                    'link' => $this->_storeManager->getStore()->getBaseUrl() . 'magazine'
                 ]
             );
             if ($this->getMagazineId()) {
@@ -97,5 +97,14 @@ class View extends AbstractBlock
         }
 
         return $this;
+    }
+
+    /**
+     * SHORT DESCRIPTION
+     * LONG DESCRIPTION LINE BY LINE
+     */
+    public function getMazineType()
+    {
+        return $this->getMagazine()->getType();
     }
 }

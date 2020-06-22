@@ -108,34 +108,27 @@ class AbstractBlock extends Template implements IdentityInterface
      *
      * @return mixed
      */
-    public function getCollection()
+    public function getCollection($type)
     {
         if (!$this->getData('collection')) {
             /** @var \Eguana\Magazine\Model\ResourceModel\Magazine\Collection $magazineCollection */
             $magazineCollection = $this->magazineCollectionFactory->create();
             $storeId = $this->storeManager->getStore()->getId();
-
             $sortDirection = 'asc';
             if ($this->helperData->getConfig('magazine/general/sort_direction') == 1) {
                 $sortDirection = 'desc';
             }
+            $magazineCollection->addFieldToFilter("is_active", ["eq" => true])
+                ->addFieldToFilter('store_id', ['in' => [0, (int)$storeId]])
+                ->setOrder(
+                    "sort_order",
+                    $sortDirection
+                )
+                ->addFieldToFilter('type', ['eq' => $type]);
 
-            $magazineCollection->addFieldToFilter(
-                "is_active",
-                ["eq" => true]
-            )->addFieldToFilter(
-                ['store_id','store_id','store_id','store_id'],
-                [["like" =>  '%' . $storeId . ',%'],
-                    ["like" =>  '%,' . $storeId . ',%'],
-                    ["like" =>  '%,' . $storeId . '%'],
-                    ["eq" => $storeId]]
-            )->setOrder(
-                "sort_order",
-                $sortDirection
-            );
-            $this->setCollection($magazineCollection);
         }
-        return $this->getData('collection');
+        return $magazineCollection;
+//        return $this->getData('collection');
     }
 
     /**
@@ -162,5 +155,26 @@ class AbstractBlock extends Template implements IdentityInterface
     public function getMagazineUrl($id)
     {
         return $this->getUrl('magazine/details/index', ['id' => $id]);
+    }
+
+    public function getDetail($id)
+    {
+       return $this->magazineRepository->getById($id);
+    }
+
+    public function videoThumbnail()
+    {
+        $magazineCollection = $this->magazineCollectionFactory->create();
+        $storeId = $this->storeManager->getStore()->getId();
+        $sortDirection = 'asc';
+        $magazineCollection->addFieldToFilter("is_active", ["eq" => true])
+            ->addFieldToFilter('store_id', ['in' => [0, (int)$storeId]])
+            ->setOrder(
+                "sort_order",
+                $sortDirection
+            )
+            ->addFieldToFilter('type', ['eq' => 3])
+        ->setPageSize(1);
+        return $magazineCollection;
     }
 }
