@@ -80,11 +80,13 @@
                 </field>
 
                 <field id="member_info" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1">
-                    <label>Memeber Information</label>
+                    <label>Memeber Information URI</label>
+                    <comment>Member info URI. Complete URL = BASE URL + Memeber Information URI</comment>
                 </field>
 
                 <field id="member_join" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1">
-                    <label>Memeber Join</label>
+                    <label>Memeber Join URI</label>
+                    <comment>Member join URI. Complete URL = BASE URL + Memeber Join URI</comment>
                 </field>
 
                 <field id="sales_organization_code" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1">
