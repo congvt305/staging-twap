@@ -1,0 +1,296 @@
+//
+//  Listing page
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    .more-item-button {
+        display: inline-block;
+        width: 100%;
+        margin: auto;
+        margin-top: 5%;
+        button{
+            margin-left: 45%;
+            border-radius: 50%;
+            background-color: #7da1de;
+            font-size: 39px;
+            color: white;
+            padding:16px 6px 8px 5px;
+        }
+        span{
+            margin-left: 45.6%;
+        }
+    }
+
+
+    .total-video-count {
+        .contents {
+            color: #767676;
+            font-size: 16px;
+            line-height: normal;
+            letter-spacing: -0.4px;
+            text-align: right;
+            width: 100%;
+        }
+    }
+
+    .video-board-list {
+        ul {
+            padding: 0 0;
+            .video-board-item {
+                list-style: none;
+                width: 29.6%;
+                height: 270px;
+                display: inline-flex;
+
+                .video-board-item-content {
+                    width: 100%;
+
+                    .video-scale {
+                        width: 100%;
+                        height: 204px;
+                        position: relative;
+                        display: inline-block;
+                        cursor: pointer;
+                        overflow: hidden;
+
+                        .video-link {
+                            display: block;
+                            font-size: 35px;
+                            color: #ffffff;
+                            text-align: center;
+                            margin: auto;
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            bottom: 0;
+                            right: 0;
+                            cursor: pointer;
+
+                            .video-iframe {
+                                height: 100%;
+                                img {
+                                    height: fit-content;
+                                    width: 100%;
+                                    background-size: cover;
+                                    background-repeat: no-repeat;
+                                    -webkit-transition: all .5s;
+                                    -moz-transition: all .5s;
+                                    -o-transition: all .5s;
+                                    transition: all .5s;
+                                }
+                            }
+                        }
+                    }
+                    .video-scale:hover, .video-scale:focus {
+                        img {
+                            -ms-transform: scale(1.15);
+                            -moz-transform: scale(1.15);
+                            -webkit-transform: scale(1.15);
+                            -o-transform: scale(1.15);
+                            transform: scale(1.15);
+                        }
+                    }
+                    .video-heading {
+                        display: block;
+                        padding: 10px 0 0 10px;
+                        width: 100%;
+
+                        .video-title {
+                            color: #000000;
+                            font-size: 16px;
+                            font-weight: 500;
+                            margin: 0 0 5px;
+                            padding: 0 0;
+                            text-transform: capitalize;
+                        }
+                    }
+                }
+            }
+            .video-board-item {
+                    margin-left: 3%;
+            }
+        }
+    }
+
+    //
+    //  Detail page
+    //  _____________________________________________
+
+    .video-board-item-content {
+        .video-detail-title {
+            text-align: right;
+            margin-bottom: 0;
+        }
+        .video-detail-created-date {
+            text-align: right;
+        }
+    }
+    .block-video-board-details{
+        .back-button {
+            width: 10%;
+            margin: auto;
+        }
+        a {
+            button {
+                border-radius: 50%;
+                background-color: #7da1de;
+                font-size: 16px;
+                color: white;
+            }
+        }
+    }
+
+    .video-board-detail{
+        hr{
+            width: 70%;
+            margin: 55px 0 0 0;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+
+}
+
+//
+//  Mobile Less than 769px / Tablet View
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+
+    .video-board-list {
+        ul {
+            padding: 0 0;
+            .video-board-item {
+                list-style: none;
+                width: 100%;
+                height: 70vh;
+                display: inline-flex;
+
+                .video-board-item-content {
+                    width: 100%;
+
+                    .video-scale {
+                        width: 100%;
+                        height: 54vh;
+                        position: relative;
+                        display: inline-block;
+                        cursor: pointer;
+                        overflow: hidden;
+
+                        .video-link {
+                            display: block;
+                            font-size: 35px;
+                            color: #ffffff;
+                            text-align: center;
+                            margin: auto;
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            bottom: 0;
+                            right: 0;
+                            cursor: pointer;
+
+                            .video-iframe {
+                                height: 100%;
+                                img {
+                                    height: auto;
+                                    width: 100%;
+                                    background-size: cover;
+                                    background-repeat: no-repeat;
+                                    -webkit-transition: all .5s;
+                                    -moz-transition: all .5s;
+                                    -o-transition: all .5s;
+                                    transition: all .5s;
+                                }
+                            }
+
+                            img:before {
+                                content: "\f144";
+                                display: block;
+                                height: 100%;
+                                width: 100%;
+                                position: relative;
+                                top: 0;
+                                left: 0;
+                                z-index: 999;
+                                background-color: rgba(0, 0, 0, 0.7);
+                            }
+                        }
+                    }
+
+                    .video-scale:hover, .video-scale:focus {
+                        img {
+                            -ms-transform: scale(1.15);
+                            -moz-transform: scale(1.15);
+                            -webkit-transform: scale(1.15);
+                            -o-transform: scale(1.15);
+                            transform: scale(1.15);
+                        }
+                    }
+
+                    .video-heading {
+                        display: block;
+                        padding: 10px 0 0 10px;
+                        width: 100%;
+
+                        .video-title {
+                            color: #000000;
+                            font-size: 16px;
+                            font-weight: 500;
+                            margin: 0 0 5px;
+                            padding: 0 0;
+                            text-transform: capitalize;
+                        }
+
+                    }
+
+                }
+            }
+            .video-board-item + li {
+                margin-left: 0px;
+            }
+        }
+    }
+}
+
+//
+//  Mobile Less than 480px
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
+
+    .video-board-list {
+        ul {
+            padding: 0 0;
+
+            .video-board-item {
+                height: 52vh;
+
+                .video-board-item-content {
+
+                    .video-scale {
+                        width: 100%;
+                        height: 35vh;
+                    }
+                }
+            }
+        }
+    }
+}
+

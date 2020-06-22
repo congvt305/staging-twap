@@ -106,7 +106,7 @@
             </argument>
         </field>
 
-        <field name="video_url">
+        <field name="video_url" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string">Video URL</item>
@@ -115,10 +115,16 @@
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="validation" xsi:type="array">
                         <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-video-source" xsi:type="boolean">true</item>
                     </item>
                     <item name="source" xsi:type="string">eguana_video_board</item>
                 </item>
             </argument>
+            <settings>
+                <tooltip>
+                    <description translate="true">Video URLs can be links to videos on YouTube or Vimeo, or HTTP(S) links to files with valid video extensions (we recommend .mp4)</description>
+                </tooltip>
+            </settings>
         </field>
         <field name="thumbnail_image">
             <argument name="data" xsi:type="array">
@@ -132,9 +138,9 @@
                         <item name="url" xsi:type="url" path="videoboard/howTo/uploadImage"/>
                     </item>
                     <item name="source" xsi:type="string">eguana_video_board</item>
-<!--                    <item name="validation" xsi:type="array">-->
-<!--                        <item name="required-entry" xsi:type="boolean">true</item>-->
-<!--                    </item>-->
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
                 </item>
             </argument>
         </field>

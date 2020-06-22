@@ -7,7 +7,6 @@
  * Date: 9/6/20
  * Time: 8:05 PM
  */
-
 namespace Eguana\VideoBoard\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;

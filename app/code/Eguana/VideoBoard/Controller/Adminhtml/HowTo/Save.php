@@ -7,7 +7,6 @@
  * Date: 12/6/20
  * Time: 3:46 PM
  */
-
 namespace Eguana\VideoBoard\Controller\Adminhtml\HowTo;
 
 use Eguana\VideoBoard\Controller\Adminhtml\AbstractController;
@@ -65,22 +64,13 @@ class Save extends AbstractController
                 $data['store_id'] = implode(',', $data['store_id']);
             }
             $model = $this->videoBoardFactory->create();
-
-//            if ($id) {
-//                try {
-//                    $model = $this->videoBoardFactory->create()->getById($id);
-//                } catch (LocalizedException $e) {
-//                    $this->messageManager
-//                        ->addErrorMessage(__('This video no longer exists.'));
-//                    return $this->processResultRedirect($model, $resultRedirect, $data);
-//                    //return $resultRedirect->setPath('*/*/');
-//                }
-//            }
-
-            if (isset($generalData['thumbnail_image'])) {
-                $generalData['thumbnail_image'] = 'VideoBoard/' .
-                    $generalData['thumbnail_image'][0]['file'];
+            if (isset($data['thumbnail_image'])) {
+                $data['thumbnail_image'] = 'VideoBoard/' .
+                    $data['thumbnail_image'][0]['file'];
             }
+            $data['video_url'] = preg_replace(
+                "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i",
+                "https://www.youtube.com/embed/$2",$data['video_url']);
 
             $model->setUpdatedAt('');
             $model->setData($data)->save();
@@ -92,8 +82,6 @@ class Save extends AbstractController
     }
 
     /**
-     * SHORT DESCRIPTION
-     * LONG DESCRIPTION LINE BY LINE
      * @param $model
      * @param $resultRedirect
      * @param $data
@@ -119,11 +107,9 @@ class Save extends AbstractController
                 ]
             );
         }
-//        $this->dataPersistor->clear('eguana_video_board');
         if ($this->getRequest()->getParam('back', false) === 'continue') {
             return $resultRedirect->setPath('*/*/edit', ['entity_id' => $model->getId(), '_current' => true]);
         }
-
         return $resultRedirect->setPath('*/*/');
     }
 }

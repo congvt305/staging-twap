@@ -24,7 +24,6 @@ class ListBlock extends AbstractBlock
      * To set page title and breadcrumb
      * This function will set the page title according to the current video title
      * and it will also set the breadcrumb
-     * LONG DESCRIPTION LINE BY LINE
      * @return $this|ListBlock
      */
     public function _prepareLayout()

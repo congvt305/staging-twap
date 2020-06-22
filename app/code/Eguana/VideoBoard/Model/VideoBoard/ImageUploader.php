@@ -7,13 +7,14 @@
  * Date: 18/6/20
  * Time: 7:36 PM
  */
-
 namespace Eguana\VideoBoard\Model\VideoBoard;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
+use Magento\Framework\Filesystem\Directory\Read as ReadAlias;
 use Magento\Framework\UrlInterface;
+use Magento\MediaStorage\Model\File\Uploader as UploaderAlias;
 use Magento\MediaStorage\Model\File\UploaderFactory;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -68,27 +69,22 @@ class ImageUploader
      */
     public function saveImageToMediaFolder($fileId)
     {
-
         try {
             $result = ['file' => '', 'size' => ''];
-            /** @var \Magento\Framework\Filesystem\Directory\Read $mediaDirectory */
+            /** @var ReadAlias $mediaDirectory */
             $mediaDirectory = $this->filesystem
                 ->getDirectoryRead(DirectoryList::MEDIA)
                 ->getAbsolutePath(self::FILE_DIR);
-            /** @var \Magento\MediaStorage\Model\File\Uploader $uploader */
+            /** @var UploaderAlias $uploader */
             $uploader = $this->uploaderFactory->create(['fileId' => $fileId]);
             $uploader->setAllowRenameFiles(true);
             $uploader->setFilesDispersion(false);
             $uploader->setAllowedExtensions($this->getAllowedExtensions());
             $result = array_intersect_key($uploader->save($mediaDirectory), $result);
-//            var_dump($result['file']);
-//            die();
             $result['url'] = $this->getMediaUrl($result['file']);
         } catch (\Exception $e) {
             $result = ['error' => $e->getMessage(), 'errorcode' => $e->getCode()];
         }
-//        var_dump($result);
-//        die();
         return $result;
     }
 

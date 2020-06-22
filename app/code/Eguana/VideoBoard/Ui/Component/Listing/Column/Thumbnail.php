@@ -7,7 +7,6 @@
  * Date: 18/6/20
  * Time: 7:22 PM
  */
-
 namespace Eguana\VideoBoard\Ui\Component\Listing\Column;
 
 use Magento\Catalog\Helper\Image;
@@ -18,7 +17,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Ui\Component\Listing\Columns\Column;
 
 /**
- * PLEASE ENTER ONE LINE SHORT DESCRIPTION OF CLASS
+ * This class is used to show thumbnail in the Admin Grid
  *
  * Class Thumbnail
  */
@@ -72,8 +71,8 @@ class Thumbnail extends Column
                 $url = '';
                 if ($item[$fieldName] != '') {
                     $url = $this->storeManager->getStore()->getBaseUrl(
-                            UrlInterface::URL_TYPE_MEDIA
-                        ).$item[$fieldName];
+                        UrlInterface::URL_TYPE_MEDIA
+                    ).$item[$fieldName];
                 }
                 $item[$fieldName . '_src'] = $url;
                 $item[$fieldName . '_alt'] = $this->getAlt($item) ?: '';

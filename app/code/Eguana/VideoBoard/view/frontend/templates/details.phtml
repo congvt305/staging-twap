@@ -18,26 +18,35 @@ $url = $block->getUrl();
     <div class="block-content">
         <div class="video-board-item">
             <div class="video-board-item-content">
+                <h1 class="video-detail-title">
+                    <?= $block->escapeHtml($videoBlock->getTitle());?>
+                </h1>
+                <h6 class="video-detail-created-date">
+                    <?=
+                    $block->escapeHtml($block->formatDate($videoBlock->getCreatedAt()));
+                    ?>
+                </h6>
                 <div class="video-board-photo">
-                    <h2>Video URL:</h2>
                     <iframe
                         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen
                         frameborder="0"
                         height="632"
-                        src="<?= $block->escapeUrl($videoBlock->getUrl());?>" width="1124">
+                        src="<?=$block->escapeUrl($videoBlock->getUrl());?>" width="100%">
                     </iframe>
-                    <br>
-                    <br>
-                    <p>Date: <?= $block->escapeHtml($block->formatDate($videoBlock->getCreatedAt()));?></p>
+                </div>
+
+                <div class="video-board-detail">
+                    <hr>
+                    <?= /* @noEscape */  $block->contentFiltering($videoBlock->getDescription()); ?>
                 </div>
             </div>
         </div>
-
-        <div class="video-board-detail">
-            <h2>Video Description:</h2>
-
-            <?= /* @noEscape */  $block->contentFiltering($videoBlock->getDescription()); ?>
-        </div>
+    </div>
+    <div class="back-button">
+        <a href="<?= $block->escapeUrl($block->getBaseUrl().'videoboard')?>">
+            <button>Back</button>
+        </a>
     </div>
 </div>
+

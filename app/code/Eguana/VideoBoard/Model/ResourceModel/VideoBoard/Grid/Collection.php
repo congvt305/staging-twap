@@ -7,7 +7,6 @@
  * Date: 10/6/20
  * Time: 3:32 PM
  */
-
 namespace Eguana\VideoBoard\Model\ResourceModel\VideoBoard\Grid;
 
 use Magento\Framework\Api\Search\SearchResultInterface;

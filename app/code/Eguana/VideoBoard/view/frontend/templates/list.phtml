@@ -11,7 +11,6 @@
 /** @var \Eguana\VideoBoard\Block\ListBlock $block */
 $videoBlockList = $block->getCollection();
 $videoBlockSize = $videoBlockList->getTotalCount();
-
 $count = 0;
 ?>
 <div class="video-board-list-wrapper">
@@ -20,40 +19,84 @@ $count = 0;
             <?= $block->escapeHtml(__('Video does not exist.')); ?>
         </div>
     <?php else: ?>
+    <div class="video-board-list">
+        <ul>
         <?php foreach ($videoBlockList as $videoBlockItem):?>
-            <?php if ($count === 0):?>
-                <div class="video-board-list">
-            <?php endif;?>
-            <?php $count++; ?>
-            <?php $videoBlockSize--; ?>
-                <div class="video-board-item">
-                    <div class="video-board-item-content">
-                        <div class="video-board-photo">
-                            <a class="action view"
-                               href="<?=$block->escapeUrl($block->getVideoBoardUrl($videoBlockItem->getEntityId())) ?>">
-                                <p><b>Video Title:</b> <?= $block->escapeHtml($videoBlockItem->getTitle());?></p>
-                            <br>
+            <li style="float: left;" class="video-board-item">
+                <div class="video-board-item-content">
+                    <div class="video-board-photo">
+                        <div class="video-scale">
+                            <a class="video-link" href="<?=
+                            $block->escapeUrl($block->getVideoBoardUrl($videoBlockItem->getEntityId()))
+                            ?>" >
+                                <div class="video-iframe">
+                                    <img src="<?= $block->escapeHtml($videoBlockItem->getThumbnailImageURL());?>"
+                                         alt="Thumbnail Image" />
+                                </div>
                             </a>
+                        </div>
 
-                            <iframe
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen
-                                frameborder="0"
-                                height="300"
-                                src="<?= $block->escapeUrl($videoBlockItem->getUrl());?>"
-                                width="500"></iframe>
-                            <br>
-
-                            <br>
-                            <p>Date: <?= $block->escapeHtml($block->formatDate($videoBlockItem->getCreatedAt()));?></p>
+                        <div class="video-heading">
+                            <a class="action view video-title"
+                               href="<?=
+                                $block->escapeUrl($block->getVideoBoardUrl($videoBlockItem->getEntityId())) ?>">
+                                <p class="video-title">
+                                    <?= $block->escapeHtml($videoBlockItem->getTitle());?>
+                                </p>
+                            </a>
+                            <p class="video-created-date">
+                                <?=
+                                $block->escapeHtml($block->formatDate($videoBlockItem->getCreatedAt()));
+                                ?>
+                            </p>
                         </div>
                     </div>
                 </div>
-                <hr>
-            <?php if ($videoBlockSize === 0 || $count === 4):?>
-                </div>
-                <?php $count = 0; ?>
-            <?php endif;?>
+            </li>
         <?php endforeach; ?>
+        </ul>
+    </div>
+
     <?php endif; ?>
 </div>
+<div class="more-item-button">
+    <button id="more-button">&#x21e9;</button>
+    <br>
+    <div><span id="video-count">6</span>/<?= $block->escapeHtml($videoBlockSize); ?></div>
+</div>
+<script>
+
+    var totalVideo = <?= $block->escapeHtml($videoBlockSize) ;?>;
+    var count = 2;
+    require(['jquery', 'mage/url'], function($, url){
+        $(document).on("click","#more-button", function() {
+            if (count*6 > totalVideo) {
+                $("#video-count").text(totalVideo);
+                $("#more-button").prop('disabled', true);
+            }else {
+                $("#video-count").text(count * 6);
+            }
+                let apiUrl = url.build('videoboard/index/index/');
+                $.ajax({
+                    showLoader: true,
+                    url: apiUrl,
+                    type: "POST",
+                    data: {count:  count},
+                }).done(function (data) {
+                    console.log(data);
+                    // $("#earn-point").html(data.page);
+                    let valueHtml ='';
+                    if($.isEmptyObject(data.listHtml)){
+                        $(".video-board-list-wrapper").html('');
+                    }else{
+                        $(".video-board-list-wrapper").html('');
+                        $.each( data.listHtml, function( key, value ) {
+                            $(".video-board-list-wrapper").html(valueHtml + value);
+                            valueHtml = $(".video-board-list-wrapper").html();
+                        });
+                    }
+                });
+            count++;
+        });
+    });
+</script>

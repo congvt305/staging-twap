@@ -10,6 +10,7 @@
 
 namespace Eguana\VideoBoard\Model;
 
+use Magento\Framework\App\ObjectManager as ObjectManagerAlias;
 use Magento\Framework\Model\AbstractModel;
 use Eguana\VideoBoard\Model\ResourceModel\VideoBoard as VideoBoardResourceModel;
 use Eguana\VideoBoard\Api\Data\VideoBoardInterface;
@@ -17,7 +18,7 @@ use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractExtensibleModel;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\Filesystem;
-use Magento\Store\Model\StoreManagerInterface;
+use Magento\Store\Model\StoreManagerInterface as StoreManagerInterfaceAlias;
 
 /**
  * This model class is used for the Curd operation of video board
@@ -47,7 +48,7 @@ class VideoBoard extends AbstractExtensibleModel implements VideoBoardInterface,
     private $cacheTag = self::CACHE_TAG;
 
     /**
-     * @var StoreManagerInterface
+     * @var StoreManagerInterfaceAlias
      */
     private $storeManager;
 
@@ -61,10 +62,10 @@ class VideoBoard extends AbstractExtensibleModel implements VideoBoardInterface,
     public function _construct()
     {
         $this->_init(VideoBoardResourceModel::class);
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $objectManager = ObjectManagerAlias::getInstance();
         /* Get store manager */
         $this->storeManager = $objectManager
-            ->get(\Magento\Store\Model\StoreManagerInterface::class);
+            ->get(StoreManagerInterfaceAlias::class);
     }
 
     /**
@@ -212,6 +213,21 @@ class VideoBoard extends AbstractExtensibleModel implements VideoBoardInterface,
             return '';
         }
         return $this->getMediaUrl($this->getThumbnailImage());
+    }
+
+    /**
+     * Get file url
+     *
+     * @param string $file
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getMediaUrl($file)
+    {
+        $file = ltrim(str_replace('\\', '/', $file), '/');
+        return $this->storeManager
+                ->getStore()
+                ->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $file;
     }
 
     /**

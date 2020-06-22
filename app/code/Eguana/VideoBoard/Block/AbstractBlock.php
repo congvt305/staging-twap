@@ -144,6 +144,7 @@ class AbstractBlock extends Template implements IdentityInterface
                     ["like" =>  '%,' . $storeId . '%'],
                     ["eq" => $storeId]]
             );
+            $videoBoardCollection->setPageSize(6);
             $this->setCollection($videoBoardCollection);
         }
         return $this->getData('collection');
