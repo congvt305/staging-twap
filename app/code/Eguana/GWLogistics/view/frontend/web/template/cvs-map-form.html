@@ -1,0 +1,59 @@
+<div id="cvs-map-load"
+     class="cvs-map-load"
+     data-role="cvs-map-load"
+     data-bind="visible: isMapVisible"
+     aria-hidden="false">
+    <form id="cvs-map-load-form"
+          name="cvsMapForm"
+          target="cvsMapFormGw"
+          class="form cvs-map"
+          action="https://logistics-stage.ecpay.com.tw/Express/map"
+          method="POST"
+          novalidate="novalidate">
+        <input type="text"
+               name="MerchantID"
+               class="input-text"
+               style="display: none"
+               value="2000132">
+        <input type="text"
+               name="MerchantTradeNo"
+               class="input-text"
+               style="display: none"
+               value=""
+               data-bind="value: getMerchantTradeNo()">
+        <input type="text"
+               name="ServerReplyURL"
+               class="input-text"
+               style="display: none"
+               data-bind="value: ServerReplyURL">
+        <input type="text"
+               name="LogisticsType"
+               class="input-text"
+               style="display: none"
+               data-bind="value: LogisticsType">
+        <input type="text"
+               name="LogisticsSubType"
+               style="display: none"
+               class="input-text"
+               data-bind="value: LogisticsSubType">
+        <input type="text"
+               name="IsCollection"
+               class="input-text"
+               style="display: none"
+               value="N">
+        <input type="text"
+               name="ExtraData"
+               style="display: none"
+               class="input-text"
+               value="">
+        <input type="text"
+               name="Device"
+               class="input-text"
+               style="display: none"
+               data-bind="value: isMobile()">
+<br/>
+        <button data-role="cvs-map-open" type="submit" class="button action">
+            <span translate="'Select 711 CVS Store in the Map'" />
+        </button>
+    </form>
+</div>

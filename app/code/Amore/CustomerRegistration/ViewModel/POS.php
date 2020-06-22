@@ -11,6 +11,7 @@ namespace Amore\CustomerRegistration\ViewModel;
 use Amore\CustomerRegistration\Helper\Data;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Amore\CustomerRegistration\Model\Verification;
+use Magento\Customer\Model\Session;
 
 /**
  * It will use for the pos step during registration
@@ -30,16 +31,25 @@ class POS implements ArgumentInterface
      * @var Verification
      */
     private $verification;
+    /**
+     * @var Session
+     */
+    private $customerSession;
 
     /**
      * POS constructor.
      *
      * @param Data $configHelper config helper
      */
-    public function __construct(Data $configHelper, Verification $verification)
+    public function __construct(
+        Data $configHelper,
+        Verification $verification,
+        Session $customerSession
+    )
     {
         $this->configHelper = $configHelper;
         $this->verification = $verification;
+        $this->customerSession = $customerSession;
     }
 
     /**
@@ -90,5 +100,23 @@ class POS implements ArgumentInterface
     public function getCurrentStep()
     {
         return $this->verification->getCurrentRegistrationStep();
+    }
+
+    private function getSocialLoginData()
+    {
+        $this->customerSession->start();
+        $socialData = $this->customerSession->getData('social_user_data');
+        return $socialData;
+    }
+
+    public function getSocialMediaName()
+    {
+        $socialMediaName = '';
+        $socialMediaData = $this->getSocialLoginData();
+        if($socialMediaData != null)
+        {
+            $socialMediaName = isset($socialMediaData['name'])?$socialMediaData['name']:'';
+        }
+        return $socialMediaName;
     }
 }

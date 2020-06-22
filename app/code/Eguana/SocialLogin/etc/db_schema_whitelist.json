@@ -1,0 +1,15 @@
+{
+    "eguana_sociallogin_customer": {
+        "column": {
+            "sociallogin_id": true,
+            "social_id": true,
+            "username": true,
+            "socialmedia": true,
+            "customer_id": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "EGUANA_SOCIALLOGIN_CSTR_CSTR_ID_CSTR_ENTT_ENTT_ID": true
+        }
+    }
+}

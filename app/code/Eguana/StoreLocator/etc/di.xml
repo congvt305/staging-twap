@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2019 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: danish
+ * Date: 11/21/19
+ * Time: 5:33 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="EguanaStoresDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Eguana\StoreLocator\Model\ResourceModel\StoreInfo\Collection</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="stores_listing_data_source" xsi:type="string">Eguana\StoreLocator\Model\ResourceModel\StoreInfo\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+<!-- storeinfo model Repositories-->
+    <preference for="Eguana\StoreLocator\Api\Data\StoreInfoInterface" type="Eguana\StoreLocator\Model\StoreInfo" />
+    <preference for="Eguana\StoreLocator\Api\StoreInfoRepositoryInterface" type="Eguana\StoreLocator\Model\StoreInfoRepository" />
+    <preference for="Eguana\StoreLocator\Api\Data\StoreInfoSearchResultInterface" type="Eguana\StoreLocator\Model\StoreInfoSearchResult" />
+<!--storeinfo_work_time model Repositories-->
+    <preference for="Eguana\StoreLocator\Api\Data\WorkTimeInterface" type="Eguana\StoreLocator\Model\WorkTime" />
+    <preference for="Eguana\StoreLocator\Api\WorkTimeRepositoryInterface" type="Eguana\StoreLocator\Model\WorkTimeRepository" />
+    <preference for="Eguana\StoreLocator\Api\Data\WorkTimeSearchResultInterface" type="Eguana\StoreLocator\Model\WorkTimeSearchResult" />
+
+</config>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <gwlogistics>
+                <active>1</active>
+                <merchant_id>2000132</merchant_id>
+                <merchant_id_sandbox>2000132</merchant_id_sandbox>
+                <hash_key>5294y06JbISpM5x9</hash_key>
+                <hash_iv>v77hoKGq4kWxNNIS</hash_iv>
+                <hash_key_sandbox>5294y06JbISpM5x9</hash_key_sandbox>
+                <hash_iv_sandbox>v77hoKGq4kWxNNIS</hash_iv_sandbox>
+                <gateway_url>https://logistics.ecpay.com.tw/Helper/QueryLogisticsTradeInfo/V2</gateway_url>
+                <gateway_url_sandbox>https://logistics-stage.ecpay.com.tw/Helper/QueryLogisticsTradeInfo/V2</gateway_url_sandbox>
+                <map_url>https://logistics.ecpay.com.tw/Express/map</map_url>
+                <map_url_sandbox>https://logistics-stage.ecpay.com.tw/Express/map</map_url_sandbox>
+                <map_secure_url>https://secure.shippingapis.com/ShippingAPI.dll</map_secure_url>
+                <model>Eguana\GWLogistics\Model\Carrier\CvsStorePickup</model>
+                <title>Green World Logistics</title>
+                <name>Convenience Store Pickup</name>
+                <max_package_weight>150</max_package_weight>
+                <shipping_cost>95</shipping_cost>
+                <sort_order>0</sort_order>
+                <active_rma>0</active_rma>
+                <is_online>1</is_online>
+                <sandbox_mode>1</sandbox_mode>
+            </gwlogistics>
+        </carriers>
+    </default>
+</config>

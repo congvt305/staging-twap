@@ -1,0 +1,436 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+@store__border-color: #d9d9d9;
+@store__list__border-color: #ccc;
+@store__list__number-width: 20px;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .stores {
+        .fieldset {
+            margin: 0;
+
+            .label {
+                &:extend(.abs-visually-hidden all);
+            }
+
+            .field {
+                &:not(.note) {
+                    margin-bottom: 0;
+                }
+
+                &.note {
+                    font-size: 16px;
+                    margin-bottom: 15px;
+                }
+
+                &.store-type {
+                    display: inline-block;
+                    padding-right: 8px;
+                    margin-bottom: 0;
+                    width: 70%;
+                }
+            }
+
+            .actions {
+                display: inline-block;
+                vertical-align: top;
+            }
+        }
+
+        form {
+            margin-bottom: @indent__m;
+        }
+
+        .stores-result {
+            overflow: hidden;
+            margin-bottom: @indent__s;
+
+            h3 {
+                font-size: 20px;
+                font-weight: @font-weight__regular;
+                float: left;
+            }
+
+            .action {
+                .lib-icon-font(
+                    @icon-next,
+                    @_icon-font-size: 22px,
+                    @_icon-font-line-height: 21px,
+                    @_icon-font-position: after
+                );
+                cursor: pointer;
+                font-size: 16px;
+                float: right;
+
+                > span {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+
+                &:after {
+                    font-weight: @font-weight__bold;
+                    width: 18px;
+                }
+            }
+        }
+
+        .stores-content {
+            .stores-map {
+                box-sizing: border-box;
+                position: relative;
+
+                .expend {
+                    .lib-icon-font(
+                        @_icon-font-content: @icon-up,
+                        @_icon-font-size: 30px,
+                        @_icon-font-line-height: 24px,
+                        @_icon-font-color-hover: @primary__color,
+                        @_icon-font-color-active: @primary__color,
+                        @_icon-font-text-hide: true
+                    );
+                    box-sizing: border-box;
+                    border-top: 24px solid @color-white;
+                    border-left: 10px solid transparent;
+                    border-right: 10px solid transparent;
+                    cursor: pointer;
+                    height: 0;
+                    width: 88px;
+                    position: absolute;
+                    margin-left: -44px;
+                    top: 0;
+                    text-align: center;
+                    left: 50%;
+                    z-index: 5;
+
+                    &:before {
+                        font-weight: @font-weight__bold;
+                        position: relative;
+                        top: -24px;
+                    }
+                }
+
+                &.active {
+                    bottom: 0;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    z-index: 5;
+
+                    .store-map-viewer {
+                        height: 100%;
+                    }
+
+                    .expend {
+                        .lib-icon-font-symbol(@icon-down);
+                    }
+                }
+            }
+
+            .store-map-viewer {
+                box-sizing: border-box;
+                width: 100%;
+                height: 540px;
+            }
+
+            .store-types-labels {
+                text-align: center;
+                padding: 35px 0;
+
+                a {
+                    &:not(:last-child) {
+                        margin-right: @indent__base;
+                    }
+
+                    img {
+                        margin-right: @indent__xs;
+                    }
+
+                    > * {
+                        cursor: pointer;
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+
+                    &.selected-type {
+                        color: @active__color;
+
+                        label {
+                            font-weight: @font-weight__bold;
+                        }
+                    }
+                }
+            }
+
+            .description {
+                padding: @indent__base @indent__base @indent__xs;
+                text-align: center;
+
+                .store-logo {
+                    width: 80px;
+                }
+
+                strong {
+                    display: block;
+                    font-size: 16px;
+                    margin-top: @indent__xs;
+                }
+            }
+
+            .store-list {
+                border: 1px solid @store__list__border-color;
+                cursor: pointer;
+                margin-bottom: 0;
+
+                &:not(:last-child) {
+                    margin-bottom: 15px;
+                }
+
+                .store-info {
+                    border: 1px solid transparent;
+                    padding: 15px 15px 15px 45px;
+                    position: relative;
+
+                    p {
+                        &:not(.address) {
+                            margin-bottom: 0;
+                        }
+
+                        &.distance {
+                            margin-top: @indent__s;
+                        }
+                    }
+
+                    .action {
+                        .lib-link(
+                            @_link-text-decoration: underline,
+                            @_link-text-decoration-visited: underline,
+                            @_link-text-decoration-hover: underline,
+                            @_link-text-decoration-active: underline
+                        );
+                        display: block;
+                        margin-top: 15px;
+                    }
+                }
+
+                .store-info-top {
+                    .lib-icon-font(
+                        @_icon-font-content: @icon-expand,
+                        @_icon-font-size: @font-size__base,
+                        @_icon-font-line-height: @font-size__base,
+                        @_icon-font-color: @primary__color,
+                        @_icon-font-display: block,
+                        @_icon-font-margin: 3px 0 0,
+                        @_icon-font-position: after
+                    );
+                    margin-bottom: @indent__s;
+
+                    &:after {
+                        top: 15px;
+                        right: 20px;
+                        position: absolute;
+                    }
+
+                    .store-sequence-number {
+                        border-radius: 50%;
+                        background-color: @primary__color__darker;
+                        color: @color-white;
+                        cursor: pointer;
+                        display: inline-block;
+                        font-weight: @font-weight__bold;
+                        height: @store__list__number-width;
+                        line-height: @store__list__number-width;
+                        left: 15px;
+                        text-align: center;
+                        width: @store__list__number-width;
+                        position: absolute;
+                        top: 15px;
+                    }
+
+                    .store-title {
+                        color: @primary__color__darker;
+                        display: block;
+                        padding-right: 20px;
+                    }
+                }
+
+                &.selected-store {
+                    &,
+                    & .store-info {
+                        border-color: @active__color;
+                    }
+
+                    .store-info-top {
+                        .lib-icon-font-symbol(
+                            @_icon-font-content: @icon-collapse,
+                            @_icon-font-position: after
+                        );
+                    }
+
+                    .store-sequence-number {
+                        background-color: @primary__color;
+                    }
+
+                    .store-title {
+                        color: @primary__color;
+                    }
+                }
+            }
+        }
+
+        &-toolbar {
+            background-color: transparent !important;
+
+            .pages {
+                padding-right: 0;
+                padding-left: 0;
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .stores {
+        .fieldset {
+            .field {
+                &.store-search {
+                    margin-bottom: 8px;
+                }
+            }
+
+            .actions {
+                width: calc(~'100% - 70% - 8px');
+
+                > .primary {
+                    .lib-button-responsive();
+                    .lib-button-size(
+                        @_button-padding: 0
+                    );
+                }
+            }
+        }
+
+        .mobile {
+            font-size: 16px;
+            font-weight: @font-weight__regular;
+        }
+
+        .stores-result {
+            h3 {
+                font-size: 16px;
+
+                &.pc {
+                    display: none;
+                }
+            }
+        }
+
+        .stores-map {
+            margin-left: -@layout__width-xs-indent;
+            margin-right: -@layout__width-xs-indent;
+        }
+
+        .stores-list {
+            margin-top: @indent__l;
+        }
+
+        .stores-content {
+            .store-types-labels {
+                display: none;
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .stores {
+        overflow: hidden;
+        margin-bottom: 90px;
+
+        form {
+            background-color: @primary__color__light;
+            padding: @indent__m;
+        }
+
+        .mobile {
+            display: none;
+        }
+
+        .fieldset {
+            .field {
+                &.store-search {
+                    box-sizing: border-box;
+                    display: inline-block;
+                    padding-right: 8px;
+                    width: 45%;
+                }
+
+                &.store-type {
+                    box-sizing: border-box;
+                    width: 24%;
+                }
+            }
+        }
+
+        .stores-content {
+            .stores-map {
+                box-sizing: border-box;
+                float: left;
+                padding-right: @indent__base;
+                width: 70%;
+
+                .expend {
+                    display: none;
+                }
+            }
+
+            .store-types-labels,
+            .store-map-viewer {
+                border: 1px solid @store__border-color;
+            }
+
+            .store-types-labels {
+                border-top: none;
+            }
+
+            .stores-list {
+                box-sizing: border-box;
+                float: right;
+                padding-left: @indent__base;
+                width: 30%;
+            }
+
+            .store-list {
+                font-size: @font-size__s;
+
+                &:not(:last-child) {
+                    margin-bottom: 8px;
+                }
+
+                .store-info {
+                    .store-info-top {
+                        font-size: @font-size__base;
+                    }
+                }
+            }
+        }
+    }
+}

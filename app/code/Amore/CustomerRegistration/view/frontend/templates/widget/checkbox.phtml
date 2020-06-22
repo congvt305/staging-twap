@@ -7,18 +7,16 @@
 /** @var \Amore\CustomerRegistration\Block\Widget\CheckBox $block */
 $isSelected = $block->getFormValue();
 ?>
-<div class="checkbox-wrapper field <?= $block->getAttributeCode() ?><?= $block->isRequired() ? ' required' : ''?>">
+<div class="checkbox-wrapper choice field <?= $block->getAttributeCode() ?><?= $block->isRequired() ? ' required' : ''?>">
+    <select style="display: none"  id="<?= $block->escapeHtmlAttr($block->getFieldId($block->getAttributeCode())) ?>" name="<?= $block->escapeHtmlAttr($block->getFieldName($block->getAttributeCode())) ?>" title="<?= $block->escapeHtmlAttr($block->getStoreLabel($block->getAttributeCode())) ?>"<?php if ($block->isRequired()) : ?> class="validate-select" data-validate="{required:true}"<?php endif; ?>>
+        <?php $options = $block->getOptions(); ?>
+        <?php $value = $block->getData($block->getAttributeCode())?$block->getData($block->getAttributeCode()):0; ?>
+        <?php foreach ($options as $option) : ?>
+            <option value="<?= $block->escapeHtmlAttr($option->getValue()) ?>"<?= ($option->getValue() == $isSelected) ? ' selected="selected"' : '' ?>><?= $block->escapeHtml(__($option->getLabel())) ?></option>
+        <?php endforeach;?>
+    </select>
+    <input type="checkbox" class="<?= $block->getAttributeCode() ?>_checkbox" <?= $isSelected == 1?'checked':''; ?> />
     <label class="label" for="<?= $block->escapeHtmlAttr($block->getFieldId($block->getAttributeCode())) ?>"><span><?= $block->escapeHtml($block->getStoreLabel($block->getAttributeCode())) ?></span></label>
-    <div class="control">
-        <select style="display: none"  id="<?= $block->escapeHtmlAttr($block->getFieldId($block->getAttributeCode())) ?>" name="<?= $block->escapeHtmlAttr($block->getFieldName($block->getAttributeCode())) ?>" title="<?= $block->escapeHtmlAttr($block->getStoreLabel($block->getAttributeCode())) ?>"<?php if ($block->isRequired()) : ?> class="validate-select" data-validate="{required:true}"<?php endif; ?>>
-            <?php $options = $block->getOptions(); ?>
-            <?php $value = $block->getData($block->getAttributeCode())?$block->getData($block->getAttributeCode()):0; ?>
-            <?php foreach ($options as $option) : ?>
-                <option value="<?= $block->escapeHtmlAttr($option->getValue()) ?>"<?= ($option->getValue() == $isSelected) ? ' selected="selected"' : '' ?>><?= $block->escapeHtml(__($option->getLabel())) ?></option>
-            <?php endforeach;?>
-        </select>
-        <input type="checkbox" class="<?= $block->getAttributeCode() ?>_checkbox" <?= $isSelected == 1?'checked':''; ?> />
-    </div>
 </div>
 
 <script type="text/x-magento-init">

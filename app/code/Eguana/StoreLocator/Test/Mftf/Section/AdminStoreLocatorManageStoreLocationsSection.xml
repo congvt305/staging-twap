@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /**
+  ~ * @author Eguana Team
+  ~ * @copyriht Copyright (c) ${YEAR} Eguana {http://eguanacommerce.com}
+  ~ * Created byPhpStorm
+  ~ * User:  umer
+  ~ * Date: 2/12/20
+  ~ * Time: 10:30 am
+  ~ */
+  -->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="AdminStoreLocatorManageStoreLocationsSection">
+        <element name="selectStoreMenu" type="text" selector="//li//a/span[text()='Stores']" timeout="800"/>
+        <element name="selectManageStoreLocations" type="text" selector="//li//a/span[text()='Manage Store Locations']" timeout="800"/>
+        <element name="selectAddNewStore" type="button" selector="//button/span[text()='Add New']" timeout="800"/>
+        <element name="storeViews" type="select" selector="//select[@name='storeinfo_data[store_id]']"/>
+        <element name="nameField" type="input" selector="//input[@name='storeinfo_data[title]']"/>
+        <element name="addressField" type="input" selector="//input[@name='storeinfo_data[address]']"/>
+        <element name="telephoneField" type="input" selector="//input[@name='storeinfo_data[telephone]']"/>
+        <element name="emailField" type="input" selector="//input[@name='storeinfo_data[email]']"/>
+        <element name="storeTimingField" type="input" selector="//textarea[@name='storeinfo_data[timing]']"/>
+        <element name="cityField" type="input" selector="//input[@name='storeinfo_data[city]']"/>
+        <element name="mapLocationField" type="input" selector="//input[@name='storeinfo_data[location]']"/>
+        <element name="countryField" type="input" selector="//select[@name='storeinfo_data[area]']//option[text()='South Korea']"/>
+        <element name="storeTypeField" type="input" selector="//select[@name='storeinfo_data[type]']//option[text()='Department store']"/>
+        <element name="saveStore" type="input" selector="//button[@id='save']"/>
+    </section>
+</sections>
