@@ -7,7 +7,7 @@ define([
     'use strict';
 
     var action = function (quoteId) {
-        console.log('action quoteId: ', quoteId);
+        // console.log('action quoteId: ', quoteId);
         var carId = {'quoteId' : quoteId};
         return storage.post(
             'eguana_gwlogistics/ajax/getSelectedCvsData',
@@ -23,7 +23,6 @@ define([
                     }]
                 });
             } else {
-                console.log('from action : ', response); //JSON.parse(response.responseText)
                 return response;
             }
         }).fail(function () {

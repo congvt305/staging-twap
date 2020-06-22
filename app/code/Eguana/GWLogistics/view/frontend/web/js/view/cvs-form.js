@@ -53,7 +53,6 @@ define([
         onWindowActivated: function () {
             this.windowActivateCount++;
             if (this.windowActivateCount % 2 === 0) {
-                console.log("Visibility of page has changed!");
                 this.getCvsStoreData();
             }
         },
@@ -69,7 +68,6 @@ define([
         },
 
         openCvsMap: function () {
-            console.log('openCvsMap');
             var mapWin = window.open('', 'cvsMapFormGw');
             // $.proxy($('#cvs-map-load-form').submit(), this);
         },
@@ -79,7 +77,6 @@ define([
         },
 
         setCvsMapFormData: function () {
-            console.log('cvs initialized.');
             // this.device(this.isMobile());
             // this.ServerReplyURL('http://192.168.0.1/ReceiverServerReply');
         },
