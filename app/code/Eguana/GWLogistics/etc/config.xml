@@ -18,9 +18,10 @@
                 <model>Eguana\GWLogistics\Model\Carrier\CvsStorePickup</model>
                 <title>Green World Logistics</title>
                 <name>Convenience Store Pickup</name>
+                <max_package_weight>150</max_package_weight>
                 <shipping_cost>95</shipping_cost>
-                <sort_order>15</sort_order>
-                <active_rma>1</active_rma>
+                <sort_order>0</sort_order>
+                <active_rma>0</active_rma>
                 <is_online>1</is_online>
                 <sandbox_mode>1</sandbox_mode>
             </gwlogistics>
