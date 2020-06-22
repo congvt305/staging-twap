@@ -34,21 +34,31 @@ $block->unSetSession();
         $facebookUrl = "https://www.facebook.com/v7.0/dialog/oauth?client_id=";
         $facebookUrl = $facebookUrl . $fbAppId . "&redirect_uri=" . $fbRedirectUrl . "&state=" . $state; ?>
 <div class="socialloginlogin-login">
+    <p><?= $block->escapeHtml(__('OR')) ?></p>
     <?php if ($helper->isEnabledLine()):?>
-        <a class="socialloginlogin-button-link"
-           rel="nofollow" href="javascript:void(0);"
-           data-role="eguana_sociallogin" data-href="<?= $block->escapeUrl($lineUrl) ?>">
+        <a class="line-button-link"
+           href="javascript:void(0);"
+           rel="nofollow"
+           data-role="eguana_sociallogin"
+           data-href="<?= $block->escapeUrl($lineUrl) ?>">
+            <?= $block->escapeHtml(__('Login with LINE')) ?>
         </a>
     <?php endif; ?>
     <?php if ($helper->isEnabledFacebook()):?>
-        <a href="javascript:void(0);" rel="nofollow"
-           class="sociallogin fb connect" data-role="eguana_sociallogin"
-           data-href="<?= $block->escapeUrl($facebookUrl) ?>"><?= $block->escapeHtml(__('Sign in with Facebook')) ?></a>
+        <a class="facebook-button-link"
+           href="javascript:void(0);" rel="nofollow"
+           data-role="eguana_sociallogin"
+           data-href="<?= $block->escapeUrl($facebookUrl) ?>">
+            <?= $block->escapeHtml(__('Login with Facebook')) ?>
+        </a>
     <?php endif; ?>
     <?php if ($helper->isEnabledGoogle()):?>
-        <a class="sociallogin-button button-google" rel="nofollow"
-           href="javascript:void(0);" data-role="eguana_sociallogin" data-href="<?= $block->escapeUrl($googleUrl) ?>">
-            <span class="sociallogin-icon sl-google"></span>
+        <a class="google-button-link"
+           href="javascript:void(0);"
+           rel="nofollow"
+           data-role="eguana_sociallogin"
+           data-href="<?= $block->escapeUrl($googleUrl) ?>">
+            <?= $block->escapeHtml(__('Login with Google')) ?>
         </a>
     <?php endif; ?>
 </div>
