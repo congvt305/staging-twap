@@ -232,7 +232,9 @@
 
     .field {
         &.date {
-            &:extend(.abs-field-date all);
+            .control {
+                position: relative;
+            }
 
             .time-picker {
                 display: inline-block;
@@ -288,7 +290,7 @@
             .lib-button-reset();
             .lib-icon-font(
             @_icon-font-content: @icon-calendar,
-            @_icon-font-color: @primary__color__lighter,
+            @_icon-font-color: @primary__color__darker,
             @_icon-font-size: @icon-calendar__font-size,
             @_icon-font-line-height: @form-element-input__height,
             @_icon-font-display: block,
