@@ -42,7 +42,8 @@ define(
                 var data = {
                     'method': this.getCode(),
                     'additional_data': {
-                        'ecpay_choosen_payment': this.paymentMethod()
+                        'ecpay_choosen_payment': this.paymentMethod(),
+                        'ecpay_einvoice_donation': $("input:radio[name=e-invoice-donation]:checked").val()
                     }
                 };
                 return data;
