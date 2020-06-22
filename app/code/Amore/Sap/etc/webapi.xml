@@ -10,7 +10,7 @@
     <route method="POST" url="/V1/sap/orders/:incrementId/statuses">
         <service class="Amore\Sap\Api\SapOrderManagementInterface" method="orderStatus"/>
         <resources>
-            <resource ref="anonymous"/>
+            <resource ref="Amore_Sap::token"/>
         </resources>
     </route>
     <route method="POST" url="/V1/sap/orders/:incrementId/confirm">
