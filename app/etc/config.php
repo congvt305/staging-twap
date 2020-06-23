@@ -482,6 +482,7 @@ return [
         'Eguana_Directory' => 1,
         'Eguana_EInvoice' => 1,
         'Eguana_Login' => 1,
+        'Eguana_Magazine' => 1,
         'Eguana_Share' => 1,
         'Eguana_SocialLogin' => 1,
         'Eguana_StoreLocator' => 1,
