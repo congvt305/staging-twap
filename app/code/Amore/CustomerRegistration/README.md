@@ -128,3 +128,9 @@ the next number whenever customer will register
     - "salOffCd": Sales office code but will nto update
     
 If you do not want to change any attribute value then set it ''
+
+# QRCode
+
+- URL = {BASE URL}/customer/account/create/referrer_code/{Value}/favorite_store/{Value}
+
+When customer account will be create using above url it will save the favorite store and refferer code during registration
