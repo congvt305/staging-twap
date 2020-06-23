@@ -7,7 +7,6 @@
  * Date: 6/16/20
  * Time: 1:07 AM
  */
-
 namespace Eguana\Magazine\Model\ResourceModel;
 
 use Magento\Framework\Data\Collection\Db\FetchStrategyInterface;

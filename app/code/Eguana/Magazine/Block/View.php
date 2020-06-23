@@ -29,7 +29,6 @@ class View extends AbstractBlock
 
     /**
      * SHORT DESCRIPTION
-     * LONG DESCRIPTION LINE BY LINE
      * @return \Eguana\Magazine\Model\Magazine
      * @throws \Magento\Framework\Exception\LocalizedException
      */

@@ -194,48 +194,4 @@ interface MagazineInterface
      * @return string
      */
     public function getType();
-
-//    /**
-//     * @param string $comingSoon
-//     * @return $this
-//     */
-//    public function setComingSoon($comingSoon);
-//
-//    /**
-//     * @return string
-//     */
-//    public function getComingSoon();
-//
-//    /**
-//     * @param string $city
-//     * @return $this
-//     */
-//    public function setCity($city);
-//
-//    /**
-//     * @return string
-//     */
-//    public function getCity();
-//
-//    /**
-//     * @param string $countryId
-//     * @return $this
-//     */
-//    public function setCountryId($countryId);
-//
-//    /**
-//     * @return string
-//     */
-//    public function getCountryId();
-//
-//    /**
-//     * @param string $urlKey
-//     * @return $this
-//     */
-//    public function setUrlKey($urlKey);
-//
-//    /**
-//     * @return string
-//     */
-//    public function getUrlKey();
 }

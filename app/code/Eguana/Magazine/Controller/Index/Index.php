@@ -7,11 +7,11 @@
  * Date: 6/18/20
  * Time: 3:10 AM
  */
-
 namespace Eguana\Magazine\Controller\Index;
 
-use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Action for index index
@@ -20,15 +20,29 @@ use Magento\Framework\App\Action\Action;
  */
 class Index extends Action
 {
+
+    /** @var Page */
+    private $resultPageFactory;
+
     /**
-     * SHORT DESCRIPTION
-     * LONG DESCRIPTION LINE BY LINE
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * Index constructor.
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     */
+    public function __construct(
+        Context $context,
+        PageFactory $resultPageFactory
+    ) {
+        parent::__construct($context);
+        $this->resultPageFactory = $resultPageFactory;
+    }
+
+    /**
+     *
+     * @return \Magento\Framework\App\ResponseInterface|ResultInterfaceAlias|void
      */
     public function execute()
     {
-        $this->_view->loadLayout();
-        $this->_view->renderLayout();
+        return $this->resultPageFactory->create();
     }
-
 }

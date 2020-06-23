@@ -7,13 +7,14 @@
  * Date: 6/18/20
  * Time: 6:29 AM
  */
+namespace Eguana\Magazine\Controller\Detail;
 
-namespace Eguana\Magazine\Controller\Details;
-
+use Eguana\Magazine\Api\MagazineRepositoryInterface;
 use Eguana\Magazine\Block\View;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class Index
@@ -28,6 +29,11 @@ class Index extends Action
     private $magazine;
 
     /**
+     * @var PageFactory
+     */
+    private $resultPageFactory;
+
+    /**
      * Construct
      *
      * @param Context $context
@@ -35,40 +41,37 @@ class Index extends Action
      */
     public function __construct(
         Context $context,
-        \Eguana\Magazine\Api\MagazineRepositoryInterface $magazineRepository,
-        View $magazine
+        MagazineRepositoryInterface $magazineRepository,
+        View $magazine,
+        PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
         $this->magazineRepository = $magazineRepository;
         $this->magazine = $magazine;
+        $this->resultPageFactory = $resultPageFactory;
     }
 
     /**
      * Dispatch request
      *
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @return \Magento\Framework\App\ResponseInterface|ResultInterfaceAlias|void
      */
     public function execute()
     {
-
         $id = $this->getRequest()->getParam('id');
         $model = $id ? $this->magazineRepository->getById($id) : null;
 
-        // 2. Initial checking
         if ($id) {
             if (!$model->getEntityId()) {
-                $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+                $resultRedirect = $this->resultRedirectFactory->create();
                 $resultRedirect->setUrl($this->_redirect->getRefererUrl());
                 return $resultRedirect;
-
             }
         } else {
-            $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+            $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-            return $resultRedirect;
+            return $resultRedsirect;
         }
-
-        $this->_view->loadLayout();
-        $this->_view->renderLayout();
+        return $this->resultPageFactory->create();
     }
 }

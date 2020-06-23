@@ -119,7 +119,13 @@ class AbstractBlock extends Template implements IdentityInterface
                 $sortDirection = 'desc';
             }
             $magazineCollection->addFieldToFilter("is_active", ["eq" => true])
-                ->addFieldToFilter('store_id', ['in' => [0, (int)$storeId]])
+//                ->addFieldToFilter('store_id', ['in' => [0, (int)$storeId]])
+                ->addFieldToFilter(
+                    ['store_id','store_id','store_id','store_id'],
+                    [["like" =>  '%' . $storeId . ',%'],
+                        ["like" =>  '%,' . $storeId . ',%'],
+                        ["like" =>  '%,' . $storeId . '%'],
+                        ["eq" => $storeId]])
                 ->setOrder(
                     "sort_order",
                     $sortDirection
@@ -154,12 +160,12 @@ class AbstractBlock extends Template implements IdentityInterface
      */
     public function getMagazineUrl($id)
     {
-        return $this->getUrl('magazine/details/index', ['id' => $id]);
+        return $this->getUrl('magazine/detail/index', ['id' => $id]);
     }
 
     public function getDetail($id)
     {
-       return $this->magazineRepository->getById($id);
+        return $this->magazineRepository->getById($id);
     }
 
     public function videoThumbnail()

@@ -9,6 +9,7 @@
             "thumbnail_image": true,
             "thumbnail_alt": true,
             "type": true,
+            "from_date": true,
             "sort_order": true,
             "created_at": true,
             "updated_at": true,
