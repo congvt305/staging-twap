@@ -118,7 +118,7 @@ class SmsSender implements SmsInterface
         $verificationCode = '';
         $phoneNumber = '';
         try {
-            $verificationCode = Random::getRandomNumber(100000, 999999);
+            $verificationCode = Random::getRandomNumber(1000, 9999);
             $this->sessionManager->start();
             $this->sessionManager->setVerificationCode($verificationCode);
             $countryCode = $this->countryCode->getCountryCallCode();
