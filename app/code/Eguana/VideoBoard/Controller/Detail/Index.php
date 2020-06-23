@@ -78,6 +78,10 @@ class Index extends Action
                 $resultRedirect->setUrl('/videoboard');
                 return $resultRedirect;
             }
+        } elseif (!isset($videoId)) {
+            $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
+            $resultRedirect->setUrl('/videoboard');
+            return $resultRedirect;
         }
         return $this->resultPageFactory->create();
     }
