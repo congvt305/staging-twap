@@ -11,14 +11,15 @@
     <?php $options = $block->getGenderOptions(); ?>
     <?php $value = $block->getGender(); ?>
     <?php foreach ($options as $option) : ?>
-        <?php if (!empty($option->getValue()) && $option->getValue() != 3) : ?>
+        <?php if (!empty($option->getValue()) && $option->getLabel() != 'Not Specified') : ?>
             <input type="radio"
                    id="<?= $block->escapeHtmlAttr($block->getFieldId('gender')) ?>"
                    value="<?= $block->escapeHtmlAttr($option->getValue()) ?>"
                    title="<?= $block->escapeHtmlAttr($option->getLabel()) ?>"
                    name="<?= $block->escapeHtmlAttr($block->getFieldName('gender')) ?>"
-                   class="radio"
-            <?= ($option->getValue() == $value) ? ' checked="checked"' : '' ?>>
+                   class="radio<?php if ($block->isRequired()) : ?> validate-radio<?php endif; ?>"
+                   <?php if ($block->isRequired()) : ?>data-validate="{required:true}"<?php endif; ?>
+                   <?= ($option->getValue() == $value || ($option->getLabel() == 'Male' && empty($value))) ? ' checked="checked"' : '' ?>>
             <label class="label" for="<?= $block->escapeHtmlAttr($option->getValue()) ?>"><span><?= $block->escapeHtml(__($option->getLabel())) ?></span></label>
         <?php endif; ?>
     <?php endforeach;?>
