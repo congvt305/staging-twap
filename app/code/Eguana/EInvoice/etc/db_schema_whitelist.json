@@ -1,0 +1,7 @@
+{
+    "sales_order_payment": {
+        "column": {
+            "ecpay_invoice_invalidate_data": true
+        }
+    }
+}

@@ -25,11 +25,11 @@ define([
             var itemsData = window.checkoutConfig.quoteItemData;
             var size = null;
             itemsData.forEach(function (item) {
-                if (item.item_id === itemId) {
+                if (item.item_id == itemId) {
                     size = item.laneige_size;
                 }
             });
-            if (size !== false) {
+            if (size != null) {
                 return size;
             } else {
                 return '';
