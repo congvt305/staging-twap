@@ -12,34 +12,9 @@ $magazineList = $block->getCollection($block->getMazineType());
 
 $url = $block->getUrl();
 ?>
-    <div class="block-title">
-        <strong><?= $block->escapeHtml($magazine->getTitle()) ?></strong>
-    </div>
-    <div class="block-content">
-        <div class="magazine-detail">
-            <?= /* @noEscape */  $block->contentFiltering($magazine->getContent()); ?>
-        </div>
-        <div class="magazine-list">
-            <?php if ($magazineList->getTotalCount() == 0): ?>
-                <div class="magazine-empty">
-                    <?= $block->escapeHtml(__('It does not exist.')); ?>
-                </div>
-            <?php else: ?>
-                <?php if ($block->getMazineType() != 3): ?>
-                    <div class="magazine-item">
-                        <div class="magazine-item-content">
-                            <div class="magazine-photo">
-                                <a class="action view" href="<?= $block->escapeUrl($magazine->getId()) ?>">
-                            <span>
-                                <img src="<?= $block->escapeHtml($magazine->getThumbnailImageURL());?>"
-                                     alt="<?= $block->escapeHtml($magazine->getThumbnailAlt());?>" />
-                            </span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            <?php endif; ?>
-        </div>
+<div class="block-content">
+    <div class="magazine-detail">
+        <?= /* @noEscape */$block->contentFiltering($magazine->getContent()); ?>
     </div>
 </div>
+
