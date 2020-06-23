@@ -16,7 +16,7 @@ $count = 0;
 <div class="video-board-list-wrapper">
     <?php if ($videoBlockList->getTotalCount() == 0): ?>
         <div class="video-board-empty">
-            <?= $block->escapeHtml(__('Video does not exist.')); ?>
+            <?= $block->escapeHtml(__('No video found!.')); ?>
         </div>
     <?php else: ?>
     <div class="video-board-list">
@@ -59,11 +59,13 @@ $count = 0;
 
     <?php endif; ?>
 </div>
+<?php if($videoBlockSize > 6 ): ?>
 <div class="more-item-button">
     <button id="more-button">&#x21e9;</button>
     <br>
     <div><span id="video-count">6</span>/<?= $block->escapeHtml($videoBlockSize); ?></div>
 </div>
+<?php endif ; ?>
 <script>
 
     var totalVideo = <?= $block->escapeHtml($videoBlockSize) ;?>;
@@ -83,8 +85,6 @@ $count = 0;
                     type: "POST",
                     data: {count:  count},
                 }).done(function (data) {
-                    console.log(data);
-                    // $("#earn-point").html(data.page);
                     let valueHtml ='';
                     if($.isEmptyObject(data.listHtml)){
                         $(".video-board-list-wrapper").html('');

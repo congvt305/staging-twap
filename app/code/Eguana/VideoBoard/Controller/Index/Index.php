@@ -13,6 +13,7 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Eguana\VideoBoard\Model\Pagination\VideoList;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
  * This class is used to add load the layout and render data
@@ -22,6 +23,11 @@ use Eguana\VideoBoard\Model\Pagination\VideoList;
  */
 class Index extends Action
 {
+    /**
+     * @var PageFactory
+     */
+    private $resultPageFactory;
+
     /**
      * @var VideoList
      */
@@ -35,10 +41,12 @@ class Index extends Action
      */
     public function __construct(
         Context $context,
+        PageFactory $resultPageFactory,
         JsonFactory $resultJsonFactory,
         VideoList $videoList
     ) {
         parent::__construct($context);
+        $this->resultPageFactory = $resultPageFactory;
         $this->resultJsonFactory = $resultJsonFactory;
         $this->videoList = $videoList;
     }
@@ -58,8 +66,7 @@ class Index extends Action
             $result->setData($data);
             return $result;
         } else {
-            $this->_view->loadLayout();
-            $this->_view->renderLayout();
+            return $this->resultPageFactory->create();
         }
     }
 }

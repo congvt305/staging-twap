@@ -175,6 +175,6 @@ class AbstractBlock extends Template implements IdentityInterface
      */
     public function getVideoBoardUrl($urlkey)
     {
-        return $this->getUrl() . 'videoboard/details/index/id/' . $urlkey;
+        return $this->getUrl() . 'videoboard/detail/index/id/' . $urlkey;
     }
 }
