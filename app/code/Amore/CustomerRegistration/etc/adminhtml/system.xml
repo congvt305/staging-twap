@@ -67,6 +67,7 @@
                         <field id="active">1</field>
                     </depends>
                 </field>
+
             </group>
 
             <group id="pos" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
@@ -95,6 +96,11 @@
 
                 <field id="sales_office_code" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
                     <label>Sales Office Code</label>
+                </field>
+
+                <field id="debug" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" >
+                    <label>Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
         </section>
