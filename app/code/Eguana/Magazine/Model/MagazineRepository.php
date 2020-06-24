@@ -7,7 +7,6 @@
  * Date: 6/16/20
  * Time: 12:51 AM
  */
-
 namespace Eguana\Magazine\Model;
 
 use Eguana\Magazine\Api\Data;
@@ -171,6 +170,10 @@ class MagazineRepository implements MagazineRepositoryInterface
         return $this->delete($this->getById($magazineId));
     }
 
+    /**
+     * For first banner
+     * @return \Magento\Framework\DataObject|null
+     */
     public function getFirstBanner()
     {
         $magazine = $this->magazineCollectionFactory->create();

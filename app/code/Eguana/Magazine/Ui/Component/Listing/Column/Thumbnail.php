@@ -7,7 +7,6 @@
  * Date: 6/16/20
  * Time: 6:28 AM
  */
-
 namespace Eguana\Magazine\Ui\Component\Listing\Column;
 
 use Magento\Catalog\Helper\Image;

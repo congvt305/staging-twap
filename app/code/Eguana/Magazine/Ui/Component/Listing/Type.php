@@ -13,8 +13,7 @@ use Magento\Framework\Data\OptionSourceInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
- * PLEASE ENTER ONE LINE SHORT DESCRIPTION OF CLASS
- *
+ * For Magazine type
  * Class Type
  */
 class Type implements OptionSourceInterface

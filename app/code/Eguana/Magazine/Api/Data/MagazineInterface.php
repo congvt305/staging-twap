@@ -17,35 +17,17 @@ namespace Eguana\Magazine\Api\Data;
 interface MagazineInterface
 {
     const ENTITY_ID = 'entity_id';
-
     const STORE_ID = 'store_id';
-
     const TITLE = 'title';
-
     const CONTENT_SHORT = 'content_short';
-
     const CONTENT = 'content';
-
     const TYPE = 'type';
-
     const THUMBNAIL_IMAGE = 'thumbnail_image';
-
     const THUMBNAIL_ALT = 'thumbnail_alt';
-
     const CREATED_AT = 'created_at';
-
     const UPDATED_AT = 'updated_at';
-
     const IS_ACTIVE = 'is_active';
-
-//    const COMING_SOON = 'coming_soon';
-//
-//    const CITY = 'city';
-//
-//    const COUNTRY_ID = 'country_id';
-//
-//    const URL_KEY = 'urlkey';
-
+    const SHOW_DATE = 'show_date';
     const SORT_ORDER = 'sort_order';
 
     /**
@@ -194,4 +176,11 @@ interface MagazineInterface
      * @return string
      */
     public function getType();
+
+    public function setShowDate($showDate);
+
+    /**
+     * @return string
+     */
+    public function getShowDate();
 }

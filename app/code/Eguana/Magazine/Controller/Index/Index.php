@@ -11,6 +11,7 @@ namespace Eguana\Magazine\Controller\Index;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
@@ -39,7 +40,7 @@ class Index extends Action
 
     /**
      *
-     * @return \Magento\Framework\App\ResponseInterface|ResultInterfaceAlias|void
+     * @return ResponseInterfaceAlias|ResultInterfaceAlias|void
      */
     public function execute()
     {

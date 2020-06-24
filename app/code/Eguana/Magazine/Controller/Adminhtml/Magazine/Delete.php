@@ -7,14 +7,16 @@
  * Date: 6/17/20
  * Time: 7:04 AM
  */
-
 namespace Eguana\Magazine\Controller\Adminhtml\Magazine;
 
 use Eguana\Magazine\Api\MagazineRepositoryInterface;
 use Eguana\Magazine\Controller\Adminhtml\AbstractController;
 use Eguana\Magazine\Model\MagazineFactory;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\Registry;
+use Psr\Log\LoggerInterface;
 
 class Delete extends AbstractController
 {
@@ -29,6 +31,11 @@ class Delete extends AbstractController
     private $magazineRepository;
 
     /**
+     * @var LoggerInterface;
+     */
+    private $logger;
+
+    /**
      * Delete constructor.
      * @param Context $context
      * @param Registry $coreRegistry
@@ -41,16 +48,18 @@ class Delete extends AbstractController
         Registry $coreRegistry,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
         MagazineFactory $magazineFactory,
-        MagazineRepositoryInterface $magazineRepository
+        MagazineRepositoryInterface $magazineRepository,
+        LoggerInterface $logger
     ) {
         $this->magazineFactory = $magazineFactory;
         $this->magazineRepository = $magazineRepository;
         parent::__construct($context, $coreRegistry, $resultPageFactory);
+        $this->logger = $logger;
     }
 
     /**
      * execute the delete action
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
+     * @return ResponseInterfaceAlias|\Magento\Framework\Controller\Result\Redirect|ResultInterfaceAlias
      */
     public function execute()
     {
@@ -68,7 +77,7 @@ class Delete extends AbstractController
                 $this->messageManager->addSuccessMessage(__('row was successfully deleted'));
                 return $resultRedirect->setPath('*/*/index');
             } catch (\Exception $exception) {
-                $this->messageManager->addErrorMessage($exception->getMessage());
+                $this->logger->debug($exception->getMessage());
             }
         }
         $this->messageManager->addErrorMessage(__('row could not be deleted'));

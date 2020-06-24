@@ -1,132 +1,99 @@
 <?php
-/** @var \Eguana\Magazine\Block\ListBlock $block */
-$magazineList = $block->getCollection(2);
-$url = $block->getUrl();
-$magazineSize = $magazineList->getTotalCount();
-$count = 0;
-
-$magazineVidoList = $block->getCollection(3);
+/** @var $viewModel \Eguana\Magazine\ViewModel\Index\MagazineList */
+$viewModel = $block->getData('view_model_list');
+$banner = $viewModel->getBannerThumbnail();
+$imageMagazineCollection = $viewModel->getImageMagazineCollection();
+$videoThumanil = $viewModel->getVideoThumbnail();
+$magazineCollection = $viewModel->getMagazineTotalCollection();
 ?>
-    <?php if ($magazineList->getTotalCount() == 0): ?>
-        <div class="magazine-empty">
-            <?= $block->escapeHtml(__('It does not exist.')); ?>
-        </div>
-    <?php else: ?>
-        <ul class="list" id="slick">
-            <?php foreach ($magazineList as $magazineItem): ?>
-                <?php if ($count === 0):?>
-                <?php endif;?>
-                <?php $count++; ?>
-                <?php $magazineSize--; ?>
-                    <li class="magazine-item-list ">
-                        <div class="magazine-item">
-                            <div class="magazine-item-content">
-                                <div class="magazine-photo">
-                                    <a class="action view" href="<?= $block->escapeUrl($block->getMagazineUrl($magazineItem->getId())) ?>">
-                                        <span>
-                                            <img src="<?=
-                                            $block->escapeUrl($magazineItem->getThumbnailImageURL());?>"
-                                                 alt="<?=
-                                                 $block->escapeHtml($magazineItem->getThumbnailAlt());?>" />
-                                        </span>
-                                    </a>
-                                </div>
-                            <div class="magazine-heading">
-                                <p class="magazine-title"></p>
-                                <?=$block->escapeHtml($magazineItem->getTitle());?>
-                                </p>
-                                <p class="Magazine-update-date">
-                                    <?=$block->escapeHtml($magazineItem->getCreatedAt());?>
-                                </p>
-                                <p class="short-description">
-                                    <?= $block->escapeHtml(__('Shot description here. Short description here.')) ?>
-
-                                </p>
-                                </div>
-                                <a class="action view" type="button"
-                                       href="<?= $block->escapeUrl($block->getMagazineUrl($magazineItem->getId())) ?>">
-                                        <span><?= $block->escapeHtml(__('Discover More')) ?></span>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-                <?php if ($magazineSize === 0 || $count === 3):?>
-                    <!--</div>-->
-                    <?php $count = 0; ?>
-                <?php endif;?>
-            <?php endforeach; ?>
-        </ul>
-        <?php if ($magazineVidoList->getTotalCount() !== 0): ?>
-            <?php foreach ($block->videoThumbnail() as $thumbnail): ?>
-                <div class="video-banner">
-                    <?php if ($thumbnail): ?>
-                        <a href="<?= $block->escapeUrl($block->getMagazineUrl($thumbnail->getId())); ?>">
-                            <span>
-                                <img src="<?=$block->escapeUrl($thumbnail->getThumbnailImageURL());?>"
-                                     alt="<?= $block->escapeHtml(__('alt'));?>" />
-                            </span>
-                        </a>
-                    <?php endif; ?>
-                </div>
-            <?php endforeach; ?>
-            <ul class="list video">
-            <?php $count = 0; ?>
-            <?php foreach ($magazineVidoList as $magazineItem): ?>
-            <?php if ($count !=0): ?>
-                <li class="video-item-list">
-                    <div class="magazine-item">
-                        <div class="magazine-item-content">
-                            <div class="magazine-photo-video">
-                                <a class="action view" href="<?= $block->escapeUrl($block->getMagazineUrl($magazineItem->getId())) ?>">
-                                    <span>
-                                        <img src="<?=
-                                        $block->escapeUrl($magazineItem->getThumbnailImageURL());?>"
-                                             alt="<?=
-                                             $block->escapeHtml($magazineItem->getThumbnailAlt());?>" />
-                                    </span>
-                                </a>
-                            </div>
-                            <div class="magazine-heading">
-                                <p class="magazine-title"></p>
-                                <?=$block->escapeHtml($magazineItem->getTitle());?>
-                                </p>
-                                <p class="Magazine-update-date">
-                                    <?=$block->escapeHtml($magazineItem->getCreatedAt());?>
-                                </p>
-                                <p class="short-description">
-                                    <?= $block->escapeHtml(__('Shot description here. Short description here.')) ?>
-
-                                </p>
-                            </div>
-                            <a class="action view" type="button"
-                               href="<?= $block->escapeUrl($block->getMagazineUrl($magazineItem->getId())) ?>">
-                                <span><?= $block->escapeHtml(__('Discover More')) ?></span>
-                            </a>
-                        </div>
+<div class="block magazine-image">
+    <?php if (!empty($banner)):?>
+    <div class="magazine-photo-banner">
+        <a class="action view"
+           href="<?= $block->escapeHtml($block->getUrl($banner['url']));?>">
+            <span>
+                <img src="<?= $block->escapeHtml($banner['src']);?>"
+                     alt="<?= $block->escapeHtml($banner['alt']);?>" />
+            </span>
+        </a>
+    </div>
+<?php endif;?>
+    <ul class="list-image-box"">
+        <?php foreach ($imageMagazineCollection as $magazineItem): ?>
+            <li class="magazine-item-box">
+                <div class="magazine-item">
+                    <a
+                        href="<?= $block->escapeHtml($block->
+                        getUrl($viewModel->getItemDetailsUrl($magazineItem['entity_id'])));?>">
+                        <span>
+                            <img src="<?= $block->escapeHtml($viewModel->
+                            getThumbnailSrc($magazineItem['thumbnail_image']));?>"
+                                 alt="<?= $block->escapeHtml($magazineItem['thumbnail_alt']);?>" />
+                        </span>
+                    </a>
+                    <div class="block-title">
+                        <strong><?= $block->escapeHtml($magazineItem['title']) ?></strong>
                     </div>
-                </li>
-            <?php endif; ?>
-                <?php $count++; ?>
+                    <div class="short-discription">
+                        <span><?= $block->escapeHtml($magazineItem['content_short']) ?></span>
+                    </div>
+                </div>
+            </li>
         <?php endforeach; ?>
-        </ul>
-        <?php endif;?>
-    <?php endif; ?>
+    </ul>
 </div>
 
+<div class="block magazine-video">
+    <?php if (!empty($videoThumanil)):?>
+        <div class="magazine-video-banner">
+            <a class="action view"
+               href="<?= $block->escapeHtml($block->getUrl($videoThumanil['url']));?>">
+            <span>
+                <img src="<?= $block->escapeHtml($videoThumanil['src']);?>"
+                     alt="<?= $block->escapeHtml($videoThumanil['alt']);?>" />
+            </span>
+            </a>
+        </div>
+    <?php endif;?>
+    <div class="block-title">
+        <strong><?= $block->escapeHtml(__('Other Magazines')) ?></strong>
+    </div>
+    <ul class="list-video-box" id="slick">
+        <?php $date = '' ?>
+        <?php foreach ($magazineCollection as $magazineItem): ?>
+            <?php if ($date == '' || $magazineItem['show_date'] < $date):?>
+                <li class="video-item-box">
+                    <div class="magazine-item">
+                        <a
+                            href="<?= $block->escapeHtml($block->
+                            getUrl($viewModel->getMonthlyMagazineUrl($magazineItem['show_date'])));?>">
+                    <span>
+                        <img src="<?= $block->escapeHtml($viewModel->
+                        getThumbnailSrc($magazineItem['thumbnail_image']));?>"
+                             alt="<?= $block->escapeHtml($magazineItem['thumbnail_alt']);?>" />
+                    </span>
+                        </a>
+                    </div>
+                </li>
+                <?php $date = $viewModel->getMonthFromDate($magazineItem['show_date']) ?>
+            <?php endif;?>
+        <?php endforeach; ?>
+    </ul>
+</div>
 <script>
     require([
         'jquery',
         'slick'
     ], function ($) {
 
-        $('.video').slick({
+        $('#slick').slick({
             dots: false,
             infinite: false,
             speed: 300,
             slidesToShow: 4,
             slidesToScroll: 1,
-            marginRight: '40px',
-            responsive: [
+            marginRight: '30px',
+        responsive: [
                 {
                     breakpoint: 1024,
                     settings: {
@@ -154,4 +121,3 @@ $magazineVidoList = $block->getCollection(3);
         });
     });
 </script>
-

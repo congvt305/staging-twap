@@ -7,7 +7,6 @@
  * Date: 6/17/20
  * Time: 6:01 AM
  */
-
 namespace Eguana\Magazine\Block\Adminhtml\Edit;
 
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
@@ -102,5 +101,4 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
 
         return $options;
     }
-
 }

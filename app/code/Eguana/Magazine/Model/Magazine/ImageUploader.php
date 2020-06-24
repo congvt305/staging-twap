@@ -7,15 +7,14 @@
  * Date: 6/17/20
  * Time: 5:09 AM
  */
-
 namespace Eguana\Magazine\Model\Magazine;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\UrlInterface;
 use Magento\MediaStorage\Model\File\UploaderFactory;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Model class for file uploading
@@ -45,6 +44,11 @@ class ImageUploader
     const FILE_DIR = 'Magazine';
 
     /**
+     * @var LoggerInterface;
+     */
+    private $logger;
+
+    /**
      * @param UploaderFactory $uploaderFactory
      * @param Filesystem $filesystem
      * @param StoreManagerInterface $storeManager
@@ -52,19 +56,19 @@ class ImageUploader
     public function __construct(
         UploaderFactory $uploaderFactory,
         Filesystem $filesystem,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        LoggerInterface $logger
     ) {
         $this->uploaderFactory = $uploaderFactory;
         $this->storeManager = $storeManager;
         $this->filesystem = $filesystem;
+        $this->logger = $logger;
     }
 
     /**
      * Save file to temp media directory
-     *
-     * @param string $fileId
-     * @return array
-     * @throws LocalizedException
+     * @param $fileId
+     * @return array|bool|string[]
      */
     public function saveImageToMediaFolder($fileId)
     {
@@ -82,24 +86,26 @@ class ImageUploader
             $result = array_intersect_key($uploader->save($mediaDirectory), $result);
             $result['url'] = $this->getMediaUrl($result['file']);
         } catch (\Exception $e) {
-            $result = ['error' => $e->getMessage(), 'errorcode' => $e->getCode()];
+            $this->logger->debug($exception->getMessage());
         }
         return $result;
     }
 
     /**
      * Get file url
-     *
-     * @param string $file
+     * @param $file
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getMediaUrl($file)
     {
-        $file = ltrim(str_replace('\\', '/', $file), '/');
-        return $this->storeManager
+        try {
+            $file = ltrim(str_replace('\\', '/', $file), '/');
+            return $this->storeManager
                 ->getStore()
                 ->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . self::FILE_DIR . '/' . $file;
+        } catch (\Exception $e) {
+            $this->logger->debug($exception->getMessage());
+        }
     }
 
     /**

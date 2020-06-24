@@ -16,6 +16,8 @@
                 comment="Entity id"/>
         <column xsi:type="varchar" name="store_id" nullable="false" length="30"
                 comment="Store ID"/>
+        <column xsi:type="timestamp" name="show_date" nullable="false"
+                comment="Store ID"/>
         <column xsi:type="varchar" name="title" nullable="false" length="50"
                 comment="Title"/>
         <column xsi:type="text" name="content_short" nullable="true"

@@ -7,7 +7,6 @@
  * Date: 6/17/20
  * Time: 5:49 AM
  */
-
 namespace Eguana\Magazine\Block\Adminhtml\Edit;
 
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;

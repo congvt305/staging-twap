@@ -20,7 +20,7 @@ define([
             dots: false,
             infinite: false,
             speed: 300,
-            slidesToShow: 1,
+            slidesToShow: 3,
             slidesToScroll: 1,
             responsive: [
                 {

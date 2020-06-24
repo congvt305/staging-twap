@@ -7,7 +7,6 @@
  * Date: 6/17/20
  * Time: 7:12 AM
  */
-
 namespace Eguana\Magazine\Controller\Adminhtml\Magazine;
 
 /**

@@ -7,7 +7,6 @@
  * Date: 6/16/20
  * Time: 6:12 AM
  */
-
 namespace Eguana\Magazine\Ui\Component;
 
 use Magento\Framework\AuthorizationInterface;

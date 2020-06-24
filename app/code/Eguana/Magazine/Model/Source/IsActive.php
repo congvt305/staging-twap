@@ -7,7 +7,6 @@
  * Date: 6/16/20
  * Time: 6:25 AM
  */
-
 namespace Eguana\Magazine\Model\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;

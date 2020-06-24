@@ -7,14 +7,18 @@
  * Date: 6/18/20
  * Time: 6:45 AM
  */
-$magazine = $block->getMagazine();
-$magazineList = $block->getCollection($block->getMazineType());
-
-$url = $block->getUrl();
+/** @var $viewModel \Eguana\Magazine\ViewModel\Detail */
+$viewModel = $block->getData('view_model_list');
+$magazine = $viewModel->getMagazine();
 ?>
-<div class="block-content">
-    <div class="magazine-detail">
-        <?= /* @noEscape */$block->contentFiltering($magazine->getContent()); ?>
+<div class="block block-magazine-details" data-mage-init='{"magazineSlide":{}}'>
+    <div class="block-title">
+        <strong><?= $block->escapeHtml($magazine->getTitle()) ?></strong>
+    </div>
+    <div class="block-content">
+        <div class="magazine-detail">
+            <?= /* @noEscape */ $magazine->getContent(); ?>
+        </div>
     </div>
 </div>
 

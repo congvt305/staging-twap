@@ -7,15 +7,16 @@
  * Date: 6/17/20
  * Time: 7:38 AM
  */
-
 namespace Eguana\Magazine\Helper;
 
-    /**
-     * Helper class get the configuration data
-     *
-     * Class Data
-     */
-class Data extends \Magento\Framework\App\Helper\AbstractHelper
+use Magento\Store\Model\ScopeInterfac;
+use Magento\Framework\App\Helper\AbstractHelper;
+
+/**
+ * Helper class get the configuration data
+ * Class Data
+ */
+class Data extends AbstractHelper
 {
     /**
      * Return the config from config path
@@ -26,7 +27,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         return $this->scopeConfig->getValue(
             $config_path,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            ScopeInterfac::SCOPE_STORE
         );
     }
 }

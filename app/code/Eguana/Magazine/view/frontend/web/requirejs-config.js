@@ -6,10 +6,5 @@ var config = {
         'slick': {
             deps: ['jquery']
         }
-    },
-    "map": {
-        "*": {
-            "slider": "Eguana_Magazine/js/slider"
-        }
     }
 };

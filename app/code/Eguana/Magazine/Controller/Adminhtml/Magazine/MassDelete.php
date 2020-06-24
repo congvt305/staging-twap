@@ -7,7 +7,6 @@
  * Date: 6/16/20
  * Time: 6:19 AM
  */
-
 namespace Eguana\Magazine\Controller\Adminhtml\Magazine;
 
 use Eguana\Magazine\Model\Magazine;
@@ -19,6 +18,10 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Ui\Component\MassAction\Filter;
 
+/**
+ * This class is used for Mass delete
+ * Class MassDelete
+ */
 class MassDelete extends Action
 {
     /**

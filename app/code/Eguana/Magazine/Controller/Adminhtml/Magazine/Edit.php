@@ -7,7 +7,6 @@
  * Date: 6/17/20
  * Time: 7:10 AM
  */
-
 namespace Eguana\Magazine\Controller\Adminhtml\Magazine;
 
 use Magento\Backend\App\Action;
@@ -70,17 +69,6 @@ class Edit extends \Magento\Backend\App\Action implements HttpGetActionInterface
             ->addBreadcrumb(__('Manage Magazines'), __('Manage Magazines'));
         return $resultPage;
     }
-
-    /**
-     * execute the edit action
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
-     */
-//    public function execute()
-//    {
-//        $resultPage = $this->_init($this->resultPageFactory->create());
-//        return $resultPage;
-//    }
-
     /**
      * Edit CMS page
      *
@@ -92,10 +80,7 @@ class Edit extends \Magento\Backend\App\Action implements HttpGetActionInterface
         // 1. Get ID and create model
         $id = $this->getRequest()->getParam('entity_id');
         $model = $id ? $this->magazineRepository->getById($id) : null;
-
-        // 2. Initial checking
         if ($id) {
-            //$model->load($id);
             if (!$model->getEntityId()) {
                 $this->messageManager->addErrorMessage(__('This magazine no longer exists.'));
                 /** \Magento\Backend\Model\View\Result\Redirect $resultRedirect */

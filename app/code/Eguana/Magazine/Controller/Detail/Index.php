@@ -10,7 +10,6 @@
 namespace Eguana\Magazine\Controller\Detail;
 
 use Eguana\Magazine\Api\MagazineRepositoryInterface;
-use Eguana\Magazine\Block\View;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
@@ -42,12 +41,10 @@ class Index extends Action
     public function __construct(
         Context $context,
         MagazineRepositoryInterface $magazineRepository,
-        View $magazine,
         PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
         $this->magazineRepository = $magazineRepository;
-        $this->magazine = $magazine;
         $this->resultPageFactory = $resultPageFactory;
     }
 

@@ -7,7 +7,6 @@
  * Date: 6/16/20
  * Time: 5:07 AM
  */
-
 namespace Eguana\Magazine\Controller\Adminhtml;
 
 use Magento\Backend\App\Action;

@@ -7,10 +7,11 @@
  * Date: 6/16/20
  * Time: 4:55 AM
  */
-
 namespace Eguana\Magazine\Controller\Adminhtml\Magazine;
 
 use Eguana\Magazine\Controller\Adminhtml\AbstractController;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 
 /**
  * Action for listing magazine
@@ -21,7 +22,7 @@ class Grid extends AbstractController
 
     /**
      * Execute the listing action
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|mixed
+     * @return ResponseInterfaceAlias|ResultInterfaceAlias|mixed
      */
     public function execute()
     {

@@ -7,14 +7,18 @@
  * Date: 6/17/20
  * Time: 5:08 AM
  */
-
 namespace Eguana\Magazine\Model\Magazine;
 
 use Eguana\Magazine\Model\ResourceModel\Magazine\CollectionFactory;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Ui\DataProvider\AbstractDataProvider as AbstractDataProviderAlias;
 
-class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
+/**
+ * This class is used for data provider
+ * Class DataProvider
+ */
+class DataProvider extends AbstractDataProviderAlias
 {
     /**
      * @var \Eguana\Magazine\Model\ResourceModel\Magazine\Collection

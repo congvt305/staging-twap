@@ -7,20 +7,19 @@
  * Date: 6/17/20
  * Time: 7:18 AM
  */
-
 namespace Eguana\Magazine\Controller\Adminhtml\Magazine;
 
-use Eguana\Magazine\Model\Magazine;
-use Magento\Framework\View\Result\PageFactory;
-use Magento\Backend\App\Action\Context;
 use Eguana\Magazine\Api\MagazineRepositoryInterface;
+use Eguana\Magazine\Controller\Adminhtml\AbstractController;
+use Eguana\Magazine\Model\Magazine;
 use Eguana\Magazine\Model\MagazineFactory;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Registry;
-use Eguana\Magazine\Controller\Adminhtml\AbstractController;
+use Magento\Framework\View\Result\PageFactory;
 use Magento\UrlRewrite\Model\UrlPersistInterface;
-use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
+use Psr\Log\LoggerInterface;
 
 /**
  * Action for save button
@@ -48,6 +47,11 @@ class Save extends AbstractController
      * @var MagazineRepositoryInterface
      */
     private $magazineRepository;
+
+    /**
+     * @var LoggerInterface;
+     */
+    private $logger;
 
     /**
      * @var \Magento\UrlRewrite\Model\UrlRewriteFactory
@@ -82,16 +86,17 @@ class Save extends AbstractController
         DataPersistorInterface $dataPersistor,
         MagazineFactory $magazineFactory,
         MagazineRepositoryInterface $magazineRepository,
-        \Eguana\Magazine\Helper\Data $helperData
+        \Eguana\Magazine\Helper\Data $helperData,
+        LoggerInterface $logger
     ) {
         $this->dataPersistor = $dataPersistor;
         $this->magazineFactory = $magazineFactory;
         $this->magazineRepository = $magazineRepository;
         $this->helperData= $helperData;
+        $this->logger = $logger;
 
         parent::__construct($context, $coreRegistry, $resultPageFactory);
     }
-
     /**
      * Save action
      *
@@ -125,7 +130,6 @@ class Save extends AbstractController
                     $this->messageManager
                         ->addErrorMessage(__('This magazine no longer exists.'));
                     return $this->processResultRedirect($model, $resultRedirect, $data);
-                    //return $resultRedirect->setPath('*/*/');
                 }
             }
 
@@ -140,13 +144,12 @@ class Save extends AbstractController
             $model->setData($generalData);
 
             try {
-
                 $model->setUpdatedAt('');
 
                 $this->magazineRepository->save($model);
                 return $this->processResultRedirect($model, $resultRedirect, $data);
             } catch (LocalizedException $e) {
-                $this->messageManager->addErrorMessage($e->getMessage());
+                $this->logger->debug($exception->getMessage());
             } catch (\Exception $e) {
                 $this->messageManager->addExceptionMessage(
                     $e,
@@ -158,20 +161,7 @@ class Save extends AbstractController
             return $this->processResultRedirect($model, $resultRedirect, $data);
         }
         return $this->processResultRedirect($model, $resultRedirect, $data);
-        //return $resultRedirect->setPath('*/*/');
     }
-
-    /**
-     * Returns if a string ends with specified word
-     * @param $haystack
-     * @param $needle
-     * @return bool
-     */
-    /*  function endsWith($haystack, $needle)
-      {
-          return substr_compare($haystack, $needle, -strlen($needle)) === 0;
-      }
-  */
     /**
      * Process result redirect
      *
@@ -186,8 +176,6 @@ class Save extends AbstractController
         if ($this->getRequest()->getParam('back', false) === 'duplicate') {
             $newMagazine = $this->magazineFactory->create(['data' => $data]);
             $newMagazine->setId(null);
-            // $identifier = $model->getUrlKey() . '-' . uniqid();
-            //$newMagazine->setUrlKey($identifier);
             $newMagazine->setIsActive(false);
             $newMagazine->setStoreId($model->getStoreId());
             $newMagazine->setThumbnailImage($model->getThumbnailImage());

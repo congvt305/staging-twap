@@ -7,7 +7,6 @@
  * Date: 6/16/20
  * Time: 6:32 AM
  */
-
 namespace Eguana\Magazine\Ui\Component\Listing\Column;
 
 use Magento\Store\Ui\Component\Listing\Column\Store\Options;

@@ -7,7 +7,6 @@
  * Date: 6/16/20
  * Time: 12:55 AM
  */
-
 namespace Eguana\Magazine\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;

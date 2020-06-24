@@ -7,7 +7,6 @@
  * Date: 6/16/20
  * Time: 12:58 AM
  */
-
 namespace Eguana\Magazine\Model\ResourceModel\Magazine;
 
 use Eguana\Magazine\Api\Data\MagazineInterface;

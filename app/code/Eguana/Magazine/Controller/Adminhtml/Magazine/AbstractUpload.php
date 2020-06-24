@@ -7,7 +7,6 @@
  * Date: 6/17/20
  * Time: 7:02 AM
  */
-
 namespace Eguana\Magazine\Controller\Adminhtml\Magazine;
 
 use Magento\Backend\App\Action\Context as Context;

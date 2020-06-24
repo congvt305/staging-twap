@@ -7,11 +7,14 @@
  * Date: 6/17/20
  * Time: 6:43 AM
  */
-
 namespace Eguana\Magazine\Model\Config\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
 
+/**
+ * This class is used for drop down Button for different magazine type
+ * Class DropdownType
+ */
 class DropdownType implements OptionSourceInterface
 {
     /**

@@ -7,7 +7,6 @@
  * Date: 6/16/20
  * Time: 12:04 AM
  */
-
 namespace Eguana\Magazine\Model;
 
 /**
@@ -17,6 +16,7 @@ namespace Eguana\Magazine\Model;
  * Eguana\Magazine\Model
  */
 use Eguana\Magazine\Api\Data\MagazineInterface;
+use Eguana\Magazine\Model\ResourceModel\Magazine as MagazineAlias;
 use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractExtensibleModel;
 use Magento\Framework\UrlInterface;
@@ -60,7 +60,7 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
      */
     protected function _construct()
     {
-        $this->_init(\Eguana\Magazine\Model\ResourceModel\Magazine::class);
+        $this->_init(MagazineAlias::class);
         /* Using Direct Object Manager */
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         /* Get store manager */
@@ -337,6 +337,21 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
     }
 
     /**
+     * @param string $isActive
+     * @return $this
+     */
+    public function setShowDate($showDate)
+    {
+        return $this->setData(self::SHOW_DATE, $showDate);
+    }
+    /**
+     * @return string
+     */
+    public function getShowDate()
+    {
+        return $this->getData(self::SHOW_DATE);
+    }
+    /**
      * Receive page store ids
      *
      * @return int[]
@@ -355,72 +370,4 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
     {
         return [self::STATUS_ENABLED => __('Enabled'), self::STATUS_DISABLED => __('Disabled')];
     }
-
-//    /**
-//     * @param string $comingSoon
-//     * @return $this
-//     */
-//    public function setComingSoon($comingSoon)
-//    {
-//        return $this->setData(self::COMING_SOON, $comingSoon);
-//    }
-//
-//    /**
-//     * @return string
-//     */
-//    public function getComingSoon()
-//    {
-//        return $this->getData(self::COMING_SOON);
-//    }
-//
-//    /**
-//     * @param string $city
-//     * @return $this
-//     */
-//    public function setCity($city)
-//    {
-//        return $this->setData(self::CITY, $city);
-//    }
-//
-//    /**
-//     * @return string
-//     */
-//    public function getCity()
-//    {
-//        return $this->getData(self::CITY);
-//    }
-//
-//    /**
-//     * @param string $countryId
-//     * @return $this
-//     */
-//    public function setCountryId($countryId)
-//    {
-//        return $this->setData(self::COUNTRY_ID, $countryId);
-//    }
-//
-//    /**
-//     * @return string
-//     */
-//    public function getCountryId()
-//    {
-//        return $this->getData(self::COUNTRY_ID);
-//    }
-//
-//    /**
-//     * @param string $urlKey
-//     * @return $this
-//     */
-//    public function setUrlKey($urlKey)
-//    {
-//        return $this->setData(self::URL_KEY, $urlKey);
-//    }
-//
-//    /**
-//     * @return string
-//     */
-//    public function getUrlKey()
-//    {
-//        return $this->getData(self::URL_KEY);
-//    }
 }

@@ -7,12 +7,12 @@
  * Date: 6/16/20
  * Time: 2:21 AM
  */
-
 namespace Eguana\Magazine\Model\ResourceModel\Magazine\Grid;
 
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Api\Search\AggregationInterface;
 use Eguana\Magazine\Model\ResourceModel\Magazine\Collection as MagazineCollection;
+use Magento\Framework\Api\SearchCriteriaInterface as SearchCriteriaInterfaceAlias;
 
 /**
  * Collection for displaying grid of cms blocks
@@ -44,7 +44,7 @@ class Collection extends MagazineCollection implements SearchResultInterface
     /**
      * Get search criteria.
      *
-     * @return \Magento\Framework\Api\SearchCriteriaInterface|null
+     * @return SearchCriteriaInterfaceAlias|null
      */
     public function getSearchCriteria()
     {
@@ -54,11 +54,11 @@ class Collection extends MagazineCollection implements SearchResultInterface
     /**
      * Set search criteria.
      *
-     * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
+     * @param SearchCriteriaInterfaceAlias $searchCriteria
      * @return $this
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
+    public function setSearchCriteria(SearchCriteriaInterfaceAlias $searchCriteria = null)
     {
         return $this;
     }
