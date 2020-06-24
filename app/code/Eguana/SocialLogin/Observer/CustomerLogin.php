@@ -10,9 +10,9 @@
 namespace Eguana\SocialLogin\Observer;
 
 use Eguana\SocialLogin\Model\SocialLoginHandler as SocialLoginModel;
-use Magento\Customer\Model\Session;
 use Magento\Framework\Event\Observer as ObserverAlias;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Session\SessionManagerInterface as SessionManagerInterfaceAlias;
 
 /**
  * Class CustomerLogin
@@ -33,7 +33,7 @@ class CustomerLogin implements ObserverInterface
      * @param SocialLoginModel $socialLoginModel
      */
     public function __construct(
-        Session $customerSession,
+        SessionManagerInterfaceAlias $customerSession,
         SocialLoginModel $socialLoginModel
     ) {
         $this->session          = $customerSession;

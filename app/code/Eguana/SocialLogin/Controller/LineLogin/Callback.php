@@ -9,28 +9,32 @@
  */
 namespace Eguana\SocialLogin\Controller\LineLogin;
 
+use Eguana\SocialLogin\Controller\AbstractSocialLogin;
 use Eguana\SocialLogin\Helper\Data as Helper;
 use Eguana\SocialLogin\Model\SocialLoginHandler as SocialLoginModel;
 use Eguana\SocialLogin\Model\SocialLoginRepository;
-use Magento\Framework\App\Action\Action;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Model\Session;
+use Magento\Customer\Model\Visitor;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\HTTP\Client\Curl;
-use Magento\Framework\Stdlib\Cookie\FailureToSendException;
+use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
+use Magento\Framework\Stdlib\CookieManagerInterface;
+use Magento\Framework\Stdlib\DateTime\DateTime as DateTimeAlias;
 use Magento\Framework\View\Result\PageFactory;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Callback
  *
  * Callback class for line login
  */
-class Callback extends Action
+class Callback extends AbstractSocialLogin
 {
     const SOCIAL_MEDIA_TYPE = 'line';
 
@@ -65,8 +69,26 @@ class Callback extends Action
     private $socialLoginRepository;
 
     /**
+     * @var Visitor
+     */
+    protected $visitor;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * Callback constructor.
      * @param Context $context
+     * @param CustomerRepositoryInterface $customerRepositoryInterface
+     * @param CookieManagerInterface $cookieManager
+     * @param CookieMetadataFactory $cookieMetadataFactory
+     * @param Session $customerSession
+     * @param ManagerInterface $eventManager
+     * @param Visitor $visitor
+     * @param DateTimeAlias $dateTime
+     * @param LoggerInterface $logger
      * @param PageFactory $resultPageFactory
      * @param Helper $helper
      * @param RedirectFactory $resultRedirectFactory
@@ -76,6 +98,14 @@ class Callback extends Action
      */
     public function __construct(
         Context $context,
+        CustomerRepositoryInterface $customerRepositoryInterface,
+        CookieManagerInterface $cookieManager,
+        CookieMetadataFactory $cookieMetadataFactory,
+        Session $customerSession,
+        ManagerInterface $eventManager,
+        Visitor $visitor,
+        DateTimeAlias $dateTime,
+        LoggerInterface $logger,
         PageFactory $resultPageFactory,
         Helper $helper,
         RedirectFactory $resultRedirectFactory,
@@ -83,7 +113,18 @@ class Callback extends Action
         SocialLoginModel $socialLoginModel,
         SocialLoginRepository $socialLoginRepository
     ) {
-        parent::__construct($context);
+        $this->logger                            = $logger;
+        parent::__construct(
+            $context,
+            $customerRepositoryInterface,
+            $cookieManager,
+            $cookieMetadataFactory,
+            $customerSession,
+            $eventManager,
+            $visitor,
+            $logger,
+            $dateTime
+        );
         $this->resultPageFactory                 = $resultPageFactory;
         $this->helper                            = $helper;
         $this->resultRedirectFactory             = $resultRedirectFactory;
@@ -94,11 +135,7 @@ class Callback extends Action
 
     /**
      * Line callback
-     * @return ResponseInterface|Forward|Redirect|ResultInterface
-     * @throws InputException
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
-     * @throws FailureToSendException
+     * @return ResponseInterface|ResultInterface|null
      */
     public function execute()
     {
@@ -132,7 +169,11 @@ class Callback extends Action
         $userid = $dataUser['sub'];
         $customerId = $this->socialLoginRepository->getSocialMediaCustomer($userid, $socialMediaType);
         //If customer exists then login and close popup else close pop and redirect to social login page
-        $this->socialLoginModel->redirectCustomer($customerId, $dataUser, $userid, $socialMediaType);
+        if ($customerId) {
+            $this->redirectToLogin($customerId);
+        } else {
+            $this->socialLoginModel->redirectCustomer($customerId, $dataUser, $userid, $socialMediaType);
+        }
         $this->helper->closePopUpWindow($this);
     }
 
@@ -157,13 +198,11 @@ class Callback extends Action
         $response = null;
         try {
             $apiUrl = "https://api.line.me/oauth2/v2.1/token";
-
             $request = 'client_id=' . $client_id;
             $request .= '&client_secret=' . $client_secret;
             $request .= '&redirect_uri=' . $redirect_uri;
             $request .= '&code=' . $code;
             $request .= '&grant_type=authorization_code';
-
             $this->getCurlClient()->setOptions(
                 [
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -179,7 +218,6 @@ class Callback extends Action
                     ]
                 ]
             );
-
             $this->getCurlClient()->post($apiUrl, []);
             $status = $this->getCurlClient()->getStatus();
             if (($status == 400 || $status == 401)) {
@@ -248,7 +286,6 @@ class Callback extends Action
             $verifyUrl = 'https://api.line.me/oauth2/v2.1/verify' . '?' . http_build_query([
                     'scope' => 'profile openid email'
                 ]);
-
             $this->getCurlClient()->setOptions(
                 [
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -262,7 +299,6 @@ class Callback extends Action
                     ]
                 ]
             );
-
             $this->getCurlClient()->post($verifyUrl, []);
             $status = $this->getCurlClient()->getStatus();
             if (($status == 400 || $status == 401)) {

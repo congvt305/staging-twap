@@ -56,9 +56,9 @@ class CreateCustomer extends Action
         SocialLoginModel $socialLoginModel,
         StoreManagerInterface $storemanager
     ) {
-        $this->resultPageFactory                = $resultPageFactory;
+        $this->resultPageFactory               = $resultPageFactory;
         $this->customerSession                 = $session;
-        $this->socialLoginModel                 = $socialLoginModel;
+        $this->socialLoginModel                = $socialLoginModel;
         $this->storemanager                    = $storemanager;
         parent::__construct($context);
     }

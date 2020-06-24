@@ -9,21 +9,29 @@
  */
 namespace Eguana\SocialLogin\Controller\GoogleLogin;
 
+use Eguana\SocialLogin\Controller\AbstractSocialLogin;
 use Eguana\SocialLogin\Helper\Data as Helper;
 use Eguana\SocialLogin\Model\SocialLoginHandler as SocialLoginModel;
 use Eguana\SocialLogin\Model\SocialLoginRepository;
-use Magento\Framework\App\Action\Action;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Model\Session;
+use Magento\Customer\Model\Visitor;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\HTTP\Client\Curl;
+use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
+use Magento\Framework\Stdlib\CookieManagerInterface;
+use Magento\Framework\Stdlib\DateTime\DateTime as DateTimeAlias;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Callback
  *
  * Callback class for google login
  */
-class Callback extends Action
+class Callback extends AbstractSocialLogin
 {
     const SOCIAL_MEDIA_TYPE = 'google';
     /**
@@ -49,6 +57,14 @@ class Callback extends Action
     /**
      * Callback constructor.
      * @param Context $context
+     * @param CustomerRepositoryInterface $customerRepositoryInterface
+     * @param CookieManagerInterface $cookieManager
+     * @param CookieMetadataFactory $cookieMetadataFactory
+     * @param Session $customerSession
+     * @param ManagerInterface $eventManager
+     * @param Visitor $visitor
+     * @param DateTimeAlias $dateTime
+     * @param LoggerInterface $logger
      * @param Helper $helper
      * @param Curl $curl
      * @param SocialLoginModel $socialLoginModel
@@ -56,12 +72,30 @@ class Callback extends Action
      */
     public function __construct(
         Context $context,
+        CustomerRepositoryInterface $customerRepositoryInterface,
+        CookieManagerInterface $cookieManager,
+        CookieMetadataFactory $cookieMetadataFactory,
+        Session $customerSession,
+        ManagerInterface $eventManager,
+        Visitor $visitor,
+        DateTimeAlias $dateTime,
+        LoggerInterface $logger,
         Helper $helper,
         Curl $curl,
         SocialLoginModel $socialLoginModel,
         SocialLoginRepository $socialLoginRepository
     ) {
-        parent::__construct($context);
+        parent::__construct(
+            $context,
+            $customerRepositoryInterface,
+            $cookieManager,
+            $cookieMetadataFactory,
+            $customerSession,
+            $eventManager,
+            $visitor,
+            $logger,
+            $dateTime
+        );
         $this->helper                            = $helper;
         $this->curlClient                        = $curl;
         $this->socialLoginModel                  = $socialLoginModel;
@@ -79,16 +113,13 @@ class Callback extends Action
         $clientId = $this->helper->getGoogleClientId();
         $clientSecret = $this->helper->getGoogleClientSecret();
         $clientRedirectUrl = $this->helper->getGoogleCallbackUrl();
-
         // Google passes a parameter 'code' in the Redirect Url
         if (isset($params['code'])) {
             try {
                 // Get the access token
                 $data = $this->getAccessToken($clientId, $clientRedirectUrl, $clientSecret, $params['code']);
-
                 // Access Token
                 $access_token = $data['access_token'];
-
                 // Get user information
                 $user_info = $this->getUserProfileInfo($access_token);
                 $userid = $user_info['id'];
@@ -98,7 +129,11 @@ class Callback extends Action
             }
             $customerId = $this->socialLoginRepository->getSocialMediaCustomer($userid, $socialMediaType);
             //If customer exists then login and close popup else close pop and redirect to social login page
-            $this->socialLoginModel->redirectCustomer($customerId, $user_info, $userid, $socialMediaType);
+            if ($customerId) {
+                $this->redirectToLogin($customerId);
+            } else {
+                $this->socialLoginModel->redirectCustomer($customerId, $user_info, $userid, $socialMediaType);
+            }
             $this->helper->closePopUpWindow($this);
         }
     }
@@ -117,7 +152,6 @@ class Callback extends Action
         try {
             $curlPost = 'client_id=' . $client_id . '&redirect_uri=' . $redirect_uri . '&client_secret=';
             $curlPost = $curlPost . $client_secret . '&code=' . $code . '&grant_type=authorization_code';
-
             $this->getCurlClient()->setOptions(
                 [
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -128,7 +162,6 @@ class Callback extends Action
                     CURLOPT_POSTFIELDS => $curlPost
                 ]
             );
-
             $this->getCurlClient()->post($url, []);
             $status = $this->getCurlClient()->getStatus();
             if ($status != 200) {
@@ -165,7 +198,6 @@ class Callback extends Action
                     ]
                 ]
             );
-
             $this->getCurlClient()->get($url, []);
             $status = $this->getCurlClient()->getStatus();
             if ($status != 200) {
