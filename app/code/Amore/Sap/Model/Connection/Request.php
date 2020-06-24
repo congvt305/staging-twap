@@ -22,6 +22,10 @@ class Request
 
     const URL_TYPE_SELECTED = 'sap/general/url_select';
 
+    const ORDER_CONFIRM_PATH = 'sap/url_path/order_confirm_path';
+
+    const ORDER_CANCEL_PATH = 'sap/url_path/order_cancel_path';
+
     /**
      * @var Curl
      */
@@ -52,8 +56,10 @@ class Request
         $this->scopeConfig = $scopeConfig;
     }
 
-    public function postRequest($requestData)
+    public function postRequest($requestData, $type = 0)
     {
+        $path = $this
+
         $url = $this->getUrl();
 
         $this->curl->addHeader('Content-Type', 'application/json');
@@ -86,5 +92,20 @@ class Request
                 $url = $this->scopeConfig->getValue(self::URL_TYPE_DEV, 'store');
         }
         return $url;
+    }
+
+    public function getPath($type)
+    {
+        switch ($type) {
+            case 0:
+                $path = $this->scopeConfig->getValue(self::ORDER_CONFIRM_PATH, 'store');
+                break;
+            case 1:
+                $path = $this->scopeConfig->getValue(self::ORDER_CANCEL_PATH, 'store');
+                break;
+            default:
+                $path = $this->scopeConfig->getValue(self::ORDER_CONFIRM_PATH, 'store');
+        }
+        return $path;
     }
 }
