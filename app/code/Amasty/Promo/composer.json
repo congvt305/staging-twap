@@ -1,0 +1,28 @@
+{
+    "name": "amasty/promo",
+    "description": "Free Gift by Amasty",
+    "require": {
+        "php": "7.0.2|7.0.4|~7.0.6|^7.1.0",
+        "amasty/base": ">=1.10.2",
+        "amasty/module-advanced-conditions": ">=1.5.0",
+        "amasty/module-banners-lite": ">=1.0.14",
+        "amasty/module-salesrulewizard": ">=1.0.1",
+        "amasty/rgrid": ">=1.0.7"
+    },
+    "suggest": {
+        "amasty/module-common-tests": "Install module-common-tests module to be able to run Free Gift MFTF tests."
+    },
+    "type": "magento2-module",
+    "version": "2.9.4",
+    "license": [
+        "Commercial"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\Promo\\": ""
+        }
+    }
+}
