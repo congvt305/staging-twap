@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: yasir
+* Date: 6/17/20
+* Time: 1:56 AM
+*/
+-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="EcommerceStatusSection">
+        <element name="store" type="input" selector="//*[@id='menu-magento-backend-stores']/a" timeout="800"/>
+        <element name="config" type="input" selector=".item-system-config" timeout="800"/>
+        <element name="eguana" type="input" selector="//div/strong[text()='Eguana Extensions']" timeout="800"/>
+        <element name="ecommerce" type="input" selector="//a/span[text()='E-commerce Status']" timeout="800"/>
+<!--        <element name="enable" type="input" selector="//select [@id='ecommerce_status_general_ecommerce_enabled']/option[text()='Yes']" timeout="800"/>-->
+        <element name="disable" type="input" selector="//select [@id='ecommerce_status_general_ecommerce_enabled']/option[text()='No']" timeout="800"/>
+        <element name="save" type="input" selector="//*[@id='save']/span/span" timeout="800"/>
+    </section>
+</sections>

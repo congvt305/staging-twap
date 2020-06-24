@@ -24,6 +24,8 @@ use GuzzleHttp\Psr7\ResponseFactory;
 use Magento\Framework\Webapi\Rest\Request;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Amore\CustomerRegistration\Model\Sequence;
+use Amore\CustomerRegistration\Model\POSLogger;
+use Magento\Framework\Serialize\Serializer\Json;
 
 /**
  * In this class we will call the POS API
@@ -57,6 +59,22 @@ class POSSystem
      * @var Curl
      */
     private $curlClient;
+    /**
+     * @var \Magento\Framework\HTTP\ZendClientFactory
+     */
+    private $httpClientFactory;
+    /**
+     * @var \Zend\Http\Client
+     */
+    private $zendClient;
+    /**
+     * @var POSLogger
+     */
+    private $logger;
+    /**
+     * @var Json
+     */
+    private $json;
 
     public function __construct(
         Curl $curl,
@@ -64,7 +82,11 @@ class POSSystem
         SubscriberFactory $subscriberFactory,
         CustomerRepositoryInterface $customerRepository,
         DateTime $date,
-        Sequence $sequence
+        Sequence $sequence,
+        \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory,
+        \Zend\Http\Client $zendClient,
+        POSLogger $logger,
+        Json $json
     ) {
         $this->date = $date;
         $this->confg = $confg;
@@ -72,12 +94,16 @@ class POSSystem
         $this->customerRepository = $customerRepository;
         $this->sequence = $sequence;
         $this->curlClient = $curl;
+        $this->httpClientFactory = $httpClientFactory;
+        $this->zendClient = $zendClient;
+        $this->logger = $logger;
+        $this->json = $json;
     }
 
     public function getMemberInfo($firstName, $lastName, $mobileNumber)
     {
         $posData = $this->callPOSInfoAPI($firstName, $lastName, $mobileNumber);
-        if(isset($posData['birthDay'])) {
+        if (isset($posData['birthDay'])) {
             $posData['birthDay'] = substr_replace($posData['birthDay'], '/', 4, 0);
             $posData['birthDay'] = substr_replace($posData['birthDay'], '/', 7, 0);
         }
@@ -86,54 +112,53 @@ class POSSystem
 
     private function callPOSInfoAPI($firstName, $lastName, $mobileNumber)
     {
-
-
         $result = [];
-        if($lastName == 'Ali') {
-            $result = [
-                'cstmIntgSeq' => 'TW10210000001',
-                'cstmNO' => 'TW1020000012345',
-                'cstmSeq' => 'tw10119130',
-                'firstName' => '學榮',
-                'lastName' => '金',
-                'birthDay' => '20000101',
-                'mobileNo' => $mobileNumber,
-                'email' => $mobileNumber.'@gmail.com',
-                'sex' => 'F',
-                'emailYN' => 'Y',
-                'smsYN' => 'Y',
-                'callYN' => 'N',
-                'dmYN' => 'N',
-                'homeCity' => 'T001',
-                'homeState' => '100',
-                'homeAddr1' => '1-1',
-                'homeZip' => '406'
-            ];
-        }
-        return $result;
-        /*$response = [];
+        $url = $this->confg->getMemberInfoURL();
         try {
-            $params = [
+            $parameters = [
                 'firstName' => $firstName,
                 'lastName' => $lastName,
                 'mobileNumber' => $mobileNumber,
             ];
+            $jsonEncodedData = json_encode($parameters);
 
-            $getUrl = $this->confg->getMemberInfoURL().'/firstName/'.$firstName.'/lastName/'.$lastName.'/mobileNumber/'.$mobileNumber;
-            $url = $this->confg->getMemberInfoURL();
-
-            $headers = ["Content-Type" => "application/json"];
-            $this->curlClient->setHeaders($headers);
-            //$this->curlClient->post($this->confg->getMemberInfoURL());
-            $this->curlClient->get($getUrl);
-            //response will contain the output in form of JSON string
-            $response = $this->curlClient->getBody();
+            $this->curlClient->setOptions([
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => $jsonEncodedData,
+                CURLOPT_HTTPHEADER => [
+                    'Content-type: application/json'
+                ],
+            ]);
+            $this->logger->addAPICallLog(
+                'POS get info API Call',
+                $url,
+                $parameters
+            );
+            $this->curlClient->post($url, $parameters);
+            $apiRespone = $this->curlClient->getBody();
+            $response = $this->json->unserialize($apiRespone);
+            if ($response['message'] == 'SUCCESS') {
+                $result = $response['data']['customerInfo'];
+            } else {
+                $result['message'] = $response['message'];
+            }
+            $this->logger->addAPICallLog(
+                'POS get info API Response',
+                $url,
+                $response
+            );
         } catch (\Exception $e) {
-          $t = $e->getMessage();
+            $result['message'] = $e->getMessage();
+            $this->logger->addExceptionMessage($e->getMessage());
         }
-
-        return $response;*/
-
+        return $result;
     }
 
     /**
@@ -148,73 +173,114 @@ class POSSystem
         try {
             $customer = $this->assignIntegrationNumber($customer);
             $parameters = [];
-            $parameters['cstmIntgSeq'] = $customer->getCustomAttribute('integration_number');
+            $parameters['cstmIntgSeq'] = $customer->getCustomAttribute('integration_number')->getValue();
             $parameters['if_flag'] = 'I';
             $parameters['firstName'] = $customer->getFirstname();
             $parameters['lastName'] = $customer->getLastname();
-            $parameters['birthDay'] = $customer->getDob();
-            $parameters['mobileNo'] = $customer->getCustomAttribute('mobile_number');
+            $parameters['birthDay'] = $customer->getDob()?$customer->getDob():'';
+            $parameters['mobileNo'] = $customer->getCustomAttribute('mobile_number')->getValue();
             $parameters['email'] = $customer->getEmail();
             $parameters['sex'] = $customer->getGender() == '1' ? 'M' : 'F';
             $parameters['emailYN'] = $this->isCustomerSubscribToNewsLetters($customer->getId()) ? 'Y' : 'N';
-            $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+            $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y':'N';
             $parameters['callYN'] = 'N';
             $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-            $parameters['homeCity'] = $customer->getCustomAttribute('dm_city');
-            $parameters['homeState'] = $customer->getCustomAttribute('dm_state');
-            $parameters['homeAddr1'] = $customer->getCustomAttribute('dm_detailed_address');
-            $parameters['homeZip'] = $customer->getCustomAttribute('dm_zipcode');
+            $parameters['homeCity'] = $customer->getCustomAttribute('dm_city')?
+                $customer->getCustomAttribute('dm_city')->getValue():'';
+            $parameters['homeState'] = $customer->getCustomAttribute('dm_state')?
+                $customer->getCustomAttribute('dm_state')->getValue():'';
+            $parameters['homeAddr1'] = $customer->getCustomAttribute('dm_detailed_address')?
+                $customer->getCustomAttribute('dm_detailed_address')->getValue():'';
+            $parameters['homeZip'] = $customer->getCustomAttribute('dm_zipcode')?
+                $customer->getCustomAttribute('dm_zipcode')->getValue():'';
+            $parameters['salOrgCd'] =  $customer->getCustomAttribute('sales_organization_code')?
+                $customer->getCustomAttribute('sales_organization_code')->getValue():'';
+            $parameters['salOffCd'] = $customer->getCustomAttribute('sales_office_code')?
+                $customer->getCustomAttribute('sales_office_code')->getValue():'';
             $parameters['statusCD'] = $action == 'register' ? '01' : '02';
 
             $response = $this->callJoinAPI($parameters);
             $this->savePOSSyncReport($customer, $response);
         } catch (\Exception $e) {
+            $this->logger->addExceptionMessage($e->getMessage());
             return $e->getMessage();
         }
     }
 
     private function assignIntegrationNumber($customer)
     {
-        $posOrOnline = $customer->getCustomAttribute('imported_from_pos')->getValue()==1?'pos':'online';
-        $this->sequence->setCustomerType($posOrOnline);
-        $secquenceNumber = $this->sequence->getNextValue();
-        $customer->setCustomAttribute('integration_number', $secquenceNumber);
-        return $this->customerRepository->save($customer);
+        try {
+            $posOrOnline = 'online';
+            if ($customer->getCustomAttribute('referrer_code')) {
+                $posOrOnline = 'pos';
+            }
+            if ($posOrOnline == 'online') {
+                $posOrOnline = $customer->getCustomAttribute('imported_from_pos')->getValue() == 1 ? 'pos' : 'online';
+            }
+
+            $this->sequence->setCustomerType($posOrOnline);
+            $secquenceNumber = $this->sequence->getNextValue();
+            $customer->setCustomAttribute('integration_number', $secquenceNumber);
+            $customer->setCustomAttribute('sales_organization_code', $this->confg->getOrganizationSalesCode());
+            $customer->setCustomAttribute('sales_office_code', $this->confg->getOfficeSalesCode());
+            return $this->customerRepository->save($customer);
+        } catch (\Exception $e) {
+            $e->getMessage();
+            $this->logger->addExceptionMessage($e->getMessage());
+            return $customer;
+        }
     }
 
     private function callJoinAPI($parameters)
     {
-        return true;
-
-        $response = $this->doRequest(
-            $this->confg->getMemberJoinURL(),
-            $parameters,
-            Request::HTTP_METHOD_POST
-        );
-
-        return $response;
-        /** @var ZendClient $client */
-       /* $client = $this->httpClientFactory->create();
-        $client->setUri($this->confg->getMemberJoinURL());
-        $client->setMethod(\Zend_Http_Client::POST);
-        $client->setHeaders(\Zend_Http_Client::CONTENT_TYPE, 'application/json');
-        $client->setHeaders('Accept', 'application/json');
-        $client->setHeaders("Authorization", "Bearer yourvalue");
-        $client->setParameterPost($parameters);
-
+        $result = [];
         try {
-            $response = $client->request();
+            $url = $this->confg->getMemberJoinURL();
 
-            $responseArray = [];
-            parse_str(strstr($response->getBody(), 'RESULT'), $responseArray);
+            $jsonEncodedData = json_encode($parameters);
 
-            $result->setData(array_change_key_case($responseArray, CASE_LOWER));
-            $result->setData('result_code', $result->getData('result'));
-        } catch (\Zend_Http_Client_Exception $e) {
-            return $e->getMessage();
+            $this->curlClient->setOptions([
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => $jsonEncodedData,
+                CURLOPT_HTTPHEADER => [
+                    'Content-type: application/json'
+                ],
+            ]);
+            $this->logger->addAPICallLog(
+                'POS set info API Call',
+                $url,
+                $parameters
+            );
+            $this->curlClient->post($url, $parameters);
+            $apiRespone = $this->curlClient->getBody();
+            $response = $this->json->unserialize($apiRespone);
+            if ($response['message'] == 'SUCCESS') {
+                $result['message'] = $response['message'];
+                $result['status'] = 1;
+            } else {
+                $result['message'] = $response['message'];
+                $result['status'] = 0;
+            }
+            $this->logger->addAPICallLog(
+                'POS set info API Response',
+                $url,
+                $response
+            );
+
+        } catch (\Exception $e) {
+            $result['message'] = $e->getMessage();
+            $result['status'] = 0;
+            $this->logger->addExceptionMessage($e->getMessage());
         }
 
-        return $result;*/
+        return $result;
     }
 
     /**
@@ -224,7 +290,8 @@ class POSSystem
      *
      * @return bool
      */
-    private function isCustomerSubscribToNewsLetters($customerId) {
+    private function isCustomerSubscribToNewsLetters($customerId)
+    {
         /**
          * @var Subscriber $subscriber
          */
@@ -242,46 +309,9 @@ class POSSystem
      */
     private function savePOSSyncReport($customer, $syncResult)
     {
-        $customer->setCustomAttribute('pos_synced_report', 'Done');
-        $customer->setCustomAttribute('pos_synced_successfully', 1);
+        $customer->setCustomAttribute('pos_synced_report', $syncResult['message']);
+        $customer->setCustomAttribute('pos_synced_successfully', $syncResult['status']);
         $this->customerRepository->save($customer);
     }
 
-    /**
-     * Do API request with provided params.
-     * I follow the way recommended at https://devdocs.magento.com/guides/v2.4/ext-best-practices/tutorials/create-integration-with-api.html
-     * to call external APIs
-     *
-     * @param string $uriEndpoint
-     * @param array $params
-     * @param string $requestMethod
-     *
-     * @return Response
-     */
-    private function doRequest(
-        string $uriEndpoint,
-        array $params = [],
-        string $requestMethod = Request::HTTP_METHOD_GET
-    ): Response {
-        /** @var Client $client */
-        $client = $this->clientFactory->create(['config' => [
-            'base_uri' => self::API_REQUEST_URI
-        ]]);
-
-        try {
-            $response = $client->request(
-                $requestMethod,
-                $uriEndpoint,
-                $params
-            );
-        } catch (GuzzleException $exception) {
-            /** @var Response $response */
-            $response = $this->responseFactory->create([
-                'status' => $exception->getCode(),
-                'reason' => $exception->getMessage()
-            ]);
-        }
-
-        return $response;
-    }
 }

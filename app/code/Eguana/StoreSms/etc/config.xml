@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <eguanasms>
+            <general>
+                <active>1</active>
+                <sender>15886983</sender>
+                <mobile_number_validation_active>1</mobile_number_validation_active>
+            </general>
+            <templates>
+                <registration_verification_active>0</registration_verification_active>
+                <customer_register_sms>eguanasms_templates_customer_register_sms</customer_register_sms>
+                <order_status_pending_active>0</order_status_pending_active>
+                <order_status_pending>eguanasms_templates_order_status_pending</order_status_pending>
+                <order_status_holded_active>0</order_status_holded_active>
+                <order_status_holded>eguanasms_templates_order_status_holded</order_status_holded>
+                <order_status_processing_active>0</order_status_processing_active>
+                <order_status_processing>eguanasms_templates_order_status_processing</order_status_processing>
+                <order_status_canceled_active>0</order_status_canceled_active>
+                <order_status_canceled>eguanasms_templates_order_status_canceled</order_status_canceled>
+                <order_status_complete_active>0</order_status_complete_active>
+                <order_status_complete>eguanasms_templates_order_status_complete</order_status_complete>
+                <order_status_closed_active>0</order_status_closed_active>
+                <order_status_closed>eguanasms_templates_order_status_closed</order_status_closed>
+            </templates>
+        </eguanasms>
+    </default>
+</config>

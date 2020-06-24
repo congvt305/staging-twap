@@ -41,6 +41,19 @@
 
         <p></p>
 
+        <form id="custom-checkout-form" class="form" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+            <fieldset class="fieldset">
+                <legend data-bind="i18n: 'E-Invoice Donation'"></legend>
+                <!-- ko foreach: getRegion('custom-checkout-form-fields') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!--/ko-->
+            </fieldset>
+            <input type="radio" id="donation-true" name="e-invoice-donation" value="true">
+            <label for="donation-true" data-bind="i18n: 'Yes'"/>
+            <input type="radio" style="margin-left: 50px;" id="donation-false" name="e-invoice-donation" value="false" checked="checked">
+            <label for="donation-false" data-bind="i18n: 'No'"/>
+        </form>
+
         <div class="actions-toolbar" data-bind="if: isPaymentAvailable()">
             <div class="primary">
                 <button class="button action primary checkout"

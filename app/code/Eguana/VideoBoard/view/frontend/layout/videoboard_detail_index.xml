@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+* User: arslan
+* Date: 16/6/20
+* Time: 12:35 PM
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Eguana\VideoBoard\Block\View" name="videoboard.details" template="Eguana_VideoBoard::details.phtml" />
+        </referenceContainer>
+    </body>
+</page>

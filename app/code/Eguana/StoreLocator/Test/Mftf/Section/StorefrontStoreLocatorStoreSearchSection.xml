@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /**
+  ~ * @author Eguana Team
+  ~ * @copyriht Copyright (c) ${YEAR} Eguana {http://eguanacommerce.com}
+  ~ * Created byPhpStorm
+  ~ * User:  umer
+  ~ * Date: 06/08/20
+  ~ * Time: 01:06 pm
+  ~ */
+  -->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="StorefrontStoreLocatorStoreSearchSection">
+        <element name="storeSelect" type="text" selector="//a[contains(@href, '/stores/info/list/')]" timeout="800"/>
+        <element name="locationField" type="input" selector="//input[@id='store-search']"/>
+        <element name="storeTypeField" type="select" selector="//select[@id='store-type']//option[@value='retail']"/>
+        <element name="storeSubmitField" type="button" selector="//button[contains(text(), '検索')]"/>
+        <element name="storeSelectFirstField" type="button" selector="//ul[@class= 'stores-listing-ul store-lists items']/li[1]"/>
+        <element name="storeSelectSecondField" type="button" selector="//ul[@class= 'stores-listing-ul store-lists items']/li[2]"/>
+        <element name="storeSelectThirdField" type="button" selector="//ul[@class= 'stores-listing-ul store-lists items']/li[3]"/>
+        <element name="storeSelectThirdFieldOpenMap" type="button" selector="//ul[@class= 'stores-listing-ul store-lists items']/li[3]//div[2]//a"/>
+    </section>
+</sections>

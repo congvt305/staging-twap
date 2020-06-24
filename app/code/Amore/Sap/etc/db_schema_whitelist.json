@@ -1,0 +1,7 @@
+{
+    "sales_order": {
+        "column": {
+            "sap_order_send_btn": true
+        }
+    }
+}

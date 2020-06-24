@@ -51,11 +51,12 @@ use Magento\Framework\App\Action\Action;
                             <?= /* @noEscape */ $_helper->productAttribute($_item, $_item->getShortDescription(), 'short_description') ?>
                         </div>
                     </div>
+
+                    <?= $block->getProductPriceHtml($_item, $type) ?>
+                    
                     <?php if ($templateType) : ?>
                         <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
                     <?php endif; ?>
-
-                    <?= $block->getProductPriceHtml($_item, $type) ?>
 
                     <?= $block->getProductDetailsHtml($_item) ?>
 

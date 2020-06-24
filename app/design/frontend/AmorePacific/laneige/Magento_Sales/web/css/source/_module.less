@@ -579,15 +579,11 @@
     }
 
     .sales-guest-form {
-        .column.main {
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
         .form-orders-search > .actions-toolbar {
-            margin-top: 100px;
-            margin-left: -@layout__width-xs-indent;
-            margin-right: -@layout__width-xs-indent;
+            bottom: 0;
+            left: 0;
+            position: fixed;
+            right: 0;
 
             .action {
                 &:extend(.abs-button-l-mobile all);
@@ -603,8 +599,6 @@
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
     .sales-guest-form {
         .column.main {
-            margin-bottom: 120px;
-
             .actions-toolbar {
                 margin-top: 80px;
 

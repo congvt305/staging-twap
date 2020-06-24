@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /**
+  ~ * @author Eguana Team
+  ~ * @copyriht Copyright (c) ${YEAR} Eguana {http://eguanacommerce.com}
+  ~ * Created byPhpStorm
+  ~ * User:  umer
+  ~ * Date: 06/08/20
+  ~ * Time: 01:06 pm
+  ~ */
+  -->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="AdminManageStoreEntityOne" type="manageStore">
+        <data key="name">Store One</data>
+        <data key="address">東京都町田市原町田7-12-20</data>
+        <data key="telephone">042-720-6053</data>
+        <data key="email">hello@admin.com</data>
+        <data key="timing">xyz</data>
+        <data key="city">東京都</data>
+        <data key="map">35.544051, 139.444823</data>
+    </entity>
+</entities>

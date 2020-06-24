@@ -14,5 +14,6 @@
     <sequence>
         <module name="Magento_Customer"/>
         <module name="Magento_CustomerCustomAttributes"/>
+        <module name="Eguana_StoreSms" />
     </sequence>
 </config>

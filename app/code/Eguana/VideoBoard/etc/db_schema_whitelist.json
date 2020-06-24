@@ -1,0 +1,22 @@
+{
+    "eguana_video_board": {
+        "column": {
+            "entity_id": true,
+            "video_title": true,
+            "video_url": true,
+            "content": true,
+            "description": true,
+            "thumbnail_image": true,
+            "store_id": true,
+            "is_active": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "EGUANA_VIDEO_BOARD_VIDEO_TITLE_DESCRIPTION": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

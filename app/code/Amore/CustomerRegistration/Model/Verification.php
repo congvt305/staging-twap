@@ -17,6 +17,7 @@ use Amore\CustomerRegistration\Helper\Data;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Eguana\StoreSms\Model\SmsSender;
 
 /**
  * It will have main functions for Code verification
@@ -58,6 +59,10 @@ class Verification
      * @var StoreManagerInterface
      */
     private $storeManager;
+    /**
+     * @var SmsSender
+     */
+    private $smsSender;
 
     /**
      * Verification constructor.
@@ -73,13 +78,15 @@ class Verification
         SessionManagerInterface $sessionManager,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         CustomerRepositoryInterface $customerRepositoryInterface,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        SmsSender $smsSender
     ) {
         $this->configHelper = $configHelper;
         $this->sessionManager = $sessionManager;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerRepositoryInterface = $customerRepositoryInterface;
         $this->storeManager = $storeManager;
+        $this->smsSender = $smsSender;
     }
 
     /**
@@ -97,10 +104,8 @@ class Verification
             return $validateMobileNumberResult;
         }
 
-        $verificationCode = Random::getRandomNumber(1000, 9999);
-
-        if ($this->sendSMS($mobileNumber, '1234')) {
-            return $this->setVerificationCode($mobileNumber, '1234');
+        if ($verificationCode = $this->sendSMS($mobileNumber)) {
+            return $this->setVerificationCode($mobileNumber, $verificationCode);
         }
         return __('Can not send verification code.');
     }
@@ -304,9 +309,9 @@ class Verification
      *
      * @return bool
      */
-    private function sendSMS($mobileNumber, $verificationCode)
+    private function sendSMS($mobileNumber)
     {
-        return true;
+        return $this->smsSender->setCode($mobileNumber);
     }
 
     /**

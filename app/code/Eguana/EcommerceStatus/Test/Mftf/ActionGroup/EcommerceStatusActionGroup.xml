@@ -1,0 +1,22 @@
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: yasir
+* Date: 6/17/20
+* Time: 1:52 AM
+*/
+-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="EcommerceStatusActionGroup">
+        <amOnPage url="{{EcommerceStatusPage.url}}" stepKey="openEcommercestatusPage"/>
+        <click selector="{{EcommerceStatusSection.store}}" stepKey="clickOnStore"/>
+        <click selector="{{EcommerceStatusSection.config}}" stepKey="clickOnConfig"/>
+        <click selector="{{EcommerceStatusSection.eguana}}" stepKey="clickOnEguana"/>
+        <click selector="{{EcommerceStatusSection.ecommerce}}" stepKey="clickOnEcommerce"/>
+<!--        <click selector="{{EcommerceStatusSection.enable}}" stepKey="clickOnEnable"/>-->
+        <click selector="{{EcommerceStatusSection.disable}}" stepKey="clickOnDisable"/>
+        <click selector="{{EcommerceStatusSection.save}}" stepKey="clickOnSave"/>
+    </actionGroup>
+</actionGroups>

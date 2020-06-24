@@ -17,7 +17,6 @@ $viewModel = $block->getData('view_model');
     <form class="form create account form-create-account" action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>" method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
         <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
         <fieldset class="fieldset create info">
-            <legend class="legend"><span><?= $block->escapeHtml(__('Personal Information')) ?></span></legend><br>
             <input type="hidden" name="success_url" value="<?= $block->escapeUrl($block->getSuccessUrl()) ?>">
             <input type="hidden" name="error_url" value="<?= $block->escapeUrl($block->getErrorUrl()) ?>">
             <?= $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Name::class)->setObject($block->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
@@ -120,11 +119,10 @@ $viewModel = $block->getData('view_model');
 
         <?php endif; ?>
         <fieldset class="fieldset create account" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>">
-            <legend class="legend"><span><?= $block->escapeHtml(__('Sign-in Information')) ?></span></legend><br>
             <div class="field required">
                 <label for="email_address" class="label"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
                 <div class="control">
-                    <input type="email" name="email" autocomplete="email" id="email_address" value="<?= $block->escapeHtmlAttr($block->getFormData()->getEmail()) ?>" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" class="input-text" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'validate-email':true}">
+                    <input type="email" name="email" autocomplete="email" id="email_address" value="<?= $block->escapeHtmlAttr($viewModel->getSocialMediaEmail()?$viewModel->getSocialMediaEmail():$block->getFormData()->getEmail()) ?>" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" class="input-text" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'validate-email':true}">
                 </div>
             </div>
             <div class="field password required">
@@ -143,6 +141,12 @@ $viewModel = $block->getData('view_model');
                             <span id="password-strength-meter-label" data-role="password-strength-meter-label">
                                 <?= $block->escapeHtml(__('No Password')) ?>
                             </span>
+                        </div>
+                        <div class="password-strength-meter-status">
+                            <span class="password-weak"></span>
+                            <span class="password-medium"></span>
+                            <span class="password-strong"></span>
+                            <span class="password-very-strong"></span>
                         </div>
                     </div>
                 </div>
@@ -183,15 +187,20 @@ $viewModel = $block->getData('view_model');
             <?php endif ?>
 
             <?php $_smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getSmsSubscriptionStatus())]]) ?>
+            <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus())]]) ?>
+
+            <?php if ($_smsSubscriptionStatus->isEnabled() || $_dmSubscriptionStatus->isEnabled()) : ?>
+                <p class="marketing-title"><?= $block->escapeHtml(__('Marketing Consent')) ?></p>
+            <?php endif ?>
+
             <?php if ($_smsSubscriptionStatus->isEnabled()) : ?>
                 <?= $_smsSubscriptionStatus->setDate($block->getFormData()->getSmsSubscriptionStatus())->toHtml() ?>
             <?php endif ?>
 
-            <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus())]]) ?>
             <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
                 <?= $_dmSubscriptionStatus->setDate($block->getFormData()->getDmSubscriptionStatus())->toHtml() ?>
             <?php endif ?>
-            <div class="dm-address" style="<?= $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus()) == 1?'':'display: none'; ?>">
+            <div class="fieldset dm-address" style="<?= $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus()) == 1?'':'display: none'; ?>">
                 <?php $_dmCtiy = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_city', ['data'=>['attribute_code'=>'dm_city', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmCity())]]) ?>
                 <?php if ($_dmCtiy->isEnabled()) : ?>
                     <?= $_dmCtiy->setDate($block->getFormData()->getDmCity())->toHtml() ?>

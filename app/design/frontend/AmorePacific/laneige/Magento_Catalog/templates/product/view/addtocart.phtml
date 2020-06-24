@@ -5,6 +5,8 @@
  */
 
 /** @var $block \Magento\Catalog\Block\Product\View */
+/** @var $helper \Eguana\Share\Helper\Data */
+$helper = $this->helper('Eguana\EcommerceStatus\Helper\Data');
 ?>
 <?php $_product = $block->getProduct(); ?>
 <?php $buttonTitle = __('Add to Cart'); ?>
@@ -51,22 +53,24 @@
     </div>
     <?php else :?>
         <?= $block->getChildHtml('product.info.price', true) ?>
-        <div class="actions">
-            <?php if($_product->getData('offline')):?>
-                <a href="<?= $block->escapeUrl($block->getUrl()) ?>"
-                   title="<?= $block->escapeHtml(__('Find a store')) ?>"
-                   class="action action-offline">
-                    <span><?= $block->escapeHtml(__('Find a store')) ?></span>
-                </a>
-            <?php else :?>
-                <button type="submit"
-                        title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
-                        class="action tocart disabled"
-                        id="product-addtocart-button" disabled>
-                    <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
-                </button>
-            <?php endif; ?>
-        </div>
+        <?php if($helper->getECommerceStatus()) :?>
+            <div class="actions">
+                <?php if($_product->getData('offline')):?>
+                    <a href="<?= $block->escapeUrl($block->getUrl()) ?>"
+                       title="<?= $block->escapeHtml(__('Find a store')) ?>"
+                       class="action action-offline">
+                        <span><?= $block->escapeHtml(__('Find a store')) ?></span>
+                    </a>
+                <?php else :?>
+                    <button type="submit"
+                            title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                            class="action tocart disabled"
+                            id="product-addtocart-button" disabled>
+                        <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
+                    </button>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
 <script type="text/x-magento-init">

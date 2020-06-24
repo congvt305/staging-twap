@@ -1,0 +1,50 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
+ * @package Amasty_Promo
+ */
+?>
+<?php /** @var \Amasty\Promo\Block\Add $block */ ?>
+<div class="ampromo-items-add" data-ampopup-js="message"><?= $block->getPopupLinkHtml()?></div>
+<script type="text/x-magento-init">
+    {
+        "[data-role=ampromo-overlay]": {
+            "Amasty_Promo/js/popup": {
+                "sourceUrl": "<?= $block->escapeUrl($block->getUrl('amasty_promo/popup/reload')) ?>",
+                "uenc":   "<?= $block->escapeUrl($block->getCurrentBase64Url()) ?>",
+                "slickSettings": {
+                    "slidesToShow": 3,
+                    "slidesToScroll": 3,
+                    "dots": true,
+                    "infinite": false,
+                    "respondTo": "slider",
+                    "rows": 0,
+                    "responsive": [
+                        {
+                            "breakpoint": 571,
+                            "settings": {
+                                "slidesToShow": 2,
+                                "slidesToScroll": 2
+                            }
+                        },
+                        {
+                            "breakpoint": 281,
+                            "settings": {
+                                "slidesToShow": 1,
+                                "slidesToScroll": 1
+                            }
+                        }
+                    ]
+                },
+                "commonQty": "<?= (int)$block->getAvailableProductQty()['common_qty'] ?>",
+                "products": <?= \Zend_Json::encode($block->getAvailableProductQty()) ?>,
+                "formUrl": "<?= $block->escapeUrl($block->getFormActionUrl()) ?>",
+                "selectionMethod": <?= (int)$block->getSelectionMethod() ?>,
+                "giftsCounter": <?= (int)$block->getGiftsCounter() ?>,
+                "autoOpenPopup": <?= $block->isOpenAutomatically() ? "true" : "false" ?>
+            }
+        }
+    }
+</script>
+

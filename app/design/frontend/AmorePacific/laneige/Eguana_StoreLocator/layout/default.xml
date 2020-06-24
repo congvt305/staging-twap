@@ -11,7 +11,7 @@
             <block class="Magento\Framework\View\Element\Html\Link" name="store-locator-link">
                 <arguments>
                     <argument name="class" xsi:type="string" translate="true">location</argument>
-                    <argument name="path" xsi:type="string">storelocator</argument>
+                    <argument name="path" xsi:type="string">stores/info/list</argument>
                     <argument name="label" xsi:type="string" translate="true">Store Locator</argument>
                     <argument name="sortOrder" xsi:type="number">120</argument>
                 </arguments>

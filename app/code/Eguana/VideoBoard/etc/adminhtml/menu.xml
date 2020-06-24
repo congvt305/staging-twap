@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 10/6/20
+ * Time: 12:20 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Eguana_VideoBoard::videoboard" title="Video Board" module="Eguana_VideoBoard" sortOrder="120" parent="Magento_Backend::content" resource="Eguana_VideoBoard::videoboard"/>
+        <add id="Eguana_VideoBoard::manage_videoboard" title="Manage Video Board" translate="title" module="Eguana_VideoBoard" sortOrder="10" parent="Eguana_VideoBoard::videoboard"
+             resource="Eguana_VideoBoard::manage_videoboard" action="videoboard/howto/index"/>
+    </menu>
+</config>

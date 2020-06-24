@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: shahroz
+ * Date: 28/1/20
+ * Time: 2:42 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Eguana_StoreLocator::board" title="Store Locator" translate="title" module="Eguana_StoreLocator" parent="Magento_Backend::stores" sortOrder="50" resource="Eguana_StoreLocator::board"/>
+        <add id="Eguana_StoreLocator::stores_info" title="Manage Store Locations" translate="title" module="Eguana_StoreLocator" sortOrder="10" parent="Eguana_StoreLocator::board" action="stores/grid/index" resource="Eguana_StoreLocator::stores_info"/>
+    </menu>
+</config>

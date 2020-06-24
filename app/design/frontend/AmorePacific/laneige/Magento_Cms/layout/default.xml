@@ -7,11 +7,24 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <move element="privacy-policy-link" destination="footer_links" after="ugc-link"/>
+        <referenceBlock name="privacy-policy-link">
+            <arguments>
+                <argument name="label" xsi:type="string" translate="true">Privacy Policy</argument>
+                <argument name="path" xsi:type="string">privacy-policy</argument>
+            </arguments>
+        </referenceBlock>
         <referenceBlock name="footer_links">
             <block class="Magento\Framework\View\Element\Html\Link\Current" name="ugc-link" before="contact-us-link">
                 <arguments>
                     <argument name="label" xsi:type="string" translate="true">UGCT&amp;C</argument>
                     <argument name="path" xsi:type="string">ugc-terms-and-conditions</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Framework\View\Element\Html\Link\Current" name="terms-link" before="-">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Terms&amp;Conditions</argument>
+                    <argument name="path" xsi:type="string">terms-and-conditions</argument>
                 </arguments>
             </block>
             <block class="Magento\Framework\View\Element\Html\Link\Current" name="sitemap-link" after="-">

@@ -97,15 +97,16 @@
 
     .field.choice {
         .lib-vendor-prefix-display(flex);
-        .lib-vendor-box-align(center);
-        -ms-flex-item-align: center;
-        -webkit-align-self: center;
-        align-self: center;
+        .lib-vendor-box-align(stretch);
+        -ms-flex-item-align: stretch;
+        -webkit-align-self: stretch;
+        align-self: stretch;
 
         .label {
             display: inline;
             font-weight: normal;
             margin-bottom: 0;
+            width: calc(~'100% - 36px');
         }
     }
 
@@ -218,6 +219,12 @@
         }
     }
 
+    input[type="radio"] + .label {
+        & + input[type="radio"] {
+            margin-left: 32px;
+        }
+    }
+
     fieldset.field {
         border: 0;
         padding: 0;
@@ -225,7 +232,9 @@
 
     .field {
         &.date {
-            &:extend(.abs-field-date all);
+            .control {
+                position: relative;
+            }
 
             .time-picker {
                 display: inline-block;
@@ -237,6 +246,12 @@
         .message {
             &.warning {
                 margin-top: @indent__s;
+            }
+        }
+
+        &.gender.required {
+            input.radio + label:after {
+                display: none;
             }
         }
     }
@@ -281,7 +296,7 @@
             .lib-button-reset();
             .lib-icon-font(
             @_icon-font-content: @icon-calendar,
-            @_icon-font-color: @primary__color__lighter,
+            @_icon-font-color: @primary__color__darker,
             @_icon-font-size: @icon-calendar__font-size,
             @_icon-font-line-height: @form-element-input__height,
             @_icon-font-display: block,
@@ -290,6 +305,7 @@
             display: inline-block;
             position: absolute;
             right: 16px;
+            top: 0;
             vertical-align: middle;
 
             &:focus {

@@ -42,27 +42,12 @@ class Data extends AbstractHelper
      * @var array
      */
     private $errorMessages = array();
-    /**
-     * @var \Magento\Sales\Model\Service\InvoiceService
-     */
-    private $invoiceService;
-    /**
-     * @var \Magento\Framework\DB\Transaction
-     */
-    private $transaction;
-    /**
-     * @var \Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface
-     */
-    private $transactionBuilder;
 
     public function __construct(
         EcpayOrderModel $ecpayOrderModel,
         EcpayPaymentModel $ecpayPaymentModel,
         ModuleListInterface $moduleList,
-        ProductMetadataInterface $productMetadata,
-        \Magento\Sales\Model\Service\InvoiceService $invoiceService,
-        \Magento\Framework\DB\Transaction $transaction,
-        \Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface $transactionBuilder
+        ProductMetadataInterface $productMetadata
     ) {
         $this->_ecpayOrderModel = $ecpayOrderModel;
         $this->_ecpayPaymentModel = $ecpayPaymentModel;
@@ -72,9 +57,6 @@ class Data extends AbstractHelper
             'invalidPayment' => __('Invalid payment method'),
             'invalidOrder' => __('Invalid order'),
         );
-        $this->invoiceService = $invoiceService;
-        $this->transaction = $transaction;
-        $this->transactionBuilder = $transactionBuilder;
     }
 
     public function getChoosenPayment()
@@ -237,9 +219,9 @@ class Data extends AbstractHelper
 
                         $this->setOrderCommentForFront($order, $comment, $status, EcpayOrderModel::NOTIFY_PAYMENT_RESULT);
 
-                        $transaction = $this->createTransaction($order, $paymentData);
+                        $transaction = $this->_ecpayPaymentModel->createTransaction($order, $paymentData);
 
-                        $this->createInvoice($order, $transaction);
+                        $this->_ecpayPaymentModel->createInvoice($order, $transaction);
 
                         unset($status, $pattern, $comment);
                         break;
@@ -343,70 +325,6 @@ class Data extends AbstractHelper
             return $version['setup_version'];
         } else {
             return null;
-        }
-    }
-
-    /**
-     * @param \Magento\Sales\Model\Order $order
-     * @param $paymentData
-     * @return \Magento\Sales\Api\Data\TransactionInterface
-     * @throws Exception
-     */
-    private function createTransaction(\Magento\Sales\Model\Order $order, $paymentData): \Magento\Sales\Api\Data\TransactionInterface
-    {
-        $payment = $order->getPayment();
-        $payment->setLastTransId($paymentData["TradeNo"]);
-        $payment->setTransactionId($paymentData["TradeNo"]);
-        $payment->setAdditionalInformation([\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => (array)$paymentData]);
-
-        // Formatted price
-        $formatedPrice = $order->getBaseCurrency()->formatTxt($order->getGrandTotal());
-
-        // Prepare transaction
-        $transaction = $this->transactionBuilder->setPayment($payment)
-            ->setOrder($order)
-            ->setTransactionId($paymentData['TradeNo'])
-            ->setAdditionalInformation([\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => (array)$paymentData])
-            ->setFailSafe(true)
-            ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_CAPTURE);
-
-        // Add transaction to payment
-        $payment->addTransactionCommentsToOrder($transaction, __('The authorized amount is %1.', $formatedPrice));
-        $payment->setParentTransactionId(null);
-
-        // Save payment, transaction and order
-        $payment->save();
-        $order->save();
-        $transaction->save();
-        return $transaction;
-    }
-
-    /**
-     * @param \Magento\Sales\Model\Order $order
-     * @param \Magento\Sales\Api\Data\TransactionInterface $transaction
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
-    private function createInvoice(\Magento\Sales\Model\Order $order, \Magento\Sales\Api\Data\TransactionInterface $transaction): void
-    {
-        if ($order->canInvoice()) {
-            $invoice = $this->invoiceService->prepareInvoice($order);
-            $invoice->register();
-
-            if ($invoice->canCapture()) {
-                $invoice->capture();
-            }
-
-            $invoice->setTransactionId($transaction->getTransactionId());
-            $invoice->save();
-
-            $transactionSave = $this->transaction->addObject(
-                $invoice
-            )->addObject(
-                $invoice->getOrder()
-            );
-
-            $transactionSave->save();
-            $order->save();
         }
     }
 }

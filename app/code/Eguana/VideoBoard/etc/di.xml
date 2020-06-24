@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 9/6/20
+* Time: 1:15 PM
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Eguana\VideoBoard\Api\Data\VideoBoardInterface" type="Eguana\VideoBoard\Model\VideoBoard" />
+    <preference for="Eguana\VideoBoard\Api\VideoBoardRepositoryInterface" type="Eguana\VideoBoard\Model\VideoBoardRepository" />
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="videoboard_howto_listing_data_source" xsi:type="string">Eguana\VideoBoard\Model\ResourceModel\VideoBoard\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Eguana\VideoBoard\Model\ResourceModel\VideoBoard\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">eguana_video_board</argument>
+            <argument name="eventPrefix" xsi:type="string">videoboard_howto_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">videoboard_howto_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Eguana\VideoBoard\Model\ResourceModel\VideoBoard</argument>
+        </arguments>
+    </type>
+    <virtualType name="VideoBoardGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

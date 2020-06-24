@@ -166,7 +166,7 @@ define([
                             if(response.pos.firstName){
                                 $('.form-create-account #firstname').val(response.pos.firstName);
                                 $('.form-create-account #lastname').val(response.pos.lastName);
-                                $('.form-create-account #mobile_number').val(response.pos.mobileNo);
+                                $('.form-create-account #mobile_number').val($(this.options.mobileNumberSelector).val());
                                 $('.form-create-account #email_address').val(response.pos.email);
                                 $('.form-create-account #gender').val(response.pos.sex == 'M'?1:2);
                                 $('.form-create-account #dob').val(response.pos.birthDay);
@@ -199,12 +199,12 @@ define([
                             {
                                 window.location.replace(response.url);
                             }else {
-                                $('.pos-verification-message').html(response.message);
+                                $('.pos-verification-message span').html(response.message);
                                 $('.pos-verification-message').show();
                             }
                         }
                         else {
-                            $('.pos-verification-message').html(response.message);
+                            $('.pos-verification-message span').html(response.message);
                             $('.pos-verification-message').show();
                         }
                     }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /**
+  ~ * @author Eguana Team
+  ~ * @copyriht Copyright (c) ${YEAR} Eguana {http://eguanacommerce.com}
+  ~ * Created byPhpStorm
+  ~ * User:  umer
+  ~ * Date: 06/08/20
+  ~ * Time: 01:06 pm
+  ~ */
+  -->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="StorefrontStoreLocatorStoreSearchTest">
+        <annotations>
+            <features value="Store Locator Store Search"/>
+            <stories value="Search store by city, zip or location and store type via the Storefront"/>
+            <title value="You should be able to search store via the storefront"/>
+            <description value="You should be able to search store via the storefront."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="VTN-00001"/>
+            <group value="StoreLocator"/>
+        </annotations>
+        <actionGroup stepKey="navigateToStoreSearchPage" ref="StorefrontStoreLocatorStoreSearchActionGroup">
+            <argument name="store" value="StoreEntityOne"/>
+        </actionGroup>
+    </test>
+</tests>
