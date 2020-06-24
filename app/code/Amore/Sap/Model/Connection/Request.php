@@ -56,11 +56,11 @@ class Request
         $this->scopeConfig = $scopeConfig;
     }
 
-    public function postRequest($requestData, $type = 0)
+    public function postRequest($requestData, $type = 'confirm')
     {
-        $path = $this
+        $path = $this->getPath($type);
 
-        $url = $this->getUrl();
+        $url = $this->getUrl() . $path;
 
         $this->curl->addHeader('Content-Type', 'application/json');
         $this->curl->post($url, $requestData);
@@ -97,10 +97,10 @@ class Request
     public function getPath($type)
     {
         switch ($type) {
-            case 0:
+            case 'confirm':
                 $path = $this->scopeConfig->getValue(self::ORDER_CONFIRM_PATH, 'store');
                 break;
-            case 1:
+            case 'cancel':
                 $path = $this->scopeConfig->getValue(self::ORDER_CANCEL_PATH, 'store');
                 break;
             default:
