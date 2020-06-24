@@ -80,20 +80,38 @@ class SapOrderConfirmData
         $this->storeRepository = $storeRepository;
     }
 
+    /**
+     * @param $incrementId
+     * @return array[]
+     * @throws NoSuchEntityException
+     */
     public function singleOrderData($incrementId)
     {
-        $request = [
-            "request" => [
-                "header" => [
-                    "source" => "source"
-                ],
-                "input" => [
-                    "itHead" => $this->getOrderData($incrementId),
-                    'itItem' => $this->getOrderItem($incrementId)
-                ]
-            ]
-        ];
+        $orderData = $this->getOrderData($incrementId);
+        $itemData = $this->getOrderItem($incrementId);
 
+        if (empty($orderData) && empty($itemData)) {
+            $msg = __("Order Data and Item Data do not exist.");
+            return ['code' => "0001", "message" => $msg];
+        } elseif (empty($orderData)) {
+            $msg = __("Order Data does not exist.");
+            return ['code' => "0001", "message" => $msg];
+        } elseif(empty($itemData)) {
+            $msg = __("Item Data does not exist.");
+            return ['code' => "0001", "message" => $msg];
+        } else {
+            $request = [
+                "request" => [
+                    "header" => [
+                        "source" => "source"
+                    ],
+                    "input" => [
+                        "itHead" => $this->getOrderData($incrementId),
+                        'itItem' => $this->getOrderItem($incrementId)
+                    ]
+                ]
+            ];
+        }
         return $request;
     }
 
@@ -148,10 +166,13 @@ class SapOrderConfirmData
         $invoice = $this->getInvoice($orderData->getEntityId());
         $bindData = [];
 
+        if ($orderData == null) {
+            throw new NoSuchEntityException(
+                __("Such order does not exist. Check the data and try again")
+            );
+        }
+
         if ($invoice != null) {
-            if ($orderData == null) {
-                throw new NoSuchEntityException(__('Such Order Data does not exist.'));
-            }
             $shippingAddress = $orderData->getShippingAddress();
 
             $bindData[] = [
@@ -209,41 +230,52 @@ class SapOrderConfirmData
      */
     public function getOrderItem($incrementId)
     {
+        $orderItemData = [];
+
         /** @var Order $order */
         $order = $this->getOrderInfo($incrementId);
+        $invoice = $this->getInvoice($order->getEntityId());
 
-        $orderItems = $order->getAllVisibleItems();
-        $orderItemData = [];
-        $cnt = 1;
-        /** @var \Magento\Sales\Api\Data\OrderItemInterface $orderItem */
-        foreach ($orderItems as $orderItem) {
-            $itemGrandTotal = $orderItem->getRowTotal() - $orderItem->getDiscountAmount() + $orderItem->getTaxAmount();
-            $orderItemData[] = [
-                'itemVkorg' => '영업조직. 중국:CN10, 프랑스:FR40, 미국:US10',
-                'itemKunnr' => '각 직영몰 거래처코드. 국가코드 + 순번(6)',
-                'itemOdrno' => $order->getIncrementId(),
-                'itemPosnr' => $cnt,
-                'itemMatnr' => 'item Material',
-                'itemSatnr' => '??',
-                'itemMenge' => $orderItem->getQtyOrdered(),
-                'itemMeins' => '아이템 단위',
-                'itemNsamt' => $orderItem->getPriceInclTax(),
-                'itemDcamt' => $orderItem->getDiscountAmount(),
-                'itemSlamt' => $itemGrandTotal,
-                'itemMiamt' => '마일리지 사용비율',
-                'itemFgflg' => '무상제공인경우 Y 아니면 N',
-                'itemMilfg' => '마일리지 구매인 경우 Y 아니면 N',
-                'itemAuart' => $this->getOrderType($order->getEntityId()),
-                'itemAugru' => 'order reason',
-                'itemAbrvw' => 'USAGE INDICATOR',
-                'itemNetwr' => $orderItem->getRowTotal(),
-                'itemMwsbp' => $orderItem->getTaxAmount(),
-                'itemVkorg_ori' => '영업조직. 중국:CN10, 프랑스:FR40, 미국:US10',
-                'itemKunnr_ori' => '각 직영몰 거래처코드. 국가코드 + 순번(6)',
-                'itemOdrno_ori' => $order->getIncrementId(),
-                'itemPosnr_ori' => $cnt
-            ];
-            $cnt++;
+        if ($order == null) {
+            throw new NoSuchEntityException(
+                __("Such order does not exist. Check the data and try again")
+            );
+        }
+
+        if ($invoice != null) {
+
+            $orderItems = $order->getAllVisibleItems();
+            $cnt = 1;
+            /** @var \Magento\Sales\Api\Data\OrderItemInterface $orderItem */
+            foreach ($orderItems as $orderItem) {
+                $itemGrandTotal = $orderItem->getRowTotal() - $orderItem->getDiscountAmount() + $orderItem->getTaxAmount();
+                $orderItemData[] = [
+                    'itemVkorg' => '영업조직. 중국:CN10, 프랑스:FR40, 미국:US10',
+                    'itemKunnr' => '각 직영몰 거래처코드. 국가코드 + 순번(6)',
+                    'itemOdrno' => $order->getIncrementId(),
+                    'itemPosnr' => $cnt,
+                    'itemMatnr' => 'item Material',
+                    'itemSatnr' => '뭐지이거',
+                    'itemMenge' => $orderItem->getQtyOrdered(),
+                    'itemMeins' => '아이템 단위',
+                    'itemNsamt' => $orderItem->getPriceInclTax(),
+                    'itemDcamt' => $orderItem->getDiscountAmount(),
+                    'itemSlamt' => $itemGrandTotal,
+                    'itemMiamt' => '마일리지 사용비율',
+                    'itemFgflg' => '무상제공인경우 Y 아니면 N',
+                    'itemMilfg' => '마일리지 구매인 경우 Y 아니면 N',
+                    'itemAuart' => $this->getOrderType($order->getEntityId()),
+                    'itemAugru' => 'order reason, 뭐여 이건',
+                    'itemAbrvw' => 'USAGE INDICATOR, 뭐임',
+                    'itemNetwr' => $orderItem->getRowTotal(),
+                    'itemMwsbp' => $orderItem->getTaxAmount(),
+                    'itemVkorg_ori' => '영업조직. 중국:CN10, 프랑스:FR40, 미국:US10',
+                    'itemKunnr_ori' => '각 직영몰 거래처코드. 국가코드 + 순번(6)',
+                    'itemOdrno_ori' => $order->getIncrementId(),
+                    'itemPosnr_ori' => $cnt
+                ];
+                $cnt++;
+            }
         }
         return $orderItemData;
     }
