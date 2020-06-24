@@ -163,35 +163,6 @@ class SapProductManagement implements SapProductManagementInterface
 //        $source = $this->request->getParam('source');
         $storeId = $this->getStore($stockData['mallId'])->getId();
 
-//        foreach ($stockData as $stockDatum) {
-//            /**
-//             * @var $product \Magento\Catalog\Model\Product
-//             */
-//            $product = $this->getProductBySku($stockDatum['matnr'], $storeId);
-//            if (gettype($product) == 'string') {
-//                $result[$stockDatum['matnr']] = ['code' => "0001", 'message' => $product];
-//                continue;
-//            }
-//
-//            $websiteId = $this->getStore($mallId)->getWebsiteId();
-//            $websiteCode = $this->storeManagerInterface->getWebsite($websiteId)->getCode();
-//
-//            $sourceCode = $this->getSourceCodeByWebsiteCode($websiteCode);
-//
-//            $sourceItems[] = $this->saveProductQtyIntoSource($sourceCode, $stockDatum);
-//
-//            try {
-//                $this->sourceItemsSaveInterface->execute($sourceItems);
-//                $result[$stockDatum['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
-//            } catch (CouldNotSaveException $e) {
-//                $result[$stockDatum['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-//            } catch (InputException $e) {
-//                $result[$stockDatum['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-//            } catch (ValidationException $e) {
-//                $result[$stockDatum['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-//            }
-//        }
-
         /**
          * @var $product \Magento\Catalog\Model\Product
          */
@@ -295,10 +266,9 @@ class SapProductManagement implements SapProductManagementInterface
         if (gettype($product) == 'string') {
             $result[$priceData['matnr']] = ['code' => "0001", 'message' => $product];
         } else {
-            $product->setPrice(floatval($priceData['kbetrInv']));
-
             try {
 //            $this->productAction->updateAttributes($productIds, $attributeData, $storeId);
+                $product->setPrice(floatval($priceData['kbetrInv']));
                 $this->productRepository->save($product);
 
                 $result[$priceData['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
@@ -403,7 +373,7 @@ class SapProductManagement implements SapProductManagementInterface
                 $storeCode = 'tw_laneige';
                 break;
             default:
-                $storeCode = 'default';
+                $storeCode = 'tw_laneige';
         }
         return $storeCode;
     }

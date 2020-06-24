@@ -15,6 +15,7 @@ use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
@@ -64,16 +65,22 @@ class OrderSend extends Action
         $orderId = $this->getRequest()->getParam('id');
         $order = $this->orderRepository->get($orderId);
 
-        $orderSendData = $this->sapOrderConfirmData->singleOrderData($order->getIncrementId());
+        try {
+            $orderSendData = $this->sapOrderConfirmData->singleOrderData($order->getIncrementId());
+            $result = $this->request->postRequest($this->json->serialize($orderSendData), $order->getStoreId());
 
-        $result = $this->request->postRequest($this->json->serialize($orderSendData));
 
-        $resultSize = count($result);
+            $resultSize = count($result);
+//            $resultSize = 1;
 
-        if ($resultSize > 0) {
-            $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
-        } else {
-            $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP.'));
+            if ($resultSize > 0) {
+                $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+            } else {
+                $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP.'));
+            }
+
+        } catch (NoSuchEntityException $e) {
+            $this->messageManager->addErrorMessage($e->getMessage());
         }
 
         /** @var Redirect $resultRedirect */

@@ -42,4 +42,14 @@ class SapInventoryStock extends AbstractExtensibleModel implements SapInventoryS
     {
         return $this->setData('mallId', $mallId);
     }
+
+    public function getSource()
+    {
+        return $this->getData('source');
+    }
+
+    public function setSource($source)
+    {
+        return $this->setData('source', $source);
+    }
 }
