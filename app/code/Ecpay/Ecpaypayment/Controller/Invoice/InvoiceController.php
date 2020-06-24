@@ -10,32 +10,31 @@
 
 namespace Ecpay\Ecpaypayment\Controller\Invoice;
 
-use Ecpay\Ecpaypayment\Helper\Data as EcpayHelper;
+use Ecpay\Ecpaypayment\Model\Payment as EcpayPaymentModel;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 
 class InvoiceController extends Action
 {
     /**
-     * @var EcpayHelper
+     * @var EcpayPaymentModel
      */
-    private $ecpayHelper;
+    private $ecpayPaymentModel;
 
     public function __construct(
         Context $context,
-        EcpayHelper $ecpayHelper
+        EcpayPaymentModel $ecpayPaymentModel
     ) {
         parent::__construct($context);
-        $this->ecpayHelper = $ecpayHelper;
+        $this->ecpayPaymentModel = $ecpayPaymentModel;
     }
 
     public function execute()
     {
         try {
             $orderId = $this->getRequest()->getParam("order_id");
-            $this->ecpayHelper->createEInvoice($orderId);
+            $this->ecpayPaymentModel->createEInvoice($orderId);
         } catch (\Exception $e) {
-            $this->exceptionLogger->logException($e);
             throw $e;
         }
     }
