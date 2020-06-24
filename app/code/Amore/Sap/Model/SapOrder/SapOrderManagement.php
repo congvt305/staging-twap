@@ -10,8 +10,12 @@ namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Api\SapOrderManagementInterface;
 use Amore\Sap\Model\SapOrder\SapOrderConfirm;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Sales\Api\Data\OrderInterfaceFactory;
+use Magento\Sales\Api\OrderRepositoryInterface;
 
 class SapOrderManagement implements SapOrderManagementInterface
 {
@@ -26,47 +30,60 @@ class SapOrderManagement implements SapOrderManagementInterface
     const SAP_ORDER_CANCEL = 'sap_order_cancel';
 
     /**
-     * @var \Magento\Sales\Api\Data\OrderInterfaceFactory
+     * @var OrderInterfaceFactory
      */
     private $orderInterfaceFactory;
     /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     * @var OrderRepositoryInterface
      */
     private $orderRepository;
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
 
     /**
      * SapOrderManagement constructor.
-     * @param \Magento\Sales\Api\Data\OrderInterfaceFactory $orderInterfaceFactory
-     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+     * @param OrderInterfaceFactory $orderInterfaceFactory
+     * @param OrderRepositoryInterface $orderRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      */
     public function __construct(
-        \Magento\Sales\Api\Data\OrderInterfaceFactory $orderInterfaceFactory,
-        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+        OrderInterfaceFactory $orderInterfaceFactory,
+        OrderRepositoryInterface $orderRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder
     ) {
         $this->orderInterfaceFactory = $orderInterfaceFactory;
         $this->orderRepository = $orderRepository;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 
-    public function orderStatus($source, $mallId, $orderStatusData)
+    public function orderStatus($orderStatusData)
     {
         $result = [];
-        foreach ($orderStatusData as $orderStatusDatum) {
-            $incrementId = $orderStatusDatum['ordno'];
-            /** @var \Magento\Sales\Model\Order $orderModel */
-            $orderModel = $this->orderInterfaceFactory->create();
-            $order = $orderModel->loadByIncrementId($incrementId);
+
+        $orders = $this->getOrderByIncrementId($orderStatusData['odrno']);
+
+        if ($orders->getTotalCount() == 0) {
+            $result[$orderStatusData['odrno']] = ['code' => "0001", 'message' => "Such Order Increment Id does not Exist."];
+        } elseif ($orders->getTotalCount() > 1) {
+            $result[$orderStatusData['odrno']] = ['code' => "0001", 'message' => "There are more than two orders with same Increment Id."];
+        } else {
+            $order = $orders->getItems()[0];
 
 
         }
     }
 
-    public function orderConfirm($incrementId)
+    /**
+     * @param $incrementId
+     * @return \Magento\Sales\Api\Data\OrderSearchResultInterface
+     */
+    public function getOrderByIncrementId($incrementId)
     {
-        if (!$incrementId) {
-            throw new InputException(__('An Increment Id is needed. Please set the Increment Id and try again.'));
-        }
+        $orderFilter = $this->searchCriteriaBuilder->addFilter('increment_id', $incrementId)->create();
 
-
+        return $this->orderRepository->getList($orderFilter);
     }
 
     public function orderStatusList($orderStatus)

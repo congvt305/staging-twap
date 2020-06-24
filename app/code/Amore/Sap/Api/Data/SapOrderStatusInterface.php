@@ -10,51 +10,89 @@ namespace Amore\Sap\Api\Data;
 
 interface SapOrderStatusInterface
 {
-    const ORDER_ID = 'order_id';
-
-    const INCREMENT_ID = 'increment_id';
-
-    const STORE_ID = 'store_id';
-
-    const STATUS = 'status';
-
-    /**
-     * @return int
-     */
-    public function getOrderId();
-
-    /**
-     * @param int $orderId
-     */
-    public function setOrderId($orderId);
+    const SOURCE = 'source';
+    const ORDER_NO = 'odrno';
+    const ORDER_STATUS = 'odrstat';
+    const TRACKING_NO = 'ztrackId';
+    const SAP_ORDER_CREATION_FAIL_CODE = 'ugcod';
+    const SAP_ORDER_CREATION_FAIL_REASON = 'ugtxt';
+    const MALL_ID = 'mallId';
 
     /**
      * @return string
      */
-    public function getIncrementId();
+    public function getSource();
 
     /**
-     * @param string $incrementId
+     * @return $this
+     * @param string $source
      */
-    public function setIncrementId($incrementId);
-
-    /**
-     * @return int
-     */
-    public function getStoreId();
-
-    /**
-     * @param int $storeId
-     */
-    public function setStoreId($storeId);
+    public function setSource($source);
 
     /**
      * @return string
      */
-    public function getStatus();
+    public function getOdrno();
 
     /**
-     * @param string $status
+     * @return $this
+     * @param string $odrno
      */
-    public function setStatus($status);
+    public function setOdrno($odrno);
+
+    /**
+     * @return string
+     */
+    public function getOdrstat();
+
+    /**
+     * @return $this
+     * @param string $odrstat
+     */
+    public function setOdrstat($odrstat);
+
+    /**
+     * @return string
+     */
+    public function getZtrackId();
+
+    /**
+     * @return $this
+     * @param string $ztrackId
+     */
+    public function setZtrackId($ztrackId);
+
+    /**
+     * @return string
+     */
+    public function getUgcod();
+
+    /**
+     * @return $this
+     * @param string $ugcod
+     */
+    public function setUgcod($ugcod);
+
+    /**
+     * @return string
+     */
+    public function getUgtxt();
+
+    /**
+     * @return $this
+     * @param string $ugtxt
+     */
+    public function setUgtxt($ugtxt);
+
+    /**
+     * @return string
+     */
+    public function getMallId();
+
+    /**
+     * @return $this
+     * @param string $mallId
+     */
+    public function setMallId($mallId);
+
 }

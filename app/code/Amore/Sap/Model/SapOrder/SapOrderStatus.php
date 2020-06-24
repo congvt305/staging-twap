@@ -13,63 +13,74 @@ use Magento\Framework\Model\AbstractExtensibleModel;
 
 class SapOrderStatus extends AbstractExtensibleModel implements SapOrderStatusInterface
 {
-    /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
-     */
-    private $orderRepository;
 
-    /**
-     * SapOrderStatus constructor.
-     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
-     */
-    public function __construct(
-      \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
-    ) {
-        $this->orderRepository = $orderRepository;
+    public function getSource()
+    {
+        return $this->getData(self::SOURCE);
     }
 
-    public function getOrderId()
+    public function setSource($source)
     {
-        return $this->getData(self::ORDER_ID);
+        return $this->setData(self::SOURCE, $source);
     }
 
-    public function setOrderId($orderId)
+    public function getOdrno()
     {
-        return $this->setData(self::ORDER_ID, $orderId);
+        return $this->getData(self::ORDER_NO);
     }
 
-    public function getIncrementId()
+    public function setOdrno($odrno)
     {
-        return $this->getData(self::INCREMENT_ID);
+        return $this->setData(self::ORDER_NO, $odrno);
     }
 
-    public function setIncrementId($incrementId)
+    public function getOdrstat()
     {
-        return $this->setData(self::INCREMENT_ID, $incrementId);
+        return $this->getData(self::ORDER_STATUS);
     }
 
-    public function getStoreId()
+    public function setOdrstat($odrstat)
     {
-        return $this->getData(self::STORE_ID);
+        return $this->setData(self::ORDER_STATUS, $odrstat);
     }
 
-    public function setStoreId($storeId)
+    public function getZtrackId()
     {
-        return $this->setData(self::STORE_ID, $storeId);
+        return $this->getData(self::TRACKING_NO);
     }
 
-    public function getStatus()
+    public function setZtrackId($ztrackId)
     {
-        return $this->getData(self::STATUS);
+        return $this->setData(self::TRACKING_NO, $ztrackId);
     }
 
-    public function setStatus($status)
+    public function getUgcod()
     {
-        return $this->setData(self::STATUS, $status);
+        return $this->getData(self::SAP_ORDER_CREATION_FAIL_CODE);
     }
 
-    public function getOrder($orderId)
+    public function setUgcod($ugcod)
     {
-        return $this->orderRepository->get($orderId);
+        return $this->setData(self::SAP_ORDER_CREATION_FAIL_CODE, $ugcod);
+    }
+
+    public function getUgtxt()
+    {
+        return $this->getData(self::SAP_ORDER_CREATION_FAIL_REASON);
+    }
+
+    public function setUgtxt($ugtxt)
+    {
+        return $this->setData(self::SAP_ORDER_CREATION_FAIL_REASON, $ugtxt);
+    }
+
+    public function getMallId()
+    {
+        return $this->getData(self::MALL_ID);
+    }
+
+    public function setMallId($mallId)
+    {
+        return $this->setData(self::MALL_ID, $mallId);
     }
 }
