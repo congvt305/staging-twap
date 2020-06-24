@@ -56,6 +56,12 @@
             background-color: @ampromo-items__background-color;
         }
 
+        h2 {
+            margin-top: 0;
+            font-size: 20px;
+            line-height: 1.5;
+        }
+
         .ampromo-popup-title,
         .ampromo-item-buttons,
         .ampromo-title {
@@ -70,14 +76,14 @@
             & {
                 position: relative;
                 box-sizing: border-box;
-                padding: 20px;
-                margin: 0 8px 7px;
+                padding: 20px @indent__s;
+                margin: 0 8px;
                 border: @ampromo-item__border;
                 transition: .6s;
             }
 
             &:hover {
-                background: #ccc;
+                border-color: #ccc;
             }
         }
 
@@ -136,7 +142,16 @@
         }
 
         .ampromo-title {
-            margin: 0;
+            &:extend(.abs-product-link all);
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            -webkit-hyphens: auto;
+            display: block;
+            font-size: 16px;
+            line-height: 1.2;
+            hyphens: auto;
+            margin: @indent__xs 0;
+            word-wrap: break-word;
         }
     }
 
@@ -180,6 +195,10 @@
 
         .slick-dots {
             padding: 0!important;
+
+            li {
+                vertical-align: top;
+            }
         }
 
         .slick-dots button {
@@ -205,9 +224,14 @@
             margin-bottom: 15px;
             padding: 10px;
             border: 1px solid @border-color__base;
-            background: #f7f7f7;
+            background: @sidebar__background-color;
             text-align: center;
             font-size: 16px;
+
+            .checkout-index-index & {
+                border: none;
+                background: @page__background-color;
+            }
         }
 
         > a {
@@ -224,18 +248,17 @@
     .checkout-index-index .ampromo-items-add:before {
         content: '';
         display: inline-block;
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
         margin-right: 12px;
         background: @ampromo-gift__background-image no-repeat;
         background-size: contain;
-        vertical-align: middle;
+        vertical-align: top;
     }
 
     .ampromo-items-form {
         & {
             background: #fff;
-            padding: 5px;
         }
 
         .ampromo-qty {
@@ -368,11 +391,18 @@
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-    .checkout-container .opc-estimated-wrapper {
-        margin-top: 10px;
-    }
-
     .checkout-container .authentication-wrapper {
         margin-top: -12px;
+    }
+
+    .ampromo-items-add {
+        margin-bottom: 0;
+
+        .checkout-index-index & {
+            margin-bottom: @indent__m;
+            margin-left: -@layout__width-xs-indent;
+            margin-right: -@layout__width-xs-indent;
+
+        }
     }
 }
