@@ -17,7 +17,6 @@ $magazineCollection = $viewModel->getMagazineTotalCollection();
                              alt="<?= $block->escapeHtml($magazineItem['thumbnail_alt']);?>" />
                     </span>
                 </a>
-                <h1><?= $block->escapeHtml($magazineItem['show_date']);?></h1>
             </div>
         <?php endforeach; ?>
     <?php endif;?>
@@ -35,7 +34,6 @@ $magazineCollection = $viewModel->getMagazineTotalCollection();
                                      alt="<?= $block->escapeHtml($magazineItem['thumbnail_alt']);?>" />
                             </span>
                     </a>
-                    <h1><?= $block->escapeHtml($magazineItem['show_date']);?></h1>
                     <div class="block-title">
                         <strong><?= $block->escapeHtml($magazineItem['title']) ?></strong>
                     </div>
@@ -58,19 +56,19 @@ $magazineCollection = $viewModel->getMagazineTotalCollection();
                                  alt="<?= $block->escapeHtml($magazineItem['thumbnail_alt']);?>" />
                         </span>
                     </a>
-                    <h1><?= $block->escapeHtml($magazineItem['show_date']);?></h1>
                 </div>
             <?php endforeach; ?>
         <?php endif;?>
-        <div class="block-title other-magazine">
-            <strong><?= $block->escapeHtml(__('Other Magazines')) ?></strong>
-        </div>
+
         <?php if (!empty($magazineCollection->getData())):?>
+            <div class="block-title other-magazine">
+                <strong><?= $block->escapeHtml(__('Other Magazines')) ?></strong>
+            </div>
             <ul class="magazine-slider" id="slick">
             <?php $date = '' ?>
             <?php foreach ($magazineCollection as $magazineItem): ?>
                 <?php if ($date == '' || $magazineItem['show_date'] < $date):?>
-                <?php $magazine = $viewModel->getSliderThumnai($magazineItem['show_date'])->getData(); ?>
+                    <?php $magazine = $viewModel->getSliderThumnai($magazineItem['show_date'])->getData(); ?>
                     <li class="magazine-slider-item">
                         <div class="magazine-item">
                             <a
@@ -82,7 +80,6 @@ $magazineCollection = $viewModel->getMagazineTotalCollection();
                              alt="<?= $block->escapeHtml($magazine[0]['thumbnail_alt']);?>" />
                     </span>
                             </a>
-                            <h1><?= $block->escapeHtml($magazine[0]['show_date']);?></h1>
                         </div>
                     </li>
                     <?php $date = $viewModel->getMonthFromDate($magazineItem['show_date']) ?>

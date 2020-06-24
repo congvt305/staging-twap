@@ -19,7 +19,7 @@ use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 class DeleteButton extends GenericButton implements ButtonProviderInterface
 {
     /**
-     *Used for Delete Magazine
+     * Used for Delete Magazine
      * @return array
      */
     public function getButtonData()

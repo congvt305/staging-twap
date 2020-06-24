@@ -66,6 +66,8 @@ class MagazineList implements ArgumentInterface
      * @param StoreManagerInterface $storeManagerInterface
      * @param UrlInterface $urlInterface
      * @param DateTime $dateTime
+     * @param RequestInterface $requestInterface
+     * @param LoggerInterface $logger
      */
     public function __construct(
         CollectionFactory $collectionFactory,
@@ -105,16 +107,15 @@ class MagazineList implements ArgumentInterface
     public function getImageMagazineCollection()
     {
         $imageCollection = $this->getMagazineCollection(self::IMAGE_TYPE);
-        $month = $this->requestInterface->getParam('month');
-        $year = $this->requestInterface->getParam('year');
-        if (isset($month) &&  isset($year)) {
-            $startDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '1'.' 00:00:00');
-            $endDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '31'.' 00:00:00');
+        $params = $this->getParams();
+        if ($params) {
+            $startDate = $params['start'];
+            $endDate = $params['end'];
         } else {
-            $startDate = $this->dateTime->gmtDate('y-m-'.'1'.' 00:00:00');
-            $endDate = $this->dateTime->gmtDate('y-m-'.'31'.' 00:00:00');
+            $startDate = $this->dateTime->gmtDate('y-m-' . '1' . ' 00:00:00');
+            $endDate = $this->dateTime->gmtDate('y-m-' . '31' . ' 00:00:00');
         }
-        $imageCollection ->addFieldToFilter(
+        $imageCollection->addFieldToFilter(
             'show_date',
             ['gteq' => $startDate]
         )->addFieldToFilter(
@@ -148,13 +149,10 @@ class MagazineList implements ArgumentInterface
             $magazineCollection->addFieldToFilter(
                 'type',
                 ['eq' => $type]
-            )->addFieldToFilter(
-                ['store_id','store_id','store_id','store_id'],
-                [["like" => '%' . $storeId . ',%'],
-                    ["like" => '%,' . $storeId . ',%'],
-                    ["like" => '%,' . $storeId . '%'],
-                    ["in" => ['0', $storeId]]]
-            )->setOrder(
+            );
+            $magazineCollection = $this->getCollectionByStoreFilter($magazineCollection);
+
+            $magazineCollection->setOrder(
                 "sort_order",
                 'ASC'
             );
@@ -199,16 +197,15 @@ class MagazineList implements ArgumentInterface
     public function getVideoThumbnail()
     {
         $collection = $this->getLargeThumbnail(self::VIDEO_TYPE);
-        $month = $this->requestInterface->getParam('month');
-        $year = $this->requestInterface->getParam('year');
-        if (isset($month) && isset($year)) {
-            $startDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '1'.' 00:00:00');
-            $endDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '31'.' 00:00:00');
+        $params = $this->getParams();
+        if ($params) {
+            $startDate = $params['start'];
+            $endDate = $params['end'];
         } else {
-            $startDate = $this->dateTime->gmtDate('y-m-'.'1'.' 00:00:00');
-            $endDate = $this->dateTime->gmtDate('y-m-'.'31'.' 00:00:00');
+            $startDate = $this->dateTime->gmtDate('y-m-' . '1' . ' 00:00:00');
+            $endDate = $this->dateTime->gmtDate('y-m-' . '31' . ' 00:00:00');
         }
-        $collection ->addFieldToFilter(
+        $collection->addFieldToFilter(
             'show_date',
             ['gteq' => $startDate]
         )->addFieldToFilter(
@@ -224,18 +221,17 @@ class MagazineList implements ArgumentInterface
      */
     public function getBannerThumbnail()
     {
-        $month = $this->requestInterface->getParam('month');
-        $year = $this->requestInterface->getParam('year');
-        if ($month && $year) {
-            $startDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '1'.' 00:00:00');
-            $endDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '31'.' 00:00:00');
+        $params = $this->getParams();
+        if ($params) {
+            $startDate = $params['start'];
+            $endDate = $params['end'];
         } else {
-            $startDate = $this->dateTime->gmtDate('y-m-'.'1'.' 00:00:00');
-            $endDate = $this->dateTime->gmtDate('y-m-'.'31'.' 00:00:00');
+            $startDate = $this->dateTime->gmtDate('y-m-' . '1' . ' 00:00:00');
+            $endDate = $this->dateTime->gmtDate('y-m-' . '31' . ' 00:00:00');
         }
 
         $collection = $this->getLargeThumbnail(self::BANNER_TYPE);
-        $collection ->addFieldToFilter(
+        $collection->addFieldToFilter(
             'show_date',
             ['gteq' => $startDate]
         )->addFieldToFilter(
@@ -259,27 +255,20 @@ class MagazineList implements ArgumentInterface
     public function getMagazineTotalCollection()
     {
         try {
-            $month = $this->requestInterface->getParam('month');
-            $year = $this->requestInterface->getParam('year');
-            if (isset($month) && isset($year)) {
-                $endDate = $this->dateTime->gmtDate($year . '-' . $month . '-' . 1 . ' 00:00:00');
+            $param = $this->getParams();
+            if ($param) {
+                $date = $param['start'];
             } else {
-                $endDate = $this->dateTime->gmtDate('y-m-'.'1'.' 00:00:00');
+                $date = $this->dateTime->gmtDate('y-m-' . '1' . ' 00:00:00');
             }
-            $storeId =  $this->storeManagerInterface->getStore()->getId();
             $magazineCollection = $this->collectionFactory->create();
-            $magazineCollection->addFieldToFilter(
-                ['store_id','store_id','store_id','store_id'],
-                [["like" => '%' . $storeId . ',%'],
-                    ["like" => '%,' . $storeId . ',%'],
-                    ["like" => '%,' . $storeId . '%'],
-                    ["in" => ['0', $storeId]]]
-            )->setOrder(
+            $magazineCollection = $this->getCollectionByStoreFilter($magazineCollection);
+            $magazineCollection->setOrder(
                 "show_date",
                 'DESC'
             )->addFieldToFilter(
                 'show_date',
-                ['lteq' => $endDate]
+                ['lteq' => $date]
             );
         } catch (\Exception $exception) {
             $this->logger->debug($exception->getMessage());
@@ -301,97 +290,98 @@ class MagazineList implements ArgumentInterface
     }
 
     /**
-     * @return CollectionFactory
-     */
-    public function getMonthWiseMagazineCollection()
-    {
-        $storeId =  $this->storeManagerInterface->getStore()->getId();
-        $magazineCollection = $this->collectionFactory->create();
-        $month = $this->requestInterface->getParam('month');
-        $year = $this->requestInterface->getParam('year');
-        $startDate = $this->dateTime->gmtDate(
-            'Y-m-d H:i:s',
-            $year . '-' . $month . '-' . 1 . ' 00:00:00'
-        );
-        $endDate = $this->dateTime->gmtDate(
-            'Y-m-d H:i:s',
-            $year . '-' . $month . '-' . 31 . ' 00:00:00'
-        );
-        $magazineCollection->addFieldToFilter(
-            ['store_id','store_id','store_id','store_id'],
-            [["like" => '%' . $storeId . ',%'],
-                ["like" => '%,' . $storeId . ',%'],
-                ["like" => '%,' . $storeId . '%'],
-                ["in" => ['0', $storeId]]]
-        )->setOrder(
-            "show_date",
-            'DESC'
-        )->addFieldToFilter(
-            'show_date',
-            ['gteq' => $startDate]
-        )->addFieldToFilter(
-            'show_date',
-            ['lteq' => $endDate]
-        );
-
-        return $magazineCollection;
-    }
-
-    /**
-     * @return CollectionFactory
+     * silder thumbbail
+     * @param $date
+     * @return mixed
      */
     public function getSliderThumnai($date)
     {
-
         $collectionByStore = $this->getMagazineCollection(self::BANNER_TYPE);
         $month = $this->dateTime->gmtDate('m', $date);
         $year = $this->dateTime->gmtDate('y', $date);
-
-        if (isset($month) &&  isset($year)) {
-            $startDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '1'.' 00:00:00');
-            $endDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '31'.' 00:00:00');
-        } else {
-            $startDate = $this->dateTime->gmtDate('y-m-'.'1'.' 00:00:00');
-            $endDate = $date;
-        }
         $startDate = $this->dateTime->gmtDate(
             'Y-m-d H:i:s',
             $year . '-' . $month . '-' . 1 . ' 00:00:00'
         );
-        $collectionByStore->addFieldToFilter(
-            'show_date',
-            ['gteq' => $startDate]
-        )->addFieldToFilter(
-            'show_date',
-            ['lteq' => $endDate]
-        );
+        $endDate = $date;
+        $collectionByStore = $this->getDateFilterCollection($collectionByStore, $startDate, $endDate);
         if (!empty($collectionByStore->getData())) {
             $collectionByStore->setPageSize('1')->load();
             return $collectionByStore;
         }
         $collectionByStore = $this->getMagazineCollection(self::IMAGE_TYPE);
-        $collectionByStore->addFieldToFilter(
-            'show_date',
-            ['gteq' => $startDate]
-        )->addFieldToFilter(
-            'show_date',
-            ['lteq' => $endDate]
-        );
+        $collectionByStore = $this->getDateFilterCollection($collectionByStore, $startDate, $endDate);
         if (!empty($collectionByStore->getData())) {
             $collectionByStore->setPageSize('1')->load();
             return $collectionByStore;
         }
         $collectionByStore = $this->getMagazineCollection(self::VIDEO_TYPE);
-        $collectionByStore->addFieldToFilter(
+        $collectionByStore = $this->getDateFilterCollection($collectionByStore, $startDate, $endDate);
+        if (!empty($collectionByStore->getData())) {
+            $collectionByStore->setPageSize('1')->load();
+            return $collectionByStore;
+        }
+    }
+
+    /**
+     * get collection filter vy date
+     * @param $collection
+     * @param $startDate
+     * @param $endDate
+     * @return mixed
+     */
+    public function getDateFilterCollection($collection, $startDate, $endDate)
+    {
+        $collection->addFieldToFilter(
             'show_date',
             ['gteq' => $startDate]
         )->addFieldToFilter(
             'show_date',
             ['lteq' => $endDate]
         );
-        if (!empty($collectionByStore->getData())) {
-            $collectionByStore->setPageSize('1')->load();
-            return $collectionByStore;
+
+        return $collection;
+    }
+
+    /**
+     * get collecion by store filter
+     * @param $magazineCollection
+     * @return mixed
+     */
+    public function getCollectionByStoreFilter($magazineCollection)
+    {
+        try {
+            $storeId =  $this->storeManagerInterface->getStore()->getId();
+            $magazineCollection->addFieldToFilter(
+                ['store_id','store_id','store_id','store_id'],
+                [["like" => '%' . $storeId . ',%'],
+                    ["like" => '%,' . $storeId . ',%'],
+                    ["like" => '%,' . $storeId . '%'],
+                    ["in" => ['0', $storeId]]]
+            );
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
+        return $magazineCollection;
+    }
+
+    /**
+     * get parameter
+     * @return array|bool
+     */
+    public function getParams()
+    {
+        $result = [];
+        $month = $this->requestInterface->getParam('month');
+        $year = $this->requestInterface->getParam('year');
+        if (isset($month) && isset($year)) {
+            $startDate = $this->dateTime->gmtDate($year . '-' . $month . '-' . '1' . ' 00:00:00');
+            $endDate = $this->dateTime->gmtDate($year . '-' . $month . '-' . '31' . ' 00:00:00');
+            $result['start'] = $startDate;
+            $result['end'] = $endDate;
+            return $result;
+        } else {
+            return false;
         }
     }
 }

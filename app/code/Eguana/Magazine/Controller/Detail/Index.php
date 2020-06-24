@@ -16,6 +16,7 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\View\Result\PageFactory;
+use Eguana\Magazine\Model\ResourceModel\Magazine\CollectionFactory;
 
 /**
  * Class Index
@@ -43,12 +44,15 @@ class Index extends Action
      * @var ManagerInterface
      */
     private $managerInterface;
+    private $collectionFactory;
 
     /**
-     * Construct
-     *
+     * Index constructor.
      * @param Context $context
-     * @param View  $magazine
+     * @param MagazineRepositoryInterface $magazineRepository
+     * @param PageFactory $resultPageFactory
+     * @param ResultFactory $resultFactory
+     * @param ManagerInterface $managerInterface
      */
     public function __construct(
         Context $context,
@@ -73,17 +77,16 @@ class Index extends Action
     {
         $id = $this->getRequest()->getParam('id');
         $magazine = $this->magazineRepository->getById($id);
-
         if (isset($id)) {
-            if (empty($magazine)) {
-                $this->managerInterface->addErrorMessage('No magazine exist with this ' . $id . 'id');
+            if (!($magazine->getEntityId())) {
+                $this->managerInterface->addErrorMessage('No magazine exist with this ' . $id . ' id');
                 $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-                $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+                $resultRedirect->setUrl('/magazine');
                 return $resultRedirect;
             }
         } elseif (!isset($id)) {
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect->setUrl('/magazine');
             return $resultRedirect;
         }
         return $this->resultPageFactory->create();
