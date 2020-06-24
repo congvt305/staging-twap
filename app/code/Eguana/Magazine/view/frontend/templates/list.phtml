@@ -79,6 +79,9 @@ $magazineCollection = $viewModel->getMagazineTotalCollection();
                         getThumbnailSrc($magazine[0]['thumbnail_image']));?>"
                              alt="<?= $block->escapeHtml($magazine[0]['thumbnail_alt']);?>" />
                     </span>
+                            <span class="discription">
+                                <?= $block->escapeHtml($magazine[0]['content_short']);?>
+                            </span>
                             </a>
                         </div>
                     </li>
