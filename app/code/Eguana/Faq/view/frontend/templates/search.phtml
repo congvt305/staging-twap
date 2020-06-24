@@ -1,0 +1,115 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 17/6/20
+ * Time: 08:00 PM
+ */
+
+/**
+ * @var $viewModel \Eguana\Faq\ViewModel\Search
+ */
+$viewModel = $block->getData('view_model');
+$searchUrl = $viewModel->getSearchUrl();
+$searchData = $viewModel->getSearchData();
+$searchValue = $viewModel->getSearchValue();
+?>
+
+<div class="faqs" data-mage-init='{
+                 "mage/tabs": {
+                    "openedState": "show",
+                    "collapsibleElement":"[data-role=tab-collapsible]",
+                    "animate": {"duration": 300},
+                    "active": false,
+                    "content": "[data-role=tab-content]",
+                    "header":"[data-role=tab-title]"
+                    }
+                 }'>
+    <div class="search-block">
+        <form class="form" action="<?= $block->escapeUrl($searchUrl)?>">
+            <fieldset class="fieldset">
+                <div class="field">
+                    <label class="label" for="faqSearchVal">
+                        <span><?= $block->escapeHtml(__('Search')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="text"
+                               class="input-text required-entry faqSearchVal"
+                               id="faqSearchVal"
+                               name="faqSearchVal" value="<?= $block->escapeHtmlAttr(strip_tags($searchValue));?>"/>
+                    </div>
+                    <div class="actions">
+                        <button
+                            type="submit"
+                            class="button action primary search faqSearchBtn"
+                            title="<?=$block->escapeHtmlAttr(__('Search'))?>">
+                            <span><?=$block->escapeHtml(__('Search'))?></span>
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <?php if (empty($searchData)): ?>
+        <div class="empty">
+            <p class="text"><?= /* @noEscape */ __('There is no search result.')?></p>
+        </div>
+    <?php else:?>
+        <?php foreach ($searchData as $key => $value):?>
+            <div class="block">
+                <div class="item title" data-role="tab-collapsible">
+                    <strong class="switch"
+                            role="heading"
+                            data-toggle="trigger"
+                            data-role="tab-title"
+                            aria-level="2">
+                        <?php if (stripos(trim($key), $searchValue) !== false): ?>
+                            <?= /* @noEscape */ $viewModel->highlightSearchValue($key, $searchValue); ?>
+                        <?php else: ?>
+                            <?= /* @noEscape */ $key; ?>
+                        <?php endif; ?>
+                    </strong>
+                </div>
+                <div class="item content" data-role="tab-content">
+                    <div class="lists"
+                         data-mage-init='{"accordion":{
+                         "collapsible": true,
+                         "animate": {"duration": 300},
+                         "active": false,
+                         "multipleCollapsible": true}}'>
+                        <?php foreach ($value as $num => $data):?>
+                                <div class="list">
+                                    <div data-role="collapsible">
+                                        <div class="title" data-role="title">
+                                            <span>
+                                                <?php if (stripos(trim($data['title']), $searchValue) !== false): ?>
+                                                    <?= /* @noEscape */
+                                                        $viewModel->highlightSearchValue($data['title'], $searchValue)
+                                                    ?>
+                                                <?php else: ?>
+                                                    <?= /* @noEscape */ $data['title']; ?>
+                                                <?php endif; ?>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="content" data-role="content" style="display: none;">
+                                        <?php if (stripos(trim($data['description']), $searchValue) !== false): ?>
+                                            <?= /* @noEscape */
+                                                $viewModel->highlightSearchValue($viewModel->
+                                                descriptionFilter($data['description']), $searchValue)
+                                            ?>
+                                        <?php else: ?>
+                                            <?= /* @noEscape */ $viewModel->descriptionFilter($data['description']); ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                        <?php endforeach;?>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach;?>
+    <?php endif;?>
+</div>
