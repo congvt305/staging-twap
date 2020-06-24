@@ -18,6 +18,12 @@ use Magento\Framework\App\Action\Action;
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+
+//pixlee
+$helper = $this->helper(Pixlee\Pixlee\Helper\Data::class);
+$websiteId = $helper->getWebsiteId();
+$helper->initializePixleeAPI($websiteId);
+
 ?>
 <?php if (!$_productCollection->count()) :?>
     <div class="message info empty"><div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div></div>
@@ -53,25 +59,8 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                                 <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
                                    title="<?= /* @noEscape */ $_productNameStripped ?>"
                                    class="action more"><?= $block->escapeHtml(__('View Details')) ?></a>
-                                <?php
-                                $helper = $this->helper(Pixlee\Pixlee\Helper\Data::class);
-                                $websiteId = $helper->getWebsiteId();
-                                $helper->initializePixleeAPI($websiteId);
-                                ?>
                                 <?php if ($helper->isActive() && $helper->getPDPWidgetId() != "") : ?>
-                                    <div id="pixlee_container"></div>
-                                    <div id="pixlee_widget_master_container"></div>
-                                    <script id="pixlee_script" type="text/javascript">
-                                        require(['https://assets.pxlecdn.com/assets/pixlee_widget_1_0_0.js'], function (pixlee) {
-                                            Pixlee.init({apiKey: '<?= /* @noEscape */ $helper->getApiKey(); ?>'});
-                                            Pixlee.addProductWidget({
-                                                widgetId: <?= /* @noEscape */ $helper->getPDPWidgetId(); ?>,
-                                                skuId: '<?= /* @noEscape */ $_product->getSku(); ?>',
-                                                accountId:<?= /* @noEscape */ $helper->getAccountId(); ?>
-                                            });
-                                            Pixlee.resizeWidget();
-                                        });
-                                    </script>
+                                    <div id="pixlee_container_<?= /* @noEscape */ $_product->getSku(); ?>"></div>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -83,4 +72,20 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
         <!-- Add Pagination -->
         <div class="swiper-pagination"></div>
     </div>
+    <?php if ($helper->isActive() && $helper->getPDPWidgetId() != "") : ?>
+        <script id="pixlee_script" type="text/javascript">
+            require(['https://assets.pxlecdn.com/assets/pixlee_widget_1_0_0.js'], function (pixlee) {
+                Pixlee.init({apiKey: '<?= /* @noEscape */ $helper->getApiKey(); ?>'});
+                <?php foreach ($_productCollection as $_product) :?>
+                Pixlee.addProductWidget({
+                    widgetId: <?= /* @noEscape */ $helper->getPDPWidgetId(); ?>,
+                    skuId: '<?= /* @noEscape */ $_product->getSku(); ?>',
+                    accountId:<?= /* @noEscape */ $helper->getAccountId(); ?>,
+                    containerId: 'pixlee_container_<?= /* @noEscape */ $_product->getSku(); ?>'
+                });
+                <?php endforeach;?>
+                Pixlee.resizeWidget();
+            });
+        </script>
+    <?php endif;?>
 <?php endif; ?>
