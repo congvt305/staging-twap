@@ -46,7 +46,7 @@ class ListBlock extends AbstractBlock
                         'title' => __('Brand'),
                     ]
                 );
-                $this->pageConfig->getTitle()->set(__(''));
+                $this->pageConfig->getTitle()->set(__('How To'));
                 $breadcrumbsBlock->addCrumb(
                     'main_title',
                     [
