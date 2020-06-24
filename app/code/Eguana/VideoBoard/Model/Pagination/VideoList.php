@@ -75,19 +75,11 @@ class VideoList
         if (!empty($videosResult)) {
             foreach ($videosResult as $key => $point) {
                 $lintHtml[$count] = '
-                <div style="margin-right: 4%; width: 29%; float: left;" class="video-board-list">
-                <ul>
-                <li style=" width: 100%;" class="video-board-item">
-                <div class="video-board-item-content">
-                    <div class="video-board-photo">
-                        <div class="video-scale">
+                <li class="video-board-item">
                             <a class="video-link" href="'.$this->urlInterface->getUrl().'videoboard/detail/index/id/'.$point['entity_id'].'" >
-                                <div class="video-iframe">
-                                    <img src="'.$this->urlInterface->getUrl('media').$point['thumbnail_image'].'"
-                                         alt="Thumbnail Image" />
-                                </div>
+                                    <img src="'.$this->urlInterface->getUrl('pub/media').$point['thumbnail_image'].'"
+                                         alt="'.__("Thumbnail Image").'" />
                             </a>
-                        </div>
 
                         <div class="video-heading">
                             <a class="action view video-title"
@@ -100,10 +92,7 @@ class VideoList
                                '.$point['created_at'].'
                             </p>
                         </div>
-                    </div>
-                    </div>
-                    </li>
-                    </ul>' . "\n";
+                    </li>' . "\n";
                 $count++;
             }
         }

@@ -19,35 +19,28 @@ $url = $block->getUrl();
     <div class="block-content">
         <div class="video-board-item">
             <div class="video-board-item-content">
-                <h1 class="video-detail-title">
-                    <?= $block->escapeHtml($videoBlock->getTitle());?>
-                </h1>
-                <h6 class="video-detail-created-date">
-                    <?=
-                    $block->escapeHtml($block->formatDate($videoBlock->getCreatedAt()));
-                    ?>
-                </h6>
-                <div class="video-board-photo">
-                    <iframe
-                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                        frameborder="0"
-                        height="632"
-                        src="<?=$block->escapeUrl($videoBlock->getUrl());?>" width="100%">
-                    </iframe>
-                </div>
-
+                <p class="video-created-date">
+                    <?= $block->escapeHtml($block->formatDate($videoBlock->getCreatedAt()));?>
+                </p>
                 <div class="video-board-detail">
-                    <hr>
+                    <div class="video-iframe">
+                        <iframe
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                                frameborder="0"
+                                src="<?=$block->escapeUrl($videoBlock->getUrl());?>" width="100%">
+                        </iframe>
+                    </div>
                     <?= /* @noEscape */  $block->contentFiltering($videoBlock->getDescription()); ?>
                 </div>
             </div>
         </div>
     </div>
     <div class="back-button">
-        <a href="<?= $block->escapeUrl($block->getBaseUrl().'videoboard')?>">
-            <button>Back</button>
-        </a>
+        <a class="action button primary" href="<?= $block->escapeUrl($block->getBaseUrl().'videoboard')?>">
+            <span><?= $block->escapeHtml(__('Back'));?></span>
+        </a><br/>
+        <span><?= $block->escapeHtml(__('Back'));?></span>
     </div>
 </div>
 
