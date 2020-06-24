@@ -17,11 +17,13 @@ class DefaultItem
     {
         if ($item->getProduct()->getCustomAttribute('laneige_size')) {
             $data['laneige_size'] = $item->getProduct()->getAttributeText('laneige_size');
-            return array_merge(
-                $result,
-                $data
-            );
+        } else {
+            $data['laneige_size'] = '';
         }
-        return $result;
+
+        return array_merge(
+            $result,
+            $data
+        );
     }
 }
