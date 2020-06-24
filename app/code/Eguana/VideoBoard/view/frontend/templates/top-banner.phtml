@@ -1,0 +1,23 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 16/6/20
+ * Time: 08:00 PM
+ */
+
+/** @var \Eguana\VideoBoard\ViewModel\VideoBoard $viewModel */
+$viewModel = $block->getData('view_model');
+$topBannerBlockId = $viewModel->getPageTopBannerValue();
+?>
+<div class="video-board-top-banner">
+    <?php if (isset($topBannerBlockId)): ?>
+        <?= $block->getLayout()
+            ->createBlock(Magento\Cms\Block\Block::class)
+            ->setBlockId($topBannerBlockId)
+            ->toHtml();
+        ?>
+    <?php endif;?>
+</div>
