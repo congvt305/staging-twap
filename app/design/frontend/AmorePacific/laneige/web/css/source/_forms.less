@@ -248,6 +248,12 @@
                 margin-top: @indent__s;
             }
         }
+
+        &.gender.required {
+            input.radio + label:after {
+                display: none;
+            }
+        }
     }
 
     .field-error,
@@ -299,6 +305,7 @@
             display: inline-block;
             position: absolute;
             right: 16px;
+            top: 0;
             vertical-align: middle;
 
             &:focus {

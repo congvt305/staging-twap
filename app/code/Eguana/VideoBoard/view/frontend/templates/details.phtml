@@ -1,0 +1,53 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 16/6/20
+ * Time: 05:18 PM
+ */
+
+/** @var \Eguana\VideoBoard\Block\View $block */
+$videoBlock = $block->getVideoBoard();
+$videoBlockList = $block->getCollection();
+
+$url = $block->getUrl();
+
+?>
+<div class="block block-video-board-details">
+    <div class="block-content">
+        <div class="video-board-item">
+            <div class="video-board-item-content">
+                <h1 class="video-detail-title">
+                    <?= $block->escapeHtml($videoBlock->getTitle());?>
+                </h1>
+                <h6 class="video-detail-created-date">
+                    <?=
+                    $block->escapeHtml($block->formatDate($videoBlock->getCreatedAt()));
+                    ?>
+                </h6>
+                <div class="video-board-photo">
+                    <iframe
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        frameborder="0"
+                        height="632"
+                        src="<?=$block->escapeUrl($videoBlock->getUrl());?>" width="100%">
+                    </iframe>
+                </div>
+
+                <div class="video-board-detail">
+                    <hr>
+                    <?= /* @noEscape */  $block->contentFiltering($videoBlock->getDescription()); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="back-button">
+        <a href="<?= $block->escapeUrl($block->getBaseUrl().'videoboard')?>">
+            <button>Back</button>
+        </a>
+    </div>
+</div>
+

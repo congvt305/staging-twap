@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="eguanasms_templates_customer_register_sms" label="Register SMS Template" file="default_register_sms_template.html" type="html" module="Eguana_StoreSms" area="frontend"/>
+    <template id="eguanasms_templates_order_status_pending" label="Order Status Pending Template" file="default_order_status_pending_sms_template.html" type="html" module="Eguana_StoreSms" area="frontend"/>
+    <template id="eguanasms_templates_order_status_holded" label="Order Status On hold Template" file="default_order_status_hold_sms_template.html" type="html" module="Eguana_StoreSms" area="frontend"/>
+    <template id="eguanasms_templates_order_status_processing" label="Order Status Processing Template" file="default_order_status_processing_sms_template.html" type="html" module="Eguana_StoreSms" area="frontend"/>
+    <template id="eguanasms_templates_order_status_canceled" label="Order Status Canceled Template" file="default_order_status_canceled_sms_template.html" type="html" module="Eguana_StoreSms" area="frontend"/>
+    <template id="eguanasms_templates_order_status_complete" label="Order Status Complete Template" file="default_order_status_complete_sms_template.html" type="html" module="Eguana_StoreSms" area="frontend"/>
+    <template id="eguanasms_templates_order_status_closed" label="Order Status Closed Template" file="default_order_status_closed_sms_template.html" type="html" module="Eguana_StoreSms" area="frontend"/>
+</config>

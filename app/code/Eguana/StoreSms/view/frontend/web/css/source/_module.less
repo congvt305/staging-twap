@@ -1,0 +1,125 @@
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //
+    //  Create account Page
+    //  ---------------------------------------------
+    .customer-account-create,
+    .magento_invitation-customer_account-create {
+        .form-create-account {
+            .fieldset {
+                &.verify {
+                    .code-validation-area {
+                        margin-bottom: 0;
+                        overflow: hidden;
+
+                        input {
+                            float: left;
+                            width: 65%;
+                        }
+                    }
+
+                    .code-confirmation,
+                    .verification-confirmation,
+                    .code-rejected,
+                    .verification-rejected {
+                        .lib-font-size(12);
+                        margin-top: 8px;
+                    }
+
+                    .code-confirmation,
+                    .verification-confirmation {
+                        color: @secondary__color;
+                    }
+
+                    .code-rejected,
+                    .verification-rejected {
+                        color: @error__color;
+                    }
+
+                    .sms-link {
+                        .lib-button(
+                            @_button-padding: 1px 0,
+                            @_button-font-size: 16px,
+                            @_button-color: @color-white,
+                            @_button-background: @primary__color__lighter,
+                            @_button-border: 1px solid @primary__color__lighter
+                        );
+                        float: left;
+                        text-align: center;
+                        width: 35%;
+                    }
+
+                    .verify-code {
+                        .lib-button(
+                            @_button-color: @color-white,
+                            @_button-font-size: 16px,
+                            @_button-margin: @indent__base 0 0,
+                            @_button-background: @primary__color__lighter,
+                            @_button-border: 1px solid @primary__color__lighter
+                        );
+                    }
+                }
+            }
+            .fieldset {
+
+                .field-mobile_number {
+
+                    .sms_error {
+
+                        display: none;
+                        font-size: 1.2rem;
+                        margin-top: 8px;
+                        color: @error__color;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .customer-account-create,
+    .magento_invitation-customer_account-create {
+        .form-create-account {
+            .fieldset {
+                &.verify {
+                    margin-bottom: @indent__base;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .customer-account-create,
+    .magento_invitation-customer_account-create {
+        .form-create-account {
+            .fieldset {
+                &.verify {
+                    margin-bottom: 24px;
+                }
+            }
+        }
+    }
+
+    .magento_invitation-customer_account-create {
+        .form-create-account {
+            >.fieldset > .customer-form-after {
+                max-width: 100% !important;
+            }
+        }
+    }
+}

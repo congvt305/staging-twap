@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 16/6/20
+* Time: 12:35 PM
+*/
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Eguana\VideoBoard\Block\ListBlock" name="videoboard.list.top.banner" template="Eguana_VideoBoard::top-banner.phtml" before="-">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Eguana\VideoBoard\ViewModel\VideoBoard</argument>
+                </arguments>
+            </block>
+            <block class="Eguana\VideoBoard\Block\ListBlock" name="VideoBoard.list" template="Eguana_VideoBoard::list.phtml" />
+        </referenceContainer>
+    </body>
+</page>

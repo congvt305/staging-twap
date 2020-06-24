@@ -13,6 +13,7 @@ use Amore\CustomerRegistration\Helper\Data;
 use Magento\Store\Model\StoreRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Newsletter\Model\SubscriberFactory;
+use Amore\CustomerRegistration\Model\POSLogger;
 
 /**
  * Implement the API module interface
@@ -43,19 +44,25 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      * @var SubscriberFactory
      */
     private $subscriberFactory;
+    /**
+     * @var \Amore\CustomerRegistration\Model\POSLogger
+     */
+    private $logger;
 
     public function __construct(
         Data $configHelper,
         CustomerRepositoryInterface $customerRepositoryInterface,
         StoreRepository $storeRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        SubscriberFactory $subscriberFactory
+        SubscriberFactory $subscriberFactory,
+        POSLogger $logger
     ) {
         $this->customerRepositoryInterface = $customerRepositoryInterface;
         $this->configHelper = $configHelper;
         $this->storeRepository = $storeRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->subscriberFactory = $subscriberFactory;
+        $this->logger = $logger;
     }
 
     /**
@@ -106,6 +113,33 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $salOffCd
     ) {
         try {
+            $parameters = [
+                $cstmIntgSeq,
+                $firstName,
+                $lastName,
+                $birthDay,
+                $mobileNo,
+                $email,
+                $sex,
+                $emailYN,
+                $smsYN,
+                $callYN,
+                $dmYN,
+                $homeCity,
+                $homeState,
+                $homeAddr1,
+                $homeZip,
+                $statusCD,
+                $salOrgCd,
+                $salOffCd
+            ];
+
+            $this->logger->addAPICallLog(
+                'Customer update api call',
+                '{Base URL}/rest/all/V1/pos-customers/',
+                $parameters
+            );
+
             $customerWebsiteId = $this->getCustomerWebsiteId($salOffCd);
 
             if ($customerWebsiteId == 0) {
@@ -191,7 +225,6 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 //$subscriber->unsubscribe();
             }
 
-
         } catch (\Exception $e) {
             return $this->getResponse($e->getCode(), $e->getMessage(), $e->getCode(), 'NO', $cstmIntgSeq);
         }
@@ -200,7 +233,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
 
     private function getResponse($code, $message, $statusCode, $statusMessage, $cstmIntgSeq)
     {
-        return [
+        $response = [
             'code' => $code,
             'message' => $message,
             'data'  =>    [
@@ -209,6 +242,12 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 'cstmIntgSeq' => $cstmIntgSeq
             ]
         ];
+        $this->logger->addAPICallLog(
+            'Customer update api response',
+            '{Base URL}/rest/all/V1/pos-customers/',
+            $response
+        );
+        return $response;
     }
 
     private function getCustomerWebsiteId($salOffCd)
@@ -243,7 +282,6 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $date = substr_replace($date, '/', 7, 0);
 
         return $date;
-
     }
 
     private function getCustomerByIntegraionNumber($integrationNumber, $websiteId)
