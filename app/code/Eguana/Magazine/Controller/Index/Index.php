@@ -67,6 +67,8 @@ class Index extends Action
      */
     public function execute()
     {
+        $month = $this->getRequest()->getParam('month');
+        $year = $this->getRequest()->getParam('year');
         $params = $this->magazineList->getParams();
         if ($params) {
             $collection = $this->getcollectionByMonth($params['start'], $params['end']);
@@ -76,10 +78,21 @@ class Index extends Action
                 $resultRedirect->setUrl('/magazine');
                 return $resultRedirect;
             }
+        } elseif (isset($month) && !isset($year) || isset($year) && !isset($month)) {
+            $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+            $resultRedirect->setUrl('/magazine');
+            return $resultRedirect;
         }
+
         return $this->resultPageFactory->create();
     }
 
+    /**
+     * this check if magazine exist with param month
+     * @param $startDate
+     * @param $endDate
+     * @return mixed
+     */
     public function getcollectionByMonth($startDate, $endDate)
     {
         $collection = $this->collectionFactory->create();
