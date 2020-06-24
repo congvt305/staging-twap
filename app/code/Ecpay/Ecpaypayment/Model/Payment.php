@@ -55,6 +55,18 @@ class Payment extends AbstractMethod
      * @var \Magento\Framework\Filesystem\DirectoryList
      */
     private $directoryList;
+    /**
+     * @var \Magento\Sales\Model\Service\InvoiceService
+     */
+    private $invoiceService;
+    /**
+     * @var \Magento\Framework\DB\Transaction
+     */
+    private $transaction;
+    /**
+     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     */
+    private $orderRepository;
 
     public function __construct(
         Context $context,
@@ -69,6 +81,9 @@ class Payment extends AbstractMethod
         \Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface $transactionBuilder,
         \Magento\Framework\HTTP\Client\Curl $curl,
         \Magento\Framework\Filesystem\DirectoryList $directoryList,
+        \Magento\Sales\Model\Service\InvoiceService $invoiceService,
+        \Magento\Framework\DB\Transaction $transaction,
+        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
@@ -91,6 +106,10 @@ class Payment extends AbstractMethod
         $this->transactionBuilder = $transactionBuilder;
         $this->curl = $curl;
         $this->directoryList = $directoryList;
+        include_once($this->directoryList->getPath("app") . '/code/Ecpay/Ecpaypayment/Helper/Library/Ecpay_Invoice.php');
+        $this->invoiceService = $invoiceService;
+        $this->transaction = $transaction;
+        $this->orderRepository = $orderRepository;
     }
 
     public function getValidPayments()
@@ -212,7 +231,7 @@ class Payment extends AbstractMethod
             throw new LocalizedException(__($stringToArray["RtnMsg"]));
         }
 
-        $this->createTransaction($payment, $tradeNo, $rawDetailsInfo);
+        $this->createRefundTransaction($payment, $tradeNo, $rawDetailsInfo);
 
         return $this;
     }
@@ -222,7 +241,7 @@ class Payment extends AbstractMethod
      * @param $tradeNo
      * @param $rawDetailsInfo
      */
-    private function createTransaction(\Magento\Payment\Model\InfoInterface $payment, $tradeNo, $rawDetailsInfo): void
+    private function createRefundTransaction(\Magento\Payment\Model\InfoInterface $payment, $tradeNo, $rawDetailsInfo): void
     {
         $payment->setTransactionId($tradeNo . "_" . $rawDetailsInfo["process_date"])
             ->setParentTransactionId($tradeNo)
@@ -278,6 +297,180 @@ class Payment extends AbstractMethod
     }
 
     /**
+     * @param \Magento\Sales\Model\Order $order
+     * @param $paymentData
+     * @return \Magento\Sales\Api\Data\TransactionInterface
+     * @throws Exception
+     */
+    public function createTransaction(\Magento\Sales\Model\Order $order, $paymentData): \Magento\Sales\Api\Data\TransactionInterface
+    {
+        $payment = $order->getPayment();
+        $originAdditionalInfo = $payment->getAdditionalInformation();
+        $mergedData = array_merge($originAdditionalInfo, $paymentData);
+        $payment->setLastTransId($paymentData["TradeNo"]);
+        $payment->setTransactionId($paymentData["TradeNo"]);
+        $payment->setAdditionalInformation([\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => (array)$mergedData]);
+
+        // Formatted price
+        $formatedPrice = $order->getBaseCurrency()->formatTxt($order->getGrandTotal());
+
+        // Prepare transaction
+        $transaction = $this->transactionBuilder->setPayment($payment)
+            ->setOrder($order)
+            ->setTransactionId($paymentData['TradeNo'])
+            ->setAdditionalInformation([\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => (array)$mergedData])
+            ->setFailSafe(true)
+            ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_CAPTURE);
+
+        // Add transaction to payment
+        $payment->addTransactionCommentsToOrder($transaction, __('The authorized amount is %1.', $formatedPrice));
+        $payment->setParentTransactionId(null);
+
+        // Save payment, transaction and order
+        $payment->save();
+        $order->save();
+        $transaction->save();
+        return $transaction;
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     * @param \Magento\Sales\Api\Data\TransactionInterface $transaction
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function createInvoice(\Magento\Sales\Model\Order $order, \Magento\Sales\Api\Data\TransactionInterface $transaction): void
+    {
+        if ($order->canInvoice()) {
+            $invoice = $this->invoiceService->prepareInvoice($order);
+            $invoice->register();
+
+            if ($invoice->canCapture()) {
+                $invoice->capture();
+            }
+
+            $invoice->setTransactionId($transaction->getTransactionId());
+            $invoice->save();
+
+            $transactionSave = $this->transaction->addObject(
+                $invoice
+            )->addObject(
+                $invoice->getOrder()
+            );
+
+            $transactionSave->save();
+            $order->save();
+        }
+    }
+
+    public function createEInvoice($orderId)
+    {
+        try
+        {
+            $sMsg = '' ;
+            // 1.載入SDK程式
+            $ecpay_invoice = new \EcpayInvoice() ;
+
+            // 2.寫入基本介接參數
+            $this->initEInvoice($ecpay_invoice);
+
+            $order = $this->orderRepository->get($orderId);
+            $payment = $order->getPayment();
+            $additionalInfo = $payment->getAdditionalInformation();
+            $rawDetailsInfo = $additionalInfo["raw_details_info"];
+            $donationValue = $rawDetailsInfo["ecpay_einvoice_donation"];
+            $donationCode = $this->getEcpayConfig("invoice/ecpay_invoice_love_code");
+
+            // 3.寫入發票相關資訊
+            $aItems = array();
+            // 商品資訊
+            $this->initOrderItems($order, $ecpay_invoice);
+
+            $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $donationValue, $donationCode);
+
+            // 4.送出
+            $aReturn_Info = $ecpay_invoice->Check_Out();
+
+            // 5.返回
+            foreach($aReturn_Info as $key => $value) {
+                $sMsg .=   $key . ' => ' . $value . '<br>' ;
+            }
+            $payment->setAdditionalData(json_encode($aReturn_Info));
+            $payment->save();
+        } catch (Exception $e) {
+            // 例外錯誤處理。
+            $sMsg = $e->getMessage();
+        }
+        echo 'RelateNumber=>' . $RelateNumber.'<br>'.$sMsg ;
+    }
+
+    /**
+     * @param \EcpayInvoice $ecpay_invoice
+     */
+    private function initEInvoice(\EcpayInvoice $ecpay_invoice): void
+    {
+        $ecpay_invoice->Invoice_Method = 'INVOICE';
+        $ecpay_invoice->Invoice_Url = 'https://einvoice-stage.ecpay.com.tw/Invoice/Issue';
+        $ecpay_invoice->MerchantID = $this->getEcpayConfig("merchant_id");
+        $ecpay_invoice->HashKey = $this->getEcpayConfig("invoice/ecpay_invoice_hash_key");
+        $ecpay_invoice->HashIV = $this->getEcpayConfig("invoice/ecpay_invoice_hash_iv");
+    }
+
+    /**
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
+     * @param \EcpayInvoice $ecpay_invoice
+     */
+    private function initOrderItems(\Magento\Sales\Api\Data\OrderInterface $order, \EcpayInvoice $ecpay_invoice): void
+    {
+        $orderItems = $order->getAllVisibleItems();
+
+        foreach ($orderItems as $orderItem) {
+            array_push(
+                $ecpay_invoice->Send['Items'],
+                array(
+                    'ItemName' => __($orderItem->getData('name')),
+                    'ItemCount' => (int)$orderItem->getData('qty_ordered'),
+                    'ItemWord' => '批',
+                    'ItemPrice' => $orderItem->getData('price'),
+                    'ItemTaxType' => 1,
+                    'ItemAmount' => $orderItem->getData('price'),
+                    'ItemRemark' => $orderItem->getData('sku')
+                )
+            );
+        }
+    }
+
+    /**
+     * @param \EcpayInvoice $ecpay_invoice
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
+     * @param string $donationValue
+     * @param $donationCode
+     * @return string
+     */
+    private function initEInvoiceInfo(\EcpayInvoice $ecpay_invoice, \Magento\Sales\Api\Data\OrderInterface $order, string $donationValue, $donationCode): string
+    {
+        $RelateNumber = 'ECPAY' . date('YmdHis') . rand(1000000000, 2147483647); // 產生測試用自訂訂單編號
+        $ecpay_invoice->Send['RelateNumber'] = $RelateNumber;
+        $ecpay_invoice->Send['CustomerID'] = $order->getCustomerId();
+        $ecpay_invoice->Send['CustomerIdentifier'] = '';
+        $ecpay_invoice->Send['CustomerName'] = $order->getCustomerFirstname() . $order->getCustomerLastname();
+        $ecpay_invoice->Send['CustomerAddr'] = $order->getBillingAddress()->getCity();
+        $ecpay_invoice->Send['CustomerPhone'] = '';
+        $ecpay_invoice->Send['CustomerEmail'] = $order->getCustomerEmail();
+        $ecpay_invoice->Send['ClearanceMark'] = '';
+        $ecpay_invoice->Send['Print'] = '0';
+        $ecpay_invoice->Send['Donation'] = ($donationValue == "true") ? 1 : 0;
+        $ecpay_invoice->Send['LoveCode'] = ($donationValue == "true") ? $donationCode : '';
+        $ecpay_invoice->Send['CarruerType'] = '';
+        $ecpay_invoice->Send['CarruerNum'] = '';
+        $ecpay_invoice->Send['TaxType'] = 1;
+        $ecpay_invoice->Send['SalesAmount'] = $order->getGrandTotal() - $order->getShippingAmount();
+        $ecpay_invoice->Send['InvoiceRemark'] = 'v1.0.190822';
+        $ecpay_invoice->Send['InvType'] = '07';
+        $ecpay_invoice->Send['vat'] = '';
+        return $RelateNumber;
+    }
+
+    /**
      * @param \Magento\Payment\Model\InfoInterface $payment
      * @throws LocalizedException
      * @throws \Magento\Framework\Exception\FileSystemException
@@ -288,7 +481,6 @@ class Payment extends AbstractMethod
             $sMsg = '';
 
             // 1.載入SDK
-            include_once($this->directoryList->getPath("app") . '/code/Ecpay/Ecpaypayment/Helper/Library/Ecpay_Invoice.php');
             $ecpay_invoice = new \EcpayInvoice();
 
             // 2.寫入基本介接參數
@@ -308,12 +500,7 @@ class Payment extends AbstractMethod
             $aReturn_Info = $ecpay_invoice->Check_Out();
 
             // 5.返回
-            $order = $payment->getOrder();
-            $invoiceCollection = $order->getInvoiceCollection();
-
-            foreach ($invoiceCollection as $invoice) {
-                $payment->setData("ecpay_invoice_invalidate_data", json_encode($aReturn_Info));
-            }
+            $payment->setData("ecpay_invoice_invalidate_data", json_encode($aReturn_Info));
         } catch (Exception $e) {
             // 例外錯誤處理。
             $sMsg = $e->getMessage();

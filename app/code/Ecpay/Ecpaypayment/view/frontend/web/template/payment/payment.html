@@ -49,9 +49,9 @@
                 <!--/ko-->
             </fieldset>
             <input type="radio" id="donation-true" name="e-invoice-donation" value="true">
-            <label for="donation-true">Yes</label>
-            <input type="radio" id="donation-false" name="e-invoice-donation" value="false" checked="checked">
-            <label for="donation-false">No</label>
+            <label for="donation-true" data-bind="i18n: 'Yes'"/>
+            <input type="radio" style="margin-left: 50px;" id="donation-false" name="e-invoice-donation" value="false" checked="checked">
+            <label for="donation-false" data-bind="i18n: 'No'"/>
         </form>
 
         <div class="actions-toolbar" data-bind="if: isPaymentAvailable()">

@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="eguana_extensions_tab" translate="label" sortOrder="250">
+            <label>Eguana Extension</label>
+        </tab>
+        <section id="eguanasms" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Eguana StoreSms</label>
+            <tab>eguana_extensions_tab</tab>
+            <resource>Eguana_StoreSms::configuration</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Configuration</label>
+                <field id="active" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Extension</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="mobile_number_validation_active" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Unique Mobile Number Validation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="api_login" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Username</label>
+                </field>
+                <field id="sender" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sender</label>
+                </field>
+                <field id="api_password" translate="label" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id="api_url" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Api url</label>
+                </field>
+            </group>
+            <group id="templates" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Message templates</label>
+                <field id="registration_verification_active" translate="label" type="select" sortOrder="29" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable SMS based registration verification option</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="customer_register_sms" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Register SMS Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="*/*/registration_verification_active">1</field>
+                    </depends>
+                </field>
+                <field id="order_status_pending_active" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send SMS after status changed to "Pending Payment"</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order_status_pending" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="*/*/order_status_pending_active">1</field>
+                    </depends>
+                </field>
+                <field id="order_status_holded_active" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send SMS after status changed to "On Hold"</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order_status_holded" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="*/*/order_status_holded_active">1</field>
+                    </depends>
+                </field>
+                <field id="order_status_processing_active" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send SMS after status changed to "Processing"</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order_status_processing" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="*/*/order_status_processing_active">1</field>
+                    </depends>
+                </field>
+                <field id="order_status_canceled_active" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send SMS after status changed to "Cancel"</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order_status_canceled" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="*/*/order_status_canceled_active">1</field>
+                    </depends>
+                </field>
+                <field id="order_status_complete_active" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send SMS after status changed to "Complete"</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order_status_complete" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="*/*/order_status_complete_active">1</field>
+                    </depends>
+                </field>
+                <field id="order_status_closed_active" translate="label" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send SMS after status changed to "Closed"</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order_status_closed" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="*/*/order_status_closed_active">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="test_templates" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Test Message</label>
+                <field id="eguana_test_numbers" translate="label" type="text" sortOrder="212" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Test Numbers</label>
+                    <comment><![CDATA[Please enter number like +821111111111]]></comment>
+                </field>
+                <field id="eguana_test_message" translate="label" type="text" sortOrder="212" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Test Message</label>
+                    <comment><![CDATA[Please enter text message]]></comment>
+                </field>
+                <field id="send_test_sms" translate="label comment" type="button" sortOrder="215" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Eguana\StoreSms\Block\System\Config\Send</frontend_model>
+                    <label>Send test message</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

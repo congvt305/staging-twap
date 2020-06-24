@@ -24,6 +24,8 @@ use GuzzleHttp\Psr7\ResponseFactory;
 use Magento\Framework\Webapi\Rest\Request;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Amore\CustomerRegistration\Model\Sequence;
+use Amore\CustomerRegistration\Model\POSLogger;
+use Magento\Framework\Serialize\Serializer\Json;
 
 /**
  * In this class we will call the POS API
@@ -65,6 +67,14 @@ class POSSystem
      * @var \Zend\Http\Client
      */
     private $zendClient;
+    /**
+     * @var POSLogger
+     */
+    private $logger;
+    /**
+     * @var Json
+     */
+    private $json;
 
     public function __construct(
         Curl $curl,
@@ -74,7 +84,9 @@ class POSSystem
         DateTime $date,
         Sequence $sequence,
         \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory,
-        \Zend\Http\Client $zendClient
+        \Zend\Http\Client $zendClient,
+        POSLogger $logger,
+        Json $json
     ) {
         $this->date = $date;
         $this->confg = $confg;
@@ -84,12 +96,14 @@ class POSSystem
         $this->curlClient = $curl;
         $this->httpClientFactory = $httpClientFactory;
         $this->zendClient = $zendClient;
+        $this->logger = $logger;
+        $this->json = $json;
     }
 
     public function getMemberInfo($firstName, $lastName, $mobileNumber)
     {
         $posData = $this->callPOSInfoAPI($firstName, $lastName, $mobileNumber);
-        if(isset($posData['birthDay'])) {
+        if (isset($posData['birthDay'])) {
             $posData['birthDay'] = substr_replace($posData['birthDay'], '/', 4, 0);
             $posData['birthDay'] = substr_replace($posData['birthDay'], '/', 7, 0);
         }
@@ -99,9 +113,8 @@ class POSSystem
     private function callPOSInfoAPI($firstName, $lastName, $mobileNumber)
     {
         $result = [];
+        $url = $this->confg->getMemberInfoURL();
         try {
-            $url = $this->confg->getMemberInfoURL();
-
             $parameters = [
                 'firstName' => $firstName,
                 'lastName' => $lastName,
@@ -109,7 +122,7 @@ class POSSystem
             ];
             $jsonEncodedData = json_encode($parameters);
 
-            $this->curlClient->setOptions(array(
+            $this->curlClient->setOptions([
                 CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
@@ -119,25 +132,33 @@ class POSSystem
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
                 CURLOPT_POSTFIELDS => $jsonEncodedData,
-                CURLOPT_HTTPHEADER => array(
+                CURLOPT_HTTPHEADER => [
                     'Content-type: application/json'
-                ),
-            ));
+                ],
+            ]);
+            $this->logger->addAPICallLog(
+                'POS get info API Call',
+                $url,
+                $parameters
+            );
             $this->curlClient->post($url, $parameters);
             $apiRespone = $this->curlClient->getBody();
-            $response = json_decode($apiRespone, true);
+            $response = $this->json->unserialize($apiRespone);
             if ($response['message'] == 'SUCCESS') {
                 $result = $response['data']['customerInfo'];
             } else {
                 $result['message'] = $response['message'];
             }
-
+            $this->logger->addAPICallLog(
+                'POS get info API Response',
+                $url,
+                $response
+            );
         } catch (\Exception $e) {
             $result['message'] = $e->getMessage();
+            $this->logger->addExceptionMessage($e->getMessage());
         }
-
         return $result;
-
     }
 
     /**
@@ -161,21 +182,27 @@ class POSSystem
             $parameters['email'] = $customer->getEmail();
             $parameters['sex'] = $customer->getGender() == '1' ? 'M' : 'F';
             $parameters['emailYN'] = $this->isCustomerSubscribToNewsLetters($customer->getId()) ? 'Y' : 'N';
-            $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+            $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y':'N';
             $parameters['callYN'] = 'N';
             $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-            $parameters['homeCity'] = $customer->getCustomAttribute('dm_city')?$customer->getCustomAttribute('dm_city')->getValue():'';
-            $parameters['homeState'] = $customer->getCustomAttribute('dm_state')?$customer->getCustomAttribute('dm_state')->getValue():'';
-            $parameters['homeAddr1'] = $customer->getCustomAttribute('dm_detailed_address')?$customer->getCustomAttribute('dm_detailed_address')->getValue():'';
-            $parameters['homeZip'] = $customer->getCustomAttribute('dm_zipcode')?$customer->getCustomAttribute('dm_zipcode')->getValue():'';
-            $parameters['salOrgCd'] =  $customer->getCustomAttribute('sales_organization_code')?$customer->getCustomAttribute('sales_organization_code')->getValue():'';
-            $parameters['salOffCd'] = $customer->getCustomAttribute('sales_office_code')?$customer->getCustomAttribute('sales_office_code')->getValue():'';
+            $parameters['homeCity'] = $customer->getCustomAttribute('dm_city')?
+                $customer->getCustomAttribute('dm_city')->getValue():'';
+            $parameters['homeState'] = $customer->getCustomAttribute('dm_state')?
+                $customer->getCustomAttribute('dm_state')->getValue():'';
+            $parameters['homeAddr1'] = $customer->getCustomAttribute('dm_detailed_address')?
+                $customer->getCustomAttribute('dm_detailed_address')->getValue():'';
+            $parameters['homeZip'] = $customer->getCustomAttribute('dm_zipcode')?
+                $customer->getCustomAttribute('dm_zipcode')->getValue():'';
+            $parameters['salOrgCd'] =  $customer->getCustomAttribute('sales_organization_code')?
+                $customer->getCustomAttribute('sales_organization_code')->getValue():'';
+            $parameters['salOffCd'] = $customer->getCustomAttribute('sales_office_code')?
+                $customer->getCustomAttribute('sales_office_code')->getValue():'';
             $parameters['statusCD'] = $action == 'register' ? '01' : '02';
-
 
             $response = $this->callJoinAPI($parameters);
             $this->savePOSSyncReport($customer, $response);
         } catch (\Exception $e) {
+            $this->logger->addExceptionMessage($e->getMessage());
             return $e->getMessage();
         }
     }
@@ -199,6 +226,7 @@ class POSSystem
             return $this->customerRepository->save($customer);
         } catch (\Exception $e) {
             $e->getMessage();
+            $this->logger->addExceptionMessage($e->getMessage());
             return $customer;
         }
     }
@@ -211,7 +239,7 @@ class POSSystem
 
             $jsonEncodedData = json_encode($parameters);
 
-            $this->curlClient->setOptions(array(
+            $this->curlClient->setOptions([
                 CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
@@ -221,13 +249,18 @@ class POSSystem
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
                 CURLOPT_POSTFIELDS => $jsonEncodedData,
-                CURLOPT_HTTPHEADER => array(
+                CURLOPT_HTTPHEADER => [
                     'Content-type: application/json'
-                ),
-            ));
+                ],
+            ]);
+            $this->logger->addAPICallLog(
+                'POS set info API Call',
+                $url,
+                $parameters
+            );
             $this->curlClient->post($url, $parameters);
             $apiRespone = $this->curlClient->getBody();
-            $response = json_decode($apiRespone, true);
+            $response = $this->json->unserialize($apiRespone);
             if ($response['message'] == 'SUCCESS') {
                 $result['message'] = $response['message'];
                 $result['status'] = 1;
@@ -235,10 +268,16 @@ class POSSystem
                 $result['message'] = $response['message'];
                 $result['status'] = 0;
             }
+            $this->logger->addAPICallLog(
+                'POS set info API Response',
+                $url,
+                $response
+            );
 
         } catch (\Exception $e) {
             $result['message'] = $e->getMessage();
             $result['status'] = 0;
+            $this->logger->addExceptionMessage($e->getMessage());
         }
 
         return $result;
@@ -251,7 +290,8 @@ class POSSystem
      *
      * @return bool
      */
-    private function isCustomerSubscribToNewsLetters($customerId) {
+    private function isCustomerSubscribToNewsLetters($customerId)
+    {
         /**
          * @var Subscriber $subscriber
          */
@@ -274,41 +314,4 @@ class POSSystem
         $this->customerRepository->save($customer);
     }
 
-    /**
-     * Do API request with provided params.
-     * I follow the way recommended at https://devdocs.magento.com/guides/v2.4/ext-best-practices/tutorials/create-integration-with-api.html
-     * to call external APIs
-     *
-     * @param string $uriEndpoint
-     * @param array $params
-     * @param string $requestMethod
-     *
-     * @return Response
-     */
-    private function doRequest(
-        string $uriEndpoint,
-        array $params = [],
-        string $requestMethod = Request::HTTP_METHOD_GET
-    ): Response {
-        /** @var Client $client */
-        $client = $this->clientFactory->create(['config' => [
-            'base_uri' => self::API_REQUEST_URI
-        ]]);
-
-        try {
-            $response = $client->request(
-                $requestMethod,
-                $uriEndpoint,
-                $params
-            );
-        } catch (GuzzleException $exception) {
-            /** @var Response $response */
-            $response = $this->responseFactory->create([
-                'status' => $exception->getCode(),
-                'reason' => $exception->getMessage()
-            ]);
-        }
-
-        return $response;
-    }
 }

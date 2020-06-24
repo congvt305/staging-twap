@@ -47,7 +47,11 @@ class DefaultConfigProviderPlugin extends AbstractModel
         foreach ($items as $index => $item) {
             $quoteItem = $this->checkoutSession->getQuote()->getItemById($item['item_id']);
             $product = $this->_productRepository->getById($quoteItem->getProduct()->getId());
-            $result['quoteItemData'][$index]['laneige_size'] = $product->getAttributeText('laneige_size');
+            if ($product->getCustomAttribute('laneige_size')) {
+                $result['quoteItemData'][$index]['laneige_size'] = $product->getAttributeText('laneige_size');
+            } else {
+                $result['quoteItemData'][$index]['laneige_size'] = '';
+            }
         }
         return $result;
     }

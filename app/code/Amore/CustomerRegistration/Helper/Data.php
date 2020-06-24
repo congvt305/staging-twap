@@ -42,6 +42,8 @@ class Data extends AbstractHelper
         = 'customerregistraion/pos/sales_organization_code';
     const SALES_OFFICE_CODE
         = 'customerregistraion/pos/sales_office_code';
+    const DEBUG
+        = 'customerregistraion/pos/debug';
 
     /**
      * Get cms block id set in setting
@@ -199,6 +201,22 @@ class Data extends AbstractHelper
 
         return $this->scopeConfig->getValue(
             self::SALES_OFFICE_CODE,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    public function getDebug($websiteId = null)
+    {
+        if($websiteId) {
+            return $this->scopeConfig->getValue(
+                self::DEBUG,
+                ScopeInterface::SCOPE_WEBSITE,
+                $websiteId
+            );
+        }
+
+        return $this->scopeConfig->getValue(
+            self::DEBUG,
             ScopeInterface::SCOPE_WEBSITE
         );
     }

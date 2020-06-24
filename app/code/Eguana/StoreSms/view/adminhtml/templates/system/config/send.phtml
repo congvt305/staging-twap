@@ -1,0 +1,13 @@
+<?php
+
+/* @var $block \Eguana\StoreSms\Block\System\Config\Send */
+?>
+
+<?= $block->getButtonHtml()?>
+<script type="text/x-magento-init">
+   {
+       "*": {
+           "send-sms": {"smsAjaxUrl":"<?= $block->escapeUrl($block->getAjaxUrl()) ?>"}
+       }
+   }
+</script>

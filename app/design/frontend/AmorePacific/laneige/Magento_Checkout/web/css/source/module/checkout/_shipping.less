@@ -228,14 +228,21 @@
 
         tbody {
             td {
-                .lib-css(border-top, @checkout-shipping-method__border);
-                .lib-css(padding-bottom, @checkout-shipping-method__padding);
+                .lib-css(padding-bottom, 0);
                 .lib-css(padding-top, @checkout-shipping-method__padding);
+                cursor: pointer;
+                padding-left: @indent__xs;
+                padding-right: @indent__xs;
+                text-align: left !important;
 
                 &:first-child {
+                    width: 20px;
                     padding-left: 0;
                     padding-right: 0;
-                    width: 20px;
+                }
+
+                form {
+                    text-align: center;
                 }
             }
 
@@ -295,9 +302,14 @@
         }
     }
 
-    .table-checkout-shipping-method {
+    .checkout-shipping-address {
+        margin-bottom: @indent__base !important;
+    }
+
+    .methods-shipping {
         padding-left: @layout__width-xs-indent;
         padding-right: @layout__width-xs-indent;
+        padding-bottom: @indent__xl;
     }
 
     .checkout-shipping-method {
@@ -373,6 +385,7 @@
         .lib-css(max-width, @checkout-shipping-address__max-width);
         margin-left: auto;
         margin-right: auto;
+        margin-bottom: @indent__base;
     }
 }
 
