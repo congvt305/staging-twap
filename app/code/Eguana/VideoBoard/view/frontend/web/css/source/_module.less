@@ -77,6 +77,26 @@
         }
     }
 
+    .back-button {
+        text-align: center;
+        font-weight: @font-weight__bold;
+        padding-top: @indent__l;
+
+        .primary {
+            .lib-button-icon(
+                @icon-list,
+                @_icon-font-color: #ccc,
+                @_icon-font-color-hover: #ccc,
+                @_icon-font-color-active: #ccc,
+                @_icon-font-position: before,
+                @_icon-font-text-hide: true
+            );
+            border-radius: 50%;
+            padding: 7px;
+            margin-bottom: 7px;
+        }
+    }
+
     //
     //  Detail page
     //  _____________________________________________
