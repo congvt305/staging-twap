@@ -19,7 +19,6 @@ class DropdownType implements OptionSourceInterface
 {
     /**
      * Values for config dropdown
-     *
      * @return array
      */
     public function toOptionArray()

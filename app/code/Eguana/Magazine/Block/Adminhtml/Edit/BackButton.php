@@ -15,6 +15,7 @@ use Eguana\Magazine\Block\Adminhtml\Edit\GenericButton;
 class BackButton extends GenericButton implements ButtonProviderInterface
 {
     /**
+     * Used for Back Button
      * @return array
      */
     public function getButtonData()

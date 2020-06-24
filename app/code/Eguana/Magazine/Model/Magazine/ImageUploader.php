@@ -18,7 +18,6 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Model class for file uploading
- *
  * Class ImageUploader
  */
 class ImageUploader

@@ -7,13 +7,16 @@
  * Date: 6/17/20
  * Time: 5:54 AM
  */
-
 namespace Eguana\Magazine\Block\Adminhtml\Edit;
 
 use Magento\Backend\Block\Widget\Context;
 use Eguana\Magazine\Api\MagazineRepositoryInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 
+/**
+ * Generic class for all buttons
+ * Class GenericButton
+ */
 class GenericButton
 {
     /**

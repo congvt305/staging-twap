@@ -18,6 +18,10 @@ use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\Registry;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Action for delete button
+ * Class Delete
+ */
 class Delete extends AbstractController
 {
     /**

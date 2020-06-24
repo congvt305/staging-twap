@@ -11,6 +11,11 @@ namespace Eguana\Magazine\Ui\Component\Listing\Column;
 
 use Magento\Store\Ui\Component\Listing\Column\Store\Options;
 
+/**
+ * This class is used for store Options
+ * Class StoreOptions
+ * @package Eguana\Magazine\Ui\Component\Listing\Column
+ */
 class StoreOptions extends Options
 {
     const ALL_STORE_VIEWS = '0';

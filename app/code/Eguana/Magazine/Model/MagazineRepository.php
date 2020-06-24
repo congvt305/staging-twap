@@ -134,9 +134,6 @@ class MagazineRepository implements MagazineRepositoryInterface
          */
         $magazine = $this->magazineFactory->create();
         $this->resource->load($magazine, $magazineId);
-        if (!$magazine->getId()) {
-            throw new NoSuchEntityException(__('Magazine with id "%1" does not exist.', $magazineId));
-        }
         return $magazine;
     }
 

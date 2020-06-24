@@ -12,15 +12,17 @@ namespace Eguana\Magazine\Controller\Monthly;
 use Eguana\Magazine\Model\ResourceModel\Magazine\CollectionFactory;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 use Eguana\Magazine\Model\ResourceModel\Magazine\Collection;
+use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Message\ManagerInterface;
 
 /**
- * PLEASE ENTER ONE LINE SHORT DESCRIPTION OF CLASS
- *
+ * Class used for Detail Magazine
  * Class Magazine
  */
 class Detail extends Action
@@ -50,6 +52,16 @@ class Detail extends Action
      * @var LoggerInterface;
      */
     private $logger;
+
+    /**
+     * @var ResultFactory
+     */
+    protected $resultFactory;
+
+    /**
+     * @var ManagerInterface
+     */
+    private $managerInterface;
     /**
      * Construct
      *
@@ -62,7 +74,9 @@ class Detail extends Action
         CollectionFactory $collectionFactory,
         StoreManagerInterface $storeManagerInterface,
         DateTime $dateTime,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ResultFactory $resultFactory,
+        ManagerInterface $managerInterface
     ) {
         parent::__construct($context);
         $this->collectionFactory = $collectionFactory;
@@ -70,11 +84,13 @@ class Detail extends Action
         $this->storeManagerInterface = $storeManagerInterface;
         $this->dateTime = $dateTime;
         $this->logger = $logger;
+        $this->resultFactory = $resultFactory;
+        $this->managerInterface = $managerInterface;
     }
     /**
      * Dispatch request
      *
-     * @return \Magento\Framework\App\ResponseInterface|ResultInterfaceAlias|void
+     * @return ResponseInterfaceAlias|ResultInterfaceAlias|void
      */
     public function execute()
     {
@@ -83,13 +99,14 @@ class Detail extends Action
         if (isset($month) && isset($year)) {
             $magazineCollection = $this->getCollection($month, $year);
             if (empty($magazineCollection->getData())) {
-                $resultRedirect = $this->resultPageFactory->create();
-                $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+                $this->managerInterface->addErrorMessage('No Magazine exsit with in this month');
+                $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+                $resultRedirect->setUrl('/magazine');
                 return $resultRedirect;
             }
         } elseif (!isset($month) || !isset($year)) {
-            $resultRedirect = $this->resultRedirectFactory->create();
-            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+            $resultRedirect->setUrl('/magazine');
             return $resultRedirect;
         }
         return $this->resultPageFactory->create();

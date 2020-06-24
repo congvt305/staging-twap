@@ -13,7 +13,6 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 /**
  * Class to convert labels on admin panel
- *
  * Class IsActive
  */
 class IsActive implements OptionSourceInterface

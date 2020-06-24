@@ -12,6 +12,10 @@ namespace Eguana\Magazine\Controller\Adminhtml\Magazine;
 use Magento\Backend\App\Action;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 
+/**
+ * Action for Edit Button
+ * Class Edit
+ */
 class Edit extends \Magento\Backend\App\Action implements HttpGetActionInterface
 {
     /**

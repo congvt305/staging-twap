@@ -12,7 +12,9 @@ namespace Eguana\Magazine\Controller\Detail;
 use Eguana\Magazine\Api\MagazineRepositoryInterface;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
+use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
@@ -33,6 +35,16 @@ class Index extends Action
     private $resultPageFactory;
 
     /**
+     * @var ResultFactory
+     */
+    protected $resultFactory;
+
+    /**
+     * @var ManagerInterface
+     */
+    private $managerInterface;
+
+    /**
      * Construct
      *
      * @param Context $context
@@ -41,11 +53,15 @@ class Index extends Action
     public function __construct(
         Context $context,
         MagazineRepositoryInterface $magazineRepository,
-        PageFactory $resultPageFactory
+        PageFactory $resultPageFactory,
+        ResultFactory $resultFactory,
+        ManagerInterface $managerInterface
     ) {
         parent::__construct($context);
         $this->magazineRepository = $magazineRepository;
         $this->resultPageFactory = $resultPageFactory;
+        $this->resultFactory = $resultFactory;
+        $this->managerInterface = $managerInterface;
     }
 
     /**
@@ -56,18 +72,19 @@ class Index extends Action
     public function execute()
     {
         $id = $this->getRequest()->getParam('id');
-        $model = $id ? $this->magazineRepository->getById($id) : null;
+        $magazine = $this->magazineRepository->getById($id);
 
-        if ($id) {
-            if (!$model->getEntityId()) {
-                $resultRedirect = $this->resultRedirectFactory->create();
+        if (isset($id)) {
+            if (empty($magazine)) {
+                $this->managerInterface->addErrorMessage('No magazine exist with this ' . $id . 'id');
+                $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
                 $resultRedirect->setUrl($this->_redirect->getRefererUrl());
                 return $resultRedirect;
             }
-        } else {
-            $resultRedirect = $this->resultRedirectFactory->create();
+        } elseif (!isset($id)) {
+            $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
             $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-            return $resultRedsirect;
+            return $resultRedirect;
         }
         return $this->resultPageFactory->create();
     }

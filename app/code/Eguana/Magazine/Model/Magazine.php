@@ -11,7 +11,6 @@ namespace Eguana\Magazine\Model;
 
 /**
  * Mdoel class to be used
- *
  * Class Magazine
  * Eguana\Magazine\Model
  */
@@ -25,7 +24,6 @@ use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Model class to be used
- *
  * Class Magazine
  */
 class Magazine extends AbstractExtensibleModel implements MagazineInterface, IdentityInterface

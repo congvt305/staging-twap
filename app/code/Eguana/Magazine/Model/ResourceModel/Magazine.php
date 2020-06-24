@@ -13,7 +13,6 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 /**
  * Main class to load data from db
- *
  * Class Magazine
  */
 class Magazine extends AbstractDb

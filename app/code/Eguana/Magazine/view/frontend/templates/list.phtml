@@ -1,36 +1,41 @@
 <?php
 /** @var $viewModel \Eguana\Magazine\ViewModel\Index\MagazineList */
 $viewModel = $block->getData('view_model_list');
-$banner = $viewModel->getBannerThumbnail();
+$bannerCollection = $viewModel->getBannerThumbnail();
 $imageMagazineCollection = $viewModel->getImageMagazineCollection();
 $videoThumbnail = $viewModel->getVideoThumbnail();
 $magazineCollection = $viewModel->getMagazineTotalCollection();
 ?>
 <div class="block magazine-image">
-    <?php if (!empty($banner)):?>
-    <div class="magazine-photo-banner">
-        <a class="action view"
-           href="<?= $block->escapeHtml($block->getUrl($banner['url']));?>">
-            <span>
-                <img src="<?= $block->escapeHtml($banner['src']);?>"
-                     alt="<?= $block->escapeHtml($banner['alt']);?>" />
-            </span>
-        </a>
-    </div>
-<?php endif;?>
-    <ul class="list-image-box"">
-        <?php foreach ($imageMagazineCollection as $magazineItem): ?>
+    <?php if (!empty($bannerCollection->getData())):?>
+        <?php foreach ($bannerCollection as $magazineItem): ?>
+            <div class="magazine-photo-banner">
+                <a class="action view"
+                   href="<?= $block->escapeHtml($block->getUrl($viewModel->getItemDetailsUrl($magazineItem['entity_id'])));?>">
+                    <span>
+                        <img src="<?= $block->escapeHtml($viewModel->getThumbnailSrc($magazineItem['thumbnail_image']));?>"
+                             alt="<?= $block->escapeHtml($magazineItem['thumbnail_alt']);?>" />
+                    </span>
+                </a>
+                <h1><?= $block->escapeHtml($magazineItem['show_date']);?></h1>
+            </div>
+        <?php endforeach; ?>
+    <?php endif;?>
+    <?php if (!empty($imageMagazineCollection->getData())):?>
+        <ul class="list-image-box"">
+            <?php foreach ($imageMagazineCollection as $magazineItem): ?>
             <li class="magazine-item-box">
                 <div class="magazine-item">
                     <a
                         href="<?= $block->escapeHtml($block->
                         getUrl($viewModel->getItemDetailsUrl($magazineItem['entity_id'])));?>">
-                        <span>
-                            <img src="<?= $block->escapeHtml($viewModel->
-                            getThumbnailSrc($magazineItem['thumbnail_image']));?>"
-                                 alt="<?= $block->escapeHtml($magazineItem['thumbnail_alt']);?>" />
-                        </span>
+                            <span>
+                                <img src="<?= $block->escapeHtml($viewModel->
+                                getThumbnailSrc($magazineItem['thumbnail_image']));?>"
+                                     alt="<?= $block->escapeHtml($magazineItem['thumbnail_alt']);?>" />
+                            </span>
                     </a>
+                    <h1><?= $block->escapeHtml($magazineItem['show_date']);?></h1>
                     <div class="block-title">
                         <strong><?= $block->escapeHtml($magazineItem['title']) ?></strong>
                     </div>
@@ -40,45 +45,52 @@ $magazineCollection = $viewModel->getMagazineTotalCollection();
                 </div>
             </li>
         <?php endforeach; ?>
-    </ul>
-</div>
-
-<div class="block magazine-video">
-    <?php if (!empty($videoThumbnail)):?>
-        <div class="magazine-video-banner">
-            <a class="action view"
-               href="<?= $block->escapeHtml($block->getUrl($videoThumbnail['url']));?>">
-            <span>
-                <img src="<?= $block->escapeHtml($videoThumbnail['src']);?>"
-                     alt="<?= $block->escapeHtml($videoThumbnail['alt']);?>" />
-            </span>
-            </a>
-        </div>
+        </ul>
     <?php endif;?>
-    <div class="block-title other-magazine">
-        <strong><?= $block->escapeHtml(__('Other Magazines')) ?></strong>
-    </div>
-    <ul class="magazine-slider" id="slick">
-        <?php $date = '' ?>
-        <?php foreach ($magazineCollection as $magazineItem): ?>
-            <?php if ($date == '' || $magazineItem['show_date'] < $date):?>
-                <li class="magazine-slider-item">
-                    <div class="magazine-item">
-                        <a
-                            href="<?= $block->escapeHtml($block->
-                            getUrl($viewModel->getMonthlyMagazineUrl($magazineItem['show_date'])));?>">
+    <div class="block magazine-video">
+        <?php if (!empty($videoThumbnail->getData())):?>
+            <?php foreach ($videoThumbnail as $magazineItem): ?>
+                <div class="magazine-video-banner">
+                    <a class="action view"
+                       href="<?= $block->escapeHtml($block->getUrl($viewModel->getItemDetailsUrl($magazineItem['entity_id'])));?>">
+                        <span>
+                            <img src="<?= $block->escapeHtml($viewModel->getThumbnailSrc($magazineItem['thumbnail_image']));?>"
+                                 alt="<?= $block->escapeHtml($magazineItem['thumbnail_alt']);?>" />
+                        </span>
+                    </a>
+                    <h1><?= $block->escapeHtml($magazineItem['show_date']);?></h1>
+                </div>
+            <?php endforeach; ?>
+        <?php endif;?>
+        <div class="block-title other-magazine">
+            <strong><?= $block->escapeHtml(__('Other Magazines')) ?></strong>
+        </div>
+        <?php if (!empty($magazineCollection->getData())):?>
+            <ul class="magazine-slider" id="slick">
+            <?php $date = '' ?>
+            <?php foreach ($magazineCollection as $magazineItem): ?>
+                <?php if ($date == '' || $magazineItem['show_date'] < $date):?>
+                <?php $magazine = $viewModel->getSliderThumnai($magazineItem['show_date'])->getData(); ?>
+                    <li class="magazine-slider-item">
+                        <div class="magazine-item">
+                            <a
+                                href="<?= $block->escapeHtml($block->
+                                getUrl($viewModel->getMonthlyMagazineUrl($magazine[0]['show_date'])));?>">
                     <span>
                         <img src="<?= $block->escapeHtml($viewModel->
-                        getThumbnailSrc($magazineItem['thumbnail_image']));?>"
-                             alt="<?= $block->escapeHtml($magazineItem['thumbnail_alt']);?>" />
+                        getThumbnailSrc($magazine[0]['thumbnail_image']));?>"
+                             alt="<?= $block->escapeHtml($magazine[0]['thumbnail_alt']);?>" />
                     </span>
-                        </a>
-                    </div>
-                </li>
-                <?php $date = $viewModel->getMonthFromDate($magazineItem['show_date']) ?>
-            <?php endif;?>
-        <?php endforeach; ?>
-    </ul>
+                            </a>
+                            <h1><?= $block->escapeHtml($magazine[0]['show_date']);?></h1>
+                        </div>
+                    </li>
+                    <?php $date = $viewModel->getMonthFromDate($magazineItem['show_date']) ?>
+                <?php endif;?>
+            <?php endforeach; ?>
+        </ul>
+        <?php endif;?>
+    </div>
 </div>
 <script>
     require([
@@ -93,7 +105,7 @@ $magazineCollection = $viewModel->getMagazineTotalCollection();
             slidesToShow: 4,
             slidesToScroll: 1,
             marginRight: '30px',
-        responsive: [
+            responsive: [
                 {
                     breakpoint: 1024,
                     settings: {

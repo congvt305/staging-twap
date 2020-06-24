@@ -29,7 +29,7 @@ class MagazineList implements ArgumentInterface
     const IMAGE_TYPE = 2;
     const VIDEO_TYPE = 3;
     const DETAIL_URL = 'magazine/detail/index/id/';
-    const MONTHLY_DETAILS_URL = 'magazine/monthly/detail/month/';
+    const MONTHLY_DETAILS_URL = 'magazine/index/index/month/';
 
     /**
      * @var CollectionFactory
@@ -92,19 +92,7 @@ class MagazineList implements ArgumentInterface
         $result = [];
         $magazineCollection = $this->getMagazineCollection($type);
         try {
-            if (!empty($magazineCollection->getData())) {
-                $magazine = $magazineCollection->getData()[0];
-                $file = ltrim(str_replace('\\', '/', $magazine['thumbnail_image']), '/');
-                $thumbnailSrc = $this->storeManagerInterface->getStore()->getBaseUrl(
-                    UrlInterface::URL_TYPE_MEDIA
-                ) . $file;
-                $thumbnailAlt = $magazine['thumbnail_alt'];
-                $result['src'] = $thumbnailSrc;
-                $result['alt'] = $thumbnailAlt;
-                $result['url'] = self::DETAIL_URL . $magazine['entity_id'];
-                return $result;
-            }
-            return $result;
+            return $magazineCollection;
         } catch (\Exception $exception) {
             $this->logger->debug($exception->getMessage());
         }
@@ -117,7 +105,23 @@ class MagazineList implements ArgumentInterface
     public function getImageMagazineCollection()
     {
         $imageCollection = $this->getMagazineCollection(self::IMAGE_TYPE);
-        return $imageCollection->getData();
+        $month = $this->requestInterface->getParam('month');
+        $year = $this->requestInterface->getParam('year');
+        if (isset($month) &&  isset($year)) {
+            $startDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '1'.' 00:00:00');
+            $endDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '31'.' 00:00:00');
+        } else {
+            $startDate = $this->dateTime->gmtDate('y-m-'.'1'.' 00:00:00');
+            $endDate = $this->dateTime->gmtDate('y-m-'.'31'.' 00:00:00');
+        }
+        $imageCollection ->addFieldToFilter(
+            'show_date',
+            ['gteq' => $startDate]
+        )->addFieldToFilter(
+            'show_date',
+            ['lteq' => $endDate]
+        );
+        return $imageCollection;
     }
 
     /**
@@ -194,7 +198,24 @@ class MagazineList implements ArgumentInterface
      */
     public function getVideoThumbnail()
     {
-        return $this->getLargeThumbnail(self::VIDEO_TYPE);
+        $collection = $this->getLargeThumbnail(self::VIDEO_TYPE);
+        $month = $this->requestInterface->getParam('month');
+        $year = $this->requestInterface->getParam('year');
+        if (isset($month) && isset($year)) {
+            $startDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '1'.' 00:00:00');
+            $endDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '31'.' 00:00:00');
+        } else {
+            $startDate = $this->dateTime->gmtDate('y-m-'.'1'.' 00:00:00');
+            $endDate = $this->dateTime->gmtDate('y-m-'.'31'.' 00:00:00');
+        }
+        $collection ->addFieldToFilter(
+            'show_date',
+            ['gteq' => $startDate]
+        )->addFieldToFilter(
+            'show_date',
+            ['lteq' => $endDate]
+        );
+        return $collection;
     }
 
     /**
@@ -203,7 +224,25 @@ class MagazineList implements ArgumentInterface
      */
     public function getBannerThumbnail()
     {
-        return $this->getLargeThumbnail(self::BANNER_TYPE);
+        $month = $this->requestInterface->getParam('month');
+        $year = $this->requestInterface->getParam('year');
+        if ($month && $year) {
+            $startDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '1'.' 00:00:00');
+            $endDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '31'.' 00:00:00');
+        } else {
+            $startDate = $this->dateTime->gmtDate('y-m-'.'1'.' 00:00:00');
+            $endDate = $this->dateTime->gmtDate('y-m-'.'31'.' 00:00:00');
+        }
+
+        $collection = $this->getLargeThumbnail(self::BANNER_TYPE);
+        $collection ->addFieldToFilter(
+            'show_date',
+            ['gteq' => $startDate]
+        )->addFieldToFilter(
+            'show_date',
+            ['lteq' => $endDate]
+        );
+        return $collection;
     }
 
     public function getMonthFromDate($time)
@@ -220,6 +259,13 @@ class MagazineList implements ArgumentInterface
     public function getMagazineTotalCollection()
     {
         try {
+            $month = $this->requestInterface->getParam('month');
+            $year = $this->requestInterface->getParam('year');
+            if (isset($month) && isset($year)) {
+                $endDate = $this->dateTime->gmtDate($year . '-' . $month . '-' . 1 . ' 00:00:00');
+            } else {
+                $endDate = $this->dateTime->gmtDate('y-m-'.'1'.' 00:00:00');
+            }
             $storeId =  $this->storeManagerInterface->getStore()->getId();
             $magazineCollection = $this->collectionFactory->create();
             $magazineCollection->addFieldToFilter(
@@ -231,6 +277,9 @@ class MagazineList implements ArgumentInterface
             )->setOrder(
                 "show_date",
                 'DESC'
+            )->addFieldToFilter(
+                'show_date',
+                ['lteq' => $endDate]
             );
         } catch (\Exception $exception) {
             $this->logger->debug($exception->getMessage());
@@ -286,5 +335,63 @@ class MagazineList implements ArgumentInterface
         );
 
         return $magazineCollection;
+    }
+
+    /**
+     * @return CollectionFactory
+     */
+    public function getSliderThumnai($date)
+    {
+
+        $collectionByStore = $this->getMagazineCollection(self::BANNER_TYPE);
+        $month = $this->dateTime->gmtDate('m', $date);
+        $year = $this->dateTime->gmtDate('y', $date);
+
+        if (isset($month) &&  isset($year)) {
+            $startDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '1'.' 00:00:00');
+            $endDate = $this->dateTime->gmtDate($year.'-'.$month.'-' . '31'.' 00:00:00');
+        } else {
+            $startDate = $this->dateTime->gmtDate('y-m-'.'1'.' 00:00:00');
+            $endDate = $date;
+        }
+        $startDate = $this->dateTime->gmtDate(
+            'Y-m-d H:i:s',
+            $year . '-' . $month . '-' . 1 . ' 00:00:00'
+        );
+        $collectionByStore->addFieldToFilter(
+            'show_date',
+            ['gteq' => $startDate]
+        )->addFieldToFilter(
+            'show_date',
+            ['lteq' => $endDate]
+        );
+        if (!empty($collectionByStore->getData())) {
+            $collectionByStore->setPageSize('1')->load();
+            return $collectionByStore;
+        }
+        $collectionByStore = $this->getMagazineCollection(self::IMAGE_TYPE);
+        $collectionByStore->addFieldToFilter(
+            'show_date',
+            ['gteq' => $startDate]
+        )->addFieldToFilter(
+            'show_date',
+            ['lteq' => $endDate]
+        );
+        if (!empty($collectionByStore->getData())) {
+            $collectionByStore->setPageSize('1')->load();
+            return $collectionByStore;
+        }
+        $collectionByStore = $this->getMagazineCollection(self::VIDEO_TYPE);
+        $collectionByStore->addFieldToFilter(
+            'show_date',
+            ['gteq' => $startDate]
+        )->addFieldToFilter(
+            'show_date',
+            ['lteq' => $endDate]
+        );
+        if (!empty($collectionByStore->getData())) {
+            $collectionByStore->setPageSize('1')->load();
+            return $collectionByStore;
+        }
     }
 }

@@ -14,6 +14,10 @@ use Eguana\Magazine\Model\Magazine\ImageUploader;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
 
+/**
+ * Action for Uploading files
+ * Class UploadImage
+ */
 class UploadImage extends \Magento\Backend\App\Action
 {
 

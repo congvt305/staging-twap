@@ -12,6 +12,10 @@ namespace Eguana\Magazine\Block\Adminhtml\Edit;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 use Magento\Ui\Component\Control\Container;
 
+/**
+ * Class for save button toolbar on create/edit magazine
+ * Class SaveButton
+ */
 class SaveButton extends GenericButton implements ButtonProviderInterface
 {
     /**
