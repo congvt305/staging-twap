@@ -19,83 +19,61 @@ $count = 0;
             <?= $block->escapeHtml(__('No video found!.')); ?>
         </div>
     <?php else: ?>
-    <div class="video-board-list">
-        <ul>
+        <ul class="video-board-list">
         <?php foreach ($videoBlockList as $videoBlockItem):?>
-            <li style="float: left;" class="video-board-item">
-                <div class="video-board-item-content">
-                    <div class="video-board-photo">
-                        <div class="video-scale">
-                            <a class="video-link" href="<?=
-                            $block->escapeUrl($block->getVideoBoardUrl($videoBlockItem->getEntityId()))
-                            ?>" >
-                                <div class="video-iframe">
-                                    <img src="<?= $block->escapeHtml($videoBlockItem->getThumbnailImageURL());?>"
-                                         alt="Thumbnail Image" />
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="video-heading">
-                            <a class="action view video-title"
-                               href="<?=
-                                $block->escapeUrl($block->getVideoBoardUrl($videoBlockItem->getEntityId())) ?>">
-                                <p class="video-title">
-                                    <?= $block->escapeHtml($videoBlockItem->getTitle());?>
-                                </p>
-                            </a>
-                            <p class="video-created-date">
-                                <?=
-                                $block->escapeHtml($block->formatDate($videoBlockItem->getCreatedAt()));
-                                ?>
-                            </p>
-                        </div>
-                    </div>
+            <li class="video-board-item">
+                <a class="video-link" href="<?= $block->escapeUrl($block->getVideoBoardUrl($videoBlockItem->getEntityId()))?>">
+                    <img src="<?= $block->escapeHtml($videoBlockItem->getThumbnailImageURL());?>" alt="<?= $block->escapeHtml(__('Thumbnail Image'));?>"/>
+                </a>
+                <div class="video-heading">
+                    <a class="action view video-title"
+                       href="<?= $block->escapeUrl($block->getVideoBoardUrl($videoBlockItem->getEntityId())) ?>">
+                        <?= $block->escapeHtml($videoBlockItem->getTitle());?>
+                    </a>
+                    <p class="video-created-date">
+                        <?= $block->escapeHtml($block->formatDate($videoBlockItem->getCreatedAt())); ?>
+                    </p>
                 </div>
             </li>
         <?php endforeach; ?>
         </ul>
-    </div>
-
     <?php endif; ?>
 </div>
 <?php if($videoBlockSize > 6 ): ?>
 <div class="more-item-button">
-    <button id="more-button">&#x21e9;</button>
-    <br>
-    <div><span id="video-count">6</span>/<?= $block->escapeHtml($videoBlockSize); ?></div>
+    <button class="action primary" id="more-button"><span><?=__('More');?></span></button><br/>
+    <span id="video-count">6</span>/<?= $block->escapeHtml($videoBlockSize); ?>
 </div>
 <?php endif ; ?>
 <script>
-
-    var totalVideo = <?= $block->escapeHtml($videoBlockSize) ;?>;
-    var count = 2;
     require(['jquery', 'mage/url'], function($, url){
+        var totalVideo = <?= $block->escapeHtml($videoBlockSize) ;?>;
+        var count = 2;
         $(document).on("click","#more-button", function() {
             if (count*6 > totalVideo) {
                 $("#video-count").text(totalVideo);
                 $("#more-button").prop('disabled', true);
-            }else {
+            } else {
                 $("#video-count").text(count * 6);
             }
-                let apiUrl = url.build('videoboard/index/index/');
-                $.ajax({
-                    showLoader: true,
-                    url: apiUrl,
-                    type: "POST",
-                    data: {count:  count},
-                }).done(function (data) {
-                    let valueHtml ='';
-                    if($.isEmptyObject(data.listHtml)){
-                        $(".video-board-list-wrapper").html('');
-                    }else{
-                        $(".video-board-list-wrapper").html('');
-                        $.each( data.listHtml, function( key, value ) {
-                            $(".video-board-list-wrapper").html(valueHtml + value);
-                            valueHtml = $(".video-board-list-wrapper").html();
-                        });
-                    }
-                });
+            let apiUrl = url.build('videoboard/index/index/');
+            $.ajax({
+                showLoader: true,
+                url: apiUrl,
+                type: "POST",
+                data: {count:  count},
+            }).done(function (data) {
+                let valueHtml ='';
+                if($.isEmptyObject(data.listHtml)){
+                    $(".video-board-list").html('');
+                }else{
+                    $(".video-board-list").html('');
+                    $.each( data.listHtml, function (key, value) {
+                        $(".video-board-list").html(valueHtml + value);
+                        valueHtml = $(".video-board-list").html();
+                    });
+                }
+            });
             count++;
         });
     });

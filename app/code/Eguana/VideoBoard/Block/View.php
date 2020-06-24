@@ -69,6 +69,7 @@ class View extends AbstractBlock
     {
         parent::_prepareLayout();
         try {
+            $this->pageConfig->getTitle()->set($this->getVideoBoard()->getTitle());
             if ($breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs')) {
                 $breadcrumbsBlock->addCrumb(
                     'home',
@@ -76,6 +77,13 @@ class View extends AbstractBlock
                         'label' => __('Home'),
                         'title' => __('Go to Home Page'),
                         'link' => $this->_storeManager->getStore()->getBaseUrl()
+                    ]
+                );
+                $breadcrumbsBlock->addCrumb(
+                    'brand',
+                    [
+                        'label' => __('Brand'),
+                        'title' => __('Brand')
                     ]
                 );
                 $breadcrumbsBlock->addCrumb(
