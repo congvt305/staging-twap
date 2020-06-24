@@ -3,7 +3,7 @@
 $viewModel = $block->getData('view_model_list');
 $banner = $viewModel->getBannerThumbnail();
 $imageMagazineCollection = $viewModel->getImageMagazineCollection();
-$videoThumanil = $viewModel->getVideoThumbnail();
+$videoThumbnail = $viewModel->getVideoThumbnail();
 $magazineCollection = $viewModel->getMagazineTotalCollection();
 ?>
 <div class="block magazine-image">
@@ -44,25 +44,25 @@ $magazineCollection = $viewModel->getMagazineTotalCollection();
 </div>
 
 <div class="block magazine-video">
-    <?php if (!empty($videoThumanil)):?>
+    <?php if (!empty($videoThumbnail)):?>
         <div class="magazine-video-banner">
             <a class="action view"
-               href="<?= $block->escapeHtml($block->getUrl($videoThumanil['url']));?>">
+               href="<?= $block->escapeHtml($block->getUrl($videoThumbnail['url']));?>">
             <span>
-                <img src="<?= $block->escapeHtml($videoThumanil['src']);?>"
-                     alt="<?= $block->escapeHtml($videoThumanil['alt']);?>" />
+                <img src="<?= $block->escapeHtml($videoThumbnail['src']);?>"
+                     alt="<?= $block->escapeHtml($videoThumbnail['alt']);?>" />
             </span>
             </a>
         </div>
     <?php endif;?>
-    <div class="block-title">
+    <div class="block-title other-magazine">
         <strong><?= $block->escapeHtml(__('Other Magazines')) ?></strong>
     </div>
-    <ul class="list-video-box" id="slick">
+    <ul class="magazine-slider" id="slick">
         <?php $date = '' ?>
         <?php foreach ($magazineCollection as $magazineItem): ?>
             <?php if ($date == '' || $magazineItem['show_date'] < $date):?>
-                <li class="video-item-box">
+                <li class="magazine-slider-item">
                     <div class="magazine-item">
                         <a
                             href="<?= $block->escapeHtml($block->

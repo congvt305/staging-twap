@@ -147,6 +147,7 @@ class Save extends AbstractController
                 $model->setUpdatedAt('');
 
                 $this->magazineRepository->save($model);
+                $this->messageManager->addSuccess(__('Magazine has been successfully saved.'));
                 return $this->processResultRedirect($model, $resultRedirect, $data);
             } catch (LocalizedException $e) {
                 $this->logger->debug($exception->getMessage());

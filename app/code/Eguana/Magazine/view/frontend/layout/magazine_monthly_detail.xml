@@ -11,36 +11,11 @@
 -->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <title>Month Base  Magazine</title>
+        <title>Month Base Magazine</title>
     </head>
     <body>
-        <referenceBlock name="breadcrumbs">
-            <action method="addCrumb">
-                <argument name="crumbName" xsi:type="string">Home</argument>
-                <argument name="crumbInfo" xsi:type="array">
-                    <item name="title" xsi:type="string">Home</item>
-                    <item name="label" xsi:type="string" translate="true">Home</item>
-                    <item name="link" xsi:type="string">{{baseUrl}}</item>
-                </argument>
-            </action>
-            <action method="addCrumb">
-                <argument name="crumbName" xsi:type="string">Magazine</argument>
-                <argument name="crumbInfo" xsi:type="array">
-                    <item name="title" xsi:type="string">Magazine</item>
-                    <item name="label" xsi:type="string" translate="true">Magazine</item>
-                    <item name="link" xsi:type="string">{{baseUrl}}magazine</item>
-                </argument>
-            </action>
-            <action method="addCrumb">
-                <argument name="crumbName" xsi:type="string">Monthly Details</argument>
-                <argument name="crumbInfo" xsi:type="array">
-                    <item name="title" xsi:type="string">Monthly Details</item>
-                    <item name="label" xsi:type="string" translate="true">Monthly Details</item>
-                </argument>
-            </action>
-        </referenceBlock>
         <referenceContainer name="content">
-            <block class="Magento\Framework\View\Element\Template" name="magazine.monthly.list" template="Eguana_Magazine::monthly/grid.phtml">
+            <block class="Eguana\Magazine\Block\Monthly\Detail" name="magazine.monthly.list" template="Eguana_Magazine::monthly/grid.phtml">
                 <arguments>
                     <argument name="view_model_list" xsi:type="object">Eguana\Magazine\ViewModel\Index\MagazineList</argument>
                 </arguments>

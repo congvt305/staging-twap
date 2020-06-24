@@ -12,6 +12,8 @@ namespace Eguana\Magazine\ViewModel;
 use Eguana\Magazine\Api\MagazineRepositoryInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\App\RequestInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Cms\Model\Template\FilterProvider;
 
 /**
  * ViewModel helper for .phtml file
@@ -29,21 +31,35 @@ class Detail implements ArgumentInterface
      * @var RequestInterface
      */
     private $requestInterface;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    private $storeManagerInterface;
+
+    /**
+     * @var FilterProvider
+     */
+    private $filterProvider;
+
     /**
      * Magazine constructor.
      * @param \Eguana\Magazine\Helper\Data $helperData
      */
     public function __construct(
         MagazineRepositoryInterface $magazineRepository,
-        RequestInterface $requestInterface
+        RequestInterface $requestInterface,
+        StoreManagerInterface $storeManagerInterface,
+        FilterProvider $filterProvider
     ) {
         $this->magazineRepository = $magazineRepository;
         $this->requestInterface = $requestInterface;
+        $this->storeManagerInterface = $storeManagerInterface;
+        $this->filterProvider = $filterProvider;
     }
 
     /**
-     * SHORT DESCRIPTION
-     * LONG DESCRIPTION LINE BY LINE
+     * this function will give content
      * @return \Eguana\Magazine\Model\Magazine
      */
     public function getMagazine()
@@ -51,5 +67,21 @@ class Detail implements ArgumentInterface
         $id = $this->requestInterface->getParam('id');
         $magazine = $this->magazineRepository->getById($id);
         return $magazine;
+    }
+
+    /**
+     * get filter cintent
+     * @param $content
+     * @return mixed
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function contentFiltering($content)
+    {
+        try {
+            $storeId = $this->storeManagerInterface->getStore()->getId();
+        } catch (\Exception $exception) {
+            $this->_logger->debug($exception->getMessage());
+        }
+        return $this->filterProvider->getBlockFilter()->setStoreId($storeId)->filter($content);
     }
 }
