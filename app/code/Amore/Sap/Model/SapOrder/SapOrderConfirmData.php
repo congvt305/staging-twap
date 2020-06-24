@@ -80,6 +80,38 @@ class SapOrderConfirmData
         $this->storeRepository = $storeRepository;
     }
 
+    public function singleOrderData($incrementId)
+    {
+        $request = [
+            "request" => [
+                "header" => [
+                    "source" => "source"
+                ],
+                "input" => [
+                    "itHead" => $this->getOrderData($incrementId),
+                    'itItem' => $this->getOrderItem($incrementId)
+                ]
+            ]
+        ];
+
+        return $request;
+    }
+
+    public function massSendOrderData($incrementId)
+    {
+        $request = [
+            "request" => [
+                "header" => [
+                    "source" => "source"
+                ],
+                "input" => [
+                    "itHead" => $this->getOrderData($incrementId),
+                    'itItem' => $this->getOrderItem($incrementId)
+                ]
+            ]
+        ];
+    }
+
     public function getOrderType($orderId)
     {
         $rma = $this->getRma($orderId);
@@ -109,7 +141,7 @@ class SapOrderConfirmData
         }
     }
 
-    public function orderDataForMiddleware($incrementId)
+    public function getOrderData($incrementId)
     {
         /** @var Order $orderData */
         $orderData = $this->getOrderInfo($incrementId);
@@ -123,54 +155,47 @@ class SapOrderConfirmData
             $shippingAddress = $orderData->getShippingAddress();
 
             $bindData[] = [
-                'VKORG' => '영업조직. 중국:CN10, 프랑스:FR40, 미국:US10',
-                'KUNNR' => '각 직영몰 거래처코드. 국가코드 + 순번(6)',
-                'ODRNO' => $orderData->getIncrementId(),
-                'ODRDT' => $orderData->getCreatedAt(),
-                'ODRTM' => $orderData->getCreatedAt(),
-                'PAYMTD' => $orderData->getPayment()->getMethod(),
-                'PAYDT' => $invoice->getCreatedAt(),
-                'PAYTM' => $invoice->getCreatedAt(),
-                'AUART' => $this->getOrderType($orderData->getEntityId()),
-                'AUGRU' => 'ORDER REASON CODE',
-                'ABRVW' => 'USAGE INDICATOR?',
-                'AUGRU_TEXT' => 'ORDER REASON TEXT',
-                'CUSTID' => '주문자회원코드-직영몰자체코드',
-                'CUSTNAM' => $orderData->getCustomerLastname() . $orderData->getCustomerLastname(),
-                'RECVID' => '배송지 id - 직영몰 자체코드, 없으면 공백',
-                'RECVNM' => $shippingAddress->getName(),
-                'POST_CODE' => $shippingAddress->getPostcode(),
-                'ADDR1' => $shippingAddress->getRegion(),
-                'ADDR2' => $shippingAddress->getCity(),
-                'ADDR3' => $shippingAddress->getStreet(),
-                'LAND1' => $shippingAddress->getCountryId(),
-                'TELNO' => $shippingAddress->getTelephone(),
-                'HPNO' => $shippingAddress->getTelephone(),
-                'WAERK' => $orderData->getOrderCurrencyCode(),
-                'NSAMT' => $orderData->getSubtotalInclTax(),
-                'DCAMT' => $orderData->getDiscountAmount(),
-                'SLAMT' => $orderData->getGrandTotal(),
-                'MIAMT' => $orderData->getRewardPointsBalance(),
-                'SHPWR' => $orderData->getShippingAmount(),
-                'MWSBP' => $orderData->getTaxAmount(),
+                'vkorg' => '영업조직. 중국:CN10, 프랑스:FR40, 미국:US10',
+                'kunnr' => '각 직영몰 거래처코드. 국가코드 + 순번(6)',
+                'odrno' => $orderData->getIncrementId(),
+                'odrdt' => $orderData->getCreatedAt(),
+                'odrtm' => $orderData->getCreatedAt(),
+                'paymtd' => $orderData->getPayment()->getMethod(),
+                'payde' => $invoice->getCreatedAt(),
+                'paytm' => $invoice->getCreatedAt(),
+                'auart' => $this->getOrderType($orderData->getEntityId()),
+                'aurgu' => 'ORDER REASON CODE',
+                'abrvw' => 'USAGE INDICATOR?',
+                'augruText' => 'ORDER REASON TEXT',
+                'custid' => '주문자회원코드-직영몰자체코드',
+                'custnm' => $orderData->getCustomerLastname() . $orderData->getCustomerLastname(),
+                'recvid' => '배송지 id - 직영몰 자체코드, 없으면 공백',
+                'recvnm' => $shippingAddress->getName(),
+                'postCode' => $shippingAddress->getPostcode(),
+                'addr1' => $shippingAddress->getRegion(),
+                'addr2' => $shippingAddress->getCity(),
+                'addr3' => $shippingAddress->getStreet(),
+                'land1' => $shippingAddress->getCountryId(),
+                'telno' => $shippingAddress->getTelephone(),
+                'hpno' => $shippingAddress->getTelephone(),
+                'waerk' => $orderData->getOrderCurrencyCode(),
+                'nsamt' => $orderData->getSubtotalInclTax(),
+                'dcamt' => $orderData->getDiscountAmount(),
+                'slamt' => $orderData->getGrandTotal(),
+                'miamt' => $orderData->getRewardPointsBalance(),
+                'shpwr' => $orderData->getShippingAmount(),
+                'mwsbp' => $orderData->getTaxAmount(),
+                // 새로 받은거에서 이 필드 사라졌는데 확인 필요
                 'SHPTP' => '배송비 주체. A : 본사부담, B : 고객부담',
-                'SPIND1' => '',
-                'SPIND2' => '',
-                'SPIND3' => '',
-                'SPIND4' => '',
-                'SPIND5' => '',
-                'SPITN1' => '',
-                'SPITN2' => '',
-                'SPITN3' => '',
-                'SPITN4' => '',
-                'SPITN5' => '',
-                'VKORG_ORI' => '주문번호 영업조직',
-                'KUNNR_ORI' => '주문번호 거래처코드',
-                'ORDNO_ORI' => $orderData->getIncrementId(),
-                'ITEM_CNT' => $orderData->getTotalItemCount(),
-                'WERKS' => '영업 플랜트 : 알수 없을 경우 공백',
-                'LGORT' => '영업저장위치 : 알수 없을 경우 공백',
-                'RMANO' => $this->getRma($orderData->getEntityId()) == null ? '' : $this->getRma($orderData->getEntityId())->getEntityId(),
+                'spitn1' => '',
+                'vkorgOri' => '주문번호 영업조직',
+                'kunnrOri' => '주문번호 거래처코드',
+                'odrnoOri' => $orderData->getIncrementId(),
+                // 이건 물건 종류 갯수(물건 전체 수량은 아님)
+                'itemCnt' => $orderData->getTotalItemCount(),
+                'werks' => '영업 플랜트 : 알수 없을 경우 공백',
+                'lgort' => '영업저장위치 : 알수 없을 경우 공백',
+                'rmano' => $this->getRma($orderData->getEntityId()) == null ? '' : $this->getRma($orderData->getEntityId())->getEntityId(),
                 'IT_ITEM' => $this->getOrderItem($orderData)
             ];
         }
@@ -180,10 +205,13 @@ class SapOrderConfirmData
 
 
     /**
-     * @param OrderInterface $order
+     * @param string $incrementId
      */
-    public function getOrderItem($order)
+    public function getOrderItem($incrementId)
     {
+        /** @var Order $order */
+        $order = $this->getOrderInfo($incrementId);
+
         $orderItems = $order->getAllVisibleItems();
         $orderItemData = [];
         $cnt = 1;
@@ -191,29 +219,29 @@ class SapOrderConfirmData
         foreach ($orderItems as $orderItem) {
             $itemGrandTotal = $orderItem->getRowTotal() - $orderItem->getDiscountAmount() + $orderItem->getTaxAmount();
             $orderItemData[] = [
-                'VKORG' => '영업조직. 중국:CN10, 프랑스:FR40, 미국:US10',
-                'KUNNR' => '각 직영몰 거래처코드. 국가코드 + 순번(6)',
-                'ODRNO' => $order->getIncrementId(),
-                'POSNR' => $cnt,
-                'MATNR' => 'item Material',
-                'SATNR' => '뭐지이거',
-                'MENGE' => $orderItem->getQtyOrdered(),
-                'MEINS' => '아이템 단위',
-                'NSAMT' => $orderItem->getPriceInclTax(),
-                'DCAMT' => $orderItem->getDiscountAmount(),
-                'SLAMT' => $itemGrandTotal,
-                'MIAMT' => '마일리지 사용비율',
-                'FGFLG' => '무상제공인경우 Y 아니면 N',
-                'MILFG' => '마일리지 구매인 경우 Y 아니면 N',
-                'AUART' => $this->getOrderType($order->getEntityId()),
-                'AUGRU' => 'order reason, 뭐여 이건',
-                'ABRVW' => 'USAGE INDICATOR, 뭐임',
-                'NETWR' => $orderItem->getRowTotal(),
-                'MWSBP' => $orderItem->getTaxAmount(),
-                'VKORG_ORI' => '영업조직. 중국:CN10, 프랑스:FR40, 미국:US10',
-                'KUNNR_ORI' => '각 직영몰 거래처코드. 국가코드 + 순번(6)',
-                'ODRNO_ORI' => $order->getIncrementId(),
-                'POSNR_ORI' => $cnt
+                'itemVkorg' => '영업조직. 중국:CN10, 프랑스:FR40, 미국:US10',
+                'itemKunnr' => '각 직영몰 거래처코드. 국가코드 + 순번(6)',
+                'itemOdrno' => $order->getIncrementId(),
+                'itemPosnr' => $cnt,
+                'itemMatnr' => 'item Material',
+                'itemSatnr' => '??',
+                'itemMenge' => $orderItem->getQtyOrdered(),
+                'itemMeins' => '아이템 단위',
+                'itemNsamt' => $orderItem->getPriceInclTax(),
+                'itemDcamt' => $orderItem->getDiscountAmount(),
+                'itemSlamt' => $itemGrandTotal,
+                'itemMiamt' => '마일리지 사용비율',
+                'itemFgflg' => '무상제공인경우 Y 아니면 N',
+                'itemMilfg' => '마일리지 구매인 경우 Y 아니면 N',
+                'itemAuart' => $this->getOrderType($order->getEntityId()),
+                'itemAugru' => 'order reason',
+                'itemAbrvw' => 'USAGE INDICATOR',
+                'itemNetwr' => $orderItem->getRowTotal(),
+                'itemMwsbp' => $orderItem->getTaxAmount(),
+                'itemVkorg_ori' => '영업조직. 중국:CN10, 프랑스:FR40, 미국:US10',
+                'itemKunnr_ori' => '각 직영몰 거래처코드. 국가코드 + 순번(6)',
+                'itemOdrno_ori' => $order->getIncrementId(),
+                'itemPosnr_ori' => $cnt
             ];
             $cnt++;
         }

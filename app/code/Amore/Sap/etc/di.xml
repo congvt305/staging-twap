@@ -14,4 +14,20 @@
     <preference for="Amore\Sap\Api\Data\SapProductsDetailInterface" type="Amore\Sap\Model\SapProduct\SapProductsDetail"/>
     <preference for="Amore\Sap\Api\Data\SapProductsPriceInterface" type="Amore\Sap\Model\SapProduct\SapProductsPrice"/>
     <preference for="Amore\Sap\Api\Data\SapInventoryStock" type="Amore\Sap\Model\SapProduct\SapInventory"/>
+
+
+<!--    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">-->
+<!--        <arguments>-->
+<!--            <argument name="collections" xsi:type="array">-->
+<!--                <item name="sales_order_grid_data_source"-->
+<!--                      xsi:type="string">Amore\Sap\Model\ResourceModel\Order\Grid\Collection</item>-->
+<!--            </argument>-->
+<!--        </arguments>-->
+<!--    </type>-->
+<!--    <type name="Amore\Sap\Model\ResourceModel\Order\Grid\Collection">-->
+<!--        <arguments>-->
+<!--            <argument name="mainTable" xsi:type="string">sales_order_grid</argument>-->
+<!--            <argument name="resourceModel" xsi:type="string">Magento\Sales\Model\ResourceModel\Order</argument>-->
+<!--        </arguments>-->
+<!--    </type>-->
 </config>

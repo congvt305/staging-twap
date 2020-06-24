@@ -15,18 +15,9 @@ namespace Amore\Sap\Api;
 interface SapOrderManagementInterface
 {
     /**
-     * @param string $source
-     * @param string $mallId
-     * @param mixed $orderStatusData
+     * @param \Amore\Sap\Api\Data\SapOrderStatusInterface $orderStatusData
      * @return \Amore\Sap\Api\Data\SapOrderStatusInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function orderStatus($source, $mallId, $orderStatusData);
-
-    /**
-     * @param string $incrementId
-     * @return \Amore\Sap\Api\Data\SapOrderConfirmInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
-    public function orderConfirm($incrementId);
+    public function orderStatus($orderStatusData);
 }
