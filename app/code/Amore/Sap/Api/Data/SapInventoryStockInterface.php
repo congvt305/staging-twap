@@ -13,6 +13,17 @@ interface SapInventoryStockInterface
     /**
      * @return string
      */
+    public function getSource();
+
+    /**
+     * @param string $source
+     * @return $this
+     */
+    public function setSource($source);
+
+    /**
+     * @return string
+     */
     public function getMatnr();
 
     /**
