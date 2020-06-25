@@ -52,4 +52,14 @@ class SapProductsPrice extends AbstractExtensibleModel implements SapProductsPri
     {
         return $this->setData('kbetrInv', $kbetrInv);
     }
+
+    public function getSource()
+    {
+        $this->getData('source');
+    }
+
+    public function setSource($source)
+    {
+        $this->setData('source', $source);
+    }
 }

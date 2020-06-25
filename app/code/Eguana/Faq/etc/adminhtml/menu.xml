@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 17/6/20
+ * Time: 08:00 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Eguana_Faq::faq" title="Manage FAQ" module="Eguana_Faq" sortOrder="120" parent="Magento_Backend::content" resource="Eguana_Faq::faq"/>
+        <add id="Eguana_Faq::manage_faq" title="Manage Faq" translate="title" module="Eguana_Faq" sortOrder="10" parent="Eguana_Faq::faq" resource="Eguana_Faq::faq" action="eguana_faq/faq/grid"/>
+    </menu>
+</config>

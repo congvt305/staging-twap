@@ -8,6 +8,6 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
-        <column xsi:type="text" name="sap_order_send_btn" nullable="true" comment="Order Data Send Button to SAP"/>
+        <column xsi:type="text" name="sap_order_send_btn" nullable="true" comment="Order Data Send Button to SAP" disabled="true"/>
     </table>
 </schema>

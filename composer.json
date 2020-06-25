@@ -12,11 +12,16 @@
         "repo": {
             "type": "composer",
             "url": "https://repo.magento.com"
+        },
+        "magento-baler": {
+            "type": "vcs",
+            "url": "git@github.com:magento/m2-baler.git"
         }
     },
     "require": {
         "dotmailer/dotmailer-magento2-extension": "4.5.1 as 4.4.0",
-        "magento/magento-cloud-metapackage": ">=2.3.5 <2.3.6"
+        "magento/magento-cloud-metapackage": ">=2.3.5 <2.3.6",
+        "magento/module-baler": "dev-master"
     },
     "suggest": {
         "ext-pcntl": "Need for run processes in parallel mode"
