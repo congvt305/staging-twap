@@ -8,6 +8,8 @@
 
 namespace Amore\Sap\Model\Connection;
 
+use http\Exception\BadUrlException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -58,7 +60,7 @@ class Request
         $path = $this->getPath($storeId, $type);
 
         if (empty($url) || empty($path)) {
-            return ['code' => "0001", "Url or Path field is empty. Please Check configuration"];
+            throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
         } else {
             $url = $this->getUrl($storeId) . $path;
 

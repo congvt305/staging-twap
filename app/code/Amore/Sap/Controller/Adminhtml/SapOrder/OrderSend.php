@@ -15,6 +15,7 @@ use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -80,6 +81,8 @@ class OrderSend extends Action
             }
 
         } catch (NoSuchEntityException $e) {
+            $this->messageManager->addErrorMessage($e->getMessage());
+        } catch (LocalizedException $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         }
 
