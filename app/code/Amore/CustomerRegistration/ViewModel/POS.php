@@ -12,7 +12,6 @@ use Amore\CustomerRegistration\Helper\Data;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Amore\CustomerRegistration\Model\Verification;
 use Magento\Customer\Model\Session;
-use Psr\Log\LoggerInterface;
 
 /**
  * It will use for the pos step during registration
@@ -36,10 +35,6 @@ class POS implements ArgumentInterface
      * @var Session
      */
     private $customerSession;
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
 
     /**
      * POS constructor.
@@ -49,14 +44,12 @@ class POS implements ArgumentInterface
     public function __construct(
         Data $configHelper,
         Verification $verification,
-        LoggerInterface $logger,
         Session $customerSession
     )
     {
         $this->configHelper = $configHelper;
         $this->verification = $verification;
         $this->customerSession = $customerSession;
-        $this->logger = $logger;
     }
 
     /**
