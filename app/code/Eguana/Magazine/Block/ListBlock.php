@@ -67,7 +67,7 @@ class ListBlock extends Template
                     'link' => $this->storeManagerInterface->getStore()->getBaseUrl()
                 ]
             );
-            $this->pageConfig->getTitle()->set(__("I'm LANEIGE"));
+            $this->pageConfig->getTitle()->set(__('LANEIGE'));
 
             $breadcrumbsBlock->addCrumb(
                 'explore',
