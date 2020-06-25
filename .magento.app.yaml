@@ -105,7 +105,7 @@ hooks:
         echo "\n================================== Minify JS files using Terser after Baler is run - Start =================================="
         npm install -g terser
         echo "Find all non-minified files, except for the ones created by Baler and run them through Terser (This could take a few minutes to run) ..."
-        find 'pub/static/frontend/Magento/luma' \( -name '*.js' -not -name '*.min.js' -not -name 'core-bundle.js' -not -name 'requirejs-bundle-config.js' \) -exec terser \{\} -c -m reserved=['$','jQuery','define','require','exports'] -o \{\} \;
+        find 'pub/static/frontend/AmorePacific/laneige' \( -name '*.js' -not -name '*.min.js' -not -name 'core-bundle.js' -not -name 'requirejs-bundle-config.js' \) -exec terser \{\} -c -m reserved=['$','jQuery','define','require','exports'] -o \{\} \;
         echo "================================== Minify JS files using Terser after Baler is run - End ==================================\n"
 
         php ./vendor/bin/ece-tools run scenario/build/transfer.xml
