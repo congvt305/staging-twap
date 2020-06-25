@@ -30,9 +30,11 @@ use Magento\Framework\Serialize\Serializer\Json;
 
 class SapProductManagement implements SapProductManagementInterface
 {
-    const MALL_ID_LANEIGE = 'laneige';
+    // Laneige Mall ID
+    const MALL_ID_LANEIGE = 'LANEIGE_TW';
 
-    const MALL_ID_SULWHASOO = 'sulwhasoo';
+    // Sulwhasoo Mall ID
+    const MALL_ID_SULWHASOO = 'SULWHASOO_TW';
 
     /**
      * @var ScopeConfigInterface
