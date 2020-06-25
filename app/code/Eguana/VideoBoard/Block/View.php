@@ -9,25 +9,60 @@
  */
 namespace Eguana\VideoBoard\Block;
 
-use Eguana\VideoBoard\Api\Data\VideoBoardInterface;
-use Eguana\VideoBoard\Model\VideoBoard;
-use Magento\Framework\Exception\NoSuchEntityException;
+use Eguana\VideoBoard\Api\VideoBoardRepositoryInterface;
+use Magento\Framework\View\Element\Template;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\App\RequestInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * class View
  *
  * block for details.phtml
  */
-class View extends AbstractBlock
+class View extends Template
 {
     /**
-     * Get video id
-     *
-     * @return mixed
+     * @var LoggerInterface
      */
-    public function getVideoBoardId()
-    {
-        return $this->getRequest()->getParam('id');
+    private $logger;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
+     * @var VideoBoardRepositoryInterface
+     */
+    public $videoBoardRepository;
+
+    /**
+     * @var RequestInterface
+     */
+    private $requestInterface;
+
+    /**
+     * VideoBoard constructor.
+     * @param Template\Context $context
+     * @param StoreManagerInterface $storeManager
+     * @param VideoBoardRepositoryInterface $videoBoardRepository
+     * @param LoggerInterface $logger
+     * @param array $data
+     */
+    public function __construct(
+        Template\Context $context,
+        VideoBoardRepositoryInterface $videoBoardRepository,
+        StoreManagerInterface $storeManager,
+        RequestInterface $requestInterface,
+        LoggerInterface $logger,
+        array $data = []
+    ) {
+        $this->storeManager = $storeManager;
+        $this->videoBoardRepository = $videoBoardRepository;
+        $this->requestInterface = $requestInterface;
+        $this->logger = $logger;
+        parent::__construct($context, $data);
     }
 
     /**
@@ -38,24 +73,9 @@ class View extends AbstractBlock
     public function getVideoBoard()
     {
         /** @var VideoBoard $videoBoard */
-        $videoBoard = $this->videoBoardRepository->getById($this->getVideoBoardId());
+        $id = $this->requestInterface->getParam('id');
+        $videoBoard = $this->videoBoardRepository->getById($id);
         return $videoBoard;
-    }
-
-    /**
-     * To filter the content
-     * This function will get the content, specially the page builder content and make it renderable at frontend.
-     * @param $content
-     * @return mixed
-     */
-    public function contentFiltering($content)
-    {
-        try {
-            $storeId = $this->storeManager->getStore()->getId();
-        } catch (NoSuchEntityException $exception) {
-            $this->_logger->debug($exception->getMessage());
-        }
-        return $this->filterProvider->getBlockFilter()->setStoreId($storeId)->filter($content);
     }
 
     /**
@@ -76,7 +96,7 @@ class View extends AbstractBlock
                     [
                         'label' => __('Home'),
                         'title' => __('Go to Home Page'),
-                        'link' => $this->_storeManager->getStore()->getBaseUrl()
+                        'link' => $this->storeManager->getStore()->getBaseUrl()
                     ]
                 );
                 $breadcrumbsBlock->addCrumb(
@@ -91,10 +111,10 @@ class View extends AbstractBlock
                     [
                         'label' => __('How to'),
                         'title' => __('How to'),
-                        'link' => $this->_storeManager->getStore()->getBaseUrl(). 'videoboard'
+                        'link' => $this->storeManager->getStore()->getBaseUrl(). 'videoboard'
                     ]
                 );
-                if ($this->getVideoBoardId()) {
+                if (!empty($this->getVideoBoard()->getData())) {
                     $breadcrumbsBlock->addCrumb(
                         'main_title',
                         [
