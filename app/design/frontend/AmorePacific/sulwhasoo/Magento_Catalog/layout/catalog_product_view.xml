@@ -49,8 +49,8 @@
                    template="Magento_Catalog::product/view/attribute.phtml"
                    group="detailed_info" before="page.main.title">
                 <arguments>
-                    <argument name="at_call" xsi:type="string">getFlag</argument>
-                    <argument name="at_code" xsi:type="string">flag</argument>
+                    <argument name="at_call" xsi:type="string">getNew</argument>
+                    <argument name="at_code" xsi:type="string">new</argument>
                     <argument name="css_class" xsi:type="string">flag</argument>
                     <argument name="at_label" xsi:type="string">none</argument>
                     <argument name="title" translate="true" xsi:type="string">Flag</argument>
