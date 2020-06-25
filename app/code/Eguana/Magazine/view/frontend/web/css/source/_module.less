@@ -8,6 +8,7 @@
 //  _____________________________________________
 @magazine_banner-background-color: #f7f7f7;
 @magazine_gray-color: #787878;
+@magazine_slider__max-width: 1320px;
 
 //
 //  Common
@@ -16,6 +17,18 @@
 & when (@media-common = true) {
     .magazine-index-index .page-title {
         font-weight: @font-weight__regular;
+    }
+
+    .block.magazine-image {
+        .block-title {
+            margin-top: @indent__base;
+
+            strong {
+                color: @color-black;
+                display: block;
+                margin-bottom: 12px;
+            }
+        }
     }
 
     .magazine-photo-banner {
@@ -46,16 +59,6 @@
         }
 
         .magazine-item {
-            .block-title {
-                margin-top: @indent__base;
-            }
-
-            strong {
-                color: @color-black;
-                display: block;
-                margin-bottom: 12px;
-            }
-
             span {
                 color: @magazine_gray-color;
                 display: block;
@@ -88,6 +91,26 @@
             }
         }
     }
+
+    .other-magazine {
+        line-height: 36px;
+        letter-spacing: -0.4px;
+        text-align: center;
+    }
+
+    .magazine-slider {
+        .slick-slide img {
+            width: 100%;
+        }
+
+        .slick-prev {
+            left: 0;
+        }
+
+        .slick-next {
+            right: 0;
+        }
+    }
 }
 
 //
@@ -97,6 +120,11 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .magazine-image {
         margin-top: 70px;
+
+        .block-title strong {
+            .lib-font-size(20);
+            line-height: @indent__l;
+        }
     }
 
     .magazine-photo-banner {
@@ -131,11 +159,6 @@
         }
 
         .magazine-item {
-            strong {
-                .lib-font-size(20);
-                line-height: @indent__l;
-            }
-
             span {
                 .lib-font-size(16);
                 letter-spacing: 0.4px;
@@ -159,6 +182,18 @@
             }
         }
     }
+
+    .other-magazine {
+        .lib-font-size(26);
+        padding: 60px 0 @indent__xl;
+    }
+
+    .magazine-slider {
+        box-sizing: border-box;
+        margin-left: -@layout__width-xs-indent;
+        margin-right: -@layout__width-xs-indent;
+        padding: 0 60px;
+    }
 }
 
 //
@@ -166,8 +201,39 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .magazine-index-index {
+        main.page-main {
+            max-width: 100%;
+            padding: 0;
+        }
+
+        .magazine-image > div {
+            box-sizing: border-box;
+            margin-left: auto;
+            margin-right: auto;
+            width: auto;
+
+            &:not(.magazine-slider) {
+                max-width: @layout__max-width;
+                padding-left: @layout-indent__width;
+                padding-right: @layout-indent__width;
+            }
+        }
+
+        .magazine-slider {
+            max-width: @magazine_slider__max-width;
+            padding-left: 70px;
+            padding-right: 70px;
+        }
+    }
+
     .magazine-image {
         margin-top: 70px;
+
+        .block-title strong {
+            .lib-font-size(16);
+            line-height: 24px;
+        }
     }
 
     .magazine-photo-banner {
@@ -219,13 +285,6 @@
             margin: 0 @indent__s;
             width: 100%/3;
         }
-
-        .magazine-item {
-            strong {
-                .lib-font-size(16);
-                line-height: 24px;
-            }
-        }
     }
 
     .magazine-video-banner {
@@ -242,6 +301,21 @@
             &:after {
                 margin-top: -80px;
             }
+        }
+    }
+
+    .other-magazine {
+        .lib-font-size(28);
+        padding: 60px 0;
+    }
+
+    .magazine-slider {
+        .slick-list {
+            margin-left: -@indent__base;
+        }
+
+        .slick-slide {
+            margin-left: @indent__base;
         }
     }
 }
