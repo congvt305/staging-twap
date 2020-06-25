@@ -1,0 +1,202 @@
+///**
+// * @author Eguana Team
+// * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+// * Created by PhpStorm
+// * User: arslan
+// * Date: 17/6/20
+// * Time: 08:00 PM
+// */
+
+//
+//  Variables
+//  _____________________________________________
+@faq__border: 1px solid @primary__color__light;
+
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .faqs {
+        .search-block {
+            margin-bottom: @indent__m;
+
+            .fieldset {
+                margin-bottom: 0;
+            }
+
+            .label {
+                display: block;
+            }
+
+            .control {
+                display: inline-block;
+                width: calc(~'100% - 110px');
+            }
+
+            .actions {
+                display: inline-block;
+                margin-left: @indent__xs;
+                width: 100px;
+                vertical-align: top;
+
+                .primary {
+                    .lib-button-size(
+                        @_button-padding: 1px 0
+                    );
+                    width: 100%;
+                }
+            }
+        }
+
+        .block {
+            .item {
+                &.title {
+                    font-size: 20px;
+                }
+            }
+
+            .list {
+                .title {
+                    .lib-css(border-bottom, @faq__border);
+                    .lib-icon-font(
+                        @icon-pointer-right,
+                        @_icon-font-size: @font-size__xs,
+                        @_icon-font-vertical-align: top,
+                        @_icon-font-margin: 3px 15px 0 0,
+                        @_icon-font-display: block
+                    );
+                    cursor: pointer;
+                    padding: 15px 0;
+
+                    span {
+                        display: inline-block;
+                        font-size: 16px;
+                        width: calc(~'100% - @{indent__l}');
+                    }
+
+                    &:before {
+                        width: @indent__s;
+                    }
+
+                    &[aria-expanded="true"] {
+                        .lib-icon-font-symbol(@icon-pointer-down);
+                        border-bottom: none;
+                    }
+                }
+
+                .content {
+                    .lib-css(border-bottom, @faq__border);
+                    padding: 0 0 @indent__xl @indent__l;
+                }
+            }
+        }
+
+        .search-word {
+            color: @active__color;
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .faqs {
+        margin-bottom: @indent__xl;
+
+        .block {
+            .lib-data-accordion();
+            margin-left: -@layout__width-xs-indent;
+            margin-right: -@layout__width-xs-indent;
+
+            .item {
+                &.content {
+                    display: none;
+                    margin-top: -@accordion-control__margin-bottom;
+                    padding-left: @layout__width-xs-indent;
+                    padding-right: @layout__width-xs-indent;
+                }
+
+                &.title {
+                    strong {
+                        .lib-icon-font(
+                            @icon-pointer-right,
+                            @_icon-font-size: @font-size__s,
+                            @_icon-font-vertical-align: top,
+                            @_icon-font-margin: 0 @indent__base 0 0,
+                            @_icon-font-display: block
+                        );
+
+                        &:before {
+                            width: 15px;
+                        }
+                    }
+
+                    &.show {
+                        .switch {
+                            .lib-css(background, @accordion-control__active__background-color);
+                            .lib-css(color, @accordion-control__active__color);
+                            .lib-css(text-decoration, @accordion-control__active__text-decoration);
+                            .lib-css(padding-bottom, @accordion-control__padding-bottom);
+                            .lib-icon-font-symbol(@icon-pointer-down);
+                        }
+                    }
+                }
+            }
+
+            .list {
+                &:last-child {
+                    .title {
+                        border-bottom: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .faqs {
+        margin-bottom: 120px;
+
+        .search-block {
+            background: @primary__color__light;
+            padding: @indent__m;
+
+            .control {
+                width: calc(~'100% - 150px');
+            }
+
+            .actions {
+                width: 140px;
+            }
+        }
+
+        .block {
+            .item {
+                &.title {
+                    margin-bottom: @indent__base;
+                }
+
+                &.content {
+                    display: block !important;
+                }
+            }
+
+            .list {
+                &:first-child {
+                    .title {
+                        .lib-css(border-top, @faq__border);
+                    }
+                }
+            }
+        }
+    }
+}

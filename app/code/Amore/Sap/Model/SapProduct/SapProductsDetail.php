@@ -402,4 +402,14 @@ class SapProductsDetail extends AbstractExtensibleModel implements SapProductsDe
     {
         return $this->setData(self::PRECAU, $precau);
     }
+
+    public function getSource()
+    {
+        return $this->getData(self::SOURCE);
+    }
+
+    public function setSource($source)
+    {
+        return $this->setData(self::SOURCE, $source);
+    }
 }

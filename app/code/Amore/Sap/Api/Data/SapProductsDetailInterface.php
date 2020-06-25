@@ -10,6 +10,7 @@ namespace Amore\Sap\Api\Data;
 
 interface SapProductsDetailInterface
 {
+    const SOURCE = 'source';
     const MATNR = 'matnr';
     const VKORG = 'vkorg';
     const BISMT = 'bismt';
@@ -49,6 +50,17 @@ interface SapProductsDetailInterface
     const MATCOL = 'matcol';
     const DESC = 'desc';
     const PRECAU = 'precau';
+
+    /**
+     * @return string
+     */
+    public function getSource();
+
+    /**
+     * @param string $source
+     * @return $this
+     */
+    public function setSource($source);
 
     /**
      * @return string
