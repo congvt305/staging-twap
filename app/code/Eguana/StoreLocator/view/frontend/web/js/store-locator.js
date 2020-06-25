@@ -6,36 +6,9 @@ define([
     return function (config) {
         //check for location. if location exist then initialize map
         if (config.locations) {
-            if (config.country == 'KR') {
-                naver_init_map(config.locations, 8, config.viewStore, config.markerImages, config.markerOnIcon);
-            } else {
-                multi_map_initialize(config.locations, 8, config.viewStore, config.markerImages, config.markerOnIcon);
-            }
+            multi_map_initialize(config.locations, 8, config.viewStore, config.markerImages);
         }
-        if (config.viewStore == 1) {
-            pushmarker(0);
-        }
-        //filter for type
-        $('.type-filter').on('click',function () {
-            // making each type 0
-            $('.type-filter-fields input').each(function () {
-                $(this).val(0);
-            });
-            //making selected type 1
-            $('#' +$(this).attr('data-filter')).val(1);
-            $('#filter-form').submit();
-
-        });
-        $('#use-my-current-location').on('click', function () {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                $('#current-lat').val(position.coords.latitude);
-                $('#current-lng').val(position.coords.longitude);
-                $('#current-location').val(1);
-                //temporary comment, may be uncomment in future
-                $('#filter-form').submit();
-            });
-        });
-
+        pushmarker(0);
         // for plus icon click on store
         $('.store-list').on('click', function () {
             let storeInfo;
@@ -49,38 +22,31 @@ define([
                 $(this).closest('.store-list').addClass('selected-store');
                 storeInfo.children('.store-secondary-info').slideDown();
             }
-        });
 
-        $('.map-open').on('click', function (event) {
-            if ($(this).attr('state-dir')==0){
-                $('.location-error').show();
-                event.preventDefault();
-            }
+            jQuery('.inner-store').html('');
+            var mapHtml = $(".desktop-map_container").html();
+            $(".store-list.selected-store .inner-store").html(mapHtml);
         });
+        var windowSize = $(window).width();
+        if (windowSize <= 959) {
+
+            $('li.store-list').children('.mobile_map_container').slideUp();
+            $('li.store-list').find('span.accordion-icon').css('opacity', '0');
+            $('li.store-list').click(function(e) {
+                $(this).find('span.accordion-icon').css('opacity', '0.4');
+                // $(this).first().trigger('click');
+                $(this).children('.mobile_map_container').slideToggle();
+            });
+        } else {
+            $( document ).ready(function() {
+                $('li.store-list').first().trigger('click');
+            });
+        }
+
 
         $( document ).ready(function() {
             if ($('#current-lat').val().length != 0) {
                 $('.map-open').attr('state-dir','1');
-            }
-        });
-        // for appending starting position with destination
-
-        $('.map-open').each(function () {
-            let link_with_destination = $(this).attr('href');
-            let element = $(this);
-            let longitude;
-            let latitude;
-            if (config.search){
-                $(this).attr('state-dir','1');
-                longitude = $("#search-lat").val();
-                latitude  = $("#searcht-lng").val();
-                setDirection(longitude, latitude, link_with_destination,element);
-            } else {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    longitude = position.coords.longitude;
-                    latitude  = position.coords.latitude;
-                    setDirection(longitude, latitude, link_with_destination,element);
-                });
             }
         });
 
@@ -93,11 +59,7 @@ define([
         function setDirection(longitude, latitude, link_with_destination,element) {
 
             let url = link_with_destination.split('||');
-            if (config.country == 'KR') {
-                link_with_destination = url[0] + latitude+ ',' + longitude + '/' + url[1] + '/-/car';
-            } else {
-                link_with_destination = url[0]+longitude  + ',' + latitude + '&destination='+url[1];
-            }
+            link_with_destination = url[0]+longitude  + ',' + latitude + '&destination='+url[1];
             element.attr('href', link_with_destination);
         }
 

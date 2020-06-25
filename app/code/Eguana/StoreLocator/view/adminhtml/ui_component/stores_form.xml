@@ -91,6 +91,18 @@
                 </item>
             </argument>
         </field>
+        <field name="store_type">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Eguana\StoreLocator\Ui\Component\Listing\Column\Type</item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Store Type</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">storeinfo_data</item>
+                </item>
+            </argument>
+        </field>
         <field name="address">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -113,7 +125,6 @@
                 </item>
             </argument>
         </field>
-
         <field name="email">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -125,7 +136,6 @@
                 </item>
             </argument>
         </field>
-
         <field name="timing">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -136,17 +146,6 @@
                     <item name="cols" xsi:type="string">15</item>
                     <item name="rows" xsi:type="string">10</item>
                     <item name="source" xsi:type="string">storeinfo_data</item>
-                </item>
-            </argument>
-        </field>
-        <field name="city">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string" translate="true">City</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="source" xsi:type="string">city</item>
                 </item>
             </argument>
         </field>
@@ -169,72 +168,6 @@
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="formElement" xsi:type="string">input</item>
-                    <item name="source" xsi:type="string">storeinfo_data</item>
-                </item>
-            </argument>
-        </field>
-        <field name="default_location">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string" translate="true">Default Location</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="formElement" xsi:type="string">hidden</item>
-                    <item name="source" xsi:type="string">storeinfo_data</item>
-                </item>
-            </argument>
-        </field>
-        <field name="map_height">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string" translate="true">Map Height</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="formElement" xsi:type="string">hidden</item>
-                    <item name="source" xsi:type="string">storeinfo_data</item>
-                </item>
-            </argument>
-        </field>
-        <field name="info_window_weight">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string" translate="true">Info Window Weight</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="formElement" xsi:type="string">hidden</item>
-                    <item name="source" xsi:type="string">storeinfo_data</item>
-                </item>
-            </argument>
-        </field>
-        <field name="info_window_height">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string" translate="true">Info Window Height</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="formElement" xsi:type="string">hidden</item>
-                    <item name="source" xsi:type="string">storeinfo_data</item>
-                </item>
-            </argument>
-        </field>
-        <field name="icon_content">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string" translate="true">Icon Content</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="formElement" xsi:type="string">hidden</item>
-                    <item name="source" xsi:type="string">storeinfo_data</item>
-                </item>
-            </argument>
-        </field>
-        <field name="map_zoom">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string" translate="true">Map Zoom</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="formElement" xsi:type="string">hidden</item>
                     <item name="source" xsi:type="string">storeinfo_data</item>
                 </item>
             </argument>

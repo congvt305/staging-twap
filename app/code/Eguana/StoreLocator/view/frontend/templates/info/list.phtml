@@ -2,11 +2,7 @@
 /** @var  \Eguana\StoreLocator\Block\InfoList $block */
 $country = $block->getDefaultCountryName();
 $locations = [];
-$selectedAreaOption = $block->getSelectedAreaOption();
-$selectedAzimuthOption = $block->getSelectedAzimuthOption();
-$selectedStoreTypes = $block->getSelectedStoreTypes();
 $selectedSearch = $block->getSelectedSearchTerm();
-$naverdestination = '';
 $googledestination = '';
 $googleApiUrl = '';
 $store_view_url = '';
@@ -16,131 +12,91 @@ $apiKeyAndRegion = $block->getApiKey();
 $storeSize = $block->getStoresCollection()->getSize();
 $storesCollection = $block->getStoresCollection();
 $searchLocationPoints = $block->getCustomerLocationPoints();
-if ($block->isCustomerSearchLocation() == 1 && $searchLocationPoints['lat'] == null) {
-    $storeSize = 0;
-}
-$markerImages = [
-    $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg'),
-    $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg'),
-    $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg'),
-    $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg')
-];
-$markerOnIcon = $block->getViewFileUrl('Eguana_StoreLocator::images/store_marker_on.svg');
+$markerImages = [];
+$markerImages['FS']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/fs_marker1.png');
+$markerImages['FS_1']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/fs_markere2.png');
+$markerImages['RS']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/rs_marker1.png');
+$markerImages['RS_1']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/rs_marker2.png');
 if ($defaultCountry != null) {
     $apiKeyAndRegion = $apiKeyAndRegion . '&region=' . $defaultCountry;
 }
-$cities = $block->getCitiesFromStores();
 ?>
-<div class="stores mian-content">
-    <form action="" target="_self" id="filter-form" method="get">
-        <fieldset class="fieldset">
-            <div class="field note"><?= $block->escapeHtml($country) ?></div>
-            <div class="field field-hidden">
-                <input type="hidden"
-                       id="current-lat"
-                       name="current_lat"
-                       value="<?= $block->escapeHtmlAttr($block->getSelectedLat()) ?>"/>
-                <input type="hidden"
-                       id="current-lng"
-                       name="current_lng"
-                       value="<?= $block->escapeHtmlAttr($block->getSelectedLng()) ?>"/>
-                <input type="hidden"
-                       id="current-location" name="use_my_location" value=""/>
-                <?php if ($selectedSearch): ?>
-                    <input type="hidden"
-                           id="search-lat"
-                           name="search_Lat"
-                           value="<?= $block->escapeHtmlAttr($searchLocationPoints['lat']) ?>"/>
-                    <input type="hidden"
-                           id="searcht-lng"
-                           name="search_Lng"
-                           value="<?= $block->escapeHtmlAttr($searchLocationPoints['long']) ?>"/>
-                <?php endif; ?>
-            </div>
-            <div class="field store-search">
-                <label class="label" for="store-search">
-                    <span><?= $block->escapeHtml(__('Please enter the address or counter name')) ?></span>
-                </label>
-                <div class="control">
-                    <input type="text" class="input-text" id="store-search" name="search"
-                           value="<?= $block->escapeHtmlAttr($selectedSearch ? $selectedSearch : '') ?>"
-                           placeholder="<?= $block->escapeHtml(__('Please enter the address or counter name')) ?>"/>
-                    <input type="hidden" id="page-number" name="p" value=""/>
-                </div>
-            </div>
-            <div class="field store-type">
-                <label class="label" for="store-type">
-                    <span><?= $block->escapeHtml(__('Store Types')) ?></span>
-                </label>
-                <div class="control">
-                    <select name="city-name" id="city-name">
-                        <option><?=$block->escapeHtml(__('All'))?></option>
-                        <?php if (count($cities) != 0):?>
-                            <?php foreach ($cities as $city):?>
-
-                                <option value="<?= $block->escapeHtml(__(trim($city))) ?>">
-                                    <?= $block->escapeHtml(__($city)) ?>
-                                </option>
-                            <?php endforeach; ?>
+<div class="stores stw-stores-locator mian-content">
+    <div class="store_list_left">
+        <form action="" target="_self" id="filter-form" method="get" class="store-locator-form">
+            <fieldset class="fieldset store-fields">
+                    <div class="field note"><?= $block->escapeHtml($country) ?></div>
+                    <div class="field field-hidden">
+                        <inp    ut type="hidden"
+                                id="current-lat"
+                                name="current_lat"
+                                value="<?= $block->escapeHtmlAttr($block->getSelectedLat()) ?>"/>
+                        <input type="hidden"
+                               id="current-lng"
+                               name="current_lng"
+                               value="<?= $block->escapeHtmlAttr($block->getSelectedLng()) ?>"/>
+                        <input type="hidden"
+                               id="current-location" name="use_my_location" value=""/>
+                        <?php if ($selectedSearch): ?>
+                            <input type="hidden"
+                                   id="search-lat"
+                                   name="search_Lat"
+                                   value="<?= $block->escapeHtmlAttr($searchLocationPoints['lat']) ?>"/>
+                            <input type="hidden"
+                                   id="searcht-lng"
+                                   name="search_Lng"
+                                   value="<?= $block->escapeHtmlAttr($searchLocationPoints['long']) ?>"/>
                         <?php endif; ?>
-                    </select>
+                    </div>
+
+                    <h1 class="page_tilte_head">Find Store</h1>
+
+                    <div class="field store-search">
+                        <label class="label" for="store-search">
+                            <span><?= $block->escapeHtml(__('Please enter the address or counter name')) ?></span>
+                        </label>
+                        <div class="control">
+                            <input type="text" class="input-text store-search-input" id="store-search" name="search"
+                                   value="<?= $block->escapeHtmlAttr($selectedSearch ? $selectedSearch : '') ?>"
+                                   placeholder="<?= $block->escapeHtml(__('Please enter the address or counter name')) ?>"/>
+                            <input type="hidden" id="page-number" name="p" value=""/>
+                        </div>
+                        <div class="actions search-btn-action">
+                            <button type="submit" class="button action primary search-btn">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <p class="location-error mage-error" style="display: none;color: #f32836;">
+                        <?= $block->escapeHtml(__('Please enter your current location')); ?>
+                    </p>
+
+                    <div class="stores-result">
+                    <h3 class="pc">
+                        <?= __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
+                    </h3>
+                    <h3 class="mobile">
+                        <?= __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
+                    </h3>
                 </div>
-            </div>
-            <div class="actions">
-                <button type="submit" class="button action primary">
-                    <?= $block->escapeHtml(__('Search')); ?>
-                </button>
-            </div>
-            <p class="location-error mage-error" style="display: none;color: #f32836;">
-                <?= $block->escapeHtml(__('Please enter your current location')); ?>
-            </p>
-        </fieldset>
-    </form>
-    <div class="stores-result">
-        <h3 class="pc">
-            <?= /* @noEscape */ __('We found <strong>%1 stores</strong> near your location', $storeSize) ?>
-        </h3>
-        <h3 class="mobile"><?= /* @noEscape */ __('<strong>%1</strong> result', $storeSize) ?></h3>
-        <a class="action link" id="use-my-current-location">
-            <span><?= $block->escapeHtml(__('A store around my location')) ?></span>
-        </a>
-    </div>
-    <div class="stores-content">
-        <?php if ($storeSize > 0): ?>
-            <div class="stores-map">
-                <a class="expend"><span><?= $block->escapeHtml(__('Expend')) ?></span></a>
-                <div class="store-map-viewer" id="store_map_viewer"></div>
-            </div>
-        <?php endif;?>
+            </fieldset>
+        </form>
         <div class="stores-list">
             <?php if ($storeSize > 0): ?>
                 <h3 class="mobile">
-                    <?= /* @noEscape */ __('We found <strong>%1 stores</strong> near your location', $storeSize) ?>
+                    <?= __('We found <strong>%1 stores</strong> near your location', $storeSize) ?>
                 </h3>
             <?php endif; ?>
             <?php if ($storeSize > 0): ?>
                 <ul class="stores-listing-ul store-lists items" style="height: 540px; overflow-y: scroll;">
                     <?php $count = 0; ?>
                     <?php foreach ($storesCollection as $storeItem):?>
-
                         <?php
                         $location = explode(',', $storeItem->getLocation());
-                        $storeType = $storeItem['type'];
                         $imgSourceForType = '';
-                        $naverApiUrl = "https://map.naver.com/v5/directions/";
-                        //                        $googleApiUrl = "http://maps.google.com/maps?daddr=";
                         $googleApiUrl = "https://www.google.com/maps/dir/?api=1&origin=";
-                        $imgSourceForType = $block->
-                        getViewFileUrl('Eguana_StoreLocator::images/store_marker_off.svg');
-                        if ($storeType == 'shop') {
-                            $imgSourceForType = $markerImages[0];
-                        } elseif ($storeType == 'outlet') {
-                            $imgSourceForType = $markerImages[1];
-                        } elseif ($storeType == 'retail') {
-                            $imgSourceForType = $markerImages[2];
-                        } else {
-                            $imgSourceForType = $markerImages[3];
-                        }
                         if (isset($location[0]) && isset($location[1])) {
                             /*
                              * Changed by Abbas, rather to implode using comma I use the => because in address and name
@@ -152,26 +108,16 @@ $cities = $block->getCitiesFromStores();
                                 $storeItem['title'],
                                 $location[0],
                                 $location[1],
-                                $storeItem['type'],
                                 $storeItem['address'],
+                                $storeItem['store_type'],
                                 $block->getUrl('stores/info/view', ['id' => $storeItem['entity_id']]),
-                                $block->getViewFileUrl('Eguana_StoreLocator::images/store_logo.png')
+                                $storeItem['telephone']
                             ]);
-                            // add naver map link if country is korea for open naver map instead of google
                             //this take long lot instead of lat long
-                            if ($defaultCountry == 'KR') {
-                                $naverdestination = $location[1] . ',' . $location[0];
-                                $store_view_url = $naverApiUrl . '||' . $naverdestination;
-                            } else {
-                                $googledestination = $location[0] . ',' . str_replace(' ', '', $location[1]);
-
-                                $store_view_url = $googleApiUrl . '||' . $googledestination;
-                            }
+                            $googledestination = $location[0] . ',' . str_replace(' ', '', $location[1]);
+                            $store_view_url = $googleApiUrl . '||' . $googledestination;
                         }
                         $clickevent = "pushmarker(" . $count . ")";
-                        if ($defaultCountry == 'KR') {
-                            $clickevent = "pushmarker_naver(" . $count . ")";
-                        }
                         ?>
                         <li class="store-list"
                             onclick="<?= $block->escapeHtmlAttr($clickevent); ?>"
@@ -181,19 +127,24 @@ $cities = $block->getCitiesFromStores();
                             <div class="store-info">
                                 <div class="store-primary-info">
                                     <div class="store-info-top">
-                                        <label class="store-sequence-number"><?= $count + 1 ?></label>
+                                        <span class="accordion-icon">
+                                            <i class="fas fa-chevron-up"></i>
+                                        </span>
+                                        <label class="store-badge-<?= $block->escapeHtml($storeItem['store_type']); ?>"><?= $block->escapeHtml($storeItem['store_type']); ?></label>
                                         <strong class="store-title"><?= $block->escapeHtml($storeItem['title']); ?>
                                         </strong>
                                     </div>
                                     <p class="address"><?= $block->escapeHtml(__($storeItem['address'])); ?></p>
                                     <p class="telephone">
-                                        <?= $block->escapeHtml(__('Tel'))?>: <?= $block->escapeHtml($storeItem['telephone']); ?>
+                                        <?= $block->escapeHtml(__('Tel'))?>:
+                                        <?= $block->escapeHtml($storeItem['telephone']); ?>
                                     </p>
                                 </div>
                                 <div class="store-secondary-info" style="display: none;">
                                     <?php if ($storeItem['email']): ?>
                                         <p class="email">
-                                            <?= $block->escapeHtml(__('Email'))?>: <?= $block->escapeHtml($storeItem['email']); ?>
+                                            <?= $block->escapeHtml(__('Email'))?>:
+                                            <?= $block->escapeHtml($storeItem['email']); ?>
                                         </p>
                                     <?php endif;?>
                                     <?php if ($storeItem['timing']): ?>
@@ -205,19 +156,9 @@ $cities = $block->getCitiesFromStores();
                                             </p>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
-                                    <?php if (isset($storeItem['distance'])): ?>
-                                        <p class="distance">
-                                            <?= /* @noEscape */ __('<strong>%1Km</strong> away from your location', __((round($storeItem['distance'], 2))))?>
-                                        </p>
-                                    <?php endif; ?>
-                                    <a class="action map-open"
-                                       href="<?= $block->escapeUrl($store_view_url) ?>"
-                                       target="_blank"
-                                       state-dir = "0">
-                                        <span><?= $block->escapeHtml(__('Get Directions')) ?></span>
-                                    </a>
                                 </div>
                             </div>
+                            <div class="inner-store"></div>
                         </li>
                         <?php $count ++ ?>
                     <?php endforeach; ?>
@@ -227,27 +168,42 @@ $cities = $block->getCitiesFromStores();
             <?php endif; ?>
         </div>
     </div>
+    <div class="desktop-map_container">
+        <div class="stores-content store_map_right">
+            <?php if ($storeSize > 0): ?>
+                <div class="stores-map">
+                    <a class="expend"><span><?= $block->escapeHtml(__('Expend')) ?></span></a>
+                    <div class="store-map-viewer" id="store_map_viewer"></div>
+                </div>
+            <?php endif;?>
+        </div>
+    </div>
+    <?php
+        $bottomBlockId = $block->getBottomBlockIdValue();
+    ?>
+    <div class="store-locator-bottom-block">
+        <?php if (isset($bottomBlockId)): ?>
+            <?= $block->getLayout()
+                ->createBlock(Magento\Cms\Block\Block::class)
+                ->setBlockId($bottomBlockId)
+                ->toHtml();
+            ?>
+        <?php endif;?>
+    </div>
 </div>
-<?php if ($defaultCountry == 'KR'): ?>
-    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<?= $block->escapeUrl($block->getNaverClientId()); ?>"></script>
-<?php else:?>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?= $block->escapeUrl($apiKeyAndRegion) ?>"></script>
-<?php endif;?>
-
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=<?= $block->escapeUrl($apiKeyAndRegion) ?>">
+</script>
 <script type="text/x-magento-init">
     {
         "*": {
             "map-viewer":{},
             "store-locator":{
                 "locations": "<?= $block->escapeJs(implode('||', $locations)) ?>",
-                "naverUrl": "<?= $block->escapeJs($store_view_url) ?>",
-                "markerImages" : "<?= $block->escapeJs(implode('||', $markerImages)) ?>",
                 "country" : "<?= $block->escapeJs($defaultCountry) ?>",
+                "markerImages" : "<?= $block->escapeJs(json_encode($markerImages, true)) ?>",
                 "search" : "<?= $block->escapeJs($selectedSearch) ?>",
-                "naverdestination" : "<?= $block->escapeJs($naverdestination) ?>",
-                "googledestination" : "<?= $block->escapeJs($googledestination) ?>",
-                "googleDirctionUrl" : "<?= $block->escapeJs($googleApiUrl) ?>",
-                "markerOnIcon" : "<?= $block->escapeJs($markerOnIcon) ?>"
+                "googledestination" : "<?= $block->escapeJs($googledestination) ?>"
             }
         }
     }
