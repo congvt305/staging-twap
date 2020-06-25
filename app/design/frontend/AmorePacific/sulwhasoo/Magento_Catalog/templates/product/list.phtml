@@ -113,9 +113,9 @@ try {
                                 </div>
                             <?php endif;?>
 
-                            <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
-
                             <?= /* @escapeNotVerified */ $block->getProductPrice($_product) ?>
+
+                            <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
 
                             <div class="addto">
                                 <?php if ($_product->isSaleable() && $ecommerceStatus): ?>

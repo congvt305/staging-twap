@@ -99,11 +99,11 @@ try {
                                     </a>
                                 </div>
 
+                                <?= $block->getProductPriceHtml($_item, $type) ?>
+
                                 <?php if ($templateType): ?>
                                     <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
                                 <?php endif; ?>
-
-                                <?= $block->getProductPriceHtml($_item, $type) ?>
 
                                 <?php if ($showWishlist || $showCompare || $showCart): ?>
                                     <div class="addto">
