@@ -185,7 +185,7 @@ class SocialLoginHandler
      * @param $userid
      * @param $socialMediaType
      */
-    public function redirectCustomer($customerId, $dataUser, $userid, $socialMediaType)
+    public function redirectCustomer($dataUser, $userid, $socialMediaType)
     {
         $customerData = $this->getCustomerData($dataUser, $userid, $socialMediaType);
         if ($customerData) {

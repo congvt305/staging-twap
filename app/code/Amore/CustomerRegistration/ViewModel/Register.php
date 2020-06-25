@@ -10,7 +10,7 @@ namespace Amore\CustomerRegistration\ViewModel;
 
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Magento\Customer\Model\Session;
+use Magento\Framework\Session\SessionManagerInterface as Session;
 
 /**
  * It will use for the register step during registration
