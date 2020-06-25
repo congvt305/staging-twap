@@ -14,18 +14,33 @@
 
 $categoryData = $block->getCategoryOptionArray();
 $faqData = $block->getFaqBindData();
+$searchUrl = $block->getSearchUrl();
 ?>
 
-<div class="faqs" data-mage-init='{
-                 "mage/tabs": {
-                    "openedState": "show",
-                    "collapsibleElement":"[data-role=tab-collapsible]",
-                    "animate": {"duration": 300},
-                    "active": false,
-                    "content": "[data-role=tab-content]",
-                    "header":"[data-role=tab-title]"
-                    }
-                 }'>
+<div class="faqs">
+    <div class="search-block">
+        <form class="form" action="<?= $block->escapeUrl($searchUrl)?>">
+            <div class="field">
+                <label class="label" for="faqSearchVal">
+                    <span><?= /* @escapeNotVerified */ $block->escapeHtml(__('Search')) ?></span>
+                </label>
+                <div class="control">
+                    <input type="text"
+                           class="input-text required-entry faqSearchVal"
+                           id="faqSearchVal"
+                           name="faqSearchVal"
+                           placeholder="<?= /* @escapeNotVerified */ $block->escapeHtmlAttr(__('Search')) ?>"
+                           value="<?= $block->escapeHtmlAttr($block->getRequest()->getParam('faqSearchVal'))?>"/>
+                    <button type="button" class="action links" onclick="var search_val = document.getElementById('faqSearchVal'); search_val.value='';"><span class="remove"><?=$block->escapeHtml(__('Remove'))?></span></button>
+                </div>
+                <div class="actions">
+                    <button type="submit" class="button action search primary faqSearchBtn" title="search">
+                        <span><?=$block->escapeHtml(__('Search'))?></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     <?php foreach ($categoryData as $key => $value):?>
         <?php if (isset($faqData[$key]) && count($faqData[$key]) > 0):?>
             <div class="block">
@@ -43,6 +58,7 @@ $faqData = $block->getFaqBindData();
                          data-mage-init='{"accordion":{
                              "collapsible": true,
                              "animate": {"duration": 300},
+                             "openedState": "_active",
                              "active": false,
                              "multipleCollapsible": true}}'>
                         <?php foreach ($faqData[$key] as $faq):?>
@@ -52,7 +68,7 @@ $faqData = $block->getFaqBindData();
                                         <span><?= $block->escapeHtml($faq->getTitle()) ?></span>
                                     </div>
                                 </div>
-                                <div class="content" data-role="content" style="display: none;">
+                                <div class="content" data-role="content">
                                     <?= /* @noEscape */ $block->descriptionFilter($faq->getDescription()) ?>
                                 </div>
                             </div>
