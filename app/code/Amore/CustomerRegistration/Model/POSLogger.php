@@ -40,7 +40,6 @@ class POSLogger
     public function addAPICallLog($message, $url, $parameters)
     {
         if ($this->confg->getDebug()) {
-            $this->logger->info('POS info test inside');
             $this->logger->info($message);
             $this->logger->info($url);
             $this->logger->info($this->json->serialize($parameters));
