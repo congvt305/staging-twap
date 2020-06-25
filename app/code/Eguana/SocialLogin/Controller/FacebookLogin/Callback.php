@@ -36,7 +36,7 @@ use Psr\Log\LoggerInterface;
  *
  * Callback class for facebook login
  */
-class Callback extends AbstractSocialLogin
+class Callback extends Action
 {
     const SOCIAL_MEDIA_TYPE = 'facebook';
 
@@ -63,13 +63,6 @@ class Callback extends AbstractSocialLogin
     /**
      * Callback constructor.
      * @param Context $context
-     * @param CustomerRepositoryInterface $customerRepositoryInterface
-     * @param CookieManagerInterface $cookieManager
-     * @param CookieMetadataFactory $cookieMetadataFactory
-     * @param Session $customerSession
-     * @param ManagerInterface $eventManager
-     * @param Visitor $visitor
-     * @param DateTimeAlias $dateTime
      * @param LoggerInterface $logger
      * @param Helper $helper
      * @param SocialLoginModel $socialLoginModel
@@ -78,34 +71,19 @@ class Callback extends AbstractSocialLogin
      */
     public function __construct(
         Context $context,
-        CustomerRepositoryInterface $customerRepositoryInterface,
-        CookieManagerInterface $cookieManager,
-        CookieMetadataFactory $cookieMetadataFactory,
-        Session $customerSession,
-        ManagerInterface $eventManager,
-        Visitor $visitor,
-        DateTimeAlias $dateTime,
         LoggerInterface $logger,
         Helper $helper,
         SocialLoginModel $socialLoginModel,
         Curl $curl,
         SocialLoginRepository $socialLoginRepository
     ) {
-        parent::__construct(
-            $context,
-            $customerRepositoryInterface,
-            $cookieManager,
-            $cookieMetadataFactory,
-            $customerSession,
-            $eventManager,
-            $visitor,
-            $logger,
-            $dateTime
-        );
         $this->helper                           = $helper;
         $this->socialLoginModel                 = $socialLoginModel;
         $this->curlClient                       = $curl;
         $this->socialLoginRepository            = $socialLoginRepository;
+        parent::__construct(
+            $context,
+        );
     }
 
     /**
@@ -151,7 +129,8 @@ class Callback extends AbstractSocialLogin
         $customerId = $this->socialLoginRepository->getSocialMediaCustomer($userid, $socialMediaType);
         //If customer exists then login and close popup else close pop and redirect to social login page
         if ($customerId) {
-            $this->redirectToLogin($customerId);
+            $this->socialLoginModel->getCoreSession()->unsSocialCustomerId();
+            $this->socialLoginModel->getCoreSession()->setSocialCustomerId($customerId);
         } else {
             $this->socialLoginModel->redirectCustomer($customerId, $response, $userid, $socialMediaType);
         }

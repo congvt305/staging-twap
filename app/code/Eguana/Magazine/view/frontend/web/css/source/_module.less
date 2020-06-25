@@ -15,8 +15,11 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-    .magazine-index-index .page-title {
-        font-weight: @font-weight__regular;
+    .magazine-index-index,
+    .magazine-detail-index {
+        .page-title {
+            font-weight: @font-weight__regular !important;
+        }
     }
 
     .block.magazine-image {
@@ -127,6 +130,10 @@
         }
     }
 
+    .magazine-detail {
+        margin-top: @indent__xs;
+    }
+
     .magazine-photo-banner {
         margin-left: -@layout__width-xs-indent;
         margin-right: -@layout__width-xs-indent;
@@ -201,6 +208,17 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .magazine-index-index,
+    .magazine-detail-index {
+        .page-title {
+            line-height: 56px !important;
+        }
+    }
+
+    .magazine-detail {
+        margin-top: 50px;
+    }
+
     .magazine-index-index {
         main.page-main {
             max-width: 100%;
