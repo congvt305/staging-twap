@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: yasir
+* Date: 6/16/20
+* Time: 5:48 AM
+*/
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">magazine_listing.magazine_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="add">
+                <url path="*/*/new"/>
+                <class>primary</class>
+                <label translate="true">Add New Magazine</label>
+            </button>
+        </buttons>
+        <spinner>magazine_columns</spinner>
+        <deps>
+            <dep>magazine_listing.magazine_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="magazine_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">entity_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Eguana_Magazine::magazine</aclResource>
+        <dataProvider class="Eguana\Magazine\Ui\Component\DataProvider" name="magazine_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <massaction name="listing_massaction" class="Eguana\Magazine\Ui\Component\MassAction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">magazine_listing.magazine_listing.magazine_columns.ids</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="magazine/magazine/massDelete"/>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters">
+            <settings>
+                <templates>
+                    <filters>
+                        <select>
+                            <param name="template" xsi:type="string">ui/grid/filters/elements/ui-select</param>
+                            <param name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</param>
+                        </select>
+                    </filters>
+                </templates>
+            </settings>
+            <filterSelect name="store_id" provider="${ $.parentName }">
+                <settings>
+                    <captionValue>0</captionValue>
+                    <options class="Magento\Cms\Ui\Component\Listing\Column\Cms\Options"/>
+                    <label translate="true">Store View</label>
+                    <dataScope>store_id</dataScope>
+                    <imports>
+                        <link name="visible">componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+        </filters>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="magazine_columns">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">magazine_listing.magazine_listing.magazine_columns_editor</item>
+                    <item name="target" xsi:type="string">startEdit</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                        <item name="1" xsi:type="boolean">true</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <selectionsColumn name="ids">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="entity_id">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="title">
+            <settings>
+                <filter>text</filter>
+                <editor>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                    <editorType>text</editorType>
+                </editor>
+                <label translate="true">Title</label>
+            </settings>
+        </column>
+        <column name="sort_order">
+            <settings>
+                <filter>text</filter>
+                <editor>
+                    <validation>
+                        <rule name="validate-digits" xsi:type="boolean">true</rule>
+                    </validation>
+                    <editorType>text</editorType>
+                </editor>
+                <label translate="true">Sort Order</label>
+            </settings>
+        </column>
+        <column name="is_active" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Eguana\Magazine\Model\Source\IsActive"/>
+                <filter>select</filter>
+                <editor>
+                    <editorType>select</editorType>
+                </editor>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        <column name="thumbnail_image" class="Eguana\Magazine\Ui\Component\Listing\Column\Thumbnail">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/thumbnail</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="altField" xsi:type="string">title</item>
+                    <item name="has_preview" xsi:type="string">1</item>
+                    <item name="label" xsi:type="string" translate="true">Thumbnail</item>
+                </item>
+            </argument>
+        </column>
+        <column name="thumbnail_alt">
+            <settings>
+                <filter>text</filter>
+                <editor>
+                    <editorType>text</editorType>
+                </editor>
+                <label translate="true">Alt</label>
+            </settings>
+        </column>
+        <column name="content_short">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Short Description</label>
+            </settings>
+        </column>
+        <column name="type">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Eguana\Magazine\Ui\Component\Listing\Type</item>
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Type</item>
+                </item>
+            </argument>
+        </column>
+        <column name="store_id" class="Magento\Store\Ui\Component\Listing\Column\Store">
+            <settings>
+                <label translate="true">Store View</label>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Created At</label>
+            </settings>
+        </column>
+        <column name="updated_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Updated At</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Eguana\Magazine\Ui\Component\Listing\Column\MagazineActions">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

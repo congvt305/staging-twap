@@ -1,0 +1,65 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 17/6/20
+ * Time: 08:00 PM
+ */
+
+/**
+ * @var \Eguana\Faq\Block\Faq $block
+ */
+
+$categoryData = $block->getCategoryOptionArray();
+$faqData = $block->getFaqBindData();
+?>
+
+<div class="faqs" data-mage-init='{
+                 "mage/tabs": {
+                    "openedState": "show",
+                    "collapsibleElement":"[data-role=tab-collapsible]",
+                    "animate": {"duration": 300},
+                    "active": false,
+                    "content": "[data-role=tab-content]",
+                    "header":"[data-role=tab-title]"
+                    }
+                 }'>
+    <?php foreach ($categoryData as $key => $value):?>
+        <?php if (isset($faqData[$key]) && count($faqData[$key]) > 0):?>
+            <div class="block">
+                <div class="item title" data-role="tab-collapsible">
+                    <strong class="switch"
+                            role="heading"
+                            data-toggle="trigger"
+                            data-role="tab-title"
+                            aria-level="2">
+                        <?= $block->escapeHtml($value) ?>
+                    </strong>
+                </div>
+                <div class="item content" data-role="tab-content">
+                    <div class="lists"
+                         data-mage-init='{"accordion":{
+                             "collapsible": true,
+                             "animate": {"duration": 300},
+                             "active": false,
+                             "multipleCollapsible": true}}'>
+                        <?php foreach ($faqData[$key] as $faq):?>
+                            <div class="list">
+                                <div data-role="collapsible">
+                                    <div class="title" data-role="title">
+                                        <span><?= $block->escapeHtml($faq->getTitle()) ?></span>
+                                    </div>
+                                </div>
+                                <div class="content" data-role="content" style="display: none;">
+                                    <?= /* @noEscape */ $block->descriptionFilter($faq->getDescription()) ?>
+                                </div>
+                            </div>
+                        <?php endforeach;?>
+                    </div>
+                </div>
+            </div>
+        <?php endif;?>
+    <?php endforeach;?>
+</div>

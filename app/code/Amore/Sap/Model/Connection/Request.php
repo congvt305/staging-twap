@@ -14,13 +14,13 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class Request
 {
-    const URL_TYPE_DEV = 'dev';
+    const URL_ACTIVE = 'sap/general/active';
 
-    const URL_TYPE_STG = 'stg';
+    const URL_REQUEST = 'sap/general/url';
 
-    const URL_TYPE_PRD = 'prd';
+    const ORDER_CONFIRM_PATH = 'sap/url_path/order_confirm_path';
 
-    const URL_TYPE_SELECTED = 'sap/general/url_select';
+    const ORDER_CANCEL_PATH = 'sap/url_path/order_cancel_path';
 
     /**
      * @var Curl
@@ -52,39 +52,58 @@ class Request
         $this->scopeConfig = $scopeConfig;
     }
 
-    public function postRequest($requestData)
+    public function postRequest($requestData, $storeId, $type = 'confirm')
     {
-        $url = $this->getUrl();
+        $url = $this->getUrl($storeId);
+        $path = $this->getPath($storeId, $type);
 
-        $this->curl->addHeader('Content-Type', 'application/json');
-        $this->curl->post($url, $requestData);
-
-        $response = $this->curl->getBody();
-        $result = $this->json->unserialize($response);
-
-        if ($result['code'] == '0000') {
-            return $result['message'];
+        if (empty($url) || empty($path)) {
+            return ['code' => "0001", "Url or Path field is empty. Please Check configuration"];
         } else {
-            return $result['data'];
+            $url = $this->getUrl($storeId) . $path;
+
+            $this->curl->addHeader('Content-Type', 'application/json');
+            $this->curl->post($url, $requestData);
+
+            $response = $this->curl->getBody();
+
+            $result = $this->json->unserialize($response);
+//        $result = ["code" => "0000", "message" => "success test"];
+//        $result = ["code" => "0001", "message" => "fail test"];
+
+            if ($result['code'] == '0000') {
+                return $result;
+            } else {
+                return $result;
+            }
         }
     }
 
-    public function getUrl()
+    public function getUrl($storeId)
     {
-        $urlType = $this->scopeConfig->getValue(self::URL_TYPE_SELECTED,'store');
-        switch ($urlType) {
-            case self::URL_TYPE_DEV:
-                $url = $this->scopeConfig->getValue(self::URL_TYPE_DEV, 'store');
+        $url = '';
+
+        $activeCheck = $this->scopeConfig->getValue(self::URL_ACTIVE, 'store', $storeId);
+
+        if ($activeCheck) {
+            $url = $this->scopeConfig->getValue(self::URL_REQUEST, 'store', $storeId);
+        }
+
+        return $url;
+    }
+
+    public function getPath($storeId, $type)
+    {
+        switch ($type) {
+            case 'confirm':
+                $path = $this->scopeConfig->getValue(self::ORDER_CONFIRM_PATH, 'store', $storeId);
                 break;
-            case self::URL_TYPE_STG:
-                $url = $this->scopeConfig->getValue(self::URL_TYPE_STG, 'store');
-                break;
-            case self::URL_TYPE_PRD:
-                $url = $this->scopeConfig->getValue(self::URL_TYPE_PRD, 'store');
+            case 'cancel':
+                $path = $this->scopeConfig->getValue(self::ORDER_CANCEL_PATH, 'store', $storeId);
                 break;
             default:
-                $url = $this->scopeConfig->getValue(self::URL_TYPE_DEV, 'store');
+                $path = $this->scopeConfig->getValue(self::ORDER_CONFIRM_PATH, 'store', $storeId);
         }
-        return $url;
+        return $path;
     }
 }

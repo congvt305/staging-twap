@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 17/6/20
+ * Time: 08:00 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <faq>
+            <general>
+                <enabled>1</enabled>
+            </general>
+            <category>
+                <category_1>Test Category</category_1>
+            </category>
+        </faq>
+    </default>
+</config>

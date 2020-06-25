@@ -14,21 +14,23 @@
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Enabled</label>
+                    <label>Enabled Request URL</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="dev_url" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Dev Url</label>
+                <field id="url" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>URL</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
                 </field>
-                <field id="stg_url" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Staging Url</label>
+            </group>
+            <group id="url_path" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Path</label>
+                <field id="order_confirm_path" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Order Confirm Path</label>
                 </field>
-                <field id="prd_url" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Production Url</label>
-                </field>
-                <field id="url_select" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Url Usage Type</label>
-                    <source_model>Amore\Sap\Model\Source\UrlType</source_model>
+                <field id="order_cancel_path" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Order Cancel Path</label>
                 </field>
             </group>
             <group id="mall_info" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
