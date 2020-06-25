@@ -68,8 +68,6 @@ class POS implements ArgumentInterface
      */
     public function getTermsCmsBlockId()
     {
-        $this->logger->debug('POS debug test');
-        $this->logger->info('POS info test');
         return $this->configHelper->getTermsCMSBlockId();
     }
 
