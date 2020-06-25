@@ -8,12 +8,15 @@
  * Time: 6:45 AM
  */
 /** @var $viewModel \Eguana\Magazine\ViewModel\Detail */
-$viewModel = $block->getData('view_model_list');
+$viewModel = $block->getData('view_model_detail');
 $magazine = $viewModel->getMagazine();
 
 
 ?>
 <div class="block block-magazine-details" data-mage-init='{"magazineSlide":{}}'>
+    <div class="block-title">
+        <strong><?= $block->escapeHtml($magazine->getTitle()) ?></strong>
+    </div>
     <div class="block-content">
         <div class="magazine-detail">
             <?= /* @noEscape */ $viewModel->contentFiltering($magazine->getContent()); ?>

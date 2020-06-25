@@ -74,7 +74,18 @@ class CreateCustomer extends Action
             $resultPage = $this->resultPageFactory->create();
             $this->_view->loadLayout();
             $this->_view->renderLayout();
-        } elseif ($this->customerSession->isLoggedIn()) {
+        } elseif ($this->socialLoginModel->getCoreSession()->getSocialCustomerId()) {
+            try {
+                $customerId = $this->socialLoginModel->getCoreSession()->getSocialCustomerId();
+                $this->customerSession->loginById($customerId);
+                $customer = $this->customerSession->getCustomer();
+                $this->customerSession->setUsername($customer->getEmail());
+            } catch (\Exception $e) {
+                $this->messageManager->addError(
+                    __('We can\'t process your request right now. Sorry, that\'s all we know.')
+                );
+            }
+            $this->socialLoginModel->getCoreSession()->unsSocialCustomerId();
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath($this->storemanager->getStore()->getBaseUrl());
             return $resultRedirect;

@@ -10,5 +10,6 @@
         <move element="catalog.leftnav" destination="columns.top" before="-" />
         <move element="category.view.container" destination="page.wrapper" before="main.content" />
         <referenceContainer name="sidebar.additional" remove="true" />
+        <referenceBlock name="category.product.addto.compare" remove="true"/>
     </body>
 </page>
