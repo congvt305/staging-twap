@@ -76,10 +76,10 @@ try {
                                 </div>
                             </div>
                             <div class="product-item-details">
-                                <?php if($_product->getData('new')):?>
+                                <?php if($_item->getData('new')):?>
                                     <span class="product-item-flag"><?= $block->escapeHtml($_product->getResource()->getAttribute('new')->getStoreLabel());?></span>
                                 <?php endif;?>
-                                <?php if($_product->getData('best')):?>
+                                <?php if($_item->getData('best')):?>
                                     <span class="product-item-flag"><?= $block->escapeHtml($_product->getResource()->getAttribute('best')->getStoreLabel()); ?></span>
                                 <?php endif;?>
                                 <strong class="product-item-name">
