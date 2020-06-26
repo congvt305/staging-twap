@@ -13,32 +13,22 @@
   <table name="storeinfo" resource="default" engine="innodb" comment="Stores Main Table">
     <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
     <column xsi:type="varchar" name="title" nullable="true" length="255" comment="Store Main Title"/>
-    <column xsi:type="varchar" name="image" nullable="true" length="255" comment="Store Image" disabled="true"/>
     <column xsi:type="varchar" name="address" nullable="true" length="255" comment="Store Address"/>
     <column xsi:type="varchar" name="telephone" nullable="true" length="100" comment="Store Telephone"/>
     <column xsi:type="varchar" name="location" nullable="true" length="100" comment="Store Map Location"/>
     <column xsi:type="timestamp" name="created_at" on_update="true" nullable="true" default="CURRENT_TIMESTAMP" comment="Created At"/>
     <column xsi:type="varchar" name="store_id" nullable="false" length="100" default="0" comment="WebSite Store ID"/>
-    <column xsi:type="varchar" name="area" nullable="false" length="3" comment="Store Area"/>
-    <column xsi:type="varchar" name="event_url" nullable="true" length="255" comment="Event Url" disabled="true"/>
-    <column xsi:type="varchar" name="azimuth_orientation" nullable="true" length="50" comment="Azimuth Orientation" disabled="true"/>
-    <column xsi:type="text" name="detail_url" nullable="true" comment="Detail Url" disabled="true"/>
-    <column xsi:type="boolean" name="store_sale" nullable="true" comment="Detail Url" disabled="true"/>
-    <column xsi:type="varchar" name="city" nullable="true" length="255" comment="City"/>
     <column xsi:type="varchar" name="email" nullable="true" length="20" comment="store Email address"/>
-    <column xsi:type="varchar" name="start_time" nullable="true" length="20" comment="Opening Time" disabled="true"/>
-    <column xsi:type="varchar" name="end_time" nullable="true" length="20" comment="Closing Time" disabled="true"/>
     <column xsi:type="varchar" name="timing" nullable="true" length="500" comment="Store timing"/>
+    <column xsi:type="varchar" name="store_type" nullable="true" length="20" comment="Store type"/>
+      <column xsi:type="varchar" name="area" nullable="false" length="3" comment="Store Area"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="entity_id"/>
     </constraint>
-    <index referenceId="STOREINFO_STORE_ID" indexType="fulltext">
+    <index referenceId="STOREINFO_STORE_ID_TITLE_ADDRESS" indexType="fulltext">
       <column name="store_id"/>
       <column name="title"/>
       <column name="address"/>
     </index>
-  </table>
-  <table name="storeinfo_work_time" resource="default" engine="innodb" comment="Store Info Work Time Table" disabled="true" >
-
   </table>
 </schema>

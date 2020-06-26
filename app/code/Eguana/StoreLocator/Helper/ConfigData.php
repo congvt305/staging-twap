@@ -24,6 +24,7 @@ class ConfigData extends AbstractHelper
     const FRONTEND_STORES = 'stores_board/frontend_stores/';
     const ADMIN_STORES = 'stores_board/admin_stores/';
     const ADMIN_STORES_PAGIANTION = 'stores_board/admin_stores_pagination/stores_pagination_per_page';
+    const GENERAL_BOTTOM_BLOCK_ID = 'stores_board/general_stores/bottom_block_id';
 
     /**
      * get config value
@@ -33,54 +34,6 @@ class ConfigData extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::GENERAL_STORES . 'enabled',
-            ScopeInterface::SCOPE_STORE
-        );
-    }
-
-    /**
-     * get config value
-     * @return mixed
-     */
-    public function getMediaPath()
-    {
-        return $this->scopeConfig->getValue(
-            self::GENERAL_STORES . 'media_directory_path',
-            ScopeInterface::SCOPE_STORE
-        );
-    }
-
-    /**
-     * get config value
-     * @return mixed
-     */
-    public function getAzimuthOrientation()
-    {
-        return $this->scopeConfig->getValue(
-            self::GENERAL_STORES . 'azimuth_orientation',
-            ScopeInterface::SCOPE_STORE
-        );
-    }
-
-    /**
-     * get config value
-     * @return mixed
-     */
-    public function getFrontMainTitle()
-    {
-        return $this->scopeConfig->getValue(
-            self::FRONTEND_STORES . 'main_title',
-            ScopeInterface::SCOPE_STORE
-        );
-    }
-
-    /**
-     * get config value
-     * @return mixed
-     */
-    public function getFrontSubTitle()
-    {
-        return $this->scopeConfig->getValue(
-            self::FRONTEND_STORES . 'sub_title',
             ScopeInterface::SCOPE_STORE
         );
     }
@@ -204,14 +157,15 @@ class ConfigData extends AbstractHelper
             ScopeInterface::SCOPE_STORE
         );
     }
+
     /**
-     * get Api key from config
+     * Get bottom block id
      * @return mixed
      */
-    public function getGeoCodeApiKey()
+    public function getBottomBlockId()
     {
         return $this->scopeConfig->getValue(
-            self::GENERAL_STORES . 'map_api_key_geocode',
+            self::GENERAL_BOTTOM_BLOCK_ID,
             ScopeInterface::SCOPE_STORE
         );
     }
