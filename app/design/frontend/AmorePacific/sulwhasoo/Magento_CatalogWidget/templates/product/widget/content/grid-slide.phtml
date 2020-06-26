@@ -8,11 +8,6 @@ use Magento\Framework\App\Action\Action;
 // @codingStandardsIgnoreFile
 
 /** @var \Magento\CatalogWidget\Block\Product\ProductsList $block */
-try {
-    $ecommerceStatus = $this->helper(Eguana\EcommerceStatus\Helper\Data::class)->getECommerceStatus();
-}catch (\Exception $e){
-    $ecommerceStatus = 1;
-}
 ?>
 <?php if ($exist = ($block->getProductCollection() && $block->getProductCollection()->getSize())): ?>
     <?php
@@ -24,7 +19,7 @@ try {
     $items = $block->getProductCollection()->getItems();
 
     $showWishlist = true;
-    $showCompare = true;
+    $showCompare = false;
     $showCart = true;
     $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
     $description = false;
@@ -76,11 +71,12 @@ try {
                                 </div>
                             </div>
                             <div class="product-item-details">
-                                <?php if ($_item->hasData('flag')): ?>
-                                    <span class="product-item-flag">
-                                        <?= $_item->getAttributeText('flag'); ?>
-                                    </span>
-                                <?php endif; ?>
+                                <?php if($_item->getData('new')):?>
+                                    <span class="product-item-flag"><?= $block->escapeHtml($_item->getResource()->getAttribute('new')->getStoreLabel());?></span>
+                                <?php endif;?>
+                                <?php if($_item->getData('best')):?>
+                                    <span class="product-item-flag"><?= $block->escapeHtml($_item->getResource()->getAttribute('best')->getStoreLabel()); ?></span>
+                                <?php endif;?>
                                 <strong class="product-item-name">
                                     <a title="<?= $block->escapeHtmlAttr($_item->getName()) ?>"
                                        href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
@@ -98,11 +94,11 @@ try {
                                     </a>
                                 </div>
 
+                                <?= $block->getProductPriceHtml($_item, $type) ?>
+
                                 <?php if ($templateType): ?>
                                     <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
                                 <?php endif; ?>
-
-                                <?= $block->getProductPriceHtml($_item, $type) ?>
 
                                 <?php if ($showWishlist || $showCompare || $showCart): ?>
                                     <div class="addto">

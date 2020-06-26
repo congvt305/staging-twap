@@ -237,11 +237,11 @@ $_item = null;
                                                 <?= $block->escapeHtml($_item->getName()) ?></a>
                                         </strong>
 
+                                        <?= /* @noEscape */ $block->getProductPrice($_item) ?>
+
                                         <?php if ($templateType): ?>
                                             <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
                                         <?php endif; ?>
-
-                                        <?= /* @noEscape */ $block->getProductPrice($_item) ?>
 
                                         <?php if ($showAddTo || $showCart): ?>
                                             <div class="addto">
