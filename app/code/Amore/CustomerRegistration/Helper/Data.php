@@ -42,6 +42,8 @@ class Data extends AbstractHelper
         = 'customerregistraion/pos/sales_organization_code';
     const SALES_OFFICE_CODE
         = 'customerregistraion/pos/sales_office_code';
+    const PARTNER_ID
+        = 'customerregistraion/pos/partner_id';
     const DEBUG
         = 'customerregistraion/pos/debug';
 
@@ -175,7 +177,7 @@ class Data extends AbstractHelper
 
     public function getOrganizationSalesCode($websiteId = null)
     {
-        if($websiteId) {
+        if ($websiteId) {
             return $this->scopeConfig->getValue(
                 self::SALES_ORGANIZATION_CODE,
                 ScopeInterface::SCOPE_WEBSITE,
@@ -191,7 +193,7 @@ class Data extends AbstractHelper
 
     public function getOfficeSalesCode($websiteId = null)
     {
-        if($websiteId) {
+        if ($websiteId) {
             return $this->scopeConfig->getValue(
                 self::SALES_OFFICE_CODE,
                 ScopeInterface::SCOPE_WEBSITE,
@@ -205,9 +207,25 @@ class Data extends AbstractHelper
         );
     }
 
+    public function getPartnerId($websiteId = null)
+    {
+        if ($websiteId) {
+            return $this->scopeConfig->getValue(
+                self::SALES_OFFICE_CODE,
+                ScopeInterface::SCOPE_WEBSITE,
+                $websiteId
+            );
+        }
+
+        return $this->scopeConfig->getValue(
+            self::PARTNER_ID,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
     public function getDebug($websiteId = null)
     {
-        if($websiteId) {
+        if ($websiteId) {
             return $this->scopeConfig->getValue(
                 self::DEBUG,
                 ScopeInterface::SCOPE_WEBSITE,
