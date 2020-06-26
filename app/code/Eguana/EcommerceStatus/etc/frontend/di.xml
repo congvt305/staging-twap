@@ -13,4 +13,14 @@
     <type name="Magento\Catalog\Model\Product">
         <plugin name="hidebutton" type="Eguana\EcommerceStatus\Plugin\RemoveAddToButton" sortOrder="1"/>
     </type>
+    <type name="Magento\Checkout\Controller\Cart\Index">
+        <plugin name="redirectFromCart" type="Eguana\EcommerceStatus\Plugin\RedirectFromCart" sortOrder="1"/>
+    </type>
+    <type name="Magento\Checkout\Controller\Index\Index">
+        <plugin name="redirectFromCheckout" type="Eguana\EcommerceStatus\Plugin\RedirectFromCheckout" sortOrder="1"/>
+    </type>
+    <type name="Magento\Wishlist\Model\Wishlist">
+        <plugin name="hideWishlistCartButton" type="Eguana\EcommerceStatus\Plugin\Wishlist" sortOrder="1"/>
+    </type>
+    <preference for="Magento\Wishlist\Block\Customer\Wishlist\Button" type="Eguana\EcommerceStatus\Block\Customer\Wishlist\Button" />
 </config>

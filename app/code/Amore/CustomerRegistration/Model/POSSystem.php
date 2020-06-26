@@ -197,6 +197,8 @@ class POSSystem
                 $customer->getCustomAttribute('sales_organization_code')->getValue():'';
             $parameters['salOffCd'] = $customer->getCustomAttribute('sales_office_code')?
                 $customer->getCustomAttribute('sales_office_code')->getValue():'';
+            $parameters['prtnrid'] = $customer->getCustomAttribute('partner_id')?
+                $customer->getCustomAttribute('partner_id')->getValue():'';
             $parameters['statusCD'] = $action == 'register' ? '01' : '02';
 
             $response = $this->callJoinAPI($parameters);
@@ -223,6 +225,7 @@ class POSSystem
             $customer->setCustomAttribute('integration_number', $secquenceNumber);
             $customer->setCustomAttribute('sales_organization_code', $this->confg->getOrganizationSalesCode());
             $customer->setCustomAttribute('sales_office_code', $this->confg->getOfficeSalesCode());
+            $customer->setCustomAttribute('partner_id', $this->confg->getPartnerId());
             return $this->customerRepository->save($customer);
         } catch (\Exception $e) {
             $e->getMessage();

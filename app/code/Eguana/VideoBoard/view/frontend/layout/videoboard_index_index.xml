@@ -25,7 +25,11 @@
                     <argument name="view_model" xsi:type="object">Eguana\VideoBoard\ViewModel\VideoBoard</argument>
                 </arguments>
             </block>
-            <block class="Eguana\VideoBoard\Block\ListBlock" name="VideoBoard.list" template="Eguana_VideoBoard::list.phtml" />
+            <block class="Eguana\VideoBoard\Block\ListBlock" name="VideoBoard.list" template="Eguana_VideoBoard::list.phtml">
+                <arguments>
+                    <argument name="list_view_model" xsi:type="object">Eguana\VideoBoard\ViewModel\VideoList</argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

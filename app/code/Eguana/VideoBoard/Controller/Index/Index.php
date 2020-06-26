@@ -11,8 +11,6 @@ namespace Eguana\VideoBoard\Controller\Index;
 
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\Action;
-use Magento\Framework\Controller\Result\JsonFactory;
-use Eguana\VideoBoard\Model\Pagination\VideoList;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
@@ -24,31 +22,15 @@ use Magento\Framework\View\Result\PageFactory;
 class Index extends Action
 {
     /**
-     * @var PageFactory
-     */
-    private $resultPageFactory;
-
-    /**
-     * @var VideoList
-     */
-    private $videoList;
-
-    /**
      * Index constructor.
      * @param Context $context
-     * @param JsonFactory $resultJsonFactory
-     * @param VideoList $videoList
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory,
-        JsonFactory $resultJsonFactory,
-        VideoList $videoList
+        PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
-        $this->resultJsonFactory = $resultJsonFactory;
-        $this->videoList = $videoList;
     }
     /**
      * This method is used to load layout and render information
@@ -56,17 +38,6 @@ class Index extends Action
      */
     public function execute()
     {
-        $paginationStatus = $this->_request->getParam('count');
-        if (isset($paginationStatus)) {
-            $data = [
-                'page'  => $paginationStatus,
-                'listHtml'   => $this->videoList->getListofVideos($paginationStatus)
-            ];
-            $result = $this->resultJsonFactory->create();
-            $result->setData($data);
-            return $result;
-        } else {
-            return $this->resultPageFactory->create();
-        }
+        return $this->resultPageFactory->create();
     }
 }

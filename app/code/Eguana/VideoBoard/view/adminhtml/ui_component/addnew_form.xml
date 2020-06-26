@@ -15,7 +15,6 @@
             <item name="provider" xsi:type="string">addnew_form.addnew_form_data_source</item>
         </item>
         <item name="label" xsi:type="string" translate="true">New Video</item>
-        <!--<item name="template" xsi:type="string">templates/form/collapsible</item>-->
         <item name="layout" xsi:type="array">
             <item name="type" xsi:type="string">tabs</item>
         </item>

@@ -66,7 +66,7 @@ Navigate to **Stores ⇾ Configuration** and the module **Curstomer Registration
 1. Navigate to **Stores ⇾ Configuration** and click on **Curstomer Registration** under Amore tab in the left panel.
 
  
- ![Configuration](https://i.ibb.co/xJs59Wk/Selection-046.png)
+ ![Configuration](https://i.ibb.co/KDhC30P/Registration-Configurations.png)
  
  All the configurations are website level not store level.
  
@@ -93,6 +93,10 @@ information of Magento customers when they will join the system
 TW10 for Laneige Taiwan, TW20 for Sulwhasso Taiwan, SG10 for Laneige Singapore, SG20 for Sulwhasso Singapore and similarly ID10,ID20 for Indonesia
 1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Sales Office Code** : It is a code to recognize the site for sales office. Such as 
 TW10 for Laneige Taiwan, TW20 for Sulwhasso Taiwan, SG10 for Laneige Singapore, SG20 for Sulwhasso Singapore and similarly ID10,ID20 for Indonesia
+1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Partner Id** : It is a partner id which will be assigned to the customer, while 
+resgiter from this particular website
+1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Debug** : If yes then it will log api calls and store the exceptions. 
+In the file var/log/pos.log
  
 # Customer Integraion Number
  
@@ -126,6 +130,7 @@ the next number whenever customer will register
     - "statusCD": Customer status
     - "salOrgCd": Sales organization code but will not update
     - "salOffCd": Sales office code but will nto update
+    - "prtnrid": Partner id of the customer
     
 If you do not want to change any attribute value then set it ''
 

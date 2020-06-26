@@ -103,24 +103,11 @@
                     &-item {
                         width: 100% !important;
 
-                        &-wrapper {
+                        &-info {
                             display: flex;
                             position: relative;
                             align-items: center;
                             justify-content: center;
-                        }
-
-                        &-info {
-                            &:hover {
-                                .product-item-inner {
-                                    display: none;
-                                    position: relative;
-                                    background: transparent;
-                                    left: auto;
-                                    top: auto;
-                                    right: auto;
-                                }
-                            }
                         }
 
                         &-inner {
@@ -131,7 +118,7 @@
                             box-sizing: border-box;
 
                             .actions-primary {
-                                display: inline-block !important;
+                                display: block;
                                 margin-top: 20px;
 
                                 .todetail {
@@ -173,6 +160,7 @@
                         &-short-description {
                             .lib-font-size(18);
                             line-height: 28px;
+                            margin-bottom: @indent__base;
                         }
                     }
                 }
@@ -286,6 +274,16 @@
     .catalog-category-view {
         .block.widget {
             .products-grid {
+                .product-item-info {
+                    &:hover {
+                        .product-image-container {
+                            &:before {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+
                 .swiper-button-prev,
                 .swiper-button-next {
                     width: 52px;
@@ -309,17 +307,21 @@
             .products-grid {
                 .product {
                     &-item {
-                        &-wrapper {
+                        &-info {
                             flex-direction: column;
                         }
 
-                        &-info {
+                        &-photo {
                             width: 77% !important;
                             margin-top: 15px;
                         }
 
                         &-inner {
                             display: none;
+                        }
+
+                        &-name {
+                            margin-bottom: @indent__base;
                         }
 
                         &-details {
@@ -387,7 +389,7 @@
                             max-width: 856px;
                         }
 
-                        &-info {
+                        &-photo {
                             width: 50% !important;
                             max-width: 420px;
                             padding-right: 8px;
@@ -404,7 +406,6 @@
                             padding: 13px 0 0 30px !important;
 
                             .actions-primary {
-                                display: block;
                                 margin-top: 42px;
 
                                 .todetail {

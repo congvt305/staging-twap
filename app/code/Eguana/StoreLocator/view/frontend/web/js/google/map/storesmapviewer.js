@@ -20,34 +20,33 @@ var prevMarkerIcon;
  * @param markerImages
  * @param markerOnIcon
  */
-function multi_map_initialize(multi_location, map_zoom, isStore, markerImages, markerOnIcon) {
-    var locations = multi_location.split('||');
-    var markerImages = markerImages.split('||');
+function multi_map_initialize(multi_location, map_zoom, isStore, markerImages) {
+
+    let locations = multi_location.split('||');
+    let markerImagesObj = JSON.parse(markerImages)
     //TODO this has to be change with images. currently live kipling images are using
-    var shopIcon = markerImages[0];
-    var outletIcon = markerImages[1];
-    var retailIcon = markerImages[2];
-    var map, myLatLng, count, info, type, markerIcon, address, storeTitle, storeViewUrl, logo;
+    var map, myLatLng, count, info, markerIcon, address, storeTitle, storeViewUrl, storeType, telephone;
     for (count = 0; count < locations.length; count++) {
         info = locations[count].split('=>');
         myLatLng = new google.maps.LatLng(info[1], info[2]);
         storeTitle = info[0];
-        type = info[3];
-        address = info[4];
+        address = info[3];
         storeViewUrl = info[5];
-        logo = info[6];
+        storeType   = info[4];
+        telephone = info[6];
+        if (storeType == 'RS') {
+            markerIcon = markerImagesObj.RS_1.image;
+        }
+
+        if (storeType == 'FS') {
+            markerIcon = markerImagesObj.FS_1.image;
+        }
+
         if (count === 0) {
             map = new google.maps.Map(document.getElementById('store_map_viewer'), {
                 zoom: Number(map_zoom),
                 center: myLatLng
             });
-        }
-        if (type == 'shop') {
-            markerIcon = shopIcon;
-        } else if (type == 'outlet') {
-            markerIcon = outletIcon;
-        } else if (type == 'retail') {
-            markerIcon = retailIcon;
         }
         var marker = new google.maps.Marker({
             position: myLatLng,
@@ -56,7 +55,8 @@ function multi_map_initialize(multi_location, map_zoom, isStore, markerImages, m
             storeTitle : storeTitle,
             address : address,
             storeViewUrl : storeViewUrl,
-            logo : logo
+            storeType   :   storeType,
+            telephone   : telephone
         });
         marker.addListener('click', (function (marker, count) {
             return function () {
@@ -64,11 +64,22 @@ function multi_map_initialize(multi_location, map_zoom, isStore, markerImages, m
                 map.setZoom(15);
                 map.setCenter(marker.getPosition());
                 var infowindow = new google.maps.InfoWindow({
-                    content: '<div class="description"><strong>' + marker.storeTitle + '</strong></div>'
+                    content: '<div class="description"><h3>' + marker.storeTitle +
+                        '</h3><p>' + marker.address + '</p>' +
+                        '<p>' + marker.telephone + '</p>' +
+                        '</div>'
                 });
                 infowindow.open(map, marker);
                 prevMarkerIcon = marker.icon;
-                marker.setIcon(markerOnIcon);
+                if (marker.storeType == 'RS') {
+                    markerIcon = markerImagesObj.RS.image;
+                    prevMarkerIcon = markerImagesObj.RS_1.image;
+                }
+                if (marker.storeType == 'FS') {
+                    markerIcon = markerImagesObj.FS.image;
+                    prevMarkerIcon = markerImagesObj.FS_1.image;
+                }
+                marker.setIcon(markerIcon);
                 prevInfoWindow = infowindow;
                 prevMarker = marker;
                 getStoreOfMarker(marker.storeTitle);
@@ -102,85 +113,6 @@ function closeInfoWindowAndRevertMarker(infoWindow, marker, markerIcon ) {
 }
 
 /**
- * naver map initiliation
- * @param multi_location
- * @param map_zoom
- * @param isStore
- * @param markerImages
- * @param markerOnIcon
- */
-function naver_init_map(multi_location, map_zoom, isStore, markerImages, markerOnIcon)
-{
-    var locations = multi_location.split('||');
-    var markerImages = markerImages.split('||');
-    //TODO this has to be change with images. currently live kipling images are using
-    var shopIcon = markerImages[0];
-    var outletIcon = markerImages[1];
-    var retailIcon = markerImages[2];
-    var map, myLatLng, count, info, type, markerIcon, address, storeTitle, storeViewUrl, logo;
-    for (count = 0; count < locations.length; count++) {
-        info = locations[count].split('=>');
-        myLatLng = new naver.maps.LatLng(info[1], info[2]);
-        storeTitle = info[0];
-        type = info[3];
-        address = info[4];
-        storeViewUrl = info[5];
-        logo = info[6];
-        if (count === 0) {
-            map = new naver.maps.Map(document.getElementById('store_map_viewer'), {
-                useStyleMap : true,
-                zoom: Number(map_zoom),
-                center: myLatLng
-            });
-        }
-        if (type == 'shop') {
-            markerIcon = shopIcon;
-        } else if (type == 'outlet') {
-            markerIcon = outletIcon;
-        } else if (type == 'retail') {
-            markerIcon = retailIcon;
-        } else if (type == 'dutyfree') {
-            markerIcon = dutyfreeIcon;
-        }
-        var marker = new naver.maps.Marker({
-            position: myLatLng,
-            map: map,
-            icon: markerIcon,
-            storeTitle : storeTitle,
-            address : address,
-            storeViewUrl : storeViewUrl,
-            logo : logo
-        });
-        marker.addListener('click', (function (marker, count) {
-            return function () {
-                closeInfoWindowAndRevertMarker_naver(prevInfoWindow, prevMarker, prevMarkerIcon);
-                map.setZoom(15);
-                map.setCenter(marker.getPosition());
-                var infowindow = new naver.maps.InfoWindow({
-                    content: '<div class="description"><strong>' + marker.storeTitle + '</strong></div>'
-                });
-                infowindow.open(map, marker);
-                prevMarkerIcon = marker.icon;
-                marker.setIcon(markerOnIcon);
-                prevInfoWindow = infowindow;
-                prevMarker = marker;
-                getStoreOfMarker(marker.storeTitle);
-            };
-        })(marker, count));
-        markers.push(marker);
-    }
-}
-
-/**
- * push marker
- * @param id
- */
-function pushmarker_naver(id) {
-    var marker = markers[parseInt(id)];
-    marker.trigger('click');
-}
-
-/**
  * open store box on click marker
  * @param title
  */
@@ -188,11 +120,10 @@ function getStoreOfMarker(title) {
 
     let count = 0;
     jQuery(".store-list").each(function() {
-        let targetElementId = jQuery(this).attr("id");
+        let targetElementId = 'store_map_viewer';
         if (jQuery(this).attr("store-expand") == title + count) {
             jQuery(this).find('.store-secondary-info').slideDown();
             jQuery(this).addClass('selected-store');
-            let targetElement = jQuery(this);
             scrollToTragetElememt("#"+targetElementId);
         } else {
             jQuery("#"+targetElementId).removeClass('selected-store');
