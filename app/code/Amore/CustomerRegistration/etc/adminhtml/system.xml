@@ -90,11 +90,11 @@
                     <comment>Member join URI. Complete URL = BASE URL + Memeber Join URI</comment>
                 </field>
 
-                <field id="sales_organization_code" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1">
+                <field id="sales_organization_code" translate="label" type="text" sortOrder="60" showInWebsite="1">
                     <label>Sales Organization Code</label>
                 </field>
 
-                <field id="sales_office_code" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
+                <field id="sales_office_code" translate="label" type="text" sortOrder="70" showInWebsite="1">
                     <label>Sales Office Code</label>
                 </field>
 
