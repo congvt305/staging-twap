@@ -136,9 +136,6 @@ class VideoBoardRepository implements VideoBoardRepositoryInterface
          */
         $videoBoard = $this->videoBoardFactory->create();
         $this->resource->load($videoBoard, $videoBoardId);
-//        if (!$videoBoard->getId()) {
-//            throw new NoSuchEntityException(__('Video with id "%1" does not exist.', $videoBoardId));
-//        }
         return $videoBoard;
     }
 

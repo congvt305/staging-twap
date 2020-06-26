@@ -9,11 +9,9 @@
  */
 
 /** @var \Eguana\VideoBoard\Block\View $block */
-$videoBlock = $block->getVideoBoard();
-$videoBlockList = $block->getCollection();
-
-$url = $block->getUrl();
-
+/** @var \Eguana\VideoBoard\ViewModel\VideoDetail $viewModel */
+$viewModel = $block->getData('detail_view_model');
+$videoBlock = $viewModel->getVideoBoard();
 ?>
 <div class="block block-video-board-details">
     <div class="block-content">
@@ -31,12 +29,12 @@ $url = $block->getUrl();
                                 src="<?=$block->escapeUrl($videoBlock->getUrl());?>" width="100%">
                         </iframe>
                     </div>
-                    <?= /* @noEscape */  $block->contentFiltering($videoBlock->getDescription()); ?>
+                    <?= /* @noEscape */  $viewModel->contentFiltering($videoBlock->getDescription()); ?>
                 </div>
             </div>
         </div>
     </div>
-    <div class="back-button">
+    <div class="more-item-button back-button">
         <a class="action button primary" href="<?= $block->escapeUrl($block->getBaseUrl().'videoboard')?>">
             <span><?= $block->escapeHtml(__('Back'));?></span>
         </a><br/>
