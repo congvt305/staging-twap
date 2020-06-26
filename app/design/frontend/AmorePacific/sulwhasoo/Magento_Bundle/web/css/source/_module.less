@@ -8,12 +8,17 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-
     .bundle-actions {
+        &:extend(.abs-visually-hidden all);
         &:extend(.abs-box-tocart all);
         .action.primary {
             &:extend(.abs-button-l all);
-            line-height: 38px;
+        }
+    }
+
+    .page-product-bundle {
+        .bundle-options-wrapper {
+            &:extend(.abs-visually-hidden all);
         }
     }
 
@@ -22,10 +27,6 @@
 
         .legend.title {
             .lib-heading(h2);
-            display: none;
-        }
-
-        .product-add-form {
             display: none;
         }
 
@@ -98,6 +99,8 @@
             }
 
             .bundle-summary {
+                margin-top: @indent__s;
+
                 &.empty {
                     display: none;
                 }
@@ -139,11 +142,6 @@
                 .actions {
                     display: inline-block;
                     margin-bottom: @indent__s;
-
-                    .tocart,
-                    .instant-purchase {
-                        line-height: 38px !important;
-                    }
                 }
 
                 .action.primary {
@@ -224,12 +222,6 @@
                     width: 100%;
                     padding: 0;
                     float: none;
-                }
-
-                .actions {
-                    .tocart {
-                        margin-top: @indent__s;
-                    }
                 }
             }
         }

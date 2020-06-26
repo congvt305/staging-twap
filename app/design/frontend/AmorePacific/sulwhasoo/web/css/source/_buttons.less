@@ -14,6 +14,14 @@
     a.action.primary {
         .lib-css(border-radius, @button__border-radius);
         &:extend(.abs-transition all);
+
+        &.disabled,
+        &[disabled],
+        fieldset[disabled] & {
+            color: @primary__color__darker !important;
+            background: @primary__color__light !important;
+            border-color: @primary__color__light !important;
+        }
     }
 
     button {

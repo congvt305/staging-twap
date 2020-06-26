@@ -7,19 +7,15 @@
 // @codingStandardsIgnoreFile
 
 /** @var $block \Magento\Catalog\Block\Product\View */
-
-try {
-    $ecommerceStatus = $this->helper('Eguana\EcommerceStatus\Helper\Data')->getECommerceStatus();
-}catch (\Exception $e){
-    $ecommerceStatus = 1;
-}
+/** @var $helper \Eguana\Share\Helper\Data */
+$helper = $this->helper('Eguana\EcommerceStatus\Helper\Data');
 ?>
 <?php $_product = $block->getProduct(); ?>
 <?php $buttonTitle = __('Add to Cart'); ?>
-<?php if ($_product->isSaleable() && $ecommerceStatus): ?>
+<?php if ($_product->isSaleable()): ?>
     <div class="box-tocart">
         <div class="fieldset">
-            <?php if ($block->shouldRenderQuantity()): ?>
+            <?php if ($block->shouldRenderQuantity() && !$_product->getData('offline')): ?>
                 <div class="field-wrapper">
                     <div class="field qty">
                         <label class="label" for="qty"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
@@ -47,18 +43,61 @@ try {
                 <button type="submit"
                         title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
                         class="action primary tocart"
-                        id="product-addtocart-button" disabled>
+                        id="product-addtocart-button">
                     <span><?= $block->escapeHtml($buttonTitle) ?></span>
+                </button>
+                <button type="submit"
+                        title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+                        class="action primary tocheckout"
+                        id="product-addtocheckout-button" onclick="return setCheckoutURL()">
+                    <span><?php /* @escapeNotVerified */ echo __('Checkout'); ?></span>
                 </button>
                 <?= $block->getChildHtml('', true) ?>
             </div>
         </div>
     </div>
+<?php else :?>
+    <?php if($helper->getECommerceStatus()) :?>
+        <div class="actions">
+            <?php if($_product->getData('offline')):?>
+                <a href="<?= $block->escapeUrl($block->getUrl()) ?>"
+                   title="<?= $block->escapeHtml(__('Find a store')) ?>"
+                   class="action action-offline">
+                    <span><?= $block->escapeHtml(__('Find a store')) ?></span>
+                </a>
+            <?php else :?>
+                <button type="submit"
+                        title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                        class="action tocart disabled"
+                        id="product-addtocart-button" disabled>
+                    <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
+                </button>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
 <?php endif; ?>
 <script type="text/x-magento-init">
     {
         "#product_addtocart_form": {
             "Magento_Catalog/js/validate-product": {}
         }
+    }
+</script>
+<?php if (!$block->isRedirectToCartEnabled()) : ?>
+    <script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "catalogAddToCart": {
+                "bindSubmit": false
+            }
+        }
+    }
+</script>
+<?php endif; ?>
+<script type="text/javascript">
+    function setCheckoutURL()
+    {
+        document.product_addtocart_form.return_url.value = '<?php echo $this->getUrl('checkout/cart');?>';
+        return true;
     }
 </script>
