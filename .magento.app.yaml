@@ -87,7 +87,7 @@ hooks:
         echo "================= Install and configure Baler - Upgrade node version 14.4.0 - End ================="
         echo "================= Install and configure Baler - Install AMD module baler - Start  ================="
         echo "================= See https://github.com/magento/baler for more information ================="
-        git clone https://github.com/magento/baler.git
+        git clone https://github.com/eguanacommerce/baler.git
         cd baler
         npm install
         npm test
@@ -129,3 +129,4 @@ variables:
         CONFIG__DEFAULT__PAYPAL_ONBOARDING__MIDDLEMAN_DOMAIN: 'payment-broker.magento.com'
         CONFIG__STORES__DEFAULT__PAYMENT__BRAINTREE__CHANNEL: 'Magento_Enterprise_Cloud_BT'
         CONFIG__STORES__DEFAULT__PAYPAL__NOTATION_CODE: 'Magento_Enterprise_Cloud'
+
