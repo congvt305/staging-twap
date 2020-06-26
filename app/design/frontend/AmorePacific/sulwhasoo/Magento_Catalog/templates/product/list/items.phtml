@@ -7,11 +7,6 @@
 // @codingStandardsIgnoreFile
 
 /* @var $block \Magento\Catalog\Block\Product\AbstractProduct */
-try {
-    $ecommerceStatus = $this->helper(Eguana\EcommerceStatus\Helper\Data::class)->getECommerceStatus();
-}catch (\Exception $e){
-    $ecommerceStatus = 1;
-}
 ?>
 
 <?php
@@ -201,16 +196,22 @@ $_item = null;
                                         <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>" class="product photo product-item-photo">
                                             <?= $block->getImage($_item, $image)->toHtml() ?>
                                         </a>
-                                        <div class="product-item-inner">
-                                            <div class="product actions product-item-actions">
-                                                <div class="product-item-table-cell">
-                                                    <div class="actions-primary">
-                                                        <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>" class="action todetail primary"
-                                                           type="button">
-                                                            <span><?= $block->escapeHtml(__('View')) ?></span>
-                                                        </a>
-                                                        <?php if ($showCart): ?>
-                                                            <?php if ($_item->isSaleable() && $ecommerceStatus): ?>
+                                        <div class="product details product-item-details">
+                                            <strong class="product name product-item-name"><a class="product-item-link" title="<?= $block->escapeHtmlAttr($_item->getName()) ?>" href="<?= /* @escapeNotVerified */ $block->escapeUrl($block->getProductUrl($_item)) ?>">
+                                                    <?= $block->escapeHtml($_item->getName()) ?></a>
+                                            </strong>
+
+                                            <?= /* @noEscape */ $block->getProductPrice($_item) ?>
+
+                                            <?php if ($templateType): ?>
+                                                <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
+                                            <?php endif; ?>
+
+                                            <div class="product-item-inner">
+                                                <div class="product actions product-item-actions">
+                                                    <?php if ($showAddTo || $showCart): ?>
+                                                        <div class="actions-primary">
+                                                            <?php if ($_item->isSaleable()): ?>
                                                                 <?php if ($_item->getTypeInstance()->hasRequiredOptions($_item)): ?>
                                                                     <button class="action tocart primary" data-mage-init='{"redirectUrl": {"url": "<?= $block->escapeUrl($block->getAddToCartUrl($_item)) ?>"}}' type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
                                                                         <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
@@ -226,50 +227,16 @@ $_item = null;
                                                                     </button>
                                                                 <?php endif; ?>
                                                             <?php endif; ?>
-                                                        <?php endif; ?>
-                                                    </div>
+                                                        </div>
+                                                        <div class="secondary-addto-links actions-secondary" data-role="add-to-links">
+                                                            <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
+                                                                <?= $addToBlock->setProduct($_item)->getChildHtml() ?>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="product details product-item-details">
-                                        <strong class="product name product-item-name"><a class="product-item-link" title="<?= $block->escapeHtmlAttr($_item->getName()) ?>" href="<?= /* @escapeNotVerified */ $block->escapeUrl($block->getProductUrl($_item)) ?>">
-                                                <?= $block->escapeHtml($_item->getName()) ?></a>
-                                        </strong>
-
-                                        <?= /* @noEscape */ $block->getProductPrice($_item) ?>
-
-                                        <?php if ($templateType): ?>
-                                            <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
-                                        <?php endif; ?>
-
-                                        <?php if ($showAddTo || $showCart): ?>
-                                            <div class="addto">
-                                                <div class="actions-primary">
-                                                    <?php if ($_item->isSaleable() && $ecommerceStatus): ?>
-                                                        <?php if ($_item->getTypeInstance()->hasRequiredOptions($_item)): ?>
-                                                            <button class="action tocart primary" data-mage-init='{"redirectUrl": {"url": "<?= $block->escapeUrl($block->getAddToCartUrl($_item)) ?>"}}' type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
-                                                                <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
-                                                            </button>
-                                                        <?php else: ?>
-                                                            <?php $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
-                                                            $postData = $postDataHelper->getPostData($block->escapeUrl($block->getAddToCartUrl($_item)), ['product' => $_item->getEntityId()])
-                                                            ?>
-                                                            <button class="action tocart primary"
-                                                                    data-post='<?= /* @escapeNotVerified */ $postData ?>'
-                                                                    type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
-                                                                <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
-                                                            </button>
-                                                        <?php endif; ?>
-                                                    <?php endif; ?>
-                                                </div>
-                                                <div class="secondary-addto-links actions-secondary" data-role="add-to-links">
-                                                    <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
-                                                        <?= $addToBlock->setProduct($_item)->getChildHtml() ?>
-                                                    <?php endif; ?>
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
                                     </div>
                                     </li>
                                 <?php endforeach ?>
