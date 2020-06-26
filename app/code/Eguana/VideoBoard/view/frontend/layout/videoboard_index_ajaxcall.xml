@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 25/6/20
+* Time: 05:15 PM
+*/
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="videoboard.ajax.result" template="Eguana_VideoBoard::ajax-result.phtml" before="-">
+                <arguments>
+                    <argument name="list_view_model" xsi:type="object">Eguana\VideoBoard\ViewModel\VideoList</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

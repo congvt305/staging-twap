@@ -74,6 +74,16 @@
                         <comment><![CDATA[<strong>Recommendation donation code]]><![CDATA[<br>]]><![CDATA[<font color="red">168001</font>]]><![CDATA[<br>]]><![CDATA[OMG Charitable Foundation for Social Care</strong>]]><![CDATA[<br>]]><![CDATA[Setup up in 2009 with the goal of gathering the support of web users to deliver love and care to every corner of the society.]]><![CDATA[<br>]]><![CDATA[Our Foundation strives to: Support the schooling of students under the poverty line or that lack education resources,]]><![CDATA[<br>]]><![CDATA[protection of strays and animals in general, support of the elderly and minority, emergency support, humanitarian aid, social]]><![CDATA[<br>]]><![CDATA[charity events and ad support...and others.]]></comment>
                         <can_be_empty>1</can_be_empty>
                     </field>
+                    <field id="ecpay_invoice_test_flag" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>TEST Mode</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="ecpay_invoice_stage_url" translate="label" type="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Stage URL</label>
+                    </field>
+                    <field id="ecpay_invoice_production_url" translate="label" type="label" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Production URL</label>
+                    </field>
                 </group>
     		</group>
     	</section>

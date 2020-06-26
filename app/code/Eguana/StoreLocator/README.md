@@ -1,19 +1,19 @@
-Eguana_StoreLocator v2.0.0
+Eguana_StoreLocator v2.0.1
 
 Website: Amore
 
-Author: Abbas Ali Butt
+Author: Muhammad Umer Farooq
 
-DB Table Name :
+DB Table Name : storeinfo
  
 Explanation: This module will allow the customer to look on the google map physical location of amore store across the country
 
-# ZipCode
+# Store Locator
 
-Description:
+#####Description :
 
-Admin can add the stores from admin panel with details so that customer can look on the google map physical location of 
-amore store across the country
+Eguna Store Locator allows you to manage the physical stores. It allows the admin to add physical store location with timings of everyday work time . Admin has to put the exact location (Longitude and Latitude).
+
 
 Requirements:
 
@@ -21,13 +21,11 @@ Requirements:
     - It should able to support multiple countries
 
 
-Key features:
+####Key features :
 
-      1. Admin can add stores with directions and in each state.
-      2. Admin can set the everyday work time of each store.
-      3. User can view all stores on frontend with map view.
-      4. User can select the specific states or specific zone and view the stores in that state or zone.
-
+- Admin can add stores with directions and in each state.
+- Admin can set the everyday work time of each store.
+- User can view all stores on frontend with map view.
 
 Module Installation
 
@@ -50,4 +48,69 @@ Navigate to **Stores ⇾ Configuration** and the module **Store Locator** under 
 
 **Configuration**
 
-1. Navigate to **Stores ⇾ Configuration** and click on **Store Locator** under Eguana tab in the left panel.
+How to enable store Locator:
+
+            Stores -> configuration -> Eguana Extensions -> Eguana Store Locator
+
+ ![](https://i.ibb.co/3hJVymr/store2.png)
+ 
+ ![](https://i.ibb.co/gFs3477/store1.png)
+ 
+ ###General Configurations :
+ 
+ -  Module Enable
+ 
+ This is module main enable/disable button. This will decide either module is enable or disabled
+
+-  Google Map Api key
+ 
+ Google Map Api key is required to use the services of google map which will use on both frontend and backend.
+
+-  Store Locator Bottom Block Id
+ 
+Here enter the cms block id to show custom content at the bottom of store locator page
+
+###Front Stores Map :
+
+- Map height
+
+This will how much height will be set on frontend for map viewer. By default its value is 420px.
+
+- Map Zoom
+
+This will set the zoom parameter while initializing the map. By default its value is 19.
+
+###Front Stores Map :
+
+- Map height
+
+This will how much height will be set on frontend for map viewer. By default its value is 420px.
+
+- Map Zoom
+
+This will set the zoom parameter while initializing the map. By default its value is 19.
+
+
+# 1. Functionalities for admin :
+
+Admin can manage stores from admin panel which will be shown on frontend.
+
+1.1 Manage Stores
+
+In Manage Store Admin can manage all stores. Admin can see all the stores with store views.
+
+                     Stores -> Store Locator -> Manage Stores
+
+
+ ![](https://i.ibb.co/HnrGYs8/menu.png)
+ 
+ ![](https://i.ibb.co/BNg1vBv/store3.png)
+
+ 
+#####1.2 Add New Store
+
+In Manage Store Admin can add new store.
+
+- In this custom module now admin can add country for each each store and this country filter will be used on frontend
+
+- In this custom module now admin can add add store type for each store

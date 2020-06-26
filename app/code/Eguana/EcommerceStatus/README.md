@@ -9,7 +9,11 @@ Explanation: This module will Enable/Disable ecommerce functionalities process a
 
 Description:
 
-Register module will be mainly used to Enable/Disable ecommerce functionalities
+    -Register module will be mainly used to Enable/Disable ecommerce functionalities
+    -Hide mini cart when ecommerce switcher is disable
+    -Redirect cart page to home page when ecommerce switcher is disable
+    -Redirect checkout page to home page when ecommerce switcher is disable
+    -Hide add ot cart buttons
 
 Requirements:
 

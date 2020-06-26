@@ -1,0 +1,34 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 25/6/20
+ * Time: 05:15 PM
+ */
+
+/** @var \Eguana\VideoBoard\ViewModel\VideoList $viewModel */
+$viewModel = $block->getData('list_view_model');
+$videoBlockList = $viewModel->getVideoCollection();
+?>
+<?php foreach ($videoBlockList as $videoBlockItem):?>
+    <li class="video-board-item">
+        <a
+            class="video-link"
+            href="<?= $block->escapeUrl($viewModel->getVideoBoardUrl($videoBlockItem->getEntityId()))?>">
+            <img
+                src="<?= $block->escapeHtml($videoBlockItem->getThumbnailImageURL());?>"
+                alt="<?= $block->escapeHtml(__('Thumbnail Image'));?>"/>
+        </a>
+        <div class="video-heading">
+            <a class="action view video-title"
+               href="<?= $block->escapeUrl($viewModel->getVideoBoardUrl($videoBlockItem->getEntityId())) ?>">
+                <?= $block->escapeHtml($videoBlockItem->getTitle());?>
+            </a>
+            <p class="video-created-date">
+                <?= $block->escapeHtml($block->formatDate($videoBlockItem->getCreatedAt())); ?>
+            </p>
+        </div>
+    </li>
+<?php endforeach; ?>

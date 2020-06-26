@@ -8,10 +8,10 @@
  * Time: 01:20 PM
  */
 
-/** @var \Eguana\VideoBoard\Block\ListBlock $block */
-$videoBlockList = $block->getCollection();
+/** @var \Eguana\VideoBoard\ViewModel\VideoList $viewModel */
+$viewModel = $block->getData('list_view_model');
+$videoBlockList = $viewModel->getVideoCollection();
 $videoBlockSize = $videoBlockList->getTotalCount();
-$count = 0;
 ?>
 <div class="video-board-list-wrapper">
     <?php if ($videoBlockList->getTotalCount() == 0): ?>
@@ -22,12 +22,16 @@ $count = 0;
         <ul class="video-board-list">
         <?php foreach ($videoBlockList as $videoBlockItem):?>
             <li class="video-board-item">
-                <a class="video-link" href="<?= $block->escapeUrl($block->getVideoBoardUrl($videoBlockItem->getEntityId()))?>">
-                    <img src="<?= $block->escapeHtml($videoBlockItem->getThumbnailImageURL());?>" alt="<?= $block->escapeHtml(__('Thumbnail Image'));?>"/>
+                <a
+                    class="video-link"
+                    href="<?= $block->escapeUrl($viewModel->getVideoBoardUrl($videoBlockItem->getEntityId()))?>">
+                    <img
+                        src="<?= $block->escapeHtml($videoBlockItem->getThumbnailImageURL());?>"
+                        alt="<?= $block->escapeHtml(__('Thumbnail Image'));?>"/>
                 </a>
                 <div class="video-heading">
                     <a class="action view video-title"
-                       href="<?= $block->escapeUrl($block->getVideoBoardUrl($videoBlockItem->getEntityId())) ?>">
+                       href="<?= $block->escapeUrl($viewModel->getVideoBoardUrl($videoBlockItem->getEntityId())) ?>">
                         <?= $block->escapeHtml($videoBlockItem->getTitle());?>
                     </a>
                     <p class="video-created-date">
@@ -39,42 +43,21 @@ $count = 0;
         </ul>
     <?php endif; ?>
 </div>
-<?php if($videoBlockSize > 6 ): ?>
+<?php if ($videoBlockSize > 6): ?>
 <div class="more-item-button">
-    <button class="action primary" id="more-button"><span><?=__('More');?></span></button><br/>
+    <button class="action primary" id="more-button">
+        <span><?=$block->escapeHtml(__('More'));?></span>
+    </button>
+    <br/>
     <span id="video-count">6</span>/<?= $block->escapeHtml($videoBlockSize); ?>
 </div>
 <?php endif ; ?>
-<script>
-    require(['jquery', 'mage/url'], function($, url){
-        var totalVideo = <?= $block->escapeHtml($videoBlockSize) ;?>;
-        var count = 2;
-        $(document).on("click","#more-button", function() {
-            if (count*6 > totalVideo) {
-                $("#video-count").text(totalVideo);
-                $("#more-button").prop('disabled', true);
-            } else {
-                $("#video-count").text(count * 6);
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "pagination":{
+                "totalVideo":"<?= $block->escapeHtml($videoBlockSize)?>"
             }
-            let apiUrl = url.build('videoboard/index/index/');
-            $.ajax({
-                showLoader: true,
-                url: apiUrl,
-                type: "POST",
-                data: {count:  count},
-            }).done(function (data) {
-                let valueHtml ='';
-                if($.isEmptyObject(data.listHtml)){
-                    $(".video-board-list").html('');
-                }else{
-                    $(".video-board-list").html('');
-                    $.each( data.listHtml, function (key, value) {
-                        $(".video-board-list").html(valueHtml + value);
-                        valueHtml = $(".video-board-list").html();
-                    });
-                }
-            });
-            count++;
-        });
-    });
+        }
+    }
 </script>
