@@ -30,14 +30,17 @@ define([
         var windowSize = $(window).width();
         if (windowSize <= 959) {
 
-            $('li.store-list').children('.inner-store').slideUp();
-            $('li.store-list').find('span.accordion-icon').css('opacity', '0');
-            $('li.store-list').click(function(e) {
-                $(this).find('span.accordion-icon').css('opacity', '0.4');
-                $('li.store-list').children('.inner-store').slideUp();
-                // $(this).first().trigger('click');
-                $(this).children('.inner-store').slideToggle();
+            $(function() {
+                $('.store-info').click(function(j) {
+
+                    var dropDown = $(this).closest('li.store-list').find('.inner-store');
+                    $(this).closest('.stores-listing-ul').find('.inner-store').not(dropDown).slideUp();
+
+                    dropDown.stop(false, true).slideToggle();
+                    j.preventDefault();
+                });
             });
+
         } else {
             $( document ).ready(function() {
                 $('li.store-list').first().trigger('click');
