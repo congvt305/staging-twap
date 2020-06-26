@@ -14,6 +14,7 @@ use Magento\Store\Model\StoreRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Amore\CustomerRegistration\Model\POSLogger;
+use Magento\Framework\Serialize\Serializer\Json;
 
 /**
  * Implement the API module interface
@@ -48,6 +49,10 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      * @var \Amore\CustomerRegistration\Model\POSLogger
      */
     private $logger;
+    /**
+     * @var Json
+     */
+    private $json;
 
     public function __construct(
         Data $configHelper,
@@ -55,7 +60,8 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         StoreRepository $storeRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SubscriberFactory $subscriberFactory,
-        POSLogger $logger
+        POSLogger $logger,
+        Json $json
     ) {
         $this->customerRepositoryInterface = $customerRepositoryInterface;
         $this->configHelper = $configHelper;
@@ -63,6 +69,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->subscriberFactory = $subscriberFactory;
         $this->logger = $logger;
+        $this->json = $json;
     }
 
     /**
@@ -235,7 +242,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
 
     private function getResponse($code, $message, $statusCode, $statusMessage, $cstmIntgSeq)
     {
-        $response = [[
+        $response = [
             'code' => $code,
             'message' => $message,
             'data'  =>    [
@@ -243,13 +250,13 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 'statusMessage' => $statusMessage,
                 'cstmIntgSeq' => $cstmIntgSeq
             ]
-        ]];
+        ];
         $this->logger->addAPICallLog(
             'Customer update api response',
             '{Base URL}/rest/all/V1/pos-customers/',
             $response
         );
-        return $response;
+        return $this->json->serialize($response);
     }
 
     private function getCustomerWebsiteId($salOffCd)
