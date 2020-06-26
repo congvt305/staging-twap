@@ -1,56 +1,52 @@
-"Map View","Map View"
-"Store Locator Information","Store Locator Information"
-"your Api key is not valid","your Api key is not valid"
+Back,Back
+Delete,Delete
+"Are you sure you want to do this?","Are you sure you want to do this?"
+Reset,Reset
+Save,Save
+"Save and Continue Edit","Save and Continue Edit"
+Stores,Stores
 "You Delete this Store Information.","You Delete this Store Information."
 "You saved this Store Information.","You saved this Store Information."
+"Please correct the data sent.","Please correct the data sent."
+"A total of %1 Store(s) have been deleted.","A total of %1 Store(s) have been deleted."
 "Unable to find history with ID ""%1""","Unable to find history with ID ""%1"""
-"Find a Store","Find a Store"
-"Find a Store near you","Find a Store near you"
-"Enter city, postcode or location","Enter city, postcode or location"
-"A store around my location","A store around my location"
-"All Store Types","All Store Types"
-"Department stores","Department stores"
-"Outlet stores","Outlet stores"
-"Retail stores","Retail stores"
-"Duty Free stores","Duty Free stores"
+Edit,Edit
+"Delete ""${ $.$data.title }""","Delete ""${ $.$data.title }"""
+"Are you sure you wan't to delete a ""${ $.$data.title }"" record?","Are you sure you wan't to delete a ""${ $.$data.title }"" record?"
+"All Store Views","All Store Views"
+"Please enter the address or counter name","Please enter the address or counter name"
+"Please enter your current location","Please enter your current location"
+"Total <strong> %1 </strong> Articals Found","Total <strong> %1 </strong> Articals Found"
 "We found <strong>%1 stores</strong> near your location","We found <strong>%1 stores</strong> near your location"
-"Map Key","Map Key"
+address,address
 Tel,Tel
-Km,Km
-"Store Title","Store Title"
-"Opening Time","Opening Time"
-"Closing Time","Closing Time"
-"Store Country","Store Country"
-"Store Type","Store Type"
-"Opening hours","Opening hours"
-"<strong>%1</strong> result","<strong>%1</strong> result"
-"<strong>%1Km</strong> away from your location","<strong>%1Km</strong> away from your location"
-Get Directions,Get Directions
+Email,Email
+Timing,Timing
 "No store exist for this address in this store view","No store exist for this address in this store view"
 "Store Locator","Store Locator"
-"Eguana Stores Config","Eguana Stores Config"
 "Manage Store Locations","Manage Store Locations"
+"Eguana Stores Config","Eguana Stores Config"
 "Eguana Store Locator","Eguana Store Locator"
 "General StoreLocator","General StoreLocator"
+Enabled,Enabled
 "Google Map Api key","Google Map Api key"
-"Naver Map Client Id","Naver Map Client Id"
-"If defualt country is korea then naver map will be used.","If defualt country is korea then naver map will be used."
-"Naver Map Secret","Naver Map Secret"
-"Search Radius limit","Search Radius limit"
+"Store Locator Bottom Block Id","Store Locator Bottom Block Id"
 "Frontend Stores Map","Frontend Stores Map"
 Map_Height,Map_Height
 "Map Zoom","Map Zoom"
-"Admin Stores Map","Admin Stores Map"
-"Default Location","Default Location"
-"Icon Weight","Icon Weight"
-"Icon Height","Icon Height"
-"Icon Content","Icon Content"
-"Map Viewer","Map Viewer"
+"Store Locator Information","Store Locator Information"
+"Store View","Store View"
+"Store Title","Store Title"
+"Store Type","Store Type"
+Address,Address
 Telephone,Telephone
+"Store Timing","Store Timing"
+"Store Country","Store Country"
 "Map Location","Map Location"
-"Stores Pagination","Stores Pagination"
-"Select number of stores show per page","Select number of stores show per page"
-"Show 5 stores per page","Show 5 stores per page"
-"Show 10 stores per page","Show 10 stores per page"
-"Show 15 stores per page","Show 15 stores per page"
-"Please enter your current location","Please enter your current location"
+"Add New","Add New"
+"Are you sure you want to delete the selected consents?","Are you sure you want to delete the selected consents?"
+"Delete items","Delete items"
+ID,ID
+"Created At","Created At"
+Home,Home
+"Find Store","Find Store"

@@ -41,7 +41,6 @@ function multi_map_initialize(multi_location, map_zoom, isStore, markerImages) {
         if (storeType == 'FS') {
             markerIcon = markerImagesObj.FS_1.image;
         }
-
         if (count === 0) {
             map = new google.maps.Map(document.getElementById('store_map_viewer'), {
                 zoom: Number(map_zoom),
@@ -82,7 +81,7 @@ function multi_map_initialize(multi_location, map_zoom, isStore, markerImages) {
                 marker.setIcon(markerIcon);
                 prevInfoWindow = infowindow;
                 prevMarker = marker;
-                getStoreOfMarker(marker.storeTitle);
+                //getStoreOfMarker(marker.storeTitle);
             };
         })(marker, count));
         markers.push(marker);

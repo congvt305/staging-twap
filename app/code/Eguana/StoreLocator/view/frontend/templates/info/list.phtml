@@ -22,9 +22,10 @@ if ($defaultCountry != null) {
 }
 ?>
 <div class="stores stw-stores-locator mian-content">
-    <div class="store_list_left">
-        <form action="" target="_self" id="filter-form" method="get" class="store-locator-form">
-            <fieldset class="fieldset store-fields">
+    <div class="main-store-block">
+        <div class="store_list_left">
+            <form action="" target="_self" id="filter-form" method="get" class="store-locator-form">
+                <fieldset class="fieldset store-fields">
                     <div class="field note"><?= $block->escapeHtml($country) ?></div>
                     <div class="field field-hidden">
                         <inp    ut type="hidden"
@@ -74,112 +75,119 @@ if ($defaultCountry != null) {
                     </p>
 
                     <div class="stores-result">
-                    <h3 class="pc">
-                        <?= __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
-                    </h3>
+                        <h3 class="pc">
+                            <?= __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
+                        </h3>
+                        <h3 class="mobile">
+                            <?= __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
+                        </h3>
+                    </div>
+                </fieldset>
+            </form>
+            <div class="stores-list">
+                <?php if ($storeSize > 0): ?>
                     <h3 class="mobile">
-                        <?= __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
+                        <?= __('We found <strong>%1 stores</strong> near your location', $storeSize) ?>
                     </h3>
-                </div>
-            </fieldset>
-        </form>
-        <div class="stores-list">
-            <?php if ($storeSize > 0): ?>
-                <h3 class="mobile">
-                    <?= __('We found <strong>%1 stores</strong> near your location', $storeSize) ?>
-                </h3>
-            <?php endif; ?>
-            <?php if ($storeSize > 0): ?>
-                <ul class="stores-listing-ul store-lists items" style="height: 540px; overflow-y: scroll;">
-                    <?php $count = 0; ?>
-                    <?php foreach ($storesCollection as $storeItem):?>
-                        <?php
-                        $location = explode(',', $storeItem->getLocation());
-                        $imgSourceForType = '';
-                        $googleApiUrl = "https://www.google.com/maps/dir/?api=1&origin=";
-                        if (isset($location[0]) && isset($location[1])) {
-                            /*
-                             * Changed by Abbas, rather to implode using comma I use the => because in address and name
-                             * there can be a comma. That's why I also have to change the file
-                             * app/code/Eguana/StoreLocator/view/frontend/web/js/google/map/storesmapviewer.js for split
-                             * using => rahter than a comma.
-                             */
-                            $locations[] = implode('=>', [
-                                $storeItem['title'],
-                                $location[0],
-                                $location[1],
-                                $storeItem['address'],
-                                $storeItem['store_type'],
-                                $block->getUrl('stores/info/view', ['id' => $storeItem['entity_id']]),
-                                $storeItem['telephone']
-                            ]);
-                            //this take long lot instead of lat long
-                            $googledestination = $location[0] . ',' . str_replace(' ', '', $location[1]);
-                            $store_view_url = $googleApiUrl . '||' . $googledestination;
-                        }
-                        $clickevent = "pushmarker(" . $count . ")";
-                        ?>
-                        <li class="store-list"
-                            onclick="<?= $block->escapeHtmlAttr($clickevent); ?>"
-                            store-expand ="<?= $block->escapeHtml($storeItem['title'] . $count); ?>"
-                            id ="<?= $block->escapeHtml(__($count)); ?>"
-                        >
-                            <div class="store-info">
-                                <div class="store-primary-info">
-                                    <div class="store-info-top">
-                                        <span class="accordion-icon">
-                                            <i class="fas fa-chevron-up"></i>
-                                        </span>
-                                        <label class="store-badge-<?= $block->escapeHtml($storeItem['store_type']); ?>"><?= $block->escapeHtml($storeItem['store_type']); ?></label>
-                                        <strong class="store-title"><?= $block->escapeHtml($storeItem['title']); ?>
-                                        </strong>
-                                    </div>
-                                    <p class="address"><?= $block->escapeHtml(__($storeItem['address'])); ?></p>
-                                    <p class="telephone">
-                                        <?= $block->escapeHtml(__('Tel'))?>:
-                                        <?= $block->escapeHtml($storeItem['telephone']); ?>
-                                    </p>
-                                </div>
-                                <div class="store-secondary-info" style="display: none;">
-                                    <?php if ($storeItem['email']): ?>
-                                        <p class="email">
-                                            <?= $block->escapeHtml(__('Email'))?>:
-                                            <?= $block->escapeHtml($storeItem['email']); ?>
-                                        </p>
-                                    <?php endif;?>
-                                    <?php if ($storeItem['timing']): ?>
-                                        <?php $timings = explode("\n", $storeItem['timing'])?>
-                                        <p><?= $block->escapeHtml(__('Timing')) ?></p>
-                                        <?php foreach ($timings as $timing):?>
-                                            <p class="hours">
-                                                <?= $block->escapeHtml(__($timing)); ?>
+                <?php endif; ?>
+                <?php if ($storeSize > 0): ?>
+                    <ul class="stores-listing-ul store-lists items" style="height: 540px; overflow-y: scroll;">
+                        <?php $count = 0; ?>
+                        <?php foreach ($storesCollection as $storeItem):?>
+                            <?php
+                            $location = explode(',', $storeItem->getLocation());
+                            $imgSourceForType = '';
+                            $googleApiUrl = "https://www.google.com/maps/dir/?api=1&origin=";
+                            if (isset($location[0]) && isset($location[1])) {
+                                /*
+                                 * Changed by Abbas, rather to implode using comma I use the => because in address and name
+                                 * there can be a comma. That's why I also have to change the file
+                                 * app/code/Eguana/StoreLocator/view/frontend/web/js/google/map/storesmapviewer.js for split
+                                 * using => rahter than a comma.
+                                 */
+                                $locations[] = implode('=>', [
+                                    $storeItem['title'],
+                                    $location[0],
+                                    $location[1],
+                                    $storeItem['address'],
+                                    $storeItem['store_type'],
+                                    $block->getUrl('stores/info/view', ['id' => $storeItem['entity_id']]),
+                                    $storeItem['telephone']
+                                ]);
+                                //this take long lot instead of lat long
+                                $googledestination = $location[0] . ',' . str_replace(' ', '', $location[1]);
+                                $store_view_url = $googleApiUrl . '||' . $googledestination;
+                            }
+                            $clickevent = "pushmarker(" . $count . ")";
+                            ?>
+                            <li class="store-list"
+                                onclick="<?= $block->escapeHtmlAttr($clickevent); ?>"
+                                store-expand ="<?= $block->escapeHtml($storeItem['title'] . $count); ?>"
+                                id ="<?= $block->escapeHtml(__($count)); ?>"
+                            >
+                                <div class="store-info">
+                                    <div class="store-primary-info">
+                                        <div class="store-info-top">
+                                            <!--                                        <span class="accordion-icon">-->
+                                            <!--                                            <i class="fas fa-chevron-up"></i>-->
+                                            <!--                                        </span>-->
+                                            <!--<label class="store-sequence-number">--><?//= $count + 1 ?><!--</label>-->
+
+                                            <label class="store-badge store-badge-<?= $block->escapeHtml($storeItem['store_type']); ?>">
+                                                <?= $block->escapeHtml($storeItem['store_type']); ?>
+                                            </label>
+                                            <strong class="store-title"><?= $block->escapeHtml($storeItem['title']); ?>
+                                            </strong>
+                                        </div>
+                                        <p class="address"><?= $block->escapeHtml(__($storeItem['address'])); ?></p>
+                                        <?php if ($block->escapeHtml($storeItem['telephone']) !== ''): ?>
+                                            <p class="telephone">
+                                                <?= $block->escapeHtml(__('Tel'))?>:
+                                                <?= $block->escapeHtml($storeItem['telephone']); ?>
                                             </p>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="store-secondary-info" style="display: none;">
+                                        <?php if ($storeItem['email']): ?>
+                                            <p class="email">
+                                                <?= $block->escapeHtml(__('Email'))?>:
+                                                <?= $block->escapeHtml($storeItem['email']); ?>
+                                            </p>
+                                        <?php endif;?>
+                                        <?php if ($storeItem['timing']): ?>
+                                            <?php $timings = explode("\n", $storeItem['timing'])?>
+                                            <p><?= $block->escapeHtml(__('Timing')) ?></p>
+                                            <?php foreach ($timings as $timing):?>
+                                                <p class="hours">
+                                                    <?= $block->escapeHtml(__($timing)); ?>
+                                                </p>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="inner-store"></div>
-                        </li>
-                        <?php $count ++ ?>
-                    <?php endforeach; ?>
-                </ul>
-            <?php else: ?>
-                <p><?= $block->escapeHtml(__('No store exist for this address in this store view')) ?></p>
-            <?php endif; ?>
+                                <div class="inner-store"></div>
+                            </li>
+                            <?php $count ++ ?>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php else: ?>
+                    <p><?= $block->escapeHtml(__('No store exist for this address in this store view')) ?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="desktop-map_container">
+            <div class="stores-content store_map_right">
+                <?php if ($storeSize > 0): ?>
+                    <div class="stores-map">
+                        <div class="store-map-viewer" id="store_map_viewer"></div>
+                    </div>
+                <?php endif;?>
+            </div>
         </div>
     </div>
-    <div class="desktop-map_container">
-        <div class="stores-content store_map_right">
-            <?php if ($storeSize > 0): ?>
-                <div class="stores-map">
-                    <a class="expend"><span><?= $block->escapeHtml(__('Expend')) ?></span></a>
-                    <div class="store-map-viewer" id="store_map_viewer"></div>
-                </div>
-            <?php endif;?>
-        </div>
-    </div>
+
     <?php
-        $bottomBlockId = $block->getBottomBlockIdValue();
+    $bottomBlockId = $block->getBottomBlockIdValue();
     ?>
     <div class="store-locator-bottom-block">
         <?php if (isset($bottomBlockId)): ?>
