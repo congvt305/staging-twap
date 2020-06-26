@@ -24,6 +24,7 @@ use Magento\Framework\Registry;
  */
 class Save extends AbstractController
 {
+    const URL_PATTERN = '/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i';
     /**
      * @var VideoBoardFactory
      */
@@ -69,8 +70,10 @@ class Save extends AbstractController
                     $data['thumbnail_image'][0]['file'];
             }
             $data['video_url'] = preg_replace(
-                "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i",
-                "https://www.youtube.com/embed/$2",$data['video_url']);
+                self::URL_PATTERN,
+                "https://www.youtube.com/embed/$2",
+                $data['video_url']
+            );
 
             $model->setUpdatedAt('');
             $model->setData($data)->save();

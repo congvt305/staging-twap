@@ -9,8 +9,9 @@
  */
 namespace Eguana\VideoBoard\Block;
 
-use Eguana\VideoBoard\Api\Data\VideoBoardInterface;
-use Eguana\VideoBoard\Model\ResourceModel\VideoBoard\CollectionFactory;
+use Magento\Framework\View\Element\Template;
+use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * This class used to add breadcrumbs and title
@@ -18,8 +19,36 @@ use Eguana\VideoBoard\Model\ResourceModel\VideoBoard\CollectionFactory;
  * Class ListBlock
  * Eguana\VideoBoard\Block
  */
-class ListBlock extends AbstractBlock
+class ListBlock extends Template
 {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
+     * Index constructor.
+     * @param Template\Context $context
+     * @param LoggerInterface $logger
+     * @param StoreManagerInterface $storeManager
+     * @param array $data
+     */
+    public function __construct(
+        Template\Context $context,
+        LoggerInterface $logger,
+        StoreManagerInterface $storeManager,
+        array $data = []
+    ) {
+        $this->logger = $logger;
+        $this->storeManager = $storeManager;
+        parent::__construct($context, $data);
+    }
+
     /**
      * To set page title and breadcrumb
      * This function will set the page title according to the current video title
@@ -36,7 +65,7 @@ class ListBlock extends AbstractBlock
                     [
                         'label' => __('Home'),
                         'title' => __('Go to Home Page'),
-                        'link' => $this->_storeManager->getStore()->getBaseUrl()
+                        'link' => $this->storeManager->getStore()->getBaseUrl()
                     ]
                 );
                 $breadcrumbsBlock->addCrumb(
@@ -58,7 +87,6 @@ class ListBlock extends AbstractBlock
         } catch (\Exception $exception) {
             $this->_logger->debug($exception->getMessage());
         }
-
         return $this;
     }
 }
