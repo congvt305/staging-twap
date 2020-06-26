@@ -471,14 +471,29 @@
         }
     }
 
-    .product-items,
-    .products.list.items,
     .table-comparison,
     .cart.table-wrapper,
     .product-addto-links {
         .action.towishlist:not(.updated) {
             &:before {
                 font-size: 22px;
+            }
+        }
+    }
+
+    .product-items,
+    .products.list.items {
+        .action.towishlist:not(.updated) {
+            .lib-button(
+                @_button-padding: 0
+            );
+
+            &:before {
+                display: none;
+            }
+
+            span {
+                .lib-visually-hidden-reset();
             }
         }
     }
