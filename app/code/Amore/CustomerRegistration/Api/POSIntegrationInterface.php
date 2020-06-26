@@ -43,7 +43,6 @@ interface POSIntegrationInterface
      * @param string $statusCD
      * @param string $salOrgCd
      * @param string $salOffCd
-     * @param string $prtnrid
      * @return boolean
      * @throws InputException If bad input is provided
      * @throws InputMismatchException If the provided email is already used
@@ -67,7 +66,6 @@ interface POSIntegrationInterface
         $homeZip,
         $statusCD,
         $salOrgCd,
-        $salOffCd,
-        $prtnrid
+        $salOffCd
     );
 }
