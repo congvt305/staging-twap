@@ -71,6 +71,10 @@ class Payment extends AbstractMethod
      * @var \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice
      */
     private $ecpayInvoice;
+    /**
+     * @var \Magento\Framework\Stdlib\DateTime\DateTimeFactory
+     */
+    private $dateTimeFactory;
 
     public function __construct(
         Context $context,
@@ -89,6 +93,7 @@ class Payment extends AbstractMethod
         \Magento\Framework\DB\Transaction $transaction,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpayInvoice,
+        \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
@@ -115,6 +120,7 @@ class Payment extends AbstractMethod
         $this->transaction = $transaction;
         $this->orderRepository = $orderRepository;
         $this->ecpayInvoice = $ecpayInvoice;
+        $this->dateTimeFactory = $dateTimeFactory;
     }
 
     public function getValidPayments()
@@ -208,8 +214,9 @@ class Payment extends AbstractMethod
     {
         $this->invalidateEInvoice($payment);
 
-        return $this;
-        throw new LocalizedException(__("TEST"));
+        if ($this->getEcpayConfig("invoice/ecpay_invoice_test_flag")) {
+            return $this;
+        }
 
         $additionalInfo = $payment->getAdditionalInformation();
         $rawDetailsInfo = $additionalInfo["raw_details_info"];
@@ -396,16 +403,18 @@ class Payment extends AbstractMethod
             $aReturn_Info = $ecpay_invoice->Check_Out();
 
             // 5.返回
-            foreach($aReturn_Info as $key => $value) {
-                $sMsg .=   $key . ' => ' . $value . '<br>' ;
-            }
+            $aReturn_Info["RelateNumber"] = $RelateNumber;
             $payment->setAdditionalData(json_encode($aReturn_Info));
             $payment->save();
+            return [
+                "RtnCode" => $aReturn_Info["RtnCode"],
+                "RtnMsg" => $aReturn_Info["RtnMsg"]
+            ];
         } catch (Exception $e) {
             // 例外錯誤處理。
             $sMsg = $e->getMessage();
+            throw new LocalizedException(__($sMsg));
         }
-        echo 'RelateNumber=>' . $RelateNumber.'<br>'.$sMsg ;
     }
 
     /**
@@ -453,7 +462,8 @@ class Payment extends AbstractMethod
      */
     private function initEInvoiceInfo(\Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice, \Magento\Sales\Api\Data\OrderInterface $order, string $donationValue, $donationCode): string
     {
-        $RelateNumber = 'ECPAY' . date('YmdHis') . rand(1000000000, 2147483647); // 產生測試用自訂訂單編號
+        $dataTime = $this->dateTimeFactory->create();
+        $RelateNumber = 'ECPAY' . $dataTime->date('YmdHis') . rand(1000000000, 2147483647); // 產生測試用自訂訂單編號
         $ecpay_invoice->Send['RelateNumber'] = $RelateNumber;
         $ecpay_invoice->Send['CustomerID'] = $order->getCustomerId();
         $ecpay_invoice->Send['CustomerIdentifier'] = '';
