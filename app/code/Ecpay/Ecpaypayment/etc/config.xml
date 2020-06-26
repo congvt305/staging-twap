@@ -15,6 +15,10 @@
 				<ecpay_failed_status>holded</ecpay_failed_status>
 				<allowspecific>0</allowspecific>
 				<payment_action>sale</payment_action>
+				<ecpay_invoice>
+					<ecpay_invoice_stage_url>https://einvoice-stage.ecpay.com.tw/Invoice/</ecpay_invoice_stage_url>
+					<ecpay_invoice_production_url>https://einvoice.ecpay.com.tw/Invoice/</ecpay_invoice_production_url>
+				</ecpay_invoice>
 			</ecpay_ecpaypayment>
 		</payment>
 	</default>
