@@ -4,7 +4,6 @@ define([
     'map-viewer'
 ], function ($) {
     return function (config) {
-        //check for location. if location exist then initialize map
         // for plus icon click on store
         $('.store-list').on('click', function () {
             let storeInfo;
@@ -24,8 +23,6 @@ define([
 
         function appendMapTimer() {
             clearInterval(appendTimer);
-
-            //$(".store-list .inner-store").empty();
             $(".store-list.selected-store .inner-store").append(htmlMapElement);
         }
         var windowSize = $(window).width();
@@ -34,19 +31,15 @@ define([
 
             var mapHtmlParent = $(".stores-map").parent();
             htmlMapElement = mapHtmlParent.children();
-            //mapHtmlParent.empty();
-            console.log(htmlMapElement);
 
             $("#store_map_viewer").css({"height":"108.333vw"});
 
             $('li.store-list').first().find('.inner-store').css({"display":"block"});
             $('li.store-list').children('.inner-store').first().append(htmlMapElement);
-            //$('li.store-list').children('.inner-store').slideUp();
             $('li.store-list').find('span.accordion-icon').css('opacity', '0');
             $('li.store-list').click(function(e) {
                 $(this).find('span.accordion-icon').css('opacity', '0.4');
                 $('li.store-list').children('.inner-store').slideUp();
-                // $(this).first().trigger('click');
                 $(this).children('.inner-store').slideToggle();
             });
         } else {
@@ -55,6 +48,7 @@ define([
             });
         }
 
+        //check for location. if location exist then initialize map
         if (config.locations) {
             multi_map_initialize(config.locations, 8, config.viewStore, config.markerImages);
         }
