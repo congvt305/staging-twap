@@ -29,17 +29,6 @@
                     </container>
                 </container>
             </container>
-            <container name="product.review.container" htmlTag="div" htmlClass="product-reviews-container" after="-">
-                <container name="product.review.wrapper" htmlTag="div" htmlClass="product-reviews-wrapper" after="-">
-                    <container name="product.review.title.wrapper" htmlTag="p" htmlClass="reviews-title" before="-">
-                        <block class="Magento\Framework\View\Element\Text" name="product.review.title" before="-">
-                            <action method="setText">
-                                <argument name="text" translate="true" xsi:type="string">Reviews</argument>
-                            </action>
-                        </block>
-                    </container>
-                </container>
-            </container>
             <container name="product.config.items" htmlTag="div" htmlClass="product-config-items" after="-" />
         </referenceContainer>
 
@@ -79,6 +68,7 @@
         <referenceBlock name="view.addto.compare" remove="true" />
         <referenceBlock name="related.product.addto.compare" remove="true" />
         <referenceBlock name="upsell.product.addto.compare" remove="true" />
+        <referenceBlock name="product.attributes" remove="true" />
 
         <referenceContainer name="product.info.main">
             <block class="Magento\Catalog\Block\Product\View\Description"
