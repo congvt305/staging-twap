@@ -236,7 +236,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
 
     private function getResponse($code, $message, $statusCode, $statusMessage, $cstmIntgSeq)
     {
-        $response = [
+        $response = [[
             'code' => $code,
             'message' => $message,
             'data'  =>    [
@@ -244,7 +244,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 'statusMessage' => $statusMessage,
                 'cstmIntgSeq' => $cstmIntgSeq
             ]
-        ];
+        ]];
         $this->logger->addAPICallLog(
             'Customer update api response',
             '{Base URL}/rest/all/V1/pos-customers/',
