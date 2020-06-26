@@ -5,7 +5,7 @@
     <type name="Magento\Theme\Model\View\Design">
         <arguments>
             <argument name="themes" xsi:type="array">
-                <item name="adminhtml" xsi:type="string">AmorePacific/sulwhasoo</item> <!-- Example: "Magento/backend" -->
+                <item name="adminhtml" xsi:type="string">AmorePacific/backend</item> <!-- Example: "Magento/backend" -->
             </argument>
         </arguments>
     </type>

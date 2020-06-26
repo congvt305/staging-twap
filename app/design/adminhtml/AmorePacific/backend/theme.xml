@@ -5,6 +5,6 @@
  */
 -->
 <theme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/theme.xsd">
-    <title>AmorePacific Sulwhasoo Admin Theme</title> <!-- your theme's name -->
+    <title>AmorePacific Admin Theme</title> <!-- your theme's name -->
     <parent>Magento/backend</parent> <!-- the parent theme. Example: Magento/backend -->
 </theme>
