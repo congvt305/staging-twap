@@ -176,8 +176,6 @@ class InfoList extends Template
      */
     public function getStoresCollection()
     {
-        //$types = $this->getSelectedStoreTypes();
-        $city = $this->getSelectedCityName();
         $id = 0;
         try {
             $id  = $this->_storeManager->getStore()->getId();
@@ -185,89 +183,55 @@ class InfoList extends Template
             $this->_logger->error($e->getMessage());
         }
         $storeCollection = $this->storeCollectionFactory->create();
-        $storeCollection->addFieldToFilter('store_id', ['in' => [0, (int)$id]]);
+        $storeCollection->addFieldToFilter(
+            ['store_id','store_id','store_id','store_id'],
+            [["like" =>  '%' . $id . ',%'],
+                ["like" =>  '%,' . $id . ',%'],
+                ["like" =>  '%,' . $id . '%'],
+                ["in" => ['0', $id]]]
+        );
         $storeCollection->addFieldToFilter('area', ['eq' => $this->getStoreCountryCode()]);
-        $isAddCity = $this->addCityFiters($city);
-        if ($isAddCity) {
-            $storeCollection->addFieldToFilter('city', ['eq' => $city]);
-        }
-        $currentLocationPoint = $this->getCustomerLocationPoints();
-        if (!empty($currentLocationPoint)) {
-            if ($currentLocationPoint['lat'] && $currentLocationPoint['long']) {
-                $storeCollection->addDistance($currentLocationPoint, $this->getradius());
-                $storeCollection->addOrder('distance', 'ASC');
-            } else {
-                $this->messageManager->addErrorMessage(__('Please search valid location'));
+        $search = $this->getSelectedSearchTerm();
+        $isAddName = $this->addStoreNameFilter($search);
+        if ($isAddName) {
+            $storeCollection->addFieldToFilter('title', ['like' => '%' . $search . '%']);
+        } else {
+            $isAddAddress = $this->addStoreAddressFilter($search);
+            if ($isAddAddress) {
+                $storeCollection->addFieldToFilter('address', ['like' => '%' . $search . '%']);
             }
         }
-
         return $storeCollection;
     }
 
     /**
-     * Get store cities
-     * @return array
-     */
-    public function getCitiesFromStores()
-    {
-        $cities = [];
-        $storeCollection = $this->storeCollectionFactory->create()->addFieldToSelect('city');
-        foreach ($storeCollection as $storeItem) {
-            $cities[] = $storeItem['city'];
-        }
-        return array_unique($cities);
-    }
-
-    /**
-     * Check city name in collection if exists or not
-     * @param $city
+     * Search store by address
+     * @param $search
      * @return bool
      */
-    private function addCityFiters($city)
+    private function addStoreAddressFilter($search)
     {
         $storeCollection = $this->storeCollectionFactory->create();
-        $storeCollection->addFieldToSelect('city');
-        $citiesList = [];
-        foreach ($storeCollection->getData() as $stores) {
-            if ($stores['city'] == $city) {
-                return true;
-            }
+        $storeCollection->addFieldToFilter('address', ['like' => '%' . $search . '%']);
+        if ($storeCollection->getSize() >= 1) {
+            return true;
         }
         return false;
     }
 
     /**
-     * This function will return location point of customer
-     * @return array
+     * Search store by name
+     * @param $search
+     * @return bool
      */
-    public function getCustomerLocationPoints()
+    private function addStoreNameFilter($search)
     {
-        $currentLat = $this->getSelectedLat();
-        $currentLng = $this->getSelectedLng();
-        $useCurrentLocation = $this->getUseMyLocation();
-        $search = $this->getSelectedSearchTerm();
-        $latLong = null;
-        $currentLatLong = [];
-        if ($search || $useCurrentLocation) {
-            if ($search) {
-                $search = str_replace(' ', '%20', $search);
-                //this is for calculating distance between searced term and stores
-                $latLong = $this->getLatLongFromApi($search);
-                //if Api response fails due to wrong api key
-                if ($latLong == 'error') {
-                    $this->messageManager->addErrorMessage(__('your Api key is not valid'));
-                    return;
-                }
-                $currentLatLong['lat'] = $latLong['lat'];
-                $currentLatLong['long'] = $latLong['lng'];
-            } elseif ($useCurrentLocation) {
-                $latLong = true;
-                $currentLatLong['lat'] = $currentLat;
-                $currentLatLong['long'] = $currentLng;
-            }
+        $storeCollection = $this->storeCollectionFactory->create();
+        $storeCollection->addFieldToFilter('title', ['like' => '%' . $search . '%']);
+        if ($storeCollection->getSize() >= 1) {
+            return true;
         }
-
-        return  $currentLatLong;
+        return false;
     }
 
     /**
@@ -317,50 +281,7 @@ class InfoList extends Template
      */
     public function getSelectedSearchTerm()
     {
-        if ($this->getUseMyLocation()) {
-            return $this->getLocationFromApi($this->getSelectedLat(), $this->getSelectedLng());
-        }
         return  $this->getRequest()->getParam('search');
-    }
-
-    /**
-     * Take parameters from request
-     * @return mixed
-     */
-    public function getSelectedAzimuthOption()
-    {
-        return $this->getRequest()->getParam('azimuth');
-    }
-
-    /**
-     * fetch the time for each store
-     * @param $storeInfoId
-     * @return \Eguana\StoreLocator\Api\Data\WorkTimeInterface[]
-     */
-    public function getStoreWorkTimeCollection($storeInfoId)
-    {
-        $sortOrder = $this->sortOrderBuilder->setField('sort')->setDirection('ASC')->create();
-        $this->searchCriteriaBuilder->addFilter('store_info_id', $storeInfoId, 'eq')->setSortOrders([$sortOrder]);
-        $workTime = $this->workTimeRepo->getList($this->searchCriteriaBuilder->create())->getItems();
-        return $workTime;
-    }
-
-    /**
-     * Take parameters from request
-     * @return mixed
-     */
-    public function getMainTitle()
-    {
-        return $this->storesHelper->getFrontMainTitle();
-    }
-
-    /**
-     * Take parameters from request
-     * @return mixed
-     */
-    public function getSubTitle()
-    {
-        return $this->storesHelper->getFrontSubTitle();
     }
 
     /**
@@ -398,110 +319,6 @@ class InfoList extends Template
     }
 
     /**
-     * get latitude and longitude from gievn serach term
-     * @param $search
-     * @return bool|mixed
-     */
-    public function getLatLongFromApi($search)
-    {
-        try {
-            $storeId  = $this->_storeManager->getStore()->getId();
-        } catch (\Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        $key = '&key=';
-        $key = $key . $this->storesHelper->getGeoCodeApiKey($storeId);
-        $address = 'address=' . $search;
-        $apiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?' . $address . $key;
-        $header = [
-            "accept: application/json",
-            "content-type: application/json"
-        ];
-        $this->curl->setOption(CURLOPT_RETURNTRANSFER, true);
-        $this->curl->setOption(CURLOPT_HTTPHEADER, $header);
-        $this->curl->get($apiUrl);
-        $response = $this->curl->getBody();
-        $response = $this->json->unserialize($response);
-        if ($response['status'] == 'REQUEST_DENIED') {
-            return "error";
-        }
-        if ($this->curl->getStatus() == 200 && $response['status'] != 'ZERO_RESULTS') {
-            return $response['results'][0]['geometry']['location'];
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * get latitude and longitude from gievn serach term
-     * @param $search
-     * @return bool|mixed
-     */
-    public function getLocationFromApi($lat, $lng)
-    {
-        $key = '&key=';
-        $key = $key . $this->storesHelper->getApiKey();
-        $latlng = 'latlng=' . $lat . ',' . $lng;
-        $apiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?' . $latlng . $key;
-        $header = [
-            "accept: application/json",
-            "content-type: application/json"
-        ];
-        $this->curl->setOption(CURLOPT_RETURNTRANSFER, true);
-        $this->curl->setOption(CURLOPT_HTTPHEADER, $header);
-        $this->curl->get($apiUrl);
-
-        $response = $this->curl->getBody();
-        $response = $this->json->unserialize($response);
-        //check either api success or fails
-        if ($response['status'] == 'REQUEST_DENIED') {
-            $this->messageManager->addErrorMessage(__('your Api key is not valid'));
-            return false;
-        }
-        if ($this->curl->getStatus() == 200 && $response['status'] != 'ZERO_RESULTS') {
-            return $response['results'][0]['formatted_address'];
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * get selected latitude
-     * @return mixed
-     */
-    public function getSelectedLat()
-    {
-        return $this->_request->getParam('current_lat');
-    }
-
-    /**
-     * get selected longitude
-     * @return mixed
-     */
-    public function getSelectedLng()
-    {
-        return $this->_request->getParam('current_lng');
-    }
-
-    /**
-     * get ue my location
-     * @return mixed
-     */
-    public function getUseMyLocation()
-    {
-        return $this->_request->getParam('use_my_location');
-    }
-
-    /**
-     * get city name from param
-     * @return mixed
-     */
-    public function getSelectedCityName()
-    {
-        return $this->_request->getParam('city-name');
-    }
-
-    /**
      * get default country name
      * @return mixed
      */
@@ -528,18 +345,11 @@ class InfoList extends Template
     }
 
     /**
-     * Get status customerse seach store with adress or not
-     * @return int
-     **/
-    public function isCustomerSearchLocation()
+     * Get bottom block id
+     * @return mixed
+     */
+    public function getBottomBlockIdValue()
     {
-        $useCurrentLocation = $this->getUseMyLocation();
-        $search = $this->getSelectedSearchTerm();
-        $result = 0;
-        if ($search || $useCurrentLocation) {
-            $result = 1;
-        }
-
-        return $result;
+        return $this->storesHelper->getBottomBlockId();
     }
 }

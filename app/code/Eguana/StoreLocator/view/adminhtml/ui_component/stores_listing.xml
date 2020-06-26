@@ -265,6 +265,15 @@
                 </item>
             </argument>
         </column>
+        <column name="store_type" class="Eguana\StoreLocator\Ui\Component\Listing\Column\StoreTypeRenderer" sortOrder="65">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Store Type</item>
+                </item>
+            </argument>
+        </column>
         <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date" sortOrder="70">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">

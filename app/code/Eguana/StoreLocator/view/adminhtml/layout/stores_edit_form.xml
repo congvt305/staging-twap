@@ -13,7 +13,6 @@
     <update handle="styles"/>
     <body>
         <referenceContainer name="content">
-            <block class="Eguana\StoreLocator\Block\Adminhtml\JsLoader" name="js_loader" template="Eguana_StoreLocator::jsLoader.phtml"/>
             <uiComponent name="stores_form"/>
         </referenceContainer>
     </body>

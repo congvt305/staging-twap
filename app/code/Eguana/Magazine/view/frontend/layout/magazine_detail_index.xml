@@ -14,7 +14,7 @@
         <referenceContainer name="content">
             <block class="Eguana\Magazine\Block\View" name="magazine.details" template="Eguana_Magazine::detail.phtml">
                 <arguments>
-                    <argument name="view_model_list" xsi:type="object">Eguana\Magazine\ViewModel\Detail</argument>
+                    <argument name="view_model_detail" xsi:type="object">Eguana\Magazine\ViewModel\Detail</argument>
                 </arguments>
             </block>
         </referenceContainer>

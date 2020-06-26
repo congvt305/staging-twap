@@ -25,10 +25,10 @@ interface StoreInfoInterface
     const LOCATION = 'location';
     const CREATED_AT = 'created_at';
     const STORE_ID = 'store_id';
-    const AREA = 'area';
-    const CITY = 'city';
     const EMAIL = 'email';
     const TIMING = 'timing';
+    const STORE_TYPE = 'store_type';
+    const AREA = 'area';
 
     /*
     *  Getters
@@ -40,10 +40,10 @@ interface StoreInfoInterface
     public function getLocation();
     public function getCreatedAt();
     public function getStoreId();
-    public function getArea();
-    public function getCity();
     public function getEmail();
     public function getTiming();
+    public function getStoreType();
+    public function getArea();
 
     /*
     *  Setters
@@ -55,8 +55,8 @@ interface StoreInfoInterface
     public function setLocation($location);
     public function setCreatedAt($createdAt);
     public function setStoreId($storeId);
-    public function setArea($area);
-    public function setCity($city);
     public function setEmail($email);
     public function setTiming($timing);
+    public function setStoreType($storeType);
+    public function setArea($area);
 }

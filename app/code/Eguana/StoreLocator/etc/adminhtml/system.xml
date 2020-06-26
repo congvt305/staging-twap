@@ -15,7 +15,7 @@
             <class>separator-top</class>
             <label>Eguana Store Locator</label>
             <tab>eguana_extensions_tab</tab>
-             <resource>Eguana_StoreLocator::config_stores</resource>
+            <resource>Eguana_StoreLocator::config_stores</resource>
             <group id="general_stores" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General StoreLocator</label>
                 <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
@@ -25,8 +25,8 @@
                 <field id="map_api_key" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Google Map Api key</label>
                 </field>
-                <field id="map_api_key_geocode" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Google Map Api key For Geo Code(Unauthorized key)</label>
+                <field id="bottom_block_id" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Store Locator Bottom Block Id</label>
                 </field>
             </group>
             <group id="frontend_stores" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -36,15 +36,6 @@
                 </field>
                 <field id="map_zoom" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Map Zoom</label>
-                </field>
-            </group>
-            <group id="admin_stores_pagination" translate="label" type="text" sortOrder="90" showInDefault="1" >
-                <label>Stores Pagination</label>
-                <field id="stores_pagination_per_page" translate="label" type="select" sortOrder="2" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
-                    <label>Stores Per Page</label>
-                    <comment><![CDATA[Select number of stores show per page]]></comment>
-                    <source_model>Eguana\StoreLocator\Model\Config\Source\Pagination</source_model>
                 </field>
             </group>
         </section>

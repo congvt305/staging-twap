@@ -49,8 +49,8 @@
                    template="Magento_Catalog::product/view/attribute.phtml"
                    group="detailed_info" before="page.main.title">
                 <arguments>
-                    <argument name="at_call" xsi:type="string">getFlag</argument>
-                    <argument name="at_code" xsi:type="string">flag</argument>
+                    <argument name="at_call" xsi:type="string">getNew</argument>
+                    <argument name="at_code" xsi:type="string">new</argument>
                     <argument name="css_class" xsi:type="string">flag</argument>
                     <argument name="at_label" xsi:type="string">none</argument>
                     <argument name="title" translate="true" xsi:type="string">Flag</argument>
@@ -76,6 +76,9 @@
         <referenceBlock name="product.info.type" remove="true" />
         <referenceBlock name="product.info.stock.sku" remove="true" />
         <referenceBlock name="product.info.overview" remove="true" />
+        <referenceBlock name="view.addto.compare" remove="true" />
+        <referenceBlock name="related.product.addto.compare" remove="true" />
+        <referenceBlock name="upsell.product.addto.compare" remove="true" />
 
         <referenceContainer name="product.info.main">
             <block class="Magento\Catalog\Block\Product\View\Description"

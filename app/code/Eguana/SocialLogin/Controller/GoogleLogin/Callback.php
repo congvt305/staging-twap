@@ -9,21 +9,14 @@
  */
 namespace Eguana\SocialLogin\Controller\GoogleLogin;
 
-use Eguana\SocialLogin\Controller\AbstractSocialLogin;
 use Eguana\SocialLogin\Helper\Data as Helper;
 use Eguana\SocialLogin\Model\SocialLoginHandler as SocialLoginModel;
 use Eguana\SocialLogin\Model\SocialLoginRepository;
-use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Customer\Model\Session;
-use Magento\Customer\Model\Visitor;
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
-use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\HTTP\Client\Curl;
-use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
-use Magento\Framework\Stdlib\CookieManagerInterface;
-use Magento\Framework\Stdlib\DateTime\DateTime as DateTimeAlias;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -31,7 +24,7 @@ use Psr\Log\LoggerInterface;
  *
  * Callback class for google login
  */
-class Callback extends AbstractSocialLogin
+class Callback extends Action
 {
     const SOCIAL_MEDIA_TYPE = 'google';
     /**
@@ -57,13 +50,6 @@ class Callback extends AbstractSocialLogin
     /**
      * Callback constructor.
      * @param Context $context
-     * @param CustomerRepositoryInterface $customerRepositoryInterface
-     * @param CookieManagerInterface $cookieManager
-     * @param CookieMetadataFactory $cookieMetadataFactory
-     * @param Session $customerSession
-     * @param ManagerInterface $eventManager
-     * @param Visitor $visitor
-     * @param DateTimeAlias $dateTime
      * @param LoggerInterface $logger
      * @param Helper $helper
      * @param Curl $curl
@@ -72,34 +58,19 @@ class Callback extends AbstractSocialLogin
      */
     public function __construct(
         Context $context,
-        CustomerRepositoryInterface $customerRepositoryInterface,
-        CookieManagerInterface $cookieManager,
-        CookieMetadataFactory $cookieMetadataFactory,
-        Session $customerSession,
-        ManagerInterface $eventManager,
-        Visitor $visitor,
-        DateTimeAlias $dateTime,
         LoggerInterface $logger,
         Helper $helper,
         Curl $curl,
         SocialLoginModel $socialLoginModel,
         SocialLoginRepository $socialLoginRepository
     ) {
-        parent::__construct(
-            $context,
-            $customerRepositoryInterface,
-            $cookieManager,
-            $cookieMetadataFactory,
-            $customerSession,
-            $eventManager,
-            $visitor,
-            $logger,
-            $dateTime
-        );
         $this->helper                            = $helper;
         $this->curlClient                        = $curl;
         $this->socialLoginModel                  = $socialLoginModel;
         $this->socialLoginRepository             = $socialLoginRepository;
+        parent::__construct(
+            $context,
+        );
     }
 
     /**
@@ -130,9 +101,10 @@ class Callback extends AbstractSocialLogin
             $customerId = $this->socialLoginRepository->getSocialMediaCustomer($userid, $socialMediaType);
             //If customer exists then login and close popup else close pop and redirect to social login page
             if ($customerId) {
-                $this->redirectToLogin($customerId);
+                $this->socialLoginModel->getCoreSession()->unsSocialCustomerId();
+                $this->socialLoginModel->getCoreSession()->setSocialCustomerId($customerId);
             } else {
-                $this->socialLoginModel->redirectCustomer($customerId, $user_info, $userid, $socialMediaType);
+                $this->socialLoginModel->redirectCustomer($user_info, $userid, $socialMediaType);
             }
             $this->helper->closePopUpWindow($this);
         }

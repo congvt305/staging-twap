@@ -10,9 +10,9 @@
 namespace Eguana\StoreLocator\Model;
 
 use Eguana\StoreLocator\Api\Data\StoreInfoInterface;
+use Eguana\StoreLocator\Model\ResourceModel\StoreInfo as ResourceModel;
 use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractExtensibleModel;
-use Eguana\StoreLocator\Model\ResourceModel\StoreInfo as ResourceModel;
 
 /**
  * Model
@@ -40,14 +40,14 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
         return [
             'entity_id',
             'title',
+            'area',
             'address',
             'telephone',
             'location',
             'store_id',
             'created_at',
-            'area',
-            'city',
-            'email'
+            'email',
+            'store_type'
         ];
     }
 
@@ -69,6 +69,16 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
     public function setTitle($title)
     {
         return $this->setData(self::TITLE, $title);
+    }
+
+    /**
+     * setter
+     * @param $area
+     * @return StoreInfo
+     */
+    public function setArea($area)
+    {
+        return $this->setData(self::AREA, $title);
     }
 
     /**
@@ -122,26 +132,6 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
     }
 
     /**
-     * setter
-     * @param $area
-     * @return StoreInfo
-     */
-    public function setArea($area)
-    {
-        return $this->setData(self::AREA, $area);
-    }
-
-    /**
-     * setter
-     * @param $city
-     * @return StoreInfo
-     */
-    public function setCity($city)
-    {
-        return $this->setData(self::CITY, $city);
-    }
-
-    /**
      * get Store timing for opening
      * @param $type
      * @return StoreInfo
@@ -149,6 +139,16 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
     public function setTiming($timing)
     {
         return $this->setData(self::TIMING, $timing);
+    }
+
+    /**
+     * get Store Type
+     * @param $storeType
+     * @return StoreInfo
+     */
+    public function setStoreType($storeType)
+    {
+        return $this->setData(self::STORE_TYPE, $timing);
     }
 
     /**
@@ -220,22 +220,6 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
     /**
      * getter
      */
-    public function getArea()
-    {
-        return $this->getData(self::AREA);
-    }
-
-    /**
-     * getter
-     */
-    public function getCity()
-    {
-        return $this->getData(self::CITY);
-    }
-
-    /**
-     * getter
-     */
     public function getEmail()
     {
         return $this->getData(self::EMAIL);
@@ -250,6 +234,22 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
     }
 
     /**
+     * getter
+     */
+    public function getArea()
+    {
+        return $this->getData(self::AREA);
+    }
+
+    /**
+     * getter
+     */
+    public function getStoreType()
+    {
+        return $this->getData(self::STORE_TYPE);
+    }
+
+    /**
      * Function save databind
      * @param $storeInfoData
      */
@@ -260,12 +260,12 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
         }
 
         $this->setData('title', $storeInfoData['title']);
+        $this->setData('area', $storeInfoData['area']);
+        $this->setData('store_type', $storeInfoData['store_type']);
         $this->setData('address', $storeInfoData['address']);
         $this->setData('telephone', $storeInfoData['telephone']);
         $this->setData('location', $storeInfoData['location']);
-        $this->setData('area', $storeInfoData['area']);
         $this->setData('store_id', implode(',', $storeInfoData['store_id']));
-        $this->setData('city', $storeInfoData['city']);
         $this->setData('email', $storeInfoData['email']);
         $this->setData('timing', $storeInfoData['timing']);
     }

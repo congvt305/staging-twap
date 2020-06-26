@@ -1,44 +1,50 @@
 <?php
 /** @var $viewModel \Eguana\Magazine\ViewModel\Index\MagazineList */
 $viewModel = $block->getData('view_model_list');
-$bannerCollection = $viewModel->getBannerThumbnail();
-$imageMagazineCollection = $viewModel->getImageMagazineCollection();
-$videoThumbnail = $viewModel->getVideoThumbnail();
-$magazineCollection = $viewModel->getMagazineTotalCollection();
+$bannerMagazines = $viewModel->getBannerMagazines();
+$imageMagazines = $viewModel->geImageMagazines();
+$videoMagazines = $viewModel->geVideoMagazines();
+$otherMonthMagazines = $viewModel->getOtherMonthsMagaginesFrontPages();
+$totalMagazinesCount = $viewModel->getCurrentMonthMagazinesTotalNumber();
 ?>
 <div class="block magazine-image">
-    <?php if (!empty($bannerCollection->getData())):?>
-        <?php foreach ($bannerCollection as $magazineItem): ?>
+    <?php if ($totalMagazinesCount == 0) : ?>
+    <p><?= $block->escapeHtml(__('Sorry there is no Magazine for %1', $viewModel->getCurrentMonthName())); ?></p>
+
+    <?php
+    endif;
+    if (!empty($bannerMagazines->getData())) : ?>
+        <?php foreach ($bannerMagazines as $bannerMagazine) : ?>
             <div class="magazine-photo-banner">
                 <a class="action view"
-                   href="<?= $block->escapeHtml($block->getUrl($viewModel->getItemDetailsUrl($magazineItem['entity_id'])));?>">
+                   href="<?= $block->escapeHtml($block->getUrl($viewModel->getItemDetailsUrl($bannerMagazine['entity_id'])));?>">
                     <span>
-                        <img src="<?= $block->escapeHtml($viewModel->getThumbnailSrc($magazineItem['thumbnail_image']));?>"
-                             alt="<?= $block->escapeHtml($magazineItem['thumbnail_alt']);?>" />
+                        <img src="<?= $block->escapeHtml($viewModel->getThumbnailSrc($bannerMagazine['thumbnail_image']));?>"
+                             alt="<?= $block->escapeHtml($bannerMagazine['thumbnail_alt']);?>" />
                     </span>
                 </a>
             </div>
         <?php endforeach; ?>
     <?php endif;?>
-    <?php if (!empty($imageMagazineCollection->getData())):?>
+    <?php if (!empty($imageMagazines->getData())) : ?>
         <ul class="list-image-box"">
-            <?php foreach ($imageMagazineCollection as $magazineItem): ?>
+            <?php foreach ($imageMagazines as $imageMagazine) : ?>
             <li class="magazine-item-box">
                 <div class="magazine-item">
                     <a
                         href="<?= $block->escapeHtml($block->
-                        getUrl($viewModel->getItemDetailsUrl($magazineItem['entity_id'])));?>">
+                        getUrl($viewModel->getItemDetailsUrl($imageMagazine['entity_id'])));?>">
                             <span>
                                 <img src="<?= $block->escapeHtml($viewModel->
-                                getThumbnailSrc($magazineItem['thumbnail_image']));?>"
-                                     alt="<?= $block->escapeHtml($magazineItem['thumbnail_alt']);?>" />
+                                getThumbnailSrc($imageMagazine['thumbnail_image']));?>"
+                                     alt="<?= $block->escapeHtml($imageMagazine['thumbnail_alt']);?>" />
                             </span>
                     </a>
                     <div class="block-title">
-                        <strong><?= $block->escapeHtml($magazineItem['title']) ?></strong>
+                        <strong><?= $block->escapeHtml($imageMagazine['title']) ?></strong>
                     </div>
                     <div class="short-discription">
-                        <span><?= $block->escapeHtml($magazineItem['content_short']) ?></span>
+                        <span><?= $block->escapeHtml($imageMagazine['content_short']) ?></span>
                     </div>
                 </div>
             </li>
@@ -46,50 +52,46 @@ $magazineCollection = $viewModel->getMagazineTotalCollection();
         </ul>
     <?php endif;?>
     <div class="block magazine-video">
-        <?php if (!empty($videoThumbnail->getData())):?>
-            <?php foreach ($videoThumbnail as $magazineItem): ?>
+        <?php if (!empty($videoMagazines->getData())) : ?>
+            <?php foreach ($videoMagazines as $videoMagazine) : ?>
                 <div class="magazine-video-banner">
                     <a class="action view"
-                       href="<?= $block->escapeHtml($block->getUrl($viewModel->getItemDetailsUrl($magazineItem['entity_id'])));?>">
+                       href="<?= $block->escapeHtml($block->getUrl($viewModel->getItemDetailsUrl($videoMagazine['entity_id'])));?>">
                         <span>
-                            <img src="<?= $block->escapeHtml($viewModel->getThumbnailSrc($magazineItem['thumbnail_image']));?>"
-                                 alt="<?= $block->escapeHtml($magazineItem['thumbnail_alt']);?>" />
+                            <img src="<?= $block->escapeHtml($viewModel->getThumbnailSrc($videoMagazine['thumbnail_image']));?>"
+                                 alt="<?= $block->escapeHtml($videoMagazine['thumbnail_alt']);?>" />
                         </span>
                     </a>
                 </div>
             <?php endforeach; ?>
         <?php endif;?>
 
-        <?php if (!empty($magazineCollection->getData())):?>
-            <div class="block-title other-magazine">
-                <strong><?= $block->escapeHtml(__('Other Magazines')) ?></strong>
-            </div>
-            <ul class="magazine-slider" id="slick">
-            <?php $date = '' ?>
-            <?php foreach ($magazineCollection as $magazineItem): ?>
-                <?php if ($date == '' || $magazineItem['show_date'] < $date):?>
-                    <?php $magazine = $viewModel->getSliderThumnai($magazineItem['show_date'])->getData(); ?>
-                    <li class="magazine-slider-item">
-                        <div class="magazine-item">
-                            <a
-                                href="<?= $block->escapeHtml($block->
-                                getUrl($viewModel->getMonthlyMagazineUrl($magazine[0]['show_date'])));?>">
+        <?php if (count($otherMonthMagazines)) : ?>
+        <div class="block-title other-magazine">
+            <strong><?= $block->escapeHtml(__('Other Magazines')) ?></strong>
+        </div>
+        <ul class="other-magazines-slider" id="slick">
+            <?php foreach ($otherMonthMagazines as $otherMonthMagazine) : ?>
+            <li class="magazine-slider-item">
+                <div class="magazine-item">
+                    <a
+                            href="<?= $block->escapeHtml($block->
+                            getUrl($otherMonthMagazine['monthly_url']));?>">
                     <span>
                         <img src="<?= $block->escapeHtml($viewModel->
-                        getThumbnailSrc($magazine[0]['thumbnail_image']));?>"
-                             alt="<?= $block->escapeHtml($magazine[0]['thumbnail_alt']);?>" />
+                        getThumbnailSrc($otherMonthMagazine['thumbnail_image']));?>"
+                             alt="<?= $block->escapeHtml($otherMonthMagazine['thumbnail_alt']);?>" />
                     </span>
-                            <span class="discription">
-                                <?= $block->escapeHtml($magazine[0]['content_short']);?>
-                            </span>
-                            </a>
-                        </div>
-                    </li>
-                    <?php $date = $viewModel->getMonthFromDate($magazineItem['show_date']) ?>
-                <?php endif;?>
+                        <span class="discription">
+                                <?= $block->escapeHtml($otherMonthMagazine['content_short']);?>
+                        </span>
+                    </a>
+                </div>
+            </li>
+
             <?php endforeach; ?>
         </ul>
-        <?php endif;?>
+        <?php endif; ?>
     </div>
 </div>
 <script>
@@ -98,7 +100,7 @@ $magazineCollection = $viewModel->getMagazineTotalCollection();
         'slick'
     ], function ($) {
 
-        $('#slick').slick({
+        $('.other-magazines-slider').slick({
             dots: false,
             infinite: false,
             speed: 300,

@@ -11,7 +11,7 @@ namespace Amore\CustomerRegistration\ViewModel;
 use Amore\CustomerRegistration\Helper\Data;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Amore\CustomerRegistration\Model\Verification;
-use Magento\Customer\Model\Session;
+use Magento\Framework\Session\SessionManagerInterface as Session;
 
 /**
  * It will use for the pos step during registration
