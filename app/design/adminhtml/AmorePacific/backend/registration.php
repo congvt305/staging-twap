@@ -4,4 +4,4 @@
  * See COPYING.txt for license details.
  */
 use \Magento\Framework\Component\ComponentRegistrar;
-ComponentRegistrar::register(ComponentRegistrar::THEME, 'adminhtml/AmorePacific/sulwhasoo', __DIR__);
+ComponentRegistrar::register(ComponentRegistrar::THEME, 'adminhtml/AmorePacific/backend', __DIR__);
