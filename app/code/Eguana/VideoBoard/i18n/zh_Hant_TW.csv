@@ -1,0 +1,49 @@
+Back,背部
+"Delete Video","刪除影片"
+"Are you sure you want to do this?","你確定你要這麼做嗎？"
+Save,保存
+Home,家
+"Go to Home Page","去首頁"
+Brand,牌
+"How To","如何"
+"How to","如何"
+Video,視頻
+HowTo,如何
+"Manage Video Board","管理視頻板"
+"Video was successfully deleted","視頻已成功刪除"
+"Video could not be deleted","無法刪除視頻"
+"This video no longer exists.","該視頻已不存在."
+"Edit Video","編輯視頻"
+"New Video","新影片"
+Videos,影片
+"Video has been successfully saved.","視頻已成功保存."
+"You duplicated the Video.","您複製了視頻."
+Ascending,上升
+Descending,降序
+Enabled,已啟用
+Disabled,殘障人士
+Edit,編輯
+Delete,刪除
+"Delete ""${ $.$data.video_title }""","刪除 ""${ $.$data.video_title }"""
+"Are you sure you wan't to delete a ""${ $.$data.video_title }"" record?","您確定要刪除一個 ""${ $.$data.video_title }"" 記錄?"
+"Thumbnail Image","縮圖圖片"
+"No video found!.","找不到視頻!."
+More,更多
+"Video Board Config","視頻板配置"
+"Video Board","視訊板"
+General,一般
+"Video Board top banner Id","視頻板頂部橫幅ID"
+"Video sort type","視頻分類類型"
+"Video Information","影片資訊"
+"Enable Video","啟用視頻"
+"Video URLs can be links to videos on YouTube or Vimeo, or HTTP(S) links to files with valid video extensions (we recommend .mp4)","視頻網址可以是YouTube或Vimeo上視頻的鏈接, 或HTTP（S）鏈接到具有有效視頻擴展名的文件（我們建議使用.mp4）"
+"Store View","店鋪檢視"
+Description,描述
+"Add New Video","添加新視頻"
+ID,ID
+"Video Title","影片標題"
+"Video URL","影片網址"
+Status,狀態
+Thumbnail,縮圖
+Created,已建立
+Modified,改性
