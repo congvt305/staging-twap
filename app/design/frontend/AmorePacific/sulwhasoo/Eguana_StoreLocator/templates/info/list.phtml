@@ -128,11 +128,10 @@ if ($defaultCountry != null) {
                                 <div class="store-info">
                                     <div class="store-primary-info">
                                         <div class="store-info-top">
-                                            <!--                                        <span class="accordion-icon">-->
-                                            <!--                                            <i class="fas fa-chevron-up"></i>-->
-                                            <!--                                        </span>-->
+                                        <span class="accordion-icon">
+                                            <i class="fas fa-chevron-up"></i>
+                                        </span>
                                             <!--<label class="store-sequence-number">--><?//= $count + 1 ?><!--</label>-->
-
                                             <label class="store-badge store-badge-<?= $block->escapeHtml($storeItem['store_type']); ?>">
                                                 <?= $block->escapeHtml($storeItem['store_type']); ?>
                                             </label>
@@ -140,12 +139,10 @@ if ($defaultCountry != null) {
                                             </strong>
                                         </div>
                                         <p class="address"><?= $block->escapeHtml(__($storeItem['address'])); ?></p>
-                                        <?php if ($block->escapeHtml($storeItem['telephone']) !== ''): ?>
-                                            <p class="telephone">
-                                                <?= $block->escapeHtml(__('Tel'))?>:
-                                                <?= $block->escapeHtml($storeItem['telephone']); ?>
-                                            </p>
-                                        <?php endif; ?>
+                                        <p class="telephone">
+                                            <?= $block->escapeHtml(__('Tel'))?>:
+                                            <?= $block->escapeHtml($storeItem['telephone']); ?>
+                                        </p>
                                     </div>
                                     <div class="store-secondary-info" style="display: none;">
                                         <?php if ($storeItem['email']): ?>
