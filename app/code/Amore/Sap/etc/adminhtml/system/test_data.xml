@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<include xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_include.xsd">
+    <group id="order_confirm_test" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" translate="label comment">
+        <label>Order Confirm Test Value</label>
+        <field id="confirm_order_test" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>Order Confirm Test Value</label>
+            <config_path>sap/order_confirm_test/confirm_order_test</config_path>
+        </field>
+        <field id="confirm_order_item_test" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>Order Item Confirm Test Value</label>
+            <config_path>sap/order_confirm_test/confirm_order_item_test</config_path>
+        </field>
+    </group>
+    <group id="order_cancel_test" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" translate="label comment">
+        <label>Order Cancel Test Value</label>
+        <field id="vkorg" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>vkorg</label>
+            <config_path>sap/order_cancel_test/vkorg</config_path>
+        </field>
+        <field id="kunnr" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>kunnr</label>
+            <config_path>sap/order_cancel_test/kunnr</config_path>
+        </field>
+        <field id="odrno" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>odrno</label>
+            <config_path>sap/order_cancel_test/odrno</config_path>
+        </field>
+        <field id="zchgind" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>zchgind</label>
+            <config_path>sap/order_cancel_test/zchgind</config_path>
+        </field>
+        <field id="recvnm" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>recvnm</label>
+            <config_path>sap/order_cancel_test/recvnm</config_path>
+        </field>
+        <field id="postCode" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>postCode</label>
+            <config_path>sap/order_cancel_test/postCode</config_path>
+        </field>
+        <field id="addr1" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>addr1</label>
+            <config_path>sap/order_cancel_test/addr1</config_path>
+        </field>
+        <field id="addr2" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>addr2</label>
+            <config_path>sap/order_cancel_test/addr2</config_path>
+        </field>
+        <field id="addr3" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>addr3</label>
+            <config_path>sap/order_cancel_test/addr3</config_path>
+        </field>
+        <field id="land1" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>land1</label>
+            <config_path>sap/order_cancel_test/land1</config_path>
+        </field>
+        <field id="telno" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>telno</label>
+            <config_path>sap/order_cancel_test/telno</config_path>
+        </field>
+        <field id="hpno" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <label>hpno</label>
+            <config_path>sap/order_cancel_test/hpno</config_path>
+        </field>
+    </group>
+</include>
