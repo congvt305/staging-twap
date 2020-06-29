@@ -130,9 +130,82 @@ the next number whenever customer will register
     - "statusCD": Customer status
     - "salOrgCd": Sales organization code but will not update
     - "salOffCd": Sales office code but will nto update
-    - "prtnrid": Partner id of the customer
     
 If you do not want to change any attribute value then set it ''
+
+Response
+
+1) When there is no website exist agains the sales office code (salOffCd) 
+
+ {
+      "code": "0001",
+      "message": "No website exist against sales office code salOffCd",
+      "data": {
+        "status_code": "0001",
+        "status_message": "NO",
+        "cstm_intg_seq": "cstmIntgSeq"
+      }
+    }
+    
+1) When customer integration sequence (cstmIntgSeq) parameter is empty 
+
+ {
+       "code": "0002",
+       "message": "Customer Sequence Number can not be empty cstmIntgSeq",
+       "data": {
+         "status_code": "0002",
+         "status_message": "NO",
+         "cstm_intg_seq": "cstmIntgSeq"
+       }
+     }
+     
+1) When there is no customer exist against the customer integration sequence (cstmIntgSeq)
+
+ {
+       "code": "0003",
+       "message": "No customer exist against this integration sequence",
+       "data": {
+         "status_code": "0003",
+         "status_message": "NO",
+         "cstm_intg_seq": "cstmIntgSeq"
+       }
+     }
+     
+1) When there are more than one customer in against the customer integration sequence (cstmIntgSeq) in a specific website 
+
+ {
+       "code": "0004",
+       "message": "There are more than one customer exist against this sequence Id cstmIntgSeq in website customerWebsiteId",
+       "data": {
+         "status_code": "0004",
+         "status_message": "NO",
+         "cstm_intg_seq": "cstmIntgSeq"
+       }
+     }
+     
+1) When mobile number (mobile) assigned to any other customer in the same website
+
+ {
+       "code": "0005",
+       "message": "mobileNo Mobile number is assigned to other customer in website customerWebsiteId",
+       "data": {
+         "status_code": "0005",
+         "status_message": "NO",
+         "cstm_intg_seq": "cstmIntgSeq"
+       }
+     }
+ 
+1) On successfull update
+
+  {
+        "code": "0000",
+        "message": "SUCCESS",
+        "data": {
+          "status_code": "200",
+          "status_message": "OK",
+          "cstm_intg_seq": "cstmIntgSeq"
+        }
+      }
 
 # QRCode
 

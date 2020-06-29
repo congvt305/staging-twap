@@ -10,6 +10,7 @@
 namespace Amore\CustomerRegistration\Api;
 
 use Amore\CustomerRegistration\Api\Data\CustomerInterface;
+use Amore\CustomerRegistration\Helper\Data;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\State\InputMismatchException;
@@ -43,7 +44,7 @@ interface POSIntegrationInterface
      * @param string $statusCD
      * @param string $salOrgCd
      * @param string $salOffCd
-     * @return boolean
+     * @return \Amore\CustomerRegistration\Api\Data\ResponseInterface
      * @throws InputException If bad input is provided
      * @throws InputMismatchException If the provided email is already used
      * @throws LocalizedException if localized exception occurs

@@ -14,7 +14,8 @@ use Magento\Store\Model\StoreRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Amore\CustomerRegistration\Model\POSLogger;
-use Magento\Framework\Serialize\Serializer\Json;
+use Amore\CustomerRegistration\Api\Data\ResponseInterface;
+use Amore\CustomerRegistration\Api\Data\DataResponseInterface;
 
 /**
  * Implement the API module interface
@@ -49,10 +50,15 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      * @var \Amore\CustomerRegistration\Model\POSLogger
      */
     private $logger;
+
     /**
-     * @var Json
+     * @var \Amore\CustomerRegistration\Api\Data\ResponseInterface
      */
-    private $json;
+    private $response;
+    /**
+     * @var DataResponseInterface
+     */
+    private $dataResponse;
 
     public function __construct(
         Data $configHelper,
@@ -61,7 +67,8 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SubscriberFactory $subscriberFactory,
         POSLogger $logger,
-        Json $json
+        ResponseInterface $response,
+        DataResponseInterface $dataResponse
     ) {
         $this->customerRepositoryInterface = $customerRepositoryInterface;
         $this->configHelper = $configHelper;
@@ -69,7 +76,8 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->subscriberFactory = $subscriberFactory;
         $this->logger = $logger;
-        $this->json = $json;
+        $this->response = $response;
+        $this->dataResponse = $dataResponse;
     }
 
     /**
@@ -97,7 +105,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      * @param string $statusCD
      * @param string $salOrgCd
      * @param string $salOffCd
-     * @return boolean|void
+     * @return \Amore\CustomerRegistration\Api\Data\ResponseInterface
      */
     public function update(
         $cstmIntgSeq,
@@ -121,24 +129,24 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
     ) {
         try {
             $parameters = [
-                $cstmIntgSeq,
-                $firstName,
-                $lastName,
-                $birthDay,
-                $mobileNo,
-                $email,
-                $sex,
-                $emailYN,
-                $smsYN,
-                $callYN,
-                $dmYN,
-                $homeCity,
-                $homeState,
-                $homeAddr1,
-                $homeZip,
-                $statusCD,
-                $salOrgCd,
-                $salOffCd
+                'cstmIntgSeq' => $cstmIntgSeq,
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'birthDay' => $birthDay,
+                'mobileNo' => $mobileNo,
+                'email' => $email,
+                'sex' => $sex,
+                'emailYN' => $emailYN,
+                'smsYN' => $smsYN,
+                'callYN' => $callYN,
+                'dmYN' => $dmYN,
+                'homeCity' => $homeCity,
+                'homeState' => $homeState,
+                'homeAddr1' => $homeAddr1,
+                'homeZip' => $homeZip,
+                'statusCD' => $statusCD,
+                'salOrgCd' => $salOrgCd,
+                'salOffCd' => $salOffCd
             ];
 
             $this->logger->addAPICallLog(
@@ -242,21 +250,30 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
 
     private function getResponse($code, $message, $statusCode, $statusMessage, $cstmIntgSeq)
     {
-        $response = [
-            'code' => $code,
-            'message' => $message,
-            'data'  =>    [
-                'statusCode' => $statusCode,
-                'statusMessage' => $statusMessage,
-                'cstmIntgSeq' => $cstmIntgSeq
-            ]
+        $logResponse = [
+          'code' => $code,
+          'message' => $message,
+          'data' => [
+              'status_code' => $statusCode,
+              'status_message' => $statusMessage,
+              'cstm_intg_seq' => $cstmIntgSeq
+          ]
         ];
+
         $this->logger->addAPICallLog(
             'Customer update api response',
             '{Base URL}/rest/all/V1/pos-customers/',
-            $response
+            $logResponse
         );
-        return $this->json->serialize($response);
+
+        $this->response->setCode($code);
+        $this->response->setMessage($message);
+        $this->dataResponse->setCstmIntgSeq($cstmIntgSeq);
+        $this->dataResponse->setStatusCode($statusCode);
+        $this->dataResponse->setStatusMessage($statusMessage);
+        $this->response->setData($this->dataResponse);
+
+        return $this->response;
     }
 
     private function getCustomerWebsiteId($salOffCd)
