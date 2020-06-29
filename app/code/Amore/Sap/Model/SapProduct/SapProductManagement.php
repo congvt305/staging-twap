@@ -162,7 +162,6 @@ class SapProductManagement implements SapProductManagementInterface
     {
         $result = [];
 
-//        $source = $this->request->getParam('source');
         $storeId = $this->getStore($stockData['mallId'])->getId();
 
         /**
@@ -269,7 +268,6 @@ class SapProductManagement implements SapProductManagementInterface
             $result[$priceData['matnr']] = ['code' => "0001", 'message' => $product];
         } else {
             try {
-//            $this->productAction->updateAttributes($productIds, $attributeData, $storeId);
                 $product->setPrice(floatval($priceData['kbetrInv']));
                 $this->productRepository->save($product);
 
