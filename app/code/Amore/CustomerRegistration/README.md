@@ -135,7 +135,7 @@ If you do not want to change any attribute value then set it ''
 
 Response
 
-1) When there is no website exist agains the sales office code (salOffCd) 
+- When there is no website exist agains the sales office code (salOffCd) 
 
  {
       "code": "0001",
@@ -147,7 +147,7 @@ Response
       }
     }
     
-1) When customer integration sequence (cstmIntgSeq) parameter is empty 
+- When customer integration sequence (cstmIntgSeq) parameter is empty 
 
  {
        "code": "0002",
@@ -159,7 +159,7 @@ Response
        }
      }
      
-1) When there is no customer exist against the customer integration sequence (cstmIntgSeq)
+- When there is no customer exist against the customer integration sequence (cstmIntgSeq)
 
  {
        "code": "0003",
@@ -171,7 +171,7 @@ Response
        }
      }
      
-1) When there are more than one customer in against the customer integration sequence (cstmIntgSeq) in a specific website 
+- When there are more than one customer in against the customer integration sequence (cstmIntgSeq) in a specific website 
 
  {
        "code": "0004",
@@ -183,7 +183,7 @@ Response
        }
      }
      
-1) When mobile number (mobile) assigned to any other customer in the same website
+- When mobile number (mobile) assigned to any other customer in the same website
 
  {
        "code": "0005",
@@ -195,7 +195,7 @@ Response
        }
      }
  
-1) On successfull update
+- On successfull update
 
   {
         "code": "0000",
