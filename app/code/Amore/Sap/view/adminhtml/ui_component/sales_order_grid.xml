@@ -32,4 +32,15 @@
             </action>
         </massaction>
     </listingToolbar>
+    <columns name="sales_order_columns">
+        <actionsColumn name="actions" class="Amore\Sap\Ui\Component\Listing\Column\SapOrderSend">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                    <item name="viewUrlPath" xsi:type="string">sales/order/view</item>
+                    <item name="urlEntityParamName" xsi:type="string">order_id</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
 </listing>
