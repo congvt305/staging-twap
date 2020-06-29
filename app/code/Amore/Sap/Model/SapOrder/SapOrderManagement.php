@@ -116,14 +116,17 @@ class SapOrderManagement implements SapOrderManagementInterface
     {
         $result = [];
 
+        $parameters = [
+            $orderStatusData['source'],
+            $orderStatusData['odrno'],
+            $orderStatusData['odrstat'],
+            $orderStatusData['ztrackId'],
+            $orderStatusData['ugcod'],
+            $orderStatusData['ugtxt'],
+            $orderStatusData['mallId']
+        ];
         $this->logger->info('ORDER STATUS REQUEST DATA');
-        $this->logger->info('Source : ' . $orderStatusData['source']);
-        $this->logger->info('Order No : ' . $orderStatusData['odrno']);
-        $this->logger->info('Order Status : ' . $orderStatusData['odrstat']);
-        $this->logger->info('Tracking No : ' . $orderStatusData['ztrackId']);
-        $this->logger->info('ugcod : ' . $orderStatusData['ugcod']);
-        $this->logger->info('ugtxt : ' . $orderStatusData['ugtxt']);
-        $this->logger->info('Mall Id : ' . $orderStatusData['mallId']);
+        $this->logger->info(print_r($parameters, true));
 
         /** @var \Magento\Sales\Model\Order $order */
         $orders = $this->getOrderByIncrementId($orderStatusData['odrno']);
