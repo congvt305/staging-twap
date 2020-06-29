@@ -349,12 +349,99 @@ class SapOrderConfirmData extends AbstractSapOrder
         }
     }
 
-    public function getStore($storeId)
+    public function getTestOrderConfirm()
     {
-        try {
-            return $this->storeRepository->get($storeId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
-            $e->getMessage();
-        }
+        $testOrderValue = $this->config->getDefaultValue('sap/order_confirm_test/confirm_order_test');
+        $testItemValue = $this->config->getDefaultValue('sap/order_confirm_test/confirm_order_item_test');
+        $arrayTestOrderValue = explode(",", $testOrderValue);
+        $arrayTestItemValue = explode(",",$testItemValue);
+
+        $request = [
+            "request" => [
+                "header" => [
+                    "source" => $this->config->getSourceByStore('default', null)
+                ],
+                "input" => [
+                    "itHead" => $this->getTestOrderData($arrayTestOrderValue),
+                    'itItem' => $this->getTestOrderItemData($arrayTestOrderValue, $arrayTestItemValue)
+                ]
+            ]
+        ];
+
+        return $request;
+    }
+
+    public function getTestOrderData($testOrderData)
+    {
+        $bindData[] = [
+            'vkorg' => $testOrderData[0],
+            'kunnr' => $testOrderData[1],
+            'odrno' => $testOrderData[2],
+            'odrdt' => $testOrderData[3],
+            'odrtm' => $testOrderData[4],
+            'paymtd' => $testOrderData[5],
+            'payde' => $testOrderData[6],
+            'paytm' => $testOrderData[7],
+            'auart' => self::NORMAL_ORDER,
+            'aurgu' => '',
+            'augruText' => '',
+            'custid' => $testOrderData[8],
+            'custnm' => 'Test Customer Name',
+            'recvid' => $testOrderData[8],
+            'recvnm' => 'Test Receiver Name',
+            'postCode' => "300",
+            'addr1' => '新竹市',
+            'addr2' => '北區',
+            'addr3' => 'test street',
+            'land1' => 'TW',
+            'telno' => '0911112222',
+            'hpno' => '',
+            'waerk' => 'TWD',
+            'nsamt' => $testOrderData[9],
+            'dcamt' => $testOrderData[10],
+            'slamt' => $testOrderData[11],
+            'miamt' => $testOrderData[12],
+            'shpwr' => $testOrderData[13],
+            'mwsbp' => $testOrderData[14],
+            'spitn1' => '',
+            'vkorgOri' => $testOrderData[0],
+            'kunnrOri' => $testOrderData[1],
+            'odrnoOri' => $testOrderData[2],
+            'itemCnt' => "1",
+            'werks' => '',
+            'lgort' => '',
+            'rmano' => '',
+            'kunwe' => $testOrderData[15],
+            'ztrackId' => $testOrderData[16]
+        ];
+        return $bindData;
+    }
+
+    public function getTestOrderItemData($testOrderData, $testItemData)
+    {
+        $orderItemData[] = [
+            'itemVkorg' => $testOrderData[0],
+            'itemKunnr' => $testOrderData[1],
+            'itemOdrno' => $testOrderData[2],
+            'itemPosnr' => "1",
+            'itemMatnr' => $testItemData[0],
+            'itemMenge' => $testItemData[1],
+            'itemMeins' => 'EA',
+            'itemNsamt' => $testItemData[2],
+            'itemDcamt' => $testItemData[3],
+            'itemSlamt' => $testItemData[4],
+            'itemMiamt' => $testItemData[5],
+            'itemFgflg' => $testItemData[6],
+            'itemMilfg' => $testItemData[7],
+            'itemAuart' => self::NORMAL_ORDER,
+            'itemAugru' => '',
+            'itemNetwr' => $testItemData[8],
+            'itemMwsbp' => $testItemData[9],
+            'itemVkorg_ori' => $testOrderData[0],
+            'itemKunnr_ori' => $testOrderData[1],
+            'itemOdrno_ori' => $testOrderData[2],
+            'itemPosnr_ori' => "1"
+        ];
+        return $orderItemData;
     }
 }
