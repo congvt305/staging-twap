@@ -9,9 +9,9 @@
 namespace Amore\Sap\Model\SapProduct;
 
 use Amore\Sap\Api\SapProductManagementInterface;
+use Amore\Sap\Logger\Logger;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\StateException;
 use Magento\Framework\MessageQueue\PublisherInterface;
 use Magento\Framework\Validation\ValidationException;
 use Magento\InventoryApi\Api\Data\SourceItemInterface;
@@ -100,6 +100,10 @@ class SapProductManagement implements SapProductManagementInterface
      * @var PublisherInterface
      */
     private $publisher;
+    /**
+     * @var Logger
+     */
+    private $logger;
 
 
     /**
@@ -120,6 +124,7 @@ class SapProductManagement implements SapProductManagementInterface
      * @param \Magento\Framework\Webapi\Rest\Request $request
      * @param Json $json
      * @param PublisherInterface $publisher
+     * @param Logger $logger
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
@@ -137,7 +142,8 @@ class SapProductManagement implements SapProductManagementInterface
         StoreManagerInterface $storeManagerInterface,
         \Magento\Framework\Webapi\Rest\Request $request,
         Json $json,
-        PublisherInterface $publisher
+        PublisherInterface $publisher,
+        Logger $logger
     )
     {
         $this->scopeConfig = $scopeConfig;
@@ -156,12 +162,21 @@ class SapProductManagement implements SapProductManagementInterface
         $this->request = $request;
         $this->json = $json;
         $this->publisher = $publisher;
+        $this->logger = $logger;
     }
 
     public function inventoryStockUpdate(\Amore\Sap\Api\Data\SapInventoryStockInterface $stockData)
     {
         $result = [];
+        $parameters = [
+            $stockData['source'],
+            $stockData['mallId'],
+            $stockData['matnr'],
+            $stockData['labst']
+        ];
 
+        $this->logger->info('STOCK DATA');
+        $this->logger->info(print_r($parameters, true));
         $storeId = $this->getStore($stockData['mallId'])->getId();
 
         /**
@@ -197,6 +212,48 @@ class SapProductManagement implements SapProductManagementInterface
     {
         $result = [];
 
+        $parameters = [
+            $productsDetail['source'],
+            $productsDetail['matnr'],
+            $productsDetail['vkorg'],
+            $productsDetail['bismt'],
+            $productsDetail['brgew'],
+            $productsDetail['gewei'],
+            $productsDetail['brand'],
+            $productsDetail['bctxtKo'],
+            $productsDetail['meins'],
+            $productsDetail['mstav'],
+            $productsDetail['spart'],
+            $productsDetail['maxlz'],
+            $productsDetail['breit'],
+            $productsDetail['hoehe'],
+            $productsDetail['laeng'],
+            $productsDetail['kondm'],
+            $productsDetail['mvgr1'],
+            $productsDetail['mvgr2'],
+            $productsDetail['prodh'],
+            $productsDetail['vmsta'],
+            $productsDetail['matnr2'],
+            $productsDetail['setid'],
+            $productsDetail['bline'],
+            $productsDetail['csmtp'],
+            $productsDetail['setdi'],
+            $productsDetail['matshinsun'],
+            $productsDetail['matvessel'],
+            $productsDetail['prdvl'],
+            $productsDetail['vlunt'],
+            $productsDetail['cpiap'],
+            $productsDetail['prdtp'],
+            $productsDetail['rpfut'],
+            $productsDetail['maktxEn'],
+            $productsDetail['maktxZh'],
+            $productsDetail['bctxtEn'],
+            $productsDetail['bctxtZh'],
+            $productsDetail['refill']
+        ];
+
+        $this->logger->info('PRODUCT INFO DATA');
+        $this->logger->info(print_r($parameters, true));
         /**
          * @var $product \Magento\Catalog\Model\Product
          */
@@ -258,6 +315,16 @@ class SapProductManagement implements SapProductManagementInterface
     public function productPriceUpdate($priceData)
     {
         $result = [];
+
+        $parameters = [
+            $priceData['source'],
+            $priceData['matnr'],
+            $priceData['pltyp'],
+            $priceData['kbetrInv'],
+            $priceData['waerk'],
+        ];
+        $this->logger->info('PRICE DATA');
+        $this->logger->info(print_r($parameters, true));
 
         /**
          * @var $product \Magento\Catalog\Model\Product
