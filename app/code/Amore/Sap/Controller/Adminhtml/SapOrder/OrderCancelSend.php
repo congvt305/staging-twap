@@ -2,34 +2,31 @@
 /**
  * Created by Eguana.
  * User: Brian
- * Date: 2020-06-23
- * Time: 오후 3:00
+ * Date: 2020-06-25
+ * Time: 오후 7:47
  */
 
 namespace Amore\Sap\Controller\Adminhtml\SapOrder;
 
 use Amore\Sap\Model\Connection\Request;
-use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
+use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
-use Ecpay\Ecpaypayment\Model\Order;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Setup\Exception;
 
-class OrderSend extends Action
+class OrderCancelSend extends Action
 {
     /**
      * @var Json
      */
     private $json;
-    /**
-     * @var SapOrderConfirmData
-     */
-    private $sapOrderConfirmData;
     /**
      * @var Request
      */
@@ -39,32 +36,36 @@ class OrderSend extends Action
      */
     private $orderRepository;
     /**
+     * @var SapOrderCancelData
+     */
+    private $sapOrderCancelData;
+    /**
      * @var Config
      */
     private $config;
 
     /**
-     * OrderSend constructor.
+     * OrderCancelSend constructor.
      * @param Action\Context $context
      * @param Json $json
-     * @param SapOrderConfirmData $sapOrderConfirmData
      * @param Request $request
      * @param OrderRepositoryInterface $orderRepository
+     * @param SapOrderCancelData $sapOrderCancelData
      * @param Config $config
      */
     public function __construct(
         Action\Context $context,
         Json $json,
-        SapOrderConfirmData $sapOrderConfirmData,
         Request $request,
         OrderRepositoryInterface $orderRepository,
+        SapOrderCancelData $sapOrderCancelData,
         Config $config
     ) {
         parent::__construct($context);
         $this->json = $json;
-        $this->sapOrderConfirmData = $sapOrderConfirmData;
         $this->request = $request;
         $this->orderRepository = $orderRepository;
+        $this->sapOrderCancelData = $sapOrderCancelData;
         $this->config = $config;
     }
 
@@ -75,50 +76,43 @@ class OrderSend extends Action
             $order = $this->orderRepository->get($orderId);
 
             try {
-                $orderSendData = $this->sapOrderConfirmData->singleOrderData($order->getIncrementId());
-                $result = $this->request->postRequest($this->json->serialize($orderSendData), $order->getStoreId());
+                $orderUpdateData = $this->sapOrderCancelData->singleOrderData($order->getIncrementId());
+                $result = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId());
 
                 $resultSize = count($result);
 
                 if ($resultSize > 0) {
                     $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                 } else {
-                    $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response'));
+                    $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
                 }
-
             } catch (NoSuchEntityException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
-            } catch (LocalizedException $e) {
+            } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             }
         } else {
+            $testData = $this->sapOrderCancelData->getTestCancelOrder();
+
+            $jsonTestData = $this->json->serialize($testData);
+
             try {
-                $testOrderData = $this->sapOrderConfirmData->getTestOrderConfirm();
-
-                $serializedTestData = $this->json->serialize($testOrderData);
-                $result = $this->request->postRequest($serializedTestData, 0, 'confirm');
-
+                $result = $this->request->postRequest($jsonTestData, 0);
                 $resultSize = count($result);
+
                 if ($resultSize > 0) {
                     $this->messageManager->addSuccessMessage(__('Test Order sent to SAP Successfully.'));
                 } else {
-                    $this->messageManager->addErrorMessage(__('Something went wrong while sending Test order data to SAP. No response'));
+                    $this->messageManager->addErrorMessage(__('Something went wrong while sending test order update data to SAP. No response.'));
                 }
-
-            } catch (\Exception $exception) {
-                $this->messageManager->addErrorMessage($exception->getMessage());
+            } catch (LocalizedException $e) {
+                $this->messageManager->addErrorMessage($e->getMessage());
+            } catch (\Exception $e) {
+                $this->messageManager->addErrorMessage($e->getMessage());
             }
         }
-
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-        $resultRedirect->setPath('sales/order/index');
-
-        return $resultRedirect;
-    }
-
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Amore_Sap::sap');
+        return $resultRedirect->setPath('sales/order/index');
     }
 }
