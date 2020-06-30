@@ -20,6 +20,8 @@ class Config
 
     const SAP_CVS_SUPPLY_CONTRACTOR_XML_PATH = 'sap/mall_info/cvs_supply_contractor';
 
+    const SAP_LOGGING_XML_PATH = 'sap/general/logging';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -68,5 +70,10 @@ class Config
     public function checkTestMode()
     {
         return $this->scopeConfig->getValue("sap/test/test_active", "default");
+    }
+
+    public function getLoggingCheck()
+    {
+        return $this->scopeConfig->getValue(self::SAP_LOGGING_XML_PATH, 'default');
     }
 }

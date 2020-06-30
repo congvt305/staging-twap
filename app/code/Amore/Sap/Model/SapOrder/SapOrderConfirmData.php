@@ -9,6 +9,8 @@
 namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Model\Source\Config;
+use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Api\InvoiceRepositoryInterface;
@@ -16,6 +18,7 @@ use Magento\Rma\Api\RmaRepositoryInterface;
 use Magento\Sales\Model\Order;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Customer\Api\CustomerRepositoryInterface;
 
 class SapOrderConfirmData extends AbstractSapOrder
 {
@@ -27,6 +30,11 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @var RmaRepositoryInterface
      */
     private $rmaRepository;
+    /**
+     * @var CustomerRepositoryInterface
+     */
+    private $customerRepository;
+
 
     /**
      * SapOrderConfirmData constructor.
@@ -36,6 +44,7 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param Config $config
      * @param InvoiceRepositoryInterface $invoiceRepository
      * @param RmaRepositoryInterface $rmaRepository
+     * @param CustomerRepositoryInterface $customerRepository
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -43,11 +52,13 @@ class SapOrderConfirmData extends AbstractSapOrder
         StoreRepositoryInterface $storeRepository,
         Config $config,
         InvoiceRepositoryInterface $invoiceRepository,
-        RmaRepositoryInterface $rmaRepository
+        RmaRepositoryInterface $rmaRepository,
+        CustomerRepositoryInterface $customerRepository
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
         $this->rmaRepository = $rmaRepository;
+        $this->customerRepository = $customerRepository;
     }
 
     /**
@@ -89,29 +100,28 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $request;
     }
 
-    public function massSendOrderData($incrementId)
+    public function massSendOrderData($orderData, $itemData)
     {
+        $source = $this->config->getDefaultValue('sap/mall_info/source');
+        if (isset($orderData[0])) {
+            $sampleOrderData = $orderData[0];
+            $sampleIncrementId = $sampleOrderData['odrno'];
+            $sampleOrder = $this->getOrderInfo($sampleIncrementId);
+            $source = $this->config->getSourceByStore('store' ,$sampleOrder->getStoreId());
+        }
+
         $request = [
             "request" => [
                 "header" => [
-                    "source" => "source"
+                    "source" => $source
                 ],
                 "input" => [
-                    "itHead" => $this->getOrderData($incrementId),
-                    'itItem' => $this->getOrderItem($incrementId)
+                    "itHead" => $orderData,
+                    'itItem' => $itemData
                 ]
             ]
         ];
-    }
-
-    public function massOrderData($incrementId)
-    {
-
-    }
-
-    public function massOrderItemData()
-    {
-
+        return $request;
     }
 
     public function getOrderType($orderId)
@@ -153,13 +163,14 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         if ($orderData == null) {
             throw new NoSuchEntityException(
-                __("Such order does not exist. Check the data and try again")
+                __("Such order %1 does not exist. Check the data and try again", $incrementId)
             );
         }
 
         if ($invoice != null) {
             $shippingAddress = $orderData->getShippingAddress();
             $trackingNumbers = implode(",",$orderData->getTrackingNumbers());
+            $customer = $this->getCustomerByOrder($orderData);
 
             $bindData[] = [
                 'vkorg' => $this->config->getMallId('store', $storeId),
@@ -173,7 +184,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'auart' => $this->getOrderType($orderData->getEntityId()),
                 'aurgu' => self::NORMAL_ORDER,
                 'augruText' => 'ORDER REASON TEXT',
-                'custid' => '주문자회원코드-직영몰자체코드',
+                // 주문자회원코드-직영몰자체코드
+                'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
                 'custnm' => $orderData->getCustomerLastname() . $orderData->getCustomerLastname(),
                 //배송지 id - 직영몰 자체코드, 없으면 공백
                 'recvid' => '',
@@ -189,10 +201,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'nsamt' => $orderData->getSubtotalInclTax(),
                 'dcamt' => $orderData->getDiscountAmount(),
                 'slamt' => $orderData->getGrandTotal(),
-                'miamt' => $orderData->getRewardPointsBalance(),
+                'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : $orderData->getRewardPointsBalance(),
                 'shpwr' => $orderData->getShippingAmount(),
                 'mwsbp' => $orderData->getTaxAmount(),
-                // 새로 받은거에서 이 필드 사라졌는데 확인 필요
                 'spitn1' => 'shipping meme',
                 'vkorgOri' => $this->config->getMallId('store', $storeId),
                 'kunnrOri' => $this->config->getClient('store', $storeId),
@@ -213,6 +224,26 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $bindData;
     }
 
+    /**
+     * @param $order Order
+     */
+    public function getCustomerByOrder($order)
+    {
+        $customerId = $order->getCustomerId();
+        if (empty($customerId)) {
+            return '';
+        } else {
+            try {
+                /** @var CustomerInterface $customer */
+                $customer = $this->customerRepository->getById($customerId);
+                return $customer;
+            } catch (NoSuchEntityException $e) {
+                return '';
+            } catch (LocalizedException $e) {
+                return '';
+            }
+        }
+    }
 
     /**
      * @param string $incrementId
@@ -236,27 +267,34 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         if ($invoice != null) {
 
-            $orderItems = $order->getAllVisibleItems();
+//            $orderItems = $order->getAllVisibleItems();
+            $orderItems = $order->getAllItems();
+
             $cnt = 1;
-            /** @var \Magento\Sales\Api\Data\OrderItemInterface $orderItem */
+            /** @var \Magento\Sales\Model\Order\Item $orderItem */
             foreach ($orderItems as $orderItem) {
-                $itemGrandTotal = $orderItem->getRowTotal() - $orderItem->getDiscountAmount() + $orderItem->getTaxAmount();
+                if ($orderItem->getProductType() != 'simple') {
+                    continue;
+                }
+                $itemGrandTotal = $this->configurableProductCheck($orderItem)->getRowTotal()
+                    - $this->configurableProductCheck($orderItem)->getDiscountAmount()
+                    + $this->configurableProductCheck($orderItem)->getTaxAmount();
                 $orderItemData[] = [
                     'itemVkorg' => $this->config->getMallId('store', $storeId),
                     'itemKunnr' => $this->config->getClient('store', $storeId),
                     'itemOdrno' => $order->getIncrementId(),
                     'itemPosnr' => $cnt,
                     'itemMatnr' => $orderItem->getSku(),
-                    'itemMenge' => $orderItem->getQtyOrdered(),
+                    'itemMenge' => intval($orderItem->getQtyOrdered()),
                     // 아이템 단위, Default : EA
                     'itemMeins' => 'EA',
-                    'itemNsamt' => $orderItem->getPriceInclTax(),
-                    'itemDcamt' => $orderItem->getDiscountAmount(),
-                    'itemSlamt' => $orderItem->getRowTotal(),
+                    'itemNsamt' => $this->configurableProductCheck($orderItem)->getPriceInclTax(),
+                    'itemDcamt' => $this->configurableProductCheck($orderItem)->getDiscountAmount(),
+                    'itemSlamt' => $this->configurableProductCheck($orderItem)->getRowTotal(),
                     'itemMiamt' => $this->mileageSpentRateByItem(
                         $orderTotal,
-                        $orderItem->getRowTotal(),
-                        $orderItem->getDiscountAmount(),
+                        $this->configurableProductCheck($orderItem)->getRowTotal(),
+                        $this->configurableProductCheck($orderItem)->getDiscountAmount(),
                         $mileageUsedAmount),
                     // 상품이 무상제공인 경우 Y 아니면 N
                     'itemFgflg' => $orderItem->getPrice() == 0 ? 'Y' : 'N',
@@ -264,7 +302,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     'itemAuart' => $this->getOrderType($order->getEntityId()),
                     'itemAugru' => 'order reason,',
                     'itemNetwr' => $itemGrandTotal,
-                    'itemMwsbp' => $orderItem->getTaxAmount(),
+                    'itemMwsbp' => $this->configurableProductCheck($orderItem)->getTaxAmount(),
                     'itemVkorg_ori' => $this->config->getMallId('store', $storeId),
                     'itemKunnr_ori' => $this->config->getClient('store', $storeId),
                     'itemOdrno_ori' => $order->getIncrementId(),
@@ -276,6 +314,19 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $orderItemData;
     }
 
+    /**
+     * @param $orderItem \Magento\Sales\Model\Order\Item
+     */
+    public function configurableProductCheck($orderItem)
+    {
+        if (empty($orderItem->getParentItem())) {
+            return $orderItem;
+        } else {
+            return $orderItem->getParentItem();
+        }
+    }
+
+
     public function mileageSpentRateByItem($orderTotal, $itemRowTotal, $itemDiscountAmount, $mileageUsed)
     {
         $itemTotal = round($itemRowTotal - $itemDiscountAmount, 2);
@@ -283,7 +334,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         if ($mileageUsed) {
             return round(($itemTotal/$orderTotal) * $mileageUsed);
         }
-        return $mileageUsed;
+        return is_null($mileageUsed) ? '0' : $mileageUsed;
     }
 
     public function getInvoice($orderId)
