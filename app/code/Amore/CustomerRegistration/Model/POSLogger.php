@@ -42,6 +42,7 @@ class POSLogger
         if ($this->confg->getDebug()) {
             $this->logger->info($message);
             $this->logger->info($url);
+            $temp = json_encode($parameters);
             $this->logger->info($this->json->serialize($parameters));
         }
     }
