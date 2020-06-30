@@ -10,15 +10,20 @@ namespace Amore\Sap\Model\SapProduct;
 
 use Amore\Sap\Api\SapProductManagementInterface;
 use Amore\Sap\Logger\Logger;
+use Amore\Sap\Model\Source\Config;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Model\ResourceModel\Product\Action;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\MessageQueue\PublisherInterface;
 use Magento\Framework\Validation\ValidationException;
+use Magento\Framework\Webapi\Rest\Request;
 use Magento\InventoryApi\Api\Data\SourceItemInterface;
 use Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory;
 use Magento\InventoryApi\Api\SourceItemsSaveInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\InventoryApi\Api\Data\StockSourceLinkInterface;
@@ -41,7 +46,7 @@ class SapProductManagement implements SapProductManagementInterface
      */
     private $scopeConfig;
     /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     * @var ProductRepositoryInterface
      */
     private $productRepository;
     /**
@@ -57,11 +62,11 @@ class SapProductManagement implements SapProductManagementInterface
      */
     private $sourceItemsSaveInterface;
     /**
-     * @var \Magento\Store\Api\StoreRepositoryInterface
+     * @var StoreRepositoryInterface
      */
     private $storeRepository;
     /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product\Action
+     * @var Action
      */
     private $productAction;
     /**
@@ -89,7 +94,7 @@ class SapProductManagement implements SapProductManagementInterface
      */
     private $storeManagerInterface;
     /**
-     * @var \Magento\Framework\Webapi\Rest\Request
+     * @var Request
      */
     private $request;
     /**
@@ -104,48 +109,53 @@ class SapProductManagement implements SapProductManagementInterface
      * @var Logger
      */
     private $logger;
+    /**
+     * @var Config
+     */
+    private $config;
 
 
     /**
      * SapProductManagement constructor.
      * @param ScopeConfigInterface $scopeConfig
-     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param ProductRepositoryInterface $productRepository
      * @param SourceItemInterface $sourceItemInterface
      * @param SourceItemInterfaceFactory $sourceItemInterfaceFactory
      * @param SourceItemsSaveInterface $sourceItemsSaveInterface
-     * @param \Magento\Store\Api\StoreRepositoryInterface $storeRepository
-     * @param \Magento\Catalog\Model\ResourceModel\Product\Action $productAction
+     * @param StoreRepositoryInterface $storeRepository
+     * @param Action $productAction
      * @param ResourceConnection $resourceConnection
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SortOrderBuilder $sortOrderBuilder
      * @param GetStockSourceLinksInterface $getStockSourceLinks
      * @param SourceRepositoryInterface $sourceRepository
      * @param StoreManagerInterface $storeManagerInterface
-     * @param \Magento\Framework\Webapi\Rest\Request $request
+     * @param Request $request
      * @param Json $json
      * @param PublisherInterface $publisher
      * @param Logger $logger
+     * @param Config $config
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
+        ProductRepositoryInterface $productRepository,
         SourceItemInterface $sourceItemInterface,
         SourceItemInterfaceFactory $sourceItemInterfaceFactory,
         SourceItemsSaveInterface $sourceItemsSaveInterface,
-        \Magento\Store\Api\StoreRepositoryInterface $storeRepository,
-        \Magento\Catalog\Model\ResourceModel\Product\Action $productAction,
+        StoreRepositoryInterface $storeRepository,
+        Action $productAction,
         ResourceConnection $resourceConnection,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SortOrderBuilder $sortOrderBuilder,
         GetStockSourceLinksInterface $getStockSourceLinks,
         SourceRepositoryInterface $sourceRepository,
         StoreManagerInterface $storeManagerInterface,
-        \Magento\Framework\Webapi\Rest\Request $request,
+        Request $request,
         Json $json,
         PublisherInterface $publisher,
-        Logger $logger
-    )
-    {
+        Logger $logger,
+        Config $config
+    ) {
         $this->scopeConfig = $scopeConfig;
         $this->productRepository = $productRepository;
         $this->sourceItemInterface = $sourceItemInterface;
@@ -163,6 +173,7 @@ class SapProductManagement implements SapProductManagementInterface
         $this->json = $json;
         $this->publisher = $publisher;
         $this->logger = $logger;
+        $this->config = $config;
     }
 
     public function inventoryStockUpdate(\Amore\Sap\Api\Data\SapInventoryStockInterface $stockData)
@@ -175,8 +186,11 @@ class SapProductManagement implements SapProductManagementInterface
             $stockData['labst']
         ];
 
-        $this->logger->info('STOCK DATA');
-        $this->logger->info(print_r($parameters, true));
+        if ($this->config->getLoggingCheck()) {
+            $this->logger->info('STOCK DATA');
+            $this->logger->info($this->json->serialize($parameters));
+        }
+
         $storeId = $this->getStore($stockData['mallId'])->getId();
 
         /**
@@ -252,8 +266,11 @@ class SapProductManagement implements SapProductManagementInterface
             $productsDetail['refill']
         ];
 
-        $this->logger->info('PRODUCT INFO DATA');
-        $this->logger->info(print_r($parameters, true));
+        if ($this->config->getLoggingCheck()) {
+            $this->logger->info('PRODUCT INFO DATA');
+            $this->logger->info($this->json->serialize($parameters));
+        }
+
         /**
          * @var $product \Magento\Catalog\Model\Product
          */
@@ -323,8 +340,11 @@ class SapProductManagement implements SapProductManagementInterface
             $priceData['kbetrInv'],
             $priceData['waerk'],
         ];
-        $this->logger->info('PRICE DATA');
-        $this->logger->info(print_r($parameters, true));
+
+        if ($this->config->getLoggingCheck()) {
+            $this->logger->info('PRICE DATA');
+            $this->logger->info($this->json->serialize($parameters));
+        }
 
         /**
          * @var $product \Magento\Catalog\Model\Product
