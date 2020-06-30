@@ -9,6 +9,8 @@
 namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Model\Source\Config;
+use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Api\InvoiceRepositoryInterface;
@@ -16,6 +18,7 @@ use Magento\Rma\Api\RmaRepositoryInterface;
 use Magento\Sales\Model\Order;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Customer\Api\CustomerRepositoryInterface;
 
 class SapOrderConfirmData extends AbstractSapOrder
 {
@@ -27,6 +30,11 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @var RmaRepositoryInterface
      */
     private $rmaRepository;
+    /**
+     * @var CustomerRepositoryInterface
+     */
+    private $customerRepository;
+
 
     /**
      * SapOrderConfirmData constructor.
@@ -36,6 +44,7 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param Config $config
      * @param InvoiceRepositoryInterface $invoiceRepository
      * @param RmaRepositoryInterface $rmaRepository
+     * @param CustomerRepositoryInterface $customerRepository
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -43,11 +52,13 @@ class SapOrderConfirmData extends AbstractSapOrder
         StoreRepositoryInterface $storeRepository,
         Config $config,
         InvoiceRepositoryInterface $invoiceRepository,
-        RmaRepositoryInterface $rmaRepository
+        RmaRepositoryInterface $rmaRepository,
+        CustomerRepositoryInterface $customerRepository
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
         $this->rmaRepository = $rmaRepository;
+        $this->customerRepository = $customerRepository;
     }
 
     /**
@@ -91,10 +102,18 @@ class SapOrderConfirmData extends AbstractSapOrder
 
     public function massSendOrderData($orderData, $itemData)
     {
+        $source = $this->config->getDefaultValue('sap/mall_info/source');
+        if (isset($orderData[0])) {
+            $sampleOrderData = $orderData[0];
+            $sampleIncrementId = $sampleOrderData['odrno'];
+            $sampleOrder = $this->getOrderInfo($sampleIncrementId);
+            $source = $this->config->getSourceByStore('store' ,$sampleOrder->getStoreId());
+        }
+
         $request = [
             "request" => [
                 "header" => [
-                    "source" => "source"
+                    "source" => $source
                 ],
                 "input" => [
                     "itHead" => $orderData,
