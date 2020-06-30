@@ -95,14 +95,24 @@ class MassSend extends AbstractAction
                 $orderStatusError[] = $order->getIncrementId() . ' : ' . $e->getMessage();
             }
         }
+
+        if ($this->config->getLoggingCheck()) {
+            $this->logger->info("ORDER List Data");
+            $this->logger->info($this->json->serialize($orderDataList));
+            $this->logger->info("ORDER Item List Data");
+            $this->logger->info($this->json->serialize($orderItemDataList));
+        }
+
         if ($this->differentStoreExist($storeIdList)) {
             $this->messageManager->addErrorMessage(__("There are more than two different stores` orders selected. Please select order by store and try again."));
             return $resultRedirect->setPath('sales/order/index');
         }
 
         if (count($orderStatusError) > 0) {
-            $errorOrderList = implode(", ", $orderStatusError);
-            $this->messageManager->addErrorMessage(__("Error occurred while sending order : %1. Please check order and try again.", $errorOrderList));
+//            $errorOrderList = implode(", ", $orderStatusError);
+            foreach ($orderStatusError as $error) {
+                $this->messageManager->addErrorMessage(__("Error occurred while sending order : %1.", $error));
+            }
         }
 
         $orderCount = count($orderDataList);
@@ -128,6 +138,8 @@ class MassSend extends AbstractAction
                 } else {
                     $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response'));
                 }
+            } else {
+                $this->messageManager->addErrorMessage(__('There is no order to send. Check order and try again.'));
             }
         } catch (LocalizedException $exception) {
             $this->messageManager->addErrorMessage($exception->getMessage());
