@@ -4,6 +4,7 @@ define([
     'map-viewer'
 ], function ($) {
     return function (config) {
+        //check for location. if location exist then initialize map
         // for plus icon click on store
         $('.store-list').on('click', function () {
             let storeInfo;
@@ -28,27 +29,32 @@ define([
         var windowSize = $(window).width();
         var htmlMapElement, appendTimer;
         if (windowSize <= 959) {
-
             var mapHtmlParent = $(".stores-map").parent();
             htmlMapElement = mapHtmlParent.children();
-
+            // console.log(htmlMapElement);
             $("#store_map_viewer").css({"height":"108.333vw"});
+            $(function() {
+                $('li.store-list').removeClass('selected-store');
+                $('.store-info').click(function(j) {
 
-            $('li.store-list').first().find('.inner-store').css({"display":"block"});
-            $('li.store-list').children('.inner-store').first().append(htmlMapElement);
-            $('li.store-list').find('span.accordion-icon').css('opacity', '0');
-            $('li.store-list').click(function(e) {
-                $(this).find('span.accordion-icon').css('opacity', '0.4');
-                $('li.store-list').children('.inner-store').slideUp();
-                $(this).children('.inner-store').slideToggle();
+                    var dropDown = $(this).closest('li.store-list').find('.inner-store');
+                    $(this).closest('.stores-listing-ul').find('.inner-store').not(dropDown).slideUp();
+
+                    if ($(this).parent('li.store-list').hasClass('selected-store')) {
+                        $(this).parent('li.store-list').removeClass('selected-store');
+                    } else {
+                        $(this).closest('.stores-listing-ul').find('li.store-list.selected-store').removeClass('selected-store');
+                        $(this).parent('li.store-list').addClass('selected-store');
+                    }
+
+                    dropDown.stop(false, true).slideToggle("slow");
+                    j.preventDefault();
+                });
             });
         } else {
-            $( document ).ready(function() {
-                $('li.store-list').first().trigger('click');
-            });
+            $('li.store-list').first().trigger('click');
         }
 
-        //check for location. if location exist then initialize map
         if (config.locations) {
             multi_map_initialize(config.locations, 8, config.viewStore, config.markerImages);
         }
