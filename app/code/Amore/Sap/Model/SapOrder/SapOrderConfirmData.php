@@ -144,7 +144,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         if ($orderData == null) {
             throw new NoSuchEntityException(
-                __("Such order does not exist. Check the data and try again")
+                __("Such order %1 does not exist. Check the data and try again", $incrementId)
             );
         }
 
