@@ -170,6 +170,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         if ($invoice != null) {
             $shippingAddress = $orderData->getShippingAddress();
             $trackingNumbers = implode(",",$orderData->getTrackingNumbers());
+            $customer = $this->getCustomerByOrder($orderData);
 
             $bindData[] = [
                 'vkorg' => $this->config->getMallId('store', $storeId),
@@ -183,7 +184,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'auart' => $this->getOrderType($orderData->getEntityId()),
                 'aurgu' => self::NORMAL_ORDER,
                 'augruText' => 'ORDER REASON TEXT',
-                'custid' => '주문자회원코드-직영몰자체코드',
+                // 주문자회원코드-직영몰자체코드
+                'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
                 'custnm' => $orderData->getCustomerLastname() . $orderData->getCustomerLastname(),
                 //배송지 id - 직영몰 자체코드, 없으면 공백
                 'recvid' => '',
@@ -222,6 +224,26 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $bindData;
     }
 
+    /**
+     * @param $order Order
+     */
+    public function getCustomerByOrder($order)
+    {
+        $customerId = $order->getCustomerId();
+        if (empty($customerId)) {
+            return '';
+        } else {
+            try {
+                /** @var CustomerInterface $customer */
+                $customer = $this->customerRepository->getById($customerId);
+                return $customer;
+            } catch (NoSuchEntityException $e) {
+                return '';
+            } catch (LocalizedException $e) {
+                return '';
+            }
+        }
+    }
 
     /**
      * @param string $incrementId
