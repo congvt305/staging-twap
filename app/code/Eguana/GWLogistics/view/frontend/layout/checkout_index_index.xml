@@ -39,12 +39,35 @@
                                                             <item name="displayArea" xsi:type="string">after-shipping-method-item</item>
                                                             <item name="children" xsi:type="array">
                                                                 <item name="gwlogistics-cvs" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/cvs-form</item>
-                                                                    <item name="config" xsi:type="array">
-                                                                        <item name="template" xsi:type="string">Eguana_GWLogistics/cvs-form</item>
-                                                                    </item>
+                                                                    <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/checkout/shipping/cvs-location-form</item>
                                                                 </item>
                                                             </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+
+                                    </item>
+
+                                </item>
+                                <item name="sidebar" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="shipping-information" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="ship-to" xsi:type="array">
+                                                    <item name="rendererTemplates" xsi:type="array">
+                                                        <item name="customer-address" xsi:type="array">
+                                                            <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/checkout/shipping-information/address-renderer/shipping</item>
+<!--                                                            <item name="config" xsi:type="array">-->
+<!--                                                                <item name="template" xsi:type="string">Eguana_GWLogistics/checkout/shipping/address-renderer/pickup-location</item>-->
+<!--                                                            </item>-->
+                                                        </item>
+                                                        <item name="new-customer-address" xsi:type="array">
+                                                            <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/checkout/shipping-information/address-renderer/shipping</item>
+<!--                                                            <item name="config" xsi:type="array">-->
+<!--                                                                <item name="template" xsi:type="string">Eguana_GWLogistics/checkout/shipping/address-renderer/pickup-location</item>-->
+<!--                                                            </item>-->
                                                         </item>
                                                     </item>
                                                 </item>

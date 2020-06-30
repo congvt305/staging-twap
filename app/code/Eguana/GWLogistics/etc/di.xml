@@ -6,6 +6,11 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Eguana\GWLogistics\Api\Data\QuoteCvsLocationInterface" type="Eguana\GWLogistics\Model\QuoteCvsLocation"/>
+    <preference for="Eguana\GWLogistics\Api\Data\QuoteCvsLocationSearchResultInterface" type="Eguana\GWLogistics\Model\QuoteCvsLocationSearchResult"/>
+    <preference for="Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface" type="Eguana\GWLogistics\Model\QuoteCvsLocationRepository"/>
+    <preference for="Eguana\GWLogistics\Api\CartCvsLocationManagementInterface" type="Eguana\GWLogistics\Model\CartCvsLocationManagement"/>
+    <preference for="Eguana\GWLogistics\Api\GuestCartCvsLocationManagementInterface" type="Eguana\GWLogistics\Model\GuestCartCvsLocationManagement"/>
     <type name="Magento\Config\Model\Config\TypePool">
         <arguments>
             <argument name="sensitive" xsi:type="array">

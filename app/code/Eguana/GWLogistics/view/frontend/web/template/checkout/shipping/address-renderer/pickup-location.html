@@ -1,0 +1,9 @@
+<div>eguana</div>
+<div data-bind="foreach: cvsLocation.cvsLocation()">
+    <strong><!-- ko text: LogisticsSubType --><!-- /ko --> <!-- ko text: CVSStoreName --><!-- /ko --><br/></strong><br/>
+    <!-- ko text: CVSAddress --><!-- /ko --><br/>
+    <!-- ko text: CVSTelephone --><!-- /ko -->, <!-- ko text: $parent.getRegionNameByCode(country,region) --><!-- /ko -->, <!-- ko text: postcode --><!-- /ko --><br/>
+    <!-- ko text: $parent.getCountryName(country) --><!-- /ko -->
+</div>
+
+
