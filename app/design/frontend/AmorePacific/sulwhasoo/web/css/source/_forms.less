@@ -199,24 +199,26 @@
         border: 1px solid @form-element-input__border-color;
         cursor: pointer;
         display: inline-block;
-        height: 20px;
+        height: @indent__base;
         top: 0;
-        width: 20px;
+        width: @indent__base;
         vertical-align: top;
 
         & + label {
             color: @primary__color;
             cursor: pointer;
-            font-size: 15px;
-            vertical-align: middle;
             display: inline;
+            font-size: 15px;
+            line-height: @indent__base;
             position: relative;
+            vertical-align: top;
+            width: calc(100% - 25px);
         }
     }
 
     input[type="checkbox"]:checked{
-        background: @form-element-input__border-color;
-        border-color: @form-element-input__border-color;
+        background: @theme__color__secondary;
+        border-color: @theme__color__secondary;
 
         .lib-icon-font(
                 @icon-checkmark,
@@ -264,8 +266,9 @@
         }
 
         &:checked {
-            background-color: @form-element-input__border-color;
-            box-shadow: 0 0 0 1px @form-element-input__border-color;
+            background-color: @theme__color__secondary;
+            border-color: @theme__color__secondary;
+            box-shadow: 0 0 0 1px @theme__color__secondary;
 
             .lib-icon-font(
                     @icon-checkmark,
@@ -293,11 +296,14 @@
                 @_icon-font-content: @icon-calendar,
                 @_icon-font-color: @primary__color__lighter,
                 @_icon-font-size: @icon-calendar__font-size,
-                @_icon-font-line-height: @icon-calendar__font-size,
+                @_icon-font-line-height: @form-element-input__height,
                 @_icon-font-display: block,
                 @_icon-font-text-hide: true
             );
             display: inline-block;
+            position: absolute;
+            right: 16px;
+            top: 0;
             vertical-align: middle;
 
             &:focus {
@@ -342,6 +348,7 @@
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .fieldset {
+        ._has-datepicker ~ .ui-datepicker-trigger:before,
         input[type="text"],
         input[type="password"],
         input[type="url"],
@@ -361,6 +368,11 @@
 
         .lib-form-fieldset(
             @_legend-font-size: 18px
-        )
+        );
+
+        ._has-datepicker ~ .ui-datepicker-trigger:before {
+            .lib-font-size(30);
+            line-height: @indent__xl;
+        }
     }
 }
