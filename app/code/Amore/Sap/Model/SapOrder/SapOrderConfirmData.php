@@ -180,10 +180,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'nsamt' => $orderData->getSubtotalInclTax(),
                 'dcamt' => $orderData->getDiscountAmount(),
                 'slamt' => $orderData->getGrandTotal(),
-                'miamt' => $orderData->getRewardPointsBalance(),
+                'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : $orderData->getRewardPointsBalance(),
                 'shpwr' => $orderData->getShippingAmount(),
                 'mwsbp' => $orderData->getTaxAmount(),
-                // 새로 받은거에서 이 필드 사라졌는데 확인 필요
                 'spitn1' => 'shipping meme',
                 'vkorgOri' => $this->config->getMallId('store', $storeId),
                 'kunnrOri' => $this->config->getClient('store', $storeId),
@@ -227,27 +226,34 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         if ($invoice != null) {
 
-            $orderItems = $order->getAllVisibleItems();
+//            $orderItems = $order->getAllVisibleItems();
+            $orderItems = $order->getAllItems();
+
             $cnt = 1;
-            /** @var \Magento\Sales\Api\Data\OrderItemInterface $orderItem */
+            /** @var \Magento\Sales\Model\Order\Item $orderItem */
             foreach ($orderItems as $orderItem) {
-                $itemGrandTotal = $orderItem->getRowTotal() - $orderItem->getDiscountAmount() + $orderItem->getTaxAmount();
+                if ($orderItem->getProductType() != 'simple') {
+                    continue;
+                }
+                $itemGrandTotal = $this->configurableProductCheck($orderItem)->getRowTotal()
+                    - $this->configurableProductCheck($orderItem)->getDiscountAmount()
+                    + $this->configurableProductCheck($orderItem)->getTaxAmount();
                 $orderItemData[] = [
                     'itemVkorg' => $this->config->getMallId('store', $storeId),
                     'itemKunnr' => $this->config->getClient('store', $storeId),
                     'itemOdrno' => $order->getIncrementId(),
                     'itemPosnr' => $cnt,
                     'itemMatnr' => $orderItem->getSku(),
-                    'itemMenge' => $orderItem->getQtyOrdered(),
+                    'itemMenge' => intval($orderItem->getQtyOrdered()),
                     // 아이템 단위, Default : EA
                     'itemMeins' => 'EA',
-                    'itemNsamt' => $orderItem->getPriceInclTax(),
-                    'itemDcamt' => $orderItem->getDiscountAmount(),
-                    'itemSlamt' => $orderItem->getRowTotal(),
+                    'itemNsamt' => $this->configurableProductCheck($orderItem)->getPriceInclTax(),
+                    'itemDcamt' => $this->configurableProductCheck($orderItem)->getDiscountAmount(),
+                    'itemSlamt' => $this->configurableProductCheck($orderItem)->getRowTotal(),
                     'itemMiamt' => $this->mileageSpentRateByItem(
                         $orderTotal,
-                        $orderItem->getRowTotal(),
-                        $orderItem->getDiscountAmount(),
+                        $this->configurableProductCheck($orderItem)->getRowTotal(),
+                        $this->configurableProductCheck($orderItem)->getDiscountAmount(),
                         $mileageUsedAmount),
                     // 상품이 무상제공인 경우 Y 아니면 N
                     'itemFgflg' => $orderItem->getPrice() == 0 ? 'Y' : 'N',
@@ -255,7 +261,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     'itemAuart' => $this->getOrderType($order->getEntityId()),
                     'itemAugru' => 'order reason,',
                     'itemNetwr' => $itemGrandTotal,
-                    'itemMwsbp' => $orderItem->getTaxAmount(),
+                    'itemMwsbp' => $this->configurableProductCheck($orderItem)->getTaxAmount(),
                     'itemVkorg_ori' => $this->config->getMallId('store', $storeId),
                     'itemKunnr_ori' => $this->config->getClient('store', $storeId),
                     'itemOdrno_ori' => $order->getIncrementId(),
@@ -267,6 +273,19 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $orderItemData;
     }
 
+    /**
+     * @param $orderItem \Magento\Sales\Model\Order\Item
+     */
+    public function configurableProductCheck($orderItem)
+    {
+        if (empty($orderItem->getParentItem())) {
+            return $orderItem;
+        } else {
+            return $orderItem->getParentItem();
+        }
+    }
+
+
     public function mileageSpentRateByItem($orderTotal, $itemRowTotal, $itemDiscountAmount, $mileageUsed)
     {
         $itemTotal = round($itemRowTotal - $itemDiscountAmount, 2);
@@ -274,7 +293,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         if ($mileageUsed) {
             return round(($itemTotal/$orderTotal) * $mileageUsed);
         }
-        return $mileageUsed;
+        return is_null($mileageUsed) ? '0' : $mileageUsed;
     }
 
     public function getInvoice($orderId)
