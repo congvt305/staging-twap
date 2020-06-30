@@ -89,7 +89,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $request;
     }
 
-    public function massSendOrderData($incrementId)
+    public function massSendOrderData($orderData, $itemData)
     {
         $request = [
             "request" => [
@@ -97,21 +97,12 @@ class SapOrderConfirmData extends AbstractSapOrder
                     "source" => "source"
                 ],
                 "input" => [
-                    "itHead" => $this->getOrderData($incrementId),
-                    'itItem' => $this->getOrderItem($incrementId)
+                    "itHead" => $orderData,
+                    'itItem' => $itemData
                 ]
             ]
         ];
-    }
-
-    public function massOrderData($incrementId)
-    {
-
-    }
-
-    public function massOrderItemData()
-    {
-
+        return $request;
     }
 
     public function getOrderType($orderId)
