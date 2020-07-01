@@ -8,7 +8,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="header.links">
-            <block class="Magento\Framework\View\Element\Html\Link" name="store-locator-link">
+            <block class="Magento\Framework\View\Element\Html\Link" name="store-locator-link" after="-">
                 <arguments>
                     <argument name="class" xsi:type="string" translate="true">location</argument>
                     <argument name="path" xsi:type="string">stores/info/list</argument>
