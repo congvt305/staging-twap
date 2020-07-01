@@ -9,5 +9,11 @@
     <body>
         <move element="order.status" destination="content" before="-"/>
         <move element="order.date" destination="order.status" after="-"/>
+        <referenceBlock name="invoice_totals">
+            <arguments>
+                <argument name="label_properties" xsi:type="string">colspan="2" class="mark"</argument>
+                <argument name="value_properties" xsi:type="string">colspan="2" class="amount"</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>

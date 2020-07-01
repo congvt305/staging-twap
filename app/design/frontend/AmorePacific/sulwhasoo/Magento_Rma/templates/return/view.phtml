@@ -31,7 +31,7 @@ $rmaHelper = $block->getRmaHelper();
                 <?php endif ?>
             </div>
         </div>
-        <div class="box box-treturns-shipping">
+        <div class="box box-returns-shipping">
             <strong class="box-title"><span><?= $block->escapeHtml(__('Shipping Address')); ?></span></strong>
             <div class="box-content">
                 <address>
@@ -137,7 +137,6 @@ $rmaHelper = $block->getRmaHelper();
                     <tr>
                         <?php $availableAttributes = $block->getVisibleAttributes(); ?>
                         <th scope="col" class="col id"><?= $block->escapeHtml(__('Product Name')); ?></th>
-                        <th scope="col" class="col sku"><?= $block->escapeHtml(__('SKU')); ?></th>
                         <?php if (isset($availableAttributes['condition'])): ?>
                             <th scope="col" class="col condition"><?= $block->escapeHtml(__('Condition')); ?></th>
                         <?php endif; ?>
@@ -178,7 +177,6 @@ $rmaHelper = $block->getRmaHelper();
                                     </button>
                                 <?php endif; ?>
                             </td>
-                            <td data-th="<?= $block->escapeHtmlAttr(__('SKU')) ?>" class="col sku"><?= $block->escapeHtml($item->getProductSku()) ?></span></td>
                             <?php if (false !== $block->getAttributeValue($item->getId(), 'condition')) : ?>
                                 <td data-th="<?= $block->escapeHtmlAttr(__('Condition')) ?>" class="col condition"><?= $block->escapeHtml($block->getAttributeValue($item->getId(), 'condition')) ?></td>
                             <?php endif; ?>

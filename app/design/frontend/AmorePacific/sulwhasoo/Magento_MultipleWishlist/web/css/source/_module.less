@@ -497,12 +497,10 @@
                     }
                 }
 
-                &-name,
-                &-description,
-                .price-box,
-                &-tooltip {
-                    .page-multiple-wishlist & {
+                &-info > * {
+                    &:not(.product-item-photo):not(.product-item-inner) {
                         margin-left: 115px;
+                        text-align: left;
                     }
                 }
             }

@@ -9,26 +9,15 @@
 ?>
 <?php /** @var  $block \Magento\Shipping\Block\Items */ ?>
 <?php  $_order = $block->getOrder() ?>
-<div class="actions-toolbar">
-    <a href="<?= $block->escapeUrl($block->getPrintAllShipmentsUrl($_order)) ?>"
-       class="action print"
-       target="_blank"
-       rel="noopener">
-        <span><?= $block->escapeHtml(__('Print All Shipments')) ?></span>
-    </a>
-</div>
 <?php foreach ($_order->getShipmentsCollection() as $_shipment): ?>
     <div class="order-title">
-        <strong><?= $block->escapeHtml(__('Shipment #')) ?><?= $_shipment->getIncrementId() ?></strong>
-        <a href="<?= $block->escapeUrl($block->getPrintShipmentUrl($_shipment)) ?>"
+        <strong><?= $block->escapeHtml(__('Shipment')) ?></strong><?= $_shipment->getIncrementId() ?>
+        <a href="<?= $block->escapeUrl($block->getPrintAllShipmentsUrl($_order)) ?>"
            class="action print"
            target="_blank"
            rel="noopener">
             <span><?= $block->escapeHtml(__('Print Shipment')) ?></span>
         </a>
-        <?php if ($_order->getTracksCollection()->count()) : ?>
-            <?= $block->getChildHtml('track-all-link') ?>
-        <?php endif; ?>
         <a href="#"
            data-mage-init='{"popupWindow": {"windowURL":"<?= $block->escapeUrl($this->helper(Magento\Shipping\Helper\Data::class)->getTrackingPopupUrlBySalesModel($_shipment)) ?>","windowName":"trackshipment","width":800,"height":600,"top":0,"left":0,"resizable":1,"scrollbars":1}}'
            title="<?= $block->escapeHtmlAttr(__('Track this shipment')) ?>"
@@ -63,7 +52,6 @@
             <thead>
             <tr>
                 <th class="col name"><?= $block->escapeHtml(__('Product Name')) ?></th>
-                <th class="col sku"><?= $block->escapeHtml(__('SKU')) ?></th>
                 <th class="col qty"><?= $block->escapeHtml(__('Qty Shipped')) ?></th>
             </tr>
             </thead>
