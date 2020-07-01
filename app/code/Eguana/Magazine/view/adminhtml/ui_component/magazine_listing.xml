@@ -35,7 +35,7 @@
             </storageConfig>
             <updateUrl path="mui/index/render"/>
         </settings>
-        <aclResource>Eguana_Magazine::magazine</aclResource>
+        <aclResource>Eguana_Magazine::manage_magazine</aclResource>
         <dataProvider class="Eguana\Magazine\Ui\Component\DataProvider" name="magazine_listing_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
