@@ -2,40 +2,50 @@
 /**
  * Created by Eguana Team.
  * User: sonia
- * Date: 6/6/20
- * Time: 8:37 PM
+ * Date: 6/28/20
+ * Time: 9:45 AM
  */
 
-namespace Eguana\GWLogistics\Controller\ReceiverServerReply;
+namespace Eguana\GWLogistics\Controller\SelectedCvsNotify;
 
-
+use Eguana\GWLogistics\Model\QuoteCvsLocation;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\RawFactory;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 class Index extends Action implements CsrfAwareActionInterface
 {
+
     /**
-     * @var RawFactory
+     * @var \Eguana\GWLogistics\Model\Service\SaveQuoteCvsLocation
      */
-    private $rawFactory;
+    private $saveQuoteCvsLocation;
     /**
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var RawFactory
+     */
+    private $rawFactory;
 
     public function __construct(
+        \Eguana\GWLogistics\Model\Service\SaveQuoteCvsLocation $saveQuoteCvsLocation, //todo move business logic to here.
         LoggerInterface $logger,
         RawFactory $rawFactory,
         Context $context
     ) {
         parent::__construct($context);
-        $this->rawFactory = $rawFactory;
+
+        $this->saveQuoteCvsLocation = $saveQuoteCvsLocation;
         $this->logger = $logger;
+        $this->rawFactory = $rawFactory;
     }
 
     public function execute()
@@ -54,18 +64,13 @@ class Index extends Action implements CsrfAwareActionInterface
         }
         $html = '';
         try {
-            $this->saveCsvStoreData($cvsStoreData);
+            $this->saveQuoteCvsLocation->process($cvsStoreData);
             $html = '<script>window.close();</script>';
         } catch (\Exception $e) {
             $html = $e->getMessage();
             $this->logger->error($e->getMessage());
         }
         return $resultRaw->setContents($html);
-    }
-
-    private function saveCsvStoreData($cvsStoreData)
-    {
-        $this->logger->debug('cvsStoreData: ', $cvsStoreData);
     }
 
     /**

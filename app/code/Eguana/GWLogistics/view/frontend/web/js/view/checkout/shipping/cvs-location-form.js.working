@@ -3,19 +3,21 @@ define([
     'jquery',
     'uiComponent',
     'Magento_Checkout/js/model/quote',
-    'Eguana_GWLogistics/js/action/get-selected-cvs-data',
+    'Eguana_GWLogistics/js/action/get-selected-cvs-location',
+    'Eguana_GWLogistics/js/model/cvs-location',
+    './test',
     'mage/url',
-], function (ko, $, Component, quote, getSelectedCvsData, urlBuilder) {
+], function (ko, $, Component, quote, getSelectedCvsLocationAction, cvsLocation,  test, urlBuilder) {
     'use strict';
     return Component.extend({
         defaults: {
             isVisible: false,
             isMapVisible : true,
             displayArea: 'after-shipping-method-item',
-            template: 'Eguana_GWLogistics/cvs-form',
+            template: 'Eguana_GWLogistics/checkout/shipping/cvs-location-form',
             cvsMapFormTemplate: 'Eguana_GWLogistics/cvs-map-form',
             MerchantTradeNo: null,
-            ServerReplyURL: urlBuilder.build('eguana_gwlogistics/ReceiverServerReply'),
+            ServerReplyURL: urlBuilder.build('eguana_gwlogistics/SelectedCvsNotify'),
             LogisticsType: 'CVS',
             LogisticsSubType: 'UNIMART',
             IsCollection: 'N',
@@ -53,21 +55,38 @@ define([
         onWindowActivated: function () {
             this.windowActivateCount++;
             if (this.windowActivateCount % 2 === 0) {
-                this.getCvsStoreData();
+                console.log("Visibility of page has changed!");
+                // this.getCvsStoreData();
+                this.getSelectedCvsLocation();
+
+                test();
             }
         },
 
-        getCvsStoreData: function () {
-            var quoteId = quote.getQuoteId();
-            getSelectedCvsData(quoteId).done(function (response) {
-                this.CVSStoreID = response.CVSStoreID;
-                this.CVSStoreName = response.CVSStoreName;
-                this.CVSTelephone = response.CVSTelephone;
-                this.CVSAddress = response.CVSAddress;
-            }.bind(this));
+        // getCvsStoreData: function () {
+        //     var quoteId = quote.getQuoteId();
+        //     getSelectedCvsData(quoteId).done(function (response) { // call action
+        //         this.CVSStoreID = response.CVSStoreID;
+        //         this.CVSStoreName = response.CVSStoreName;
+        //         this.CVSTelephone = response.CVSTelephone;
+        //         this.CVSAddress = response.CVSAddress;
+        //         cvsLocations.selectPickupLocation(response); //call model to set customer data
+        //     }.bind(this));
+        //
+        // },
+        getSelectedCvsLocation: function () {
+            console.log("getSelectedCvsLocation");
+            getSelectedCvsLocationAction(); //todo if error?
+            cvsLocation.selectCvsLocation();
+        },
+
+        getCvsLocation: function () {
+            console.log('getCvsLocation called: ', cvsLocation.getCvsLocation());
+            return cvsLocation.getCvsLocation();
         },
 
         openCvsMap: function () {
+            // console.log('openCvsMap');
             var mapWin = window.open('', 'cvsMapFormGw');
             // $.proxy($('#cvs-map-load-form').submit(), this);
         },
@@ -77,6 +96,7 @@ define([
         },
 
         setCvsMapFormData: function () {
+            // console.log('cvs initialized.');
             // this.device(this.isMobile());
             // this.ServerReplyURL('http://192.168.0.1/ReceiverServerReply');
         },

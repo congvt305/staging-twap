@@ -11,7 +11,8 @@ namespace Amore\Sap\Controller\Adminhtml\SapOrder;
 use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Model\Source\Config;
-use Ecpay\Ecpaypayment\Model\Order;
+use Amore\Sap\Logger\Logger;
+use Amore\Sap\Controller\Adminhtml\AbstractAction;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
@@ -20,63 +21,67 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
-class OrderSend extends Action
+class OrderSend extends AbstractAction
 {
-    /**
-     * @var Json
-     */
-    private $json;
     /**
      * @var SapOrderConfirmData
      */
     private $sapOrderConfirmData;
-    /**
-     * @var Request
-     */
-    private $request;
+
     /**
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
-    /**
-     * @var Config
-     */
-    private $config;
+
 
     /**
      * OrderSend constructor.
      * @param Action\Context $context
      * @param Json $json
-     * @param SapOrderConfirmData $sapOrderConfirmData
      * @param Request $request
-     * @param OrderRepositoryInterface $orderRepository
+     * @param Logger $logger
      * @param Config $config
+     * @param OrderRepositoryInterface $orderRepository
+     * @param SapOrderConfirmData $sapOrderConfirmData
      */
     public function __construct(
         Action\Context $context,
         Json $json,
-        SapOrderConfirmData $sapOrderConfirmData,
         Request $request,
+        Logger $logger,
+        Config $config,
         OrderRepositoryInterface $orderRepository,
-        Config $config
+        SapOrderConfirmData $sapOrderConfirmData
     ) {
-        parent::__construct($context);
-        $this->json = $json;
-        $this->sapOrderConfirmData = $sapOrderConfirmData;
-        $this->request = $request;
+        parent::__construct($context, $json, $request, $logger, $config);
         $this->orderRepository = $orderRepository;
-        $this->config = $config;
+        $this->sapOrderConfirmData = $sapOrderConfirmData;
     }
 
     public function execute()
     {
         if (!$this->config->checkTestMode()) {
-            $orderId = $this->getRequest()->getParam('id');
+            if ($this->config->getLoggingCheck()) {
+                $this->logger->info("Order Entity Id");
+                $this->logger->info($this->getRequest()->getParam('order_id'));
+            }
+            $orderId = $this->getRequest()->getParam('order_id');
             $order = $this->orderRepository->get($orderId);
 
             try {
                 $orderSendData = $this->sapOrderConfirmData->singleOrderData($order->getIncrementId());
+
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info("Single Order Send Data");
+                    $this->logger->info($this->json->serialize($orderSendData));
+                }
+
                 $result = $this->request->postRequest($this->json->serialize($orderSendData), $order->getStoreId());
+
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info("Single Order Result Data");
+                    $this->logger->info($this->json->serialize($result));
+                }
 
                 $resultSize = count($result);
 
@@ -95,8 +100,19 @@ class OrderSend extends Action
             try {
                 $testOrderData = $this->sapOrderConfirmData->getTestOrderConfirm();
 
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info("Single Test Order Send Data");
+                    $this->logger->info($this->json->serialize($testOrderData));
+                }
+
                 $serializedTestData = $this->json->serialize($testOrderData);
+
                 $result = $this->request->postRequest($serializedTestData, 0, 'confirm');
+
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info("Single Test Order Result Data");
+                    $this->logger->info($this->json->serialize($result));
+                }
 
                 $resultSize = count($result);
                 if ($resultSize > 0) {

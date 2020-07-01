@@ -10,6 +10,7 @@ namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Api\SapOrderManagementInterface;
 use Amore\Sap\Logger\Logger;
+use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Api\Data\OrderInterfaceFactory;
@@ -74,6 +75,10 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @var Logger
      */
     private $logger;
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * SapOrderManagement constructor.
@@ -87,6 +92,7 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @param Json $json
      * @param Payment $ecpayPayment
      * @param Logger $logger
+     * @param Config $config
      */
     public function __construct(
         ShipmentItemCreationInterfaceFactory $shipmentItemCreationInterfaceFactory,
@@ -98,7 +104,8 @@ class SapOrderManagement implements SapOrderManagementInterface
         SearchCriteriaBuilder $searchCriteriaBuilder,
         Json $json,
         Payment $ecpayPayment,
-        Logger $logger
+        Logger $logger,
+        Config $config
     ) {
         $this->shipmentItemCreationInterfaceFactory = $shipmentItemCreationInterfaceFactory;
         $this->shipmentTrackCreationInterfaceFactory = $shipmentTrackCreationInterfaceFactory;
@@ -110,6 +117,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         $this->json = $json;
         $this->ecpayPayment = $ecpayPayment;
         $this->logger = $logger;
+        $this->config = $config;
     }
 
     public function orderStatus($orderStatusData)
@@ -125,8 +133,11 @@ class SapOrderManagement implements SapOrderManagementInterface
             $orderStatusData['ugtxt'],
             $orderStatusData['mallId']
         ];
-        $this->logger->info('ORDER STATUS REQUEST DATA');
-        $this->logger->info(print_r($parameters, true));
+
+        if ($this->config->getLoggingCheck()) {
+            $this->logger->info('ORDER STATUS REQUEST DATA');
+            $this->logger->info($this->json->serialize($parameters));
+        }
 
         /** @var \Magento\Sales\Model\Order $order */
         $orders = $this->getOrderByIncrementId($orderStatusData['odrno']);

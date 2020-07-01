@@ -68,6 +68,7 @@ class Index extends Action implements CsrfAwareActionInterface
     {
         //todo check checksum and save correctly.
         $this->logger->debug('notifyDataFrom GWLogistics: ', $notifyData);
+        //todo save QuoteCvsLocation from repository or resource model
     }
 
     /**

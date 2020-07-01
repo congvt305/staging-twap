@@ -8,29 +8,22 @@
 
 namespace Amore\Sap\Controller\Adminhtml\SapOrder;
 
+use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
+use Amore\Sap\Controller\Adminhtml\AbstractAction;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Setup\Exception;
 
-class OrderCancelSend extends Action
+class OrderCancelSend extends AbstractAction
 {
-    /**
-     * @var Json
-     */
-    private $json;
-    /**
-     * @var Request
-     */
-    private $request;
+
     /**
      * @var OrderRepositoryInterface
      */
@@ -39,34 +32,29 @@ class OrderCancelSend extends Action
      * @var SapOrderCancelData
      */
     private $sapOrderCancelData;
-    /**
-     * @var Config
-     */
-    private $config;
 
     /**
      * OrderCancelSend constructor.
      * @param Action\Context $context
      * @param Json $json
      * @param Request $request
+     * @param Logger $logger
+     * @param Config $config
      * @param OrderRepositoryInterface $orderRepository
      * @param SapOrderCancelData $sapOrderCancelData
-     * @param Config $config
      */
     public function __construct(
         Action\Context $context,
         Json $json,
         Request $request,
+        Logger $logger,
+        Config $config,
         OrderRepositoryInterface $orderRepository,
-        SapOrderCancelData $sapOrderCancelData,
-        Config $config
+        SapOrderCancelData $sapOrderCancelData
     ) {
-        parent::__construct($context);
-        $this->json = $json;
-        $this->request = $request;
+        parent::__construct($context, $json, $request, $logger, $config);
         $this->orderRepository = $orderRepository;
         $this->sapOrderCancelData = $sapOrderCancelData;
-        $this->config = $config;
     }
 
     public function execute()
