@@ -42,7 +42,7 @@
         <settings>
             <submitUrl path="videoboard/howto/save"/>
         </settings>
-        <aclResource>Magento_VideoBoard::videoboard</aclResource>
+        <aclResource>Eguana_VideoBoard::manage_videoboard</aclResource>
         <dataProvider class="Eguana\VideoBoard\Model\DataProvider" name="addnew_form_data_source">
             <settings>
                 <primaryFieldName>entity_id</primaryFieldName>

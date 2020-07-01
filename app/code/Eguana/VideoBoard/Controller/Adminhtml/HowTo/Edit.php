@@ -32,7 +32,7 @@ class Edit extends Action implements HttpGetActionInterface
      *
      * @see _isAllowed()
      */
-    const ADMIN_RESOURCE = 'Eguana_VideoBoard::config_stores';
+    const ADMIN_RESOURCE = 'Eguana_VideoBoard::manage_videoboard';
     /**
      * @var Registry
      */
