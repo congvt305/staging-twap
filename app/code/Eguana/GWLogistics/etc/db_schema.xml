@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="eguana_gwlogistics_quote_cvs_location" resource="default" engine="innodb"
+           comment="Quote Cvs Location Entity">
+        <column xsi:type="int" name="location_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Quote Cvs Location Id"/>
+        <column xsi:type="int" name="quote_address_id" padding="10" unsigned="true" nullable="true" identity="false"
+                default="0" comment="Quote Address Id"/>
+        <column xsi:type="varchar" name="merchant_trade_no" nullable="true" length="20"
+                comment="Merchant Trade No"/>
+        <column xsi:type="varchar" name="logistics_sub_type" nullable="true" length="20"
+                comment="Logistics Sub Type"/>
+        <column xsi:type="varchar" name="cvs_store_id" nullable="true" length="9"
+                comment="CVS StoreID"/>
+        <column xsi:type="varchar" name="cvs_store_name" nullable="true" length="10"
+                comment="CVS Store Name"/>
+        <column xsi:type="varchar" name="cvs_address" nullable="true" length="60"
+                comment="CVS Address"/>
+        <column xsi:type="varchar" name="cvs_telephone" nullable="true" length="20"
+                comment="CVS Telephone"/>
+        <column xsi:type="varchar" name="cvs_outside" nullable="true" length="1"
+                comment="CVS OutSide"/>
+        <column xsi:type="varchar" name="extra_data" nullable="true" length="20"
+                comment="Extra Data"/>
+        <column xsi:type="smallint" name="is_selected" padding="6" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Is Selected"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="location_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="FK_03592A8E8B7525E44B5D0F179D297A14"
+                    table="eguana_gwlogistics_quote_cvs_location" column="quote_address_id" referenceTable="quote_address"
+                    referenceColumn="address_id" onDelete="CASCADE"/>
+        <index referenceId="EGUANA_GWLOGISTICS_QUOTE_CVS_LOCATION_QUOTE_ADDR_ID_IS_SELECTED" indexType="btree">
+            <column name="quote_address_id"/>
+            <column name="is_selected"/>
+        </index>
+    </table>
+</schema>

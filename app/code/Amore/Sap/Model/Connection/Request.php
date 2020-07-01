@@ -65,7 +65,6 @@ class Request
     public function postRequest($requestData, $storeId, $type = 'confirm')
     {
         if ($this->config->checkTestMode()) {
-            $this->logger->info("TEST MODE REQUEST");
             $url = $this->config->getDefaultValue("sap/general/url");
             if ($type == 'confirm') {
                 $path = $this->config->getDefaultValue("sap/url_path/order_confirm_path");
@@ -73,6 +72,13 @@ class Request
                 $path = $this->config->getDefaultValue("sap/url_path/order_cancel_path");
             }
             $fullUrl = $url . $path;
+
+            if ($this->config->getLoggingCheck()) {
+                $this->logger->info("TEST MODE REQUEST");
+                $this->logger->info($requestData);
+                $this->logger->info("FUlL URL");
+                $this->logger->info($fullUrl);
+            }
 
             if (empty($url) || empty($path)) {
                 throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
@@ -83,20 +89,28 @@ class Request
                 $response = $this->curl->getBody();
                 $serializedResult = $this->json->unserialize($response);
 
-                $this->logger->info("TEST RESPONSE");
-                $this->logger->info($serializedResult);
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info("TEST RESPONSE");
+                    $this->logger->info($serializedResult);
+                }
                 return $serializedResult;
             }
         } else {
-            $this->logger->info('LIVE MODE REQUEST');
             $url = $this->getUrl($storeId);
             $path = $this->getPath($storeId, $type);
+            $fullUrl = $url . $path;
+
+            if ($this->config->getLoggingCheck()) {
+                $this->logger->info('LIVE MODE REQUEST');
+                $this->logger->info($requestData);
+                $this->logger->info("FUlL URL");
+                $this->logger->info($fullUrl);
+            }
+
 
             if (empty($url) || empty($path)) {
                 throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
             } else {
-                $fullUrl = $url . $path;
-
                 $this->curl->addHeader('Content-Type', 'application/json');
                 $this->curl->post($fullUrl, $requestData);
 
@@ -104,8 +118,10 @@ class Request
 
                 $result = $this->json->unserialize($response);
 
-                $this->logger->info('LIVE RESPONSE');
-                $this->logger->info($result);
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info('LIVE RESPONSE');
+                    $this->logger->info($result);
+                }
 
                 if ($result['code'] == '0000') {
                     return $result;

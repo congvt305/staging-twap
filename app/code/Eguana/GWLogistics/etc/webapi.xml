@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Refer to LICENSE.txt distributed with the Temando Shipping module for notice of license
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <!-- Managing Cvs Locations in Checkout  -->
+    <route method="POST" url="/V1/guest-carts/:cartId/checkout-cvs-location/select">
+        <service class="Eguana\GWLogistics\Api\GuestCartCvsLocationManagementInterface" method="selectCvsLocation"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route method="POST" url="/V1/carts/mine/checkout-cvs-location/select">
+        <service class="Eguana\GWLogistics\Api\CartCvsLocationManagementInterface" method="selectCvsLocation"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+
+</routes>
