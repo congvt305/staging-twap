@@ -75,7 +75,7 @@ class DataProvider extends DataProviderAlias
     {
         $metadata = [];
 
-        if (!$this->authorization->isAllowed('Eguana_Faq::faq')) {
+        if (!$this->authorization->isAllowed('Eguana_Faq::manage_faq')) {
             $metadata = [
                 'faq_columns' => [
                     'arguments' => [
