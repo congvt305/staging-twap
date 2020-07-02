@@ -67,6 +67,6 @@ abstract class AbstractController extends Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Eguana_Magazine::magazine');
+        return $this->_authorization->isAllowed('Eguana_Magazine::manage_magazine');
     }
 }
