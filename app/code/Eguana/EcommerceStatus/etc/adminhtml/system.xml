@@ -14,7 +14,7 @@
         <section id="ecommerce_status" translate="label" type="text" sortOrder="1001" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>E-commerce Status</label>
             <tab>eguana_extensions_tab</tab>
-            <resource>Eguana_EcommerceStatus::ecommerce_status</resource>
+            <resource>Eguana_EcommerceStatus::config_stores</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
                 <field id="ecommerce_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
