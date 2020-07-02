@@ -37,5 +37,7 @@
                 <argument name="is_highlighted" xsi:type="boolean">true</argument>
             </arguments>
         </referenceBlock>
+        <referenceBlock name="customer.wishlist.button.update" remove="true"/>
+        <referenceBlock name="customer.wishlist.item.edit" remove="true"/>
     </body>
 </page>
