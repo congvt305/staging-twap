@@ -14,7 +14,7 @@
         <section id="faq" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Faq</label>
             <tab>eguana_extensions_tab</tab>
-            <resource>Eguana_Faq::faq</resource>
+            <resource>Eguana_Faq::faq_config</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
                 <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">

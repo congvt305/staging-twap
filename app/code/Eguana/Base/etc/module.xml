@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Commerce
+ * @copyright Copyright (c) 2020 Eguana Abbas
+ * @package Eguana_Base
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Eguana_Base" setup_version="2.0.0">
+    </module>
+</config>

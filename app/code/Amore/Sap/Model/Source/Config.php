@@ -12,6 +12,8 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class Config
 {
+    const URL_ACTIVE_XML_PATH = 'sap/general/active';
+
     const SAP_SOURCE_ID_XML_PATH = 'sap/mall_info/source';
 
     const SAP_MALL_ID_XML_PATH = 'sap/mall_info/mall_id';
@@ -40,6 +42,11 @@ class Config
     public function getValue($path, $type, $storeId)
     {
         return $this->scopeConfig->getValue($path, $type, $storeId);
+    }
+
+    public function getActiveCheck($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::URL_ACTIVE_XML_PATH, $type, $storeId);
     }
 
     public function getSourceByStore($type ,$storeId)

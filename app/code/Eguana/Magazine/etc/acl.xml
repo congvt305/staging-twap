@@ -13,10 +13,17 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::content">
+                    <resource id="Eguana_Base::base">
+                        <resource id="Eguana_Magazine::manage_magazine" title="Manage Magazine" translate="title" />
+                    </resource>
+                </resource>
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Eguana_Magazine::config_stores" title="Eguana Magazine Config" translate="title" />
+                            <resource id="Eguana_Base::config">
+                                <resource id="Eguana_Magazine::magazines_config" title="Magazine" translate="title" />
+                            </resource>
                         </resource>
                     </resource>
                 </resource>

@@ -101,6 +101,35 @@
     .order-details-items {
         margin-bottom: @indent__l;
 
+        .table-wrapper {
+            margin-bottom: 0;
+
+            td {
+                span, strong {
+                    white-space: normal;
+                    word-break: break-word;
+                }
+            }
+        }
+
+        .item-options {
+            &:extend(.abs-product-options-list all);
+
+            &.links {
+                dt {
+                    display: inline-block;
+
+                    &:after {
+                        content: ': ';
+                    }
+                }
+
+                dd {
+                    margin: 0;
+                }
+            }
+        }
+
         &.ordered,
         &.rma {
             .order-title {
@@ -117,6 +146,11 @@
                 font-family: 'buri', @font-family__sans-serif;
                 font-weight: @font-weight__semibold;
                 color: @primary__color__lighter;
+
+                &:after {
+                    content: ':';
+                    padding: 0 @indent__xs;
+                }
             }
 
             .print {
@@ -185,26 +219,6 @@
 
                 &:before {
                     font-family: @font-family__base;
-                }
-            }
-        }
-
-        .item-options {
-            dt {
-                margin: 0;
-            }
-
-            &.links {
-                dt {
-                    display: inline-block;
-
-                    &:after {
-                        content: ': ';
-                    }
-                }
-
-                dd {
-                    margin: 0;
                 }
             }
         }
@@ -472,17 +486,21 @@
         }
     }
 
-    .order-title {
-        > strong {
-            display: block;
-        }
+    .order-actions-toolbar {
+        .action {
+            &.order {
+                margin-right: @indent__s;
+            }
 
+            &.return {
+                margin-left: 0;
+            }
+        }
+    }
+
+    .order-title {
         .action:not(.print) {
-            display: inline-block;
-            float: left;
-            padding-bottom: @indent__s;
-            padding-left: 0;
-            padding-top: @indent__s;
+            float: right;
         }
 
         .track + .track {
@@ -529,6 +547,20 @@
     }
 
     .order-details-items {
+        .toolbar {
+            &:extend(.abs-pager-toolbar-mobile all);
+        }
+
+        .item-options {
+            margin: 0;
+
+            dt, dd {
+                display: inline-block;
+                float: none;
+                margin-bottom: 0;
+            }
+        }
+
         .actions-toolbar {
             display: none;
             float: none;
@@ -576,6 +608,12 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .order-details-items {
+        .toolbar {
+            &:extend(.abs-pager-toolbar all);
+        }
+    }
+
     .table-order-items {
         .subtotal,
         .amount {
@@ -616,6 +654,11 @@
     .orders-history {
         .col.actions {
             width: 20%;
+        }
+
+        a.action {
+            display: block !important;
+            margin-left: 0 !important;
         }
     }
 

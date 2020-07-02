@@ -17,7 +17,7 @@
 <?php foreach ($_creditmemos as $_creditmemo): ?>
     <div class="order-details-items creditmemo">
         <div class="order-title">
-            <strong><?= $block->escapeHtml(__('Refund #%1', $_creditmemo->getIncrementId())) ?></strong>
+            <strong><?= $block->escapeHtml(__('Refund')) ?></strong><?= $block->escapeHtml($_creditmemo->getIncrementId()) ?>
         </div>
         <div class="table-wrapper order-items-creditmemo">
             <table class="data table table-order-items creditmemo" id="my-refund-table-<?= /* @escapeNotVerified */ (int) $_creditmemo->getId() ?>">
@@ -25,7 +25,6 @@
                 <thead>
                 <tr>
                     <th class="col name"><?= $block->escapeHtml(__('Product Name')) ?></th>
-                    <th class="col sku"><?= $block->escapeHtml(__('SKU')) ?></th>
                     <th class="col price"><?= $block->escapeHtml(__('Price')) ?></th>
                     <th class="col qty"><?= $block->escapeHtml(__('Qty')) ?></th>
                     <th class="col subtotal"><?= $block->escapeHtml(__('Subtotal')) ?></th>

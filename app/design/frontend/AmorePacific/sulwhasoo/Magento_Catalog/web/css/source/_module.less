@@ -588,7 +588,7 @@
             }
 
             &.price {
-                > p {
+                .price-title {
                     .lib-font-size(13);
                     display: inline-block;
                     letter-spacing: -0.025em;
@@ -598,9 +598,11 @@
                     color: @primary__color__lighter;
                 }
 
-                .price-box {
+                .price-title + div {
                     display: inline-block;
+                }
 
+                .price-box {
                     .price {
                         .lib-font-size(13);
                         margin-left: @indent__xs;
@@ -918,6 +920,24 @@
             .page-title {
                 .lib-font-size(20);
                 margin-bottom: 8px;
+            }
+        }
+
+        &.page-product-configurable {
+            .product.attribute.price {
+                > .price-title {
+                    display: none;
+
+                    & + div {
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        &:not(.page-product-configurable) {
+            .configurable-price-title {
+                display: none !important;
             }
         }
     }
@@ -1475,14 +1495,12 @@
             margin-bottom: 22px;
 
             &.price {
-                > p {
+                .price-title {
                     .lib-font-size(15);
                     max-width: 87px;
                 }
 
                 .price-box {
-                    display: inline-block;
-
                     .price {
                         .lib-font-size(15);
                         letter-spacing: 1px;

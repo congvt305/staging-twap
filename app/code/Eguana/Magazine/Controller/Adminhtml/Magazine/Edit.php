@@ -23,7 +23,7 @@ class Edit extends \Magento\Backend\App\Action implements HttpGetActionInterface
      *
      * @see _isAllowed()
      */
-    const ADMIN_RESOURCE = 'Eguana_Magazine::config_stores';
+    const ADMIN_RESOURCE = 'Eguana_Magazine::manage_magazine';
 
     /**
      * Core registry

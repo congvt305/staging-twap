@@ -153,6 +153,12 @@ class SapOrderConfirmData extends AbstractSapOrder
         }
     }
 
+    /**
+     * @param $incrementId
+     * @return array
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
+     */
     public function getOrderData($incrementId)
     {
         /** @var Order $orderData */
@@ -238,9 +244,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                 $customer = $this->customerRepository->getById($customerId);
                 return $customer;
             } catch (NoSuchEntityException $e) {
-                return '';
+                return $e;
             } catch (LocalizedException $e) {
-                return '';
+                return $e;
             }
         }
     }
