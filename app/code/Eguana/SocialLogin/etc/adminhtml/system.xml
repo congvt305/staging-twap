@@ -11,9 +11,6 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="eguana" translate="label" sortOrder="1000">
-            <label>Eguana</label>
-        </tab>
         <section id="SocialLogin" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>Social Login</label>
