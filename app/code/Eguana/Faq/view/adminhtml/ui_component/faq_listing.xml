@@ -35,7 +35,7 @@
             </storageConfig>
             <updateUrl path="mui/index/render"/>
         </settings>
-        <aclResource>Eguana_Faq::faq</aclResource>
+        <aclResource>Eguana_Faq::manage_faq</aclResource>
         <dataProvider class="Eguana\Faq\Ui\Component\DataProvider" name="eguana_faq_listing_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
