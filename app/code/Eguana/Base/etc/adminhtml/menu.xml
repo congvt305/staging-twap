@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: Abbas
+ * Date: 30/6/20
+ * Time: 08:00 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Eguana_Base::base" title="Manage Store Contents" module="Eguana_Base" sortOrder="120" parent="Magento_Backend::content" resource="Eguana_Base::base"/>
+    </menu>
+</config>

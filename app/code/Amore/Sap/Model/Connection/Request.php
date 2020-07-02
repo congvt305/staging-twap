@@ -16,8 +16,6 @@ use Amore\Sap\Logger\Logger;
 
 class Request
 {
-    const URL_ACTIVE = 'sap/general/active';
-
     const URL_REQUEST = 'sap/general/url';
 
     const ORDER_CONFIRM_PATH = 'sap/url_path/order_confirm_path';
@@ -136,7 +134,7 @@ class Request
     {
         $url = '';
 
-        $activeCheck = $this->config->getValue(self::URL_ACTIVE, 'store', $storeId);
+        $activeCheck = $this->config->getActiveCheck('store', $storeId);
 
         if ($activeCheck) {
             $url = $this->config->getValue(self::URL_REQUEST, 'store', $storeId);

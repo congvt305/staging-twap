@@ -14,14 +14,16 @@
         <resources>
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Backend::content">
-                    <resource id="Eguana_VideoBoard::videoboard" title="Video Board" sortOrder="10">
-                            <resource id="Eguana_VideoBoard::manage_videoboard" title="Manage Video Board" translate="title" />
+                    <resource id="Eguana_Base::base">
+                        <resource id="Eguana_VideoBoard::manage_videoboard" title="Manage Video Board" translate="title" />
                     </resource>
                 </resource>
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Eguana_VideoBoard::videoboard_config" title="Video Board Config" translate="title" />
+                            <resource id="Eguana_Base::config">
+                                <resource id="Eguana_VideoBoard::videoboard_config" title="Video Board" translate="title" />
+                            </resource>
                         </resource>
                     </resource>
                 </resource>

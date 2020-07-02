@@ -55,7 +55,7 @@ class SapOrderCancelData extends AbstractSapOrder
         $testData = [
             "request" => [
                 "header" => [
-                    "source" => "L0014",
+                    "source" => $this->config->getSourceByStore('default', null),
                 ],
                 "input" => [
                     "itData" => [
@@ -79,6 +79,21 @@ class SapOrderCancelData extends AbstractSapOrder
         return $testData;
     }
 
+    public function getOrderAddressUpdate($incrementId)
+    {
+        /** @var Order $orderData */
+        $orderData = $this->getOrderInfo($incrementId);
+        $storeId = $orderData->getStoreId();
+        $shippingAddress = $orderData->getShippingAddress();
+        $bindData = [];
+
+        if ($orderData == null) {
+            throw new NoSuchEntityException(
+                __("Such order does not exist. Check the data and try again")
+            );
+        }
+    }
+
     public function getOrderCancelData($incrementId)
     {
         /** @var Order $orderData */
@@ -98,7 +113,7 @@ class SapOrderCancelData extends AbstractSapOrder
             "kunnr" => $this->config->getClient('store', $storeId),
             "odrno" => $orderData->getIncrementId(),
             // 주문 취소 : 1, 주소변경 : 2
-            "zchgind" => 2,
+            "zchgind" => 1,
             "recvnm" => $shippingAddress->getName(),
             "postCode" => $shippingAddress->getPostcode(),
             "addr1" => $shippingAddress->getRegion(),
@@ -108,6 +123,7 @@ class SapOrderCancelData extends AbstractSapOrder
             "telno" => $shippingAddress->getTelephone(),
             "hpno" => $shippingAddress->getTelephone()
         ];
+
         return $bindData;
     }
 

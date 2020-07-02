@@ -16,7 +16,9 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Eguana_EcommerceStatus::config_stores" title="E-commerce Switch Config" translate="title" />
+                            <resource id="Eguana_Base::config">
+                                <resource id="Eguana_EcommerceStatus::config_stores" title="E-commerce Switch Config" translate="title" />
+                            </resource>
                         </resource>
                     </resource>
                 </resource>
