@@ -19,7 +19,9 @@
                     </resource>
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Eguana_StoreLocator::config_stores" title="Eguana Stores Config" translate="title" />
+                            <resource id="Eguana_Base::config">
+                                <resource id="Eguana_StoreLocator::config_stores" title="Eguana Stores Config" translate="title" />
+                            </resource>
                         </resource>
                     </resource>
                 </resource>
