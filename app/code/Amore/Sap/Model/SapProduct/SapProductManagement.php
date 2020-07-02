@@ -208,22 +208,26 @@ class SapProductManagement implements SapProductManagementInterface
         if (gettype($product) == 'string') {
             $result[$stockData['matnr']] = ['code' => "0001", 'message' => $product];
         } else {
-            $websiteId = $this->getStore($stockData['mallId'])->getWebsiteId();
-            $websiteCode = $this->storeManagerInterface->getWebsite($websiteId)->getCode();
+            if ($this->sapIntegrationCheck($product)) {
+                $websiteId = $this->getStore($stockData['mallId'])->getWebsiteId();
+                $websiteCode = $this->storeManagerInterface->getWebsite($websiteId)->getCode();
 
-            $sourceCode = $this->getSourceCodeByWebsiteCode($websiteCode);
+                $sourceCode = $this->getSourceCodeByWebsiteCode($websiteCode);
 
-            $sourceItems[] = $this->saveProductQtyIntoSource($sourceCode, $stockData);
+                $sourceItems[] = $this->saveProductQtyIntoSource($sourceCode, $stockData);
 
-            try {
-                $this->sourceItemsSaveInterface->execute($sourceItems);
-                $result[$stockData['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
-            } catch (CouldNotSaveException $e) {
-                $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-            } catch (InputException $e) {
-                $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-            } catch (ValidationException $e) {
-                $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                try {
+                    $this->sourceItemsSaveInterface->execute($sourceItems);
+                    $result[$stockData['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
+                } catch (CouldNotSaveException $e) {
+                    $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                } catch (InputException $e) {
+                    $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                } catch (ValidationException $e) {
+                    $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                }
+            } else {
+                $result[$stockData['matnr']] = ['code' => "0001", 'message' => 'SAP Integration option is disabled. Check product option and try again.'];
             }
         }
 
@@ -421,6 +425,12 @@ class SapProductManagement implements SapProductManagementInterface
 
         }
         return $result;
+    }
+
+    /** @param $product \Magento\Catalog\Model\Product */
+    public function sapIntegrationCheck($product)
+    {
+        return $product->getCustomAttribute('disable_sap_integration')->getValue();
     }
 
     public function getProductBySku($sku, $storeId = null)
