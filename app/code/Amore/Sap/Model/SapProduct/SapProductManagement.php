@@ -430,7 +430,11 @@ class SapProductManagement implements SapProductManagementInterface
     /** @param $product \Magento\Catalog\Model\Product */
     public function sapIntegrationCheck($product)
     {
-        return $product->getCustomAttribute('disable_sap_integration')->getValue();
+        if (is_null($product->getCustomAttribute('disable_sap_integration'))) {
+            return null;
+        } else {
+            return $product->getCustomAttribute('disable_sap_integration')->getValue();
+        }
     }
 
     public function getProductBySku($sku, $storeId = null)
