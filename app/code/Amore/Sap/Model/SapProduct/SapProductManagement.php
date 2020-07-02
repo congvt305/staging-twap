@@ -13,6 +13,7 @@ use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Source\Config;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ResourceModel\Product\Action;
+use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\MessageQueue\PublisherInterface;
@@ -113,6 +114,10 @@ class SapProductManagement implements SapProductManagementInterface
      * @var Config
      */
     private $config;
+    /**
+     * @var AttributeRepositoryInterface
+     */
+    private $eavAttributeRepositoryInterface;
 
 
     /**
@@ -135,6 +140,7 @@ class SapProductManagement implements SapProductManagementInterface
      * @param PublisherInterface $publisher
      * @param Logger $logger
      * @param Config $config
+     * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
@@ -154,7 +160,8 @@ class SapProductManagement implements SapProductManagementInterface
         Json $json,
         PublisherInterface $publisher,
         Logger $logger,
-        Config $config
+        Config $config,
+        AttributeRepositoryInterface $eavAttributeRepositoryInterface
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->productRepository = $productRepository;
@@ -174,6 +181,7 @@ class SapProductManagement implements SapProductManagementInterface
         $this->publisher = $publisher;
         $this->logger = $logger;
         $this->config = $config;
+        $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
     }
 
     public function inventoryStockUpdate(\Amore\Sap\Api\Data\SapInventoryStockInterface $stockData)
@@ -280,42 +288,43 @@ class SapProductManagement implements SapProductManagementInterface
             $result[$productsDetail['matnr']] = ['code' => "0001", 'message' => $product];
         } else {
             $product->setWeight((float)$productsDetail['brgew']);
+            // 이전 상품 코드
 //            $product->addAttributeUpdate('bismt', $productsDetail['bismt'], 0);
             // 중량단위
 //            $product->addAttributeUpdate('gewei', $productsDetail['gewei'], 0);
-//            $product->addAttributeUpdate('brand', $productsDetail['brand'], 0);
-            $product->addAttributeUpdate('bctxtKo', $productsDetail['bctxtKo'], 0);
-//            $product->addAttributeUpdate('meins', $productsDetail['meins'], 0);
-            $product->addAttributeUpdate('mstav', $productsDetail['mstav'], 0);
-//            $product->addAttributeUpdate('spart', $productsDetail['spart'], 0);
+            $product->addAttributeUpdate('brand', $this->getProductAttribute('brand', $productsDetail['brand']), 0);
+            $product->addAttributeUpdate('bctxtKo', $this->getProductAttribute('bctxtKo', $productsDetail['bctxtKo']), 0);
+            $product->addAttributeUpdate('meins', $this->getProductAttribute('meins', $productsDetail['meins']), 0);
+            $product->addAttributeUpdate('mstav', $this->getProductAttribute('mstav',$productsDetail['mstav']), 0);
+            $product->addAttributeUpdate('spart', $this->getProductAttribute('spart', $productsDetail['spart']), 0);
             $product->addAttributeUpdate('maxlz', $productsDetail['maxlz'], 0);
             $product->addAttributeUpdate('breit', $productsDetail['breit'], 0);
             $product->addAttributeUpdate('hoehe', $productsDetail['hoehe'], 0);
             $product->addAttributeUpdate('laeng', $productsDetail['laeng'], 0);
             // 세액구분코드
 //            $product->addAttributeUpdate('kondm', $productsDetail['kondm'], 0);
-//            $product->addAttributeUpdate('mvgr1', $productsDetail['mvgr1'], 0);
-//            $product->addAttributeUpdate('mvgr2', $productsDetail['mvgr2'], 0);
+            $product->addAttributeUpdate('mvgr1', $this->getProductAttribute('mvgr1', $productsDetail['mvgr1']), 0);
+            $product->addAttributeUpdate('mvgr2', $this->getProductAttribute('mvgr2', $productsDetail['mvgr2']), 0);
             $product->addAttributeUpdate('prodh', $productsDetail['prodh'], 0);
-//            $product->addAttributeUpdate('vmsta', $productsDetail['vmsta'], 0);
-//            $product->addAttributeUpdate('matnr2', $productsDetail['matnr2'], 0);
-//            $product->addAttributeUpdate('setid', $productsDetail['setid'], 0);
-//            $product->addAttributeUpdate('bline', $productsDetail['bline'], 0);
-//            $product->addAttributeUpdate('csmtp', $productsDetail['csmtp'], 0);
-            $product->addAttributeUpdate('setdi', $productsDetail['setdi'], 0);
-            $product->addAttributeUpdate('matshinsun', $productsDetail['matshinsun'], 0);
-//            $product->addAttributeUpdate('matvessel', $productsDetail['matvessel'], 0);
+            $product->addAttributeUpdate('vmsta', $this->getProductAttribute('vmsta', $productsDetail['vmsta']), 0);
+            $product->addAttributeUpdate('matnr2', $productsDetail['matnr2'], 0);
+            $product->addAttributeUpdate('setid', $this->getProductAttribute('setid', $productsDetail['setid']), 0);
+            $product->addAttributeUpdate('bline', $this->getProductAttribute('bline', $productsDetail['bline']), 0);
+            $product->addAttributeUpdate('csmtp', $this->getProductAttribute('csmtp', $productsDetail['csmtp']), 0);
+            $product->addAttributeUpdate('setdi', $this->getProductAttribute('setdi', $productsDetail['setdi']), 0);
+            $product->addAttributeUpdate('matshinsun', $this->getProductAttribute('matshinsun', $productsDetail['matshinsun']), 0);
+            $product->addAttributeUpdate('matvessel', $this->getProductAttribute('matvessel', $productsDetail['matvessel']), 0);
             // 용량
-//            $product->addAttributeUpdate('prdvl', $productsDetail['prdvl'], 0);
-//            $product->addAttributeUpdate('vlunt', $productsDetail['vlunt'], 0);
-//            $product->addAttributeUpdate('cpiap', $productsDetail['cpiap'], 0);
-//            $product->addAttributeUpdate('prdtp', $productsDetail['prdtp'], 0);
-//            $product->addAttributeUpdate('rpfut', $productsDetail['rpfut'], 0);
+            $product->addAttributeUpdate('prdvl', intval($productsDetail['prdvl']), 0);
+            $product->addAttributeUpdate('vlunt', $this->getProductAttribute('vlunt', $productsDetail['vlunt']), 0);
+            $product->addAttributeUpdate('cpiap', $this->getProductAttribute('cpiap', $productsDetail['cpiap']), 0);
+            $product->addAttributeUpdate('prdtp', $this->getProductAttribute('prdtp', $productsDetail['prdtp']), 0);
+            $product->addAttributeUpdate('rpfut', $this->getProductAttribute('rpfut',$productsDetail['rpfut']), 0);
             $product->addAttributeUpdate('maktxEn', $productsDetail['maktxEn'], 0);
             $product->addAttributeUpdate('maktxZh', $productsDetail['maktxZh'], 0);
             $product->addAttributeUpdate('bctxtEn', $productsDetail['bctxtEn'], 0);
             $product->addAttributeUpdate('bctxtZh', $productsDetail['bctxtZh'], 0);
-            $product->addAttributeUpdate('refill', $productsDetail['refill'], 0);
+            $product->addAttributeUpdate('refill', $this->getProductAttribute('refill', $productsDetail['refill']), 0);
 
             try {
                 $this->productRepository->save($product);
@@ -327,6 +336,53 @@ class SapProductManagement implements SapProductManagementInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @param $attributeCode string
+     * @param $requestValue
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getProductAttribute($attributeCode, $requestValue)
+    {
+        $attribute = $this->eavAttributeRepositoryInterface->get('catalog_product', $attributeCode);
+        $inputType = $attribute->getFrontendInput();
+        $value = '';
+
+        if ($inputType == 'select') {
+            $options = $attribute->getOptions();
+            foreach ($options as $option) {
+                if ($option->getLabel() == $requestValue) {
+                    $value = $option->getValue();
+                    break;
+                }
+            }
+        } elseif ($inputType == 'boolean') {
+            switch ($requestValue) {
+                case 'Y':
+                    $value = 1;
+                    break;
+                case 'N':
+                    $value = 0;
+                    break;
+                default:
+                    $value = 0;
+            }
+        } elseif ($inputType == 'multiselect') {
+            $options = $attribute->getOptions();
+            $arrayValue = explode(",", $requestValue);
+            foreach ($options as $option) {
+                if (in_array($option->getLabel(), $arrayValue)) {
+                    if ($value == '') {
+                        $value = $option->getValue();
+                    } else {
+                        $value = $value . "," . $option->getValue();
+                    }
+                }
+            }
+        }
+        return $value;
     }
 
     public function productPriceUpdate($priceData)
