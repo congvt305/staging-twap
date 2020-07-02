@@ -1,4 +1,3 @@
-<?php
 return [
     'scopes' => [
         'websites' => [
@@ -501,6 +500,7 @@ return [
         'Eguana_VideoBoard' => 1,
         'Fastly_Cdn' => 1,
         'Klarna_Core' => 0,
+        'Eguana_OrderDeliveryMessage' => 1,
         'Klarna_Ordermanagement' => 0,
         'Klarna_Kp' => 0,
         'Magento_PaypalReCaptcha' => 1,

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+  ~ /**
+  ~ * @author Eguana Team
+  ~ * @copyriht Copyright (c) ${YEAR} Eguana {http://eguanacommerce.com}
+  ~ * Created byPhpStorm
+  ~ * User:  Abbas
+  ~ * Date: 07/02/20
+  ~ * Time: 6:30 pm
+  ~ */
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_place_after">
+        <observer name="eguana_delivery_message_observer" instance="Eguana\OrderDeliveryMessage\Observer\SaveMessage" />
+    </event>
+</config>

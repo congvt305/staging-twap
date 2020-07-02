@@ -1,0 +1,16 @@
+<!--
+  ~ /**
+  ~ * @author Eguana Team
+  ~ * @copyriht Copyright (c) ${YEAR} Eguana {http://eguanacommerce.com}
+  ~ * Created byPhpStorm
+  ~ * User:  Abbas
+  ~ * Date: 06/30/20
+  ~ * Time: 6:30 pm
+  ~ */
+  -->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order" resource="default" engine="innodb">
+        <column xsi:type="varchar" name="delivery_message" nullable="true" length="255" comment="Delivery Note"/>
+    </table>
+</schema>
