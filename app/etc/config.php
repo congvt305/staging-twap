@@ -486,7 +486,7 @@ return [
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_Enterprise' => 1,
         'Ecpay_Ecpaypayment' => 1,
-        'Eguana_Base' => 0,
+        'Eguana_Base' => 1,
         'Eguana_Theme' => 1,
         'Eguana_Directory' => 1,
         'Eguana_EInvoice' => 1,
