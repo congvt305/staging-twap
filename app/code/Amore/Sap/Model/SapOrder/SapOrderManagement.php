@@ -188,6 +188,11 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId());
 
                 $result[$orderStatusData['odrno']] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
+
+                if ($order->getStatus() == 'preparing') {
+                    $order->setStatus('shipment_processing');
+                    $this->orderRepository->save($order);
+                }
             } else {
                 $message =  "Other order status return.";
                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
