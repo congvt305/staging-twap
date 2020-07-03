@@ -24,6 +24,7 @@ if ($defaultCountry != null) {
 <div class="stores stw-stores-locator mian-content">
     <div class="main-store-block">
         <div class="store_list_left">
+            <?= $block->getChildHtml('page.main.title') ?>
             <form action="" target="_self" id="filter-form" method="get" class="store-locator-form">
                 <fieldset class="fieldset store-fields">
                     <div class="field note"><?= $block->escapeHtml($country) ?></div>
@@ -49,9 +50,6 @@ if ($defaultCountry != null) {
                                    value="<?= $block->escapeHtmlAttr($searchLocationPoints['long']) ?>"/>
                         <?php endif; ?>
                     </div>
-
-                    <h1 class="page_tilte_head">Find Store</h1>
-
                     <div class="field store-search">
                         <label class="label" for="store-search">
                             <span><?= $block->escapeHtml(__('Please enter the address or counter name')) ?></span>

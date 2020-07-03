@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+<!--        <referenceContainer name="before.body.end">-->
+<!--            <block class="Amore\TagManager\Block\ListJson" name="banner_impression"-->
+<!--                   template="Amore_TagManager::promotion.phtml">-->
+<!--                <arguments>-->
+<!--                    <argument name="variable_name" xsi:type="string">staticPromotions</argument>-->
+<!--                </arguments>-->
+<!--            </block>-->
+<!--        </referenceContainer>-->
+
+        <referenceContainer name="after.body.start">
+            <!--Data Layer 변수-->
+            <block ifconfig="amore_gatagging/tagmanager/active"
+                   template="Amore_GaTagging::common-data.phtml"
+                   name="amore_gatagging.common.data.js"
+                   after="google_tag_manager">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Amore\GaTagging\ViewModel\CommonData</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
