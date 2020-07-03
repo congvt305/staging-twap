@@ -155,7 +155,12 @@ class POSSystem
                 $response
             );
         } catch (\Exception $e) {
-            $result['message'] = $e->getMessage();
+            if($e->getMessage() == '<url> malformed')
+            {
+                $result['message'] = __('Please first configure POS APIs properly. Then try again.');
+            }else {
+                $result['message'] = $e->getMessage();
+            }
             $this->logger->addExceptionMessage($e->getMessage());
         }
         return $result;
