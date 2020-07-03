@@ -61,7 +61,7 @@ class CvsLocation implements SectionSourceInterface
 //        $isEnabled = $this->config->isEnabled($storeId) && $this->config->isClickAndCollectEnabled($storeId); todo configuration
         $isEnabled = true;
         $quoteId = $this->checkoutSession->getQuoteId();
-        $shippingAddress = $this->shippingAddressManagement->get($quoteId);
+
         if (!$isEnabled || empty($quoteId)) {
             return [
                 'cvs-location' => [],
@@ -70,6 +70,7 @@ class CvsLocation implements SectionSourceInterface
         }
 
         try {
+            $shippingAddress = $this->shippingAddressManagement->get($quoteId);
             /** @var QuoteCvsLocationInterface $cvsLocation */
             $cvsLocation = $this->cartCvsLocationManagement->getCvsLocationByAddressId($shippingAddress->getId());
             $cvsLocationData = [
