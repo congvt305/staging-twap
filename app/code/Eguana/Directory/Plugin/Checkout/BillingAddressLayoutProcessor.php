@@ -6,7 +6,7 @@
  * Time: 9:39 AM
  */
 
-namespace Eguana\Directory\Plugin;
+namespace Eguana\Directory\Plugin\Checkout;
 
 class BillingAddressLayoutProcessor
 {
