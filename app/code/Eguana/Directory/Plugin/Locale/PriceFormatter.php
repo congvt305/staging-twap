@@ -21,7 +21,9 @@ class PriceFormatter
      */
     public function afterGetPriceFormat(\Magento\Framework\Locale\Format $subject, $result, $localeCode = null, $currencyCode = null)
     {
-        if (isset($result['integerRequired'])) { //todo: check locale code for future...
+        if (isset($result['precision']) && isset($result['requiredPrecision'])) { //todo: check locale code for future...
+            $result['precision'] = 0;
+            $result['requiredPrecision'] = 0;
             $result['integerRequired'] = true;
         }
         return $result;
