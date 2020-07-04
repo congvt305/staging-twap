@@ -30,7 +30,6 @@ define([
             JSON.stringify(payload)
         ).success(
             function (response) {
-                console.log('response in adction : ', response);
                 if (quote.shippingAddress()) {
                     // if a shipping address was selected, clear shipping rates cache
                     cacheService.invalidateCacheForAddress(quote.shippingAddress());

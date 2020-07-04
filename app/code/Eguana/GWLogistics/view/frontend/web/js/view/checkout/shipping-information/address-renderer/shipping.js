@@ -11,6 +11,8 @@ define([
 ) {
     'use strict';
 
+    var countryData = customerData.get('directory-data');
+
     return Component.extend({
         defaults: {
             template: 'Magento_Checkout/shipping-information/address-renderer/default'
@@ -23,30 +25,15 @@ define([
         getCountryName: function (countryId) {
             return countryData()[countryId] != undefined ? countryData()[countryId].name : ''; //eslint-disable-line
         },
-        getRegionNameByCode: function (countryId, regionCode) {
-            var result = regionCode;
-            var countryRegions = countryData()[countryId].regions || {};
-
-            if (_.size(countryRegions) > 0) {
-                var region = _.filter(countryRegions, (function (element) {
-                        return element.code === regionCode;
-                    })
-                );
-
-                if (region.length > 0) {
-                    result = region[0].name;
-                }
-            }
-
-            return result;
-        },
         getTemplate: function () {
-            var cvsLocation = cvsLocation.getSelectedCvsLocation();
-            console.log('finally...', cvsLocation);
+            var cvsLocation = this.cvsLocation.getCvsLocation(); // {LogisticsSubType: "UNIMART", CVSStoreID: "991182", CVSStoreName: "馥樺門市", CVSAddress: "台北市南港區三重路23號1樓", CVSTelephone: null}
             if (cvsLocation) {
-                return 'Eguana_GWLogistics/checkout/shipping/address-renderer/pickup-location';
+                return 'Eguana_GWLogistics/checkout/shipping-information/address-renderer/cvs-address';
             }
             return this.template;
+        },
+        getSelectedCvsLocation: function () {
+            return this.cvsLocation.getCvsLocation()
         }
     });
 

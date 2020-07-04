@@ -12,7 +12,7 @@ define([
 
     return {
         getCvsLocation: function () {
-            console.log(sectionData());
+            // console.log(sectionData());
             return sectionData()['cvs-location'] || [];
             // return sectionData()['cvs-location'] || [];
         },
@@ -39,7 +39,6 @@ define([
         },
 
         selectCvsLocation: function () {
-            console.log('selectCvsLocation Model')
             this.reloadCheckoutData();
             // var cvsLocation = this.getCvsLocation();
             // var searchRequest = this.getSearchCvsRequest();
@@ -77,7 +76,7 @@ define([
 
         clear: function() {
             customerData.set(cacheKey, {
-                'pickup-locations': [],
+                'cvs-location': [],
                 'search-request': {}
             });
         }

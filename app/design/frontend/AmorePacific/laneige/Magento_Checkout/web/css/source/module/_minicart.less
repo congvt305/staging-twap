@@ -10,7 +10,7 @@
 @minicart__border-color: @border-color__base;
 @minicart__padding-horizontal: @indent__l;
 
-@minicart-qty__height: 6px;
+@minicart-qty__height: 15px;
 
 //
 //  Common
@@ -216,7 +216,7 @@
                     .lib-css(height, @minicart-qty__height);
                     .lib-css(line-height, @minicart-qty__height);
                     border-radius: 50%;
-                    font-size: 0;
+                    font-size: 10px;
                     display: inline-block;
                     margin: 3px 0 0;
                     min-width: @minicart-qty__height;
@@ -224,8 +224,8 @@
                     text-align: center;
                     white-space: normal;
                     position: absolute;
-                    top: 15px;
-                    right: 0;
+                    top: 10px;
+                    right: -5px;
 
                     &.empty {
                         display: none;
