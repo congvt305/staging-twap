@@ -6,7 +6,7 @@
  * Time: 7:19 AM
  */
 
-namespace Eguana\Directory\Plugin;
+namespace Eguana\Directory\Plugin\Checkout;
 
 
 use Magento\Store\Model\StoreManagerInterface;

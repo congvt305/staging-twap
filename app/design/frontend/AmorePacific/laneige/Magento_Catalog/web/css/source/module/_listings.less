@@ -343,6 +343,17 @@
             }
         }
     }
+
+    .product-hover-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        opacity: 0;
+        webkit-transition: opacity .1s ease;
+        -o-transition: opacity .1s ease;
+        transition: opacity .1s ease;
+    }
 }
 
 //
@@ -480,6 +491,10 @@
                          right: 0;
                          width: 100%;
                          z-index: 3;
+                     }
+
+                     .product-hover-image {
+                         opacity: 1;
                      }
                  }
              }

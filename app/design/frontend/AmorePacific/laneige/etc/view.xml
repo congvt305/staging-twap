@@ -24,6 +24,10 @@
                 <width>280</width>
                 <height>336</height>
             </image>
+            <image id="hover_image" type="hover_image">
+                <width>280</width>
+                <height>336</height>
+            </image>
             <image id="category_page_list" type="thumbnail">
                 <width>1000</width>
                 <height>1200</height>

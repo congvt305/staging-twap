@@ -7,8 +7,8 @@ define([
     'uiComponent',
     'Magento_Checkout/js/model/shipping-rates-validator',
     'Magento_Checkout/js/model/shipping-rates-validation-rules',
-    '../model/shipping-rates-validator',
-    '../model/shipping-rates-validation-rules'
+    'Eguana_GWLogistics/js/model/shipping-rates-validator',
+    'Eguana_GWLogistics/js/model/shipping-rates-validation-rules'
 ], function (
     Component,
     defaultShippingRatesValidator,
@@ -17,9 +17,10 @@ define([
     gwlShippingRatesValidationRules
 ) {
     'use strict';
+    console.log('kk');
 
-    defaultShippingRatesValidator.registerValidator('eguana_gwlogistics', gwlShippingRatesValidator);
-    defaultShippingRatesValidationRules.registerRules('eguana_gwlogistics', gwlShippingRatesValidationRules);
+    defaultShippingRatesValidator.registerValidator('gwlogistics', gwlShippingRatesValidator);
+    defaultShippingRatesValidationRules.registerRules('gwlogistics', gwlShippingRatesValidationRules);
 
     return Component;
 });
