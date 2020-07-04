@@ -1,17 +1,20 @@
 define([
     'ko',
     'jquery',
-    'uiComponent',
+    'Magento_Ui/js/form/element/abstract',
+    // 'uiComponent',
     'Magento_Checkout/js/model/quote',
     'Eguana_GWLogistics/js/action/get-selected-cvs-location',
     'Eguana_GWLogistics/js/model/cvs-location',
+    'Magento_Customer/js/customer-data',
     './test',
     'mage/url',
-], function (ko, $, Component, quote, getSelectedCvsLocationAction, cvsLocation,  test, urlBuilder) {
+], function (ko, $, Component, quote, getSelectedCvsLocationAction, cvsLocation,  customerData, test, urlBuilder) {
     'use strict';
     return Component.extend({
         defaults: {
-            isVisible: false,
+            visible: true,
+            disabled: true,
             isMapVisible : true,
             displayArea: 'after-shipping-method-item',
             template: 'Eguana_GWLogistics/checkout/shipping/cvs-location-form',
@@ -23,7 +26,7 @@ define([
             IsCollection: 'N',
             device: null, //0: PC (default) 1: Mobile,
             tracks: {
-                isVisible: true,
+                visible: true,
                 isMapVisible: true,
             }
         },
@@ -31,6 +34,7 @@ define([
 
         initialize: function () {
             this._super();
+            cvsLocation.clear();
             this.windowActivateCount = 0;
             return this;
         },
@@ -38,7 +42,7 @@ define([
         initObservable: function () {
             this._super();
             quote.shippingMethod.subscribe(function (data) {
-                this.isVisible = (data.method_code + '_' + data.carrier_code === 'CVS_gwlogistics') ? true : false ;
+                this.visible = (data.method_code + '_' + data.carrier_code === 'CVS_gwlogistics') ? true : false ;
             }, this)
             $(document).on('visibilitychange', $.proxy(this.onWindowActivated, this));
             return this;
@@ -49,10 +53,11 @@ define([
             if (this.windowActivateCount % 2 === 0) {
                 this.getSelectedCvsLocation();
             }
+
         },
 
         getSelectedCvsLocation: function () {
-            getSelectedCvsLocationAction();
+            getSelectedCvsLocationAction.bind(this);
             cvsLocation.selectCvsLocation();
         },
 
@@ -82,6 +87,7 @@ define([
 
         getExtraData: function () {
             return quote.getQuoteId();
-        }
+        },
+
     });
 });
