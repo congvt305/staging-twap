@@ -488,6 +488,7 @@ return [
         'Ecpay_Ecpaypayment' => 1,
         'Eguana_Base' => 1,
         'Eguana_Theme' => 1,
+        'Eguana_CustomerRefund' => 1,
         'Eguana_Directory' => 1,
         'Eguana_EInvoice' => 1,
         'Eguana_EcommerceStatus' => 1,
