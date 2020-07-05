@@ -1,0 +1,20 @@
+<?php
+/**
+ * Created by Eguana Team.
+ * User: sonia
+ * Date: 7/5/20
+ * Time: 8:08 AM
+ */
+
+/** @var \Eguana\CustomerRefund\ViewModel\Refund $refundOnlineViewModel */
+/** @var \Magento\Framework\View\Element\Template $block */
+$refundOnlineViewModel = $block->getRefundOnlineViewModel();
+/** @var \Magento\Sales\Model\Order $_order */
+$_order = $block->getOrder();
+?>
+<?php if ($refundOnlineViewModel->canShowRefundOnlineButton($_order)): ?>
+    <a href="#" class="action refund-online" data-role="refund-online-button"
+       data-mage-init='{"Eguana_CustomerRefund/js/view/refund-online": {"orderId": "<?= (int)$_order->getId() ?>"}}'>
+        <span><?= __('Refund') ?></span>
+    </a>
+<?php endif;?>
