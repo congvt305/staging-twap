@@ -8,6 +8,8 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <move element="product.info.price" destination="product.info.addtocart.additional"/>
-        <move element="product.info.size" destination="product.info.addtocart.additional"/>
+        <move element="product.info.prdvl" destination="product.info.addtocart.additional"/>
+        <move element="product.info.vlunt" destination="product.info.addtocart.additional"/>
+        <move element="product.info.product.count" destination="product.info.addtocart.additional"/>
     </body>
 </page>

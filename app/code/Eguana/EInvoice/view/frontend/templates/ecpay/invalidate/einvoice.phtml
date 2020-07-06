@@ -15,11 +15,13 @@
  */
 ?>
 <?php if ($block->hasInvalidateEInvoices($block->getOrderId()) > 0) : ?>
-    <div class="order additional details invalidate-e-invoices">
-        <h6 class="subtitle"><?= $block->escapeHtml(__("Invalidate E-Invoice Information")) ?></h6>
-            <dl class="order invalidate-e-invoice">
-                <dt><?= $block->escapeHtml(__("Invalidate E-Invoice Number")) ?></dt>
-                <dd><?= $block->escapeHtml(__($block->getInvalidateEInvoiceNumber($block->getOrderId()))) ?></dd>
-            </dl>
+    <div class="block order additional details invalidate-e-invoices">
+        <div class="block-title"><strong><?= $block->escapeHtml(__("Invalidate E-Invoice Information")) ?></strong></div>
+        <div class="block-content order invalidate-e-invoice">
+            <div class="box">
+                <strong class="box-title"><span><?= $block->escapeHtml(__("Invalidate E-Invoice Number")) ?></span></strong>
+                <div class="box-content"><?= $block->escapeHtml(__($block->getInvalidateEInvoiceNumber($block->getOrderId()))) ?></div>
+            </div>
+        </div>
     </div>
 <?php endif;?>
