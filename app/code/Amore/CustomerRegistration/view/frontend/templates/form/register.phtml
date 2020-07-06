@@ -211,25 +211,43 @@ $viewModel = $block->getData('view_model');
                 <?= $_dmSubscriptionStatus->setDate($block->getFormData()->getDmSubscriptionStatus())->toHtml() ?>
             <?php endif ?>
             <div class="fieldset dm-address" style="<?= $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus()) == 1?'':'display: none'; ?>">
-                <?php $_dmCtiy = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_city', ['data'=>['attribute_code'=>'dm_city', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmCity())]]) ?>
-                <?php if ($_dmCtiy->isEnabled()) : ?>
-                    <?= $_dmCtiy->setDate($block->getFormData()->getDmCity())->toHtml() ?>
-                <?php endif ?>
 
-                <?php $_dmState = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_state', ['data'=>['attribute_code'=>'dm_state', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmState())]]) ?>
-                <?php if ($_dmState->isEnabled()) : ?>
-                    <?= $_dmState->setDate($block->getFormData()->getDmState())->toHtml() ?>
-                <?php endif ?>
+                <div class="field required">
+                    <label for="dm_city" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_city') ?></span></label>
+                    <div class="control">
+                        <?php //phpcs:disable ?>
+                        <input type="text" name="dm_city" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmCity()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_city') ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_city')) ?>" id="dm_city">
+                        <?php //phpcs:enable ?>
+                    </div>
+                </div>
 
-                <?php $_dmDetailedAddress = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_detailed_address', ['data'=>['attribute_code'=>'dm_detailed_address', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmDetailedAddress())]]) ?>
-                <?php if ($_dmDetailedAddress->isEnabled()) : ?>
-                    <?= $_dmDetailedAddress->setDate($block->getFormData()->getDmDetailedAddress())->toHtml() ?>
-                <?php endif ?>
+                <div class="field required">
+                    <label for="dm_state" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_state') ?></span></label>
+                    <div class="control">
+                        <?php //phpcs:disable ?>
+                        <input type="text" name="dm_state" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmState()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_state') ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_state')) ?>" id="dm_state">
+                        <?php //phpcs:enable ?>
+                    </div>
+                </div>
 
-                <?php $_dmZipcode = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'dm_zipcode', ['data'=>['attribute_code'=>'dm_zipcode', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmZipcode())]]) ?>
-                <?php if ($_dmZipcode->isEnabled()) : ?>
-                    <?= $_dmZipcode->setDate($block->getFormData()->getDmZipcode())->toHtml() ?>
-                <?php endif ?>
+                <div class="field required">
+                    <label for="dm_detailed_address" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_detailed_address') ?></span></label>
+                    <div class="control">
+                        <?php //phpcs:disable ?>
+                        <input type="text" name="dm_detailed_address" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmDetailedAddress()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_detailed_address') ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_detailed_address')) ?>" id="dm_detailed_address">
+                        <?php //phpcs:enable ?>
+                    </div>
+                </div>
+
+                <div class="field required">
+                    <label for="dm_zipcode" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_zipcode') ?></span></label>
+                    <div class="control">
+                        <?php //phpcs:disable ?>
+                        <input type="text" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_zipcode') ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
+                        <?php //phpcs:enable ?>
+                    </div>
+                </div>
+
             </div>
         </fieldset>
         <div class="store-info" style="display: none">
