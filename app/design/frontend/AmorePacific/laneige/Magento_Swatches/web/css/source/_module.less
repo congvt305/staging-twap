@@ -10,7 +10,7 @@
 @swatch-attribute-option__selected__color: #646464;
 
 @swatch-option__background: @color-gray94;
-@swatch-option__border: 1px solid transparent;
+@swatch-option__border: 1px solid @border-color__base;
 
 @swatch-option__hover__border: @border-width__base solid @color-white;
 @swatch-option__hover__color: @color-gray20;
@@ -76,12 +76,6 @@
 
         .swatch-opt {
             margin: @indent__s 0 0 0;
-        }
-
-        .swatch-option {
-            &-tooltip {
-                display: none !important;
-            }
         }
 
         .swatch-attribute {
@@ -260,9 +254,10 @@
             &-tooltip {
                 .lib-css(border, @swatch-option-tooltip__border);
                 .lib-css(color, @swatch-option-tooltip__color);
+                .lib-font-size(12);
                 display: none;
+                margin-top: 8px;
                 max-height: 100%;
-                min-height: 20px;
                 min-width: 20px;
                 padding: @indent__xs;
                 position: absolute;
@@ -274,6 +269,7 @@
                 &-layered {
                     .corner {
                         bottom: 0;
+                        display: none !important;
                         height: 8px;
                         left: 40%;
                         position: absolute;
@@ -304,7 +300,7 @@
                     }
 
                     .image {
-                        display: block;
+                        display: none !important;
                         height: 130px;
                         margin: 0 auto;
                         width: 130px;
@@ -326,7 +322,6 @@
                     .lib-css(color, @swatch-option-tooltip-title__color);
                     display: block;
                     max-height: 200px;
-                    min-height: 20px;
                     overflow: hidden;
                     text-align: center;
                 }
@@ -402,6 +397,10 @@
             overflow: auto;
             padding-top: 2px;
             padding-left: 2px;
+        }
+
+        .swatch-option-tooltip {
+            display: none !important;
         }
     }
 }

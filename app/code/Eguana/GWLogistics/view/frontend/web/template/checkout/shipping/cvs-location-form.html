@@ -1,12 +1,4 @@
-<td class="col col-error" id="cvs-fields" colspan="4" data-bind="visible: isVisible">
-    <!--    <input type="text"-->
-    <!--           name="MerchantTradeNo"-->
-    <!--           id="MerchantTradeNo"-->
-    <!--           class="input-text"-->
-    <!--           value="">-->
-    <!--    <label for="MerchantTradeNo" class="label">-->
-    <!--        <span>MerchantTradeNo</span>-->
-    <!--    </label>-->
+<td class="col col-error" id="cvs-fields" colspan="4" data-bind="visible: visible">
     <fieldset class="fieldset">
         <div class="field required">
             <label class="label" for="LogisticsSubType">
@@ -18,7 +10,7 @@
                        id="LogisticsSubType"
                        class="input-text"
                        disabled="disabled"
-                       data-bind="value: getCvsLocation().LogisticsSubType">
+                       data-bind="value: getCvsLocation().LogisticsSubType, attr: { disabled: disabled}">
             </div>
         </div>
         <div class="field required">
@@ -31,7 +23,7 @@
                        id="CVSStoreID"
                        class="input-text"
                        disabled="disabled"
-                       data-bind="value: getCvsLocation().CVSStoreID">
+                       data-bind="value: getCvsLocation().CVSStoreID, attr: { disabled: disabled}">
             </div>
         </div>
         <div class="field required">
@@ -44,7 +36,7 @@
                        id="CVSStoreName"
                        class="input-text"
                        disabled="disabled"
-                       data-bind="value: getCvsLocation().CVSStoreName">
+                       data-bind="value: getCvsLocation().CVSStoreName, attr: { disabled: disabled}">
             </div>
         </div>
         <div class="field required">
@@ -57,7 +49,7 @@
                        id="CVSAddress"
                        class="input-text"
                        disabled="disabled"
-                       data-bind="value: getCvsLocation().CVSAddress">
+                       data-bind="value: getCvsLocation().CVSAddress, attr: { disabled: disabled}">
             </div>
         </div>
         <div class="field required">
@@ -70,7 +62,7 @@
                        id="CVSTelephone"
                        class="input-text"
                        disabled="disabled"
-                       data-bind="value: getCvsLocation().CVSTelephone">
+                       data-bind="value: getCvsLocation().CVSTelephone, attr: { disabled: disabled}">
             </div>
         </div>
     </fieldset>
@@ -80,3 +72,4 @@
 
     <render args="cvsMapFormTemplate"/>
 </td>
+

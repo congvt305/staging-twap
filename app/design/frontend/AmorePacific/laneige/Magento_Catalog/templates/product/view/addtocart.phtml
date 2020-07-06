@@ -13,7 +13,11 @@ $helper = $this->helper('Eguana\EcommerceStatus\Helper\Data');
 <div class="box-tocart">
     <?php if ($_product->isSaleable()) :?>
     <div class="fieldset">
-        <?= $block->getChildHtml('product.info.size', true) ?>
+        <div class="product attributes">
+            <?= $block->getChildHtml('product.info.prdvl', true) ?>
+            <?= $block->getChildHtml('product.info.vlunt', true) ?>
+            <?= $block->getChildHtml('product.info.product.count', true) ?>
+        </div>
         <?php if ($block->shouldRenderQuantity() && !$_product->getData('offline')) :?>
         <div class="field qty">
             <div class="control">
@@ -52,6 +56,11 @@ $helper = $this->helper('Eguana\EcommerceStatus\Helper\Data');
         </div>
     </div>
     <?php else :?>
+        <div class="product attributes">
+            <?= $block->getChildHtml('product.info.prdvl', true) ?>
+            <?= $block->getChildHtml('product.info.vlunt', true) ?>
+            <?= $block->getChildHtml('product.info.product.count', true) ?>
+        </div>
         <?= $block->getChildHtml('product.info.price', true) ?>
         <?php if($helper->getECommerceStatus()) :?>
             <div class="actions">
