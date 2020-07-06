@@ -100,20 +100,35 @@
                     <argument name="sort_order" xsi:type="string">20</argument>
                 </arguments>
             </block>
-            <block class="Magento\Catalog\Block\Product\View\Description"
-                   name="product.info.size" as="size"
-                   template="Magento_Catalog::product/view/attribute.phtml"
-                   group="detailed_info" after="product.info.skinconcern">
-                <arguments>
-                    <argument name="at_call" xsi:type="string">getSize</argument>
-                    <argument name="at_code" xsi:type="string">size</argument>
-                    <argument name="css_class" xsi:type="string">size</argument>
-                    <argument name="at_label" xsi:type="string">default</argument>
-                    <argument name="title" translate="true" xsi:type="string">Size</argument>
-                    <argument name="at_type" xsi:type="string">text</argument>
-                    <argument name="sort_order" xsi:type="string">40</argument>
-                </arguments>
-            </block>
+            <container name="product.info.attribute.size" htmlTag="div" htmlClass="product attribute size" after="product.info.skinconcern">
+                <block class="Magento\Catalog\Block\Product\View\Description"
+                       name="product.info.size" as="size"
+                       template="Magento_Catalog::product/view/attribute.phtml">
+                    <arguments>
+                        <argument name="at_call" xsi:type="string">getPrdvl</argument>
+                        <argument name="at_code" xsi:type="string">prdvl</argument>
+                        <argument name="css_class" xsi:type="string">prdvl</argument>
+                        <argument name="at_label" xsi:type="string">default</argument>
+                        <argument name="title" translate="true" xsi:type="string">Size</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.vlunt" template="Magento_Catalog::product/view/attribute.phtml">
+                    <arguments>
+                        <argument name="at_call" xsi:type="string">getVlunt</argument>
+                        <argument name="at_code" xsi:type="string">vlunt</argument>
+                        <argument name="css_class" xsi:type="string">vlunt</argument>
+                        <argument name="at_type" xsi:type="string">text</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.product.count" template="Magento_Catalog::product/view/attribute.phtml">
+                    <arguments>
+                        <argument name="at_call" xsi:type="string">getProductCount</argument>
+                        <argument name="at_code" xsi:type="string">product_count</argument>
+                        <argument name="css_class" xsi:type="string">product-count</argument>
+                        <argument name="at_type" xsi:type="string">text</argument>
+                    </arguments>
+                </block>
+            </container>
             <container name="product.info.content.price" htmlTag="div" htmlClass="product attribute price"  after="-" >
                 <container name="product.info.content.price.title" htmlTag="p" htmlClass="price-title" before="-">
                     <block class="Magento\Framework\View\Element\Text" name="product.info.price.label">
