@@ -118,7 +118,6 @@ class Request
                 throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
             } else {
                 $this->curl->addHeader('Content-Type', 'application/json');
-                $this->curl->post($fullUrl, $requestData);
 
                 if ($this->config->getSslVerification('default', 0)) {
                     if ($this->config->getLoggingCheck()) {
@@ -127,6 +126,8 @@ class Request
                     $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
                     $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
                 }
+
+                $this->curl->post($fullUrl, $requestData);
 
                 $response = $this->curl->getBody();
 
