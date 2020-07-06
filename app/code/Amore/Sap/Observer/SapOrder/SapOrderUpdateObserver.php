@@ -91,7 +91,7 @@ class SapOrderUpdateObserver implements ObserverInterface
                         if ($result['code'] == '0000') {
                             $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                         } else {
-                            $this->messageManager->addErrorMessage(__(''));
+                            $this->messageManager->addErrorMessage(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
                         }
                     } else {
                         $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
@@ -117,7 +117,12 @@ class SapOrderUpdateObserver implements ObserverInterface
 
                     if ($resultSize > 0) {
                         $this->messageManager->addSuccessMessage('Test Order Update sent to SAP Successfully.');
-                        $this->logger->info('Test Order Update sent to SAP Successfully.');
+                        if ($result['code'] == '0000') {
+                            $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                            $this->logger->info('Test Order Update sent to SAP Successfully.');
+                        } else {
+                            $this->messageManager->addErrorMessage(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                        }
                     } else {
                         $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
                         $this->logger->info('Something went wrong while sending test order update data to SAP. No response.');
