@@ -95,12 +95,14 @@ class Request
                     $this->curl->post($fullUrl, $requestData);
 
                     $response = $this->curl->getBody();
-                    $serializedResult = $this->json->unserialize($response);
 
                     if ($this->config->getLoggingCheck()) {
                         $this->logger->info("TEST RESPONSE");
-                        $this->logger->info($serializedResult);
+                        $this->logger->info($response);
                     }
+
+                    $serializedResult = $this->json->unserialize($response);
+
                     return $serializedResult;
                 } catch (\Exception $exception) {
                     return $exception->getMessage();
@@ -136,12 +138,12 @@ class Request
 
                     $response = $this->curl->getBody();
 
-                    $result = $this->json->unserialize($response);
-
                     if ($this->config->getLoggingCheck()) {
                         $this->logger->info('LIVE RESPONSE');
-                        $this->logger->info($result);
+                        $this->logger->info($response);
                     }
+
+                    $result = $this->json->unserialize($response);
 
                     return $result;
                 } catch (\Exception $exception) {
