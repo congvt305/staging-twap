@@ -226,6 +226,36 @@
                         margin: 0 @indent__xs;
                     }
                 }
+
+                &.store {
+                    width: 50%;
+                    float: left;
+                    text-align: center;
+                    padding: @indent__base 0;
+
+                    > li {
+                        .abs-bar(after,#d5d5d5,0,@font-weight__regular);
+                        display: block;
+                        vertical-align: top;
+
+                        &:after {
+                            float: right;
+                        }
+
+                        .location {
+                            .lib-icon-font(
+                                @_icon-font-content: @icon-location,
+                                @_icon-font-size: 16px,
+                                @_icon-font-vertical-align: top,
+                                @_icon-font-color: #aaa,
+                                @_icon-font-color-hover: #aaa,
+                                @_icon-font-color-active: #aaa,
+                                @_icon-font-margin: 0 0 0 @indent__xs,
+                                @_icon-font-position: after
+                            );
+                        }
+                    }
+                }
             }
 
             .switcher-store {
@@ -475,7 +505,7 @@
         &.content {
             .copyright,
             .links {
-                &:not(.social) {
+                &:not(.social):not(.store) {
                     display: none;
                 }
             }
@@ -701,6 +731,10 @@
                             margin-right: @indent__s;
                         }
                     }
+                }
+
+                &.store {
+                    display: none;
                 }
             }
 

@@ -36,11 +36,26 @@
             </arguments>
         </referenceBlock>
         <referenceBlock name="product.info.addtocart">
-            <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.size" template="Magento_Catalog::product/view/attribute.phtml">
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.prdvl" template="Magento_Catalog::product/view/attribute.phtml">
                 <arguments>
-                    <argument name="at_call" xsi:type="string">getLaneigeSize</argument>
-                    <argument name="at_code" xsi:type="string">laneige_size</argument>
-                    <argument name="css_class" xsi:type="string">laneige-size</argument>
+                    <argument name="at_call" xsi:type="string">getPrdvl</argument>
+                    <argument name="at_code" xsi:type="string">prdvl</argument>
+                    <argument name="css_class" xsi:type="string">prdvl</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.vlunt" template="Magento_Catalog::product/view/attribute.phtml">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getVlunt</argument>
+                    <argument name="at_code" xsi:type="string">vlunt</argument>
+                    <argument name="css_class" xsi:type="string">vlunt</argument>
+                    <argument name="at_type" xsi:type="string">text</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.product.count" template="Magento_Catalog::product/view/attribute.phtml">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getProductCount</argument>
+                    <argument name="at_code" xsi:type="string">product_count</argument>
+                    <argument name="css_class" xsi:type="string">product-count</argument>
                     <argument name="at_type" xsi:type="string">text</argument>
                 </arguments>
             </block>
