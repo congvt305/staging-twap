@@ -83,9 +83,12 @@ class Request
             } else {
                 $this->curl->addHeader('Content-Type', 'application/json');
 
-                if ($this->config->getSslVerification('store', $storeId)) {
+                if ($this->config->getSslVerification('default', 0)) {
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info('TEST MODE SSL VERIFICATION DISABLED');
+                    }
                     $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
-                    $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, FALSE);
+                    $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
                 }
 
                 $this->curl->post($fullUrl, $requestData);
@@ -116,9 +119,13 @@ class Request
             } else {
                 $this->curl->addHeader('Content-Type', 'application/json');
                 $this->curl->post($fullUrl, $requestData);
-                if ($this->config->getSslVerification('store', $storeId)) {
+
+                if ($this->config->getSslVerification('default', 0)) {
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info('SSL VERIFICATION DISABLED');
+                    }
                     $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
-                    $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, FALSE);
+                    $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
                 }
 
                 $response = $this->curl->getBody();
