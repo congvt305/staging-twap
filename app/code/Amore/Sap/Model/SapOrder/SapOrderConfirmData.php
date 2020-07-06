@@ -206,7 +206,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'postCode' => $shippingAddress->getPostcode(),
                 'addr1' => $shippingAddress->getRegion(),
                 'addr2' => $shippingAddress->getCity(),
-                'addr3' => $shippingAddress->getStreet(),
+                'addr3' => preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())),
                 'land1' => $shippingAddress->getCountryId(),
                 'telno' => $shippingAddress->getTelephone(),
                 'hpno' => $shippingAddress->getTelephone(),
