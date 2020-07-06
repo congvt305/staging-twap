@@ -74,11 +74,25 @@ class SapOrderUpdateObserver implements ObserverInterface
                 try {
                     $orderUpdateData = $this->sapOrderCancelData->singleOrderData($order->getIncrementId());
 
-                    $result = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId());
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info("Single Order Cancel Send Data");
+                        $this->logger->info($this->json->serialize($orderUpdateData));
+                    }
+
+                    $result = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
+
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info("Single Order Cancel Result Data");
+                        $this->logger->info($result);
+                    }
 
                     $resultSize = count($result);
                     if ($resultSize > 0) {
-                        $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                        if ($result['code'] == '0000') {
+                            $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                        } else {
+                            $this->messageManager->addErrorMessage(__(''));
+                        }
                     } else {
                         $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
                     }
@@ -92,8 +106,13 @@ class SapOrderUpdateObserver implements ObserverInterface
 
                 $jsonTestData = $this->json->serialize($testData);
 
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info("Single Test Order Cancel Send Data");
+                    $this->logger->info($jsonTestData);
+                }
+
                 try {
-                    $result = $this->request->postRequest($jsonTestData, 0);
+                    $result = $this->request->postRequest($jsonTestData, 0, 'cancel');
                     $resultSize = count($result);
 
                     if ($resultSize > 0) {
