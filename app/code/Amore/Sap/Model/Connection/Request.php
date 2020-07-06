@@ -81,26 +81,30 @@ class Request
             if (empty($url) || empty($path)) {
                 throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
             } else {
-                $this->curl->addHeader('Content-Type', 'application/json');
+                try {
+                    $this->curl->addHeader('Content-Type', 'application/json');
 
-                if ($this->config->getSslVerification('default', 0)) {
-                    if ($this->config->getLoggingCheck()) {
-                        $this->logger->info('TEST MODE SSL VERIFICATION DISABLED');
+                    if ($this->config->getSslVerification('default', 0)) {
+                        if ($this->config->getLoggingCheck()) {
+                            $this->logger->info('TEST MODE SSL VERIFICATION DISABLED');
+                        }
+                        $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                        $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
                     }
-                    $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
-                    $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+
+                    $this->curl->post($fullUrl, $requestData);
+
+                    $response = $this->curl->getBody();
+                    $serializedResult = $this->json->unserialize($response);
+
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info("TEST RESPONSE");
+                        $this->logger->info($serializedResult);
+                    }
+                    return $serializedResult;
+                } catch (\Exception $exception) {
+                    return $exception->getMessage();
                 }
-
-                $this->curl->post($fullUrl, $requestData);
-
-                $response = $this->curl->getBody();
-                $serializedResult = $this->json->unserialize($response);
-
-                if ($this->config->getLoggingCheck()) {
-                    $this->logger->info("TEST RESPONSE");
-                    $this->logger->info($serializedResult);
-                }
-                return $serializedResult;
             }
         } else {
             $url = $this->getUrl($storeId);
@@ -117,31 +121,31 @@ class Request
             if (empty($url) || empty($path)) {
                 throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
             } else {
-                $this->curl->addHeader('Content-Type', 'application/json');
+                try {
+                    $this->curl->addHeader('Content-Type', 'application/json');
 
-                if ($this->config->getSslVerification('default', 0)) {
-                    if ($this->config->getLoggingCheck()) {
-                        $this->logger->info('SSL VERIFICATION DISABLED');
+                    if ($this->config->getSslVerification('default', 0)) {
+                        if ($this->config->getLoggingCheck()) {
+                            $this->logger->info('SSL VERIFICATION DISABLED');
+                        }
+                        $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                        $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
                     }
-                    $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
-                    $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
-                }
 
-                $this->curl->post($fullUrl, $requestData);
+                    $this->curl->post($fullUrl, $requestData);
 
-                $response = $this->curl->getBody();
+                    $response = $this->curl->getBody();
 
-                $result = $this->json->unserialize($response);
+                    $result = $this->json->unserialize($response);
 
-                if ($this->config->getLoggingCheck()) {
-                    $this->logger->info('LIVE RESPONSE');
-                    $this->logger->info($result);
-                }
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info('LIVE RESPONSE');
+                        $this->logger->info($result);
+                    }
 
-                if ($result['code'] == '0000') {
                     return $result;
-                } else {
-                    return $result;
+                } catch (\Exception $exception) {
+                    return $exception->getMessage();
                 }
             }
         }
