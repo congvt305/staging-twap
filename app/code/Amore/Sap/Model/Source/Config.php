@@ -24,6 +24,8 @@ class Config
 
     const SAP_LOGGING_XML_PATH = 'sap/general/logging';
 
+    const SAP_SSL_VERIFICATION_XML_PATH = 'sap/general/ssl_verify_host';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -82,5 +84,10 @@ class Config
     public function getLoggingCheck()
     {
         return $this->scopeConfig->getValue(self::SAP_LOGGING_XML_PATH, 'default');
+    }
+
+    public function getSslVerification($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::SAP_SSL_VERIFICATION_XML_PATH, $type, $storeId);
     }
 }
