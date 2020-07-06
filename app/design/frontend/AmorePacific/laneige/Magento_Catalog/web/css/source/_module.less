@@ -369,13 +369,27 @@
             margin-bottom: 0;
         }
 
-        .laneige-size {
+        .product.attributes {
             .lib-font-size(16);
             color: @primary__color__darker;
             display: inline-block;
             letter-spacing: -0.4px;
-            margin-right: @indent__s;
             vertical-align: top;
+
+            > div {
+                display: inline-block;
+                float: left;
+
+                &.product-count .value:before {
+                    content: '*';
+                    display: inline-block;
+                    padding: 0 @indent__xs;
+                }
+
+                &:last-child {
+                    margin-right: @indent__s;
+                }
+            }
         }
 
         .product-info-price {
@@ -863,7 +877,7 @@
                 }
             }
 
-            .laneige-size {
+            .product.attributes {
                 line-height: @indent__l;
             }
 
@@ -1034,7 +1048,7 @@
             }
         }
 
-        .laneige-size {
+        .product.attributes {
             line-height: 35px;
         }
     }
