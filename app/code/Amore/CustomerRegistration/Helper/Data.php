@@ -50,6 +50,8 @@ class Data extends AbstractHelper
         = 'customerregistraion/pos/sales_office_code';
     const PARTNER_ID
         = 'customerregistraion/pos/partner_id';
+    const SSL_VERIFICATION
+        = 'customerregistraion/pos/ssl_verification';
     const DEBUG
         = 'customerregistraion/pos/debug';
 
@@ -280,6 +282,14 @@ class Data extends AbstractHelper
 
         return $this->scopeConfig->getValue(
             self::DEBUG,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    public function getSSLVerification()
+    {
+        return $this->scopeConfig->getValue(
+            self::SSL_VERIFICATION,
             ScopeInterface::SCOPE_WEBSITE
         );
     }

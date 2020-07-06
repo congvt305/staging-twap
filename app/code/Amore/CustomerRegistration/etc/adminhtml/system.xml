@@ -123,7 +123,12 @@
                     <label>Partner ID</label>
                 </field>
 
-                <field id="debug" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" >
+                <field id="ssl_verification" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" >
+                    <label>SSL Verfication</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="debug" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" >
                     <label>Debug</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
