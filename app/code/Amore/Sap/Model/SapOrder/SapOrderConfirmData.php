@@ -222,7 +222,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'kunnrOri' => $this->config->getClient('store', $storeId),
                 'odrnoOri' => $orderData->getIncrementId(),
                 // 이건 물건 종류 갯수(물건 전체 수량은 아님)
-                'itemCnt' => $orderData->getTotalItemCount(),
+                'itemCnt' => intval($orderData->getTotalItemCount()),
                 // 영업 플랜트 : 알수 없을 경우 공백
                 'werks' => '',
                 // 영업저장위치 : 알수 없을 경우 공백
