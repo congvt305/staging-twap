@@ -57,7 +57,11 @@
                     <label>指定國家</label>
                     <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                 </field>
-                <group id="ecpay_invoice" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="test_flag" translate="label" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>TEST Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <group id="ecpay_invoice" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>ECPay E-Invoice</label>
                     <field id="ecpay_invoice_hash_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>金鑰</label>
@@ -78,10 +82,10 @@
                         <label>TEST Mode</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
-                    <field id="ecpay_invoice_stage_url" translate="label" type="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <field id="ecpay_invoice_stage_url" translate="label" type="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Stage URL</label>
                     </field>
-                    <field id="ecpay_invoice_production_url" translate="label" type="label" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <field id="ecpay_invoice_production_url" translate="label" type="label" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Production URL</label>
                     </field>
                 </group>

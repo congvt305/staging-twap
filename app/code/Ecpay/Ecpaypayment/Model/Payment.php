@@ -75,6 +75,10 @@ class Payment extends AbstractMethod
      * @var \Magento\Framework\Stdlib\DateTime\DateTimeFactory
      */
     private $dateTimeFactory;
+    /**
+     * @var \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue
+     */
+    private $ECPayInvoiceCheckMacValue;
 
     public function __construct(
         Context $context,
@@ -94,6 +98,7 @@ class Payment extends AbstractMethod
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpayInvoice,
         \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory,
+        \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
@@ -121,6 +126,7 @@ class Payment extends AbstractMethod
         $this->orderRepository = $orderRepository;
         $this->ecpayInvoice = $ecpayInvoice;
         $this->dateTimeFactory = $dateTimeFactory;
+        $this->ECPayInvoiceCheckMacValue = $ECPayInvoiceCheckMacValue;
     }
 
     public function getValidPayments()
@@ -218,7 +224,7 @@ class Payment extends AbstractMethod
             $this->invalidateEInvoice($payment);
         }
 
-        if ($this->getEcpayConfig("invoice/ecpay_invoice_test_flag")) {
+        if ($this->getMagentoConfig("test_flag")) {
             return $this;
         }
 
@@ -232,10 +238,12 @@ class Payment extends AbstractMethod
         $tradeNo = $rawDetailsInfo["TradeNo"];
         $merchantId = $rawDetailsInfo["MerchantID"];
         $merchantTradeNo = $rawDetailsInfo["MerchantTradeNo"];
-        $checkMacValue = $rawDetailsInfo["CheckMacValue"];
 
         $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
-        $params = $this->getRefundParams($merchantId, $merchantTradeNo, $tradeNo, $amount, $checkMacValue);
+        $params = $this->getRefundParams($merchantId, $merchantTradeNo, $tradeNo, $amount);
+
+        $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate($params, $this->getEcpayConfig('hash_key'), $this->getEcpayConfig('hash_iv'));
+        $params["checkMacValue"] = $checkMacValue;
 
         $this->curl->post($url, $params);
         $result = $this->curl->getBody();
@@ -296,18 +304,16 @@ class Payment extends AbstractMethod
      * @param $merchantTradeNo
      * @param $tradeNo
      * @param float $amount
-     * @param $checkMacValue
      * @return array
      */
-    private function getRefundParams($merchantId, $merchantTradeNo, $tradeNo, float $amount, $checkMacValue): array
+    private function getRefundParams($merchantId, $merchantTradeNo, $tradeNo, float $amount): array
     {
         $params = [
             "MerchantID" => $merchantId,
             "MerchantTradeNo" => $merchantTradeNo,
             "TradeNo" => $tradeNo,
             "Action" => "R",
-            "TotalAmount" => $amount,
-            "CheckMacValue" => $checkMacValue
+            "TotalAmount" => $amount
         ];
         return $params;
     }
