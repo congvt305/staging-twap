@@ -716,6 +716,14 @@
                     letter-spacing: 0.4px;
                 }
             }
+
+            .block.widget [data-content-type='row'][data-appearance='contained'] {
+                padding: 0 !important;
+
+                > [data-element=inner] {
+                    padding: 0 !important;
+                }
+            }
         }
     }
 
@@ -1023,7 +1031,7 @@
 
     .product.info.detailed {
         .data.item.content[aria-labelledby=tab-label-reviews-title],
-        [data-content-type=row][data-appearance=contained] [data-element=inner] {
+        .attribute-content > [data-content-type=row][data-appearance=contained] > [data-element=inner] {
             padding-left: @layout__width-xs-indent !important;
             padding-right: @layout__width-xs-indent !important;
         }
@@ -1163,7 +1171,7 @@
 
     .product.info.detailed {
         .attribute-content {
-            [data-content-type=row][data-appearance=contained] [data-element=inner] {
+            > [data-content-type=row][data-appearance=contained] > [data-element=inner] {
                 padding-left: 24px !important;
                 padding-right: 24px !important;
             }

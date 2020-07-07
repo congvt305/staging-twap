@@ -29,10 +29,10 @@ if ($defaultCountry != null) {
                 <fieldset class="fieldset store-fields">
                     <div class="field note"><?= $block->escapeHtml($country) ?></div>
                     <div class="field field-hidden">
-                        <inp    ut type="hidden"
-                                id="current-lat"
-                                name="current_lat"
-                                value="<?= $block->escapeHtmlAttr($block->getSelectedLat()) ?>"/>
+                        <input type="hidden"
+                               id="current-lat"
+                               name="current_lat"
+                               value="<?= $block->escapeHtmlAttr($block->getSelectedLat()) ?>"/>
                         <input type="hidden"
                                id="current-lng"
                                name="current_lng"
@@ -62,7 +62,7 @@ if ($defaultCountry != null) {
                         </div>
                         <div class="actions search-btn-action">
                             <button type="submit" class="button action primary search-btn">
-                                <i class="fas fa-search" aria-hidden="true"></i>
+                                <span><?= $block->escapeHtml(__('Search')) ?></span>
                             </button>
                         </div>
                     </div>
