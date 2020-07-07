@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 2/7/20
+* Time: 1:50 PM
+*/
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="eventmanager.ajax.result" template="Eguana_EventManager::ajax-result.phtml" before="-">
+                <arguments>
+                    <argument name="list_view_model" xsi:type="object">Eguana\EventManager\ViewModel\EventList</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

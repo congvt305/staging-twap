@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 1/7/20
+* Time: 7:50 PM
+*/
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Events</title>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Eguana\EventManager\Block\ListBlock" name="eventmanager.list" template="Eguana_EventManager::list.phtml">
+                <arguments>
+                    <argument name="list_view_model" xsi:type="object">Eguana\EventManager\ViewModel\EventList</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
