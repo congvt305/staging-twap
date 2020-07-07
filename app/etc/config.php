@@ -492,6 +492,7 @@ return [
         'Eguana_CustomerRefund' => 1,
         'Eguana_Directory' => 1,
         'Eguana_EInvoice' => 1,
+        'Eguana_EventManager' => 1,
         'Eguana_EcommerceStatus' => 1,
         'Eguana_Faq' => 1,
         'Eguana_GWLogistics' => 1,
