@@ -10,7 +10,7 @@
 
 namespace Amore\CustomerRegistration\Model;
 
-use Psr\Log\LoggerInterface;
+use Amore\CustomerRegistration\Logger\Logger;
 use Amore\CustomerRegistration\Helper\Data;
 use Magento\Framework\Serialize\Serializer\Json;
 
@@ -29,7 +29,7 @@ class POSLogger
 
     public function __construct(
         Data $confg,
-        LoggerInterface $logger,
+        Logger $logger,
         Json $json
     ) {
         $this->confg = $confg;
@@ -40,14 +40,17 @@ class POSLogger
     public function addAPICallLog($message, $url, $parameters)
     {
         if ($this->confg->getDebug()) {
-            $this->logger->debug($message);
-            $this->logger->debug($url);
-            $this->logger->debug($this->json->serialize($parameters));
+            $this->logger->info($message);
+            $this->logger->info($url);
+            $temp = json_encode($parameters);
+            $this->logger->info($this->json->serialize($parameters));
         }
     }
 
     public function addExceptionMessage($message)
     {
-        $this->logger->debug($message);
+        if ($this->confg->getDebug()) {
+            $this->logger->info($message);
+        }
     }
 }

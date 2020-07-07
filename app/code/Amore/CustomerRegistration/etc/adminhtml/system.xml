@@ -68,6 +68,27 @@
                     </depends>
                 </field>
 
+                <field id="newsletter_policy_cms_block" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1">
+                    <label>Newsletter Policy CMS Block</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
+                <field id="sms_policy_cms_block" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1">
+                    <label>SMS Policy CMS Block</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
+                <field id="dm_policy_cms_block" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1">
+                    <label>DM Policy CMS Block</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
             </group>
 
             <group id="pos" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
@@ -81,8 +102,8 @@
                 </field>
 
                 <field id="member_info" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1">
-                    <label>Memeber Information URI</label>
-                    <comment>Member info URI. Complete URL = BASE URL + Memeber Information URI</comment>
+                    <label>Member Information URI</label>
+                    <comment>Member info URI. Complete URL = BASE URL + Member Information URI</comment>
                 </field>
 
                 <field id="member_join" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1">
@@ -90,15 +111,24 @@
                     <comment>Member join URI. Complete URL = BASE URL + Memeber Join URI</comment>
                 </field>
 
-                <field id="sales_organization_code" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1">
+                <field id="sales_organization_code" translate="label" type="text" sortOrder="60" showInWebsite="1">
                     <label>Sales Organization Code</label>
                 </field>
 
-                <field id="sales_office_code" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
+                <field id="sales_office_code" translate="label" type="text" sortOrder="70" showInWebsite="1">
                     <label>Sales Office Code</label>
                 </field>
 
-                <field id="debug" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" >
+                <field id="partner_id" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
+                    <label>Partner ID</label>
+                </field>
+
+                <field id="ssl_verification" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" >
+                    <label>SSL Verification</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="debug" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" >
                     <label>Debug</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>

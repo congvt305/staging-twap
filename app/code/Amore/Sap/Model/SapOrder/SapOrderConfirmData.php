@@ -8,40 +8,20 @@
 
 namespace Amore\Sap\Model\SapOrder;
 
+use Amore\Sap\Model\Source\Config;
+use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Api\InvoiceRepositoryInterface;
 use Magento\Rma\Api\RmaRepositoryInterface;
 use Magento\Sales\Model\Order;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Customer\Api\CustomerRepositoryInterface;
 
-class SapOrderConfirmData
+class SapOrderConfirmData extends AbstractSapOrder
 {
-// 정상 주문
-    const NORMAL_ORDER = 'ZA01';
-    // 반품
-    const RETURN_ORDER = 'ZR01';
-    // 잡출 주문
-    const SAMPLE_ORDER = 'ZFA1';
-    // 잡출 반품
-    const SAMPLE_RETURN = 'ZFR1';
-
-    /**
-     * @var ScopeConfigInterface
-     */
-    private $scopeConfig;
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-    /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
     /**
      * @var InvoiceRepositoryInterface
      */
@@ -51,33 +31,41 @@ class SapOrderConfirmData
      */
     private $rmaRepository;
     /**
-     * @var StoreRepositoryInterface
+     * @var CustomerRepositoryInterface
      */
-    private $storeRepository;
+    private $customerRepository;
+    /**
+     * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
+     */
+    private $timezoneInterface;
+
 
     /**
-     * SapOrderService constructor.
-     * @param ScopeConfigInterface $scopeConfig
+     * SapOrderConfirmData constructor.
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
+     * @param StoreRepositoryInterface $storeRepository
+     * @param Config $config
      * @param InvoiceRepositoryInterface $invoiceRepository
      * @param RmaRepositoryInterface $rmaRepository
-     * @param StoreRepositoryInterface $storeRepository
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         OrderRepositoryInterface $orderRepository,
+        StoreRepositoryInterface $storeRepository,
+        Config $config,
         InvoiceRepositoryInterface $invoiceRepository,
         RmaRepositoryInterface $rmaRepository,
-        StoreRepositoryInterface $storeRepository
+        CustomerRepositoryInterface $customerRepository,
+        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface
     ) {
-        $this->scopeConfig = $scopeConfig;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->orderRepository = $orderRepository;
+        parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
         $this->rmaRepository = $rmaRepository;
-        $this->storeRepository = $storeRepository;
+        $this->customerRepository = $customerRepository;
+        $this->timezoneInterface = $timezoneInterface;
     }
 
     /**
@@ -87,6 +75,10 @@ class SapOrderConfirmData
      */
     public function singleOrderData($incrementId)
     {
+        /** @var Order $order */
+        $order = $this->getOrderInfo($incrementId);
+
+        $source = $this->config->getSourceByStore('store' ,$order->getStoreId());
         $orderData = $this->getOrderData($incrementId);
         $itemData = $this->getOrderItem($incrementId);
 
@@ -96,14 +88,14 @@ class SapOrderConfirmData
         } elseif (empty($orderData)) {
             $msg = __("Order Data does not exist.");
             return ['code' => "0001", "message" => $msg];
-        } elseif(empty($itemData)) {
+        } elseif (empty($itemData)) {
             $msg = __("Item Data does not exist.");
             return ['code' => "0001", "message" => $msg];
         } else {
             $request = [
                 "request" => [
                     "header" => [
-                        "source" => "source"
+                        "source" => $source
                     ],
                     "input" => [
                         "itHead" => $this->getOrderData($incrementId),
@@ -115,19 +107,28 @@ class SapOrderConfirmData
         return $request;
     }
 
-    public function massSendOrderData($incrementId)
+    public function massSendOrderData($orderData, $itemData)
     {
+        $source = $this->config->getDefaultValue('sap/mall_info/source');
+        if (isset($orderData[0])) {
+            $sampleOrderData = $orderData[0];
+            $sampleIncrementId = $sampleOrderData['odrno'];
+            $sampleOrder = $this->getOrderInfo($sampleIncrementId);
+            $source = $this->config->getSourceByStore('store' ,$sampleOrder->getStoreId());
+        }
+
         $request = [
             "request" => [
                 "header" => [
-                    "source" => "source"
+                    "source" => $source
                 ],
                 "input" => [
-                    "itHead" => $this->getOrderData($incrementId),
-                    'itItem' => $this->getOrderItem($incrementId)
+                    "itHead" => $orderData,
+                    'itItem' => $itemData
                 ]
             ]
         ];
+        return $request;
     }
 
     public function getOrderType($orderId)
@@ -159,43 +160,53 @@ class SapOrderConfirmData
         }
     }
 
+    /**
+     * @param $incrementId
+     * @return array
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
+     */
     public function getOrderData($incrementId)
     {
         /** @var Order $orderData */
         $orderData = $this->getOrderInfo($incrementId);
         $invoice = $this->getInvoice($orderData->getEntityId());
+        $storeId = $orderData->getStoreId();
         $bindData = [];
 
         if ($orderData == null) {
             throw new NoSuchEntityException(
-                __("Such order does not exist. Check the data and try again")
+                __("Such order %1 does not exist. Check the data and try again", $incrementId)
             );
         }
 
         if ($invoice != null) {
             $shippingAddress = $orderData->getShippingAddress();
+            $trackingNumbers = implode(",",$orderData->getTrackingNumbers());
+            $customer = $this->getCustomerByOrder($orderData);
 
             $bindData[] = [
-                'vkorg' => '영업조직. 중국:CN10, 프랑스:FR40, 미국:US10',
-                'kunnr' => '각 직영몰 거래처코드. 국가코드 + 순번(6)',
+                'vkorg' => $this->config->getMallId('store', $storeId),
+                'kunnr' => $this->config->getClient('store', $storeId),
                 'odrno' => $orderData->getIncrementId(),
-                'odrdt' => $orderData->getCreatedAt(),
-                'odrtm' => $orderData->getCreatedAt(),
-                'paymtd' => $orderData->getPayment()->getMethod(),
-                'payde' => $invoice->getCreatedAt(),
-                'paytm' => $invoice->getCreatedAt(),
+                'odrdt' => $this->dateFormatting($orderData->getCreatedAt(), 'Ymd'),
+                'odrtm' => $this->dateFormatting($orderData->getCreatedAt(), 'His'),
+                'paymtd' => $this->getPaymentCode($orderData->getPayment()->getMethod()),
+                'payde' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
+                'paytm' => $this->dateFormatting($invoice->getCreatedAt(), 'His'),
                 'auart' => $this->getOrderType($orderData->getEntityId()),
-                'aurgu' => 'ORDER REASON CODE',
-                'abrvw' => 'USAGE INDICATOR?',
+                'aurgu' => self::NORMAL_ORDER,
                 'augruText' => 'ORDER REASON TEXT',
-                'custid' => '주문자회원코드-직영몰자체코드',
+                // 주문자회원코드-직영몰자체코드
+                'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
                 'custnm' => $orderData->getCustomerLastname() . $orderData->getCustomerLastname(),
-                'recvid' => '배송지 id - 직영몰 자체코드, 없으면 공백',
+                //배송지 id - 직영몰 자체코드, 없으면 공백
+                'recvid' => '',
                 'recvnm' => $shippingAddress->getName(),
-                'postCode' => $shippingAddress->getPostcode(),
-                'addr1' => $shippingAddress->getRegion(),
-                'addr2' => $shippingAddress->getCity(),
-                'addr3' => $shippingAddress->getStreet(),
+                'postCode' => $this->cvsShippingCheck($orderData) ? 'cvs postcode' : $shippingAddress->getPostcode(),
+                'addr1' => $this->cvsShippingCheck($orderData) ? 'cvs Region' : $shippingAddress->getRegion(),
+                'addr2' => $this->cvsShippingCheck($orderData) ? 'cvs city' : $shippingAddress->getCity(),
+                'addr3' => $this->cvsShippingCheck($orderData) ? 'cvs street' : preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())),
                 'land1' => $shippingAddress->getCountryId(),
                 'telno' => $shippingAddress->getTelephone(),
                 'hpno' => $shippingAddress->getTelephone(),
@@ -203,27 +214,72 @@ class SapOrderConfirmData
                 'nsamt' => $orderData->getSubtotalInclTax(),
                 'dcamt' => $orderData->getDiscountAmount(),
                 'slamt' => $orderData->getGrandTotal(),
-                'miamt' => $orderData->getRewardPointsBalance(),
+                'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : $orderData->getRewardPointsBalance(),
                 'shpwr' => $orderData->getShippingAmount(),
                 'mwsbp' => $orderData->getTaxAmount(),
-                // 새로 받은거에서 이 필드 사라졌는데 확인 필요
-                'SHPTP' => '배송비 주체. A : 본사부담, B : 고객부담',
-                'spitn1' => '',
-                'vkorgOri' => '주문번호 영업조직',
-                'kunnrOri' => '주문번호 거래처코드',
+                'spitn1' => 'shipping meme',
+                'vkorgOri' => $this->config->getMallId('store', $storeId),
+                'kunnrOri' => $this->config->getClient('store', $storeId),
                 'odrnoOri' => $orderData->getIncrementId(),
                 // 이건 물건 종류 갯수(물건 전체 수량은 아님)
-                'itemCnt' => $orderData->getTotalItemCount(),
-                'werks' => '영업 플랜트 : 알수 없을 경우 공백',
-                'lgort' => '영업저장위치 : 알수 없을 경우 공백',
+                'itemCnt' => intval($orderData->getTotalItemCount()),
+                // 영업 플랜트 : 알수 없을 경우 공백
+                'werks' => '',
+                // 영업저장위치 : 알수 없을 경우 공백
+                'lgort' => '',
                 'rmano' => $this->getRma($orderData->getEntityId()) == null ? '' : $this->getRma($orderData->getEntityId())->getEntityId(),
-                'IT_ITEM' => $this->getOrderItem($orderData)
+                // 납품처
+                'kunwe' => $this->config->getSupplyContractor('store', $storeId),
+                'ztrackId' => $trackingNumbers
             ];
         }
 
         return $bindData;
     }
 
+    /**
+     * @param $order \Magento\Sales\Model\Order
+     */
+    public function cvsShippingCheck($order)
+    {
+        switch ($order->getShippingMethod()) {
+            case 'gwlogistics_CVS':
+                $cvsCheck = true;
+                break;
+            case 'flatrate_flatrate':
+                $cvsCheck = false;
+                break;
+            default:
+                $cvsCheck = false;
+        }
+        return $cvsCheck;
+    }
+
+    /**
+     * @param $order Order
+     */
+    public function getCustomerByOrder($order)
+    {
+        $customerId = $order->getCustomerId();
+        if (empty($customerId)) {
+            return '';
+        } else {
+            try {
+                /** @var CustomerInterface $customer */
+                $customer = $this->customerRepository->getById($customerId);
+                return $customer;
+            } catch (NoSuchEntityException $e) {
+                return $e;
+            } catch (LocalizedException $e) {
+                return $e;
+            }
+        }
+    }
+
+    public function dateFormatting($date, $format)
+    {
+        return $this->timezoneInterface->date($date)->format($format);
+    }
 
     /**
      * @param string $incrementId
@@ -234,7 +290,10 @@ class SapOrderConfirmData
 
         /** @var Order $order */
         $order = $this->getOrderInfo($incrementId);
+        $storeId = $order->getStoreId();
+        $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount());
         $invoice = $this->getInvoice($order->getEntityId());
+        $mileageUsedAmount = $order->getRewardPointsBalance();
 
         if ($order == null) {
             throw new NoSuchEntityException(
@@ -244,33 +303,44 @@ class SapOrderConfirmData
 
         if ($invoice != null) {
 
-            $orderItems = $order->getAllVisibleItems();
+//            $orderItems = $order->getAllVisibleItems();
+            $orderItems = $order->getAllItems();
+
             $cnt = 1;
-            /** @var \Magento\Sales\Api\Data\OrderItemInterface $orderItem */
+            /** @var \Magento\Sales\Model\Order\Item $orderItem */
             foreach ($orderItems as $orderItem) {
-                $itemGrandTotal = $orderItem->getRowTotal() - $orderItem->getDiscountAmount() + $orderItem->getTaxAmount();
+                if ($orderItem->getProductType() != 'simple') {
+                    continue;
+                }
+                $itemGrandTotal = $this->configurableProductCheck($orderItem)->getRowTotal()
+                    - $this->configurableProductCheck($orderItem)->getDiscountAmount()
+                    + $this->configurableProductCheck($orderItem)->getTaxAmount();
                 $orderItemData[] = [
-                    'itemVkorg' => '영업조직. 중국:CN10, 프랑스:FR40, 미국:US10',
-                    'itemKunnr' => '각 직영몰 거래처코드. 국가코드 + 순번(6)',
+                    'itemVkorg' => $this->config->getMallId('store', $storeId),
+                    'itemKunnr' => $this->config->getClient('store', $storeId),
                     'itemOdrno' => $order->getIncrementId(),
                     'itemPosnr' => $cnt,
-                    'itemMatnr' => 'item Material',
-                    'itemSatnr' => '',
-                    'itemMenge' => $orderItem->getQtyOrdered(),
-                    'itemMeins' => '아이템 단위',
-                    'itemNsamt' => $orderItem->getPriceInclTax(),
-                    'itemDcamt' => $orderItem->getDiscountAmount(),
-                    'itemSlamt' => $itemGrandTotal,
-                    'itemMiamt' => '마일리지 사용비율',
-                    'itemFgflg' => '무상제공인경우 Y 아니면 N',
-                    'itemMilfg' => '마일리지 구매인 경우 Y 아니면 N',
+                    'itemMatnr' => $orderItem->getSku(),
+                    'itemMenge' => intval($orderItem->getQtyOrdered()),
+                    // 아이템 단위, Default : EA
+                    'itemMeins' => 'EA',
+                    'itemNsamt' => $this->configurableProductCheck($orderItem)->getPriceInclTax(),
+                    'itemDcamt' => $this->configurableProductCheck($orderItem)->getDiscountAmount(),
+                    'itemSlamt' => $this->configurableProductCheck($orderItem)->getRowTotal(),
+                    'itemMiamt' => $this->mileageSpentRateByItem(
+                        $orderTotal,
+                        $this->configurableProductCheck($orderItem)->getRowTotal(),
+                        $this->configurableProductCheck($orderItem)->getDiscountAmount(),
+                        $mileageUsedAmount),
+                    // 상품이 무상제공인 경우 Y 아니면 N
+                    'itemFgflg' => $orderItem->getPrice() == 0 ? 'Y' : 'N',
+                    'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                     'itemAuart' => $this->getOrderType($order->getEntityId()),
                     'itemAugru' => 'order reason,',
-                    'itemAbrvw' => 'USAGE INDICATOR',
-                    'itemNetwr' => $orderItem->getRowTotal(),
-                    'itemMwsbp' => $orderItem->getTaxAmount(),
-                    'itemVkorg_ori' => '영업조직. 중국:CN10, 프랑스:FR40, 미국:US10',
-                    'itemKunnr_ori' => '각 직영몰 거래처코드. 국가코드 + 순번(6)',
+                    'itemNetwr' => $itemGrandTotal,
+                    'itemMwsbp' => $this->configurableProductCheck($orderItem)->getTaxAmount(),
+                    'itemVkorg_ori' => $this->config->getMallId('store', $storeId),
+                    'itemKunnr_ori' => $this->config->getClient('store', $storeId),
                     'itemOdrno_ori' => $order->getIncrementId(),
                     'itemPosnr_ori' => $cnt
                 ];
@@ -278,6 +348,29 @@ class SapOrderConfirmData
             }
         }
         return $orderItemData;
+    }
+
+    /**
+     * @param $orderItem \Magento\Sales\Model\Order\Item
+     */
+    public function configurableProductCheck($orderItem)
+    {
+        if (empty($orderItem->getParentItem())) {
+            return $orderItem;
+        } else {
+            return $orderItem->getParentItem();
+        }
+    }
+
+
+    public function mileageSpentRateByItem($orderTotal, $itemRowTotal, $itemDiscountAmount, $mileageUsed)
+    {
+        $itemTotal = round($itemRowTotal - $itemDiscountAmount, 2);
+
+        if ($mileageUsed) {
+            return round(($itemTotal/$orderTotal) * $mileageUsed);
+        }
+        return is_null($mileageUsed) ? '0' : $mileageUsed;
     }
 
     public function getInvoice($orderId)
@@ -294,6 +387,16 @@ class SapOrderConfirmData
         } else {
             return null;
         }
+    }
+
+    public function getPaymentCode($paymentMethod)
+    {
+        if ($paymentMethod == 'ecpay_ecpaypayment') {
+            $paymentCode = "P";
+        } else {
+            $paymentCode = "S";
+        }
+        return $paymentCode;
     }
 
     public function getRma($orderId)
@@ -333,12 +436,99 @@ class SapOrderConfirmData
         }
     }
 
-    public function getStore($storeId)
+    public function getTestOrderConfirm()
     {
-        try {
-            return $this->storeRepository->get($storeId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
-            $e->getMessage();
-        }
+        $testOrderValue = $this->config->getDefaultValue('sap/order_confirm_test/confirm_order_test');
+        $testItemValue = $this->config->getDefaultValue('sap/order_confirm_test/confirm_order_item_test');
+        $arrayTestOrderValue = explode(",", $testOrderValue);
+        $arrayTestItemValue = explode(",",$testItemValue);
+
+        $request = [
+            "request" => [
+                "header" => [
+                    "source" => $this->config->getSourceByStore('default', null)
+                ],
+                "input" => [
+                    "itHead" => $this->getTestOrderData($arrayTestOrderValue),
+                    'itItem' => $this->getTestOrderItemData($arrayTestOrderValue, $arrayTestItemValue)
+                ]
+            ]
+        ];
+
+        return $request;
+    }
+
+    public function getTestOrderData($testOrderData)
+    {
+        $bindData[] = [
+            'vkorg' => $testOrderData[0],
+            'kunnr' => $testOrderData[1],
+            'odrno' => $testOrderData[2],
+            'odrdt' => $testOrderData[3],
+            'odrtm' => $testOrderData[4],
+            'paymtd' => $testOrderData[5],
+            'payde' => $testOrderData[6],
+            'paytm' => $testOrderData[7],
+            'auart' => self::NORMAL_ORDER,
+            'aurgu' => '',
+            'augruText' => '',
+            'custid' => $testOrderData[8],
+            'custnm' => 'Test Customer Name',
+            'recvid' => $testOrderData[8],
+            'recvnm' => 'Test Receiver Name',
+            'postCode' => "300",
+            'addr1' => '新竹市',
+            'addr2' => '北區',
+            'addr3' => 'test street',
+            'land1' => 'TW',
+            'telno' => '0911112222',
+            'hpno' => '',
+            'waerk' => 'TWD',
+            'nsamt' => $testOrderData[9],
+            'dcamt' => $testOrderData[10],
+            'slamt' => $testOrderData[11],
+            'miamt' => $testOrderData[12],
+            'shpwr' => $testOrderData[13],
+            'mwsbp' => $testOrderData[14],
+            'spitn1' => '',
+            'vkorgOri' => $testOrderData[0],
+            'kunnrOri' => $testOrderData[1],
+            'odrnoOri' => $testOrderData[2],
+            'itemCnt' => "1",
+            'werks' => '',
+            'lgort' => '',
+            'rmano' => '',
+            'kunwe' => $testOrderData[15],
+            'ztrackId' => $testOrderData[16]
+        ];
+        return $bindData;
+    }
+
+    public function getTestOrderItemData($testOrderData, $testItemData)
+    {
+        $orderItemData[] = [
+            'itemVkorg' => $testOrderData[0],
+            'itemKunnr' => $testOrderData[1],
+            'itemOdrno' => $testOrderData[2],
+            'itemPosnr' => "1",
+            'itemMatnr' => $testItemData[0],
+            'itemMenge' => $testItemData[1],
+            'itemMeins' => 'EA',
+            'itemNsamt' => $testItemData[2],
+            'itemDcamt' => $testItemData[3],
+            'itemSlamt' => $testItemData[4],
+            'itemMiamt' => $testItemData[5],
+            'itemFgflg' => $testItemData[6],
+            'itemMilfg' => $testItemData[7],
+            'itemAuart' => self::NORMAL_ORDER,
+            'itemAugru' => '',
+            'itemNetwr' => $testItemData[8],
+            'itemMwsbp' => $testItemData[9],
+            'itemVkorg_ori' => $testOrderData[0],
+            'itemKunnr_ori' => $testOrderData[1],
+            'itemOdrno_ori' => $testOrderData[2],
+            'itemPosnr_ori' => "1"
+        ];
+        return $orderItemData;
     }
 }

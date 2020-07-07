@@ -38,6 +38,10 @@
         > .loading-mask {
             background: @page__background-color;
             z-index: @loader-overlay__z-index;
+
+            .loader > img {
+                width: 60px;
+            }
         }
     }
 
@@ -47,19 +51,5 @@
 
     [data-role='main-css-loader'] {
         display: none;
-    }
-}
-
-//
-//  Mobile
-//  _____________________________________________
-
-.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-    body {
-        > .loading-mask {
-            .loader > img {
-                width: 80px;
-            }
-        }
     }
 }

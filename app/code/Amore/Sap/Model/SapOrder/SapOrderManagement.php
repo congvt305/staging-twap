@@ -9,11 +9,9 @@
 namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Api\SapOrderManagementInterface;
-use Amore\Sap\Model\SapOrder\SapOrderConfirm;
+use Amore\Sap\Logger\Logger;
+use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\Exception\AlreadyExistsException;
-use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Api\Data\OrderInterfaceFactory;
 use Magento\Sales\Api\Data\ShipmentItemCreationInterfaceFactory;
@@ -21,6 +19,7 @@ use Magento\Sales\Api\Data\ShipmentTrackCreationInterfaceFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Api\ShipOrderInterface;
 use Magento\Sales\Model\Order\Email\Container\ShipmentIdentity;
+use Ecpay\Ecpaypayment\Model\Payment;
 
 class SapOrderManagement implements SapOrderManagementInterface
 {
@@ -68,6 +67,18 @@ class SapOrderManagement implements SapOrderManagementInterface
     private $shipmentIdentity;
 
     private $appendComments = false;
+    /**
+     * @var Payment
+     */
+    private $ecpayPayment;
+    /**
+     * @var Logger
+     */
+    private $logger;
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * SapOrderManagement constructor.
@@ -79,6 +90,9 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @param OrderRepositoryInterface $orderRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param Json $json
+     * @param Payment $ecpayPayment
+     * @param Logger $logger
+     * @param Config $config
      */
     public function __construct(
         ShipmentItemCreationInterfaceFactory $shipmentItemCreationInterfaceFactory,
@@ -88,7 +102,10 @@ class SapOrderManagement implements SapOrderManagementInterface
         OrderInterfaceFactory $orderInterfaceFactory,
         OrderRepositoryInterface $orderRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        Json $json
+        Json $json,
+        Payment $ecpayPayment,
+        Logger $logger,
+        Config $config
     ) {
         $this->shipmentItemCreationInterfaceFactory = $shipmentItemCreationInterfaceFactory;
         $this->shipmentTrackCreationInterfaceFactory = $shipmentTrackCreationInterfaceFactory;
@@ -98,11 +115,29 @@ class SapOrderManagement implements SapOrderManagementInterface
         $this->orderRepository = $orderRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->json = $json;
+        $this->ecpayPayment = $ecpayPayment;
+        $this->logger = $logger;
+        $this->config = $config;
     }
 
     public function orderStatus($orderStatusData)
     {
         $result = [];
+
+        $parameters = [
+            $orderStatusData['source'],
+            $orderStatusData['odrno'],
+            $orderStatusData['odrstat'],
+            $orderStatusData['ztrackId'],
+            $orderStatusData['ugcod'],
+            $orderStatusData['ugtxt'],
+            $orderStatusData['mallId']
+        ];
+
+        if ($this->config->getLoggingCheck()) {
+            $this->logger->info('ORDER STATUS REQUEST DATA');
+            $this->logger->info($this->json->serialize($parameters));
+        }
 
         /** @var \Magento\Sales\Model\Order $order */
         $orders = $this->getOrderByIncrementId($orderStatusData['odrno']);
@@ -122,7 +157,6 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
             // case that DN is created
             } elseif ($orderStatusData['odrstat'] == 3) {
-
                 $order = $this->getOrderFromList($orderStatusData['odrno']);
 
                 $trackingNo = $orderStatusData['ztrackId'];
@@ -147,7 +181,18 @@ class SapOrderManagement implements SapOrderManagementInterface
                     $message = "Order already has a shipment";
                     $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                 }
-            // 기타 order status 일 때. 각 status 별 프로세스 확실해지면 제대로 하기.
+            // 기타 order status 일 때.
+            } elseif ($orderStatusData['odrstat'] == 4) {
+                // ecpay invoice creation
+                $order = $this->getOrderFromList($orderStatusData['odrno']);
+                $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId());
+
+                $result[$orderStatusData['odrno']] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
+
+                if ($order->getStatus() == 'preparing') {
+                    $order->setStatus('shipment_processing');
+                    $this->orderRepository->save($order);
+                }
             } else {
                 $message =  "Other order status return.";
                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
@@ -207,6 +252,18 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $status = self::SAP_ORDER_DELIVERY_CREATION;
         }
         return $status;
+    }
+
+    public function validateEInvoiceResult($orderStatusData, $eInvoiceResult)
+    {
+        if ($eInvoiceResult['RtnCode'] == 1) {
+            $message = "EcPay Invoice has been created successfully.";
+            $result =  $this->orderResultMsg($orderStatusData, $message, "0000");
+        } else {
+            $message = "Something went wrong while creating EcPay Invoice.";
+            $result =  $this->orderResultMsg($orderStatusData, $message, "0001");
+        }
+        return $result;
     }
 
     /**

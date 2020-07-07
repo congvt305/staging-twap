@@ -2,7 +2,7 @@
 
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <title>Find a Store near you</title>
+        <title>Find Store</title>
         <script src="Eguana_StoreLocator/js/google/map/storesmapviewer.js"/>
     </head>
     <body>
@@ -17,15 +17,16 @@
                 </argument>
             </action>
             <action method="addCrumb">
-                <argument name="crumbName" xsi:type="string">Find a Store near you</argument>
+                <argument name="crumbName" xsi:type="string">Find Store</argument>
                 <argument name="crumbInfo" xsi:type="array">
-                    <item name="title" xsi:type="string">Find a Store near you</item>
-                    <item name="label" xsi:type="string" translate="true">Find a Store near you</item>
+                    <item name="title" xsi:type="string">Find Store</item>
+                    <item name="label" xsi:type="string" translate="true">Find Store</item>
                 </argument>
             </action>
         </referenceBlock>
         <referenceContainer name="content">
             <block class="Eguana\StoreLocator\Block\InfoList" name="stores_info_list" template="Eguana_StoreLocator::info/list.phtml"/>
         </referenceContainer>
+        <move element="page.main.title" destination="stores_info_list"/>
     </body>
 </page>

@@ -20,8 +20,10 @@
     <div class="additional-attributes-wrapper">
         <div class="additional-attribute">
             <?php foreach ($_additional as $_data) :?>
-                <div class="attribute-title" data-mage-init='{"toggleAdvanced": {"toggleContainers": "#attribute-content-<?= /* @noEscape */ $_data['code']?>", "selectorsToggleClass": "active"}}'><span><?= $block->escapeHtml($_data['label']) ?></span></div>
-                <div id="attribute-content-<?= /* @noEscape */ $_data['code']?>" class="attribute-content"><?= /* @noEscape */ $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></div>
+                <?php if($_data['code'] == 'ingredients' || $_data['code'] == 'precautions') : ?>
+                    <div class="attribute-title" data-mage-init='{"toggleAdvanced": {"toggleContainers": "#attribute-content-<?= /* @noEscape */ $_data['code']?>", "selectorsToggleClass": "active"}}'><span><?= $block->escapeHtml($_data['label']) ?></span></div>
+                    <div id="attribute-content-<?= /* @noEscape */ $_data['code']?>" class="attribute-content"><?= /* @noEscape */ $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></div>
+                <?php endif; ?>
             <?php endforeach; ?>
         </div>
     </div>

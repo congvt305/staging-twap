@@ -1,0 +1,34 @@
+"Warning! State mismatch. Authentication attempt may have been compromised.","Warning! State mismatch. Authentication attempt may have been compromised."
+"Unspecified OAuth error occurred.","Unspecified OAuth error occurred."
+"Warning! Visitor may have declined access or navigated to the page without being redirected.","Warning! Visitor may have declined access or navigated to the page without being redirected."
+"We can't process your request right now. Sorry, that's all we know.","We can't process your request right now. Sorry, that's all we know."
+"Unable to find Social Login User with ID ""%1""","Unable to find Social Login User with ID ""%1"""
+"* Required Fields","* Required Fields"
+"Social Login","Social Login"
+"Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!","Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!"
+"I am already a Laneige member(Login to complete the setup)","I am already a Laneige member(Login to complete the setup)"
+"Linked Account : Google ID/Facebook/Line","Linked Account : Google ID/Facebook/Line"
+Email,Email
+Password,Password
+"I am not a Laneige member yet, I want to be a new member at the same time)","I am not a Laneige member yet, I want to be a new member at the same time)"
+Canel,Canel
+OK,OK
+OR,OR
+"Login with LINE","Login with LINE"
+"Login with Facebook","Login with Facebook"
+"Login with Google","Login with Google"
+Eguana,Eguana
+"General Setting","General Setting"
+"Enable Module","Enable Module"
+LINE,LINE
+Enable,Enable
+"Channel ID","Channel ID"
+"Channel Secret","Channel Secret"
+"Callback URL","Callback URL"
+Facebook,Facebook
+"App ID","App ID"
+"App Secret","App Secret"
+"OAuth Redirect URI","OAuth Redirect URI"
+Google,Google
+"Client ID","Client ID"
+"Client Secret","Client Secret"

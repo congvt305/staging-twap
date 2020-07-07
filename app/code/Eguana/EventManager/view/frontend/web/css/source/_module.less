@@ -1,0 +1,173 @@
+//
+//  Listing page
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .event-list-wrapper {
+        width: 100%;
+
+            .toggle-btn-desktop{
+                display: block;
+            }
+
+            .event-list-toggle-mobile{
+                display: none;
+            }
+
+        .event-list{
+            padding: 0;
+
+            .event-list-item{
+                display: inline-block;
+                width: 31%;
+                padding: 0 1%;
+                margin-bottom: 45px;
+
+                .event-list-heading-date{
+                    padding: 15px 0;
+
+                    .event-list-heading{
+                        font-size: 17px;
+                        a{
+                            text-decoration: none;
+                        }
+                    }
+                    .ellipsis {
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+        }
+        .hr-no-bottom-margin{
+            margin: 50px 0 0 0;
+        }
+        .hr-no-top-margin{
+            margin: 0 0 50px 0;
+        }
+    }
+    .event-list-toggle-buttons{
+        width: 35%;
+        margin: auto;
+        display: flex;
+        font-size: 18px;
+        font-weight: 600;
+
+        .current-tab-link{
+            margin-right: 5px;
+            width: 50%;
+            text-align: center;
+            padding: 15px 0;
+
+            a{
+                text-decoration: none;
+                padding: 15px 0;
+            }
+        }
+        .current-tab-link:hover{
+            border-bottom: 2px solid #5f5f5f;
+            cursor: pointer;
+        }
+
+        .previous-tab-link{
+            margin-left: 5px;
+            width: 50%;
+            text-align: center;
+            padding: 15px 0;
+            a{
+                text-decoration: none;
+                padding: 15px 0;
+            }
+        }
+        .previous-tab-link:hover{
+            border-bottom: 2px solid #5f5f5f;
+            cursor: pointer;
+        }
+        .active-button{
+            border-bottom: 2px solid #000;
+        }
+    }
+}
+    .page-no-button {
+        text-align: center;
+
+        .no-display{
+            display: none;
+        }
+
+        span{
+            padding: 0;
+            border: none;
+            padding: 6px 10px;
+        }
+
+        span:hover{
+            border: none;
+            cursor: pointer;
+            background-color: #0a6c9f;
+            color: white;
+        }
+    }
+    .active-page-button{
+        cursor: pointer;
+        display: inline-block;
+        background: #2b2b2b;
+        color: #ffffff;
+    }
+    .no-border{
+        border: none;
+    }
+
+//
+//  Mobile to Tab Max Width 959px
+//  _____________________________________________
+
+@screen__m: 960px;
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .event-list-wrapper {
+        width: 100%;
+
+            .toggle-btn-desktop{
+                display: none;
+            }
+
+            .event-list-toggle-mobile{
+                display: block;
+                width: 98%;
+                margin: 0 1% 5% 1%;
+            }
+        .event-list{
+            padding: 0;
+
+            .event-list-item{
+                display: inline-block;
+                width: 47%;
+                padding: 0 1%;
+            }
+        }
+    }
+}
+
+//
+//  Mobile to Tab Max Width 560px
+//  _____________________________________________
+
+@screen__s: 560px;
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .event-list-wrapper {
+        width: 100%;
+
+        .event-list{
+            padding: 0;
+
+            .event-list-item{
+                display: inline-block;
+                width: 98%;
+                padding: 0 1%;
+            }
+        }
+    }
+}

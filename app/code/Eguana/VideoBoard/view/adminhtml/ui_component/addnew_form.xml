@@ -15,7 +15,6 @@
             <item name="provider" xsi:type="string">addnew_form.addnew_form_data_source</item>
         </item>
         <item name="label" xsi:type="string" translate="true">New Video</item>
-        <!--<item name="template" xsi:type="string">templates/form/collapsible</item>-->
         <item name="layout" xsi:type="array">
             <item name="type" xsi:type="string">tabs</item>
         </item>
@@ -43,7 +42,7 @@
         <settings>
             <submitUrl path="videoboard/howto/save"/>
         </settings>
-        <aclResource>Magento_VideoBoard::videoboard</aclResource>
+        <aclResource>Eguana_VideoBoard::manage_videoboard</aclResource>
         <dataProvider class="Eguana\VideoBoard\Model\DataProvider" name="addnew_form_data_source">
             <settings>
                 <primaryFieldName>entity_id</primaryFieldName>

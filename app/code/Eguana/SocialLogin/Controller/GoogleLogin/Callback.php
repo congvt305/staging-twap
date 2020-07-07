@@ -104,7 +104,7 @@ class Callback extends Action
                 $this->socialLoginModel->getCoreSession()->unsSocialCustomerId();
                 $this->socialLoginModel->getCoreSession()->setSocialCustomerId($customerId);
             } else {
-                $this->socialLoginModel->redirectCustomer($customerId, $user_info, $userid, $socialMediaType);
+                $this->socialLoginModel->redirectCustomer($user_info, $userid, $socialMediaType);
             }
             $this->helper->closePopUpWindow($this);
         }

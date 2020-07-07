@@ -6,7 +6,7 @@
 define([
     'jquery',
     'mageUtils',
-    './shipping-rates-validation-rules',
+    'Eguana_GWLogistics/js/model/shipping-rates-validation-rules',
     'mage/translate'
 ], function ($, utils, validationRules, $t) {
     'use strict';
@@ -21,27 +21,21 @@ define([
          * @return {Boolean}
          */
         validate: function (address) {
-            var rules = validationRules.getRules(),
-                self = this;
+            console.log('puhaha');
+            var self = this;
 
-            $.each(rules, function (field, rule) {
+            this.validationErrors = [];
+            $.each(validationRules.getRules(), function (field, rule) {
                 var message;
 
                 if (rule.required && utils.isEmpty(address[field])) {
                     message = $t('Field ') + field + $t(' is required.');
+
                     self.validationErrors.push(message);
                 }
             });
 
-            if (!this.validationErrors.length) {
-                if (address['country_id'] == checkoutConfig.originCountryCode) { //eslint-disable-line eqeqeq
-                    return !utils.isEmpty(address.postcode);
-                }
-
-                return true;
-            }
-
-            return false;
+            return !this.validationErrors.length;
         }
     };
 });

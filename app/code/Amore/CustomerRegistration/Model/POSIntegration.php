@@ -14,6 +14,8 @@ use Magento\Store\Model\StoreRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Amore\CustomerRegistration\Model\POSLogger;
+use Amore\CustomerRegistration\Api\Data\ResponseInterface;
+use Amore\CustomerRegistration\Api\Data\DataResponseInterface;
 
 /**
  * Implement the API module interface
@@ -49,13 +51,24 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      */
     private $logger;
 
+    /**
+     * @var \Amore\CustomerRegistration\Api\Data\ResponseInterface
+     */
+    private $response;
+    /**
+     * @var DataResponseInterface
+     */
+    private $dataResponse;
+
     public function __construct(
         Data $configHelper,
         CustomerRepositoryInterface $customerRepositoryInterface,
         StoreRepository $storeRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SubscriberFactory $subscriberFactory,
-        POSLogger $logger
+        POSLogger $logger,
+        ResponseInterface $response,
+        DataResponseInterface $dataResponse
     ) {
         $this->customerRepositoryInterface = $customerRepositoryInterface;
         $this->configHelper = $configHelper;
@@ -63,6 +76,8 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->subscriberFactory = $subscriberFactory;
         $this->logger = $logger;
+        $this->response = $response;
+        $this->dataResponse = $dataResponse;
     }
 
     /**
@@ -90,7 +105,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      * @param string $statusCD
      * @param string $salOrgCd
      * @param string $salOffCd
-     * @return boolean|void
+     * @return \Amore\CustomerRegistration\Api\Data\ResponseInterface
      */
     public function update(
         $cstmIntgSeq,
@@ -114,24 +129,24 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
     ) {
         try {
             $parameters = [
-                $cstmIntgSeq,
-                $firstName,
-                $lastName,
-                $birthDay,
-                $mobileNo,
-                $email,
-                $sex,
-                $emailYN,
-                $smsYN,
-                $callYN,
-                $dmYN,
-                $homeCity,
-                $homeState,
-                $homeAddr1,
-                $homeZip,
-                $statusCD,
-                $salOrgCd,
-                $salOffCd
+                'cstmIntgSeq' => $cstmIntgSeq,
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'birthDay' => $birthDay,
+                'mobileNo' => $mobileNo,
+                'email' => $email,
+                'sex' => $sex,
+                'emailYN' => $emailYN,
+                'smsYN' => $smsYN,
+                'callYN' => $callYN,
+                'dmYN' => $dmYN,
+                'homeCity' => $homeCity,
+                'homeState' => $homeState,
+                'homeAddr1' => $homeAddr1,
+                'homeZip' => $homeZip,
+                'statusCD' => $statusCD,
+                'salOrgCd' => $salOrgCd,
+                'salOffCd' => $salOffCd
             ];
 
             $this->logger->addAPICallLog(
@@ -211,9 +226,11 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
             trim($homeAddr1)?$customer->setCustomAttribute('dm_detailed_address', $homeAddr1):'';
             trim($homeZip)?$customer->setCustomAttribute('dm_zipcode', $homeZip):'';
             trim($statusCD)?$customer->setCustomAttribute('status_code', $statusCD == '1' ? 1 : 0):'';
+
             //Confiremd with Client sales office and organization code will never change
             //trim($salOrgCd)? $customer->setCustomAttribute('sales_organization_code', $salOrgCd):'';
             //trim($salOffCd)?$customer->setCustomAttribute('sales_office_code', $salOffCd):'';
+            //trim($prtnrid)?$customer->setCustomAttribute('partner_id', $prtnrid):'';
 
             $customer = $this->customerRepositoryInterface->save($customer);
             if (trim($emailYN) == 'Y') {
@@ -233,21 +250,30 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
 
     private function getResponse($code, $message, $statusCode, $statusMessage, $cstmIntgSeq)
     {
-        $response = [
-            'code' => $code,
-            'message' => $message,
-            'data'  =>    [
-                'statusCode' => $statusCode,
-                'statusMessage' => $statusMessage,
-                'cstmIntgSeq' => $cstmIntgSeq
-            ]
+        $logResponse = [
+          'code' => $code,
+          'message' => $message,
+          'data' => [
+              'status_code' => $statusCode,
+              'status_message' => $statusMessage,
+              'cstm_intg_seq' => $cstmIntgSeq
+          ]
         ];
+
         $this->logger->addAPICallLog(
             'Customer update api response',
             '{Base URL}/rest/all/V1/pos-customers/',
-            $response
+            $logResponse
         );
-        return $response;
+
+        $this->response->setCode($code);
+        $this->response->setMessage($message);
+        $this->dataResponse->setCstmIntgSeq($cstmIntgSeq);
+        $this->dataResponse->setStatusCode($statusCode);
+        $this->dataResponse->setStatusMessage($statusMessage);
+        $this->response->setData($this->dataResponse);
+
+        return $this->response;
     }
 
     private function getCustomerWebsiteId($salOffCd)

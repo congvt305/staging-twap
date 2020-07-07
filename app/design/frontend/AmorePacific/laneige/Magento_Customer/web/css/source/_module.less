@@ -97,6 +97,7 @@
         }
     }
 
+    .block.details[class*="e-invoices"],
     .block-return-details,
     .block-order-details-view,
     .block-addresses-default,
@@ -236,7 +237,7 @@
             .block:not(.widget) {
                 &:extend(.abs-account-blocks all);
 
-                &:not(.block-orders-history):not(.block-order-details-view) {
+                &:not(.block-orders-history):not(.block-order-details-view):not(.block-order-details-comments) {
                     margin-bottom: 100px;
                 }
 
@@ -482,14 +483,14 @@
                     &:extend(.abs-button-l all);
                     .lib-button-revert-secondary-color(
                         @_button-color: @color-white,
-                        @_button-background: #79a3dc,
-                        @_button-border: 1px solid #79a3dc,
+                        @_button-background: @theme__color__secondary,
+                        @_button-border: 1px solid @theme__color__secondary,
                         @_button-color-hover: @color-white,
-                        @_button-background-hover: #4477be,
-                        @_button-border-hover: 1px solid #4477be,
-                        @_button-color-active: #4477be,
-                        @_button-background-active: #4477be,
-                        @_button-border-active: 1px solid #4477be
+                        @_button-background-hover: @theme__color__primary-alt,
+                        @_button-border-hover: 1px solid @theme__color__primary-alt,
+                        @_button-color-active: @theme__color__primary-alt,
+                        @_button-background-active: @theme__color__primary-alt,
+                        @_button-border-active: 1px solid @theme__color__primary-alt
                     );
                 }
             }
@@ -571,6 +572,7 @@
                             display: block;
                             margin: 0 0 @indent__s 0 !important;
                             height: @indent__xl;
+                            left: 0;
                             position: relative;
                             top: 0;
                             width: 100%;
@@ -752,6 +754,7 @@
         }
     }
 
+    .block.details[class*="e-invoices"],
     .block-return-details,
     .block-order-details-view,
     .block-addresses-default,
@@ -930,6 +933,7 @@
         }
     }
 
+    .block.details[class*="e-invoices"],
     .block-return-details,
     .block-order-details-view,
     .block-addresses-default,

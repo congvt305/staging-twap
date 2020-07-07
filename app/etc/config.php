@@ -1,4 +1,5 @@
 <?php
+
 return [
     'scopes' => [
         'websites' => [
@@ -235,7 +236,7 @@ return [
         'Magento_Contact' => 1,
         'Magento_Cookie' => 1,
         'Magento_Cron' => 1,
-        'Magento_Csp' => 1,
+        'Magento_Csp' => 0,
         'Magento_CurrencySymbol' => 1,
         'Magento_CustomAttributeManagement' => 1,
         'Magento_AdvancedRule' => 1,
@@ -480,15 +481,18 @@ return [
         'Amazon_Payment' => 0,
         'Amore_Base' => 1,
         'Amore_CustomerRegistration' => 1,
+        'Amore_GaTagging' => 1,
         'Amore_Sap' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_Enterprise' => 1,
         'Ecpay_Ecpaypayment' => 1,
-        'Eguana_BizConnect' => 1,
+        'Eguana_Base' => 1,
         'Eguana_Theme' => 1,
+        'Eguana_CustomerRefund' => 1,
         'Eguana_Directory' => 1,
         'Eguana_EInvoice' => 1,
+        'Eguana_EventManager' => 1,
         'Eguana_EcommerceStatus' => 1,
         'Eguana_Faq' => 1,
         'Eguana_GWLogistics' => 1,
@@ -502,6 +506,7 @@ return [
         'Eguana_VideoBoard' => 1,
         'Fastly_Cdn' => 1,
         'Klarna_Core' => 0,
+        'Eguana_OrderDeliveryMessage' => 1,
         'Klarna_Ordermanagement' => 0,
         'Klarna_Kp' => 0,
         'Magento_PaypalReCaptcha' => 1,

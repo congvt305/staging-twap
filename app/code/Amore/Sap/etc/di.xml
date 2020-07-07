@@ -15,19 +15,20 @@
     <preference for="Amore\Sap\Api\Data\SapProductsDetailInterface" type="Amore\Sap\Model\SapProduct\SapProductsDetail"/>
     <preference for="Amore\Sap\Api\Data\SapProductsPriceInterface" type="Amore\Sap\Model\SapProduct\SapProductsPrice"/>
 
-
-<!--    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">-->
-<!--        <arguments>-->
-<!--            <argument name="collections" xsi:type="array">-->
-<!--                <item name="sales_order_grid_data_source"-->
-<!--                      xsi:type="string">Amore\Sap\Model\ResourceModel\Order\Grid\Collection</item>-->
-<!--            </argument>-->
-<!--        </arguments>-->
-<!--    </type>-->
-<!--    <type name="Amore\Sap\Model\ResourceModel\Order\Grid\Collection">-->
-<!--        <arguments>-->
-<!--            <argument name="mainTable" xsi:type="string">sales_order_grid</argument>-->
-<!--            <argument name="resourceModel" xsi:type="string">Magento\Sales\Model\ResourceModel\Order</argument>-->
-<!--        </arguments>-->
-<!--    </type>-->
+    <type name="Amore\Sap\Logger\HAndler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Amore\Sap\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">sapLogger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Amore\Sap\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Sales\Model\Order\CreditmemoRepository">
+        <plugin sortOrder="1" name="amoreSapCreditmemoRepository" type="Amore\Sap\Plugin\Model\Order\CreditmemoRepositoryPlugin"/>
+    </type>
 </config>

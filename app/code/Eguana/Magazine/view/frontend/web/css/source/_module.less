@@ -77,15 +77,15 @@
         text-align: center;
 
         a {
+            display: block;
             position: relative;
 
             &:after {
-                bottom: 0;
-                left: 0;
+                content: '';
+                background: transparent url('../Eguana_Magazine/images/play.svg') no-repeat;
                 position: absolute;
-                right: 0;
-                top: 0;
-                transform: translate(0 , 50%);
+                top: 50%;
+                left: 50%;
             }
 
             img {
@@ -175,17 +175,12 @@
 
     .magazine-video-banner {
         a {
-            .lib-icon-font(
-                @icon-play,
-                @_icon-font-color: @color-white,
-                @_icon-font-size: 32px,
-                @_icon-font-line-height: 32px,
-                @_icon-font-position: after,
-                @_icon-font-display: block
-            );
-
             &:after {
-                margin-top: -32px;
+                background-size: 32px;
+                width: 32px;
+                height: 32px;
+                margin-top: -16px;
+                margin-left: -16px;
             }
         }
     }
@@ -307,17 +302,11 @@
 
     .magazine-video-banner {
         a {
-            .lib-icon-font(
-                @icon-play,
-                @_icon-font-color: @color-white,
-                @_icon-font-size: 80px,
-                @_icon-font-line-height: 80px,
-                @_icon-font-position: after,
-                @_icon-font-display: block
-            );
-
             &:after {
-                margin-top: -80px;
+                width: 80px;
+                height: 80px;
+                margin-top: -@indent__xl;
+                margin-left: -@indent__xl;
             }
         }
     }

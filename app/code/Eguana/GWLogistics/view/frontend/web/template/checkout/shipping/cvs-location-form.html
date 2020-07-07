@@ -1,0 +1,75 @@
+<td class="col col-error" id="cvs-fields" colspan="4" data-bind="visible: visible">
+    <fieldset class="fieldset">
+        <div class="field required">
+            <label class="label" for="LogisticsSubType">
+                <span data-bind="i18n: 'CVS Type'"></span>
+            </label>
+            <div class="control">
+                <input type="text"
+                       name="LogisticsSubType"
+                       id="LogisticsSubType"
+                       class="input-text"
+                       disabled="disabled"
+                       data-bind="value: getCvsLocation().LogisticsSubType, attr: { disabled: disabled}">
+            </div>
+        </div>
+        <div class="field required">
+            <label class="label" for="CVSStoreID">
+                <span data-bind="i18n: 'CVS Store ID'"></span>
+            </label>
+            <div class="control">
+                <input type="text"
+                       name="CVSStoreID"
+                       id="CVSStoreID"
+                       class="input-text"
+                       disabled="disabled"
+                       data-bind="value: getCvsLocation().CVSStoreID, attr: { disabled: disabled}">
+            </div>
+        </div>
+        <div class="field required">
+            <label class="label" for="CVSStoreName">
+                <span data-bind="i18n: 'CVS Store Name'"></span>
+            </label>
+            <div class="control">
+                <input type="text"
+                       name="CVSStoreName"
+                       id="CVSStoreName"
+                       class="input-text"
+                       disabled="disabled"
+                       data-bind="value: getCvsLocation().CVSStoreName, attr: { disabled: disabled}">
+            </div>
+        </div>
+        <div class="field required">
+            <label class="label" for="CVSAddress">
+                <span data-bind="i18n: 'CVS Store Address'"></span>
+            </label>
+            <div class="control">
+                <input type="text"
+                       name="CVSAddress"
+                       id="CVSAddress"
+                       class="input-text"
+                       disabled="disabled"
+                       data-bind="value: getCvsLocation().CVSAddress, attr: { disabled: disabled}">
+            </div>
+        </div>
+        <div class="field required">
+            <label class="label" for="CVSTelephone">
+                <span data-bind="i18n: 'CVS Store Telephone'"></span>
+            </label>
+            <div class="control">
+                <input type="text"
+                       name="CVSTelephone"
+                       id="CVSTelephone"
+                       class="input-text"
+                       disabled="disabled"
+                       data-bind="value: getCvsLocation().CVSTelephone, attr: { disabled: disabled}">
+            </div>
+        </div>
+    </fieldset>
+    <!--    <button data-role="cvs-map-open" type="button" data-bind="'value': $t('Apply'), click: openCvsMap" class="button action">-->
+    <!--        <span translate="'Select 711 CVS Store in the Map'" />-->
+    <!--    </button>-->
+
+    <render args="cvsMapFormTemplate"/>
+</td>
+

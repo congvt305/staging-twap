@@ -1,0 +1,109 @@
+<?php
+/**
+ * Created by Eguana Team.
+ * User: sonia
+ * Date: 7/2/20
+ * Time: 6:25 AM
+ */
+?>
+<?php
+/* @var $block \Magento\Framework\View\Element\Template */
+/* @var $viewModel \Amore\GaTagging\ViewModel\CommonData */
+$viewModel = $block->getViewModel();
+?>
+<script>
+    <!-- AP GA Tagging Data -->
+    //공동변수
+    var AP_DATA_GCID = "";
+    var AP_DATA_CID = "";
+    var AP_DATA_ISMEMBER = "X";
+    var AP_DATA_ISLOGIN = "N";
+    var AP_DATA_LOGINTYPE = "";
+    var AP_DATA_CA = "";
+    var AP_DATA_CD = "";
+    var AP_DATA_CG = "";
+    var AP_DATA_CT = "";
+    var AP_DATA_SITENAME = "<?= $block->escapeJs($block->escapeHtml($this->helper(\Amore\GaTagging\Helper\Data::class)->getSiteName())) ?>";
+    var AP_DATA_CHANNEL = "";
+    var AP_DATA_PAGENAME = "";
+    var AP_DATA_PAGETYPE = "";
+    var AP_DATA_BREAD = "";
+
+    //상품상세
+    var AP_PRD_NAME = "";
+    var AP_PRD_CODE = "";
+    var AP_PRD_PRDPRICE = "";
+    var AP_PRD_PRICE = "";
+    var AP_PRD_BRAND = "";
+    var AP_PRD_CATEGORY = "";
+    var AP_PRD_SN = "";
+    var AP_PRD_ISMEMBER = "";
+
+    //장바구니
+    var AP_CART_PRICE = "";
+    var AP_CART_PRDPRICE = "";
+    var AP_CART_DISCOUNT = "";
+    var AP_CART_PRDS = "";
+
+    //장바구니 추가
+    //var AP_CART_PRDS
+
+    //장바구니 빼기(삭제)
+    var AP_RMCART_PRDS = [];
+
+    //주문서
+    var AP_ORDER_PRICE = "";
+    var AP_ORDER_PRDPRICE = "";
+    var AP_ORDER_DISCOUNT = "";
+    var AP_ORDER_TYPE = "";
+    var AP_ORDER_PRDS = "";
+
+    //주문완료
+    var AP_PURCHASE_PRICE = "";
+    var AP_PURCHASE_PRDPRICE = "";
+    var AP_PURCHASE_DCTOTAL = "";
+    var AP_PURCHASE_DCBASIC = "";
+    var AP_PURCHASE_COUPON = "";
+    var AP_PURCHASE_MEMBERSHIP = "";
+    var AP_PURCHASE_GIFTCARD = "";
+    var AP_PURCHASE_POINT = "";
+    var AP_PURCHASE_ONLINEGIFT = "";
+    var AP_PURCHASE_ORDERNUM = "";
+    var AP_PURCHASE_BEAUTYACC = "";
+    var AP_PURCHASE_SHIPPING = "";
+    var AP_PURCHASE_TYPE = "";
+    var AP_PURCHASE_COUPONNAME = "";
+    var AP_PURCHASE_PRDS = "";
+    var AP_SAMPLE_PRDS = [];
+
+    //주문취소
+    var AP_REFUND_PRICE = "";
+    var AP_REFUND_ORDERNUM = "";
+    var AP_REFUND_CONTENT = "";
+    var AP_REFUND_PRDS = "";
+
+    //검색
+    var AP_SEARCH_TERM = "";
+    var AP_SEARCH_PRDRESULT = "";
+    var AP_SEARCH_NUM = "";
+    var AP_SEARCH_TYPE = "";
+
+    //회원가입
+    var AP_JOIN_NAME = "";
+
+    //쿠폰다운
+    var AP_COUPON_NAME = "";
+
+    //뷰티포인트금액
+    var AP_DATA_POINT = "";
+
+    <!-- AP GA Tagging Data -->
+</script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Amore_GaTagging/js/ap": {}
+        }
+    }
+</script>
+

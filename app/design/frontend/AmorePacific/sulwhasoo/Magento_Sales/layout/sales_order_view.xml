@@ -43,10 +43,17 @@
         <move element="order.status" destination="content" before="-"/>
         <move element="order.date" destination="order.status" after="-"/>
         <move element="order.actions.container" destination="content" before="sales.order.info.links"/>
+        <move element="order.comments" destination="content" after="sales.order.view"/>
         <referenceBlock name="page.main.title">
             <action method="setPageTitle">
                 <argument translate="true" name="label" xsi:type="string">My Orders View</argument>
             </action>
+        </referenceBlock>
+        <referenceBlock name="order_totals">
+            <arguments>
+                <argument name="label_properties" xsi:type="string">colspan="2" class="mark"</argument>
+                <argument name="value_properties" xsi:type="string">colspan="2" class="amount"</argument>
+            </arguments>
         </referenceBlock>
     </body>
 </page>

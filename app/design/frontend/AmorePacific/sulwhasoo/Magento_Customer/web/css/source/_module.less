@@ -32,6 +32,12 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+    .form-create-account {
+        .field:not(.gender) label {
+            display: none;
+        }
+    }
+
     .customer-account-login,
     .customer-account-create,
     .company-account-create,
@@ -109,6 +115,26 @@
                     &:not(:last-child) {
                         border-right: 1px solid @border-color__base;
                     }
+                }
+            }
+        }
+    }
+
+    .customer-account-create {
+        .form.create.account {
+            .actions-toolbar {
+                .action {
+                    .lib-button-revert-secondary-color(
+                        @_button-color: @color-white,
+                        @_button-background: @theme__color__secondary,
+                        @_button-border: 1px solid @theme__color__secondary,
+                        @_button-color-hover: @color-white,
+                        @_button-background-hover: @theme__color__primary-alt,
+                        @_button-border-hover: 1px solid @theme__color__primary-alt,
+                        @_button-color-active: @theme__color__primary-alt,
+                        @_button-background-active: @theme__color__primary-alt,
+                        @_button-border-active: 1px solid @theme__color__primary-alt
+                    );
                 }
             }
         }

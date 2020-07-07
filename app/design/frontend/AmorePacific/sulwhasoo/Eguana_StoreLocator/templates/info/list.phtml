@@ -1,0 +1,216 @@
+<?php
+/** @var  \Eguana\StoreLocator\Block\InfoList $block */
+$country = $block->getDefaultCountryName();
+$locations = [];
+$selectedSearch = $block->getSelectedSearchTerm();
+$googledestination = '';
+$googleApiUrl = '';
+$store_view_url = '';
+//get default country for passing region parameter to change sea of japan to east sea
+$defaultCountry = $block->getStoreCountryCode();
+$apiKeyAndRegion = $block->getApiKey();
+$storeSize = $block->getStoresCollection()->getSize();
+$storesCollection = $block->getStoresCollection();
+$searchLocationPoints = $block->getCustomerLocationPoints();
+$markerImages = [];
+$markerImages['FS']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/marker.png');
+$markerImages['FS_1']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/marker.png');
+$markerImages['RS']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/marker.png');
+$markerImages['RS_1']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/marker.png');
+if ($defaultCountry != null) {
+    $apiKeyAndRegion = $apiKeyAndRegion . '&region=' . $defaultCountry;
+}
+?>
+<div class="stores stw-stores-locator mian-content">
+    <div class="main-store-block">
+        <div class="store_list_left">
+            <?= $block->getChildHtml('page.main.title') ?>
+            <form action="" target="_self" id="filter-form" method="get" class="store-locator-form">
+                <fieldset class="fieldset store-fields">
+                    <div class="field note"><?= $block->escapeHtml($country) ?></div>
+                    <div class="field field-hidden">
+                        <input type="hidden"
+                               id="current-lat"
+                               name="current_lat"
+                               value="<?= $block->escapeHtmlAttr($block->getSelectedLat()) ?>"/>
+                        <input type="hidden"
+                               id="current-lng"
+                               name="current_lng"
+                               value="<?= $block->escapeHtmlAttr($block->getSelectedLng()) ?>"/>
+                        <input type="hidden"
+                               id="current-location" name="use_my_location" value=""/>
+                        <?php if ($selectedSearch): ?>
+                            <input type="hidden"
+                                   id="search-lat"
+                                   name="search_Lat"
+                                   value="<?= $block->escapeHtmlAttr($searchLocationPoints['lat']) ?>"/>
+                            <input type="hidden"
+                                   id="searcht-lng"
+                                   name="search_Lng"
+                                   value="<?= $block->escapeHtmlAttr($searchLocationPoints['long']) ?>"/>
+                        <?php endif; ?>
+                    </div>
+                    <div class="field store-search">
+                        <label class="label" for="store-search">
+                            <span><?= $block->escapeHtml(__('Please enter the address or counter name')) ?></span>
+                        </label>
+                        <div class="control">
+                            <input type="text" class="input-text store-search-input" id="store-search" name="search"
+                                   value="<?= $block->escapeHtmlAttr($selectedSearch ? $selectedSearch : '') ?>"
+                                   placeholder="<?= $block->escapeHtml(__('Please enter the address or counter name')) ?>"/>
+                            <input type="hidden" id="page-number" name="p" value=""/>
+                        </div>
+                        <div class="actions search-btn-action">
+                            <button type="submit" class="button action primary search-btn">
+                                <span><?= $block->escapeHtml(__('Search')) ?></span>
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <p class="location-error mage-error" style="display: none;color: #f32836;">
+                        <?= $block->escapeHtml(__('Please enter your current location')); ?>
+                    </p>
+
+                    <div class="stores-result">
+                        <h3 class="pc">
+                            <?= __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
+                        </h3>
+                        <h3 class="mobile">
+                            <?= __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
+                        </h3>
+                    </div>
+                </fieldset>
+            </form>
+            <div class="stores-list">
+                <?php if ($storeSize > 0): ?>
+                    <h3 class="mobile">
+                        <?= __('We found <strong>%1 stores</strong> near your location', $storeSize) ?>
+                    </h3>
+                <?php endif; ?>
+                <?php if ($storeSize > 0): ?>
+                    <ul class="stores-listing-ul store-lists items" style="height: 540px; overflow-y: scroll;">
+                        <?php $count = 0; ?>
+                        <?php foreach ($storesCollection as $storeItem):?>
+                            <?php
+                            $location = explode(',', $storeItem->getLocation());
+                            $imgSourceForType = '';
+                            $googleApiUrl = "https://www.google.com/maps/dir/?api=1&origin=";
+                            if (isset($location[0]) && isset($location[1])) {
+                                /*
+                                 * Changed by Abbas, rather to implode using comma I use the => because in address and name
+                                 * there can be a comma. That's why I also have to change the file
+                                 * app/code/Eguana/StoreLocator/view/frontend/web/js/google/map/storesmapviewer.js for split
+                                 * using => rahter than a comma.
+                                 */
+                                $locations[] = implode('=>', [
+                                    $storeItem['title'],
+                                    $location[0],
+                                    $location[1],
+                                    $storeItem['address'],
+                                    $storeItem['store_type'],
+                                    $block->getUrl('stores/info/view', ['id' => $storeItem['entity_id']]),
+                                    $storeItem['telephone']
+                                ]);
+                                //this take long lot instead of lat long
+                                $googledestination = $location[0] . ',' . str_replace(' ', '', $location[1]);
+                                $store_view_url = $googleApiUrl . '||' . $googledestination;
+                            }
+                            $clickevent = "pushmarker(" . $count . ")";
+                            ?>
+                            <li class="store-list"
+                                onclick="<?= $block->escapeHtmlAttr($clickevent); ?>"
+                                store-expand ="<?= $block->escapeHtml($storeItem['title'] . $count); ?>"
+                                id ="<?= $block->escapeHtml(__($count)); ?>"
+                            >
+                                <div class="store-info">
+                                    <div class="store-primary-info">
+                                        <div class="store-info-top">
+                                            <!--                                        <span class="accordion-icon">-->
+                                            <!--                                            <i class="fas fa-chevron-up"></i>-->
+                                            <!--                                        </span>-->
+                                            <!--<label class="store-sequence-number">--><?//= $count + 1 ?><!--</label>-->
+
+                                            <label class="store-badge store-badge-<?= $block->escapeHtml($storeItem['store_type']); ?>">
+                                                <?= $block->escapeHtml($storeItem['store_type']); ?>
+                                            </label>
+                                            <strong class="store-title"><?= $block->escapeHtml($storeItem['title']); ?>
+                                            </strong>
+                                        </div>
+                                        <p class="address"><?= $block->escapeHtml(__($storeItem['address'])); ?></p>
+                                        <?php if ($block->escapeHtml($storeItem['telephone']) !== ''): ?>
+                                            <p class="telephone">
+                                                <?= $block->escapeHtml(__('Tel'))?>:
+                                                <?= $block->escapeHtml($storeItem['telephone']); ?>
+                                            </p>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="store-secondary-info" style="display: none;">
+                                        <?php if ($storeItem['email']): ?>
+                                            <p class="email">
+                                                <?= $block->escapeHtml(__('Email'))?>:
+                                                <?= $block->escapeHtml($storeItem['email']); ?>
+                                            </p>
+                                        <?php endif;?>
+                                        <?php if ($storeItem['timing']): ?>
+                                            <?php $timings = explode("\n", $storeItem['timing'])?>
+                                            <p><?= $block->escapeHtml(__('Timing')) ?></p>
+                                            <?php foreach ($timings as $timing):?>
+                                                <p class="hours">
+                                                    <?= $block->escapeHtml(__($timing)); ?>
+                                                </p>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <div class="inner-store"></div>
+                            </li>
+                            <?php $count ++ ?>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php else: ?>
+                    <p><?= $block->escapeHtml(__('No store exist for this address in this store view')) ?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="desktop-map_container">
+            <div class="stores-content store_map_right">
+                <?php if ($storeSize > 0): ?>
+                    <div class="stores-map">
+                        <div class="store-map-viewer" id="store_map_viewer"></div>
+                    </div>
+                <?php endif;?>
+            </div>
+        </div>
+    </div>
+
+    <?php
+    $bottomBlockId = $block->getBottomBlockIdValue();
+    ?>
+    <div class="store-locator-bottom-block">
+        <?php if (isset($bottomBlockId)): ?>
+            <?= $block->getLayout()
+                ->createBlock(Magento\Cms\Block\Block::class)
+                ->setBlockId($bottomBlockId)
+                ->toHtml();
+            ?>
+        <?php endif;?>
+    </div>
+</div>
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=<?= $block->escapeUrl($apiKeyAndRegion) ?>">
+</script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "map-viewer":{},
+            "store-locator":{
+                "locations": "<?= $block->escapeJs(implode('||', $locations)) ?>",
+                "country" : "<?= $block->escapeJs($defaultCountry) ?>",
+                "markerImages" : "<?= $block->escapeJs(json_encode($markerImages, true)) ?>",
+                "search" : "<?= $block->escapeJs($selectedSearch) ?>",
+                "googledestination" : "<?= $block->escapeJs($googledestination) ?>"
+            }
+        }
+    }
+</script>

@@ -1,0 +1,27 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2019 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: david
+ * Date: 2020/06/26
+ * Time: 4:39 PM
+ */
+?>
+<?php
+/**
+ * @var $block \Eguana\EInvoice\Block\Ecpay\EInvoice
+ * @see \Eguana\EInvoice\Block\Ecpay\EInvoice
+ */
+?>
+<?php if ($block->hasInvalidateEInvoices($block->getOrderId()) > 0) : ?>
+    <div class="block order additional details invalidate-e-invoices">
+        <div class="block-title"><strong><?= $block->escapeHtml(__("Invalidate E-Invoice Information")) ?></strong></div>
+        <div class="block-content order invalidate-e-invoice">
+            <div class="box">
+                <strong class="box-title"><span><?= $block->escapeHtml(__("Invalidate E-Invoice Number")) ?></span></strong>
+                <div class="box-content"><?= $block->escapeHtml(__($block->getInvalidateEInvoiceNumber($block->getOrderId()))) ?></div>
+            </div>
+        </div>
+    </div>
+<?php endif;?>

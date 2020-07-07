@@ -42,7 +42,7 @@ class POSSystem
     /**
      * @var Data
      */
-    private $confg;
+    private $config;
     /**
      * @var SubscriberFactory
      */
@@ -78,7 +78,7 @@ class POSSystem
 
     public function __construct(
         Curl $curl,
-        Data $confg,
+        Data $config,
         SubscriberFactory $subscriberFactory,
         CustomerRepositoryInterface $customerRepository,
         DateTime $date,
@@ -89,7 +89,7 @@ class POSSystem
         Json $json
     ) {
         $this->date = $date;
-        $this->confg = $confg;
+        $this->config = $config;
         $this->subscriberFactory = $subscriberFactory;
         $this->customerRepository = $customerRepository;
         $this->sequence = $sequence;
@@ -113,12 +113,14 @@ class POSSystem
     private function callPOSInfoAPI($firstName, $lastName, $mobileNumber)
     {
         $result = [];
-        $url = $this->confg->getMemberInfoURL();
+        $url = $this->config->getMemberInfoURL();
         try {
             $parameters = [
                 'firstName' => $firstName,
                 'lastName' => $lastName,
                 'mobileNumber' => $mobileNumber,
+                'salOrgCd' => $this->config->getOrganizationSalesCode(),
+                'salOffCd' => $this->config->getOfficeSalesCode()
             ];
             $jsonEncodedData = json_encode($parameters);
 
@@ -136,6 +138,12 @@ class POSSystem
                     'Content-type: application/json'
                 ],
             ]);
+
+            if ($this->config->getSSLVerification()) {
+                $this->curlClient->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                $this->curlClient->setOption(CURLOPT_SSL_VERIFYPEER, false);
+            }
+
             $this->logger->addAPICallLog(
                 'POS get info API Call',
                 $url,
@@ -155,7 +163,11 @@ class POSSystem
                 $response
             );
         } catch (\Exception $e) {
-            $result['message'] = $e->getMessage();
+            if ($e->getMessage() == '<url> malformed') {
+                $result['message'] = __('Please first configure POS APIs properly. Then try again.');
+            } else {
+                $result['message'] = $e->getMessage();
+            }
             $this->logger->addExceptionMessage($e->getMessage());
         }
         return $result;
@@ -197,6 +209,8 @@ class POSSystem
                 $customer->getCustomAttribute('sales_organization_code')->getValue():'';
             $parameters['salOffCd'] = $customer->getCustomAttribute('sales_office_code')?
                 $customer->getCustomAttribute('sales_office_code')->getValue():'';
+            $parameters['prtnrid'] = $customer->getCustomAttribute('partner_id')?
+                $customer->getCustomAttribute('partner_id')->getValue():'';
             $parameters['statusCD'] = $action == 'register' ? '01' : '02';
 
             $response = $this->callJoinAPI($parameters);
@@ -221,8 +235,9 @@ class POSSystem
             $this->sequence->setCustomerType($posOrOnline);
             $secquenceNumber = $this->sequence->getNextValue();
             $customer->setCustomAttribute('integration_number', $secquenceNumber);
-            $customer->setCustomAttribute('sales_organization_code', $this->confg->getOrganizationSalesCode());
-            $customer->setCustomAttribute('sales_office_code', $this->confg->getOfficeSalesCode());
+            $customer->setCustomAttribute('sales_organization_code', $this->config->getOrganizationSalesCode());
+            $customer->setCustomAttribute('sales_office_code', $this->config->getOfficeSalesCode());
+            $customer->setCustomAttribute('partner_id', $this->config->getPartnerId());
             return $this->customerRepository->save($customer);
         } catch (\Exception $e) {
             $e->getMessage();
@@ -235,7 +250,7 @@ class POSSystem
     {
         $result = [];
         try {
-            $url = $this->confg->getMemberJoinURL();
+            $url = $this->config->getMemberJoinURL();
 
             $jsonEncodedData = json_encode($parameters);
 
@@ -253,6 +268,12 @@ class POSSystem
                     'Content-type: application/json'
                 ],
             ]);
+
+            if ($this->config->getSSLVerification()) {
+                $this->curlClient->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                $this->curlClient->setOption(CURLOPT_SSL_VERIFYPEER, false);
+            }
+
             $this->logger->addAPICallLog(
                 'POS set info API Call',
                 $url,

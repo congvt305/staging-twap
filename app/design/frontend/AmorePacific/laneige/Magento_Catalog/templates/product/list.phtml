@@ -49,6 +49,7 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                 <div class="product-item-info" data-container="product-<?= /* @noEscape */ $viewMode ?>">
                     <?php
                     $productImage = $block->getImage($_product, $imageDisplayArea);
+                    $productHoverImage = $block->getImage($_product, 'hover_image');
                     if ($pos != null) {
                         $position = ' style="left:' . $productImage->getWidth() . 'px;'
                             . 'top:' . $productImage->getHeight() . 'px;"';
@@ -67,6 +68,11 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                         <?php endif;?>
                         </span>
                         <?= $productImage->toHtml() ?>
+                        <?php if (!strpos($productHoverImage->getImageUrl(), 'placeholder')):?>
+                            <span class="product-hover-image">
+                                <?= $productHoverImage->toHtml() ?>
+                            </span>
+                        <?php endif;?>
                     </a>
                     <div class="product details product-item-details">
                         <?php

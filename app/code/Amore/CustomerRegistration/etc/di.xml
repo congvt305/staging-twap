@@ -10,4 +10,19 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Amore\CustomerRegistration\Api\POSIntegrationInterface" type="Amore\CustomerRegistration\Model\POSIntegration" />
+    <preference for="Amore\CustomerRegistration\Api\Data\ResponseInterface" type="Amore\CustomerRegistration\Model\Response" />
+    <preference for="Amore\CustomerRegistration\Api\Data\DataResponseInterface" type="Amore\CustomerRegistration\Model\DataResponse" />
+    <type name="Amore\CustomerRegistration\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Amore\CustomerRegistration\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">posLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Amore\CustomerRegistration\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

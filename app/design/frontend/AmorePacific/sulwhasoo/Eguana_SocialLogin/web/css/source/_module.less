@@ -1,0 +1,151 @@
+//
+//  Variables
+//  _____________________________________________
+
+@social-line-color: #51b501;
+@social-line-hover-color: #4ca903;
+@social-facebook-color: #3b5998;
+@social-facebook-hover-color: #344d84;
+@social-google-color: #ea4335;
+@social-google-hover-color: #d63b2f;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    #eguana-form-validate {
+        .fieldset{
+            .eguanasociallogin-form-legend{
+                margin: 15px 0 20px !important;
+            }
+
+            .msg{
+                padding: 0 0 10px 0;
+            }
+
+            .member-legend{
+                padding: 0 0 10px 0;
+                width: 100%;
+                box-sizing: border-box;
+                float: left;
+                color: #000000;
+                line-height: 1.2;
+                font-size: 1.4rem;
+                margin: 15px 0 20px !important;
+                border-bottom: 1px solid #999999;
+                display: block;
+            }
+        }
+    }
+
+    .socialloginlogin-login{
+        text-align: center;
+
+        a {
+            .lib-link-as-button();
+            &:extend(.abs-button-l all);
+            display: block;
+
+            &:not(:last-child) {
+                margin-bottom: 12px;
+            }
+
+            &.line-button-link {
+                .lib-button-revert-secondary-color(
+                    @_button-color: @color-white,
+                    @_button-background: @social-line-color,
+                    @_button-border: 1px solid @social-line-color,
+                    @_button-color-hover: @color-white,
+                    @_button-background-hover: @social-line-hover-color,
+                    @_button-border-hover: 1px solid @social-line-hover-color,
+                    @_button-color-active: @color-white,
+                    @_button-background-active: @social-line-hover-color,
+                    @_button-border-active: 1px solid @social-line-hover-color
+                );
+            }
+
+            &.facebook-button-link {
+                .lib-button-revert-secondary-color(
+                    @_button-color: @color-white,
+                    @_button-background: @social-facebook-color,
+                    @_button-border: 1px solid @social-facebook-color,
+                    @_button-color-hover: @color-white,
+                    @_button-background-hover: @social-facebook-hover-color,
+                    @_button-border-hover: 1px solid @social-facebook-hover-color,
+                    @_button-color-active: @color-white,
+                    @_button-background-active: @social-facebook-hover-color,
+                    @_button-border-active: 1px solid @social-facebook-hover-color
+                );
+            }
+
+            &.google-button-link {
+                .lib-button-revert-secondary-color(
+                    @_button-color: @color-white,
+                    @_button-background: @social-google-color,
+                    @_button-border: 1px solid @social-google-color,
+                    @_button-color-hover: @color-white,
+                    @_button-background-hover: @social-google-hover-color,
+                    @_button-border-hover: 1px solid @social-google-hover-color,
+                    @_button-color-active: @color-white,
+                    @_button-background-active: @social-google-hover-color,
+                    @_button-border-active: 1px solid @social-google-hover-color
+                );
+            }
+        }
+
+        > p {
+            .lib-font-size(16);
+            color: #c7c7c7;
+            display: inline-block;
+            font-weight: @font-weight__bold;
+            margin-bottom: @indent__m;
+            position: relative;
+
+            &:before,
+            &:after {
+                border-bottom: 1px solid;
+                content: '';
+                display: inline-block;
+                position: absolute;
+                top: 50%;
+                width: @indent__s;
+            }
+
+            &:before {
+                left: -@indent__base;
+            }
+
+            &:after {
+                right: -@indent__base;
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .socialloginlogin-login {
+        margin-top: 75px;
+
+        a {
+            padding: 10.5px 0 !important;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .socialloginlogin-login {
+        margin-top: @indent__xl;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 400px;
+    }
+}

@@ -13,11 +13,16 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::content">
+                    <resource id="Eguana_Base::base">
+                        <resource id="Eguana_Faq::manage_faq" title="Manage FAQ" translate="title" />
+                    </resource>
+                </resource>
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource title="Eguana Faq" id="Eguana_Base::configuration">
-                                <resource id="Eguana_Faq::config_stores" title="Eguana Faq Config" translate="title" />
+                            <resource id="Eguana_Base::config">
+                                <resource id="Eguana_Faq::faq_config" title="FAQ" translate="title" />
                             </resource>
                         </resource>
                     </resource>

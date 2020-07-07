@@ -32,6 +32,12 @@ class Data extends AbstractHelper
         = 'customerregistraion/general/membership_error_cms_page';
     const DUPLICATE_MEMBERSHIP_CMS_PAGE
         = 'customerregistraion/general/duplicate_membership_cms_page';
+    const NEWSLETTER_POLICY_CMS_BLOCK
+        = 'customerregistraion/general/newsletter_policy_cms_block';
+    const SMS_POLICY_CMS_BLOCK
+        = 'customerregistraion/general/sms_policy_cms_block';
+    const DM_POLICY_CMS_BLOCK
+        = 'customerregistraion/general/dm_policy_cms_block';
     const POS_BASE_URL
         = 'customerregistraion/pos/base_url';
     const POS_MEMBER_INFO_URL
@@ -42,6 +48,10 @@ class Data extends AbstractHelper
         = 'customerregistraion/pos/sales_organization_code';
     const SALES_OFFICE_CODE
         = 'customerregistraion/pos/sales_office_code';
+    const PARTNER_ID
+        = 'customerregistraion/pos/partner_id';
+    const SSL_VERIFICATION
+        = 'customerregistraion/pos/ssl_verification';
     const DEBUG
         = 'customerregistraion/pos/debug';
 
@@ -132,6 +142,45 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Get Newsletter privacy policy CMS block id
+     *
+     * @return mixed
+     */
+    public function getNewsLetterPolicyCMSBlockId()
+    {
+        return $this->scopeConfig->getValue(
+            self::NEWSLETTER_POLICY_CMS_BLOCK,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
+     * Get SMS privacy policy CMS block id
+     *
+     * @return mixed
+     */
+    public function getSMSPolicyCMSBlockId()
+    {
+        return $this->scopeConfig->getValue(
+            self::SMS_POLICY_CMS_BLOCK,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
+     * Get DM privacy policy CMS block id
+     *
+     * @return mixed
+     */
+    public function getDMPolicyCMSBlockId()
+    {
+        return $this->scopeConfig->getValue(
+            self::DM_POLICY_CMS_BLOCK,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
      * It will return the full url of the POS API to get the customer information
      * @return string
      */
@@ -175,7 +224,7 @@ class Data extends AbstractHelper
 
     public function getOrganizationSalesCode($websiteId = null)
     {
-        if($websiteId) {
+        if ($websiteId) {
             return $this->scopeConfig->getValue(
                 self::SALES_ORGANIZATION_CODE,
                 ScopeInterface::SCOPE_WEBSITE,
@@ -191,7 +240,7 @@ class Data extends AbstractHelper
 
     public function getOfficeSalesCode($websiteId = null)
     {
-        if($websiteId) {
+        if ($websiteId) {
             return $this->scopeConfig->getValue(
                 self::SALES_OFFICE_CODE,
                 ScopeInterface::SCOPE_WEBSITE,
@@ -205,9 +254,25 @@ class Data extends AbstractHelper
         );
     }
 
+    public function getPartnerId($websiteId = null)
+    {
+        if ($websiteId) {
+            return $this->scopeConfig->getValue(
+                self::SALES_OFFICE_CODE,
+                ScopeInterface::SCOPE_WEBSITE,
+                $websiteId
+            );
+        }
+
+        return $this->scopeConfig->getValue(
+            self::PARTNER_ID,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
     public function getDebug($websiteId = null)
     {
-        if($websiteId) {
+        if ($websiteId) {
             return $this->scopeConfig->getValue(
                 self::DEBUG,
                 ScopeInterface::SCOPE_WEBSITE,
@@ -217,6 +282,14 @@ class Data extends AbstractHelper
 
         return $this->scopeConfig->getValue(
             self::DEBUG,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    public function getSSLVerification()
+    {
+        return $this->scopeConfig->getValue(
+            self::SSL_VERIFICATION,
             ScopeInterface::SCOPE_WEBSITE
         );
     }

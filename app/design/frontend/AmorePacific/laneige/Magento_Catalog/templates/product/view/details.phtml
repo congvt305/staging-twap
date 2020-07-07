@@ -24,14 +24,16 @@
                         $alias = 'feature';
                     }
                     ?>
-                    <li class="data item title"
-                        id="tab-label-<?= $block->escapeHtmlAttr($alias) ?>">
-                        <a class="data switch"
-                           href="#<?= $block->escapeUrl($alias) ?>"
-                           id="tab-label-<?= $block->escapeHtmlAttr($alias) ?>-title">
-                            <?= /* @noEscape */ $label ?>
-                        </a>
-                    </li>
+                    <?php if ($alias != 'community_gallery'): ?>
+                        <li class="data item title"
+                            id="tab-label-<?= $block->escapeHtmlAttr($alias) ?>">
+                            <a class="data switch"
+                               href="#<?= $block->escapeUrl($alias) ?>"
+                               id="tab-label-<?= $block->escapeHtmlAttr($alias) ?>-title">
+                                <?= /* @noEscape */ $label ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
                 <?php endforeach;?>
             </ul>
             <div class="tab-contents">

@@ -8,14 +8,14 @@
 
 namespace Amore\Sap\Model\Connection;
 
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Framework\App\Config\ScopeConfigInterface;
+use Amore\Sap\Model\Source\Config;
+use Amore\Sap\Logger\Logger;
 
 class Request
 {
-    const URL_ACTIVE = 'sap/general/active';
-
     const URL_REQUEST = 'sap/general/url';
 
     const ORDER_CONFIRM_PATH = 'sap/url_path/order_confirm_path';
@@ -31,50 +31,124 @@ class Request
      */
     private $json;
     /**
-     * @var ScopeConfigInterface
+     * @var Config
      */
-    private $scopeConfig;
+    private $config;
+    /**
+     * @var Logger
+     */
+    private $logger;
+
 
     /**
      * Constructor.
      *
      * @param Curl $curl
      * @param Json $json
-     * @param ScopeConfigInterface $scopeConfig
+     * @param Config $config
+     * @param Logger $logger
      */
     public function __construct(
         Curl $curl,
         Json $json,
-        ScopeConfigInterface $scopeConfig
+        Config $config,
+        Logger $logger
     ) {
         $this->curl = $curl;
         $this->json = $json;
-        $this->scopeConfig = $scopeConfig;
+        $this->config = $config;
+        $this->logger = $logger;
     }
 
     public function postRequest($requestData, $storeId, $type = 'confirm')
     {
-        $url = $this->getUrl($storeId);
-        $path = $this->getPath($storeId, $type);
-
-        if (empty($url) || empty($path)) {
-            return ['code' => "0001", "Url or Path field is empty. Please Check configuration"];
-        } else {
-            $url = $this->getUrl($storeId) . $path;
-
-            $this->curl->addHeader('Content-Type', 'application/json');
-            $this->curl->post($url, $requestData);
-
-            $response = $this->curl->getBody();
-
-            $result = $this->json->unserialize($response);
-//        $result = ["code" => "0000", "message" => "success test"];
-//        $result = ["code" => "0001", "message" => "fail test"];
-
-            if ($result['code'] == '0000') {
-                return $result;
+        if ($this->config->checkTestMode()) {
+            $url = $this->config->getDefaultValue("sap/general/url");
+            if ($type == 'confirm') {
+                $path = $this->config->getDefaultValue("sap/url_path/order_confirm_path");
             } else {
-                return $result;
+                $path = $this->config->getDefaultValue("sap/url_path/order_cancel_path");
+            }
+            $fullUrl = $url . $path;
+
+            if ($this->config->getLoggingCheck()) {
+                $this->logger->info("TEST MODE REQUEST");
+                $this->logger->info($requestData);
+                $this->logger->info("FUlL URL");
+                $this->logger->info($fullUrl);
+            }
+
+            if (empty($url) || empty($path)) {
+                throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
+            } else {
+                try {
+                    $this->curl->addHeader('Content-Type', 'application/json');
+
+                    if ($this->config->getSslVerification('default', 0)) {
+                        if ($this->config->getLoggingCheck()) {
+                            $this->logger->info('TEST MODE SSL VERIFICATION DISABLED');
+                        }
+                        $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                        $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+                    }
+
+                    $this->curl->post($fullUrl, $requestData);
+
+                    $response = $this->curl->getBody();
+
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info("TEST RESPONSE");
+                        $this->logger->info($response);
+                    }
+
+                    $serializedResult = $this->json->unserialize($response);
+
+                    return $serializedResult;
+                } catch (\Exception $exception) {
+                    return $exception->getMessage();
+                }
+            }
+        } else {
+            $url = $this->getUrl($storeId);
+            $path = $this->getPath($storeId, $type);
+            $fullUrl = $url . $path;
+
+            if ($this->config->getLoggingCheck()) {
+                $this->logger->info('LIVE MODE REQUEST');
+                $this->logger->info($requestData);
+                $this->logger->info("FUlL URL");
+                $this->logger->info($fullUrl);
+            }
+
+            if (empty($url) || empty($path)) {
+                throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
+            } else {
+                try {
+                    $this->curl->addHeader('Content-Type', 'application/json');
+
+                    if ($this->config->getSslVerification('default', 0)) {
+                        if ($this->config->getLoggingCheck()) {
+                            $this->logger->info('SSL VERIFICATION DISABLED');
+                        }
+                        $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                        $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+                    }
+
+                    $this->curl->post($fullUrl, $requestData);
+
+                    $response = $this->curl->getBody();
+
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info('LIVE RESPONSE');
+                        $this->logger->info($response);
+                    }
+
+                    $result = $this->json->unserialize($response);
+
+                    return $result;
+                } catch (\Exception $exception) {
+                    return $exception->getMessage();
+                }
             }
         }
     }
@@ -83,10 +157,10 @@ class Request
     {
         $url = '';
 
-        $activeCheck = $this->scopeConfig->getValue(self::URL_ACTIVE, 'store', $storeId);
+        $activeCheck = $this->config->getActiveCheck('store', $storeId);
 
         if ($activeCheck) {
-            $url = $this->scopeConfig->getValue(self::URL_REQUEST, 'store', $storeId);
+            $url = $this->config->getValue(self::URL_REQUEST, 'store', $storeId);
         }
 
         return $url;
@@ -96,13 +170,13 @@ class Request
     {
         switch ($type) {
             case 'confirm':
-                $path = $this->scopeConfig->getValue(self::ORDER_CONFIRM_PATH, 'store', $storeId);
+                $path = $this->config->getValue(self::ORDER_CONFIRM_PATH, 'store', $storeId);
                 break;
             case 'cancel':
-                $path = $this->scopeConfig->getValue(self::ORDER_CANCEL_PATH, 'store', $storeId);
+                $path = $this->config->getValue(self::ORDER_CANCEL_PATH, 'store', $storeId);
                 break;
             default:
-                $path = $this->scopeConfig->getValue(self::ORDER_CONFIRM_PATH, 'store', $storeId);
+                $path = $this->config->getValue(self::ORDER_CONFIRM_PATH, 'store', $storeId);
         }
         return $path;
     }

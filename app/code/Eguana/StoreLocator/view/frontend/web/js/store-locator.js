@@ -5,37 +5,6 @@ define([
 ], function ($) {
     return function (config) {
         //check for location. if location exist then initialize map
-        if (config.locations) {
-            if (config.country == 'KR') {
-                naver_init_map(config.locations, 8, config.viewStore, config.markerImages, config.markerOnIcon);
-            } else {
-                multi_map_initialize(config.locations, 8, config.viewStore, config.markerImages, config.markerOnIcon);
-            }
-        }
-        if (config.viewStore == 1) {
-            pushmarker(0);
-        }
-        //filter for type
-        $('.type-filter').on('click',function () {
-            // making each type 0
-            $('.type-filter-fields input').each(function () {
-                $(this).val(0);
-            });
-            //making selected type 1
-            $('#' +$(this).attr('data-filter')).val(1);
-            $('#filter-form').submit();
-
-        });
-        $('#use-my-current-location').on('click', function () {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                $('#current-lat').val(position.coords.latitude);
-                $('#current-lng').val(position.coords.longitude);
-                $('#current-location').val(1);
-                //temporary comment, may be uncomment in future
-                $('#filter-form').submit();
-            });
-        });
-
         // for plus icon click on store
         $('.store-list').on('click', function () {
             let storeInfo;
@@ -49,38 +18,51 @@ define([
                 $(this).closest('.store-list').addClass('selected-store');
                 storeInfo.children('.store-secondary-info').slideDown();
             }
+
+            appendTimer = setInterval(appendMapTimer, 100);
         });
 
-        $('.map-open').on('click', function (event) {
-            if ($(this).attr('state-dir')==0){
-                $('.location-error').show();
-                event.preventDefault();
-            }
-        });
+        function appendMapTimer() {
+            clearInterval(appendTimer);
+
+            //$(".store-list .inner-store").empty();
+            $(".store-list.selected-store .inner-store").append(htmlMapElement);
+        }
+        var windowSize = $(window).width();
+        var htmlMapElement, appendTimer;
+        if (windowSize <= 959) {
+
+            var mapHtmlParent = $(".stores-map").parent();
+            htmlMapElement = mapHtmlParent.children();
+            //mapHtmlParent.empty();
+            console.log(htmlMapElement);
+
+            $("#store_map_viewer").css({"height":"108.333vw"});
+
+            $('li.store-list').first().find('.inner-store').css({"display":"block"});
+            $('li.store-list').children('.inner-store').first().append(htmlMapElement);
+            //$('li.store-list').children('.inner-store').slideUp();
+            $('li.store-list').find('span.accordion-icon').css('opacity', '0');
+            $('li.store-list').click(function(e) {
+                $(this).find('span.accordion-icon').css('opacity', '0.4');
+                $('li.store-list').children('.inner-store').slideUp();
+                // $(this).first().trigger('click');
+                $(this).children('.inner-store').slideToggle();
+            });
+        } else {
+            $( document ).ready(function() {
+                $('li.store-list').first().trigger('click');
+            });
+        }
+
+        if (config.locations) {
+            multi_map_initialize(config.locations, 8, config.viewStore, config.markerImages);
+        }
+        pushmarker(0);
 
         $( document ).ready(function() {
             if ($('#current-lat').val().length != 0) {
                 $('.map-open').attr('state-dir','1');
-            }
-        });
-        // for appending starting position with destination
-
-        $('.map-open').each(function () {
-            let link_with_destination = $(this).attr('href');
-            let element = $(this);
-            let longitude;
-            let latitude;
-            if (config.search){
-                $(this).attr('state-dir','1');
-                longitude = $("#search-lat").val();
-                latitude  = $("#searcht-lng").val();
-                setDirection(longitude, latitude, link_with_destination,element);
-            } else {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    longitude = position.coords.longitude;
-                    latitude  = position.coords.latitude;
-                    setDirection(longitude, latitude, link_with_destination,element);
-                });
             }
         });
 
@@ -93,11 +75,7 @@ define([
         function setDirection(longitude, latitude, link_with_destination,element) {
 
             let url = link_with_destination.split('||');
-            if (config.country == 'KR') {
-                link_with_destination = url[0] + latitude+ ',' + longitude + '/' + url[1] + '/-/car';
-            } else {
-                link_with_destination = url[0]+longitude  + ',' + latitude + '&destination='+url[1];
-            }
+            link_with_destination = url[0]+longitude  + ',' + latitude + '&destination='+url[1];
             element.attr('href', link_with_destination);
         }
 

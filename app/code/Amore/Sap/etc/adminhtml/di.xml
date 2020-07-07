@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-
-    <type name="Magento\Sales\Ui\Component\Listing\Column\ViewAction">
-        <plugin sortOrder="1" name="amoreSapViewAction"
-                type="Amore\Sap\Plugin\Ui\Component\Listing\Column\SendActionPlugin"/>
+    <type name="Magento\Sales\Model\Order\AddressRepository">
+        <plugin sortOrder="1" name="amoreSapAddressRepository" type="Amore\Sap\Plugin\Model\Order\AddressRepositoryPlugin"/>
     </type>
 </config>

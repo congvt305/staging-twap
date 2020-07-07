@@ -1,0 +1,49 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 2/7/20
+ * Time: 2:10 PM
+ */
+
+/** @var \Eguana\EventManager\ViewModel\EventList $viewModel */
+$viewModel = $block->getData('list_view_model');
+$condition = $block->getRequest()->getParam('condition');
+$eventCount = $block->getRequest()->getParam('count');
+$eventCount = $eventCount - 1;
+$eventList = $viewModel->getEventCollection($condition);
+$count = 0;
+?>
+<?php foreach ($eventList as $eventListItem):?>
+    <?php $count++;
+    if ($count <= $eventCount*9) {
+        continue;
+    } ?>
+    <li class="event-list-item">
+        <a class="event-list-image-link"
+           href="<?= $block->escapeUrl($viewModel->getEventManagerUrl($eventListItem->getEntityId()))?>">
+            <img src="<?= $block->escapeHtml($viewModel->
+            getThumbnailImageURL($eventListItem->getThumbnailImage()));?>"
+                 alt="<?= $block->escapeHtml($eventListItem->getTitle());?>"/>
+        </a>
+        <div class="event-list-heading-date">
+            <div class="event-list-heading ellipsis">
+                <a class="action view event-list-title"
+                   href="<?=$block->escapeUrl($viewModel->getEventManagerUrl($eventListItem->getEntityId()))?>">
+                    <b><?=$block->escapeHtml($eventListItem->getTitle());?></b>
+                </a>
+            </div>
+            <div class="event-list-period">
+                <span class="event-list-start-date">
+                    <?= $block->escapeHtml($viewModel->changeDateFormat($eventListItem->getStartDate()));?>
+                </span>
+                <span>~</span>
+                <span class="event-list-end-date">
+                    <?= $block->escapeHtml($viewModel->changeDateFormat($eventListItem->getEndDate()));?>
+                </span>
+            </div>
+        </div>
+    </li>
+<?php endforeach; ?>

@@ -67,6 +67,18 @@ class Payment extends AbstractMethod
      * @var \Magento\Sales\Api\OrderRepositoryInterface
      */
     private $orderRepository;
+    /**
+     * @var \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice
+     */
+    private $ecpayInvoice;
+    /**
+     * @var \Magento\Framework\Stdlib\DateTime\DateTimeFactory
+     */
+    private $dateTimeFactory;
+    /**
+     * @var \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue
+     */
+    private $ECPayInvoiceCheckMacValue;
 
     public function __construct(
         Context $context,
@@ -84,6 +96,9 @@ class Payment extends AbstractMethod
         \Magento\Sales\Model\Service\InvoiceService $invoiceService,
         \Magento\Framework\DB\Transaction $transaction,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
+        \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpayInvoice,
+        \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory,
+        \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
@@ -106,10 +121,12 @@ class Payment extends AbstractMethod
         $this->transactionBuilder = $transactionBuilder;
         $this->curl = $curl;
         $this->directoryList = $directoryList;
-        include_once($this->directoryList->getPath("app") . '/code/Ecpay/Ecpaypayment/Helper/Library/Ecpay_Invoice.php');
         $this->invoiceService = $invoiceService;
         $this->transaction = $transaction;
         $this->orderRepository = $orderRepository;
+        $this->ecpayInvoice = $ecpayInvoice;
+        $this->dateTimeFactory = $dateTimeFactory;
+        $this->ECPayInvoiceCheckMacValue = $ECPayInvoiceCheckMacValue;
     }
 
     public function getValidPayments()
@@ -201,10 +218,15 @@ class Payment extends AbstractMethod
 
     public function refund(\Magento\Payment\Model\InfoInterface $payment, $amount)
     {
-        $this->invalidateEInvoice($payment);
+        $eInvoiceData = json_decode($payment->getAdditionalData(), true);
 
-        return $this;
-        throw new LocalizedException(__("TEST"));
+        if (isset($eInvoiceData["InvoiceNumber"]) && ($eInvoiceData["RtnCode"] == 1)) {
+            $this->invalidateEInvoice($payment);
+        }
+
+        if ($this->getMagentoConfig("test_flag")) {
+            return $this;
+        }
 
         $additionalInfo = $payment->getAdditionalInformation();
         $rawDetailsInfo = $additionalInfo["raw_details_info"];
@@ -216,10 +238,12 @@ class Payment extends AbstractMethod
         $tradeNo = $rawDetailsInfo["TradeNo"];
         $merchantId = $rawDetailsInfo["MerchantID"];
         $merchantTradeNo = $rawDetailsInfo["MerchantTradeNo"];
-        $checkMacValue = $rawDetailsInfo["CheckMacValue"];
 
         $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
-        $params = $this->getRefundParams($merchantId, $merchantTradeNo, $tradeNo, $amount, $checkMacValue);
+        $params = $this->getRefundParams($merchantId, $merchantTradeNo, $tradeNo, $amount);
+
+        $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate($params, $this->getEcpayConfig('hash_key'), $this->getEcpayConfig('hash_iv'));
+        $params["checkMacValue"] = $checkMacValue;
 
         $this->curl->post($url, $params);
         $result = $this->curl->getBody();
@@ -280,18 +304,16 @@ class Payment extends AbstractMethod
      * @param $merchantTradeNo
      * @param $tradeNo
      * @param float $amount
-     * @param $checkMacValue
      * @return array
      */
-    private function getRefundParams($merchantId, $merchantTradeNo, $tradeNo, float $amount, $checkMacValue): array
+    private function getRefundParams($merchantId, $merchantTradeNo, $tradeNo, float $amount): array
     {
         $params = [
             "MerchantID" => $merchantId,
             "MerchantTradeNo" => $merchantTradeNo,
             "TradeNo" => $tradeNo,
             "Action" => "R",
-            "TotalAmount" => $amount,
-            "CheckMacValue" => $checkMacValue
+            "TotalAmount" => $amount
         ];
         return $params;
     }
@@ -366,9 +388,9 @@ class Payment extends AbstractMethod
     {
         try
         {
-            $sMsg = '' ;
+            $sMsg = '';
             // 1.載入SDK程式
-            $ecpay_invoice = new \EcpayInvoice() ;
+            $ecpay_invoice = $this->ecpayInvoice;
 
             // 2.寫入基本介接參數
             $this->initEInvoice($ecpay_invoice);
@@ -391,25 +413,27 @@ class Payment extends AbstractMethod
             $aReturn_Info = $ecpay_invoice->Check_Out();
 
             // 5.返回
-            foreach($aReturn_Info as $key => $value) {
-                $sMsg .=   $key . ' => ' . $value . '<br>' ;
-            }
+            $aReturn_Info["RelateNumber"] = $RelateNumber;
             $payment->setAdditionalData(json_encode($aReturn_Info));
             $payment->save();
+            return [
+                "RtnCode" => $aReturn_Info["RtnCode"],
+                "RtnMsg" => $aReturn_Info["RtnMsg"]
+            ];
         } catch (Exception $e) {
             // 例外錯誤處理。
             $sMsg = $e->getMessage();
+            throw new LocalizedException(__($sMsg));
         }
-        echo 'RelateNumber=>' . $RelateNumber.'<br>'.$sMsg ;
     }
 
     /**
-     * @param \EcpayInvoice $ecpay_invoice
+     * @param \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice
      */
-    private function initEInvoice(\EcpayInvoice $ecpay_invoice): void
+    private function initEInvoice(\Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice): void
     {
         $ecpay_invoice->Invoice_Method = 'INVOICE';
-        $ecpay_invoice->Invoice_Url = 'https://einvoice-stage.ecpay.com.tw/Invoice/Issue';
+        $ecpay_invoice->Invoice_Url = $this->getInvoiceApiUrl() . 'Issue';
         $ecpay_invoice->MerchantID = $this->getEcpayConfig("merchant_id");
         $ecpay_invoice->HashKey = $this->getEcpayConfig("invoice/ecpay_invoice_hash_key");
         $ecpay_invoice->HashIV = $this->getEcpayConfig("invoice/ecpay_invoice_hash_iv");
@@ -417,9 +441,9 @@ class Payment extends AbstractMethod
 
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $order
-     * @param \EcpayInvoice $ecpay_invoice
+     * @param \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice
      */
-    private function initOrderItems(\Magento\Sales\Api\Data\OrderInterface $order, \EcpayInvoice $ecpay_invoice): void
+    private function initOrderItems(\Magento\Sales\Api\Data\OrderInterface $order, \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice): void
     {
         $orderItems = $order->getAllVisibleItems();
 
@@ -440,15 +464,16 @@ class Payment extends AbstractMethod
     }
 
     /**
-     * @param \EcpayInvoice $ecpay_invoice
+     * @param \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice
      * @param \Magento\Sales\Api\Data\OrderInterface $order
      * @param string $donationValue
      * @param $donationCode
      * @return string
      */
-    private function initEInvoiceInfo(\EcpayInvoice $ecpay_invoice, \Magento\Sales\Api\Data\OrderInterface $order, string $donationValue, $donationCode): string
+    private function initEInvoiceInfo(\Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice, \Magento\Sales\Api\Data\OrderInterface $order, string $donationValue, $donationCode): string
     {
-        $RelateNumber = 'ECPAY' . date('YmdHis') . rand(1000000000, 2147483647); // 產生測試用自訂訂單編號
+        $dataTime = $this->dateTimeFactory->create();
+        $RelateNumber = 'ECPAY' . $dataTime->date('YmdHis') . rand(1000000000, 2147483647); // 產生測試用自訂訂單編號
         $ecpay_invoice->Send['RelateNumber'] = $RelateNumber;
         $ecpay_invoice->Send['CustomerID'] = $order->getCustomerId();
         $ecpay_invoice->Send['CustomerIdentifier'] = '';
@@ -481,11 +506,11 @@ class Payment extends AbstractMethod
             $sMsg = '';
 
             // 1.載入SDK
-            $ecpay_invoice = new \EcpayInvoice();
+            $ecpay_invoice = $this->ecpayInvoice;
 
             // 2.寫入基本介接參數
             $ecpay_invoice->Invoice_Method = 'INVOICE_VOID';
-            $ecpay_invoice->Invoice_Url = 'https://einvoice-stage.ecpay.com.tw/Invoice/IssueInvalid';
+            $ecpay_invoice->Invoice_Url = $this->getInvoiceApiUrl() . 'IssueInvalid';
             $ecpay_invoice->MerchantID = $this->getEcpayConfig("merchant_id");
             $ecpay_invoice->HashKey = $this->getEcpayConfig("invoice/ecpay_invoice_hash_key");
             $ecpay_invoice->HashIV = $this->getEcpayConfig("invoice/ecpay_invoice_hash_iv");
@@ -506,5 +531,17 @@ class Payment extends AbstractMethod
             $sMsg = $e->getMessage();
             throw new LocalizedException(__($sMsg));
         }
+    }
+
+    public function getInvoiceApiUrl()
+    {
+        $apiUrl = "";
+        if ($this->getEcpayConfig("invoice/ecpay_invoice_test_flag")) {
+            $apiUrl = $this->getEcpayConfig("invoice/ecpay_invoice_stage_url");
+        } else {
+            $apiUrl = $this->getEcpayConfig("invoice/ecpay_invoice_production_url");
+        }
+
+        return $apiUrl;
     }
 }
