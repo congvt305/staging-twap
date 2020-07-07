@@ -146,4 +146,23 @@ class QuoteCvsLocationRepository implements QuoteCvsLocationRepositoryInterface
 
         return $cvsLocation;
     }
+
+    /**
+     * @param int $quoteId
+     * @return QuoteCvsLocationInterface
+     * @throws NoSuchEntityException
+     */
+    public function getByQuoteId($quoteId): QuoteCvsLocationInterface
+    {
+        $cvsLocation = $this->quoteCvsLocationInterfaceFactory->create();
+        $field = 'extra_data';
+
+        try {
+            $this->quoteCvsLocationResource->load($cvsLocation, $quoteId, $field);
+        } catch (\Exception $e) {
+            throw new NoSuchEntityException(__('Cvs location with quote id "%1" does not exist.', $quoteId));
+        }
+
+        return $cvsLocation;
+    }
 }

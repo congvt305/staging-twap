@@ -20,12 +20,38 @@
         <attribute code="ext_location_id" type="string" />
         <attribute code="ext_tracking_url" type="string" />
         <attribute code="ext_tracking_reference" type="string" />
+
     </extension_attributes>
-    <!-- Additional attributes used during rates requests -->
     <extension_attributes for="Magento\Quote\Api\Data\AddressInterface">
-        <attribute code="checkout_fields" type="Magento\Framework\Api\AttributeInterface[]" />
+        <attribute code="cvs_type" type="string" >
+            <join reference_table="eguana_gwlogistics_quote_cvs_location"
+                  reference_field="quote_address_id"
+                  join_on_field="address_id"
+            >
+                <field>logistics_sub_type</field>
+            </join>
+        </attribute>
+    </extension_attributes>
+
+    <extension_attributes for="Magento\Quote\Api\Data\AddressInterface">
+        <attribute code="cvs_location_id" type="int" />
     </extension_attributes>
     <extension_attributes for="Magento\Sales\Api\Data\OrderAddressInterface">
-        <attribute code="checkout_fields" type="Magento\Framework\Api\AttributeInterface[]" />
+        <attribute code="cvs_location_id" type="int" />
     </extension_attributes>
+
+
+<!--    <extension_attributes for="Magento\Quote\Api\Data\AddressInterface">-->
+<!--        <attribute code="cvs_location_id" type="Magento\Framework\Api\AttributeInterface[]" />-->
+<!--    </extension_attributes>-->
+<!--    <extension_attributes for="Magento\Sales\Api\Data\OrderAddressInterface">-->
+<!--        <attribute code="cvs_location_id" type="Magento\Framework\Api\AttributeInterface[]" />-->
+<!--    </extension_attributes>-->
+    <!-- Additional attributes used during rates requests -->
+<!--    <extension_attributes for="Magento\Quote\Api\Data\AddressInterface">-->
+<!--        <attribute code="checkout_fields" type="Magento\Framework\Api\AttributeInterface[]" />-->
+<!--    </extension_attributes>-->
+<!--    <extension_attributes for="Magento\Sales\Api\Data\OrderAddressInterface">-->
+<!--        <attribute code="checkout_fields" type="Magento\Framework\Api\AttributeInterface[]" />-->
+<!--    </extension_attributes>-->
 </config>

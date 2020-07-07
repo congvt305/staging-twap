@@ -2,7 +2,6 @@ define([
     'ko',
     'jquery',
     'Magento_Ui/js/form/element/abstract',
-    // 'uiComponent',
     'Magento_Checkout/js/model/quote',
     'Eguana_GWLogistics/js/action/get-selected-cvs-location',
     'Eguana_GWLogistics/js/model/cvs-location',

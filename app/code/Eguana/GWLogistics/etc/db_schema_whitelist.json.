@@ -22,15 +22,5 @@
             "PRIMARY": true,
             "FK_03592A8E8B7525E44B5D0F179D297A14": true
         }
-    },
-    "sales_order_address": {
-        "column": {
-            "cvs_location_id": true
-        }
-    },
-    "quote_address": {
-        "column": {
-            "cvs_location_id": true
-        }
     }
 }

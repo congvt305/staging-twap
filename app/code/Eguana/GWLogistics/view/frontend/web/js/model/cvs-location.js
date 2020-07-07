@@ -9,7 +9,6 @@ define([
     var cacheKey = 'cvs-location-result';
     var sectionData = customerData.get(cacheKey);
 
-
     return {
         getCvsLocation: function () {
             // console.log(sectionData());
