@@ -26,7 +26,7 @@ class Collection extends AbstractCollection implements SearchResultInterface
     /**
      * @var string
      */
-    private $idFieldName = 'entity_id';
+    protected $_idFieldName = 'entity_id';
 
     /**
      * Event prefix
