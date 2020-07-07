@@ -18,22 +18,48 @@
             display: none;
         }
 
-        form {
-            border-bottom: 1px solid @theme__color__primary;
+        .store-badge {
+            .lib-font-size(12);
+            color: @color-white;
+            display: none;
+            padding: 1px 14px;
+            margin-right: 2px;
+            text-align: center;
+            vertical-align: middle;
 
+            &.store-badge-FS {
+                background-color: #4477be;
+            }
+
+            &.store-badge-RS {
+                background-color: #D63B60;
+            }
+        }
+
+        form {
             .store-search {
+                margin-bottom: 0;
+
                 .label {
                     &:extend(.abs-visually-hidden all);
                 }
 
                 .control {
                     display: inline-block;
-                    width: calc(~'100% -' (@form-element-input__height + 1)) !important;
+                    width: calc(~'100% - 53px') !important;
+
+                    input {
+                        height: @indent__xl !important;
+                    }
                 }
             }
 
             .store-fields {
                 margin-bottom: 0;
+            }
+
+            .stores-result {
+                display: none;
             }
         }
 
@@ -63,23 +89,13 @@
                     }
 
                     .button {
-                        &.search-btn {
-                            .lib-button-icon(
-                                    @icon-search,
-                                @_icon-font-size: @indent__l,
-                                @_icon-font-line-height: @form-element-input__height - 2,
-                                @_icon-font-color: @color-white,
-                                @_icon-font-text-hide: true
-                            );
-                            .lib-button-primary(
-                                @_button-font-size: 0,
-                                @_button-padding: 0
-                            );
-
-                            &:before {
-                                width: @form-element-input__height - 2;
-                            }
-                        }
+                        .lib-button-primary(
+                            @_button-padding: 0 @indent__s,
+                            @_button-background: @primary__color__light,
+                            @_button-border: 1px solid @primary__color__light,
+                            @_button-border-hover: 1px solid @primary__color__light,
+                            @_button-border-active: 1px solid @primary__color__light
+                        )
                     }
                 }
 
@@ -131,11 +147,36 @@
             box-sizing: border-box;
             width: 100%;
             height: 900px;
+
+            .gm-style .gm-style-iw-c {
+                border-radius: 0;
+                padding: 0;
+            }
+
+            .gm-ui-hover-effect {
+                height: auto !important;
+                right: 0!important;
+                top: 0 !important;
+                width: auto !important;
+
+                img {
+                    height: @indent__m !important;
+                    width: @indent__m !important;
+                }
+            }
         }
 
         .description {
-            padding: @indent__base @indent__base @indent__xs;
-            text-align: center;
+            padding: @indent__m @indent__l @indent__xs;
+
+            h3 {
+                .lib-font-size(16);
+                margin: 0;
+            }
+
+            h3, p {
+                color: #5f5f5f;
+            }
 
             strong {
                 display: block;
@@ -157,18 +198,11 @@
                     &:focus,
                     &:hover,
                     &.selected-store {
-                        .store-title {
-                            border-color: @theme__color__primary-alt;
-                        }
-
-                        .store-title, p {
-                            color: @theme__color__primary-alt;
-                        }
+                        border-bottom-color: @primary__color__darker;
                     }
 
                     .store-title {
                         .lib-font-size(16);
-                        border-bottom: 1px solid transparent;
                         color: @color-black;
                         display: inline-block;
                         line-height: 24px;
@@ -176,9 +210,9 @@
                         padding-bottom: 2px;
                     }
 
-                    p {
+                    .store-primary-info > p {
                         .lib-font-size(16);
-                        color: @store__list__gray-color;
+                        color: @secondary__color;
                         margin-bottom: @indent__xs;
                     }
 
@@ -606,9 +640,6 @@
         }
 
         .description {
-            padding: @indent__base @indent__base @indent__xs;
-            text-align: center;
-
             strong {
                 display: block;
                 font-size: 16px;
