@@ -49,4 +49,11 @@ interface QuoteCvsLocationRepositoryInterface
      * @throws NoSuchEntityException
      */
     public function getByAddressId($quoteAddressId): QuoteCvsLocationInterface;
+
+    /**
+     * @param int $quoteId
+     * @return QuoteCvsLocationInterface
+     * @throws NoSuchEntityException
+     */
+    public function getByQuoteId($quoteId): QuoteCvsLocationInterface;
 }

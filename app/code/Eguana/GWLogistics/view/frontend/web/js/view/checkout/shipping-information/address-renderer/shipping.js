@@ -2,11 +2,15 @@ define([
     'underscore',
     'uiComponent',
     'Magento_Customer/js/customer-data',
+    'Magento_Checkout/js/checkout-data',
+    'Magento_Checkout/js/model/quote',
     'Eguana_GWLogistics/js/model/cvs-location'
 ], function (
     _,
     Component,
     customerData,
+    checkoutData,
+    quote,
     cvsLocation
 ) {
     'use strict';
@@ -26,11 +30,10 @@ define([
             return countryData()[countryId] != undefined ? countryData()[countryId].name : ''; //eslint-disable-line
         },
         getTemplate: function () {
-            var cvsLocation = this.cvsLocation.getCvsLocation(); // {LogisticsSubType: "UNIMART", CVSStoreID: "991182", CVSStoreName: "馥樺門市", CVSAddress: "台北市南港區三重路23號1樓", CVSTelephone: null}
-            if (cvsLocation) {
-                return 'Eguana_GWLogistics/checkout/shipping-information/address-renderer/cvs-address';
-            }
-            return this.template;
+            console.log(quote.shippingAddress());
+            // console.log(quote.shippingMethod()['carrier_code']);
+            var addressTemplate = 'Eguana_GWLogistics/checkout/shipping-information/address-renderer/cvs-address';
+           return quote.shippingMethod()['carrier_code'] + '_' + quote.shippingMethod()['method_code'] === 'gwlogistics_CVS' ? addressTemplate : this.template
         },
         getSelectedCvsLocation: function () {
             return this.cvsLocation.getCvsLocation()
