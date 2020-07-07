@@ -1,0 +1,52 @@
+<?php /* @var $block \Pixlee\Pixlee\Block\ProductWidget */?>
+<?php
+$helper = $block->getDataHelper();
+$websiteId = $helper->getWebsiteId();
+$helper->initializePixleeAPI($websiteId);
+$_product = $block->getProduct();
+?>
+<?php if ($helper->isActive() && $helper->getPDPWidgetId() != "") : ?>
+<div class="product-view-pixlee_container">
+    <strong class="product-name"><?= /* @noEscape */ $_product->getName(); ?></strong>
+    <div class="luminous-area">
+        <div id="pixlee_container"></div>
+        <div id="pixlee_widget_master_container"></div>
+    </div>
+    <div class="actions-toolbar">
+        <a href="<?= $block->escapeUrl($block->getUrl('brand/luminous-live.html')) ?>" class="action view"><?= $block->escapeHtml(__('View More')) ?></a>
+    </div>
+    <script id="pixlee_script" type="text/javascript">
+        require(['https://assets.pxlecdn.com/assets/pixlee_widget_1_0_0.js','jquery', 'domReady!'], function (pixlee, $) {
+            Pixlee.init({apiKey: '<?= /* @noEscape */ $helper->getApiKey(); ?>'});
+            Pixlee.addProductWidget({
+                widgetId: <?= /* @noEscape */ $helper->getPDPWidgetId(); ?>,
+                skuId: '<?= /* @noEscape */ $_product->getSku(); ?>',
+                accountId:<?= /* @noEscape */ $helper->getAccountId(); ?>,
+                subscribedEvents: ['widgetNumPhotos']
+            });
+            Pixlee.resizeWidget();
+
+            window.addEventListener('message', function(event) {
+                var message = '';
+
+                try {
+                    message = JSON.parse(event.data);
+                } catch (e) {
+                    return;
+                }
+
+                if ($('.product-view-pixlee_container').offset()) {
+                    if (message && message.name === 'pixlee:close:widget') {
+                        $('#community_gallery').hide();
+                    } else if (message.eventName && message.eventName === 'widgetNumPhotos') {
+                        if (message.data.photoCount === 0) {
+                            $('#community_gallery').hide();
+                        }
+                    }
+                }
+
+            }, false);
+        });
+    </script>
+</div>
+<?php endif; ?>

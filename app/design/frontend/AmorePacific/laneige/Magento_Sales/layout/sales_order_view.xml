@@ -49,5 +49,6 @@
         <move element="order.status" destination="order.view.info"/>
         <move element="order.date" destination="order.view.info"/>
         <move element="order.actions.container" destination="order.view.info"/>
+        <move element="order.comments" destination="content" after="sales.order.view"/>
     </body>
 </page>

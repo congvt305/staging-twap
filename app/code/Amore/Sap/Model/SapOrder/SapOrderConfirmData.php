@@ -203,10 +203,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                 //배송지 id - 직영몰 자체코드, 없으면 공백
                 'recvid' => '',
                 'recvnm' => $shippingAddress->getName(),
-                'postCode' => $shippingAddress->getPostcode(),
-                'addr1' => $shippingAddress->getRegion(),
-                'addr2' => $shippingAddress->getCity(),
-                'addr3' => preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())),
+                'postCode' => $this->cvsShippingCheck($orderData) ? 'cvs postcode' : $shippingAddress->getPostcode(),
+                'addr1' => $this->cvsShippingCheck($orderData) ? 'cvs Region' : $shippingAddress->getRegion(),
+                'addr2' => $this->cvsShippingCheck($orderData) ? 'cvs city' : $shippingAddress->getCity(),
+                'addr3' => $this->cvsShippingCheck($orderData) ? 'cvs street' : preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())),
                 'land1' => $shippingAddress->getCountryId(),
                 'telno' => $shippingAddress->getTelephone(),
                 'hpno' => $shippingAddress->getTelephone(),
@@ -235,6 +235,24 @@ class SapOrderConfirmData extends AbstractSapOrder
         }
 
         return $bindData;
+    }
+
+    /**
+     * @param $order \Magento\Sales\Model\Order
+     */
+    public function cvsShippingCheck($order)
+    {
+        switch ($order->getShippingMethod()) {
+            case 'gwlogistics_CVS':
+                $cvsCheck = true;
+                break;
+            case 'flatrate_flatrate':
+                $cvsCheck = false;
+                break;
+            default:
+                $cvsCheck = false;
+        }
+        return $cvsCheck;
     }
 
     /**

@@ -5,5 +5,13 @@
     along with the "after" inside the block tags.
     The names are a little opaque, but if you're reading this you probably know what you're doing.
     -->
-    <move element="product.view.community_gallery" destination="yotpo.reviews.tab" before="-"/>
+    <referenceBlock name="product.view.community_gallery" remove="true"/>
+    <referenceBlock name="product.info.details">
+        <block class="Pixlee\Pixlee\Block\ProductWidget" name="product.view.community_gallery.tab" as="community_gallery" template="Pixlee_Pixlee::pixlee/product_gallery.phtml" group="detailed_info">
+            <arguments>
+                <argument name="sort_order" xsi:type="string">20</argument>
+                <argument translate="true" name="title" xsi:type="string">Luminous Live</argument>
+            </arguments>
+        </block>
+    </referenceBlock>
 </body>
