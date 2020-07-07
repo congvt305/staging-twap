@@ -28,4 +28,7 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Sales\Model\Order\CreditmemoRepository">
+        <plugin sortOrder="1" name="amoreSapCreditmemoRepository" type="Amore\Sap\Plugin\Model\Order\CreditmemoRepositoryPlugin"/>
+    </type>
 </config>

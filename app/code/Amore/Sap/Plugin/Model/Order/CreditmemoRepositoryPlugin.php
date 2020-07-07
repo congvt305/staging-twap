@@ -2,24 +2,25 @@
 /**
  * Created by Eguana.
  * User: Brian
- * Date: 2020-07-01
- * Time: 오후 4:22
+ * Date: 2020-07-07
+ * Time: 오전 9:57
  */
-
-namespace Amore\Sap\Observer\SapOrder;
+namespace Amore\Sap\Plugin\Model\Order;
 
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
+use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\App\Response\RedirectInterface;
+use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Sales\Api\OrderRepositoryInterface;
 
-class SapOrderUpdateObserver implements ObserverInterface
+class CreditmemoRepositoryPlugin
 {
     /**
      * @var Json
@@ -45,14 +46,29 @@ class SapOrderUpdateObserver implements ObserverInterface
      * @var SapOrderCancelData
      */
     private $sapOrderCancelData;
+    /**
+     * @var OrderRepositoryInterface
+     */
+    private $orderRepository;
 
+    /**
+     * CreditmemoRepositoryPlugin constructor.
+     * @param Json $json
+     * @param Request $request
+     * @param Logger $logger
+     * @param Config $config
+     * @param ManagerInterface $messageManager
+     * @param SapOrderCancelData $sapOrderCancelData
+     * @param OrderRepositoryInterface $orderRepository
+     */
     public function __construct(
         Json $json,
         Request $request,
         Logger $logger,
         Config $config,
         ManagerInterface $messageManager,
-        SapOrderCancelData $sapOrderCancelData
+        SapOrderCancelData $sapOrderCancelData,
+        OrderRepositoryInterface $orderRepository
     ) {
         $this->json = $json;
         $this->request = $request;
@@ -60,15 +76,15 @@ class SapOrderUpdateObserver implements ObserverInterface
         $this->config = $config;
         $this->messageManager = $messageManager;
         $this->sapOrderCancelData = $sapOrderCancelData;
+        $this->orderRepository = $orderRepository;
     }
 
-    public function execute(Observer $observer)
+    public function beforeSave(\Magento\Sales\Model\Order\CreditmemoRepository $subject, \Magento\Sales\Api\Data\CreditmemoInterface $entity)
     {
-        /** @var \Magento\Sales\Model\Order\Creditmemo $creditMemo */
-        $creditMemo = $observer->getEvent()->getData('creditmemo');
-        $order = $creditMemo->getOrder();
+        $storeId = $entity->getStoreId();
+        $enableCheck = $this->config->getActiveCheck('store', $storeId);
+        $order = $this->orderRepository->get($entity->getOrderId());
 
-        $enableCheck = $this->config->getActiveCheck('store', $order->getStoreId());
         if ($enableCheck) {
             if (!$this->config->checkTestMode()) {
                 try {
@@ -97,9 +113,9 @@ class SapOrderUpdateObserver implements ObserverInterface
                         $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
                     }
                 } catch (NoSuchEntityException $e) {
-                    $this->messageManager->addErrorMessage($e->getMessage());
+                    throw new NoSuchEntityException(__($e->getMessage()));
                 } catch (\Exception $e) {
-                    $this->messageManager->addErrorMessage($e->getMessage());
+                    throw new \Exception(__($e->getMessage()));
                 }
             } else {
                 $testData = $this->sapOrderCancelData->getTestCancelOrder();
@@ -128,11 +144,11 @@ class SapOrderUpdateObserver implements ObserverInterface
                         $this->logger->info('Something went wrong while sending test order update data to SAP. No response.');
                     }
                 } catch (LocalizedException $e) {
-                    $this->messageManager->addErrorMessage($e->getMessage());
                     $this->logger->info($e->getMessage());
+                    throw new NoSuchEntityException(__($e->getMessage()));
                 } catch (\Exception $e) {
-                    $this->messageManager->addErrorMessage($e->getMessage());
                     $this->logger->info($e->getMessage());
+                    throw new \Exception(__($e->getMessage()));
                 }
             }
         }
