@@ -86,7 +86,11 @@ class OrderSend extends AbstractAction
                 $resultSize = count($result);
 
                 if ($resultSize > 0) {
-                    $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                    if ($result['code'] == '0000') {
+                        $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                    } else {
+                        $this->messageManager->addErrorMessage(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                    }
                 } else {
                     $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response'));
                 }
@@ -116,7 +120,11 @@ class OrderSend extends AbstractAction
 
                 $resultSize = count($result);
                 if ($resultSize > 0) {
-                    $this->messageManager->addSuccessMessage(__('Test Order sent to SAP Successfully.'));
+                    if ($result['code'] == '0000') {
+                        $this->messageManager->addSuccessMessage(__('Test Order sent to SAP Successfully.'));
+                    } else {
+                        $this->messageManager->addErrorMessage(__('Error occurred while sending order. Error code : %2. Message : %3', $result['code'], $result['message']));
+                    }
                 } else {
                     $this->messageManager->addErrorMessage(__('Something went wrong while sending Test order data to SAP. No response'));
                 }

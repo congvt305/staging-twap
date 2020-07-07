@@ -80,6 +80,7 @@
         }
     }
 
+    .block.details[class*="e-invoices"],
     .block-order-details-view {
         .box {
             &:not(:first-child) {
@@ -112,6 +113,10 @@
 
         > .actions-toolbar .secondary {
             display: none;
+        }
+
+        .block.details[class*="e-invoices"] {
+            margin: @indent__xl 0 @indent__base 0 !important;
         }
 
         .order-actions {
@@ -606,6 +611,16 @@
                     width: 380px;
                 }
             }
+        }
+    }
+
+    .block.order.invalidate-e-invoices {
+        .box-title {
+            width: 40% !important;
+        }
+
+        .box-content {
+            width: 60% !important;
         }
     }
 

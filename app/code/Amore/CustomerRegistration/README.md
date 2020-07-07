@@ -4,7 +4,26 @@ Website: Amore
 
 Author: Abbas Ali Butt
 
-DB Table Name :
+DB Table Name : Added customer attributes 
+
+    - mobile_number: To save the customer mobile number
+    - dm_city: To save customer city for Direct Mail (DM)
+    - dm_state: To save customer state for Direct Mail (DM)
+    - dm_detailed_address: To save street address for Direct Mail (DM)
+    - dm_zipcode: To save customer zip code for Direct Mail (DM)
+    - favorite_store: To save favorite store value when custmer will register using QR Code
+    - referrer_code: To save refferer code value when custmer will register using QR Code
+    - sms_subscription_status: To identify whether customer is subscribed for SMS or not
+    - dm_subscription_status: To identify whether customer is subscribed for DM or not
+    - pos_synced_report: It is text area which will contain the response value when synced with POS in case of new customer register
+    - pos_synced_successfully: Whether synced successfully or not
+    - integration_number: To save customer integration number. Auto generated number like Order increment id. Further details you can read in next sections
+    - sales_organization_code: To save Website based sale organization code.
+    - sales_office_code: To save Website based sale organization code.
+    - call_subscription_status: To save call marketing subsctiption. Currently we are not taking it while register. Only when POS want to update
+    - status_code: To save customer status. In case of POS api customer update call.
+    - imported_from_pos: To identify whether customer information was brought from POS or not
+    - partner_id: To save Website based partner id.
  
 Explanation: This module will customize the registration process according to the Amore requirements
 
@@ -20,7 +39,7 @@ Requirements:
     - Check whether customer already exist in POS or not
     - If exist in POS then fetch the infromation from POS and load into the form for registration in Magento
     - If not exist in POS then load the form without any existing infromation. But load the phone number from step 1 and
-      in step 2 customer is not allowed to change the phone number
+      in step 2 customer is not allowed to change first name, last name and phone number
     - When existing customer registration completed also update in the POS with the new infromation.  
     - When new customer registration completed also create a new customer in the POS
     - While registration also check whether phone number already exist or not. If already exist in Magento then show 
@@ -66,37 +85,49 @@ Navigate to **Stores ⇾ Configuration** and the module **Curstomer Registration
 1. Navigate to **Stores ⇾ Configuration** and click on **Curstomer Registration** under Amore tab in the left panel.
 
  
- ![Configuration](https://i.ibb.co/KDhC30P/Registration-Configurations.png)
+![Configuration](https://i.ibb.co/QNjThcs/Customer-Registration-Configuration.png)
+
+**Frontend Registration Step 1**
+
+![Step 1](https://i.ibb.co/S00yt7K/Customer-Registration-Step-1.png)
+
+**Frontend Registration Step 2**
+  
+![Step 2](https://i.ibb.co/CM0V6Gr/Customer-Registration-Step-2.png)
+
+**Frontend Registration Step 2 Direct Mail (DM) Subscription**
+
+![DM Subscription](https://i.ibb.co/XSty2x8/Customer-Registration-Step-2-DM-Subscription.png)
  
  All the configurations are website level not store level.
  
-1. Stores -> Configuration -> Amore Extensions -> Customer Registration -> General Configuration -> **Enable Extension** : To 
-enable or disable this extension. If it will enable then while register customer will see the two step registration 
-1. Stores -> Configuration -> Amore Extensions -> Customer Registration -> General Configuration -> **Terms CMS Block Id** : It will 
-take the CMS block id which will show in the top of first step form during customer registration
-1. Stores -> Configuration -> Amore Extensions -> Customer Registration -> General Configuration -> **Expiration Time in Minutes** : It is 
-a expiration time of the code which will send to the customer in step 1 for mobile verification
-1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> General Configuration -> **Minimum Mobile Number Digits** : Minimum number of 
-digits allowed in the mobile number
-1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> General Configuration -> **Minimum Mobile Number Digits** : Minimum number of 
-digits allowed in the mobile number
-1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> General Configuration -> **Membership Error CMS Page** : Here admin will add the 
-CMS page URL key. In case of customer with same mobile number exist then system will redirect to this page
-1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> General Configuration -> **Duplicate Membership CMS Page** : Here admin will add the 
-CMS page URL key. In case of customer with same name and mobile number exist then system will redirect to this page
-1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Base URL** : Base URL of the POS system.
-1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Member Information** : URI from where system can get the memerbship
-information of POS members 
-1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Member Join** : URI from where system can send the memerbship
-information of Magento customers when they will join the system
-1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Sales Organization Code** : It is a code to recognize the site for sales organization. Such as
-TW10 for Laneige Taiwan, TW20 for Sulwhasso Taiwan, SG10 for Laneige Singapore, SG20 for Sulwhasso Singapore and similarly ID10,ID20 for Indonesia
-1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Sales Office Code** : It is a code to recognize the site for sales office. Such as 
-TW10 for Laneige Taiwan, TW20 for Sulwhasso Taiwan, SG10 for Laneige Singapore, SG20 for Sulwhasso Singapore and similarly ID10,ID20 for Indonesia
-1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Partner Id** : It is a partner id which will be assigned to the customer, while 
-resgiter from this particular website
-1.  Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Debug** : If yes then it will log api calls and store the exceptions. 
-In the file var/log/pos.log
+ **Stores -> Configuration -> Amore Extensions -> Customer Registration -> General Configuration**
+ 
+1. Enable Extension: To enable or disable this extension. If it will enable then while register customer will see the two step registration. As you can see in the
+above images frontend registration Step 1 & Step 2. Else you will see the default Magento registration. 
+1. Terms CMS Block Id: It will take the CMS block id which will show in the top of first step form during customer registration. **For Reference please see the image Frontend Registration Step 1-1 part**
+1. Expiration Time in Minutes: It is a expiration time of the code which will send to the customer in step 1 for mobile verification **For Reference please see the image Frontend Registration Step 1-5 part**
+1. Minimum Mobile Number Digits:Minimum number of digits allowed in the mobile number. **For Reference please see the image Frontend Registration Step 1-2 part**
+1. Maximum Mobile Number Digits: Maximum number of digits allowed in the mobile number. **For Reference please see the image Frontend Registration Step 1-2 part**
+1. Membership Error CMS Page: Here admin will add the CMS page URL key. In case of customer with same mobile number exist then system will redirect to this page. If there is no CMS page in configuration then show a message.
+1. Duplicate Membership CMS Page: Here admin will add the CMS page URL key. In case of customer with same name and mobile number exist then system will redirect to this page. If there is no CMS page in configuration then show a message.
+1. Newsletter Policy CMS Block: Here user will add the news letter privacy policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-13 part**
+1. SMS Policy CMS Block: Here user will add the SMS privacy policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-15 part**
+1. DM Policy CMS Block: Here user will add the DM privacy policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-17 part**
+
+
+ **Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System**
+ 
+1. Base URL: Base URL of the POS system.
+1. Member Information: URI from where system can get the memerbship information of POS members 
+1. Member Join: URI from where system can send the memerbship information of Magento customers when they will join the system
+1. Sales Organization Code: It is a code to recognize the site for sales organization. Such as TW10 for Laneige Taiwan, TW20 for Sulwhasso Taiwan, SG10 for Laneige Singapore, SG20 for Sulwhasso Singapore and similarly ID10,ID20 for Indonesia. 
+It will assign to all customer who register to that particulat site. You can see this information after customer registration from admin in his account information.
+1. Sales Office Code: It is a code to recognize the site for sales office. Such as TW10 for Laneige Taiwan, TW20 for Sulwhasso Taiwan, SG10 for Laneige Singapore, SG20 for Sulwhasso Singapore and similarly ID10,ID20 for Indonesia
+It will assign to all customer who register to that particulat site. You can see this information after customer registration from admin in his account information.
+1. Partner Id: It is a partner id which will be assigned to the customer, while resgiter from this particular website
+It will assign to all customer who register to that particulat site. You can see this information after customer registration from admin in his account information.
+1. Debug: If yes then it will log api calls and store the exceptions. In the file var/log/pos.log
  
 # Customer Integraion Number
  

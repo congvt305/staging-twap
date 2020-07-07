@@ -81,17 +81,32 @@ class Request
             if (empty($url) || empty($path)) {
                 throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
             } else {
-                $this->curl->addHeader('Content-Type', 'application/json');
-                $this->curl->post($fullUrl, $requestData);
+                try {
+                    $this->curl->addHeader('Content-Type', 'application/json');
 
-                $response = $this->curl->getBody();
-                $serializedResult = $this->json->unserialize($response);
+                    if ($this->config->getSslVerification('default', 0)) {
+                        if ($this->config->getLoggingCheck()) {
+                            $this->logger->info('TEST MODE SSL VERIFICATION DISABLED');
+                        }
+                        $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                        $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+                    }
 
-                if ($this->config->getLoggingCheck()) {
-                    $this->logger->info("TEST RESPONSE");
-                    $this->logger->info($serializedResult);
+                    $this->curl->post($fullUrl, $requestData);
+
+                    $response = $this->curl->getBody();
+
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info("TEST RESPONSE");
+                        $this->logger->info($response);
+                    }
+
+                    $serializedResult = $this->json->unserialize($response);
+
+                    return $serializedResult;
+                } catch (\Exception $exception) {
+                    return $exception->getMessage();
                 }
-                return $serializedResult;
             }
         } else {
             $url = $this->getUrl($storeId);
@@ -105,26 +120,34 @@ class Request
                 $this->logger->info($fullUrl);
             }
 
-
             if (empty($url) || empty($path)) {
                 throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
             } else {
-                $this->curl->addHeader('Content-Type', 'application/json');
-                $this->curl->post($fullUrl, $requestData);
+                try {
+                    $this->curl->addHeader('Content-Type', 'application/json');
 
-                $response = $this->curl->getBody();
+                    if ($this->config->getSslVerification('default', 0)) {
+                        if ($this->config->getLoggingCheck()) {
+                            $this->logger->info('SSL VERIFICATION DISABLED');
+                        }
+                        $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                        $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+                    }
 
-                $result = $this->json->unserialize($response);
+                    $this->curl->post($fullUrl, $requestData);
 
-                if ($this->config->getLoggingCheck()) {
-                    $this->logger->info('LIVE RESPONSE');
-                    $this->logger->info($result);
-                }
+                    $response = $this->curl->getBody();
 
-                if ($result['code'] == '0000') {
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info('LIVE RESPONSE');
+                        $this->logger->info($response);
+                    }
+
+                    $result = $this->json->unserialize($response);
+
                     return $result;
-                } else {
-                    return $result;
+                } catch (\Exception $exception) {
+                    return $exception->getMessage();
                 }
             }
         }

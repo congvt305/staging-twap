@@ -15,13 +15,17 @@
  */
 ?>
 <?php if ($block->hasEInvoices($block->getOrderId()) > 0) : ?>
-    <div class="order additional details e-invoices">
-        <h6 class="subtitle"><?= $block->escapeHtml(__("E-Invoice Information")) ?></h6>
-        <dl class="order e-invoice">
-            <dt><?= $block->escapeHtml(__("E-Invoice Date")) ?></dt>
-            <dd><?= $block->escapeHtml(__($block->getEInvoiceDate($block->getOrderId()))) ?></dd>
-            <dt><?= $block->escapeHtml(__("E-Invoice Number")) ?></dt>
-            <dd><?= $block->escapeHtml(__($block->getEInvoiceNumber($block->getOrderId()))) ?></dd>
-        </dl>
+    <div class="block order additional details e-invoices">
+        <div class="block-title"><strong><?= $block->escapeHtml(__("E-Invoice Information")) ?></strong></div>
+        <div class="block-content order e-invoice">
+            <div class="box">
+                <strong class="box-title"><span><?= $block->escapeHtml(__("E-Invoice Date")) ?></span></strong>
+                <div class="box-content"><?= $block->escapeHtml(__($block->getEInvoiceDate($block->getOrderId()))) ?></div>
+            </div>
+            <div class="box">
+                <strong class="box-title"><span><?= $block->escapeHtml(__("E-Invoice Number")) ?></span></strong>
+                <div class="box-content"><?= $block->escapeHtml(__($block->getEInvoiceNumber($block->getOrderId()))) ?></div>
+            </div>
+        </div>
     </div>
 <?php endif;?>
