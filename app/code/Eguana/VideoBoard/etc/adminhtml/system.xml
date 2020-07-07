@@ -14,7 +14,7 @@
         <section id="videoboard" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Video Board</label>
             <tab>eguana_extensions_tab</tab>
-            <resource>Eguana_Videoboard::videoboard_config</resource>
+            <resource>Eguana_VideoBoard::videoboard_config</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
                 <field id="page_top_banner_id" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">

@@ -5,7 +5,8 @@
             "social_id": true,
             "username": true,
             "socialmedia": true,
-            "customer_id": true
+            "customer_id": true,
+            "website_id": true
         },
         "constraint": {
             "PRIMARY": true,

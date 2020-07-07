@@ -22,7 +22,7 @@
             <div class="msg"><?= $block->escapeHtml(__('Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!')) ?></div>
             <div class="member-legend">
                 <label class="label" for="member">
-                    <span><?= $block->escapeHtml(__('I am already a Laneige member(Login to complete the setup)')) ?>
+                    <span><?= $block->escapeHtml(__("I am already a %1 member(Login to complete the setup)", $block->getCurrentStoreName())) ?>
                     </span>
                 </label>
                 <input type="radio" id="member" name="member" data-validate="{required:true}" value="ismember">
@@ -57,7 +57,7 @@
             <div class="member-legend">
                 <label class="label" for="not-a-member">
                     <span>
-                        <?= $block->escapeHtml(__('I am not a Laneige member yet, I want to be a new member at the same time)')) ?>
+                        <?= $block->escapeHtml(__("I am already a %1 member(Login to complete the setup)", $block->getCurrentStoreName())) ?>
                     </span>
                 </label>
                 <input type="radio" id="not-a-member" name="member" value="notamember">

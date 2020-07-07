@@ -28,6 +28,9 @@
                                                         </item>
                                                     </item>
                                                 </item>
+<!--                                                <item name="eguana-gwlogistics-cvs-location-provider" xsi:type="array">-->
+<!--                                                    <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/shipping-address/cvs-location-provider</item>-->
+<!--                                                </item>-->
                                                 <item name="shippingAddress" xsi:type="array">
                                                     <item name="config" xsi:type="array">
                                                         <item name="shippingMethodItemTemplate" xsi:type="string">Eguana_GWLogistics/shipping-address/shipping-method-item</item>
@@ -47,9 +50,7 @@
                                                 </item>
                                             </item>
                                         </item>
-
                                     </item>
-
                                 </item>
                                 <item name="sidebar" xsi:type="array">
                                     <item name="children" xsi:type="array">
@@ -59,15 +60,9 @@
                                                     <item name="rendererTemplates" xsi:type="array">
                                                         <item name="customer-address" xsi:type="array">
                                                             <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/checkout/shipping-information/address-renderer/shipping</item>
-<!--                                                            <item name="config" xsi:type="array">-->
-<!--                                                                <item name="template" xsi:type="string">Eguana_GWLogistics/checkout/shipping/address-renderer/pickup-location</item>-->
-<!--                                                            </item>-->
                                                         </item>
                                                         <item name="new-customer-address" xsi:type="array">
                                                             <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/checkout/shipping-information/address-renderer/shipping</item>
-<!--                                                            <item name="config" xsi:type="array">-->
-<!--                                                                <item name="template" xsi:type="string">Eguana_GWLogistics/checkout/shipping/address-renderer/pickup-location</item>-->
-<!--                                                            </item>-->
                                                         </item>
                                                     </item>
                                                 </item>

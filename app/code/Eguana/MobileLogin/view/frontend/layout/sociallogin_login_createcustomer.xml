@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: umer
+* Date: 22/6/20
+* Time: 6:24 PM
+*/
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="sociallogin.createcustomer">
+            <action method="setTemplate" ifconfig='MobileLogin/general/mobilelogin_mod_enable'>
+                <argument name="template" xsi:type="string">Eguana_MobileLogin::social/createcustomer.phtml</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

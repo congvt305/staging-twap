@@ -15,7 +15,7 @@
             <item name="provider" xsi:type="string">videoboard_howto_listing.videoboard_howto_listing_data_source</item>
             <item name="deps" xsi:type="string">videoboard_howto_listing.videoboard_howto_listing_data_source</item>
         </item>
-        <item name="spinner" xsi:type="string">spinner_columns</item>
+        <item name="spinner" xsi:type="string">video_board</item>
         <item name="buttons" xsi:type="array">
             <item name="add" xsi:type="array">
                 <item name="name" xsi:type="string">add</item>
@@ -44,6 +44,23 @@
     </dataSource>
 
     <listingToolbar name="listing_top">
+        <massaction name="listing_massaction" class="Eguana\VideoBoard\Ui\Component\MassAction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">videoboard_howto_listing.videoboard_howto_listing.video_board.ids</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="videoboard/howto/massDelete"/>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
         <bookmark name="bookmarks"/>
         <columnsControls name="columns_controls"/>
         <filterSearch name="fulltext"/>
@@ -73,15 +90,23 @@
         <paging name="listing_paging"/>
     </listingToolbar>
 
-    <columns name="spinner_columns">
+    <columns name="video_board">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">videoboard_howto_listing.videoboard_howto_listing.video_board_editor</item>
+                    <item name="target" xsi:type="string">startEdit</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                        <item name="1" xsi:type="boolean">true</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
         <selectionsColumn name="ids">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="resizeEnabled" xsi:type="boolean">false</item>
-                    <item name="resizeDefaultWidth" xsi:type="string">55</item>
-                    <item name="indexField" xsi:type="string">entity_id</item>
-                </item>
-            </argument>
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
         </selectionsColumn>
         <column name="entity_id">
             <argument name="data" xsi:type="array">

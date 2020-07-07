@@ -104,13 +104,13 @@ Go to CONTENT > Video Board and click on Manage Video Board
 
 It will open a Manage Video Board Grid. In the grid all records will be shown which added by admin.
 
-![grid](https://nimbus-screenshots.s3.amazonaws.com/s/dccacc50075931eccbb8bf381127badd.png)
+![grid](https://nimbus-screenshots.s3.amazonaws.com/s/d5b63505f59231d5b642d5645e8b2cab.png)
 
  **Explore The Grid**
  
 ## 1) Add New Video
 
-![add-new-video](https://nimbus-screenshots.s3.amazonaws.com/s/a07a829df6d5366b20e997af44f31a88.png)
+![add-new-video](https://nimbus-screenshots.s3.amazonaws.com/s/a42661a48783a3e6b88ac4c16ae7406e.png)
 
 It will open a form to Add New Video to add a new record
 
@@ -160,7 +160,7 @@ Search by keyword is used to search specific keyword word available list of reco
 
 ## 3) Filters
 
-![filters](https://nimbus-screenshots.s3.amazonaws.com/s/07e985a01c14dd5f0e79a4921c623735.png)
+![filters](https://nimbus-screenshots.s3.amazonaws.com/s/36ce1a284c94a4bb0742f85deef91b5e.png)
 
 Filter option is used to search data but in this you can select range of different options. as you can add ID from 5 to 10, it will show data between 5 and 10 IDs. Similarly you can filter data between two created at dates. or two modified dates. Also you can filter data according to the store scope and video status.
 Add the parameters and click Apply Filters Button
@@ -179,11 +179,11 @@ The link with to view fontend page is {Main Website URL}/videoboard
   
 Video banner image block and All the thumbnail images added by admin will show on the listing page.
 
-![banner](https://nimbus-screenshots.s3.amazonaws.com/s/0a571bbf39673783d17d6b534a128900.png)
+![banner](https://nimbus-screenshots.s3.amazonaws.com/s/91c2bb540511066b89858cad3d974f7d.png)
 
 (1) This is banner block which we added in content blocks and then add its identifier in the store configurations.
 
-![thumbnails](https://nimbus-screenshots.s3.amazonaws.com/s/e56b343055fee1e7cf4b5b31e1fe4f9e.png)
+![thumbnails](https://nimbus-screenshots.s3.amazonaws.com/s/039fa016b4fa67d20c0c0687fed8e2a5.png)
 
 (2) This is the list of all the thumbnails from the video records which were added by admin.
 

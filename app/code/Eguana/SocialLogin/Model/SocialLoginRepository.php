@@ -14,6 +14,7 @@ use Eguana\SocialLogin\Api\SocialLoginRepositoryInterface;
 use Eguana\SocialLogin\Model\ResourceModel\SocialLogin;
 use Eguana\SocialLogin\Model\ResourceModel\SocialLogin\CollectionFactory as SocialLoginCollectionFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -24,7 +25,6 @@ use Psr\Log\LoggerInterface;
  */
 class SocialLoginRepository implements SocialLoginRepositoryInterface
 {
-    private $socialLoginResource;
 
     /**
      * @var SocialLoginFactory
@@ -47,22 +47,30 @@ class SocialLoginRepository implements SocialLoginRepositoryInterface
     private $logger;
 
     /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * SocialLoginRepository constructor.
      * @param SocialLoginFactory $socialLoginFactory
      * @param SocialLogin $sociallogin
      * @param SocialLoginCollectionFactory $socialLoginCollectionFactory
      * @param LoggerInterface $logger
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         SocialLoginFactory $socialLoginFactory,
         SocialLogin $sociallogin,
         SocialLoginCollectionFactory $socialLoginCollectionFactory,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        StoreManagerInterface $storeManager
     ) {
         $this->socialLoginFactory = $socialLoginFactory;
         $this->sociallogin = $sociallogin;
         $this->socialLoginCollectionFactory = $socialLoginCollectionFactory;
         $this->logger = $logger;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -117,9 +125,11 @@ class SocialLoginRepository implements SocialLoginRepositoryInterface
      */
     public function getSocialMediaCustomer($socialId, $socialMediaType)
     {
+        $websiteId = $this->storeManager->getStore()->getWebsiteId();
         $customer = $this->socialLoginCollectionFactory->create();
         $dataUser = $customer->addFieldToFilter('social_id', $socialId)
             ->addFieldToFilter('socialmedia', $socialMediaType)
+            ->addFieldToFilter('website_id', $websiteId)
             ->getFirstItem();
         if ($dataUser && $dataUser->getId()) {
             return $dataUser->getCustomerId();

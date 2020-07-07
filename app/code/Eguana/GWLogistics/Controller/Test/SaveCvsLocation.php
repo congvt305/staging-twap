@@ -36,7 +36,7 @@ class SaveCvsLocation extends Action
             'CVSAddress' => '台北市南港區三重路23號1樓',
             'CVSTelephone' => '',
             'CVSOutSide' => '0',
-            'ExtraData' => '52'
+            'ExtraData' => '118' //quote id
         ];
         /** @var \Eguana\GWLogistics\Model\QuoteCvsLocation $cvsLocation */
         $cvsLocation = $this->saveQuoteCvsLocation->process($cvsStoreData);

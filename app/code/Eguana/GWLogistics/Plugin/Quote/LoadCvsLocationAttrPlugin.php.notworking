@@ -1,0 +1,63 @@
+<?php
+/**
+ * Created by Eguana Team.
+ * User: sonia
+ * Date: 7/8/20
+ * Time: 6:14 AM
+ */
+
+namespace Eguana\GWLogistics\Plugin\Quote;
+
+
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Quote\Model\ShippingAddressManagementInterface;
+
+class LoadCvsLocationAttrPlugin
+{
+    /**
+     * @var \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface
+     */
+    private $quoteCvsLocationRepository;
+    /**
+     * @var \Magento\Quote\Api\Data\AddressExtensionFactory
+     */
+    private $addressExtensionFactory;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(
+        \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository,
+        \Magento\Quote\Api\Data\AddressExtensionFactory $addressExtensionFactory,
+        \Psr\Log\LoggerInterface $logger
+    ){
+        $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
+        $this->addressExtensionFactory = $addressExtensionFactory;
+        $this->logger = $logger;
+    }
+
+    /**
+     * @param \Magento\Quote\Model\ShippingAddressManagementInterface $subject
+     * @param \Magento\Quote\Api\Data\AddressInterface $result
+     * @param int $cartId
+     */
+    public function afterGet(\Magento\Quote\Model\ShippingAddressManagementInterface $subject, $result, $cartId)
+    {
+        try {
+            $cvsLocation = $this->quoteCvsLocationRepository->getByQuoteId($cartId);
+        } catch (NoSuchEntityException $e) {
+            $result->setCvsLocationId(null);
+            return $result;
+        }
+        $extensionAttributes = $result->getExtensionAttributes();
+        if ($extensionAttributes === null) {
+            $extensionAttributes = $this->addressExtensionFactory->create();
+        }
+        $extensionAttributes->setCvsLocationId($cvsLocation->getLocationId());
+        $result->setExtensionAttributes($extensionAttributes);
+        $result->setCvsLocationId($extensionAttributes->getCvsLocationId());
+
+        return $result;
+    }
+}

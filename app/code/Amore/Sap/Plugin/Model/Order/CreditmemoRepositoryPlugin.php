@@ -113,9 +113,9 @@ class CreditmemoRepositoryPlugin
                         $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
                     }
                 } catch (NoSuchEntityException $e) {
-                    throw new NoSuchEntityException(__($e->getMessage()));
+                    throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
                 } catch (\Exception $e) {
-                    throw new \Exception(__($e->getMessage()));
+                    throw new \Exception(__('SAP : ' . $e->getMessage()));
                 }
             } else {
                 $testData = $this->sapOrderCancelData->getTestCancelOrder();
@@ -145,10 +145,10 @@ class CreditmemoRepositoryPlugin
                     }
                 } catch (LocalizedException $e) {
                     $this->logger->info($e->getMessage());
-                    throw new NoSuchEntityException(__($e->getMessage()));
+                    throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
                 } catch (\Exception $e) {
                     $this->logger->info($e->getMessage());
-                    throw new \Exception(__($e->getMessage()));
+                    throw new \Exception(__('SAP : ' . $e->getMessage()));
                 }
             }
         }
