@@ -43,6 +43,7 @@
         <move element="order.status" destination="content" before="-"/>
         <move element="order.date" destination="order.status" after="-"/>
         <move element="order.actions.container" destination="content" before="sales.order.info.links"/>
+        <move element="order.comments" destination="content" after="sales.order.view"/>
         <referenceBlock name="page.main.title">
             <action method="setPageTitle">
                 <argument translate="true" name="label" xsi:type="string">My Orders View</argument>

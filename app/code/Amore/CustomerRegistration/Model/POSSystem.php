@@ -119,6 +119,8 @@ class POSSystem
                 'firstName' => $firstName,
                 'lastName' => $lastName,
                 'mobileNumber' => $mobileNumber,
+                'salOrgCd' => $this->config->getOrganizationSalesCode(),
+                'salOffCd' => $this->config->getOfficeSalesCode()
             ];
             $jsonEncodedData = json_encode($parameters);
 

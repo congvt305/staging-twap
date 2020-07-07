@@ -102,8 +102,8 @@
                 </field>
 
                 <field id="member_info" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1">
-                    <label>Memeber Information URI</label>
-                    <comment>Member info URI. Complete URL = BASE URL + Memeber Information URI</comment>
+                    <label>Member Information URI</label>
+                    <comment>Member info URI. Complete URL = BASE URL + Member Information URI</comment>
                 </field>
 
                 <field id="member_join" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1">
@@ -124,7 +124,7 @@
                 </field>
 
                 <field id="ssl_verification" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" >
-                    <label>SSL Verfication</label>
+                    <label>SSL Verification</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
