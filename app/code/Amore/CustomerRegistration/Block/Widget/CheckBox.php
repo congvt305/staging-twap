@@ -18,6 +18,7 @@ use Magento\Customer\Model\Session;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template\Context;
+use Amore\CustomerRegistration\Helper\Data;
 
 /**
  * Block to render customer's Checkbox attribute
@@ -38,6 +39,10 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
      * @var CustomerRepositoryInterface
      */
     protected $customerRepository;
+    /**
+     * @var Data
+     */
+    private $config;
 
     /**
      * Create an instance of the Checkbox widget
@@ -55,12 +60,14 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
         CustomerMetadataInterface $customerMetadata,
         CustomerRepositoryInterface $customerRepository,
         Session $customerSession,
+        Data $config,
         array $data = []
     ) {
         $this->customerSession = $customerSession;
         $this->customerRepository = $customerRepository;
         parent::__construct($context, $addressHelper, $customerMetadata, $data);
         $this->_isScopePrivate = true;
+        $this->config = $config;
     }
 
     /**
@@ -147,5 +154,23 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
     {
         $formValue = $this->getData('form_value');
         return $formValue == 1 ? $formValue:0;
+    }
+
+    public function getReadMoreContent()
+    {
+        if ($this->getAttributeCode() == 'sms_subscription_status') {
+            $privacyPolicyCMSBlockId = $this->config->getSMSPolicyCMSBlockId();
+        } else {
+            $privacyPolicyCMSBlockId = $this->config->getDMPolicyCMSBlockId();
+        }
+
+        if (!$privacyPolicyCMSBlockId) {
+            return '';
+        }
+
+        return $this->getLayout()
+            ->createBlock('Magento\Cms\Block\Block')
+            ->setBlockId($privacyPolicyCMSBlockId)
+            ->toHtml();
     }
 }
