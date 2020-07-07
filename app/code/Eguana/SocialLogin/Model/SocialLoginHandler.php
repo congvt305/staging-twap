@@ -18,6 +18,7 @@ use Magento\Customer\Model\Session;
 use Magento\Framework\Message\ManagerInterface as ManagerInterfaceAlias;
 use Magento\Framework\Session\SessionManagerInterface as SessionManagerInterfaceAlias;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -70,6 +71,11 @@ class SocialLoginHandler
     protected $resultPageFactory;
 
     /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * SocialLoginHandler constructor.
      * @param CustomerFactory $customerFactory
      * @param ManagerInterfaceAlias $messageManager
@@ -82,6 +88,7 @@ class SocialLoginHandler
      * @param SessionManagerInterfaceAlias $coreSession
      * @param PageFactory $resultPageFactory
      * @param SocialLoginRepository $socialLoginRepository
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         CustomerFactory $customerFactory,
@@ -94,7 +101,8 @@ class SocialLoginHandler
         LineModelFactory $lineCustomerModelFactory,
         SessionManagerInterfaceAlias $coreSession,
         PageFactory $resultPageFactory,
-        SocialLoginRepository $socialLoginRepository
+        SocialLoginRepository $socialLoginRepository,
+        StoreManagerInterface $storeManager
     ) {
         $this->customerRepositoryInterface       = $customerRepositoryInterface;
         $this->customerFactory                   = $customerFactory;
@@ -107,6 +115,7 @@ class SocialLoginHandler
         $this->coreSession                       = $coreSession;
         $this->resultPageFactory                 = $resultPageFactory;
         $this->socialLoginRepository             = $socialLoginRepository;
+        $this->storeManager                      = $storeManager;
     }
 
     /**
@@ -165,11 +174,13 @@ class SocialLoginHandler
      */
     public function setSocialMediaCustomer($socialId, $customerId, $username, $socialMediaType)
     {
+        $websiteId = $this->storeManager->getStore()->getWebsiteId();
         $lineCustomer = $this->lineCustomerModelFactory->create();
         $lineCustomer->setData('social_id', $socialId);
         $lineCustomer->setData('username', $username);
         $lineCustomer->setData('socialmedia', $socialMediaType);
         $lineCustomer->setData('customer_id', $customerId);
+        $lineCustomer->setData('website_id', $websiteId);
         try {
             $this->socialLoginRepository->save($lineCustomer);
         } catch (\Exception $e) {

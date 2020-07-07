@@ -1,0 +1,62 @@
+define([], function() {
+    'use strict';
+
+    /**
+     * @param {Number} registryId
+     * @return {Object} new address object
+     */
+    return function (cvsLocationId) {
+        return {
+            cvs_location_id: cvsLocationId,
+
+            /**
+             * @return {Boolean}
+             */
+            isDefaultShipping: function () {
+                return false;
+            },
+
+            /**
+             * @return {Boolean}
+             */
+            isDefaultBilling: function () {
+                return false;
+            },
+
+            /**
+             * @return {String}
+             */
+            getType: function () {
+                return 'cvs_location_id';
+            },
+
+            /**
+             * @return {String}
+             */
+            getKey: function () {
+                return this.getType() + this.cvs_location_id;
+            },
+
+            /**
+             * @return {String}
+             */
+            getCacheKey: function () {
+                return this.getKey();
+            },
+
+            /**
+             * @return {Boolean}
+             */
+            isEditable: function () {
+                return false;
+            },
+
+            /**
+             * @return {Boolean}
+             */
+            canUseForBilling: function () {
+                return false;
+            }
+        };
+    };
+});

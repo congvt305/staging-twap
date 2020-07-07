@@ -73,7 +73,7 @@ class Index extends Action
         if (isset($videoId)) {
             $video = $this->videoBoardRepository->getById($videoId);
             if (empty($video->getData())) {
-                $this->managerInterface->addErrorMessage('No video exsit with ' .$videoId . ' id');
+                $this->managerInterface->addErrorMessage('No video exist with ' .$videoId . ' id');
                 $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
                 $resultRedirect->setUrl('/videoboard');
                 return $resultRedirect;

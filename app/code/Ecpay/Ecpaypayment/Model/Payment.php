@@ -243,7 +243,7 @@ class Payment extends AbstractMethod
         $params = $this->getRefundParams($merchantId, $merchantTradeNo, $tradeNo, $amount);
 
         $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate($params, $this->getEcpayConfig('hash_key'), $this->getEcpayConfig('hash_iv'));
-        $params["checkMacValue"] = $checkMacValue;
+        $params["CheckMacValue"] = $checkMacValue;
 
         $this->curl->post($url, $params);
         $result = $this->curl->getBody();

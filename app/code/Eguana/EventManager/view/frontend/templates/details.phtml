@@ -1,0 +1,42 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 1/7/20
+ * Time: 12:44 PM
+ */
+
+/** @var \Eguana\EventManager\Block\View $block */
+/** @var \Eguana\EventManager\ViewModel\EventDetail $viewModel */
+$viewModel = $block->getData('detail_view_model');
+$eventDetail = $viewModel->getEventManager();
+?>
+<div class="event-detail-wrapper">
+    <div class="event-detail-content">
+        <div class="event-detail-item">
+            <div class="event-detail-title">
+                <h2><?= $block->escapeHtml($eventDetail->getTitle());?></h2>
+            </div>
+            <div class="event-detail-period">
+                <span class="event-detail-start-date">
+                    <?= $block->escapeHtml($viewModel->changeDateFormat($eventDetail->getStartDate()));?>
+                </span>
+                <span>~</span>
+                <span class="event-detail-end-date">
+                    <?= $block->escapeHtml($viewModel->changeDateFormat($eventDetail->getEndDate()));?>
+                </span>
+            </div>
+            <div class="event-detail-description">
+                <?= /* @noEscape */  $viewModel->contentFiltering($eventDetail->getDescription()); ?>
+            </div>
+        </div>
+    </div>
+    <div class="more-item-button back-button">
+        <a class="action button primary" href="<?= $block->escapeUrl($block->getBaseUrl().'events')?>">
+            <span><?= $block->escapeHtml(__('Back to list'));?></span>
+        </a><br/>
+        <span><?= $block->escapeHtml(__('Back to list'));?></span>
+    </div>
+</div>
