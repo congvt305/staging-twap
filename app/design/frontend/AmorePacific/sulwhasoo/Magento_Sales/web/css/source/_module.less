@@ -112,6 +112,10 @@
             }
         }
 
+        .block.details[class*="e-invoices"] {
+            margin-top: @indent__l;
+        }
+
         .item-options {
             &:extend(.abs-product-options-list all);
 
@@ -330,7 +334,7 @@
 
     .block-order-details {
         &-comments {
-            margin: 0 0 40px;
+            margin: 0 0 @indent__s;
 
             .comment-date {
                 font-weight: @font-weight__semibold;
