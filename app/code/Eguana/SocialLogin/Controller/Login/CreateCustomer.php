@@ -87,7 +87,10 @@ class CreateCustomer extends Action
             }
             $this->socialLoginModel->getCoreSession()->unsSocialCustomerId();
             $resultRedirect = $this->resultRedirectFactory->create();
-            $resultRedirect->setPath($this->storemanager->getStore()->getBaseUrl());
+            $resultRedirect->setPath('customer/account/index');
+            $this->messageManager->addSuccess(
+                __('Login successful.')
+            );
             return $resultRedirect;
         } else {
             $resultRedirect = $this->resultRedirectFactory->create();

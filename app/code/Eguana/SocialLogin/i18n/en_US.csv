@@ -6,18 +6,16 @@
 "* Required Fields","* Required Fields"
 "Social Login","Social Login"
 "Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!","Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!"
-"I am already a Laneige member(Login to complete the setup)","I am already a Laneige member(Login to complete the setup)"
+"I am already a '%1' member(Login to complete the setup)","I am already a '%1' member(Login to complete the setup)"
 "Linked Account : Google ID/Facebook/Line","Linked Account : Google ID/Facebook/Line"
 Email,Email
 Password,Password
-"I am not a Laneige member yet, I want to be a new member at the same time)","I am not a Laneige member yet, I want to be a new member at the same time)"
 Canel,Canel
 OK,OK
 OR,OR
 "Login with LINE","Login with LINE"
 "Login with Facebook","Login with Facebook"
 "Login with Google","Login with Google"
-Eguana,Eguana
 "General Setting","General Setting"
 "Enable Module","Enable Module"
 LINE,LINE

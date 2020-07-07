@@ -4,7 +4,7 @@ Website: Amore
 
 Author: Abbas Ali Butt
 
-DB Table Name :
+DB Table Name : eguana_sociallogin_customer
  
 Explanation: This module will allow the customer to login/register using social media
 
@@ -111,3 +111,19 @@ Here you will enter app secret
 
 This is the callback url for Google Login
  ![Google](https://i.ibb.co/sVvhY06/google.png)
+
+**Frontend**
+
+After enabling google, line and facebook logins.
+You can see social login buttons on customer login page
+
+ ![Logins](https://i.ibb.co/hX3Q8T9/logins.png)
+
+If the customer is already registered with social login account then he will be redirected to home page.
+
+If the customer is logging in for the first time then he will go to Social Login Page
+
+ ![SocialLoginpage](https://i.ibb.co/TLxdz0r/sociallogin.png)
+
+At this page he can decide if he can link his existing account with social media Or create a new account.
+
