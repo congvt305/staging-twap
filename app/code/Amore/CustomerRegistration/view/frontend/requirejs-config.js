@@ -7,6 +7,7 @@ var config = {
         '*': {
             posform: 'Amore_CustomerRegistration/js/pos',
             checkboxfield: 'Amore_CustomerRegistration/js/checkboxfield',
+            privacypolicypopup: 'Amore_CustomerRegistration/js/newsletter-privacy-policy-popup'
         }
     }
 };

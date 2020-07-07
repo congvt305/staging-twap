@@ -397,9 +397,12 @@
                 &-actions {
                     .delete {
                         .lib-button-primary(
-                            @_button-width: @product-link__width,
+                            @_button-background: fade(@button-primary__background,40%),
+                            @_button-font-size: @font-size__base,
+                            @_button-border: 1px solid transparent,
+                            @_button-width: @product-link__width-m,
                             @_button-font-weight: @font-weight__semibold,
-                            @_button-padding: 20px 0
+                            @_button-padding: 13px 0
                         );
                         border-radius: 50%;
                         display: inline-block;
@@ -458,6 +461,24 @@
 
             button.tocart {
                 padding-left: @indent__l;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    .products-grid.wishlist {
+        .product {
+            &-item {
+                &-actions {
+                    .delete {
+                        .lib-button-revert-secondary-size(
+                            @_button-font-size: @button-primary__font-size,
+                            @_button-padding: 23.5px 0
+                        );
+                        width: @product-link__width;
+                    }
+                }
             }
         }
     }

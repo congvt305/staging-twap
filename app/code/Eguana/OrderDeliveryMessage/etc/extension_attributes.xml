@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+  ~ /**
+  ~ * @author Eguana Team
+  ~ * @copyriht Copyright (c) ${YEAR} Eguana {http://eguanacommerce.com}
+  ~ * Created byPhpStorm
+  ~ * User:  Abbas
+  ~ * Date: 06/30/20
+  ~ * Time: 6:30 pm
+  ~ */
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    <extension_attributes for="Magento\Checkout\Api\Data\ShippingInformationInterface">
+        <attribute code="delivery_message" type="string"/>
+    </extension_attributes>
+</config>

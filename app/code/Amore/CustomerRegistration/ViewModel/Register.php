@@ -11,6 +11,7 @@ namespace Amore\CustomerRegistration\ViewModel;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\Session\SessionManagerInterface as Session;
+use Amore\CustomerRegistration\Helper\Data;
 
 /**
  * It will use for the register step during registration
@@ -29,6 +30,10 @@ class Register implements ArgumentInterface
      * @var Session
      */
     private $customerSession;
+    /**
+     * @var Data
+     */
+    private $configHelper;
 
     /**
      * Register constructor.
@@ -36,11 +41,13 @@ class Register implements ArgumentInterface
      * @param Http $request request
      */
     public function __construct(
+        Data $configHelper,
         Http $request,
         Session $customerSession
     ) {
         $this->request = $request;
         $this->customerSession = $customerSession;
+        $this->configHelper = $configHelper;
     }
 
     /**
@@ -81,5 +88,15 @@ class Register implements ArgumentInterface
             $socialMediaEmail = isset($socialMediaData['email'])?$socialMediaData['email']:'';
         }
         return $socialMediaEmail;
+    }
+
+    /**
+     * Get newsLetter privacy policy CMS block id
+     *
+     * @return string
+     */
+    public function getNewsLetterPolicyCMSBlockId()
+    {
+        return $this->configHelper->getNewsLetterPolicyCMSBlockId();
     }
 }

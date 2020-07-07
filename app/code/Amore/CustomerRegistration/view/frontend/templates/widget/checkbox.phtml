@@ -16,7 +16,14 @@ $isSelected = $block->getFormValue();
         <?php endforeach;?>
     </select>
     <input type="checkbox" class="<?= $block->getAttributeCode() ?>_checkbox" <?= $isSelected == 1?'checked':''; ?> />
-    <label class="label" for="<?= $block->escapeHtmlAttr($block->getFieldId($block->getAttributeCode())) ?>"><span><?= $block->escapeHtml($block->getStoreLabel($block->getAttributeCode())) ?></span></label>
+    <label class="<?= $block->getAttributeCode().'-label' ?> label" for="<?= $block->escapeHtmlAttr($block->getFieldId($block->getAttributeCode())) ?>"><span><?= $block->escapeHtml($block->getStoreLabel($block->getAttributeCode())) ?></span></label>
+    <span>
+        <a href="#" id="<?= $block->getAttributeCode().'-read-policy' ?>" target="_blank"><?= $block->escapeHtml(__('Read more')) ?></a>
+    </span>
+</div>
+
+<div class="<?= $block->getAttributeCode().'-policy-popup' ?>" style="display: none;">
+    <?= /* @noEscape */ $block->getReadMoreContent(); ?>
 </div>
 
 <script type="text/x-magento-init">

@@ -74,11 +74,25 @@ class SapOrderUpdateObserver implements ObserverInterface
                 try {
                     $orderUpdateData = $this->sapOrderCancelData->singleOrderData($order->getIncrementId());
 
-                    $result = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId());
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info("Single Order Cancel Send Data");
+                        $this->logger->info($this->json->serialize($orderUpdateData));
+                    }
+
+                    $result = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
+
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info("Single Order Cancel Result Data");
+                        $this->logger->info($result);
+                    }
 
                     $resultSize = count($result);
                     if ($resultSize > 0) {
-                        $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                        if ($result['code'] == '0000') {
+                            $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                        } else {
+                            $this->messageManager->addErrorMessage(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                        }
                     } else {
                         $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
                     }
@@ -92,13 +106,23 @@ class SapOrderUpdateObserver implements ObserverInterface
 
                 $jsonTestData = $this->json->serialize($testData);
 
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info("Single Test Order Cancel Send Data");
+                    $this->logger->info($jsonTestData);
+                }
+
                 try {
-                    $result = $this->request->postRequest($jsonTestData, 0);
+                    $result = $this->request->postRequest($jsonTestData, 0, 'cancel');
                     $resultSize = count($result);
 
                     if ($resultSize > 0) {
                         $this->messageManager->addSuccessMessage('Test Order Update sent to SAP Successfully.');
-                        $this->logger->info('Test Order Update sent to SAP Successfully.');
+                        if ($result['code'] == '0000') {
+                            $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                            $this->logger->info('Test Order Update sent to SAP Successfully.');
+                        } else {
+                            $this->messageManager->addErrorMessage(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                        }
                     } else {
                         $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
                         $this->logger->info('Something went wrong while sending test order update data to SAP. No response.');
