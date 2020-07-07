@@ -40,13 +40,14 @@
 
     .toolbar-amount {
         color: @primary__color__lighter;
+        float: left;
         display: block;
         line-height: @toolbar-mode-icon-font-size + 2;
-        margin: 0;
+        margin: 15px 0 0;
         vertical-align: middle;
 
         .products.wrapper ~ .toolbar & {
-            display: none;
+            display: none !important;
         }
     }
 
@@ -188,7 +189,6 @@
 
     .sorter {
         float: right;
-        padding-top: 15px;
     }
 
     .modes {

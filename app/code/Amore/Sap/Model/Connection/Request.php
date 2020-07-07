@@ -82,6 +82,12 @@ class Request
                 throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
             } else {
                 $this->curl->addHeader('Content-Type', 'application/json');
+
+                if ($this->config->getSslVerification('store', $storeId)) {
+                    $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                    $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, FALSE);
+                }
+
                 $this->curl->post($fullUrl, $requestData);
 
                 $response = $this->curl->getBody();
@@ -105,12 +111,15 @@ class Request
                 $this->logger->info($fullUrl);
             }
 
-
             if (empty($url) || empty($path)) {
                 throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
             } else {
                 $this->curl->addHeader('Content-Type', 'application/json');
                 $this->curl->post($fullUrl, $requestData);
+                if ($this->config->getSslVerification('store', $storeId)) {
+                    $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                    $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, FALSE);
+                }
 
                 $response = $this->curl->getBody();
 

@@ -26,6 +26,7 @@ $_className = $block->getCssClass();
 $_attributeLabel = $block->getAtLabel();
 $_attributeType = $block->getAtType();
 $_attributeAddAttribute = $block->getAddAttribute();
+$_title = $block->getTitle();
 
 $renderLabel = true;
 // if defined as 'none' in layout, do not render
@@ -46,13 +47,20 @@ if ($_attributeType && $_attributeType == 'text') {
 ?>
 
 <?php if ($_attributeValue): ?>
-    <div class="product attribute <?= $block->escapeHtmlAttr($_className) ?>">
-        <?php if ($renderLabel): ?><strong class="type"><?= $block->escapeHtml($_attributeLabel) ?></strong><?php endif; ?>
-        <?php if($_className == 'ingredients'):?>
-            <div class="attribute title">
-                <span><?= $_attributeLabel?></span>
-            </div>
-        <?php endif?>
-        <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_attributeValue ?></div>
-    </div>
+    <?php if ($_code == 'prdvl'):?>
+        <?php if ($renderLabel): ?><strong class="type"><?= $block->escapeHtml($_title) ?></strong><?php endif; ?>
+        <div class="value <?= $block->escapeHtmlAttr($_className) ?>" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_attributeValue ?></div>
+    <?php elseif ($_code == 'vlunt' || $_code == 'product_count'):?>
+        <div class="value <?= $block->escapeHtmlAttr($_className) ?>" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_attributeValue ?></div>
+    <?php else:?>
+        <div class="product attribute <?= $block->escapeHtmlAttr($_className) ?>">
+            <?php if ($renderLabel): ?><strong class="type"><?= $block->escapeHtml($_attributeLabel) ?></strong><?php endif; ?>
+            <?php if($_className == 'ingredients'):?>
+                <div class="attribute title">
+                    <span><?= $_attributeLabel?></span>
+                </div>
+            <?php endif?>
+            <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_attributeValue ?></div>
+        </div>
+    <?php endif; ?>
 <?php endif; ?>

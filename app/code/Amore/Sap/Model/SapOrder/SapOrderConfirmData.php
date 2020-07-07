@@ -34,6 +34,10 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @var CustomerRepositoryInterface
      */
     private $customerRepository;
+    /**
+     * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
+     */
+    private $timezoneInterface;
 
 
     /**
@@ -45,6 +49,7 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param InvoiceRepositoryInterface $invoiceRepository
      * @param RmaRepositoryInterface $rmaRepository
      * @param CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -53,12 +58,14 @@ class SapOrderConfirmData extends AbstractSapOrder
         Config $config,
         InvoiceRepositoryInterface $invoiceRepository,
         RmaRepositoryInterface $rmaRepository,
-        CustomerRepositoryInterface $customerRepository
+        CustomerRepositoryInterface $customerRepository,
+        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
         $this->rmaRepository = $rmaRepository;
         $this->customerRepository = $customerRepository;
+        $this->timezoneInterface = $timezoneInterface;
     }
 
     /**
@@ -182,11 +189,11 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'vkorg' => $this->config->getMallId('store', $storeId),
                 'kunnr' => $this->config->getClient('store', $storeId),
                 'odrno' => $orderData->getIncrementId(),
-                'odrdt' => $orderData->getCreatedAt(),
-                'odrtm' => $orderData->getCreatedAt(),
+                'odrdt' => $this->dateFormatting($orderData->getCreatedAt(), 'Ymd'),
+                'odrtm' => $this->dateFormatting($orderData->getCreatedAt(), 'His'),
                 'paymtd' => $this->getPaymentCode($orderData->getPayment()->getMethod()),
-                'payde' => $invoice->getCreatedAt(),
-                'paytm' => $invoice->getCreatedAt(),
+                'payde' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
+                'paytm' => $this->dateFormatting($invoice->getCreatedAt(), 'His'),
                 'auart' => $this->getOrderType($orderData->getEntityId()),
                 'aurgu' => self::NORMAL_ORDER,
                 'augruText' => 'ORDER REASON TEXT',
@@ -249,6 +256,11 @@ class SapOrderConfirmData extends AbstractSapOrder
                 return $e;
             }
         }
+    }
+
+    public function dateFormatting($date, $format)
+    {
+        return $this->timezoneInterface->date($date)->format($format);
     }
 
     /**

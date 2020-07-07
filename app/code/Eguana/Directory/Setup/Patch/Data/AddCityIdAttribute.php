@@ -6,11 +6,13 @@
 
 namespace Eguana\Directory\Setup\Patch\Data;
 
+use Eguana\Directory\Model\ResourceModel\Address\Source\City;
 use Magento\Customer\Setup\CustomerSetup;
 use Magento\Customer\Setup\CustomerSetupFactory;
+use Magento\Customer\Setup\Patch\Data\DefaultCustomerGroupsAndAttributes;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute as AttributeResource;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
-use Magento\Eav\Model\ResourceModel\Entity\Attribute as AttributeResource;
 
 /**
 * Patch is mechanism, that allows to do atomic upgrade data changes
@@ -66,7 +68,7 @@ class AddCityIdAttribute implements DataPatchInterface
             'type' => 'static',
             'label' => 'City/District',
             'input' => 'hidden',
-            'source' => \Eguana\Directory\Model\ResourceModel\Address\Source\City::class,
+            'source' => City::class,
             'required' => false,
             'sort_order' => 80,
             'position' => 80,
@@ -75,27 +77,20 @@ class AddCityIdAttribute implements DataPatchInterface
             'is_filterable_in_grid' => false,
             'is_searchable_in_grid' => false,
         ];
+
         $customerSetup->addAttribute('customer_address', 'city_id', $cityIdAttrInfo);
         $cityIdAttribute = $customerSetup->getEavConfig()->getAttribute('customer_address', 'city_id');
-        //Magento\Eav\Model\ResourceModel\Entity\Attribute as AttributeResource;
-        $cityIdAttribute->setData(
-            'used_in_forms',
-            [
-                'customer_address_edit',
-                'customer_register_address',
-                'customer_account_create',
-                'checkout_register',
-                'adminhtml_customer',
-                'adminhtml_checkout',
-                'adminhtml_customer_address',
-                'checkout_onepage_register',
-                'checkout_onepage_register_guest',
-                'checkout_onepage_billing_address',
-                'checkout_onepage_shipping_address',
-            ]
-        );
-        $cityIdAttribute->save();
-//        $this->attributeResource->save($cityIdAttribute);
+        $usedInForms = [
+            'adminhtml_customer_address',
+            'customer_address_edit',
+            'customer_register_address',
+        ];
+        foreach ($usedInForms as $formCode) {
+            $data[] = ['form_code' => $formCode, 'attribute_id' => $cityIdAttribute->getId()];
+        }
+
+        $this->moduleDataSetup->getConnection()
+            ->insertMultiple($this->moduleDataSetup->getTable('customer_form_attribute'), $data);
     }
 
     /**
@@ -112,7 +107,7 @@ class AddCityIdAttribute implements DataPatchInterface
     public static function getDependencies()
     {
         return [
-            \Magento\Customer\Setup\Patch\Data\DefaultCustomerGroupsAndAttributes::class,
+            DefaultCustomerGroupsAndAttributes::class,
         ];
     }
 }
