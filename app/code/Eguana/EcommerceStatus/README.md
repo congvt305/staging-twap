@@ -9,11 +9,12 @@ Explanation: This module will Enable/Disable ecommerce functionalities process a
 
 Description:
 
-    -Register module will be mainly used to Enable/Disable ecommerce functionalities
-    -Hide mini cart when ecommerce switcher is disable
-    -Redirect cart page to home page when ecommerce switcher is disable
-    -Redirect checkout page to home page when ecommerce switcher is disable
-    -Hide add ot cart buttons
+-Register module will be mainly used to Enable/Disable ecommerce functionalities
+-Hide mini cart when ecommerce switcher is disable
+-Redirect cart page to home page when ecommerce switcher is disable
+-Redirect checkout page to home page when ecommerce switcher is disable
+-Hide add ot cart buttons
+
 
 Requirements:
 
@@ -45,3 +46,7 @@ Navigate to **Stores ⇾ Configuration** Eguana Extension **E-commerce Status
 
 ![](https://i.ibb.co/Bs2pmMk/Screenshot-2.png)
 
+**IMPORTANT NOTE:**
+
+Please run indexer command bin/magento indexer:reindex after enable or disable this module so that changes apply to
+the products that are in content blocks, widgets and other pages etc.
