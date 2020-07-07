@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2019 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: Umer
+ * Date: 05/18/20
+ * Time: 11:32 AM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Eguana_MobileLogin">
+        <sequence>
+            <module name="Magento_Customer"/>
+            <module name="Eguana_Base"/>
+            <module name="Eguana_SocialLogin"/>
+            <module name="Magento_Checkout"/>
+        </sequence>
+    </module>
+</config>

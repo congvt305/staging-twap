@@ -1,0 +1,89 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: umer
+ * Date: 3/7/20
+ * Time: 8:01 PM
+ */
+/**
+ * @var $block \Eguana\SocialLogin\Block\SocialLogin\CreateCustomer
+ */
+?>
+<div id="myModel">
+    <form method="post" id="eguana-form-validate" enctype="multipart/form-data" autocomplete="off"
+          data-mage-init='{"validation":{}}' data-hasrequired="<?= $block->escapeHtml(__('* Required Fields')) ?>">
+        <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
+        <fieldset class="fieldset">
+            <legend class="legend eguanasociallogin-form-legend">
+                <span><?= $block->escapeHtml(__('Social Login')) ?></span>
+            </legend>
+            <div class="msg"><?= $block->escapeHtml(__('Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!')) ?></div>
+            <div class="member-legend">
+                <label class="label" for="member">
+                    <span><?= $block->escapeHtml(__("I am already a %1 member(Login to complete the setup)", $block->getCurrentStoreName())) ?>
+                    </span>
+                </label>
+                <input type="radio" id="member" name="member" data-validate="{required:true}" value="ismember">
+            </div>
+            <div class="msg"><?= $block->escapeHtml(__('Linked Account : Google ID/Facebook/Line')) ?></div>
+            <div class="field email required">
+                <label class="label" for="email"><span><?= $block->escapeHtml(__('Email / Mobile Number')) ?></span></label>
+                <div class="control">
+                    <input name="login[username]"
+                           id="email"
+                           title="<?= $block->escapeHtmlAttr(__('Email / Mobile Number')) ?>"
+                           class="input-text"
+                           type="tel"
+                           value=""
+                           placeholder="Enter email or mobile number"
+                           data-validate="{required:true, 'mobileloginvalidationrule':true}"
+                           aria-required="true">
+                </div>
+            </div>
+            <div class="field password required">
+                <label class="label" for="password"><span><?= $block->escapeHtml(__('Password')) ?></span></label>
+                <div class="control">
+                    <input name="login[password]"
+                           id="password"
+                           title="<?= $block->escapeHtml(__('Password')) ?>"
+                           class="input-text"
+                           type="password"
+                           value=""
+                           data-validate="{required:true}"
+                           aria-required="true">
+                </div>
+            </div>
+            <div class="member-legend">
+                <label class="label" for="not-a-member">
+                    <span><?= $block->escapeHtml(__("I am already a %1 member(Login to complete the setup)", $block->getCurrentStoreName())) ?>
+                    </span>
+                </label>
+                <input type="radio" id="not-a-member" name="member" value="notamember">
+            </div>
+            <div class="msg"><?= $block->escapeHtml(__('Linked Account : Google ID/Facebook/Line')) ?></div>
+
+            <div class="sociallogin-form-actions">
+                <button class="cancel" type="button" id="cancel" data-role="action" data-action-name="Cancel">
+                    <span><?= $block->escapeHtml(__('Canel')) ?></span>
+                </button>
+                <button class="login" type="submit" id="login" data-role="action" data-action-name="Login">
+                    <span><?= $block->escapeHtml(__('OK')) ?></span>
+                </button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "createCustomerForm": {
+            "url":"<?= $block->escapeUrl($block->getFormAction()) ?>",
+            "customerurl":"<?= $block->escapeUrl($block->getUrl('customer/account/login', ['_current' => true, '_use_rewrite' => true])) ?>",
+            "registrationurl":"<?= $block->escapeUrl($block->getUrl('customer/account/create', ['_current' => true, '_use_rewrite' => true])) ?>"
+        },
+        "mobileLoginRule": {}
+    }
+}
+</script>
