@@ -4,9 +4,9 @@
     <type name="\Magento\Framework\Locale\FormatInterface">
         <plugin name="eguana_directory_fix_number_with_comma" type="Eguana\Directory\Plugin\Locale\FormatPlugin"/>
     </type>
+
     <type name="Magento\Framework\Locale\Format">
         <plugin name="eguana_directory_price_formatter"
                 type="Eguana\Directory\Plugin\Locale\PriceFormatter" sortOrder="10"/>
     </type>
-
 </config>
