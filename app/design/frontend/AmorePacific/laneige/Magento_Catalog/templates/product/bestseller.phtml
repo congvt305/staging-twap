@@ -60,7 +60,7 @@ $helper->initializePixleeAPI($websiteId);
                                    title="<?= /* @noEscape */ $_productNameStripped ?>"
                                    class="action more"><?= $block->escapeHtml(__('View Details')) ?></a>
                                 <?php if ($helper->isActive() && $helper->getPDPWidgetId() != "") : ?>
-                                    <div id="pixlee_container_<?= /* @noEscape */ $_product->getSku(); ?>"></div>
+                                    <div class="pixlee-container" id="pixlee_container_<?= $block->escapeHtml(preg_replace("/\s+/","",$_product->getSku())); ?>"></div>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -81,7 +81,7 @@ $helper->initializePixleeAPI($websiteId);
                     widgetId: <?= /* @noEscape */ $helper->getPDPWidgetId(); ?>,
                     skuId: '<?= /* @noEscape */ $_product->getSku(); ?>',
                     accountId:<?= /* @noEscape */ $helper->getAccountId(); ?>,
-                    containerId: 'pixlee_container_<?= /* @noEscape */ $_product->getSku(); ?>'
+                    containerId: 'pixlee_container_<?= $block->escapeHtml(preg_replace("/\s+/","",$_product->getSku())); ?>'
                 });
                 <?php endforeach;?>
                 Pixlee.resizeWidget();
