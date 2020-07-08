@@ -87,7 +87,18 @@ class AddressRepositoryPlugin
             if (!$this->config->checkTestMode()) {
                 try {
                     $orderUpdateData = $this->sapOrderCancelData->singleAddressUpdateData($order->getIncrementId());
+
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info("Order Address Update Data");
+                        $this->logger->info($this->json->serialize($orderUpdateData));
+                    }
+
                     $result = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
+
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info("Order Address Update Result Data");
+                        $this->logger->info($result);
+                    }
 
                     $resultSize = count($result);
                     if ($resultSize > 0) {
