@@ -67,11 +67,15 @@ define([
                 var offsetTop = offset.top;
                 var stickyHeight = $('.product.data.items').height();
                 var top = offsetTop - stickyHeight - 10;
+                var id = $(element).attr('id');
 
-                if (scrollTop > top && scrollTop > 0) {
-                    var id = $(element).attr('id');
-                    $('.product.data.items >.data.item.title').removeClass('active');
-                    $("a[href='#"+id+"']").parent().addClass('active');
+                if(id != 'community_gallery') {
+                    console.log($(element).attr('id')+ ' scrollTop = '+scrollTop+' top =' + top);
+                    if (scrollTop > top && scrollTop > 0) {
+                        var id = $(element).attr('id');
+                        $('.product.data.items >.data.item.title').removeClass('active');
+                        $("a[href='#"+id+"']").parent().addClass('active');
+                    }
                 }
             });
         }
