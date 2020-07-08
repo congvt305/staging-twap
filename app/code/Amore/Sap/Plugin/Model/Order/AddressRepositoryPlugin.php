@@ -80,36 +80,45 @@ class AddressRepositoryPlugin
     {
         $orderId = $entity->getParentId();
         $order = $this->orderRepository->get($orderId);
+        $orderStatus = $order->getStatus();
+
+        $availableStatus = ['processing', 'prepareing', 'sap_processing'];
 
         $enableCheck = $this->config->getActiveCheck('store', $order->getStoreId());
 
         if ($enableCheck) {
             if (!$this->config->checkTestMode()) {
-                try {
-                    $orderUpdateData = $this->sapOrderCancelData->singleAddressUpdateData($order->getIncrementId());
+                if (in_array($orderStatus, $availableStatus)) {
+                    try {
+                        $orderUpdateData = $this->sapOrderCancelData->singleAddressUpdateData($order->getIncrementId());
 
-                    if ($this->config->getLoggingCheck()) {
-                        $this->logger->info("Order Address Update Data");
-                        $this->logger->info($this->json->serialize($orderUpdateData));
+                        if ($this->config->getLoggingCheck()) {
+                            $this->logger->info("Order Address Update Data");
+                            $this->logger->info($this->json->serialize($orderUpdateData));
+                        }
+
+                        $result = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
+
+                        if ($this->config->getLoggingCheck()) {
+                            $this->logger->info("Order Address Update Result Data");
+                            $this->logger->info($result);
+                        }
+
+                        $resultSize = count($result);
+                        if ($resultSize > 0) {
+                            if ($result['code'] == '0000') {
+                                $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                            } else {
+                                $this->messageManager->addErrorMessage(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                            }
+                        } else {
+                            $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
+                        }
+                    } catch (NoSuchEntityException $e) {
+                        throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
+                    } catch (\Exception $e) {
+                        throw new \Exception(__('SAP : ' . $e->getMessage()));
                     }
-
-                    $result = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
-
-                    if ($this->config->getLoggingCheck()) {
-                        $this->logger->info("Order Address Update Result Data");
-                        $this->logger->info($result);
-                    }
-
-                    $resultSize = count($result);
-                    if ($resultSize > 0) {
-                        $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
-                    } else {
-                        $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
-                    }
-                } catch (NoSuchEntityException $e) {
-                    throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
-                } catch (\Exception $e) {
-                    throw new \Exception(__('SAP : ' . $e->getMessage()));
                 }
             } else {
                 $testData = $this->sapOrderCancelData->getTestCancelOrder();
