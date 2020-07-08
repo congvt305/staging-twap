@@ -121,19 +121,26 @@
 
 .button {
     .inner-wrapper {
+        margin-top: @indent__s;
+
         td:hover {
-            border-color: @button-primary__hover__background !important;
+            border-color: @primary__color !important;
         }
 
         a:active,
         td:active {
-            border-color: @button-primary__hover__background !important;
+            border-color: @primary__color !important;
         }
+    }
+
+    a {
+        padding-top: @indent__xs !important;
+        padding-bottom: @indent__xs !important;
     }
 
     a:active,
     a:hover,
     a:visited {
-        border: 1px solid @button-primary__hover__background !important;
+        border: 1px solid @primary__color !important;
     }
 }
