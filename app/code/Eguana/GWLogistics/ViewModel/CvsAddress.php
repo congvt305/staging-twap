@@ -23,9 +23,33 @@ class CvsAddress implements ArgumentInterface
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
     }
 
-    public function getCvsAddress()
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     */
+    public function getCvsStoreData($order)
     {
+        $cvsLocationId = $order->getShippingAddress()->getData('cvs_location_id');
+        $cvsLocation = null;
+        if ($cvsLocationId) {
+            $cvsLocation = $this->quoteCvsLocationRepository->getById($cvsLocationId);
+        }
+        return $cvsLocation;
 
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order\Address|null $shippingAddress
+     */
+    public function limitAddress($shippingAddress)
+    {
+        $firstName = $shippingAddress->getFirstname();
+        $lastName = $shippingAddress->getLastname();
+        $telephone = $shippingAddress->getTelephone();
+        $shippingAddress->unsetData();
+        $shippingAddress->setFirstname($firstName);
+        $shippingAddress->setLastname($lastName);
+        $shippingAddress->setTelephone($telephone);
+        return $shippingAddress;
     }
 
     /**
@@ -35,6 +59,11 @@ class CvsAddress implements ArgumentInterface
     {
         return $order->getShippingMethod() === 'gwlogistics_CVS'; //need to check if cvs location exists?
     }
+//
+//    private function getCvsLocation()
+//    {
+//
+//    }
 
 
 }
