@@ -122,13 +122,14 @@ $viewModel = $block->getData('view_model');
             <div class="field required">
                 <label for="email_address" class="label"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
                 <div class="control">
-                    <input type="email" name="email" autocomplete="email" id="email_address" value="<?= $block->escapeHtmlAttr($viewModel->getSocialMediaEmail()?$viewModel->getSocialMediaEmail():$block->getFormData()->getEmail()) ?>" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" class="input-text" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'validate-email':true}">
+                    <input placeholder="<?= $block->escapeHtml(__('Email')) ?>" type="email" name="email" autocomplete="email" id="email_address" value="<?= $block->escapeHtmlAttr($viewModel->getSocialMediaEmail()?$viewModel->getSocialMediaEmail():$block->getFormData()->getEmail()) ?>" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" class="input-text" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'validate-email':true}">
                 </div>
             </div>
             <div class="field password required">
                 <label for="password" class="label"><span><?= $block->escapeHtml(__('Password')) ?></span></label>
                 <div class="control">
                     <input type="password" name="password" id="password"
+                           placeholder="<?= $block->escapeHtmlAttr(__('Password')) ?>"
                            title="<?= $block->escapeHtmlAttr(__('Password')) ?>"
                            class="input-text"
                            data-password-min-length="<?= $block->escapeHtmlAttr($block->getMinimumPasswordLength()) ?>"
@@ -155,7 +156,7 @@ $viewModel = $block->getData('view_model');
             <div class="field confirmation required">
                 <label for="password-confirmation" class="label"><span><?= $block->escapeHtml(__('Confirm Password')) ?></span></label>
                 <div class="control">
-                    <input type="password" name="password_confirmation" title="<?= $block->escapeHtmlAttr(__('Confirm Password')) ?>" id="password-confirmation" class="input-text" data-validate="{required:true, equalTo:'#password'}" autocomplete="off">
+                    <input placeholder="<?= $block->escapeHtml(__('Confirm Password')) ?>" type="password" name="password_confirmation" title="<?= $block->escapeHtmlAttr(__('Confirm Password')) ?>" id="password-confirmation" class="input-text" data-validate="{required:true, equalTo:'#password'}" autocomplete="off">
                 </div>
             </div>
             <?= $block->getChildHtml('form_additional_info') ?>
@@ -213,37 +214,37 @@ $viewModel = $block->getData('view_model');
             <div class="fieldset dm-address" style="<?= $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus()) == 1?'':'display: none'; ?>">
 
                 <div class="field required">
-                    <label for="dm_city" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_city') ?></span></label>
+                    <label for="dm_city" class="label"><span><?= $block->getAttributeData()->getFrontendLabel('dm_city') ?></span></label>
                     <div class="control">
                         <?php //phpcs:disable ?>
-                        <input type="text" name="dm_city" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmCity()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_city') ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_city')) ?>" id="dm_city">
+                        <input type="text" placeholder="<?= $block->getAttributeData()->getFrontendLabel('dm_city') ?>" name="dm_city" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmCity()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_city') ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_city')) ?>" id="dm_city">
                         <?php //phpcs:enable ?>
                     </div>
                 </div>
 
                 <div class="field required">
-                    <label for="dm_state" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_state') ?></span></label>
+                    <label for="dm_state" class="label"><span><?= $block->getAttributeData()->getFrontendLabel('dm_state') ?></span></label>
                     <div class="control">
                         <?php //phpcs:disable ?>
-                        <input type="text" name="dm_state" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmState()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_state') ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_state')) ?>" id="dm_state">
+                        <input type="text" placeholder="<?= $block->getAttributeData()->getFrontendLabel('dm_state') ?>" name="dm_state" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmState()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_state') ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_state')) ?>" id="dm_state">
                         <?php //phpcs:enable ?>
                     </div>
                 </div>
 
                 <div class="field required">
-                    <label for="dm_detailed_address" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_detailed_address') ?></span></label>
+                    <label for="dm_detailed_address" class="label"><span><?= $block->getAttributeData()->getFrontendLabel('dm_detailed_address') ?></span></label>
                     <div class="control">
                         <?php //phpcs:disable ?>
-                        <input type="text" name="dm_detailed_address" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmDetailedAddress()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_detailed_address') ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_detailed_address')) ?>" id="dm_detailed_address">
+                        <input type="text" placeholder="<?= $block->getAttributeData()->getFrontendLabel('dm_detailed_address') ?>" name="dm_detailed_address" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmDetailedAddress()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_detailed_address') ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_detailed_address')) ?>" id="dm_detailed_address">
                         <?php //phpcs:enable ?>
                     </div>
                 </div>
 
                 <div class="field required">
-                    <label for="dm_zipcode" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_zipcode') ?></span></label>
+                    <label for="dm_zipcode" class="label"><span><?= $block->getAttributeData()->getFrontendLabel('dm_zipcode') ?></span></label>
                     <div class="control">
                         <?php //phpcs:disable ?>
-                        <input type="text" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_zipcode') ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
+                        <input type="text" placeholder="<?= $block->getAttributeData()->getFrontendLabel('dm_zipcode') ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('dm_zipcode') ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
                         <?php //phpcs:enable ?>
                     </div>
                 </div>
