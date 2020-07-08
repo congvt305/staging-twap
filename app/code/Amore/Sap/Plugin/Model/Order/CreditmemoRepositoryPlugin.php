@@ -113,10 +113,10 @@ class CreditmemoRepositoryPlugin
                                 if ($responseHeader['rtn_TYPE'] == 'S') {
                                     $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                                 } else {
-                                    throw new \Exception(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                                    throw new \Exception(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
                                 }
                             } else {
-                                throw new \Exception(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                                throw new \Exception(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
                             }
                         } else {
                             throw new \Exception(__('Something went wrong while sending order data to SAP. No response.'));
@@ -153,10 +153,10 @@ class CreditmemoRepositoryPlugin
                             if ($responseHeader['rtn_TYPE'] == 'S') {
                                 $this->messageManager->addSuccessMessage(__('Test Order Address Update sent to SAP Successfully.'));
                             } else {
-                                throw new \Exception(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                                throw new \Exception(__('Error returned from SAP for Test order. Error code : %1. Message : %2', $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
                             }
                         } else {
-                            throw new \Exception(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                            throw new \Exception(__('Error returned from SAP for Test order. Error code : %1. Message : %2', $result['code'], $result['message']));
                         }
                     } else {
                         throw new \Exception(__('Something went wrong while sending order data to SAP. No response.'));
