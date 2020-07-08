@@ -109,12 +109,17 @@ class CreditmemoRepositoryPlugin
                         $resultSize = count($result);
                         if ($resultSize > 0) {
                             if ($result['code'] == '0000') {
-                                $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                                $responseHeader = $result['data']['response']['header'];
+                                if ($responseHeader['rtn_TYPE'] == 'S') {
+                                    $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                                } else {
+                                    throw new \Exception(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                                }
                             } else {
-                                $this->messageManager->addErrorMessage(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                                throw new \Exception(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
                             }
                         } else {
-                            $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
+                            throw new \Exception(__('Something went wrong while sending order data to SAP. No response.'));
                         }
                     } catch (NoSuchEntityException $e) {
                         throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
@@ -143,22 +148,22 @@ class CreditmemoRepositoryPlugin
                     $resultSize = count($result);
 
                     if ($resultSize > 0) {
-                        $this->messageManager->addSuccessMessage('Test Order Update sent to SAP Successfully.');
                         if ($result['code'] == '0000') {
-                            $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
-                            $this->logger->info('Test Order Update sent to SAP Successfully.');
+                            $responseHeader = $result['data']['response']['header'];
+                            if ($responseHeader['rtn_TYPE'] == 'S') {
+                                $this->messageManager->addSuccessMessage(__('Test Order Address Update sent to SAP Successfully.'));
+                            } else {
+                                throw new \Exception(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                            }
                         } else {
-                            $this->messageManager->addErrorMessage(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                            throw new \Exception(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
                         }
                     } else {
-                        $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
-                        $this->logger->info('Something went wrong while sending test order update data to SAP. No response.');
+                        throw new \Exception(__('Something went wrong while sending order data to SAP. No response.'));
                     }
                 } catch (LocalizedException $e) {
-                    $this->logger->info($e->getMessage());
                     throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
                 } catch (\Exception $e) {
-                    $this->logger->info($e->getMessage());
                     throw new \Exception(__('SAP : ' . $e->getMessage()));
                 }
             }
