@@ -50,6 +50,11 @@ class SapOrderCancelData extends AbstractSapOrder
         return $request;
     }
 
+    /**
+     * @param $incrementId
+     * @return array[]
+     * @throws NoSuchEntityException
+     */
     public function singleAddressUpdateData($incrementId)
     {
         /** @var Order $order */
@@ -104,7 +109,6 @@ class SapOrderCancelData extends AbstractSapOrder
         $orderData = $this->getOrderInfo($incrementId);
         $storeId = $orderData->getStoreId();
         $shippingAddress = $orderData->getShippingAddress();
-        $bindData = [];
 
         if ($orderData == null) {
             throw new NoSuchEntityException(
@@ -112,7 +116,7 @@ class SapOrderCancelData extends AbstractSapOrder
             );
         }
 
-        $bindData[] = [
+        $bindData = [
             "vkorg" => $this->config->getMallId('store', $storeId),
             "kunnr" => $this->config->getClient('store', $storeId),
             "odrno" => $orderData->getIncrementId(),
@@ -122,7 +126,7 @@ class SapOrderCancelData extends AbstractSapOrder
             "postCode" => $shippingAddress->getPostcode(),
             "addr1" => $shippingAddress->getRegion(),
             "addr2" => $shippingAddress->getCity(),
-            "addr3" => $shippingAddress->getStreet(),
+            "addr3" => preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())),
             "land1" => $shippingAddress->getCountryId(),
             "telno" => $shippingAddress->getTelephone(),
             "hpno" => $shippingAddress->getTelephone()
@@ -137,7 +141,6 @@ class SapOrderCancelData extends AbstractSapOrder
         $orderData = $this->getOrderInfo($incrementId);
         $storeId = $orderData->getStoreId();
         $shippingAddress = $orderData->getShippingAddress();
-        $bindData = [];
 
         if ($orderData == null) {
             throw new NoSuchEntityException(
@@ -145,7 +148,7 @@ class SapOrderCancelData extends AbstractSapOrder
             );
         }
 
-        $bindData[] = [
+        $bindData = [
             "vkorg" => $this->config->getMallId('store', $storeId),
             "kunnr" => $this->config->getClient('store', $storeId),
             "odrno" => $orderData->getIncrementId(),
@@ -155,7 +158,7 @@ class SapOrderCancelData extends AbstractSapOrder
             "postCode" => $shippingAddress->getPostcode(),
             "addr1" => $shippingAddress->getRegion(),
             "addr2" => $shippingAddress->getCity(),
-            "addr3" => $shippingAddress->getStreet(),
+            "addr3" => preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())),
             "land1" => $shippingAddress->getCountryId(),
             "telno" => $shippingAddress->getTelephone(),
             "hpno" => $shippingAddress->getTelephone()

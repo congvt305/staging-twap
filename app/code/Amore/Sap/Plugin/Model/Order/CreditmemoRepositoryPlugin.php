@@ -84,38 +84,43 @@ class CreditmemoRepositoryPlugin
         $storeId = $entity->getStoreId();
         $enableCheck = $this->config->getActiveCheck('store', $storeId);
         $order = $this->orderRepository->get($entity->getOrderId());
+        $orderStatus = $order->getStatus();
+
+        $availableStatus = ['complete', 'processing', 'prepareing', 'sap_processing'];
 
         if ($enableCheck) {
             if (!$this->config->checkTestMode()) {
-                try {
-                    $orderUpdateData = $this->sapOrderCancelData->singleOrderData($order->getIncrementId());
+                if (in_array($orderStatus, $availableStatus)) {
+                    try {
+                        $orderUpdateData = $this->sapOrderCancelData->singleOrderData($order->getIncrementId());
 
-                    if ($this->config->getLoggingCheck()) {
-                        $this->logger->info("Single Order Cancel Send Data");
-                        $this->logger->info($this->json->serialize($orderUpdateData));
-                    }
-
-                    $result = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
-
-                    if ($this->config->getLoggingCheck()) {
-                        $this->logger->info("Single Order Cancel Result Data");
-                        $this->logger->info($result);
-                    }
-
-                    $resultSize = count($result);
-                    if ($resultSize > 0) {
-                        if ($result['code'] == '0000') {
-                            $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
-                        } else {
-                            $this->messageManager->addErrorMessage(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                        if ($this->config->getLoggingCheck()) {
+                            $this->logger->info("Single Order Cancel Send Data");
+                            $this->logger->info($this->json->serialize($orderUpdateData));
                         }
-                    } else {
-                        $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
+
+                        $result = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
+
+                        if ($this->config->getLoggingCheck()) {
+                            $this->logger->info("Single Order Cancel Result Data");
+                            $this->logger->info($result);
+                        }
+
+                        $resultSize = count($result);
+                        if ($resultSize > 0) {
+                            if ($result['code'] == '0000') {
+                                $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                            } else {
+                                $this->messageManager->addErrorMessage(__('Error occurred while sending order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                            }
+                        } else {
+                            $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
+                        }
+                    } catch (NoSuchEntityException $e) {
+                        throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
+                    } catch (\Exception $e) {
+                        throw new \Exception(__('SAP : ' . $e->getMessage()));
                     }
-                } catch (NoSuchEntityException $e) {
-                    throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
-                } catch (\Exception $e) {
-                    throw new \Exception(__('SAP : ' . $e->getMessage()));
                 }
             } else {
                 $testData = $this->sapOrderCancelData->getTestCancelOrder();
