@@ -213,7 +213,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'waerk' => $orderData->getOrderCurrencyCode(),
                 'nsamt' => $orderData->getSubtotalInclTax(),
                 'dcamt' => $orderData->getDiscountAmount(),
-                'slamt' => $orderData->getGrandTotal(),
+                'slamt' => $orderData->getGrandTotal() + $orderData->getShippingAmount(),
                 'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : $orderData->getRewardPointsBalance(),
                 'shpwr' => $orderData->getShippingAmount(),
                 'mwsbp' => $orderData->getTaxAmount(),
