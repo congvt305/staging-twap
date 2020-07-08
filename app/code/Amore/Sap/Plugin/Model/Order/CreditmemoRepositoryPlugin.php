@@ -103,7 +103,7 @@ class CreditmemoRepositoryPlugin
 
                         if ($this->config->getLoggingCheck()) {
                             $this->logger->info("Single Order Cancel Result Data");
-                            $this->logger->info($result);
+                            $this->logger->info($this->json->serialize($result));
                         }
 
                         $resultSize = count($result);
@@ -134,6 +134,12 @@ class CreditmemoRepositoryPlugin
 
                 try {
                     $result = $this->request->postRequest($jsonTestData, 0, 'cancel');
+
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info("Single Order Test Cancel Result Data");
+                        $this->logger->info($this->json->serialize($result));
+                    }
+
                     $resultSize = count($result);
 
                     if ($resultSize > 0) {

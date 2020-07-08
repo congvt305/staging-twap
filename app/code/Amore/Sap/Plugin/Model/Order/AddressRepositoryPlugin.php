@@ -101,7 +101,7 @@ class AddressRepositoryPlugin
 
                         if ($this->config->getLoggingCheck()) {
                             $this->logger->info("Order Address Update Result Data");
-                            $this->logger->info($result);
+                            $this->logger->info($this->json->serialize($result));
                         }
 
                         $resultSize = count($result);
@@ -127,6 +127,12 @@ class AddressRepositoryPlugin
 
                 try {
                     $result = $this->request->postRequest($jsonTestData, 0, 'cancel');
+
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info("Order Address Test Update Result Data");
+                        $this->logger->info($this->json->serialize($result));
+                    }
+
                     $resultSize = count($result);
 
                     if ($resultSize > 0) {
