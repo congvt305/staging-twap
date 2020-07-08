@@ -1,0 +1,132 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Email extend styles
+//  _____________________________________________
+
+//  This file should be used for theme-specific styles for emails that extend or modify the styles in _email.less
+//  This will allow you to edit email styles without copying and editing the _email.less file
+
+//  Custom fonts are declared here, rather than in _email-base.less, as it allows for custom fonts to be changed/removed
+//  in custom themes.
+
+//  Importing fonts from an external CSS file, rather than embedding @font-face declarations inside the <style> tag,
+//  as the latter will cause font rendering issues if the web fonts are inaccessible.
+
+@import url("../css/email-fonts.css");
+
+//
+//  Main
+//  _____________________________________________
+.main {
+    border: 1px solid @border-color__base;
+}
+
+
+//
+//  Header
+//  _____________________________________________
+.header {
+    padding: 14px 0 16px;
+}
+
+//
+//  Navigation
+//  _____________________________________________
+.header-navigation {
+    a {
+        color: @primary__color__dark !important;
+        display: block;
+        font-size: 16px;
+        line-height: 24px;
+        padding: 17px 0;
+    }
+}
+
+//
+//  Content
+//  _____________________________________________
+
+.main-content {
+    border-top: 1px solid @border-color__base;
+    padding: @indent__base @indent__base 80px;
+
+    ul {
+        padding-left: @indent__m;
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+}
+
+//
+//  Footer
+//  _____________________________________________
+.footer {
+    padding-left: 0;
+    padding-right: 0;
+
+    .copyright {
+        color: @primary__color__dark;
+        display: block;
+        font-size: 13px;
+        line-height: 22px;
+        padding: 16px 0 @indent__l;
+        text-align: center;
+    }
+}
+
+//
+//  Social Icon
+//  _____________________________________________
+.social-icon {
+    border-top: 1px solid @border-color__base;
+    border-bottom: 1px solid @border-color__base;
+
+    ul {
+        list-style-type: none;
+        margin-bottom: 0;
+        padding-top: 9px;
+        padding-bottom: 9px;
+        padding-left: 0;
+    }
+
+    li {
+        display: inline-block;
+        margin-bottom: 0;
+        padding: 0 @indent__s;
+    }
+
+    .social {
+        img {
+            vertical-align: middle;
+        }
+    }
+}
+
+//
+//  Button
+//  _____________________________________________
+
+.button {
+    .inner-wrapper {
+        td:hover {
+            border-color: @button-primary__hover__background !important;
+        }
+
+        a:active,
+        td:active {
+            border-color: @button-primary__hover__background !important;
+        }
+    }
+
+    a:active,
+    a:hover,
+    a:visited {
+        border: 1px solid @button-primary__hover__background !important;
+    }
+}
