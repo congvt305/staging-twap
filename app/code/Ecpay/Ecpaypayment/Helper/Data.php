@@ -42,12 +42,22 @@ class Data extends AbstractHelper
      * @var array
      */
     private $errorMessages = array();
+    /**
+     * @var Library\ECPayInvoiceCheckMacValue
+     */
+    private $ECPayInvoiceCheckMacValue;
+    /**
+     * @var \Magento\Framework\HTTP\Client\Curl
+     */
+    private $curl;
 
     public function __construct(
         EcpayOrderModel $ecpayOrderModel,
         EcpayPaymentModel $ecpayPaymentModel,
         ModuleListInterface $moduleList,
-        ProductMetadataInterface $productMetadata
+        ProductMetadataInterface $productMetadata,
+        \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue,
+        \Magento\Framework\HTTP\Client\Curl $curl
     ) {
         $this->_ecpayOrderModel = $ecpayOrderModel;
         $this->_ecpayPaymentModel = $ecpayPaymentModel;
@@ -57,6 +67,8 @@ class Data extends AbstractHelper
             'invalidPayment' => __('Invalid payment method'),
             'invalidOrder' => __('Invalid order'),
         );
+        $this->ECPayInvoiceCheckMacValue = $ECPayInvoiceCheckMacValue;
+        $this->curl = $curl;
     }
 
     public function getChoosenPayment()
@@ -222,6 +234,42 @@ class Data extends AbstractHelper
                         $transaction = $this->_ecpayPaymentModel->createTransaction($order, $paymentData);
 
                         $this->_ecpayPaymentModel->createInvoice($order, $transaction);
+
+                        $payment = $order->getPayment();
+                        $additionalInfo = $payment->getAdditionalInformation();
+                        $rawDetailsInfo = $additionalInfo["raw_details_info"];
+
+                        $tradeNo = $rawDetailsInfo["TradeNo"];
+                        $merchantId = $rawDetailsInfo["MerchantID"];
+                        $merchantTradeNo = $rawDetailsInfo["MerchantTradeNo"];
+
+                        $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
+                        $params = [
+                            "MerchantID" => $merchantId,
+                            "MerchantTradeNo" => $merchantTradeNo,
+                            "TradeNo" => $tradeNo,
+                            "Action" => "C",
+                            "TotalAmount" => $rawDetailsInfo["amount"]
+                        ];
+
+                        $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate($params, $this->getEcpayConfig('hash_key'), $this->getEcpayConfig('hash_iv'));
+                        $params["CheckMacValue"] = $checkMacValue;
+
+                        $this->curl->post($url, $params);
+                        $result = $this->curl->getBody();
+
+                        $resultExplode = explode("&", $result);
+                        $stringToArray = [];
+
+                        foreach ($resultExplode as $key => $value) {
+                            $resultExplode = explode("=", $value);
+                            $stringToArray[$resultExplode[0]] = $resultExplode[1];
+                        }
+
+                        if ($stringToArray["RtnCode"] !== 1) {
+                            $this->_logger->critical(__($stringToArray["RtnMsg"]));
+                            throw new Exception(__($stringToArray["RtnMsg"]));
+                        }
 
                         unset($status, $pattern, $comment);
                         break;
