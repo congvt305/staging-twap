@@ -32,17 +32,17 @@ class EventDetail implements ArgumentInterface
     /**
      * @var FilterProvider
      */
-    public $filterProvider;
+    private $filterProvider;
 
     /**
      * @var StoreManagerInterface
      */
-    public $storeManager;
+    private $storeManager;
 
     /**
      * @var EventManagerRepositoryInterface
      */
-    public $eventManagerRepository;
+    private $eventManagerRepository;
 
     /**
      * @var Http
@@ -82,7 +82,7 @@ class EventDetail implements ArgumentInterface
      *
      * @return mixed
      */
-    public function getEventManagerId()
+    private function getEventManagerId()
     {
         return $this->request->getParam('id');
     }
@@ -113,14 +113,6 @@ class EventDetail implements ArgumentInterface
             $this->logger->debug($exception->getMessage());
         }
         return $this->filterProvider->getBlockFilter()->setStoreId($storeId)->filter($content);
-    }
-
-    /**
-     * @return array|string[]
-     */
-    public function getIdentities()
-    {
-        return [EventManager::CACHE_TAG];
     }
 
     /**

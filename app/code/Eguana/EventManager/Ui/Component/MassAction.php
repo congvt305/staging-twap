@@ -28,7 +28,7 @@ class MassAction extends MassActionAlias
     /**
      * @var array
      */
-    protected $allowedAction = ['delete'];
+    private $allowedAction = ['delete'];
 
     /**
      * MassAction constructor.

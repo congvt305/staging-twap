@@ -49,7 +49,7 @@ class IsActive implements OptionSourceInterface
     /**
      * @return array
      */
-    public function getAvailableStatuses()
+    private function getAvailableStatuses()
     {
         return [self::STATUS_ENABLED => __('Enabled'), self::STATUS_DISABLED => __('Disabled')];
     }

@@ -18,6 +18,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Psr\Log\LoggerInterface;
+use Eguana\EventManager\Model\EventManagerConfiguration\EventManagerConfiguration;
 
 /**
  * This class used to add breadcrumbs and title
@@ -35,8 +36,6 @@ class EventList implements ArgumentInterface
     /**
      * Constant
      */
-    const DEAFULT_EVENT_COUNT = 9;
-
     const DATE_FORMAT = 'Y-m-d';
 
     /**
@@ -52,12 +51,12 @@ class EventList implements ArgumentInterface
     /**
      * @var StoreManagerInterface
      */
-    public $storeManager;
+    private $storeManager;
 
     /**
      * @var EventManagerRepositoryInterface
      */
-    public $eventManagerRepository;
+    private $eventManagerRepository;
 
     /**
      * @var RequestInterface
@@ -68,6 +67,12 @@ class EventList implements ArgumentInterface
      * @var TimezoneInterface
      */
     private $timezone;
+
+    /**
+     * @var EventManagerConfiguration
+     */
+    private $eventConfiguration;
+
     /**
      * EventManager constructor.
      * @param CollectionFactory $collectionFactory
@@ -78,6 +83,7 @@ class EventList implements ArgumentInterface
      * @param TimezoneInterface $timezone
      * @param LoggerInterface $logger
      * @param array $data
+     * @param EventManagerConfiguration $eventConfiguration
      */
     public function __construct(
         CollectionFactory $collectionFactory,
@@ -87,6 +93,7 @@ class EventList implements ArgumentInterface
         RequestInterface $requestInterface,
         TimezoneInterface $timezone,
         LoggerInterface $logger,
+        EventManagerConfiguration $eventConfiguration,
         array $data = []
     ) {
         $this->eventManagerCollectionFactory = $collectionFactory;
@@ -96,13 +103,7 @@ class EventList implements ArgumentInterface
         $this->requestInterface = $requestInterface;
         $this->timezone = $timezone;
         $this->logger = $logger;
-    }
-    /**
-     * @return array|string[]
-     */
-    public function getIdentities()
-    {
-        return [EventManager::CACHE_TAG];
+        $this->eventConfiguration = $eventConfiguration;
     }
 
     /**
@@ -126,10 +127,16 @@ class EventList implements ArgumentInterface
     {
         $currentDate = $this->timezone->date()->format(self::DATE_FORMAT);
         $param = $this->requestInterface->getParam('count');
-
-        $count = self::DEAFULT_EVENT_COUNT;
+        $sortOrder = 'asc';
+        $sortOrderConfigValue = $this->eventConfiguration->getConfigValue(
+            EventManagerConfiguration::XML_PATH_SORT_ORDER_FIELD
+        );
+        if ($sortOrderConfigValue == 1) {
+            $sortOrder = 'desc';
+        }
+        $count =  $this->eventConfiguration->getConfigValue(EventManagerConfiguration::XML_PATH_LOAD_MORE_FIELD);
         if (isset($param)) {
-            $count = $param * self::DEAFULT_EVENT_COUNT;
+            $count = $param * $count;
         }
         $eventManagerCollection = $this->eventManagerCollectionFactory->create();
         $storeId = $this->storeManager->getStore()->getId();
@@ -149,6 +156,9 @@ class EventList implements ArgumentInterface
         )->addFieldToFilter(
             "start_date",
             ['lteq' => $currentDate]
+        )->setOrder(
+            "entity_id",
+            $sortOrder
         );
         $eventManagerCollection->setPageSize($count);
         return $eventManagerCollection;
@@ -219,5 +229,17 @@ class EventList implements ArgumentInterface
             $condition = "lt";
         }
         return $condition;
+    }
+
+    /**
+     * getConfigLoadMoreValue
+     * This method is used to get value that how many events to load next
+     * @return mixed
+     */
+    public function getConfigLoadMoreValue()
+    {
+        return $this->eventConfiguration->getConfigValue(
+            EventManagerConfiguration::XML_PATH_LOAD_MORE_FIELD
+        );
     }
 }
