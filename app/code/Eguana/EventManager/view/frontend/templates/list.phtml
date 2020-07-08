@@ -79,15 +79,11 @@ $eventCount = $eventList->getTotalCount();
         <?php endif; ?>
     </div>
     <?php if ($eventCount > 9): ?>
-    <div class="actions-toolbar">
-        <div class="primary">
-            <div class="page-no-button">
-                <span class="no-border no-display" id="previous-button">0</span>
-                <span class="no-border active-page-button" id="current-active-button">1</span>
-                <span class="no-border" id="nextButton">2</span>
-            </div>
+        <div class="page-no-button">
+            <span class="no-border no-display" id="previous-button">0</span>
+            <span class="no-border active-page-button" id="current-active-button">1</span>
+            <span class="no-border" id="nextButton">2</span>
         </div>
-    </div>
     <?php endif ; ?>
 </div>
 <script type="text/x-magento-init">
