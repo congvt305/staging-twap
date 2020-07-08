@@ -30,6 +30,10 @@
         <plugin name="eguana_gwlogistics_copy_cvs_location_field"
                 type="Eguana\GWLogistics\Plugin\Quote\CopyCvsLocationFieldPlugin" sortOrder="10"/>
     </type>
+<!--    <type name="Magento\Sales\Model\Order">-->
+<!--        <plugin name="eguana_gwlogistics_load_cvs_in_order_model"-->
+<!--                type="Eguana\GWLogistics\Plugin\LoadCvsLocationForOrder" sortOrder="10"/>-->
+<!--    </type>-->
 
     <!--maybe can use later for saving selected field or update location table..-->
     <!--    <type name="Magento\Checkout\Api\ShippingInformationManagementInterface">-->
