@@ -13,12 +13,9 @@
 $viewModel = $block->getData('detail_view_model');
 $eventDetail = $viewModel->getEventManager();
 ?>
-<div class="event-detail-wrapper">
+<div class="event-detail-wrapper event-manager">
     <div class="event-detail-content">
         <div class="event-detail-item">
-            <div class="event-detail-title">
-                <h2><?= $block->escapeHtml($eventDetail->getTitle());?></h2>
-            </div>
             <div class="event-detail-period">
                 <span class="event-detail-start-date">
                     <?= $block->escapeHtml($viewModel->changeDateFormat($eventDetail->getStartDate()));?>
@@ -33,10 +30,11 @@ $eventDetail = $viewModel->getEventManager();
             </div>
         </div>
     </div>
-    <div class="more-item-button back-button">
-        <a class="action button primary" href="<?= $block->escapeUrl($block->getBaseUrl().'events')?>">
-            <span><?= $block->escapeHtml(__('Back to list'));?></span>
-        </a><br/>
-        <span><?= $block->escapeHtml(__('Back to list'));?></span>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <a class="action primary" href="<?= $block->escapeUrl($block->getBaseUrl().'events')?>">
+                <span><?= $block->escapeHtml(__('Back to list'));?></span>
+            </a>
+        </div>
     </div>
 </div>
