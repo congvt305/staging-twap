@@ -5,10 +5,11 @@ define([
     'Magento_Checkout/js/model/quote',
     'Eguana_GWLogistics/js/action/get-selected-cvs-location',
     'Eguana_GWLogistics/js/model/cvs-location',
+    'Magento_Customer/js/model/customer',
     'Magento_Customer/js/customer-data',
     './test',
     'mage/url',
-], function (ko, $, Component, quote, getSelectedCvsLocationAction, cvsLocation,  customerData, test, urlBuilder) {
+], function (ko, $, Component, quote, getSelectedCvsLocationAction, cvsLocation,  customer, customerData, test, urlBuilder) {
     'use strict';
     return Component.extend({
         defaults: {
@@ -50,13 +51,14 @@ define([
         onWindowActivated: function () {
             this.windowActivateCount++;
             if (this.windowActivateCount % 2 === 0) {
+                console.log('onWindowActivated');
                 this.getSelectedCvsLocation();
             }
 
         },
 
         getSelectedCvsLocation: function () {
-            getSelectedCvsLocationAction.bind(this);
+            getSelectedCvsLocationAction.bind(this); // this is not working!!! but okay because customer section is working good!
             cvsLocation.selectCvsLocation();
         },
 
@@ -65,13 +67,16 @@ define([
         },
 
         openCvsMap: function () { //todo open window and submit
-            // console.log('openCvsMap');
             var mapWin = window.open('', 'cvsMapFormGw');
             // $.proxy($('#cvs-map-load-form').submit(), this);
         },
 
         getMerchantTradeNo: function () {
-            return Date.now().toString();
+            var prefix = customer.isLoggedIn() ? 'c_' : 'g_',
+                quoteId = quote.getQuoteId(),
+                quoteIdStr = customer.isLoggedIn() ? quoteId : quoteId.substr(0, 12);
+            console.log(prefix + this.getCurrentTimeString() + quoteIdStr);
+            return prefix + this.getCurrentTimeString() + quoteIdStr;
         },
 
         setCvsMapFormData: function () { //todo create form dynamically
@@ -85,8 +90,18 @@ define([
         },
 
         getExtraData: function () {
-            return quote.getQuoteId();
+            console.log(quote.getQuoteId().substr(12, 20));
+            return quote.getQuoteId().substr(12, 20);
         },
+
+        getCurrentTimeString: function () {
+            return Date()
+                .split(' ')[4]
+                .split(':')
+                .join()
+                .replace(',', '')
+                .replace(',','');
+        }
 
     });
 });

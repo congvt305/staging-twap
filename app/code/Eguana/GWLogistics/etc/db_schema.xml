@@ -5,6 +5,8 @@
            comment="Quote Cvs Location Entity">
         <column xsi:type="int" name="location_id" padding="10" unsigned="true" nullable="false" identity="true"
                 comment="Quote Cvs Location Id"/>
+        <column xsi:type="int" name="quote_id" padding="10" unsigned="true" nullable="true" identity="false"
+                default="0" comment="Quote Id"/>
         <column xsi:type="int" name="quote_address_id" padding="10" unsigned="true" nullable="true" identity="false"
                 default="0" comment="Quote Address Id"/>
         <column xsi:type="varchar" name="merchant_trade_no" nullable="true" length="20"
@@ -35,8 +37,12 @@
         <constraint xsi:type="foreign" referenceId="FK_03592A8E8B7525E44B5D0F179D297A14"
                     table="eguana_gwlogistics_quote_cvs_location" column="quote_address_id" referenceTable="quote_address"
                     referenceColumn="address_id" onDelete="CASCADE"/>
-        <index referenceId="EGUANA_GWLOGISTICS_QUOTE_CVS_LOCATION_QUOTE_ADDR_ID_IS_SELECTED" indexType="btree">
+        <constraint xsi:type="foreign" referenceId="EGUANA_GWLOGISTICS_QUOTE_CVS_LOCATION_QUOTE_ID_QUOTE_ENTITY_ID"
+                    table="eguana_gwlogistics_quote_cvs_location" column="quote_id" referenceTable="quote"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="IDX_914F5587DA9FFAA2085013442A0D795B" indexType="btree">
             <column name="quote_address_id"/>
+            <column name="quote_id"/>
             <column name="is_selected"/>
         </index>
     </table>
