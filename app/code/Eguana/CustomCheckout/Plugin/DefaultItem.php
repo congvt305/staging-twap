@@ -15,8 +15,13 @@ class DefaultItem
 {
     public function afterGetItemData(AbstractItem $subject, $result, Item $item)
     {
-        if ($item->getProduct()->getCustomAttribute('laneige_size')) {
-            $data['laneige_size'] = $item->getProduct()->getAttributeText('laneige_size');
+        if ($item->getProduct()->getCustomAttribute('prdvl')) {
+            $data['laneige_size'] = $item->getProduct()->getPrdvl().$item->getProduct()->getAttributeText('vlunt');
+
+            if ($item->getProduct()->getCustomAttribute('product_count')) {
+                $size = $data['laneige_size'];
+                $data['laneige_size'] = $size.'*'.$item->getProduct()->getAttributeText('product_count');
+            }
         } else {
             $data['laneige_size'] = '';
         }
