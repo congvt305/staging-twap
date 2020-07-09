@@ -32,5 +32,10 @@
         "column": {
             "cvs_location_id": true
         }
+    },
+    "sales_shipment": {
+        "column": {
+            "all_pay_logistics_id": true
+        }
     }
 }
