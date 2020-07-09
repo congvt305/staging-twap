@@ -30,20 +30,20 @@ class CvsLocation implements SectionSourceInterface
      */
     private $shippingAddressManagement;
     /**
-     * @var \Eguana\GWLogistics\Api\CartCvsLocationManagementInterface
+     * @var \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface
      */
-    private $cartCvsLocationManagement;
+    private $quoteCvsLocationRepository;
 
     public function __construct(
         StoreManagerInterface $storeManager,
         Session $checkoutSession,
         \Magento\Quote\Model\ShippingAddressManagement $shippingAddressManagement,
-        \Eguana\GWLogistics\Api\CartCvsLocationManagementInterface $cartCvsLocationManagement
+        \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository
     ) {
         $this->storeManager = $storeManager;
         $this->checkoutSession = $checkoutSession;
         $this->shippingAddressManagement = $shippingAddressManagement;
-        $this->cartCvsLocationManagement = $cartCvsLocationManagement;
+        $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
     }
 
     /**
@@ -72,7 +72,7 @@ class CvsLocation implements SectionSourceInterface
         try {
             $shippingAddress = $this->shippingAddressManagement->get($quoteId);
             /** @var QuoteCvsLocationInterface $cvsLocation */
-            $cvsLocation = $this->cartCvsLocationManagement->getCvsLocationByAddressId($shippingAddress->getId());
+            $cvsLocation = $this->quoteCvsLocationRepository->getByAddressId($shippingAddress->getId());
             $cvsLocationData = [
                 'LogisticsSubType' => $cvsLocation->getLogisticsSubType(),
                 'CVSStoreID' => $cvsLocation->getCvsStoreId(),

@@ -18,17 +18,12 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 interface GuestCartCvsLocationManagementInterface
 {
-    /**
-     * @param string $cartId
-     * @return bool
-     */
-    public function selectCvsLocation(string $cartId):bool;
 
     /**
-     * @param int $quoteAddressId
-     * @return QuoteCvsLocationInterface
-     * @throws NoSuchEntityException
+     * @param string $cartId
+     * @param string|null $data
+     * @return bool
      */
-    public function getByAddressId($quoteAddressId): QuoteCvsLocationInterface;
+    public function selectCvsLocation(string $cartId, string $data = null):bool;
 
 }
