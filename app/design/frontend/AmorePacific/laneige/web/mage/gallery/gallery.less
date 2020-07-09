@@ -223,11 +223,18 @@
 }
 
 .fotorama__thumb {
-    background-color: @color-gray92;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    cursor: pointer;
     height: 100%;
     overflow: hidden;
     position: relative;
     width: 100%;
+
+    &:hover {
+        border-color: @primary__color__dark;
+    }
+
     .fotorama__nav__frame:focus & {
         &:extend(.fotorama-focus-overlay);
         z-index: 2;
