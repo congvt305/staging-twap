@@ -1,0 +1,54 @@
+Back,Back
+Delete,刪除
+"Are you sure you want to do this?","你確定你要這麼做嗎？"
+Reset,重啟
+Save,保存
+"Save and Continue Edit","保存並繼續編輯"
+Stores,專賣店
+"You Delete this Store Information.","您刪除此商店信息。"
+"You saved this Store Information.","您保存了此商店信息。"
+"Please correct the data sent.","請更正發送的數據。"
+"A total of %1 Store(s) have been deleted.","總共 %1 個商店已被刪除。"
+"Unable to find history with ID ""%1""","找不到具有ID的歷史記錄 ""%1"""
+Edit,編輯
+"Delete ""${ $.$data.title }""","刪除 ""${ $.$data.title }"""
+"Are you sure you wan't to delete a ""${ $.$data.title }"" record?","您確定要刪除一個 ""${ $.$data.title }"" 記錄？"
+"All Store Views","所有商店視圖"
+"Please enter the address or counter name","請輸入地址或櫃檯名稱"
+Search,搜索
+"Please enter your current location","請輸入您當前的位置"
+"Total <strong> %1 </strong> Articals Found","總 <strong> %1 </strong> 找到的文章"
+"We found <strong>%1 stores</strong> near your location","我們找到 <strong>%1 商店</strong> 在您所在地附近"
+address,地址
+Tel,電話號碼
+Email,電子郵件
+Timing,定時
+"No store exist for this address in this store view","此商店視圖中沒有該地址的商店"
+"Store Locator","商店定位器"
+"Manage Store Locations","管理商店位置"
+"Eguana Stores Config","鬣蜥商店配置"
+"Eguana Store Locator","鬣蜥商店定位器"
+"General StoreLocator","一般StoreLocator"
+Enabled,已啟用
+"Google Map Api key","Google Map Api密鑰"
+"Store Locator Bottom Block Id","商店定位器底部代碼"
+"Frontend Stores Map","前端商店地圖"
+Map_Height,地圖高度
+"Map Zoom","地圖縮放"
+"Store Locator Information","商店定位器信息"
+"Store View","店鋪檢視"
+"Store Title","店鋪名稱"
+"Store Type","店鋪類型"
+Address,地址
+Telephone,電話
+"Store Timing","店舖時間"
+"Store Country","店鋪國家"
+"Map Location","地圖位置"
+"Add New","添新"
+"Are you sure you want to delete the selected stores?","您確定要刪除所選的商店嗎？"
+"Delete items","刪除項目"
+ID,ID
+"Created At","創建於"
+location,位置
+Home,家
+"Find Store","查找店鋪"

@@ -8,48 +8,51 @@
 
 namespace Eguana\GWLogistics\Model\Service;
 
-
+use Eguana\GWLogistics\Api\Data\QuoteCvsLocationInterfaceFactory;
+use Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface;
 use Eguana\GWLogistics\Model\QuoteCvsLocation;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
+use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\ShippingAddressManagementInterface;
+use Psr\Log\LoggerInterface;
 
 class SaveQuoteCvsLocation
 {
     /**
-     * @var \Eguana\GWLogistics\Api\Data\QuoteCvsLocationInterfaceFactory
+     * @var QuoteCvsLocationInterfaceFactory
      */
     private $quoteCvsLocationInterfaceFactory;
     /**
-     * @var \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface
+     * @var QuoteCvsLocationRepositoryInterface
      */
     private $quoteCvsLocationRepository;
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     private $logger;
     /**
-     * @var \Magento\Quote\Model\ShippingAddressManagementInterface
+     * @var ShippingAddressManagementInterface
      */
     private $shippingAddressManagement;
     /**
-     * @var \Eguana\GWLogistics\Model\ResourceModel\QuoteCvsLocation
+     * @var MaskedQuoteIdToQuoteIdInterface
      */
-    private $quoteCvsLocationResource;
+    private $maskedQuoteIdToQuoteId;
 
-    public function __construct
-    (
-        \Eguana\GWLogistics\Api\Data\QuoteCvsLocationInterfaceFactory $quoteCvsLocationInterfaceFactory,
-        \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository,
-        \Eguana\GWLogistics\Model\ResourceModel\QuoteCvsLocation $quoteCvsLocationResource,
-        \Magento\Quote\Model\ShippingAddressManagementInterface $shippingAddressManagement,
-        \Psr\Log\LoggerInterface $logger
+    public function __construct(
+        QuoteCvsLocationInterfaceFactory $quoteCvsLocationInterfaceFactory,
+        QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository,
+        ShippingAddressManagementInterface $shippingAddressManagement,
+        MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
+        LoggerInterface $logger
     ) {
         $this->quoteCvsLocationInterfaceFactory = $quoteCvsLocationInterfaceFactory;
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
         $this->shippingAddressManagement = $shippingAddressManagement;
         $this->logger = $logger;
-
-        $this->quoteCvsLocationResource = $quoteCvsLocationResource;
+        $this->maskedQuoteIdToQuoteId = $maskedQuoteIdToQuoteId;
     }
 
     /*
@@ -67,22 +70,24 @@ class SaveQuoteCvsLocation
     */
     public function process(array $cvsStoreData)
     {
-        $quoteId = (int)$cvsStoreData['ExtraData'];
+        $quoteIdString = $cvsStoreData['MerchantTradeNo'] . $cvsStoreData['ExtraData'];
+        $quoteId = $this->getQuoteId($quoteIdString);
         try {
-            /** @var \Magento\Quote\Model\Quote $quote */
+
+            /** @var Quote $quote */
             $quoteAddress = $this->shippingAddressManagement->get($quoteId);
         } catch (NoSuchEntityException $e) {
             throw new NoSuchEntityException(__('Quote Address id for Quote "%1" does not exist.', $quoteId), $e);
-
         }
 
-        if($this->findOldLocation($quoteAddress->getId())) {
+        if ($this->findOldLocation($quoteAddress->getId())) {
             /** @var QuoteCvsLocation $cvsLocation */
             $cvsLocation = $this->findOldLocation($quoteAddress->getId());
         } else {
             $cvsLocation = $this->quoteCvsLocationInterfaceFactory->create();
         }
 
+        $cvsLocation->setData('quote_id', $quoteId);
         $cvsLocation->setData('quote_address_id', $quoteAddress->getId());
         $cvsLocation->setData('merchant_trade_no', $cvsStoreData['MerchantTradeNo']);
         $cvsLocation->setData('logistics_sub_type', $cvsStoreData['LogisticsSubType']);
@@ -103,8 +108,17 @@ class SaveQuoteCvsLocation
         }
     }
 
-    private function findOldLocation($quoteAddressId) {
+    private function findOldLocation($quoteAddressId)
+    {
         return $this->quoteCvsLocationRepository->getByAddressId($quoteAddressId);
+    }
+
+    private function getQuoteId(string $quoteIdString)
+    {
+        $isCustomer = (substr($quoteIdString, 0, 2) === 'c_') ? true : false;
+        $quoteIdString = substr($quoteIdString, 8);
+        $quoteId = $isCustomer ? $quoteIdString : $this->maskedQuoteIdToQuoteId->execute($quoteIdString);
+        return $quoteId;
     }
 
 }

@@ -155,7 +155,7 @@ class QuoteCvsLocationRepository implements QuoteCvsLocationRepositoryInterface
     public function getByQuoteId($quoteId): QuoteCvsLocationInterface
     {
         $cvsLocation = $this->quoteCvsLocationInterfaceFactory->create();
-        $field = 'extra_data';
+        $field = 'quote_id';
 
         try {
             $this->quoteCvsLocationResource->load($cvsLocation, $quoteId, $field);

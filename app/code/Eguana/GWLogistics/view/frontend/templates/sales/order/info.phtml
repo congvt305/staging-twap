@@ -25,16 +25,16 @@
                 <div class="box-content">
                     <div><?= $block->escapeHtml($_order->getShippingAddress()->getLastname() . ' ' . $_order->getShippingAddress()->getFirstname()) ?></div>
                     <div><?= $block->escapeHtml($_order->getShippingAddress()->getTelephone()) ?></div>
-                    <?php $cvsStoreData = $viewModel->getCvsStoreData($_order) ?>
-                    <div class="box-subtitle order-shipping-primary-address">
-                        <?= $block->escapeHtml($cvsStoreData->getLogisticsSubType()) ?> <?= $block->escapeHtml($cvsStoreData->getCvsStoreName()) ?>
-                    </div>
+                </div>
+                <?php $cvsStoreData = $viewModel->getCvsStoreData($_order) ?>
+                <div class="box-subtitle order-shipping-primary-address">
+                    <?= $block->escapeHtml($cvsStoreData->getLogisticsSubType()) ?> <?= $block->escapeHtml($cvsStoreData->getCvsStoreName()) ?>
+                </div>
+                <div class="box-content">
                     <div>
-                        <div>
-                            <?= $block->escapeHtml($cvsStoreData->getCvsAddress()) ?>
-                        </div>
-                        <div><?= $block->escapeHtml($cvsStoreData->getCvsTelephone()) ?></div>
+                        <?= $block->escapeHtml($cvsStoreData->getCvsAddress()) ?>
                     </div>
+                    <div><?= $block->escapeHtml($cvsStoreData->getCvsTelephone()) ?></div>
                 </div>
                 <?php endif; ?>
             </div>

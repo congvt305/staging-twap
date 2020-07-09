@@ -1,0 +1,34 @@
+"Warning! State mismatch. Authentication attempt may have been compromised.","警告！ 狀態不匹配。 身份驗證嘗試可能已被破壞。"
+"Unspecified OAuth error occurred.","發生未指定的OAuth錯誤。"
+"Warning! Visitor may have declined access or navigated to the page without being redirected.","警告！ 訪問者可能拒絕訪問或導航到該頁面而沒有被重定向。"
+"We can't process your request right now. Sorry, that's all we know.","我們目前無法處理您的請求。 抱歉，這就是我們所知道的。"
+"Login successful.","登陸成功。"
+"Unable to find Social Login User with ID ""%1""","找不到ID為的社交登錄用戶 ""%1"""
+"* Required Fields","* 必填項"
+"Social Login","社交登錄"
+"Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!","歡迎使用FB，Google和LINE帳戶快速登錄。設置後，您可以直接使用FB和Google帳戶登錄！"
+"I am already a %1 member(Login to complete the setup)","我已經是 %1 會員（登錄以完成設置）"
+"Linked Account : Google ID/Facebook/Line","關聯帳戶：Google ID / Facebook /專線"
+Email,電子郵件
+Password,密碼
+"I am not a %1 member(Login to complete the setup)","我不是 %1 會員（登錄以完成設置）"
+Canel,卡內爾
+OK,好
+OR,或
+"Login with LINE","用LINE登錄"
+"Login with Facebook","用Facebook登錄"
+"Login with Google","用谷歌登錄"
+"General Setting","通用設置"
+"Enable Module","啟用模塊"
+LINE,LINE
+Enable,啟用
+"Channel ID","頻道編號"
+"Channel Secret","頻道秘密"
+"Callback URL","回調網址"
+Facebook,Facebook
+"App ID","應用程式編號"
+"App Secret","應用秘密"
+"OAuth Redirect URI","OAuth重定向URI"
+Google,Google
+"Client ID","客戶編號"
+"Client Secret","客戶機密"

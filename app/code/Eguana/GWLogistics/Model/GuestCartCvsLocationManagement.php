@@ -23,14 +23,20 @@ class GuestCartCvsLocationManagement implements \Eguana\GWLogistics\Api\GuestCar
      * @var \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface
      */
     private $quoteCvsLocationRepository;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     public function __construct(
         \Magento\Quote\Model\ShippingAddressManagement $shippingAddressManagement,
-        \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository
+        \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository,
+        \Psr\Log\LoggerInterface $logger
     ) {
 
         $this->shippingAddressManagement = $shippingAddressManagement;
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -40,6 +46,7 @@ class GuestCartCvsLocationManagement implements \Eguana\GWLogistics\Api\GuestCar
      */
     public function selectCvsLocation(string $cartId, string $data = null): bool
     {
+        $this->logger->debug('cartId: ', ['cartId' => $cartId]);
         try {
             $address = $this->shippingAddressManagement->get($cartId);
             $cvsLocation = $this->quoteCvsLocationRepository->getByAddressId($address->getId());

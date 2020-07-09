@@ -44,9 +44,10 @@ Telephone,Telephone
 "Store Country","Store Country"
 "Map Location","Map Location"
 "Add New","Add New"
-"Are you sure you want to delete the selected consents?","Are you sure you want to delete the selected consents?"
+"Are you sure you want to delete the selected stores?","Are you sure you want to delete the selected stores?"
 "Delete items","Delete items"
 ID,ID
 "Created At","Created At"
+location,location
 Home,Home
 "Find Store","Find Store"
