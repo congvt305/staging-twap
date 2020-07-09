@@ -36,7 +36,7 @@ class View extends Template
     /**
      * @var EventManagerRepositoryInterface
      */
-    public $eventManagerRepository;
+    private $eventManagerRepository;
 
     /**
      * @var RequestInterface

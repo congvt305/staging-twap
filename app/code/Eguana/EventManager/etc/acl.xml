@@ -18,6 +18,15 @@
                             <resource id="Eguana_EventManager::manage_event" title="Manage Event" translate="title" />
                     </resource>
                 </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Eguana_Base::config">
+                                <resource id="Eguana_EventManager::eventmanager_config" title="Event Manager" translate="title" />
+                            </resource>
+                        </resource>
+                    </resource>
+                </resource>
             </resource>
         </resources>
     </acl>
