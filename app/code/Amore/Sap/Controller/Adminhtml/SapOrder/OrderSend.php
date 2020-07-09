@@ -97,8 +97,8 @@ class OrderSend extends AbstractAction
                                     __(
                                         'Error returned from SAP for order %1. Error code : %2. Message : %3',
                                         $order->getIncrementId(),
-                                        $outdata['ugcod'],
-                                        $outdata['ugtxt']
+                                        $data['ugcod'],
+                                        $data['ugtxt']
                                     )
                                 );
                             }

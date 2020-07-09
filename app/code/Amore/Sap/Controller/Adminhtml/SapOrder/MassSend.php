@@ -146,8 +146,8 @@ class MassSend extends AbstractAction
                                     __(
                                         'Error returned from SAP for order %1. Error code : %2. Message : %3',
                                         $data['odrno'],
-                                        $outdata['ugcod'],
-                                        $outdata['ugtxt']
+                                        $data['ugcod'],
+                                        $data['ugtxt']
                                     )
                                 );
                             }
