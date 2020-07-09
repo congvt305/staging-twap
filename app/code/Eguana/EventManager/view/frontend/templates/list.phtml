@@ -13,6 +13,7 @@ $viewModel = $block->getData('list_view_model');
 $condition = $viewModel->getEventCondition();
 $eventList = $viewModel->getEventCollection($condition);
 $eventCount = $eventList->getTotalCount();
+$eventConfigValue = $viewModel->getConfigLoadMoreValue();
 ?>
 <div class="event-manager">
     <div class="toggle-btn">
@@ -86,12 +87,24 @@ $eventCount = $eventList->getTotalCount();
         </div>
     <?php endif ; ?>
 </div>
+<?php if ($eventCount > $eventConfigValue): ?>
+    <div class="more-item-button">
+        <button class="action primary" id="more-button">
+            <span><?=$block->escapeHtml(__('More'));?></span>
+        </button>
+        <br/>
+        <span id="event-count">
+            <?=$block->escapeHtml($eventConfigValue)?>
+        </span>/<?= $block->escapeHtml($eventCount); ?>
+    </div>
+<?php endif ; ?>
 <script type="text/x-magento-init">
     {
         "*": {
             "event-pagination":{
                 "totalEvent":"<?= $block->escapeHtml($eventCount)?>",
-                "condition":"<?= $block->escapeHtml($condition)?>"
+                "condition":"<?= $block->escapeHtml($condition)?>",
+                "eventConfigValue":"<?= $block->escapeHtml($eventConfigValue)?>"
             }
         }
     }

@@ -46,12 +46,22 @@ class CreateShipment
      * @var string
      */
     private $shipmentNo;
+    /**
+     * @var \Magento\Sales\Api\Data\ShipmentCreationArgumentsInterfaceFactory
+     */
+    private $shipmentCreationArgumentsFactory;
+    /**
+     * @var \Magento\Sales\Api\Data\ShipmentCreationArgumentsExtensionInterfaceFactory
+     */
+    private $shipmentCreationArgumentsExtensionFactory;
 
     public function __construct(
         \Eguana\GWLogistics\Model\Request\QueryLogisticsInfo $queryTransactionInfo,
         \Eguana\GWLogistics\Model\Request\CvsCreateShipmentOrder $cvsCreateShipmentOrder,
         \Magento\Sales\Api\Data\ShipmentItemCreationInterfaceFactory $shipmentItemCreationFactory,
         \Magento\Sales\Api\Data\ShipmentTrackCreationInterfaceFactory $shipmentTrackCreationFactory,
+        \Magento\Sales\Api\Data\ShipmentCreationArgumentsInterfaceFactory $shipmentCreationArgumentsFactory,
+        \Magento\Sales\Api\Data\ShipmentCreationArgumentsExtensionInterfaceFactory $shipmentCreationArgumentsExtensionFactory,
         \Magento\Sales\Model\Order\Email\Container\ShipmentIdentity $shipmentIdentity,
         \Magento\Sales\Api\ShipOrderInterface $shipOrder,
         \Psr\Log\LoggerInterface $logger
@@ -63,6 +73,8 @@ class CreateShipment
         $this->cvsCreateShipmentOrder = $cvsCreateShipmentOrder;
         $this->queryTransactionInfo = $queryTransactionInfo;
         $this->shipmentTrackCreationFactory = $shipmentTrackCreationFactory;
+        $this->shipmentCreationArgumentsFactory = $shipmentCreationArgumentsFactory;
+        $this->shipmentCreationArgumentsExtensionFactory = $shipmentCreationArgumentsExtensionFactory;
     }
 
     /**
@@ -87,6 +99,7 @@ class CreateShipment
 
 
     private function createShipmentOrder($order) {
+        //maybe need to save all transaction data in a separate table??
         $result = $this->cvsCreateShipmentOrder->execute($order);
         if (isset($result['ResCode']) &&  $result['ResCode'] === '1' && isset($result['AllPayLogisticsID'])) {
             return $result['AllPayLogisticsID'];
@@ -114,7 +127,7 @@ class CreateShipment
         $comment = null;
         $tracks = $this->buildShipmentTrack($this->shipmentNo);
         $packages = [];
-        $arguments = null;
+        $arguments = $this->getShipmentCreationArguments();
 
         $shipmentId = $this->shipOrder->execute(
             $order->getId(),
@@ -156,6 +169,16 @@ class CreateShipment
         $shipmentTrack->setTitle(__('GWLogistics CVS')); //need to fix to follow config value
         $shipmentTrack->setTrackNumber($shipmentNo);
         return $shipmentTrack;
+    }
+
+    private function getShipmentCreationArguments()
+    {
+        $extensionAttributes = $this->shipmentCreationArgumentsExtensionFactory->create();
+        $extensionAttributes->setAllPayLogisticsId($this->allPayLogisticsID);
+        //maybe use here to save return shipment??
+        $arguments = $this->shipmentCreationArgumentsFactory->create();
+        $arguments->setExtensionAttributes($extensionAttributes);
+        return $arguments;
     }
 
 }

@@ -250,7 +250,7 @@ class Payment extends AbstractMethod
 
         $stringToArray = $this->ecpayResponse($result);
 
-        if ($stringToArray["RtnCode"] !== 1) {
+        if ($stringToArray["RtnCode"] != 1) {
             $this->_logger->critical(__($stringToArray["RtnMsg"]));
             throw new LocalizedException(__($stringToArray["RtnMsg"]));
         }
