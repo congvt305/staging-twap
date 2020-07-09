@@ -27,6 +27,29 @@ Eguna Event Manager allows you to manage the date, content and more information 
 
 Refresh the Cache under System­ ⇾ Cache Management
 ```
+ **General Configurations**
+  
+Navigate to **Stores­ ⇾ Configuration**
+
+![store-config](https://nimbus-screenshots.s3.amazonaws.com/s/b7d0f7098eb8912cea0507737a970139.png)
+
+Navigate to EGUANA EXTENSION ⇾ Event Manager in the left panel.
+
+![event-manager-config](https://nimbus-screenshots.s3.amazonaws.com/s/02190d42d61f04e9136d80f0bd82d591.png)
+
+Add configuration Values in the following fields and click the save button.
+
+![config-fields](https://nimbus-screenshots.s3.amazonaws.com/s/c443b89ea13a51a2ecf3a84941d4c0ee.png)
+
+#####(1) No. of events to load
+
+ Add a number in this field. This number will decide how many events will load when click on load more button on listing page.
+
+#####(2) Event sort type	
+
+ Select one option for Event sort type from Ascending and Descending order options.
+
+#####(3) Now Click on Save Config button to save the configuration.
 
 #  Manage Event Manager
 Go to CONTENT > Manage Store Contents and click on Events
@@ -162,7 +185,7 @@ The link to view fontend page is {Main Website URL}/events
  
 (1) This is the list of all the thumbnails from the Event records which were added by admin. also shows the Title, Start and End Date.
 
-![listing-page](https://nimbus-screenshots.s3.amazonaws.com/s/c664f879f8cb1f66d694a3e9eec3df0d.png)
+![listing-page](https://nimbus-screenshots.s3.amazonaws.com/s/8bbedc1aedbb3bd9f78b7ff250090eba.png)
 
 (2) There are two tabs on the listing page which shows 2 differet events.
     
@@ -179,11 +202,11 @@ Here only those events will show which date period is already started and until 
     
 Here only those events will show which date period has been passed.
 
-(3) Pagination
+(3) Load More Button
  
- ![pagination](https://nimbus-screenshots.s3.amazonaws.com/s/462184fd9c47eeeb63ef019aea8d9771.png)
- 
- This button is used to load next 9 thumbnails.
+![more-button](https://nimbus-screenshots.s3.amazonaws.com/s/2efa4cc70210248121d883927490740d.png)
+
+(3) This button is used to load more thumbnails. And the number of thumbails to load will be added in general configuration section.
 
  **Detail Page**
 

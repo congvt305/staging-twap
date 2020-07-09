@@ -109,7 +109,6 @@ class MassSend extends AbstractAction
         }
 
         if (count($orderStatusError) > 0) {
-//            $errorOrderList = implode(", ", $orderStatusError);
             foreach ($orderStatusError as $error) {
                 $this->messageManager->addErrorMessage(__("Error occurred while sending order : %1.", $error));
             }
@@ -134,7 +133,39 @@ class MassSend extends AbstractAction
 
                 $resultSize = count($result);
                 if ($resultSize > 0) {
-                    $this->messageManager->addSuccessMessage(__('%1 orders sent to SAP Successfully.', $orderCount));
+//                    $this->messageManager->addSuccessMessage(__('%1 orders sent to SAP Successfully.', $orderCount));
+                    if ($result['code'] == '0000') {
+                        $outdata = $result['data']['response']['output']['outdata'];
+                        $ordersSucceeded = [];
+                        foreach ($outdata as $data) {
+                            if ($data['retcod'] == 'S') {
+                                // 여기에서 성공한 order들 order status 변경 처리
+                                $ordersSucceeded[] = $data['odrno'];
+                            } else {
+                                $this->messageManager->addErrorMessage(
+                                    __(
+                                        'Error returned from SAP for order %1. Error code : %2. Message : %3',
+                                        $data['odrno'],
+                                        $outdata['ugcod'],
+                                        $outdata['ugtxt']
+                                    )
+                                );
+                            }
+                        }
+                        $countOrderSucceeded = count($ordersSucceeded);
+                        if ($countOrderSucceeded > 0) {
+                            $this->messageManager->addSuccessMessage(__('%1 orders sent to SAP Successfully.', $countOrderSucceeded));
+                        }
+                    } else {
+                        $this->messageManager->addErrorMessage(
+                            __(
+                                'Error returned from SAP for order %1. Error code : %2. Message : %3',
+                                $order->getIncrementId(),
+                                $result['code'],
+                                $result['message']
+                            )
+                        );
+                    }
                 } else {
                     $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response'));
                 }

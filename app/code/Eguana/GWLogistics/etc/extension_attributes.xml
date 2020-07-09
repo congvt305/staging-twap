@@ -2,26 +2,13 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
     <!-- Additional attributes pushed to the salesShipOrderV1 M2 API -->
     <extension_attributes for="Magento\Sales\Api\Data\ShipmentCreationArgumentsInterface">
-        <attribute code="shipping_label" type="string" />
-        <attribute code="ext_shipment_id" type="string" />
-        <attribute code="ext_return_shipment_id" type="string" />
-        <attribute code="ext_location_id" type="string" />
-        <attribute code="ext_tracking_url" type="string" />
-        <attribute code="ext_tracking_reference" type="string" />
+        <attribute code="all_pay_logistics_id" type="string" />
     </extension_attributes>
     <!-- Additional attributes fetched from the salesOrderRepositoryV1 M2 API -->
-    <extension_attributes for="Magento\Sales\Api\Data\ShippingInterface">
-        <attribute code="ext_order_id" type="string" />
-    </extension_attributes>
-    <!-- Additional attributes for the shipment view page -->
     <extension_attributes for="Magento\Sales\Api\Data\ShipmentInterface">
-        <attribute code="ext_shipment_id" type="string" />
-        <attribute code="ext_return_shipment_id" type="string" />
-        <attribute code="ext_location_id" type="string" />
-        <attribute code="ext_tracking_url" type="string" />
-        <attribute code="ext_tracking_reference" type="string" />
-
+        <attribute code="all_pay_logistics_id" type="string" />
     </extension_attributes>
+
     <extension_attributes for="Magento\Quote\Api\Data\AddressInterface">
         <attribute code="cvs_type" type="string" >
             <join reference_table="eguana_gwlogistics_quote_cvs_location"
@@ -32,7 +19,6 @@
             </join>
         </attribute>
     </extension_attributes>
-
     <extension_attributes for="Magento\Quote\Api\Data\AddressInterface">
         <attribute code="cvs_location_id" type="int" />
     </extension_attributes>

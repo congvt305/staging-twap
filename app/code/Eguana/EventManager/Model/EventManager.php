@@ -12,7 +12,6 @@ namespace Eguana\EventManager\Model;
 use Magento\Framework\Model\AbstractModel;
 use Eguana\EventManager\Model\ResourceModel\EventManager as EventManagerResourceModel;
 use Eguana\EventManager\Api\Data\EventManagerInterface;
-use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractExtensibleModel;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\Filesystem;
@@ -22,13 +21,8 @@ use Magento\Framework\Filesystem;
  *
  * Class EventManager
  */
-class EventManager extends AbstractExtensibleModel implements EventManagerInterface, IdentityInterface
+class EventManager extends AbstractExtensibleModel implements EventManagerInterface
 {
-    /**
-     * @var CACHE_TAG
-     */
-    const CACHE_TAG = 'eventManager';
-
     /**
      * @var STATUS_ENABLED
      */
@@ -38,11 +32,6 @@ class EventManager extends AbstractExtensibleModel implements EventManagerInterf
      * @var STATUS_DISABLED
      */
     const STATUS_DISABLED = 0;
-
-    /**
-     * @var string
-     */
-    private $cacheTag = self::CACHE_TAG;
 
     /**
      * Constructor to initialize ResourceModel
@@ -71,14 +60,6 @@ class EventManager extends AbstractExtensibleModel implements EventManagerInterf
             'created_at',
             'updated_at',
         ];
-    }
-    /**
-     * get identities
-     * @return string[]
-     */
-    public function getIdentities()
-    {
-        return [self::CACHE_TAG . '_' . $this->getId(), self::CACHE_TAG . '_' . $this->getId()];
     }
 
     /**
@@ -277,7 +258,7 @@ class EventManager extends AbstractExtensibleModel implements EventManagerInterf
     {
         return $this->hasData('stores') ? $this->getData('stores') : $this->getData('store_id');
     }
-    
+
     /**
      * Prepare block's statuses.
      *

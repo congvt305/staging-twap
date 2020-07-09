@@ -31,16 +31,22 @@ class CartCvsLocationManagement implements \Eguana\GWLogistics\Api\CartCvsLocati
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
     }
 
+    /**
+     * important notice : this function should not be called only when the cart is not active!!!
+     * @param string $cartId
+     * @param string|null $data
+     * @return bool
+     * @throws CouldNotSaveException
+     */
     public function selectCvsLocation(string $cartId, string $data = null): bool
     {
-        //todo find location by quote address id and updated as selected then return data for form display
         try {
             $address = $this->shippingAddressManagement->get($cartId);
             $cvsLocation = $this->quoteCvsLocationRepository->getByAddressId($address->getId());
             $cvsLocation->setData('is_selected', true);
             $this->quoteCvsLocationRepository->save($cvsLocation);
         } catch (\Exception $e) {
-            throw new CouldNotSaveException(__('Unable to select cvs location.'), $e);
+            throw new CouldNotSaveException(__('Unable to select or save cvs location.'), $e);
         }
         return true;
     }
@@ -51,7 +57,7 @@ class CartCvsLocationManagement implements \Eguana\GWLogistics\Api\CartCvsLocati
         try {
             $cvsLocation = $this->quoteCvsLocationRepository->getByAddressId($shippingAddressId);
         } catch (\Exception $e) {
-            throw new CouldNotSaveException(__('Unable to select cvs location.'), $e);
+            $cvsLocation = null; //todo: check if this is okay
         }
         return $cvsLocation;
     }
