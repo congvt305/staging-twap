@@ -15,6 +15,7 @@ use \Magento\Ui\Component\Listing\Columns\Column;
 use \Magento\Framework\Api\SearchCriteriaBuilder;
 use \Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Framework\Escaper;
+use Amore\Sap\Model\Source\Config;
 
 class SapOrderSend extends Column
 {
@@ -36,6 +37,10 @@ class SapOrderSend extends Column
      * @var Escaper
      */
     private $escaper;
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * SapOrderSend constructor.
@@ -45,6 +50,7 @@ class SapOrderSend extends Column
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param UrlInterface $urlBuilder
      * @param Escaper $escaper
+     * @param Config $config
      * @param array $components
      * @param array $data
      */
@@ -55,6 +61,7 @@ class SapOrderSend extends Column
             SearchCriteriaBuilder $searchCriteriaBuilder,
             UrlInterface $urlBuilder,
             Escaper $escaper,
+            Config $config,
             array $components = [],
             array $data = []
     ) {
@@ -62,6 +69,7 @@ class SapOrderSend extends Column
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->urlBuilder = $urlBuilder;
         $this->escaper = $escaper;
+        $this->config = $config;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
@@ -71,8 +79,9 @@ class SapOrderSend extends Column
             foreach ($dataSource['data']['items'] as & $item) {
                 if (isset($item['entity_id'])) {
                     $viewUrlPath = $this->getData('config/viewUrlPath') ?: '#';
+                    $storeId = $this->orderRepository->get($item['entity_id'])->getStoreId();
                     $urlEntityParamName = $this->getData('config/urlEntityParamName') ?: 'entity_id';
-                    if ($item['status'] == 'processing') {
+                    if ($item['status'] == 'processing' && $this->config->getActiveCheck('store', $storeId)) {
                         $item[$this->getData('name')] = [
                             'view' => [
                                 'href' => $this->urlBuilder->getUrl(
