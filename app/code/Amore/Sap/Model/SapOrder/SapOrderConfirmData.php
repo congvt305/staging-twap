@@ -324,9 +324,18 @@ class SapOrderConfirmData extends AbstractSapOrder
                 if ($orderItem->getProductType() != 'simple') {
                     continue;
                 }
+                $mileagePerItem = $this->mileageSpentRateByItem(
+                    $orderTotal,
+                    $this->configurableProductCheck($orderItem)->getRowTotalInclTax(),
+                    $this->configurableProductCheck($orderItem)->getDiscountAmount(),
+                    $mileageUsedAmount);
                 $itemGrandTotal = $this->configurableProductCheck($orderItem)->getRowTotal()
                     - $this->configurableProductCheck($orderItem)->getDiscountAmount()
-                    + $this->configurableProductCheck($orderItem)->getTaxAmount();
+                    - $mileagePerItem;
+                $itemGrandTotalInclTax = $this->configurableProductCheck($orderItem)->getRowTotalInclTax()
+                    - $this->configurableProductCheck($orderItem)->getDiscountAmount()
+                    - $mileagePerItem;
+
                 $orderItemData[] = [
                     'itemVkorg' => $this->config->getMallId('store', $storeId),
                     'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -336,19 +345,15 @@ class SapOrderConfirmData extends AbstractSapOrder
                     'itemMenge' => intval($orderItem->getQtyOrdered()),
                     // 아이템 단위, Default : EA
                     'itemMeins' => 'EA',
-                    'itemNsamt' => $this->configurableProductCheck($orderItem)->getPriceInclTax(),
+                    'itemNsamt' => $this->configurableProductCheck($orderItem)->getRowTotalInclTax(),
                     'itemDcamt' => $this->configurableProductCheck($orderItem)->getDiscountAmount(),
-                    'itemSlamt' => $this->configurableProductCheck($orderItem)->getRowTotal(),
-                    'itemMiamt' => $this->mileageSpentRateByItem(
-                        $orderTotal,
-                        $this->configurableProductCheck($orderItem)->getRowTotal(),
-                        $this->configurableProductCheck($orderItem)->getDiscountAmount(),
-                        $mileageUsedAmount),
+                    'itemSlamt' => $itemGrandTotalInclTax,
+                    'itemMiamt' => $mileagePerItem,
                     // 상품이 무상제공인 경우 Y 아니면 N
                     'itemFgflg' => $orderItem->getPrice() == 0 ? 'Y' : 'N',
                     'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                     'itemAuart' => $this->getOrderType($order->getEntityId()),
-                    'itemAugru' => 'order reason,',
+                    'itemAugru' => 'order reason',
                     'itemNetwr' => $itemGrandTotal,
                     'itemMwsbp' => $this->configurableProductCheck($orderItem)->getTaxAmount(),
                     'itemVkorg_ori' => $this->config->getMallId('store', $storeId),
