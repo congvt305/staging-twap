@@ -24,15 +24,14 @@ if ($defaultCountry != null) {
 <div class="stores stw-stores-locator mian-content">
     <div class="main-store-block">
         <div class="store_list_left">
-            <?= $block->getChildHtml('page.main.title') ?>
             <form action="" target="_self" id="filter-form" method="get" class="store-locator-form">
                 <fieldset class="fieldset store-fields">
                     <div class="field note"><?= $block->escapeHtml($country) ?></div>
                     <div class="field field-hidden">
-                        <input type="hidden"
-                               id="current-lat"
-                               name="current_lat"
-                               value="<?= $block->escapeHtmlAttr($block->getSelectedLat()) ?>"/>
+                        <inp    ut type="hidden"
+                                id="current-lat"
+                                name="current_lat"
+                                value="<?= $block->escapeHtmlAttr($block->getSelectedLat()) ?>"/>
                         <input type="hidden"
                                id="current-lng"
                                name="current_lng"
@@ -50,10 +49,10 @@ if ($defaultCountry != null) {
                                    value="<?= $block->escapeHtmlAttr($searchLocationPoints['long']) ?>"/>
                         <?php endif; ?>
                     </div>
+
+                    <h1 class="page_tilte_head">Find Store</h1>
+
                     <div class="field store-search">
-                        <label class="label" for="store-search">
-                            <span><?= $block->escapeHtml(__('Please enter the address or counter name')) ?></span>
-                        </label>
                         <div class="control">
                             <input type="text" class="input-text store-search-input" id="store-search" name="search"
                                    value="<?= $block->escapeHtmlAttr($selectedSearch ? $selectedSearch : '') ?>"
@@ -62,7 +61,6 @@ if ($defaultCountry != null) {
                         </div>
                         <div class="actions search-btn-action">
                             <button type="submit" class="button action primary search-btn">
-                                <span><?= $block->escapeHtml(__('Search')) ?></span>
                             </button>
                         </div>
                     </div>
@@ -74,10 +72,10 @@ if ($defaultCountry != null) {
 
                     <div class="stores-result">
                         <h3 class="pc">
-                            <?= __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
+                            <?= /* @noEscape */ __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
                         </h3>
                         <h3 class="mobile">
-                            <?= __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
+                            <?= /* @noEscape */ __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
                         </h3>
                     </div>
                 </fieldset>
@@ -85,11 +83,12 @@ if ($defaultCountry != null) {
             <div class="stores-list">
                 <?php if ($storeSize > 0): ?>
                     <h3 class="mobile">
-                        <?= __('We found <strong>%1 stores</strong> near your location', $storeSize) ?>
+                        <?= /* @noEscape */ __('We found <strong>%1 stores</strong> near your location', $storeSize) ?>
                     </h3>
                 <?php endif; ?>
                 <?php if ($storeSize > 0): ?>
-                    <ul class="stores-listing-ul store-lists items" style="height: 540px; overflow-y: scroll;">
+                    <ul class="stores-listing-ul store-lists items"
+                        id="content" style="height: 540px; overflow-y: scroll;">
                         <?php $count = 0; ?>
                         <?php foreach ($storesCollection as $storeItem):?>
                             <?php
@@ -97,12 +96,6 @@ if ($defaultCountry != null) {
                             $imgSourceForType = '';
                             $googleApiUrl = "https://www.google.com/maps/dir/?api=1&origin=";
                             if (isset($location[0]) && isset($location[1])) {
-                                /*
-                                 * Changed by Abbas, rather to implode using comma I use the => because in address and name
-                                 * there can be a comma. That's why I also have to change the file
-                                 * app/code/Eguana/StoreLocator/view/frontend/web/js/google/map/storesmapviewer.js for split
-                                 * using => rahter than a comma.
-                                 */
                                 $locations[] = implode('=>', [
                                     $storeItem['title'],
                                     $location[0],
@@ -126,12 +119,9 @@ if ($defaultCountry != null) {
                                 <div class="store-info">
                                     <div class="store-primary-info">
                                         <div class="store-info-top">
-                                            <!--                                        <span class="accordion-icon">-->
-                                            <!--                                            <i class="fas fa-chevron-up"></i>-->
-                                            <!--                                        </span>-->
-                                            <!--<label class="store-sequence-number">--><?//= $count + 1 ?><!--</label>-->
-
-                                            <label class="store-badge store-badge-<?= $block->escapeHtml($storeItem['store_type']); ?>">
+                                            <label
+                                                class="store-badge store-badge-<?=
+                                                $block->escapeHtml($storeItem['store_type']); ?>">
                                                 <?= $block->escapeHtml($storeItem['store_type']); ?>
                                             </label>
                                             <strong class="store-title"><?= $block->escapeHtml($storeItem['title']); ?>
@@ -163,7 +153,9 @@ if ($defaultCountry != null) {
                                         <?php endif; ?>
                                     </div>
                                 </div>
-                                <div class="inner-store"></div>
+                                <div class="inner-store">
+
+                                </div>
                             </li>
                             <?php $count ++ ?>
                         <?php endforeach; ?>
@@ -197,6 +189,9 @@ if ($defaultCountry != null) {
         <?php endif;?>
     </div>
 </div>
+
+
+
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=<?= $block->escapeUrl($apiKeyAndRegion) ?>">
 </script>

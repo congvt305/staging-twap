@@ -81,7 +81,6 @@ function multi_map_initialize(multi_location, map_zoom, isStore, markerImages) {
                 marker.setIcon(markerIcon);
                 prevInfoWindow = infowindow;
                 prevMarker = marker;
-                //getStoreOfMarker(marker.storeTitle);
             };
         })(marker, count));
         markers.push(marker);
