@@ -50,15 +50,4 @@ class CartCvsLocationManagement implements \Eguana\GWLogistics\Api\CartCvsLocati
         }
         return true;
     }
-
-    public function getCvsLocationByAddressId(string $shippingAddressId): QuoteCvsLocationInterface
-    {
-        //here try catch is redundant
-        try {
-            $cvsLocation = $this->quoteCvsLocationRepository->getByAddressId($shippingAddressId);
-        } catch (\Exception $e) {
-            $cvsLocation = null; //todo: check if this is okay
-        }
-        return $cvsLocation;
-    }
 }
