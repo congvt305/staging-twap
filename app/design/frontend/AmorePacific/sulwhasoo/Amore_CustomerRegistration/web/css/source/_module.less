@@ -3,6 +3,13 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+  .customer-account-create {
+    .modal-popup.modal-slide {
+      .modal-inner-wrap {
+        width: 600px;
+      }
+    }
+  }
   .form-create-account-pos {
     .field {
       &.mobile,
@@ -87,6 +94,26 @@
         border-top: 1px solid;
         margin-top: 24px;
         padding-top: @indent__m;
+      }
+    }
+
+    .field.choice {
+      a {
+        color: @theme__color__secondary;
+        line-height: 24px;
+        margin-left: @indent__s;
+
+        &:hover,
+        &:active,
+        &:focus {
+          color: @theme__color__primary-alt;
+        }
+      }
+    }
+
+    .field.newsletter {
+      label {
+        width: auto;
       }
     }
   }
