@@ -87,7 +87,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         /** @var Order $order */
         $order = $this->getOrderInfo($incrementId);
 
-        $source = $this->config->getSourceByStore('store' ,$order->getStoreId());
+        $source = $this->config->getSourceByStore('store', $order->getStoreId());
         $orderData = $this->getOrderData($incrementId);
         $itemData = $this->getOrderItem($incrementId);
 
@@ -123,7 +123,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             $sampleOrderData = $orderData[0];
             $sampleIncrementId = $sampleOrderData['odrno'];
             $sampleOrder = $this->getOrderInfo($sampleIncrementId);
-            $source = $this->config->getSourceByStore('store' ,$sampleOrder->getStoreId());
+            $source = $this->config->getSourceByStore('store', $sampleOrder->getStoreId());
         }
 
         $request = [
@@ -191,11 +191,8 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         if ($invoice != null) {
             $shippingAddress = $orderData->getShippingAddress();
-            $trackingNumbers = implode(",",$orderData->getTrackingNumbers());
+            $trackingNumbers = implode(",", $orderData->getTrackingNumbers());
             $customer = $this->getCustomerByOrder($orderData);
-            $cvsLocationId = $shippingAddress->getExtensionAttributes()->getCvsLocationId();
-            $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
-            $cvsAddress = $cvsStoreData->getCvsAddress() . ' ' . $cvsStoreData->getCvsStoreName() . ' ' . $cvsStoreData->getLogisticsSubType();
 
             $bindData[] = [
                 'vkorg' => $this->config->getMallId('store', $storeId),
@@ -216,9 +213,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'recvid' => '',
                 'recvnm' => $shippingAddress->getName(),
                 'postCode' => $this->cvsShippingCheck($orderData) ? '' : $shippingAddress->getPostcode(),
-                'addr1' => $this->cvsShippingCheck($orderData) ? $cvsAddress : $shippingAddress->getRegion(),
+                'addr1' => $this->cvsShippingCheck($orderData) ? $this->getCsvAddress($shippingAddress) : $shippingAddress->getRegion(),
                 'addr2' => $this->cvsShippingCheck($orderData) ? '' : $shippingAddress->getCity(),
-                'addr3' => $this->cvsShippingCheck($orderData) ? '' : preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())),
+                'addr3' => $this->cvsShippingCheck($orderData) ? '' : preg_replace('/\r\n|\r|\n/', ' ', implode(PHP_EOL, $shippingAddress->getStreet())),
                 'land1' => $shippingAddress->getCountryId(),
                 'telno' => $shippingAddress->getTelephone(),
                 'hpno' => $shippingAddress->getTelephone(),
@@ -265,6 +262,15 @@ class SapOrderConfirmData extends AbstractSapOrder
                 $cvsCheck = false;
         }
         return $cvsCheck;
+    }
+
+    public function getCsvAddress($shippingAddress)
+    {
+        $cvsLocationId = $shippingAddress->getExtensionAttributes()->getCvsLocationId();
+        $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
+        $cvsAddress = $cvsStoreData->getCvsAddress() . ' ' . $cvsStoreData->getCvsStoreName() . ' ' . $cvsStoreData->getLogisticsSubType();
+
+        return $cvsAddress;
     }
 
     /**
