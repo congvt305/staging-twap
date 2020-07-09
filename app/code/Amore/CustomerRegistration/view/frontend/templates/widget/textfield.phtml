@@ -18,6 +18,7 @@
             $_validationClass = $block->getFrontendClasses();
             ?>
         <input type="text"
+               placeholder="<?= $block->getStoreLabel() ?>"
                name="<?= $block->getAttributeCode() ?>"
                id="<?= $block->getAttributeCode() ?>"
                value="<?= $block->escapeHtmlAttr($block->getAttributeValue()) ?>"

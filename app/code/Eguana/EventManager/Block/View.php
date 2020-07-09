@@ -90,6 +90,7 @@ class View extends Template
     {
         parent::_prepareLayout();
         try {
+            $this->pageConfig->getTitle()->set($this->getEventManager()->getTitle());
             if ($breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs')) {
                 $breadcrumbsBlock->addCrumb(
                     'home',

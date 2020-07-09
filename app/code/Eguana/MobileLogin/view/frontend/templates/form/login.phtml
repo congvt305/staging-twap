@@ -21,18 +21,19 @@
             <fieldset class="fieldset login">
                 <div class="field email required">
                     <label class="label" for="email">
-                        <span><?= $block->escapeHtml(__('Email/Phone Number')) ?></span>
+                        <span><?= $block->escapeHtml(__('Email / Phone number')) ?></span>
                     </label>
                     <div class="control">
                         <input
+                            placeholder="<?= $block->escapeHtml(__('Email / Phone number')) ?>"
                             name="login[username]"
-                            value="<?= $block->escapeHtmlAttr($block->getUsername()) ?>" <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> id="email" type="tel" class="input-text" placeholder="Enter email or mobile number" title="<?= $block->escapeHtmlAttr(__('Email/Phone Number')) ?>" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'mobileloginvalidationrule':true}">
+                            value="<?= $block->escapeHtmlAttr($block->getUsername()) ?>" <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> id="email" type="tel" class="input-text" placeholder="Enter email or mobile number" title="<?= $block->escapeHtmlAttr(__('Email / Phone number')) ?>" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'mobileloginvalidationrule':true}">
                     </div>
                 </div>
                 <div class="field password required">
                     <label for="pass" class="label"><span><?= $block->escapeHtml(__('Password')) ?></span></label>
                     <div class="control">
-                        <input name="login[password]" type="password" <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> class="input-text" id="pass" title="<?= $block->escapeHtmlAttr(__('Password')) ?>" data-validate="{required:true}">
+                        <input placeholder="<?= $block->escapeHtml(__('Password')) ?>" name="login[password]" type="password" <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> class="input-text" id="pass" title="<?= $block->escapeHtmlAttr(__('Password')) ?>" data-validate="{required:true}">
                     </div>
                 </div>
                 <?= $block->getChildHtml('form_additional_info') ?>
@@ -40,7 +41,7 @@
                     <div class="primary"><button type="submit" class="action login primary" name="send" id="send2"><span><?= $block->escapeHtml(__('Sign In')) ?></span></button></div>
                     <div class="secondary">
                         <a class="action remind" href="<?= $block->escapeUrl($block->getForgotPasswordUrl()) ?>"><span><?= $block->escapeHtml(__('Forgot Your Password?')) ?></span></a>
-                        <?= $block->getChildHtml() ?>
+                        <?= $block->getChildHtml('customer.new') ?>
                     </div>
                 </div>
             </fieldset>
