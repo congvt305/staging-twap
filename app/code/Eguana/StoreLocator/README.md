@@ -113,4 +113,25 @@ In Manage Store Admin can add new store.
 
 - In this custom module now admin can add country for each each store and this country filter will be used on frontend
 
-- In this custom module now admin can add add store type for each store
+- In this custom module now admin can add add store type for each store.
+ Select type Flagship Store and Roadshop store
+ 
+- Customer can add store title, location,  address, telephone, email and store timmings.
+ 
+ - Click on Save to save the store.
+ 
+ ![](https://i.ibb.co/XjFmTZH/screencapture-chrome-extension-fdpohaocaechififmbbbbbknoalclacl-editor-html-2020-06-30-20-37-21.png)
+
+ **Frontend**
+ 
+ - Go to store list page to view all the stores 
+ 
+ - Search stores by store name and address
+ 
+ - All stores are displayed based on their type RS or FS
+ 
+ - There are separate marker for both store types blue and red
+ 
+  ![](https://i.ibb.co/gmrmjh5/storefront.png)
+
+  ![](https://i.ibb.co/GTgfK9Q/storefornt2.png)

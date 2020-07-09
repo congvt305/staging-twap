@@ -40,19 +40,16 @@ class CreateShipment implements ObserverInterface
     {
         /** @var \Magento\Sales\Model\Order\Invoice $invoice */
         $invoice = $observer->getEvent()->getData('invoice');
-        //create shipment here
-        $state = $invoice->getState();
-        if ($state !== 2) {
-            return;
-        }
-
+        /** @var \Magento\Sales\Model\Order $order */
         $order = $invoice->getOrder();
 
-//        if (!$order->getId() && $order->getShippingMethod()->getData('code') === 'gwlogistics') { //todo debug shipping method
-        if (!$order->getId()) {
+        //create shipment here
+        $state = $invoice->getState();
+        if ($state !== 2 || $order->getShippingMethod() !== 'gwlogistics_CVS') {
             return;
         }
-            try {
+
+        try {
             $this->createShipment->process($invoice->getOrder());
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());

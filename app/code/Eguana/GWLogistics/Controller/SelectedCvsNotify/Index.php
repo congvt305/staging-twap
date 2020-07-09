@@ -64,6 +64,7 @@ class Index extends Action implements CsrfAwareActionInterface
         }
         $html = '';
         try {
+            $this->logger->debug('$cvsStoreData: ', $cvsStoreData);
             $this->saveQuoteCvsLocation->process($cvsStoreData);
             $html = '<script>window.close();</script>';
         } catch (\Exception $e) {

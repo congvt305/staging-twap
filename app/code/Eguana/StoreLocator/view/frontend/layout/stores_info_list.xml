@@ -27,6 +27,5 @@
         <referenceContainer name="content">
             <block class="Eguana\StoreLocator\Block\InfoList" name="stores_info_list" template="Eguana_StoreLocator::info/list.phtml"/>
         </referenceContainer>
-        <move element="page.main.title" destination="stores_info_list"/>
     </body>
 </page>

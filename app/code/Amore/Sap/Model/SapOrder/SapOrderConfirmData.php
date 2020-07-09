@@ -9,9 +9,11 @@
 namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Model\Source\Config;
+use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Api\InvoiceRepositoryInterface;
 use Magento\Rma\Api\RmaRepositoryInterface;
@@ -35,9 +37,13 @@ class SapOrderConfirmData extends AbstractSapOrder
      */
     private $customerRepository;
     /**
-     * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
+     * @var TimezoneInterface
      */
     private $timezoneInterface;
+    /**
+     * @var QuoteCvsLocationRepository
+     */
+    private $quoteCvsLocationRepository;
 
 
     /**
@@ -49,7 +55,8 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param InvoiceRepositoryInterface $invoiceRepository
      * @param RmaRepositoryInterface $rmaRepository
      * @param CustomerRepositoryInterface $customerRepository
-     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface
+     * @param TimezoneInterface $timezoneInterface
+     * @param QuoteCvsLocationRepository $quoteCvsLocationRepository
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -59,13 +66,15 @@ class SapOrderConfirmData extends AbstractSapOrder
         InvoiceRepositoryInterface $invoiceRepository,
         RmaRepositoryInterface $rmaRepository,
         CustomerRepositoryInterface $customerRepository,
-        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface
+        TimezoneInterface $timezoneInterface,
+        QuoteCvsLocationRepository $quoteCvsLocationRepository
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
         $this->rmaRepository = $rmaRepository;
         $this->customerRepository = $customerRepository;
         $this->timezoneInterface = $timezoneInterface;
+        $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
     }
 
     /**
@@ -184,6 +193,9 @@ class SapOrderConfirmData extends AbstractSapOrder
             $shippingAddress = $orderData->getShippingAddress();
             $trackingNumbers = implode(",",$orderData->getTrackingNumbers());
             $customer = $this->getCustomerByOrder($orderData);
+            $cvsLocationId = $shippingAddress->getExtensionAttributes()->getCvsLocationId();
+            $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
+            $cvsAddress = $cvsStoreData->getCvsAddress() . ' ' . $cvsStoreData->getCvsStoreName() . ' ' . $cvsStoreData->getLogisticsSubType();
 
             $bindData[] = [
                 'vkorg' => $this->config->getMallId('store', $storeId),
@@ -203,10 +215,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                 //배송지 id - 직영몰 자체코드, 없으면 공백
                 'recvid' => '',
                 'recvnm' => $shippingAddress->getName(),
-                'postCode' => $this->cvsShippingCheck($orderData) ? 'cvs postcode' : $shippingAddress->getPostcode(),
-                'addr1' => $this->cvsShippingCheck($orderData) ? 'cvs Region' : $shippingAddress->getRegion(),
-                'addr2' => $this->cvsShippingCheck($orderData) ? 'cvs city' : $shippingAddress->getCity(),
-                'addr3' => $this->cvsShippingCheck($orderData) ? 'cvs street' : preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())),
+                'postCode' => $this->cvsShippingCheck($orderData) ? '' : $shippingAddress->getPostcode(),
+                'addr1' => $this->cvsShippingCheck($orderData) ? $cvsAddress : $shippingAddress->getRegion(),
+                'addr2' => $this->cvsShippingCheck($orderData) ? '' : $shippingAddress->getCity(),
+                'addr3' => $this->cvsShippingCheck($orderData) ? '' : preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())),
                 'land1' => $shippingAddress->getCountryId(),
                 'telno' => $shippingAddress->getTelephone(),
                 'hpno' => $shippingAddress->getTelephone(),
@@ -312,9 +324,18 @@ class SapOrderConfirmData extends AbstractSapOrder
                 if ($orderItem->getProductType() != 'simple') {
                     continue;
                 }
+                $mileagePerItem = $this->mileageSpentRateByItem(
+                    $orderTotal,
+                    $this->configurableProductCheck($orderItem)->getRowTotalInclTax(),
+                    $this->configurableProductCheck($orderItem)->getDiscountAmount(),
+                    $mileageUsedAmount);
                 $itemGrandTotal = $this->configurableProductCheck($orderItem)->getRowTotal()
                     - $this->configurableProductCheck($orderItem)->getDiscountAmount()
-                    + $this->configurableProductCheck($orderItem)->getTaxAmount();
+                    - $mileagePerItem;
+                $itemGrandTotalInclTax = $this->configurableProductCheck($orderItem)->getRowTotalInclTax()
+                    - $this->configurableProductCheck($orderItem)->getDiscountAmount()
+                    - $mileagePerItem;
+
                 $orderItemData[] = [
                     'itemVkorg' => $this->config->getMallId('store', $storeId),
                     'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -324,19 +345,15 @@ class SapOrderConfirmData extends AbstractSapOrder
                     'itemMenge' => intval($orderItem->getQtyOrdered()),
                     // 아이템 단위, Default : EA
                     'itemMeins' => 'EA',
-                    'itemNsamt' => $this->configurableProductCheck($orderItem)->getPriceInclTax(),
+                    'itemNsamt' => $this->configurableProductCheck($orderItem)->getRowTotalInclTax(),
                     'itemDcamt' => $this->configurableProductCheck($orderItem)->getDiscountAmount(),
-                    'itemSlamt' => $this->configurableProductCheck($orderItem)->getRowTotal(),
-                    'itemMiamt' => $this->mileageSpentRateByItem(
-                        $orderTotal,
-                        $this->configurableProductCheck($orderItem)->getRowTotal(),
-                        $this->configurableProductCheck($orderItem)->getDiscountAmount(),
-                        $mileageUsedAmount),
+                    'itemSlamt' => $itemGrandTotalInclTax,
+                    'itemMiamt' => $mileagePerItem,
                     // 상품이 무상제공인 경우 Y 아니면 N
                     'itemFgflg' => $orderItem->getPrice() == 0 ? 'Y' : 'N',
                     'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                     'itemAuart' => $this->getOrderType($order->getEntityId()),
-                    'itemAugru' => 'order reason,',
+                    'itemAugru' => 'order reason',
                     'itemNetwr' => $itemGrandTotal,
                     'itemMwsbp' => $this->configurableProductCheck($orderItem)->getTaxAmount(),
                     'itemVkorg_ori' => $this->config->getMallId('store', $storeId),

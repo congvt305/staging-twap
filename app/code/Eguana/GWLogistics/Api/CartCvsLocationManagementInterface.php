@@ -23,9 +23,4 @@ interface CartCvsLocationManagementInterface
      */
     public function selectCvsLocation(string $cartId):bool;
 
-    /**
-     * @param string $shippingAddressId
-     * @return QuoteCvsLocationInterface
-     */
-    public function getCvsLocationByAddressId(string $shippingAddressId): QuoteCvsLocationInterface;
 }
