@@ -57,13 +57,7 @@ class CvsAddress implements ArgumentInterface
      */
     public function hasCvsLocation($order)
     {
-        return $order->getShippingMethod() === 'gwlogistics_CVS'; //need to check if cvs location exists?
+        return $order->getShippingMethod() === 'gwlogistics_CVS' && $this->getCvsStoreData($order); //need to check if cvs location exists?
     }
-//
-//    private function getCvsLocation()
-//    {
-//
-//    }
-
 
 }

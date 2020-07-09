@@ -10,23 +10,44 @@ namespace Eguana\GWLogistics\Model;
 
 
 use Eguana\GWLogistics\Api\Data\QuoteCvsLocationInterface;
+use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 class GuestCartCvsLocationManagement implements \Eguana\GWLogistics\Api\GuestCartCvsLocationManagementInterface
 {
+    /**
+     * @var \Magento\Quote\Model\ShippingAddressManagement
+     */
+    private $shippingAddressManagement;
+    /**
+     * @var \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface
+     */
+    private $quoteCvsLocationRepository;
 
-    public function selectCvsLocation(string $cartId): bool
-    {
-        // TODO: Implement selectCvsLocation() method.
+    public function __construct(
+        \Magento\Quote\Model\ShippingAddressManagement $shippingAddressManagement,
+        \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository
+    ) {
+
+        $this->shippingAddressManagement = $shippingAddressManagement;
+        $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
     }
 
     /**
-     * @param int $quoteAddressId
-     * @return QuoteCvsLocationInterface
-     * @throws NoSuchEntityException
+     * @param string $cartId
+     * @param string|null $data
+     * @return bool
      */
-    public function getByAddressId($quoteAddressId): QuoteCvsLocationInterface
+    public function selectCvsLocation(string $cartId, string $data = null): bool
     {
-        // TODO: Implement getByAddressId() method.
+        try {
+            $address = $this->shippingAddressManagement->get($cartId);
+            $cvsLocation = $this->quoteCvsLocationRepository->getByAddressId($address->getId());
+            $cvsLocation->setData('is_selected', true);
+            $this->quoteCvsLocationRepository->save($cvsLocation);
+        } catch (\Exception $e) {
+            throw new CouldNotSaveException(__('Unable to select or save cvs location.'), $e);
+        }
+        return true;
     }
 }

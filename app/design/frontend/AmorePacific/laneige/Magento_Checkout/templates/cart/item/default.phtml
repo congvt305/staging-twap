@@ -42,9 +42,14 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <?php endif; ?>
                 </strong>
                 <dl class="item-options">
-                    <?php if($product->getData('laneige_size')):?>
+                    <?php if($product->getCustomAttribute('prdvl')):?>
                         <dt><?= $block->escapeHtml(__('Size')) ?></dt>
-                        <dd><?= $block->escapeHtml($product->getAttributeText('laneige_size')); ?></dd>
+                        <dd>
+                            <?= $block->escapeHtml($product->getPrdvl().$product->getAttributeText('vlunt')); ?>
+                            <?php if($product->getCustomAttribute('product_count')):?>
+                                <?= $block->escapeHtml('*'.$product->getAttributeText('product_count')); ?>
+                            <?php endif;?>
+                        </dd>
                     <?php endif;?>
                     <?php if ($_options = $block->getOptionList()) :?>
                         <?php foreach ($_options as $_option) :?>

@@ -240,7 +240,22 @@ class Payment extends AbstractMethod
         $merchantTradeNo = $rawDetailsInfo["MerchantTradeNo"];
 
         $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
-        $params = $this->getRefundParams($merchantId, $merchantTradeNo, $tradeNo, $amount);
+        $params = $this->getCancellingCaptureParams($merchantId, $merchantTradeNo, $tradeNo, $amount);
+
+        $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate($params, $this->getEcpayConfig('hash_key'), $this->getEcpayConfig('hash_iv'));
+        $params["CheckMacValue"] = $checkMacValue;
+
+        $this->curl->post($url, $params);
+        $result = $this->curl->getBody();
+
+        $stringToArray = $this->ecpayResponse($result);
+
+        if ($stringToArray["RtnCode"] != 1) {
+            $this->_logger->critical(__($stringToArray["RtnMsg"]));
+            throw new LocalizedException(__($stringToArray["RtnMsg"]));
+        }
+
+        $params = $this->getAbandoningTransactionParams($merchantId, $merchantTradeNo, $tradeNo, $amount);
 
         $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate($params, $this->getEcpayConfig('hash_key'), $this->getEcpayConfig('hash_iv'));
         $params["CheckMacValue"] = $checkMacValue;
@@ -543,5 +558,43 @@ class Payment extends AbstractMethod
         }
 
         return $apiUrl;
+    }
+
+    /**
+     * @param $merchantId
+     * @param $merchantTradeNo
+     * @param $tradeNo
+     * @param float $amount
+     * @return array
+     */
+    private function getCancellingCaptureParams($merchantId, $merchantTradeNo, $tradeNo, float $amount): array
+    {
+        $params = [
+            "MerchantID" => $merchantId,
+            "MerchantTradeNo" => $merchantTradeNo,
+            "TradeNo" => $tradeNo,
+            "Action" => "E",
+            "TotalAmount" => $amount
+        ];
+        return $params;
+    }
+
+    /**
+     * @param $merchantId
+     * @param $merchantTradeNo
+     * @param $tradeNo
+     * @param float $amount
+     * @return array
+     */
+    private function getAbandoningTransactionParams($merchantId, $merchantTradeNo, $tradeNo, float $amount): array
+    {
+        $params = [
+            "MerchantID" => $merchantId,
+            "MerchantTradeNo" => $merchantTradeNo,
+            "TradeNo" => $tradeNo,
+            "Action" => "N",
+            "TotalAmount" => $amount
+        ];
+        return $params;
     }
 }
