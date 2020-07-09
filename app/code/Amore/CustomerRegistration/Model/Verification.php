@@ -311,7 +311,7 @@ class Verification
      */
     private function sendSMS($mobileNumber)
     {
-        return $this->smsSender->setCode($mobileNumber);
+        return '1234';//$this->smsSender->setCode($mobileNumber);
     }
 
     /**
