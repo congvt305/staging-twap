@@ -79,25 +79,16 @@ $eventConfigValue = $viewModel->getConfigLoadMoreValue();
             </ul>
         <?php endif; ?>
     </div>
-    <?php if ($eventCount > 9): ?>
-        <div class="page-no-button">
-            <span class="no-border no-display" id="previous-button">0</span>
-            <span class="no-border active-page-button" id="current-active-button">1</span>
-            <span class="no-border" id="nextButton">2</span>
+    <?php if ($eventCount > $eventConfigValue): ?>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary" id="more-button">
+                    <span><?=$block->escapeHtml(__('More'));?></span>
+                </button>
+            </div>
         </div>
     <?php endif ; ?>
 </div>
-<?php if ($eventCount > $eventConfigValue): ?>
-    <div class="more-item-button">
-        <button class="action primary" id="more-button">
-            <span><?=$block->escapeHtml(__('More'));?></span>
-        </button>
-        <br/>
-        <span id="event-count">
-            <?=$block->escapeHtml($eventConfigValue)?>
-        </span>/<?= $block->escapeHtml($eventCount); ?>
-    </div>
-<?php endif ; ?>
 <script type="text/x-magento-init">
     {
         "*": {
