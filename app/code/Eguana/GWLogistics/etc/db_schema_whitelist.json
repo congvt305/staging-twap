@@ -2,6 +2,7 @@
     "eguana_gwlogistics_quote_cvs_location": {
         "column": {
             "location_id": true,
+            "quote_id": true,
             "quote_address_id": true,
             "merchant_trade_no": true,
             "logistics_sub_type": true,
@@ -16,11 +17,12 @@
             "updated_at": true
         },
         "index": {
-            "EGUANA_GWLOGISTICS_QUOTE_CVS_LOCATION_QUOTE_ADDR_ID_IS_SELECTED": true
+            "IDX_914F5587DA9FFAA2085013442A0D795B": true
         },
         "constraint": {
             "PRIMARY": true,
-            "FK_03592A8E8B7525E44B5D0F179D297A14": true
+            "FK_03592A8E8B7525E44B5D0F179D297A14": true,
+            "EGUANA_GWLOGISTICS_QUOTE_CVS_LOCATION_QUOTE_ID_QUOTE_ENTITY_ID": true
         }
     },
     "sales_order_address": {

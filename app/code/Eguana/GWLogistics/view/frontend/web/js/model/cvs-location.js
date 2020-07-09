@@ -11,9 +11,7 @@ define([
 
     return {
         getCvsLocation: function () {
-            // console.log(sectionData());
             return sectionData()['cvs-location'] || [];
-            // return sectionData()['cvs-location'] || [];
         },
 
         getMessage: function () {
@@ -39,24 +37,6 @@ define([
 
         selectCvsLocation: function () {
             this.reloadCheckoutData();
-            // var cvsLocation = this.getCvsLocation();
-            // var searchRequest = this.getSearchCvsRequest();
-            // customerData.set(cacheKey, {
-            //     'cvs-location': cvsLocation,
-            //      'search-request': searchRequest
-            // });
-
-        },
-
-        selectPickupLocation: function (pickupLocationId) {
-            // console.log(pickupLocationId);
-            var pickupLocations = this.getPickupLocations();
-            // var searchRequest = this.getSearchRequest(); //cvs store name, 711, familymart... later??
-
-            customerData.set(cacheKey, {
-                'cvs-location': pickupLocationId,
-                // 'search-request': searchRequest
-            });
         },
 
         getSelectedCvsLocation: function () {
