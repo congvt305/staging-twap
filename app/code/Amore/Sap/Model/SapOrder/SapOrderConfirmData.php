@@ -221,7 +221,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'hpno' => $shippingAddress->getTelephone(),
                 'waerk' => $orderData->getOrderCurrencyCode(),
                 'nsamt' => $orderData->getSubtotalInclTax(),
-                'dcamt' => $orderData->getDiscountAmount(),
+                'dcamt' => abs($orderData->getDiscountAmount()),
                 'slamt' => $orderData->getGrandTotal() - $orderData->getShippingAmount(),
                 'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : $orderData->getRewardPointsBalance(),
                 'shpwr' => $orderData->getShippingAmount(),
