@@ -1,10 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Eguana\GWLogistics\Api\Data\QuoteCvsLocationInterface" type="Eguana\GWLogistics\Model\QuoteCvsLocation"/>
     <preference for="Eguana\GWLogistics\Api\Data\QuoteCvsLocationSearchResultInterface" type="Eguana\GWLogistics\Model\QuoteCvsLocationSearchResult"/>
@@ -19,24 +13,37 @@
             </argument>
         </arguments>
     </type>
-    <type name="Magento\Quote\Model\ShippingAddressManagementInterface">
-        <plugin name="eguana_gwlogistics_set_cvs_location_to_quote_address"
-                type="Eguana\GWLogistics\Plugin\Quote\SetCvsLocationPlugin" sortOrder="10"/>
-        <!-- not working -->
-<!--        <plugin name="eguana_gwlogistics_load_cvs_location"-->
-<!--                type="Eguana\GWLogistics\Plugin\Quote\LoadCvsLocationAttrPlugin" sortOrder="10"/>-->
+
+    <!--extension attributes load-->
+    <type name="Magento\Sales\Api\Data\ShipmentInterface">
+        <plugin name="eguana_gwlogistics_shipment_extension_attr_load"
+                type="Eguana\GWLogistics\Plugin\Sales\ShipmentAttributeLoad"/>
     </type>
+    <type name="Magento\Sales\Api\Data\OrderAddressInterface">
+        <plugin name="eguana_gwlogistics_order_address_extension_attr_load"
+                type="Eguana\GWLogistics\Plugin\Sales\OrderAddressAttributeLoad" sortOrder="10"/>
+    </type>
+    <type name="Magento\Quote\Api\Data\AddressInterface">
+        <plugin name="eguana_gwlogistics_quote_address_extension_attr_load"
+                type="Eguana\GWLogistics\Plugin\Quote\QuoteAddressAttributeLoad" sortOrder="10"/>
+    </type>
+    <!--extension attribute save/load-->
+    <type name="Magento\Quote\Model\ShippingAddressManagementInterface">
+        <plugin name="eguana_gwlogistics_quote_address_extension_attr_operation"
+                type="Eguana\GWLogistics\Plugin\Quote\ShippingAddressManagementPlugin" sortOrder="10"/>
+    </type>
+    <type name="Magento\Sales\Api\OrderAddressRepositoryInterface">
+        <plugin name="eguana_gwlogistics_order_address_extension_attr_operation"
+                type="Eguana\GWLogistics\Plugin\Sales\OrderAddressRepositoryPlugin" sortOrder="10"/>
+    </type>
+        <!--if not working, try to use class-->
+    <type name="Magento\Sales\Api\ShipmentRepositoryInterface">
+        <plugin name="eguana_gwlogistics_save_allpaylogisticsid"
+                type="Eguana\GWLogistics\Plugin\Sales\ShipmentRepositoryPlugin" sortOrder="10"/>
+    </type>
+    <!--workaround for field copy not working-->
     <type name="Magento\Quote\Model\Quote\Address\ToOrderAddress">
         <plugin name="eguana_gwlogistics_copy_cvs_location_field"
                 type="Eguana\GWLogistics\Plugin\Quote\CopyCvsLocationFieldPlugin" sortOrder="10"/>
     </type>
-<!--    <type name="Magento\Sales\Model\Order">-->
-<!--        <plugin name="eguana_gwlogistics_load_cvs_in_order_model"-->
-<!--                type="Eguana\GWLogistics\Plugin\LoadCvsLocationForOrder" sortOrder="10"/>-->
-<!--    </type>-->
-
-    <!--maybe can use later for saving selected field or update location table..-->
-    <!--    <type name="Magento\Checkout\Api\ShippingInformationManagementInterface">-->
-    <!--        <plugin name="eguana_gwlogistics_quote_save_address" type="Eguana\GWLogistics\Plugin\Checkout\Api\SaveAddressPlugin"/>-->
-    <!--    </type>-->
 </config>
