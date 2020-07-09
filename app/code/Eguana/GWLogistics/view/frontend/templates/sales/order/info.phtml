@@ -5,7 +5,9 @@
  */
 ?>
 <?php /** @var $block \Magento\Sales\Block\Order\Info */ ?>
-<?php /** @var $viewModel \Eguana\GWLogistics\ViewModel\CvsAddress */ ?>
+<?php /** @var $viewModel \Eguana\GWLogistics\ViewModel\CvsAddress */
+    $viewModel = $block->getViewModel();
+?>
 <?php $_order = $block->getOrder() ?>
 <div class="block block-order-details-view">
     <div class="block-title">
@@ -15,9 +17,26 @@
         <?php if (!$_order->getIsVirtual()) : ?>
             <div class="box box-order-shipping-address">
                 <strong class="box-title"><span><?= $block->escapeHtml(__('Shipping Address')) ?></span></strong>
+                <?php if (!$viewModel->hasCvsLocation($_order)) : ?>
                 <div class="box-content">
                     <address><?= /* @noEscape */ $block->getFormattedAddress($_order->getShippingAddress()) ?></address>
                 </div>
+                <?php else : ?>
+                <div class="box-content">
+                    <div><?= $block->escapeHtml($_order->getShippingAddress()->getLastname() . ' ' . $_order->getShippingAddress()->getFirstname()) ?></div>
+                    <div><?= $block->escapeHtml($_order->getShippingAddress()->getTelephone()) ?></div>
+                </div>
+                <?php $cvsStoreData = $viewModel->getCvsStoreData($_order) ?>
+                <div class="box-subtitle order-shipping-primary-address">
+                    <?= $block->escapeHtml($cvsStoreData->getLogisticsSubType()) ?> <?= $block->escapeHtml($cvsStoreData->getCvsStoreName()) ?>
+                </div>
+                <div class="box-content">
+                    <div>
+                        <?= $block->escapeHtml($cvsStoreData->getCvsAddress()) ?>
+                    </div>
+                    <div><?= $block->escapeHtml($cvsStoreData->getCvsTelephone()) ?></div>
+                </div>
+                <?php endif; ?>
             </div>
 
             <div class="box box-order-shipping-method">

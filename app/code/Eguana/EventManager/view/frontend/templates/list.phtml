@@ -13,88 +13,89 @@ $viewModel = $block->getData('list_view_model');
 $condition = $viewModel->getEventCondition();
 $eventList = $viewModel->getEventCollection($condition);
 $eventCount = $eventList->getTotalCount();
+$eventConfigValue = $viewModel->getConfigLoadMoreValue();
 ?>
-<div class="event-list-wrapper">
-    <div class="toggle-btn-desktop">
-        <hr class="hr-no-bottom-margin">
-        <div class="event-list-toggle-buttons">
-            <div class="current-tab-link <?= $condition == "gteq" ? 'active-button' : ''?>">
+<div class="event-manager">
+    <div class="toggle-btn">
+        <div class="event-list-toggle-desktop">
+            <div class="tab-link <?= $condition == "gteq" ? 'active-button' : ''?>">
                 <a href="<?= $block->escapeUrl($block->getBaseUrl().'events')?>">
                     <?= $block->escapeHtml(__('Current Events')); ?>
                 </a>
             </div>
-            <div class="previous-tab-link <?= $condition == "lt" ? 'active-button' : ''?>">
+            <div class="tab-link <?= $condition == "lt" ? 'active-button' : ''?>">
                 <a href="<?= $block->escapeUrl($block->getBaseUrl().'events/previous')?>">
                     <?= $block->escapeHtml(__('Previous Events')); ?>
                 </a>
             </div>
         </div>
-        <hr class="hr-no-top-margin">
-    </div>
-
-    <div class="event-list-toggle-mobile">
-        <select onchange="location = this.value;">
-            <option value="<?= $block->escapeUrl($block->getBaseUrl().'events')?>"
-                <?= $condition == "gteq" ? 'selected' : ''?>
-            >
-                <?= $block->escapeHtml(__('Current Events')); ?>
-            </option>
-            <option value="<?= $block->escapeUrl($block->getBaseUrl().'events/previous')?>"
-                <?= $condition == "lt" ? 'selected' : ''?>
-            >
-                <?= $block->escapeHtml(__('Previous Events')); ?>
-            </option>
-        </select>
-    </div>
-    <?php if ($eventList->getTotalCount() == 0): ?>
-        <div class="event-list-empty">
-            <?= $block->escapeHtml(__('No Event found!')); ?>
+        <div class="event-list-toggle-mobile">
+            <select onchange="location = this.value;">
+                <option value="<?= $block->escapeUrl($block->getBaseUrl().'events')?>"
+                    <?= $condition == "gteq" ? 'selected' : ''?>>
+                    <?= $block->escapeHtml(__('Current Events')); ?>
+                </option>
+                <option value="<?= $block->escapeUrl($block->getBaseUrl().'events/previous')?>"
+                    <?= $condition == "lt" ? 'selected' : ''?>>
+                    <?= $block->escapeHtml(__('Previous Events')); ?>
+                </option>
+            </select>
         </div>
-    <?php else: ?>
-        <ul class="event-list">
-        <?php foreach ($eventList as $eventListItem):?>
-            <li class="event-list-item">
-                <a class="event-list-image-link"
-                   href="<?= $block->escapeUrl($viewModel->getEventManagerUrl($eventListItem->getEntityId()))?>">
-                    <img src="<?= $block->escapeHtml($viewModel->
-                            getThumbnailImageURL($eventListItem->getThumbnailImage()));?>"
-                         alt="<?= $block->escapeHtml($eventListItem->getTitle());?>"/>
-                </a>
-                <div class="event-list-heading-date">
-                    <div class="event-list-heading ellipsis">
-                        <a class="action view event-list-title"
-                           href="<?=$block->escapeUrl($viewModel->getEventManagerUrl($eventListItem->getEntityId()))?>">
-                            <b><?=$block->escapeHtml($eventListItem->getTitle());?></b>
-                        </a>
-                    </div>
-                    <div class="event-list-period">
-                        <span class="event-list-start-date">
-                            <?= $block->escapeHtml($viewModel->changeDateFormat($eventListItem->getStartDate()));?>
-                        </span>
-                        <span>~</span>
-                        <span class="event-list-end-date">
-                            <?= $block->escapeHtml($viewModel->changeDateFormat($eventListItem->getEndDate()));?>
-                        </span>
-                    </div>
-                </div>
-            </li>
-        <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
-</div>
-<?php if ($eventCount > 9): ?>
-    <div class="page-no-button">
-        <span class="no-border no-display" id="previous-button">0</span>
-        <span class="no-border active-page-button" id="current-active-button">1</span>
-        <span class="no-border" id="nextButton">2</span>
     </div>
-<?php endif ; ?>
+    <div class="event-list-wrapper">
+        <?php if ($eventList->getTotalCount() == 0): ?>
+            <div class="event-list-empty">
+                <?= $block->escapeHtml(__('No Event found!')); ?>
+            </div>
+        <?php else: ?>
+            <ul class="event-list">
+            <?php foreach ($eventList as $eventListItem):?>
+                <li class="event-list-item">
+                    <a class="event-list-image-link"
+                       href="<?= $block->escapeUrl($viewModel->getEventManagerUrl($eventListItem->getEntityId()))?>">
+                        <img src="<?= $block->escapeHtml($viewModel->
+                                getThumbnailImageURL($eventListItem->getThumbnailImage()));?>"
+                             alt="<?= $block->escapeHtml($eventListItem->getTitle());?>"/>
+                    </a>
+                    <div class="event-list-heading-date">
+                        <div class="event-list-heading ellipsis">
+                            <a class="action view event-list-title"
+                               href="<?=$block->escapeUrl($viewModel->getEventManagerUrl($eventListItem->getEntityId()))?>">
+                                <?=$block->escapeHtml($eventListItem->getTitle());?>
+                            </a>
+                        </div>
+                        <div class="event-list-period">
+                            <span class="event-list-start-date">
+                                <?= $block->escapeHtml($viewModel->changeDateFormat($eventListItem->getStartDate()));?>
+                            </span>
+                            <span>~</span>
+                            <span class="event-list-end-date">
+                                <?= $block->escapeHtml($viewModel->changeDateFormat($eventListItem->getEndDate()));?>
+                            </span>
+                        </div>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </div>
+    <?php if ($eventCount > $eventConfigValue): ?>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary" id="more-button">
+                    <span><?=$block->escapeHtml(__('More'));?></span>
+                </button>
+            </div>
+        </div>
+    <?php endif ; ?>
+</div>
 <script type="text/x-magento-init">
     {
         "*": {
             "event-pagination":{
                 "totalEvent":"<?= $block->escapeHtml($eventCount)?>",
-                "condition":"<?= $block->escapeHtml($condition)?>"
+                "condition":"<?= $block->escapeHtml($condition)?>",
+                "eventConfigValue":"<?= $block->escapeHtml($eventConfigValue)?>"
             }
         }
     }

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 8/7/20
+ * Time: 12:25 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="eventmanager" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Event Manager</label>
+            <tab>eguana_extensions_tab</tab>
+            <resource>Eguana_EventManager::eventmanager_config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="load_more_id" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>No. of events to load</label>
+                    <validate>required-entry validate-digits validate-not-negative-number validate-digits-range digits-range-1-100</validate>
+                </field>
+                <field id="sort_order_id" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Event sort type</label>
+                    <source_model>Eguana\EventManager\Model\EventManagerConfiguration\Source\Dropdown</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

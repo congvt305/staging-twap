@@ -49,5 +49,7 @@
         <column xsi:type="int" name="cvs_location_id" padding="11" unsigned="false" nullable="true"
                 identity="false" comment="CVS Location Id"/>
     </table>
-
+    <table name="sales_shipment" resource="sales" engine="innodb" comment="Sales Flat Shipment">
+        <column xsi:type="varchar" name="all_pay_logistics_id" nullable="true" length="20" comment="GW AllPay Logistics ID"/>
+    </table>
 </schema>

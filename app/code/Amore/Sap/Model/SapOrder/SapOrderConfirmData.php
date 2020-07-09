@@ -213,7 +213,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'waerk' => $orderData->getOrderCurrencyCode(),
                 'nsamt' => $orderData->getSubtotalInclTax(),
                 'dcamt' => $orderData->getDiscountAmount(),
-                'slamt' => $orderData->getGrandTotal(),
+                'slamt' => $orderData->getGrandTotal() - $orderData->getShippingAmount(),
                 'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : $orderData->getRewardPointsBalance(),
                 'shpwr' => $orderData->getShippingAmount(),
                 'mwsbp' => $orderData->getTaxAmount(),
@@ -222,7 +222,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'kunnrOri' => $this->config->getClient('store', $storeId),
                 'odrnoOri' => $orderData->getIncrementId(),
                 // 이건 물건 종류 갯수(물건 전체 수량은 아님)
-                'itemCnt' => intval($orderData->getTotalItemCount()),
+                'itemCnt' => $orderData->getTotalItemCount(),
                 // 영업 플랜트 : 알수 없을 경우 공백
                 'werks' => '',
                 // 영업저장위치 : 알수 없을 경우 공백

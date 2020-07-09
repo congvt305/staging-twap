@@ -10,7 +10,7 @@
         <referenceBlock name="sales.order.info">
             <arguments>
                 <argument name="template" xsi:type="string">Eguana_GWLogistics::sales/order/info.phtml</argument>
-                <argument name="view_model" xsi:type="object">Eguana\CustomerRefund\ViewModel\Refund</argument>
+                <argument name="view_model" xsi:type="object">Eguana\GWLogistics\ViewModel\CvsAddress</argument>
             </arguments>
         </referenceBlock>
     </body>

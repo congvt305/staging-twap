@@ -8,12 +8,11 @@
 
 namespace Eguana\GWLogistics\Plugin\Quote;
 
-
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Model\ShippingAddressManagementInterface;
 
-class SetCvsLocationPlugin
+class ShippingAddressManagementPlugin
 {
     /**
      * @var \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface
@@ -46,6 +45,25 @@ class SetCvsLocationPlugin
 
     /**
      * @param \Magento\Quote\Model\ShippingAddressManagementInterface $subject
+     * @param $result
+     * @param int $cartId
+     */
+    public function afterGet(\Magento\Quote\Model\ShippingAddressManagementInterface $subject, \Magento\Quote\Api\Data\AddressInterface $result, $cartId)
+    {
+        if ($result->getData('cvs_location_id')) {
+            $extensionAttributes = $result->getExtensionAttributes();
+            try {
+                $extensionAttributes->setCvsLocationId($result->getData('cvs_location_id'));
+            } catch (\Exception $e) {
+                $extensionAttributes->setCvsLocationId(null);
+            }
+            $result->setExtensionAttributes($extensionAttributes);
+        }
+        return $result;
+    }
+
+    /**
+     * @param \Magento\Quote\Model\ShippingAddressManagementInterface $subject
      * @param int $cartId
      * @param AddressInterface $address
      * @return array
@@ -53,22 +71,18 @@ class SetCvsLocationPlugin
     public function beforeAssign(\Magento\Quote\Model\ShippingAddressManagementInterface $subject, $cartId, AddressInterface $address)
     {
         if ($address->getData('limit_carrier') === 'gwlogistics') {
+            $extensionAttributes = $address->getExtensionAttributes();
             try {
                 $cvsLocation = $this->quoteCvsLocationRepository->getByQuoteId($cartId);
-            } catch (NoSuchEntityException $e) {
-                $this->logger->error($e->getMessage());
-            }
-            if ($cvsLocation->getLocationId()) {
-                $extensionAttributes = $address->getExtensionAttributes();
-                if ($extensionAttributes === null) {
-                    $extensionAttributes = $this->addressExtensionFactory->create([]);
+                if ($cvsLocation->getLocationId()) {
+                    $extensionAttributes->setCvsLocationId($cvsLocation->getLocationId());
+                    $address->setCvsLocationId($extensionAttributes->getCvsLocationId());
                 }
-                $extensionAttributes->setCvsLocationId($cvsLocation->getLocationId());
-                $address->setExtensionAttributes($extensionAttributes);
-                $address->setCvsLocationId($extensionAttributes->getCvsLocationId());
+            } catch (\Exception $e) {
+                $extensionAttributes->setCvsLocationId(null);
             }
+            $address->setExtensionAttributes($extensionAttributes);
         }
-
         return [$cartId, $address];
     }
 }
