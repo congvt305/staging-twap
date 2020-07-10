@@ -311,7 +311,11 @@ class Verification
      */
     private function sendSMS($mobileNumber)
     {
-        return '1234';//$this->smsSender->setCode($mobileNumber);
+        if ($this->configHelper->getSMSVerificationEnable()) {
+            return $this->smsSender->setCode($mobileNumber);
+        } else {
+            return '1234';
+        }
     }
 
     /**

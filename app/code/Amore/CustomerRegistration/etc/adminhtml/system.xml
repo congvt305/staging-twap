@@ -89,6 +89,12 @@
                     </depends>
                 </field>
 
+                <field id="sms_verification_enable" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" >
+                    <label>SMS Verification Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If disabled then verification code will be 1234 at registration</comment>
+                </field>
+
             </group>
 
             <group id="pos" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
