@@ -15,7 +15,6 @@ use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * This class is used for breadcrumps for detail page
- *
  * Class ListBlock
  */
 class ListBlock extends Template

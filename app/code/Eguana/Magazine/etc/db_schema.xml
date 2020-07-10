@@ -17,10 +17,12 @@
         <column xsi:type="varchar" name="store_id" nullable="false" length="30"
                 comment="Store ID"/>
         <column xsi:type="timestamp" name="show_date" nullable="false"
-                comment="Store ID"/>
+                comment="Show Date"/>
         <column xsi:type="varchar" name="title" nullable="false" length="50"
                 comment="Title"/>
-        <column xsi:type="text" name="content_short" nullable="true"
+        <column xsi:type="text" name="content_short" nullable="true" disabled="true"
+                comment="Short Description"/>
+        <column xsi:type="text" name="short_description" nullable="true"
                 comment="Short Description"/>
         <column xsi:type="text" name="content" nullable="true"
                 comment="Long Desciption"/>
@@ -38,7 +40,6 @@
                 comment="Updated At"/>
         <column xsi:type="smallint" name="is_active" nullable="false" default="0"
                 comment="Is active"/>
-
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
             <column name="store_id"/>
@@ -49,4 +50,3 @@
         </index>
     </table>
 </schema>
-

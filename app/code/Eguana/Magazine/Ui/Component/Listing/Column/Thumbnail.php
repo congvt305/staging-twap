@@ -17,8 +17,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Ui\Component\Listing\Columns\Column;
 
 /**
- * PLEASE ENTER ONE LINE SHORT DESCRIPTION OF CLASS
- *
+ * Use for Thumbnail
  * Class Thumbnail
  */
 class Thumbnail extends Column
@@ -56,7 +55,6 @@ class Thumbnail extends Column
 
     /**
      * Prepare Data Source
-     *
      * @param array $dataSource
      * @return array
      */
@@ -71,8 +69,8 @@ class Thumbnail extends Column
                 $url = '';
                 if ($item[$fieldName] != '') {
                     $url = $this->storeManager->getStore()->getBaseUrl(
-                        UrlInterface::URL_TYPE_MEDIA
-                    ) . $item[$fieldName];
+                            UrlInterface::URL_TYPE_MEDIA
+                        ) . $item[$fieldName];
                 }
                 $item[$fieldName . '_src'] = $url;
                 $item[$fieldName . '_alt'] = $this->getAlt($item) ?: '';
@@ -84,7 +82,6 @@ class Thumbnail extends Column
 
     /**
      * @param array $row
-     *
      * @return null|string
      */
     protected function getAlt($row)

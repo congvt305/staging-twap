@@ -31,6 +31,7 @@ Delete,Delete
 "Are you sure you wan't to delete a ""${ $.$data.title }"" record?","Are you sure you wan't to delete a ""${ $.$data.title }"" record?"
 "Sorry there is no Magazine for %1","Sorry there is no Magazine for %1"
 "Other Magazines","Other Magazines"
+"Eguana Magazine Config","Eguana Magazine Config"
 General,General
 "Magazine Enabled","Magazine Enabled"
 "Magazine Information","Magazine Information"

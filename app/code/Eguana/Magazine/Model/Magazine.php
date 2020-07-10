@@ -68,7 +68,6 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
 
     /**
      * Get custom attributes codes
-     *
      * @return array|string[]
      */
     public function getCustomAttributesCodes()
@@ -77,12 +76,13 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
             'entity_id',
             'store_id',
             'title',
-            'content_short',
+            'short_description',
             'content',
             'thumbnail_image',
             'thumbnail_alt',
             'type',
             'sort_order',
+            'show_date',
             'created_at',
             'updated_at',
             'is_active'
@@ -171,20 +171,20 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
     }
 
     /**
-     * @param string $contentshort
+     * @param string $shortdescription
      * @return $this
      */
-    public function setContentShort($contentshort)
+    public function setShortDescription($shortDescription)
     {
-        return $this->setData(self::CONTENT_SHORT, $content);
+        return $this->setData(self::SHORT_DESCRIPTION, $shortDescription);
     }
 
     /**
      * @return string
      */
-    public function getContentShort()
+    public function getShortDescription()
     {
-        return $this->getData(self::CONTENT_SHORT);
+        return $this->getData(self::SHORT_DESCRIPTION);
     }
 
     /**
