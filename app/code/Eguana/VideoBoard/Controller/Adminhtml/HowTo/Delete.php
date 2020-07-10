@@ -12,6 +12,9 @@ namespace Eguana\VideoBoard\Controller\Adminhtml\HowTo;
 use Eguana\VideoBoard\Controller\Adminhtml\AbstractController;
 use Eguana\VideoBoard\Model\VideoBoardFactory;
 use Eguana\VideoBoard\Api\VideoBoardRepositoryInterface;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
+use Magento\Framework\Controller\Result\Redirect as RedirectAlias;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Registry;
 use Magento\Backend\App\Action\Context;
@@ -56,7 +59,7 @@ class Delete extends AbstractController
 
     /**
      * execute the delete action
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
+     * @return ResponseInterfaceAlias|RedirectAlias|ResultInterfaceAlias
      */
 
     public function execute()

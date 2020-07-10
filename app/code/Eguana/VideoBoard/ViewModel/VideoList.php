@@ -44,7 +44,7 @@ class VideoList implements ArgumentInterface
     /**
      * @var StoreManagerInterface
      */
-    public $storeManager;
+    private $storeManager;
 
     /**
      * @var Data
@@ -54,7 +54,7 @@ class VideoList implements ArgumentInterface
     /**
      * @var VideoBoardRepositoryInterface
      */
-    public $videoBoardRepository;
+    private $videoBoardRepository;
 
     /**
      * @var RequestInterface

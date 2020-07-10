@@ -15,9 +15,7 @@
             <item name="provider" xsi:type="string">addnew_form.addnew_form_data_source</item>
         </item>
         <item name="label" xsi:type="string" translate="true">New Video</item>
-        <item name="layout" xsi:type="array">
-            <item name="type" xsi:type="string">tabs</item>
-        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
     </argument>
 
     <settings>
@@ -51,7 +49,7 @@
         </dataProvider>
     </dataSource>
 
-    <fieldset name="video_information">
+    <fieldset name="general">
         <settings>
             <label translate="true">Video Information</label>
             <dataScope/>
@@ -121,7 +119,7 @@
             </argument>
             <settings>
                 <tooltip>
-                    <description translate="true">Video URLs can be links to videos on YouTube or Vimeo, or HTTP(S) links to files with valid video extensions (we recommend .mp4)</description>
+                    <description translate="true">Video URLs can be links to videos on YouTube or HTTP(S) links to files with valid video extensions (we recommend .mp4)</description>
                 </tooltip>
             </settings>
         </field>

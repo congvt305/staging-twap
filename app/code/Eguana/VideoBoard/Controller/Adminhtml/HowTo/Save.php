@@ -10,11 +10,16 @@
 namespace Eguana\VideoBoard\Controller\Adminhtml\HowTo;
 
 use Eguana\VideoBoard\Controller\Adminhtml\AbstractController;
+use Eguana\VideoBoard\Model\VideoBoard;
 use Eguana\VideoBoard\Model\VideoBoardFactory;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Backend\App\Action;
 use Magento\Framework\Registry;
+use Eguana\VideoBoard\Api\VideoBoardRepositoryInterface;
 
 /**
  * This class is used to save the video record data
@@ -24,25 +29,45 @@ use Magento\Framework\Registry;
  */
 class Save extends AbstractController
 {
+    /**
+     * Constant
+     */
     const URL_PATTERN = '/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i';
+
+    /**
+     * @var DataPersistorInterface
+     */
+    private $dataPersistor;
+
     /**
      * @var VideoBoardFactory
      */
     private $videoBoardFactory;
 
     /**
+     * @var VideoBoardRepositoryInterface
+     */
+    private $videoBoardRepository;
+
+    /**
      * Save constructor.
      * @param Registry $coreRegistry
      * @param Context $context
+     * @param DataPersistorInterface $dataPersistor
      * @param VideoBoardFactory $videoBoardFactory
+     * @param VideoBoardRepositoryInterface $videoBoardRepository
      */
     public function __construct(
         Context $context,
         Registry $coreRegistry,
+        DataPersistorInterface $dataPersistor,
         PageFactory $resultPageFactory,
-        VideoBoardFactory $videoBoardFactory
+        VideoBoardFactory $videoBoardFactory,
+        VideoBoardRepositoryInterface $videoBoardRepository
     ) {
+        $this->dataPersistor = $dataPersistor;
         $this->videoBoardFactory = $videoBoardFactory;
+        $this->videoBoardRepository = $videoBoardRepository;
         parent::__construct(
             $context,
             $coreRegistry,
@@ -53,35 +78,62 @@ class Save extends AbstractController
     /**
      * execute action
      * This action is used to save the video record
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
-     * @throws \Exception
+     * @return ResponseInterfaceAlias|ResultInterfaceAlias|void
      */
     public function execute()
     {
         $resultRedirect = $this->resultRedirectFactory->create();
-        $data = $this->getRequest()->getParam('video_information');
+        $data = $this->getRequest()->getPostValue();
         if ($data) {
-            if (isset($data['store_id'])) {
-                $data['store_id'] = implode(',', $data['store_id']);
+            $generalData = $data;
+            if (isset($generalData['active']) && $generalData['active'] === '1') {
+                $generalData['is_active'] = 1;
             }
+            if (empty($generalData['entity_id'])) {
+                $generalData['entity_id'] = null;
+            }
+            $id = $generalData['entity_id'];
+            /** @var VideoBoard $model */
             $model = $this->videoBoardFactory->create();
-            if (isset($data['thumbnail_image'])) {
-                $data['thumbnail_image'] = 'VideoBoard/' .
-                    $data['thumbnail_image'][0]['file'];
+            if ($id) {
+                try {
+                    $model = $this->videoBoardRepository->getById($id);
+                } catch (LocalizedException $e) {
+                    $this->messageManager
+                        ->addErrorMessage(__('This video no longer exists.'));
+                    return $this->processResultRedirect($model, $resultRedirect, $data);
+                }
             }
-            $data['video_url'] = preg_replace(
+            if (isset($generalData['thumbnail_image'])) {
+                $generalData['thumbnail_image'] = 'VideoBoard/' .
+                    $generalData['thumbnail_image'][0]['file'];
+            }
+            if (isset($generalData['store_id'])) {
+                $generalData['store_id'] = implode(',', $generalData['store_id']);
+            }
+            $generalData['video_url'] = preg_replace(
                 self::URL_PATTERN,
                 "https://www.youtube.com/embed/$2",
-                $data['video_url']
+                $generalData['video_url']
             );
-
-            $model->setUpdatedAt('');
-            $model->setData($data)->save();
-            $this->messageManager->addSuccess(__('Video has been successfully saved.'));
-        } else {
-            $this->messageManager->addError(__($e->getMessage()));
+            $model->setData($generalData);
+            try {
+                $model->setUpdatedAt('');
+                $this->videoBoardRepository->save($model);
+                $this->messageManager->addSuccessMessage(__('You saved the video.'));
+                return $this->processResultRedirect($model, $resultRedirect, $data);
+            } catch (LocalizedException $e) {
+                $this->messageManager->addErrorMessage($e->getMessage());
+            } catch (\Exception $e) {
+                $this->messageManager->addExceptionMessage(
+                    $e,
+                    __('Something went wrong while saving the video.')
+                );
+            }
+            $this->dataPersistor->set('eguana_video_board', $data);
+            return $this->processResultRedirect($model, $resultRedirect, $data);
         }
-        $this->_redirect('videoboard/howto/index');
+        return $this->processResultRedirect($model, $resultRedirect, $data);
     }
 
     /**
@@ -93,14 +145,12 @@ class Save extends AbstractController
     private function processResultRedirect($model, $resultRedirect, $data)
     {
         if ($this->getRequest()->getParam('back', false) === 'duplicate') {
-            $newVideoBoard = $this->videoBoardFactory->create()->create(['data' => $data]);
+            $newVideoBoard = $this->videoBoardFactory->create(['data' => $data]);
             $newVideoBoard->setId(null);
-            $identifier = $model->getUrlKey() . '-' . uniqid();
-            $newVideoBoard->setUrlKey($identifier);
             $newVideoBoard->setIsActive(false);
             $newVideoBoard->setStoreId($model->getStoreId());
             $newVideoBoard->setThumbnailImage($model->getThumbnailImage());
-            $this->videoBoardFactory->create()->save($newVideoBoard);
+            $this->videoBoardRepository->save($newVideoBoard);
             $this->messageManager->addSuccessMessage(__('You duplicated the Video.'));
             return $resultRedirect->setPath(
                 '*/*/edit',
@@ -110,6 +160,7 @@ class Save extends AbstractController
                 ]
             );
         }
+        $this->dataPersistor->clear('eguana_video_board');
         if ($this->getRequest()->getParam('back', false) === 'continue') {
             return $resultRedirect->setPath('*/*/edit', ['entity_id' => $model->getId(), '_current' => true]);
         }
