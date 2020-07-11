@@ -1,11 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * @author Eguana Commerce Kevin
- * @copyright Copyright (c) 2017 Eguana Commerce
- * @package Eguana_CustomerCancelOrder
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="sales.order.info.buttons">
@@ -18,16 +11,9 @@
             <block class="Magento\Sales\Block\Order\Info\Buttons" name="eguana.customer.refund.offline.button" ifconfig="eguana_cutomerrefund/general/enabled"
                    template="Eguana_CustomerRefund::refund/offline/button.phtml" cacheable="false">
                 <arguments>
-                    <argument name="refund_offline_view_model" xsi:type="object">\Eguana\CustomerRefund\ViewModel\Refund</argument>
+                    <argument name="refund_offline_view_model" xsi:type="object">Eguana\CustomerRefund\ViewModel\Refund</argument>
                 </arguments>
             </block>
         </referenceBlock>
-<!--        <referenceContainer name="content">-->
-<!--            <block name="refund.bankinfo.popup" template="Eguana_CustomerCancelOrder::order/refund/refund-popup.phtml">-->
-<!--                <arguments>-->
-<!--                    <argument name="popup_view_model" xsi:type="object">Eguana\CustomerCancelOrder\ViewModel\OrderCancelRefundButton</argument>-->
-<!--                </arguments>-->
-<!--            </block>-->
-<!--        </referenceContainer>-->
     </body>
 </page>
