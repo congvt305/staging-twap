@@ -27,17 +27,17 @@ class VideoDetail implements ArgumentInterface
     /**
      * @var FilterProvider
      */
-    public $filterProvider;
+    private $filterProvider;
 
     /**
      * @var StoreManagerInterface
      */
-    public $storeManager;
+    private $storeManager;
 
     /**
      * @var VideoBoardRepositoryInterface
      */
-    public $videoBoardRepository;
+    private $videoBoardRepository;
 
     /**
      * @var Http
@@ -69,7 +69,7 @@ class VideoDetail implements ArgumentInterface
      *
      * @return mixed
      */
-    public function getVideoBoardId()
+    private function getVideoBoardId()
     {
         return $this->request->getParam('id');
     }

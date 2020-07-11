@@ -28,7 +28,7 @@ class Thumbnail extends Column
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    private $storeManager;
 
     /**
      * @param ContextInterface $context

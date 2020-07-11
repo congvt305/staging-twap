@@ -35,7 +35,7 @@ class View extends Template
     /**
      * @var VideoBoardRepositoryInterface
      */
-    public $videoBoardRepository;
+    private $videoBoardRepository;
 
     /**
      * @var RequestInterface

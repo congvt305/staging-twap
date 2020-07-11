@@ -41,7 +41,7 @@ class UploadImage extends ActionAlias
      */
     public function execute()
     {
-        $result = $this->imageUploader->saveImageToMediaFolder('video_information[thumbnail_image]');
+        $result = $this->imageUploader->saveImageToMediaFolder('thumbnail_image');
         return $this->resultFactory->create(ResultFactory::TYPE_JSON)->setData($result);
     }
 }

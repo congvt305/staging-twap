@@ -1,0 +1,52 @@
+Back,Back
+"Delete Video","Delete Video"
+"Are you sure you want to do this?","Are you sure you want to do this?"
+Save,Save
+"Save & Duplicate","Save & Duplicate"
+"Save & Close","Save & Close"
+Home,Home
+"Go to Home Page","Go to Home Page"
+Brand,Brand
+"How To","How To"
+"How to","How to"
+Video,Video
+HowTo,HowTo
+"Manage Video Board","Manage Video Board"
+"Video was successfully deleted","Video was successfully deleted"
+"Video could not be deleted","Video could not be deleted"
+"This video no longer exists.","This video no longer exists."
+"Edit Video","Edit Video"
+"New Video","New Video"
+Videos,Videos
+"A total of %1 video(s) have been deleted.","A total of %1 video(s) have been deleted."
+"You saved the video.","You saved the video."
+"Something went wrong while saving the video.","Something went wrong while saving the video."
+"You duplicated the Video.","You duplicated the Video."
+Ascending,Ascending
+Descending,Descending
+Enabled,Enabled
+Disabled,Disabled
+Edit,Edit
+Delete,Delete
+"Delete ""${ $.$data.video_title }""","Delete ""${ $.$data.video_title }"""
+"Are you sure you wan't to delete a ""${ $.$data.video_title }"" record?","Are you sure you wan't to delete a ""${ $.$data.video_title }"" record?"
+"Thumbnail Image","Thumbnail Image"
+"No video found!.","No video found!."
+More,More
+"Video Board","Video Board"
+General,General
+"Video Board top banner Id","Video Board top banner Id"
+"Video sort type","Video sort type"
+"Video Information","Video Information"
+"Enable Video","Enable Video"
+"Video URLs can be links to videos on YouTube or HTTP(S) links to files with valid video extensions (we recommend .mp4)","Video URLs can be links to videos on YouTube or HTTP(S) links to files with valid video extensions (we recommend .mp4)"
+"Store View","Store View"
+Description,Description
+"Add New Video","Add New Video"
+ID,ID
+"Video Title","Video Title"
+"Video URL","Video URL"
+Status,Status
+Thumbnail,Thumbnail
+Created,Created
+Modified,Modified

@@ -12,7 +12,9 @@ namespace Eguana\VideoBoard\Controller\Index;
 
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\View\Result\Page as PageAlias;
 use Magento\Framework\View\Result\PageFactory;
 
@@ -51,7 +53,7 @@ class AjaxCall extends Action
     }
     /**
      * This method is used to load layout and render information
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @return ResponseInterfaceAlias|ResultInterfaceAlias|void
      */
     public function execute()
     {

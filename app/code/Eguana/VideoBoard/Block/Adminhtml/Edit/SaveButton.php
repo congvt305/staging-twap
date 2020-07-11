@@ -45,6 +45,63 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
                     ]
                 ]
             ],
+            'class_name' => Container::SPLIT_BUTTON,
+            'options' => $this->getOptions(),
         ];
+    }
+    /**
+     * Retrieve options
+     *
+     * @return array
+     */
+    private function getOptions()
+    {
+        $options = [
+            [
+                'label' => __('Save & Duplicate'),
+                'id_hard' => 'save_and_duplicate',
+                'data_attribute' => [
+                    'mage-init' => [
+                        'buttonAdapter' => [
+                            'actions' => [
+                                [
+                                    'targetName' => 'addnew_form.addnew_form',
+                                    'actionName' => 'save',
+                                    'params' => [
+                                        true,
+                                        [
+                                            'back' => 'duplicate'
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'id_hard' => 'save_and_close',
+                'label' => __('Save & Close'),
+                'data_attribute' => [
+                    'mage-init' => [
+                        'buttonAdapter' => [
+                            'actions' => [
+                                [
+                                    'targetName' => 'addnew_form.addnew_form',
+                                    'actionName' => 'save',
+                                    'params' => [
+                                        true,
+                                        [
+                                            'back' => 'close'
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        return $options;
     }
 }

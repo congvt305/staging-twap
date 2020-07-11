@@ -16,6 +16,10 @@ use Magento\Framework\AuthorizationInterface;
 use Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider as DataProviderAlias;
 use Magento\Framework\View\Element\UiComponent\DataProvider\Reporting;
 
+/**
+ * This class is used to provide data for UI
+ * Class DataProvider
+ */
 class DataProvider extends DataProviderAlias
 {
     /**
