@@ -85,7 +85,7 @@ Navigate to **Stores ⇾ Configuration** and the module **Curstomer Registration
 1. Navigate to **Stores ⇾ Configuration** and click on **Curstomer Registration** under Amore tab in the left panel.
 
  
-![Configuration](https://i.ibb.co/QNjThcs/Customer-Registration-Configuration.png)
+![Configuration](https://i.ibb.co/LhzJND2/Customer-Registration-Configuration.png)
 
 **Frontend Registration Step 1**
 
@@ -114,13 +114,14 @@ above images frontend registration Step 1 & Step 2. Else you will see the defaul
 1. Newsletter Policy CMS Block: Here user will add the news letter privacy policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-13 part**
 1. SMS Policy CMS Block: Here user will add the SMS privacy policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-15 part**
 1. DM Policy CMS Block: Here user will add the DM privacy policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-17 part**
+1. SMS Verification Enable: Here user admin can enable disable SMS verification. In case sms verification is disabled then during SMS verification 1234 will be the verification code.
 
 
  **Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System**
  
 1. Base URL: Base URL of the POS system.
 1. Member Information: URI from where system can get the memerbship information of POS members 
-1. Member Join: URI from where system can send the memerbship information of Magento customers when they will join the system
+1. Member Join: URI from where system can send the memerbship information of Magento customers when they will join or update in the system
 1. Sales Organization Code: It is a code to recognize the site for sales organization. Such as TW10 for Laneige Taiwan, TW20 for Sulwhasso Taiwan, SG10 for Laneige Singapore, SG20 for Sulwhasso Singapore and similarly ID10,ID20 for Indonesia. 
 It will assign to all customer who register to that particulat site. You can see this information after customer registration from admin in his account information.
 1. Sales Office Code: It is a code to recognize the site for sales office. Such as TW10 for Laneige Taiwan, TW20 for Sulwhasso Taiwan, SG10 for Laneige Singapore, SG20 for Sulwhasso Singapore and similarly ID10,ID20 for Indonesia
