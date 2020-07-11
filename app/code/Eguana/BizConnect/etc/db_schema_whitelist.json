@@ -1,0 +1,33 @@
+{
+    "eguana_bizconnect_logged_operation": {
+        "column": {
+            "id": true,
+            "status": true,
+            "topic_name": true,
+            "serialized_data": true,
+            "start_time": true,
+            "direction": true,
+            "to": true,
+            "store_id": true
+        },
+        "index": {
+            "EGUANA_BIZCONNECT_LOGGED_OPERATION_STORE_ID_STATUS_DIRECTION": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "EGUANA_BIZCONNECT_LOGGED_OPERATION_STORE_ID_STORE_STORE_ID": true
+        }
+    },
+    "eguana_bizconnect_logged_operation_log": {
+        "column": {
+            "id": true,
+            "result_message": true,
+            "logged_at": true,
+            "operation_id": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_64914344E45CB387CFE550EB6E230FBC": true
+        }
+    }
+}

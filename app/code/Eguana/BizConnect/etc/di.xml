@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Eguana\BizConnect\Model\LoggedOperation\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">eguana_bizconnect_logged_operation</argument>
+            <argument name="eventPrefix" xsi:type="string">eguana_bizconnect_logged_operation_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">eguana_bizconnect_logged_operation_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Eguana\BizConnect\Model\ResourceModel\LoggedOperation
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="eguana_bizconnect_operationlog_listing_data_source" xsi:type="string">Eguana\BizConnect\Model\LoggedOperation\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="logTestCommand" xsi:type="object">Eguana\BizConnect\Console\Command\LogTestCommand</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Sales\Model\Order\StateResolver">
+        <plugin name="eguana_bizconnect_add_inprogress_state"
+                type="\Eguana\BizConnect\Plugin\Order\StateResolver\InProgressStatePlugin"
+                disabled="true"/>
+    </type>
+</config>
