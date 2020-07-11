@@ -27,12 +27,12 @@ class MassDelete extends Action
     /**
      * @var Filter
      */
-    protected $filter;
+    private $filter;
 
     /**
      * @var CollectionFactory
      */
-    protected $collectionFactory;
+    private $collectionFactory;
 
     /**
      * @param Context $context

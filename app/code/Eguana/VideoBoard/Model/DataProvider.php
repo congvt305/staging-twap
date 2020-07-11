@@ -94,7 +94,7 @@ class DataProvider extends AbstractDataProvider
                 ];
                 $video->setData('thumbnail_image', [$thumbnailImage]);
             }
-            $this->loadedData[$video->getId()]['video_information'] = $video->getData();
+            $this->loadedData[$video->getId()] = $video->getData();
         }
         $data = $this->dataPersistor->get('eguana_video_board');
         if (!empty($data)) {

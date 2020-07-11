@@ -44,8 +44,6 @@ class Collection extends HowToCollection implements SearchResultInterface
      * @param string $model
      * @param AdapterInterface|string|null $connection
      * @param AbstractDb $resource
-     *
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         EntityFactoryInterface $entityFactory,
@@ -106,7 +104,6 @@ class Collection extends HowToCollection implements SearchResultInterface
      *
      * @param SearchCriteriaInterface $searchCriteria
      * @return $this
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function setSearchCriteria(SearchCriteriaInterface $searchCriteria = null)
     {
@@ -128,7 +125,6 @@ class Collection extends HowToCollection implements SearchResultInterface
      *
      * @param int $totalCount
      * @return $this
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function setTotalCount($totalCount)
     {
@@ -137,10 +133,8 @@ class Collection extends HowToCollection implements SearchResultInterface
 
     /**
      * Set items list.
-     *
-     * @param \Magento\Framework\Api\ExtensibleDataInterface[] $items
-     * @return $this
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @param array|null $items
+     * @return $this|Collection|SearchResultInterface
      */
     public function setItems(array $items = null)
     {

@@ -157,13 +157,15 @@ For FAQ delete and edit, go in the last column of Grid **Action** click the **se
  
  (2) Search button.
  
+ **Showing Criteria**
+ 
  ![config-cat](https://nimbus-screenshots.s3.amazonaws.com/s/61d4bf1f1aaffd6b069d4caaf435e3cc.png)
  
- (3) This is the category which were added by admin in the general configuration section.
+ (3) This is the category which were added by admin in the general configuration section. And there must be atleast one category. That one category will be shown in two store view in admin panel.
+     And on front end it will be displayed based on which store's category selected when adding FAQ from Admin panel. 
  
  ![answer](https://nimbus-screenshots.s3.amazonaws.com/s/fd56e206793fe5018bdf3365df4b75f8.png)
  
  (4) This is the FAQ title which were added by admin in add new faq section. By clicking on this title it will opens the description area in which asked question's answer will be available which were explained by admin.
  
  (5) Description area.
- 

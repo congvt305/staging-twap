@@ -32,23 +32,23 @@ abstract class AbstractUpload extends Action
      *
      * @var UploaderFactory $imageUploader
      */
-    protected $imageUploader;
+    private $imageUploader;
 
     /**
      * @var string
      */
-    protected $imagePath = 'VideoBoard';
+    private $imagePath = 'VideoBoard';
     /**
      * Directory List
      *
      * @var DirectoryList $_directoryList
      */
-    protected $_directoryList;
+    private $_directoryList;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $_storeManager;
+    private $_storeManager;
 
     /**
      * Upload constructor.

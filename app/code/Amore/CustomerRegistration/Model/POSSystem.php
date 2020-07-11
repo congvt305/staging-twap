@@ -14,16 +14,12 @@ use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Amore\CustomerRegistration\Helper\Data;
 use Magento\Customer\Model\Data\Customer;
-use Magento\Newsletter\Model\SubscriberFactory;
-use Magento\Newsletter\Model\Subscriber;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientFactory;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ResponseFactory;
 use Magento\Framework\Webapi\Rest\Request;
-use Magento\Customer\Api\CustomerRepositoryInterface;
-use Amore\CustomerRegistration\Model\Sequence;
 use Amore\CustomerRegistration\Model\POSLogger;
 use Magento\Framework\Serialize\Serializer\Json;
 
@@ -43,18 +39,7 @@ class POSSystem
      * @var Data
      */
     private $config;
-    /**
-     * @var SubscriberFactory
-     */
-    private $subscriberFactory;
-    /**
-     * @var CustomerRepositoryInterface
-     */
-    private $customerRepository;
-    /**
-     * @var \Amore\CustomerRegistration\Model\Sequence
-     */
-    private $sequence;
+
     /**
      * @var Curl
      */
@@ -79,10 +64,7 @@ class POSSystem
     public function __construct(
         Curl $curl,
         Data $config,
-        SubscriberFactory $subscriberFactory,
-        CustomerRepositoryInterface $customerRepository,
         DateTime $date,
-        Sequence $sequence,
         \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory,
         \Zend\Http\Client $zendClient,
         POSLogger $logger,
@@ -90,9 +72,6 @@ class POSSystem
     ) {
         $this->date = $date;
         $this->config = $config;
-        $this->subscriberFactory = $subscriberFactory;
-        $this->customerRepository = $customerRepository;
-        $this->sequence = $sequence;
         $this->curlClient = $curl;
         $this->httpClientFactory = $httpClientFactory;
         $this->zendClient = $zendClient;
@@ -177,72 +156,16 @@ class POSSystem
      * It will call the POS API join
      * Whenever customer will update or register this function will call and it will sync with the POS system
      *
-     * @param Customer $customer
-     * @param string   $action
+     * @param Array $parameters
      */
-    public function syncMember($customer, $action)
+    public function syncMember($parameters)
     {
         try {
-            $customer = $this->assignIntegrationNumber($customer);
-            $parameters = [];
-            $parameters['cstmIntgSeq'] = $customer->getCustomAttribute('integration_number')->getValue();
-            $parameters['if_flag'] = 'I';
-            $parameters['firstName'] = $customer->getFirstname();
-            $parameters['lastName'] = $customer->getLastname();
-            $parameters['birthDay'] = $customer->getDob()?$customer->getDob():'';
-            $parameters['mobileNo'] = $customer->getCustomAttribute('mobile_number')->getValue();
-            $parameters['email'] = $customer->getEmail();
-            $parameters['sex'] = $customer->getGender() == '1' ? 'M' : 'F';
-            $parameters['emailYN'] = $this->isCustomerSubscribToNewsLetters($customer->getId()) ? 'Y' : 'N';
-            $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y':'N';
-            $parameters['callYN'] = 'N';
-            $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-            $parameters['homeCity'] = $customer->getCustomAttribute('dm_city')?
-                $customer->getCustomAttribute('dm_city')->getValue():'';
-            $parameters['homeState'] = $customer->getCustomAttribute('dm_state')?
-                $customer->getCustomAttribute('dm_state')->getValue():'';
-            $parameters['homeAddr1'] = $customer->getCustomAttribute('dm_detailed_address')?
-                $customer->getCustomAttribute('dm_detailed_address')->getValue():'';
-            $parameters['homeZip'] = $customer->getCustomAttribute('dm_zipcode')?
-                $customer->getCustomAttribute('dm_zipcode')->getValue():'';
-            $parameters['salOrgCd'] =  $customer->getCustomAttribute('sales_organization_code')?
-                $customer->getCustomAttribute('sales_organization_code')->getValue():'';
-            $parameters['salOffCd'] = $customer->getCustomAttribute('sales_office_code')?
-                $customer->getCustomAttribute('sales_office_code')->getValue():'';
-            $parameters['prtnrid'] = $customer->getCustomAttribute('partner_id')?
-                $customer->getCustomAttribute('partner_id')->getValue():'';
-            $parameters['statusCD'] = $action == 'register' ? '01' : '02';
-
             $response = $this->callJoinAPI($parameters);
-            $this->savePOSSyncReport($customer, $response);
+            //$this->savePOSSyncReport($parameters, $response);
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
             return $e->getMessage();
-        }
-    }
-
-    private function assignIntegrationNumber($customer)
-    {
-        try {
-            $posOrOnline = 'online';
-            if ($customer->getCustomAttribute('referrer_code')) {
-                $posOrOnline = 'pos';
-            }
-            if ($posOrOnline == 'online') {
-                $posOrOnline = $customer->getCustomAttribute('imported_from_pos')->getValue() == 1 ? 'pos' : 'online';
-            }
-
-            $this->sequence->setCustomerType($posOrOnline);
-            $secquenceNumber = $this->sequence->getNextValue();
-            $customer->setCustomAttribute('integration_number', $secquenceNumber);
-            $customer->setCustomAttribute('sales_organization_code', $this->config->getOrganizationSalesCode());
-            $customer->setCustomAttribute('sales_office_code', $this->config->getOfficeSalesCode());
-            $customer->setCustomAttribute('partner_id', $this->config->getPartnerId());
-            return $this->customerRepository->save($customer);
-        } catch (\Exception $e) {
-            $e->getMessage();
-            $this->logger->addExceptionMessage($e->getMessage());
-            return $customer;
         }
     }
 
@@ -305,34 +228,16 @@ class POSSystem
     }
 
     /**
-     * To check whether customer is subscribed to the news letters or not
-     *
-     * @param int $customerId
-     *
-     * @return bool
-     */
-    private function isCustomerSubscribToNewsLetters($customerId)
-    {
-        /**
-         * @var Subscriber $subscriber
-         */
-        $subscriber = $this->subscriberFactory->create();
-        $status = $subscriber->loadByCustomerId((int)$customerId)->isSubscribed();
-
-        return (bool)$status;
-    }
-
-    /**
      * To save the POS API response with the customer
      *
-     * @param Customer $customer
+     * @param Array $parameters
      * @param $syncResult
      */
-    private function savePOSSyncReport($customer, $syncResult)
+    private function savePOSSyncReport($parameters, $syncResult)
     {
-        $customer->setCustomAttribute('pos_synced_report', $syncResult['message']);
-        $customer->setCustomAttribute('pos_synced_successfully', $syncResult['status']);
-        $this->customerRepository->save($customer);
+        //$customer->setCustomAttribute('pos_synced_report', $syncResult['message']);
+        //$customer->setCustomAttribute('pos_synced_successfully', $syncResult['status']);
+        //$this->customerRepository->save($customer);
     }
 
 }
