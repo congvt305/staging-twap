@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd" component="Magento_Customer/js/form/components/form">
+    <fieldset name="general">
+        <field name="city_id" component="Eguana_Directory/js/form/element/city" formElement="select">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">City/District</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <filterBy>
+                            <field>region_id</field>
+                            <target>${ $.provider }:${ $.parentScope }.region_id</target>
+                        </filterBy>
+                        <customEntry>region</customEntry>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+    </fieldset>
+</form>
