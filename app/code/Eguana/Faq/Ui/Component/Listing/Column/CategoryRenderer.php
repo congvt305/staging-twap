@@ -14,6 +14,7 @@ use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 use Eguana\Faq\Model\Source\Category as CategoryOption;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class CategoryRenderer
@@ -22,6 +23,13 @@ use Eguana\Faq\Model\Source\Category as CategoryOption;
  */
 class CategoryRenderer extends Column
 {
+    /**
+     * Store manager
+     *
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
     /**
      * @var Escaper
      */
@@ -33,6 +41,7 @@ class CategoryRenderer extends Column
 
     /**
      * CategoryRenderer constructor.
+     * @param StoreManagerInterface $storeManager
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
      * @param Escaper $escaper
@@ -41,6 +50,7 @@ class CategoryRenderer extends Column
      * @param array $data
      */
     public function __construct(
+        StoreManagerInterface $storeManager,
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
         Escaper $escaper,
@@ -48,9 +58,10 @@ class CategoryRenderer extends Column
         array $components = [],
         array $data = []
     ) {
-        parent::__construct($context, $uiComponentFactory, $components, $data);
+        $this->storeManager = $storeManager;
         $this->escaper = $escaper;
         $this->categoryOption = $categoryOption;
+        parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
     /**
@@ -59,6 +70,7 @@ class CategoryRenderer extends Column
      */
     public function prepareDataSource(array $dataSource)
     {
+
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 $name = $this->getData('name');
@@ -77,8 +89,8 @@ class CategoryRenderer extends Column
     public function prepareItem(array $dataSource)
     {
         $categories = $this->categoryOption->toOptionArray();
-
-        $label = $categories[$dataSource['store_id'][0]]['label'];
+        $storeId = (int)$dataSource['category'][0];
+        $label = $this->storeManager->getStore($storeId)->getName();
         $content = $label . "<br/>";
 
         $storeCategoryList = $categories[$dataSource['store_id'][0]];
