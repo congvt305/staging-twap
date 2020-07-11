@@ -19,7 +19,6 @@ use Magento\Ui\Component\Listing\Columns\Column;
  * This class is used for edit and delete actions functionality
  *
  * Class VideoBoardActions
- * Eguana\VideoBoard\Ui\Component\Listing\Column
  */
 class VideoBoardActions extends Column
 {

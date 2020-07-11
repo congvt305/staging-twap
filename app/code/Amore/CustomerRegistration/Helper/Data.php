@@ -38,6 +38,8 @@ class Data extends AbstractHelper
         = 'customerregistraion/general/sms_policy_cms_block';
     const DM_POLICY_CMS_BLOCK
         = 'customerregistraion/general/dm_policy_cms_block';
+    const SMS_VERIFICATION_ENABLE
+        = 'customerregistraion/general/sms_verification_enable';
     const POS_BASE_URL
         = 'customerregistraion/pos/base_url';
     const POS_MEMBER_INFO_URL
@@ -176,6 +178,19 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::DM_POLICY_CMS_BLOCK,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
+     * Get whether SMS verification is enabled on the website or not
+     *
+     * @return mixed
+     */
+    public function getSMSVerificationEnable()
+    {
+        return $this->scopeConfig->getValue(
+            self::SMS_VERIFICATION_ENABLE,
             ScopeInterface::SCOPE_WEBSITE
         );
     }

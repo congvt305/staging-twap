@@ -21,8 +21,8 @@
         <column xsi:type="varchar" name="store_id" nullable="false" comment="Store ID"/>
         <column xsi:type="smallint" name="is_active" padding="5" unsigned="true" nullable="false" identity="false"
                 default="1" comment="Visibility status 1 for Enable and 0 for Disable"/>
-        <column xsi:type="timestamp" name="created_at" on_update="false" comment="Created at" default="CURRENT_TIMESTAMP"/>
-        <column xsi:type="timestamp" name="updated_at" on_update="true" comment="Updated at" default="CURRENT_TIMESTAMP"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" comment="Created at" default="CURRENT_TIMESTAMP"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" comment="Updated at" default="CURRENT_TIMESTAMP"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
         </constraint>

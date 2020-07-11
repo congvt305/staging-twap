@@ -32,6 +32,11 @@
                     <argument name="view_model" xsi:type="object">Magento\Store\ViewModel\SwitcherUrlProvider</argument>
                 </arguments>
             </block>
+            <block class="Magento\Cms\Block\Block" name="footer_language_select_links">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">select-language</argument>
+                </arguments>
+            </block>
         </referenceContainer>
         <referenceContainer name="page.bottom">
             <block class="Magento\Framework\View\Element\Text" name="back">

@@ -10,6 +10,9 @@
 namespace Eguana\VideoBoard\Controller\Adminhtml\HowTo;
 
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
+use Magento\Framework\Controller\Result\Redirect as RedirectAlias;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\View\Result\PageFactory;
 use Eguana\VideoBoard\Api\VideoBoardRepositoryInterface;
 use Magento\Backend\App\Action\Context;
@@ -93,8 +96,7 @@ class Edit extends Action implements HttpGetActionInterface
 
     /**
      * Edit CMS page
-     * @return Page|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @return Page|ResponseInterfaceAlias|RedirectAlias|ResultInterfaceAlias
      */
     public function execute()
     {
