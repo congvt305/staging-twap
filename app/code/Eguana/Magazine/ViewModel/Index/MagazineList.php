@@ -217,6 +217,7 @@ class MagazineList implements ArgumentInterface
             $magazine['thumbnail_image'] =  $nextMonthsMagazineFrontPage->getData('thumbnail_image');
             $magazine['thumbnail_alt'] =  $nextMonthsMagazineFrontPage->getData('thumbnail_alt');
             $magazine['content_short'] =  $nextMonthsMagazineFrontPage->getData('content_short');
+            $magazine['title'] =  $nextMonthsMagazineFrontPage->getData('title');
             $magazine['monthly_url'] =  $this->getMonthlyMagazineUrl(
                 $nextMonthsMagazineFrontPage->getData('show_date')
             );
@@ -227,6 +228,7 @@ class MagazineList implements ArgumentInterface
             $magazine['thumbnail_image'] =  $previousMonthsMagazineFrontPage->getData('thumbnail_image');
             $magazine['thumbnail_alt'] =  $previousMonthsMagazineFrontPage->getData('thumbnail_alt');
             $magazine['content_short'] =  $previousMonthsMagazineFrontPage->getData('content_short');
+            $magazine['title'] =  $previousMonthsMagazineFrontPage->getData('title');
             $magazine['monthly_url'] =  $this->getMonthlyMagazineUrl(
                 $previousMonthsMagazineFrontPage->getData('show_date')
             );
