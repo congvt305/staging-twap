@@ -35,9 +35,9 @@ class Refund implements ArgumentInterface
         return $this->refundModel->canRefundOnline($order);
     }
 
-    public function canShowRefundOfflineButton()
+    public function canShowRefundOfflineButton($order)
     {
-
+        return $this->refundModel->canRefundOffline($order);
     }
 
 }

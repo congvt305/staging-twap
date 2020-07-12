@@ -6,7 +6,6 @@ define([
 ], function ($, confirmation, refundAction, $t) {
     'use strict'
     return function (config, element) {
-        console.log(config);
         $(element).click(function (event) {
             confirmation({
                 title: $t('Refund Order Confirmation'),

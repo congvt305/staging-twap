@@ -9,7 +9,6 @@
 namespace Eguana\CustomerRefund\Model;
 
 use Eguana\CustomerRefund\Api\RefundOnlineManagementInterface;
-use Exception;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Sales\Api\Data\CreditmemoItemCreationInterfaceFactory;
@@ -53,6 +52,10 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
      * @var CreditmemoItemCreationInterfaceFactory
      */
     private $creditmemoItemFactory;
+    /**
+     * @var \Magento\Framework\Message\ManagerInterface
+     */
+    private $messageManager;
 
     public function __construct(
         OrderRepositoryInterface $orderRepository,
@@ -60,6 +63,7 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
         SearchCriteriaBuilder $searchCriteriaBuilder,
         CreditmemoItemCreationInterfaceFactory $creditmemoItemFactory,
         RefundInvoiceInterface $refundInvoice,
+        \Magento\Framework\Message\ManagerInterface $messageManager,
         RefundOrderInterface $refundOrder, // for offline creditmemo like checkmo todo: remove after test
         LoggerInterface $logger
     ) {
@@ -70,6 +74,7 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
         $this->invoiceRepository = $invoiceRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->creditmemoItemFactory = $creditmemoItemFactory;
+        $this->messageManager = $messageManager;
     }
 
 
@@ -84,8 +89,10 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
             $order = $this->orderRepository->get($orderId);
             $this->cancelLogisticOrder($order);
             $this->refund($order);
-        } catch (Exception $e) {
-            throw new CouldNotSaveException(__('Unable to save creditmemo.'), $e);
+            $this->messageManager->addSuccessMessage(__('You Refunded the order'));
+        } catch (\Exception $e) {
+            $this->messageManager->addErrorMessage(__('Something is wrong with refund. Please contact our customer service.'));
+//            throw new CouldNotSaveException(__('Unable to save creditmemo.'), $e);
         }
         return true;
     }
