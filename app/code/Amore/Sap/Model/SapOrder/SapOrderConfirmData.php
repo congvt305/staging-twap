@@ -204,7 +204,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'payde' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
                 'paytm' => $this->dateFormatting($invoice->getCreatedAt(), 'His'),
                 'auart' => $this->getOrderType($orderData->getEntityId()),
-                'aurgu' => self::NORMAL_ORDER,
+                'aurgu' => 'ORDER REASON',
                 'augruText' => 'ORDER REASON TEXT',
                 // 주문자회원코드-직영몰자체코드
                 'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
