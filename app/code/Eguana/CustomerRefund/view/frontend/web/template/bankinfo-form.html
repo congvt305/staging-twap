@@ -1,0 +1,41 @@
+<form data-role="bankinfo-form"
+      method="post">
+    <div class="fieldset"
+         data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+        <div class="field field-bank-name required">
+            <label for="bank-name" class="label"><span data-bind="i18n: 'Bank Name'"></span></label>
+            <div class="control">
+                <input type="text"
+                       class="input-text"
+                       id="bank-name"
+                       name="bank-name"
+                       data-bind="value: value().bank_name"
+                       data-validate="{required:true}"
+                       autocomplete="off"/>
+            </div>
+        </div>
+        <div class="field field-name required">
+            <label class="label" for="account-owner-name"><span data-bind="i18n: 'Account Owner Name'"></span></label>
+            <div class="control">
+                <input type="text"
+                       class="input-text"
+                       id="account-owner-name"
+                       name="account-owner-name"
+                       data-bind="value: value().account_owner_name"
+                       data-validate="{required:true}" />
+            </div>
+        </div>
+        <div class="field field-bank-account-number required">
+            <label for="bank-account-number" class="label"><span data-bind="i18n: 'Bank Account Number'"></span></label>
+            <div class="control">
+                <input type="text"
+                       class="input-text"
+                       id="bank-account-number"
+                       name="bank-account-number"
+                       data-bind="value: value().bank_account_number"
+                       data-validate="{required:true}"
+                       autocomplete="off"/>
+            </div>
+        </div>
+    </div>
+</form>

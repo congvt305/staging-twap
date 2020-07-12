@@ -11,10 +11,11 @@ namespace Eguana\CustomerRefund\Api;
 
 interface RefundOfflineManagementInterface
 {
+    const STATUS_PENDING_REFUND = 'pending_refund';
     /**
-     * @param string $orderId
+     * @param \Eguana\CustomerRefund\Api\Data\BankInfoDataInterface $bankInfoData
      * @return bool
      */
-    public function process(string $orderId):bool;
+    public function process(\Eguana\CustomerRefund\Api\Data\BankInfoDataInterface $bankInfoData):bool;
 
 }
