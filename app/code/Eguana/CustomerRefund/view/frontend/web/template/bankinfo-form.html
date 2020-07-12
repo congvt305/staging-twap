@@ -2,14 +2,14 @@
       method="post">
     <div class="fieldset"
          data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
-        <div class="field field-bankname required">
-            <label for="bankname" class="label"><span data-bind="i18n: 'Bank Name'"></span></label>
+        <div class="field field-bank-name required">
+            <label for="bank-name" class="label"><span data-bind="i18n: 'Bank Name'"></span></label>
             <div class="control">
                 <input type="text"
                        class="input-text"
-                       id="bankname"
-                       name="bankname"
-                       data-bind="value: value().bankname"
+                       id="bank-name"
+                       name="bank-name"
+                       data-bind="value: value().bank_name"
                        data-validate="{required:true}"
                        autocomplete="off"/>
             </div>

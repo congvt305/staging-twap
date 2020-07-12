@@ -98,9 +98,9 @@ define([
         },
 
         refund: function () {
-            var data = _.extend(this.getValues(), {'order_id': this.orderId});
+            var bankInfoData = _.extend(this.getValues(), {'order_id': this.orderId});
             $('body').trigger('processStart');
-            refundAction(data);
+            refundAction(bankInfoData);
         },
 
     });
