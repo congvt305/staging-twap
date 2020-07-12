@@ -27,6 +27,7 @@ define([
                 console.log(response);
                 $('body').trigger('processStop');
                 location.reload();
+
             }
         ).fail(
             function () {

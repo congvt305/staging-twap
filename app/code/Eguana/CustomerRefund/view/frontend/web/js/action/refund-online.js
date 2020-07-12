@@ -25,8 +25,8 @@ define([
         ).done(
             function (response) {
                 console.log(response);
-                $('body').trigger('processStop');
                 location.reload();
+                $('body').trigger('processStop');
             }
         ).fail(
             function () {
