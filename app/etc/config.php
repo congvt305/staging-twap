@@ -403,7 +403,7 @@ return [
         'Magento_SalesRuleStaging' => 1,
         'Magento_BannerPageBuilder' => 1,
         'Magento_SalesAnalytics' => 1,
-        'Magento_Signifyd' => 1,
+        'Magento_Signifyd' => 0,
         'Magento_SalesGraphQl' => 1,
         'Magento_SalesInventory' => 1,
         'Magento_CatalogRuleStaging' => 1,

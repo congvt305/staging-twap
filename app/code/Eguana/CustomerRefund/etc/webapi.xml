@@ -7,4 +7,10 @@
             <resource ref="self"/>
         </resources>
     </route>
+    <route method="POST" url="/V1/eguana_customerrefund/mine/refund/offline">
+        <service class="Eguana\CustomerRefund\Api\RefundOfflineManagementInterface" method="process"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
 </routes>

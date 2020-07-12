@@ -1,0 +1,21 @@
+{
+    "eguana_customerrefund_bankinfo": {
+        "column": {
+            "bankinfo_id": true,
+            "bank_name": true,
+            "account_owner_name": true,
+            "bank_account_number": true,
+            "order_id": true,
+            "is_used": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "EGUANA_CUSTOMERREFUND_BANKINFO_ORDER_ID_IS_USED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "EGUANA_CUSTOMERREFUND_BANKINFO_ORDER_ID_SALES_ORDER_ENTITY_ID": true
+        }
+    }
+}

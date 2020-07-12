@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="eguana_customerrefund_bankinfo" resource="default" engine="innodb"
+           comment="Customer Bank Info Entity">
+        <column xsi:type="int" name="bankinfo_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Bank Info Id"/>
+        <column xsi:type="varchar" name="bank_name" nullable="true" length="128"
+                comment="Bank Name"/>
+        <column xsi:type="varchar" name="account_owner_name" nullable="true" length="128"
+                comment="Account Owner Name"/>
+        <column xsi:type="varchar" name="bank_account_number" nullable="true" length="128"
+                comment="Bank Account Number"/>
+        <column xsi:type="int" name="order_id" padding="10" unsigned="true" nullable="true" identity="false"
+                default="0" comment="Order Id"/>
+        <column xsi:type="smallint" name="is_used" padding="6" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Is Used"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="bankinfo_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="EGUANA_CUSTOMERREFUND_BANKINFO_ORDER_ID_SALES_ORDER_ENTITY_ID"
+                    table="eguana_customerrefund_bankinfo" column="order_id" referenceTable="sales_order"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="EGUANA_CUSTOMERREFUND_BANKINFO_ORDER_ID_IS_USED" indexType="btree">
+            <column name="order_id"/>
+            <column name="is_used"/>
+        </index>
+    </table>
+</schema>

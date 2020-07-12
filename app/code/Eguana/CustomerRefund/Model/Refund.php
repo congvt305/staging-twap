@@ -30,15 +30,35 @@ class Refund
     public function canRefundOnline($order)
     {
         if ($order->getStatus() === 'processing' && $this->isActive()) {
-            $paymentInfo = $order->getPayment()->getAdditionalInformation();
             if ($order->getPayment()->getMethod() === 'checkmo') { //todo: for test purpose only, should remove later
                 return true;
             }
-            if (isset($paymentInfo['ecpay_choosen_payment']) && ($paymentInfo['ecpay_choosen_payment'] === 'credit')) {
+
+            $ecpayMethod = $this->getEcpayMethod($order);
+            if ($ecpayMethod === 'credit') {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * @param $order
+     * @return bool|string
+     */
+    private function getEcpayMethod($order)
+    {
+        $paymentInfo = $order->getPayment()->getAdditionalInformation();
+        if (isset($paymentInfo['ecpay_choosen_payment'])) {
+            return $paymentInfo['ecpay_choosen_payment'];
+        }
+
+        if (isset($paymentInfo['raw_details_info']['ecpay_choosen_payment'])) {
+            return $paymentInfo['raw_details_info']['ecpay_choosen_payment'];
+        }
+
+        return false;
+
     }
 
     /**
@@ -48,16 +68,16 @@ class Refund
     public function canRefundOffline($order)
     {
         if ($order->getStatus() === 'processing' && $this->isActive()) {
-            $paymentInfo = $order->getPayment()->getAdditionalInformation();
             if ($order->getPayment()->getMethod() === 'checkmo') { //todo: for test purpose only, should remove later
                 return true;
             }
-            if (isset($paymentInfo['ecpay_choosen_payment']) && ($paymentInfo['ecpay_choosen_payment'] === 'webatm')) {
+
+            $ecpayMethod = $this->getEcpayMethod($order);
+            if ($ecpayMethod === 'webatm') {
                 return true;
             }
         }
         return false;
-
     }
 
     private function isActive()
