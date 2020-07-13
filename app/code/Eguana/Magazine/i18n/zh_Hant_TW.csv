@@ -1,0 +1,55 @@
+Back,背部
+"Delete Magazine","刪除雜誌"
+"Are you sure you want to do this?","你確定你要這麼做嗎？"
+Save,保存
+"Save & Duplicate","保存並複制"
+"Save & Close","保存並關閉"
+Home,家
+"Go to Home Page","去首頁"
+"I'm LANEIGE","我是LANEIGE"
+Magazine,雜誌
+"Manage Magazine","管理雜誌"
+"row was successfully deleted","行已成功刪除"
+"row could not be deleted","行無法刪除"
+"Manage Magazines","管理雜誌"
+"This magazine no longer exists.","這本雜誌已不存在。"
+"Edit Magazine","編輯雜誌"
+"New Magazine","新雜誌"
+Magazines,雜誌
+"A total of %1 magazine(s) have been deleted.","總共 %1 個雜誌已被刪除。"
+"Magazine has been successfully saved.","雜誌已成功保存。"
+"Something went wrong while saving the magazine.","保存雜誌時出了點問題。"
+"You duplicated the magazine.","您複製了雜誌。"
+"Main Banner","主橫幅"
+Image,圖片
+Video,視頻
+Enabled,已啟用
+Disabled,殘障人士
+Edit,編輯
+Delete,刪除
+"Delete ""${ $.$data.title }""","刪除 ""${ $.$data.title }"""
+"Are you sure you wan't to delete a ""${ $.$data.title }"" record?","您確定要刪除一個 ""${ $.$data.title }"" 記錄？"
+"Sorry there is no Magazine for %1","對不起，沒有雜誌 %1"
+"Other Magazines","其他雜誌"
+"Eguana Magazine Config","鬣蜥雜誌配置"
+General,一般
+"Magazine Enabled","已啟用雜誌"
+"Magazine Information","雜誌資訊"
+"Enable Magazine","啟用雜誌"
+"Magazine Title","雜誌標題"
+"Sort Order","排序"
+"Thumbnail Image","縮圖圖片"
+"Thumbnail Alt","縮略圖Alt"
+"Short Description","簡短的介紹"
+Type,類型
+"Select Month To show","選擇要顯示的月份"
+"Store View","店鋪檢視"
+Content,內容
+"Add New Magazine","添加新雜誌"
+ID,ID
+Title,標題
+Status,狀態
+Thumbnail,縮圖
+Alt,Alt
+"Created At","創建於"
+"Updated At","更新於"
