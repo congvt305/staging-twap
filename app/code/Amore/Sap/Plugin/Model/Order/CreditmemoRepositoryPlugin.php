@@ -79,11 +79,12 @@ class CreditmemoRepositoryPlugin
         $this->orderRepository = $orderRepository;
     }
 
-    public function beforeSave(\Magento\Sales\Model\Order\CreditmemoRepository $subject, \Magento\Sales\Api\Data\CreditmemoInterface $entity)
+
+    public function afterSave(\Magento\Sales\Model\Order\CreditmemoRepository $subject, $result)
     {
-        $storeId = $entity->getStoreId();
+        $storeId = $result->getStoreId();
         $enableCheck = $this->config->getActiveCheck('store', $storeId);
-        $order = $this->orderRepository->get($entity->getOrderId());
+        $order = $this->orderRepository->get($result->getOrderId());
         $orderStatus = $order->getStatus();
 
         $availableStatus = ['complete', 'processing', 'prepareing', 'sap_processing'];
@@ -113,18 +114,23 @@ class CreditmemoRepositoryPlugin
                                 if ($responseHeader['rtn_TYPE'] == 'S') {
                                     $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                                 } else {
-                                    throw new \Exception(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+//                                    throw new \Exception(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                                    $this->messageManager->addErrorMessage(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
                                 }
                             } else {
-                                throw new \Exception(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+//                                throw new \Exception(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                                $this->messageManager->addErrorMessage(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
                             }
                         } else {
-                            throw new \Exception(__('Something went wrong while sending order data to SAP. No response.'));
+//                            throw new \Exception(__('Something went wrong while sending order data to SAP. No response.'));
+                            $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
                         }
                     } catch (NoSuchEntityException $e) {
-                        throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
+//                        throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
+                        $this->messageManager->addErrorMessage(__('SAP : ' . $e->getMessage()));
                     } catch (\Exception $e) {
-                        throw new \Exception(__('SAP : ' . $e->getMessage()));
+//                        throw new \Exception(__('SAP : ' . $e->getMessage()));
+                        $this->messageManager->addErrorMessage(__('SAP : ' . $e->getMessage()));
                     }
                 }
             } else {
