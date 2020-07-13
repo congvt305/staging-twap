@@ -108,7 +108,6 @@ class SapOrderCancelData extends AbstractSapOrder
         /** @var Order $orderData */
         $orderData = $this->getOrderInfo($incrementId);
         $storeId = $orderData->getStoreId();
-        $shippingAddress = $orderData->getShippingAddress();
 
         if ($orderData == null) {
             throw new NoSuchEntityException(
@@ -126,7 +125,7 @@ class SapOrderCancelData extends AbstractSapOrder
             "postCode" => $addressData->getPostcode(),
             "addr1" => $addressData->getRegion(),
             "addr2" => $addressData->getCity(),
-            "addr3" => preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())),
+            "addr3" => preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $addressData->getStreet())),
             "land1" => $addressData->getCountryId(),
             "telno" => $addressData->getTelephone(),
             "hpno" => $addressData->getTelephone()
