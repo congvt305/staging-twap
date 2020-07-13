@@ -264,6 +264,11 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $cvsCheck;
     }
 
+    /**
+     * @param $shippingAddress
+     * @return string
+     * @throws NoSuchEntityException
+     */
     public function getCsvAddress($shippingAddress)
     {
         $cvsLocationId = $shippingAddress->getExtensionAttributes()->getCvsLocationId();
