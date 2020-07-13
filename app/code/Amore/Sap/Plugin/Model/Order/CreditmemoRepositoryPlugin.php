@@ -5,6 +5,7 @@
  * Date: 2020-07-07
  * Time: 오전 9:57
  */
+
 namespace Amore\Sap\Plugin\Model\Order;
 
 use Amore\Sap\Logger\Logger;
@@ -12,12 +13,14 @@ use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Rma\Api\RmaRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
 class CreditmemoRepositoryPlugin
@@ -50,6 +53,14 @@ class CreditmemoRepositoryPlugin
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
+    /**
+     * @var RmaRepositoryInterface
+     */
+    private $rmaRepository;
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
 
     /**
      * CreditmemoRepositoryPlugin constructor.
@@ -60,6 +71,8 @@ class CreditmemoRepositoryPlugin
      * @param ManagerInterface $messageManager
      * @param SapOrderCancelData $sapOrderCancelData
      * @param OrderRepositoryInterface $orderRepository
+     * @param RmaRepositoryInterface $rmaRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      */
     public function __construct(
         Json $json,
@@ -68,8 +81,11 @@ class CreditmemoRepositoryPlugin
         Config $config,
         ManagerInterface $messageManager,
         SapOrderCancelData $sapOrderCancelData,
-        OrderRepositoryInterface $orderRepository
-    ) {
+        OrderRepositoryInterface $orderRepository,
+        RmaRepositoryInterface $rmaRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder
+    )
+    {
         $this->json = $json;
         $this->request = $request;
         $this->logger = $logger;
@@ -77,6 +93,8 @@ class CreditmemoRepositoryPlugin
         $this->messageManager = $messageManager;
         $this->sapOrderCancelData = $sapOrderCancelData;
         $this->orderRepository = $orderRepository;
+        $this->rmaRepository = $rmaRepository;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 
 
@@ -86,12 +104,13 @@ class CreditmemoRepositoryPlugin
         $enableCheck = $this->config->getActiveCheck('store', $storeId);
         $order = $this->orderRepository->get($result->getOrderId());
         $orderStatus = $order->getStatus();
+        $rma = $this->getRma($order->getEntityId());
 
-        $availableStatus = ['complete', 'processing', 'prepareing', 'sap_processing'];
+//        $availableStatus = ['complete', 'processing', 'preparing', 'sap_processing'];
 
-        if ($enableCheck) {
-            if (!$this->config->checkTestMode()) {
-                if (in_array($orderStatus, $availableStatus)) {
+        if ($rma != null) {
+            if ($enableCheck) {
+                if (!$this->config->checkTestMode()) {
                     try {
                         $orderUpdateData = $this->sapOrderCancelData->singleOrderData($order->getIncrementId());
 
@@ -132,47 +151,64 @@ class CreditmemoRepositoryPlugin
 //                        throw new \Exception(__('SAP : ' . $e->getMessage()));
                         $this->messageManager->addErrorMessage(__('SAP : ' . $e->getMessage()));
                     }
-                }
-            } else {
-                $testData = $this->sapOrderCancelData->getTestCancelOrder();
+                } else {
+                    $testData = $this->sapOrderCancelData->getTestCancelOrder();
 
-                $jsonTestData = $this->json->serialize($testData);
-
-                if ($this->config->getLoggingCheck()) {
-                    $this->logger->info("Single Test Order Cancel Send Data");
-                    $this->logger->info($jsonTestData);
-                }
-
-                try {
-                    $result = $this->request->postRequest($jsonTestData, 0, 'cancel');
+                    $jsonTestData = $this->json->serialize($testData);
 
                     if ($this->config->getLoggingCheck()) {
-                        $this->logger->info("Single Order Test Cancel Result Data");
-                        $this->logger->info($this->json->serialize($result));
+                        $this->logger->info("Single Test Order Cancel Send Data");
+                        $this->logger->info($jsonTestData);
                     }
 
-                    $resultSize = count($result);
+                    try {
+                        $result = $this->request->postRequest($jsonTestData, 0, 'cancel');
 
-                    if ($resultSize > 0) {
-                        if ($result['code'] == '0000') {
-                            $responseHeader = $result['data']['response']['header'];
-                            if ($responseHeader['rtn_TYPE'] == 'S') {
-                                $this->messageManager->addSuccessMessage(__('Test Order Address Update sent to SAP Successfully.'));
+                        if ($this->config->getLoggingCheck()) {
+                            $this->logger->info("Single Order Test Cancel Result Data");
+                            $this->logger->info($this->json->serialize($result));
+                        }
+
+                        $resultSize = count($result);
+
+                        if ($resultSize > 0) {
+                            if ($result['code'] == '0000') {
+                                $responseHeader = $result['data']['response']['header'];
+                                if ($responseHeader['rtn_TYPE'] == 'S') {
+                                    $this->messageManager->addSuccessMessage(__('Test Order Address Update sent to SAP Successfully.'));
+                                } else {
+                                    throw new \Exception(__('Error returned from SAP for Test order. Error code : %1. Message : %2', $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                                }
                             } else {
-                                throw new \Exception(__('Error returned from SAP for Test order. Error code : %1. Message : %2', $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                                throw new \Exception(__('Error returned from SAP for Test order. Error code : %1. Message : %2', $result['code'], $result['message']));
                             }
                         } else {
-                            throw new \Exception(__('Error returned from SAP for Test order. Error code : %1. Message : %2', $result['code'], $result['message']));
+                            throw new \Exception(__('Something went wrong while sending order data to SAP. No response.'));
                         }
-                    } else {
-                        throw new \Exception(__('Something went wrong while sending order data to SAP. No response.'));
+                    } catch (LocalizedException $e) {
+                        throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
+                    } catch (\Exception $e) {
+                        throw new \Exception(__('SAP : ' . $e->getMessage()));
                     }
-                } catch (LocalizedException $e) {
-                    throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
-                } catch (\Exception $e) {
-                    throw new \Exception(__('SAP : ' . $e->getMessage()));
                 }
             }
+        }
+    }
+
+    public function getRma($orderId)
+    {
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('order_id', $orderId, 'eq')
+            ->addFilter('status', 'processed_closed', 'eq')
+            ->create();
+
+        $rma = $this->rmaRepository->getList($searchCriteria)->getItems();
+        $rmaCount = $this->rmaRepository->getList($searchCriteria)->getTotalCount();
+
+        if ($rmaCount >= 1) {
+            return reset($rma);
+        } else {
+            return null;
         }
     }
 }

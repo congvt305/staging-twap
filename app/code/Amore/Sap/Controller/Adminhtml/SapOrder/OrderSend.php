@@ -125,6 +125,8 @@ class OrderSend extends AbstractAction
                 $this->messageManager->addErrorMessage($e->getMessage());
             } catch (LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
+            } catch (\Exception $e) {
+                $this->messageManager->addErrorMessage($e->getMessage());
             }
         } else {
             try {
