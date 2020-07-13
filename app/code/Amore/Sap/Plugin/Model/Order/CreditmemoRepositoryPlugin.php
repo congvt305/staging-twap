@@ -131,7 +131,13 @@ class CreditmemoRepositoryPlugin
                             if ($result['code'] == '0000') {
                                 $responseHeader = $result['data']['response']['header'];
                                 if ($responseHeader['rtn_TYPE'] == 'S') {
-                                    $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                                    try {
+                                        $order->setData('sap_creditmemo_send_check', 1);
+                                        $this->orderRepository->save($order);
+                                        $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                                    } catch (\Exception $exception) {
+                                        $this->messageManager->addErrorMessage(__('Something went wrong while saving order %1. Message : %2', $order->getIncrementId(),$exception->getMessage()));
+                                    }
                                 } else {
 //                                    throw new \Exception(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
                                     $this->messageManager->addErrorMessage(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));

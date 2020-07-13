@@ -9,7 +9,6 @@ define([
     'use strict';
 
     return function () {
-        console.log('cvs action called');
         var url, urlParams, serviceUrl;
         if (customer.isLoggedIn()) {
             url = '/carts/mine/checkout-cvs-location/select';

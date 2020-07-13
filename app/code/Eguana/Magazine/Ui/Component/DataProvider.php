@@ -76,7 +76,7 @@ class DataProvider extends DataProviderAlias
     {
         $metadata = [];
 
-        if (!$this->authorization->isAllowed('Eguana_Magazine::manage_magazine')) {
+        if (!$this->authorization->isAllowed('Eguana_Magazine::magazine')) {
             $metadata = [
                 'magazine_columns' => [
                     'arguments' => [

@@ -21,7 +21,7 @@ define([
         let condition = config.condition;
         let eventConfigValue = config.eventConfigValue;
         $(document).on("click","#more-button", function () {
-            if (count * eventConfigValue > totalEvent) {
+            if (count * eventConfigValue >= totalEvent) {
                 $("#event-count").text(totalEvent);
                 $("#more-button").prop('disabled', true);
             } else {

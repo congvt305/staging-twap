@@ -131,8 +131,23 @@ class POSSystem
             $this->curlClient->post($url, $parameters);
             $apiRespone = $this->curlClient->getBody();
             $response = $this->json->unserialize($apiRespone);
-            if ($response['message'] == 'SUCCESS') {
-                $result = $response['data']['customerInfo'];
+            if ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'Y') {
+                if ($response['data']['checkCnt'] > 1) {
+                    $result['message'] =  __(
+                        'The requested membership information is already registered.'
+                    );
+                } elseif (
+                    isset($response['data']['customerInfo']['cstmIntgSeq']) == false ||
+                    $response['data']['customerInfo']['cstmIntgSeq'] == ''
+                ) {
+                    $result['message'] =  __(
+                        'There is no customer integration number from POS. Please contact to the admin.'
+                    );
+                } else {
+                    $result = $response['data']['customerInfo'];
+                }
+            } elseif ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'N') {
+                $result = [];
             } else {
                 $result['message'] = $response['message'];
             }

@@ -31,11 +31,6 @@ class QuoteCvsLocationRepository implements QuoteCvsLocationRepositoryInterface
      */
     private $collectionFactory;
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-
-    /**
      * @var \Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface
      */
     private $collectionProcessor;
@@ -49,13 +44,11 @@ class QuoteCvsLocationRepository implements QuoteCvsLocationRepositoryInterface
         \Eguana\GWLogistics\Model\ResourceModel\QuoteCvsLocation $quoteCvsLocationResource,
         \Eguana\GWLogistics\Model\ResourceModel\QuoteCvsLocation\CollectionFactory $collectionFactory,
         \Eguana\GWLogistics\Api\Data\QuoteCvsLocationSearchResultInterfaceFactory $quoteCvsLocationSearchResultInterfaceFactory,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface $collectionProcessor
     ) {
         $this->quoteCvsLocationInterfaceFactory = $quoteCvsLocationInterfaceFactory;
         $this->quoteCvsLocationResource = $quoteCvsLocationResource;
         $this->collectionFactory = $collectionFactory;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->collectionProcessor = $collectionProcessor;
         $this->quoteCvsLocationSearchResultInterfaceFactory = $quoteCvsLocationSearchResultInterfaceFactory;
     }

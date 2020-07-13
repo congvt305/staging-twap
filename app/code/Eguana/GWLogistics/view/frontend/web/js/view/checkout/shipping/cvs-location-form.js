@@ -1,7 +1,8 @@
 define([
     'ko',
     'jquery',
-    'Magento_Ui/js/form/element/abstract',
+    // 'Magento_Ui/js/form/element/abstract',
+    'uiComponent',
     'Magento_Checkout/js/model/quote',
     'Eguana_GWLogistics/js/action/get-selected-cvs-location',
     'Eguana_GWLogistics/js/model/cvs-location',
@@ -28,13 +29,15 @@ define([
             tracks: {
                 visible: true,
                 isMapVisible: true,
-            }
+            },
         },
+        errorMessage: ko.observable(false),
         windowActivateCount: 0,
 
         initialize: function () {
             this._super();
             cvsLocation.clear();
+            this.visible = false;
             this.windowActivateCount = 0;
             return this;
         },
@@ -51,13 +54,13 @@ define([
         onWindowActivated: function () {
             this.windowActivateCount++;
             if (this.windowActivateCount % 2 === 0) {
-                console.log('onWindowActivated');
                 this.getSelectedCvsLocation();
             }
 
         },
 
         getSelectedCvsLocation: function () {
+            this.errorMessage(false);
             getSelectedCvsLocationAction.bind(this); // this is not working!!! but okay because customer section is working good!
             cvsLocation.selectCvsLocation();
         },
@@ -75,7 +78,6 @@ define([
             var prefix = customer.isLoggedIn() ? 'c_' : 'g_',
                 quoteId = quote.getQuoteId(),
                 quoteIdStr = customer.isLoggedIn() ? quoteId : quoteId.substr(0, 12);
-            console.log(prefix + this.getCurrentTimeString() + quoteIdStr);
             return prefix + this.getCurrentTimeString() + quoteIdStr;
         },
 
@@ -90,7 +92,6 @@ define([
         },
 
         getExtraData: function () {
-            console.log(quote.getQuoteId().substr(12, 20));
             return quote.getQuoteId().substr(12, 20);
         },
 
@@ -101,7 +102,6 @@ define([
                 .join()
                 .replace(',', '')
                 .replace(',','');
-        }
-
+        },
     });
 });
