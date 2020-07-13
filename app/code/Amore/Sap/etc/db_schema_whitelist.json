@@ -1,7 +1,8 @@
 {
     "sales_order": {
         "column": {
-            "sap_order_send_btn": true
+            "sap_creditmemo_send_check": true,
+            "sap_return_send_check": true
         }
     }
 }
