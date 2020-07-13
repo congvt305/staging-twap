@@ -10,9 +10,9 @@ $totalMagazinesCount = $viewModel->getCurrentMonthMagazinesTotalNumber();
 <div class="block magazine-image">
     <div>
         <?php if ($totalMagazinesCount == 0) : ?>
-        <p>
-            <?= $block->escapeHtml(__('Sorry there is no Magazine for %1', $viewModel->getCurrentMonthName())); ?>
-        </p>
+            <p>
+                <?= $block->escapeHtml(__('Sorry there is no Magazine for %1', $viewModel->getCurrentMonthName())); ?>
+            </p>
         <?php
         endif;
         if (!empty($bannerMagazines->getData())) : ?>
@@ -24,7 +24,7 @@ $totalMagazinesCount = $viewModel->getCurrentMonthMagazinesTotalNumber();
                              alt="<?= $block->escapeHtml($bannerMagazine['thumbnail_alt']);?>" />
                         <div class="banner-text">
                             <strong><?= $block->escapeHtml($bannerMagazine['title']) ?></strong>
-                            <span><?= $block->escapeHtml($bannerMagazine['content_short']) ?></span>
+                            <span><?= $block->escapeHtml($bannerMagazine['short_description']) ?></span>
                         </div>
                     </a>
                 </div>
@@ -32,7 +32,7 @@ $totalMagazinesCount = $viewModel->getCurrentMonthMagazinesTotalNumber();
         <?php endif;?>
         <?php if (!empty($imageMagazines->getData())) : ?>
             <ul class="list-image-box"">
-                <?php foreach ($imageMagazines as $imageMagazine) : ?>
+            <?php foreach ($imageMagazines as $imageMagazine) : ?>
                 <li class="magazine-item-box">
                     <div class="magazine-item">
                         <a
@@ -45,7 +45,7 @@ $totalMagazinesCount = $viewModel->getCurrentMonthMagazinesTotalNumber();
                                 <strong><?= $block->escapeHtml($imageMagazine['title']) ?></strong>
                             </div>
                             <div class="short-discription">
-                                <span><?= $block->escapeHtml($imageMagazine['content_short']) ?></span>
+                                <span><?= $block->escapeHtml($imageMagazine['short_description']) ?></span>
                             </div>
                         </a>
                     </div>
@@ -76,8 +76,8 @@ $totalMagazinesCount = $viewModel->getCurrentMonthMagazinesTotalNumber();
                 <div class="magazine-slider-item">
                     <div class="magazine-item">
                         <a
-                                href="<?= $block->escapeHtml($block->
-                                getUrl($otherMonthMagazine['monthly_url']));?>">
+                            href="<?= $block->escapeHtml($block->
+                            getUrl($otherMonthMagazine['monthly_url']));?>">
                             <img src="<?= $block->escapeHtml($viewModel->
                             getThumbnailSrc($otherMonthMagazine['thumbnail_image']));?>"
                                  alt="<?= $block->escapeHtml($otherMonthMagazine['thumbnail_alt']);?>" />

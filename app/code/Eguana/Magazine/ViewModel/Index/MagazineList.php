@@ -9,7 +9,7 @@
  */
 namespace Eguana\Magazine\ViewModel\Index;
 
-use Eguana\Magazine\Model\ResourceModel\Magazine\Collection;
+use Eguana\Magazine\Model\ResourceModel\Magazine\Collection as CollectionAlias;
 use Eguana\Magazine\Model\ResourceModel\Magazine\CollectionFactory;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
@@ -20,7 +20,6 @@ use Psr\Log\LoggerInterface;
 
 /**
  * This class is responsible for get magazine data for the listing page
- *
  * Class MagazineList
  */
 class MagazineList implements ArgumentInterface
@@ -86,7 +85,7 @@ class MagazineList implements ArgumentInterface
     }
 
     /**
-     * get magazine deatil url
+     * get magazine detail url
      * @param $id
      * @return string
      */
@@ -126,7 +125,7 @@ class MagazineList implements ArgumentInterface
                 ['eq' => self::BANNER_TYPE]
             );
         } catch (\Exception $exception) {
-                $this->logger->debug($exception->getMessage());
+            $this->logger->debug($exception->getMessage());
         }
 
         return $bannerMagazines;
@@ -170,6 +169,10 @@ class MagazineList implements ArgumentInterface
         return $bannerMagazines;
     }
 
+    /**
+     * This function will return Current Month Magazines
+     * @return int
+     */
     public function getCurrentMonthMagazinesTotalNumber()
     {
         try {
@@ -181,6 +184,10 @@ class MagazineList implements ArgumentInterface
         return 0;
     }
 
+    /**
+     * This function willl return Current Month Name
+     * @return bool|string
+     */
     public function getCurrentMonthName()
     {
         $currentMonth = $this->requestInterface->getParam('month');
@@ -192,6 +199,11 @@ class MagazineList implements ArgumentInterface
         $query_date = sprintf('%s-%s', $currentYear, $currentMonth);
         return $this->dateTime->gmtDate('F Y', $this->dateTime->gmtTimestamp($query_date));
     }
+
+    /**
+     * This function will return Magazines of current Month
+     * @return CollectionAlias
+     */
     private function getCurrentMonthMagazines()
     {
         $magazineCollection = $this->getCurrentStoreActiveAndSortedMagazines();
@@ -207,16 +219,19 @@ class MagazineList implements ArgumentInterface
         return $magazineCollection;
     }
 
+    /**
+     * This function will return Other Magazines for slider
+     * @return array
+     */
     public function getOtherMonthsMagaginesFrontPages()
     {
         $result = [];
         $nextMonthsMagazineFrontPages = $this->getNextMonthMagazines();
         $previousMonthsMagazineFrontPages = $this->getPreviousMonthMagazines();
-
         foreach ($nextMonthsMagazineFrontPages as $nextMonthsMagazineFrontPage) {
             $magazine['thumbnail_image'] =  $nextMonthsMagazineFrontPage->getData('thumbnail_image');
             $magazine['thumbnail_alt'] =  $nextMonthsMagazineFrontPage->getData('thumbnail_alt');
-            $magazine['content_short'] =  $nextMonthsMagazineFrontPage->getData('content_short');
+            $magazine['short_description'] =  $nextMonthsMagazineFrontPage->getData('short_description');
             $magazine['title'] =  $nextMonthsMagazineFrontPage->getData('title');
             $magazine['monthly_url'] =  $this->getMonthlyMagazineUrl(
                 $nextMonthsMagazineFrontPage->getData('show_date')
@@ -227,7 +242,7 @@ class MagazineList implements ArgumentInterface
         foreach ($previousMonthsMagazineFrontPages as $previousMonthsMagazineFrontPage) {
             $magazine['thumbnail_image'] =  $previousMonthsMagazineFrontPage->getData('thumbnail_image');
             $magazine['thumbnail_alt'] =  $previousMonthsMagazineFrontPage->getData('thumbnail_alt');
-            $magazine['content_short'] =  $previousMonthsMagazineFrontPage->getData('content_short');
+            $magazine['short_description'] =  $previousMonthsMagazineFrontPage->getData('short_description');
             $magazine['title'] =  $previousMonthsMagazineFrontPage->getData('title');
             $magazine['monthly_url'] =  $this->getMonthlyMagazineUrl(
                 $previousMonthsMagazineFrontPage->getData('show_date')
@@ -237,6 +252,11 @@ class MagazineList implements ArgumentInterface
 
         return $result;
     }
+
+    /**
+     * This function will return Next Month Magazines
+     * @return CollectionAlias
+     */
 
     private function getNextMonthMagazines()
     {
@@ -249,6 +269,10 @@ class MagazineList implements ArgumentInterface
         return $nextMonthsBannerMagazines;
     }
 
+    /**
+     * This function will return previous month Magazines
+     * @return CollectionAlias
+     */
     private function getPreviousMonthMagazines()
     {
         $previousMonthsBannerMagazines = $this->getOtherMonthBannerMagazines();
@@ -260,6 +284,10 @@ class MagazineList implements ArgumentInterface
         return $previousMonthsBannerMagazines;
     }
 
+    /**
+     * This function will return Banner of other Magazines
+     * @return CollectionAlias
+     */
     private function getOtherMonthBannerMagazines()
     {
         $magazineCollection = $this->getCurrentStoreActiveAndSortedMagazines();
@@ -281,30 +309,41 @@ class MagazineList implements ArgumentInterface
         return $bannerMagazines;
     }
 
+    /**
+     * This function will check active banner and return banner magazine for current store
+     * @return CollectionAlias
+     */
     private function getCurrentStoreActiveAndSortedMagazines()
     {
-        $storeId =  $this->storeManagerInterface->getStore()->getId();
-        $magazineCollection = $this->collectionFactory->create();
+        try {
+            $storeId = $this->storeManagerInterface->getStore()->getId();
+            $magazineCollection = $this->collectionFactory->create();
 
-        $magazineCollection->addFieldToFilter(
-            ['store_id','store_id','store_id','store_id'],
-            [["like" => '%' . $storeId . ',%'],
-                ["like" => '%,' . $storeId . ',%'],
-                ["like" => '%,' . $storeId . '%'],
-                ["in" => ['0', $storeId]]]
-        );
-        $bannerMagazines = $magazineCollection->addFieldToFilter(
-            'is_active',
-            ['eq' => 1]
-        );
-        $magazineCollection->setOrder(
-            "sort_order",
-            'ASC'
-        );
-
+            $magazineCollection->addFieldToFilter(
+                ['store_id', 'store_id', 'store_id', 'store_id'],
+                [["like" => '%' . $storeId . ',%'],
+                    ["like" => '%,' . $storeId . ',%'],
+                    ["like" => '%,' . $storeId . '%'],
+                    ["in" => ['0', $storeId]]]
+            );
+            $bannerMagazines = $magazineCollection->addFieldToFilter(
+                'is_active',
+                ['eq' => 1]
+            );
+            $magazineCollection->setOrder(
+                "sort_order",
+                'ASC'
+            );
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
         return $magazineCollection;
     }
 
+    /**
+     * This function will return first and last date of current month
+     * @return array
+     */
     private function getCurrentMonthFirstAndLastDate()
     {
         $result = [];
@@ -319,12 +358,24 @@ class MagazineList implements ArgumentInterface
         return $result;
     }
 
+    /**
+     * This funtion will return first date of month
+     * @param $month
+     * @param $year
+     * @return bool|string
+     */
     private function getFirstDateOfMonth($month, $year)
     {
         $query_date = sprintf('%s-%s-04', $year, $month);
         return $this->dateTime->gmtDate('Y-m-01 H:i:s', $this->dateTime->gmtTimestamp($query_date));
     }
 
+    /**
+     * This function will return last date of month
+     * @param $month
+     * @param $year
+     * @return bool|string
+     */
     private function getLastDateOfMonth($month, $year)
     {
         $query_date = sprintf('%s-%s-04 23:59:59', $year, $month);
@@ -343,5 +394,4 @@ class MagazineList implements ArgumentInterface
         $date = self::MONTHLY_DETAILS_URL . $month . '/year/' . $year;
         return $date;
     }
-
 }

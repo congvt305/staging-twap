@@ -7,7 +7,6 @@
  * Date: 6/16/20
  * Time: 1:38 AM
  */
-
 namespace Eguana\Magazine\Api\Data;
 
 /**
@@ -19,7 +18,7 @@ interface MagazineInterface
     const ENTITY_ID = 'entity_id';
     const STORE_ID = 'store_id';
     const TITLE = 'title';
-    const CONTENT_SHORT = 'content_short';
+    const SHORT_DESCRIPTION = 'short_description';
     const CONTENT = 'content';
     const TYPE = 'type';
     const THUMBNAIL_IMAGE = 'thumbnail_image';
@@ -54,14 +53,12 @@ interface MagazineInterface
 
     /**
      * Get Store ID
-     *
      * @return int|null
      */
     public function getStoreId();
 
     /**
      * Set Store ID
-     *
      * @param int $storeId
      * @return MagazineInterface
      */
@@ -79,15 +76,15 @@ interface MagazineInterface
     public function getTitle();
 
     /**
-     * @param string $contentshort
+     * @param string $shortDescription
      * @return $this
      */
-    public function setContentShort($contentshort);
+    public function setShortDescription($shortDescription);
 
     /**
      * @return string
      */
-    public function getContentShort();
+    public function getShortDescription();
 
     /**
      * @param string $content
@@ -117,14 +114,12 @@ interface MagazineInterface
 
     /**
      * Get Thumbnail Image
-     *
      * @return string
      */
     public function getThumbnailImageURL();
 
     /**
      * Set Thumbnail Image
-     *
      * @param string $thumbnailAlt
      * @return MagazineInterface
      */
@@ -132,7 +127,6 @@ interface MagazineInterface
 
     /**
      * Get Thumbnail Image
-     *
      * @return string
      */
     public function getThumbnailAlt();
