@@ -271,7 +271,7 @@ class SapOrderConfirmData extends AbstractSapOrder
      */
     public function getCsvAddress($shippingAddress)
     {
-        $cvsLocationId = $shippingAddress->getExtensionAttributes()->getCvsLocationId();
+        $cvsLocationId = $shippingAddress->getData('cvs_location_id');
         $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
         $cvsAddress = $cvsStoreData->getCvsAddress() . ' ' . $cvsStoreData->getCvsStoreName() . ' ' . $cvsStoreData->getLogisticsSubType();
 
