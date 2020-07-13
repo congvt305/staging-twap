@@ -22,7 +22,7 @@ define([
     function main(config) {
         let count = 2;
         let totalVideo = config.totalVideo;
-        $(document).on("click","#more-button", function() {
+        $(document).on("click","#more-button", function () {
             if (count*6 > totalVideo) {
                 $("#video-count").text(totalVideo);
                 $("#more-button").prop('disabled', true);
@@ -31,15 +31,14 @@ define([
             }
             let apiUrl = url.build('videoboard/index/ajaxcall/');
             $.ajax({
-                showLoader: true,
                 url: apiUrl,
                 type: "POST",
                 data: {count:  count},
             }).done(function (data) {
                 let valueHtml ='';
-                if($.isEmptyObject(data)){
+                if ($.isEmptyObject(data)) {
                     $(".video-board-list").html('');
-                }else{
+                } else {
                     $(".video-board-list").html('');
                     $(".video-board-list").html(data);
                 }
