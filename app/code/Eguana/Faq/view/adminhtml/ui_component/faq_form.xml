@@ -85,7 +85,36 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="storeviews" formElement="multiselect">
+        <field name="title" sortOrder="20" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">faq</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Faq Title</label>
+                <dataScope>title</dataScope>
+            </settings>
+        </field>
+        <field name="category" sortOrder="30" formElement="select">
+            <settings>
+                <dataType>int</dataType>
+                <label translate="true">Category</label>
+                <dataScope>category</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Eguana\Faq\Model\Source\Category"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="storeviews" sortOrder="40" formElement="multiselect">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">block</item>
@@ -107,36 +136,7 @@
                 </multiselect>
             </formElements>
         </field>
-        <field name="category" formElement="select">
-            <settings>
-                <dataType>int</dataType>
-                <label translate="true">Category</label>
-                <dataScope>category</dataScope>
-            </settings>
-            <formElements>
-                <select>
-                    <settings>
-                        <options class="Eguana\Faq\Model\Source\Category"/>
-                    </settings>
-                </select>
-            </formElements>
-        </field>
-        <field name="title" sortOrder="20" formElement="input">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">faq</item>
-                </item>
-            </argument>
-            <settings>
-                <validation>
-                    <rule name="required-entry" xsi:type="boolean">true</rule>
-                </validation>
-                <dataType>text</dataType>
-                <label translate="true">Faq Title</label>
-                <dataScope>title</dataScope>
-            </settings>
-        </field>
-        <field name="description" formElement="wysiwyg">
+        <field name="description" sortOrder="50" formElement="wysiwyg">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string" translate="true">Description</item>
