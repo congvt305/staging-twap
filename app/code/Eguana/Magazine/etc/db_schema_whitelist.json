@@ -6,6 +6,7 @@
             "show_date": true,
             "title": true,
             "content_short": true,
+            "short_description": true,
             "content": true,
             "thumbnail_image": true,
             "thumbnail_alt": true,

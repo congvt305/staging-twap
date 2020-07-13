@@ -10,10 +10,12 @@
 namespace Eguana\Magazine\ViewModel;
 
 use Eguana\Magazine\Api\MagazineRepositoryInterface;
-use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Magento\Framework\App\RequestInterface;
-use Magento\Store\Model\StoreManagerInterface;
+use Eguana\Magazine\Helper\Data as DataAlias;
+use Eguana\Magazine\Model\Magazine as MagazineAlias;
 use Magento\Cms\Model\Template\FilterProvider;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * ViewModel helper for .phtml file
@@ -44,7 +46,7 @@ class Detail implements ArgumentInterface
 
     /**
      * Magazine constructor.
-     * @param \Eguana\Magazine\Helper\Data $helperData
+     * @param DataAlias $helperData
      */
     public function __construct(
         MagazineRepositoryInterface $magazineRepository,
@@ -60,7 +62,7 @@ class Detail implements ArgumentInterface
 
     /**
      * this function will give content
-     * @return \Eguana\Magazine\Model\Magazine
+     * @return MagazineAlias
      */
     public function getMagazine()
     {
@@ -73,7 +75,6 @@ class Detail implements ArgumentInterface
      * get filter cintent
      * @param $content
      * @return mixed
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function contentFiltering($content)
     {
