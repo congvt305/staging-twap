@@ -91,7 +91,7 @@ class Save extends AbstractController
                 try {
                     $model = $this->faqRepository->getById($id);
                 } catch (LocalizedException $e) {
-                    $this->messageManager->addErrorMessage(__('This block no longer exists.'));
+                    $this->messageManager->addErrorMessage(__('This faq no longer exists.'));
                     return $this->processResultRedirect($model, $resultRedirect, $data);
                 }
             }
@@ -100,12 +100,12 @@ class Save extends AbstractController
 
             try {
                 $this->faqRepository->save($model);
-                $this->messageManager->addSuccessMessage(__('You saved the block.'));
+                $this->messageManager->addSuccessMessage(__('You saved the faq.'));
                 return $this->processResultRedirect($model, $resultRedirect, $data);
             } catch (LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             } catch (\Exception $e) {
-                $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the block.'));
+                $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the faq.'));
             }
 
             $this->dataPersistor->set('eguana_faq', $data);
