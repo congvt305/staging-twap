@@ -15,11 +15,11 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 use Eguana\Faq\Model\Source\Category as CategoryOption;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Backend\Model\Auth\Session;
 
 /**
  * Class CategoryRenderer
- *
- * Eguana\Faq\Ui\Component\Listing\Column
+ * This class is used to show store vise categories in admin grid
  */
 class CategoryRenderer extends Column
 {
@@ -34,10 +34,16 @@ class CategoryRenderer extends Column
      * @var Escaper
      */
     private $escaper;
+
     /**
      * @var CategoryOption
      */
     private $categoryOption;
+
+    /**
+     * @var Session
+     */
+    private $session;
 
     /**
      * CategoryRenderer constructor.
@@ -47,6 +53,7 @@ class CategoryRenderer extends Column
      * @param Escaper $escaper
      * @param CategoryOption $categoryOption
      * @param array $components
+     * @param Session $session
      * @param array $data
      */
     public function __construct(
@@ -55,12 +62,14 @@ class CategoryRenderer extends Column
         UiComponentFactory $uiComponentFactory,
         Escaper $escaper,
         CategoryOption $categoryOption,
+        Session $session,
         array $components = [],
         array $data = []
     ) {
         $this->storeManager = $storeManager;
         $this->escaper = $escaper;
         $this->categoryOption = $categoryOption;
+        $this->session = $session;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
@@ -88,14 +97,15 @@ class CategoryRenderer extends Column
      */
     public function prepareItem(array $dataSource)
     {
+        $userStoreId = (int)$this->session->getUser()->getRole()['gws_stores'][0];
         $categories = $this->categoryOption->toOptionArray();
         $storeId = (int)$dataSource['category'][0];
         $label = $this->storeManager->getStore($storeId)->getName();
         $content = $label . "<br/>";
 
-        $storeCategoryList = $categories[$dataSource['store_id'][0]];
+        $storeCategoryList = $categories[$userStoreId];
 
-        $categoryIndex = substr($dataSource['category'], strlen($dataSource['store_id'][0])) -1;
+        $categoryIndex = substr($dataSource['category'], strlen($userStoreId)) -1;
 
         if (array_key_exists($categoryIndex, $storeCategoryList['value'])) {
             $value = $storeCategoryList['value'][$categoryIndex]['label'];

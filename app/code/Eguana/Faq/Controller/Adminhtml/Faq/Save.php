@@ -13,16 +13,20 @@ use Eguana\Faq\Model\Faq;
 use Magento\Backend\App\Action\Context;
 use Eguana\Faq\Api\FaqRepositoryInterface;
 use Eguana\Faq\Model\FaqFactory;
+use Magento\Backend\Model\View\Result\Redirect as RedirectAlias;
 use Magento\Framework\App\Request\DataPersistorInterface;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Registry;
 use Eguana\Faq\Controller\Adminhtml\AbstractController;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\Model\View\Result\Redirect;
+use Eguana\Faq\Api\Data\FaqInterface;
 
 /**
+ * This Class is used to save FAQ information
  * Class Save
- * Eguana\Faq\Controller\Adminhtml\Faq
  */
 class Save extends AbstractController
 {
@@ -66,8 +70,7 @@ class Save extends AbstractController
     /**
      * Save action
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return ResponseInterfaceAlias|ResultInterfaceAlias|mixed
      */
     public function execute()
     {
@@ -88,8 +91,8 @@ class Save extends AbstractController
                 try {
                     $model = $this->faqRepository->getById($id);
                 } catch (LocalizedException $e) {
-                    $this->messageManager->addErrorMessage(__('This block no longer exists.'));
-                    return $resultRedirect->setPath('*/*/');
+                    $this->messageManager->addErrorMessage(__('This faq no longer exists.'));
+                    return $this->processResultRedirect($model, $resultRedirect, $data);
                 }
             }
 
@@ -97,21 +100,51 @@ class Save extends AbstractController
 
             try {
                 $this->faqRepository->save($model);
-                $this->messageManager->addSuccessMessage(__('You saved the block.'));
-                $this->dataPersistor->clear('eguana_faq');
-                if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['block_id' => $model->getId()]);
-                }
-                return $resultRedirect->setPath('*/*/');
+                $this->messageManager->addSuccessMessage(__('You saved the faq.'));
+                return $this->processResultRedirect($model, $resultRedirect, $data);
             } catch (LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             } catch (\Exception $e) {
-                $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the block.'));
+                $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the faq.'));
             }
 
             $this->dataPersistor->set('eguana_faq', $data);
-            return $resultRedirect->setPath('*/*/edit', ['entity_id' => $this->getRequest()->getParam('entity_id')]);
+            return $this->processResultRedirect($model, $resultRedirect, $data);
         }
-        return $resultRedirect->setPath('*/*/');
+        return $this->processResultRedirect($model, $resultRedirect, $data);
+    }
+    /**
+     * Process result redirect
+     *
+     * @param FaqInterface $model
+     * @param RedirectAlias $resultRedirect
+     * @param $model
+     * @param $resultRedirect
+     * @param $data
+     * @return mixed
+     */
+    private function processResultRedirect($model, $resultRedirect, $data)
+    {
+        if ($this->getRequest()->getParam('back', false) === 'duplicate') {
+            $newFaq = $this->faqFactory->create(['data' => $data]);
+            $newFaq->setId(null);
+            $newFaq->setIsActive(false);
+            $newFaq->setStoreId($model->getStoreId());
+            $this->faqRepository->save($newFaq);
+            $this->messageManager->addSuccessMessage(__('You duplicated the faq.'));
+            return $resultRedirect->setPath(
+                '*/*/edit',
+                [
+                    'entity_id' => $newFaq->getId(),
+                    '_current' => true
+                ]
+            );
+        }
+        $this->dataPersistor->clear('eguana_faq');
+        if ($this->getRequest()->getParam('back', false) === 'continue') {
+            return $resultRedirect->setPath('*/*/edit', ['entity_id' => $model->getId(), '_current' => true]);
+        }
+
+        return $resultRedirect->setPath('*/*/index');
     }
 }
