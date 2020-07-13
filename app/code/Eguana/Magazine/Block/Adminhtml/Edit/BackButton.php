@@ -12,6 +12,10 @@ namespace Eguana\Magazine\Block\Adminhtml\Edit;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 use Eguana\Magazine\Block\Adminhtml\Edit\GenericButton;
 
+/**
+ * Class for the backbutton toolbar on create/edit magazine
+ * Class BackButton
+ */
 class BackButton extends GenericButton implements ButtonProviderInterface
 {
     /**
