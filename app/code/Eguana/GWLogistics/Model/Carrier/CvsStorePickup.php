@@ -72,7 +72,7 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnli
         $result = $this->rateResultFactory->create();
 
 //        $shippingPrice = $this->getShippingPrice($request, $freeBoxes);
-        $shippingPrice = 95;
+        $shippingPrice = 100;
 
         if ($shippingPrice !== false) {
             $method = $this->createResultMethod($shippingPrice);

@@ -17,7 +17,6 @@ define([
     gwlShippingRatesValidationRules
 ) {
     'use strict';
-    console.log('kk');
 
     defaultShippingRatesValidator.registerValidator('gwlogistics', gwlShippingRatesValidator);
     defaultShippingRatesValidationRules.registerRules('gwlogistics', gwlShippingRatesValidationRules);
