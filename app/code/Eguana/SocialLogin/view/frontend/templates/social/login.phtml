@@ -40,7 +40,10 @@ $block->unSetSession();
            href="javascript:void(0);"
            rel="nofollow"
            data-role="eguana_sociallogin"
-           data-href="<?= $block->escapeUrl($lineUrl) ?>">
+           data-href="<?= $block->escapeUrl($lineUrl) ?>"
+           ap-click-area="<?= $block->escapeHtmlAttr(__('Login')) ?>"
+           ap-click-name="<?= $block->escapeHtmlAttr(__('Line Login Click')) ?>"
+           ap-click-data="<?= $block->escapeHtmlAttr(__('Line Login')) ?>">
             <?= $block->escapeHtml(__('Login with LINE')) ?>
         </a>
     <?php endif; ?>
@@ -48,7 +51,10 @@ $block->unSetSession();
         <a class="facebook-button-link"
            href="javascript:void(0);" rel="nofollow"
            data-role="eguana_sociallogin"
-           data-href="<?= $block->escapeUrl($facebookUrl) ?>">
+           data-href="<?= $block->escapeUrl($facebookUrl) ?>"
+           ap-click-area="<?= $block->escapeHtmlAttr(__('Login')) ?>"
+           ap-click-name="<?= $block->escapeHtmlAttr(__('Facebook Login Click')) ?>"
+           ap-click-data="<?= $block->escapeHtmlAttr(__('Facebook Login')) ?>">
             <?= $block->escapeHtml(__('Login with Facebook')) ?>
         </a>
     <?php endif; ?>
@@ -57,7 +63,10 @@ $block->unSetSession();
            href="javascript:void(0);"
            rel="nofollow"
            data-role="eguana_sociallogin"
-           data-href="<?= $block->escapeUrl($googleUrl) ?>">
+           data-href="<?= $block->escapeUrl($googleUrl) ?>"
+           ap-click-area="<?= $block->escapeHtmlAttr(__('Login')) ?>"
+           ap-click-name="<?= $block->escapeHtmlAttr(__('Google Login Click')) ?>"
+           ap-click-data="<?= $block->escapeHtmlAttr(__('Google Login')) ?>">
             <?= $block->escapeHtml(__('Login with Google')) ?>
         </a>
     <?php endif; ?>
