@@ -145,8 +145,10 @@ class SaveSuccess implements ObserverInterface
             }
 
             $this->sequence->setCustomerType($posOrOnline);
-            $secquenceNumber = $this->sequence->getNextValue();
-            $customer->setCustomAttribute('integration_number', $secquenceNumber);
+            if ($posOrOnline == 'online') {
+                $secquenceNumber = $this->sequence->getNextValue();
+                $customer->setCustomAttribute('integration_number', $secquenceNumber);
+            }
             $customer->setCustomAttribute(
                 'sales_organization_code',
                 $this->config->getOrganizationSalesCode($customer->getWebsiteId())
