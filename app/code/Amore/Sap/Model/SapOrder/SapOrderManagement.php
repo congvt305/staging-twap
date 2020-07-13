@@ -155,45 +155,75 @@ class SapOrderManagement implements SapOrderManagementInterface
             if ($orderStatusData['odrstat'] == 2) {
                 $message = "Order Status Error. Please Check order status.";
                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+
+                // 가용재고 부족 등 상태로 왔을 때 주문 취소할지 아니면 관리자에게 알릴지 다른 방법 찾아야 함
+                // 아모레쪽이랑 어떻게 처리할지 얘기해야 함
             // case that DN is created
             } elseif ($orderStatusData['odrstat'] == 3) {
                 $order = $this->getOrderFromList($orderStatusData['odrno']);
-
-                $trackingNo = $orderStatusData['ztrackId'];
-
-                $shipmentCheck = $order->hasShipments();
-
-                if (!$shipmentCheck) {
-                    $shipmentId = $this->createShipment($order, $trackingNo);
-                    // case that failed to creat shipment in Magento
-                    if (empty($shipmentId)) {
-                        $message = "Could not create shipment.";
-                        $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-                        // case to create shipment successfully
-                    } else {
-                        $message = "Shipment Created Successfully.";
-                        $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
-
+                try {
+                    if ($order->getStatus() == "sap_processing") {
                         $order->setStatus('preparing');
                         $this->orderRepository->save($order);
+                        $message = "Order status changed to preparing successfully.";
+                        $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+                    } else {
+                        $message = "Order status is not SAP Processing. Please check the order.";
+                        $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                     }
-                } else {
-                    $message = "Order already has a shipment";
-                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                } catch (\Exception $exception) {
+                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
                 }
             // 기타 order status 일 때.
             } elseif ($orderStatusData['odrstat'] == 4) {
                 // ecpay invoice creation
                 $order = $this->getOrderFromList($orderStatusData['odrno']);
-                $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId());
-
-                $result[$orderStatusData['odrno']] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
+                $trackingNo = $orderStatusData['ztrackId'];
 
                 if ($order->getStatus() == 'preparing') {
-                    $order->setStatus('shipment_processing');
-                    $this->orderRepository->save($order);
+                    $shipmentCheck = $order->hasShipments();
+
+                    if (!$shipmentCheck) {
+                        $shipmentId = $this->createShipment($order, $trackingNo);
+                        // case that failed to creat shipment in Magento
+                        if (empty($shipmentId)) {
+                            $message = "Could not create shipment.";
+                            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                            // case to create shipment successfully
+                        } else {
+                            try {
+                                $order->setStatus('shipment_processing');
+                                $this->orderRepository->save($order);
+                                $message = "Shipment Created Successfully.";
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+
+                                $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId());
+                                $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
+                            } catch (\Exception $exception) {
+                                $message = "Something went wrong while saving preparing order : " . $orderStatusData['odrno'];
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                                $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
+                            }
+                        }
+                    } else {
+                        if ($order->getStatus() != 'shipment_processing') {
+                            try {
+                                $order->setStatus('shipment_processing');
+                                $this->orderRepository->save($order);
+                                $message = "Order already has a shipment";
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+
+                                $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId());
+                                $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
+                            } catch (\Exception $exception) {
+                                $message = "Something went wrong while saving order : " . $orderStatusData['odrno'];
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                                $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
+                            }
+                        }
+                    }
                 }
-            } else {
+            } elseif ($orderStatusData['odrstat'] == 9) {
                 $message =  "Other order status return.";
                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
             }
@@ -272,7 +302,7 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @param $shippingMethod string
      * @return int|null
      */
-    public function createShipment($order, $trackingNo, $shippingMethod = "test shipping method")
+    public function createShipment($order, $trackingNo)
     {
         $shipmentItems = $this->createShipmentItem($order);
 
@@ -280,7 +310,7 @@ class SapOrderManagement implements SapOrderManagementInterface
             return null;
         }
 
-        $track = $this->createTrackNo($trackingNo, $shippingMethod);
+        $track = $this->createTrackNo($trackingNo);
         $orderEntityId = $order->getEntityId();
 
         return $this->shipOrderInterface
@@ -294,11 +324,11 @@ class SapOrderManagement implements SapOrderManagementInterface
             );
     }
 
-    public function createTrackNo($trackingNo, $shippingMethod)
+    public function createTrackNo($trackingNo, $shippingMethod = "GWLogistics CVS", $carrierCode = 'gwlogistics')
     {
         /** @var \Magento\Sales\Model\Order\Shipment\TrackCreation $trackNo */
         $trackNo = $this->shipmentTrackCreationInterfaceFactory->create();
-        $trackNo->setCarrierCode('custom');
+        $trackNo->setCarrierCode($carrierCode);
         $trackNo->setTitle($shippingMethod);
         $trackNo->setTrackNumber($trackingNo);
 
