@@ -1,0 +1,51 @@
+Back,Back
+"Delete Faq","Delete Faq"
+"Are you sure you want to do this?","Are you sure you want to do this?"
+Reset,Reset
+"Save and Continue Edit","Save and Continue Edit"
+"Save Faq","Save Faq"
+"Save & Duplicate","Save & Duplicate"
+"Save & Close","Save & Close"
+FAQ,FAQ
+"Manage FAQ","Manage FAQ"
+"row was successfully deleted","row was successfully deleted"
+"row could not be deleted","row could not be deleted"
+"A total of %1 record(s) have been deleted.","A total of %1 record(s) have been deleted."
+"This faq no longer exists.","This faq no longer exists."
+"You saved the faq.","You saved the faq."
+"Something went wrong while saving the faq.","Something went wrong while saving the faq."
+"You duplicated the faq.","You duplicated the faq."
+Enabled,Enabled
+Disabled,Disabled
+"Faq with id ""%1"" does not exist.","Faq with id ""%1"" does not exist."
+"A block identifier with the same properties already exists in the selected store.","A block identifier with the same properties already exists in the selected store."
+"Wrong Category Value. Please select category again.","Wrong Category Value. Please select category again."
+Edit,Edit
+Delete,Delete
+"Delete ""${ $.$data.title }""","Delete ""${ $.$data.title }"""
+"Are you sure you wan't to delete a ""${ $.$data.title }"" record?","Are you sure you wan't to delete a ""${ $.$data.title }"" record?"
+General,General
+Search,Search
+Remove,Remove
+"There is no search result.","There is no search result."
+Faq,Faq
+"FAQ Category","FAQ Category"
+"Category 1","Category 1"
+"Category 2","Category 2"
+"Category 3","Category 3"
+"Category 4","Category 4"
+"Category 5","Category 5"
+"Category 6","Category 6"
+"General Information","General Information"
+"Enable Faq","Enable Faq"
+"Faq Title","Faq Title"
+Category,Category
+"Store View","Store View"
+Description,Description
+"Add New Faq","Add New Faq"
+ID,ID
+Title,Title
+"Created At","Created At"
+"Updated At","Updated At"
+Status,Status
+Home,Home
