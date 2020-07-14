@@ -1,0 +1,44 @@
+<?php
+/**
+ * @author Eguana Commerce
+ *  Created by PhpStorm
+ *  User: Sonia Park
+ */
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Eguana\CustomerRefund\ViewModel\Refund $viewModel */
+$viewModel = $block->getViewModel();
+$order = $viewModel->getOrder();
+$isBankInfoRequired = $viewModel->canShowBankInfoPopup($order);
+?>
+<?php if ($isBankInfoRequired) : ?>
+<div data-bind="scope: 'bankinfo_popup'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "bankinfo_popup": {
+                    "component": "Eguana_CustomerRefund/js/view/rma/bankinfo-modal",
+                    "orderId": "<?= (int)$order->getId() ?>",
+                    "rmaForm": "#rma_create_form",
+                    "options": {
+                        "title": "<?= $block->escapeJs($block->escapeHtml(__('Please enter a bank information for your refund.')))?>",
+                        "modalClass": "bankinfo-popup"
+                    },
+                    "children": {
+                        "form": {
+                            "component": "Eguana_CustomerRefund/js/view/bankinfo-form",
+                            "template": "Eguana_CustomerRefund/bankinfo-form"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+</script>
+<?php endif; ?>
+
+
