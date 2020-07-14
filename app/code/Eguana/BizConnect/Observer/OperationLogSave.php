@@ -53,6 +53,10 @@ class OperationLogSave implements ObserverInterface
             $storeCode = 'kr';
         } elseif (strtolower($to) == 'tempostar') {
             $storeCode = 'jp';
+        } elseif (strtolower($to) == 'tw_lageige_website') {
+            $storeCode = 'tw_laneige';
+        } elseif (strtolower($to) == 'base') {
+            $storeCode = 'default';
         }
         $storeId = null;
         if ($storeCode) {
