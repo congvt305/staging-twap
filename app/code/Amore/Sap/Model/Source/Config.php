@@ -26,6 +26,8 @@ class Config
 
     const SAP_SSL_VERIFICATION_XML_PATH = 'sap/general/ssl_verify_host';
 
+    const SAP_EINVOICE_ENABLE_XML_PATH = 'sap/general/einvoice';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -89,5 +91,10 @@ class Config
     public function getSslVerification($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::SAP_SSL_VERIFICATION_XML_PATH, $type, $storeId);
+    }
+
+    public function getEInvoiceActiveCheck($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::SAP_EINVOICE_ENABLE_XML_PATH, $type, $storeId);
     }
 }
