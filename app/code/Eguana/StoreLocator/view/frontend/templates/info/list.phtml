@@ -50,11 +50,7 @@ if ($defaultCountry != null) {
                                    value="<?= $block->escapeHtmlAttr($searchLocationPoints['long']) ?>"/>
                         <?php endif; ?>
                     </div>
-                    <h1 class="page_tilte_head"><?= $block->escapeHtml(__('Find Store')) ?></h1>
                     <div class="field store-search">
-                        <label class="label" for="store-search">
-                            <span><?= $block->escapeHtml(__('Please enter the address or counter name')) ?></span>
-                        </label>
                         <div class="control">
                             <input type="text" class="input-text store-search-input" id="store-search" name="search"
                                    value="<?= $block->escapeHtmlAttr($selectedSearch ? $selectedSearch : '') ?>"
@@ -67,7 +63,7 @@ if ($defaultCountry != null) {
                             </button>
                         </div>
                     </div>
-                    <p class="location-error mage-error">
+                    <p class="location-error mage-error" style="display: none;">
                         <?= $block->escapeHtml(__('Please enter your current location')); ?>
                     </p>
                     <div class="stores-result">
