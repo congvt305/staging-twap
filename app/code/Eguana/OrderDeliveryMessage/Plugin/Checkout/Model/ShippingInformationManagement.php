@@ -11,7 +11,8 @@
 namespace Eguana\OrderDeliveryMessage\Plugin\Checkout\Model;
 
 use Magento\Checkout\Api\Data\ShippingInformationInterface;
-use Magento\Framework\App\Request\DataPersistorInterface;
+use Magento\Quote\Model\QuoteRepository;
+use Magento\Framework\Escaper;
 
 /**
  * Get Delivery Message in checkout process
@@ -21,19 +22,25 @@ use Magento\Framework\App\Request\DataPersistorInterface;
 class ShippingInformationManagement
 {
     /**
-     * @var DataPersistorInterface
+     * @var QuoteRepository
      */
-    private $dataPersistor;
+    private $quoteRepository;
+    /**
+     * @var Escaper
+     */
+    private $escaper;
 
     /**
      * ShippingInformationManagement constructor.
      * @param DataPersistorInterface $dataPersistor
      */
     public function __construct(
-        DataPersistorInterface $dataPersistor
+        QuoteRepository $quoteRepository,
+        Escaper $escaper
     ) {
 
-        $this->dataPersistor = $dataPersistor;
+        $this->quoteRepository = $quoteRepository;
+        $this->escaper = $escaper;
     }
 
     /**
@@ -53,12 +60,16 @@ class ShippingInformationManagement
             return;
         }
         $deliveryMessage = $extAttributes->getDeliveryMessage();
+        /**
+         * By Abbas I am using strip_tags because I did not get any related function in Magento 2
+         * In core files they are also using it. For example at
+         * vendor/magento/module-catalog/Model/Product/Option/Type/File.php Line 407
+         */
+        $deliveryMessage = $this->escaper->escapeHtml(strip_tags($deliveryMessage));
+        $quote = $this->quoteRepository->getActive($cartId);
+        $quote->setDeliveryMessage($deliveryMessage);
+        $this->quoteRepository->save($quote);
 
-        if (!isset($deliveryMessage)) {
-            return;
-        }
-
-        $this->dataPersistor->set('delivery_message', $deliveryMessage);
     }
 
 }
