@@ -61,6 +61,15 @@ class POSSystem
      */
     private $json;
 
+    /**
+     * @var \Magento\Framework\Event\ManagerInterface
+     */
+    private $eventManager;
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    private $storeManager;
+
     public function __construct(
         Curl $curl,
         Data $config,
@@ -68,7 +77,9 @@ class POSSystem
         \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory,
         \Zend\Http\Client $zendClient,
         POSLogger $logger,
-        Json $json
+        Json $json,
+        \Magento\Framework\Event\ManagerInterface $eventManager,
+        \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         $this->date = $date;
         $this->config = $config;
@@ -77,6 +88,8 @@ class POSSystem
         $this->zendClient = $zendClient;
         $this->logger = $logger;
         $this->json = $json;
+        $this->eventManager = $eventManager;
+        $this->storeManager = $storeManager;
     }
 
     public function getMemberInfo($firstName, $lastName, $mobileNumber)
@@ -93,6 +106,7 @@ class POSSystem
     {
         $result = [];
         $url = $this->config->getMemberInfoURL();
+        $callSuccess = 1;
         try {
             $parameters = [
                 'firstName' => $firstName,
@@ -136,8 +150,7 @@ class POSSystem
                     $result['message'] =  __(
                         'The requested membership information is already registered.'
                     );
-                } elseif (
-                    isset($response['data']['customerInfo']['cstmIntgSeq']) == false ||
+                } elseif (isset($response['data']['customerInfo']['cstmIntgSeq']) == false ||
                     $response['data']['customerInfo']['cstmIntgSeq'] == ''
                 ) {
                     $result['message'] =  __(
@@ -156,6 +169,7 @@ class POSSystem
                 $url,
                 $response
             );
+
         } catch (\Exception $e) {
             if ($e->getMessage() == '<url> malformed') {
                 $result['message'] = __('Please first configure POS APIs properly. Then try again.');
@@ -163,7 +177,26 @@ class POSSystem
                 $result['message'] = $e->getMessage();
             }
             $this->logger->addExceptionMessage($e->getMessage());
+            $callSuccess = 0;
         }
+
+        $log['request'] = $parameters;
+        $log['response'] = $response;
+
+        $websiteCode = $this->storeManager->getWebsite()->getCode();
+
+        $this->eventManager->dispatch(
+            'eguana_bizconnect_operation_processed',
+            [
+                'topic_name' => 'eguana.pos.get.info',
+                'direction' => 'outgoing',
+                'to' => $websiteCode, //from or to
+                'serialized_data' => $this->json->serialize($log),
+                'status' => $callSuccess,
+                'result_message' => isset($result['message'])?$result['message']:'Fail'
+            ]
+        );
+
         return $result;
     }
 
@@ -187,6 +220,7 @@ class POSSystem
     private function callJoinAPI($parameters)
     {
         $result = [];
+        $callSuccess = 1;
         try {
             $url = $this->config->getMemberJoinURL();
 
@@ -237,7 +271,25 @@ class POSSystem
             $result['message'] = $e->getMessage();
             $result['status'] = 0;
             $this->logger->addExceptionMessage($e->getMessage());
+            $callSuccess = 0;
         }
+
+        $log['request'] = $parameters;
+        $log['response'] = $response;
+
+        $websiteCode = $this->storeManager->getWebsite()->getCode();
+
+        $this->eventManager->dispatch(
+            'eguana_bizconnect_operation_processed',
+            [
+                'topic_name' => 'eguana.pos.sync.info',
+                'direction' => 'outgoing',
+                'to' => $websiteCode, //from or to
+                'serialized_data' => $this->json->serialize($log),
+                'status' => $callSuccess,
+                'result_message' => isset($result['message'])?$result['message']:'Fail'
+            ]
+        );
 
         return $result;
     }
