@@ -21,3 +21,33 @@ Faq,Faq
 "Faq Title","FAQ標題"
 "Add New Faq","FAQ添新"
 "Common Customer Questions","常見客戶問題"
+Back,背部
+"Are you sure you want to do this?","你確定你要這麼做嗎？"
+Reset,重啟
+"Save and Continue Edit","保存並繼續編輯"
+"Save & Duplicate","保存並複制"
+"Save & Close","保存並關閉"
+"A total of %1 record(s) have been deleted.","總共 ％1 個記錄已被刪除。"
+"This faq no longer exists.","該常見問題不再存在"
+"You saved the faq.","您保存了常見問題。"
+"Something went wrong while saving the faq.","保存常見問題時出了點問題。"
+"You duplicated the faq.","您複製了常見問題解答。"
+Enabled,已啟用
+Disabled,殘障人士
+"A block identifier with the same properties already exists in the selected store.","所選存儲中已經存在具有相同屬性的塊標識符。"
+"Wrong Category Value. Please select category again.","類別值錯誤。 請再次選擇類別。"
+Edit,編輯
+Delete,刪除
+"Delete ""${ $.$data.title }""","刪除 ""${ $.$data.title }"""
+General,一般
+Search,搜索
+Remove,去掉
+Category,類別
+"Store View","店鋪檢視"
+Description,描述
+ID,ID
+Title,標題
+"Created At","創建於"
+"Updated At","更新於"
+Status,狀態
+Home,家
