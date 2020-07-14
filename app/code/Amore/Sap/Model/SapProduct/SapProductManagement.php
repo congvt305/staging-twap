@@ -199,8 +199,15 @@ class SapProductManagement implements SapProductManagementInterface
             $this->logger->info($this->json->serialize($parameters));
         }
 
-        $storeId = $this->getStore($stockData['mallId'])->getId();
 
+        $store = $this->getStore($stockData['mallId']);
+
+        if (empty($store)) {
+            $result[$stockData['matnr']] = ['code' => "0001", 'message' => "Mall Id " . $stockData['mallId'] ." is not specified. Please check configuration."];
+            return $result;
+        }
+
+        $storeId = $store->getId();
         /**
          * @var $product \Magento\Catalog\Model\Product
          */
@@ -208,23 +215,42 @@ class SapProductManagement implements SapProductManagementInterface
         if (gettype($product) == 'string') {
             $result[$stockData['matnr']] = ['code' => "0001", 'message' => $product];
         } else {
-            if ($this->sapIntegrationCheck($product)) {
+            if (!$this->sapIntegrationCheck($product)) {
                 $websiteId = $this->getStore($stockData['mallId'])->getWebsiteId();
                 $websiteCode = $this->storeManagerInterface->getWebsite($websiteId)->getCode();
 
                 $sourceCode = $this->getSourceCodeByWebsiteCode($websiteCode);
+                $itemExistInSource = $this->sourceItemExistingCheck($stockData['matnr'], $sourceCode);
+                $itemExistInDefault = $this->sourceItemExistingCheck($stockData['matnr'], 'default');
 
-                $sourceItems[] = $this->saveProductQtyIntoSource($sourceCode, $stockData);
-
-                try {
-                    $this->sourceItemsSaveInterface->execute($sourceItems);
-                    $result[$stockData['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
-                } catch (CouldNotSaveException $e) {
-                    $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-                } catch (InputException $e) {
-                    $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-                } catch (ValidationException $e) {
-                    $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                if (!empty($itemExistInSource)) {
+                    $this->logger->info('PRODUCT SOURCE IS NOT DEFAULT');
+                    $sourceItems[] = $this->saveProductQtyIntoSource($sourceCode, $stockData);
+                    try {
+                        $this->sourceItemsSaveInterface->execute($sourceItems);
+                        $result[$stockData['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
+                    } catch (CouldNotSaveException $e) {
+                        $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                    } catch (InputException $e) {
+                        $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                    } catch (ValidationException $e) {
+                        $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                    }
+                } elseif (!empty($itemExistInDefault)) {
+                    $this->logger->info('PRODUCT SOURCE IS DEFAULT');
+                    $sourceItems[] = $this->saveProductQtyIntoSource('default', $stockData);
+                    try {
+                        $this->sourceItemsSaveInterface->execute($sourceItems);
+                        $result[$stockData['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
+                    } catch (CouldNotSaveException $e) {
+                        $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                    } catch (InputException $e) {
+                        $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                    } catch (ValidationException $e) {
+                        $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                    }
+                } else {
+                    $result[$stockData['matnr']] = ['code' => "0001", 'message' => $stockData['matnr'] . ' does not exist in the source.'];
                 }
             } else {
                 $result[$stockData['matnr']] = ['code' => "0001", 'message' => 'SAP Integration option is disabled. Check product option and try again.'];
@@ -389,6 +415,19 @@ class SapProductManagement implements SapProductManagementInterface
         return $value;
     }
 
+    public function sourceItemExistingCheck($sku, $sourceCode)
+    {
+        $connection = $this->resourceConnection->getConnection();
+        $table = $connection->getTableName('inventory_source_item');
+        $query = "SELECT * FROM $table WHERE sku = '$sku' AND source_code = '$sourceCode'";
+
+        try {
+            return $connection->fetchAll($query);
+        } catch (\Exception $exception) {
+            return null;
+        }
+    }
+
     public function productPriceUpdate($priceData)
     {
         $result = [];
@@ -431,7 +470,7 @@ class SapProductManagement implements SapProductManagementInterface
     public function sapIntegrationCheck($product)
     {
         if (is_null($product->getCustomAttribute('disable_sap_integration'))) {
-            return null;
+            return false;
         } else {
             return $product->getCustomAttribute('disable_sap_integration')->getValue();
         }
@@ -480,9 +519,16 @@ class SapProductManagement implements SapProductManagementInterface
 
     public function getStore($mallId)
     {
-        $storeCode = $this->getStoreCodeByMallCode($mallId);
-
-        return $this->storeRepository->get($storeCode);
+        $exactStore = '';
+        $stores = $this->storeManagerInterface->getStores();
+        foreach ($stores as $store) {
+            $configMallId = $this->config->getMallId('store', $store->getId());
+            if ($mallId == $configMallId) {
+                $exactStore = $store;
+                break;
+            }
+        }
+        return $exactStore;
     }
 
     public function getSourceCodeByWebsiteCode($websiteCode)
