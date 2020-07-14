@@ -13,10 +13,10 @@ $storeSize = $block->getStoresCollection()->getSize();
 $storesCollection = $block->getStoresCollection();
 $searchLocationPoints = $block->getCustomerLocationPoints();
 $markerImages = [];
-$markerImages['FS']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/fs_marker1.png');
-$markerImages['FS_1']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/fs_markere2.png');
-$markerImages['RS']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/rs_marker1.png');
-$markerImages['RS_1']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/rs_marker2.png');
+$markerImages['FS']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/marker.png');
+$markerImages['FS_1']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/marker.png');
+$markerImages['RS']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/marker.png');
+$markerImages['RS_1']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/marker.png');
 if ($defaultCountry != null) {
     $apiKeyAndRegion = $apiKeyAndRegion . '&region=' . $defaultCountry;
 }
@@ -24,14 +24,15 @@ if ($defaultCountry != null) {
 <div class="stores stw-stores-locator mian-content">
     <div class="main-store-block">
         <div class="store_list_left">
+            <?= $block->getChildHtml('page.main.title') ?>
             <form action="" target="_self" id="filter-form" method="get" class="store-locator-form">
                 <fieldset class="fieldset store-fields">
                     <div class="field note"><?= $block->escapeHtml($country) ?></div>
                     <div class="field field-hidden">
-                        <inp    ut type="hidden"
-                                id="current-lat"
-                                name="current_lat"
-                                value="<?= $block->escapeHtmlAttr($block->getSelectedLat()) ?>"/>
+                        <input type="hidden"
+                               id="current-lat"
+                               name="current_lat"
+                               value="<?= $block->escapeHtmlAttr($block->getSelectedLat()) ?>"/>
                         <input type="hidden"
                                id="current-lng"
                                name="current_lng"
@@ -49,9 +50,6 @@ if ($defaultCountry != null) {
                                    value="<?= $block->escapeHtmlAttr($searchLocationPoints['long']) ?>"/>
                         <?php endif; ?>
                     </div>
-
-                    <h1 class="page_tilte_head"><?= $block->escapeHtml(__('Find Store')) ?></h1>
-
                     <div class="field store-search">
                         <div class="control">
                             <input type="text" class="input-text store-search-input" id="store-search" name="search"
@@ -61,6 +59,7 @@ if ($defaultCountry != null) {
                         </div>
                         <div class="actions search-btn-action">
                             <button type="submit" class="button action primary search-btn">
+                                <span><?= $block->escapeHtml(__('Search')) ?></span>
                             </button>
                         </div>
                     </div>
@@ -72,10 +71,10 @@ if ($defaultCountry != null) {
 
                     <div class="stores-result">
                         <h3 class="pc">
-                            <?= /* @noEscape */ __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
+                            <?= __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
                         </h3>
                         <h3 class="mobile">
-                            <?= /* @noEscape */ __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
+                            <?= __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>
                         </h3>
                     </div>
                 </fieldset>
@@ -83,7 +82,7 @@ if ($defaultCountry != null) {
             <div class="stores-list">
                 <?php if ($storeSize > 0): ?>
                     <h3 class="mobile">
-                        <?= /* @noEscape */ __('We found <strong>%1 stores</strong> near your location', $storeSize) ?>
+                        <?= __('We found <strong>%1 stores</strong> near your location', $storeSize) ?>
                     </h3>
                 <?php endif; ?>
                 <?php if ($storeSize > 0): ?>
@@ -153,9 +152,7 @@ if ($defaultCountry != null) {
                                         <?php endif; ?>
                                     </div>
                                 </div>
-                                <div class="inner-store">
-
-                                </div>
+                                <div class="inner-store"></div>
                             </li>
                             <?php $count ++ ?>
                         <?php endforeach; ?>
@@ -189,9 +186,6 @@ if ($defaultCountry != null) {
         <?php endif;?>
     </div>
 </div>
-
-
-
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=<?= $block->escapeUrl($apiKeyAndRegion) ?>">
 </script>
