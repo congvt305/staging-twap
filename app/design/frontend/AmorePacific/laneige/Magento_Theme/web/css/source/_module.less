@@ -429,17 +429,17 @@
                     @_icon-font-color: #a9a9a9,
                     @_icon-font-size: 24px,
                     @_icon-font-line-height: 20px,
-                    @_icon-font-position: after
+                    @_icon-font-position: before
                 );
 
-                &:after {
+                &:before {
                     float: right;
                 }
 
                 &.active {
                     .lib-icon-font-symbol(
                         @icon-up,
-                        @_icon-font-position: after
+                        @_icon-font-position: before
                     );
                 }
             }

@@ -7,12 +7,8 @@ define([
     'use strict';
 
     return function (orderId) {
-        console.log(orderId);
-        console.log(typeof orderId);
-
         var refundUrl, serviceUrl, payload;
         refundUrl = 'rest/V1/eguana_customerrefund/mine/refund/online';
-            console.log(refundUrl);
         payload = {'orderId': orderId};
 
         serviceUrl = url.build(refundUrl);
@@ -24,9 +20,8 @@ define([
             JSON.stringify(payload)
         ).done(
             function (response) {
-                console.log(response);
-                location.reload();
                 $('body').trigger('processStop');
+                location.reload();
             }
         ).fail(
             function () {

@@ -10,13 +10,13 @@
 namespace Eguana\Magazine\Controller\Detail;
 
 use Eguana\Magazine\Api\MagazineRepositoryInterface;
+use Eguana\Magazine\Model\ResourceModel\Magazine\CollectionFactory;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\View\Result\PageFactory;
-use Eguana\Magazine\Model\ResourceModel\Magazine\CollectionFactory;
 
 /**
  * Class Index
@@ -44,6 +44,10 @@ class Index extends Action
      * @var ManagerInterface
      */
     private $managerInterface;
+
+    /**
+     * @var CollectionFactory
+     */
     private $collectionFactory;
 
     /**

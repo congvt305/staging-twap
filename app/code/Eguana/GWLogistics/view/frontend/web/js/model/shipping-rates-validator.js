@@ -21,7 +21,6 @@ define([
          * @return {Boolean}
          */
         validate: function (address) {
-            console.log('puhaha');
             var self = this;
 
             this.validationErrors = [];

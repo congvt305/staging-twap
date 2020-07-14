@@ -17,39 +17,28 @@ $searchData = $viewModel->getSearchData();
 $searchValue = $viewModel->getSearchValue();
 ?>
 
-<div class="faqs" data-mage-init='{
-                 "mage/tabs": {
-                    "openedState": "show",
-                    "collapsibleElement":"[data-role=tab-collapsible]",
-                    "animate": {"duration": 300},
-                    "active": false,
-                    "content": "[data-role=tab-content]",
-                    "header":"[data-role=tab-title]"
-                    }
-                 }'>
+<div class="faqs">
     <div class="search-block">
         <form class="form" action="<?= $block->escapeUrl($searchUrl)?>">
-            <fieldset class="fieldset">
-                <div class="field">
-                    <label class="label" for="faqSearchVal">
-                        <span><?= $block->escapeHtml(__('Search')) ?></span>
-                    </label>
-                    <div class="control">
-                        <input type="text"
-                               class="input-text required-entry faqSearchVal"
-                               id="faqSearchVal"
-                               name="faqSearchVal" value="<?= $block->escapeHtmlAttr(strip_tags($searchValue));?>"/>
-                    </div>
-                    <div class="actions">
-                        <button
-                            type="submit"
-                            class="button action primary search faqSearchBtn"
-                            title="<?=$block->escapeHtmlAttr(__('Search'))?>">
-                            <span><?=$block->escapeHtml(__('Search'))?></span>
-                        </button>
-                    </div>
+            <div class="field">
+                <label class="label" for="faqSearchVal">
+                    <span><?= /* @escapeNotVerified */ $block->escapeHtml(__('Search')) ?></span>
+                </label>
+                <div class="control">
+                    <input type="text"
+                           class="input-text required-entry faqSearchVal"
+                           id="faqSearchVal"
+                           name="faqSearchVal"
+                           placeholder="<?= /* @escapeNotVerified */ $block->escapeHtmlAttr(__('Search')) ?>"
+                           value="<?= $block->escapeHtmlAttr($block->getRequest()->getParam('faqSearchVal'))?>"/>
+                    <button type="button" class="action links" onclick="var search_val = document.getElementById('faqSearchVal'); search_val.value='';"><span class="remove"><?=$block->escapeHtml(__('Remove'))?></span></button>
                 </div>
-            </fieldset>
+                <div class="actions">
+                    <button type="submit" class="button action search primary faqSearchBtn" title="search">
+                        <span><?=$block->escapeHtml(__('Search'))?></span>
+                    </button>
+                </div>
+            </div>
         </form>
     </div>
 

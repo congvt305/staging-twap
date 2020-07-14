@@ -16,6 +16,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Ui\Component\MassAction\Filter;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
+use Magento\Sales\Api\OrderRepositoryInterface;
 use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Logger\Logger;
@@ -36,6 +37,10 @@ class MassSend extends AbstractAction
      * @var CollectionFactory
      */
     private $collectionFactory;
+    /**
+     * @var OrderRepositoryInterface
+     */
+    private $orderRepository;
 
     /**
      * MassSend constructor.
@@ -47,6 +52,7 @@ class MassSend extends AbstractAction
      * @param Filter $filter
      * @param CollectionFactory $collectionFactory
      * @param SapOrderConfirmData $sapOrderConfirmData
+     * @param OrderRepositoryInterface $orderRepository
      */
     public function __construct(
         Action\Context $context,
@@ -56,12 +62,14 @@ class MassSend extends AbstractAction
         Config $config,
         Filter $filter,
         CollectionFactory $collectionFactory,
-        SapOrderConfirmData $sapOrderConfirmData
+        SapOrderConfirmData $sapOrderConfirmData,
+        OrderRepositoryInterface $orderRepository
     ) {
         parent::__construct($context, $json, $request, $logger, $config);
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
         $this->sapOrderConfirmData = $sapOrderConfirmData;
+        $this->orderRepository = $orderRepository;
     }
 
     public function execute()
@@ -139,8 +147,11 @@ class MassSend extends AbstractAction
                         $ordersSucceeded = [];
                         foreach ($outdata as $data) {
                             if ($data['retcod'] == 'S') {
-                                // 여기에서 성공한 order들 order status 변경 처리
+                                // 여기에서 성공한 order들 order status 변경 처리(sap_processing)
                                 $ordersSucceeded[] = $data['odrno'];
+                                $succeededOrderObject = $this->sapOrderConfirmData->getOrderInfo($data['odrno']);
+                                $succeededOrderObject->setStatus('preparing');
+                                $this->orderRepository->save($succeededOrderObject);
                             } else {
                                 $this->messageManager->addErrorMessage(
                                     __(

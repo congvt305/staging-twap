@@ -87,7 +87,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         /** @var Order $order */
         $order = $this->getOrderInfo($incrementId);
 
-        $source = $this->config->getSourceByStore('store' ,$order->getStoreId());
+        $source = $this->config->getSourceByStore('store', $order->getStoreId());
         $orderData = $this->getOrderData($incrementId);
         $itemData = $this->getOrderItem($incrementId);
 
@@ -123,7 +123,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             $sampleOrderData = $orderData[0];
             $sampleIncrementId = $sampleOrderData['odrno'];
             $sampleOrder = $this->getOrderInfo($sampleIncrementId);
-            $source = $this->config->getSourceByStore('store' ,$sampleOrder->getStoreId());
+            $source = $this->config->getSourceByStore('store', $sampleOrder->getStoreId());
         }
 
         $request = [
@@ -191,11 +191,8 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         if ($invoice != null) {
             $shippingAddress = $orderData->getShippingAddress();
-            $trackingNumbers = implode(",",$orderData->getTrackingNumbers());
+            $trackingNumbers = implode(",", $orderData->getTrackingNumbers());
             $customer = $this->getCustomerByOrder($orderData);
-            $cvsLocationId = $shippingAddress->getExtensionAttributes()->getCvsLocationId();
-            $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
-            $cvsAddress = $cvsStoreData->getCvsAddress() . ' ' . $cvsStoreData->getCvsStoreName() . ' ' . $cvsStoreData->getLogisticsSubType();
 
             $bindData[] = [
                 'vkorg' => $this->config->getMallId('store', $storeId),
@@ -207,7 +204,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'payde' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
                 'paytm' => $this->dateFormatting($invoice->getCreatedAt(), 'His'),
                 'auart' => $this->getOrderType($orderData->getEntityId()),
-                'aurgu' => self::NORMAL_ORDER,
+                'aurgu' => 'ORDER REASON',
                 'augruText' => 'ORDER REASON TEXT',
                 // 주문자회원코드-직영몰자체코드
                 'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
@@ -215,16 +212,16 @@ class SapOrderConfirmData extends AbstractSapOrder
                 //배송지 id - 직영몰 자체코드, 없으면 공백
                 'recvid' => '',
                 'recvnm' => $shippingAddress->getName(),
-                'postCode' => $this->cvsShippingCheck($orderData) ? '' : $shippingAddress->getPostcode(),
-                'addr1' => $this->cvsShippingCheck($orderData) ? $cvsAddress : $shippingAddress->getRegion(),
-                'addr2' => $this->cvsShippingCheck($orderData) ? '' : $shippingAddress->getCity(),
-                'addr3' => $this->cvsShippingCheck($orderData) ? '' : preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())),
+                'postCode' => $this->cvsShippingCheck($orderData) ? '00000' : $shippingAddress->getPostcode(),
+                'addr1' => $this->cvsShippingCheck($orderData) ? $this->getCsvAddress($shippingAddress) : $shippingAddress->getRegion(),
+                'addr2' => $this->cvsShippingCheck($orderData) ? '.' : $shippingAddress->getCity(),
+                'addr3' => $this->cvsShippingCheck($orderData) ? '.' : preg_replace('/\r\n|\r|\n/', ' ', implode(PHP_EOL, $shippingAddress->getStreet())),
                 'land1' => $shippingAddress->getCountryId(),
                 'telno' => $shippingAddress->getTelephone(),
                 'hpno' => $shippingAddress->getTelephone(),
                 'waerk' => $orderData->getOrderCurrencyCode(),
                 'nsamt' => $orderData->getSubtotalInclTax(),
-                'dcamt' => $orderData->getDiscountAmount(),
+                'dcamt' => abs($orderData->getDiscountAmount()),
                 'slamt' => $orderData->getGrandTotal() - $orderData->getShippingAmount(),
                 'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : $orderData->getRewardPointsBalance(),
                 'shpwr' => $orderData->getShippingAmount(),
@@ -265,6 +262,20 @@ class SapOrderConfirmData extends AbstractSapOrder
                 $cvsCheck = false;
         }
         return $cvsCheck;
+    }
+
+    /**
+     * @param $shippingAddress
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getCsvAddress($shippingAddress)
+    {
+        $cvsLocationId = $shippingAddress->getData('cvs_location_id');
+        $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
+        $cvsAddress = $cvsStoreData->getCvsAddress() . ' ' . $cvsStoreData->getCvsStoreName() . ' ' . $cvsStoreData->getLogisticsSubType();
+
+        return $cvsAddress;
     }
 
     /**

@@ -17,14 +17,26 @@ class Refund implements ArgumentInterface
      * @var \Eguana\CustomerRefund\Model\Refund
      */
     private $refundModel;
+    /**
+     * @var \Magento\Framework\Registry
+     */
+    private $registry;
 
-    public function __construct(\Eguana\CustomerRefund\Model\Refund $refundModel)
+    public function __construct(
+        \Eguana\CustomerRefund\Model\Refund $refundModel,
+        \Magento\Framework\Registry $registry
+    )
     {
         $this->refundModel = $refundModel;
+        $this->registry = $registry;
     }
-    private function getOrder()
-    {
 
+    /**
+     * @return mixed|null
+     */
+    public function getOrder()
+    {
+        return $this->registry->registry('current_order');
     }
 
     /**
@@ -38,6 +50,11 @@ class Refund implements ArgumentInterface
     public function canShowRefundOfflineButton($order)
     {
         return $this->refundModel->canRefundOffline($order);
+    }
+
+    public function canShowBankInfoPopup($order)
+    {
+        return $this->refundModel->canShowBankInfoPopup($order);
     }
 
 }

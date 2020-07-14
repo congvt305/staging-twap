@@ -51,9 +51,6 @@ if ($defaultCountry != null) {
                         <?php endif; ?>
                     </div>
                     <div class="field store-search">
-                        <label class="label" for="store-search">
-                            <span><?= $block->escapeHtml(__('Please enter the address or counter name')) ?></span>
-                        </label>
                         <div class="control">
                             <input type="text" class="input-text store-search-input" id="store-search" name="search"
                                    value="<?= $block->escapeHtmlAttr($selectedSearch ? $selectedSearch : '') ?>"
@@ -66,12 +63,9 @@ if ($defaultCountry != null) {
                             </button>
                         </div>
                     </div>
-
-
-                    <p class="location-error mage-error" style="display: none;color: #f32836;">
+                    <p class="location-error mage-error" style="display: none;">
                         <?= $block->escapeHtml(__('Please enter your current location')); ?>
                     </p>
-
                     <div class="stores-result">
                         <h3 class="pc">
                             <?= /* @noEscape */ __('Total <strong> %1 </strong> Articals Found', $storeSize) ?>

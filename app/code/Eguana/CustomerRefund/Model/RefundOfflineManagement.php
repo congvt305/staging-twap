@@ -56,7 +56,8 @@ class RefundOfflineManagement implements \Eguana\CustomerRefund\Api\RefundOfflin
             $this->hold($order);
             $this->messageManager->addSuccessMessage(__('You requested to refund.'));
         } catch (\Exception $e) {
-            $this->messageManager->addErrorMessage(__('Something is wrong with the refund request. Please contact our customer service.'));
+            $this->messageManager->addErrorMessage($e->getMessage());
+//            $this->messageManager->addErrorMessage(__('Something is wrong with the refund request. Please contact our customer service.'));
         }
         return true;
     }

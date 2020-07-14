@@ -443,6 +443,10 @@ define([
                     if (!target.hasClass('parent')) {
                         window.location.href = target.find('> a').attr('href');
                     }
+                },
+
+                'click .category-img:has(a)': function (event) {
+                    window.location.href = $(event.target).closest('.category-img').find('a').attr('href');
                 }
             });
 

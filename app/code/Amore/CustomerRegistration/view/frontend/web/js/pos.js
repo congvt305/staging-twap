@@ -168,6 +168,7 @@ define([
                                 $('.form-create-account #lastname').val(response.pos.lastName);
                                 $('.form-create-account #mobile_number').val($(this.options.mobileNumberSelector).val());
                                 $('.form-create-account #email_address').val(response.pos.email);
+                                $('.form-create-account #integration_number').val(response.pos.cstmIntgSeq);
                                 $('.form-create-account #gender').val(response.pos.sex == 'M'?1:2);
                                 $('.form-create-account #dob').val(response.pos.birthDay);
                                 $('.form-create-account #is_subscribed').prop('checked',response.pos.emailYN == 'Y'?true:false);

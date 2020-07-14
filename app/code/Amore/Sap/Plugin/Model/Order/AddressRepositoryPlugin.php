@@ -82,7 +82,7 @@ class AddressRepositoryPlugin
         $order = $this->orderRepository->get($orderId);
         $orderStatus = $order->getStatus();
 
-        $availableStatus = ['processing', 'prepareing', 'sap_processing'];
+        $availableStatus = ['processing', 'preparing', 'sap_processing'];
 
         $enableCheck = $this->config->getActiveCheck('store', $order->getStoreId());
 
@@ -90,7 +90,7 @@ class AddressRepositoryPlugin
             if (!$this->config->checkTestMode()) {
                 if (in_array($orderStatus, $availableStatus)) {
                     try {
-                        $orderUpdateData = $this->sapOrderCancelData->singleAddressUpdateData($order->getIncrementId());
+                        $orderUpdateData = $this->sapOrderCancelData->singleAddressUpdateData($order->getIncrementId(), $entity);
 
                         if ($this->config->getLoggingCheck()) {
                             $this->logger->info("Order Address Update Data");

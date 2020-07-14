@@ -90,7 +90,9 @@ class OrderSend extends AbstractAction
                         $outdata = $result['data']['response']['output']['outdata'];
                         foreach ($outdata as $data) {
                             if ($data['retcod'] == 'S') {
-                                // 여기에서 성공한 order order status 변경 처리
+                                // 여기에서 성공한 order order status 변경 처리(sap_processing)
+                                $order->setStatus('preparing');
+                                $this->orderRepository->save($order);
                                 $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                             } else {
                                 $this->messageManager->addErrorMessage(
@@ -122,6 +124,8 @@ class OrderSend extends AbstractAction
             } catch (NoSuchEntityException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             } catch (LocalizedException $e) {
+                $this->messageManager->addErrorMessage($e->getMessage());
+            } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             }
         } else {

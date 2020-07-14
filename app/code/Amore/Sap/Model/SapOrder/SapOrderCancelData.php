@@ -55,7 +55,7 @@ class SapOrderCancelData extends AbstractSapOrder
      * @return array[]
      * @throws NoSuchEntityException
      */
-    public function singleAddressUpdateData($incrementId)
+    public function singleAddressUpdateData($incrementId, $addressData)
     {
         /** @var Order $order */
         $order = $this->getOrderInfo($incrementId);
@@ -67,7 +67,7 @@ class SapOrderCancelData extends AbstractSapOrder
                     "source" => $source
                 ],
                 "input" => [
-                    "itData" => $this->getOrderAddressUpdate($incrementId)
+                    "itData" => $this->getOrderAddressUpdate($incrementId, $addressData)
                 ]
             ]
         ];
@@ -103,12 +103,11 @@ class SapOrderCancelData extends AbstractSapOrder
         return $testData;
     }
 
-    public function getOrderAddressUpdate($incrementId)
+    public function getOrderAddressUpdate($incrementId, $addressData)
     {
         /** @var Order $orderData */
         $orderData = $this->getOrderInfo($incrementId);
         $storeId = $orderData->getStoreId();
-        $shippingAddress = $orderData->getShippingAddress();
 
         if ($orderData == null) {
             throw new NoSuchEntityException(
@@ -122,14 +121,14 @@ class SapOrderCancelData extends AbstractSapOrder
             "odrno" => $orderData->getIncrementId(),
             // 주문 취소 : 1, 주소변경 : 2
             "zchgind" => 2,
-            "recvnm" => $shippingAddress->getName(),
-            "postCode" => $shippingAddress->getPostcode(),
-            "addr1" => $shippingAddress->getRegion(),
-            "addr2" => $shippingAddress->getCity(),
-            "addr3" => preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())),
-            "land1" => $shippingAddress->getCountryId(),
-            "telno" => $shippingAddress->getTelephone(),
-            "hpno" => $shippingAddress->getTelephone()
+            "recvnm" => $addressData->getLastname() . $addressData->getFirstname(),
+            "postCode" => $addressData->getPostcode(),
+            "addr1" => $addressData->getRegion(),
+            "addr2" => $addressData->getCity(),
+            "addr3" => preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $addressData->getStreet())),
+            "land1" => $addressData->getCountryId(),
+            "telno" => $addressData->getTelephone(),
+            "hpno" => $addressData->getTelephone()
         ];
 
         return $bindData;

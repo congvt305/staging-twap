@@ -26,15 +26,23 @@ class POSLogger
      * @var Json
      */
     private $json;
+    /**
+     * @var Data
+     */
+    private $confg;
+    /**
+     * @var Logger
+     */
+    private $logger;
 
     public function __construct(
         Data $confg,
         Logger $logger,
         Json $json
     ) {
+        $this->json = $json;
         $this->confg = $confg;
         $this->logger = $logger;
-        $this->json = $json;
     }
 
     public function addAPICallLog($message, $url, $parameters)

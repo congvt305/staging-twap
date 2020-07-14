@@ -7,5 +7,9 @@
 /** @var \Magento\Customer\Block\Form\Login\Info $block */
 ?>
 <?php if ($block->getRegistration()->isAllowed()) : ?>
-    <a href="<?= $block->escapeUrl($block->getCreateAccountUrl()) ?>" class="action create"><span><?= $block->escapeHtml(__('Create an Account')) ?></span></a>
+    <a href="<?= $block->escapeUrl($block->getCreateAccountUrl()) ?>"
+       class="action create"
+       ap-click-data="<?= $block->escapeHtmlAttr(__('Create an Account')) ?>">
+        <span><?= $block->escapeHtml(__('Create an Account')) ?></span>
+    </a>
 <?php endif; ?>

@@ -20,8 +20,8 @@ define([
         let totalEvent = config.totalEvent;
         let condition = config.condition;
         let eventConfigValue = config.eventConfigValue;
-        $(document).on("click","#more-button", function() {
-            if (count * eventConfigValue > totalEvent) {
+        $(document).on("click","#more-button", function () {
+            if (count * eventConfigValue >= totalEvent) {
                 $("#event-count").text(totalEvent);
                 $("#more-button").prop('disabled', true);
             } else {
@@ -29,15 +29,14 @@ define([
             }
             let apiUrl = url.build('events/index/ajaxcall/');
             $.ajax({
-                showLoader: true,
                 url: apiUrl,
                 type: "POST",
                 data: {count:  count, condition:condition},
             }).done(function (data) {
                 let valueHtml ='';
-                if($.isEmptyObject(data)){
+                if ($.isEmptyObject(data)) {
                     $(".event-list").html('');
-                }else{
+                } else {
                     $(".event-list").html('');
                     $(".event-list").html(data);
                 }

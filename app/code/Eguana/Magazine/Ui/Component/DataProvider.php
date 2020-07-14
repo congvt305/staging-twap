@@ -14,9 +14,15 @@ use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\AuthorizationInterface;
+use Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider as DataProviderAlias;
 use Magento\Framework\View\Element\UiComponent\DataProvider\Reporting;
 
-class DataProvider extends \Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
+/**
+ * Used for data Provider
+ * Class DataProvider
+ *
+ */
+class DataProvider extends DataProviderAlias
 {
     /**
      * @var AuthorizationInterface
@@ -70,7 +76,7 @@ class DataProvider extends \Magento\Framework\View\Element\UiComponent\DataProvi
     {
         $metadata = [];
 
-        if (!$this->authorization->isAllowed('Eguana_Magazine::manage_magazine')) {
+        if (!$this->authorization->isAllowed('Eguana_Magazine::magazine')) {
             $metadata = [
                 'magazine_columns' => [
                     'arguments' => [

@@ -80,6 +80,14 @@ class Refund
         return false;
     }
 
+    public function canShowBankInfoPopup($order)
+    {
+        if ($order->getPayment()->getMethod() === 'checkmo') { //todo: for test purpose only, should remove later
+            return true;
+        }
+        return $this->isActive() && $this->getEcpayMethod($order) === 'webatm';
+    }
+
     private function isActive()
     {
         return $this->dataHelper->isEnabled();

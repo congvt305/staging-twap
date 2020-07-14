@@ -10,7 +10,8 @@
 
 /** @var \Magento\Sales\Model\Order\AbstractOrder $block */
 $order = $block->getOrder()->getData();
-$deliveryMessage = $order["delivery_message"];
+$orderExtensionAttributes = $block->getOrder()->getExtensionAttributes();
+$deliveryMessage = $orderExtensionAttributes->getDeliveryMessage();
 ?>
 <?php
 /**
