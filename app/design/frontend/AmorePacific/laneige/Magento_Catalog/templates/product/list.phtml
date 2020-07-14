@@ -18,6 +18,7 @@ use Magento\Framework\App\Action\Action;
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+$categoryName = $block->getLayer()->getCurrentCategory()->getName();
 ?>
 <?php if (!$_productCollection->count()) :?>
     <div class="message info empty"><div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div></div>
@@ -47,6 +48,8 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
             <?php foreach ($_productCollection as $_product) :?>
             <li class="item product product-item">
                 <div class="product-item-info" data-container="product-<?= /* @noEscape */ $viewMode ?>">
+                    <?php /* @noEscape */ $productName = $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
+                    <?php $productSku = $_product->getSku() ?>
                     <?php
                     $productImage = $block->getImage($_product, $imageDisplayArea);
                     $productHoverImage = $block->getImage($_product, 'hover_image');
@@ -58,7 +61,10 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                     <?php // Product Image ?>
                     <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
                        class="product photo product-item-photo"
-                       tabindex="-1">
+                       tabindex="-1"
+                       ap-click-area="prds-<?= $categoryName ?>"
+                       ap-click-name="prd click"
+                       ap-click-data="<?= $productName . '/' . $productSku ?>">
                         <span class="flags">
                         <?php if($_product->getData('new')):?>
                             <span class="flag new"><?= $block->escapeHtml($_product->getResource()->getAttribute('new')->getStoreLabel());?></span>
@@ -80,7 +86,10 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                         ?>
                         <strong class="product name product-item-name">
                             <a class="product-item-link"
-                               href="<?= $block->escapeUrl($_product->getProductUrl()) ?>">
+                               href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
+                               ap-click-area="prds-<?= $categoryName ?>"
+                               ap-click-name="prd click"
+                               ap-click-data="<?= $productName . '/' . $productSku ?>">
                                 <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a>
                         </strong>
