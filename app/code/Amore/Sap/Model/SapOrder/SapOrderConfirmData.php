@@ -212,7 +212,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 //배송지 id - 직영몰 자체코드, 없으면 공백
                 'recvid' => '',
                 'recvnm' => $shippingAddress->getName(),
-                'postCode' => $this->cvsShippingCheck($orderData) ? '' : $shippingAddress->getPostcode(),
+                'postCode' => $this->cvsShippingCheck($orderData) ? '00000' : $shippingAddress->getPostcode(),
                 'addr1' => $this->cvsShippingCheck($orderData) ? $this->getCsvAddress($shippingAddress) : $shippingAddress->getRegion(),
                 'addr2' => $this->cvsShippingCheck($orderData) ? '' : $shippingAddress->getCity(),
                 'addr3' => $this->cvsShippingCheck($orderData) ? '' : preg_replace('/\r\n|\r|\n/', ' ', implode(PHP_EOL, $shippingAddress->getStreet())),
