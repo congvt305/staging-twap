@@ -6,10 +6,14 @@ define([
 ], function ($,url,storage, $t) {
     'use strict';
 
-    return function (orderId) {
+    return function (bankInfoData) {
+        console.log(bankInfoData);
+        console.log(typeof bankInfoData);
+
         var refundUrl, serviceUrl, payload;
-        refundUrl = 'rest/V1/eguana_customerrefund/mine/refund/online';
-        payload = {'orderId': orderId};
+        refundUrl = 'rest/V1/eguana_customerrefund/mine/rma/bankinfo/save';
+        console.log(refundUrl);
+        payload = {'bankInfoData': bankInfoData};
 
         serviceUrl = url.build(refundUrl);
 
@@ -20,9 +24,8 @@ define([
             JSON.stringify(payload)
         ).done(
             function (response) {
-                $('body').trigger('processStop');
-                location.reload();
-            }
+                return true;
+            } //if errors, reload
         ).fail(
             function () {
                 $('body').trigger('processStop');

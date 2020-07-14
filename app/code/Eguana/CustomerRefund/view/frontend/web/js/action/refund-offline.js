@@ -24,10 +24,8 @@ define([
             JSON.stringify(payload)
         ).done(
             function (response) {
-                console.log(response);
                 $('body').trigger('processStop');
                 location.reload();
-
             }
         ).fail(
             function () {
