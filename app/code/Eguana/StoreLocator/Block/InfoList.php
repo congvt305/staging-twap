@@ -199,6 +199,8 @@ class InfoList extends Template
             $isAddAddress = $this->addStoreAddressFilter($search);
             if ($isAddAddress) {
                 $storeCollection->addFieldToFilter('address', ['like' => '%' . $search . '%']);
+            } else {
+                $storeCollection->addFieldToFilter('title', ['like' => '%' . $search . '%']);
             }
         }
         return $storeCollection;
