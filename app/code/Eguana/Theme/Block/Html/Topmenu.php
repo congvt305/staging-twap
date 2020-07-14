@@ -116,11 +116,21 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
                 $html .= '</ul></li><li class="column"><ul>';
             }
 
+            $parentCategoryName = 'MENU';
+            if ($child->getParent()->getName()) {
+                $parentCategoryName = $child->getParent()->getName();
+            }
+
             $html .= '<li ' . $this->_getRenderedMenuItemAttributes($child) . '>';
-            $html .= '<a href="' . $child->getUrl() . '" ' . $outermostClassCode . '><span>' . $this->escapeHtml(
-                $child->getName()
-            ) . '</span></a>' . $this->_addSubMenu(
-                $child,
+
+            $html .= '<a href="' . $child->getUrl() . '" ' . $outermostClassCode
+                . 'ap-click-area="GNB"'
+                . 'ap-click-name="'. $parentCategoryName .'"'
+                . 'ap-click-data="'. $child->getName() .'"'
+                .'><span>' . $this->escapeHtml(
+                    $child->getName()
+                ) . '</span></a>' . $this->_addSubMenu(
+                    $child,
                 $childLevel,
                 $childrenWrapClass,
                 $limit
