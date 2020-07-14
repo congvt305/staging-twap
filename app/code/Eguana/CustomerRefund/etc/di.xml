@@ -15,5 +15,8 @@
                 type="Eguana\CustomerRefund\Model\BankInfo"/>
     <preference for="Eguana\CustomerRefund\Api\BankInfoRepositoryInterface"
                 type="Eguana\CustomerRefund\Model\BankInfoRepository"/>
-    <preference for="Eguana\CustomerRefund\Api\Data\BankInfoSearchResultInterface" type="Eguana\CustomerRefund\Model\BankInfoSearchResult"/>
+    <preference for="Eguana\CustomerRefund\Api\Data\BankInfoSearchResultInterface"
+                type="Eguana\CustomerRefund\Model\BankInfoSearchResult"/>
+    <preference for="Eguana\CustomerRefund\Api\BankinfoManagementInterface"
+                type="Eguana\CustomerRefund\Model\BankinfoManagement"/>
 </config>

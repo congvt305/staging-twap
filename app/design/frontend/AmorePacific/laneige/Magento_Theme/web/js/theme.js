@@ -70,7 +70,6 @@ define([
                 var id = $(element).attr('id');
 
                 if(id != 'community_gallery') {
-                    console.log($(element).attr('id')+ ' scrollTop = '+scrollTop+' top =' + top);
                     if (scrollTop > top && scrollTop > 0) {
                         var id = $(element).attr('id');
                         $('.product.data.items >.data.item.title').removeClass('active');

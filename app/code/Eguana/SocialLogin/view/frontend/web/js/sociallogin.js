@@ -9,23 +9,32 @@
 require(
     [
         'jquery',
-        'mage/url'
+        'mage/url',
     ], function($, url) {
     'use strict';
-    var buttonDataRole = $('[data-role="eguana_sociallogin"]');
+    let buttonDataRole = $('[data-role="eguana_sociallogin"]');
     buttonDataRole.click(function(){
-        var loginurl = $(this).data("href");
-        var returnUrl = url.build('sociallogin/login/createcustomer');
-        var win = window.open(
+        let loginurl = $(this).data("href");
+        let returnUrl = url.build('sociallogin/login/createcustomer');
+        let win = window.open(
             loginurl,
             "_blank",
             "toolbar=yes,scrollbars=yes,resizable=yes,top=200,left=400,width=500,height=440"
         );
-        var timer = setInterval(function() {
+        let timer = setInterval(function() {
             if(win.closed) {
                 clearInterval(timer);
-                window.location.href = returnUrl;
+                let form_data = null;
+                let ajaxUrl = url.build('sociallogin/login/validatelogin');
+                $.ajax({
+                    url: ajaxUrl,
+                    data: form_data,
+                    type: "POST",
+                    async:true
+                }).done(function (data) {
+                    window.location.href = data['url']
+                });
             }
-        }, 1000);
+        }, 500);
     });
 });

@@ -13,4 +13,10 @@
             <resource ref="self"/>
         </resources>
     </route>
+    <route method="POST" url="/V1/eguana_customerrefund/mine/rma/bankinfo/save">
+        <service class="Eguana\CustomerRefund\Api\BankinfoManagementInterface" method="process"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
 </routes>

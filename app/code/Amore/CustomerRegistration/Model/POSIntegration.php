@@ -16,6 +16,7 @@ use Magento\Newsletter\Model\SubscriberFactory;
 use Amore\CustomerRegistration\Model\POSLogger;
 use Amore\CustomerRegistration\Api\Data\ResponseInterface;
 use Amore\CustomerRegistration\Api\Data\DataResponseInterface;
+use Magento\Framework\Serialize\Serializer\Json;
 
 /**
  * Implement the API module interface
@@ -59,6 +60,14 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      * @var DataResponseInterface
      */
     private $dataResponse;
+    /**
+     * @var Json
+     */
+    private $json;
+    /**
+     * @var \Magento\Framework\Event\ManagerInterface
+     */
+    private $eventManager;
 
     public function __construct(
         Data $configHelper,
@@ -68,7 +77,9 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         SubscriberFactory $subscriberFactory,
         POSLogger $logger,
         ResponseInterface $response,
-        DataResponseInterface $dataResponse
+        DataResponseInterface $dataResponse,
+        Json $json,
+        \Magento\Framework\Event\ManagerInterface $eventManager
     ) {
         $this->customerRepositoryInterface = $customerRepositoryInterface;
         $this->configHelper = $configHelper;
@@ -78,6 +89,8 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $this->logger = $logger;
         $this->response = $response;
         $this->dataResponse = $dataResponse;
+        $this->json = $json;
+        $this->eventManager = $eventManager;
     }
 
     /**
@@ -148,7 +161,8 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 'salOrgCd' => $salOrgCd,
                 'salOffCd' => $salOffCd
             ];
-
+            $callSuccess = 1;
+            $response = '';
             $this->logger->addAPICallLog(
                 'Customer update api call',
                 '{Base URL}/rest/all/V1/pos-customers/',
@@ -158,7 +172,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
             $customerWebsiteId = $this->getCustomerWebsiteId($salOffCd);
 
             if ($customerWebsiteId == 0) {
-                return $this->getResponse(
+                $response = $this->getResponse(
                     "0001",
                     'No website exist against sales office code '.$salOffCd,
                     '0001',
@@ -168,7 +182,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
             }
 
             if (!trim($cstmIntgSeq)) {
-                return $this->getResponse(
+                $response = $this->getResponse(
                     "0002",
                     'Customer Sequence Number can not be empty '.$cstmIntgSeq,
                     '0002',
@@ -183,7 +197,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
             $customers = $this->getCustomerByIntegraionNumber($cstmIntgSeq, $customerWebsiteId);
 
             if (!count($customers)) {
-                return $this->getResponse(
+                $response =  $this->getResponse(
                     "0003",
                     'No customer exist against this integration sequence '.$cstmIntgSeq,
                     '0003',
@@ -193,7 +207,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
             }
 
             if (count($customers) > 1) {
-                return $this->getResponse(
+                $response = $this->getResponse(
                     "0004",
                     'There are more than one customer exist against this sequence Id '.$cstmIntgSeq.' in website '.$customerWebsiteId,
                     '0004',
@@ -203,7 +217,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
             }
 
             if (trim($mobileNo) && $this->mobileUseByOtherCustomer($cstmIntgSeq, $customerWebsiteId, $mobileNo)) {
-                return $this->getResponse(
+                $response = $this->getResponse(
                     "0005",
                     $mobileNo.' Mobile number is assigned to other customer in website '.$customerWebsiteId,
                     '0005',
@@ -211,41 +225,72 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                     $cstmIntgSeq
                 );
             }
-            $customer = $customers[0];
-            trim($firstName)?$customer->setFirstname($firstName):'';
-            trim($lastName)?$customer->setLastname($lastName):'';
-            trim($birthDay)?$customer->setDob($this->setProperDateFormat($birthDay)):'';
-            trim($mobileNo)?$customer->setCustomAttribute('mobile_number', $mobileNo):'';
-            trim($email)?$customer->setEmail($email):'';
-            trim($sex)?$customer->setGender($sex == 'M' ? 1 : 2):'';
-            trim($smsYN)?$customer->setCustomAttribute('sms_subscription_status', $smsYN == 'Y' ? 1 : 0):'';
-            trim($dmYN)?$customer->setCustomAttribute('dm_subscription_status', $dmYN == 'Y' ? 1 : 0):'';
-            trim($callYN)?$customer->setCustomAttribute('call_subscription_status', $callYN == 'Y' ? 1 : 0):'';
-            trim($homeCity)?$customer->setCustomAttribute('dm_city', $homeCity):'';
-            trim($homeState)?$customer->setCustomAttribute('dm_state', $homeState):'';
-            trim($homeAddr1)?$customer->setCustomAttribute('dm_detailed_address', $homeAddr1):'';
-            trim($homeZip)?$customer->setCustomAttribute('dm_zipcode', $homeZip):'';
-            trim($statusCD)?$customer->setCustomAttribute('status_code', $statusCD == '1' ? 1 : 0):'';
+            if ($response == '') {
+                $customer = $customers[0];
+                trim($firstName) ? $customer->setFirstname($firstName) : '';
+                trim($lastName) ? $customer->setLastname($lastName) : '';
+                trim($birthDay) ? $customer->setDob($this->setProperDateFormat($birthDay)) : '';
+                trim($mobileNo) ? $customer->setCustomAttribute('mobile_number', $mobileNo) : '';
+                trim($email) ? $customer->setEmail($email) : '';
+                trim($sex) ? $customer->setGender($sex == 'M' ? 1 : 2) : '';
+                trim($smsYN) ? $customer->setCustomAttribute('sms_subscription_status', $smsYN == 'Y' ? 1 : 0) : '';
+                trim($dmYN) ? $customer->setCustomAttribute('dm_subscription_status', $dmYN == 'Y' ? 1 : 0) : '';
+                trim($callYN) ? $customer->setCustomAttribute('call_subscription_status', $callYN == 'Y' ? 1 : 0) : '';
+                trim($homeCity) ? $customer->setCustomAttribute('dm_city', $homeCity) : '';
+                trim($homeState) ? $customer->setCustomAttribute('dm_state', $homeState) : '';
+                trim($homeAddr1) ? $customer->setCustomAttribute('dm_detailed_address', $homeAddr1) : '';
+                trim($homeZip) ? $customer->setCustomAttribute('dm_zipcode', $homeZip) : '';
+                trim($statusCD) ? $customer->setCustomAttribute('status_code', $statusCD == '1' ? 1 : 0) : '';
 
-            //Confiremd with Client sales office and organization code will never change
-            //trim($salOrgCd)? $customer->setCustomAttribute('sales_organization_code', $salOrgCd):'';
-            //trim($salOffCd)?$customer->setCustomAttribute('sales_office_code', $salOffCd):'';
-            //trim($prtnrid)?$customer->setCustomAttribute('partner_id', $prtnrid):'';
+                //Confiremd with Client sales office and organization code will never change
+                //trim($salOrgCd)? $customer->setCustomAttribute('sales_organization_code', $salOrgCd):'';
+                //trim($salOffCd)?$customer->setCustomAttribute('sales_office_code', $salOffCd):'';
+                //trim($prtnrid)?$customer->setCustomAttribute('partner_id', $prtnrid):'';
 
-            $customer = $this->customerRepositoryInterface->save($customer);
-            if (trim($emailYN) == 'Y') {
-                $this->subscriberFactory->create()->subscribeCustomerById($customer->getId());
-            } elseif (trim($emailYN) == 'N') {
-               // $subscriber = $this->subscriberFactory->create();
-                //$this->subscriberFactory->create()->unsubscribeCustomerById(35);
-                //$temp = $subscriber->loadByEmail('iiqra@eguanacommerce.com')->getCustomerId();
-                //$subscriber->unsubscribe();
+                $customer = $this->customerRepositoryInterface->save($customer);
+                if (trim($emailYN) == 'Y') {
+                    $this->subscriberFactory->create()->subscribeCustomerById($customer->getId());
+                } elseif (trim($emailYN) == 'N') {
+                    // $subscriber = $this->subscriberFactory->create();
+                    //$this->subscriberFactory->create()->unsubscribeCustomerById(35);
+                    //$temp = $subscriber->loadByEmail('iiqra@eguanacommerce.com')->getCustomerId();
+                    //$subscriber->unsubscribe();
+                }
+                $response = $this->getResponse("0000", 'SUCCESS', '200', 'OK', $cstmIntgSeq);
             }
-
         } catch (\Exception $e) {
-            return $this->getResponse($e->getCode(), $e->getMessage(), $e->getCode(), 'NO', $cstmIntgSeq);
+            $callSuccess = 1;
+            $response = $this->getResponse($e->getCode(), $e->getMessage(), $e->getCode(), 'NO', $cstmIntgSeq);
         }
-        return $this->getResponse("0000", 'SUCCESS', '200', 'OK', $cstmIntgSeq);
+
+        $responseData = $response->getData();
+
+        $arrayResponse = [
+            'code' => $response->getCode(),
+            'message' => $response->getMessage(),
+            'data' => [
+                'status_code' => $responseData->getStatusCode(),
+                'status_message' => $responseData->getStatusMessage(),
+                'cstm_intg_seq' => $responseData->getCstmIntgSeq()
+            ]
+        ];
+
+        $log['request'] = $parameters;
+        $log['response'] = $arrayResponse;
+
+        $this->eventManager->dispatch(
+            'eguana_bizconnect_operation_processed',
+            [
+                'topic_name' => 'eguana.pos.update.customer',
+                'direction' => 'incoming',
+                'to' => 'base', //from or to
+                'serialized_data' => $this->json->serialize($log),
+                'status' => $callSuccess,
+                'result_message' => $response->getMessage()
+            ]
+        );
+
+        return $response;
     }
 
     private function getResponse($code, $message, $statusCode, $statusMessage, $cstmIntgSeq)
@@ -280,6 +325,11 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
     {
         $customerWebsiteId = 0;
         $websiteIds = $this->getWebsiteIds();
+        /**
+         * Magento core also use the arsort function
+         * vendor/magento/module-dhl/Model/Carrier.php at LINE 856
+         */
+        arsort($websiteIds);
         foreach ($websiteIds as $websiteId) {
             $officeSaleCode = $this->configHelper->getOfficeSalesCode($websiteId);
             if ($officeSaleCode == $salOffCd) {
