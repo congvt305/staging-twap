@@ -216,13 +216,10 @@ $viewModel = $block->getData('view_model');
             </div>
 
             <div class="fieldset dm-address" style="<?= $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus()) == 1?'':'display: none'; ?>">
-
-                <div class="field required">
-                    <label for="dm_city" class="label"><span><?= $block->escapeHtml(__('City')) ?></span></label>
+                <div class="field country required">
+                    <label for="country" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('country_id') ?></span></label>
                     <div class="control">
-                        <?php //phpcs:disable ?>
-                        <input type="text" placeholder="<?= $block->escapeHtml(__('City')) ?>" name="dm_city" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmCity()) ?>" title="<?= $block->escapeHtml(__('City')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_city')) ?>" id="dm_city">
-                        <?php //phpcs:enable ?>
+                        <?= $block->getCountryHtmlSelect() ?>
                     </div>
                 </div>
 
@@ -230,7 +227,23 @@ $viewModel = $block->getData('view_model');
                     <label for="dm_state" class="label"><span><?= $block->escapeHtml(__('State')) ?></span></label>
                     <div class="control">
                         <?php //phpcs:disable ?>
-                        <input type="text" placeholder="<?= $block->escapeHtml(__('State')) ?>" name="dm_state" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmState()) ?>" title="<?= $block->escapeHtml(__('State')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_state')) ?>" id="dm_state">
+                        <select id="region_id" name="region_id" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?>" class="validate-select region_id">
+                            <option value=""><?= $block->escapeHtml(__('Please select a region, state or province.')) ?></option>
+                        </select>
+                        <!--<input type="text" id="dm_state" name="dm_state" placeholder="<?/*= $block->escapeHtml(__('State')) */?>"  value="<?/*= $block->escapeHtmlAttr($block->getFormData()->getDmState()) */?>" title="<?/*= $block->escapeHtml(__('State')) */?>" class="input-text <?/*= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_state')) */?>" >-->
+                        <input type="text" id="dm_state" name="dm_state" value="<?= $block->escapeHtmlAttr($block->getRegion()) ?>"  title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('region') ?>"<?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>/>
+                        <?php //phpcs:enable ?>
+                    </div>
+                </div>
+
+                <div class="field required">
+                    <label for="dm_city" class="label"><span><?= $block->escapeHtml(__('City')) ?></span></label>
+                    <div class="control">
+                        <?php //phpcs:disable ?>
+                        <select id="city_id" name="city_id" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?>" class="validate-select region_id" <?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>>
+                            <option value=""><?= $block->escapeHtml(__('Please select a city, city or district.')) ?></option>
+                        </select>
+                        <input type="text" placeholder="<?= $block->escapeHtml(__('City')) ?>" name="dm_city" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmCity()) ?>" title="<?= $block->escapeHtml(__('City')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_city')) ?>" id="dm_city">
                         <?php //phpcs:enable ?>
                     </div>
                 </div>
@@ -252,6 +265,8 @@ $viewModel = $block->getData('view_model');
                         <?php //phpcs:enable ?>
                     </div>
                 </div>
+
+
 
             </div>
         </fieldset>
@@ -312,15 +327,15 @@ require([
 
 });
 </script>
-<?php if ($block->getShowAddressFields()) : ?>
+
 <script type="text/x-magento-init">
     {
         "#country": {
             "regionUpdater": {
                 "optionalRegionAllowed": <?= /* @noEscape */ $block->getConfig('general/region/display_all') ? 'true' : 'false' ?>,
                 "regionListId": "#region_id",
-                "regionInputId": "#region",
-                "postcodeId": "#zip",
+                "regionInputId": "#dm_state",
+                "postcodeId": "#dm_zipcode",
                 "form": "#form-validate",
                 <?php //phpcs:disable ?>
                 "regionJson": <?= /* @noEscape */ $this->helper(\Magento\Directory\Helper\Data::class)->getRegionJson() ?>,
@@ -330,10 +345,23 @@ require([
                 "countriesWithOptionalZip": <?= /* @noEscape */ $this->helper(\Magento\Directory\Helper\Data::class)->getCountriesWithOptionalZip(true) ?>
                 <?php //phpcs:enable ?>
             }
+        },
+        "#region_id": {
+            "cityUpdater": {
+                "optionalCityAllowed": <?= /* @noEscape need to do config*/ ($block->getConfig('general/region/display_all') ? 'true' : 'false') ?>,
+                "cityListId": "#city_id",
+                "cityInputId": "#dm_city",
+                "postcodeId": "#dm_zipcode",
+                "form": "#form-validate",
+                "cityJson": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityJson() ?>,
+                "defaultRegion": "<?= /* @noEscape */ $block->getRegionId() ?>",
+                "defaultCity": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityCodeByRegionName((int)$block->getRegionId(), $block->getFormData()->getDmCity()) ?>
+            }
         }
+
     }
 </script>
-<?php endif; ?>
+
 
 <script type="text/x-magento-init">
     {
