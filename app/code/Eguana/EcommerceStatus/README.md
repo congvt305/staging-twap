@@ -13,6 +13,7 @@ Description:
 -Hide mini cart when ecommerce switcher is disable
 -Redirect cart page to home page when ecommerce switcher is disable
 -Redirect checkout page to home page when ecommerce switcher is disable
+-Redirect from order history page to home page when ecommerce switcher is disable
 -Hide add ot cart buttons
 
 
