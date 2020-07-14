@@ -104,76 +104,29 @@ class Category implements OptionSourceInterface
      */
     public function toOptionArray()
     {
-        if ($this->adminSession->isLoggedIn()) {
-            $adminUserRoleCheck = $this->adminSession->getUser()->getRole()->getData('gws_is_all');
-
-            $storeCategoryList = [];
-            $categoryList = [];
-
-            if ($adminUserRoleCheck == true) {
-                $configValueCategories = $this->storesConfig->getStoresConfigByPath('faq/category');
-                // $key is store id and value is list of categories set in configuration
-                foreach ($configValueCategories as $key => $value) {
-                    if ($key == 0 || $value == null) {
-                        continue;
-                    }
-
-                    $index = 1;
-                    foreach ($value as $category) {
-                        $categoryList[$key][] = [
-                            'label' => $category,
-                            'value' => $key . $index
-                        ];
-                        $index++;
-                    }
-                    $storeCategoryList[$key] = [
-                        'label'   => $this->storeManager->getStore($key)->getName(),
-                        'value'   => $categoryList[$key]
-                    ];
-                }
-                return $storeCategoryList;
-            } else {
-                $adminScopeStores = $this->adminSession->getUser()->getRole()->getData('gws_stores');
-
-                if (count($adminScopeStores) == 1) {
-                    $configValueCategories = $this->helper->getStoreCategories($adminScopeStores[0]);
-                    $index = 1;
-                    foreach ($configValueCategories as $category) {
-                        $categoryList[] = [
-                            'label' => $category,
-                            'value' => $adminScopeStores[0] . $index
-                        ];
-                        $index++;
-                    }
-                    $storeCategoryList[$adminScopeStores[0]] = [
-                        'label'   => $this->storeManager->getStore($adminScopeStores[0])->getName(),
-                        'value'   => $categoryList
-                    ];
-                } else {
-                    foreach ($adminScopeStores as $storeId) {
-                        $categories = $this->helper->getStoreCategories($storeId);
-                        $index = 1;
-                        foreach ($categories as $category) {
-                            $categoryList[$storeId][] = [
-                                'label' => $category,
-                                'value' => $storeId . $index
-                            ];
-                            $index++;
-                        }
-                    }
-                    foreach ($categoryList as $key => $value) {
-                        if ($key == 0) {
-                            continue;
-                        }
-                        $storeCategoryList[$key] = [
-                            'label'   => $this->storeManager->getStore($key)->getName(),
-                            'value'   => $value
-                        ];
-                    }
-                }
-                return $storeCategoryList;
+        $storeCategoryList = [];
+        $categoryList = [];
+         $configValueCategories = $this->storesConfig->getStoresConfigByPath('faq/category');
+        // $key is store id and value is list of categories set in configuration
+        foreach ($configValueCategories as $key => $value) {
+            if ($key == 0 || $value == null) {
+                continue;
             }
+
+            $index = 1;
+            foreach ($value as $category) {
+                $categoryList[$key][] = [
+                    'label' => $category,
+                    'value' => $key . $index
+                ];
+                $index++;
+            }
+            $storeCategoryList[$key] = [
+                'label'   => $this->storeManager->getStore($key)->getName(),
+                'value'   => $categoryList[$key]
+            ];
         }
+        return $storeCategoryList;
     }
 
     /**
