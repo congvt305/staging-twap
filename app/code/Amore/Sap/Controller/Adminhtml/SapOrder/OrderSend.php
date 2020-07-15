@@ -91,7 +91,7 @@ class OrderSend extends AbstractAction
                         foreach ($outdata as $data) {
                             if ($data['retcod'] == 'S') {
                                 // 여기에서 성공한 order order status 변경 처리(sap_processing)
-                                $order->setStatus('preparing');
+                                $order->setStatus('sap_processing');
                                 $this->orderRepository->save($order);
                                 $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                             } else {
