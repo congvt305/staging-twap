@@ -82,7 +82,7 @@ class Verify extends Action
                 $result['message'] = __('Code has been verified please move to the next step');
                 $result['verify'] = true;
             } elseif ($verificationResult === false) {
-                $result['message'] = 'Verification code is wrong';
+                $result['message'] = __('Verification code is wrong');
             } else {
                 $result['message'] = $verificationResult;
             }
