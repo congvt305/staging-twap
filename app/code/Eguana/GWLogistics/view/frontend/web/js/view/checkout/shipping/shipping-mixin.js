@@ -15,17 +15,10 @@ define([
                     && ($(logisticTypeSelector)[0].value === '')
                 )
                 {
-                    console.log('mixin');
                     cvsForm().errorMessage('Please select a cvs store');
-                    // Shipping.errorValidationMessage('ttt');
-                    // console.log(Shipping.errorValidationMessage);
-                    // Shipping.errorValidationMessage(
-                    //     $t(' zzz The shipping method is missing. Select the shipping method and try again.')
-                    // );
                     return false;
                 }
                 return self._super(updatedShipping);
-
             }
         });
     };

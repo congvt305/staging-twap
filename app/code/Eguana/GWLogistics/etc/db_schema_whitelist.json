@@ -39,5 +39,10 @@
         "column": {
             "all_pay_logistics_id": true
         }
+    },
+    "magento_rma_shipping_label": {
+        "column": {
+            "rtn_merchant_trade_no": true
+        }
     }
 }
