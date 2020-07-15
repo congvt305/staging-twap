@@ -5,6 +5,7 @@
         <sequence>
             <module name="Magento_Sales"/>
             <module name="Eguana_GWLogistics"/>
+            <module name="Ecpay_Ecpaypayment"/>
         </sequence>
     </module>
 </config>
