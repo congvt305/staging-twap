@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="shipping_method" class="Eguana\GWLogistics\Block\Adminhtml\Rma\Edit\Tab\General\ShippingMethod">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Eguana_GWLogistics::edit/shippingmethod.phtml</argument>
+            </action>
+        </referenceBlock>
+<!--        <referenceBlock name="magento_rma_edit_tabs">-->
+<!--            <block class="Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\Items" template="Magento_Rma::edit/items.phtml" name="magento_rma_edit_tab_bankinfo">-->
+<!--                <block class="Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\Grid" name="bankinfo"/>-->
+<!--            </block>-->
+<!--            <action method="addTab">-->
+<!--                <argument name="name" xsi:type="string">rma_shipments</argument>-->
+<!--                <argument name="block" xsi:type="string">magento_rma_edit_tab_shipments</argument>-->
+<!--            </action>-->
+<!--            <action method="addTab" > &lt;!&ndash;public function addTabAfter($tabId, $tab, $afterTabId)&ndash;&gt;-->
+<!--                <argument name="name" xsi:type="string">bankinfo_section</argument>-->
+<!--                <argument name="block" xsi:type="string">magento_rma_edit_tab_bankinfo</argument>-->
+<!--            </action>-->
+<!--        </referenceBlock>-->
+<!--        <referenceBlock name="page.actions.toolbar">-->
+<!--            <block class="Magento\Backend\Block\Template" name="admin.temando.packaging.head-action" before="-">-->
+<!--                <arguments>-->
+<!--                    <argument name="template" xsi:type="string">Temando_Shipping::components/configuration/action-buttons.phtml</argument>-->
+<!--                </arguments>-->
+<!--            </block>-->
+<!--        </referenceBlock>-->
+    </body>
+</page>

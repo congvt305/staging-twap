@@ -44,7 +44,7 @@ class QueryLogisticsInfo
      * @param $allPayLogisticsID
      * @return array
      */
-    public function execute($allPayLogisticsID)
+    public function sendRequest($allPayLogisticsID)
     {
         try {
             $this->ecpayLogistics->HashKey = '5294y06JbISpM5x9';

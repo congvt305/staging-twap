@@ -58,4 +58,8 @@
     <table name="sales_shipment" resource="sales" engine="innodb" comment="Sales Flat Shipment">
         <column xsi:type="varchar" name="all_pay_logistics_id" nullable="true" length="20" comment="GW AllPay Logistics ID"/>
     </table>
+
+    <table name="magento_rma_shipping_label" resource="default" engine="innodb" comment="List of RMA Shipping Labels">
+        <column xsi:type="varchar" name="rtn_merchant_trade_no" nullable="true" length="20" comment="GW Return Merchant Trade No"/>
+    </table>
 </schema>

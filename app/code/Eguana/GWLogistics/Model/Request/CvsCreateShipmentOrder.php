@@ -49,7 +49,7 @@ class CvsCreateShipmentOrder
     /**
      * @param \Magento\Sales\Model\Order $order
      */
-    public function execute($order) {
+    public function sendRequest($order) {
         $dataTime = $this->dateTimeFactory->create();
         //request
         //{"MerchantID":"2000132","MerchantTradeNo":"1592653900596","LogisticsSubType":"UNIMART","CVSStoreID":"991182","CVSStoreName":"馥樺門市","CVSAddress":"台北市南港區三重路23號1樓","CVSTelephone":"","CVSOutSide":"0","ExtraData":""}
@@ -64,7 +64,7 @@ class CvsCreateShipmentOrder
         $senderName = 'StoreName'; //no space not more than 10.
         //Character limit is 4-10 characters (Chinese2-5 characters, English 4-10 characters)
         $receiverName = $order->getShippingAddress()->getFirstname() . $order->getShippingAddress()->getLastname();
-        $serverReplyURL = $this->helper->getCreateShipmentReplyUrl();
+        $serverReplyURL = $this->helper->getReverseLogisticsOrderReplyUrl();
         $receiverStoreID = '991182'; //no need, only for C2C
         $returnStoreID = '991182'; //no need, only for C2C
 
