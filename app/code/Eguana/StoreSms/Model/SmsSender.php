@@ -8,8 +8,10 @@ use Magento\Email\Model\TemplateFactory;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Math\Random;
 use Magento\Framework\Session\SessionManagerInterface;
+use Magento\Framework\View\Asset\NotationResolver\Variable;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Email\Model\ResourceModel\TemplateFactory as ResourceModelFactory;
 
 /**
  * This class is responsible for sending verification code on telephone number
@@ -64,6 +66,11 @@ class SmsSender implements SmsInterface
     private $collectionFactory;
 
     /**
+     * @var ResourceModelFactory
+     */
+    private $resourceModelFactory;
+
+    /**
      * SmsSender constructor.
      * @param SessionManagerInterface $sessionManager
      * @param Curl $curl
@@ -82,7 +89,8 @@ class SmsSender implements SmsInterface
         LoggerInterface $logger,
         TemplateFactory $templateFactory,
         CountryCode $countryCode,
-        CollectionFactory $collectionFactory
+        CollectionFactory $collectionFactory,
+        ResourceModelFactory $resourceModelFactory
     ) {
         $this->sessionManager = $sessionManager;
         $this->curl = $curl;
@@ -92,6 +100,7 @@ class SmsSender implements SmsInterface
         $this->templateFactory = $templateFactory;
         $this->countryCode = $countryCode;
         $this->collectionFactory = $collectionFactory;
+        $this->resourceModelFactory = $resourceModelFactory;
     }
 
     /**
@@ -117,6 +126,7 @@ class SmsSender implements SmsInterface
         $message = '';
         $verificationCode = '';
         $phoneNumber = '';
+        $template = $this->templateFactory->create();
         try {
             $verificationCode = Random::getRandomNumber(1000, 9999);
             $this->sessionManager->start();
@@ -126,17 +136,19 @@ class SmsSender implements SmsInterface
             $numberPrefix = $countryCode[$this->data->getCurrentCountry($store)]['code'];
             $phoneNumber = $this->getPhoneNumberWithCode($number, $numberPrefix);
             $this->sessionManager->setPhoneNumber($number);
-            $template = $this->templateFactory->create();
-            $template->setDesignConfig(['area' => 'frontend', 'store' => $store]);
+            $storePhoneNumber = $this->data->getStorePhoneNumber($store);
             $storeName = $this->storeManager->getStore()->getName();
-            $params = ['code' => $verificationCode, 'store_name' => $storeName];
-            $message = $template->getTemplateContent(self::XML_REGISTRATION_TEMPLATE_PATH, $params);
+            $params = ['code' => $verificationCode, 'store_name' => $storeName, 'store_phone' => $storePhoneNumber];
+
+            $templateModel->loadDefault(self::XML_REGISTRATION_TEMPLATE_PATH, $params);
+            $message = $templateModel->getProcessedTemplate($params);
         } catch (\Exception $e) {
+            $template1 = $this->resourceModelFactory->create();
+            $template1 = $template1->load($template, self::XML_REGISTRATION_TEMPLATE_PATH);
+            $message = $template->getProcessedTemplate($params);
             $this->logger->error($e->getMessage());
         }
         $this->sendMessageByApi($message, $phoneNumber);
-//        $verificationCode = base64_encode($verificationCode);
-
         return $verificationCode;
     }
 
@@ -148,20 +160,20 @@ class SmsSender implements SmsInterface
      * @param $order
      * @return mixed
      */
-    public function getOrderNotification($templatePath, $customer, $order, $storeName)
+    public function getOrderNotification($storeId, $templatePath, $customer, $order, $storeName, $storePhoneNumber)
     {
         $message = '';
-        $template = $this->templateFactory->create();
+        $templateModel = $this->templateFactory->create();
+        $template = $this->resourceModelFactory->create();
+        $params = [ 'customer'=> $customer,'order' => $order, 'store_name' => $storeName, 'store_phone' => $storePhoneNumber];
         try {
-            $store = $this->storeManager->getStore()->getId();
-            $template->setDesignConfig(['area' => 'frontend', 'store' => $store]);
-            $template->setDesignConfig(['area' => 'frontend', 'store' => $store]);
-            $params = [ 'customer'=> $customer,'order' => $order, 'store_name' => $storeName];
-            $message = $template->getTemplateContent($templatePath, $params);
+            $templateModel->setDesignConfig(['area' => 'frontend', 'store' => $storeId]);
+            $templateModel->loadDefault($templatePath);
+            $message = $templateModel->getProcessedTemplate($params);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
+            $template = $template->load($templateModel, $templatePath);
+            $message = $templateModel->getProcessedTemplate($params);
         }
-
         return $message;
     }
 
