@@ -231,7 +231,7 @@ class Payment extends AbstractMethod
         $additionalInfo = $payment->getAdditionalInformation();
         $rawDetailsInfo = $additionalInfo["raw_details_info"];
 
-        if ($amount != $rawDetailsInfo["amount"]) {
+        if ($amount != $rawDetailsInfo["TradeAmt"]) {
             throw new LocalizedException(__($rawDetailsInfo["RtnMsg"]));
         }
 
@@ -435,7 +435,7 @@ class Payment extends AbstractMethod
                 "RtnCode" => $aReturn_Info["RtnCode"],
                 "RtnMsg" => $aReturn_Info["RtnMsg"]
             ];
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // 例外錯誤處理。
             $sMsg = $e->getMessage();
             throw new LocalizedException(__($sMsg));

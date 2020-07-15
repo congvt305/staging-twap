@@ -82,7 +82,7 @@ class AddressRepositoryPlugin
         $order = $this->orderRepository->get($orderId);
         $orderStatus = $order->getStatus();
 
-        $availableStatus = ['processing', 'preparing', 'sap_processing'];
+        $availableStatus = ['processing', 'sap_processing'];
 
         $enableCheck = $this->config->getActiveCheck('store', $order->getStoreId());
 
@@ -124,6 +124,8 @@ class AddressRepositoryPlugin
                     } catch (\Exception $e) {
                         throw new \Exception(__('SAP : ' . $e->getMessage()));
                     }
+                } else {
+                    throw new \Exception(__('Cannot change the shipping address with current order status.'));
                 }
             } else {
                 $testData = $this->sapOrderCancelData->getTestCancelOrder();
