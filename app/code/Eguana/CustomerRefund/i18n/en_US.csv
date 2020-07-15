@@ -1,0 +1,26 @@
+"Customer Bank Information","Customer Bank Information"
+"Cvs location with id ""%1"" does not exist.","Cvs location with id ""%1"" does not exist."
+"Unable to save the bank info.","Unable to save the bank info."
+"Unable to delete cvs location.","Unable to delete cvs location."
+"Cvs location with order id ""%1"" does not exist.","Cvs location with order id ""%1"" does not exist."
+"Something is wrong when saving the bank information. Please contact our customer service.","Something is wrong when saving the bank information. Please contact our customer service."
+"You requested to refund.","You requested to refund."
+"You Refunded the order","You Refunded the order"
+"Something is wrong with refund. Please contact our customer service.","Something is wrong with refund. Please contact our customer service."
+"Pending Refund","Pending Refund"
+"Customer Bank Information for this Orders","Customer Bank Information for this Orders"
+"Request to Refund","Request to Refund"
+"Please enter a bank information for your refund.","Please enter a bank information for your refund."
+Refund,Refund
+"Bank Name","Bank Name"
+"Account Owner Name","Account Owner Name"
+"Bank Account Number","Bank Account Number"
+"Could not submit your return request. Please try again later","Could not submit your return request. Please try again later"
+Cancel,Cancel
+"Refund Order Confirmation","Refund Order Confirmation"
+"Are you sure to refund this order?.","Are you sure to refund this order?."
+"Request to Return and Refund.","Request to Return and Refund."
+"Customer Refund","Customer Refund"
+General,General
+Enabled,Enabled
+"When enabled, customer can request to refund in the store front.","When enabled, customer can request to refund in the store front."

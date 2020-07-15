@@ -25,7 +25,7 @@ define([
                     },
                     {
                         'class': 'action primary confirm',
-                        text: $.mage.__('Request to Refund'),
+                        text: $.mage.__('Request to Return and Refund.'),
                         actions: ['actionDone']
                     }
                 ]
