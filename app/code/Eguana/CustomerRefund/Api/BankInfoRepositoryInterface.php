@@ -34,7 +34,7 @@ interface BankInfoRepositoryInterface
 
     /**
      * @param SearchCriteriaInterface $searchCriteria
-     * @return mixed
+     * @return \Eguana\CustomerRefund\Api\Data\BankInfoSearchResultInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria);
 

@@ -101,6 +101,20 @@
 }
 
 //
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .bundle-options-container {
+        .product-info-price {
+            .price-box >.price-final_price {
+                width: 100%;
+            }
+        }
+    }
+}
+
+//
 //  Desktop
 //  _____________________________________________
 

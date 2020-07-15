@@ -7,4 +7,5 @@
     <template id="eguanasms_templates_order_status_canceled" label="Order Status Canceled Template" file="default_order_status_canceled_sms_template.html" type="html" module="Eguana_StoreSms" area="frontend"/>
     <template id="eguanasms_templates_order_status_complete" label="Order Status Complete Template" file="default_order_status_complete_sms_template.html" type="html" module="Eguana_StoreSms" area="frontend"/>
     <template id="eguanasms_templates_order_status_closed" label="Order Status Closed Template" file="default_order_status_closed_sms_template.html" type="html" module="Eguana_StoreSms" area="frontend"/>
+    <template id="eguanasms_templates_order_status_refund" label="Order Refund Template" file="default_order_status_refund_sms_template.html" type="html" module="Eguana_StoreSms" area="frontend"/>
 </config>

@@ -10,7 +10,7 @@
 namespace Amore\CustomerRegistration\Controller\Verification;
 
 use Amore\CustomerRegistration\Model\Verification;
-use Magento\Framework\App\ActionInterface;
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
@@ -22,7 +22,7 @@ use Magento\Framework\Controller\ResultInterface;
  * To send the verification code to the customer
  * Class Code
  */
-class Code implements ActionInterface
+class Code extends Action
 {
     /**
      * Json Factory
@@ -60,6 +60,7 @@ class Code implements ActionInterface
         $this->request = $context->getRequest();
         $this->resultJsonFactory = $resultJsonFactory;
         $this->verification = $verification;
+        parent::__construct($context);
     }
 
     /**

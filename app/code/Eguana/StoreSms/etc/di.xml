@@ -5,18 +5,8 @@
         <arguments>
             <argument name="sensitive" xsi:type="array">
                 <item name="eguanasms/general/api_login" xsi:type="string">1</item>
-            </argument>
-        </arguments>
-    </type>
-    <type name="Magento\Config\Model\Config\TypePool">
-        <arguments>
-            <argument name="sensitive" xsi:type="array">
                 <item name="eguanasms/general/api_password" xsi:type="string">1</item>
             </argument>
-        </arguments>
-    </type>
-    <type name="Magento\Config\Model\Config\TypePool">
-        <arguments>
             <argument name="environment" xsi:type="array">
                 <item name="eguanasms/general/api_url" xsi:type="string">1</item>
             </argument>

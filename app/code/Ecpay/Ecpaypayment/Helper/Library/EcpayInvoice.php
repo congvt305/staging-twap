@@ -29,7 +29,7 @@ class EcpayInvoice
      */
     private $ECPayInvoiceSend;
 
-    function __construct(\Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceSend $ECPayInvoiceSend)
+    public function __construct(\Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceSend $ECPayInvoiceSend)
     {
         $this->Send = array(
             'RelateNumber' => '',
@@ -77,7 +77,7 @@ class EcpayInvoice
         $this->ECPayInvoiceSend = $ECPayInvoiceSend;
     }
 
-    function Check_Out()
+    public function Check_Out()
     {
         $arParameters = array_merge( array('MerchantID' => $this->MerchantID) , array('TimeStamp' => $this->TimeStamp), $this->Send);
         return $this->ECPayInvoiceSend->CheckOut($arParameters, $this->HashKey, $this->HashIV, $this->Invoice_Method, $this->Invoice_Url);
@@ -90,7 +90,7 @@ class EcpayInvoice
      * @param  array $parameters
      * @return array
      */
-    function allowanceByCollegiateResponse($merchantInfo, $parameters)
+    public function allowanceByCollegiateResponse($merchantInfo, $parameters)
     {
         $merchantInfo['method'] = ALLOWANCE_BY_COLLEGIATE ;
         return ecpayResponse::response($merchantInfo, $parameters);

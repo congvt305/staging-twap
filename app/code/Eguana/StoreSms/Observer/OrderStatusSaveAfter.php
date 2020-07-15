@@ -107,7 +107,7 @@ class OrderStatusSaveAfter implements ObserverInterface
             $storeId = $order->getData('store_id');
             $storeName = $this->storeManager->getStore($storeId)->getName();
             $smsModuleActive = $this->data->getActivation($storeId);
-            $storeName = $this->storeManager->getStore($storeId)->getName();
+            $storePhoneNumber = $this->data->getStorePhoneNumber($storeId);
             if ($smsModuleActive) {
                 $order = $observer->getEvent()->getOrder();
                 $originalStatus = $order->getOrigData('status');
@@ -115,6 +115,9 @@ class OrderStatusSaveAfter implements ObserverInterface
                 $isActive = $this->data->getOrderStatus($newStatus);
                 if ($originalStatus != $newStatus && $isActive) {
                     $shippingAddress = $order->getShippingAddress();
+                    if ($shippingAddress == null) {
+                        $shippingAddress = $order->getBillingAddress();
+                    }
                     $countryCode = $this->getCountryCode($storeId);
                     $shippingTelephone = $shippingAddress->getData('telephone');
                     $mobilenumber = preg_replace(
@@ -126,9 +129,9 @@ class OrderStatusSaveAfter implements ObserverInterface
                     $telephone = $this->sendNotification->getPhoneNumberWithCode($mobilenumber, $countryCode);
                     $firstName = $shippingAddress->getData('firstname');
                     $orderId = $order->getIncrementId();
-                    $templatePath = $this->data->getTemplateConfigPath($newStatus);
+                    $templateIdentifer = $this->data->getTemplateIdentifer($newStatus, $storeId);
                     $orderNotification = $this->sendNotification
-                        ->getOrderNotification($templatePath, $firstName, $orderId, $storeName);
+                        ->getOrderNotification($storeId, $templateIdentifer, $firstName, $orderId, $storeName, $storePhoneNumber);
                     if ($this->state->getAreaCode() != 'adminhtml' && $order->getExportProcessed()) {
                         return;
                     } else {

@@ -103,7 +103,10 @@ class CreditmemoRepositoryPlugin
         $storeId = $result->getStoreId();
         $enableCheck = $this->config->getActiveCheck('store', $storeId);
         $order = $this->orderRepository->get($result->getOrderId());
-        $orderStatus = $order->getStatus();
+        $orderStatus = $order->getStatus();//todo: if order status === 'closed' then return result
+        if ($orderStatus === 'closed') {
+            return $result;
+        }
         $rma = $this->getRma($order->getEntityId());
 
 //        $availableStatus = ['complete', 'processing', 'preparing', 'sap_processing'];
@@ -199,6 +202,8 @@ class CreditmemoRepositoryPlugin
                 }
             }
         }
+
+        return $result; // return $result is required!!!
     }
 
     public function getRma($orderId)

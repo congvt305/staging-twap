@@ -10,6 +10,7 @@ namespace Eguana\CustomerRefund\Model;
 
 
 use Eguana\CustomerRefund\Api\Data\BankInfoDataInterface;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
@@ -37,12 +38,17 @@ class BankInfoRepository implements \Eguana\CustomerRefund\Api\BankInfoRepositor
      * @var \Eguana\CustomerRefund\Api\Data\BankInfoSearchResultInterfaceFactory
      */
     private $bankInfoSearchResultFactory;
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
 
     public function __construct(
         \Eguana\CustomerRefund\Api\Data\BankInfoDataInterfaceFactory $bankInfoDataInterfaceFactory,
         \Eguana\CustomerRefund\Model\ResourceModel\BankInfo $bankInfoResource,
         \Eguana\CustomerRefund\Model\ResourceModel\BankInfo\CollectionFactory $collectionFactory,
         \Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface $collectionProcessor,
+        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Eguana\CustomerRefund\Api\Data\BankInfoSearchResultInterfaceFactory $bankInfoSearchResultFactory
     ) {
         $this->bankInfoDataInterfaceFactory = $bankInfoDataInterfaceFactory;
@@ -50,6 +56,7 @@ class BankInfoRepository implements \Eguana\CustomerRefund\Api\BankInfoRepositor
         $this->collectionFactory = $collectionFactory;
         $this->collectionProcessor = $collectionProcessor;
         $this->bankInfoSearchResultFactory = $bankInfoSearchResultFactory;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 
     /**
@@ -104,17 +111,26 @@ class BankInfoRepository implements \Eguana\CustomerRefund\Api\BankInfoRepositor
 
     /**
      * @param SearchCriteriaInterface $searchCriteria
-     * @return mixed
+     * @return \Eguana\CustomerRefund\Api\Data\BankInfoSearchResultInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria)
     {
+        /** @var \Eguana\CustomerRefund\Model\ResourceModel\BankInfo\Collection $collection */
         $collection = $this->collectionFactory->create();
-        $this->collectionProcessor->process($searchCriteria, $collection);
-        $searchResult = $this->bankInfoSearchResultFactory->create();
-        $searchResult->setSearchCriteria($searchCriteria);
-        $searchResult->setTotalCount($collection->getSize());
 
+        if (null === $searchCriteria) {
+            $searchCriteria = $this->searchCriteriaBuilder->create();
+        } else {
+            $this->collectionProcessor->process($searchCriteria, $collection);
+        }
+
+        /** @var \Eguana\CustomerRefund\Api\Data\BankInfoSearchResultInterface $searchResult */
+        $searchResult = $this->bankInfoSearchResultFactory->create();
+        $searchResult->setItems($collection->getItems());
+        $searchResult->setTotalCount($collection->getSize());
+        $searchResult->setSearchCriteria($searchCriteria);
         return $searchResult;
+
     }
 
     /**

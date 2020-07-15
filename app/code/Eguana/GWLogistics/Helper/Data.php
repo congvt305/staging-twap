@@ -13,12 +13,23 @@ use Magento\Framework\App\Helper\AbstractHelper;
 
 class Data extends AbstractHelper
 {
+    public function getCarrierTitle() {
+        return $this->scopeConfig->getValue(
+            'carriers/gwlogistics/title',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+
+        );
+    }
     public function getMapServerReplyUrl() {
        return $this->_getUrl('eguana_gwlogistics/ReceiverServerReply', ['_secure' => true]);
     }
 
     public function getCreateShipmentReplyUrl() {
         return $this->_getUrl('eguana_gwlogistics/StatusNotify', ['_secure' => true]);
+    }
+
+    public function getReverseLogisticsOrderReplyUrl() {
+        return $this->_getUrl('eguana_gwlogistics/ReverseOrderStatusNotify', ['_secure' => true]);
     }
 
 }

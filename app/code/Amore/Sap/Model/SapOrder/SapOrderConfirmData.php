@@ -191,7 +191,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         if ($invoice != null) {
             $shippingAddress = $orderData->getShippingAddress();
-            $trackingNumbers = implode(",", $orderData->getTrackingNumbers());
+            $trackingNumbers = implode(",", $this->getTrackNumber($orderData));
             $customer = $this->getCustomerByOrder($orderData);
 
             $bindData[] = [
@@ -226,7 +226,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : $orderData->getRewardPointsBalance(),
                 'shpwr' => $orderData->getShippingAmount(),
                 'mwsbp' => $orderData->getTaxAmount(),
-                'spitn1' => $orderData->getData('delivery_message'),
+                'spitn1' => $orderData->getExtensionAttributes()->getDeliveryMessage(),
                 'vkorgOri' => $this->config->getMallId('store', $storeId),
                 'kunnrOri' => $this->config->getClient('store', $storeId),
                 'odrnoOri' => $orderData->getIncrementId(),
@@ -244,6 +244,19 @@ class SapOrderConfirmData extends AbstractSapOrder
         }
 
         return $bindData;
+    }
+
+    /**
+     * @param $order \Magento\Sales\Model\Order
+     */
+    public function getTrackNumber($order)
+    {
+        $trackNumbers = [];
+        $trackCollection = $order->getTracksCollection();
+        foreach ($trackCollection->getItems() as $track) {
+            $trackNumbers[] = $track->getTrackNumber();
+        }
+        return $trackNumbers;
     }
 
     /**

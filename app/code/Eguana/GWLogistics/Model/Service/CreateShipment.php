@@ -11,9 +11,29 @@ namespace Eguana\GWLogistics\Model\Service;
 class CreateShipment
 {
     /**
+     * @var \Eguana\GWLogistics\Model\Request\QueryLogisticsInfo
+     */
+    private $queryTransactionInfoRequest;
+    /**
+     * @var \Eguana\GWLogistics\Model\Request\CvsCreateShipmentOrder
+     */
+    private $cvsCreateShipmentOrderRequest;
+    /**
      * @var \Magento\Sales\Api\Data\ShipmentItemCreationInterfaceFactory
      */
     private $shipmentItemCreationFactory;
+    /**
+     * @var \Magento\Sales\Api\Data\ShipmentTrackCreationInterfaceFactory
+     */
+    private $shipmentTrackCreationFactory;
+    /**
+     * @var \Magento\Sales\Api\Data\ShipmentCreationArgumentsInterfaceFactory
+     */
+    private $shipmentCreationArgumentsFactory;
+    /**
+     * @var \Magento\Sales\Api\Data\ShipmentCreationArgumentsExtensionInterfaceFactory
+     */
+    private $shipmentCreationArgumentsExtensionFactory;
     /**
      * @var \Magento\Sales\Model\Order\Email\Container\ShipmentIdentity
      */
@@ -26,38 +46,11 @@ class CreateShipment
      * @var \Psr\Log\LoggerInterface
      */
     private $logger;
-    /**
-     * @var \Eguana\GWLogistics\Model\Request\CvsCreateShipmentOrder
-     */
-    private $cvsCreateShipmentOrder;
-    /**
-     * @var \Eguana\GWLogistics\Model\Request\QueryLogisticsInfo
-     */
-    private $queryTransactionInfo;
-    /**
-     * @var string
-     */
     private $allPayLogisticsID;
-    /**
-     * @var \Magento\Sales\Api\Data\ShipmentTrackCreationInterfaceFactory
-     */
-    private $shipmentTrackCreationFactory;
-    /**
-     * @var string
-     */
-    private $shipmentNo;
-    /**
-     * @var \Magento\Sales\Api\Data\ShipmentCreationArgumentsInterfaceFactory
-     */
-    private $shipmentCreationArgumentsFactory;
-    /**
-     * @var \Magento\Sales\Api\Data\ShipmentCreationArgumentsExtensionInterfaceFactory
-     */
-    private $shipmentCreationArgumentsExtensionFactory;
 
     public function __construct(
-        \Eguana\GWLogistics\Model\Request\QueryLogisticsInfo $queryTransactionInfo,
-        \Eguana\GWLogistics\Model\Request\CvsCreateShipmentOrder $cvsCreateShipmentOrder,
+        \Eguana\GWLogistics\Model\Request\QueryLogisticsInfo $queryTransactionInfoRequest,
+        \Eguana\GWLogistics\Model\Request\CvsCreateShipmentOrder $cvsCreateShipmentOrderRequest,
         \Magento\Sales\Api\Data\ShipmentItemCreationInterfaceFactory $shipmentItemCreationFactory,
         \Magento\Sales\Api\Data\ShipmentTrackCreationInterfaceFactory $shipmentTrackCreationFactory,
         \Magento\Sales\Api\Data\ShipmentCreationArgumentsInterfaceFactory $shipmentCreationArgumentsFactory,
@@ -66,15 +59,16 @@ class CreateShipment
         \Magento\Sales\Api\ShipOrderInterface $shipOrder,
         \Psr\Log\LoggerInterface $logger
     ) {
+
+        $this->queryTransactionInfoRequest = $queryTransactionInfoRequest;
+        $this->cvsCreateShipmentOrderRequest = $cvsCreateShipmentOrderRequest;
         $this->shipmentItemCreationFactory = $shipmentItemCreationFactory;
-        $this->shipmentIdentity = $shipmentIdentity;
-        $this->shipOrder = $shipOrder;
-        $this->logger = $logger;
-        $this->cvsCreateShipmentOrder = $cvsCreateShipmentOrder;
-        $this->queryTransactionInfo = $queryTransactionInfo;
         $this->shipmentTrackCreationFactory = $shipmentTrackCreationFactory;
         $this->shipmentCreationArgumentsFactory = $shipmentCreationArgumentsFactory;
         $this->shipmentCreationArgumentsExtensionFactory = $shipmentCreationArgumentsExtensionFactory;
+        $this->shipmentIdentity = $shipmentIdentity;
+        $this->shipOrder = $shipOrder;
+        $this->logger = $logger;
     }
 
     /**
@@ -100,7 +94,7 @@ class CreateShipment
 
     private function createShipmentOrder($order) {
         //maybe need to save all transaction data in a separate table??
-        $result = $this->cvsCreateShipmentOrder->execute($order);
+        $result = $this->cvsCreateShipmentOrderRequest->sendRequest($order);
         if (isset($result['ResCode']) &&  $result['ResCode'] === '1' && isset($result['AllPayLogisticsID'])) {
             return $result['AllPayLogisticsID'];
         }
@@ -108,7 +102,7 @@ class CreateShipment
     }
 
     private function requestTrackingInfo($allPayLogisticsID) {
-        $result = $this->queryTransactionInfo->execute($allPayLogisticsID);
+        $result = $this->queryTransactionInfoRequest->sendRequest($allPayLogisticsID);
         if (isset($result['ShipmentNo'])) {
             return $result['ShipmentNo'];
         }

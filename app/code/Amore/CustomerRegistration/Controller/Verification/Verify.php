@@ -8,7 +8,7 @@
 
 namespace Amore\CustomerRegistration\Controller\Verification;
 
-use Magento\Framework\App\ActionInterface;
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
@@ -21,7 +21,7 @@ use Magento\Framework\Controller\ResultInterface;
  * To verify code of the customer
  * Class Verify
  */
-class Verify implements ActionInterface
+class Verify extends Action
 {
     /**
      * Json Factory
@@ -59,6 +59,7 @@ class Verify implements ActionInterface
         $this->request = $context->getRequest();
         $this->resultJsonFactory = $resultJsonFactory;
         $this->verification = $verification;
+        parent::__construct($context);
     }
 
     /**
@@ -78,9 +79,7 @@ class Verify implements ActionInterface
                 ->verifyCode($mobileNumber, $verificationCode);
 
             if ($verificationResult === true) {
-                $result['message'] = __(
-                    'Code has been verified please move to the next step'
-                );
+                $result['message'] = __('Code has been verified please move to the next step');
                 $result['verify'] = true;
             } elseif ($verificationResult === false) {
                 $result['message'] = __('Verification code is wrong');

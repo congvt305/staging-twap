@@ -22,6 +22,8 @@
                 <order_status_complete>eguanasms_templates_order_status_complete</order_status_complete>
                 <order_status_closed_active>0</order_status_closed_active>
                 <order_status_closed>eguanasms_templates_order_status_closed</order_status_closed>
+                <order_status_refund_active>0</order_status_refund_active>
+                <order_status_refund>eguanasms_templates_order_status_refund</order_status_refund>
             </templates>
         </eguanasms>
     </default>
