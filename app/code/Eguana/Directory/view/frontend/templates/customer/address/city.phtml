@@ -15,10 +15,10 @@
 ?>
 <div class="city-html" style="display: none">
     <div class="field city required">
-        <label class="label" for="city"><span>City</span></label>
+        <label class="label" for="city"><span><?= $block->escapeHtml(__('City')) ?></span></label>
         <div class="control">
             <select id="city_id" name="city_id" title="City" class="validate-select region_id">
-                <option value="">Please select a city, city or district.</option>
+                <option value=""><?= $block->escapeHtml(__('Please select a city or district.')) ?></option>
             </select>
             <input type="text" name="customCity" value="" title="city" class="input-text" id="customCity"/>
         </div>

@@ -85,7 +85,7 @@ $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked'
             <label class="label" for="city"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?></span></label>
             <div class="control">
                 <select id="city_id" name="city_id" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?>" class="validate-select region_id" <?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>>
-                    <option value=""><?= $block->escapeHtml(__('Please select a city, city or district.')) ?></option>
+                    <option value=""><?= $block->escapeHtml(__('Please select a city or district.')) ?></option>
                 </select>
                 <input type="text" name="city" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCity()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('city') ?>" id="city"/>
             </div>
