@@ -181,7 +181,7 @@ class AddCustomerCustomAttributes implements DataPatchInterface
                                         "min_text_length":1,
                                         "max_text_length":255}',
                                         'required' => 0,
-                                        'sort_order' => 142
+                                        'sort_order' => 143
                                     ],
                                     [
                                         'code'=>'dm_state',
@@ -191,7 +191,7 @@ class AddCustomerCustomAttributes implements DataPatchInterface
                                         "min_text_length":1,
                                         "max_text_length":255}',
                                         'required' => 0,
-                                        'sort_order' => 143
+                                        'sort_order' => 144
                                     ],
                                     [
                                         'code'=>'dm_detailed_address',
@@ -201,7 +201,7 @@ class AddCustomerCustomAttributes implements DataPatchInterface
                                         "min_text_length":1,
                                         "max_text_length":255}',
                                         'required' => 0,
-                                        'sort_order' => 144
+                                        'sort_order' => 145
                                     ],
                                     [
                                         'code'=>'dm_zipcode',
@@ -211,7 +211,7 @@ class AddCustomerCustomAttributes implements DataPatchInterface
                                         "min_text_length":1,
                                         "max_text_length":20}',
                                         'required' => 0,
-                                        'sort_order' => 145
+                                        'sort_order' => 146
                                     ]
                                 ];
         $yesNoAttributes = [
@@ -219,12 +219,14 @@ class AddCustomerCustomAttributes implements DataPatchInterface
                 'sort_order' => 137],
             ['code'=>'status_code','label'=>'Status Code',
                 'sort_order' => 138],
-            ['code'=>'sms_subscription_status','label'=>'SMS Marketing',
+            ['code'=>'terms_and_services_policy','label'=>'Terms And Services Policy',
                 'sort_order' => 139],
-            ['code'=>'call_subscription_status','label'=>'Call Marketing',
+            ['code'=>'sms_subscription_status','label'=>'SMS Marketing',
                 'sort_order' => 140],
+            ['code'=>'call_subscription_status','label'=>'Call Marketing',
+                'sort_order' => 141],
             ['code'=>'dm_subscription_status','label'=>'DM Marketing',
-                'sort_order' => 141]
+                'sort_order' => 142]
                             ];
 
         foreach ($textFieldAttributes as $textFieldAttribute) {
