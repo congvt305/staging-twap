@@ -211,10 +211,10 @@ class SapOrderManagement implements SapOrderManagementInterface
                         // case to create shipment successfully
                     } else {
                         try {
-                            if ($order->getStatus() == 'complete') {
-                                $order->setStatus('shipment_processing');
-                                $this->orderRepository->save($order);
-                            }
+                            $this->setQtyShipToOrderItem($order);
+                            $order->setStatus('shipment_processing');
+                            $this->orderRepository->save($order);
+
                             $message = "Shipment Created Successfully.";
                             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
 
@@ -233,15 +233,14 @@ class SapOrderManagement implements SapOrderManagementInterface
                         try {
                             $this->setQtyShipToOrderItem($order);
 
-                            // order status 변경 필요 시 주석 해제
-//                            if ($order->getStatus() == 'complete') {
-//                                $order->setStatus('shipment_processing');
-//                                $this->orderRepository->save($order);
-//                            } else {
-//                                $order->setState('complete');
-//                                $order->setStatus('shipment_processing');
-//                                $this->orderRepository->save($order);
-//                            }
+                            if ($order->getStatus() == 'complete') {
+                                $order->setStatus('shipment_processing');
+                                $this->orderRepository->save($order);
+                            } else {
+                                $order->setState('complete');
+                                $order->setStatus('shipment_processing');
+                                $this->orderRepository->save($order);
+                            }
 
                             $message = "Order already has a shipment";
                             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
@@ -294,12 +293,12 @@ class SapOrderManagement implements SapOrderManagementInterface
         if ($order->hasInvoices()) {
             $orderItems = $order->getAllItems();
             foreach ($orderItems as $item) {
-                if ($item->getQtyShipped() <= 0 ) {
-                    $item->setQtyShipped($item->getQtyInvoiced());
-                    $this->orderItemRepository->save($item);
+                if (empty($item->getQtyToShip()) || $item->getIsVirtual()) {
+                    continue;
                 }
+                $item->setQtyShipped($item->getQtyInvoiced());
+                $this->orderItemRepository->save($item);
             }
-
             $this->orderRepository->save($order);
         }
     }
