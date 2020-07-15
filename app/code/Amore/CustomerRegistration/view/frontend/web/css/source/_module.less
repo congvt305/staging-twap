@@ -3,13 +3,6 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-  .customer-account-create {
-    .modal-popup.modal-slide {
-      .modal-inner-wrap {
-        width: 600px;
-      }
-    }
-  }
   .form-create-account-pos {
     .field {
       &.mobile,
@@ -157,6 +150,14 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .customer-account-create {
+    .modal-popup.modal-slide {
+      .modal-inner-wrap {
+        width: 600px;
+      }
+    }
+  }
+
   .pos-verification-message {
     margin-top: -@indent__base !important;
     margin-bottom: 16px !important;
