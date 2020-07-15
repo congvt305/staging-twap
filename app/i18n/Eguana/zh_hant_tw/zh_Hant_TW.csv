@@ -11506,7 +11506,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't delete the label right now.","We can't delete the label right now.",module,Magento_Rma
 "Return #%1","Return #%1",module,Magento_Rma
 "Cannot add message.","Cannot add message.",module,Magento_Rma
-"My Returns","My Returns",module,Magento_Rma
+"My Returns","我的退貨",module,Magento_Rma
 "Tracking Information","Tracking Information",module,Magento_Rma
 "Page not found","Page not found",module,Magento_Rma
 "Please check this order for errors.","請檢查此訂單是否有錯誤。",module,Magento_Rma
