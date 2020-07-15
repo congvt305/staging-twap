@@ -20,12 +20,9 @@ define([
             JSON.stringify(payload)
         ).done(
             function (response) {
-                $('body').trigger('processStop');
                 location.reload();
-            }
-        ).fail(
-            function () {
-                $('body').trigger('processStop');
+                // $('body').trigger('processStop');
+
             }
         );
     };

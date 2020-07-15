@@ -7,12 +7,8 @@ define([
     'use strict';
 
     return function (bankInfoData) {
-        console.log(bankInfoData);
-        console.log(typeof bankInfoData);
-
         var refundUrl, serviceUrl, payload;
         refundUrl = 'rest/V1/eguana_customerrefund/mine/rma/bankinfo/save';
-        console.log(refundUrl);
         payload = {'bankInfoData': bankInfoData};
 
         serviceUrl = url.build(refundUrl);

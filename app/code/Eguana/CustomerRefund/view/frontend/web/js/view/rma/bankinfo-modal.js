@@ -38,7 +38,6 @@ define([
         },
 
         openPopup: function (e) {
-            console.log('openPopup');
             var submitUrl = $(this.rmaForm).attr('action');
             if ($(this.rmaForm).validation('isValid') === true) {
                 e.preventDefault();
@@ -85,7 +84,6 @@ define([
          * @return {Promise}
          */
         openModal: function () {
-            console.log('openPopup');
             this._super();
             this.dfd = $.Deferred();
             return this.dfd.promise();
