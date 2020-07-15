@@ -150,7 +150,7 @@ class MassSend extends AbstractAction
                                 // 여기에서 성공한 order들 order status 변경 처리(sap_processing)
                                 $ordersSucceeded[] = $data['odrno'];
                                 $succeededOrderObject = $this->sapOrderConfirmData->getOrderInfo($data['odrno']);
-                                $succeededOrderObject->setStatus('preparing');
+                                $succeededOrderObject->setStatus('sap_processing');
                                 $this->orderRepository->save($succeededOrderObject);
                             } else {
                                 $this->messageManager->addErrorMessage(

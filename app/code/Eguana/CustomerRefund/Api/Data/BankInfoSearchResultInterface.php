@@ -17,8 +17,8 @@ interface BankInfoSearchResultInterface extends \Magento\Framework\Api\SearchRes
     public function getItems();
 
     /**
-     * @param array $items
-     * @return BankInfoSearchResultInterface
+     * @param \Eguana\CustomerRefund\Api\Data\BankInfoDataInterface[] $items
+     * @return $this
      */
     public function setItems(array $items);
 
