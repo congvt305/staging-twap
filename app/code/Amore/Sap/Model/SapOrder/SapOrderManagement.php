@@ -221,6 +221,10 @@ class SapOrderManagement implements SapOrderManagementInterface
                             if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
                                 $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId());
                                 $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
+                                if ($this->config->getLoggingCheck()) {
+                                    $this->logger->info('EINVOICE ISSUE RESULT');
+                                    $this->logger->info($this->json->serialize($ecpayInvoiceResult));
+                                }
                             }
                         } catch (\Exception $exception) {
                             $message = "Something went wrong while saving preparing order : " . $orderStatusData['odrno'];
