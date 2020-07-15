@@ -7,12 +7,8 @@ define([
     'use strict';
 
     return function (bankInfoData) {
-        console.log(bankInfoData);
-        console.log(typeof bankInfoData);
-
         var refundUrl, serviceUrl, payload;
         refundUrl = 'rest/V1/eguana_customerrefund/mine/refund/offline';
-        console.log(refundUrl);
         payload = {'bankInfoData': bankInfoData};
 
         serviceUrl = url.build(refundUrl);
@@ -21,7 +17,8 @@ define([
 
         return storage.post(
             serviceUrl,
-            JSON.stringify(payload)
+            JSON.stringify(payload),
+            false
         ).done(
             function (response) {
                 $('body').trigger('processStop');

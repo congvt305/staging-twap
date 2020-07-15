@@ -87,7 +87,6 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
     {
         try {
             $order = $this->orderRepository->get($orderId);
-            $this->cancelLogisticOrder($order);
             $this->refund($order);
             $this->messageManager->addSuccessMessage(__('You Refunded the order'));
         } catch (\Exception $e) {
@@ -106,8 +105,8 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
             return $this->refundOffline($order);
         }
         /** @var InvoiceInterface $invoice */
-        $invoice = $this->getInvoice($order->getId());
-        $invoiceId = $invoice->getId();
+        $invoice = $this->getInvoice($order->getEntityId());
+        $invoiceId = $invoice->getEntityId();
         $creditmemoItems = $this->buildCreditmemoItems($order);
         $isOnline = true;
         $notify = false;
@@ -123,18 +122,8 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
             $comment,
             $argument
         );
-        $this->logger->debug(__METHOD__, ['orderId' => $order->getId()]);
     }
 
-    /**
-     * @param $order
-     * @return bool
-     */
-    private function cancelLogisticOrder($order)
-    {
-        $this->logger->debug(__METHOD__, ['orderId' => $order->getId()]);
-        return true;
-    }
     /**
      * @param int $orderId
      * @return InvoiceInterface
@@ -173,9 +162,8 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
      */
     private function refundOffline($order)
     {
-        $orderId = $order->getId();
+        $orderId = $order->getEntityId();
         $creditmemoItems = $this->buildCreditmemoItems($order);
-        $isOnline = true;
         $notify = false;
         $appendComment = false;
         $comment = null;
@@ -188,6 +176,5 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
             $comment,
             $argument
         );
-        $this->logger->debug(__METHOD__, ['orderId' => $order->getId()]);
     }
 }
