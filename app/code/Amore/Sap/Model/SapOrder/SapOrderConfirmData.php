@@ -191,7 +191,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         if ($invoice != null) {
             $shippingAddress = $orderData->getShippingAddress();
-            $trackingNumbers = implode(",", $orderData->getTrackingNumbers());
+            $trackingNumbers = implode(",", $this->getTrackNumber($orderData));
             $customer = $this->getCustomerByOrder($orderData);
 
             $bindData[] = [
@@ -244,6 +244,19 @@ class SapOrderConfirmData extends AbstractSapOrder
         }
 
         return $bindData;
+    }
+
+    /**
+     * @param $order \Magento\Sales\Model\Order
+     */
+    public function getTrackNumber($order)
+    {
+        $trackNumbers = [];
+        $trackCollection = $order->getTracksCollection();
+        foreach ($trackCollection->getItems() as $track) {
+            $trackNumbers[] = $track->getTrackNumber();
+        }
+        return $trackNumbers;
     }
 
     /**
