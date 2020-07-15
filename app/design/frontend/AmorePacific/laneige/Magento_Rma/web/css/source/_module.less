@@ -71,30 +71,31 @@
     }
 
     .block-returns-tracking {
-        display: none;
-
         .block-content {
             padding-top: 0 !important;
         }
 
-        table {
-            tfoot {
-                td {
-                    &.actions {
-                        .action {
-                            &:extend(.abs-action-button-as-link all);
-                            .lib-link(
-                                @_link-color: @theme__color__primary-alt,
-                                @_link-text-decoration: none,
-                                @_link-color-visited: @theme__color__primary-alt,
-                                @_link-text-decoration-visited: none,
-                                @_link-color-hover: @theme__color__primary-alt,
-                                @_link-text-decoration-hover: none,
-                                @_link-color-active: @theme__color__primary-alt,
-                                @_link-text-decoration-active: none
-                            );
-                        }
-                    }
+        .actions-track {
+            .lib-font-size(14);
+
+            a {
+                .lib-link(
+                    @_link-color: @theme__color__primary-alt,
+                    @_link-text-decoration: none,
+                    @_link-color-visited: @theme__color__primary-alt,
+                    @_link-text-decoration-visited: none,
+                    @_link-color-hover: @theme__color__primary-alt,
+                    @_link-text-decoration-hover: none,
+                    @_link-color-active: @theme__color__primary-alt,
+                    @_link-text-decoration-active: none
+                );
+            }
+        }
+
+        tfoot {
+            td.actions {
+                .action {
+                    &:extend(.abs-action-button-as-link all);
                 }
             }
         }
@@ -228,10 +229,48 @@
             .returns-details-items {
                 .block-returns-tracking {
                     .block-title {
-                        > .action.track {
+                        > .actions-track {
                             display: block;
-                            float: none;
                             margin: @indent__s 0 0;
+                        }
+                    }
+
+                    table {
+                        td:last-child {
+                            min-height: 24px;
+                        }
+
+                        .action {
+                            margin-left: 0 !important;
+                        }
+
+                        tfoot {
+                            display: block;
+
+                            tr {
+                                display: block;
+                            }
+
+                            td {
+                                display: block;
+                                padding-left: 3px;
+                                padding-right: 3px;
+
+                                &:first-child {
+                                    padding-bottom: 0;
+                                }
+
+                                .action {
+                                    &.add {
+                                        .lib-button();
+                                        width: 100%;
+                                    }
+                                }
+
+                                &.last {
+                                    padding-top: 0;
+                                }
+                            }
                         }
                     }
                 }
@@ -336,7 +375,6 @@
 
             .actions-track {
                 float: right;
-                margin-top: 12px;
             }
         }
 
@@ -345,6 +383,16 @@
         }
 
         table {
+            &.rma-track-info-table {
+                td {
+                    vertical-align: top;
+
+                    .action.add {
+                        line-height: @form-element-input__height;
+                    }
+                }
+            }
+
             tfoot {
                 td {
                     &.carrier,
@@ -355,6 +403,19 @@
                     &.actions {
                         text-align: center;
                         width: 10%;
+
+                        .action {
+                            .lib-link(
+                                @_link-color: @theme__color__primary-alt,
+                                @_link-text-decoration: none,
+                                @_link-color-visited: @theme__color__primary-alt,
+                                @_link-text-decoration-visited: none,
+                                @_link-color-hover: @theme__color__primary-alt,
+                                @_link-text-decoration-hover: none,
+                                @_link-color-active: @theme__color__primary-alt,
+                                @_link-text-decoration-active: none
+                            );
+                        }
                     }
                 }
             }
