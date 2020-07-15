@@ -171,7 +171,7 @@ class ECPayInvoiceSend
             array_push($arErrors, 'Invoice_Url is required.');
         }
 
-        if(sizeof($arErrors)>0) throw new Exception(join('<br>', $arErrors));
+        if(sizeof($arErrors)>0) throw new \Exception(join('<br>', $arErrors));
     }
 
     /**
