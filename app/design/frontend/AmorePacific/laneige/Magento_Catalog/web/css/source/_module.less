@@ -340,12 +340,15 @@
             .weee {
                 .price {
                     .lib-font-size(20);
-                    line-height: @indent__l;
                 }
             }
 
             .price-wrapper .price {
                 .lib-font-size(20);
+            }
+
+            .old-price .price {
+                .lib-font-size(14);
             }
 
             .price {
@@ -398,13 +401,21 @@
             line-height: 35px;
         }
 
+        .discount-label + * {
+            display: inline-block;
+        }
+
         .special-price {
             .price-container {
                 .lib-font-size(14);
             }
+        }
 
-            .price-label + .price-wrapper {
-                display: inline-block;
+        .normal-price {
+            display: block;
+
+            .price-final_price {
+                vertical-align: middle;
             }
         }
 
@@ -862,6 +873,26 @@
                     .swatch-attribute-options {
                         display: block;
                         height: auto;
+                        padding-left: 0;
+
+                        > div {
+                            box-sizing: border-box;
+                            float: left;
+                            margin: 0 auto;
+                            padding: 0 2px;
+                            text-align: center;
+                            width: 100%/4;
+
+                            .swatch-option {
+                                display: inline-block;
+                                float: none;
+                                margin: 0 auto;
+                            }
+
+                            .label {
+                                display: block;
+                            }
+                        }
                     }
                 }
             }
@@ -965,14 +996,28 @@
             }
 
             .price-box {
-                .lib-vendor-prefix-flex-direction(row);
                 line-height: @indent__l;
 
                 .special-price {
+                    display: block;
+                    float: right;
                     margin-top: 0;
-                    margin-left: @indent__xs;
+                    width: 100%;
+                }
+
+                .discount {
+                    margin-right: 6px;
+                }
+
+                .normal-price {
+                    width: 100%;
                 }
             }
+        }
+
+        .product-info-price {
+            padding-right: 4px;
+            text-align: right;
         }
 
         .product {
@@ -1081,6 +1126,17 @@
                         margin-top: @indent__base;
                     }
                 }
+            }
+        }
+
+        .old-price {
+            line-height: 34px;
+            margin-right: @indent__s;
+        }
+
+        .price-wrapper {
+            .price {
+                display: block;
             }
         }
 
