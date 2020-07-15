@@ -1,4 +1,13 @@
 <?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: mobeen
+ * Date: 13/7/20
+ * Time: 4:13 PM
+ */
+
 namespace Eguana\StoreSms\Observer;
 
 use Magento\Framework\Event\Observer;
@@ -11,13 +20,9 @@ use Magento\Eav\Model\Config;
 use Magento\Framework\Message\ManagerInterface;
 use Eguana\StoreSms\Model\CountryCode;
 use Magento\Framework\App\State;
+use Magento\Sales\Api\OrderRepositoryInterface;
 
-/**
- * This class is responsible for check order status and if status change then it will send notifications
- *
- * Class OrderStatusSaveAfter
- */
-class OrderStatusSaveAfter implements ObserverInterface
+class CreditMemoRefundSaveAfter implements ObserverInterface
 {
     /**
      * constants
@@ -75,6 +80,7 @@ class OrderStatusSaveAfter implements ObserverInterface
      * @param ManagerInterface $messageManagerInterface
      * @param CountryCode $countryCode
      * @param State $state
+     * @param OrderRepositoryInterface $orderRepository
      */
     public function __construct(
         Data $data,
@@ -84,7 +90,9 @@ class OrderStatusSaveAfter implements ObserverInterface
         Config $eavConfig,
         ManagerInterface $messageManagerInterface,
         CountryCode $countryCode,
-        State $state
+        State $state,
+        OrderRepositoryInterface $orderRepository
+
     ) {
         $this->data = $data;
         $this->sendNotification = $sendNotification;
@@ -94,26 +102,27 @@ class OrderStatusSaveAfter implements ObserverInterface
         $this->messageManagerInterface = $messageManagerInterface;
         $this->countryCode = $countryCode;
         $this->state = $state;
+        $this->orderRepository = $orderRepository;
+
     }
 
     /**
-     * It will check whether order status have been changed if yes then send the order update SMS
+     * It will check whether credit memo refund is requested if yes then send the refund SMS
      * @param Observer $observer
      */
     public function execute(Observer $observer)
     {
         try {
-            $order = $observer->getEvent()->getOrder();
+            $creditmemo = $observer->getEvent()->getCreditmemo();
+            $order = $this->orderRepository->get($creditmemo->getOrderId());
             $storeId = $order->getData('store_id');
             $storeName = $this->storeManager->getStore($storeId)->getName();
             $smsModuleActive = $this->data->getActivation($storeId);
             $storePhoneNumber = $this->data->getStorePhoneNumber($storeId);
             if ($smsModuleActive) {
-                $order = $observer->getEvent()->getOrder();
-                $originalStatus = $order->getOrigData('status');
-                $newStatus = $order->getData('status');
+                $newStatus = 'refund';
                 $isActive = $this->data->getOrderStatus($newStatus);
-                if ($originalStatus != $newStatus && $isActive) {
+                if ($isActive) {
                     $shippingAddress = $order->getShippingAddress();
                     if ($shippingAddress == null) {
                         $shippingAddress = $order->getBillingAddress();
@@ -129,9 +138,9 @@ class OrderStatusSaveAfter implements ObserverInterface
                     $telephone = $this->sendNotification->getPhoneNumberWithCode($mobilenumber, $countryCode);
                     $firstName = $shippingAddress->getData('firstname');
                     $orderId = $order->getIncrementId();
-                    $templateIdentifer = $this->data->getTemplateIdentifer($newStatus, $storeId);
+                    $templatePath = $this->data->getTemplateIdentifer($newStatus, $storeId);
                     $orderNotification = $this->sendNotification
-                        ->getOrderNotification($storeId, $templateIdentifer, $firstName, $orderId, $storeName, $storePhoneNumber);
+                        ->getOrderNotification($storeId, $templatePath, $firstName, $orderId, $storeName, $storePhoneNumber);
                     if ($this->state->getAreaCode() != 'adminhtml' && $order->getExportProcessed()) {
                         return;
                     } else {
@@ -167,5 +176,6 @@ class OrderStatusSaveAfter implements ObserverInterface
 
         return $result;
     }
+
 
 }

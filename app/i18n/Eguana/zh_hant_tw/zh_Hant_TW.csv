@@ -5072,7 +5072,7 @@ new products will be created. Use this step to customize images and price for yo
 "Forgot Your Password?","忘記密碼了嗎？",module,Magento_Customer
 "Subscription option","Subscription option",module,Magento_Customer
 "General Subscription","General Subscription",module,Magento_Customer
-"Sign Up for Newsletter","Sign Up for Newsletter",module,Magento_Customer
+"Sign Up for Newsletter","訂閱電子報",module,Magento_Customer
 "Address Information","地址信息",module,Magento_Customer
 "Sign-in Information","登錄信息",module,Magento_Customer
 "Confirm Password","確認密碼",module,Magento_Customer
@@ -5342,7 +5342,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Delete address","Delete address",module,Magento_Customer
 "Are you sure you want to delete the address?","您確定要刪除該地址嗎？",module,Magento_Customer
 "Additional addresses","Additional addresses",module,Magento_Customer
-"State","State",module,Magento_Customer
+"State","州",module,Magento_Customer
 "Actions","動作",module,Magento_Customer
 "Sorry, there has been an error processing your request. Please try again later.","對不起，在處理您的請求時出現錯誤。請稍後重試。",module,Magento_Customer
 "Reset password","Reset password",module,Magento_Customer
@@ -5551,7 +5551,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "No Password","沒有密碼",module,Magento_CustomerCustomAttributes
 "Confirm New Password","確認新密碼",module,Magento_CustomerCustomAttributes
 "Personal Information","個人信息",module,Magento_CustomerCustomAttributes
-"Sign Up for Newsletter","Sign Up for Newsletter",module,Magento_CustomerCustomAttributes
+"Sign Up for Newsletter","訂閱電子報",module,Magento_CustomerCustomAttributes
 "Address Information","地址信息",module,Magento_CustomerCustomAttributes
 "Company","公司",module,Magento_CustomerCustomAttributes
 "Phone Number","電話號碼",module,Magento_CustomerCustomAttributes
@@ -11506,7 +11506,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't delete the label right now.","We can't delete the label right now.",module,Magento_Rma
 "Return #%1","Return #%1",module,Magento_Rma
 "Cannot add message.","Cannot add message.",module,Magento_Rma
-"My Returns","My Returns",module,Magento_Rma
+"My Returns","我的退貨",module,Magento_Rma
 "Tracking Information","Tracking Information",module,Magento_Rma
 "Page not found","Page not found",module,Magento_Rma
 "Please check this order for errors.","請檢查此訂單是否有錯誤。",module,Magento_Rma
@@ -16426,4 +16426,3 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "First character must be letter.","First character must be letter.",lib,web
 "The password can't be the same as the email address. Create a new password and try again.","密碼不能與電子郵件地址相同。 創建一個新密碼，然後重試。",lib,web
 "Enter your destination to get a shipping estimate.","輸入目的地以獲取運輸估算。"
-"Code has been verified please move to the next step","代碼已通過驗證，請轉到下一步"

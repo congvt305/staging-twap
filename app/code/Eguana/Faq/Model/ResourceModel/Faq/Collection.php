@@ -86,7 +86,10 @@ class Collection extends AbstractCollection
      */
     public function addStoreFilter($store, $withAdmin = true)
     {
-        $this->performAddStoreFilter($store, $withAdmin);
+        if (!$this->getFlag('store_filter_added')) {
+            $this->performAddStoreFilter($store, $withAdmin);
+            $this->setFlag('store_filter_added', true);
+        }
 
         return $this;
     }

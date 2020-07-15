@@ -24,9 +24,11 @@ class Data extends AbstractHelper
     const XML_PATH_ORDER_STATUS = 'eguanasms/templates/order_status_';
     const XML_PATH_ORDER_TEMPLATE = 'eguanasms/templates/order_status_';
     const XML_PATH_FOR_REGISTRATION = 'eguanasms/templates/registration_verification_active';
+    const XML_PATH_FOR_REGISTRATION_TEMPLATE = 'eguanasms/templates/customer_register_sms';
     const XML_PATH_FOR_WELCOME_SMS = 'eguanasms/templates/registration_welcome_active';
     const XML_PATH_FOR_NUMBER_ACTIVATION = 'eguanasms/general/mobile_number_validation_active';
     const XML_PATH_FOR_DEFAULT_COUNTRY = 'general/country/default';
+    const XML_PATH_STORE_PHONE = 'general/store_information/phone';
 
     /**
      * @var EncryptorInterface
@@ -116,9 +118,27 @@ class Data extends AbstractHelper
      * @param $status
      * @return string
      */
-    public function getTemplateConfigPath($status)
+    public function getTemplateIdentifer($status, $scopeCode)
     {
-        return self::XML_PATH_ORDER_TEMPLATE . $status;
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_ORDER_TEMPLATE . $status,
+            ScopeInterface::SCOPE_STORE,
+            $scopeCode
+        );
+    }
+    /**
+     * This function will get  SMS template selected template config value
+     *
+     * @param $status
+     * @return string
+     */
+    public function getTemplateIdentiferRegistration($scopeCode)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_FOR_REGISTRATION_TEMPLATE,
+            ScopeInterface::SCOPE_STORE,
+            $scopeCode
+        );
     }
 
     /**
@@ -203,6 +223,20 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_API_SENDER,
+            ScopeInterface::SCOPE_STORE,
+            $scopeCode
+        );
+    }
+
+    /**
+     * This function is use to get store phone number
+     * @param null $scopeCode
+     * @return string | void
+     */
+    public function getStorePhoneNumber($scopeCode = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_STORE_PHONE,
             ScopeInterface::SCOPE_STORE,
             $scopeCode
         );
