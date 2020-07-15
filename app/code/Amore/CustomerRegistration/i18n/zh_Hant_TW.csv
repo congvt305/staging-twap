@@ -58,4 +58,9 @@ Api,阿皮
 "Sales Office Code","銷售辦事處代碼"
 "Partner ID","合作夥伴ID"
 "SSL Verification","SSL驗證"
-Debug,除錯
+"Debug","除錯"
+"State","州"
+"Detailed Address","詳細地址"
+"Zip Code","郵政編碼"
+"Call Marketing","電話營銷"
+"Terms And Services Policy","條款和服務政策"
