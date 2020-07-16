@@ -111,4 +111,7 @@ class BankInfo extends \Magento\Framework\Model\AbstractModel implements \Eguana
         return parent::afterLoad(); // TODO: decrypt AES 256 bankinfo
     }
 
+
+
+
 }
