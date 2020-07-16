@@ -219,7 +219,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
 
                             if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId());
+                                $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
                                 $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
                                 if ($this->config->getLoggingCheck()) {
                                     $this->logger->info('EINVOICE ISSUE RESULT');
@@ -250,7 +250,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
 
                             if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId());
+                                $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
                                 $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
                             }
                         } catch (\Exception $exception) {
