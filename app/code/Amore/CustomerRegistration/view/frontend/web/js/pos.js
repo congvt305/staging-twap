@@ -67,7 +67,9 @@ define([
                     context: this,
                     cache: false,
                     data: {
-                        'mobileNumber':$(this.options.mobileNumberSelector).val()
+                        'mobileNumber':$(this.options.mobileNumberSelector).val(),
+                        'firstName':$(this.options.firstNameSelector).val(),
+                        'lastName':$(this.options.lastNameSelector).val()
                     },
 
                     /**
