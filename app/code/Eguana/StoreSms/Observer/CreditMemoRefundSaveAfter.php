@@ -112,6 +112,7 @@ class CreditMemoRefundSaveAfter implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+        die('test');
         try {
             $creditmemo = $observer->getEvent()->getCreditmemo();
             $order = $this->orderRepository->get($creditmemo->getOrderId());
@@ -121,7 +122,7 @@ class CreditMemoRefundSaveAfter implements ObserverInterface
             $storePhoneNumber = $this->data->getStorePhoneNumber($storeId);
             if ($smsModuleActive) {
                 $newStatus = 'refund';
-                $isActive = $this->data->getOrderStatus($newStatus);
+                $isActive = $this->data->getOrderStatus($newStatus, $storeId);
                 if ($isActive) {
                     $shippingAddress = $order->getShippingAddress();
                     if ($shippingAddress == null) {

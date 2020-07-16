@@ -1,48 +1,42 @@
-Eguana_Directory v2.0.0
+# Eguana Directory
 
-Website: Amore
+`Website` : Main Website URL 
+`Author` : Sonia  
+`DB Table Name` : eguana_directory_region_city
+`EAV Attribute` : city_id for Customer Address Entity
 
-Author: Abbas Ali Butt
 
-DB Table Name :
+####Description:
+
+The Eguana_CustomerRefund module provides enhanced local features for Taiwan addition to Magento_Directory Module which enables the management of countries and regions recognized by the store and associated data
+                                                                                                                        like the country code and currency rates. Also, enables conversion of prices to a specified currency format.
+
+####Key features:
  
-Explanation: This module will allow the customer to fetch the address details from Amore DB
+- Install TW region and city data in the database
+- Customer Address Form Field Handling For City and Zipcode
+- Load optional (dropdown) cities.
+- Load Zipcode automatically
+- Handle Currency Fix to remove decimal point.
+ 
+#Module Installation  
 
-# TWDirectory
-
-Description:
-
-Register module will be mainly used to allow the customer during registration, checkout, address management to fetch the 
-address details from amore db.
-
-Requirements:
-
-    - 
-
-
-Key features:
-
-      1. 
-
-Module Installation
-
-Download the extension and Unzip the files in a temporary directory
-
-Upload it to your Magento installation root directory
-
-Execute the following commands respectively:
-
-1.  php bin/magento module:enable Eguana_ZipCode
-
-2.  php bin/magento setup:upgrade
-
+```
+1.  php bin/magento Module:enable Eguana_Directory
+2.  php bin/magento setup:upgrade  
 3.  php bin/magento setup:di:compile
+```
 
-Refresh the Cache under System ⇾ Cache Management
+#General Configurations
 
-Navigate to **Stores ⇾ Configuration** and the module **Zip Code** under Eguana tab.
+On the Admin sidebar, go to Stores > Settings > Configuration.
+
+Under General in the left panel, choose General.
+
+Expand Expansion selector the City Options section and do the following: 
+
+- In the City is required for list, select each country where City/District is a required entry.
+- Set the Allow to Choose City if It is Optional for Country field. (Dropdow will display for selecting city.)
 
 
-**Configuration**
 
-1. Navigate to **Stores ⇾ Configuration** and click on **Zip Code** under Eguana tab in the left panel.
