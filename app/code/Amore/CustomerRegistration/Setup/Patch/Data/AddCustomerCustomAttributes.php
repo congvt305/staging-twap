@@ -262,10 +262,10 @@ class AddCustomerCustomAttributes implements DataPatchInterface
      */
     private function addCustomerAttributeTextFiled($code, $label, $type, $validation, $required, $sortOrder)
     {
-        $this->eavSetup->removeAttribute(
+        /*$this->eavSetup->removeAttribute(
             CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
             $code
-        );
+        );*/
 
         $attribute = $this->customerAttributeResource
             ->getIdByCode(

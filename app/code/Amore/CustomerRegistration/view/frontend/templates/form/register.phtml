@@ -209,12 +209,12 @@ $viewModel = $block->getData('view_model');
                 <?= $_smsSubscriptionStatus->setDate($block->getFormData()->getSmsSubscriptionStatus())->toHtml() ?>
             <?php endif ?>
 
-            <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
-                <?= $_dmSubscriptionStatus->setDate($block->getFormData()->getDmSubscriptionStatus())->toHtml() ?>
-            <?php endif ?>
-
             <?php if ($_termsAndServicesPolicy->isEnabled()) : ?>
                 <?= $_termsAndServicesPolicy->setDate($block->getFormData()->getTermsAndServicesPolicy())->toHtml() ?>
+            <?php endif ?>
+
+            <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
+                <?= $_dmSubscriptionStatus->setDate($block->getFormData()->getDmSubscriptionStatus())->toHtml() ?>
             <?php endif ?>
 
             <div class="field required" style="display: none;">
