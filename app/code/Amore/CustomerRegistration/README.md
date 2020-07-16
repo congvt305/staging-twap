@@ -98,7 +98,7 @@ Navigate to **Stores ⇾ Configuration** and the module **Curstomer Registration
 
 ![DM Subscription](https://i.ibb.co/vdrsprW/Customer-Registration-Step-2-DM-Subscription.png)
  
- All the configurations are website level not store level.
+ All the configurations are website level not store level. 
  
  **Stores -> Configuration -> Amore Extensions -> Customer Registration -> General Configuration**
  
