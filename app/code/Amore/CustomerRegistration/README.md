@@ -15,8 +15,7 @@ DB Table Name : Added customer attributes
     - referrer_code: To save refferer code value when custmer will register using QR Code
     - sms_subscription_status: To identify whether customer is subscribed for SMS or not
     - dm_subscription_status: To identify whether customer is subscribed for DM or not
-    - pos_synced_report: It is text area which will contain the response value when synced with POS in case of new customer register
-    - pos_synced_successfully: Whether synced successfully or not
+    - terms_and_services_policy: Whether customer has been agreed with the terms and services policy or not
     - integration_number: To save customer integration number. Auto generated number like Order increment id. Further details you can read in next sections
     - sales_organization_code: To save Website based sale organization code.
     - sales_office_code: To save Website based sale organization code.
@@ -85,7 +84,7 @@ Navigate to **Stores ⇾ Configuration** and the module **Curstomer Registration
 1. Navigate to **Stores ⇾ Configuration** and click on **Curstomer Registration** under Amore tab in the left panel.
 
  
-![Configuration](https://i.ibb.co/LhzJND2/Customer-Registration-Configuration.png)
+![Configuration](https://i.ibb.co/rmvHcrf/Customer-Registration-Configuration.png)
 
 **Frontend Registration Step 1**
 
@@ -93,11 +92,11 @@ Navigate to **Stores ⇾ Configuration** and the module **Curstomer Registration
 
 **Frontend Registration Step 2**
   
-![Step 2](https://i.ibb.co/CM0V6Gr/Customer-Registration-Step-2.png)
+![Step 2](https://i.ibb.co/F57b5kz/Customer-Registration-Step-2.png)
 
 **Frontend Registration Step 2 Direct Mail (DM) Subscription**
 
-![DM Subscription](https://i.ibb.co/XSty2x8/Customer-Registration-Step-2-DM-Subscription.png)
+![DM Subscription](https://i.ibb.co/vdrsprW/Customer-Registration-Step-2-DM-Subscription.png)
  
  All the configurations are website level not store level.
  
@@ -114,6 +113,7 @@ above images frontend registration Step 1 & Step 2. Else you will see the defaul
 1. Newsletter Policy CMS Block: Here user will add the news letter privacy policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-13 part**
 1. SMS Policy CMS Block: Here user will add the SMS privacy policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-15 part**
 1. DM Policy CMS Block: Here user will add the DM privacy policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-17 part**
+1. Terms and Services Policy CMS Block: Here user will add the Terms and services policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-17 part**
 1. SMS Verification Enable: Here user admin can enable disable SMS verification. In case sms verification is disabled then during SMS verification 1234 will be the verification code.
 
 
