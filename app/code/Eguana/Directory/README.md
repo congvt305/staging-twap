@@ -29,10 +29,14 @@ The Eguana_CustomerRefund module provides enhanced local features for Taiwan add
 
 #General Configurations
 
-In Admin Panel, Navigate to **Stores­ ⇾ Configuration**
+On the Admin sidebar, go to Stores > Settings > Configuration.
 
-Navigate to **EGUANA EXTENSION ⇾ Customer Refund** in the left panel.
+Under General in the left panel, choose General.
 
-(1)Clicking general tab will show module's Enable/Disable configuration. 
+Expand Expansion selector the City Options section and do the following: 
+
+- In the City is required for list, select each country where City/District is a required entry.
+- Set the Allow to Choose City if It is Optional for Country field. (Dropdow will display for selecting city.)
+
 
 
