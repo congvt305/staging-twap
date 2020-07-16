@@ -169,7 +169,10 @@ define([
                                 $('.form-create-account #mobile_number').val($(this.options.mobileNumberSelector).val());
                                 $('.form-create-account #email_address').val(response.pos.email);
                                 $('.form-create-account #integration_number').val(response.pos.cstmIntgSeq);
-                                $('.form-create-account #gender').val(response.pos.sex == 'M'?1:2);
+                                //$('.form-create-account #gender').val(response.pos.sex == 'M'?1:4);
+                                if (response.pos.sex == 'F') {
+                                    $(".form-create-account #gender_Female").prop("checked", true);
+                                }
                                 $('.form-create-account #dob').val(response.pos.birthDay);
                                 $('.form-create-account #is_subscribed').prop('checked',response.pos.emailYN == 'Y'?true:false);
                                 $('.form-create-account .sms_subscription_status_checkbox').prop('checked',response.pos.smsYN == 'Y'?true:false);

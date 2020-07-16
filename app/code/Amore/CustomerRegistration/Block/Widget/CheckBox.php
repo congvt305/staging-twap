@@ -160,6 +160,8 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
     {
         if ($this->getAttributeCode() == 'sms_subscription_status') {
             $privacyPolicyCMSBlockId = $this->config->getSMSPolicyCMSBlockId();
+        } elseif ($this->getAttributeCode() == 'terms_and_services_policy') {
+            $privacyPolicyCMSBlockId = $this->config->getTermsAndServicesPolicyCMSBlockId();
         } else {
             $privacyPolicyCMSBlockId = $this->config->getDMPolicyCMSBlockId();
         }
