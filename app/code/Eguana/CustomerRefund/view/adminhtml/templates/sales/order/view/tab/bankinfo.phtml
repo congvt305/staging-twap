@@ -19,7 +19,7 @@
                 <span class="bankinfo-list-created-at"><?= /* @noEscape */ $block->escapeHtml($_item->getCreatedAt()) ?></span>
                 <span class="bankinfo-list-created-at"> | </span>
                 <span class="bankinfo-list-bankname"><?= /* @noEscape */ $block->escapeHtml($_item->getBankName()) ?></span>
-                <span class="bankinfo-list-account-owner-name"><?= /* @noEscape */ $block->escapeHtml($_item->getBankAccountNumber()) ?></span>
+                <span class="bankinfo-list-account-owner-name"><?= /* @noEscape */ $block->escapeHtml($_item->getAccountOwnerName()) ?></span>
                 <span class="bankinfo-list-account-name"><?= /* @noEscape */ $block->escapeHtml($_item->getBankAccountNumber()) ?></span>
             </li>
         <?php endforeach; ?>
