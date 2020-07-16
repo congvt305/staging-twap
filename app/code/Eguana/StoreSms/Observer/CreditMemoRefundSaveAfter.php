@@ -112,7 +112,6 @@ class CreditMemoRefundSaveAfter implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        die('test');
         try {
             $creditmemo = $observer->getEvent()->getCreditmemo();
             $order = $this->orderRepository->get($creditmemo->getOrderId());
