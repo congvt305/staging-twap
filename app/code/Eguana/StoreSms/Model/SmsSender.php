@@ -121,12 +121,11 @@ class SmsSender implements SmsInterface
      * @param $number
      * @return bool
      */
-    public function setCode($number)
+    public function setCode($number, $customer = 'customer')
     {
         $message = '';
         $verificationCode = '';
         $phoneNumber = '';
-        $template = $this->templateFactory->create();
         try {
             $verificationCode = Random::getRandomNumber(1000, 9999);
             $this->sessionManager->start();
@@ -136,18 +135,21 @@ class SmsSender implements SmsInterface
             $numberPrefix = $countryCode[$this->data->getCurrentCountry($store)]['code'];
             $phoneNumber = $this->getPhoneNumberWithCode($number, $numberPrefix);
             $this->sessionManager->setPhoneNumber($number);
+            $template = $this->templateFactory->create();
+            $template->setDesignConfig(['area' => 'frontend', 'store' => $store]);
             $storePhoneNumber = $this->data->getStorePhoneNumber($store);
             $storeName = $this->storeManager->getStore()->getName();
-            $params = ['code' => $verificationCode, 'store_name' => $storeName, 'store_phone' => $storePhoneNumber];
-
-            $templateModel->loadDefault(self::XML_REGISTRATION_TEMPLATE_PATH, $params);
-            $message = $templateModel->getProcessedTemplate($params);
+            $params = [
+                'code'         => $verificationCode,
+                'store_name'   => $storeName,
+                'store_phone'  => $storePhoneNumber,
+                'customer'     => $customer
+            ];
+            $message = $template->getTemplateContent(self::XML_REGISTRATION_TEMPLATE_PATH, $params);
         } catch (\Exception $e) {
-            $template1 = $this->resourceModelFactory->create();
-            $template1 = $template1->load($template, self::XML_REGISTRATION_TEMPLATE_PATH);
-            $message = $template->getProcessedTemplate($params);
             $this->logger->error($e->getMessage());
         }
+
         $this->sendMessageByApi($message, $phoneNumber);
         return $verificationCode;
     }
