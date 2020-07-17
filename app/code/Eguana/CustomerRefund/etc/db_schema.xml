@@ -15,6 +15,8 @@
                 default="0" comment="Order Id"/>
         <column xsi:type="smallint" name="is_used" padding="6" unsigned="false" nullable="true" identity="false"
                 default="0" comment="Is Used"/>
+        <column xsi:type="varchar" name="base64iv" nullable="true" length="128"
+                comment="Base64 Encoded Initialized Vector"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Created At"/>
         <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
