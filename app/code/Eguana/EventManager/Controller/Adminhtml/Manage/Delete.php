@@ -16,7 +16,6 @@ use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
 use Magento\Framework\Controller\Result\Redirect as RedirectAlias;
 use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\View\Result\PageFactory;
-use Magento\Framework\Registry;
 use Magento\Backend\App\Action\Context;
 
 /**
@@ -37,23 +36,25 @@ class Delete extends AbstractController
     private $eventManagerRepository;
 
     /**
+     * @var PageFactory
+     */
+    private $resultPageFactory;
+    /**
      * Delete constructor.
      * @param Context $context
-     * @param Registry $coreRegistry
      * @param PageFactory $resultPageFactory
      * @param EventManagerFactory|null $eventManagerFactory
      * @param EventManagerRepositoryInterface|null $eventManagerRepository
      */
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
         PageFactory $resultPageFactory,
         EventManagerFactory $eventManagerFactory,
         EventManagerRepositoryInterface $eventManagerRepository
     ) {
         $this->eventManagerFactory = $eventManagerFactory;
         $this->eventManagerRepository = $eventManagerRepository;
-        parent::__construct($context, $coreRegistry, $resultPageFactory);
+        parent::__construct($context, $resultPageFactory);
     }
 
     /**

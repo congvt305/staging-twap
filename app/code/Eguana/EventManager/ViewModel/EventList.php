@@ -144,13 +144,7 @@ class EventList implements ArgumentInterface
         $eventManagerCollection->addFieldToFilter(
             "is_active",
             ["eq" => true]
-        )->addFieldToFilter(
-            ['store_id','store_id','store_id','store_id'],
-            [["like" =>  '%' . $storeId . ',%'],
-                ["like" =>  '%,' . $storeId . ',%'],
-                ["like" =>  '%,' . $storeId . '%'],
-                ["eq" => $storeId]]
-        )->addFieldToFilter(
+        )->addStoreFilter($storeId)->addFieldToFilter(
             "end_date",
             [$condition => $currentDate]
         )->addFieldToFilter(

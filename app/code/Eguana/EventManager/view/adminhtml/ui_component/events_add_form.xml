@@ -49,7 +49,7 @@
         </dataProvider>
     </dataSource>
 
-    <fieldset name="general">
+    <fieldset name="eguana_event_manager">
         <settings>
             <label/>
         </settings>

@@ -39,7 +39,11 @@ class EInvoice extends \Magento\Framework\View\Element\Template
         $payment = $order->getPayment();
         $additionalData = $payment->getAdditionalData();
 
-        return json_decode($additionalData, true);
+        if (json_decode($additionalData, true)["RtnCode"] == 1) {
+            return json_decode($additionalData, true);
+        } else {
+            return null;
+        }
     }
 
     public function getEInvoiceDate($orderId)
@@ -70,7 +74,11 @@ class EInvoice extends \Magento\Framework\View\Element\Template
         $payment = $order->getPayment();
         $ecpayInvoiceInvalidateData = $payment->getEcpayInvoiceInvalidateData();
 
-        return json_decode($ecpayInvoiceInvalidateData, true);
+        if (json_decode($ecpayInvoiceInvalidateData, true)["RtnCode"] == 1) {
+            return json_decode($ecpayInvoiceInvalidateData, true);
+        } else {
+            return null;
+        }
     }
 
     public function getInvalidateEInvoiceNumber($orderId)

@@ -169,7 +169,6 @@ class CreateShipment
     {
         $extensionAttributes = $this->shipmentCreationArgumentsExtensionFactory->create();
         $extensionAttributes->setAllPayLogisticsId($this->allPayLogisticsID);
-        //maybe use here to save return shipment??
         $arguments = $this->shipmentCreationArgumentsFactory->create();
         $arguments->setExtensionAttributes($extensionAttributes);
         return $arguments;

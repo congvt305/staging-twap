@@ -53,7 +53,6 @@ class EventManager extends AbstractExtensibleModel implements EventManagerInterf
             'event_title',
             'description',
             'thumbnail_image',
-            'store_id',
             'is_active',
             'start_date',
             'end_date',
@@ -77,27 +76,6 @@ class EventManager extends AbstractExtensibleModel implements EventManagerInterf
     public function getEntityId()
     {
         return $this->getData(self::ENTITY_ID);
-    }
-
-    /**
-     * Get Store ID
-     *
-     * @return int|null
-     */
-    public function getStoreId()
-    {
-        return $this->getData(self::STORE_ID);
-    }
-
-    /**
-     * Set Store ID
-     *
-     * @param int $storeId
-     * @return EventManagerInterface
-     */
-    public function setStoreId($storeId)
-    {
-        return $this->setData(self::STORE_ID, $storeId);
     }
 
     /**

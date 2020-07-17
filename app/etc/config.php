@@ -480,6 +480,7 @@ return [
         'Amazon_Payment' => 0,
         'Amore_Base' => 1,
         'Eguana_Base' => 1,
+        'Eguana_CustomRMA' => 1,
         'Amore_GaTagging' => 1,
         'Ecpay_Ecpaypayment' => 1,
         'Dotdigitalgroup_Email' => 1,

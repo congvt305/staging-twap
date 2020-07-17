@@ -24,6 +24,14 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 
 class SapOrderConfirmData extends AbstractSapOrder
 {
+    const ORDER_SENT_TO_SAP_BEFORE = 0;
+
+    const ORDER_SENT_TO_SAP_SUCCESS = 1;
+
+    const ORDER_SENT_TO_SAP_FAIL = 2;
+
+    const ORDER_RESENT_TO_SAP_SUCCESS = 3;
+
     /**
      * @var InvoiceRepositoryInterface
      */
@@ -181,6 +189,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         $orderData = $this->getOrderInfo($incrementId);
         $invoice = $this->getInvoice($orderData->getEntityId());
         $storeId = $orderData->getStoreId();
+        $orderSendCheck = $orderData->getData('sap_order_send_check');
         $bindData = [];
 
         if ($orderData == null) {
@@ -188,6 +197,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                 __("Such order %1 does not exist. Check the data and try again", $incrementId)
             );
         }
+
+        $incrementIdForSap = $this->getOrderIncrementId($orderData->getIncrementId(), $orderSendCheck);
 
         if ($invoice != null) {
             $shippingAddress = $orderData->getShippingAddress();
@@ -197,7 +208,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             $bindData[] = [
                 'vkorg' => $this->config->getMallId('store', $storeId),
                 'kunnr' => $this->config->getClient('store', $storeId),
-                'odrno' => $orderData->getIncrementId(),
+                'odrno' => $incrementIdForSap,
                 'odrdt' => $this->dateFormatting($orderData->getCreatedAt(), 'Ymd'),
                 'odrtm' => $this->dateFormatting($orderData->getCreatedAt(), 'His'),
                 'paymtd' => $this->getPaymentCode($orderData->getPayment()->getMethod()),
@@ -244,6 +255,17 @@ class SapOrderConfirmData extends AbstractSapOrder
         }
 
         return $bindData;
+    }
+
+    public function getOrderIncrementId($incrementId, $orderSendCheck)
+    {
+        if ($orderSendCheck == 0 || $orderSendCheck == 2) {
+            $currentDate = $this->timezoneInterface->date()->format('ymdHis');
+            $incrementIdForSap = $incrementId . '_' . $currentDate;
+        } else {
+            $incrementIdForSap = $incrementId;
+        }
+        return $incrementIdForSap;
     }
 
     /**
