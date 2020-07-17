@@ -11,5 +11,6 @@
         <column xsi:type="smallint" name="sap_creditmemo_send_check" nullable="true" comment="Check for credit memo send"/>
         <column xsi:type="smallint" name="sap_return_send_check" nullable="true" comment="Check for rma send"/>
         <column xsi:type="smallint" name="sap_order_send_check" nullable="true" comment="Check for order send"/>
+        <column xsi:type="varchar" name="sap_order_increment_id" nullable="true" length="32" comment="New Increment Id sent to SAP by failure of origin increment id order sent"/>
     </table>
 </schema>

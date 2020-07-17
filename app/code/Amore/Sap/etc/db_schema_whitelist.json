@@ -3,7 +3,8 @@
         "column": {
             "sap_creditmemo_send_check": true,
             "sap_return_send_check": true,
-            "sap_order_send_check": true
+            "sap_order_send_check": true,
+            "sap_order_increment_id": true
         }
     }
 }
