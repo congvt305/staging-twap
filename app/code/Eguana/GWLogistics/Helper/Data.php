@@ -25,7 +25,7 @@ class Data extends AbstractHelper
     }
 
     public function getCreateShipmentReplyUrl() {
-        return $this->_getUrl('eguana_gwlogistics/StatusNotify', ['_secure' => true]);
+        return $this->_getUrl('eguana_gwlogistics/OrderStatusNotify', ['_secure' => true]);
     }
 
     public function getReverseLogisticsOrderReplyUrl() {

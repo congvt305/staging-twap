@@ -6,7 +6,7 @@
  * Time: 5:41 PM
  */
 
-namespace Eguana\GWLogistics\Controller\StatusNotify;
+namespace Eguana\GWLogistics\Controller\OrderStatusNotify;
 
 
 use Magento\Framework\App\Action\Action;

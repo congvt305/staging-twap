@@ -15,6 +15,10 @@
     </type>
 
     <!--extension attributes load-->
+    <type name="Magento\Rma\Api\Data\TrackInterface">
+        <plugin name="eguana_gwlogistics_rma_track_extension_attr_load"
+                type="Eguana\GWLogistics\Plugin\Rma\TrackAttributeLoad"/>
+    </type>
     <type name="Magento\Sales\Api\Data\ShipmentInterface">
         <plugin name="eguana_gwlogistics_shipment_extension_attr_load"
                 type="Eguana\GWLogistics\Plugin\Sales\ShipmentAttributeLoad"/>

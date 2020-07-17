@@ -89,9 +89,10 @@ class CreateReverseLogisticsOrder
         /** @var \Magento\Rma\Api\Data\CommentInterface $comment */
         $comment = $this->commentInterfaceFactory->create();
         $comment->setRmaEntityId($rma->getEntityId());
-        $comment->setComment('Reverse Logistics Order Created');
+        $comment->setComment(__('Reverse Logistics Order Created. Return Code is %1.', $result['RtnOrderNo']));
         $comment->setIsAdmin(true);
         $comment->setIsVisibleOnFront(true);
+        $comment->setData('rtn_merchant_trade_no', $result['RtnMerchantTradeNo']);
         $this->commentRepository->save($comment);
 
         return;
