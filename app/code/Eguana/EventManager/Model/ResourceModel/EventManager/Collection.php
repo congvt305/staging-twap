@@ -9,9 +9,10 @@
  */
 namespace Eguana\EventManager\Model\ResourceModel\EventManager;
 
-use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+use Eguana\EventManager\Model\ResourceModel\AbstractCollection;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Eguana\EventManager\Api\Data\EventManagerInterface;
 use Eguana\EventManager\Model\EventManager as EventManagerModel;
 use Eguana\EventManager\Model\ResourceModel\EventManager as EventManagerResourceModel;
 use Magento\Framework\Api\Search\AggregationInterface;
@@ -53,6 +54,23 @@ class Collection extends AbstractCollection implements SearchResultInterface
             EventManagerModel::class,
             EventManagerResourceModel::class
         );
+        $this->_map['fields']['store'] = 'store_table.store_id';
+        $this->_map['fields']['entity_id'] = 'main_table.entity_id';
+    }
+
+    /**
+     * After load method
+     * @return Collection
+     */
+    protected function _afterLoad()
+    {
+        try {
+            $entityMetadata = $this->metadataPool->getMetadata(EventManagerInterface::class);
+            $this->performAfterLoad('eguana_event_manager_store', $entityMetadata->getLinkField());
+            return parent::_afterLoad();
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
     }
 
     /**
@@ -140,5 +158,45 @@ class Collection extends AbstractCollection implements SearchResultInterface
     public function setItems(array $items = null)
     {
         return $this;
+    }
+
+    /**
+     * Options method
+     * @return array
+     */
+    public function toOptionArray()
+    {
+        return $this->_toOptionArray('entity_id', 'event_title');
+    }
+
+    /**
+     * Add filter by store
+     *
+     * @param int|array|\Magento\Store\Model\Store $store
+     * @param bool $withAdmin
+     * @return $this
+     */
+    public function addStoreFilter($store, $withAdmin = true)
+    {
+        if (!$this->getFlag('store_filter_added')) {
+            $this->performAddStoreFilter($store, $withAdmin);
+            $this->setFlag('store_filter_added', true);
+        }
+        return $this;
+    }
+
+    /**
+     * Join store relation table if there is store filter
+     *
+     * @return void
+     */
+    protected function _renderFiltersBefore()
+    {
+        try {
+            $entityMetadata = $this->metadataPool->getMetadata(EventManagerInterface::class);
+            $this->joinStoreRelationTable('eguana_event_manager_store', $entityMetadata->getLinkField());
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
     }
 }

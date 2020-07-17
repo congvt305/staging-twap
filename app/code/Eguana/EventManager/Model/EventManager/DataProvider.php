@@ -65,7 +65,13 @@ class DataProvider extends AbstractDataProvider
         $this->collection = $eventManagerCollectionFactory->create();
         $this->dataPersistor = $dataPersistor;
         $this->storeManager = $storeManagerInterface;
-        parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
+        parent::__construct(
+            $name,
+            $primaryFieldName,
+            $requestFieldName,
+            $meta,
+            $data
+        );
     }
 
     /**

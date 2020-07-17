@@ -7,7 +7,6 @@
  * Date: 11/6/20
  * Time: 11:47 AM
  */
-
 namespace Eguana\EventManager\Model;
 
 use Eguana\EventManager\Api\EventManagerRepositoryInterface;
@@ -128,19 +127,11 @@ class EventManagerRepository implements EventManagerRepositoryInterface
     public function save(EventManagerInterface $eventManager)
     {
         try {
-            if (empty($eventManager->getStoreId())) {
-                $storeId = $this->storeManager->getStore()->getId();
-                $eventManager->setStoreId($storeId);
-            }
-            try {
-                $this->resourceEventManager->save($eventManager);
-            } catch (\Exception $exception) {
-                throw new CouldNotSaveException(__($exception->getMessage()));
-            }
-            return $eventManager;
+            $this->resourceEventManager->save($eventManager);
         } catch (\Exception $exception) {
-            $this->logger->debug($exception->getMessage());
+            throw new CouldNotSaveException(__($exception->getMessage()));
         }
+        return $eventManager;
     }
 
     /**
@@ -169,6 +160,16 @@ class EventManagerRepository implements EventManagerRepositoryInterface
     {
         /** @var Collection $collection */
         $collection = $this->eventManagerCollectionFactory->create();
+
+        foreach ($criteria->getFilterGroups() as $filterGroup) {
+            foreach ($filterGroup->getFilters() as $filter) {
+                if ($filter->getField() === 'store_id') {
+                    $collection->addStoreFilter($filter->getValue(), true);
+                }
+                $condition = $filter->getConditionType() ?: 'eq';
+                $collection->addFieldToFilter($filter->getField(), [$condition => $filter->getValue()]);
+            }
+        }
 
         $this->collectionProcessor->process($criteria, $collection);
 

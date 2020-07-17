@@ -11,7 +11,6 @@
 namespace Eguana\EventManager\Controller\Adminhtml;
 
 use Magento\Backend\App\Action;
-use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action\Context;
 
@@ -27,22 +26,14 @@ abstract class AbstractController extends Action
     private $resultPageFactory;
 
     /**
-     * @var Registry
-     */
-    private $coreRegistry;
-
-    /**
      * @param Context $context
-     * @param Registry $coreRegistry
      * @param PageFactory $resultPageFactory
      */
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
         PageFactory $resultPageFactory
     ) {
         $this->resultPageFactory = $resultPageFactory;
-        $this->coreRegistry = $coreRegistry;
         parent::__construct($context);
     }
 
