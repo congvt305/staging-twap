@@ -10,6 +10,8 @@
 */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="\Eguana\EventManager\Api\Data\EventManagerSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults" />
     <preference for="Eguana\EventManager\Api\Data\EventManagerInterface" type="Eguana\EventManager\Model\EventManager" />
     <preference for="Eguana\EventManager\Api\EventManagerRepositoryInterface" type="Eguana\EventManager\Model\EventManagerRepository" />
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
@@ -35,4 +37,45 @@
             </argument>
         </arguments>
     </virtualType>
+    <type name="Magento\Framework\Model\Entity\RepositoryFactory">
+        <arguments>
+            <argument name="entities" xsi:type="array">
+                <item name="Eguana\EventManager\Api\Data\EventManagerInterface" xsi:type="string">Eguana\EventManager\Api\Data\EventManagerInterface</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Eguana\EventManager\Api\Data\EventManagerInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">eguana_event_manager</item>
+                    <item name="identifierField" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
+        <arguments>
+            <argument name="extensionActions" xsi:type="array">
+                <item name="Eguana\EventManager\Api\Data\EventManagerInterface" xsi:type="array">
+                    <item name="read" xsi:type="array">
+                        <item name="storeReader" xsi:type="string">Eguana\EventManager\Model\ResourceModel\EventManager\Relation\Store\ReadHandler</item>
+                    </item>
+                    <item name="create" xsi:type="array">
+                        <item name="storeCreator" xsi:type="string">Eguana\EventManager\Model\ResourceModel\EventManager\Relation\Store\SaveHandler</item>
+                    </item>
+                    <item name="update" xsi:type="array">
+                        <item name="storeUpdater" xsi:type="string">Eguana\EventManager\Model\ResourceModel\EventManager\Relation\Store\SaveHandler</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\HydratorPool">
+        <arguments>
+            <argument name="hydrators" xsi:type="array">
+                <item name="Eguana\EventManager\Api\Data\EventManagerInterface" xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

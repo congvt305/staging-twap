@@ -19,9 +19,9 @@ use Eguana\EventManager\Api\EventManagerRepositoryInterface;
 use Eguana\EventManager\Model\EventManagerFactory;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Registry;
 use Eguana\EventManager\Controller\Adminhtml\AbstractController;
-use Magento\UrlRewrite\Model\UrlPersistInterface;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Action for save button
@@ -30,6 +30,11 @@ use Magento\UrlRewrite\Model\UrlPersistInterface;
  */
 class Save extends AbstractController
 {
+    /**
+     * Constant
+     */
+    const DATE_FORMAT = 'Y-m-d';
+
     /**
      * @var DataPersistorInterface
      */
@@ -46,30 +51,37 @@ class Save extends AbstractController
     private $eventManagerRepository;
 
     /**
-     * @var UrlPersistInterface\Proxy
+     * @var TimezoneInterface
      */
-    private $urlPersist;
+    private $timezone;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * @param Context $context
-     * @param Registry $coreRegistry
      * @param DataPersistorInterface $dataPersistor
      * @param EventManagerFactory|null $eventManagerFactory
      * @param EventManagerRepositoryInterface|null $eventManagerRepository
-     * @param UrlPersistInterface\Proxy $urlPersist
+     * @param TimezoneInterface $timezone
      */
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
         PageFactory $resultPageFactory,
         DataPersistorInterface $dataPersistor,
         EventManagerFactory $eventManagerFactory,
-        EventManagerRepositoryInterface $eventManagerRepository
+        EventManagerRepositoryInterface $eventManagerRepository,
+        TimezoneInterface $timezone,
+        LoggerInterface $logger
     ) {
         $this->dataPersistor = $dataPersistor;
         $this->eventManagerFactory = $eventManagerFactory;
         $this->eventManagerRepository = $eventManagerRepository;
-        parent::__construct($context, $coreRegistry, $resultPageFactory);
+        $this->timezone = $timezone;
+        $this->logger = $logger;
+        parent::__construct($context, $resultPageFactory);
     }
 
     /**
@@ -99,6 +111,8 @@ class Save extends AbstractController
                     ->addErrorMessage(__('Start Date should be before End Date'));
                 return $this->processResultRedirect($model, $resultRedirect, $data);
             }
+            $generalData['start_date'] = $this->changeDateFormat($generalData['start_date']);
+            $generalData['end_date'] = $this->changeDateFormat($generalData['end_date']);
             if ($id) {
                 try {
                     $model = $this->eventManagerRepository->getById($id);
@@ -111,9 +125,6 @@ class Save extends AbstractController
             if (isset($generalData['thumbnail_image'])) {
                 $generalData['thumbnail_image'] = 'EventManager/' .
                     $generalData['thumbnail_image'][0]['file'];
-            }
-            if (isset($generalData['store_id'])) {
-                $generalData['store_id'] = implode(',', $generalData['store_id']);
             }
             $model->setData($generalData);
             try {
@@ -158,8 +169,9 @@ class Save extends AbstractController
             }
             $newEvent->setId(null);
             $newEvent->setIsActive(false);
-            $newEvent->setStoreId($model->getStoreId());
             $newEvent->setThumbnailImage($model->getThumbnailImage());
+            $newEvent->setStartDate($this->changeDateFormat($newEvent->getStartDate()));
+            $newEvent->setEndDate($this->changeDateFormat($newEvent->getEndDate()));
             $this->eventManagerRepository->save($newEvent);
             $this->messageManager->addSuccessMessage(__('You duplicated the event.'));
             return $resultRedirect->setPath(
@@ -174,7 +186,20 @@ class Save extends AbstractController
         if ($this->getRequest()->getParam('back', false) === 'continue') {
             return $resultRedirect->setPath('*/*/edit', ['entity_id' => $model->getId(), '_current' => true]);
         }
-
         return $resultRedirect->setPath('*/*/index');
+    }
+
+    /**
+     * This method is used to change the date format
+     * @param $date
+     * @return string
+     */
+    private function changeDateFormat($date)
+    {
+        try {
+            return $this->timezone->date($date)->format(self::DATE_FORMAT);
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
     }
 }

@@ -9,7 +9,6 @@
  */
 namespace Eguana\EventManager\Controller\Adminhtml\Manage;
 
-use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
 use Magento\Framework\Controller\Result\Redirect as RedirectAlias;
 use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
@@ -17,18 +16,14 @@ use Magento\Framework\View\Result\PageFactory;
 use Eguana\EventManager\Api\EventManagerRepositoryInterface;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Page;
-use Magento\Framework\Registry;
 use Magento\Backend\App\Action;
-use Eguana\EventManager\Model\EventManagerFactory;
-use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\Exception\LocalizedException as LocalizedExceptionAlias;
 
 /**
  * This Class is used to add new or update existing record
  *
  * Class Edit
  */
-class Edit extends Action implements HttpGetActionInterface
+class Edit extends Action
 {
     /**
      * Authorization level of a basic admin session
@@ -36,10 +31,6 @@ class Edit extends Action implements HttpGetActionInterface
      * @see _isAllowed()
      */
     const ADMIN_RESOURCE = 'Eguana_EventManager::manage_event';
-    /**
-     * @var Registry
-     */
-    private $coreRegistry;
 
     /**
      * @var PageFactory
@@ -52,46 +43,19 @@ class Edit extends Action implements HttpGetActionInterface
     private $eventManagerRepositoryInterface;
 
     /**
-     * @var EventManagerFactory
-     */
-    private $eventManagerFactory;
-
-    /**
      * Edit constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
-     * @param Registry $registry
      * @param EventManagerRepositoryInterface $eventManagerRepositoryInterface
-     * @param EventManagerFactory $eventManagerFactory
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
-        Registry $registry,
-        EventManagerRepositoryInterface $eventManagerRepositoryInterface,
-        EventManagerFactory $eventManagerFactory
+        EventManagerRepositoryInterface $eventManagerRepositoryInterface
     ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->eventManagerRepositoryInterface = $eventManagerRepositoryInterface;
-        $this->eventManagerFactory = $eventManagerFactory;
-        $this->coreRegistry = $registry;
         parent::__construct($context);
-    }
-
-    /**
-     * _initAction() method
-     * This method is used to load layout, set active menu and breadcrumbs
-     * @return Page
-     */
-
-    protected function _initAction()
-    {
-        /** @var Page $resultPage */
-        $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('Eguana_EventManager::event')
-            ->addBreadcrumb(__('Event'), __('Event'))
-            ->addBreadcrumb(__('Manage Event'), __('Manage Event'));
-        return $resultPage;
     }
 
     /**
@@ -100,25 +64,13 @@ class Edit extends Action implements HttpGetActionInterface
      */
     public function execute()
     {
-        // 1. Get ID and create model
+        // 1. Get ID and create model and breadcrumbs
         $id = $this->getRequest()->getParam('entity_id');
         $model = $id?$this->eventManagerRepositoryInterface->getById($id):null;
-
-        // 2. Initial checking
-        if ($id) {
-            $model->load($id);
-            if (!$model->getEntityId()) {
-                $this->messageManager->addErrorMessage(__('This event no longer exists.'));
-                /** \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
-                $resultRedirect = $this->resultRedirectFactory->create();
-                return $resultRedirect->setPath('*/*/');
-            }
-        }
-        $this->coreRegistry->register('eguana_event_manager', $model);
-
-        // 5. Build edit form
-        /** @var Page $resultPage */
-        $resultPage = $this->_initAction();
+        $resultPage = $this->resultPageFactory->create();
+        $resultPage->setActiveMenu('Eguana_EventManager::event')
+            ->addBreadcrumb(__('Event'), __('Event'))
+            ->addBreadcrumb(__('Manage Event'), __('Manage Event'));
         $resultPage->addBreadcrumb(
             $id ? __('Edit Event') : __('New Event'),
             $id ? __('Edit Event') : __('New Event')

@@ -23,8 +23,6 @@ interface EventManagerInterface
 
     const THUMBNAIL_IMAGE = 'thumbnail_image';
 
-    const STORE_ID = 'store_id';
-
     const IS_ACTIVE = 'is_active';
 
     const START_DATE = 'start_date';
@@ -45,21 +43,6 @@ interface EventManagerInterface
      * @return int
      */
     public function getEntityId();
-
-    /**
-     * Get Store ID
-     *
-     * @return int
-     */
-    public function getStoreId();
-
-    /**
-     * Set Store ID
-     *
-     * @param int $storeId
-     * @return EventManagerInterface
-     */
-    public function setStoreId($storeId);
 
     /**
      * @param string $title
