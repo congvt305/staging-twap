@@ -1,4 +1,4 @@
-Eguana_CustomRMA v2.0
+Eguana_CustomRMA v1.0.0
 
 Website : Main Website 
 Author : Mobeen Sarwar

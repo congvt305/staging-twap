@@ -51,6 +51,10 @@ class RmaConfiguration
         );
     }
 
+    /**
+     * Get relevant template file for RMA form
+     * @return string
+     */
     public function getTemplate()
     {
         if ($this->isRmaActive()) {
