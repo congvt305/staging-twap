@@ -64,7 +64,7 @@ class CvsCreateShipmentOrder
         $senderName = 'StoreName'; //no space not more than 10.
         //Character limit is 4-10 characters (Chinese2-5 characters, English 4-10 characters)
         $receiverName = $order->getShippingAddress()->getFirstname() . $order->getShippingAddress()->getLastname();
-        $serverReplyURL = $this->helper->getReverseLogisticsOrderReplyUrl();
+        $serverReplyURL = $this->helper->getCreateShipmentReplyUrl();
         $receiverStoreID = '991182'; //no need, only for C2C
         $returnStoreID = '991182'; //no need, only for C2C
 

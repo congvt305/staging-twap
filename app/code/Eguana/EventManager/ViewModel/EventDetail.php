@@ -16,6 +16,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * This ViewModel is used to show single Event detail
@@ -55,11 +56,17 @@ class EventDetail implements ArgumentInterface
     private $timezone;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * EventManager constructor.
      * @param FilterProvider $filterProvider
      * @param StoreManagerInterface $storeManager
      * @param EventManagerRepositoryInterface $eventManagerRepository
      * @param TimezoneInterface $timezone
+     * @param LoggerInterface $logger
      * @param array $data
      */
     public function __construct(
@@ -68,6 +75,7 @@ class EventDetail implements ArgumentInterface
         EventManagerRepositoryInterface $eventManagerRepository,
         StoreManagerInterface $storeManager,
         TimezoneInterface $timezone,
+        LoggerInterface $logger,
         array $data = []
     ) {
         $this->request = $request;
@@ -75,6 +83,7 @@ class EventDetail implements ArgumentInterface
         $this->storeManager = $storeManager;
         $this->eventManagerRepository = $eventManagerRepository;
         $this->timezone = $timezone;
+        $this->logger = $logger;
     }
 
     /**
@@ -135,6 +144,10 @@ class EventDetail implements ArgumentInterface
      */
     public function changeDateFormat($date)
     {
-        return $this->timezone->date($date)->format(self::DATE_FORMAT);
+        try {
+            return $this->timezone->date($date)->format(self::DATE_FORMAT);
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
     }
 }

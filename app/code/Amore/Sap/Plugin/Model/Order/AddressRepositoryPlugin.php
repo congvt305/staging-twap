@@ -5,6 +5,7 @@
  * Date: 2020-07-07
  * Time: 오후 3:07
  */
+
 namespace Amore\Sap\Plugin\Model\Order;
 
 use Amore\Sap\Logger\Logger;
@@ -82,13 +83,13 @@ class AddressRepositoryPlugin
         $order = $this->orderRepository->get($orderId);
         $orderStatus = $order->getStatus();
 
-        $availableStatus = ['processing', 'sap_processing'];
+        $availableStatus = ['sap_processing'];
 
         $enableCheck = $this->config->getActiveCheck('store', $order->getStoreId());
 
-        if ($enableCheck) {
-            if (!$this->config->checkTestMode()) {
-                if (in_array($orderStatus, $availableStatus)) {
+        if (in_array($orderStatus, $availableStatus)) {
+            if ($enableCheck) {
+                if (!$this->config->checkTestMode()) {
                     try {
                         $orderUpdateData = $this->sapOrderCancelData->singleAddressUpdateData($order->getIncrementId(), $entity);
 

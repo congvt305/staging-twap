@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: mobeen
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Eguana_CustomRMA">
+        <sequence>
+            <module name="Eguana_Base"/>
+            <module name="Magento_Rma"/>
+        </sequence>
+    </module>
+</config>
