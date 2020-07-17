@@ -218,12 +218,6 @@ class Payment extends AbstractMethod
 
     public function refund(\Magento\Payment\Model\InfoInterface $payment, $amount)
     {
-        $eInvoiceData = json_decode($payment->getAdditionalData(), true);
-
-        if (isset($eInvoiceData["InvoiceNumber"]) && ($eInvoiceData["RtnCode"] == 1)) {
-            $this->invalidateEInvoice($payment, $payment->getOrder()->getStoreId());
-        }
-
         if ($this->getMagentoConfig("test_flag")) {
             return $this;
         }
