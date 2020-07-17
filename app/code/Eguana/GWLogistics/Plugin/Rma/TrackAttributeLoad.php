@@ -13,13 +13,26 @@ use Magento\Rma\Api\Data\TrackInterface;
 class TrackAttributeLoad
 {
     /**
-     * @param \Magento\Rma\Api\Data\TrackInterface $subject
-     * @param $result
+     * @var \Magento\Rma\Api\Data\TrackExtensionFactory
      */
-    public function afterGetExtensionAttributes(\Magento\Rma\Api\Data\TrackInterface $subject, $result)
+    private $extensionFactory;
+
+    public function __construct(\Magento\Rma\Api\Data\TrackExtensionFactory $extensionFactory)
     {
-        // TODO: Implement plugin method.
-        return $result;
+        $this->extensionFactory = $extensionFactory;
+    }
+
+    /**
+     * @param \Magento\Rma\Api\Data\TrackInterface $entity
+     * @param $extension
+     */
+    public function afterGetExtensionAttributes(\Magento\Rma\Api\Data\TrackInterface $entity, $extension)
+    {
+        if ($extension === null) {
+            $extension = $this->extensionFactory->create();
+        }
+
+        return $extension;
     }
 
 }
