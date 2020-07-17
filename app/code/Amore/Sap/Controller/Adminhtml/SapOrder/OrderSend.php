@@ -62,11 +62,16 @@ class OrderSend extends AbstractAction
     {
         if (!$this->config->checkTestMode()) {
             if ($this->config->getLoggingCheck()) {
-                $this->logger->info("Order Entity Id");
+                $this->logger->info("SAP Send Order Entity Id");
                 $this->logger->info($this->getRequest()->getParam('order_id'));
             }
             $orderId = $this->getRequest()->getParam('order_id');
             $order = $this->orderRepository->get($orderId);
+            $orderSendCheck = $order->getData('sap_order_send_check');
+
+            if ($orderSendCheck == null) {
+                $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_BEFORE);
+            }
 
             try {
                 $orderSendData = $this->sapOrderConfirmData->singleOrderData($order->getIncrementId());
@@ -90,11 +95,16 @@ class OrderSend extends AbstractAction
                         $outdata = $result['data']['response']['output']['outdata'];
                         foreach ($outdata as $data) {
                             if ($data['retcod'] == 'S') {
-                                // 여기에서 성공한 order order status 변경 처리(sap_processing)
                                 $order->setStatus('sap_processing');
-                                $this->orderRepository->save($order);
+                                if ($orderSendCheck == 0 || $orderSendCheck == 2) {
+                                    $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_RESENT_TO_SAP_SUCCESS);
+                                    $order->setData('sap_order_increment_id', $this->sapOrderConfirmData->getOrderIncrementId($order->getIncrementId(), $orderSendCheck));
+                                } else {
+                                    $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                                }
                                 $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                             } else {
+                                $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                                 $this->messageManager->addErrorMessage(
                                     __(
                                         'Error returned from SAP for order %1. Error code : %2. Message : %3',
@@ -106,6 +116,7 @@ class OrderSend extends AbstractAction
                             }
                         }
                     } else {
+                        $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                         $this->messageManager->addErrorMessage(
                             __(
                                 'Error returned from SAP for order %1. Error code : %2. Message : %3',
@@ -116,18 +127,22 @@ class OrderSend extends AbstractAction
                         );
                     }
                 } else {
+                    $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                     $this->messageManager->addErrorMessage(
                         __('Something went wrong while sending order data to SAP. No response')
                     );
                 }
-
             } catch (NoSuchEntityException $e) {
+                $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                 $this->messageManager->addErrorMessage($e->getMessage());
             } catch (LocalizedException $e) {
+                $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                 $this->messageManager->addErrorMessage($e->getMessage());
             } catch (\Exception $e) {
+                $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                 $this->messageManager->addErrorMessage($e->getMessage());
             }
+            $this->orderRepository->save($order);
         } else {
             try {
                 $testOrderData = $this->sapOrderConfirmData->getTestOrderConfirm();
