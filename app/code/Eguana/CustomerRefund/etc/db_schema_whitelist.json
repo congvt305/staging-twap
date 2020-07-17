@@ -8,7 +8,8 @@
             "order_id": true,
             "is_used": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "base64iv": true
         },
         "index": {
             "EGUANA_CUSTOMERREFUND_BANKINFO_ORDER_ID_IS_USED": true
