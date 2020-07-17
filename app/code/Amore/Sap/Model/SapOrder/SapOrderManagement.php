@@ -147,8 +147,14 @@ class SapOrderManagement implements SapOrderManagementInterface
             $this->logger->info($this->json->serialize($parameters));
         }
 
+        if (strpos($orderStatusData['odrno'], '_')) {
+            list($incrementId, $date) = explode('_', $orderStatusData['odrno']);
+        } else {
+            $incrementId = $orderStatusData['odrno'];
+        }
+
         /** @var \Magento\Sales\Model\Order $order */
-        $orders = $this->getOrderByIncrementId($orderStatusData['odrno']);
+        $orders = $this->getOrderByIncrementId($incrementId);
 
         // case that matching order does not exist
         if ($orders->getTotalCount() == 0) {
@@ -175,7 +181,7 @@ class SapOrderManagement implements SapOrderManagementInterface
 
         // case that DN is created
         if ($orderStatusData['odrstat'] == 3) {
-            $order = $this->getOrderFromList($orderStatusData['odrno']);
+            $order = $this->getOrderFromList($incrementId);
             try {
                 if ($order->getStatus() == "sap_processing") {
                     $order->setStatus('preparing');
@@ -191,7 +197,7 @@ class SapOrderManagement implements SapOrderManagementInterface
             }
         } elseif ($orderStatusData['odrstat'] == 4) {
             // ecpay invoice creation
-            $order = $this->getOrderFromList($orderStatusData['odrno']);
+            $order = $this->getOrderFromList($incrementId);
             $trackingNo = $orderStatusData['ztrackId'];
 
             if ($order->getStatus() == 'preparing') {
@@ -227,7 +233,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 }
                             }
                         } catch (\Exception $exception) {
-                            $message = "Something went wrong while saving preparing order : " . $orderStatusData['odrno'];
+                            $message = "Something went wrong while saving preparing order : " . $incrementId;
                             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                             $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
                         }
@@ -254,7 +260,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
                             }
                         } catch (\Exception $exception) {
-                            $message = "Something went wrong while saving order : " . $orderStatusData['odrno'];
+                            $message = "Something went wrong while saving order : " . $incrementId;
                             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                             if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
                                 $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];

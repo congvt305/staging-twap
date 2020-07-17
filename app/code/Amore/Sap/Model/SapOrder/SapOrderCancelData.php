@@ -17,6 +17,14 @@ use Magento\Store\Api\StoreRepositoryInterface;
 
 class SapOrderCancelData extends AbstractSapOrder
 {
+    const CREDITMEMO_SENT_TO_SAP_BEFORE = 0;
+
+    const CREDITMEMO_SENT_TO_SAP_SUCCESS = 1;
+
+    const CREDITMEMO_SENT_TO_SAP_FAIL = 2;
+
+    const CREDITMEMO_RESENT_TO_SAP_SUCCESS = 3;
+
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
         OrderRepositoryInterface $orderRepository,
@@ -108,6 +116,7 @@ class SapOrderCancelData extends AbstractSapOrder
         /** @var Order $orderData */
         $orderData = $this->getOrderInfo($incrementId);
         $storeId = $orderData->getStoreId();
+        $sapIncrementId = $this->getOrderIncrementId($orderData);
 
         if ($orderData == null) {
             throw new NoSuchEntityException(
@@ -118,7 +127,7 @@ class SapOrderCancelData extends AbstractSapOrder
         $bindData = [
             "vkorg" => $this->config->getMallId('store', $storeId),
             "kunnr" => $this->config->getClient('store', $storeId),
-            "odrno" => $orderData->getIncrementId(),
+            "odrno" => $sapIncrementId,
             // 주문 취소 : 1, 주소변경 : 2
             "zchgind" => 2,
             "recvnm" => $addressData->getLastname() . $addressData->getFirstname(),
@@ -140,6 +149,7 @@ class SapOrderCancelData extends AbstractSapOrder
         $orderData = $this->getOrderInfo($incrementId);
         $storeId = $orderData->getStoreId();
         $shippingAddress = $orderData->getShippingAddress();
+        $sapIncrementId = $this->getOrderIncrementId($orderData);
 
         if ($orderData == null) {
             throw new NoSuchEntityException(
@@ -150,7 +160,7 @@ class SapOrderCancelData extends AbstractSapOrder
         $bindData = [
             "vkorg" => $this->config->getMallId('store', $storeId),
             "kunnr" => $this->config->getClient('store', $storeId),
-            "odrno" => $orderData->getIncrementId(),
+            "odrno" => $sapIncrementId,
             // 주문 취소 : 1, 주소변경 : 2
             "zchgind" => 1,
             "recvnm" => $shippingAddress->getName(),
@@ -166,4 +176,18 @@ class SapOrderCancelData extends AbstractSapOrder
         return $bindData;
     }
 
+    /**
+     * @param $order Order
+     */
+    public function getOrderIncrementId($order)
+    {
+       $orderSendCheck = $order->getData('sap_order_send_check');
+       $sapOrderIncrementId = $order->getData('sap_order_increment_id');
+       if ($orderSendCheck == null || $orderSendCheck == 1) {
+           $incrementId = $order->getIncrementId();
+       } else {
+           $incrementId = $sapOrderIncrementId;
+       }
+       return $incrementId;
+    }
 }

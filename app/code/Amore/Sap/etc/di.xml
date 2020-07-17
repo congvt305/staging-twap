@@ -15,6 +15,8 @@
     <preference for="Amore\Sap\Api\Data\SapProductsDetailInterface" type="Amore\Sap\Model\SapProduct\SapProductsDetail"/>
     <preference for="Amore\Sap\Api\Data\SapProductsPriceInterface" type="Amore\Sap\Model\SapProduct\SapProductsPrice"/>
 
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Creditmemo\View" type="Amore\Sap\Block\Adminhtml\Order\Creditmemo\CreditmemoSapResend"/>
+
     <type name="Amore\Sap\Logger\HAndler">
         <arguments>
             <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
