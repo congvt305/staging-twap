@@ -85,11 +85,12 @@ class CreateReverseLogisticsOrder
         $track->setRmaEntityId($rma->getEntityId());
         $track->setCarrierCode('gwlogistics');
         $track->setCarrierTitle($this->helper->getCarrierTitle());
+        $track->setData('rtn_merchant_trade_no', $result['RtnMerchantTradeNo']);
         $this->trackRepository->save($track);
         /** @var \Magento\Rma\Api\Data\CommentInterface $comment */
         $comment = $this->commentInterfaceFactory->create();
         $comment->setRmaEntityId($rma->getEntityId());
-        $comment->setComment('Reverse Logistics Order Created');
+        $comment->setComment(__('Reverse Logistics Order Created. Return Code is %1.', $result['RtnOrderNo']));
         $comment->setIsAdmin(true);
         $comment->setIsVisibleOnFront(true);
         $this->commentRepository->save($comment);

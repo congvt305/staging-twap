@@ -16,23 +16,23 @@ class OrderAddressAttributeLoad
     /**
      * @var \Magento\Sales\Api\Data\OrderAddressExtensionFactory
      */
-    private $extenstionFactory;
+    private $extensionFactory;
 
-    public function __construct(\Magento\Sales\Api\Data\OrderAddressExtensionFactory $extenstionFactory)
+    public function __construct(\Magento\Sales\Api\Data\OrderAddressExtensionFactory $extensionFactory)
     {
-        $this->extenstionFactory = $extenstionFactory;
+        $this->extensionFactory = $extensionFactory;
     }
 
     /**
-     * @param \Magento\Sales\Api\Data\OrderAddressInterface $subject
-     * @param $result
+     * @param \Magento\Sales\Api\Data\OrderAddressInterface $entity
+     * @param $extension
      */
-    public function afterGetExtensionAttributes(\Magento\Sales\Api\Data\OrderAddressInterface $entity, $extenstion)
+    public function afterGetExtensionAttributes(\Magento\Sales\Api\Data\OrderAddressInterface $entity, $extension)
     {
-        if ($extenstion === null) {
-            $extenstion = $this->extenstionFactory->create();
+        if ($extension === null) {
+            $extension = $this->extensionFactory->create();
         }
 
-        return $extenstion;
+        return $extension;
     }
 }

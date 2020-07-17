@@ -21,11 +21,11 @@ class Data extends AbstractHelper
         );
     }
     public function getMapServerReplyUrl() {
-       return $this->_getUrl('eguana_gwlogistics/ReceiverServerReply', ['_secure' => true]);
+       return $this->_getUrl('eguana_gwlogistics/SelectedCvsNotify', ['_secure' => true]);
     }
 
     public function getCreateShipmentReplyUrl() {
-        return $this->_getUrl('eguana_gwlogistics/StatusNotify', ['_secure' => true]);
+        return $this->_getUrl('eguana_gwlogistics/OrderStatusNotify', ['_secure' => true]);
     }
 
     public function getReverseLogisticsOrderReplyUrl() {
