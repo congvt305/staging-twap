@@ -17,6 +17,14 @@ use Magento\Store\Api\StoreRepositoryInterface;
 
 class SapOrderCancelData extends AbstractSapOrder
 {
+    const CREDITMEMO_SENT_TO_SAP_BEFORE = 0;
+
+    const CREDITMEMO_SENT_TO_SAP_SUCCESS = 1;
+
+    const CREDITMEMO_SENT_TO_SAP_FAIL = 2;
+
+    const CREDITMEMO_RESENT_TO_SAP_SUCCESS = 3;
+
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
         OrderRepositoryInterface $orderRepository,
