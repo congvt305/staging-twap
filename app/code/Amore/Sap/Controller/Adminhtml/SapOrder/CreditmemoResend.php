@@ -89,8 +89,7 @@ class CreditmemoResend extends Action
             $this->logger->info("CREDITMEMO RESEND - CreditMemo Entity Id");
             $this->logger->info($creditMemoId);
         }
-        $order->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_RESENT_TO_SAP_SUCCESS);
-        $this->orderRepository->save($order);
+
         if ($enableCheck) {
             if (!$this->config->checkTestMode()) {
                 try {
