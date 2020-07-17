@@ -221,7 +221,7 @@ class Payment extends AbstractMethod
         $eInvoiceData = json_decode($payment->getAdditionalData(), true);
 
         if (isset($eInvoiceData["InvoiceNumber"]) && ($eInvoiceData["RtnCode"] == 1)) {
-            $this->invalidateEInvoice($payment);
+            $this->invalidateEInvoice($payment, $payment->getOrder()->getStoreId());
         }
 
         if ($this->getMagentoConfig("test_flag")) {
@@ -399,7 +399,7 @@ class Payment extends AbstractMethod
         }
     }
 
-    public function createEInvoice($orderId)
+    public function createEInvoice($orderId, $storeId)
     {
         try
         {
@@ -408,14 +408,14 @@ class Payment extends AbstractMethod
             $ecpay_invoice = $this->ecpayInvoice;
 
             // 2.寫入基本介接參數
-            $this->initEInvoice($ecpay_invoice);
+            $this->initEInvoice($ecpay_invoice, $storeId);
 
             $order = $this->orderRepository->get($orderId);
             $payment = $order->getPayment();
             $additionalInfo = $payment->getAdditionalInformation();
             $rawDetailsInfo = $additionalInfo["raw_details_info"];
             $donationValue = $rawDetailsInfo["ecpay_einvoice_donation"];
-            $donationCode = $this->getEcpayConfig("invoice/ecpay_invoice_love_code");
+            $donationCode = $this->getEInvoiceConfig("invoice/ecpay_invoice_love_code", $storeId);
 
             // 3.寫入發票相關資訊
             $aItems = array();
@@ -445,13 +445,13 @@ class Payment extends AbstractMethod
     /**
      * @param \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice
      */
-    private function initEInvoice(\Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice): void
+    private function initEInvoice(\Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice, $storeId): void
     {
         $ecpay_invoice->Invoice_Method = 'INVOICE';
-        $ecpay_invoice->Invoice_Url = $this->getInvoiceApiUrl() . 'Issue';
-        $ecpay_invoice->MerchantID = $this->getEcpayConfig("merchant_id");
-        $ecpay_invoice->HashKey = $this->getEcpayConfig("invoice/ecpay_invoice_hash_key");
-        $ecpay_invoice->HashIV = $this->getEcpayConfig("invoice/ecpay_invoice_hash_iv");
+        $ecpay_invoice->Invoice_Url = $this->getInvoiceApiUrl($storeId) . 'Issue';
+        $ecpay_invoice->MerchantID = $this->getEInvoiceConfig("merchant_id", $storeId);
+        $ecpay_invoice->HashKey = $this->getEInvoiceConfig("invoice/ecpay_invoice_hash_key", $storeId);
+        $ecpay_invoice->HashIV = $this->getEInvoiceConfig("invoice/ecpay_invoice_hash_iv", $storeId);
     }
 
     /**
@@ -515,7 +515,7 @@ class Payment extends AbstractMethod
      * @throws LocalizedException
      * @throws \Magento\Framework\Exception\FileSystemException
      */
-    public function invalidateEInvoice(\Magento\Payment\Model\InfoInterface $payment): void
+    public function invalidateEInvoice(\Magento\Payment\Model\InfoInterface $payment, $storeId): void
     {
         try {
             $sMsg = '';
@@ -525,7 +525,7 @@ class Payment extends AbstractMethod
 
             // 2.寫入基本介接參數
             $ecpay_invoice->Invoice_Method = 'INVOICE_VOID';
-            $ecpay_invoice->Invoice_Url = $this->getInvoiceApiUrl() . 'IssueInvalid';
+            $ecpay_invoice->Invoice_Url = $this->getInvoiceApiUrl($storeId) . 'IssueInvalid';
             $ecpay_invoice->MerchantID = $this->getEcpayConfig("merchant_id");
             $ecpay_invoice->HashKey = $this->getEcpayConfig("invoice/ecpay_invoice_hash_key");
             $ecpay_invoice->HashIV = $this->getEcpayConfig("invoice/ecpay_invoice_hash_iv");
@@ -548,13 +548,13 @@ class Payment extends AbstractMethod
         }
     }
 
-    public function getInvoiceApiUrl()
+    public function getInvoiceApiUrl($storeId)
     {
         $apiUrl = "";
-        if ($this->getEcpayConfig("invoice/ecpay_invoice_test_flag")) {
-            $apiUrl = $this->getEcpayConfig("invoice/ecpay_invoice_stage_url");
+        if ($this->getEInvoiceConfig("invoice/ecpay_invoice_test_flag", $storeId)) {
+            $apiUrl = $this->getEInvoiceConfig("invoice/ecpay_invoice_stage_url", $storeId);
         } else {
-            $apiUrl = $this->getEcpayConfig("invoice/ecpay_invoice_production_url");
+            $apiUrl = $this->getEInvoiceConfig("invoice/ecpay_invoice_production_url", $storeId);
         }
 
         return $apiUrl;
@@ -596,5 +596,12 @@ class Payment extends AbstractMethod
             "TotalAmount" => $amount
         ];
         return $params;
+    }
+
+    public function getEInvoiceConfig($id, $storeId)
+    {
+        $prefix = "payment/ecpay_ecpaypayment/ecpay_";
+        $path = $prefix . $id;
+        return $this->_scopeConfig->getValue($path, 'store', $storeId);
     }
 }

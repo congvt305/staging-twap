@@ -121,7 +121,7 @@ class CreditMemoRefundSaveAfter implements ObserverInterface
             $storePhoneNumber = $this->data->getStorePhoneNumber($storeId);
             if ($smsModuleActive) {
                 $newStatus = 'refund';
-                $isActive = $this->data->getOrderStatus($newStatus);
+                $isActive = $this->data->getOrderStatus($newStatus, $storeId);
                 if ($isActive) {
                     $shippingAddress = $order->getShippingAddress();
                     if ($shippingAddress == null) {

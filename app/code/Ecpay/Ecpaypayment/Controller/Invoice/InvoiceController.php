@@ -20,20 +20,28 @@ class InvoiceController extends Action
      * @var EcpayPaymentModel
      */
     private $ecpayPaymentModel;
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    private $storeManager;
 
     public function __construct(
         Context $context,
-        EcpayPaymentModel $ecpayPaymentModel
+        EcpayPaymentModel $ecpayPaymentModel,
+        \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         parent::__construct($context);
         $this->ecpayPaymentModel = $ecpayPaymentModel;
+        $this->storeManager = $storeManager;
     }
 
     public function execute()
     {
         try {
             $orderId = $this->getRequest()->getParam("order_id");
-            $this->ecpayPaymentModel->createEInvoice($orderId);
+            $storeId = $this->storeManager->getStore()->getId();
+            $resArr = $this->ecpayPaymentModel->createEInvoice($orderId, $storeId);
+            echo print_r($resArr, true) . "<br/>";
         } catch (\Exception $e) {
             throw $e;
         }

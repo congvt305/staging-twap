@@ -13,7 +13,7 @@
     <?php foreach ($options as $option) : ?>
         <?php if (!empty($option->getValue()) && $option->getLabel() != 'Not Specified') : ?>
             <input type="radio"
-                   id="<?= $block->escapeHtmlAttr($block->getFieldId('gender')) ?>"
+                   id="<?= $block->escapeHtmlAttr($block->getFieldId('gender').'_'.$option->getLabel()) ?>"
                    value="<?= $block->escapeHtmlAttr($option->getValue()) ?>"
                    title="<?= $block->escapeHtmlAttr($option->getLabel()) ?>"
                    name="<?= $block->escapeHtmlAttr($block->getFieldName('gender')) ?>"

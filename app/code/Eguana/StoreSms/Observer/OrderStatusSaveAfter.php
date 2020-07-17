@@ -112,7 +112,7 @@ class OrderStatusSaveAfter implements ObserverInterface
                 $order = $observer->getEvent()->getOrder();
                 $originalStatus = $order->getOrigData('status');
                 $newStatus = $order->getData('status');
-                $isActive = $this->data->getOrderStatus($newStatus);
+                $isActive = $this->data->getOrderStatus($newStatus, $storeId);
                 if ($originalStatus != $newStatus && $isActive) {
                     $shippingAddress = $order->getShippingAddress();
                     if ($shippingAddress == null) {

@@ -8,7 +8,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block name="rma.bankinfo" template="Eguana_CustomerRefund::rma/bankinfo.phtml">
+            <block name="rma.bankinfo" template="Eguana_CustomerRefund::rma/bankinfo.phtml" ifconfig="eguana_cutomerrefund/general/enabled">
                 <arguments>
                     <argument name="view_model" xsi:type="object">Eguana\CustomerRefund\ViewModel\Refund</argument>
                 </arguments>

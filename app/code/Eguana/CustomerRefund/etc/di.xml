@@ -19,4 +19,15 @@
                 type="Eguana\CustomerRefund\Model\BankInfoSearchResult"/>
     <preference for="Eguana\CustomerRefund\Api\BankinfoManagementInterface"
                 type="Eguana\CustomerRefund\Model\BankinfoManagement"/>
+    <type name="Magento\Config\Model\Config\TypePool">
+        <arguments>
+            <argument name="sensitive" xsi:type="array">
+                <item name="eguana_customerrefund/bankinfo/encryption_key" xsi:type="string">1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Eguana\CustomerRefund\Api\BankInfoRepositoryInterface">
+        <plugin name="eguana_customerrefund_bankinfo_decrypt"
+                type="Eguana\CustomerRefund\Plugin\BankInfoRepositoryPlugin" sortOrder="10"/>
+    </type>
 </config>

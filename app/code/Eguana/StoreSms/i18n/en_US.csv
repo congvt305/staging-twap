@@ -13,7 +13,7 @@ Send,Send
 "Dear %customer Your order #%order is in pending state By %store_name","Dear %customer Your ordergit #%order is in pending state By %store_name"
 "Dear %customer Your order #%order is completed By %store_name %store_phone","Dear %customer Your order #%order is completed By %store_name"
 "Dear %customer Your order #%order has been refunded By %store_name %store_phone","Dear %customer Your order #%order has been refunded By %store_name"
-"Your verification number of %store_name is %code","Your verification number of %store_name is %code"
+"Your verification number of %store_name is %code %customer %store_phone","Your verification number of %store_name is %code"
 "Eguana StoreSms","Eguana StoreSms"
 "General Configuration","General Configuration"
 "Enable Extension","Enable Extension"

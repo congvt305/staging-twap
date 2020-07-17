@@ -97,14 +97,14 @@ class Verification
      * @return bool|Phrase
      * @throws LocalizedException
      */
-    public function sendVerificationCode($mobileNumber)
+    public function sendVerificationCode($mobileNumber, $customerName)
     {
         $validateMobileNumberResult = $this->validateMobileNumber($mobileNumber);
         if ($validateMobileNumberResult !== true) {
             return $validateMobileNumberResult;
         }
 
-        if ($verificationCode = $this->sendSMS($mobileNumber)) {
+        if ($verificationCode = $this->sendSMS($mobileNumber, $customerName)) {
             return $this->setVerificationCode($mobileNumber, $verificationCode);
         }
         return __('Can not send verification code.');
@@ -309,10 +309,10 @@ class Verification
      *
      * @return bool
      */
-    private function sendSMS($mobileNumber)
+    private function sendSMS($mobileNumber, $customerName)
     {
         if ($this->configHelper->getSMSVerificationEnable()) {
-            return $this->smsSender->setCode($mobileNumber);
+            return $this->smsSender->setCode($mobileNumber, $customerName);
         } else {
             return '1234';
         }

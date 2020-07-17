@@ -14,7 +14,7 @@ $_order = $block->getOrder();
 ?>
 <?php if ($refundOfflineViewModel->canShowRefundOfflineButton($_order)): ?>
 <a href="#" class="action refund-offline bankinfo-popup-wrapper" data-role="refund-offline-button">
-    <span><?= __('Request to Refund') ?></span>
+    <span><?= $block->escapeHtml(__('Request to Refund')) ?></span>
 </a>
 <div data-bind="scope: 'bankinfo_popup'">
     <!-- ko template: getTemplate() --><!-- /ko -->
