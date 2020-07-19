@@ -7,16 +7,16 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-<!--        <referenceContainer name="before.body.end">-->
-<!--            <block class="Amore\TagManager\Block\ListJson" name="banner_impression"-->
-<!--                   template="Amore_TagManager::promotion.phtml">-->
-<!--                <arguments>-->
-<!--                    <argument name="variable_name" xsi:type="string">staticPromotions</argument>-->
-<!--                </arguments>-->
-<!--            </block>-->
-<!--        </referenceContainer>-->
+        <referenceContainer name="head.additional">
+            <block name="amore_tagging_common_head_js"
+                   ifconfig="amore_gatagging/tagmanager/active"
+                   template="Amore_GaTagging::common-head-js.phtml" />
+        </referenceContainer>
 
         <referenceContainer name="after.body.start">
+            <block name="amore_tagging_common_body_js"
+                   ifconfig="amore_gatagging/tagmanager/active"
+                   template="Amore_GaTagging::common-body-js.phtml" />
             <!--Data Layer 변수-->
             <block ifconfig="amore_gatagging/tagmanager/active"
                    template="Amore_GaTagging::common-data.phtml"
