@@ -9,6 +9,7 @@
 namespace Amore\GaTagging\Block;
 
 
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
 
 class GaTagging extends \Magento\Framework\View\Element\Template
@@ -21,8 +22,13 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      * @var \Magento\Framework\Registry
      */
     private $registry;
+    /**
+     * @var Json
+     */
+    private $jsonSerializer;
 
     public function __construct(
+        \Magento\Framework\Serialize\Serializer\Json $jsonSerializer,
         \Magento\Framework\Registry $registry,
         \Amore\GaTagging\Helper\Data $helper,
         Template\Context $context,
@@ -31,6 +37,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         parent::__construct($context, $data);
         $this->helper = $helper;
         $this->registry = $registry;
+        $this->jsonSerializer = $jsonSerializer;
     }
 
     /**
@@ -44,6 +51,30 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             return '';
         }
         return parent::_toHtml();
+    }
+
+    public function getChannel()
+    {
+        return 'PC';
+    }
+    public function getBreadCrumbText() //todo: javascript
+    {
+        $crumbBlock =  $this->_layout->getBlock('breadcrumbs');
+
+        $html = $crumbBlock->toHtml();
+        $crumbs = $crumbBlock->getCrumbs();
+
+//        $result = '';
+//        foreach ($crumbs as $crumb) {
+//            $result . $crumb->getText();
+//        }
+//        return $result;
+        return 'home';
+    }
+
+    public function getTitle()
+    {
+        return $this->pageConfig->getTitle()->get();
     }
 
     /**
@@ -63,5 +94,34 @@ class GaTagging extends \Magento\Framework\View\Element\Template
 //        return $productTypesAttr->getFrontend()->getValue($product);
         return '스킨케어';
     }
+
+    public function getQueryText()
+    {
+        return $this->_request->getParam('q');
+    }
+
+    public function getResultProductData()
+    {
+       $resultProducts = $this->_layout->getBlock('search_result_list')->getLoadedProductCollection();
+       $productData = [];
+        /** @var \Magento\Catalog\Model\Product $product */
+        foreach ($resultProducts as $product) {
+           $productData[] = ['name' => $product->getName(), 'brand' => 'Laneige'];
+       }
+        return $this->jsonSerializer->serialize($productData);
+
+    }
+
+    public function getSearchNumber()
+    {
+        /** @var \Magento\Catalog\Model\ResourceModel\Product\Collection $collection */
+        $collection = $this->_layout->getBlock('search_result_list')->getLoadedProductCollection();
+        return $collection->getSize();
+    }
+    public function getSearchType()
+    {
+        return '직접입력';
+    }
+
 
 }

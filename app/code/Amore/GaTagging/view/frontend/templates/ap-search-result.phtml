@@ -8,13 +8,11 @@
 ?>
 <?php
 /** @var \Amore\GaTagging\Block\GaTagging $block */
-$currentProduct = $block->getCurrentProduct();
 ?>
 <script>
-    //상품상세
-    var AP_PRD_NAME = "<?= $block->escapeHtml($currentProduct->getName())?>";
-    var AP_PRD_CODE = "<?= $block->escapeHtml($currentProduct->getSku())?>";
-    var AP_PRD_PRICE = "<?= $block->escapeHtml($currentProduct->getFinalPrice())?>";
-    var AP_PRD_BRAND = "<?= $block->escapeHtml(__('Laneige'))?>";
-    var AP_PRD_CATEGORY = "<?= $block->escapeHtml($block->getProductCategory($currentProduct))?>";
+    //검색
+    var AP_SEARCH_TERM = "<?= $block->escapeHtml($block->getQueryText())?>";
+    var AP_SEARCH_PRDRESULT = "<?= $block->escapeHtml($block->getResultProductData())?>";
+    var AP_SEARCH_NUM = "<?= $block->escapeHtml($block->getSearchNumber())?>";
+    var AP_SEARCH_TYPE = "<?= $block->escapeHtml($block->getSearchType())?>";
 </script>

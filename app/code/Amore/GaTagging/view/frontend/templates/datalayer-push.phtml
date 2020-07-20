@@ -3,14 +3,14 @@
  * Created by Eguana Team.
  * User: sonia
  * Date: 7/19/20
- * Time: 8:56 AM
+ * Time: 12:59 PM
  */
 ?>
 <?php
-/** @var \Amore\GaTagging\Block\GaTagging $block */
+/** @var \Magento\Framework\View\Element\Template $block */
 ?>
 <script>
     dataLayer.push({
-        'event': 'product'
+        'event': <?= $block->getEventName() ?>
     });
 </script>

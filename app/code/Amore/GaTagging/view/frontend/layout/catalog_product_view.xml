@@ -15,11 +15,14 @@
                    template="Amore_GaTagging::ap-product-detail.phtml" />
         </referenceContainer>
         <referenceContainer name="before.body.end">
-            <block class="Amore\GaTagging\Block\GaTagging"
-                   name="product_detail_datalayer_push"
+            <block name="product_detail_datalayer_push"
                    ifconfig="amore_gatagging/tagmanager/active"
                    after="-"
-                   template="Amore_GaTagging::product-detail.phtml" />
+                   template="Amore_GaTagging::datalayer-push.phtml" >
+                <arguments>
+                    <argument name="event_name" xsi:type="string">product</argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

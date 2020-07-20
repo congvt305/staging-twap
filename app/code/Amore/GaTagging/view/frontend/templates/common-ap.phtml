@@ -7,7 +7,7 @@
  */
 ?>
 <?php
-/* @var $block \Magento\Framework\View\Element\Template */
+/** @var \Amore\GaTagging\Block\GaTagging $block */
 /* @var $viewModel \Amore\GaTagging\ViewModel\CommonData */
 $viewModel = $block->getViewModel();
 ?>
@@ -24,10 +24,10 @@ $viewModel = $block->getViewModel();
     var AP_DATA_CG = "";
     var AP_DATA_CT = "";
     var AP_DATA_SITENAME = "<?= $block->escapeJs($block->escapeHtml($this->helper(\Amore\GaTagging\Helper\Data::class)->getSiteName())) ?>";
-    var AP_DATA_CHANNEL = "";
-    var AP_DATA_PAGENAME = "";
-    var AP_DATA_PAGETYPE = "";
-    var AP_DATA_BREAD = "";
+    var AP_DATA_CHANNEL = "<?= $block->getChannel() ?>";
+    var AP_DATA_PAGENAME = "<?= $block->getTitle() ?>";
+    var AP_DATA_PAGETYPE = "<?= $block->getChannel() ?>";
+    var AP_DATA_BREAD = "<?= $block->getBreadCrumbText() ?>";
 
     //장바구니
     var AP_CART_PRICE = "";

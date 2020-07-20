@@ -18,10 +18,11 @@
                    ifconfig="amore_gatagging/tagmanager/active"
                    template="Amore_GaTagging::common-body-js.phtml" />
             <!--Data Layer 변수-->
-            <block ifconfig="amore_gatagging/tagmanager/active"
-                   template="Amore_GaTagging::common-data.phtml"
-                   name="amore_gatagging.common.data.js"
-                   after="google_tag_manager">
+            <block class="Amore\GaTagging\Block\GaTagging"
+                   ifconfig="amore_gatagging/tagmanager/active"
+                   template="Amore_GaTagging::common-ap.phtml"
+                   name="amore_gatagging.common.ap.js"
+                   after="amore_tagging_common_body_js">
                 <arguments>
                     <argument name="view_model" xsi:type="object">Amore\GaTagging\ViewModel\CommonData</argument>
                 </arguments>
