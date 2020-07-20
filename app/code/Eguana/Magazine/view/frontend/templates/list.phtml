@@ -9,14 +9,14 @@ $totalMagazinesCount = $viewModel->getCurrentMonthMagazinesTotalNumber();
 ?>
 <div class="block magazine-image">
     <div>
-        <?php if ($totalMagazinesCount == 0) : ?>
+        <?php if ($totalMagazinesCount == 0): ?>
             <p>
                 <?= $block->escapeHtml(__('Sorry there is no Magazine for %1', $viewModel->getCurrentMonthName())); ?>
             </p>
-        <?php
+            <?php
         endif;
-        if (!empty($bannerMagazines->getData())) : ?>
-            <?php foreach ($bannerMagazines as $bannerMagazine) : ?>
+        if (!empty($bannerMagazines->getData())): ?>
+            <?php foreach ($bannerMagazines as $bannerMagazine): ?>
                 <div class="magazine-photo-banner">
                     <a class="action view"
                        href="<?= $block->escapeHtml($block->getUrl($viewModel->getItemDetailsUrl($bannerMagazine['entity_id'])));?>">
@@ -30,9 +30,9 @@ $totalMagazinesCount = $viewModel->getCurrentMonthMagazinesTotalNumber();
                 </div>
             <?php endforeach; ?>
         <?php endif;?>
-        <?php if (!empty($imageMagazines->getData())) : ?>
+        <?php if (!empty($imageMagazines->getData())): ?>
             <ul class="list-image-box"">
-            <?php foreach ($imageMagazines as $imageMagazine) : ?>
+            <?php foreach ($imageMagazines as $imageMagazine): ?>
                 <li class="magazine-item-box">
                     <div class="magazine-item">
                         <a
@@ -54,8 +54,8 @@ $totalMagazinesCount = $viewModel->getCurrentMonthMagazinesTotalNumber();
             </ul>
         <?php endif;?>
         <div class="block magazine-video">
-            <?php if (!empty($videoMagazines->getData())) : ?>
-                <?php foreach ($videoMagazines as $videoMagazine) : ?>
+            <?php if (!empty($videoMagazines->getData())): ?>
+                <?php foreach ($videoMagazines as $videoMagazine): ?>
                     <div class="magazine-video-banner">
                         <a class="action view"
                            href="<?= $block->escapeHtml($block->getUrl($viewModel->getItemDetailsUrl($videoMagazine['entity_id'])));?>">
@@ -67,12 +67,12 @@ $totalMagazinesCount = $viewModel->getCurrentMonthMagazinesTotalNumber();
             <?php endif;?>
         </div>
     </div>
-    <?php if (count($otherMonthMagazines)) : ?>
+    <?php if (count($otherMonthMagazines)): ?>
         <div class="other-magazine">
             <strong><?= $block->escapeHtml(__('Other Magazines')) ?></strong>
         </div>
         <div class="magazine-slider" id="slick">
-            <?php foreach ($otherMonthMagazines as $otherMonthMagazine) : ?>
+            <?php foreach ($otherMonthMagazines as $otherMonthMagazine): ?>
                 <div class="magazine-slider-item">
                     <div class="magazine-item">
                         <a

@@ -10,41 +10,50 @@
 namespace Eguana\Magazine\Model\ResourceModel;
 
 use Magento\Framework\Data\Collection\Db\FetchStrategyInterface;
+use Magento\Framework\Data\Collection\Db\FetchStrategyInterface as FetchStrategyInterfaceAlias;
 use Magento\Framework\Data\Collection\EntityFactoryInterface;
+use Magento\Framework\Data\Collection\EntityFactoryInterface as EntityFactoryInterfaceAlias;
 use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\DB\Adapter\AdapterInterface as AdapterInterfaceAlias;
+use Magento\Framework\DB\Select as SelectAlias;
 use Magento\Framework\EntityManager\MetadataPool;
+use Magento\Framework\EntityManager\MetadataPool as MetadataPoolAlias;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Event\ManagerInterface as ManagerInterfaceAlias;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb as AbstractDbAlias;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection as AbstractCollectionAlias;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Store\Model\StoreManagerInterface as StoreManagerInterfaceAlias;
 use Psr\Log\LoggerInterface;
 
 /**
  * Abstract collection of Eguana Magazine
  */
-abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
+abstract class AbstractCollection extends AbstractCollectionAlias
 {
     /**
      * Store manager
      *
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterfaceAlias
      */
     protected $storeManager;
 
     /**
-     * @var \Magento\Framework\EntityManager\MetadataPool
+     * @var MetadataPoolAlias
      */
     protected $metadataPool;
 
     /**
-     * @param \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory
+     * @param EntityFactoryInterfaceAlias $entityFactory
      * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy
-     * @param \Magento\Framework\Event\ManagerInterface $eventManager
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Framework\EntityManager\MetadataPool $metadataPool
-     * @param \Magento\Framework\DB\Adapter\AdapterInterface|null $connection
-     * @param \Magento\Framework\Model\ResourceModel\Db\AbstractDb|null $resource
+     * @param FetchStrategyInterfaceAlias $fetchStrategy
+     * @param ManagerInterfaceAlias $eventManager
+     * @param StoreManagerInterfaceAlias $storeManager
+     * @param MetadataPoolAlias $metadataPool
+     * @param AdapterInterfaceAlias|null $connection
+     * @param AbstractDbAlias|null $resource
      */
     public function __construct(
         EntityFactoryInterface $entityFactory,
@@ -58,55 +67,63 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
     ) {
         $this->storeManager = $storeManager;
         $this->metadataPool = $metadataPool;
-        parent::__construct($entityFactory, $logger, $fetchStrategy, $eventManager, $connection, $resource);
+        parent::__construct(
+            $entityFactory,
+            $logger,
+            $fetchStrategy,
+            $eventManager,
+            $connection,
+            $resource
+        );
     }
 
     /**
      * Perform operations after collection load
-     *
-     * @param string $tableName
-     * @param string|null $linkField
-     * @return void
+     * @param $tableName
+     * @param $linkField
      */
     protected function performAfterLoad($tableName, $linkField)
     {
-        $linkedIds = $this->getColumnValues($linkField);
-        if (count($linkedIds)) {
-            $connection = $this->getConnection();
-            $select = $connection->select()->from(['eguana_magazine_store' => $this->getTable($tableName)])
-                ->where('eguana_magazine_store.' . $linkField . ' IN (?)', $linkedIds);
-            $result = $connection->fetchAll($select);
-            if ($result) {
-                $storesData = [];
-                foreach ($result as $storeData) {
-                    $storesData[$storeData[$linkField]][] = $storeData['store_id'];
-                }
+        try {
+            $linkedIds = $this->getColumnValues($linkField);
+            if (count($linkedIds)) {
+                $connection = $this->getConnection();
+                $select = $connection->select()->from(['eguana_magazine_store' => $this->getTable($tableName)])
+                    ->where('eguana_magazine_store.' . $linkField . ' IN (?)', $linkedIds);
+                $result = $connection->fetchAll($select);
+                if ($result) {
+                    $storesData = [];
+                    foreach ($result as $storeData) {
+                        $storesData[$storeData[$linkField]][] = $storeData['store_id'];
+                    }
 
-                foreach ($this as $item) {
-                    $linkedId = $item->getData($linkField);
-                    if (!isset($storesData[$linkedId])) {
-                        continue;
+                    foreach ($this as $item) {
+                        $linkedId = $item->getData($linkField);
+                        if (!isset($storesData[$linkedId])) {
+                            continue;
+                        }
+                        $storeIdKey = array_search(Store::DEFAULT_STORE_ID, $storesData[$linkedId], true);
+                        if ($storeIdKey !== false) {
+                            $stores = $this->storeManager->getStores(false, true);
+                            $storeId = current($stores)->getId();
+                            $storeCode = key($stores);
+                        } else {
+                            $storeId = current($storesData[$linkedId]);
+                            $storeCode = $this->storeManager->getStore($storeId)->getCode();
+                        }
+                        $item->setData('_first_store_id', $storeId);
+                        $item->setData('store_code', $storeCode);
+                        $item->setData('store_id', $storesData[$linkedId]);
                     }
-                    $storeIdKey = array_search(Store::DEFAULT_STORE_ID, $storesData[$linkedId], true);
-                    if ($storeIdKey !== false) {
-                        $stores = $this->storeManager->getStores(false, true);
-                        $storeId = current($stores)->getId();
-                        $storeCode = key($stores);
-                    } else {
-                        $storeId = current($storesData[$linkedId]);
-                        $storeCode = $this->storeManager->getStore($storeId)->getCode();
-                    }
-                    $item->setData('_first_store_id', $storeId);
-                    $item->setData('store_code', $storeCode);
-                    $item->setData('store_id', $storesData[$linkedId]);
                 }
             }
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
         }
     }
 
     /**
      * Add field filter to collection
-     *
      * @param array|string $field
      * @param string|int|array|null $condition
      * @return $this
@@ -122,7 +139,6 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
 
     /**
      * Add filter by store
-     *
      * @param int|array|Store $store
      * @param bool $withAdmin
      * @return $this
@@ -131,7 +147,6 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
 
     /**
      * Perform adding filter by store
-     *
      * @param int|array|Store $store
      * @param bool $withAdmin
      * @return void
@@ -155,7 +170,6 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
 
     /**
      * Join store relation table if there is store filter
-     *
      * @param string $tableName
      * @param string|null $linkField
      * @return void
@@ -176,16 +190,13 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
 
     /**
      * Get SQL for get record count
-     *
      * Extra GROUP BY strip added.
-     *
-     * @return \Magento\Framework\DB\Select
+     * @return SelectAlias
      */
     public function getSelectCountSql()
     {
         $countSelect = parent::getSelectCountSql();
-        $countSelect->reset(\Magento\Framework\DB\Select::GROUP);
-
+        $countSelect->reset(SelectAlias::GROUP);
         return $countSelect;
     }
 }

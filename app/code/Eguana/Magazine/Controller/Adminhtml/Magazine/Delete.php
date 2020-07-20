@@ -14,8 +14,9 @@ use Eguana\Magazine\Controller\Adminhtml\AbstractController;
 use Eguana\Magazine\Model\MagazineFactory;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
+use Magento\Framework\Controller\Result\Redirect as RedirectAlias;
 use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
-use Magento\Framework\Registry;
+use Magento\Framework\View\Result\PageFactory as PageFactoryAlias;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -42,28 +43,26 @@ class Delete extends AbstractController
     /**
      * Delete constructor.
      * @param Context $context
-     * @param Registry $coreRegistry
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param PageFactoryAlias $resultPageFactory
      * @param MagazineFactory|null $magazineFactory
      * @param MagazineRepositoryInterface|null $magazineRepository
      */
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
+        PageFactoryAlias $resultPageFactory,
         MagazineFactory $magazineFactory,
         MagazineRepositoryInterface $magazineRepository,
         LoggerInterface $logger
     ) {
         $this->magazineFactory = $magazineFactory;
         $this->magazineRepository = $magazineRepository;
-        parent::__construct($context, $coreRegistry, $resultPageFactory);
+        parent::__construct($context, $resultPageFactory);
         $this->logger = $logger;
     }
 
     /**
      * execute the delete action
-     * @return ResponseInterfaceAlias|\Magento\Framework\Controller\Result\Redirect|ResultInterfaceAlias
+     * @return ResponseInterfaceAlias|RedirectAlias|ResultInterfaceAlias
      */
     public function execute()
     {

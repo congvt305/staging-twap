@@ -9,18 +9,11 @@
  */
 namespace Eguana\Magazine\Model;
 
-/**
- * Mdoel class to be used
- * Class Magazine
- * Eguana\Magazine\Model
- */
 use Eguana\Magazine\Api\Data\MagazineInterface;
 use Eguana\Magazine\Model\ResourceModel\Magazine as MagazineAlias;
 use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractExtensibleModel;
 use Magento\Framework\UrlInterface;
-use Magento\Framework\Filesystem;
-use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Model class to be used
@@ -49,21 +42,11 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
     protected $_cacheTag = self::CACHE_TAG;
 
     /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
-
-    /**
      * Empty construtor
      */
     protected function _construct()
     {
         $this->_init(MagazineAlias::class);
-        /* Using Direct Object Manager */
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        /* Get store manager */
-        $this->storeManager = $objectManager
-            ->get(\Magento\Store\Model\StoreManagerInterface::class);
     }
 
     /**
@@ -74,7 +57,6 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
     {
         return [
             'entity_id',
-            'store_id',
             'title',
             'short_description',
             'content',
@@ -133,27 +115,6 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
     }
 
     /**
-     * Get Store ID
-     *
-     * @return int|null
-     */
-    public function getStoreId()
-    {
-        return $this->getData(self::STORE_ID);
-    }
-
-    /**
-     * Set Store ID
-     *
-     * @param int $storeId
-     * @return MagazineInterface
-     */
-    public function setStoreId($storeId)
-    {
-        return $this->setData(self::STORE_ID, $storeId);
-    }
-
-    /**
      * @param string $title
      * @return $this
      */
@@ -202,51 +163,6 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
     public function getContent()
     {
         return $this->getData(self::CONTENT);
-    }
-
-    /**
-     * @param string $thumbnailImage
-     * @return $this
-     */
-    public function setThumbnailImage($thumbnailImage)
-    {
-        return $this->setData(self::THUMBNAIL_IMAGE, $thumbnailImage);
-    }
-
-    /**
-     * @return string
-     */
-    public function getThumbnailImage()
-    {
-        return $this->getData(self::THUMBNAIL_IMAGE);
-    }
-
-    /**
-     * It will return the thumbanil image URL
-     *
-     * @return string
-     */
-    public function getThumbnailImageURL()
-    {
-        if ($this->getThumbnailImage() == '') {
-            return '';
-        }
-        return $this->getMediaUrl($this->getThumbnailImage());
-    }
-
-    /**
-     * Get file url
-     *
-     * @param string $file
-     * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
-    public function getMediaUrl($file)
-    {
-        $file = ltrim(str_replace('\\', '/', $file), '/');
-        return $this->storeManager
-                ->getStore()
-                ->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $file;
     }
 
     /**

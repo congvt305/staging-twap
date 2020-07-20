@@ -19,38 +19,30 @@ interface MagazineRepositoryInterface
 {
     /**
      * Save magazine.
-     *
      * @param MagazineInterface $magazine
-     * @return MagazineInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @return mixed
      */
     public function save(MagazineInterface $magazine);
 
     /**
-     * Retrieve magazine.
-     *
-     * @param int $magazineId
-     * @return MagazineInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * Retrieve magazine
+     * @param $magazineId
+     * @return mixed
      */
+
     public function getById($magazineId);
 
     /**
-     * Delete magazine.
-     *
+     * Delete Magazine
      * @param MagazineInterface $magazine
-     * @return bool true on success
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @return mixed
      */
     public function delete(MagazineInterface $magazine);
 
     /**
-     * Delete magazine by ID.
-     *
-     * @param int $magazineId
-     * @return bool true on success
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * Delete Magazine by Id
+     * @param $magazineId
+     * @return mixed
      */
     public function deleteById($magazineId);
 }
