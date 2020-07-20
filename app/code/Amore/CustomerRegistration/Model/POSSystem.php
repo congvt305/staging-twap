@@ -105,6 +105,7 @@ class POSSystem
     private function callPOSInfoAPI($firstName, $lastName, $mobileNumber)
     {
         $result = [];
+        $response = [];
         $url = $this->config->getMemberInfoURL();
         $callSuccess = 1;
         try {
@@ -221,6 +222,7 @@ class POSSystem
     {
         $result = [];
         $callSuccess = 1;
+        $response = [];
         try {
             $url = $this->config->getMemberJoinURL();
 

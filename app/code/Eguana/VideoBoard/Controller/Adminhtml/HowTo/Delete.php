@@ -16,7 +16,6 @@ use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
 use Magento\Framework\Controller\Result\Redirect as RedirectAlias;
 use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\View\Result\PageFactory;
-use Magento\Framework\Registry;
 use Magento\Backend\App\Action\Context;
 
 /**
@@ -40,21 +39,19 @@ class Delete extends AbstractController
     /**
      * Delete constructor.
      * @param Context $context
-     * @param Registry $coreRegistry
      * @param PageFactory $resultPageFactory
      * @param VideoBoardFactory|null $videoBoardFactory
      * @param VideoBoardRepositoryInterface|null $videoBoardRepository
      */
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
         PageFactory $resultPageFactory,
         VideoBoardFactory $videoBoardFactory,
         VideoBoardRepositoryInterface $videoBoardRepository
     ) {
         $this->videoBoardFactory = $videoBoardFactory;
         $this->videoBoardRepository = $videoBoardRepository;
-        parent::__construct($context, $coreRegistry, $resultPageFactory);
+        parent::__construct($context, $resultPageFactory);
     }
 
     /**

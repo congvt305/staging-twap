@@ -12,13 +12,13 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="eguana_video_board" resource="default" engine="innodb" comment="Create Eguana Video Board Table">
-        <column xsi:type="int" name="entity_id" padding="10" identity="true" unsigned="true" nullable="false" comment="ID"/>
+        <column xsi:type="smallint" name="entity_id" padding="10" identity="true" unsigned="true" nullable="false" comment="ID"/>
         <column xsi:type="varchar" name="video_title" nullable="false" length="255" comment="Video Title"/>
         <column xsi:type="varchar" name="video_url" nullable="false" length="255" comment="Video URL"/>
         <column xsi:type="text" disabled="true" name="content" nullable="true" comment="Content"/>
         <column xsi:type="text" name="description" nullable="true" comment="Description"/>
-        <column xsi:type="text" name="thumbnail_image" nullable="true" comment="Thumbnail Image"/>
-        <column xsi:type="varchar" name="store_id" nullable="false" comment="Store ID"/>
+        <column xsi:type="varchar" name="thumbnail_image" nullable="true" comment="Thumbnail Image"/>
+        <column xsi:type="varchar" disabled="true" name="store_id" nullable="false" comment="Store ID"/>
         <column xsi:type="smallint" name="is_active" padding="5" unsigned="true" nullable="false" identity="false"
                 default="1" comment="Visibility status 1 for Enable and 0 for Disable"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" comment="Created at" default="CURRENT_TIMESTAMP"/>
@@ -30,5 +30,24 @@
             <column name="video_title"/>
             <column name="description"/>
         </index>
+    </table>
+    <table name="eguana_video_board_store" resource="default" engine="innodb" comment="Video Board To Store Linkage Table">
+        <column xsi:type="smallint" name="entity_id" padding="10" identity="true" unsigned="true" nullable="false"
+                comment="ID"/>
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false" identity="false"
+                comment="Store ID"/>
+        <index referenceId="EGUANA_VIDEO_BOARD_STORE_STORE_ID" indexType="btree">
+            <column name="store_id"/>
+        </index>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+            <column name="store_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="EGUANA_VIDEO_BOARD_STORE_ENTITY_ID_EGUANA_VIDEO_BOARD_ENTITY_ID"
+                    table="eguana_video_board_store" column="entity_id" referenceTable="eguana_video_board"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="EGUANA_VIDEO_BOARD_STORE_STORE_ID_STORE_STORE_ID"
+                    table="eguana_video_board_store" column="store_id" referenceTable="store"
+                    referenceColumn="store_id" onDelete="CASCADE"/>
     </table>
 </schema>

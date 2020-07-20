@@ -22,7 +22,6 @@ use Magento\Framework\App\RequestInterface;
  * This class used to add breadcrumbs and title
  *
  * Class VideoList
- * Eguana\VideoBoard\Block
  */
 class VideoList implements ArgumentInterface
 {
@@ -129,13 +128,8 @@ class VideoList implements ArgumentInterface
         $videoBoardCollection->addFieldToFilter(
             "is_active",
             ["eq" => true]
-        )->addFieldToFilter(
-            ['store_id','store_id','store_id','store_id'],
-            [["like" =>  '%' . $storeId . ',%'],
-                ["like" =>  '%,' . $storeId . ',%'],
-                ["like" =>  '%,' . $storeId . '%'],
-                ["eq" => $storeId]]
-        )->setOrder(
+        )->addStoreFilter($storeId)
+        ->setOrder(
             "entity_id",
             $sortDirection
         );
@@ -153,5 +147,30 @@ class VideoList implements ArgumentInterface
     public function getVideoBoardUrl($urlkey)
     {
         return $this->urlInterface->getUrl() . 'videoboard/detail/index/id/' . $urlkey;
+    }
+
+    public function getThumbnailImageURL($file)
+    {
+        if ($file == '') {
+            return '';
+        }
+        return $this->getMediaUrl($file);
+    }
+
+    /**
+     * Get file url
+     * @param $file
+     * @return string
+     */
+    public function getMediaUrl($file)
+    {
+        try {
+            $file = ltrim(str_replace('\\', '/', $file), '/');
+            return $this->storeManager
+                    ->getStore()
+                    ->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $file;
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
     }
 }

@@ -20,9 +20,7 @@ use Magento\Framework\View\Result\PageFactory;
 
 /**
  * This class is used to add load the Ajax Call which shows next 6 record
- *
  * Class AjaxCall
- * Eguana\VideoBoard\Controller\Index
  */
 class AjaxCall extends Action
 {
