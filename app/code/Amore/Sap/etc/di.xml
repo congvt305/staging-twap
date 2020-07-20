@@ -33,4 +33,7 @@
     <type name="Magento\Sales\Model\Order\CreditmemoRepository">
         <plugin sortOrder="1" name="amoreSapCreditmemoRepository" type="Amore\Sap\Plugin\Model\Order\CreditmemoRepositoryPlugin"/>
     </type>
+    <type name="Magento\Rma\Model\Rma">
+        <plugin sortOrder="2" name="amoreSapRma" type="Amore\Sap\Plugin\Model\RmaPlugin"/>
+    </type>
 </config>
