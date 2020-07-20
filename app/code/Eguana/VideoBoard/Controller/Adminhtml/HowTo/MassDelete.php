@@ -48,8 +48,12 @@ class MassDelete extends Action
      * @param CollectionFactory $collectionFactory
      * @param LoggerInterface $logger
      */
-    public function __construct(Context $context, Filter $filter, CollectionFactory $collectionFactory)
-    {
+    public function __construct(
+        Context $context,
+        Filter $filter,
+        CollectionFactory $collectionFactory,
+        LoggerInterface $logger
+    ) {
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
         $this->logger = $logger;
