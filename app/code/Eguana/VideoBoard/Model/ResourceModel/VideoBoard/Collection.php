@@ -9,12 +9,15 @@
  */
 namespace Eguana\VideoBoard\Model\ResourceModel\VideoBoard;
 
-use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+//use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+use Eguana\VideoBoard\Model\ResourceModel\AbstractCollection;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Eguana\VideoBoard\Api\Data\VideoBoardInterface;
 use Eguana\VideoBoard\Model\VideoBoard as VideoBoardModel;
 use Eguana\VideoBoard\Model\ResourceModel\VideoBoard as VideoBoardResourceModel;
 use Magento\Framework\Api\Search\AggregationInterface;
+use Magento\Store\Model\Store as StoreAlias;
 
 /**
  * Collection class to retrieve the data from db table
@@ -56,6 +59,23 @@ class Collection extends AbstractCollection implements SearchResultInterface
             VideoBoardModel::class,
             VideoBoardResourceModel::class
         );
+        $this->_map['fields']['store'] = 'store_table.store_id';
+        $this->_map['fields']['entity_id'] = 'main_table.entity_id';
+    }
+
+    /**
+     * After load method
+     * @return Collection
+     */
+    protected function _afterLoad()
+    {
+        try {
+            $entityMetadata = $this->metadataPool->getMetadata(VideoBoardInterface::class);
+            $this->performAfterLoad('eguana_video_board_store', $entityMetadata->getLinkField());
+            return parent::_afterLoad();
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
     }
 
     /**
@@ -151,5 +171,44 @@ class Collection extends AbstractCollection implements SearchResultInterface
     public function setItems(array $items = null)
     {
         return $this;
+    }
+    /**
+     * Options method
+     * @return array
+     */
+    public function toOptionArray()
+    {
+        return $this->_toOptionArray('entity_id', 'title');
+    }
+
+    /**
+     * Add filter by store
+     *
+     * @param int|array|StoreAlias $store
+     * @param bool $withAdmin
+     * @return $this
+     */
+    public function addStoreFilter($store, $withAdmin = true)
+    {
+        if (!$this->getFlag('store_filter_added')) {
+            $this->performAddStoreFilter($store, $withAdmin);
+            $this->setFlag('store_filter_added', true);
+        }
+        return $this;
+    }
+
+    /**
+     * Join store relation table if there is store filter
+     *
+     * @return void
+     */
+    protected function _renderFiltersBefore()
+    {
+        try {
+            $entityMetadata = $this->metadataPool->getMetadata(VideoBoardInterface::class);
+            $this->joinStoreRelationTable('eguana_video_board_store', $entityMetadata->getLinkField());
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
     }
 }

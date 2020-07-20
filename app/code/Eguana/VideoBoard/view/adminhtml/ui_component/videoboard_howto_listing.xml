@@ -62,13 +62,15 @@
                 </item>
             </argument>
             <action name="delete">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="type" xsi:type="string">delete</item>
-                        <item name="label" xsi:type="string" translate="true">Delete</item>
-                        <item name="url" xsi:type="url" path="videoboard/howto/massDelete"/>
-                    </item>
-                </argument>
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to delete selected items?</message>
+                        <title translate="true">Delete items</title>
+                    </confirm>
+                    <url path="videoboard/howto/massDelete"/>
+                    <type>delete</type>
+                    <label translate="true">Delete</label>
+                </settings>
             </action>
         </massaction>
         <bookmark name="bookmarks"/>
@@ -155,15 +157,11 @@
                 </item>
             </argument>
         </column>
-        <column name="store_id" class="Magento\Store\Ui\Component\Listing\Column\Store">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
-                    <item name="sortable" xsi:type="boolean">false</item>
-                    <item name="label" xsi:type="string" translate="true">Store View</item>
-                    <item name="sortOrder" xsi:type="number">5</item>
-                </item>
-            </argument>
+        <column name="store_id" class="Eguana\VideoBoard\Ui\Component\Listing\Column\StoreRenderer">
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <label translate="true">Store View</label>
+            </settings>
         </column>
         <column name="is_active" component="Magento_Ui/js/grid/columns/select">
             <settings>

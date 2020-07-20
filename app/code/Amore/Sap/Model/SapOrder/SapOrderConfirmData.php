@@ -87,17 +87,19 @@ class SapOrderConfirmData extends AbstractSapOrder
 
     /**
      * @param $incrementId
+     * @param string $type
      * @return array[]
+     * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function singleOrderData($incrementId)
+    public function singleOrderData($incrementId, $type = 'order')
     {
         /** @var Order $order */
-        $order = $this->getOrderInfo($incrementId);
+        $order = $this->getOrderInfo($incrementId, $type);
 
         $source = $this->config->getSourceByStore('store', $order->getStoreId());
-        $orderData = $this->getOrderData($incrementId);
-        $itemData = $this->getOrderItem($incrementId);
+        $orderData = $this->getOrderData($incrementId, $type);
+        $itemData = $this->getOrderItem($incrementId, $type);
 
         if (empty($orderData) && empty($itemData)) {
             $msg = __("Order Data and Item Data do not exist.");
@@ -115,8 +117,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                         "source" => $source
                     ],
                     "input" => [
-                        "itHead" => $this->getOrderData($incrementId),
-                        'itItem' => $this->getOrderItem($incrementId)
+                        "itHead" => $orderData,
+                        'itItem' => $itemData
                     ]
                 ]
             ];
@@ -160,12 +162,19 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $orderType;
     }
 
-    public function getOrderInfo($incrementId)
+    public function getOrderInfo($incrementId, $type = 'order')
     {
-        $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('increment_id', $incrementId, 'eq')
-            ->addFilter('status', 'processing', 'eq')
-            ->create();
+        if ($type == 'return') {
+            $searchCriteria = $this->searchCriteriaBuilder
+                ->addFilter('increment_id', $incrementId, 'eq')
+                ->addFilter('state', 'complete', 'eq')
+                ->create();
+        } else {
+            $searchCriteria = $this->searchCriteriaBuilder
+                ->addFilter('increment_id', $incrementId, 'eq')
+                ->addFilter('status', 'processing', 'eq')
+                ->create();
+        }
 
         $orderList = $this->orderRepository->getList($searchCriteria)->getItems();
         $orderCount = $this->orderRepository->getList($searchCriteria)->getTotalCount();
@@ -178,15 +187,15 @@ class SapOrderConfirmData extends AbstractSapOrder
     }
 
     /**
-     * @param $incrementId
+     * @param $incrementId string
+     * @param $type string
      * @return array
      * @throws NoSuchEntityException
-     * @throws LocalizedException
      */
-    public function getOrderData($incrementId)
+    public function getOrderData($incrementId, $type = 'order')
     {
         /** @var Order $orderData */
-        $orderData = $this->getOrderInfo($incrementId);
+        $orderData = $this->getOrderInfo($incrementId, $type);
         $invoice = $this->getInvoice($orderData->getEntityId());
         $storeId = $orderData->getStoreId();
         $orderSendCheck = $orderData->getData('sap_order_send_check');
@@ -341,15 +350,19 @@ class SapOrderConfirmData extends AbstractSapOrder
 
     /**
      * @param string $incrementId
+     * @param string $type
+     * @return array
+     * @throws NoSuchEntityException
      */
-    public function getOrderItem($incrementId)
+    public function getOrderItem($incrementId, $type = 'order')
     {
         $orderItemData = [];
 
         /** @var Order $order */
-        $order = $this->getOrderInfo($incrementId);
+        $order = $this->getOrderInfo($incrementId, $type);
         $storeId = $order->getStoreId();
-        $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount());
+//        $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount());
+        $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
         $invoice = $this->getInvoice($order->getEntityId());
         $mileageUsedAmount = $order->getRewardPointsBalance();
 

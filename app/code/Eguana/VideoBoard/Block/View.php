@@ -14,6 +14,7 @@ use Magento\Framework\View\Element\Template;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\RequestInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\View\Element\Template\Context;
 
 /**
  * class View
@@ -44,14 +45,14 @@ class View extends Template
 
     /**
      * VideoBoard constructor.
-     * @param Template\Context $context
+     * @param Context $context
      * @param StoreManagerInterface $storeManager
      * @param VideoBoardRepositoryInterface $videoBoardRepository
      * @param LoggerInterface $logger
      * @param array $data
      */
     public function __construct(
-        Template\Context $context,
+        Context $context,
         VideoBoardRepositoryInterface $videoBoardRepository,
         StoreManagerInterface $storeManager,
         RequestInterface $requestInterface,

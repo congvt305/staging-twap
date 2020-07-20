@@ -11,13 +11,13 @@ namespace Eguana\VideoBoard\Controller\Index;
 
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
  * This class is used to add load the layout and render data
- *
  * Class Index
- * Eguana\VideoBoard\Controller\Index
  */
 class Index extends Action
 {
@@ -34,7 +34,7 @@ class Index extends Action
     }
     /**
      * This method is used to load layout and render information
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @return ResponseInterfaceAlias|ResultInterfaceAlias|void
      */
     public function execute()
     {

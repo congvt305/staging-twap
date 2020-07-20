@@ -54,9 +54,9 @@ class SequenceTablesCreator
         $wesbitesId = $this->getWebsiteIds();
 
         foreach ($wesbitesId as $wesbiteId) {
-            $this->sequenceBuilder->setStartValue(0)
+           /* $this->sequenceBuilder->setStartValue(0)
                 ->setWebsiteId($wesbiteId)
-                ->setEntityType('customer_pos')->create();
+                ->setEntityType('customer_pos')->create();*/
 
             $this->sequenceBuilder->setStartValue(10000000)
                 ->setWebsiteId($wesbiteId)

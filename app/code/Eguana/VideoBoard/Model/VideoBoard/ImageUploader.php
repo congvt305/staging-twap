@@ -65,7 +65,6 @@ class ImageUploader
      *
      * @param string $fileId
      * @return array
-     * @throws LocalizedException
      */
     public function saveImageToMediaFolder($fileId)
     {
