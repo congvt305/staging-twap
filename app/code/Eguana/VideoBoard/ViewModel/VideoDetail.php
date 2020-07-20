@@ -20,7 +20,6 @@ use Magento\Framework\App\Request\Http;
  * This ViewModel is used to show single video detail
  *
  * Class VideoDetail
- * Eguana\VideoBoard\ViewModel
  */
 class VideoDetail implements ArgumentInterface
 {

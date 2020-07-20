@@ -10,6 +10,9 @@
 namespace Eguana\VideoBoard\Controller\Adminhtml\HowTo;
 
 use Magento\Backend\App\Action;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
+use Magento\Framework\View\Result\Page as PageAlias;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action\Context;
 
@@ -17,7 +20,6 @@ use Magento\Backend\App\Action\Context;
  * This class is used to show the Grid for Video Board Record in Admin Panel
  *
  * Class Index
- * Eguana\VideoBoard\Controller\Adminhtml\HowTo
  */
 class Index extends Action
 {
@@ -42,7 +44,7 @@ class Index extends Action
     /**
      * execute() Method
      * This method is used to create new page and add title on the Grid page
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
+     * @return ResponseInterfaceAlias|ResultInterfaceAlias|PageAlias
      */
     public function execute()
     {

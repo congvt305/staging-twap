@@ -13,9 +13,7 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 /**
  * This class is used to get the sort order value
- *
  * Class Dropdown
- * Eguana\VideoBoard\Model\Config\Source
  */
 class Dropdown implements OptionSourceInterface
 {
