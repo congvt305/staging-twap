@@ -18,7 +18,8 @@ $videoBlockList = $viewModel->getVideoCollection();
             class="video-link"
             href="<?= $block->escapeUrl($viewModel->getVideoBoardUrl($videoBlockItem->getEntityId()))?>">
             <img
-                src="<?= $block->escapeHtml($videoBlockItem->getThumbnailImageURL());?>"
+                src="<?= $block->escapeHtml($viewModel->
+                getThumbnailImageURL($videoBlockItem->getThumbnailImage()));?>"
                 alt="<?= $block->escapeHtml(__('Thumbnail Image'));?>"/>
         </a>
         <div class="video-heading">
