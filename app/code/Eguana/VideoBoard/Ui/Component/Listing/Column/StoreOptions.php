@@ -15,7 +15,6 @@ use Magento\Store\Ui\Component\Listing\Column\Store\Options;
  * This class is used to add show the available stores
  *
  * Class StoreOptions
- * Eguana\VideoBoard\Ui\Component\Listing\Column
  */
 class StoreOptions extends Options
 {

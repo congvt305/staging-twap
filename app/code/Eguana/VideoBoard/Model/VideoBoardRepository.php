@@ -23,10 +23,11 @@ use Magento\Framework\Reflection\DataObjectProcessor;
 use Magento\Store\Model\StoreManagerInterface;
 use Eguana\VideoBoard\Api\Data\VideoBoardInterfaceFactory;
 use Eguana\VideoBoard\Model\VideoBoard;
+use Eguana\VideoBoard\Api\Data\VideoBoardInterface;
 
 /**
+ * Vided Board Repository Class
  * Class VideoBoardRepository
- * Eguana\VideoBoard\Model
  */
 class VideoBoardRepository implements VideoBoardRepositoryInterface
 {
@@ -61,7 +62,7 @@ class VideoBoardRepository implements VideoBoardRepositoryInterface
     private $dataVideoBoardFactory;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     private $storeManager;
 
@@ -73,7 +74,7 @@ class VideoBoardRepository implements VideoBoardRepositoryInterface
     /**
      * @param ResourceVideoBoard $resource
      * @param VideoBoardFactory $videoBoardFactory
-     * @param Data\VideoBoardInterfaceFactory $dataVideoBoardFactory
+     * @param VideoBoardInterfaceFactory $dataVideoBoardFactory
      * @param VideoBoardCollectionFactory $videoBoardCollectionFactory
      * @param DataObjectHelper $dataObjectHelper
      * @param DataObjectProcessor $dataObjectProcessor
@@ -107,7 +108,7 @@ class VideoBoardRepository implements VideoBoardRepositoryInterface
      * @return VideoBoard
      * @throws CouldNotSaveException
      */
-    public function save(Data\VideoBoardInterface $videoBoard)
+    public function save(VideoBoardInterface $videoBoard)
     {
         try {
             $this->resource->save($videoBoard);
@@ -121,8 +122,7 @@ class VideoBoardRepository implements VideoBoardRepositoryInterface
      * Load Block data by given Block Identity
      *
      * @param string $videoBoardId
-     * @return VideoBoard
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return VideoBoard|mixed
      */
     public function getById($videoBoardId)
     {
@@ -141,7 +141,7 @@ class VideoBoardRepository implements VideoBoardRepositoryInterface
      * @return bool
      * @throws CouldNotDeleteException
      */
-    public function delete(Data\VideoBoardInterface $videoBoard)
+    public function delete(VideoBoardInterface $videoBoard)
     {
         try {
             $this->resource->delete($videoBoard);

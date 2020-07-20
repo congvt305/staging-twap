@@ -18,14 +18,12 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Backend\App\Action;
-use Magento\Framework\Registry;
 use Eguana\VideoBoard\Api\VideoBoardRepositoryInterface;
 
 /**
  * This class is used to save the video record data
  *
  * Class Save
- * Eguana\VideoBoard\Controller\Adminhtml\HowTo
  */
 class Save extends AbstractController
 {
@@ -51,7 +49,6 @@ class Save extends AbstractController
 
     /**
      * Save constructor.
-     * @param Registry $coreRegistry
      * @param Context $context
      * @param DataPersistorInterface $dataPersistor
      * @param VideoBoardFactory $videoBoardFactory
@@ -59,7 +56,6 @@ class Save extends AbstractController
      */
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
         DataPersistorInterface $dataPersistor,
         PageFactory $resultPageFactory,
         VideoBoardFactory $videoBoardFactory,
@@ -70,7 +66,6 @@ class Save extends AbstractController
         $this->videoBoardRepository = $videoBoardRepository;
         parent::__construct(
             $context,
-            $coreRegistry,
             $resultPageFactory
         );
     }

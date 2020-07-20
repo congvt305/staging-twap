@@ -10,7 +10,6 @@
 
 namespace Eguana\VideoBoard\Model;
 
-use Magento\Framework\App\ObjectManager as ObjectManagerAlias;
 use Magento\Framework\Model\AbstractModel;
 use Eguana\VideoBoard\Model\ResourceModel\VideoBoard as VideoBoardResourceModel;
 use Eguana\VideoBoard\Api\Data\VideoBoardInterface;
@@ -62,10 +61,6 @@ class VideoBoard extends AbstractExtensibleModel implements VideoBoardInterface,
     public function _construct()
     {
         $this->_init(VideoBoardResourceModel::class);
-        $objectManager = ObjectManagerAlias::getInstance();
-        /* Get store manager */
-        $this->storeManager = $objectManager
-            ->get(StoreManagerInterfaceAlias::class);
     }
 
     /**
@@ -178,34 +173,6 @@ class VideoBoard extends AbstractExtensibleModel implements VideoBoardInterface,
     public function getThumbnailImage()
     {
         return $this->getData(self::THUMBNAIL_IMAGE);
-    }
-
-    /**
-     * It will return the thumbanil image URL
-     *
-     * @return string
-     */
-    public function getThumbnailImageURL()
-    {
-        if ($this->getThumbnailImage() == '') {
-            return '';
-        }
-        return $this->getMediaUrl($this->getThumbnailImage());
-    }
-
-    /**
-     * Get file url
-     *
-     * @param string $file
-     * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
-    public function getMediaUrl($file)
-    {
-        $file = ltrim(str_replace('\\', '/', $file), '/');
-        return $this->storeManager
-                ->getStore()
-                ->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $file;
     }
 
     /**

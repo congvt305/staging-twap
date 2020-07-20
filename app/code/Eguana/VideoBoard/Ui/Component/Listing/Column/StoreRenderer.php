@@ -15,7 +15,6 @@ use Magento\Store\Ui\Component\Listing\Column\Store;
  * Class for displaying Store views in Grid
  *
  * Class StoreRenderer
- *
  */
 class StoreRenderer extends Store
 {

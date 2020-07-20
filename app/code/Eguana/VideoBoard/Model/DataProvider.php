@@ -20,7 +20,6 @@ use Eguana\VideoBoard\Model\ResourceModel\VideoBoard\Collection;
  * This class is used to get the Data
  *
  * Class DataProvider
- * Eguana\VideoBoard\Model
  */
 class DataProvider extends AbstractDataProvider
 {
@@ -82,7 +81,6 @@ class DataProvider extends AbstractDataProvider
             return $this->loadedData;
         }
         $items = $this->collection->getItems();
-        /** @var Customer $video */
         foreach ($items as $video) {
             $thumbnailImagePath = explode('/', $video->getData('thumbnail_image'));
             $thumbnailImageCount = count($thumbnailImagePath);

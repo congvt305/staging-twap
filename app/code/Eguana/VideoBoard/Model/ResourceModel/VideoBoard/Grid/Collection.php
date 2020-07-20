@@ -24,8 +24,8 @@ use Psr\Log\LoggerInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
+ * This class is for collection methods
  * Class Collection
- * Eguana\VideoBoard\Model\ResourceModel\VideoBoard\Grid
  */
 class Collection extends HowToCollection implements SearchResultInterface
 {

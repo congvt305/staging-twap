@@ -91,13 +91,6 @@ interface VideoBoardInterface
     public function getThumbnailImage();
 
     /**
-     * Get Thumbnail Image
-     *
-     * @return string
-     */
-    public function getThumbnailImageURL();
-
-    /**
      * @param string $createdAt
      * @return $this
      */
