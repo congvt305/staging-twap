@@ -15,11 +15,13 @@ use Eguana\VideoBoard\Model\ResourceModel\VideoBoard\Collection as HowToCollecti
 use Magento\Framework\Data\Collection\EntityFactoryInterface;
 use Magento\Framework\Data\Collection\Db\FetchStrategyInterface;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\EntityManager\MetadataPool;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\View\Element\UiComponent\DataProvider\Document;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Collection
@@ -37,12 +39,14 @@ class Collection extends HowToCollection implements SearchResultInterface
      * @param LoggerInterface $logger
      * @param FetchStrategyInterface $fetchStrategy
      * @param ManagerInterface $eventManager
+     * @param StoreManagerInterface $storeManager
+     * @param MetadataPool $metadataPool
      * @param string $mainTable
      * @param string $eventPrefix
      * @param string $eventObject
      * @param string $resourceModel
      * @param string $model
-     * @param AdapterInterface|string|null $connection
+     * @param string|null $connection
      * @param AbstractDb $resource
      */
     public function __construct(
@@ -50,12 +54,14 @@ class Collection extends HowToCollection implements SearchResultInterface
         LoggerInterface $logger,
         FetchStrategyInterface $fetchStrategy,
         ManagerInterface $eventManager,
+        StoreManagerInterface $storeManager,
+        MetadataPool $metadataPool,
         $mainTable,
         $eventPrefix,
         $eventObject,
         $resourceModel,
         $model = Document::class,
-        $connection = null,
+        AdapterInterface $connection = null,
         AbstractDb $resource = null
     ) {
         parent::__construct(
@@ -63,6 +69,8 @@ class Collection extends HowToCollection implements SearchResultInterface
             $logger,
             $fetchStrategy,
             $eventManager,
+            $storeManager,
+            $metadataPool,
             $connection,
             $resource
         );
@@ -139,35 +147,5 @@ class Collection extends HowToCollection implements SearchResultInterface
     public function setItems(array $items = null)
     {
         return $this;
-    }
-
-    /**
-     * Get all data array for collection
-     *
-     * @return array
-     */
-    public function getData()
-    {
-        if ($this->_data === null) {
-            $this->_renderFilters()->_renderOrders()->_renderLimit();
-            $select = $this->getSelect();
-            $this->_data = $this->_fetchAll($select);
-            $this->_afterLoadData();
-        }
-
-        // getData Store_ID Array Setting
-        $items = [];
-        foreach ($this->_data as $item) {
-            if (isset($item['store_id'])) {
-                $item['store_id'] = explode(',', $item['store_id']);
-                if (in_array('0', $item['store_id'])) {
-                    $item['store_id'] = [0];
-                }
-            }
-            $items[] = $item;
-        }
-        $this->_data = $items;
-
-        return $this->_data;
     }
 }

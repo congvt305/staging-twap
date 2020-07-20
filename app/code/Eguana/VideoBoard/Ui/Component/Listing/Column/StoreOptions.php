@@ -20,11 +20,6 @@ use Magento\Store\Ui\Component\Listing\Column\Store\Options;
 class StoreOptions extends Options
 {
     /**
-     * All store views value is 0
-     */
-    const ALL_STORE_VIEWS = '0';
-
-    /**
      * @return array
      */
     public function toOptionArray()

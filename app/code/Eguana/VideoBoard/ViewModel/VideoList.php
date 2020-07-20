@@ -129,13 +129,8 @@ class VideoList implements ArgumentInterface
         $videoBoardCollection->addFieldToFilter(
             "is_active",
             ["eq" => true]
-        )->addFieldToFilter(
-            ['store_id','store_id','store_id','store_id'],
-            [["like" =>  '%' . $storeId . ',%'],
-                ["like" =>  '%,' . $storeId . ',%'],
-                ["like" =>  '%,' . $storeId . '%'],
-                ["eq" => $storeId]]
-        )->setOrder(
+        )->addStoreFilter($storeId)
+        ->setOrder(
             "entity_id",
             $sortDirection
         );

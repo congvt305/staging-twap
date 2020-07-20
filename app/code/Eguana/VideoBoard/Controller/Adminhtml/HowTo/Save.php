@@ -108,9 +108,6 @@ class Save extends AbstractController
                 $generalData['thumbnail_image'] = 'VideoBoard/' .
                     $generalData['thumbnail_image'][0]['file'];
             }
-            if (isset($generalData['store_id'])) {
-                $generalData['store_id'] = implode(',', $generalData['store_id']);
-            }
             $generalData['video_url'] = preg_replace(
                 self::URL_PATTERN,
                 "https://www.youtube.com/embed/$2",
@@ -148,7 +145,6 @@ class Save extends AbstractController
             $newVideoBoard = $this->videoBoardFactory->create(['data' => $data]);
             $newVideoBoard->setId(null);
             $newVideoBoard->setIsActive(false);
-            $newVideoBoard->setStoreId($model->getStoreId());
             $newVideoBoard->setThumbnailImage($model->getThumbnailImage());
             $this->videoBoardRepository->save($newVideoBoard);
             $this->messageManager->addSuccessMessage(__('You duplicated the Video.'));

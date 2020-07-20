@@ -25,8 +25,6 @@ interface VideoBoardInterface
 
     const DESCRIPTION = 'description';
 
-    const STORE_ID = 'store_id';
-
     const IS_ACTIVE = 'is_active';
 
     const CREATED_AT = 'created_at';
@@ -43,21 +41,6 @@ interface VideoBoardInterface
      * @return int
      */
     public function getEntityId();
-
-    /**
-     * Get Store ID
-     *
-     * @return int
-     */
-    public function getStoreId();
-
-    /**
-     * Set Store ID
-     *
-     * @param int $storeId
-     * @return VideoBoardInterface
-     */
-    public function setStoreId($storeId);
 
     /**
      * @param string $title

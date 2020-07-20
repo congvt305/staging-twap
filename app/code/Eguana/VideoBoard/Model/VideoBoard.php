@@ -81,7 +81,6 @@ class VideoBoard extends AbstractExtensibleModel implements VideoBoardInterface,
             'video_url',
             'description',
             'thumbnail_image',
-            'store_id',
             'is_active',
             'created_at',
             'updated_at',
@@ -111,27 +110,6 @@ class VideoBoard extends AbstractExtensibleModel implements VideoBoardInterface,
     public function getEntityId()
     {
         return $this->getData(self::ENTITY_ID);
-    }
-
-    /**
-     * Get Store ID
-     *
-     * @return int|null
-     */
-    public function getStoreId()
-    {
-        return $this->getData(self::STORE_ID);
-    }
-
-    /**
-     * Set Store ID
-     *
-     * @param int $storeId
-     * @return VideoBoardInterface
-     */
-    public function setStoreId($storeId)
-    {
-        return $this->setData(self::STORE_ID, $storeId);
     }
 
     /**

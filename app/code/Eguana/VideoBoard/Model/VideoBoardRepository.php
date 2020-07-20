@@ -109,11 +109,6 @@ class VideoBoardRepository implements VideoBoardRepositoryInterface
      */
     public function save(Data\VideoBoardInterface $videoBoard)
     {
-        if (empty($videoBoard->getStoreId())) {
-            $storeId = $this->storeManager->getStore()->getId();
-            $videoBoard->setStoreId($storeId);
-        }
-
         try {
             $this->resource->save($videoBoard);
         } catch (\Exception $exception) {
