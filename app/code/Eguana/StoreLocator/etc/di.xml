@@ -10,15 +10,67 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <virtualType name="EguanaStoresDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
-        <arguments>
-            <argument name="collection" xsi:type="object" shared="false">Eguana\StoreLocator\Model\ResourceModel\StoreInfo\Collection</argument>
-        </arguments>
-    </virtualType>
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="stores_listing_data_source" xsi:type="string">Eguana\StoreLocator\Model\ResourceModel\StoreInfo\Collection</item>
+                <item name="stores_listing_data_source" xsi:type="string">Eguana\StoreLocator\Model\ResourceModel\StoreInfo\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Eguana\StoreLocator\Model\ResourceModel\StoreInfo\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">storeinfo</argument>
+            <argument name="eventPrefix" xsi:type="string">eguana_storelocator_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">storelocator_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Eguana\StoreLocator\Model\ResourceModel\StoreInfo</argument>
+        </arguments>
+    </type>
+    <virtualType name="StoreLocatorFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\Model\Entity\RepositoryFactory">
+        <arguments>
+            <argument name="entities" xsi:type="array">
+                <item name="Eguana\StoreLocator\Api\Data\StoreInfoInterface" xsi:type="string">Eguana\StoreLocator\Api\Data\StoreInfoInterface</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
+        <arguments>
+            <argument name="extensionActions" xsi:type="array">
+                <item name="Eguana\StoreLocator\Api\Data\StoreInfoInterface" xsi:type="array">
+                    <item name="read" xsi:type="array">
+                        <item name="storeReader" xsi:type="string">Eguana\StoreLocator\Model\ResourceModel\StoreInfo\Relation\Store\ReadHandler</item>
+                    </item>
+                    <item name="create" xsi:type="array">
+                        <item name="storeCreator" xsi:type="string">Eguana\StoreLocator\Model\ResourceModel\StoreInfo\Relation\Store\SaveHandler</item>
+                    </item>
+                    <item name="update" xsi:type="array">
+                        <item name="storeUpdater" xsi:type="string">Eguana\StoreLocator\Model\ResourceModel\StoreInfo\Relation\Store\SaveHandler</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\HydratorPool">
+        <arguments>
+            <argument name="hydrators" xsi:type="array">
+                <item name="Eguana\StoreLocator\Api\Data\StoreInfoInterface" xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Eguana\StoreLocator\Api\Data\StoreInfoInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">storeinfo</item>
+                    <item name="identifierField" xsi:type="string">entity_id</item>
+                </item>
             </argument>
         </arguments>
     </type>
@@ -26,9 +78,4 @@
     <preference for="Eguana\StoreLocator\Api\Data\StoreInfoInterface" type="Eguana\StoreLocator\Model\StoreInfo" />
     <preference for="Eguana\StoreLocator\Api\StoreInfoRepositoryInterface" type="Eguana\StoreLocator\Model\StoreInfoRepository" />
     <preference for="Eguana\StoreLocator\Api\Data\StoreInfoSearchResultInterface" type="Eguana\StoreLocator\Model\StoreInfoSearchResult" />
-<!--storeinfo_work_time model Repositories-->
-    <preference for="Eguana\StoreLocator\Api\Data\WorkTimeInterface" type="Eguana\StoreLocator\Model\WorkTime" />
-    <preference for="Eguana\StoreLocator\Api\WorkTimeRepositoryInterface" type="Eguana\StoreLocator\Model\WorkTimeRepository" />
-    <preference for="Eguana\StoreLocator\Api\Data\WorkTimeSearchResultInterface" type="Eguana\StoreLocator\Model\WorkTimeSearchResult" />
-
 </config>

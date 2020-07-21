@@ -24,7 +24,6 @@ interface StoreInfoInterface
     const TELEPHONE = 'telephone';
     const LOCATION = 'location';
     const CREATED_AT = 'created_at';
-    const STORE_ID = 'store_id';
     const EMAIL = 'email';
     const TIMING = 'timing';
     const STORE_TYPE = 'store_type';
@@ -39,7 +38,6 @@ interface StoreInfoInterface
     public function getTelephone();
     public function getLocation();
     public function getCreatedAt();
-    public function getStoreId();
     public function getEmail();
     public function getTiming();
     public function getStoreType();
@@ -54,7 +52,6 @@ interface StoreInfoInterface
     public function setTelephone($telephone);
     public function setLocation($location);
     public function setCreatedAt($createdAt);
-    public function setStoreId($storeId);
     public function setEmail($email);
     public function setTiming($timing);
     public function setStoreType($storeType);
