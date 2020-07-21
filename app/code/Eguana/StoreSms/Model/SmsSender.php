@@ -3,6 +3,7 @@ namespace Eguana\StoreSms\Model;
 
 use Eguana\StoreSms\Api\SmsInterface;
 use Eguana\StoreSms\Helper\Data;
+use Eguana\StoreSms\Model\CountryCode;
 use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory;
 use Magento\Email\Model\TemplateFactory;
 use Magento\Framework\HTTP\Client\Curl;
@@ -12,6 +13,8 @@ use Magento\Framework\View\Asset\NotationResolver\Variable;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 use Magento\Email\Model\ResourceModel\TemplateFactory as ResourceModelFactory;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Customer\Model\ResourceModel\Customer\Collection;
 
 /**
  * This class is responsible for sending verification code on telephone number
@@ -78,7 +81,7 @@ class SmsSender implements SmsInterface
      * @param StoreManagerInterface $storeManager
      * @param LoggerInterface $logger
      * @param TemplateFactory $templateFactory
-     * @param \Eguana\StoreSms\Model\CountryCode $countryCode
+     * @param CountryCode $countryCode
      * @param CollectionFactory $collectionFactory
      */
     public function __construct(
@@ -150,8 +153,12 @@ class SmsSender implements SmsInterface
             $this->logger->error($e->getMessage());
         }
 
-        $this->sendMessageByApi($message, $phoneNumber);
-        return $verificationCode;
+        if ($this->sendMessageByApi($message, $phoneNumber)){
+            return $verificationCode;
+        };
+
+        return 'An error occurred! Please check API credentials and try again.';
+
     }
 
     /**
@@ -215,9 +222,14 @@ class SmsSender implements SmsInterface
             $this->curl->setOption(CURLOPT_POST, true);
             $this->curl->setOption(CURLOPT_POSTFIELDS, json_encode($param));
             $this->curl->post($apiUrl, $param);
+            $status = $this->curl->getStatus();
+
+            if ($status != 200) {
+                return false;
+            }
+
         } catch (\Exception $e) {
             $result = false;
-
             return $result;
         }
 
@@ -236,7 +248,7 @@ class SmsSender implements SmsInterface
         try {
             $storeId = $this->storeManager->getStore()->getId();
             if ($this->data->getNumberValidationStatus($storeId) === '1') {
-                /** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $customerCollection */
+                /** @var Collection $customerCollection */
                 $customerCollection = $this->collectionFactory->create();
                 $customerCollection->addAttributeToFilter('mobile_number', $number)->load();
                 $customerHaveNumber = $customerCollection->getSize();
@@ -259,15 +271,14 @@ class SmsSender implements SmsInterface
     }
 
     /**
-     * SHORT DESCRIPTION
-     * LONG DESCRIPTION LINE BY LINE
+     * This function validate old customer number
      * @param $number
      * @return int
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function validateOldCustomerNumber($number)
     {
-        /** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $customerCollection */
+        /** @var Collection $customerCollection */
         $customerCollection = $this->collectionFactory->create();
         $customerCollection->addAttributeToFilter('mobile_number', $number);
         $customerCollection->addAttributeToFilter('username', ['notnull' => true]);

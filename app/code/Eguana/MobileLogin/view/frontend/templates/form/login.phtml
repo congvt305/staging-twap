@@ -27,7 +27,7 @@
                         <input
                             placeholder="<?= $block->escapeHtml(__('Email / Phone number')) ?>"
                             name="login[username]"
-                            value="<?= $block->escapeHtmlAttr($block->getUsername()) ?>" <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> id="email" type="tel" class="input-text" placeholder="Enter email or mobile number" title="<?= $block->escapeHtmlAttr(__('Email / Phone number')) ?>" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'mobileloginvalidationrule':true}">
+                            value="<?= $block->escapeHtmlAttr($block->getUsername()) ?>" <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> id="email" type="text" class="input-text" placeholder="Enter email or mobile number" title="<?= $block->escapeHtmlAttr(__('Email / Phone number')) ?>" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'mobileloginvalidationrule':true}">
                     </div>
                 </div>
                 <div class="field password required">

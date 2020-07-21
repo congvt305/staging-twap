@@ -85,22 +85,6 @@ class RmaPlugin
         $this->historyFactory = $historyFactory;
     }
 
-//    public function afterSaveRma(\Magento\Rma\Model\Rma $subject, $result)
-//    {
-//        $writer = new \Zend\Log\Writer\Stream(BP . sprintf('/var/log/rma_%s.log',date('Ymd')));
-//        $logger = new \Zend\Log\Logger();
-//        $logger->addWriter($writer);
-//        $logger->info(__METHOD__);
-//        $logger->info($subject->getOrderIncrementId());
-//        $logger->info($subject->getStoreId());
-//        $logger->info($subject->getId());
-//        $logger->info($subject->getStatus());
-//        $logger->info($subject->getCustomerId());
-//        $logger->info($subject->getShippingMethods());
-//
-//        return $result;
-//    }
-
     public function beforeSaveRma(\Magento\Rma\Model\Rma $subject, $data)
     {
         $enableCheck = $this->config->getActiveCheck('store', $subject->getStoreId());
@@ -231,7 +215,5 @@ class RmaPlugin
         $history->setIsVisibleOnFront(false);
         $history->setOrder($order);
         $history->save();
-
-        $this->orderRepository->save($order);
     }
 }

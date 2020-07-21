@@ -183,13 +183,7 @@ class InfoList extends Template
             $this->_logger->error($e->getMessage());
         }
         $storeCollection = $this->storeCollectionFactory->create();
-        $storeCollection->addFieldToFilter(
-            ['store_id','store_id','store_id','store_id'],
-            [["like" =>  '%' . $id . ',%'],
-                ["like" =>  '%,' . $id . ',%'],
-                ["like" =>  '%,' . $id . '%'],
-                ["in" => ['0', $id]]]
-        );
+        $storeCollection->addStoreFilter($id);
         $storeCollection->addFieldToFilter('area', ['eq' => $this->getStoreCountryCode()]);
         $search = $this->getSelectedSearchTerm();
         $isAddName = $this->addStoreNameFilter($search);
