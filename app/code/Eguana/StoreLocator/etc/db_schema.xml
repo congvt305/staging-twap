@@ -11,24 +11,45 @@
 -->
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
   <table name="storeinfo" resource="default" engine="innodb" comment="Stores Main Table">
-    <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+    <column xsi:type="smallint" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
     <column xsi:type="varchar" name="title" nullable="true" length="255" comment="Store Main Title"/>
     <column xsi:type="varchar" name="address" nullable="true" length="255" comment="Store Address"/>
     <column xsi:type="varchar" name="telephone" nullable="true" length="100" comment="Store Telephone"/>
     <column xsi:type="varchar" name="location" nullable="true" length="100" comment="Store Map Location"/>
     <column xsi:type="timestamp" name="created_at" on_update="true" nullable="true" default="CURRENT_TIMESTAMP" comment="Created At"/>
-    <column xsi:type="varchar" name="store_id" nullable="false" length="100" default="0" comment="WebSite Store ID"/>
+    <column xsi:type="varchar" name="store_id" nullable="false" disabled="true" length="100" default="0" comment="WebSite Store ID"/>
     <column xsi:type="varchar" name="email" nullable="true" length="20" comment="store Email address"/>
     <column xsi:type="varchar" name="timing" nullable="true" length="500" comment="Store timing"/>
     <column xsi:type="varchar" name="store_type" nullable="true" length="20" comment="Store type"/>
-      <column xsi:type="varchar" name="area" nullable="false" length="3" comment="Store Area"/>
+    <column xsi:type="varchar" name="area" nullable="false" length="3" comment="Store Area"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="entity_id"/>
     </constraint>
-    <index referenceId="STOREINFO_STORE_ID_TITLE_ADDRESS" indexType="fulltext">
-      <column name="store_id"/>
+    <index referenceId="STOREINFO_ENTITY_ID" indexType="btree">
+        <column name="entity_id"/>
+    </index>
+    <index referenceId="STOREINFO_TITLE_ADDRESS" indexType="fulltext">
       <column name="title"/>
       <column name="address"/>
     </index>
+  </table>
+  <table name="eguana_storelocator_store" resource="default" engine="innodb" comment="Store Locator To Store Linkage Table">
+      <column xsi:type="smallint" name="entity_id" padding="10" unsigned="true" nullable="false"
+                comment="Entity ID"/>
+      <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false"
+                comment="Store ID"/>
+      <index referenceId="EGUANA_STORELOCATOR_STORE_STORE_ID" indexType="btree">
+          <column name="store_id"/>
+      </index>
+      <constraint xsi:type="primary" referenceId="PRIMARY">
+          <column name="entity_id"/>
+          <column name="store_id"/>
+      </constraint>
+      <constraint xsi:type="foreign" referenceId="EGUANA_STORELOCATOR_STORE_ENTITY_ID_STOREINFO_ENTITY_ID"
+                  table="eguana_storelocator_store" column="entity_id" referenceTable="storeinfo"
+                  referenceColumn="entity_id" onDelete="CASCADE"/>
+      <constraint xsi:type="foreign" referenceId="EGUANA_STORELOCATOR_STORE_STORE_ID_STORE_STORE_ID"
+                  table="eguana_storelocator_store" column="store_id" referenceTable="store"
+                  referenceColumn="store_id" onDelete="CASCADE"/>
   </table>
 </schema>

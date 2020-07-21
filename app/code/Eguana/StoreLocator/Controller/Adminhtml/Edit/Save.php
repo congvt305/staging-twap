@@ -36,11 +36,6 @@ class Save extends AbstractStores
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
             $storeInfoData = $data['storeinfo_data'];
-            $workTimeData = isset($data['storeinfo_work_time_data']) ? $data['storeinfo_work_time_data'] : null;
-            if ($workTimeData !== null) {
-                $storeWorkTimeData = $data['storeinfo_work_time_data']
-                ['storeinfo_work_time_dynamic']['storeinfo_work_time_dynamic'];
-            }
             $this->_storeInfo->adminSaveDataBind($storeInfoData);
             try {
                 $this->_storeInfoRepo->save($this->_storeInfo);
