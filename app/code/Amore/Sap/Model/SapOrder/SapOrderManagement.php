@@ -12,7 +12,9 @@ use Amore\Sap\Api\SapOrderManagementInterface;
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Rma\Api\RmaRepositoryInterface;
 use Magento\Sales\Api\Data\OrderInterfaceFactory;
 use Magento\Sales\Api\Data\ShipmentItemCreationInterfaceFactory;
 use Magento\Sales\Api\Data\ShipmentTrackCreationInterfaceFactory;
@@ -21,6 +23,8 @@ use Magento\Sales\Api\ShipOrderInterface;
 use Magento\Sales\Model\Order\Email\Container\ShipmentIdentity;
 use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Ecpay\Ecpaypayment\Model\Payment;
+use Magento\Setup\Exception;
+use function PHPUnit\Framework\throwException;
 
 class SapOrderManagement implements SapOrderManagementInterface
 {
@@ -84,6 +88,22 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @var OrderItemRepositoryInterface
      */
     private $orderItemRepository;
+    /**
+     * @var RmaRepositoryInterface
+     */
+    private $rmaRepository;
+    /**
+     * @var \Magento\Rma\Model\ResourceModel\Item\CollectionFactory
+     */
+    private $rmaItemFactory;
+    /**
+     * @var \Magento\Rma\Model\Rma\Source\StatusFactory
+     */
+    private $rmaStatusFactory;
+    /**
+     * @var \Magento\Rma\Model\Rma\Status\HistoryFactory
+     */
+    private $historyFactory;
 
     /**
      * SapOrderManagement constructor.
@@ -99,6 +119,10 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @param Logger $logger
      * @param Config $config
      * @param OrderItemRepositoryInterface $orderItemRepository
+     * @param RmaRepositoryInterface $rmaRepository
+     * @param \Magento\Rma\Model\ResourceModel\Item\CollectionFactory $rmaItemFactory
+     * @param \Magento\Rma\Model\Rma\Source\StatusFactory $rmaStatusFactory
+     * @param \Magento\Rma\Model\Rma\Status\HistoryFactory $historyFactory
      */
     public function __construct(
         ShipmentItemCreationInterfaceFactory $shipmentItemCreationInterfaceFactory,
@@ -112,7 +136,11 @@ class SapOrderManagement implements SapOrderManagementInterface
         Payment $ecpayPayment,
         Logger $logger,
         Config $config,
-        OrderItemRepositoryInterface $orderItemRepository
+        OrderItemRepositoryInterface $orderItemRepository,
+        RmaRepositoryInterface $rmaRepository,
+        \Magento\Rma\Model\ResourceModel\Item\CollectionFactory $rmaItemFactory,
+        \Magento\Rma\Model\Rma\Source\StatusFactory $rmaStatusFactory,
+        \Magento\Rma\Model\Rma\Status\HistoryFactory $historyFactory
     ) {
         $this->shipmentItemCreationInterfaceFactory = $shipmentItemCreationInterfaceFactory;
         $this->shipmentTrackCreationInterfaceFactory = $shipmentTrackCreationInterfaceFactory;
@@ -126,6 +154,10 @@ class SapOrderManagement implements SapOrderManagementInterface
         $this->logger = $logger;
         $this->config = $config;
         $this->orderItemRepository = $orderItemRepository;
+        $this->rmaRepository = $rmaRepository;
+        $this->rmaItemFactory = $rmaItemFactory;
+        $this->rmaStatusFactory = $rmaStatusFactory;
+        $this->historyFactory = $historyFactory;
     }
 
     public function orderStatus($orderStatusData)
@@ -200,80 +232,109 @@ class SapOrderManagement implements SapOrderManagementInterface
             $order = $this->getOrderFromList($incrementId);
             $trackingNo = $orderStatusData['ztrackId'];
 
-            if ($order->getStatus() == 'preparing') {
-                $shipmentCheck = $order->hasShipments();
+            $rma = $this->getRma($order->getEntityId());
 
-                if (!$shipmentCheck) {
-                    try {
-                        $shipmentId = $this->createShipment($order, $trackingNo);
-                    } catch (\Exception $exception) {
-                        return $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
-                    }
-
-                    // case that failed to creat shipment in Magento
-                    if (empty($shipmentId)) {
-                        $message = "Could not create shipment.";
-                        $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-                        // case to create shipment successfully
-                    } else {
+            if (!empty($rma)) {
+                if ($order->getStatus() == 'complete' || $order->getStatus() == 'shipment_processing') {
+                    if ($rma->getStatus() == 'authorized') {
                         try {
-                            $this->setQtyShipToOrderItem($order);
-                            $order->setStatus('shipment_processing');
-                            $this->orderRepository->save($order);
-
-                            $message = "Shipment Created Successfully.";
+                            $this->rmaChangeToReceived($rma);
+                            $message = "Rma status changed to received Successfully.";
                             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
-
-                            if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
-                                $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
-                                if ($this->config->getLoggingCheck()) {
-                                    $this->logger->info('EINVOICE ISSUE RESULT');
-                                    $this->logger->info($this->json->serialize($ecpayInvoiceResult));
-                                }
-                            }
+                        } catch (LocalizedException $exception) {
+                            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
                         } catch (\Exception $exception) {
-                            $message = "Something went wrong while saving preparing order : " . $incrementId;
-                            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-                            $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
+                            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
                         }
+                    } else {
+                        $message = "RMA Status is not Authorized.";
+                        $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                     }
                 } else {
-                    if ($order->getStatus() != 'shipment_processing') {
+                    $message = "Order Status is not proper status to change rma status.";
+                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                }
+            } else {
+                if ($order->getStatus() == 'preparing') {
+                    $shipmentCheck = $order->hasShipments();
+
+                    if (!$shipmentCheck) {
                         try {
-                            $this->setQtyShipToOrderItem($order);
-
-                            if ($order->getStatus() == 'complete') {
-                                $order->setStatus('shipment_processing');
-                                $this->orderRepository->save($order);
-                            } else {
-                                $order->setState('complete');
-                                $order->setStatus('shipment_processing');
-                                $this->orderRepository->save($order);
-                            }
-
-                            $message = "Order already has a shipment";
-                            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-
-                            if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
-                                $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
-                            }
+                            $shipmentId = $this->createShipment($order, $trackingNo);
                         } catch (\Exception $exception) {
-                            $message = "Something went wrong while saving order : " . $incrementId;
+                            return $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
+                        }
+
+                        // case that failed to creat shipment in Magento
+                        if (empty($shipmentId)) {
+                            $message = "Could not create shipment.";
                             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-                            if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                            // case to create shipment successfully
+                        } else {
+                            try {
+                                $this->setQtyShipToOrderItem($order);
+                                $order->setStatus('shipment_processing');
+                                $this->orderRepository->save($order);
+
+                                $message = "Shipment Created Successfully.";
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+
+                                if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                                    $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
+                                    $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
+                                    if ($this->config->getLoggingCheck()) {
+                                        $this->logger->info('EINVOICE ISSUE RESULT');
+                                        $this->logger->info($this->json->serialize($ecpayInvoiceResult));
+                                    }
+                                }
+                            } catch (\Exception $exception) {
+                                $message = "Something went wrong while saving preparing order : " . $incrementId;
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                                 $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
                             }
                         }
                     } else {
-                        $message = "Order already has a shipment and Order Status is already Shipment Processing.";
-                        $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                        if ($order->getShippingMethod() == 'gwlogistics_CVS') {
+                            if ($order->getStatus() != 'shipment_processing') {
+                                try {
+                                    $this->setQtyShipToOrderItem($order);
+
+                                    if ($order->getStatus() == 'complete') {
+                                        $order->setStatus('shipment_processing');
+                                        $this->orderRepository->save($order);
+                                    } else {
+                                        $order->setState('complete');
+                                        $order->setStatus('shipment_processing');
+                                        $this->orderRepository->save($order);
+                                    }
+
+                                    $message = "Order already has a shipment. Order Status changed to Shipment Processing.";
+                                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+
+                                    if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                                        $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
+                                        $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
+                                    }
+                                } catch (\Exception $exception) {
+                                    $message = "Something went wrong while saving order : " . $incrementId;
+                                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                                    if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                                        $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
+                                    }
+                                }
+                            } else {
+                                $message = "Order already has a shipment and Order Status is already Shipment Processing.";
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                            }
+                        } else {
+                            $message = "Shipping method is not Greenworld and Shipment exists. Please Check Order.";
+                            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                        }
                     }
+                } else {
+                    $message = "Order Status is not Preparing.";
+                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                 }
-            } else {
-                $message = "Order Status is not Preparing.";
-                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
             }
         } elseif ($orderStatusData['odrstat'] == 9) {
             $message = "Other order status return.";
@@ -422,5 +483,109 @@ class SapOrderManagement implements SapOrderManagementInterface
             $shipmentItems[] = $shipmentItem;
         }
         return $shipmentItems;
+    }
+
+    public function getRma($orderId)
+    {
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('order_id', $orderId, 'eq')
+            ->addFilter('status', 'authorized', 'eq')
+            ->create();
+
+        $rma = $this->rmaRepository->getList($searchCriteria)->getItems();
+        $rmaCount = $this->rmaRepository->getList($searchCriteria)->getTotalCount();
+
+        if ($rmaCount >= 1) {
+            return reset($rma);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param $rma \Magento\Rma\Model\Rma
+     * @param $order \Magento\Sales\Model\Order
+     */
+    public function rmaChangeToReceived($rma)
+    {
+        try {
+            /** @var $sourceStatus \Magento\Rma\Model\Rma\Source\Status */
+            $sourceStatus = $this->rmaStatusFactory->create();
+            $rma->setStatus($sourceStatus->getStatusByItems($this->getRmaItemStatus($rma->getEntityId())))->setIsUpdate(1);
+
+            if (!$rma->saveRma($this->getRmaRequestData($rma))) {
+                $this->logger->critical(__("Cron Could not save RMA %1.", $rma->getEntityId()));
+            }
+
+            /** @var $statusHistory \Magento\Rma\Model\Rma\Status\History */
+            $statusHistory = $this->historyFactory->create();
+            $statusHistory->setRmaEntityId($rma->getEntityId());
+            if ($rma->getIsSendAuthEmail()) {
+                $statusHistory->sendAuthorizeEmail();
+            }
+            if ($rma->getStatus() !== $rma->getOrigData('status')) {
+                $statusHistory->saveSystemComment();
+            }
+        } catch (LocalizedException $e) {
+            $this->logger->critical('Change Status EXCEPTION : ' . $e->getMessage());
+            throw new LocalizedException(__('Change Status EXCEPTION : ' . $e->getMessage()));
+        } catch (\Exception $e) {
+            $this->logger->critical('Change Status EXCEPTION : ' . $e->getMessage());
+            throw new Exception(__('Change Status EXCEPTION : ' . $e->getMessage()));
+        }
+    }
+
+    /**
+     * @param \Magento\Rma\Model\Rma $rma
+     * @param \Magento\Sales\Model\Order $order
+     * @return array
+     */
+    public function getRmaRequestData($rma)
+    {
+        $requestData = [
+            'entity_id' => $rma->getEntityId(),
+            'title' => '',
+            'number' => '',
+            'items' => $this->getRmaItemData($rma->getEntityId())
+        ];
+        return $requestData;
+    }
+
+    public function getRmaItemData($rmaId)
+    {
+        $itemData = [];
+        $rmaItemCollection = $this->getRmaItemCollection($rmaId);
+        /** @var \Magento\Rma\Model\Item $rmaItem */
+        foreach ($rmaItemCollection as $rmaItem) {
+            $itemData[$rmaItem->getEntityId()] = [
+                'qty_returned' => $rmaItem->getQtyAuthorized(),
+                'status' => 'received',
+                'order_item_id' => $rmaItem->getOrderItemId(),
+                'entity_id' => $rmaItem->getEntityId(),
+                'resolution' => $rmaItem->getResolution()
+            ];
+        }
+        return $itemData;
+    }
+
+    public function getRmaItemCollection($rmaId)
+    {
+        /** @var \Magento\Rma\Model\ResourceModel\Item\Collection $rmaItemCollection */
+        $rmaItemCollection = $this->rmaItemFactory->create();
+        $rmaItemCollection->addFieldToFilter('rma_entity_id', $rmaId)
+            ->addAttributeToSelect("*");
+
+        return $rmaItemCollection->getItems();
+    }
+
+    public function getRmaItemStatus($rmaId)
+    {
+        $statuses = [];
+        $rmaItemCollection = $this->getRmaItemCollection($rmaId);
+        /** @var \Magento\Rma\Model\Item $rmaItem */
+        foreach ($rmaItemCollection as $rmaItem) {
+            $statuses[$rmaItem->getId()] = 'received';
+        }
+        return $statuses;
     }
 }

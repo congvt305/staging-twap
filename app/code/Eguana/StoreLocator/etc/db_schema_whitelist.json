@@ -14,10 +14,25 @@
             "area": true
         },
         "index": {
-            "STOREINFO_STORE_ID_TITLE_ADDRESS": true
+            "STOREINFO_ENTITY_ID": true,
+            "STOREINFO_TITLE_ADDRESS": true
         },
         "constraint": {
             "PRIMARY": true
+        }
+    },
+    "eguana_storelocator_store": {
+        "column": {
+            "entity_id": true,
+            "store_id": true
+        },
+        "index": {
+            "EGUANA_STORELOCATOR_STORE_STORE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "EGUANA_STORELOCATOR_STORE_ENTITY_ID_STOREINFO_ENTITY_ID": true,
+            "EGUANA_STORELOCATOR_STORE_STORE_ID_STORE_STORE_ID": true
         }
     }
 }

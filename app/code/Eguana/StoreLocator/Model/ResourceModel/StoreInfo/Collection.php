@@ -9,14 +9,13 @@
  */
 namespace Eguana\StoreLocator\Model\ResourceModel\StoreInfo;
 
+use Eguana\StoreLocator\Api\Data\StoreInfoInterface;
+use Eguana\StoreLocator\Model\ResourceModel\AbstractCollection;
 use Eguana\StoreLocator\Model\ResourceModel\StoreInfo as ResourceModel;
 use Eguana\StoreLocator\Model\StoreInfo as Model;
-use Magento\Framework\Api\ExtensibleDataInterface;
-use Magento\Framework\Api\Search\AggregationInterface;
-use Magento\Framework\Api\Search\SearchResultInterface;
-use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\DB\Select as SelectAlias;
-use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+use Magento\Framework\Exception\NoSuchEntityException as NoSuchEntityExceptionAlias;
+use Magento\Store\Model\Store as StoreAlias;
 
 /**
  * Collection class for store info
@@ -24,9 +23,16 @@ use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
  * Class Collection
  *  Eguana\StoreLocator\Model\ResourceModel\StoreInfo
  */
-class Collection extends AbstractCollection implements SearchResultInterface
+class Collection extends AbstractCollection
 {
+    /**
+     * @var
+     */
     protected $aggregations;
+
+    /**
+     * @var string
+     */
     protected $_idFieldName = 'entity_id';
 
     /**
@@ -35,94 +41,35 @@ class Collection extends AbstractCollection implements SearchResultInterface
     protected function _construct()
     {
         $this->_init(Model::class, ResourceModel::class);
+        $this->_map['fields']['store'] = 'store_table.store_id';
+        $this->_map['fields']['entity_id'] = 'main_table.entity_id';
     }
 
     /**
-     * getter
-     * @return AggregationInterface
+     * Add filters after load
+     * @return Collection
+     * @throws NoSuchEntityExceptionAlias
      */
-    public function getAggregations()
+    protected function _afterLoad()
     {
-        return $this->aggregations;
+        $entityMetadata = $this->metadataPool->getMetadata(StoreInfoInterface::class);
+        $this->performAfterLoad('eguana_storelocator_store', $entityMetadata->getLinkField());
+        return parent::_afterLoad();
     }
 
     /**
-     * setter
-     * @param AggregationInterface $aggregations
-     * @return SearchResultInterface|void
+     * Add store filter on collection
+     * @param array|int|StoreAlias $store
+     * @param bool $withAdmin
+     * @return $this|Collection
      */
-    public function setAggregations($aggregations)
+    public function addStoreFilter($store, $withAdmin = true)
     {
-        $this->aggregations = $aggregations;
-    }
-
-    /**
-     * Retrieve all ids for collection
-     * Backward compatibility with EAV collection
-     *
-     * @param int $limit
-     * @param int $offset
-     * @return array
-     */
-    public function getAllIds($limit = null, $offset = null)
-    {
-        return $this->getConnection()->fetchCol($this->_getAllIdsSelect($limit, $offset), $this->_bindParams);
-    }
-
-    /**
-     * Get search criteria.
-     *
-     * @return SearchCriteriaInterface|null
-     */
-    public function getSearchCriteria()
-    {
-        return null;
-    }
-
-    /**
-     * Set search criteria.
-     *
-     * @param SearchCriteriaInterface $searchCriteria
-     * @return $this
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public function setSearchCriteria(SearchCriteriaInterface $searchCriteria = null)
-    {
+        if (!$this->getFlag('store_filter_added')) {
+            $this->performAddStoreFilter($store, $withAdmin);
+            $this->setFlag('store_filter_added', true);
+        }
         return $this;
-    }
-
-    /**
-     * Get total count.
-     *
-     * @return int
-     */
-    public function getTotalCount()
-    {
-        return $this->getSize();
-    }
-
-    /**
-     * Set total count.
-     *
-     * @param int $totalCount
-     * @return $this
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public function setTotalCount($totalCount)
-    {
-        return $this;
-    }
-
-    /**
-     * Set items list.
-     *
-     * @param ExtensibleDataInterface[] $items
-     * @return array|ExtensibleDataInterface[]
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public function setItems(array $items = null)
-    {
-        return $items;
     }
 
     /**
@@ -152,8 +99,7 @@ class Collection extends AbstractCollection implements SearchResultInterface
     }
 
     /**
-     * SHORT DESCRIPTION
-     * LONG DESCRIPTION LINE BY LINE
+     * Get select count
      * @return SelectAlias
      */
     public function getSelectCountSql()
@@ -170,5 +116,16 @@ class Collection extends AbstractCollection implements SearchResultInterface
         $countSelect->reset(SelectAlias::COLUMNS);
         $countSelect->columns(new \Zend_Db_Expr('COUNT(*)'));
         return $countSelect;
+    }
+
+    /**
+     * Join store relation table if there is store filter
+     *
+     * @return void
+     */
+    protected function _renderFiltersBefore()
+    {
+        $entityMetadata = $this->metadataPool->getMetadata(StoreInfoInterface::class);
+        $this->joinStoreRelationTable('eguana_storelocator_store', $entityMetadata->getLinkField());
     }
 }

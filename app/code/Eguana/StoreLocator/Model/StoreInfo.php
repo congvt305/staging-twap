@@ -44,7 +44,6 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
             'address',
             'telephone',
             'location',
-            'store_id',
             'created_at',
             'email',
             'store_type'
@@ -119,16 +118,6 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
     public function setCreatedAt($createdAt)
     {
         return $this->setData(self::CREATED_AT, $createdAt);
-    }
-
-    /**
-     * setter
-     * @param $storeId
-     * @return StoreInfo
-     */
-    public function setStoreId($storeId)
-    {
-        return $this->setData(self::STORE_ID, $storeId);
     }
 
     /**
@@ -212,14 +201,6 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
     /**
      * getter
      */
-    public function getStoreId()
-    {
-        return $this->getData(self::STORE_ID);
-    }
-
-    /**
-     * getter
-     */
     public function getEmail()
     {
         return $this->getData(self::EMAIL);
@@ -258,14 +239,13 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
         if (isset($storeInfoData['entity_id'])) {
             $this->load($storeInfoData['entity_id']);
         }
-
         $this->setData('title', $storeInfoData['title']);
         $this->setData('area', $storeInfoData['area']);
         $this->setData('store_type', $storeInfoData['store_type']);
         $this->setData('address', $storeInfoData['address']);
         $this->setData('telephone', $storeInfoData['telephone']);
         $this->setData('location', $storeInfoData['location']);
-        $this->setData('store_id', implode(',', $storeInfoData['store_id']));
+        $this->setData('stores', $storeInfoData['store_id']);
         $this->setData('email', $storeInfoData['email']);
         $this->setData('timing', $storeInfoData['timing']);
     }
@@ -276,5 +256,15 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
     public function getIdentities()
     {
         return [self::CACHE_TAG . '_' . $this->getId()];
+    }
+
+    /**
+     * Receive page store ids
+     *
+     * @return int[]
+     */
+    public function getStores()
+    {
+        return $this->hasData('stores') ? $this->getData('stores') : $this->getData('store_id');
     }
 }
