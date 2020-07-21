@@ -26,8 +26,13 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      * @var Json
      */
     private $jsonSerializer;
+    /**
+     * @var \Magento\Customer\Model\Session
+     */
+    private $customerSession;
 
     public function __construct(
+        \Magento\Customer\Model\Session $customerSession,
         \Magento\Framework\Serialize\Serializer\Json $jsonSerializer,
         \Magento\Framework\Registry $registry,
         \Amore\GaTagging\Helper\Data $helper,
@@ -38,6 +43,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $this->helper = $helper;
         $this->registry = $registry;
         $this->jsonSerializer = $jsonSerializer;
+        $this->customerSession = $customerSession;
     }
 
     /**
@@ -121,6 +127,22 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     public function getSearchType()
     {
         return '직접입력';
+    }
+
+    public function getCustomerRegisterSuccess()
+    {
+        if ($this->customerSession->getData('customer_register_success', true)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getJoinName()
+    {
+        if ($this->getCustomerRegisterSuccess()) {
+            return '가입완료';
+        }
+        return '';
     }
 
 
