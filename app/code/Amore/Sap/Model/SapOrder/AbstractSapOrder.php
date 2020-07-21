@@ -75,7 +75,7 @@ abstract class AbstractSapOrder
         }
     }
 
-    public function getOrderInfo($incrementId)
+    public function getOrderInfo($incrementId, $type = 'order')
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('increment_id', $incrementId, 'eq')
