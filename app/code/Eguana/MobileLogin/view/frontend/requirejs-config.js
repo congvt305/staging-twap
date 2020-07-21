@@ -11,7 +11,16 @@ var config = {
         '*': {
             mobileLoginRule: "Eguana_MobileLogin/js/mobileLoginValidationRule",
             'Magento_Checkout/template/form/element/email.html': 'Eguana_MobileLogin/template/form/element/email.html',
-            'Magento_Checkout/js/view/form/element/email': 'Eguana_MobileLogin/js/view/form/element/email'
+        }
+    },
+    config: {
+        mixins: {
+            'Magento_Checkout/js/view/form/element/email': {
+                'Eguana_MobileLogin/js/view/form/element/email': true
+            },
+            'Magento_Checkout/js/view/shipping': {
+                'Eguana_MobileLogin/js/view/shipping': true
+            }
         }
     }
 };
