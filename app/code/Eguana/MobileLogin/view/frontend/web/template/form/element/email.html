@@ -3,6 +3,11 @@
 <!-- ko foreach: getRegion('before-login-form') -->
 <!-- ko template: getTemplate() --><!-- /ko -->
 <!-- /ko -->
+<!-- ko if: getMobileLoginConfig() -->
+<div id="mobilelogin-popup-modal">
+    <span data-bind="i18n: 'Please enter a valid email address (Ex: johndoe@domain.com).'"></span>
+</div>
+<!-- /ko -->
 <form class="form form-login" data-role="email-with-possible-login"
       data-bind="submit:login"
       method="post">
@@ -19,7 +24,7 @@
             <div class="control _with-tooltip">
                 <!-- ko if: getMobileLoginConfig() -->
                 <input class="input-text"
-                       type="tel"
+                       type="text"
                        data-bind="
                             textInput: email,
                             hasFocus: emailFocused,

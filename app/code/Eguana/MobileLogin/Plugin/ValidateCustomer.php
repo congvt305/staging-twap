@@ -106,8 +106,10 @@ class ValidateCustomer
     {
         $customerCount = null;
         $customerEmail = null;
+        $websiteId = $this->storeManager->getStore()->getWebsiteId();
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('mobile_number', $customerData, 'eq')
+            ->addFilter('website_id', $websiteId)
             ->create();
         $customerObj = $this->customerRepository->getList($searchCriteria);
         $customerCount = $customerObj->getTotalCount();
