@@ -18,6 +18,16 @@
     <div class="block order additional details e-invoices">
         <div class="block-title"><strong><?= $block->escapeHtml(__("E-Invoice Information")) ?></strong></div>
         <div class="block-content order e-invoice">
+            <?php if ($block->hasEInvoiceTriplicateData($block->getOrderId()) > 0) : ?>
+                <div class="box">
+                    <strong class="box-title"><span><?= $block->escapeHtml(__("E-Invoice Title")) ?></span></strong>
+                    <div class="box-content"><?= $block->escapeHtml(__($block->getEInvoiceTitle($block->getOrderId()))) ?></div>
+                </div>
+                <div class="box">
+                    <strong class="box-title"><span><?= $block->escapeHtml(__("E-Invoice Tax ID Number")) ?></span></strong>
+                    <div class="box-content"><?= $block->escapeHtml(__($block->getEInvoiceTaxIdNumber($block->getOrderId()))) ?></div>
+                </div>
+            <?php endif;?>
             <div class="box">
                 <strong class="box-title"><span><?= $block->escapeHtml(__("E-Invoice Date")) ?></span></strong>
                 <div class="box-content"><?= $block->escapeHtml(__($block->getEInvoiceDate($block->getOrderId()))) ?></div>

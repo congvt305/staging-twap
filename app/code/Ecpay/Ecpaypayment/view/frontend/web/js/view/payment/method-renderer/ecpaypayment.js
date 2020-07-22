@@ -43,7 +43,9 @@ define(
                     'method': this.getCode(),
                     'additional_data': {
                         'ecpay_choosen_payment': this.paymentMethod(),
-                        'ecpay_einvoice_donation': $("input:radio[name=e-invoice-donation]:checked").val()
+                        'ecpay_einvoice_donation': $("input:radio[name=e-invoice-donation]:checked").val(),
+                        'ecpay_einvoice_title': $("input:text[name=invoice_title]").val(),
+                        'ecpay_einvoice_tax_id_number': $("input:text[name=tax_id_number]").val()
                     }
                 };
                 return data;
