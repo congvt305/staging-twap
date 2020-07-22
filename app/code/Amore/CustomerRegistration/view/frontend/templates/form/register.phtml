@@ -178,6 +178,22 @@ $viewModel = $block->getData('view_model');
                 <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
             <?php endif ?>
 
+            <?php $_smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getSmsSubscriptionStatus())]]) ?>
+            <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus())]]) ?>
+            <?php $_termsAndServicesPolicy = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'terms_and_services_policy', ['data'=>['attribute_code'=>'terms_and_services_policy', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getTermsAndServicesPolicy())]]) ?>
+
+            <?php if ($_smsSubscriptionStatus->isEnabled() || $_dmSubscriptionStatus->isEnabled()) : ?>
+                <p class="marketing-title"><?= $block->escapeHtml(__('Marketing Consent')) ?></p>
+            <?php endif ?>
+
+            <?php if ($_termsAndServicesPolicy->isEnabled()) : ?>
+                <?= $_termsAndServicesPolicy->setDate($block->getFormData()->getTermsAndServicesPolicy())->toHtml() ?>
+            <?php endif ?>
+
+            <?php if ($_smsSubscriptionStatus->isEnabled()) : ?>
+                <?= $_smsSubscriptionStatus->setDate($block->getFormData()->getSmsSubscriptionStatus())->toHtml() ?>
+            <?php endif ?>
+
             <?php if ($block->isNewsletterEnabled()) : ?>
                 <div class="field choice newsletter">
                     <input type="checkbox" name="is_subscribed" title="<?= $block->escapeHtmlAttr(__('Sign Up for Newsletter')) ?>" value="1" id="is_subscribed"<?php if ($block->getFormData()->getIsSubscribed()) : ?> checked="checked"<?php endif; ?> class="checkbox">
@@ -188,29 +204,13 @@ $viewModel = $block->getData('view_model');
                 </div>
                 <div class="news-letter-policy-popup" style="display: none;">
                     <?= /* @noEscape */
-                        $block->getLayout()
+                    $block->getLayout()
                         ->createBlock('Magento\Cms\Block\Block')
                         ->setBlockId($viewModel->getNewsLetterPolicyCMSBlockId())
                         ->toHtml(); ?>
                 </div>
                 <?php /* Extensions placeholder */ ?>
                 <?= $block->getChildHtml('customer.form.register.newsletter') ?>
-            <?php endif ?>
-
-            <?php $_smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getSmsSubscriptionStatus())]]) ?>
-            <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus())]]) ?>
-            <?php $_termsAndServicesPolicy = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'terms_and_services_policy', ['data'=>['attribute_code'=>'terms_and_services_policy', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getTermsAndServicesPolicy())]]) ?>
-
-            <?php if ($_smsSubscriptionStatus->isEnabled() || $_dmSubscriptionStatus->isEnabled()) : ?>
-                <p class="marketing-title"><?= $block->escapeHtml(__('Marketing Consent')) ?></p>
-            <?php endif ?>
-
-            <?php if ($_smsSubscriptionStatus->isEnabled()) : ?>
-                <?= $_smsSubscriptionStatus->setDate($block->getFormData()->getSmsSubscriptionStatus())->toHtml() ?>
-            <?php endif ?>
-
-            <?php if ($_termsAndServicesPolicy->isEnabled()) : ?>
-                <?= $_termsAndServicesPolicy->setDate($block->getFormData()->getTermsAndServicesPolicy())->toHtml() ?>
             <?php endif ?>
 
             <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
