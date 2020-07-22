@@ -83,12 +83,13 @@ class AddressRepositoryPlugin
         $order = $this->orderRepository->get($orderId);
         $orderStatus = $order->getStatus();
 
-        $availableStatus = ['sap_processing'];
+        $availableStatus = ['sap_processing', 'sap_success', 'sap_fail'];
 
-        $enableCheck = $this->config->getActiveCheck('store', $order->getStoreId());
+        $enableSapCheck = $this->config->getActiveCheck('store', $order->getStoreId());
+        $enableAddressCheck = $this->config->getAddressActiveCheck('store', $order->getStoreId());
 
-        if (in_array($orderStatus, $availableStatus)) {
-            if ($enableCheck) {
+        if ($enableSapCheck && $enableAddressCheck) {
+            if (in_array($orderStatus, $availableStatus)) {
                 if (!$this->config->checkTestMode()) {
                     try {
                         $orderUpdateData = $this->sapOrderCancelData->singleAddressUpdateData($order->getIncrementId(), $entity);
@@ -126,42 +127,42 @@ class AddressRepositoryPlugin
                         throw new \Exception(__('SAP : ' . $e->getMessage()));
                     }
                 } else {
-                    throw new \Exception(__('Cannot change the shipping address with current order status.'));
-                }
-            } else {
-                $testData = $this->sapOrderCancelData->getTestCancelOrder();
+                    $testData = $this->sapOrderCancelData->getTestCancelOrder();
 
-                $jsonTestData = $this->json->serialize($testData);
+                    $jsonTestData = $this->json->serialize($testData);
 
-                try {
-                    $result = $this->request->postRequest($jsonTestData, 0, 'cancel');
+                    try {
+                        $result = $this->request->postRequest($jsonTestData, 0, 'cancel');
 
-                    if ($this->config->getLoggingCheck()) {
-                        $this->logger->info("Order Address Test Update Result Data");
-                        $this->logger->info($this->json->serialize($result));
-                    }
+                        if ($this->config->getLoggingCheck()) {
+                            $this->logger->info("Order Address Test Update Result Data");
+                            $this->logger->info($this->json->serialize($result));
+                        }
 
-                    $resultSize = count($result);
+                        $resultSize = count($result);
 
-                    if ($resultSize > 0) {
-                        if ($result['code'] == '0000') {
-                            $responseHeader = $result['data']['response']['header'];
-                            if ($responseHeader['rtn_TYPE'] == 'S') {
-                                $this->messageManager->addSuccessMessage(__('Test Order Address Update sent to SAP Successfully.'));
+                        if ($resultSize > 0) {
+                            if ($result['code'] == '0000') {
+                                $responseHeader = $result['data']['response']['header'];
+                                if ($responseHeader['rtn_TYPE'] == 'S') {
+                                    $this->messageManager->addSuccessMessage(__('Test Order Address Update sent to SAP Successfully.'));
+                                } else {
+                                    throw new \Exception(__('Error returned from SAP for Test order. Error code : %1. Message : %2', $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                                }
                             } else {
-                                throw new \Exception(__('Error returned from SAP for Test order. Error code : %1. Message : %2', $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                                throw new \Exception(__('Error returned from SAP for Test order. Error code : %1. Message : %2', $result['code'], $result['message']));
                             }
                         } else {
-                            throw new \Exception(__('Error returned from SAP for Test order. Error code : %1. Message : %2', $result['code'], $result['message']));
+                            throw new \Exception(__('Something went wrong while sending order address update data to SAP. No response.'));
                         }
-                    } else {
-                        throw new \Exception(__('Something went wrong while sending order address update data to SAP. No response.'));
+                    } catch (LocalizedException $e) {
+                        throw new LocalizedException(__('SAP : ' . $e->getMessage()));
+                    } catch (\Exception $e) {
+                        throw new \Exception(__('SAP : ' . $e->getMessage()));
                     }
-                } catch (LocalizedException $e) {
-                    throw new LocalizedException(__('SAP : ' . $e->getMessage()));
-                } catch (\Exception $e) {
-                    throw new \Exception(__('SAP : ' . $e->getMessage()));
                 }
+            } else {
+                throw new \Exception(__('Cannot change the shipping address with current order status.'));
             }
         }
     }

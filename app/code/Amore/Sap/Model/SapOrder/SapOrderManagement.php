@@ -202,12 +202,30 @@ class SapOrderManagement implements SapOrderManagementInterface
             return $result;
         }
 
+        if ($orderStatusData['odrstat'] == 1) {
+            $message = "Order Status Success.";
+            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+
+            $order = $this->getOrderFromList($incrementId);
+            $order->setStatus('sap_success');
+            $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+            $this->orderRepository->save($order);
+
+            return $result;
+        }
+
         // case that order created error in SAP
         // 가용재고 부족 등 상태로 왔을 때 주문 취소할지 아니면 관리자에게 알릴지 다른 방법 찾아야 함
         // 아모레쪽이랑 어떻게 처리할지 얘기 필요
         if ($orderStatusData['odrstat'] == 2) {
             $message = "Order Status Error. Please Check order status.";
             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+
+            $order = $this->getOrderFromList($incrementId);
+            $order->setStatus('sap_fail');
+            $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+            $this->orderRepository->save($order);
+
             return $result;
         }
 
@@ -215,7 +233,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         if ($orderStatusData['odrstat'] == 3) {
             $order = $this->getOrderFromList($incrementId);
             try {
-                if ($order->getStatus() == "sap_processing") {
+                if ($order->getStatus() == "sap_success") {
                     $order->setStatus('preparing');
                     $this->orderRepository->save($order);
                     $message = "Order status changed to preparing successfully.";

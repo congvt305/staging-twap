@@ -96,7 +96,8 @@ class CreditmemoRepositoryPlugin
     public function afterSave(\Magento\Sales\Model\Order\CreditmemoRepository $subject, $result, \Magento\Sales\Api\Data\CreditmemoInterface $entity)
     {
         $storeId = $result->getStoreId();
-        $enableCheck = $this->config->getActiveCheck('store', $storeId);
+        $enableSapCheck = $this->config->getActiveCheck('store', $storeId);
+        $enableCreditmemoCheck = $this->config->getCreditmemoActiveCheck('store', $storeId);
         $order = $this->orderRepository->get($result->getOrderId());
         $orderStatus = $order->getStatus();
 
@@ -106,8 +107,8 @@ class CreditmemoRepositoryPlugin
         $creditMemoOrder = $entity->getOrder();
         $creditMemoOrder->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_BEFORE);
 
-        if (in_array($orderStatus, $availableStatus)) {
-            if ($enableCheck) {
+        if ($enableSapCheck && $enableCreditmemoCheck) {
+            if (in_array($orderStatus, $availableStatus)) {
                 if (!$this->config->checkTestMode()) {
                     try {
                         $orderUpdateData = $this->sapOrderCancelData->singleOrderData($order->getIncrementId());
@@ -134,7 +135,7 @@ class CreditmemoRepositoryPlugin
                                         $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                                     } catch (\Exception $exception) {
                                         $creditMemoOrder->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                                        $this->messageManager->addErrorMessage(__('Something went wrong while saving order %1. Message : %2', $order->getIncrementId(),$exception->getMessage()));
+                                        $this->messageManager->addErrorMessage(__('Something went wrong while saving order %1. Message : %2', $order->getIncrementId(), $exception->getMessage()));
                                     }
                                 } else {
                                     $creditMemoOrder->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
@@ -221,4 +222,5 @@ class CreditmemoRepositoryPlugin
             return null;
         }
     }
+
 }
