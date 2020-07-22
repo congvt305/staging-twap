@@ -88,21 +88,20 @@ class SapOrderConfirmData extends AbstractSapOrder
 
     /**
      * @param $incrementId
-     * @param string $type
      * @return array[]
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function singleOrderData($incrementId, $type = 'order')
+    public function singleOrderData($incrementId)
     {
         /** @var Order $order */
-        $order = $this->getOrderInfo($incrementId, $type);
+        $order = $this->getOrderInfo($incrementId);
         $orderSendCheck = $order->getData('sap_order_send_check');
         $incrementIdForSap = $this->getOrderIncrementId($order->getIncrementId(), $orderSendCheck);
 
         $source = $this->config->getSourceByStore('store', $order->getStoreId());
-        $orderData = $this->getOrderData($incrementId, $incrementIdForSap, $type);
-        $itemData = $this->getOrderItem($incrementId, $incrementIdForSap, $type);
+        $orderData = $this->getOrderData($incrementId, $incrementIdForSap);
+        $itemData = $this->getOrderItem($incrementId, $incrementIdForSap);
 
         if (empty($orderData) && empty($itemData)) {
             $msg = __("Order Data and Item Data do not exist.");
@@ -170,19 +169,12 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $orderType;
     }
 
-    public function getOrderInfo($incrementId, $type = 'order')
+    public function getOrderInfo($incrementId)
     {
-        if ($type == 'return') {
-            $searchCriteria = $this->searchCriteriaBuilder
-                ->addFilter('increment_id', $incrementId, 'eq')
-                ->addFilter('state', 'complete', 'eq')
-                ->create();
-        } else {
-            $searchCriteria = $this->searchCriteriaBuilder
-                ->addFilter('increment_id', $incrementId, 'eq')
-                ->addFilter('status', 'processing', 'eq')
-                ->create();
-        }
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('increment_id', $incrementId, 'eq')
+            ->addFilter('status', 'processing', 'eq')
+            ->create();
 
         $orderList = $this->orderRepository->getList($searchCriteria)->getItems();
         $orderCount = $this->orderRepository->getList($searchCriteria)->getTotalCount();
@@ -197,14 +189,13 @@ class SapOrderConfirmData extends AbstractSapOrder
     /**
      * @param $incrementId string
      * @param $sapIncrementId string
-     * @param $type string
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getOrderData($incrementId, $sapIncrementId, $type = 'order')
+    public function getOrderData($incrementId, $sapIncrementId)
     {
         /** @var Order $orderData */
-        $orderData = $this->getOrderInfo($incrementId, $type);
+        $orderData = $this->getOrderInfo($incrementId);
         $invoice = $this->getInvoice($orderData->getEntityId());
         $storeId = $orderData->getStoreId();
 
@@ -230,8 +221,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'paymtd' => $this->getPaymentCode($orderData->getPayment()->getMethod()),
                 'payde' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
                 'paytm' => $this->dateFormatting($invoice->getCreatedAt(), 'His'),
-                'auart' => $this->getOrderType($orderData->getEntityId()),
-                'augru' => 'ORDER REASON',
+                'auart' => self::NORMAL_ORDER,
+                'augru' => '',
                 'augruText' => 'ORDER REASON TEXT',
                 // 주문자회원코드-직영몰자체코드
                 'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
@@ -249,7 +240,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'waerk' => $orderData->getOrderCurrencyCode(),
                 'nsamt' => $orderData->getSubtotalInclTax(),
                 'dcamt' => abs($orderData->getDiscountAmount()),
-                'slamt' => $orderData->getGrandTotal() - $orderData->getShippingAmount(),
+                'slamt' => $orderData->getGrandTotal() == 0 ? $orderData->getGrandTotal() : $orderData->getGrandTotal() - $orderData->getShippingAmount(),
                 'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : $orderData->getRewardPointsBalance(),
                 'shpwr' => $orderData->getShippingAmount(),
                 'mwsbp' => $orderData->getTaxAmount(),
@@ -360,16 +351,15 @@ class SapOrderConfirmData extends AbstractSapOrder
     /**
      * @param string $incrementId
      * @param string $sapIncrementId
-     * @param string $type
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getOrderItem($incrementId, $sapIncrementId, $type = 'order')
+    public function getOrderItem($incrementId, $sapIncrementId)
     {
         $orderItemData = [];
 
         /** @var Order $order */
-        $order = $this->getOrderInfo($incrementId, $type);
+        $order = $this->getOrderInfo($incrementId);
         $storeId = $order->getStoreId();
 //        $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount());
         $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
@@ -421,8 +411,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                     // 상품이 무상제공인 경우 Y 아니면 N
                     'itemFgflg' => $orderItem->getPrice() == 0 ? 'Y' : 'N',
                     'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
-                    'itemAuart' => $this->getOrderType($order->getEntityId()),
-                    'itemAugru' => 'order reason',
+                    'itemAuart' => self::NORMAL_ORDER,
+                    'itemAugru' => '',
                     'itemNetwr' => $itemGrandTotal,
                     'itemMwsbp' => $this->configurableProductCheck($orderItem)->getTaxAmount(),
                     'itemVkorg_ori' => $this->config->getMallId('store', $storeId),
@@ -556,7 +546,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             'payde' => $testOrderData[6],
             'paytm' => $testOrderData[7],
             'auart' => self::NORMAL_ORDER,
-            'aurgu' => '',
+            'augru' => '',
             'augruText' => '',
             'custid' => $testOrderData[8],
             'custnm' => 'Test Customer Name',

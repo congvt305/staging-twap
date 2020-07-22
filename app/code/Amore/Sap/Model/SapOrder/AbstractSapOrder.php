@@ -24,7 +24,6 @@ abstract class AbstractSapOrder
     // 잡출 반품
     const SAMPLE_RETURN = 'ZFR1';
 
-
     /**
      * @var SearchCriteriaBuilder
      */
@@ -75,7 +74,7 @@ abstract class AbstractSapOrder
         }
     }
 
-    public function getOrderInfo($incrementId, $type = 'order')
+    public function getOrderInfo($incrementId)
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('increment_id', $incrementId, 'eq')
