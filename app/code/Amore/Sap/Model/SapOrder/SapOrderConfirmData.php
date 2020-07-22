@@ -134,8 +134,13 @@ class SapOrderConfirmData extends AbstractSapOrder
         $source = $this->config->getDefaultValue('sap/mall_info/source');
         if (isset($orderData[0])) {
             $sampleOrderData = $orderData[0];
-            $sampleIncrementId = $sampleOrderData['odrno'];
-            $sampleOrder = $this->getOrderInfo($sampleIncrementId);
+            if (strpos($sampleOrderData['odrno'], '_')) {
+                list($incrementId, $date) = explode('_', $sampleOrderData['odrno']);
+            } else {
+                $incrementId = $sampleOrderData['odrno'];
+            }
+
+            $sampleOrder = $this->getOrderInfo($incrementId);
             $source = $this->config->getSourceByStore('store', $sampleOrder->getStoreId());
         }
 
