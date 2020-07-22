@@ -24,17 +24,51 @@
                 padding: 0 0 10px 0;
             }
 
-            .member-legend{
-                padding: 0 0 10px 0;
-                width: 100%;
-                box-sizing: border-box;
+            .field.choice {
+                display: block !important;
+
+                input {
+                    float: left;
+                }
+
+                label {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+
+    .sociallogin-form-actions {
+        margin-top: @indent__base;
+        text-align: center;
+
+        button {
+            width: 49%;
+
+            &.cancel {
                 float: left;
-                color: #000000;
-                line-height: 1.2;
-                font-size: 1.4rem;
-                margin: 15px 0 20px !important;
-                border-bottom: 1px solid #999999;
-                display: block;
+            }
+
+            &.login {
+                float: right;
+            }
+        }
+
+        button {
+            &:extend(.abs-button-l all);
+
+            &.login {
+                .lib-button-revert-secondary-color(
+                    @_button-color: @color-white,
+                    @_button-background: @theme__color__secondary,
+                    @_button-border: 1px solid @theme__color__secondary,
+                    @_button-color-hover: @color-white,
+                    @_button-background-hover: @theme__color__primary-alt,
+                    @_button-border-hover: 1px solid @theme__color__primary-alt,
+                    @_button-color-active: @theme__color__primary-alt,
+                    @_button-background-active: @theme__color__primary-alt,
+                    @_button-border-active: 1px solid @theme__color__primary-alt
+                );
             }
         }
     }
@@ -147,5 +181,26 @@
         margin-left: auto;
         margin-right: auto;
         max-width: 400px;
+    }
+
+    .sociallogin-login-createcustomer {
+        .page-title-wrapper {
+            border: @indent__xl solid @border-color__base;
+            border-bottom: none;
+            padding: @indent__l @indent__l 0;
+            text-align: center;
+        }
+
+        .columns {
+            border: @indent__xl solid @border-color__base;
+            border-top: none;
+            padding: 0 @indent__l @indent__l;
+        }
+
+        #eguana-form-validate {
+            margin: 0 auto;
+            min-width: 600px;
+            width: 50%;
+        }
     }
 }
