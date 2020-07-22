@@ -35,13 +35,13 @@
 
         .label {
             .lib-icon-font(
-            @_icon-font-content: @icon-search-label,
-            @_icon-font-size: 24px,
-            @_icon-font-line-height: 60px,
-            @_icon-font-color: @header-icons-color,
-            @_icon-font-color-hover: @header-icons-color-hover,
-            @_icon-font-color-active: @header-icons-color-hover,
-            @_icon-font-text-hide: true
+                @_icon-font-content: @icon-search-label,
+                @_icon-font-size: 24px,
+                @_icon-font-line-height: 60px,
+                @_icon-font-color: @header-icons-color,
+                @_icon-font-color-hover: @header-icons-color-hover,
+                @_icon-font-color-active: @header-icons-color-hover,
+                @_icon-font-text-hide: true
             );
             cursor: pointer;
             display: inline-block;
@@ -119,13 +119,15 @@
 
     .search-autocomplete {
         &:extend(.abs-add-box-sizing all);
-        display: none !important;
+        width: 646px !important;
         margin-top: -15px;
+        margin: 0 auto;
         overflow: hidden;
-        position: absolute;
+        position: relative !important;
         z-index: 3;
 
         ul {
+            width: 521px !important;
             .lib-list-reset-styles();
 
             li {
@@ -271,6 +273,9 @@
             padding-right: @indent__l;
         }
     }
+    .search-autocomplete {
+        width: 520px !important;
+    }
 }
 
 //
@@ -311,7 +316,7 @@
         .nested {
             display: block;
             padding-top: 5px;
-            position: absolute;
+            position: relative;
         }
 
         input {
