@@ -21,6 +21,7 @@ use Magento\Sales\Model\Order;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Customer\Api\CustomerRepositoryInterface;
+use function PHPUnit\Framework\isNull;
 
 class SapOrderConfirmData extends AbstractSapOrder
 {
@@ -133,8 +134,13 @@ class SapOrderConfirmData extends AbstractSapOrder
         $source = $this->config->getDefaultValue('sap/mall_info/source');
         if (isset($orderData[0])) {
             $sampleOrderData = $orderData[0];
-            $sampleIncrementId = $sampleOrderData['odrno'];
-            $sampleOrder = $this->getOrderInfo($sampleIncrementId);
+            if (strpos($sampleOrderData['odrno'], '_')) {
+                list($incrementId, $date) = explode('_', $sampleOrderData['odrno']);
+            } else {
+                $incrementId = $sampleOrderData['odrno'];
+            }
+
+            $sampleOrder = $this->getOrderInfo($incrementId);
             $source = $this->config->getSourceByStore('store', $sampleOrder->getStoreId());
         }
 
@@ -225,7 +231,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'payde' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
                 'paytm' => $this->dateFormatting($invoice->getCreatedAt(), 'His'),
                 'auart' => $this->getOrderType($orderData->getEntityId()),
-                'aurgu' => 'ORDER REASON',
+                'augru' => 'ORDER REASON',
                 'augruText' => 'ORDER REASON TEXT',
                 // 주문자회원코드-직영몰자체코드
                 'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
@@ -269,7 +275,9 @@ class SapOrderConfirmData extends AbstractSapOrder
 
     public function getOrderIncrementId($incrementId, $orderSendCheck)
     {
-        if ($orderSendCheck == 0 || $orderSendCheck == 2) {
+        if (is_null($orderSendCheck)) {
+            $incrementIdForSap = $incrementId;
+        } elseif ($orderSendCheck == 0 || $orderSendCheck == 2) {
             $currentDate = $this->timezoneInterface->date()->format('ymdHis');
             $incrementIdForSap = $incrementId . '_' . $currentDate;
         } else {
@@ -419,7 +427,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     'itemMwsbp' => $this->configurableProductCheck($orderItem)->getTaxAmount(),
                     'itemVkorg_ori' => $this->config->getMallId('store', $storeId),
                     'itemKunnr_ori' => $this->config->getClient('store', $storeId),
-                    'itemOdrno_ori' => $order->getIncrementId(),
+                    'itemOdrno_ori' => $sapIncrementId,
                     'itemPosnr_ori' => $cnt
                 ];
                 $cnt++;
