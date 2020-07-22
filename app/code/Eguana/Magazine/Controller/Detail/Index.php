@@ -13,6 +13,7 @@ use Eguana\Magazine\Api\MagazineRepositoryInterface;
 use Eguana\Magazine\Model\ResourceModel\Magazine\CollectionFactory;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\Message\ManagerInterface;
@@ -22,7 +23,6 @@ use Magento\Framework\View\Result\PageFactory;
  * Class Index
  * Controller to display detail about the magazine
  */
-
 class Index extends Action
 {
     /**
@@ -74,8 +74,7 @@ class Index extends Action
 
     /**
      * Dispatch request
-     *
-     * @return \Magento\Framework\App\ResponseInterface|ResultInterfaceAlias|void
+     * @return ResponseInterfaceAlias|ResultInterfaceAlias|void
      */
     public function execute()
     {

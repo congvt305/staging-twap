@@ -9,102 +9,71 @@
  */
 namespace Eguana\Magazine\Controller\Adminhtml\Magazine;
 
+use Eguana\Magazine\Api\MagazineRepositoryInterface as MagazineRepositoryInterfaceAlias;
 use Magento\Backend\App\Action;
+use Magento\Backend\Model\View\Result\Page as PageAlias;
+use Magento\Backend\Model\View\Result\Redirect as RedirectAlias;
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
+use Magento\Framework\Controller\Result\Redirect as RedirectAlias1;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
+use Magento\Framework\View\Result\PageFactory as PageFactoryAlias;
+use Magento\Backend\App\Action\Context;
 
 /**
  * Action for Edit Button
  * Class Edit
  */
-class Edit extends \Magento\Backend\App\Action implements HttpGetActionInterface
+class Edit extends Action implements HttpGetActionInterface
 {
     /**
      * Authorization level of a basic admin session
-     *
      * @see _isAllowed()
      */
     const ADMIN_RESOURCE = 'Eguana_Magazine::manage_magazine';
 
     /**
-     * Core registry
-     *
-     * @var \Magento\Framework\Registry
+     * @var PageFactoryAlias
      */
-    protected $_coreRegistry;
-
+    private $resultPageFactory;
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    protected $resultPageFactory;
-    /**
-     * @var \Eguana\Magazine\Api\MagazineRepositoryInterface
+     * @var MagazineRepositoryInterfaceAlias
      */
     private $magazineRepository;
 
     /**
-     * @param Action\Context $context
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param \Magento\Framework\Registry $registry
+     * Edit constructor.
+     * @param Context $context
+     * @param PageFactoryAlias $resultPageFactory
+     * @param RegistryAlias $registry
+     * @param MagazineRepositoryInterfaceAlias $magazineRepository
      */
     public function __construct(
-        Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Framework\Registry $registry,
-        \Eguana\Magazine\Api\MagazineRepositoryInterface $magazineRepository
+        Context $context,
+        PageFactoryAlias $resultPageFactory,
+        MagazineRepositoryInterfaceAlias $magazineRepository
     ) {
         $this->resultPageFactory = $resultPageFactory;
-        $this->_coreRegistry = $registry;
         $this->magazineRepository = $magazineRepository;
         parent::__construct($context);
     }
 
     /**
-     * Init actions
-     *
-     * @return \Magento\Backend\Model\View\Result\Page
-     */
-    protected function _initAction()
-    {
-        // load layout, set active menu and breadcrumbs
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
-        $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('Magento_Cms::cms_page')
-            ->addBreadcrumb(__('Magazine'), __('Magazine'))
-            ->addBreadcrumb(__('Manage Magazines'), __('Manage Magazines'));
-        return $resultPage;
-    }
-    /**
-     * Edit CMS page
-     *
-     * @return \Magento\Backend\Model\View\Result\Page|\Magento\Backend\Model\View\Result\Redirect
-     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * Edit CMS Page
+     * @return PageAlias|ResponseInterfaceAlias|RedirectAlias1|ResultInterfaceAlias
      */
     public function execute()
     {
-        // 1. Get ID and create model
         $id = $this->getRequest()->getParam('entity_id');
-        $model = $id ? $this->magazineRepository->getById($id) : null;
+        $model = $this->magazineRepository->getById($id);
+        $resultPage = $this->resultPageFactory->create();
         if ($id) {
-            if (!$model->getEntityId()) {
-                $this->messageManager->addErrorMessage(__('This magazine no longer exists.'));
-                /** \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
-                $resultRedirect = $this->resultRedirectFactory->create();
-                return $resultRedirect->setPath('*/*/');
-            }
+            $resultPage->addBreadcrumb(__('Edit Magazine'), __('Edit Magazine'));
+            $resultPage->getConfig()->getTitle()->prepend(__('Edit Magazine'));
+        } else {
+            $resultPage->addBreadcrumb(__('New Magazine'), __('New Magazine'));
+            $resultPage->getConfig()->getTitle()->prepend(__('New Magazine'));
         }
-
-        $this->_coreRegistry->register('eguana_magazine', $model);
-
-        // 5. Build edit form
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
-        $resultPage = $this->_initAction();
-        $resultPage->addBreadcrumb(
-            $id ? __('Edit Magazine') : __('New Magazine'),
-            $id ? __('Edit Magazine') : __('New Magazine')
-        );
-        $resultPage->getConfig()->getTitle()->prepend(__('Magazines'));
-        $resultPage->getConfig()->getTitle()
-            ->prepend($id ? $model->getTitle() : __('New Magazine'));
 
         return $resultPage;
     }

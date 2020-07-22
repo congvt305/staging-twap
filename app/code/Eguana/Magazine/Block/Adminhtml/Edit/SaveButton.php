@@ -11,6 +11,7 @@ namespace Eguana\Magazine\Block\Adminhtml\Edit;
 
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 use Magento\Ui\Component\Control\Container;
+use Eguana\Magazine\Block\Adminhtml\Edit\GenericButton;
 
 /**
  * Class for save button toolbar on create/edit magazine
@@ -51,7 +52,6 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
 
     /**
      * Retrieve options
-     *
      * @return array
      */
     private function getOptions()

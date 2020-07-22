@@ -42,6 +42,5 @@
                 <argument name="is_highlighted" xsi:type="boolean">true</argument>
             </arguments>
         </referenceBlock>
-        <move element="return.status" destination="rma.returns.history"/>
     </body>
 </page>

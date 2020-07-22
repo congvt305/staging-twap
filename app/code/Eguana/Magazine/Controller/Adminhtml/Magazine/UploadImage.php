@@ -11,14 +11,16 @@
 namespace Eguana\Magazine\Controller\Adminhtml\Magazine;
 
 use Eguana\Magazine\Model\Magazine\ImageUploader;
+use Magento\Backend\App\Action as ActionAlias;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 
 /**
  * Action for Uploading files
  * Class UploadImage
  */
-class UploadImage extends \Magento\Backend\App\Action
+class UploadImage extends ActionAlias
 {
 
     /**
@@ -41,7 +43,7 @@ class UploadImage extends \Magento\Backend\App\Action
     /**
      * Image upload action
      *
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return ResultInterfaceAlias
      */
     public function execute()
     {

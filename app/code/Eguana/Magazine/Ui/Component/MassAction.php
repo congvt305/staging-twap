@@ -11,6 +11,7 @@ namespace Eguana\Magazine\Ui\Component;
 
 use Magento\Framework\AuthorizationInterface;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class for doing multiple transactions
@@ -26,6 +27,11 @@ class MassAction extends \Magento\Ui\Component\MassAction
     private $authorization;
 
     /**
+     * @var LoggerInterface;
+     */
+    private $logger;
+
+    /**
      * @var array
      */
     protected $allowedAction = ['delete'];
@@ -36,36 +42,40 @@ class MassAction extends \Magento\Ui\Component\MassAction
      * @param AuthorizationInterface $authorization
      * @param array $components
      * @param array $data
+     * @param LoggerInterface $logger
+     *
      */
     public function __construct(
         ContextInterface $context,
         AuthorizationInterface $authorization,
+        LoggerInterface $logger,
         $components = [],
         array $data = []
     ) {
         $this->authorization = $authorization;
+        $this->logger = $logger;
         parent::__construct($context, $components, $data);
     }
-
     /**
      * prepare the layout for this class
-     * @return $this|Template
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function prepare()
     {
-        parent::prepare();
-        $config = $this->getConfiguration();
+        try {
+            parent::prepare();
+            $config = $this->getConfiguration();
 
-        $allowedActions = [];
-        foreach ($config['actions'] as $action) {
-            if (in_array($action['type'], $this->allowedAction)) {
-                $allowedActions[] = $action;
+            $allowedActions = [];
+            foreach ($config['actions'] as $action) {
+                if (in_array($action['type'], $this->allowedAction)) {
+                    $allowedActions[] = $action;
+                }
             }
-        }
-        $config['actions'] = $allowedActions;
+            $config['actions'] = $allowedActions;
 
-        $this->setData('config', (array)$config);
+            $this->setData('config', (array)$config);
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
     }
 }

@@ -20,7 +20,6 @@ class Type implements OptionSourceInterface
 {
     /**
      * Get options
-     *
      * @return array
      */
     public function toOptionArray()

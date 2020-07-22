@@ -10,39 +10,31 @@
 namespace Eguana\Magazine\Controller\Adminhtml;
 
 use Magento\Backend\App\Action;
-use Magento\Framework\Registry;
+use Magento\Backend\App\Action\Context as ContextAlias;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\View\Result\PageFactory as PageFactoryAlias;
 
 /**
  * Abstract class for actions
- *
  * abstract AbstractController
  */
 
 abstract class AbstractController extends Action
 {
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
+     * @var PageFactoryAlias
      */
     protected $resultPageFactory;
 
     /**
-     * @var \Magento\Framework\Registry
-     */
-    protected $coreRegistry;
-
-    /**
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\Registry $coreRegistry
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param ContextAlias $context
+     * @param PageFactoryAlias $resultPageFactory
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        Registry $coreRegistry,
+        ContextAlias $context,
         PageFactory $resultPageFactory
     ) {
         $this->resultPageFactory = $resultPageFactory;
-        $this->coreRegistry = $coreRegistry;
         parent::__construct($context);
     }
 
@@ -62,7 +54,6 @@ abstract class AbstractController extends Action
 
     /**
      * Check the permission to run it
-     *
      * @return bool
      */
     protected function _isAllowed()
