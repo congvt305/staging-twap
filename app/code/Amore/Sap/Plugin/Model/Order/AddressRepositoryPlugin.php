@@ -83,7 +83,7 @@ class AddressRepositoryPlugin
         $order = $this->orderRepository->get($orderId);
         $orderStatus = $order->getStatus();
 
-        $availableStatus = ['sap_processing'];
+        $availableStatus = ['sap_processing', 'sap_success', 'sap_fail'];
 
         $enableCheck = $this->config->getActiveCheck('store', $order->getStoreId());
 
