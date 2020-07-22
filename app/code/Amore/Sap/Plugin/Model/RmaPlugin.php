@@ -100,7 +100,7 @@ class RmaPlugin
                 }
 
                 try {
-                    $orderRmaData = $this->sapOrderConfirmData->singleOrderData($orderIncrementId, 'return');
+                    $orderRmaData = $this->sapOrderConfirmData->singleOrderData($orderIncrementId);
 
                     if ($this->config->getLoggingCheck()) {
                         $this->logger->info("Order RMA Send Data");
