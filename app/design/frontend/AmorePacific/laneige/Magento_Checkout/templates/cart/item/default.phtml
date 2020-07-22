@@ -97,7 +97,8 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                                title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
                                class="input-text qty"
                                data-validate="{required:true,'validate-greater-than-zero':true}"
-                               data-role="cart-item-qty"/>
+                               data-role="cart-item-qty"
+                                readonly/>
                         <button type="button" onclick="var qty_el = document.getElementById('cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++; " class="qty-increase qty-selector">
                             <span class="icon"><?= $block->escapeHtml(__('increase')) ?></span>
                         </button>

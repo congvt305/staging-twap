@@ -35,13 +35,13 @@
 
         .label {
             .lib-icon-font(
-            @_icon-font-content: @icon-search-label,
-            @_icon-font-size: 24px,
-            @_icon-font-line-height: 60px,
-            @_icon-font-color: @header-icons-color,
-            @_icon-font-color-hover: @header-icons-color-hover,
-            @_icon-font-color-active: @header-icons-color-hover,
-            @_icon-font-text-hide: true
+                @_icon-font-content: @icon-search-label,
+                @_icon-font-size: 24px,
+                @_icon-font-line-height: 60px,
+                @_icon-font-color: @header-icons-color,
+                @_icon-font-color-hover: @header-icons-color-hover,
+                @_icon-font-color-active: @header-icons-color-hover,
+                @_icon-font-text-hide: true
             );
             cursor: pointer;
             display: inline-block;
@@ -54,10 +54,6 @@
                     left: 0;
                     right: 0;
                     z-index: 5;
-
-                    input {
-                        max-width: 520px;
-                    }
                 }
 
                 &:after {
@@ -119,10 +115,10 @@
 
     .search-autocomplete {
         &:extend(.abs-add-box-sizing all);
-        display: none !important;
         margin-top: -15px;
+        margin: 0 auto;
         overflow: hidden;
-        position: absolute;
+        position: relative !important;
         z-index: 3;
 
         ul {
@@ -138,9 +134,9 @@
                 white-space: normal;
 
                 &:not(:empty) {
-                    border-top: 0;
                     .lib-css(border, @autocomplete__border);
                     .lib-css(background, @autocomplete__background-color);
+                    border-top: 0;
                 }
 
                 &:first-child {
@@ -311,10 +307,11 @@
         .nested {
             display: block;
             padding-top: 5px;
-            position: absolute;
+            position: relative;
         }
 
         input {
+            max-width: 520px;
             margin: 0;
             padding-left: @indent__l*2;
             padding-right: 35px;
@@ -323,5 +320,6 @@
 
     .search-autocomplete {
         margin-top: 0;
+        left: -62px;
     }
 }

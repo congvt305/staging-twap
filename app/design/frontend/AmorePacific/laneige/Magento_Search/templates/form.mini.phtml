@@ -40,8 +40,6 @@ $helper = $this->helper(\Magento\Search\Helper\Data::class);
                            autocomplete="off"
                            aria-expanded="false"/>
                     <span class="remove" data-role="minisearch-remove"><span><?= $block->escapeHtml(__('Remove')) ?></span></span>
-                    <div id="search_autocomplete" class="search-autocomplete"></div>
-                    <?= $block->getChildHtml() ?>
                     <div class="actions">
                         <button type="submit"
                                 title="<?= $block->escapeHtmlAttr(__('Search')) ?>"
@@ -51,6 +49,8 @@ $helper = $this->helper(\Magento\Search\Helper\Data::class);
                             <span><?= $block->escapeHtml(__('Search')) ?></span>
                         </button>
                     </div>
+                    <div id="search_autocomplete" class="search-autocomplete"></div>
+                    <?= $block->getChildHtml() ?>
                 </div>
             </div>
         </form>
