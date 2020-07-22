@@ -28,6 +28,12 @@ class Config
 
     const SAP_EINVOICE_ENABLE_XML_PATH = 'sap/general/einvoice';
 
+    const SAP_ADDRESS_ENABLE_XML_PATH = 'sap/general/address';
+
+    const SAP_CREDITMEMO_ENABLE_XML_PATH = 'sap/general/creditmemo';
+
+    const SAP_RMA_ENABLE_XML_PATH = 'sap/general/rma';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -96,5 +102,20 @@ class Config
     public function getEInvoiceActiveCheck($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::SAP_EINVOICE_ENABLE_XML_PATH, $type, $storeId);
+    }
+
+    public function getCreditmemoActiveCheck($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::SAP_CREDITMEMO_ENABLE_XML_PATH, $type, $storeId);
+    }
+
+    public function getAddressActiveCheck($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::SAP_ADDRESS_ENABLE_XML_PATH, $type, $storeId);
+    }
+
+    public function getRmaActiveCheck($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::SAP_RMA_ENABLE_XML_PATH, $type, $storeId);
     }
 }
