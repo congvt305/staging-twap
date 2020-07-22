@@ -87,13 +87,14 @@ class RmaPlugin
 
     public function beforeSaveRma(\Magento\Rma\Model\Rma $subject, $data)
     {
-        $enableCheck = $this->config->getActiveCheck('store', $subject->getStoreId());
+        $enableSapCheck = $this->config->getActiveCheck('store', $subject->getStoreId());
+        $enableRmaCheck = $this->config->getRmaActiveCheck('store', $subject->getStoreId());
         $availableStatus = 'authorized';
         $orderIncrementId = $subject->getOrderIncrementId();
         $order = $subject->getOrder();
         $rmaSendCheck = $order->getData('sap_return_send_check');
 
-        if ($enableCheck) {
+        if ($enableSapCheck && $enableRmaCheck) {
             if ($subject->getStatus() == $availableStatus) {
                 if ($rmaSendCheck == null) {
                     $order->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_BEFORE);
