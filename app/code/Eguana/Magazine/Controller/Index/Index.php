@@ -15,7 +15,6 @@ use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Action for index index
- *
  * Class Index
  */
 class Index extends Action
@@ -45,5 +44,4 @@ class Index extends Action
     {
         return $this->resultPageFactory->create();
     }
-
 }

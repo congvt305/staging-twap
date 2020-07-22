@@ -15,14 +15,12 @@ use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 
 /**
  * Action for add new magazine button
- *
  * Class NewAction
  */
-
 class NewAction extends Action
 {
     /**
-     * Execute the add new magazine action
+     * Execute the add new magazine Action
      * @return ResponseInterfaceAlias|ResultInterfaceAlias|void
      */
     public function execute()

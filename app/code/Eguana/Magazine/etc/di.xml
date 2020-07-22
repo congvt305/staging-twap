@@ -10,7 +10,8 @@
 */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-
+    <preference for="\Eguana\Magazine\Api\Data\MagazineSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults" />
     <preference for="Eguana\Magazine\Api\Data\MagazineInterface" type="Eguana\Magazine\Model\Magazine" />
     <preference for="Eguana\Magazine\Api\MagazineRepositoryInterface" type="Eguana\Magazine\Model\MagazineRepository" />
 
@@ -59,7 +60,6 @@
         </arguments>
     </type>
 
-
     <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
         <arguments>
             <argument name="extensionActions" xsi:type="array">
@@ -78,7 +78,6 @@
         </arguments>
     </type>
 
-
     <type name="Magento\Framework\EntityManager\HydratorPool">
         <arguments>
             <argument name="hydrators" xsi:type="array">
@@ -86,8 +85,6 @@
             </argument>
         </arguments>
     </type>
-
-
     <type name="Eguana\Magazine\Model\MagazineRepository">
     </type>
 

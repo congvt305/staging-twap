@@ -16,7 +16,6 @@ namespace Eguana\Magazine\Api\Data;
 interface MagazineInterface
 {
     const ENTITY_ID = 'entity_id';
-    const STORE_ID = 'store_id';
     const TITLE = 'title';
     const SHORT_DESCRIPTION = 'short_description';
     const CONTENT = 'content';
@@ -36,7 +35,7 @@ interface MagazineInterface
     public function setEntityId($entity_id);
 
     /**
-     * @return int
+     * @return mixed
      */
     public function getEntityId();
 
@@ -50,19 +49,6 @@ interface MagazineInterface
      * @return int
      */
     public function getSortOrder();
-
-    /**
-     * Get Store ID
-     * @return int|null
-     */
-    public function getStoreId();
-
-    /**
-     * Set Store ID
-     * @param int $storeId
-     * @return MagazineInterface
-     */
-    public function setStoreId($storeId);
 
     /**
      * @param string $title
@@ -96,27 +82,6 @@ interface MagazineInterface
      * @return string
      */
     public function getContent();
-
-    /**
-     * Set Thumbnail Image
-     *
-     * @param string $thumbnailImage
-     * @return MagazineInterface
-     */
-    public function setThumbnailImage($thumbnailImage);
-
-    /**
-     * Get Thumbnail Image
-     *
-     * @return string
-     */
-    public function getThumbnailImage();
-
-    /**
-     * Get Thumbnail Image
-     * @return string
-     */
-    public function getThumbnailImageURL();
 
     /**
      * Set Thumbnail Image
@@ -164,6 +129,10 @@ interface MagazineInterface
      */
     public function getIsActive();
 
+    /**
+     * @param $type
+     * @return mixed
+     */
     public function setType($type);
 
     /**
@@ -171,6 +140,10 @@ interface MagazineInterface
      */
     public function getType();
 
+    /**
+     * @param $showDate
+     * @return mixed
+     */
     public function setShowDate($showDate);
 
     /**

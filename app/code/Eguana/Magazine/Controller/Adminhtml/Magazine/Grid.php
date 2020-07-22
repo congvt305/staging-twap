@@ -19,7 +19,6 @@ use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
  */
 class Grid extends AbstractController
 {
-
     /**
      * Execute the listing action
      * @return ResponseInterfaceAlias|ResultInterfaceAlias|mixed

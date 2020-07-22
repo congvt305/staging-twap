@@ -17,8 +17,10 @@ use Magento\Store\Ui\Component\Listing\Column\Store\Options;
  */
 class StoreOptions extends Options
 {
-    const ALL_STORE_VIEWS = '0';
-
+    /**
+     * For options
+     * @return array
+     */
     public function toOptionArray()
     {
         if ($this->options !== null) {

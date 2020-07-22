@@ -9,10 +9,21 @@
  */
 namespace Eguana\Magazine\Model\ResourceModel\Magazine\Grid;
 
-use Magento\Framework\Api\Search\SearchResultInterface;
-use Magento\Framework\Api\Search\AggregationInterface;
 use Eguana\Magazine\Model\ResourceModel\Magazine\Collection as MagazineCollection;
+use Magento\Framework\Api\ExtensibleDataInterface as ExtensibleDataInterfaceAlias;
+use Magento\Framework\Api\Search\SearchCriteriaInterface as SearchCriteriaInterfaceAlias1;
+use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Api\SearchCriteriaInterface as SearchCriteriaInterfaceAlias;
+use Magento\Framework\Data\Collection\Db\FetchStrategyInterface;
+use Magento\Framework\Data\Collection\EntityFactoryInterface;
+use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\EntityManager\MetadataPool;
+use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\Search\AggregationInterface;
+use Magento\Framework\View\Element\UiComponent\DataProvider\Document;
+use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Collection for displaying grid of cms blocks
@@ -23,6 +34,36 @@ class Collection extends MagazineCollection implements SearchResultInterface
      * @var AggregationInterface
      */
     protected $aggregations;
+    public function __construct(
+        EntityFactoryInterface $entityFactory,
+        LoggerInterface $logger,
+        FetchStrategyInterface $fetchStrategy,
+        ManagerInterface $magazine,
+        StoreManagerInterface $storeManager,
+        MetadataPool $metadataPool,
+        $mainTable,
+        $eventPrefix,
+        $eventObject,
+        $resourceModel,
+        $model = Document::class,
+        AdapterInterface $connection = null,
+        AbstractDb $resource = null
+    ) {
+        parent::__construct(
+            $entityFactory,
+            $logger,
+            $fetchStrategy,
+            $magazine,
+            $storeManager,
+            $metadataPool,
+            $connection,
+            $resource
+        );
+        $this->_eventPrefix = $eventPrefix;
+        $this->_eventObject = $eventObject;
+        $this->_init($model, $resourceModel);
+        $this->setMainTable($mainTable);
+    }
 
     /**
      * @return AggregationInterface
@@ -42,9 +83,8 @@ class Collection extends MagazineCollection implements SearchResultInterface
     }
 
     /**
-     * Get search criteria.
-     *
-     * @return SearchCriteriaInterfaceAlias|null
+     * Get search criteria
+     * @return SearchCriteriaInterfaceAlias1|SearchCriteriaInterfaceAlias|null
      */
     public function getSearchCriteria()
     {
@@ -52,20 +92,17 @@ class Collection extends MagazineCollection implements SearchResultInterface
     }
 
     /**
-     * Set search criteria.
-     *
-     * @param SearchCriteriaInterfaceAlias $searchCriteria
-     * @return $this
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * Set search criteria
+     * @param SearchCriteriaInterfaceAlias|null $searchCriteria
+     * @return $this|Collection|SearchResultInterface
      */
     public function setSearchCriteria(SearchCriteriaInterfaceAlias $searchCriteria = null)
     {
         return $this;
     }
 
-    /**
-     * Get total count.
-     *
+    /***
+     * Get total count
      * @return int
      */
     public function getTotalCount()
@@ -74,11 +111,9 @@ class Collection extends MagazineCollection implements SearchResultInterface
     }
 
     /**
-     * Set total count.
-     *
+     * Set total count
      * @param int $totalCount
-     * @return $this
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @return $this|Collection|SearchResultInterface
      */
     public function setTotalCount($totalCount)
     {
@@ -86,44 +121,12 @@ class Collection extends MagazineCollection implements SearchResultInterface
     }
 
     /**
-     * Set items list.
-     *
-     * @param \Magento\Framework\Api\ExtensibleDataInterface[] $items
-     * @return $this
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * Set itme list SHORT DESCRIPTION
+     * @param array|null $items
+     * @return $this|Collection|SearchResultInterface
      */
     public function setItems(array $items = null)
     {
         return $this;
-    }
-
-    /**
-     * Get all data array for collection
-     *
-     * @return array
-     */
-    public function getData()
-    {
-        if ($this->_data === null) {
-            $this->_renderFilters()->_renderOrders()->_renderLimit();
-            $select = $this->getSelect();
-            $this->_data = $this->_fetchAll($select);
-            $this->_afterLoadData();
-        }
-
-        // getData Store_ID Array Setting
-        $items = [];
-        foreach ($this->_data as $item) {
-            if (isset($item['store_id'])) {
-                $item['store_id'] = explode(',', $item['store_id']);
-                if (in_array('0', $item['store_id'])) {
-                    $item['store_id'] = [0];
-                }
-            }
-            $items[] = $item;
-        }
-        $this->_data = $items;
-
-        return $this->_data;
     }
 }

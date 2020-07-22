@@ -16,6 +16,7 @@ use Magento\Cms\Model\Template\FilterProvider;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * ViewModel helper for .phtml file
@@ -45,18 +46,26 @@ class Detail implements ArgumentInterface
     private $filterProvider;
 
     /**
+     * @var LoggerInterface;
+     */
+    private $logger;
+
+    /**
      * Magazine constructor.
      * @param DataAlias $helperData
+     * @param LoggerInterface $logger
      */
     public function __construct(
         MagazineRepositoryInterface $magazineRepository,
         RequestInterface $requestInterface,
         StoreManagerInterface $storeManagerInterface,
+        LoggerInterface $logger,
         FilterProvider $filterProvider
     ) {
         $this->magazineRepository = $magazineRepository;
         $this->requestInterface = $requestInterface;
         $this->storeManagerInterface = $storeManagerInterface;
+        $this->logger = $logger;
         $this->filterProvider = $filterProvider;
     }
 
@@ -81,7 +90,7 @@ class Detail implements ArgumentInterface
         try {
             $storeId = $this->storeManagerInterface->getStore()->getId();
         } catch (\Exception $exception) {
-            $this->_logger->debug($exception->getMessage());
+            $this->logger->debug($exception->getMessage());
         }
         return $this->filterProvider->getBlockFilter()->setStoreId($storeId)->filter($content);
     }

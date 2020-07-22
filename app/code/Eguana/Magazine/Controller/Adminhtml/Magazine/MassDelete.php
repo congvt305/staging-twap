@@ -9,14 +9,15 @@
  */
 namespace Eguana\Magazine\Controller\Adminhtml\Magazine;
 
-use Eguana\Magazine\Model\Magazine;
 use Eguana\Magazine\Model\ResourceModel\Magazine\CollectionFactory;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Ui\Component\MassAction\Filter;
+use Psr\Log\LoggerInterface;
 
 /**
  * This class is used for Mass delete
@@ -27,47 +28,58 @@ class MassDelete extends Action
     /**
      * @var Filter
      */
-    protected $filter;
+    private $filter;
 
     /**
      * @var CollectionFactory
      */
-    protected $collectionFactory;
+    private $collectionFactory;
+
+    /**
+     * @var LoggerInterface;
+     */
+    private $logger;
 
     /**
      * @param Context $context
      * @param Filter $filter
+     * @param LoggerInterface $logger
      * @param CollectionFactory $collectionFactory
      */
-    public function __construct(Context $context, Filter $filter, CollectionFactory $collectionFactory)
-    {
+    public function __construct(
+        Context $context,
+        Filter $filter,
+        CollectionFactory $collectionFactory,
+        LoggerInterface $logger
+    ) {
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
+        $this->logger = $logger;
         parent::__construct($context);
     }
 
     /**
-     * Execute action
-     *
-     * @return Redirect
-     * @throws LocalizedException|\Exception
+     * Execute Action
+     * @return Redirect|ResponseInterfaceAlias|ResultInterfaceAlias
      */
     public function execute()
     {
-        $collection = $this->filter->getCollection($this->collectionFactory->create());
-        $collectionSize = $collection->getSize();
+        try {
+            $collection = $this->filter->getCollection($this->collectionFactory->create());
+            $collectionSize = $collection->getSize();
 
-        /**
-         * @var Event $event
-         */
-        foreach ($collection as $event) {
-            $event->delete();
+            /**
+             * @var Event $event
+             */
+            foreach ($collection as $event) {
+                $event->delete();
+            }
+            $this->messageManager->addSuccessMessage(__('A total of %1 magazine(s) have been deleted.', $collectionSize));
+            /** @var Redirect $resultRedirect */
+            $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+            return $resultRedirect->setPath('*/*/');
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
         }
-
-        $this->messageManager->addSuccessMessage(__('A total of %1 magazine(s) have been deleted.', $collectionSize));
-
-        /** @var Redirect $resultRedirect */
-        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-        return $resultRedirect->setPath('*/*/');
     }
 }

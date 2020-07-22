@@ -9,34 +9,49 @@
  */
 namespace Eguana\Magazine\Controller\Adminhtml\Magazine;
 
+use Eguana\Magazine\Api\Data\MagazineInterface as MagazineInterfaceAlias;
 use Eguana\Magazine\Api\MagazineRepositoryInterface;
 use Eguana\Magazine\Controller\Adminhtml\AbstractController;
+use Eguana\Magazine\Helper\Data as DataAlias;
 use Eguana\Magazine\Model\Magazine;
 use Eguana\Magazine\Model\MagazineFactory;
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\Redirect as RedirectAlias;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\UrlRewrite\Model\ResourceModel\UrlRewrite as UrlRewriteAlias1;
 use Magento\UrlRewrite\Model\UrlPersistInterface;
+use Magento\UrlRewrite\Model\UrlRewrite as UrlRewriteAlias;
+use Magento\UrlRewrite\Model\UrlRewriteFactory as UrlRewriteFactoryAlias;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 /**
  * Action for save button
- *
  * Class Save
  */
 class Save extends AbstractController
 {
     /**
-     * @var \Eguana\Magazine\Helper\Data
+     * @var DataAlias
      */
     private $helperData;
 
     /**
+     * Constant
+     */
+    const DATE_FORMAT = 'Y-m-d H:i:s';
+
+    /**
+     * @var TimezoneInterface
+     */
+    private $timezone;
+
+    /**
      * @var DataPersistorInterface
      */
-    protected $dataPersistor;
+    private $dataPersistor;
 
     /**
      * @var MagazineFactory
@@ -54,58 +69,50 @@ class Save extends AbstractController
     private $logger;
 
     /**
-     * @var \Magento\UrlRewrite\Model\UrlRewriteFactory
+     * @var UrlRewriteFactoryAlias
      */
-    protected $urlRewriteFactory;
-
-    /**
-     * @var \Magento\UrlRewrite\Model\ResourceModel\UrlRewriteFactory
-     */
-    protected $resourceUrlRewriteFactory;
+    private $urlRewriteFactory;
 
     /**
      * @var UrlPersistInterface\Proxy
      */
-    protected $urlPersist;
+    private $urlPersist;
 
     /**
      * @param Context $context
-     * @param Registry $coreRegistry
      * @param DataPersistorInterface $dataPersistor
      * @param MagazineFactory|null $magazineFactory
      * @param MagazineRepositoryInterface|null $magazineRepository
      * @param UrlPersistInterface\Proxy $urlPersist
-     * @param \Magento\UrlRewrite\Model\UrlRewrite $urlRewriteFactory
-     * @param \Magento\UrlRewrite\Model\ResourceModel\UrlRewrite $resourceUrlRewriteFactory
-     * @param \Eguana\Magazine\Helper\Data $helperData
+     * @param UrlRewriteAlias $urlRewriteFactory
+     * @param DataAlias $helperData
+     * @param TimezoneInterface $timezone
      */
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
         PageFactory $resultPageFactory,
         DataPersistorInterface $dataPersistor,
         MagazineFactory $magazineFactory,
         MagazineRepositoryInterface $magazineRepository,
-        \Eguana\Magazine\Helper\Data $helperData,
+        DataAlias $helperData,
+        TimezoneInterface $timezone,
         LoggerInterface $logger
     ) {
         $this->dataPersistor = $dataPersistor;
         $this->magazineFactory = $magazineFactory;
         $this->magazineRepository = $magazineRepository;
         $this->helperData= $helperData;
+        $this->timezone = $timezone;
         $this->logger = $logger;
-
-        parent::__construct($context, $coreRegistry, $resultPageFactory);
+        parent::__construct($context, $resultPageFactory);
     }
     /**
      * Save action
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @return \Magento\Framework\Controller\ResultInterface
      */
     public function execute()
     {
-        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+        /** @var RedirectAlias $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         $data = $this->getRequest()->getPostValue();
         if ($data) {
@@ -122,6 +129,7 @@ class Save extends AbstractController
 
             /** @var Magazine $model */
             $model = $this->magazineFactory->create();
+            $generalData['show_date'] = $this->changeDateFormat($generalData['show_date']);
 
             if ($id) {
                 try {
@@ -137,15 +145,10 @@ class Save extends AbstractController
                 $generalData['thumbnail_image'] = 'Magazine/' .
                     $generalData['thumbnail_image'][0]['file'];
             }
-
-            if (isset($generalData['store_id'])) {
-                $generalData['store_id'] = implode(',', $generalData['store_id']);
-            }
             $model->setData($generalData);
 
             try {
                 $model->setUpdatedAt('');
-
                 $this->magazineRepository->save($model);
                 $this->messageManager->addSuccess(__('Magazine has been successfully saved.'));
                 return $this->processResultRedirect($model, $resultRedirect, $data);
@@ -166,11 +169,10 @@ class Save extends AbstractController
     /**
      * Process result redirect
      *
-     * @param \Eguana\Magazine\Api\Data\MagazineInterface $model
-     * @param \Magento\Backend\Model\View\Result\Redirect $resultRedirect
+     * @param MagazineInterfaceAlias $model
+     * @param RedirectAlias $resultRedirect
      * @param array $data
-     * @return \Magento\Backend\Model\View\Result\Redirect
-     * @throws LocalizedException
+     * @return RedirectAlias
      */
     private function processResultRedirect($model, $resultRedirect, $data)
     {
@@ -185,16 +187,28 @@ class Save extends AbstractController
             return $resultRedirect->setPath(
                 '*/*/edit',
                 [
-                    'entity_id' => $newMagazine->getId(),
+                    'entity_id' => $newMagazine->getEntityId(),
                     '_current' => true
                 ]
             );
         }
         $this->dataPersistor->clear('eguana_magazine');
         if ($this->getRequest()->getParam('back', false) === 'continue') {
-            return $resultRedirect->setPath('*/*/edit', ['entity_id' => $model->getId(), '_current' => true]);
+            return $resultRedirect->setPath('*/*/edit/', ['entity_id' => $model->getEntityId(), '_current' => true]);
         }
-
         return $resultRedirect->setPath('*/*/');
+    }
+    /**
+     * This method is used to change the date format
+     * @param $date
+     * @return string
+     */
+    private function changeDateFormat($date)
+    {
+        try {
+            return $this->timezone->date($date)->format(self::DATE_FORMAT);
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
     }
 }

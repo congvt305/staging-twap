@@ -24,11 +24,14 @@ class MagazineActions extends Column
      * Url path
      */
     const URL_PATH_EDIT = 'magazine/magazine/edit';
+    /**
+     * Url path
+     */
     const URL_PATH_DELETE = 'magazine/magazine/delete';
     /**
      * @var UrlInterface
      */
-    protected $urlBuilder;
+    private $urlBuilder;
     /**
      * Constructor
      *

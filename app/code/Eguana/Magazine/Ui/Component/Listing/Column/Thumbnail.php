@@ -14,7 +14,9 @@ use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Store\Model\StoreManagerInterface as StoreManagerInterfaceAlias;
 use Magento\Ui\Component\Listing\Columns\Column;
+use Psr\Log\LoggerInterface;
 
 /**
  * Use for Thumbnail
@@ -25,9 +27,9 @@ class Thumbnail extends Column
     const ALT_FIELD = 'title';
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterfaceAlias
      */
-    protected $storeManager;
+    private $storeManager;
 
     /**
      * @param ContextInterface $context
@@ -36,6 +38,7 @@ class Thumbnail extends Column
      * @param UrlInterface $urlBuilder
      * @param StoreManagerInterface $storeManager
      * @param array $components
+     * @param LoggerInterface $logger
      * @param array $data
      */
     public function __construct(
@@ -43,18 +46,20 @@ class Thumbnail extends Column
         UiComponentFactory $uiComponentFactory,
         Image $imageHelper,
         UrlInterface $urlBuilder,
+        LoggerInterface $logger,
         StoreManagerInterface $storeManager,
         array $components = [],
         array $data = []
     ) {
         $this->storeManager = $storeManager;
         $this->imageHelper = $imageHelper;
+        $this->logger = $logger;
         $this->urlBuilder = $urlBuilder;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
     /**
-     * Prepare Data Source
+     * Prepare data source
      * @param array $dataSource
      * @return array
      */
@@ -68,21 +73,23 @@ class Thumbnail extends Column
                 }
                 $url = '';
                 if ($item[$fieldName] != '') {
-                    $url = $this->storeManager->getStore()->getBaseUrl(
-                            UrlInterface::URL_TYPE_MEDIA
-                        ) . $item[$fieldName];
+                    try {
+                        $url = $this->storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $item[$fieldName];
+                    } catch (\Exception $e) {
+                        $this->logger->debug($exception->getMessage());
+                    }
                 }
                 $item[$fieldName . '_src'] = $url;
                 $item[$fieldName . '_alt'] = $this->getAlt($item) ?: '';
             }
         }
-
         return $dataSource;
     }
 
     /**
-     * @param array $row
-     * @return null|string
+     * Used for get Alt
+     * @param $row
+     * @return |null
      */
     protected function getAlt($row)
     {

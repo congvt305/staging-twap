@@ -12,10 +12,12 @@ namespace Eguana\Magazine\Controller\Adminhtml\Magazine;
 use Magento\Backend\App\Action\Context as Context;
 use Magento\Framework\App\Filesystem\DirectoryList as DirectoryList;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\File\UploaderFactory;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * abstract class for uploading file
@@ -26,26 +28,29 @@ class AbstractUpload extends \Magento\Backend\App\Action
 {
     /**
      * Image uploader
-     *
      * @var UploaderFactory $imageUploader
      */
-    protected $imageUploader;
+    private $imageUploader;
 
     /**
      * @var string
      */
-    protected $imagePath = 'Magazine';
+    private $imagePath = 'Magazine';
     /**
      * Directory List
-     *
      * @var DirectoryList $_directoryList
      */
-    protected $_directoryList;
+    private $_directoryList;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $_storeManager;
+    private $_storeManager;
+
+    /**
+     * @var LoggerInterface;
+     */
+    private $logger;
 
     /**
      * Upload constructor.
@@ -54,16 +59,20 @@ class AbstractUpload extends \Magento\Backend\App\Action
      * @param DirectoryList $directoryList
      * @param StoreManagerInterface $storeManagerInterface
      * @param UploaderFactory $imageUploader
+     * @param LoggerInterface $logger
+
      */
     public function __construct(
         Context $context,
         DirectoryList $directoryList,
         StoreManagerInterface $storeManagerInterface,
+        LoggerInterface $logger,
         UploaderFactory $imageUploader
     ) {
         parent::__construct($context);
         $this->imageUploader = $imageUploader;
         $this->_directoryList = $directoryList;
+        $this->logger = $logger;
         $this->_storeManager = $storeManagerInterface;
     }
 
@@ -101,8 +110,7 @@ class AbstractUpload extends \Magento\Backend\App\Action
 
     /**
      * Upload file controller action
-     *
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return ResultInterfaceAlias
      */
     public function execute()
     {
@@ -141,34 +149,39 @@ class AbstractUpload extends \Magento\Backend\App\Action
             return null;
         }
     }
-
     /**
      * return new filename for uploaded file
      * @param $fileName
      * @return string
-     * @throws \Exception
      */
     public function getFileName($fileName)
     {
-        $fileExtension = explode('.', $fileName)[count(explode('.', $fileName))-1];
-        return md5_file($fileName . date('YmdHis') . random_int(1, 1000)) . '.' . $fileExtension;
+        try {
+            $fileExtension = explode('.', $fileName)[count(explode('.', $fileName))-1];
+            return md5_file($fileName . date('YmdHis') . random_int(1, 1000)) . '.' . $fileExtension;
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
     }
 
     /**
      * upload the file
-     * @return array
-     * @throws \Exception
+     * @return array|bool
      */
     public function fileUpload()
     {
-        $result = $this->imageUploader->create(['fileId' => 'thumbnail_image']);
-        $result->getUploadedFileName();
-        $result->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
-        return $result->save($this->getFullPath());
+        try {
+            $result = $this->imageUploader->create(['fileId' => 'thumbnail_image']);
+            $result->getUploadedFileName();
+            $result->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
+            return $result->save($this->getFullPath());
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
     }
 
     /**
-     * return name and url of the file
+     * Return name and url of file
      * @param $result
      * @return mixed
      */
