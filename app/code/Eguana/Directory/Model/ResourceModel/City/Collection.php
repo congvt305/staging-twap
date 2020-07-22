@@ -135,7 +135,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
         if (count($options) > 0) {
             array_unshift(
                 $options,
-                ['title' => '', 'value' => '', 'label' => __('Please select a city or district.')]
+                ['title' => '', 'value' => '0000', 'label' => __('Please select a city or district.')]
             );
         }
         return $options;

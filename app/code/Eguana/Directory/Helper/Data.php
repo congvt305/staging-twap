@@ -14,10 +14,13 @@ use Magento\Directory\Model\ResourceModel\Region\CollectionFactory;
 use Magento\Framework\App\Cache\Type\Config;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Json\Helper\Data as JsonData;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 class Data extends \Magento\Directory\Helper\Data
 {
+    const XML_PATH_CITIES_REQUIRED = 'general/city/state_required';
+    const XML_PATH_DISPLAY_ALL_CITIES = 'general/city/display_all';
     /**
      * @var \Eguana\Directory\Model\ResourceModel\City\CollectionFactory
      */
@@ -102,8 +105,8 @@ class Data extends \Magento\Directory\Helper\Data
         //Todo system config
         $cities = [
             'config' => [
-                'show_all_cities' => $this->isShowNonRequiredState(),
-                'cities_required' => $this->getCountriesWithStatesRequired(), //todo config
+                'show_all_cities' => $this->isDisplayAllCities(),
+                'cities_required' => $this->getCountriesWithCityRequired(),
             ],
         ];
         foreach ($collection as $city) {
@@ -137,5 +140,33 @@ class Data extends \Magento\Directory\Helper\Data
             }
         }
         return $cityCode;
+    }
+
+    public function getCountriesWithCityRequired($asJson = false)
+    {
+        $value = trim(
+            $this->scopeConfig->getValue(
+                self::XML_PATH_CITIES_REQUIRED,
+                ScopeInterface::SCOPE_STORE
+            )
+        );
+        $countryList = preg_split('/\,/', $value, 0, PREG_SPLIT_NO_EMPTY);
+        if ($asJson) {
+            return $this->jsonHelper->jsonEncode($countryList);
+        }
+        return $countryList;
+    }
+
+    /**
+     * Return, whether non-required state should be shown
+     *
+     * @return bool
+     */
+    public function isDisplayAllCities()
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::XML_PATH_DISPLAY_ALL_CITIES,
+            ScopeInterface::SCOPE_STORE
+        );
     }
 }

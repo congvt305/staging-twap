@@ -2,8 +2,7 @@ define([
     'underscore',
     'uiRegistry',
     'Magento_Ui/js/form/element/select',
-    'Magento_Checkout/js/model/default-post-code-resolver',
-], function (_, registry, Select, defaultPostCodeResolver) {
+], function (_, registry, Select) {
     'use strict';
 
     return Select.extend({
@@ -13,7 +12,7 @@ define([
             postcodeValue: null,
             is_city_required: true,
             currentRegion: null,
-            skipValidation: false, // todo: should be false, but when change to false, 2 city is shown.
+            skipValidation: false,
             imports: {
                 update: '${ $.parentName }.region_id:value'
             },
@@ -38,6 +37,7 @@ define([
 
         onUpdate: function (value) {
             this._super();
+
             if ( this.indexedOptions[value]) {
                 this.cityValue = this.indexedOptions[value]['title'];
                 this.postcodeValue = this.indexedOptions[value]['code'];
@@ -63,14 +63,14 @@ define([
                 return;
             }
 
-            if (this.skipValidation) { //here is excuted and working, but need to be fixed.
+            if (this.skipValidation) {
                 this.validation['required-entry'] = false;
                 this.required(false);
             } else {
-                if (option && !option['is_city_required']) { //executed here todo: is_city_required, city_display_all need to be configuration.
+                if (option && !this.is_city_required) {
                     this.error(false);
                     this.validation = _.omit(this.validation, 'required-entry');
-                    registry.get(this.customName, function (input) { //customName == custom Entry?? todo: required entiry shoud be fixed
+                    registry.get(this.customName, function (input) {
                         input.validation['required-entry'] = false;
                         input.required(false);
                     });
@@ -80,13 +80,13 @@ define([
 
                 if (option && !this.options().length) {
                     registry.get(this.customName, function (input) {
-                        isCityRequired = !!option['is_city_required'];
+                        isCityRequired = this.is_city_required;
                         input.validation['required-entry'] = isCityRequired;
                         input.validation['validate-not-number-first'] = true;
                         input.required(isCityRequired);
                     });
                 }
-                this.required(!!option['is_city_required']);
+                this.required(this.is_city_required);
             }
         },
 
@@ -105,6 +105,7 @@ define([
         },
 
         initAttr: function () {
+            // this.required(this.is_city_required);
             // registry.get((this.parentName + '.' + 'city_id_input'), function (cityId) { //customName == custom Entry??
             //     cityId.required(true);
             // });
