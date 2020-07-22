@@ -185,6 +185,19 @@
             <span class="label"><span><?= $block->escapeHtml(__('Order Shipping Address')) ?></span></span>
             <address class="control"><?= /* @noEscape */ $block->format($_order->getShippingAddress(), 'html') ?></address>
         </div>
+        <div class="field shipping-preference">
+            <label class="label"><span><?= $block->escapeHtml(__('Shipping Preference')) ?></span></label>
+            <div class="control">
+                <input type="radio" id="unimart" name="shipping_preference" title="Unimart" class="input-radio" data-validate="{required:true}" value="<?= $block->escapeHtmlAttr(__('unimart')) ?>">
+                <label class="label" for="unimart">
+                    <span><?= $block->escapeHtml(__('Unimart')) ?></span>
+                </label>
+                <input type="radio" id="familymart" name="shipping_preference" title="Family Mart" class="input-radio" value="<?= $block->escapeHtmlAttr(__('familymart')) ?>">
+                <label class="label" for="familymart">
+                    <span><?= $block->escapeHtml(__('Family Mart')) ?></span>
+                </label>
+            </div>
+        </div>
     </fieldset>
     <script type="text/x-magento-init">
         {
@@ -226,31 +239,31 @@
             }
         }
     </script>
-<fieldset class="fieldset">
-    <legend class="legend"><span><?= $block->escapeHtml(__('Return Items Information')) ?></span></legend>
-    <br>
-    <div id="registrant-options" style="display: none;"></div> <?php /* fields of the form are inserted here */ ?>
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?= $block->escapeHtml(__('Return Items Information')) ?></span></legend>
+        <br>
+        <div id="registrant-options" style="display: none;"></div> <?php /* fields of the form are inserted here */ ?>
+        <div class="actions-toolbar">
+            <div class="secondary" style="display: none;">
+                <button type="button" id="add-item-to-return" class="action add">
+                    <span><?= $block->escapeHtml(__('Add Item To Return')) ?></span>
+                </button>
+            </div>
+        </div>
+        <div class="field comment">
+            <label for="rma_comment" class="label"><span><?= $block->escapeHtml(__('Comments')) ?></span></label>
+            <div class="control">
+                <input type="hidden" name="orderDetails" value="<?= $orderDetails;?>">
+                <textarea id="rma_comment" cols="5" rows="3" name="rma_comment" class="input-text"><?php if ($_data) : ?><?= $block->escapeHtml($_data->getRmaComment()) ?><?php endif; ?></textarea>
+            </div>
+        </div>
+    </fieldset>
     <div class="actions-toolbar">
-        <div class="secondary" style="display: none;">
-            <button type="button" id="add-item-to-return" class="action add">
-                <span><?= $block->escapeHtml(__('Add Item To Return')) ?></span>
-            </button>
+        <div class="primary">
+            <button type="submit" class="action submit primary" id="submit.save" title="<?= $block->escapeHtmlAttr(__('Save')) ?>"><span><?= $block->escapeHtml(__('Submit')) ?></span></button>
+        </div>
+        <div class="secondary">
+            <a href="<?= $block->escapeUrl($block->getBackUrl()) ?>" class="action back"><span><?= $block->escapeHtml(__('Back')) ?></span></a>
         </div>
     </div>
-    <div class="field comment">
-        <label for="rma_comment" class="label"><span><?= $block->escapeHtml(__('Comments')) ?></span></label>
-        <div class="control">
-            <input type="hidden" name="orderDetails" value="<?= $orderDetails;?>">
-            <textarea id="rma_comment" cols="5" rows="3" name="rma_comment" class="input-text"><?php if ($_data) : ?><?= $block->escapeHtml($_data->getRmaComment()) ?><?php endif; ?></textarea>
-        </div>
-    </div>
-</fieldset>
-<div class="actions-toolbar">
-    <div class="primary">
-        <button type="submit" class="action submit primary" id="submit.save" title="<?= $block->escapeHtmlAttr(__('Save')) ?>"><span><?= $block->escapeHtml(__('Submit')) ?></span></button>
-    </div>
-    <div class="secondary">
-        <a href="<?= $block->escapeUrl($block->getBackUrl()) ?>" class="action back"><span><?= $block->escapeHtml(__('Back')) ?></span></a>
-    </div>
-</div>
 </form>
