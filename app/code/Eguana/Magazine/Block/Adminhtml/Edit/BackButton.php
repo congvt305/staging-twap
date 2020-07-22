@@ -10,7 +10,6 @@
 namespace Eguana\Magazine\Block\Adminhtml\Edit;
 
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
-use Eguana\Magazine\Block\Adminhtml\Edit\GenericButton;
 
 /**
  * Class for the backbutton toolbar on create/edit magazine
@@ -18,6 +17,7 @@ use Eguana\Magazine\Block\Adminhtml\Edit\GenericButton;
  */
 class BackButton extends GenericButton implements ButtonProviderInterface
 {
+
     /**
      * Used for Back Button
      * @return array
@@ -34,7 +34,6 @@ class BackButton extends GenericButton implements ButtonProviderInterface
 
     /**
      * Get URL for back (reset) button
-     *
      * @return string
      */
     private function getBackUrl()

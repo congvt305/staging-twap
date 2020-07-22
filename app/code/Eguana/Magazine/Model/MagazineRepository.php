@@ -11,15 +11,19 @@ namespace Eguana\Magazine\Model;
 
 use Eguana\Magazine\Api\Data;
 use Eguana\Magazine\Api\MagazineRepositoryInterface;
+use Eguana\Magazine\Model\Magazine as MagazineAlias;
 use Eguana\Magazine\Model\ResourceModel\Magazine as ResourceMagazine;
 use Eguana\Magazine\Model\ResourceModel\Magazine\CollectionFactory as MagazineCollectionFactory;
 use Magento\Framework\Api\DataObjectHelper;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
+use Magento\Framework\DataObject as DataObjectAlias;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Reflection\DataObjectProcessor;
 use Magento\Store\Model\StoreManagerInterface;
+use Eguana\Magazine\Api\Data\MagazineInterfaceFactory;
+use Eguana\Magazine\Api\Data\MagazineInterface;
 
 /**
  * Class for eguana_magazine db table
@@ -54,12 +58,12 @@ class MagazineRepository implements MagazineRepositoryInterface
     protected $dataObjectProcessor;
 
     /**
-     * @var \Eguana\Magazine\Api\Data\MagazineInterfaceFactory
+     * @var MagazineInterfaceFactory
      */
     protected $dataMagazineFactory;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     private $storeManager;
 
@@ -71,17 +75,18 @@ class MagazineRepository implements MagazineRepositoryInterface
     /**
      * @param ResourceMagazine $resource
      * @param MagazineFactory $magazineFactory
-     * @param Data\MagazineInterfaceFactory $dataMagazineFactory
+     * @param MagazineInterfaceFactory $dataMagazineFactory
      * @param MagazineCollectionFactory $magazineCollectionFactory
      * @param DataObjectHelper $dataObjectHelper
      * @param DataObjectProcessor $dataObjectProcessor
      * @param StoreManagerInterface $storeManager
      * @param CollectionProcessorInterface $collectionProcessor
+     * @param LoggerInterface $logger
      */
     public function __construct(
         ResourceMagazine $resource,
         MagazineFactory $magazineFactory,
-        \Eguana\Magazine\Api\Data\MagazineInterfaceFactory $dataMagazineFactory,
+        MagazineInterfaceFactory $dataMagazineFactory,
         MagazineCollectionFactory $magazineCollectionFactory,
         DataObjectHelper $dataObjectHelper,
         DataObjectProcessor $dataObjectProcessor,
@@ -99,19 +104,14 @@ class MagazineRepository implements MagazineRepositoryInterface
     }
 
     /**
-     * Save Block data
+     * Save block data
      *
-     * @param \Eguana\Magazine\Api\Data\MagazineInterface $magazine
-     * @return Magazine
+     * @param MagazineInterface $magazine
+     * @return MagazineInterface
      * @throws CouldNotSaveException
      */
-    public function save(Data\MagazineInterface $magazine)
+    public function save(MagazineInterface $magazine)
     {
-        if (empty($magazine->getStoreId())) {
-            $storeId = $this->storeManager->getStore()->getId();
-            $magazine->setStoreId($storeId);
-        }
-
         try {
             $this->resource->save($magazine);
         } catch (\Exception $exception) {
@@ -121,16 +121,14 @@ class MagazineRepository implements MagazineRepositoryInterface
     }
 
     /**
-     * Load Block data by given Block Identity
-     *
-     * @param string $magazineId
-     * @return Magazine
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * Load block data by given identity
+     * @param $magazineId
+     * @return Magazine|mixed
      */
     public function getById($magazineId)
     {
         /**
-         * @var \Eguana\Magazine\Model\Magazine $magazine
+         * @var MagazineAlias $magazine
          */
         $magazine = $this->magazineFactory->create();
         $this->resource->load($magazine, $magazineId);
@@ -139,12 +137,10 @@ class MagazineRepository implements MagazineRepositoryInterface
 
     /**
      * Delete Block
-     *
-     * @param \Eguana\Magazine\Api\Data\MagazineInterface $magazine
-     * @return bool
-     * @throws CouldNotDeleteException
+     * @param MagazineInterface $magazine
+     * @return bool|mixed
      */
-    public function delete(Data\MagazineInterface $magazine)
+    public function delete(MagazineInterface $magazine)
     {
         try {
             $this->resource->delete($magazine);
@@ -159,8 +155,6 @@ class MagazineRepository implements MagazineRepositoryInterface
      *
      * @param string $magazineId
      * @return bool
-     * @throws CouldNotDeleteException
-     * @throws NoSuchEntityException
      */
     public function deleteById($magazineId)
     {
@@ -169,7 +163,7 @@ class MagazineRepository implements MagazineRepositoryInterface
 
     /**
      * For first banner
-     * @return \Magento\Framework\DataObject|null
+     * @return DataObjectAlias|null
      */
     public function getFirstBanner()
     {

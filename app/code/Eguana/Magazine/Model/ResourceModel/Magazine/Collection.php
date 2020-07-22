@@ -11,16 +11,17 @@ namespace Eguana\Magazine\Model\ResourceModel\Magazine;
 
 use Eguana\Magazine\Api\Data\MagazineInterface;
 use Eguana\Magazine\Model\Magazine;
+use Eguana\Magazine\Model\ResourceModel\AbstractCollection;
+use Eguana\Magazine\Model\ResourceModel\Magazine as MagazineAlias;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+use Magento\Store\Model\Store as StoreAlias;
 
 /**
  * Collection class to retrieve the data from db table
- *
  * Class Collection
  */
-class Collection extends AbstractCollection implements SearchResultInterface
+class Collection extends AbstractCollection
 {
 
     /**
@@ -30,14 +31,12 @@ class Collection extends AbstractCollection implements SearchResultInterface
 
     /**
      * Event prefix
-     *
      * @var string
      */
     protected $eventPrefix = 'eguana_magazine_collection';
 
     /**
      * Event object
-     *
      * @var string
      */
     protected $eventObject = 'magazine_collection';
@@ -49,28 +48,33 @@ class Collection extends AbstractCollection implements SearchResultInterface
 
     /**
      * Define resource model
-     *
      * @return void
      */
     protected function _construct()
     {
-        $this->_init(Magazine::class, \Eguana\Magazine\Model\ResourceModel\Magazine::class);
+        $this->_init(Magazine::class, MagazineAlias::class);
+        $this->_map['fields']['store'] = 'store_table.store_id';
+        $this->_map['fields']['entity_id'] = 'main_table.entity_id';
     }
 
     /**
-     * Returns pairs block_id - title
-     *
-     * @return array
+     * After load method
+     * @return Collection
      */
-    public function toOptionArray()
+    protected function _afterLoad()
     {
-        return $this->_toOptionArray('entity_id', 'title');
+        try {
+            $entityMetadata = $this->metadataPool->getMetadata(MagazineInterface::class);
+            $this->performAfterLoad('eguana_magazine_store', $entityMetadata->getLinkField());
+            return parent::_afterLoad();
+        } catch (\Exception $exception) {
+            $this->_logger->debug($exception->getMessage());
+        }
     }
 
     /**
      * Get aggregations
-     *
-     * @return AggregationInterface
+     * @return mixed
      */
     public function getAggregations()
     {
@@ -79,10 +83,7 @@ class Collection extends AbstractCollection implements SearchResultInterface
 
     /**
      * Set aggregations
-     *
-     * @param AggregationInterface $aggregations
-     *
-     * @return $this
+     * @param $aggregations
      */
     public function setAggregations($aggregations)
     {
@@ -92,10 +93,8 @@ class Collection extends AbstractCollection implements SearchResultInterface
     /**
      * Retrieve all ids for collection
      * Backward compatibility with EAV collection
-     *
-     * @param int $limit
-     * @param int $offset
-     *
+     * @param null $limit
+     * @param null $offset
      * @return array
      */
     public function getAllIds($limit = null, $offset = null)
@@ -107,9 +106,8 @@ class Collection extends AbstractCollection implements SearchResultInterface
     }
 
     /**
-     * Get search criteria.
-     *
-     * @return SearchCriteriaInterface|null
+     * Get search criteria
+     * @return |null
      */
     public function getSearchCriteria()
     {
@@ -117,11 +115,9 @@ class Collection extends AbstractCollection implements SearchResultInterface
     }
 
     /**
-     * Set search criteria.
-     *
+     * Set Search criteria
      * @param SearchCriteriaInterface|null $searchCriteria
-     *
-     * @return SearchResultInterface
+     * @return $this
      */
     public function setSearchCriteria(SearchCriteriaInterface $searchCriteria = null)
     {
@@ -129,8 +125,7 @@ class Collection extends AbstractCollection implements SearchResultInterface
     }
 
     /**
-     * Get total count.
-     *
+     * Get total count
      * @return int
      */
     public function getTotalCount()
@@ -151,14 +146,46 @@ class Collection extends AbstractCollection implements SearchResultInterface
     }
 
     /**
-     * Set items list.
-     *
+     * Set item list
      * @param array|null $items
-     *
-     * @return $this|SearchResultInterface
+     * @return $this
      */
     public function setItems(array $items = null)
     {
         return $this;
+    }
+
+    /**
+     * Options method
+     * @return array
+     */
+    public function toOptionArray()
+    {
+        return $this->_toOptionArray('entity_id', 'title');
+    }
+
+    /**
+     * Add filter by store
+     * @param array|int|StoreAlias $store
+     * @param bool $withAdmin
+     * @return $this|Collection
+     */
+    public function addStoreFilter($store, $withAdmin = true)
+    {
+        if (!$this->getFlag('store_filter_added')) {
+            $this->performAddStoreFilter($store, $withAdmin);
+            $this->setFlag('store_filter_added', true);
+        }
+        return $this;
+    }
+
+    /**
+     * Join store relation table if there is store filter
+     * @return void
+     */
+    protected function _renderFiltersBefore()
+    {
+        $entityMetadata = $this->metadataPool->getMetadata(MagazineInterface::class);
+        $this->joinStoreRelationTable('eguana_magazine_store', $entityMetadata->getLinkField());
     }
 }

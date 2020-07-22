@@ -1280,6 +1280,19 @@
         clear: right;
         float: right;
         margin-bottom: 120px;
+
+        .box-tocart  {
+            .fieldset {
+                margin-bottom: 0;
+            }
+            
+            .product-info-price {
+                & + .actions {
+                    overflow: hidden;
+                    width: 100%;
+                }
+            }
+        }
     }
 
     .page-layout-1column {

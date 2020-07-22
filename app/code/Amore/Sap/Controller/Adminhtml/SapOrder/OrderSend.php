@@ -98,7 +98,7 @@ class OrderSend extends AbstractAction
                                 $order->setStatus('sap_processing');
                                 if ($orderSendCheck == 0 || $orderSendCheck == 2) {
                                     $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_RESENT_TO_SAP_SUCCESS);
-                                    $order->setData('sap_order_increment_id', $this->sapOrderConfirmData->getOrderIncrementId($order->getIncrementId(), $orderSendCheck));
+                                    $order->setData('sap_order_increment_id', $data['odrno']);
                                 } else {
                                     $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
                                 }

@@ -14,6 +14,7 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Ui\Component\MassAction\Filter;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -41,6 +42,10 @@ class MassSend extends AbstractAction
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
+    /**
+     * @var TimezoneInterface
+     */
+    private $timezoneInterface;
 
     /**
      * MassSend constructor.
@@ -53,6 +58,7 @@ class MassSend extends AbstractAction
      * @param CollectionFactory $collectionFactory
      * @param SapOrderConfirmData $sapOrderConfirmData
      * @param OrderRepositoryInterface $orderRepository
+     * @param TimezoneInterface $timezoneInterface
      */
     public function __construct(
         Action\Context $context,
@@ -63,13 +69,15 @@ class MassSend extends AbstractAction
         Filter $filter,
         CollectionFactory $collectionFactory,
         SapOrderConfirmData $sapOrderConfirmData,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        TimezoneInterface $timezoneInterface
     ) {
         parent::__construct($context, $json, $request, $logger, $config);
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
         $this->sapOrderConfirmData = $sapOrderConfirmData;
         $this->orderRepository = $orderRepository;
+        $this->timezoneInterface = $timezoneInterface;
     }
 
     public function execute()
@@ -90,8 +98,11 @@ class MassSend extends AbstractAction
                 $storeId = $order->getStoreId();
                 $storeIdList[] = $storeId;
                 if ($order->getStatus() == 'processing') {
-                    $orderData = $this->sapOrderConfirmData->getOrderData($order->getIncrementId());
-                    $orderItemData = $this->sapOrderConfirmData->getOrderItem($order->getIncrementId());
+                    $orderSendCheck = $order->getData('sap_order_send_check');
+                    $incrementIdForSap = $this->getOrderIncrementId($order->getIncrementId(), $orderSendCheck);
+
+                    $orderData = $this->sapOrderConfirmData->getOrderData($order->getIncrementId(), $incrementIdForSap);
+                    $orderItemData = $this->sapOrderConfirmData->getOrderItem($order->getIncrementId(), $incrementIdForSap);
                     $orderDataList = array_merge($orderDataList, $orderData);
                     $orderItemDataList = array_merge($orderItemDataList, $orderItemData);
                 } else {
@@ -141,18 +152,26 @@ class MassSend extends AbstractAction
 
                 $resultSize = count($result);
                 if ($resultSize > 0) {
-//                    $this->messageManager->addSuccessMessage(__('%1 orders sent to SAP Successfully.', $orderCount));
                     if ($result['code'] == '0000') {
                         $outdata = $result['data']['response']['output']['outdata'];
                         $ordersSucceeded = [];
                         foreach ($outdata as $data) {
                             if ($data['retcod'] == 'S') {
-                                // 여기에서 성공한 order들 order status 변경 처리(sap_processing)
-                                $ordersSucceeded[] = $data['odrno'];
-                                $succeededOrderObject = $this->sapOrderConfirmData->getOrderInfo($data['odrno']);
+                                $ordersSucceeded[] = $this->getOriginOrderIncrementId($data);
+                                $succeededOrderObject = $this->sapOrderConfirmData->getOrderInfo($this->getOriginOrderIncrementId($data));
+                                $orderSendCheck = $succeededOrderObject->getData('sap_order_send_check');
                                 $succeededOrderObject->setStatus('sap_processing');
+
+                                if ($orderSendCheck == 0 || $orderSendCheck == 2) {
+                                    $succeededOrderObject->setData('sap_order_send_check', SapOrderConfirmData::ORDER_RESENT_TO_SAP_SUCCESS);
+                                    $succeededOrderObject->setData('sap_order_increment_id', $data['odrno']);
+                                } else {
+                                    $succeededOrderObject->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                                }
+
                                 $this->orderRepository->save($succeededOrderObject);
                             } else {
+                                $this->changeOrderSendCheckValue($data, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                                 $this->messageManager->addErrorMessage(
                                     __(
                                         'Error returned from SAP for order %1. Error code : %2. Message : %3',
@@ -168,6 +187,10 @@ class MassSend extends AbstractAction
                             $this->messageManager->addSuccessMessage(__('%1 orders sent to SAP Successfully.', $countOrderSucceeded));
                         }
                     } else {
+                        $outdata = $result['data']['response']['output']['outdata'];
+                        foreach ($outdata as $data) {
+                            $this->changeOrderSendCheckValue($data, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                        }
                         $this->messageManager->addErrorMessage(
                             __(
                                 'Error returned from SAP for order %1. Error code : %2. Message : %3',
@@ -190,11 +213,40 @@ class MassSend extends AbstractAction
         return $resultRedirect->setPath('sales/order/index');
     }
 
+    public function getOrderIncrementId($incrementId, $orderSendCheck)
+    {
+        if ($orderSendCheck == 0 || $orderSendCheck == 2) {
+            $currentDate = $this->timezoneInterface->date()->format('ymdHis');
+            $incrementIdForSap = $incrementId . '_' . $currentDate;
+        } else {
+            $incrementIdForSap = $incrementId;
+        }
+        return $incrementIdForSap;
+    }
+
+    public function getOriginOrderIncrementId($data)
+    {
+        if (strpos($data['odrno'], '_')) {
+            list($incrementId, $date) = explode('_', $data['odrno']);
+        } else {
+            $incrementId = $data['odrno'];
+        }
+        return $incrementId;
+    }
+
     public function differentStoreExist($storeIdList)
     {
         if (count(array_unique($storeIdList)) > 1) {
             return true;
         }
         return false;
+    }
+
+    public function changeOrderSendCheckValue($data, $status)
+    {
+        $orderIncrementId = $this->getOriginOrderIncrementId($data);
+        $order = $this->sapOrderConfirmData->getOrderInfo($orderIncrementId);
+        $order->setData('sap_order_send_check', $status);
+        $this->orderRepository->save($order);
     }
 }

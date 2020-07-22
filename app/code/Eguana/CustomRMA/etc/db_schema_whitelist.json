@@ -1,0 +1,7 @@
+{
+    "magento_rma": {
+        "column": {
+            "shipping_preference": true
+        }
+    }
+}

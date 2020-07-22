@@ -24,6 +24,7 @@ use Psr\Log\LoggerInterface;
  */
 class MagazineList implements ArgumentInterface
 {
+
     const BANNER_TYPE = 1;
     const IMAGE_TYPE = 2;
     const VIDEO_TYPE = 3;
@@ -319,13 +320,7 @@ class MagazineList implements ArgumentInterface
             $storeId = $this->storeManagerInterface->getStore()->getId();
             $magazineCollection = $this->collectionFactory->create();
 
-            $magazineCollection->addFieldToFilter(
-                ['store_id', 'store_id', 'store_id', 'store_id'],
-                [["like" => '%' . $storeId . ',%'],
-                    ["like" => '%,' . $storeId . ',%'],
-                    ["like" => '%,' . $storeId . '%'],
-                    ["in" => ['0', $storeId]]]
-            );
+            $magazineCollection->addStoreFilter($storeId);
             $bannerMagazines = $magazineCollection->addFieldToFilter(
                 'is_active',
                 ['eq' => 1]

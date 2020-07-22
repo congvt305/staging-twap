@@ -14,7 +14,7 @@
     <table name="eguana_magazine" resource="default" engine="innodb" comment="Magazine">
         <column xsi:type="smallint" name="entity_id" unsigned="true" nullable="false" identity="true"
                 comment="Entity id"/>
-        <column xsi:type="varchar" name="store_id" nullable="false" length="30"
+        <column xsi:type="varchar" name="store_id" nullable="false" disabled="true" length="30"
                 comment="Store ID"/>
         <column xsi:type="timestamp" name="show_date" nullable="false"
                 comment="Show Date"/>
@@ -42,11 +42,28 @@
                 comment="Is active"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
-            <column name="store_id"/>
         </constraint>
         <index referenceId="EGUANA_MAGAZINE_TITLE_CONTENT" indexType="fulltext">
             <column name="title"/>
             <column name="content"/>
+        </index>
+    </table>
+
+    <table name="eguana_magazine_store" resource="default" engine="innodb" comment="Magazine store">
+        <column xsi:type="smallint" name="entity_id" unsigned="true" nullable="false"
+                comment="Entity id"/>
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false"
+                comment="Store ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+            <column name="store_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="EGUANA_MAGAZINE_STORE_ENTITY_ID_EGUANA_MAGAZINE_ENTITY_ID" table="eguana_magazine_store"
+                    column="entity_id" referenceTable="eguana_magazine" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="EGUANA_MAGAZINE_STORE_STORE_ID_STORE_STORE_ID" table="eguana_magazine_store"
+                    column="store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+        <index referenceId="EGUANA_MAGAZINE_STORE_STORE_ID" indexType="btree">
+            <column name="store_id"/>
         </index>
     </table>
 </schema>

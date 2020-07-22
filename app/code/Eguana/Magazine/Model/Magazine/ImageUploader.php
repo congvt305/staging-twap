@@ -11,7 +11,9 @@ namespace Eguana\Magazine\Model\Magazine;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
+use Magento\Framework\Filesystem\Directory\Read as ReadAlias;
 use Magento\Framework\UrlInterface;
+use Magento\MediaStorage\Model\File\Uploader as UploaderAlias;
 use Magento\MediaStorage\Model\File\UploaderFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -73,11 +75,11 @@ class ImageUploader
     {
         try {
             $result = ['file' => '', 'size' => ''];
-            /** @var \Magento\Framework\Filesystem\Directory\Read $mediaDirectory */
+            /** @var ReadAlias $mediaDirectory */
             $mediaDirectory = $this->filesystem
                 ->getDirectoryRead(DirectoryList::MEDIA)
                 ->getAbsolutePath(self::FILE_DIR);
-            /** @var \Magento\MediaStorage\Model\File\Uploader $uploader */
+            /** @var UploaderAlias $uploader */
             $uploader = $this->uploaderFactory->create(['fileId' => $fileId]);
             $uploader->setAllowRenameFiles(true);
             $uploader->setFilesDispersion(false);
