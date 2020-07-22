@@ -427,7 +427,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     'itemMwsbp' => $this->configurableProductCheck($orderItem)->getTaxAmount(),
                     'itemVkorg_ori' => $this->config->getMallId('store', $storeId),
                     'itemKunnr_ori' => $this->config->getClient('store', $storeId),
-                    'itemOdrno_ori' => $order->getIncrementId(),
+                    'itemOdrno_ori' => $sapIncrementId,
                     'itemPosnr_ori' => $cnt
                 ];
                 $cnt++;
