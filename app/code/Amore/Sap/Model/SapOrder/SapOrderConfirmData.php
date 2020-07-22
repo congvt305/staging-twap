@@ -21,6 +21,7 @@ use Magento\Sales\Model\Order;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Customer\Api\CustomerRepositoryInterface;
+use function PHPUnit\Framework\isNull;
 
 class SapOrderConfirmData extends AbstractSapOrder
 {
@@ -269,7 +270,9 @@ class SapOrderConfirmData extends AbstractSapOrder
 
     public function getOrderIncrementId($incrementId, $orderSendCheck)
     {
-        if ($orderSendCheck == 0 || $orderSendCheck == 2) {
+        if (is_null($orderSendCheck)) {
+            $incrementIdForSap = $incrementId;
+        } elseif ($orderSendCheck == 0 || $orderSendCheck == 2) {
             $currentDate = $this->timezoneInterface->date()->format('ymdHis');
             $incrementIdForSap = $incrementId . '_' . $currentDate;
         } else {
