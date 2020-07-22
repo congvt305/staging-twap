@@ -15,26 +15,50 @@
 
 & when (@media-common = true) {
     #eguana-form-validate {
+        border-top: 2px solid @primary__color__dark;
+
         .fieldset{
-            .eguanasociallogin-form-legend{
-                margin: 15px 0 20px !important;
+            .eguanasociallogin-form-legend {
+                border: none;
+                margin-bottom: 0;
             }
 
-            .msg{
-                padding: 0 0 10px 0;
+            .msg {
+                margin: -8px 0 @indent__base 0;
             }
 
-            .member-legend{
-                padding: 0 0 10px 0;
-                width: 100%;
-                box-sizing: border-box;
-                float: left;
-                color: #000000;
-                line-height: 1.2;
-                font-size: 1.4rem;
-                margin: 15px 0 20px !important;
-                border-bottom: 1px solid #999999;
-                display: block;
+            .field.choice {
+                display: block !important;
+
+                input {
+                    float: left;
+                }
+
+                label {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+
+    .sociallogin-form-actions {
+        text-align: center;
+
+        button {
+            &:extend(.abs-button-l all);
+
+            &.login {
+                .lib-button-revert-secondary-color(
+                    @_button-color: @color-white,
+                    @_button-background: @theme__color__secondary,
+                    @_button-border: 1px solid @theme__color__secondary,
+                    @_button-color-hover: @color-white,
+                    @_button-background-hover: @theme__color__primary-alt,
+                    @_button-border-hover: 1px solid @theme__color__primary-alt,
+                    @_button-color-active: @theme__color__primary-alt,
+                    @_button-background-active: @theme__color__primary-alt,
+                    @_button-border-active: 1px solid @theme__color__primary-alt
+                );
             }
         }
     }
@@ -135,6 +159,27 @@
             padding: 10.5px 0 !important;
         }
     }
+
+    #eguana-form-validate {
+        .fieldset{
+            .eguanasociallogin-form-legend {
+                padding-top: @indent__base;
+            }
+        }
+    }
+
+    .sociallogin-form-actions {
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        right: 0;
+
+        button {
+            display: inline-block;
+            float: left;
+            width: 50%;
+        }
+    }
 }
 
 //
@@ -142,7 +187,43 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .sociallogin-login-createcustomer {
+        .page-title-wrapper,
+        .columns {
+            margin: 15px auto 0;
+            max-width: 580px;
+        }
+
+        .page-title-wrapper .page-title {
+            margin-bottom: 35px !important;
+        }
+    }
+
     .socialloginlogin-login {
         margin-top: @indent__xl;
+    }
+
+    #eguana-form-validate {
+        .fieldset{
+            .eguanasociallogin-form-legend {
+                padding-top: 16px;
+            }
+        }
+    }
+
+    .sociallogin-form-actions {
+        margin-top: 80px;
+
+        button {
+            width: 49%;
+
+            &.cancel {
+                float: left;
+            }
+
+            &.login {
+                float: right;
+            }
+        }
     }
 }
