@@ -96,10 +96,12 @@ class SapOrderConfirmData extends AbstractSapOrder
     {
         /** @var Order $order */
         $order = $this->getOrderInfo($incrementId, $type);
+        $orderSendCheck = $order->getData('sap_order_send_check');
+        $incrementIdForSap = $this->getOrderIncrementId($order->getIncrementId(), $orderSendCheck);
 
         $source = $this->config->getSourceByStore('store', $order->getStoreId());
-        $orderData = $this->getOrderData($incrementId, $type);
-        $itemData = $this->getOrderItem($incrementId, $type);
+        $orderData = $this->getOrderData($incrementId, $incrementIdForSap, $type);
+        $itemData = $this->getOrderItem($incrementId, $incrementIdForSap, $type);
 
         if (empty($orderData) && empty($itemData)) {
             $msg = __("Order Data and Item Data do not exist.");
@@ -188,17 +190,18 @@ class SapOrderConfirmData extends AbstractSapOrder
 
     /**
      * @param $incrementId string
+     * @param $sapIncrementId string
      * @param $type string
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getOrderData($incrementId, $type = 'order')
+    public function getOrderData($incrementId, $sapIncrementId, $type = 'order')
     {
         /** @var Order $orderData */
         $orderData = $this->getOrderInfo($incrementId, $type);
         $invoice = $this->getInvoice($orderData->getEntityId());
         $storeId = $orderData->getStoreId();
-        $orderSendCheck = $orderData->getData('sap_order_send_check');
+
         $bindData = [];
 
         if ($orderData == null) {
@@ -206,8 +209,6 @@ class SapOrderConfirmData extends AbstractSapOrder
                 __("Such order %1 does not exist. Check the data and try again", $incrementId)
             );
         }
-
-        $incrementIdForSap = $this->getOrderIncrementId($orderData->getIncrementId(), $orderSendCheck);
 
         if ($invoice != null) {
             $shippingAddress = $orderData->getShippingAddress();
@@ -217,7 +218,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             $bindData[] = [
                 'vkorg' => $this->config->getMallId('store', $storeId),
                 'kunnr' => $this->config->getClient('store', $storeId),
-                'odrno' => $incrementIdForSap,
+                'odrno' => $sapIncrementId,
                 'odrdt' => $this->dateFormatting($orderData->getCreatedAt(), 'Ymd'),
                 'odrtm' => $this->dateFormatting($orderData->getCreatedAt(), 'His'),
                 'paymtd' => $this->getPaymentCode($orderData->getPayment()->getMethod()),
@@ -350,11 +351,12 @@ class SapOrderConfirmData extends AbstractSapOrder
 
     /**
      * @param string $incrementId
+     * @param string $sapIncrementId
      * @param string $type
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getOrderItem($incrementId, $type = 'order')
+    public function getOrderItem($incrementId, $sapIncrementId, $type = 'order')
     {
         $orderItemData = [];
 
@@ -398,7 +400,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 $orderItemData[] = [
                     'itemVkorg' => $this->config->getMallId('store', $storeId),
                     'itemKunnr' => $this->config->getClient('store', $storeId),
-                    'itemOdrno' => $order->getIncrementId(),
+                    'itemOdrno' => $sapIncrementId,
                     'itemPosnr' => $cnt,
                     'itemMatnr' => $orderItem->getSku(),
                     'itemMenge' => intval($orderItem->getQtyOrdered()),
