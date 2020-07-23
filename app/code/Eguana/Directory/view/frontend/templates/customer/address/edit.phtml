@@ -101,7 +101,7 @@ $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked'
         <div class="field zip required">
             <label class="label" for="zip"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?></span></label>
             <div class="control">
-                <input type="text" name="postcode" value="<?= $block->escapeHtmlAttr($block->getAddress()->getPostcode()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>" id="zip" class="input-text validate-zip-international <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('postcode') ?>"/>
+                <input type="text" disabled="true" name="postcode" value="<?= $block->escapeHtmlAttr($block->getAddress()->getPostcode()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>" id="zip" class="input-text validate-zip-international <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('postcode') ?>"/>
                 <div role="alert" class="message warning" style="display:none">
                     <span></span>
                 </div>
