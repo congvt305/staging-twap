@@ -10,20 +10,25 @@
                 <hash_iv>v77hoKGq4kWxNNIS</hash_iv>
                 <hash_key_sandbox>5294y06JbISpM5x9</hash_key_sandbox>
                 <hash_iv_sandbox>v77hoKGq4kWxNNIS</hash_iv_sandbox>
-                <gateway_url>https://logistics.ecpay.com.tw/Helper/QueryLogisticsTradeInfo/V2</gateway_url>
-                <gateway_url_sandbox>https://logistics-stage.ecpay.com.tw/Helper/QueryLogisticsTradeInfo/V2</gateway_url_sandbox>
                 <map_url>https://logistics.ecpay.com.tw/Express/map</map_url>
                 <map_url_sandbox>https://logistics-stage.ecpay.com.tw/Express/map</map_url_sandbox>
-                <map_secure_url>https://secure.shippingapis.com/ShippingAPI.dll</map_secure_url>
+                <create_logistics_order_url>https://logistics.ecpay.com.tw/Express/Create</create_logistics_order_url>
+                <create_logistics_order_url_sandbox>https://logistics-stage.ecpay.com.tw/Express/Create</create_logistics_order_url_sandbox>
+                <logistics_order_query_url>https://logistics.ecpay.com.tw/Helper/QueryLogisticsTradeInfo/V2</logistics_order_query_url>
+                <logistics_order_query_url_sandbox>https://logistics-stage.ecpay.com.tw/Helper/QueryLogisticsTradeInfo/V2</logistics_order_query_url_sandbox>
+                <fami_reverse_logistics_order_url>https://logistics.ecpay.com.tw/express/ReturnCVS</fami_reverse_logistics_order_url>
+                <fami_reverse_logistics_order_url_sandblox>https://logistics-stage.ecpay.com.tw/express/ReturnCVS</fami_reverse_logistics_order_url_sandblox>
+                <unimart_reverse_logistics_order_url>https://logistics.ecpay.com.tw/express/ReturnUniMartCVS</unimart_reverse_logistics_order_url>
+                <unimart_reverse_logistics_order_url_sandblox>https://logistics-stage.ecpay.com.tw/express/ReturnUniMartCVS</unimart_reverse_logistics_order_url_sandblox>
                 <model>Eguana\GWLogistics\Model\Carrier\CvsStorePickup</model>
                 <title>Green World Logistics</title>
                 <name>Convenience Store Pickup</name>
                 <max_package_weight>150</max_package_weight>
-                <shipping_cost>95</shipping_cost>
+                <shipping_price>100</shipping_price>
                 <sort_order>0</sort_order>
                 <active_rma>0</active_rma>
-                <is_online>1</is_online>
-                <sandbox_mode>1</sandbox_mode>
+                <is_online>0</is_online>
+                <mode>1</mode>
             </gwlogistics>
         </carriers>
     </default>
