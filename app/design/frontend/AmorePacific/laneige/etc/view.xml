@@ -202,12 +202,12 @@
             <var name="keyboard">true</var> <!-- Turn on/off keyboard arrows navigation (true/false) -->
             <var name="arrows">true</var> <!-- Turn on/off arrows on the sides preview (true/false) -->
             <var name="caption">false</var> <!-- Display alt text as image title (true/false) -->
-            <var name="allowfullscreen">true</var> <!-- Turn on/off fullscreen (true/false) -->
+            <var name="allowfullscreen">false</var> <!-- Turn on/off fullscreen (true/false) -->
             <var name="navdir">vertical</var> <!-- Sliding direction of thumbnails (horizontal/vertical) -->
             <var name="navarrows">true</var> <!-- Turn on/off on the thumbs navigation sides arrows(true/false) -->
             <var name="navtype">slides</var> <!-- Sliding type of thumbnails (slides/thumbs) -->
             <var name="transition">
-                <var name="effect">slide</var> <!-- Sets transition effect for slides changing (slide/crossfade/dissolve) -->
+                <var name="effect">crossfade</var> <!-- Sets transition effect for slides changing (slide/crossfade/dissolve) -->
                 <var name="duration">500</var> <!-- Sets transition duration in ms -->
             </var>
             <var name="fullscreen">
@@ -242,6 +242,9 @@
                 <var name="options">
                     <var name="options">
                         <var name="nav">dots</var>
+                        <var name="transition">
+                            <var name="effect">slide</var>
+                        </var>
                     </var>
                 </var>
             </var>
