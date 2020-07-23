@@ -24,34 +24,60 @@ $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked'
         <input type="hidden" name="error_url" value="<?= $block->escapeUrl($block->getErrorUrl()) ?>"/>
         <?= $block->getNameBlockHtml() ?>
         <?php if ($addressHelper->isAttributeVisible('company')) : ?>
-        <div class="field company <?php if (in_array('company', $requiredAttributesPrechecked)) :
-            ?>required<?php endif; ?>">
-            <label class="label" for="company"><span><?= $block->escapeHtml(__('Company')) ?></span></label>
-            <div class="control">
-                <input type="text" name="company" id="company" title="<?= $block->escapeHtmlAttr(__('Company')) ?>" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCompany()) ?>" class="input-text <?= $block->escapeHtmlAttr($addressHelper->getAttributeValidationClass('company')) ?>"/>
+            <div class="field company <?php if (in_array('company', $requiredAttributesPrechecked)) :
+                ?>required<?php endif; ?>">
+                <label class="label" for="company"><span><?= $block->escapeHtml(__('Company')) ?></span></label>
+                <div class="control">
+                    <input type="text" name="company" id="company" title="<?= $block->escapeHtmlAttr(__('Company')) ?>" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCompany()) ?>" class="input-text <?= $block->escapeHtmlAttr($addressHelper->getAttributeValidationClass('company')) ?>"/>
+                </div>
             </div>
-        </div>
         <?php endif; ?>
         <?php if ($addressHelper->isAttributeVisible('telephone')) : ?>
             <div class="field telephone <?php if (in_array('telephone', $requiredAttributesPrechecked)) :
                 ?>required<?php endif; ?>">
-            <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
-            <div class="control">
-                <input type="text" name="telephone" value="<?= $block->escapeHtmlAttr($block->getAddress()->getTelephone()) ?>" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" class="input-text <?= /* @noEscape */ $addressHelper->getAttributeValidationClass('telephone') ?>" id="telephone"/>
+                <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
+                <div class="control">
+                    <input type="text" name="telephone" value="<?= $block->escapeHtmlAttr($block->getAddress()->getTelephone()) ?>" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" class="input-text <?= /* @noEscape */ $addressHelper->getAttributeValidationClass('telephone') ?>" id="telephone"/>
+                </div>
             </div>
-        </div>
         <?php endif; ?>
         <?php if ($addressHelper->isAttributeVisible('fax')) : ?>
-        <div class="field fax">
-            <label class="label" for="fax"><span><?= $block->escapeHtml(__('Fax')) ?></span></label>
-            <div class="control">
-                <input type="text" name="fax" id="fax" title="<?= $block->escapeHtmlAttr(__('Fax')) ?>" value="<?= $block->escapeHtmlAttr($block->getAddress()->getFax()) ?>" class="input-text <?= /* @noEscape */ $addressHelper->getAttributeValidationClass('fax') ?>"/>
+            <div class="field fax">
+                <label class="label" for="fax"><span><?= $block->escapeHtml(__('Fax')) ?></span></label>
+                <div class="control">
+                    <input type="text" name="fax" id="fax" title="<?= $block->escapeHtmlAttr(__('Fax')) ?>" value="<?= $block->escapeHtmlAttr($block->getAddress()->getFax()) ?>" class="input-text <?= /* @noEscape */ $addressHelper->getAttributeValidationClass('fax') ?>"/>
+                </div>
             </div>
-        </div>
         <?php endif; ?>
     </fieldset>
     <fieldset class="fieldset">
         <legend class="legend"><span><?= $block->escapeHtml(__('Address')) ?></span></legend><br>
+        <?php if ($addressHelper->isVatAttributeVisible()) : ?>
+            <div class="field taxvat">
+                <label class="label" for="vat_id"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('vat_id') ?></span></label>
+                <div class="control">
+                    <input type="text" name="vat_id" value="<?= $block->escapeHtmlAttr($block->getAddress()->getVatId()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('vat_id') ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('vat_id') ?>" id="vat_id"/>
+                </div>
+            </div>
+        <?php endif; ?>
+        <div class="field region required">
+            <label class="label" for="region_id"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?></span></label>
+            <div class="control">
+                <select id="region_id" name="region_id" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?>" class="validate-select region_id" <?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>>
+                    <option value=""><?= $block->escapeHtml(__('Please select a region, state or province.')) ?></option>
+                </select>
+                <input type="text" id="region" name="region" value="<?= $block->escapeHtmlAttr($block->getRegion()) ?>"  title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('region') ?>"<?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>/>
+            </div>
+        </div>
+        <div class="field city required">
+            <label class="label" for="city"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?></span></label>
+            <div class="control">
+                <select id="city_id" name="city_id" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?>" class="validate-select region_id" <?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>>
+                    <option value=""><?= $block->escapeHtml(__('Please select a city or district.')) ?></option>
+                </select>
+                <input type="text" name="city" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCity()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('city') ?>" id="city"/>
+            </div>
+        </div>
         <?php $_streetValidationClass = $addressHelper->getAttributeValidationClass('street'); ?>
         <div class="field street required">
             <label for="street_1" class="label"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('street') ?></span></label>
@@ -72,33 +98,6 @@ $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked'
                 </div>
             </div>
         </div>
-
-        <?php if ($addressHelper->isVatAttributeVisible()) : ?>
-            <div class="field taxvat">
-                <label class="label" for="vat_id"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('vat_id') ?></span></label>
-                <div class="control">
-                    <input type="text" name="vat_id" value="<?= $block->escapeHtmlAttr($block->getAddress()->getVatId()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('vat_id') ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('vat_id') ?>" id="vat_id"/>
-                </div>
-            </div>
-        <?php endif; ?>
-        <div class="field city required">
-            <label class="label" for="city"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?></span></label>
-            <div class="control">
-                <select id="city_id" name="city_id" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?>" class="validate-select region_id" <?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>>
-                    <option value=""><?= $block->escapeHtml(__('Please select a city or district.')) ?></option>
-                </select>
-                <input type="text" name="city" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCity()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('city') ?>" id="city"/>
-            </div>
-        </div>
-        <div class="field region required">
-            <label class="label" for="region_id"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?></span></label>
-            <div class="control">
-                <select id="region_id" name="region_id" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?>" class="validate-select region_id" <?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>>
-                    <option value=""><?= $block->escapeHtml(__('Please select a region, state or province.')) ?></option>
-                </select>
-                <input type="text" id="region" name="region" value="<?= $block->escapeHtmlAttr($block->getRegion()) ?>"  title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('region') ?>"<?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>/>
-            </div>
-        </div>
         <div class="field zip required">
             <label class="label" for="zip"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?></span></label>
             <div class="control">
@@ -114,7 +113,6 @@ $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked'
                 <?= $block->getCountryHtmlSelect() ?>
             </div>
         </div>
-
         <?php $userDefinedAttributes = $block->getLayout()->getBlock('customer_form_address_user_attributes'); ?>
         <?php if ($userDefinedAttributes) :?>
             <?= $userDefinedAttributes->setShowContainer(false)->toHtml() ?>
@@ -131,7 +129,6 @@ $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked'
         <?php else : ?>
             <input type="hidden" name="default_billing" value="1"/>
         <?php endif; ?>
-
         <?php if ($block->isDefaultShipping()) : ?>
             <div class="message info">
                 <span><?= $block->escapeHtml(__("This is your default shipping address.")) ?></span>
