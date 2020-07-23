@@ -19,6 +19,8 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 use Amore\CustomerRegistration\Model\POSLogger;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Newsletter\Model\Subscriber;
+use Magento\Directory\Model\RegionFactory;
+use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 
 /**
  * PLEASE ENTER ONE LINE SHORT DESCRIPTION OF CLASS
@@ -56,8 +58,23 @@ class SaveSuccess implements ObserverInterface
      * @var SubscriberFactory
      */
     private $subscriberFactory;
+    /**
+     * @var RegionFactory
+     */
+    private $regionFactory;
+    /**
+     * @var RegionResourceModel
+     */
+    private $regionResourceModel;
+    /**
+     * @var \Eguana\Directory\Helper\Data
+     */
+    private $cityHelper;
 
     public function __construct(
+        RegionFactory $regionFactory,
+        \Eguana\Directory\Helper\Data $cityHelper,
+        RegionResourceModel $regionResourceModel,
         Sequence $sequence,
         Data $config,
         CustomerRepositoryInterface $customerRepository,
@@ -71,6 +88,9 @@ class SaveSuccess implements ObserverInterface
         $this->config = $config;
         $this->customerRepository = $customerRepository;
         $this->logger = $logger;
+        $this->regionFactory = $regionFactory;
+        $this->regionResourceModel = $regionResourceModel;
+        $this->cityHelper = $cityHelper;
     }
 
     /**
@@ -81,49 +101,53 @@ class SaveSuccess implements ObserverInterface
     public function execute(
         \Magento\Framework\Event\Observer $observer
     ) {
-        /**
-         * @var Customer $newCustomerData
-         */
-        $newCustomerData = $observer->getEvent()->getData('customer_data_object');
+        try {
+            /**
+             * @var Customer $newCustomerData
+             */
+            $newCustomerData = $observer->getEvent()->getData('customer_data_object');
 
-        /**
-         * @var Customer $oldCustomerData
-         */
-        $oldCustomerData = $observer->getEvent()->getData('orig_customer_data_object');
+            /**
+             * @var Customer $oldCustomerData
+             */
+            $oldCustomerData = $observer->getEvent()->getData('orig_customer_data_object');
 
-        /**
-         * When customer register for the first time then old data will be null
-         */
-        if ($oldCustomerData == null) {
-            $this->assignIntegrationNumber($newCustomerData);
-            return ;
-        }
-
-        $newDataHaveSequenceNumber = false;
-
-        if ($newCustomerData->getCustomAttribute('integration_number') &&
-            $newCustomerData->getCustomAttribute('integration_number')->getValue()
-        ) {
-            $newDataHaveSequenceNumber = true;
-        }
-
-        $oldDataHaveSequenceNumber = false;
-
-        if ($oldCustomerData->getCustomAttribute('integration_number') &&
-            $oldCustomerData->getCustomAttribute('integration_number')->getValue()
-        ) {
-            $oldDataHaveSequenceNumber = true;
-        }
-
-        if (!$oldDataHaveSequenceNumber && $newDataHaveSequenceNumber) {
-            $APIParameters = $this->getAPIParameters($newCustomerData, 'register');
-            $this->POSSystem->syncMember($APIParameters);
-        } elseif ($oldDataHaveSequenceNumber && $newDataHaveSequenceNumber) {
-            $oldDataAPIParameters = $this->getAPIParameters($oldCustomerData, 'update');
-            $newDataAPIParameters = $this->getAPIParameters($newCustomerData, 'update');
-            if ($this->APIValuesChanged($oldDataAPIParameters, $newDataAPIParameters)) {
-                $this->POSSystem->syncMember($newDataAPIParameters);
+            /**
+             * When customer register for the first time then old data will be null
+             */
+            if ($oldCustomerData == null) {
+                $this->assignIntegrationNumber($newCustomerData);
+                return;
             }
+
+            $newDataHaveSequenceNumber = false;
+
+            if ($newCustomerData->getCustomAttribute('integration_number') &&
+                $newCustomerData->getCustomAttribute('integration_number')->getValue()
+            ) {
+                $newDataHaveSequenceNumber = true;
+            }
+
+            $oldDataHaveSequenceNumber = false;
+
+            if ($oldCustomerData->getCustomAttribute('integration_number') &&
+                $oldCustomerData->getCustomAttribute('integration_number')->getValue()
+            ) {
+                $oldDataHaveSequenceNumber = true;
+            }
+
+            if (!$oldDataHaveSequenceNumber && $newDataHaveSequenceNumber) {
+                $APIParameters = $this->getAPIParameters($newCustomerData, 'register');
+                $this->POSSystem->syncMember($APIParameters);
+            } elseif ($oldDataHaveSequenceNumber && $newDataHaveSequenceNumber) {
+                $oldDataAPIParameters = $this->getAPIParameters($oldCustomerData, 'update');
+                $newDataAPIParameters = $this->getAPIParameters($newCustomerData, 'update');
+                if ($this->APIValuesChanged($oldDataAPIParameters, $newDataAPIParameters)) {
+                    $this->POSSystem->syncMember($newDataAPIParameters);
+                }
+            }
+        } catch (\Exception $e) {
+            $this->logger->addExceptionMessage($e->getMessage());
         }
     }
 
@@ -181,14 +205,35 @@ class SaveSuccess implements ObserverInterface
         $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y':'N';
         $parameters['callYN'] = 'N';
         $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-        $parameters['homeCity'] = $customer->getCustomAttribute('dm_city')?
-            $customer->getCustomAttribute('dm_city')->getValue():'';
-        $parameters['homeState'] = $customer->getCustomAttribute('dm_state')?
-            $customer->getCustomAttribute('dm_state')->getValue():'';
-        $parameters['homeAddr1'] = $customer->getCustomAttribute('dm_detailed_address')?
-            $customer->getCustomAttribute('dm_detailed_address')->getValue():'';
-        $parameters['homeZip'] = $customer->getCustomAttribute('dm_zipcode')?
-            $customer->getCustomAttribute('dm_zipcode')->getValue():'';
+        $regionName = $customer->getCustomAttribute('dm_state') ?
+            $customer->getCustomAttribute('dm_state')->getValue() : '';
+        if ($regionName) {
+            $regionObject = $this->getRegionObject($regionName);
+            $parameters['homeCity'] = $regionObject->getCode();
+        } else {
+            $parameters['homeCity'] = '';
+        }
+
+        $cityName = $customer->getCustomAttribute('dm_city') ?
+            $customer->getCustomAttribute('dm_city')->getValue() : '';
+        if ($cityName && $regionObject) {
+            $cities = $this->cityHelper->getCityData();
+            $regionCities = $cities[$regionObject->getRegionId()];
+            foreach ($regionCities as $regionCity) {
+                if ($regionCity['name'] == $cityName) {
+                    $parameters['homeState'] = $regionCity['code'];
+                    break;
+                }
+            }
+        } else {
+            $parameters['homeState'] = '';
+        }
+
+        $parameters['homeAddr1'] = $customer->getCustomAttribute('dm_detailed_address') ?
+            $customer->getCustomAttribute('dm_detailed_address')->getValue() : '';
+        $parameters['homeZip'] = $customer->getCustomAttribute('dm_zipcode') ?
+            $customer->getCustomAttribute('dm_zipcode')->getValue() : '';
+
         $parameters['salOrgCd'] =  $customer->getCustomAttribute('sales_organization_code')?
             $customer->getCustomAttribute('sales_organization_code')->getValue():'';
         $parameters['salOffCd'] = $customer->getCustomAttribute('sales_office_code')?
@@ -228,5 +273,17 @@ class SaveSuccess implements ObserverInterface
         $status = $subscriber->loadByCustomerId((int)$customerId)->isSubscribed();
 
         return (bool)$status;
+    }
+
+    private function getRegionObject($regionName)
+    {
+        /** @var \Magento\Directory\Model\Region $region */
+        $region = $this->regionFactory->create();
+        try {
+            $this->regionResourceModel->load($region, $regionName, 'default_name');
+        } catch (\Exception $e) {
+          $message = $e->getMessage();
+        }
+        return $region;
     }
 }
