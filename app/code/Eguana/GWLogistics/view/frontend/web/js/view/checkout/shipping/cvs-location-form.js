@@ -29,6 +29,7 @@ define([
             tracks: {
                 visible: true,
                 isMapVisible: true,
+                disabled: true,
             },
         },
         errorMessage: ko.observable(false),
@@ -38,6 +39,7 @@ define([
             this._super();
             cvsLocation.clear();
             this.visible = false;
+            this.disabled = true;
             this.windowActivateCount = 0;
             return this;
         },
@@ -63,6 +65,7 @@ define([
             this.errorMessage(false);
             getSelectedCvsLocationAction.bind(this); // this is not working!!! but okay because customer section is working good!
             cvsLocation.selectCvsLocation();
+            this.disabled = true;
         },
 
         getCvsLocation: function () {
