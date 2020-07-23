@@ -8,13 +8,16 @@
 
 namespace Amore\Sap\Plugin\Model;
 
+use Amore\Sap\Exception\RmaTrackNoException;
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
+use Amore\Sap\Model\SapOrder\SapOrderReturnData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Rma\Model\Rma;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Status\HistoryFactory;
 
@@ -44,18 +47,16 @@ class RmaPlugin
      * @var Logger
      */
     private $logger;
-    /**
-     * @var SapOrderConfirmData
-     */
-    private $sapOrderConfirmData;
+
     /**
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
+
     /**
-     * @var HistoryFactory
+     * @var SapOrderReturnData
      */
-    private $historyFactory;
+    private $sapOrderReturnData;
 
     /**
      * RmaPlugin constructor.
@@ -63,34 +64,30 @@ class RmaPlugin
      * @param Request $request
      * @param Config $config
      * @param Logger $logger
-     * @param SapOrderConfirmData $sapOrderConfirmData
      * @param OrderRepositoryInterface $orderRepository
-     * @param HistoryFactory $historyFactory
+     * @param SapOrderReturnData $sapOrderReturnData
      */
     public function __construct(
         Json $json,
         Request $request,
         Config $config,
         Logger $logger,
-        SapOrderConfirmData $sapOrderConfirmData,
         OrderRepositoryInterface $orderRepository,
-        HistoryFactory $historyFactory
+        SapOrderReturnData $sapOrderReturnData
     ) {
         $this->json = $json;
         $this->request = $request;
         $this->config = $config;
         $this->logger = $logger;
-        $this->sapOrderConfirmData = $sapOrderConfirmData;
         $this->orderRepository = $orderRepository;
-        $this->historyFactory = $historyFactory;
+        $this->sapOrderReturnData = $sapOrderReturnData;
     }
 
-    public function beforeSaveRma(\Magento\Rma\Model\Rma $subject, $data)
+    public function beforeSaveRma(Rma $subject, $data)
     {
         $enableSapCheck = $this->config->getActiveCheck('store', $subject->getStoreId());
         $enableRmaCheck = $this->config->getRmaActiveCheck('store', $subject->getStoreId());
         $availableStatus = 'authorized';
-        $orderIncrementId = $subject->getOrderIncrementId();
         $order = $subject->getOrder();
         $rmaSendCheck = $order->getData('sap_return_send_check');
 
@@ -101,7 +98,7 @@ class RmaPlugin
                 }
 
                 try {
-                    $orderRmaData = $this->sapOrderConfirmData->singleOrderData($orderIncrementId);
+                    $orderRmaData = $this->sapOrderReturnData->singleOrderData($subject);
 
                     if ($this->config->getLoggingCheck()) {
                         $this->logger->info("Order RMA Send Data");
@@ -124,21 +121,13 @@ class RmaPlugin
                                 if ($data['retcod'] == 'S') {
                                     if ($rmaSendCheck == 0 || $rmaSendCheck == 2) {
                                         $this->saveRmaSendCheck($order, self::RMA_RESENT_TO_SAP_SUCCESS);
+                                        $subject->setData('sap_return_increment_id', $data['odrno']);
                                     } else {
                                         $this->saveRmaSendCheck($order, self::RMA_SENT_TO_SAP_SUCCESS);
                                     }
-                                    $this->addComment($order, "SAP Return : RMA Sent to SAP Successfully.");
                                 } else {
                                     $this->saveRmaSendCheck($order, self::RMA_SENT_TO_SAP_FAIL);
-                                    $this->addComment(
-                                        $order,
-                                        __(
-                                            'SAP Return : Error returned from SAP for order %1. Error code : %2. Message : %3',
-                                            $order->getIncrementId(),
-                                            $data['ugcod'],
-                                            $data['ugtxt']
-                                        )
-                                    );
+
                                     throw new \Exception(
                                         __(
                                             'Error returned from SAP for order %1. Error code : %2. Message : %3',
@@ -151,15 +140,6 @@ class RmaPlugin
                             }
                         } else {
                             $this->saveRmaSendCheck($order, self::RMA_SENT_TO_SAP_FAIL);
-                            $this->addComment(
-                                $order,
-                                __(
-                                    'SAP Return : Error returned from SAP for order %1. Error code : %2. Message : %3',
-                                    $order->getIncrementId(),
-                                    $result['code'],
-                                    $result['message']
-                                )
-                            );
                             throw new \Exception(
                                 __(
                                     'Error returned from SAP for order %1. Error code : %2. Message : %3',
@@ -171,19 +151,18 @@ class RmaPlugin
                         }
                     } else {
                         $this->saveRmaSendCheck($order, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
-                        $this->addComment($order, 'SAP Return : Something went wrong while sending order data to SAP. No response');
                         throw new \Exception(__('Something went wrong while sending order data to SAP. No response'));
                     }
                 } catch (NoSuchEntityException $e) {
                     $this->saveRmaSendCheck($order, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
-                    $this->addComment($order, "SAP Return : " . $e->getMessage());
                     throw new NoSuchEntityException(__($e->getMessage()));
+                } catch (RmaTrackNoException $e) {
+                    $this->saveRmaSendCheck($order, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                    throw new LocalizedException(__($e->getMessage()));
                 } catch (LocalizedException $e) {
                     $this->saveRmaSendCheck($order, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
-                    $this->addComment($order, "SAP Return : " . $e->getMessage());
                     throw new LocalizedException(__($e->getMessage()));
                 } catch (\Exception $exception) {
-                    $this->addComment($order, "SAP Return : " . $exception->getMessage());
                     $this->saveRmaSendCheck($order, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                     throw new \Exception(__('SAP Return : Error occurred while sending RMA data to SAP'));
                 }
@@ -200,21 +179,5 @@ class RmaPlugin
     {
         $order->setData('sap_return_send_check', $status);
         $this->orderRepository->save($order);
-    }
-
-    /**
-     * @param $order \Magento\Sales\Model\Order
-     * @param $message string
-     */
-    public function addComment($order, $message)
-    {
-        /** @var \Magento\Sales\Model\Order\Status\History $history */
-        $history = $this->historyFactory->create();
-        $history->setStatus(false);
-        $history->setComment($message);
-        $history->setEntityName('rma');
-        $history->setIsVisibleOnFront(false);
-        $history->setOrder($order);
-        $history->save();
     }
 }
