@@ -11,8 +11,10 @@ namespace Eguana\GWLogistics\Model\Carrier;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Shipping\Model\Rate\Result;
 
-class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnline implements \Magento\Shipping\Model\Carrier\CarrierInterface
+class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements
+    \Magento\Shipping\Model\Carrier\CarrierInterface
 {
+    const XML_PATH_SHIPPING_PRICE = 'carriers/gwlogistics/shipping_price';
     /**
      * @var string
      */
@@ -21,58 +23,37 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnli
      * @var \Magento\Shipping\Model\Rate\ResultFactory
      */
     private $rateResultFactory;
+    /**
+     * @var \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory
+     */
+    private $rateMethodFactory;
 
     public function __construct(
-        \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Framework\Xml\Security $xmlSecurity,
-        \Magento\Shipping\Model\Simplexml\ElementFactory $xmlElFactory,
-        \Magento\Shipping\Model\Rate\ResultFactory $rateFactory,
+        \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory,
         \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory,
-        \Magento\Shipping\Model\Tracking\ResultFactory $trackFactory,
-        \Magento\Shipping\Model\Tracking\Result\ErrorFactory $trackErrorFactory,
-        \Magento\Shipping\Model\Tracking\Result\StatusFactory $trackStatusFactory,
-        \Magento\Directory\Model\RegionFactory $regionFactory,
-        \Magento\Directory\Model\CountryFactory $countryFactory,
-        \Magento\Directory\Model\CurrencyFactory $currencyFactory,
-        \Magento\Directory\Helper\Data $directoryData,
-        \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
         array $data = []
     ) {
-        parent::__construct(
-            $scopeConfig,
-            $rateErrorFactory,
-            $logger,
-            $xmlSecurity,
-            $xmlElFactory,
-            $rateFactory,
-            $rateMethodFactory,
-            $trackFactory,
-            $trackErrorFactory,
-            $trackStatusFactory,
-            $regionFactory,
-            $countryFactory,
-            $currencyFactory,
-            $directoryData,
-            $stockRegistry,
-            $data
-        );
+        parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
         $this->rateResultFactory = $rateResultFactory;
+        $this->rateMethodFactory = $rateMethodFactory;
     }
 
     public function collectRates(RateRequest $request)
     {
-        if (!$this->canCollectRates()) {
-            return $this->getErrorMessage();
+        if (!$this->getConfigFlag('active')) {
+            return false;
         }
+
+        $freeBoxes = $this->getFreeBoxesCount($request);
+        $this->setFreeBoxes($freeBoxes);
 
         /** @var Result $result */
         $result = $this->rateResultFactory->create();
 
-//        $shippingPrice = $this->getShippingPrice($request, $freeBoxes);
-        $shippingPrice = 100;
+        $shippingPrice = $this->getShippingPrice($request, $freeBoxes);
 
         if ($shippingPrice !== false) {
             $method = $this->createResultMethod($shippingPrice);
@@ -105,7 +86,7 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnli
     private function createResultMethod($shippingPrice)
     {
         /** @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method */
-        $method = $this->_rateMethodFactory->create();
+        $method = $this->rateMethodFactory->create();
 
         $method->setCarrier('gwlogistics');
         $method->setCarrierTitle($this->getConfigData('title'));
@@ -116,5 +97,61 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnli
         $method->setPrice($shippingPrice);
         $method->setCost($shippingPrice);
         return $method;
+    }
+
+    private function getShippingPrice(RateRequest $request, $freeBoxes)
+    {
+        $shippingPrice = $this->_scopeConfig->getValue(
+            self::XML_PATH_SHIPPING_PRICE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+
+
+        if ($shippingPrice !== false && $request->getPackageQty() == $freeBoxes) {
+            $shippingPrice = '0.00';
+        }
+        return $shippingPrice;
+    }
+
+    /**
+     * Get count of free boxes
+     *
+     * @param RateRequest $request
+     * @return int
+     */
+    private function getFreeBoxesCount(RateRequest $request)
+    {
+        $freeBoxes = 0;
+        if ($request->getAllItems()) {
+            foreach ($request->getAllItems() as $item) {
+                if ($item->getProduct()->isVirtual() || $item->getParentItem()) {
+                    continue;
+                }
+
+                if ($item->getHasChildren() && $item->isShipSeparately()) {
+                    $freeBoxes += $this->getFreeBoxesCountFromChildren($item);
+                } elseif ($item->getFreeShipping()) {
+                    $freeBoxes += $item->getQty();
+                }
+            }
+        }
+        return $freeBoxes;
+    }
+
+    /**
+     * Returns free boxes count of children
+     *
+     * @param mixed $item
+     * @return mixed
+     */
+    private function getFreeBoxesCountFromChildren($item)
+    {
+        $freeBoxes = 0;
+        foreach ($item->getChildren() as $child) {
+            if ($child->getFreeShipping() && !$child->getProduct()->isVirtual()) {
+                $freeBoxes += $item->getQty() * $child->getQty();
+            }
+        }
+        return $freeBoxes;
     }
 }
