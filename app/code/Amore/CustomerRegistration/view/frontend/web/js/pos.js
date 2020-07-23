@@ -189,7 +189,6 @@ define([
                                     $('.form-create-account #city_id').val(response.pos.city.code);
                                     $('.form-create-account #dm_city').val(response.pos.city.name);
                                 }
-                                $('.form-create-account #dm_state').val(response.pos.homeState);
                                 $('.form-create-account #dm_detailed_address').val(response.pos.homeAddr1);
                                 $('.form-create-account #dm_zipcode').val(response.pos.homeZip);
                                 $('.form-create-account #imported_from_pos').val(1);
