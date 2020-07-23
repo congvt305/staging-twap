@@ -6,5 +6,10 @@
             "sap_order_send_check": true,
             "sap_order_increment_id": true
         }
+    },
+    "magento_rma": {
+        "column": {
+            "sap_return_increment_id": true
+        }
     }
 }
