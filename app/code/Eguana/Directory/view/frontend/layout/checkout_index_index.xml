@@ -21,11 +21,11 @@
                                                     <item name="children" xsi:type="array">
                                                         <item name="shipping-address-fieldset" xsi:type="array">
                                                             <item name="children" xsi:type="array">
-<!--                                                                <item name="city" xsi:type="array">-->
-<!--                                                                    <item name="component" xsi:type="string">Eguana_Directory/js/city-name</item>-->
-<!--                                                                     Make region attribute invisible on frontend. Corresponding input element is created by region_id field -->
-<!--                                                                    <item name="visible" xsi:type="boolean">false</item>-->
-<!--                                                                </item>-->
+                                                                <item name="city" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Eguana_Directory/js/city-name</item>
+                                                                     Make region attribute invisible on frontend. Corresponding input element is created by region_id field
+                                                                    <item name="visible" xsi:type="boolean">false</item>
+                                                                </item>
                                                                 <item name="city_id" xsi:type="array">
                                                                     <item name="component" xsi:type="string">Eguana_Directory/js/city</item>
                                                                     <item name="config" xsi:type="array">
@@ -36,6 +36,7 @@
                                                                     <item name="validation" xsi:type="array">
                                                                         <item name="required-entry" xsi:type="boolean">true</item>
                                                                     </item>
+                                                                    <item name="sortOrder" xsi:type="string">105</item>
                                                                     <item name="filterBy" xsi:type="array">
                                                                         <item name="target" xsi:type="string"><![CDATA[${ $.provider }:${ $.parentScope }.region_id]]></item>
                                                                         <item name="field" xsi:type="string">region_id</item>

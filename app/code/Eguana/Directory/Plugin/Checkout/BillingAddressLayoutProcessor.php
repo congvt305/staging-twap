@@ -70,7 +70,7 @@ class BillingAddressLayoutProcessor
         ['payment']['children']['payments-list']['children'][$paymentMethodForm]['children']
         ['form-fields']['children']['city_id'];
 
-        $cityField = [
+        $cityIdField = [
             'component' => 'Eguana_Directory/js/city', //need to change
             'config' => [
                 'customScope' => 'billingAddresscheckmo', //passed
@@ -82,7 +82,7 @@ class BillingAddressLayoutProcessor
             'dataScope' => 'billingAddresscheckmo' . '.' . 'city_id', //exists
             'label' => $cityIdPassed['label'], //exists
             'provider' => 'checkoutProvider', //exists
-            'sortOrder' => '80',//exists
+            'sortOrder' => '105',//exists
             'validation' => ['required-entry' => true], //change
             'options' => $cityIdPassed['options'], //exists
             'filterBy' => [ //exists
@@ -98,9 +98,17 @@ class BillingAddressLayoutProcessor
             ],
         ];
 
+        $cityField = [
+            'visible' => false,
+        ];
+
         $this->result['components']['checkout']['children']['steps']['children']['billing-step']['children']
         ['payment']['children']['payments-list']['children'][$paymentMethodForm]['children']
-        ['form-fields']['children']['city_id'] = $cityField;
+        ['form-fields']['children']['city_id'] = $cityIdField;
+
+        $this->result['components']['checkout']['children']['steps']['children']['billing-step']['children']
+        ['payment']['children']['payments-list']['children'][$paymentMethodForm]['children']
+        ['form-fields']['children']['city'] = $cityField;
 
         return $this;
     }
