@@ -98,6 +98,12 @@
             clear: left;
         }
     }
+
+    .wishlist-index-configure.page-product-bundle {
+        .bundle-options-container .product-options-wrapper {
+            &:extend(.abs-visually-hidden all);
+        }
+    }
 }
 
 //
@@ -109,6 +115,11 @@
         .product-info-price {
             .price-box >.price-final_price {
                 width: 100%;
+
+                .price-from,
+                .price-to {
+                    width: 100%;
+                }
             }
         }
     }
@@ -131,6 +142,10 @@
             .page-layout-3columns & {
                 width: 48%;
             }
+        }
+
+        .price-box .price-to {
+            margin-left: @indent__s;
         }
     }
 }
