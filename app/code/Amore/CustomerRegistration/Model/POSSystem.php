@@ -22,6 +22,8 @@ use GuzzleHttp\Psr7\ResponseFactory;
 use Magento\Framework\Webapi\Rest\Request;
 use Amore\CustomerRegistration\Model\POSLogger;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Directory\Model\RegionFactory;
+use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 
 /**
  * In this class we will call the POS API
@@ -69,8 +71,23 @@ class POSSystem
      * @var \Magento\Store\Model\StoreManagerInterface
      */
     private $storeManager;
+    /**
+     * @var RegionFactory
+     */
+    private $regionFactory;
+    /**
+     * @var RegionResourceModel
+     */
+    private $regionResourceModel;
+    /**
+     * @var \Eguana\Directory\Helper
+     */
+    private $cityHelper;
 
     public function __construct(
+        RegionFactory $regionFactory,
+        RegionResourceModel $regionResourceModel,
+        \Eguana\Directory\Helper\Data $cityHelper,
         Curl $curl,
         Data $config,
         DateTime $date,
@@ -90,6 +107,9 @@ class POSSystem
         $this->json = $json;
         $this->eventManager = $eventManager;
         $this->storeManager = $storeManager;
+        $this->regionFactory = $regionFactory;
+        $this->regionResourceModel = $regionResourceModel;
+        $this->cityHelper = $cityHelper;
     }
 
     public function getMemberInfo($firstName, $lastName, $mobileNumber)
@@ -159,6 +179,24 @@ class POSSystem
                     );
                 } else {
                     $result = $response['data']['customerInfo'];
+                    $result['region'] = [];
+                    if ($result['homeCity']) {
+                        /** @var \Magento\Directory\Model\Region $region */
+                        $region = $this->regionFactory->create();
+                        $this->regionResourceModel->load($region, $result['homeCity'], 'code');
+                        $result['region'] = $region->getData();
+                    }
+
+                    if ($result['homeState'] && $result['region']['region_id']) {
+                        $cities = $this->cityHelper->getCityData();
+                        $regionCities = $cities[$result['region']['region_id']];
+                        foreach ($regionCities as $regionCity) {
+                            if ($regionCity['code'] == $result['homeState']) {
+                                $result['city'] = $regionCity;
+                                break;
+                            }
+                        }
+                    }
                 }
             } elseif ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'N') {
                 $result = [];
