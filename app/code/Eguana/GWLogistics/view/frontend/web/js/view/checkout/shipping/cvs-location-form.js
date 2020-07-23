@@ -1,7 +1,6 @@
 define([
     'ko',
     'jquery',
-    // 'Magento_Ui/js/form/element/abstract',
     'uiComponent',
     'Magento_Checkout/js/model/quote',
     'Eguana_GWLogistics/js/action/get-selected-cvs-location',
@@ -15,7 +14,6 @@ define([
     return Component.extend({
         defaults: {
             visible: true,
-            disabled: true,
             isMapVisible : true,
             displayArea: 'after-shipping-method-item',
             template: 'Eguana_GWLogistics/checkout/shipping/cvs-location-form',
@@ -62,7 +60,7 @@ define([
         getSelectedCvsLocation: function () {
             this.errorMessage(false);
             getSelectedCvsLocationAction.bind(this); // this is not working!!! but okay because customer section is working good!
-            cvsLocation.selectCvsLocation();
+            cvsLocation.selectCvsLocation().bind(this);
         },
 
         getCvsLocation: function () {
