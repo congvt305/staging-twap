@@ -383,13 +383,14 @@ class SapOrderConfirmData extends AbstractSapOrder
                 if ($orderItem->getProductType() != 'simple') {
                     continue;
                 }
+                $configurableCheckedItem = $this->configurableProductCheck($orderItem);
                 $mileagePerItem = $this->mileageSpentRateByItem(
                     $orderTotal,
-                    $this->configurableProductCheck($orderItem)->getRowTotalInclTax(),
-                    $this->configurableProductCheck($orderItem)->getDiscountAmount(),
+                    $configurableCheckedItem->getRowTotalInclTax(),
+                    $configurableCheckedItem->getDiscountAmount(),
                     $mileageUsedAmount);
-                $itemGrandTotal = $this->configurableProductCheck($orderItem)->getRowTotal()
-                    - $this->configurableProductCheck($orderItem)->getDiscountAmount()
+                $itemGrandTotal = $configurableCheckedItem->getRowTotal()
+                    - $configurableCheckedItem->getDiscountAmount()
                     - $mileagePerItem;
                 $itemGrandTotalInclTax = $this->configurableProductCheck($orderItem)->getRowTotalInclTax()
                     - $this->configurableProductCheck($orderItem)->getDiscountAmount()
@@ -404,8 +405,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                     'itemMenge' => intval($orderItem->getQtyOrdered()),
                     // 아이템 단위, Default : EA
                     'itemMeins' => 'EA',
-                    'itemNsamt' => $this->configurableProductCheck($orderItem)->getRowTotalInclTax(),
-                    'itemDcamt' => $this->configurableProductCheck($orderItem)->getDiscountAmount(),
+                    'itemNsamt' => $configurableCheckedItem->getRowTotalInclTax(),
+                    'itemDcamt' => $configurableCheckedItem->getDiscountAmount(),
                     'itemSlamt' => $itemGrandTotalInclTax,
                     'itemMiamt' => $mileagePerItem,
                     // 상품이 무상제공인 경우 Y 아니면 N
@@ -414,7 +415,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     'itemAuart' => self::NORMAL_ORDER,
                     'itemAugru' => '',
                     'itemNetwr' => $itemGrandTotal,
-                    'itemMwsbp' => $this->configurableProductCheck($orderItem)->getTaxAmount(),
+                    'itemMwsbp' => $configurableCheckedItem->getTaxAmount(),
                     'itemVkorg_ori' => $this->config->getMallId('store', $storeId),
                     'itemKunnr_ori' => $this->config->getClient('store', $storeId),
                     'itemOdrno_ori' => $sapIncrementId,
