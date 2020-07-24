@@ -3,13 +3,12 @@ define([
     'jquery',
     'uiComponent',
     'Magento_Checkout/js/model/quote',
-    'Eguana_GWLogistics/js/action/get-selected-cvs-location',
     'Eguana_GWLogistics/js/model/cvs-location',
     'Magento_Customer/js/model/customer',
     'Magento_Customer/js/customer-data',
     './test',
     'mage/url',
-], function (ko, $, Component, quote, getSelectedCvsLocationAction, cvsLocation,  customer, customerData, test, urlBuilder) {
+], function (ko, $, Component, quote, cvsLocation,  customer, customerData, test, urlBuilder) {
     'use strict';
     return Component.extend({
         defaults: {
@@ -43,7 +42,7 @@ define([
         initObservable: function () {
             this._super();
             quote.shippingMethod.subscribe(function (data) {
-                this.visible = (data.method_code + '_' + data.carrier_code === 'CVS_gwlogistics') ? true : false ;
+                this.visible = (data.method_code + '_' + data.carrier_code === 'CVS_gwlogistics');
             }, this)
             $(document).on('visibilitychange', $.proxy(this.onWindowActivated, this));
             return this;
@@ -54,13 +53,11 @@ define([
             if (this.windowActivateCount % 2 === 0) {
                 this.getSelectedCvsLocation();
             }
-
         },
 
         getSelectedCvsLocation: function () {
             this.errorMessage(false);
-            getSelectedCvsLocationAction.bind(this); // this is not working!!! but okay because customer section is working good!
-            cvsLocation.selectCvsLocation().bind(this);
+            cvsLocation.selectCvsLocation();
         },
 
         getCvsLocation: function () {

@@ -12,11 +12,14 @@ define([], function () {
          */
         getRules: function () {
             return {
-                'country_id': {
+                'firstname': {
                     'required': true
                 },
-                'postcode': {
-                    'required': false
+                'lastname': {
+                    'required': true
+                },
+                'telephone': {
+                    'required': true
                 }
             };
         }
