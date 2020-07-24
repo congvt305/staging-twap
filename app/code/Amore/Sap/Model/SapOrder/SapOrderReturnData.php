@@ -305,8 +305,7 @@ class SapOrderReturnData extends AbstractSapOrder
      */
     public function getRmaIncrementId($rma)
     {
-        $order = $rma->getOrder();
-        $rmaSendCheck = $order->getData('sap_return_send_check');
+        $rmaSendCheck = $rma->getData('sap_return_send_check');
         $rmaIncrementId = $rma->getIncrementId();
 
         if (is_null($rmaSendCheck)) {
