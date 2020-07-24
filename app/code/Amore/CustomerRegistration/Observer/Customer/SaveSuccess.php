@@ -195,11 +195,11 @@ class SaveSuccess implements ObserverInterface
         $parameters = [];
         $parameters['cstmIntgSeq'] = $customer->getCustomAttribute('integration_number')->getValue();
         $parameters['if_flag'] = $action == 'register' ? 'I' : 'U';
-        $parameters['firstName'] = $customer->getFirstname();
-        $parameters['lastName'] = $customer->getLastname();
+        $parameters['firstName'] = trim($customer->getFirstname());
+        $parameters['lastName'] = trim($customer->getLastname());
         $parameters['birthDay'] = $customer->getDob()?preg_replace('/\D/', '', $customer->getDob()):'';
         $parameters['mobileNo'] = $customer->getCustomAttribute('mobile_number')->getValue();
-        $parameters['email'] = $customer->getEmail();
+        $parameters['email'] = trim($customer->getEmail());
         $parameters['sex'] = $customer->getGender() == '1' ? 'M' : 'F';
         $parameters['emailYN'] = $this->isCustomerSubscribToNewsLetters($customer->getId()) ? 'Y' : 'N';
         $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y':'N';
@@ -209,13 +209,14 @@ class SaveSuccess implements ObserverInterface
             $customer->getCustomAttribute('dm_state')->getValue() : '';
         if ($regionName) {
             $regionObject = $this->getRegionObject($regionName);
-            $parameters['homeCity'] = $regionObject->getCode();
+            $parameters['homeCity'] = $regionObject->getCode()?$regionObject->getCode():'';
         } else {
             $parameters['homeCity'] = '';
         }
 
         $cityName = $customer->getCustomAttribute('dm_city') ?
             $customer->getCustomAttribute('dm_city')->getValue() : '';
+        $parameters['homeState'] = '';
         if ($cityName && $regionObject) {
             $cities = $this->cityHelper->getCityData();
             $regionCities = $cities[$regionObject->getRegionId()];
@@ -225,12 +226,10 @@ class SaveSuccess implements ObserverInterface
                     break;
                 }
             }
-        } else {
-            $parameters['homeState'] = '';
         }
 
         $parameters['homeAddr1'] = $customer->getCustomAttribute('dm_detailed_address') ?
-            $customer->getCustomAttribute('dm_detailed_address')->getValue() : '';
+            trim($customer->getCustomAttribute('dm_detailed_address')->getValue()) : '';
         $parameters['homeZip'] = $customer->getCustomAttribute('dm_zipcode') ?
             $customer->getCustomAttribute('dm_zipcode')->getValue() : '';
 
