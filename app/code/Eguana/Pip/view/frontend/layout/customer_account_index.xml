@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: umer
+* Date: 23/7/20
+* Time: 6:18 PM
+*/
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block name="customer_account_dashboard_leave_account" after="-" template="Eguana_Pip::account/dashboard/leaveaccount.phtml">
+                <arguments>
+                    <argument name="view_model_leave_account" xsi:type="object">Eguana\Pip\ViewModel\LeaveAccount</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

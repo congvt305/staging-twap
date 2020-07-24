@@ -1,0 +1,24 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: umer
+ * Date: 23/7/20
+ * Time: 6:21 PM
+ */
+/** @var $viewModel \Eguana\Pip\ViewModel\LeaveAccount */
+$viewModel = $block->getData('view_model_leave_account');
+$isEnabled = $viewModel->getHelper()->isEnabledInFrontend();
+?>
+<?php if ($isEnabled): ?>
+<div class="box-actions">
+    <p>
+        <a href="<?= $block->escapeUrl($viewModel->getLink()) ?>" class="action">
+            <span class="action">
+                Click here to leave account
+            </span>
+        </a>
+    </p>
+</div>
+<?php endif; ?>
