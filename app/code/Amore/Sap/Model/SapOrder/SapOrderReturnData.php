@@ -147,6 +147,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'auart' => self::RETURN_ORDER,
             'augru' => self::AUGRU_RETURN_CODE,
             'augruText' => '',
+            'abrvw' => self::ABRVW_RETURN_CODE,
             // 주문자회원코드-직영몰자체코드
             'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
             'custnm' => $order->getCustomerLastname() . $order->getCustomerLastname(),
@@ -235,6 +236,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                 'itemAuart' => self::NORMAL_ORDER,
                 'itemAugru' => self::AUGRU_RETURN_CODE,
+                'itemAbrvw' => self::ABRVW_RETURN_CODE,
                 'itemNetwr' => $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
                 'itemMwsbp' => $this->getRateAmount($orderItem->getTaxAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
                 'itemVkorg_ori' => $this->config->getMallId('store', $storeId),
