@@ -215,7 +215,9 @@ class MassSend extends AbstractAction
 
     public function getOrderIncrementId($incrementId, $orderSendCheck)
     {
-        if ($orderSendCheck == 0 || $orderSendCheck == 2) {
+        if (is_null($orderSendCheck)) {
+            $incrementIdForSap = $orderSendCheck;
+        } elseif ($orderSendCheck == 0 || $orderSendCheck == 2) {
             $currentDate = $this->timezoneInterface->date()->format('ymdHis');
             $incrementIdForSap = $incrementId . '_' . $currentDate;
         } else {
