@@ -9,7 +9,8 @@
     },
     "magento_rma": {
         "column": {
-            "sap_return_increment_id": true
+            "sap_return_increment_id": true,
+            "sap_return_send_check": true
         }
     }
 }

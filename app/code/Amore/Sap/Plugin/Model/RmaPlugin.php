@@ -94,7 +94,7 @@ class RmaPlugin
         if ($enableSapCheck && $enableRmaCheck) {
             if ($subject->getStatus() == $availableStatus) {
                 if ($rmaSendCheck == null) {
-                    $order->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_BEFORE);
+                    $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_BEFORE);
                 }
 
                 try {
@@ -120,18 +120,18 @@ class RmaPlugin
                             foreach ($outdata as $data) {
                                 if ($data['retcod'] == 'S') {
                                     if ($rmaSendCheck == 0 || $rmaSendCheck == 2) {
-                                        $this->saveRmaSendCheck($order, self::RMA_RESENT_TO_SAP_SUCCESS);
+                                        $subject->setData('sap_return_send_check', self::RMA_RESENT_TO_SAP_SUCCESS);
                                         $subject->setData('sap_return_increment_id', $data['odrno']);
                                     } else {
-                                        $this->saveRmaSendCheck($order, self::RMA_SENT_TO_SAP_SUCCESS);
+                                        $subject->setData('sap_return_send_check', self::RMA_RESENT_TO_SAP_SUCCESS);
                                     }
                                 } else {
-                                    $this->saveRmaSendCheck($order, self::RMA_SENT_TO_SAP_FAIL);
+                                    $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
 
                                     throw new \Exception(
                                         __(
-                                            'Error returned from SAP for order %1. Error code : %2. Message : %3',
-                                            $order->getIncrementId(),
+                                            'Error returned from SAP for RMA %1. Error code : %2. Message : %3',
+                                            $subject->getIncrementId(),
                                             $data['ugcod'],
                                             $data['ugtxt']
                                         )
@@ -139,45 +139,34 @@ class RmaPlugin
                                 }
                             }
                         } else {
-                            $this->saveRmaSendCheck($order, self::RMA_SENT_TO_SAP_FAIL);
+                            $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                             throw new \Exception(
                                 __(
-                                    'Error returned from SAP for order %1. Error code : %2. Message : %3',
-                                    $order->getIncrementId(),
+                                    'Error returned from SAP for RMA %1. Error code : %2. Message : %3',
+                                    $subject->getIncrementId(),
                                     $result['code'],
                                     $result['message']
                                 )
                             );
                         }
                     } else {
-                        $this->saveRmaSendCheck($order, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                        $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                         throw new \Exception(__('Something went wrong while sending order data to SAP. No response'));
                     }
                 } catch (NoSuchEntityException $e) {
-                    $this->saveRmaSendCheck($order, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                    $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                     throw new NoSuchEntityException(__($e->getMessage()));
                 } catch (RmaTrackNoException $e) {
-                    $this->saveRmaSendCheck($order, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                    $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                     throw new LocalizedException(__($e->getMessage()));
                 } catch (LocalizedException $e) {
-                    $this->saveRmaSendCheck($order, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                    $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                     throw new LocalizedException(__($e->getMessage()));
                 } catch (\Exception $exception) {
-                    $this->saveRmaSendCheck($order, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                    $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                     throw new \Exception(__('SAP Return : Error occurred while sending RMA data to SAP'));
                 }
             }
-            $this->orderRepository->save($order);
         }
-    }
-
-    /**
-     * @param $order \Magento\Sales\Model\Order
-     * @param $status int
-     */
-    public function saveRmaSendCheck($order, $status)
-    {
-        $order->setData('sap_return_send_check', $status);
-        $this->orderRepository->save($order);
     }
 }
