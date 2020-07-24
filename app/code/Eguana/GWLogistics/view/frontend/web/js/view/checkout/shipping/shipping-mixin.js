@@ -11,6 +11,9 @@ define([
             validateShippingInformation: function (updatedShipping) {
                 var self = this,
                     logisticTypeSelector= 'input#LogisticsSubType.input-text';
+                if (quote.shippingMethod() === null) {
+                    return self._super(updatedShipping);
+                }
                 if ((quote.shippingMethod().method_code + '_' + quote.shippingMethod().carrier_code === 'CVS_gwlogistics')
                     && ($(logisticTypeSelector)[0].value === '')
                 )
