@@ -98,17 +98,9 @@ class BillingAddressLayoutProcessor
             ],
         ];
 
-        $cityField = [
-            'visible' => false,
-        ];
-
         $this->result['components']['checkout']['children']['steps']['children']['billing-step']['children']
         ['payment']['children']['payments-list']['children'][$paymentMethodForm]['children']
         ['form-fields']['children']['city_id'] = $cityIdField;
-
-        $this->result['components']['checkout']['children']['steps']['children']['billing-step']['children']
-        ['payment']['children']['payments-list']['children'][$paymentMethodForm]['children']
-        ['form-fields']['children']['city'] = $cityField;
 
         return $this;
     }
