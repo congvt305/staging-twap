@@ -2,6 +2,7 @@ define([
     'underscore',
     'uiRegistry',
     'Magento_Ui/js/form/element/select',
+    'Magento_Ui/js/form/element/region'
 ], function (_, registry, Select) {
     'use strict';
 
