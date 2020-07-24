@@ -180,7 +180,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'lgort' => '',
             'rmano' => '',
             // 납품처
-            'kunwe' => $this->config->getSupplyContractor('store', $storeId),
+            'kunwe' => $this->cvsShippingCheck($order) ? $this->config->getSupplyContractor('store', $storeId) : $this->config->getHomeDeliveryContractor('store', $storeId),
             // trackNo 가져와야 함
             'ztrackId' => $trackData['track_number']
         ];

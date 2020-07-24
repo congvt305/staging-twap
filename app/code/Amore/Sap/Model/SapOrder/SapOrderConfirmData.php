@@ -256,7 +256,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'lgort' => '',
                 'rmano' => $this->getRma($orderData->getEntityId()) == null ? '' : $this->getRma($orderData->getEntityId())->getEntityId(),
                 // 납품처
-                'kunwe' => $this->config->getSupplyContractor('store', $storeId),
+                'kunwe' => $this->cvsShippingCheck($orderData) ? $this->config->getSupplyContractor('store', $storeId) : $this->config->getHomeDeliveryContractor('store', $storeId),
                 'ztrackId' => $trackingNumbers
             ];
         }
