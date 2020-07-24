@@ -136,7 +136,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $trackData = $this->getTracks($rma);
 
         $bindData[] = [
-            'vkorg' => $this->config->getMallId('store', $storeId),
+            'vkorg' => $this->config->getSalesOrg('store', $storeId),
             'kunnr' => $this->config->getClient('store', $storeId),
             'odrno' => "R" . $sapIncrementId,
             'odrdt' => $this->dateFormatting($rma->getDateRequested(), 'Ymd'),
@@ -169,7 +169,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'shpwr' => '',
             'mwsbp' => $this->getRmaTaxAmount($rma),
             'spitn1' => '',
-            'vkorgOri' => $this->config->getMallId('store', $storeId),
+            'vkorgOri' => $this->config->getSalesOrg('store', $storeId),
             'kunnrOri' => $this->config->getClient('store', $storeId),
             'odrnoOri' => $this->getSapOrderId($order),
             // 이건 물건 종류 갯수(물건 전체 수량은 아님)
@@ -219,7 +219,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 - $mileagePerItem;
 
             $rmaItemData[] = [
-                'itemVkorg' => $this->config->getMallId('store', $storeId),
+                'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                 'itemKunnr' => $this->config->getClient('store', $storeId),
                 'itemOdrno' => $sapIncrementId,
                 'itemPosnr' => $cnt,
@@ -239,7 +239,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 'itemAbrvw' => self::ABRVW_RETURN_CODE,
                 'itemNetwr' => $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
                 'itemMwsbp' => $this->getRateAmount($orderItem->getTaxAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
-                'itemVkorg_ori' => $this->config->getMallId('store', $storeId),
+                'itemVkorg_ori' => $this->config->getSalesOrg('store', $storeId),
                 'itemKunnr_ori' => $this->config->getClient('store', $storeId),
                 'itemOdrno_ori' => $this->getSapOrderId($order),
                 'itemPosnr_ori' => $originPosnr[$configurableCheckedItem->getItemId()]
