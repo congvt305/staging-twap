@@ -20,7 +20,6 @@ Requirements:
     - Mobile number length should be between 10 and 11
     - User should be able to login on customer login page via mobile number
     - User should be able to login on social login page via mobile number
-    - User should be able to login on checkout page via mobile number
 
 Key features:
 
@@ -63,7 +62,3 @@ Go to customer login page and login using mobile no or email
 Go to social login page and login using mobile no or email
 
 ![](https://i.ibb.co/3c64NJq/mobieloginsocial.png)
-
-Go to checkout page and login using mobile no or email
-
-![](https://i.ibb.co/SvHSQsz/mobilelogincheckot.png)
