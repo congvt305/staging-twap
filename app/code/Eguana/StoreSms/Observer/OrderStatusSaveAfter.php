@@ -158,8 +158,7 @@ class OrderStatusSaveAfter implements ObserverInterface
     {
         $result = '';
         try {
-            $countryInformation = $this->countryCode->getCountryCallCode();
-            $result = $countryInformation[$this->data->getCurrentCountry($storeId)]['code'];
+            $result = $this->data->getCountryCode($storeId);
 
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
