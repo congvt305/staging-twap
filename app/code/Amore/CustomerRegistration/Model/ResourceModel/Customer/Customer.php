@@ -10,6 +10,7 @@
 
 namespace Amore\CustomerRegistration\Model\ResourceModel\Customer;
 
+use Amore\CustomerRegistration\Model\POSLogger;
 use Magento\Customer\Model\AccountConfirmation;
 use Magento\Framework\Exception\AlreadyExistsException;
 
@@ -25,8 +26,13 @@ class Customer extends \Magento\Customer\Model\ResourceModel\Customer
      * @var \Magento\Eav\Api\AttributeRepositoryInterface
      */
     private $attributeRepository;
+    /**
+     * @var POSLogger
+     */
+    private $logger;
 
     public function __construct(
+        \Amore\CustomerRegistration\Model\POSLogger $logger,
         \Magento\Eav\Api\AttributeRepositoryInterface $attributeRepository,
         \Magento\Eav\Model\Entity\Context $context,
         \Magento\Framework\Model\ResourceModel\Db\VersionControl\Snapshot $entitySnapshot,
@@ -51,6 +57,7 @@ class Customer extends \Magento\Customer\Model\ResourceModel\Customer
         );
 
         $this->attributeRepository = $attributeRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -67,20 +74,19 @@ class Customer extends \Magento\Customer\Model\ResourceModel\Customer
      */
     protected function _beforeSave(\Magento\Framework\DataObject $customer)
     {
-        parent::_beforeSave($customer);
         $mobileAttribute = null;
         $integrationNumberAttribute = null;
 
         try {
             $mobileAttribute = $this->attributeRepository->get('customer', 'mobile_number');
         } catch (\Exception $e) {
-
+            $this->logger->addExceptionMessage($e->getMessage());
         }
 
         try {
             $integrationNumberAttribute = $this->attributeRepository->get('customer', 'integration_number');
         } catch (\Exception $e) {
-
+            $this->logger->addExceptionMessage($e->getMessage());
         }
 
         if ($mobileAttribute) {
@@ -113,7 +119,7 @@ class Customer extends \Magento\Customer\Model\ResourceModel\Customer
             }
         }
 
-        return $this;
+        return parent::_beforeSave($customer);
     }
 
     private function attributeValueUseByOtherCustomer($customer, $websiteId, $attributeValue, $attributeId)
