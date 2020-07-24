@@ -193,6 +193,8 @@ Enter text message you want to test
 
 Click on Send button;
 
+**Note:** Test sms can be sent to any country. (Do not depend upon selected country in the configuration).
+
 Test cases:
 
 **-** The message will be sent.
