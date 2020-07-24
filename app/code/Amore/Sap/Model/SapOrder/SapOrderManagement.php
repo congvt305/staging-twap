@@ -185,32 +185,48 @@ class SapOrderManagement implements SapOrderManagementInterface
             $incrementId = $orderStatusData['odrno'];
         }
 
-        /** @var \Magento\Sales\Model\Order $order */
-        $orders = $this->getOrderByIncrementId($incrementId);
+//        /** @var \Magento\Sales\Model\Order $order */
+//        $orders = $this->getOrderByIncrementId($incrementId);
 
         // case that matching order does not exist
-        if ($orders->getTotalCount() == 0) {
-            $message = "Such Order Increment Id does not Exist.";
-            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-            return $result;
-        }
+//        if ($orders->getTotalCount() == 0) {
+//            $message = "Such Order Increment Id does not Exist.";
+//            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+//            return $result;
+//        }
 
         // case that there are orders with same increment Id
-        if ($orders->getTotalCount() > 1) {
-            $message = "There are more than two orders with same Increment Id.";
-            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-            return $result;
-        }
+//        if ($orders->getTotalCount() > 1) {
+//            $message = "There are more than two orders with same Increment Id.";
+//            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+//            return $result;
+//        }
 
         if ($orderStatusData['odrstat'] == 1) {
-            $message = "Order Status Success.";
-            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+            if (strpos($incrementId, "R") !== false) {
+                $message = "Order Return Status Success.";
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
 
-            $order = $this->getOrderFromList($incrementId);
-            $order->setStatus('sap_success');
-            $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
-            $this->orderRepository->save($order);
+                $rmaIncrementId = str_replace("R", "", $incrementId);
+                /** @var \Magento\Rma\Model\Rma $rma */
+                $rma = $this->getRma($rmaIncrementId);
+                $order = $this->orderRepository->get($rma->getOrderId());
+                $returnSendCheck = $order->getData('sap_return_send_check');
 
+                if ($returnSendCheck != 1) {
+                    $rma->setData('sap_return_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                    $this->rmaRepository->save($rma);
+                }
+            } else {
+                $order = $this->getOrderFromList($incrementId);
+
+                $message = "Order Status Success.";
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+
+                $order->setStatus('sap_success');
+                $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                $this->orderRepository->save($order);
+            }
             return $result;
         }
 
@@ -218,61 +234,81 @@ class SapOrderManagement implements SapOrderManagementInterface
         // 가용재고 부족 등 상태로 왔을 때 주문 취소할지 아니면 관리자에게 알릴지 다른 방법 찾아야 함
         // 아모레쪽이랑 어떻게 처리할지 얘기 필요
         if ($orderStatusData['odrstat'] == 2) {
-            $message = "Order Status Error. Please Check order status.";
-            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+            if (strpos($incrementId, "R") !== false) {
+                $message = "Order Return Does not created in SAP.";
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
 
-            $order = $this->getOrderFromList($incrementId);
-            $order->setStatus('sap_fail');
-            $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
-            $this->orderRepository->save($order);
+                $rmaIncrementId = str_replace("R", "", $incrementId);
+                /** @var \Magento\Rma\Model\Rma $rma */
+                $rma = $this->getRma($rmaIncrementId);
+                $order = $this->orderRepository->get($rma->getOrderId());
+                $returnSendCheck = $order->getData('sap_return_send_check');
 
+                if ($returnSendCheck != 2) {
+                    $rma->setData('sap_return_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                    $this->rmaRepository->save($rma);
+                }
+            } else {
+                $message = "Order Does not created in SAP.";
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+
+                $order = $this->getOrderFromList($incrementId);
+                $order->setStatus('sap_fail');
+                $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                $this->orderRepository->save($order);
+            }
             return $result;
         }
 
         // case that DN is created
         if ($orderStatusData['odrstat'] == 3) {
-            $order = $this->getOrderFromList($incrementId);
-            try {
-                if ($order->getStatus() == "sap_success") {
-                    $order->setStatus('preparing');
-                    $this->orderRepository->save($order);
-                    $message = "Order status changed to preparing successfully.";
-                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
-                } else {
-                    $message = "Order status is not SAP Processing. Please check the order.";
-                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-                }
-            } catch (\Exception $exception) {
-                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
-            }
-        } elseif ($orderStatusData['odrstat'] == 4) {
-            // ecpay invoice creation
-            $order = $this->getOrderFromList($incrementId);
-            $trackingNo = $orderStatusData['ztrackId'];
-
-            $rma = $this->getRma($order->getEntityId());
-
-            if (!empty($rma)) {
-                if ($order->getStatus() == 'complete' || $order->getStatus() == 'shipment_processing') {
-                    if ($rma->getStatus() == 'authorized') {
-                        try {
-                            $this->rmaChangeToReceived($rma);
-                            $message = "Rma status changed to received Successfully.";
-                            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
-                        } catch (LocalizedException $exception) {
-                            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
-                        } catch (\Exception $exception) {
-                            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
-                        }
+            if (strpos($incrementId, "R") !== false) {
+                $message = "Get DN Info from SAP for Return Order.";
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+            } else {
+                $order = $this->getOrderFromList($incrementId);
+                try {
+                    if ($order->getStatus() == "sap_success") {
+                        $order->setStatus('preparing');
+                        $this->orderRepository->save($order);
+                        $message = "Order status changed to preparing successfully.";
+                        $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
                     } else {
-                        $message = "RMA Status is not Authorized.";
+                        $message = "Order status is not SAP Success. Please check the order.";
                         $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                     }
+                } catch (\Exception $exception) {
+                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
+                }
+            }
+            return $result;
+        }
+
+        if ($orderStatusData['odrstat'] == 4) {
+            // ecpay invoice creation
+            $trackingNo = $orderStatusData['ztrackId'];
+
+            if (strpos($incrementId, "R") !== false) {
+                $rmaIncrementId = str_replace("R", "", $incrementId);
+                /** @var \Magento\Rma\Model\Rma $rma */
+                $rma = $this->getRma($rmaIncrementId);
+
+                if ($rma->getStatus() == 'authorized') {
+                    try {
+                        $this->rmaChangeToReceived($rma);
+                        $message = "Rma status changed to received Successfully.";
+                        $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+                    } catch (LocalizedException $exception) {
+                        $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
+                    } catch (\Exception $exception) {
+                        $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
+                    }
                 } else {
-                    $message = "Order Status is not proper status to change rma status.";
+                    $message = "RMA Status is not Authorized.";
                     $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                 }
             } else {
+                $order = $this->getOrderFromList($incrementId);
                 if ($order->getStatus() == 'preparing') {
                     $shipmentCheck = $order->hasShipments();
 
@@ -354,9 +390,13 @@ class SapOrderManagement implements SapOrderManagementInterface
                     $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                 }
             }
-        } elseif ($orderStatusData['odrstat'] == 9) {
-            $message = "Other order status return.";
+            return $result;
+        }
+
+        if ($orderStatusData['odrstat'] == 9) {
+            $message = "Other order status returned.";
             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+            return $result;
         }
 
         return $result;
@@ -368,8 +408,10 @@ class SapOrderManagement implements SapOrderManagementInterface
             'code' => $code,
             'message' => $message,
             'data' => [
-                'order_status_code' => $request['odrno'],
-                'order_status_txt' => $this->orderStatusList($request['odrstat'])
+                'order_status_code' => $request['odrstat'],
+                'order_status_txt' => $this->orderStatusList($request['odrstat']),
+                'order_error_code' => $request['ugcod'],
+                'order_error_txt' => $request['ugtxt'],
             ]
         ];
     }
@@ -503,11 +545,10 @@ class SapOrderManagement implements SapOrderManagementInterface
         return $shipmentItems;
     }
 
-    public function getRma($orderId)
+    public function getRma($rmaIncrementId)
     {
         $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('order_id', $orderId, 'eq')
-            ->addFilter('status', 'authorized', 'eq')
+            ->addFilter('increment_id', $rmaIncrementId, 'eq')
             ->create();
 
         $rma = $this->rmaRepository->getList($searchCriteria)->getItems();
