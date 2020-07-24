@@ -28,6 +28,7 @@ define([
             this.cityTmpl = mageTemplate(this.options.cityTemplate);
             this._updateCity(this.element.find('option:selected').val());
             this._initZipcodeElement();
+            this._initCountryElement();
 
             $(this.options.cityListId).on('change', $.proxy(function (e) {
                 this.setOption = false;
@@ -226,6 +227,12 @@ define([
 
         _updateZipcode: function (cityId) {
             $(this.options.postcodeId).val(cityId);
+        },
+
+        _initCountryElement: function () {
+            if (!this.options.isMultipleCountriesAllowed) {
+                $(this.options.countryId).parents('div.field').hide();
+            }
         },
 
         /**
