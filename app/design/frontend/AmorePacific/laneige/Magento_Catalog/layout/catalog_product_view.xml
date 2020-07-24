@@ -25,6 +25,7 @@
                     <argument name="at_call" xsi:type="string">getHashTag</argument>
                     <argument name="at_code" xsi:type="string">hash_tag</argument>
                     <argument name="css_class" xsi:type="string">hash-tag</argument>
+                    <argument name="at_label" xsi:type="string">none</argument>
                 </arguments>
             </block>
         </referenceBlock>
