@@ -159,7 +159,7 @@ class CreditMemoRefundSaveAfter implements ObserverInterface
     }
 
     /**
-     * By default drop down attribute have the value and we need the label of that value.
+     * get the country code for relevant store
      * @param $storeId
      * @return string
      */
@@ -167,8 +167,7 @@ class CreditMemoRefundSaveAfter implements ObserverInterface
     {
         $result = '';
         try {
-            $countryInformation = $this->countryCode->getCountryCallCode();
-            $result = $countryInformation[$this->data->getCurrentCountry($storeId)]['code'];
+            $result = $this->data->getCountryCode($storeId);
 
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());

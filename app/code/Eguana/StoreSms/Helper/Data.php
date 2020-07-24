@@ -28,6 +28,7 @@ class Data extends AbstractHelper
     const XML_PATH_FOR_WELCOME_SMS = 'eguanasms/templates/registration_welcome_active';
     const XML_PATH_FOR_NUMBER_ACTIVATION = 'eguanasms/general/mobile_number_validation_active';
     const XML_PATH_FOR_DEFAULT_COUNTRY = 'general/country/default';
+    const XML_PATH_FOR_COUNTRY_CODE = 'eguanasms/general/country_code';
     const XML_PATH_STORE_PHONE = 'general/store_information/phone';
 
     /**
@@ -181,6 +182,20 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_FOR_DEFAULT_COUNTRY,
+            ScopeInterface::SCOPE_STORE,
+            $scopeCode
+        );
+    }
+
+    /**
+     * get country code
+     * @param null $scopeCode
+     * @return integer
+     */
+    public function getCountryCode($scopeCode = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_FOR_COUNTRY_CODE,
             ScopeInterface::SCOPE_STORE,
             $scopeCode
         );

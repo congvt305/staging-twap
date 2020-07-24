@@ -3,7 +3,6 @@ namespace Eguana\StoreSms\Model;
 
 use Eguana\StoreSms\Api\SmsInterface;
 use Eguana\StoreSms\Helper\Data;
-use Eguana\StoreSms\Model\CountryCode;
 use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory;
 use Magento\Email\Model\TemplateFactory;
 use Magento\Framework\HTTP\Client\Curl;
@@ -13,6 +12,7 @@ use Magento\Framework\View\Asset\NotationResolver\Variable;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 use Magento\Email\Model\ResourceModel\TemplateFactory as ResourceModelFactory;
+use Eguana\StoreSms\Model\CountryCode;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Customer\Model\ResourceModel\Customer\Collection;
 
@@ -135,7 +135,7 @@ class SmsSender implements SmsInterface
             $this->sessionManager->setVerificationCode($verificationCode);
             $countryCode = $this->countryCode->getCountryCallCode();
             $store = $this->storeManager->getStore()->getId();
-            $numberPrefix = $countryCode[$this->data->getCurrentCountry($store)]['code'];
+            $numberPrefix = $this->data->getCountryCode($store);
             $phoneNumber = $this->getPhoneNumberWithCode($number, $numberPrefix);
             $this->sessionManager->setPhoneNumber($number);
             $template = $this->templateFactory->create();
@@ -152,12 +152,11 @@ class SmsSender implements SmsInterface
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
-
         if ($this->sendMessageByApi($message, $phoneNumber)){
             return $verificationCode;
         };
 
-        return 'An error occurred! Please check API credentials and try again.';
+        return false;
 
     }
 

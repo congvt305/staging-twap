@@ -14,6 +14,7 @@ Key features:
 - Send verification code on customer create an account and validate this code for registration
 - Notification user Order status like pending, processing, hold etc
 - Admin can enable or disable the module
+- Admin can select country for the store sms
 - Admin can enable or disable Verification code on registration
 - Admin can enable or disable order notification for a specific order status
 - Admin can edit the SMS template according to the requirement
@@ -71,10 +72,18 @@ Navigate to **Stores ⇾ Configuration** and **StoreSms** under **Eguana Extensi
 
 **i)**  **General Configuration**
 
-![](https://nimbusweb.me/box/attachment/3632796/zf71ck44gb8b731efvop/MO3R28TPnFgEHJzn/screenshot-dev.magentoshop.net-2019.12.11-19_29_05.png)
+![](https://i.ibb.co/HF19Tp8/image.png)
 - **●●**** Enable Extension**
 
 This will decide either enable/disable StoreSms Module.
+
+- **●●**** Unique Mobile Number Validation	**
+
+This will verify that new registration number is not already register.
+
+- **●●**** Select Country  **
+
+Select the country for your store.
 
 - **●●**** Username**
 
