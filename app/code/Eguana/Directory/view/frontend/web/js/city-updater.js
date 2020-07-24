@@ -3,7 +3,8 @@ define([
     'mage/template',
     'underscore',
     'jquery-ui-modules/widget',
-    'mage/validation'
+    'mage/validation',
+    'regionUpdater'
 ], function ($, mageTemplate, _) {
     'use strict';
 
@@ -27,6 +28,7 @@ define([
             this.cityTmpl = mageTemplate(this.options.cityTemplate);
             this._updateCity(this.element.find('option:selected').val());
             this._initZipcodeElement();
+            this._initCountryElement();
 
             $(this.options.cityListId).on('change', $.proxy(function (e) {
                 this.setOption = false;
@@ -37,10 +39,6 @@ define([
 
             $(this.options.cityInputId).on('focusout', $.proxy(function () {
                 this.setOption = true;
-            }, this));
-
-            $(this.options.cityInputId).on('focus', $.proxy(function () {
-                this._updateCity(this.currentCityOption);
             }, this));
 
             this.element.on('change', $.proxy(function () {
@@ -161,8 +159,11 @@ define([
             this._clearError();
             this._checkCityRequired(region);
 
+            $(cityList).find('option:selected').removeAttr('selected');
+            $(this.options.cityListId).val('');
+
             // Populate state/province dropdown list if available or use input box
-            if (this.options.cityJson[region]) {
+            if (this.options.cityJson[region]) { //executed when optional city is enabled.
                 this._removeSelectOptions(cityList);
                 $.each(this.options.cityJson[region], $.proxy(function (key, value) {
                     this._renderSelectOption(cityList, key, value);
@@ -171,7 +172,6 @@ define([
                 if (this.currentCityOption) {
                     cityList.val(this.currentCityOption);
                     postcode.val('');
-
                 }
 
                 if (this.setOption) {
@@ -183,6 +183,10 @@ define([
                 if (this.options.isCityRequired) {
                     cityList.addClass('required-entry').removeAttr('disabled');
                     container.addClass('required').show();
+
+                    cityInput.hide();
+                    cityList.show();
+                    label.attr('for', cityList.attr('id'));
                 } else {
                     cityList.removeClass('required-entry validate-select').removeAttr('data-validate');
                     container.removeClass('required');
@@ -194,19 +198,14 @@ define([
                         cityList.show();
                     }
                 }
-
-                cityList.show();
-                cityInput.hide();
-                label.attr('for', cityList.attr('id'));
-
-            } else {
+            } else { //not executed when optional city is enabled.
                 this._removeSelectOptions(cityList);
 
                 if (this.options.isCityRequired) {
                     cityInput.addClass('required-entry').removeAttr('disabled');
                     container.addClass('required').show();
                 } else {
-                    if (!this.options.optionalRegionAllowed) { //eslint-disable-line max-depth//todo system config to be implement
+                    if (!this.options.optionalCityAllowed) {
                         cityInput.attr('disabled', 'disabled');
                         container.hide();
                     }
@@ -217,17 +216,10 @@ define([
                 cityList.removeClass('required-entry').prop('disabled', 'disabled').hide();
                 cityInput.show();
                 label.attr('for', cityInput.attr('id'));
-
-                //todo hide only when no value
-                // cityList.hide();
-                // cityInput.hide();
-                // container.hide()
-                // postcode.hide();
             }
 
             // Add defaultvalue attribute to city select element
             cityInput.attr('defaultvalue', this.options.defaultCity);
-            // cityList.attr('defaultvalue', this.options.defaultCity);
             cityList.find('option').filter(function () {
                 return this.text === cityInput.val();
             }).attr('selected', true);
@@ -235,6 +227,12 @@ define([
 
         _updateZipcode: function (cityId) {
             $(this.options.postcodeId).val(cityId);
+        },
+
+        _initCountryElement: function () {
+            if (!this.options.isMultipleCountriesAllowed) {
+                $(this.options.countryId).parents('div.field').hide();
+            }
         },
 
         /**
