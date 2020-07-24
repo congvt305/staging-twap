@@ -181,8 +181,14 @@ define([
                                 $('.form-create-account #sms_subscription_status').val(response.pos.smsYN == 'Y'?1:0);
                                 $('.form-create-account .dm_subscription_status_checkbox').prop('checked',response.pos.dmYN == 'Y'?true:false);
                                 $('.form-create-account #dm_subscription_status').val(response.pos.dmYN == 'Y'?1:0);
-                                $('.form-create-account #dm_city').val(response.pos.homeCity);
-                                $('.form-create-account #dm_state').val(response.pos.homeState);
+                                if (response.pos.homeCity) {
+                                    $('.form-create-account #region_id').val(response.pos.region.region_id).trigger('change');
+                                    $('.form-create-account #dm_state').val(response.pos.region.default_name);
+                                }
+                                if (response.pos.homeState) {
+                                    $('.form-create-account #city_id').val(response.pos.city.code);
+                                    $('.form-create-account #dm_city').val(response.pos.city.name);
+                                }
                                 $('.form-create-account #dm_detailed_address').val(response.pos.homeAddr1);
                                 $('.form-create-account #dm_zipcode').val(response.pos.homeZip);
                                 $('.form-create-account #imported_from_pos').val(1);
