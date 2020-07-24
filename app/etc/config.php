@@ -500,6 +500,7 @@ return [
         'Eguana_Login' => 1,
         'Eguana_Magazine' => 1,
         'Eguana_SocialLogin' => 1,
+        'Eguana_NameSorter' => 1,
         'Eguana_OrderDeliveryMessage' => 1,
         'Eguana_Share' => 1,
         'Eguana_MobileLogin' => 0,
