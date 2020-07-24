@@ -229,7 +229,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 'itemMeins' => 'EA',
                 'itemNsamt' => $orderItem->getPriceInclTax() * $rmaItem->getQtyRequested(),
                 'itemDcamt' => $this->getRateAmount($orderItem->getDiscountAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
-                'itemSlamt' => $this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),,
+                'itemSlamt' => $this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
                 'itemMiamt' => $this->getRateAmount($mileagePerItem, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
                 // 상품이 무상제공인 경우 Y 아니면 N
                 'itemFgflg' => $orderItem->getPrice() == 0 ? 'Y' : 'N',
