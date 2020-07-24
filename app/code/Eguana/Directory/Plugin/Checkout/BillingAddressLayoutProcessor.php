@@ -73,13 +73,13 @@ class BillingAddressLayoutProcessor
         $cityIdField = [
             'component' => 'Eguana_Directory/js/city', //need to change
             'config' => [
-                'customScope' => 'billingAddresscheckmo', //passed
+                'customScope' => 'billingAddress' . $paymentMethodCode, //passed
                 'template' => 'ui/form/field', //passed
                 'elementTmpl' => 'ui/form/element/select', //need to change
                 'templateice' => 'ui/form/field', //need to add
-                'customEntry' => 'billingAddress'. $paymentMethodCode. '.city',//need to add
+                'customEntry' => 'billingAddress'. $paymentMethodCode . '.city',//need to add
             ],
-            'dataScope' => 'billingAddresscheckmo' . '.' . 'city_id', //exists
+            'dataScope' => 'billingAddress' . $paymentMethodCode . '.city_id', //exists
             'label' => $cityIdPassed['label'], //exists
             'provider' => 'checkoutProvider', //exists
             'sortOrder' => '105',//exists
