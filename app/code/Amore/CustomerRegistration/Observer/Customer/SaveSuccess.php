@@ -207,6 +207,7 @@ class SaveSuccess implements ObserverInterface
         $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
         $regionName = $customer->getCustomAttribute('dm_state') ?
             $customer->getCustomAttribute('dm_state')->getValue() : '';
+        $regionObject = null;
         if ($regionName) {
             $regionObject = $this->getRegionObject($regionName);
             $parameters['homeCity'] = $regionObject->getCode()?$regionObject->getCode():'';
