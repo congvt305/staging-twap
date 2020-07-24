@@ -267,7 +267,7 @@ $viewModel = $block->getData('view_model');
                     <label for="dm_zipcode" class="label"><span><?= $block->escapeHtml(__('Zip Code')) ?></span></label>
                     <div class="control">
                         <?php //phpcs:disable ?>
-                        <input type="text" placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
+                        <input type="text" readonly placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
                         <?php //phpcs:enable ?>
                     </div>
                 </div>
