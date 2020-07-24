@@ -176,7 +176,7 @@ $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked'
         },
         "#region_id": {
             "cityUpdater": {
-                "optionalCityAllowed": <?= /* @noEscape need to do config*/ ($block->getConfig('general/region/display_all') ? 'true' : 'false') ?>,
+                "optionalCityAllowed": <?= /* @noEscape need to do config*/ ($block->getConfig('general/city/display_all') ? 'true' : 'false') ?>,
                 "cityListId": "#city_id",
                 "cityInputId": "#city",
                 "postcodeId": "#zip",
