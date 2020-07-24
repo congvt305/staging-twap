@@ -21,11 +21,6 @@
                                                     <item name="children" xsi:type="array">
                                                         <item name="shipping-address-fieldset" xsi:type="array">
                                                             <item name="children" xsi:type="array">
-                                                                <item name="city" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Eguana_Directory/js/city-name</item>
-                                                                     Make region attribute invisible on frontend. Corresponding input element is created by region_id field
-                                                                    <item name="visible" xsi:type="boolean">false</item>
-                                                                </item>
                                                                 <item name="city_id" xsi:type="array">
                                                                     <item name="component" xsi:type="string">Eguana_Directory/js/city</item>
                                                                     <item name="config" xsi:type="array">

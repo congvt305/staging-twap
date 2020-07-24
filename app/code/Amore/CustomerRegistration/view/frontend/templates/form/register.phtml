@@ -267,7 +267,7 @@ $viewModel = $block->getData('view_model');
                     <label for="dm_zipcode" class="label"><span><?= $block->escapeHtml(__('Zip Code')) ?></span></label>
                     <div class="control">
                         <?php //phpcs:disable ?>
-                        <input type="text" placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
+                        <input type="text" readonly placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
                         <?php //phpcs:enable ?>
                     </div>
                 </div>
@@ -291,7 +291,7 @@ $viewModel = $block->getData('view_model');
         </div>
         <div class="actions-toolbar">
             <div class="primary">
-                <button type="submit" class="action submit primary" title="<?= $block->escapeHtmlAttr(__('Create an Account')) ?>"><span><?= $block->escapeHtml(__('Create an Account')) ?></span></button>
+                <button type="submit" id="customerSubmit" class="action submit primary" title="<?= $block->escapeHtmlAttr(__('Create an Account')) ?>"><span><?= $block->escapeHtml(__('Create an Account')) ?></span></button>
             </div>
             <div class="secondary">
                 <a class="action back" href="<?= $block->escapeUrl($block->getBackUrl()) ?>"><span><?= $block->escapeHtml(__('Back')) ?></span></a>
@@ -377,4 +377,18 @@ require([
             "privacypolicypopup":{}
         }
     }
+</script>
+
+<script>
+    require([
+        'jquery',
+        'mage/mage'
+    ], function($){
+
+        $('#customerSubmit').on('click', function (event) {
+            var dataForm = jQuery('#form-validate');
+            if(dataForm.validation('isValid') === true){
+                jQuery('body').loader('show');
+            }});
+    });
 </script>

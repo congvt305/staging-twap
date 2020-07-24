@@ -226,7 +226,68 @@ Response
          "cstm_intg_seq": "cstmIntgSeq"
        }
      }
+- When mobile number (mobile) contain other than number and hypens
+
+ {
+       "code": "0006",
+       "message": "mobileNo Mobile number can contain only number and hypens",
+       "data": {
+         "status_code": "0006",
+         "status_message": "NO",
+         "cstm_intg_seq": "cstmIntgSeq"
+       }
+ }
  
+- When there is no city name against the homeCity code
+
+ {
+       "code": "0007",
+       "message": "There is not city name against the homeCity code",
+       "data": {
+         "status_code": "0007",
+         "status_message": "NO",
+         "cstm_intg_seq": "cstmIntgSeq"
+       }
+     }
+
+- It homeState value is set but homeCity is empty
+
+ {
+       "code": "0008",
+       "message": "If you want to set the state then city is required for state code ",
+       "data": {
+         "status_code": "0008",
+         "status_message": "NO",
+         "cstm_intg_seq": "cstmIntgSeq"
+       }
+     }
+
+- When in the system there is no name exist against homeState code
+
+ {
+       "code": "0009",
+       "message": "There is no state name against the homeState code",
+       "data": {
+         "status_code": "0009",
+         "status_message": "NO",
+         "cstm_intg_seq": "cstmIntgSeq"
+       }
+     }
+   
+- There can be Magento core validation messages as well
+
+For example
+
+{
+  "code": "0",
+  "message": "Invalid date",
+  "data": {
+    "status_code": "0",
+    "status_message": "NO",
+    "cstm_intg_seq": "cstmIntgSeq"
+  }
+}
+
 - On successfull update
 
   {

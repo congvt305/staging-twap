@@ -136,7 +136,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $trackData = $this->getTracks($rma);
 
         $bindData[] = [
-            'vkorg' => $this->config->getMallId('store', $storeId),
+            'vkorg' => $this->config->getSalesOrg('store', $storeId),
             'kunnr' => $this->config->getClient('store', $storeId),
             'odrno' => "R" . $sapIncrementId,
             'odrdt' => $this->dateFormatting($rma->getDateRequested(), 'Ymd'),
@@ -147,6 +147,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'auart' => self::RETURN_ORDER,
             'augru' => self::AUGRU_RETURN_CODE,
             'augruText' => '',
+            'abrvw' => self::ABRVW_RETURN_CODE,
             // 주문자회원코드-직영몰자체코드
             'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
             'custnm' => $order->getCustomerLastname() . $order->getCustomerLastname(),
@@ -168,7 +169,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'shpwr' => '',
             'mwsbp' => $this->getRmaTaxAmount($rma),
             'spitn1' => '',
-            'vkorgOri' => $this->config->getMallId('store', $storeId),
+            'vkorgOri' => $this->config->getSalesOrg('store', $storeId),
             'kunnrOri' => $this->config->getClient('store', $storeId),
             'odrnoOri' => $this->getSapOrderId($order),
             // 이건 물건 종류 갯수(물건 전체 수량은 아님)
@@ -179,7 +180,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'lgort' => '',
             'rmano' => '',
             // 납품처
-            'kunwe' => $this->config->getSupplyContractor('store', $storeId),
+            'kunwe' => $this->cvsShippingCheck($order) ? $this->config->getSupplyContractor('store', $storeId) : $this->config->getHomeDeliveryContractor('store', $storeId),
             // trackNo 가져와야 함
             'ztrackId' => $trackData['track_number']
         ];
@@ -218,7 +219,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 - $mileagePerItem;
 
             $rmaItemData[] = [
-                'itemVkorg' => $this->config->getMallId('store', $storeId),
+                'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                 'itemKunnr' => $this->config->getClient('store', $storeId),
                 'itemOdrno' => $sapIncrementId,
                 'itemPosnr' => $cnt,
@@ -228,16 +229,17 @@ class SapOrderReturnData extends AbstractSapOrder
                 'itemMeins' => 'EA',
                 'itemNsamt' => $orderItem->getPriceInclTax() * $rmaItem->getQtyRequested(),
                 'itemDcamt' => $this->getRateAmount($orderItem->getDiscountAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
-                'itemSlamt' => $itemGrandTotalInclTax,
+                'itemSlamt' => $this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
                 'itemMiamt' => $this->getRateAmount($mileagePerItem, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
                 // 상품이 무상제공인 경우 Y 아니면 N
                 'itemFgflg' => $orderItem->getPrice() == 0 ? 'Y' : 'N',
                 'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
-                'itemAuart' => self::NORMAL_ORDER,
+                'itemAuart' => self::RETURN_ORDER,
                 'itemAugru' => self::AUGRU_RETURN_CODE,
+                'itemAbrvw' => self::ABRVW_RETURN_CODE,
                 'itemNetwr' => $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
                 'itemMwsbp' => $this->getRateAmount($orderItem->getTaxAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
-                'itemVkorg_ori' => $this->config->getMallId('store', $storeId),
+                'itemVkorg_ori' => $this->config->getSalesOrg('store', $storeId),
                 'itemKunnr_ori' => $this->config->getClient('store', $storeId),
                 'itemOdrno_ori' => $this->getSapOrderId($order),
                 'itemPosnr_ori' => $originPosnr[$configurableCheckedItem->getItemId()]
@@ -303,8 +305,7 @@ class SapOrderReturnData extends AbstractSapOrder
      */
     public function getRmaIncrementId($rma)
     {
-        $order = $rma->getOrder();
-        $rmaSendCheck = $order->getData('sap_return_send_check');
+        $rmaSendCheck = $rma->getData('sap_return_send_check');
         $rmaIncrementId = $rma->getIncrementId();
 
         if (is_null($rmaSendCheck)) {

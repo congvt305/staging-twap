@@ -213,7 +213,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             $customer = $this->getCustomerByOrder($orderData);
 
             $bindData[] = [
-                'vkorg' => $this->config->getMallId('store', $storeId),
+                'vkorg' => $this->config->getSalesOrg('store', $storeId),
                 'kunnr' => $this->config->getClient('store', $storeId),
                 'odrno' => $sapIncrementId,
                 'odrdt' => $this->dateFormatting($orderData->getCreatedAt(), 'Ymd'),
@@ -245,7 +245,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'shpwr' => $orderData->getShippingAmount(),
                 'mwsbp' => $orderData->getTaxAmount(),
                 'spitn1' => $orderData->getExtensionAttributes()->getDeliveryMessage(),
-                'vkorgOri' => $this->config->getMallId('store', $storeId),
+                'vkorgOri' => $this->config->getSalesOrg('store', $storeId),
                 'kunnrOri' => $this->config->getClient('store', $storeId),
                 'odrnoOri' => $orderData->getIncrementId(),
                 // 이건 물건 종류 갯수(물건 전체 수량은 아님)
@@ -256,7 +256,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'lgort' => '',
                 'rmano' => $this->getRma($orderData->getEntityId()) == null ? '' : $this->getRma($orderData->getEntityId())->getEntityId(),
                 // 납품처
-                'kunwe' => $this->config->getSupplyContractor('store', $storeId),
+                'kunwe' => $this->cvsShippingCheck($orderData) ? $this->config->getSupplyContractor('store', $storeId) : $this->config->getHomeDeliveryContractor('store', $storeId),
                 'ztrackId' => $trackingNumbers
             ];
         }
@@ -397,7 +397,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     - $mileagePerItem;
 
                 $orderItemData[] = [
-                    'itemVkorg' => $this->config->getMallId('store', $storeId),
+                    'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                     'itemKunnr' => $this->config->getClient('store', $storeId),
                     'itemOdrno' => $sapIncrementId,
                     'itemPosnr' => $cnt,
@@ -416,7 +416,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     'itemAugru' => '',
                     'itemNetwr' => $itemGrandTotal,
                     'itemMwsbp' => $configurableCheckedItem->getTaxAmount(),
-                    'itemVkorg_ori' => $this->config->getMallId('store', $storeId),
+                    'itemVkorg_ori' => $this->config->getSalesOrg('store', $storeId),
                     'itemKunnr_ori' => $this->config->getClient('store', $storeId),
                     'itemOdrno_ori' => $sapIncrementId,
                     'itemPosnr_ori' => $cnt

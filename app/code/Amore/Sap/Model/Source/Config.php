@@ -22,6 +22,10 @@ class Config
 
     const SAP_CVS_SUPPLY_CONTRACTOR_XML_PATH = 'sap/mall_info/cvs_supply_contractor';
 
+    const SAP_HOME_DELIVERY_CONTRACTOR_XML_PATH = 'sap/mall_info/home_delivery_contractor';
+
+    const SAP_SALES_ORG_XML_PATH = 'sap/mall_info/sales_org';
+
     const SAP_LOGGING_XML_PATH = 'sap/general/logging';
 
     const SAP_SSL_VERIFICATION_XML_PATH = 'sap/general/ssl_verify_host';
@@ -74,9 +78,19 @@ class Config
         return $this->getValue(self::SAP_CLIENT_XML_PATH, $type, $storeId);
     }
 
+    public function getHomeDeliveryContractor($type, $storeId)
+    {
+        return $this->getValue(self::SAP_HOME_DELIVERY_CONTRACTOR_XML_PATH, $type, $storeId);
+    }
+
     public function getSupplyContractor($type, $storeId)
     {
         return $this->getValue(self::SAP_CVS_SUPPLY_CONTRACTOR_XML_PATH, $type, $storeId);
+    }
+
+    public function getSalesOrg($type, $storeId)
+    {
+        return $this->getValue(self::SAP_SALES_ORG_XML_PATH, $type, $storeId);
     }
 
     public function getDefaultValue($path)

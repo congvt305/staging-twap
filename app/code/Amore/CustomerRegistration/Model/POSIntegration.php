@@ -17,6 +17,8 @@ use Amore\CustomerRegistration\Model\POSLogger;
 use Amore\CustomerRegistration\Api\Data\ResponseInterface;
 use Amore\CustomerRegistration\Api\Data\DataResponseInterface;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Directory\Model\RegionFactory;
+use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 
 /**
  * Implement the API module interface
@@ -68,8 +70,23 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      * @var \Magento\Framework\Event\ManagerInterface
      */
     private $eventManager;
+    /**
+     * @var RegionFactory
+     */
+    private $regionFactory;
+    /**
+     * @var \Eguana\Directory\Helper\Data
+     */
+    private $cityHelper;
+    /**
+     * @var RegionResourceModel
+     */
+    private $regionResourceModel;
 
     public function __construct(
+        RegionFactory $regionFactory,
+        \Eguana\Directory\Helper\Data $cityHelper,
+        RegionResourceModel $regionResourceModel,
         Data $configHelper,
         CustomerRepositoryInterface $customerRepositoryInterface,
         StoreRepository $storeRepository,
@@ -91,6 +108,9 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $this->dataResponse = $dataResponse;
         $this->json = $json;
         $this->eventManager = $eventManager;
+        $this->regionFactory = $regionFactory;
+        $this->cityHelper = $cityHelper;
+        $this->regionResourceModel = $regionResourceModel;
     }
 
     /**
@@ -141,6 +161,9 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $salOffCd
     ) {
         try {
+            $mobileNo = str_replace("-", "", $mobileNo);
+            $homeCityName = '';
+            $homeStateName = '';
             $parameters = [
                 'cstmIntgSeq' => $cstmIntgSeq,
                 'firstName' => $firstName,
@@ -171,7 +194,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
 
             $customerWebsiteId = $this->getCustomerWebsiteId($salOffCd);
 
-            if ($customerWebsiteId == 0) {
+            if ($response == '' && $customerWebsiteId == 0) {
                 $response = $this->getResponse(
                     "0001",
                     'No website exist against sales office code '.$salOffCd,
@@ -181,7 +204,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 );
             }
 
-            if (!trim($cstmIntgSeq)) {
+            if ($response == '' && !trim($cstmIntgSeq)) {
                 $response = $this->getResponse(
                     "0002",
                     'Customer Sequence Number can not be empty '.$cstmIntgSeq,
@@ -196,7 +219,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
              */
             $customers = $this->getCustomerByIntegraionNumber($cstmIntgSeq, $customerWebsiteId);
 
-            if (!count($customers)) {
+            if ($response == '' && !count($customers)) {
                 $response =  $this->getResponse(
                     "0003",
                     'No customer exist against this integration sequence '.$cstmIntgSeq,
@@ -206,17 +229,30 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 );
             }
 
-            if (count($customers) > 1) {
+            if ($response == '' && count($customers) > 1) {
                 $response = $this->getResponse(
                     "0004",
-                    'There are more than one customer exist against this sequence Id '.$cstmIntgSeq.' in website '.$customerWebsiteId,
+                    'There are more than one customer exist against this sequence Id '.
+                    $cstmIntgSeq.' in website '.$customerWebsiteId,
                     '0004',
                     'NO',
                     $cstmIntgSeq
                 );
             }
 
-            if (trim($mobileNo) && $this->mobileUseByOtherCustomer($cstmIntgSeq, $customerWebsiteId, $mobileNo)) {
+            if ($response == '' && trim($mobileNo) &&
+                !preg_match('/^[0-9-]+$/', $mobileNo)) {
+                $response = $this->getResponse(
+                    "0006",
+                    $mobileNo.' Mobile number can contain only number and hypens ',
+                    '0006',
+                    'NO',
+                    $cstmIntgSeq
+                );
+            }
+
+            if ($response == '' && trim($mobileNo) &&
+                $this->mobileUseByOtherCustomer($cstmIntgSeq, $customerWebsiteId, $mobileNo)) {
                 $response = $this->getResponse(
                     "0005",
                     $mobileNo.' Mobile number is assigned to other customer in website '.$customerWebsiteId,
@@ -225,6 +261,58 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                     $cstmIntgSeq
                 );
             }
+
+            /** @var \Magento\Directory\Model\Region $region */
+            $region = $this->regionFactory->create();
+
+            if ($response == '' && $homeCity != '') {
+                $this->regionResourceModel->load($region, $homeCity, 'code');
+                if (!$region->getDefaultName()) {
+                    $response = $this->getResponse(
+                        "0007",
+                        'There is not city name against the code ' . $homeCity,
+                        '0007',
+                        'NO',
+                        $cstmIntgSeq
+                    );
+                } else {
+                    $homeCityName = $region->getDefaultName();
+                }
+            }
+
+            if ($response == '' && trim($homeCity) == '' && trim($homeState) != '') {
+                $response = $this->getResponse(
+                    "0008",
+                    'If you want to set the state then city is required for state code ' . $homeState,
+                    '0008',
+                    'NO',
+                    $cstmIntgSeq
+                );
+            }
+
+            if ($response == '' && $region->getRegionId() && $homeState != '') {
+                $cityName = '';
+                $cities = $this->cityHelper->getCityData();
+                $regionCities = $cities[$region->getRegionId()];
+                foreach ($regionCities as $regionCity) {
+                    if ($regionCity['code'] == $homeState) {
+                        $cityName = $regionCity['name'];
+                        break;
+                    }
+                }
+                if ($cityName == '') {
+                    $response = $this->getResponse(
+                        "0009",
+                        'There is no state name against the code ' . $homeState,
+                        '0009',
+                        'NO',
+                        $cstmIntgSeq
+                    );
+                } else {
+                    $homeStateName = $cityName;
+                }
+            }
+
             if ($response == '') {
                 $customer = $customers[0];
                 trim($firstName) ? $customer->setFirstname($firstName) : '';
@@ -236,8 +324,8 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 trim($smsYN) ? $customer->setCustomAttribute('sms_subscription_status', $smsYN == 'Y' ? 1 : 0) : '';
                 trim($dmYN) ? $customer->setCustomAttribute('dm_subscription_status', $dmYN == 'Y' ? 1 : 0) : '';
                 trim($callYN) ? $customer->setCustomAttribute('call_subscription_status', $callYN == 'Y' ? 1 : 0) : '';
-                trim($homeCity) ? $customer->setCustomAttribute('dm_city', $homeCity) : '';
-                trim($homeState) ? $customer->setCustomAttribute('dm_state', $homeState) : '';
+                trim($homeCity) ? $customer->setCustomAttribute('dm_state', $homeCityName) : '';
+                trim($homeState) ? $customer->setCustomAttribute('dm_city', $homeStateName) : '';
                 trim($homeAddr1) ? $customer->setCustomAttribute('dm_detailed_address', $homeAddr1) : '';
                 trim($homeZip) ? $customer->setCustomAttribute('dm_zipcode', $homeZip) : '';
                 trim($statusCD) ? $customer->setCustomAttribute('status_code', $statusCD == '1' ? 1 : 0) : '';
@@ -383,4 +471,5 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
 
         return count($customers)?true:false;
     }
+
 }

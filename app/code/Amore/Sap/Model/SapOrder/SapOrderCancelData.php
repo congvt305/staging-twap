@@ -125,7 +125,7 @@ class SapOrderCancelData extends AbstractSapOrder
         }
 
         $bindData = [
-            "vkorg" => $this->config->getMallId('store', $storeId),
+            "vkorg" => $this->config->getSalesOrg('store', $storeId),
             "kunnr" => $this->config->getClient('store', $storeId),
             "odrno" => $sapIncrementId,
             // 주문 취소 : 1, 주소변경 : 2
@@ -158,7 +158,7 @@ class SapOrderCancelData extends AbstractSapOrder
         }
 
         $bindData = [
-            "vkorg" => $this->config->getMallId('store', $storeId),
+            "vkorg" => $this->config->getSalesOrg('store', $storeId),
             "kunnr" => $this->config->getClient('store', $storeId),
             "odrno" => $sapIncrementId,
             // 주문 취소 : 1, 주소변경 : 2
