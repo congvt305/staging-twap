@@ -44,5 +44,56 @@
         "column": {
             "rtn_merchant_trade_no": true
         }
+    },
+    "eguana_gwlogistics_reverse_logistics_status_notification": {
+        "column": {
+            "entity_id": true,
+            "rma_id": true,
+            "merchant_id": true,
+            "rtn_merchant_trade_no": true,
+            "rtn_code": true,
+            "rtn_msg": true,
+            "all_pay_logistics_id": true,
+            "GoodsAmount": true,
+            "update_status_date": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "IDX_E4EDE7B0EAF6B1185B8686B4A2FA5F7F": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_E7A533AB954388D884589CF737015D7F": true
+        }
+    },
+    "eguana_gwlogistics_logistics_status_notification": {
+        "column": {
+            "entity_id": true,
+            "order_id": true,
+            "merchant_id": true,
+            "merchant_trade_no": true,
+            "rtn_code": true,
+            "rtn_msg": true,
+            "all_pay_logistics_id": true,
+            "logistics_type": true,
+            "logistics_sub_type": true,
+            "GoodsAmount": true,
+            "update_status_date": true,
+            "receiver_name": true,
+            "receiver_phone": true,
+            "receiver_cell_phone": true,
+            "receiver_email": true,
+            "receiver_address": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "IDX_8BB80495239EDCFD5B8CA7AA974BF946": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_E7860464B88FB9509E550DF7614E5BCA": true
+        }
     }
 }
