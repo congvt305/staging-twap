@@ -70,12 +70,12 @@
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
         </constraint>
-        <constraint xsi:type="foreign" referenceId="Eguana_GWLogistics_R"
+        <constraint xsi:type="foreign" referenceId="FK_E7A533AB954388D884589CF737015D7F"
                     table="eguana_gwlogistics_reverse_logistics_status_notification" column="rma_id" referenceTable="magento_rma"
                     referenceColumn="entity_id" onDelete="CASCADE"/>
-        <index referenceId="Eguana_GWLogistics_N" indexType="btree">
+        <index referenceId="IDX_E4EDE7B0EAF6B1185B8686B4A2FA5F7F" indexType="btree">
             <column name="rma_id"/>
-            <column name="all_pay_logistics_id"/>
+            <column name="rtn_merchant_trade_no"/>
         </index>
     </table>
 
@@ -116,10 +116,10 @@
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
         </constraint>
-        <constraint xsi:type="foreign" referenceId="Eguana_GWLogistics_O"
+        <constraint xsi:type="foreign" referenceId="FK_E7860464B88FB9509E550DF7614E5BCA"
                     table="eguana_gwlogistics_logistics_status_notification" column="order_id" referenceTable="sales_order"
-                    referenceColumn="order_id" onDelete="CASCADE"/>
-        <index referenceId="Eguana_GWLogistics_N" indexType="btree">
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="IDX_8BB80495239EDCFD5B8CA7AA974BF946" indexType="btree">
             <column name="order_id"/>
             <column name="all_pay_logistics_id"/>
         </index>
@@ -136,7 +136,6 @@
     <table name="sales_shipment" resource="sales" engine="innodb" comment="Sales Flat Shipment">
         <column xsi:type="varchar" name="all_pay_logistics_id" nullable="true" length="20" comment="GW AllPay Logistics ID"/>
     </table>
-
     <table name="magento_rma_shipping_label" resource="default" engine="innodb" comment="List of RMA Shipping Labels">
         <column xsi:type="varchar" name="rtn_merchant_trade_no" nullable="true" length="20" comment="GW Return Merchant Trade No"/>
     </table>
