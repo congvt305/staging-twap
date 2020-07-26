@@ -20,6 +20,12 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
      */
     protected $_code = 'gwlogistics';
     /**
+     * Rate result data
+     *
+     * @var Result
+     */
+    private $result;
+    /**
      * @var \Magento\Shipping\Model\Rate\ResultFactory
      */
     private $rateResultFactory;
@@ -27,8 +33,23 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
      * @var \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory
      */
     private $rateMethodFactory;
+    /**
+     * @var \Magento\Shipping\Model\Tracking\ResultFactory
+     */
+    private $trackFactory;
+    /**
+     * @var \Magento\Shipping\Model\Tracking\Result\ErrorFactory
+     */
+    private $trackErrorFactory;
+    /**
+     * @var \Magento\Shipping\Model\Tracking\Result\StatusFactory
+     */
+    private $trackStatusFactory;
 
     public function __construct(
+        \Magento\Shipping\Model\Tracking\ResultFactory $trackFactory,
+        \Magento\Shipping\Model\Tracking\Result\ErrorFactory $trackErrorFactory,
+        \Magento\Shipping\Model\Tracking\Result\StatusFactory $trackStatusFactory,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory,
         \Psr\Log\LoggerInterface $logger,
@@ -39,6 +60,9 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
         parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
         $this->rateResultFactory = $rateResultFactory;
         $this->rateMethodFactory = $rateMethodFactory;
+        $this->trackFactory = $trackFactory;
+        $this->trackErrorFactory = $trackErrorFactory;
+        $this->trackStatusFactory = $trackStatusFactory;
     }
 
     public function collectRates(RateRequest $request)
@@ -153,5 +177,74 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
             }
         }
         return $freeBoxes;
+    }
+
+    /**
+     * Get tracking information
+     *
+     * @param string $tracking
+     * @return string|false
+     * @api
+     */
+    public function getTrackingInfo($tracking) //$tracking is the tracking number, no need to implement, remove later
+    {
+        $result = $this->getTracking($tracking);
+
+        if ($result instanceof \Magento\Shipping\Model\Tracking\Result) {
+            $trackings = $result->getAllTrackings();
+            if ($trackings) {
+                return $trackings[0];
+            }
+        } elseif (is_string($result) && !empty($result)) {
+            return $result;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get tracking
+     *
+     * @param string|string[] $trackings
+     * @return Result
+     */
+    public function getTracking($trackings)
+    {
+//        $this->setTrackingReqeust(); //todo: set merchant ID later
+        if (!is_array($trackings)) {
+            $trackings = [$trackings];
+        }
+        foreach ($trackings as $tracking) {
+            $this->getGWLTracking($tracking);
+        }
+        return $this->result;
+    }
+
+    private function getGWLTracking($trackingValue)
+    {
+        if (!$this->result) {
+            $this->result = $this->trackFactory->create();
+        }
+        /*
+        $fields = [
+            'Status' => 'getStatus',
+            'Signed by' => 'getSignedby',
+            'Delivered to' => 'getDeliveryLocation',
+            'Shipped or billed on' => 'getShippedDate',
+            'Service Type' => 'getService',
+            'Weight' => 'getWeight',
+        ];
+        */
+        $resultArr = [
+            'status' => 'test status | test message | updated data',
+        ];
+        $tracking = $this->trackStatusFactory->create();
+        $tracking->setCarrier('Green World Logistics');
+        $tracking->setCarrierTitle($this->getConfigData('title'));
+        $tracking->setTracking($trackingValue);
+//        $tracking->setTrackSummary('test test summary');
+//        $tracking->setUrl('https://daum.net');
+        $tracking->addData($resultArr);
+        $this->result->append($tracking);
     }
 }

@@ -81,9 +81,9 @@ class ReverseOrderStatusNotificationHandler
             }
         }
 
-        if (isset($notificationData['RtnMsg'], $notificationData['RtnCode'], $notificationData['UpdateStatusDate'], $notificationData['AllPayLogisticsID'])) {
+        if (isset($notificationData['RtnMsg'], $notificationData['RtnCode'], $notificationData['UpdateStatusDate'], $notificationData['RtnMerchantTradeNo'])) {
             try {
-                $rmaId = $this->findRmaId($notificationData['AllPayLogisticsID']);
+                $rmaId = $this->findRmaId($notificationData['RtnMerchantTradeNo']);
                 if ($rmaId) {
                     /** @var \Magento\Rma\Api\Data\CommentInterface $rmaComment */
                     $rmaComment = $this->commentInterfaceFactory->create();
@@ -103,10 +103,10 @@ class ReverseOrderStatusNotificationHandler
         }
     }
 
-    private function findRmaId(string $allPayLogisticsID): int
+    private function findRmaId(string $rtnMerchantTradeNo): int
     {
         $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('all_pay_logistics_id', $allPayLogisticsID)
+            ->addFilter('rtn_merchant_trade_no', $rtnMerchantTradeNo)
             ->create();
         $tracks = $this->trackRepository
             ->getList($searchCriteria)

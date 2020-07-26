@@ -87,6 +87,7 @@ class CreateReverseLogisticsOrder
         $track->setCarrierTitle($this->helper->getCarrierTitle());
         $track->setData('rtn_merchant_trade_no', $result['RtnMerchantTradeNo']);
         $this->trackRepository->save($track);
+
         /** @var \Magento\Rma\Api\Data\CommentInterface $comment */
         $comment = $this->commentInterfaceFactory->create();
         $comment->setRmaEntityId($rma->getEntityId());
@@ -95,21 +96,6 @@ class CreateReverseLogisticsOrder
         $comment->setIsVisibleOnFront(true);
         $this->commentRepository->save($comment);
 
-        return;
-    }
-    /**
-     * @param \Magento\Rma\Api\Data\RmaInterface $rma
-     * @throws \Exception
-     */
-    private function saveComment($rma)
-    {
-        /** @var \Magento\Rma\Api\Data\CommentInterface $comment */
-        $comment = $this->commentInterfaceFactory->create();
-        $comment->setRmaEntityId($rma->getEntityId());
-        $comment->setComment('Reverse Logistics Order Created');
-        $comment->setIsAdmin(true);
-        $comment->setIsVisibleOnFront(true);
-        $this->commentRepository->save($comment);
         return;
     }
 
