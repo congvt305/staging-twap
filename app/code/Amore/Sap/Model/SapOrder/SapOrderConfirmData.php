@@ -416,10 +416,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                     'itemAugru' => '',
                     'itemNetwr' => $itemGrandTotal,
                     'itemMwsbp' => $configurableCheckedItem->getTaxAmount(),
-                    'itemVkorg_ori' => $this->config->getSalesOrg('store', $storeId),
-                    'itemKunnr_ori' => $this->config->getClient('store', $storeId),
-                    'itemOdrno_ori' => $sapIncrementId,
-                    'itemPosnr_ori' => $cnt
+                    'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
+                    'itemKunnrOri' => $this->config->getClient('store', $storeId),
+                    'itemOdrnoOri' => $sapIncrementId,
+                    'itemPosnrOri' => $cnt
                 ];
                 $cnt++;
             }
@@ -601,10 +601,10 @@ class SapOrderConfirmData extends AbstractSapOrder
             'itemAugru' => '',
             'itemNetwr' => $testItemData[8],
             'itemMwsbp' => $testItemData[9],
-            'itemVkorg_ori' => $testOrderData[0],
-            'itemKunnr_ori' => $testOrderData[1],
-            'itemOdrno_ori' => $testOrderData[2],
-            'itemPosnr_ori' => "1"
+            'itemVkorgOri' => $testOrderData[0],
+            'itemKunnrOri' => $testOrderData[1],
+            'itemOdrnoOri' => $testOrderData[2],
+            'itemPosnrOri' => "1"
         ];
         return $orderItemData;
     }

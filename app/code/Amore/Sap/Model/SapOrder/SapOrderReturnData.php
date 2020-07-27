@@ -239,10 +239,10 @@ class SapOrderReturnData extends AbstractSapOrder
                 'itemAbrvw' => self::ABRVW_RETURN_CODE,
                 'itemNetwr' => $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
                 'itemMwsbp' => $this->getRateAmount($orderItem->getTaxAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
-                'itemVkorg_ori' => $this->config->getSalesOrg('store', $storeId),
-                'itemKunnr_ori' => $this->config->getClient('store', $storeId),
-                'itemOdrno_ori' => $this->getSapOrderId($order),
-                'itemPosnr_ori' => $originPosnr[$configurableCheckedItem->getItemId()]
+                'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
+                'itemKunnrOri' => $this->config->getClient('store', $storeId),
+                'itemOdrnoOri' => $this->getSapOrderId($order),
+                'itemPosnrOri' => $originPosnr[$configurableCheckedItem->getItemId()]
             ];
             $cnt++;
         }
