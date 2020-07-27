@@ -29,6 +29,12 @@ define(
                 }
             });
 
+            $('#region_id').change(function () {
+                if ($(this).val()) {
+                    var selectedRegion = $('#region_id option:selected').text();
+                    $('#dm_state').val(selectedRegion);
+                }
+            });
             $("#"+config.attributeCode+'-read-policy').on('click', function (e) {
                 e.preventDefault();
                 var privacyPolicyPopupSelector = '.'+config.attributeCode+'-policy-popup';
