@@ -12,6 +12,8 @@ define([
     'use strict';
     return Component.extend({
         defaults: {
+            merchantId: null,
+            mapUrl: null,
             visible: true,
             isMapVisible : true,
             displayArea: 'after-shipping-method-item',
@@ -32,6 +34,7 @@ define([
         windowActivateCount: 0,
 
         initialize: function () {
+
             this._super();
             cvsLocation.clear();
             this.visible = false;
@@ -43,7 +46,8 @@ define([
             this._super();
             quote.shippingMethod.subscribe(function (data) {
                 this.visible = (data.method_code + '_' + data.carrier_code === 'CVS_gwlogistics');
-            }, this)
+            }, this);
+
             $(document).on('visibilitychange', $.proxy(this.onWindowActivated, this));
             return this;
         },
@@ -67,6 +71,14 @@ define([
         openCvsMap: function () { //todo open window and submit
             var mapWin = window.open('', 'cvsMapFormGw');
             // $.proxy($('#cvs-map-load-form').submit(), this);
+        },
+
+        getMerchantId: function () {
+            return this.merchantId;
+        },
+
+        getMapUrl: function () {
+            return this.mapUrl;
         },
 
         getMerchantTradeNo: function () {

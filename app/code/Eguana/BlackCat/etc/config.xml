@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <blackcat>
+                <active>1</active>
+                <model>Eguana\BlackCat\Model\Carrier\HomeDelivery</model>
+                <title>Black Cat</title>
+                <name>Home Delivery</name>
+                <max_package_weight>150</max_package_weight>
+                <shipping_price>100</shipping_price>
+                <sort_order>10</sort_order>
+                <active_rma>0</active_rma>
+                <is_online>0</is_online>
+            </blackcat>
+        </carriers>
+    </default>
+</config>

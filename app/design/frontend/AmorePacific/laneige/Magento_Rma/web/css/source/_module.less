@@ -31,8 +31,6 @@
 
         > fieldset {
             &:first-child {
-                margin-bottom: 100px;
-
                 .field {
                     address {
                         &:extend(.abs-address-blocks all);
@@ -63,10 +61,6 @@
                     margin-bottom: 0;
                 }
             }
-        }
-
-        .field.comment {
-            margin-top: @indent__xl;
         }
     }
 
@@ -208,6 +202,12 @@
                 &:extend(.abs-add-clearfix-mobile-m all);
             }
         }
+
+        > fieldset {
+            &:first-child {
+                margin-bottom: @indent__base;
+            }
+        }
     }
 
     .form-returns-comments,
@@ -310,10 +310,10 @@
     }
 
     .form-create-return {
-        &:extend(.abs-add-fields-desktop all);
-
         > fieldset {
             &:first-child {
+                margin-bottom: 0;
+
                 .field {
                     &:nth-child(odd) {
                         clear: left;
@@ -322,12 +322,21 @@
                     }
 
                     &:nth-child(even) {
+                        box-sizing: border-box;
                         float: right;
+                        padding-left: @indent__base;
                         width: 54.55%;
                     }
 
-                    &.contact .control {
-                        width: 380px;
+                    &.shipping-preference,
+                    &.contact {
+                        .control {
+                            width: 380px;
+                        }
+                    }
+
+                    &.email:not(.contact) {
+                        margin-bottom: @indent__xl;
                     }
                 }
             }
