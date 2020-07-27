@@ -2,23 +2,23 @@
 /**
  * Created by Eguana Team.
  * User: sonia
- * Date: 6/5/20
- * Time: 5:34 AM
+ * Date: 7/27/20
+ * Time: 2:20 PM
  */
 
-namespace Eguana\GWLogistics\Model\Carrier;
+namespace Eguana\BlackCat\Model\Carrier;
 
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Shipping\Model\Rate\Result;
-
-class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements
+class HomeDelivery extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements
     \Magento\Shipping\Model\Carrier\CarrierInterface
 {
-    const XML_PATH_SHIPPING_PRICE = 'carriers/gwlogistics/shipping_price';
+    const XML_PATH_SHIPPING_PRICE = 'carriers/blackcat/shipping_price';
+    const XML_PATH_TITLE = 'carriers/blackcat/title';
     /**
      * @var string
      */
-    protected $_code = 'gwlogistics';
+    protected $_code = 'blackcat';
     /**
      * Rate result data
      *
@@ -87,18 +87,11 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
         return $result;
     }
 
-    /**
-     * @param \Magento\Framework\DataObject $request
-     * @return \Magento\Framework\DataObject|void
-     */
-    protected function _doShipmentRequest(\Magento\Framework\DataObject $request)
-    {
-        $this->_logger->debug(__METHOD__);
-    }
-
     public function getAllowedMethods()
     {
-        return [$this->_code => __('Convenience Store Pickup')];
+        return [
+            $this->_code => $this->getConfigData('title')
+        ];
     }
 
     /**
@@ -112,26 +105,20 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
         /** @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method */
         $method = $this->rateMethodFactory->create();
 
-        $method->setCarrier('gwlogistics');
+        $method->setCarrier('blackcat');
         $method->setCarrierTitle($this->getConfigData('title'));
 
-        $method->setMethod('CVS');
+        $method->setMethod('homedelivery');
         $method->setMethodTitle($this->getConfigData('name'));
 
         $method->setPrice($shippingPrice);
         $method->setCost($shippingPrice);
-
         return $method;
     }
 
     private function getShippingPrice(RateRequest $request, $freeBoxes)
     {
-        $shippingPrice = $this->_scopeConfig->getValue(
-            self::XML_PATH_SHIPPING_PRICE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
-
-
+        $shippingPrice = $this->getConfigData('shipping_price');
         if ($shippingPrice !== false && $request->getPackageQty() == $freeBoxes) {
             $shippingPrice = '0.00';
         }
@@ -216,36 +203,24 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
             $trackings = [$trackings];
         }
         foreach ($trackings as $tracking) {
-            $this->getGWLTracking($tracking);
+            $this->getBlackCatTracking($tracking);
         }
         return $this->result;
     }
 
-    private function getGWLTracking($trackingValue)
+    private function getBlackCatTracking($trackingValue)
     {
         if (!$this->result) {
             $this->result = $this->trackFactory->create();
         }
-        /*
-        $fields = [
-            'Status' => 'getStatus',
-            'Signed by' => 'getSignedby',
-            'Delivered to' => 'getDeliveryLocation',
-            'Shipped or billed on' => 'getShippedDate',
-            'Service Type' => 'getService',
-            'Weight' => 'getWeight',
-        ];
-        */
-        $resultArr = [
-            'status' => 'test status | test message | updated data',
-        ];
         $tracking = $this->trackStatusFactory->create();
         $tracking->setCarrier($this->_code);
         $tracking->setCarrierTitle($this->getConfigData('title'));
         $tracking->setTracking($trackingValue);
-//        $tracking->setTrackSummary('test test summary');
-//        $tracking->setUrl('https://daum.net');
-        $tracking->addData($resultArr);
+        $tracking->setPopup(1);
+        $tracking->setUrl(
+            "https://www.t-cat.com.tw/inquire/Trace.aspx?no={$trackingValue}"
+        );
         $this->result->append($tracking);
     }
 
@@ -253,4 +228,5 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
     {
         return true;
     }
+
 }
