@@ -488,6 +488,7 @@ return [
         'Eguana_GWLogistics' => 1,
         'Eguana_StoreSms' => 1,
         'Eguana_BizConnect' => 1,
+        'Eguana_BlackCat' => 1,
         'Eguana_Theme' => 1,
         'Eguana_CustomRMA' => 1,
         'Eguana_CustomerRefund' => 1,
