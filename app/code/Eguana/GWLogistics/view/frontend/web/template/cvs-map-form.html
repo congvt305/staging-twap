@@ -7,14 +7,14 @@
           name="cvsMapForm"
           target="cvsMapFormGw"
           class="form cvs-map"
-          action="https://logistics-stage.ecpay.com.tw/Express/map"
           method="POST"
+          data-bind="attr: {'action': getMapUrl()}"
           novalidate="novalidate">
         <input type="text"
                name="MerchantID"
                class="input-text"
                style="display: none"
-               value="2000132">
+               data-bind="value: getMerchantId()">
         <input type="text"
                name="MerchantTradeNo"
                class="input-text"

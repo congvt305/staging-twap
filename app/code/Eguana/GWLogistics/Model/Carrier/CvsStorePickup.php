@@ -120,6 +120,7 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
 
         $method->setPrice($shippingPrice);
         $method->setCost($shippingPrice);
+
         return $method;
     }
 
