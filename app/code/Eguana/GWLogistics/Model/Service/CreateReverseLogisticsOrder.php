@@ -35,6 +35,10 @@ class CreateReverseLogisticsOrder
      * @var \Magento\Rma\Api\CommentRepositoryInterface
      */
     private $commentRepository;
+    /**
+     * @var SmsSender
+     */
+    private $smsSender;
 
     public function __construct(
         \Eguana\GWLogistics\Model\Request\CvsCreateReverseShipmentOrder $createReverseShipmentOrderRequest,
@@ -42,7 +46,8 @@ class CreateReverseLogisticsOrder
         \Magento\Rma\Api\TrackRepositoryInterface $trackRepository,
         \Magento\Rma\Api\Data\CommentInterfaceFactory $commentInterfaceFactory,
         \Magento\Rma\Api\CommentRepositoryInterface $commentRepository,
-        \Eguana\GWLogistics\Helper\Data $helper
+        \Eguana\GWLogistics\Helper\Data $helper,
+        \Eguana\GWLogistics\Model\Service\SmsSender $smsSender
     ) {
         $this->createReverseShipmentOrderRequest = $createReverseShipmentOrderRequest;
         $this->trackFactory = $trackFactory;
@@ -50,6 +55,7 @@ class CreateReverseLogisticsOrder
         $this->helper = $helper;
         $this->commentInterfaceFactory = $commentInterfaceFactory;
         $this->commentRepository = $commentRepository;
+        $this->smsSender = $smsSender;
     }
     /**
      * @param \Magento\Rma\Api\Data\RmaInterface $rma
@@ -59,14 +65,16 @@ class CreateReverseLogisticsOrder
     {
         try {
             $result = $this->createReverseShipmentOrderRequest->sendRequest($rma);
-            if (isset($result['RtnMerchantTradeNo']) && isset($result['RtnOrderNo'])) {
+            if (isset($result['RtnMerchantTradeNo']) && isset($result['RtnOrderNo']) && $result['RtnOrderNo']) {
                 $this->saveTrack($rma, $result);
+                $this->smsSender->sendSms($rma, $result['RtnOrderNo']);
             } elseif (isset($result['ErrorMessage']) && $result['ErrorMessage'] === '找不到加密金鑰，請確認是否有申請開通此物流方式!') { //need to remove when go live
                 $result = [
                     'RtnMerchantTradeNo' => time(),
                     'RtnOrderNo' => time()
                 ];
                 $this->saveTrack($rma, $result);
+                $this->smsSender->sendSms($rma, $result['RtnOrderNo']);
             }
         } catch (\Exception $e) {
             $result = ['ErrorMessage' => $e->getMessage()];
@@ -91,7 +99,7 @@ class CreateReverseLogisticsOrder
         /** @var \Magento\Rma\Api\Data\CommentInterface $comment */
         $comment = $this->commentInterfaceFactory->create();
         $comment->setRmaEntityId($rma->getEntityId());
-        $comment->setComment(__('Reverse Logistics Order Created. Return Code is %1.', $result['RtnOrderNo']));
+        $comment->setComment(__('Reverse Logistics Order Created. Return Order Number is %1.', $result['RtnOrderNo']));
         $comment->setIsAdmin(true);
         $comment->setIsVisibleOnFront(true);
         $this->commentRepository->save($comment);

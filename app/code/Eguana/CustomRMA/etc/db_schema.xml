@@ -4,5 +4,7 @@
     <table name="magento_rma" resource="default" engine="innodb" comment="RMA LIst">
         <column xsi:type="varchar" name="shipping_preference" nullable="true" length="255"
                 comment="Shipping Carrier Preference"/>
+        <column xsi:type="varchar" name="customer_custom_phone" nullable="true" length="255"
+                comment="Customer Custom Phone"/>
     </table>
 </schema>
