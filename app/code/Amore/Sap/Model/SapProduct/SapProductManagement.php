@@ -411,6 +411,8 @@ class SapProductManagement implements SapProductManagementInterface
                     }
                 }
             }
+        } elseif ($inputType == "text") {
+            $value = $requestValue;
         }
         return $value;
     }
