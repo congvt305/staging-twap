@@ -221,7 +221,7 @@ class SapOrderReturnData extends AbstractSapOrder
             $rmaItemData[] = [
                 'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                 'itemKunnr' => $this->config->getClient('store', $storeId),
-                'itemOdrno' => $sapIncrementId,
+                'itemOdrno' => "R" . $sapIncrementId,
                 'itemPosnr' => $cnt,
                 'itemMatnr' => $this->configurableProductCheck($orderItem)->getSku(),
                 'itemMenge' => intval($rmaItem->getQtyRequested()),
