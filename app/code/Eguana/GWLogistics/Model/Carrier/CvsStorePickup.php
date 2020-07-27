@@ -247,4 +247,9 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
         $tracking->addData($resultArr);
         $this->result->append($tracking);
     }
+
+    public function isTrackingAvailable()
+    {
+        return true;
+    }
 }

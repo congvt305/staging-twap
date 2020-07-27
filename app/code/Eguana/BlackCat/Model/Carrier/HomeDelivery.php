@@ -224,4 +224,9 @@ class HomeDelivery extends \Magento\Shipping\Model\Carrier\AbstractCarrier imple
         $this->result->append($tracking);
     }
 
+    public function isTrackingAvailable()
+    {
+        return true;
+    }
+
 }
