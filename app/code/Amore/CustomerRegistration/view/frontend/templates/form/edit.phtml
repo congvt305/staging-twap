@@ -111,7 +111,7 @@ $viewModel = $block->getData('view_model');
                     <option value=""><?= $block->escapeHtml(__('Please select a region, state or province.')) ?></option>
                 </select>
                 <?php //phpcs:enable ?>
-                <input type="text" id="dm_state" name="dm_state" value="<?= $block->escapeHtmlAttr($block->getCustomer()->getCustomAttribute('dm_state')->getValue()) ?>"  title="<?= /* @noEscape */ $block->escapeHtml(__('State')) ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('region') ?>" />
+                <input type="text" id="dm_state" name="dm_state" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_state')) ?>"  title="<?= /* @noEscape */ $block->escapeHtml(__('State')) ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('region') ?>" />
             </div>
         </div>
 
@@ -122,7 +122,7 @@ $viewModel = $block->getData('view_model');
                 <select id="city_id" name="city_id" title="<?= $block->escapeHtml(__('City')); ?>" class="validate-select region_id" ?>>
                     <option value=""><?= $block->escapeHtml(__('Please select a city, city or district.')) ?></option>
                 </select>
-                <input type="text" placeholder="<?= $block->escapeHtml(__('City')) ?>" name="dm_city" value="<?= $block->escapeHtmlAttr($block->getCustomer()->getCustomAttribute('dm_city')->getValue()) ?>" title="<?= $block->escapeHtml(__('City')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_city')) ?>" id="dm_city">
+                <input type="text" placeholder="<?= $block->escapeHtml(__('City')) ?>" name="dm_city" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_city')) ?>" title="<?= $block->escapeHtml(__('City')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_city')) ?>" id="dm_city">
                 <?php //phpcs:enable ?>
             </div>
         </div>
@@ -131,7 +131,7 @@ $viewModel = $block->getData('view_model');
             <label for="dm_detailed_address" class="label"><span><?= $block->escapeHtml(__('Detailed Address')) ?></span></label>
             <div class="control">
                 <?php //phpcs:disable ?>
-                <input type="text" placeholder="<?= $block->escapeHtml(__('Detailed Address')) ?>" name="dm_detailed_address" value="<?= $block->escapeHtmlAttr($block->getCustomer()->getCustomAttribute('dm_detailed_address')->getValue()) ?>" title="<?= $block->escapeHtml(__('Detailed Address')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_detailed_address')) ?>" id="dm_detailed_address">
+                <input type="text" placeholder="<?= $block->escapeHtml(__('Detailed Address')) ?>" name="dm_detailed_address" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_detailed_address')) ?>" title="<?= $block->escapeHtml(__('Detailed Address')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_detailed_address')) ?>" id="dm_detailed_address">
                 <?php //phpcs:enable ?>
             </div>
         </div>
@@ -140,7 +140,7 @@ $viewModel = $block->getData('view_model');
             <label for="dm_zipcode" class="label"><span><?= $block->escapeHtml(__('Zip Code')) ?></span></label>
             <div class="control">
                 <?php //phpcs:disable ?>
-                <input type="text" readonly placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getCustomer()->getCustomAttribute('dm_zipcode')->getValue()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
+                <input type="text" readonly placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_zipcode')) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
                 <?php //phpcs:enable ?>
             </div>
         </div>
@@ -199,7 +199,7 @@ $viewModel = $block->getData('view_model');
                 <?php //phpcs:disable ?>
                 "regionJson": <?= /* @noEscape */ $this->helper(\Magento\Directory\Helper\Data::class)->getRegionJson() ?>,
                 <?php //phpcs:enable ?>
-                "defaultRegion": "<?= (int) 2158 ?>",
+                "defaultRegion": "<?= $viewModel->getCustomerDMStateRegionId($block->getCustomer()); ?>",
                 <?php //phpcs:disable ?>
                 "countriesWithOptionalZip": <?= /* @noEscape */ $this->helper(\Magento\Directory\Helper\Data::class)->getCountriesWithOptionalZip(true) ?>
                 <?php //phpcs:enable ?>
@@ -213,8 +213,8 @@ $viewModel = $block->getData('view_model');
                 "postcodeId": "#dm_zipcode",
                 "form": "#form-validate",
                 "cityJson": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityJson() ?>,
-                "defaultRegion": "<?= /* @noEscape */ 957 ?>",
-                "defaultCity": "<?= (int) 957 ?>"
+                "defaultRegion": "<?= $viewModel->getCustomerDMStateRegionId($block->getCustomer()); ?>",
+                "defaultCity": "<?= $viewModel->getCustomerDMCityId($block->getCustomer()); ?>"
             }
         }
 
