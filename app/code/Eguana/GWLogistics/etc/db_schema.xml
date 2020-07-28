@@ -59,7 +59,7 @@
                 default="0" comment="Return Code"/>
         <column xsi:type="varchar" name="rtn_msg" nullable="true" length="200" comment="Return Message"/>
         <column xsi:type="varchar" name="all_pay_logistics_id" nullable="true" length="20" comment="GW AllPay Logistics ID"/>
-        <column xsi:type="int" name="GoodsAmount" padding="10" unsigned="true" nullable="true" identity="false"
+        <column xsi:type="int" name="goods_amount" padding="10" unsigned="true" nullable="true" identity="false"
                 default="0" comment="Goods Amount"/>
         <column xsi:type="varchar" name="update_status_date" nullable="true" length="20"
                 comment="Update Status Date"/>
@@ -95,7 +95,7 @@
                 comment="Logistics Type"/>
         <column xsi:type="varchar" name="logistics_sub_type" nullable="true" length="20"
                 comment="Logistics Sub Type"/>
-        <column xsi:type="int" name="GoodsAmount" padding="10" unsigned="true" nullable="true" identity="false"
+        <column xsi:type="int" name="goods_amount" padding="10" unsigned="true" nullable="true" identity="false"
                 default="0" comment="Goods Amount"/>
         <column xsi:type="varchar" name="update_status_date" nullable="true" length="20"
                 comment="Update Status Date"/>

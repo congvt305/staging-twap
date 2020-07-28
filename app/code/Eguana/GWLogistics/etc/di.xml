@@ -3,6 +3,8 @@
     <preference for="Eguana\GWLogistics\Api\Data\QuoteCvsLocationInterface" type="Eguana\GWLogistics\Model\QuoteCvsLocation"/>
     <preference for="Eguana\GWLogistics\Api\Data\QuoteCvsLocationSearchResultInterface" type="Eguana\GWLogistics\Model\QuoteCvsLocationSearchResult"/>
     <preference for="Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface" type="Eguana\GWLogistics\Model\QuoteCvsLocationRepository"/>
+    <preference for="Eguana\GWLogistics\Api\Data\ReverseStatusNotificationInterface" type="Eguana\GWLogistics\Model\ReverseStatusNotification"/>
+    <preference for="Eguana\GWLogistics\Api\Data\StatusNotificationInterface" type="Eguana\GWLogistics\Model\StatusNotification"/>
 
 <!--    <preference for="Eguana\GWLogistics\Api\CartCvsLocationManagementInterface" type="Eguana\GWLogistics\Model\CartCvsLocationManagement"/>-->
 <!--    <preference for="Eguana\GWLogistics\Api\GuestCartCvsLocationManagementInterface" type="Eguana\GWLogistics\Model\GuestCartCvsLocationManagement"/>-->
