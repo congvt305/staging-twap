@@ -19,10 +19,39 @@
     .form-create-return {
         &:extend(.abs-add-fields all);
 
+        > .fieldset {
+            > .actions-toolbar {
+                margin: 0 !important;
+            }
+
+            &:first-child {
+                margin-bottom: 0 !important;
+            }
+        }
+
         .field {
-            &.id,
-            &.name {
-                margin-bottom: 0;
+            .label {
+                height: auto !important;
+                margin-bottom: @indent__xs;
+                overflow: visible !important;
+                text-align: left !important;
+                width: auto !important;
+            }
+
+            &.contact {
+                .control {
+                    margin-top: @indent__xs;
+                }
+            }
+
+            &.shipping-preference {
+                .label + .input-radio {
+                    margin-left: 15px;
+                }
+
+                .label {
+                    color: @primary__color__lighter;
+                }
             }
 
             &.address address {

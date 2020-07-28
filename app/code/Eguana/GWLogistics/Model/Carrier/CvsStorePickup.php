@@ -120,6 +120,7 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
 
         $method->setPrice($shippingPrice);
         $method->setCost($shippingPrice);
+
         return $method;
     }
 
@@ -239,12 +240,17 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
             'status' => 'test status | test message | updated data',
         ];
         $tracking = $this->trackStatusFactory->create();
-        $tracking->setCarrier('Green World Logistics');
+        $tracking->setCarrier($this->_code);
         $tracking->setCarrierTitle($this->getConfigData('title'));
         $tracking->setTracking($trackingValue);
 //        $tracking->setTrackSummary('test test summary');
 //        $tracking->setUrl('https://daum.net');
         $tracking->addData($resultArr);
         $this->result->append($tracking);
+    }
+
+    public function isTrackingAvailable()
+    {
+        return true;
     }
 }

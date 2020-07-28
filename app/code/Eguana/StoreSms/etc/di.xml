@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Eguana\StoreSms\Api\SmsInterface" type="Eguana\StoreSms\Model\SmsSender" />
+    <preference for="Eguana\StoreSms\Api\SmsManagementInterface" type="Eguana\StoreSms\Model\SmsManagement"/>
     <type name="Magento\Config\Model\Config\TypePool">
         <arguments>
             <argument name="sensitive" xsi:type="array">

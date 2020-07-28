@@ -60,6 +60,7 @@ class SapOrderCancelData extends AbstractSapOrder
 
     /**
      * @param $incrementId
+     * @param $addressData
      * @return array[]
      * @throws NoSuchEntityException
      */
@@ -116,7 +117,6 @@ class SapOrderCancelData extends AbstractSapOrder
         /** @var Order $orderData */
         $orderData = $this->getOrderInfo($incrementId);
         $storeId = $orderData->getStoreId();
-        $sapIncrementId = $this->getOrderIncrementId($orderData);
 
         if ($orderData == null) {
             throw new NoSuchEntityException(
@@ -127,7 +127,7 @@ class SapOrderCancelData extends AbstractSapOrder
         $bindData = [
             "vkorg" => $this->config->getSalesOrg('store', $storeId),
             "kunnr" => $this->config->getClient('store', $storeId),
-            "odrno" => $sapIncrementId,
+            "odrno" => $orderData->getIncrementId(),
             // 주문 취소 : 1, 주소변경 : 2
             "zchgind" => 2,
             "recvnm" => $addressData->getLastname() . $addressData->getFirstname(),
@@ -149,7 +149,6 @@ class SapOrderCancelData extends AbstractSapOrder
         $orderData = $this->getOrderInfo($incrementId);
         $storeId = $orderData->getStoreId();
         $shippingAddress = $orderData->getShippingAddress();
-        $sapIncrementId = $this->getOrderIncrementId($orderData);
 
         if ($orderData == null) {
             throw new NoSuchEntityException(
@@ -160,7 +159,7 @@ class SapOrderCancelData extends AbstractSapOrder
         $bindData = [
             "vkorg" => $this->config->getSalesOrg('store', $storeId),
             "kunnr" => $this->config->getClient('store', $storeId),
-            "odrno" => $sapIncrementId,
+            "odrno" => $orderData->getIncrementId(),
             // 주문 취소 : 1, 주소변경 : 2
             "zchgind" => 1,
             "recvnm" => $shippingAddress->getName(),

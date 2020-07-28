@@ -33,6 +33,10 @@
                     <br>
                     <?= $block->escapeHtml(__('Contact Email Address')); ?>: <?= $block->escapeHtml($_rma->getCustomerCustomEmail()) ?>
                 <?php endif ?>
+                <?php if ($_rma->getCustomerCustomPhone()) : ?>
+                    <br>
+                    <?= $block->escapeHtml(__('Contact Phone Number')); ?>: <?= $block->escapeHtml($_rma->getCustomerCustomEmail()) ?>
+                <?php endif ?>
                 <?php if ($_rma->getData('shipping_preference')) : ?>
                     <br>
                     <?= $block->escapeHtml(__('Shipping Preference')); ?>: <?= $block->escapeHtml($_rma->getData('shipping_preference')) ?>
@@ -189,7 +193,9 @@
                                 <td data-th="<?= $block->escapeHtmlAttr(__('Condition')) ?>" class="col condition"><?= $block->escapeHtml($block->getAttributeValue($item->getId(), 'condition')) ?></td>
                             <?php endif; ?>
                             <?php if (false !== $block->getAttributeValue($item->getId(), 'condition')) : ?>
-                                <td data-th="<?= $block->escapeHtmlAttr(__('Resolution')) ?>" class="col resolution"><?= $block->escapeHtml($block->getAttributeValue($item->getId(), 'resolution')) ?></td>
+                                <td data-th="<?= $block->escapeHtmlAttr(__('Resolution')) ?>" class="col resolution">
+                                    <?= $block->escapeHtml(__('%1 refund',$block->getAttributeValue($item->getId(), 'resolution'))) ?>
+                                </td>
                             <?php endif; ?>
                             <td data-th="<?= $block->escapeHtmlAttr(__('Request Qty')) ?>" class="col request qty"><?= $block->escapeHtml($rmaHelper->parseQuantity($item->getQtyRequested(), $item)) ?></td>
                             <td data-th="<?= $block->escapeHtmlAttr(__('Qty')) ?>" class="col qty"><?= $block->escapeHtml($rmaHelper->getQty($item)) ?></td>
@@ -265,3 +271,6 @@
         </div>
     </div>
 </div>
+<strong>
+    <?= $block->escapeHtml(__('Items Return Requested For')); ?>
+</strong>
