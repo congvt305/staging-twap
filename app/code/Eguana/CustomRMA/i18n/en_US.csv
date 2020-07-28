@@ -1,0 +1,76 @@
+Remove,Remove
+Item,Item
+"Return items","Return items"
+Sub-items,Sub-items
+"Remaining Qty","Remaining Qty"
+Qty,Qty
+Product,Product
+"Quantity To Return","Quantity To Return"
+"Remaining Quantity:","Remaining Quantity:"
+"New Return for Order %1","New Return for Order %1"
+"Order ID","Order ID"
+"Customer Name","Customer Name"
+Email,Email
+"Order Shipping Address","Order Shipping Address"
+"Shipping Preference","Shipping Preference"
+unimart,unimart
+Unimart,Unimart
+familymart,familymart
+"Family Mart","Family Mart"
+"Return Items Information","Return Items Information"
+"Add Item To Return","Add Item To Return"
+Comments,Comments
+Save,Save
+Submit,Submit
+Back,Back
+Carrier,Carrier
+Method,Method
+"Return Code","Return Code"
+"Are you sure you want to delete this tracking information?","Are you sure you want to delete this tracking information?"
+"Return #","Return #"
+"Request Information s","Request Information s"
+ID,ID
+"Date Requested","Date Requested"
+"Contact Email Address","Contact Email Address"
+"Shipping Address","Shipping Address"
+"This won't take long . . .","This won't take long . . ."
+"Shipping and Tracking Information","Shipping and Tracking Information"
+"Track this shipment","Track this shipment"
+"Print Shipping Label","Print Shipping Label"
+"Show Packages","Show Packages"
+Add,Add
+"Items Return Requested For","Items Return Requested For"
+"Product Name","Product Name"
+Condition,Condition
+Resolution,Resolution
+"Request Qty","Request Qty"
+Status,Status
+"Hide Details","Hide Details"
+"Show Details","Show Details"
+"%1 translated refund","%1 translated refund"
+"Questions and Answers","Questions and Answers"
+Questions,Questions
+Answers,Answers
+"Customer Service","Customer Service"
+"Leave Comment","Leave Comment"
+"Submit Comment","Submit Comment"
+"Order tracking","Order tracking"
+"Tracking Number:","Tracking Number:"
+Carrier:,Carrier:
+Error:,Error:
+"Tracking information is currently not available. Please ","Tracking information is currently not available. Please "
+"contact us","contact us"
+" for more information or "," for more information or "
+"email us at ","email us at "
+Info:,Info:
+Track:,Track:
+". ':'",". ':'"
+N/A,N/A
+"Shipment #","Shipment #"
+"There is no tracking available for this shipment.","There is no tracking available for this shipment."
+"There is no tracking available.","There is no tracking available."
+"Close Window","Close Window"
+"Eguana CustomRMA","Eguana CustomRMA"
+"General Configuration","General Configuration"
+"Enable Extension","Enable Extension"
+"%1 refund","Order Cancel And Refund"
