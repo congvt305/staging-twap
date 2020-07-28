@@ -54,7 +54,7 @@
             "rtn_code": true,
             "rtn_msg": true,
             "all_pay_logistics_id": true,
-            "GoodsAmount": true,
+            "goods_amount": true,
             "update_status_date": true,
             "created_at": true,
             "updated_at": true
@@ -78,7 +78,7 @@
             "all_pay_logistics_id": true,
             "logistics_type": true,
             "logistics_sub_type": true,
-            "GoodsAmount": true,
+            "goods_amount": true,
             "update_status_date": true,
             "receiver_name": true,
             "receiver_phone": true,

@@ -100,9 +100,8 @@ class SapOrderReturnData extends AbstractSapOrder
     public function singleOrderData($rma)
     {
         $source = $this->config->getSourceByStore('store', $rma->getStoreId());
-        $rmaIncrementId = $this->getRmaIncrementId($rma);
-        $rmaData = $this->getRmaData($rma, $rmaIncrementId);
-        $rmaItemData = $this->getRmaItemData($rma, $rmaIncrementId);
+        $rmaData = $this->getRmaData($rma);
+        $rmaItemData = $this->getRmaItemData($rma);
 
         $request =  [
             "request" => [
@@ -120,12 +119,11 @@ class SapOrderReturnData extends AbstractSapOrder
 
     /**
      * @param \Magento\Rma\Model\Rma $rma
-     * @param string $sapIncrementId
      * @throws RmaTrackNoException
      * @throws NoSuchEntityException
      * @throws LocalizedException
      */
-    public function getRmaData($rma, $sapIncrementId)
+    public function getRmaData($rma)
     {
         $storeId = $rma->getStoreId();
         $order = $rma->getOrder();
@@ -138,7 +136,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $bindData[] = [
             'vkorg' => $this->config->getSalesOrg('store', $storeId),
             'kunnr' => $this->config->getClient('store', $storeId),
-            'odrno' => "R" . $sapIncrementId,
+            'odrno' => "R" . $rma->getIncrementId(),
             'odrdt' => $this->dateFormatting($rma->getDateRequested(), 'Ymd'),
             'odrtm' => $this->dateFormatting($rma->getDateRequested(), 'His'),
             'paymtd' => '',
@@ -171,7 +169,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'spitn1' => '',
             'vkorgOri' => $this->config->getSalesOrg('store', $storeId),
             'kunnrOri' => $this->config->getClient('store', $storeId),
-            'odrnoOri' => $this->getSapOrderId($order),
+            'odrnoOri' => $order->getIncrementId(),
             // 이건 물건 종류 갯수(물건 전체 수량은 아님)
             'itemCnt' => count($rma->getItems()),
             // 영업 플랜트 : 알수 없을 경우 공백
@@ -189,9 +187,8 @@ class SapOrderReturnData extends AbstractSapOrder
 
     /**
      * @param \Magento\Rma\Model\Rma $rma
-     * @param string $sapIncrementId
      */
-    public function getRmaItemData($rma, $sapIncrementId)
+    public function getRmaItemData($rma)
     {
         $rmaItemData = [];
         $storeId = $rma->getStoreId();
@@ -221,7 +218,7 @@ class SapOrderReturnData extends AbstractSapOrder
             $rmaItemData[] = [
                 'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                 'itemKunnr' => $this->config->getClient('store', $storeId),
-                'itemOdrno' => "R" . $sapIncrementId,
+                'itemOdrno' => "R" . $rma->getIncrementId(),
                 'itemPosnr' => $cnt,
                 'itemMatnr' => $this->configurableProductCheck($orderItem)->getSku(),
                 'itemMenge' => intval($rmaItem->getQtyRequested()),
@@ -241,7 +238,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 'itemMwsbp' => $this->getRateAmount($orderItem->getTaxAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
                 'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                 'itemKunnrOri' => $this->config->getClient('store', $storeId),
-                'itemOdrnoOri' => $this->getSapOrderId($order),
+                'itemOdrnoOri' => $order->getIncrementId(),
                 'itemPosnrOri' => $originPosnr[$configurableCheckedItem->getItemId()]
             ];
             $cnt++;
@@ -284,39 +281,6 @@ class SapOrderReturnData extends AbstractSapOrder
     public function dateFormatting($date, $format)
     {
         return $this->timezoneInterface->date($date)->format($format);
-    }
-
-    /**
-     * @param \Magento\Sales\Model\Order $order
-     */
-    public function getSapOrderId($order)
-    {
-        $sapOrderIncrementId = $order->getData('sap_order_increment_id');
-        if (empty($sapOrderIncrementId)) {
-            $incrementId = $order->getIncrementId();
-        } else {
-            $incrementId = $sapOrderIncrementId;
-        }
-        return $incrementId;
-    }
-
-    /**
-     * @param \Magento\Rma\Model\Rma $rma
-     */
-    public function getRmaIncrementId($rma)
-    {
-        $rmaSendCheck = $rma->getData('sap_return_send_check');
-        $rmaIncrementId = $rma->getIncrementId();
-
-        if (is_null($rmaSendCheck)) {
-            $incrementIdForSap = $rmaIncrementId;
-        } elseif ($rmaSendCheck == 0 || $rmaSendCheck == 2) {
-            $currentDate = $this->timezoneInterface->date()->format('ymdHis');
-            $incrementIdForSap = $rmaIncrementId . '_' . $currentDate;
-        } else {
-            $incrementIdForSap = $rmaIncrementId;
-        }
-        return $incrementIdForSap;
     }
 
     /**
