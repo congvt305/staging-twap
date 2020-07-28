@@ -28,7 +28,9 @@ class Data extends AbstractHelper
     const XML_PATH_FAMI_REVERSE_LOGISTICS_URL = 'carriers/gwlogistics/fami_reverse_logistics_order_url';
     const XML_PATH_UNIMART_REVERSE_LOGISTICS_URL = 'carriers/gwlogistics/unimart_reverse_logistics_order_url';
 
-    const XML_PATH_MODE = 'carriers/gwlogistics/model';
+    const XML_PATH_MODE = 'carriers/gwlogistics/mode';
+    const XML_PATH_SEND_SMS_ACTIVE = 'carriers/gwlogistics/send_sms_active';
+    const XML_PATH_MESSAGE_TEMPLATE = 'carriers/gwlogistics/message_template';
 
     private $mode;
     /**
@@ -85,9 +87,8 @@ class Data extends AbstractHelper
     public function getMode()
     {
         return $this->scopeConfig->getValue(
-            'carriers/gwlogistics/mode',
+            self::XML_PATH_MODE,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-
         );
     }
 
@@ -99,7 +100,25 @@ class Data extends AbstractHelper
         $checkMackValue = $params['CheckMacValue'];
         $checkMackValueFound = $this->ecpayCheckMacValue->Generate($params, $hashKey, $hasIv);
         return $checkMackValue === $checkMackValueFound;
-
     }
+
+    public function getSendSmsActive($store = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_SEND_SMS_ACTIVE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $store
+        );
+    }
+
+    public function getMessageTemplate($store)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_MESSAGE_TEMPLATE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $store
+        );
+    }
+
 
 }

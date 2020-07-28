@@ -42,12 +42,14 @@ class ReturnsSubmitPlugin
     public function afterExecute(\Magento\Rma\Controller\Returns\Submit $subject, $result)
     {
         $shippingPreference = $subject->getRequest()->getParam('shipping_preference');
+        $customPhone = $subject->getRequest()->getParam('customer_custom_phone');
         if ($shippingPreference) {
             $orderId = (int)$subject->getRequest()->getParam('order_id');
             try {
                 $rmaModel = $this->rmaFactory->create();
                 $this->rmaResource->load($rmaModel, $orderId, 'order_id');
                 $rmaModel->setData('shipping_preference', $shippingPreference);
+                $rmaModel->setData('customer_custom_phone', $customPhone);
                 $this->rmaResource->save($rmaModel);
             } catch (AlreadyExistsException $e) {
                 $this->logger->critical($e->getMessage());
