@@ -37,6 +37,14 @@ class ReverseOrderStatusNotificationHandler
      * @var \Psr\Log\LoggerInterface
      */
     private $logger;
+    /**
+     * @var \Eguana\GWLogistics\Api\Data\ReverseStatusNotificationInterfaceFactory
+     */
+    private $reverseStatusNotificationFactory;
+    /**
+     * @var \Eguana\GWLogistics\Api\ReverseStatusNotificationRepositoryInterface
+     */
+    private $statusNotificationRepository;
 
     public function __construct(
         \Eguana\GWLogistics\Helper\Data $dataHelper,
@@ -44,6 +52,8 @@ class ReverseOrderStatusNotificationHandler
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Rma\Api\Data\CommentInterfaceFactory $commentInterfaceFactory,
         \Magento\Rma\Api\CommentRepositoryInterface $commentRepository,
+        \Eguana\GWLogistics\Api\Data\ReverseStatusNotificationInterfaceFactory $reverseStatusNotificationFactory,
+        \Eguana\GWLogistics\Api\ReverseStatusNotificationRepositoryInterface $statusNotificationRepository,
         \Psr\Log\LoggerInterface $logger
     ) {
         $this->dataHelper = $dataHelper;
@@ -52,6 +62,8 @@ class ReverseOrderStatusNotificationHandler
         $this->commentInterfaceFactory = $commentInterfaceFactory;
         $this->commentRepository = $commentRepository;
         $this->logger = $logger;
+        $this->reverseStatusNotificationFactory = $reverseStatusNotificationFactory;
+        $this->statusNotificationRepository = $statusNotificationRepository;
     }
 
     /*
@@ -94,6 +106,17 @@ class ReverseOrderStatusNotificationHandler
                     $rmaComment->setComment($this->makeComments($notificationData['RtnMsg'], $notificationData['RtnCode'], $notificationData['UpdateStatusDate']));
 //                    $rmaComment->setStatus('...'); //todo: handle status depends on Return Code for exameple received..
                     $this->commentRepository->save($rmaComment);
+
+                    /** @var \Eguana\GWLogistics\Api\Data\ReverseStatusNotificationInterface $statusNotification */
+                    $statusNotification = $this->reverseStatusNotificationFactory->create();
+                    $statusNotification->setMerchantId($notificationData['MerchantID']);
+                    $statusNotification->setRtnMerchantTradeNo($notificationData['MerchantTradeNo']);
+                    $statusNotification->setRtnCode($notificationData['RtnCode']);
+                    $statusNotification->setRtnMsg($notificationData['RtnMsg']);
+                    $statusNotification->setAllPayLogisticsId($notificationData['AllPayLogisticsID']);
+                    $statusNotification->setGoodsAmount($notificationData['GoodsAmount']);
+                    $statusNotification->setUpdateStatusDate($notificationData['UpdateStatusDate']);
+                    $this->statusNotificationRepository->save($statusNotification);
                     return true;
                 }
             } catch (CouldNotSaveException $e) {
