@@ -179,11 +179,7 @@ class SapOrderManagement implements SapOrderManagementInterface
             $this->logger->info($this->json->serialize($parameters));
         }
 
-        if (strpos($orderStatusData['odrno'], '_')) {
-            list($incrementId, $date) = explode('_', $orderStatusData['odrno']);
-        } else {
-            $incrementId = $orderStatusData['odrno'];
-        }
+        $incrementId = $orderStatusData['odrno'];
 
 //        /** @var \Magento\Sales\Model\Order $order */
 //        $orders = $this->getOrderByIncrementId($incrementId);
@@ -224,6 +220,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
 
                 $order->setStatus('sap_success');
+                $order->setData('sap_response', $orderStatusData['ugtxt']);
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
                 $this->orderRepository->save($order);
             }
@@ -231,8 +228,6 @@ class SapOrderManagement implements SapOrderManagementInterface
         }
 
         // case that order created error in SAP
-        // 가용재고 부족 등 상태로 왔을 때 주문 취소할지 아니면 관리자에게 알릴지 다른 방법 찾아야 함
-        // 아모레쪽이랑 어떻게 처리할지 얘기 필요
         if ($orderStatusData['odrstat'] == 2) {
             if (strpos($incrementId, "R") !== false) {
                 $message = "Order Return Does not created in SAP.";
@@ -250,10 +245,12 @@ class SapOrderManagement implements SapOrderManagementInterface
                 }
             } else {
                 $message = "Order Does not created in SAP.";
-                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
 
                 $order = $this->getOrderFromList($incrementId);
+
                 $order->setStatus('sap_fail');
+                $order->setData('sap_response', $orderStatusData['ugtxt']);
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                 $this->orderRepository->save($order);
             }
@@ -268,16 +265,23 @@ class SapOrderManagement implements SapOrderManagementInterface
             } else {
                 $order = $this->getOrderFromList($incrementId);
                 try {
-                    if ($order->getStatus() == "sap_success") {
+                    if ($order->getStatus() == "sap_success" || $order->getStatus() == 'processing' || $order->getStatus() == 'sap_fail') {
                         $order->setStatus('preparing');
+                        $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                        $order->setData('sap_response', $orderStatusData['ugtxt']);
                         $this->orderRepository->save($order);
                         $message = "Order status changed to preparing successfully.";
                         $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
                     } else {
-                        $message = "Order status is not SAP Success. Please check the order.";
+                        $message = "Order status is not proper status. Please check the order.";
+
+                        $order->setData('sap_response', $message);
+                        $this->orderRepository->save($order);
                         $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                     }
                 } catch (\Exception $exception) {
+                    $order->setData('sap_response', $exception->getMessage());
+                    $this->orderRepository->save($order);
                     $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
                 }
             }
@@ -309,7 +313,8 @@ class SapOrderManagement implements SapOrderManagementInterface
                 }
             } else {
                 $order = $this->getOrderFromList($incrementId);
-                if ($order->getStatus() == 'preparing') {
+                if ($order->getStatus() == 'preparing' || $order->getStatus() == 'processing'
+                    || $order->getStatus() == 'sap_success' || $order->getStatus() == 'sap_fail') {
                     $shipmentCheck = $order->hasShipments();
 
                     if (!$shipmentCheck) {
@@ -355,10 +360,12 @@ class SapOrderManagement implements SapOrderManagementInterface
 
                                     if ($order->getStatus() == 'complete') {
                                         $order->setStatus('shipment_processing');
+                                        $order->setData('sap_response', $orderStatusData['ugtxt']);
                                         $this->orderRepository->save($order);
                                     } else {
                                         $order->setState('complete');
                                         $order->setStatus('shipment_processing');
+                                        $order->setData('sap_response', $orderStatusData['ugtxt']);
                                         $this->orderRepository->save($order);
                                     }
 
@@ -386,7 +393,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                         }
                     }
                 } else {
-                    $message = "Order Status is not Preparing.";
+                    $message = "Order Status is not Proper status. Please check order status.";
                     $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                 }
             }
@@ -394,7 +401,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         }
 
         if ($orderStatusData['odrstat'] == 9) {
-            $message = "Other order status returned.";
+            $message = "Order Canceled Successfully.";
             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
             return $result;
         }
