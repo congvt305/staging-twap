@@ -43,23 +43,35 @@
 
         <form id="custom-checkout-form" class="form" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
             <fieldset class="fieldset">
-                <legend data-bind="i18n: 'E-Invoice Donation'"></legend>
                 <!-- ko foreach: getRegion('custom-checkout-form-fields') -->
                 <!-- ko template: getTemplate() --><!-- /ko -->
                 <!--/ko-->
             </fieldset>
-            <input type="radio" id="donation-true" name="e-invoice-donation" value="true">
-            <label for="donation-true">Yes</label>
-            <input type="radio" id="donation-false" name="e-invoice-donation" value="false" checked="checked">
-            <label for="donation-false">No</label>
-
-            <div class="control">
-                <label for="invoice_title" class="label">Invoice Title</label>
-                <input type="text" name="invoice_title" data-validate='{"maxlength":255}' value="" title="Invoice Title" class="input-text invoice-title" id="invoice_title">
-
-                <label for="tax_id_number" class="label">Tax ID Number</label>
-                <input type="text" name="tax_id_number" data-validate='{"maxlength":255}' value="" title="Tax ID Number" class="input-text tax_id_number" id="tax_id_number">
-            </div>
+            <fieldset class="fieldset">
+                <div class="field">
+                    <label class="label" data-bind="i18n: 'E-Invoice Donation'"></label>
+                    <div class="control">
+                        <input type="radio" id="donation-true" name="e-invoice-donation" value="true">
+                        <label for="donation-true" data-bind="i18n: 'Yes'"/>
+                        <input type="radio" style="margin-left: 50px;" id="donation-false" name="e-invoice-donation" value="false" checked="checked">
+                        <label for="donation-false" data-bind="i18n: 'No'"/>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="fieldset">
+                <div class="field">
+                    <label for="invoice_title" class="label" data-bind="i18n: 'Invoice Title'"/>
+                    <div class="control">
+                        <input type="text" name="invoice_title" data-validate='{"maxlength":255}' value="" title="Invoice Title" class="input-text invoice-title" id="invoice_title">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="tax_id_number" class="label" data-bind="i18n: 'Tax ID Number'"/>
+                    <div class="control">
+                        <input type="text" name="tax_id_number" data-validate='{"maxlength":255}' value="" title="Tax ID Number" class="input-text tax_id_number" id="tax_id_number">
+                    </div>
+                </div>
+            </fieldset>
         </form>
 
         <div class="actions-toolbar" data-bind="if: isPaymentAvailable()">
