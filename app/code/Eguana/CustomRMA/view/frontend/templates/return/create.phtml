@@ -181,6 +181,12 @@
                 <input type="text" name="customer_custom_email" id="email" title="Contact Email Address" class="input-text" data-validate="{'validate-email':true}" value="<?= $block->escapeHtmlAttr($block->getContactEmail()) ?>">
             </div>
         </div>
+        <div class="field contact telephone">
+            <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Contact Phone Number')) ?></span></label>
+            <div class="control">
+                <input type="text" name="customer_custom_phone" id="telephone" title="Contact Phone Number" class="input-text" data-validate="{'required':true}" value="<?= $block->escapeHtmlAttr($block->getContactPhone()) ?>">
+            </div>
+        </div>
         <div class="field address shipping">
             <span class="label"><span><?= $block->escapeHtml(__('Order Shipping Address')) ?></span></span>
             <address class="control"><?= /* @noEscape */ $block->format($_order->getShippingAddress(), 'html') ?></address>

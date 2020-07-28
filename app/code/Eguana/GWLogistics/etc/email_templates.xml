@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="eguana_gwlogistics_rma_return_order_number_template"
+              label="RMA Return Order Number SMS Template"
+              file="rma_return_order_number.html"
+              type="html"
+              module="Eguana_GWLogistics"
+              area="frontend"/>
+</config>
