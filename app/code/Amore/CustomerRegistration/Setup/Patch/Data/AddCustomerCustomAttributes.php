@@ -309,10 +309,10 @@ class AddCustomerCustomAttributes implements DataPatchInterface
      */
     private function addCustomerAttributeBoolean($code, $label, $sortOrder)
     {
-        $this->eavSetup->removeAttribute(
+        /*$this->eavSetup->removeAttribute(
             CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
             $code
-        );
+        );*/
         $attribute = $this->customerAttributeResource
             ->getIdByCode(
                 CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
@@ -363,6 +363,7 @@ class AddCustomerCustomAttributes implements DataPatchInterface
                 'adminhtml_customer',
                 'customer_account_create'
             ];
+
             $onlyInAdmin = [
                 'customer_integration_number',
                 'status_code',
@@ -371,9 +372,26 @@ class AddCustomerCustomAttributes implements DataPatchInterface
                 'sales_office_code'
             ];
 
+            $myAccountEditableAttributes = [
+                'mobile_number',
+                'dm_city',
+                'dm_state',
+                'dm_detailed_address',
+                'dm_zipcode',
+                'sms_subscription_status',
+                'dm_subscription_status'
+            ];
+
             if (in_array($code, $onlyInAdmin)) {
                 $forms = [
                     'adminhtml_customer'
+                ];
+            }
+
+            if (in_array($code, $myAccountEditableAttributes)) {
+                $forms = [
+                    'customer_account_edit',
+                    'customer_account_create'
                 ];
             }
 
