@@ -11351,14 +11351,14 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "The ""Minimum Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.","The ""Minimum Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.",module,Magento_Reward
 "The ""Cap Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.","The ""Cap Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.",module,Magento_Reward
 "The ""Minimum Reward Points Balance"" is invalid. The balance needs to be less than or equal to the ""Cap Reward Points Balance"".","The ""Minimum Reward Points Balance"" is invalid. The balance needs to be less than or equal to the ""Cap Reward Points Balance"".",module,Magento_Reward
-"Return","Return",module,Magento_Rma
-"Returns","Returns",module,Magento_Rma
-"Create Returns","Create Returns",module,Magento_Rma
+"Return","返回",module,Magento_Rma
+"Returns","退貨",module,Magento_Rma
+"Create Returns","創建退貨",module,Magento_Rma
 "Select Items","選擇項目",module,Magento_Rma
-"New Return Request","New Return Request",module,Magento_Rma
+"New Return Request","新的退貨要求",module,Magento_Rma
 "Create New RMA for %1 in %2","Create New RMA for %1 in %2",module,Magento_Rma
 "Create New RMA for %1","Create New RMA for %1",module,Magento_Rma
-"Create New RMA","Create New RMA",module,Magento_Rma
+"Create New RMA","創建新的RMA",module,Magento_Rma
 "Please Select Order","請選擇指令",module,Magento_Rma
 "Order","訂單",module,Magento_Rma
 "Purchase Point","Purchase Point",module,Magento_Rma
@@ -11373,7 +11373,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Are you sure you want to close this returns request?","Are you sure you want to close this returns request?",module,Magento_Rma
 "Print","Print",module,Magento_Rma
 "Return #%1 - %2","Return #%1 - %2",module,Magento_Rma
-"RMA Item Details","RMA Item Details",module,Magento_Rma
+"RMA Item Details","RMA項目詳細信息",module,Magento_Rma
 "OK","確定",module,Magento_Rma
 "Cancel","取消",module,Magento_Rma
 "No","否",module,Magento_Rma
@@ -11384,24 +11384,24 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Submit Comment","提交評論",module,Magento_Rma
 "Add","Add",module,Magento_Rma
 "Custom Value","Custom Value",module,Magento_Rma
-"Print Shipping Label","Print Shipping Label",module,Magento_Rma
+"Print Shipping Label","打印運輸標籤",module,Magento_Rma
 "Show Packages","Show Packages",module,Magento_Rma
 "Items","品項",module,Magento_Rma
-"Return Items","Return Items",module,Magento_Rma
+"Return Items","退換貨品",module,Magento_Rma
 "Product","產品",module,Magento_Rma
 "SKU","商品編號",module,Magento_Rma
-"Remaining","Remaining",module,Magento_Rma
-"Requested","Requested",module,Magento_Rma
+"Remaining","剩餘的",module,Magento_Rma
+"Requested","已要求",module,Magento_Rma
 "Authorized","已授權",module,Magento_Rma
-"Returned","Returned",module,Magento_Rma
-"Approved","Approved",module,Magento_Rma
+"Returned","回來",module,Magento_Rma
+"Approved","已批准",module,Magento_Rma
 "Return Reason","退貨原因",module,Magento_Rma
-"Item Condition","Item Condition",module,Magento_Rma
-"Resolution","Resolution",module,Magento_Rma
+"Item Condition","項目情況",module,Magento_Rma
+"Resolution","解析度",module,Magento_Rma
 "Details","詳細資料",module,Magento_Rma
-"Split","Split",module,Magento_Rma
+"Split","分裂",module,Magento_Rma
 "Action","操作",module,Magento_Rma
-"Return Information","Return Information",module,Magento_Rma
+"Return Information","退貨信息",module,Magento_Rma
 "RMA","RMA",module,Magento_Rma
 "Ordered","已訂購",module,Magento_Rma
 "Customer","客戶",module,Magento_Rma
