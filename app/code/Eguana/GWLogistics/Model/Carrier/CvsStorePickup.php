@@ -8,6 +8,8 @@
 
 namespace Eguana\GWLogistics\Model\Carrier;
 
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Shipping\Model\Rate\Result;
 
@@ -45,8 +47,48 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
      * @var \Magento\Shipping\Model\Tracking\Result\StatusFactory
      */
     private $trackStatusFactory;
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
+    /**
+     * @var \Magento\Sales\Api\ShipmentTrackRepositoryInterface
+     */
+    private $shipmentTrackRepository;
+    /**
+     * @var \Magento\Sales\Api\ShipmentRepositoryInterface
+     */
+    private $shipmentRepository;
+    /**
+     * @var SortOrderBuilder
+     */
+    private $sortOrderBuilder;
+    /**
+     * @var LogisticsInfoStatus
+     */
+    private $infoStatus;
+    /**
+     * @var \Eguana\GWLogistics\Model\Request\QueryLogisticsInfo
+     */
+    private $queryLogisticsInfo;
+    /**
+     * @var \Eguana\GWLogistics\Api\ReverseStatusNotificationRepositoryInterface
+     */
+    private $reverseStatusNotificationRepository;
+    /**
+     * @var \Magento\Rma\Api\TrackRepositoryInterface
+     */
+    private $rmaTrackRepository;
 
     public function __construct(
+        \Eguana\GWLogistics\Model\Request\QueryLogisticsInfo $queryLogisticsInfo,
+        \Eguana\GWLogistics\Model\Carrier\LogisticsInfoStatus $infoStatus,
+        \Magento\Rma\Api\TrackRepositoryInterface $rmaTrackRepository,
+        \Eguana\GWLogistics\Api\ReverseStatusNotificationRepositoryInterface $reverseStatusNotificationRepository,
+        \Magento\Framework\Api\SortOrderBuilder $sortOrderBuilder,
+        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
+        \Magento\Sales\Api\ShipmentTrackRepositoryInterface $shipmentTrackRepository,
+        \Magento\Sales\Api\ShipmentRepositoryInterface $shipmentRepository,
         \Magento\Shipping\Model\Tracking\ResultFactory $trackFactory,
         \Magento\Shipping\Model\Tracking\Result\ErrorFactory $trackErrorFactory,
         \Magento\Shipping\Model\Tracking\Result\StatusFactory $trackStatusFactory,
@@ -63,6 +105,14 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
         $this->trackFactory = $trackFactory;
         $this->trackErrorFactory = $trackErrorFactory;
         $this->trackStatusFactory = $trackStatusFactory;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->shipmentTrackRepository = $shipmentTrackRepository;
+        $this->shipmentRepository = $shipmentRepository;
+        $this->sortOrderBuilder = $sortOrderBuilder;
+        $this->infoStatus = $infoStatus;
+        $this->queryLogisticsInfo = $queryLogisticsInfo;
+        $this->reverseStatusNotificationRepository = $reverseStatusNotificationRepository;
+        $this->rmaTrackRepository = $rmaTrackRepository;
     }
 
     public function collectRates(RateRequest $request)
@@ -121,8 +171,6 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
             self::XML_PATH_SHIPPING_PRICE,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
-
-
         if ($shippingPrice !== false && $request->getPackageQty() == $freeBoxes) {
             $shippingPrice = '0.00';
         }
@@ -203,41 +251,99 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
     public function getTracking($trackings)
     {
 //        $this->setTrackingReqeust(); //todo: set merchant ID later
+        if (!$this->result) {
+            $this->result = $this->trackFactory->create();
+        }
         if (!is_array($trackings)) {
             $trackings = [$trackings];
         }
-        foreach ($trackings as $tracking) {
-            $this->getGWLTracking($tracking);
+        foreach ($trackings as $trackingValue) {
+            $responseArr = $this->getGWLTracking($trackingValue);
+            if(count($responseArr) > 0) {
+                $tracking = $this->trackStatusFactory->create();
+                $tracking->setCarrier($this->_code);
+                $tracking->setCarrierTitle($this->getConfigData('title'));
+                $tracking->setTracking($trackingValue);
+                $tracking->addData($responseArr);
+                $this->result->append($tracking);
+            } else {
+                $error = $this->trackErrorFactory->create();
+                $error->setCarrier($this->_code);
+                $error->setCarrierTitle($this->getConfigData('title'));
+                $error->setTracking($trackingValue);
+                $error->setErrorMessage(__('There is not tracking info'));
+                $this->result->append($error);
+            }
         }
         return $this->result;
     }
 
     private function getGWLTracking($trackingValue)
     {
+        $resultArr = [];
+        $allPayLogisticsId = $this->findAllPayLogisticsId($trackingValue);
+        if($allPayLogisticsId) {
+            $notifications = $this->queryLogisticsInfo->sendRequest($allPayLogisticsId);
+            if(isset($notifications['LogisticsStatus']) && $notifications['LogisticsStatus']) {
+                $info = $this->infoStatus->getStatusInfo($notifications['LogisticsStatus']);
+                $resultArr = [
+                    'status' => $notifications['LogisticsStatus'] . ' | ' . $info
+                ];
+            }
+        }
+        return $resultArr;
+    }
+    private function getReverseGWTracking($trackingValue)
+    {
+        $resultArr = [];
         if (!$this->result) {
             $this->result = $this->trackFactory->create();
         }
-        /*
-        $fields = [
-            'Status' => 'getStatus',
-            'Signed by' => 'getSignedby',
-            'Delivered to' => 'getDeliveryLocation',
-            'Shipped or billed on' => 'getShippedDate',
-            'Service Type' => 'getService',
-            'Weight' => 'getWeight',
-        ];
-        */
-        $resultArr = [
-            'status' => 'test status | test message | updated data',
-        ];
-        $tracking = $this->trackStatusFactory->create();
-        $tracking->setCarrier($this->_code);
-        $tracking->setCarrierTitle($this->getConfigData('title'));
-        $tracking->setTracking($trackingValue);
-//        $tracking->setTrackSummary('test test summary');
-//        $tracking->setUrl('https://daum.net');
-        $tracking->addData($resultArr);
-        $this->result->append($tracking);
+
+        $rtnMerchantTradeNo = $this->findRtnMerchantTradeNo($trackingValue);
+            $sortOrder = $this->sortOrderBuilder->setField('created_at')
+            ->setDirection('DESC')
+            ->create();
+
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('rtn_merchant_trade_no', $rtnMerchantTradeNo)
+            ->addSortOrder($sortOrder)
+            ->create();
+
+        $notifications = $this->reverseStatusNotificationRepository->getList($searchCriteria)->getItems();
+
+        if (count($notifications) > 0) {
+            /** @var \Eguana\GWLogistics\Api\Data\ReverseStatusNotificationInterface $latestNotification */
+            $latestNotification = reset($notifications);
+            $resultArr = [
+                'status' => $latestNotification->getRtnCode() . ' | ' . $latestNotification->getRtnMsg() . ' | ' . $latestNotification->getUpdateStatusDate()
+            ];
+        }
+        return $resultArr;
+    }
+
+    private function findAllPayLogisticsId($tracking)
+    {
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('track_number', $tracking)
+            ->create();
+        $track = $this->shipmentTrackRepository->getList($searchCriteria)->getItems();
+        $track = reset($track);
+        $shipmentId = $track->getParentId();
+        $shipment = $this->shipmentRepository->get($shipmentId);
+        return $shipment->getAllPayLogisticsId();
+    }
+
+    private function findRtnMerchantTradeNo($tracking)
+    {
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('track_number', $tracking)
+            ->create();
+        $rmatrack = $this->rmaTrackRepository->getList($searchCriteria)->getItems();
+        /** @var \Magento\Rma\Api\Data\TrackInterface $rmatrack */
+        $rmatrack = reset($rmatrack);
+        $rmaTrackId = $rmatrack->getEntityId(); //todo debug...
+        return $rmatrack->getData('rtn_merchant_trade_no');
     }
 
     public function isTrackingAvailable()
