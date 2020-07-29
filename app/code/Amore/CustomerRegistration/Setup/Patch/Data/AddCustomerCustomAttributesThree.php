@@ -22,7 +22,7 @@ use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
  *
  * Class AddTelephoneAttribute
  */
-class AddCustomerCustomAttributes implements DataPatchInterface
+class AddCustomerCustomAttributesThree implements DataPatchInterface
 {
 
     /**
