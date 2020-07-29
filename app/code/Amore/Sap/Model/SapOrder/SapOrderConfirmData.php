@@ -11,6 +11,7 @@ namespace Amore\Sap\Model\SapOrder;
 use Amore\Sap\Model\Source\Config;
 use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
 use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
@@ -53,6 +54,14 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @var QuoteCvsLocationRepository
      */
     private $quoteCvsLocationRepository;
+    /**
+     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     */
+    private $productRepository;
+    /**
+     * @var AttributeRepositoryInterface
+     */
+    private $eavAttributeRepositoryInterface;
 
 
     /**
@@ -66,6 +75,8 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param CustomerRepositoryInterface $customerRepository
      * @param TimezoneInterface $timezoneInterface
      * @param QuoteCvsLocationRepository $quoteCvsLocationRepository
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -76,7 +87,9 @@ class SapOrderConfirmData extends AbstractSapOrder
         RmaRepositoryInterface $rmaRepository,
         CustomerRepositoryInterface $customerRepository,
         TimezoneInterface $timezoneInterface,
-        QuoteCvsLocationRepository $quoteCvsLocationRepository
+        QuoteCvsLocationRepository $quoteCvsLocationRepository,
+        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $eavAttributeRepositoryInterface
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
@@ -84,6 +97,8 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->customerRepository = $customerRepository;
         $this->timezoneInterface = $timezoneInterface;
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
+        $this->productRepository = $productRepository;
+        $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
     }
 
     /**
@@ -377,6 +392,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                     - $this->productTypeCheck($orderItem)->getDiscountAmount()
                     - $mileagePerItem;
 
+                $product = $this->productRepository->getById($orderItem->getProductId());
+                $meins = $product->getData('meins');
+
                 $orderItemData[] = [
                     'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                     'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -385,7 +403,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     'itemMatnr' => $orderItem->getSku(),
                     'itemMenge' => intval($orderItem->getQtyOrdered()),
                     // 아이템 단위, Default : EA
-                    'itemMeins' => 'EA',
+                    'itemMeins' => $this->getMeins($meins),
                     'itemNsamt' => $configurableCheckedItem->getRowTotalInclTax(),
                     'itemDcamt' => $configurableCheckedItem->getDiscountAmount(),
                     'itemSlamt' => $itemGrandTotalInclTax,
@@ -408,6 +426,24 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $orderItemData;
     }
 
+    public function getMeins($value)
+    {
+        try {
+            $attribute = $this->eavAttributeRepositoryInterface->get('catalog_product', 'meins');
+            $options = $attribute->getOptions();
+
+            $label = 'EA';
+            foreach ($options as $option) {
+                if ($option->getValue() == $value) {
+                    $label = $option->getLabel();
+                }
+            }
+            return $label;
+        } catch (\Exception $exception) {
+            return null;
+        }
+    }
+
     /**
      * @param $orderItem \Magento\Sales\Model\Order\Item
      */
@@ -423,7 +459,6 @@ class SapOrderConfirmData extends AbstractSapOrder
             return $orderItem;
         }
     }
-
 
     public function mileageSpentRateByItem($orderTotal, $itemRowTotal, $itemDiscountAmount, $mileageUsed)
     {
