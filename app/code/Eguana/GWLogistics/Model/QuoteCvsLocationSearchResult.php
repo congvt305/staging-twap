@@ -8,7 +8,6 @@
 
 namespace Eguana\GWLogistics\Model;
 
-
 use Eguana\GWLogistics\Api\Data\QuoteCvsLocationSearchResultInterface;
 use Magento\Framework\Api\SearchResults;
 

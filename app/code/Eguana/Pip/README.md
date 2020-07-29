@@ -57,10 +57,4 @@ After enabling module.
 
 You can see "Click here to leave account" on Customer My Account page.
 
-If user clicks this button, Then user information will be encrypted and user can not login again.
-
-Following information of customer will be encrypted.
-
-Customer First Name, Middle Name, Last Name, Dob, Mobile Number, Phone, Billing Address Information, Shipping Address Information, 
-
-Order, Invoice , Credit memos, Shipments, RMA, Newsletter Subscription, Customer Reviews, Customer Address, Invitations.
+By clicking the button, it will delete customer account.

@@ -81,8 +81,8 @@ define([
 
                 if (option && !this.options().length) {
                     registry.get(this.customName, function (input) {
-                        isCityRequired = this.is_city_required;
-                        input.validation['required-entry'] = isCityRequired;
+                        // isCityRequired = this.is_city_required;
+                        input.validation['required-entry'] = false;
                         input.validation['validate-not-number-first'] = true;
                         input.required(isCityRequired);
                     });

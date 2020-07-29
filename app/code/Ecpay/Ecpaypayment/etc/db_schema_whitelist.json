@@ -1,0 +1,7 @@
+{
+    "sales_order": {
+        "column": {
+            "ecpay_payment_method": true
+        }
+    }
+}

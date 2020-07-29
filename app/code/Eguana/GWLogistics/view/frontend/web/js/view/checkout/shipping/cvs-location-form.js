@@ -6,9 +6,8 @@ define([
     'Eguana_GWLogistics/js/model/cvs-location',
     'Magento_Customer/js/model/customer',
     'Magento_Customer/js/customer-data',
-    './test',
     'mage/url',
-], function (ko, $, Component, quote, cvsLocation,  customer, customerData, test, urlBuilder) {
+], function (ko, $, Component, quote, cvsLocation,  customer, customerData, urlBuilder) {
     'use strict';
     return Component.extend({
         defaults: {
@@ -28,6 +27,7 @@ define([
             tracks: {
                 visible: true,
                 isMapVisible: true,
+                LogisticsSubType: true
             },
         },
         errorMessage: ko.observable(false),
@@ -68,9 +68,16 @@ define([
             return cvsLocation.getCvsLocation();
         },
 
-        openCvsMap: function () { //todo open window and submit
-            var mapWin = window.open('', 'cvsMapFormGw');
-            // $.proxy($('#cvs-map-load-form').submit(), this);
+        openCvsMap: function (cvs) { //todo open window and submit
+            console.log(this.mapUrl);
+            this.LogisticsSubType = cvs;
+            // var gwWin = window.open('about:blank','cvsMapFormGw');
+            window.open('about:blank','cvsMapFormGw');
+            var gwForm = document.cvsMapForm;
+            // gwForm.action = this.mapUrl;
+            // gwForm.target ="cvsMapFormGw";
+            // gwForm.method ="post";
+            gwForm.submit();
         },
 
         getMerchantId: function () {

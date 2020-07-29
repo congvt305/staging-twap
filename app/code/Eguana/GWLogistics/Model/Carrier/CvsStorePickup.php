@@ -87,15 +87,6 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
         return $result;
     }
 
-    /**
-     * @param \Magento\Framework\DataObject $request
-     * @return \Magento\Framework\DataObject|void
-     */
-    protected function _doShipmentRequest(\Magento\Framework\DataObject $request)
-    {
-        $this->_logger->debug(__METHOD__);
-    }
-
     public function getAllowedMethods()
     {
         return [$this->_code => __('Convenience Store Pickup')];

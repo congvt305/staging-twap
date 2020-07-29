@@ -11,12 +11,17 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="content">
-            <block name="customer_account_dashboard_leave_account" after="-" template="Eguana_Pip::account/dashboard/leaveaccount.phtml">
+        <referenceContainer name="customer_account_dashboard_info">
+            <block name="customer_account_dashboard_leave_account" template="Eguana_Pip::account/dashboard/leaveaccount.phtml">
                 <arguments>
                     <argument name="view_model_leave_account" xsi:type="object">Eguana\Pip\ViewModel\LeaveAccount</argument>
                 </arguments>
             </block>
         </referenceContainer>
+        <referenceBlock name="customer_account_dashboard_info">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Eguana_Pip::account/dashboard/info.phtml</argument>
+            </action>
+        </referenceBlock>
     </body>
 </page>

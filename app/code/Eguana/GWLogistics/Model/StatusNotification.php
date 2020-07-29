@@ -23,7 +23,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getLogisticsType()
     {
-        // TODO: Implement getLogisticsType() method.
+        return $this->getData(self::LOGISTICS_TYPE);
     }
 
     /**
@@ -31,7 +31,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getLogisticsSubType()
     {
-        // TODO: Implement getLogisticsSubType() method.
+        return $this->getData(self::LOGISTICS_SUB_TYPE);
     }
 
     /**
@@ -39,7 +39,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getReceiverName()
     {
-        // TODO: Implement getReceiverName() method.
+        return $this->getData(self::RECEIVER_NAME);
     }
 
     /**
@@ -47,7 +47,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getReceiverPhone()
     {
-        // TODO: Implement getReceiverPhone() method.
+        return $this->getData(self::RECEIVER_PHONE);
     }
 
     /**
@@ -55,7 +55,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getReceiverCellPhone()
     {
-        // TODO: Implement getReceiverCellPhone() method.
+        return $this->getData(self::RECEIVER_CELL_PHONE);
     }
 
     /**
@@ -63,7 +63,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getReceiverEmail()
     {
-        // TODO: Implement getReceiverEmail() method.
+        return $this->getData(self::RECEIVER_EMAIL);
     }
 
     /**
@@ -71,7 +71,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getReceiverAddress()
     {
-        // TODO: Implement getReceiverAddress() method.
+        return $this->getData(self::RECEIVER_ADDRESS);
     }
 
     /**
@@ -79,7 +79,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getOrderId()
     {
-        // TODO: Implement getOrderId() method.
+        return $this->getData(self::ORDER_ID);
     }
 
     /**
@@ -87,7 +87,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getMerchantId()
     {
-        // TODO: Implement getMerchantId() method.
+        return $this->getData(self::MERCHANT_ID);
     }
 
     /**
@@ -95,7 +95,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getMerchantTradeNo()
     {
-        // TODO: Implement getMerchantTradeNo() method.
+        return $this->getData(self::RTN_CODE);
     }
 
     /**
@@ -103,7 +103,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getRtnCode()
     {
-        // TODO: Implement getRtnCode() method.
+        return $this->getData(self::RTN_CODE);
     }
 
     /**
@@ -111,7 +111,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getRtnMsg()
     {
-        // TODO: Implement getRtnMsg() method.
+        return $this->getData(self::RTN_MSG);
     }
 
     /**
@@ -119,7 +119,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getAllPayLogisticsId()
     {
-        // TODO: Implement getAllPayLogisticsId() method.
+        return $this->getData(self::ALL_PAY_LOGISTICS_ID);
     }
 
     /**
@@ -127,7 +127,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getGoodsAmount()
     {
-        // TODO: Implement getGoodsAmount() method.
+        return $this->getData(self::GOODS_AMOUNT);
     }
 
     /**
@@ -135,7 +135,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function getUpdateStatusDate()
     {
-        // TODO: Implement getUpdateStatusDate() method.
+        return $this->getData(self::UPDATE_STATUS_DATE);
     }
 
     /**
@@ -144,7 +144,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setOrderId($orderId)
     {
-        // TODO: Implement setOrderId() method.
+        return $this->setData(self::ORDER_ID, $orderId);
     }
 
     /**
@@ -153,7 +153,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setMerchantId($merchantId)
     {
-        // TODO: Implement setMerchantId() method.
+        return $this->setData(self::MERCHANT_ID, $merchantId);
     }
 
     /**
@@ -162,7 +162,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setMerchantTradeNo($merchantTradeNo)
     {
-        // TODO: Implement setMerchantTradeNo() method.
+        return $this->setData(self::MERCHANT_TRADE_NO, $merchantTradeNo);
     }
 
     /**
@@ -171,7 +171,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setRtnCode($rtnCode)
     {
-        // TODO: Implement setRtnCode() method.
+        return $this->setData(self::RTN_CODE, $rtnCode);
     }
 
     /**
@@ -180,7 +180,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setRtnMsg($rtnMsg)
     {
-        // TODO: Implement setRtnMsg() method.
+        return $this->setData(self::RTN_MSG, $rtnMsg);
     }
 
     /**
@@ -189,7 +189,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setAllPayLogisticsId($allPayLogisticsId)
     {
-        // TODO: Implement setAllPayLogisticsId() method.
+        return $this->setData(self::ALL_PAY_LOGISTICS_ID, $allPayLogisticsId);
     }
 
     /**
@@ -198,7 +198,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setGoodsAmount($goodsAmount)
     {
-        // TODO: Implement setGoodsAmount() method.
+        return $this->setData(self::GOODS_AMOUNT, $goodsAmount);
     }
 
     /**
@@ -207,16 +207,16 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setUpdateStatusDate($updateStatusDate)
     {
-        // TODO: Implement setUpdateStatusDate() method.
+        return $this->setData(self::UPDATE_STATUS_DATE, $updateStatusDate);
     }
 
     /**
-     * @param $LogisticsType
+     * @param $logisticsType
      * @return \Eguana\GWLogistics\Api\Data\StatusNotificationInterface
      */
-    public function setLogisticsType($LogisticsType)
+    public function setLogisticsType($logisticsType)
     {
-        // TODO: Implement setLogisticsType() method.
+        return $this->setData(self::LOGISTICS_TYPE, $logisticsType);
     }
 
     /**
@@ -225,7 +225,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setLogisticsSubType($logisticsSubType)
     {
-        // TODO: Implement setLogisticsSubType() method.
+        return $this->setData(self::LOGISTICS_SUB_TYPE, $logisticsSubType);
     }
 
     /**
@@ -234,7 +234,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setReceiverName($receiverName)
     {
-        // TODO: Implement setReceiverName() method.
+        return $this->setData(self::RECEIVER_NAME, $receiverName);
     }
 
     /**
@@ -243,7 +243,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setReceiverPhone($receiverPhone)
     {
-        // TODO: Implement setReceiverPhone() method.
+        return $this->setData(self::RECEIVER_PHONE, $receiverPhone);
     }
 
     /**
@@ -252,7 +252,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setReceiverCellPhone($receiverCellPhone)
     {
-        // TODO: Implement setReceiverCellPhone() method.
+        return $this->setData(self::RECEIVER_CELL_PHONE, $receiverCellPhone);
     }
 
     /**
@@ -261,7 +261,7 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setReceiverEmail($receiverEmail)
     {
-        // TODO: Implement setReceiverEmail() method.
+        return $this->setData(self::RECEIVER_EMAIL, $receiverEmail);
     }
 
     /**
@@ -270,6 +270,6 @@ class StatusNotification extends AbstractModel implements \Eguana\GWLogistics\Ap
      */
     public function setReceiverAddress($receiverAddress)
     {
-        // TODO: Implement setReceiverAddress() method.
+        return $this->setData(self::RECEIVER_ADDRESS, $receiverAddress);
     }
 }
