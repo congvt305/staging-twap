@@ -404,6 +404,10 @@ class SapOrderManagement implements SapOrderManagementInterface
         }
 
         if ($orderStatusData['odrstat'] == 9) {
+            $order = $this->getOrderFromList($incrementId);
+            $order->setData('sap_creditmemo_send_check', 1);
+            $this->orderRepository->save($order);
+
             $message = "Order Canceled Successfully.";
             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
             return $result;
