@@ -20,8 +20,10 @@ define(
                 On account edit and create account dm_state text field become empty until we do not
                 chagne the region so I set in the start value according to the region drop down
              */
-            var selectedRegion = $('#region_id option:selected').text();
-            $('#dm_state').val(selectedRegion);
+            if ($('#region_id option:selected').val()) {
+                var selectedRegion = $('#region_id option:selected').text();
+                $('#dm_state').val(selectedRegion);
+            }
 
             $("."+config.attributeCode+'_checkbox').change(function() {
                 if(this.checked) {

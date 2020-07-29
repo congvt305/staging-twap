@@ -14,6 +14,8 @@ use Magento\Eav\Setup\EavSetup;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Eav\Api\AttributeRepositoryInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Eav\Model\Entity\Attribute\Source\Boolean;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 
 /**
  * This class is responsible for add attribute in customer
@@ -216,17 +218,17 @@ class AddCustomerCustomAttributes implements DataPatchInterface
                                 ];
         $yesNoAttributes = [
             ['code'=>'imported_from_pos','label'=>'Imported from POS',
-                'sort_order' => 137],
+                'sort_order' => 137, 'required'=>false],
             ['code'=>'status_code','label'=>'Status Code',
-                'sort_order' => 138],
+                'sort_order' => 138, 'required'=>false],
             ['code'=>'terms_and_services_policy','label'=>'Terms And Services Policy',
-                'sort_order' => 139],
+                'sort_order' => 139, 'required'=>true],
             ['code'=>'sms_subscription_status','label'=>'SMS Marketing',
-                'sort_order' => 140],
+                'sort_order' => 140, 'required'=>false],
             ['code'=>'call_subscription_status','label'=>'Call Marketing',
-                'sort_order' => 141],
+                'sort_order' => 141, 'required'=>false],
             ['code'=>'dm_subscription_status','label'=>'DM Marketing',
-                'sort_order' => 142]
+                'sort_order' => 142, 'required'=>false]
                             ];
 
         foreach ($textFieldAttributes as $textFieldAttribute) {
@@ -245,7 +247,8 @@ class AddCustomerCustomAttributes implements DataPatchInterface
             $this->addCustomerAttributeBoolean(
                 $yesNoAttribute['code'],
                 $yesNoAttribute['label'],
-                $yesNoAttribute['sort_order']
+                $yesNoAttribute['sort_order'],
+                $yesNoAttribute['required']
             );
         }
     }
@@ -307,12 +310,12 @@ class AddCustomerCustomAttributes implements DataPatchInterface
      *
      * @return void
      */
-    private function addCustomerAttributeBoolean($code, $label, $sortOrder)
+    private function addCustomerAttributeBoolean($code, $label, $sortOrder, $required)
     {
-        /*$this->eavSetup->removeAttribute(
+        $this->eavSetup->removeAttribute(
             CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
             $code
-        );*/
+        );
         $attribute = $this->customerAttributeResource
             ->getIdByCode(
                 CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
@@ -327,9 +330,11 @@ class AddCustomerCustomAttributes implements DataPatchInterface
                     [
                         'label' => $label,
                         'type' => 'int',
-                        'input' => 'select',
-                        'source' => \Magento\Eav\Model\Entity\Attribute\Source\Boolean::class,
-                        'required' => 0,
+                        'input' => 'boolean',
+                        'source' => Boolean::class,
+                        'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
+                        'default' => Boolean::VALUE_NO,
+                        'required' => $required,
                         'system' => 0,
                         'position' => $sortOrder,
                         'user_defined' => 1,
