@@ -11,10 +11,18 @@
         <column xsi:type="smallint" name="sap_creditmemo_send_check" nullable="true" comment="Check for credit memo send"/>
         <column xsi:type="smallint" name="sap_return_send_check" nullable="true" comment="Check for rma send" disabled="true"/>
         <column xsi:type="smallint" name="sap_order_send_check" nullable="true" comment="Check for order send"/>
-        <column xsi:type="varchar" name="sap_order_increment_id" nullable="true" length="32" comment="New Increment Id sent to SAP by failure of origin increment id order sent"/>
+        <column xsi:type="varchar" name="sap_order_increment_id" nullable="true" length="32" comment="New Increment Id sent to SAP by failure of origin increment id order sent" disabled="true"/>
+        <column xsi:type="text" name="sap_response" nullable="true" comment="Message Returned from SAP"/>
+        <index referenceId="SALES_ORDER_SAP_ORDER_INCREMENT_ID" indexType="btree" disabled="true">
+            <column name="sap_order_increment_id"/>
+        </index>
     </table>
     <table name="magento_rma" resource="default" engine="innodb" comment="RMA LIst">
         <column xsi:type="smallint" name="sap_return_send_check" nullable="true" comment="Check for rma send"/>
-        <column xsi:type="varchar" name="sap_return_increment_id" nullable="true" length="50" comment="New Increment Id sent to SAP by failure of origin increment id return order sent"/>
+        <column xsi:type="varchar" name="sap_return_increment_id" nullable="true" length="50" comment="New Increment Id sent to SAP by failure of origin increment id return order sent" disabled="true"/>
+        <column xsi:type="text" name="sap_response" nullable="true" comment="Message Returned from SAP"/>
+        <index referenceId="MAGENTO_RMA_SAP_RETURN_INCREMENT_ID" indexType="btree" disabled="true">
+            <column name="sap_return_increment_id"/>
+        </index>
     </table>
 </schema>

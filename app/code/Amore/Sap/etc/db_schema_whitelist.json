@@ -4,13 +4,21 @@
             "sap_creditmemo_send_check": true,
             "sap_return_send_check": true,
             "sap_order_send_check": true,
-            "sap_order_increment_id": true
+            "sap_order_increment_id": true,
+            "sap_response": true
+        },
+        "index": {
+            "SALES_ORDER_SAP_ORDER_INCREMENT_ID": true
         }
     },
     "magento_rma": {
         "column": {
+            "sap_return_send_check": true,
             "sap_return_increment_id": true,
-            "sap_return_send_check": true
+            "sap_response": true
+        },
+        "index": {
+            "MAGENTO_RMA_SAP_RETURN_INCREMENT_ID": true
         }
     }
 }
