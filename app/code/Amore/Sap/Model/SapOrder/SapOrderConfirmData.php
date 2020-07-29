@@ -96,7 +96,6 @@ class SapOrderConfirmData extends AbstractSapOrder
     {
         /** @var Order $order */
         $order = $this->getOrderInfo($incrementId);
-        $orderSendCheck = $order->getData('sap_order_send_check');
 
         $source = $this->config->getSourceByStore('store', $order->getStoreId());
         $orderData = $this->getOrderData($incrementId);
@@ -132,11 +131,8 @@ class SapOrderConfirmData extends AbstractSapOrder
         $source = $this->config->getDefaultValue('sap/mall_info/source');
         if (isset($orderData[0])) {
             $sampleOrderData = $orderData[0];
-            if (strpos($sampleOrderData['odrno'], '_')) {
-                list($incrementId, $date) = explode('_', $sampleOrderData['odrno']);
-            } else {
-                $incrementId = $sampleOrderData['odrno'];
-            }
+
+            $incrementId = $sampleOrderData['odrno'];
 
             $sampleOrder = $this->getOrderInfo($incrementId);
             $source = $this->config->getSourceByStore('store', $sampleOrder->getStoreId());

@@ -321,6 +321,8 @@ class SapOrderManagement implements SapOrderManagementInterface
                         try {
                             $shipmentId = $this->createShipment($order, $trackingNo);
                         } catch (\Exception $exception) {
+                            $order->setData('sap_response', $exception->getMessage());
+                            $this->orderRepository->save($order);
                             return $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
                         }
 
@@ -333,6 +335,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                             try {
                                 $this->setQtyShipToOrderItem($order);
                                 $order->setStatus('shipment_processing');
+                                $order->setData('sap_response', $orderStatusData['ugtxt']);
                                 $this->orderRepository->save($order);
 
                                 $message = "Shipment Created Successfully.";
