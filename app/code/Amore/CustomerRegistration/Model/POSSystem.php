@@ -168,15 +168,29 @@ class POSSystem
             $response = $this->json->unserialize($apiRespone);
             if ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'Y') {
                 if ($response['data']['checkCnt'] > 1) {
-                    $result['message'] =  __(
-                        'The requested membership information is already registered.'
-                    );
+                    $result['code'] = 4;
+                    $cmsPage = $this->config->getDuplicateMembershipCmsPage();
+                    if ($cmsPage) {
+                        $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
+                    } else {
+                        $result['message'] = __(
+                            'There is a problem with the requested subscription information. Please contact our CS Center for registration.'
+                        );
+                    }
                 } elseif (isset($response['data']['customerInfo']['cstmIntgSeq']) == false ||
                     $response['data']['customerInfo']['cstmIntgSeq'] == ''
                 ) {
-                    $result['message'] =  __(
-                        'There is no customer integration number from POS. Please contact to the admin.'
-                    );
+                    $result['code'] = 5;
+                    $cmsPage = $this->config->getMembershipErrorCmsPage();
+                    if ($cmsPage) {
+                        $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
+                    } else {
+                        $result['message'] = __(
+                            'The requested membership information is already registered.'
+                        );
+
+                    }
+
                 } else {
                     $result = $response['data']['customerInfo'];
                     $result['region'] = [];

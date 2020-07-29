@@ -182,7 +182,7 @@ class Verification
                 $response['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
             } else {
                 $response['message'] = __(
-                    'The requested membership information is already registered.'
+                    'There is a problem with the requested subscription information. Please contact our CS Center for registration.'
                 );
             }
             return $response;
@@ -195,8 +195,9 @@ class Verification
                 $response['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
             } else {
                 $response['message'] = __(
-                    'There is a problem with the requested subscription information. Please contact our CS Center for registration.'
+                    'The requested membership information is already registered.'
                 );
+
             }
             return $response;
         }
