@@ -83,19 +83,19 @@ $viewModel = $block->getData('view_model');
     <div class="field field-mobile-number required">
         <label class="label" for="mobile_number"><span>Mobile Number</span></label>
         <div class="control">
-            <input placeholder="Mobile Number" type="text" id="mobile_number" name="mobile_number" value="<?= $block->getCustomer()->getCustomAttribute('mobile_number')->getValue() ?>" title="Mobile Number" class="input-text required-entry" data-validate="{required:true}" aria-required="true">
+            <input placeholder="Mobile Number" type="text" id="mobile_number" name="mobile_number" value="<?= $viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number') ?>" title="Mobile Number" class="input-text required-entry" data-validate="{required:true}" aria-required="true">
         </div>
     </div>
-    <?php $_smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getCustomer()->getCustomAttribute('sms_subscription_status')->getValue())]]) ?>
+    <?php $_smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'sms_subscription_status'))]]) ?>
     <?php if ($_smsSubscriptionStatus->isEnabled()) : ?>
-        <?= $_smsSubscriptionStatus->setSmsSubscriptionStatus($block->getCustomer()->getCustomAttribute('sms_subscription_status')->getValue())->toHtml() ?>
+        <?= $_smsSubscriptionStatus->setSmsSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'sms_subscription_status'))->toHtml() ?>
     <?php endif ?>
 
-    <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getCustomer()->getCustomAttribute('dm_subscription_status')->getValue())]]) ?>
+    <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status'))]]) ?>
     <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
-        <?= $_dmSubscriptionStatus->setDmSubscriptionStatus($block->getCustomer()->getCustomAttribute('dm_subscription_status')->getValue())->toHtml() ?>
+        <?= $_dmSubscriptionStatus->setDmSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status'))->toHtml() ?>
     <?php endif ?>
-    <div class="fieldset dm-address" style="<?= $block->escapeHtmlAttr($block->getCustomer()->getCustomAttribute('dm_subscription_status')->getValue()) == 1?'':'display: none'; ?>">
+    <div class="fieldset dm-address" style="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status')) == 1?'':'display: none'; ?>">
         <div class="field country required">
             <label for="country" class="label"><span><?= $block->escapeHtml(__('Country')) ?></span></label>
             <div class="control">
