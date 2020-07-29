@@ -120,4 +120,14 @@ class Data extends AbstractHelper
         );
     }
 
+    public function getMessageTemplate($store)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_MESSAGE_TEMPLATE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $store
+        );
+    }
+
+
 }
