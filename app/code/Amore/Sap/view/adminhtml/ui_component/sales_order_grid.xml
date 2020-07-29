@@ -6,15 +6,6 @@
  */
 -->
 <listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
-    <settings>
-        <buttons>
-            <button name="test_update_order">
-                <url path="sap/saporder/ordercancelsend"/>
-                <label translate="true">Test Update Order</label>
-                <class>primary</class>
-            </button>
-        </buttons>
-    </settings>
     <listingToolbar name="listing_top">
         <massaction name="listing_massaction" component="Magento_Ui/js/grid/tree-massactions">
             <action name="send">

@@ -32,6 +32,13 @@
                     </depends>
                 </field>
 
+                <field id="pos_alert_cms_block_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1">
+                    <label>POS Alert CMS Block Id</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
                 <field id="code_expiration_time_in_minutes" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1">
                     <label>Expiration time in minutes</label>
                     <comment>It's format is minutes:seconds. For example 1:00 for one minute zero seconds.</comment>

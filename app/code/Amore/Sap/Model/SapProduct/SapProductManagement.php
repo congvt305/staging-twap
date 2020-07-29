@@ -435,8 +435,8 @@ class SapProductManagement implements SapProductManagementInterface
                 $options = $attribute->getOptions();
                 foreach ($options as $option) {
                     if ($option->getLabel() == $requestValue ||
-                        $option->getValue() == strtolower($requestValue) ||
-                        $option->getValue() == strtoupper($requestValue)) {
+                        $option->getLabel() == strtolower($requestValue) ||
+                        $option->getLabel() == strtoupper($requestValue)) {
                         $value = $option->getValue();
                         break;
                     }

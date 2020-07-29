@@ -14,19 +14,17 @@ define([
             merchantId: null,
             mapUrl: null,
             visible: true,
-            isMapVisible : true,
             displayArea: 'after-shipping-method-item',
             template: 'Eguana_GWLogistics/checkout/shipping/cvs-location-form',
             cvsMapFormTemplate: 'Eguana_GWLogistics/cvs-map-form',
             MerchantTradeNo: null,
             ServerReplyURL: urlBuilder.build('eguana_gwlogistics/SelectedCvsNotify'),
             LogisticsType: 'CVS',
-            LogisticsSubType: 'UNIMART',
+            LogisticsSubType: null,
             IsCollection: 'N',
             device: null, //0: PC (default) 1: Mobile,
             tracks: {
                 visible: true,
-                isMapVisible: true,
                 LogisticsSubType: true
             },
         },
@@ -34,7 +32,6 @@ define([
         windowActivateCount: 0,
 
         initialize: function () {
-
             this._super();
             cvsLocation.clear();
             this.visible = false;
@@ -71,17 +68,9 @@ define([
         openCvsMap: function (cvs) { //todo open window and submit
             console.log(this.mapUrl);
             this.LogisticsSubType = cvs;
-            // var gwWin = window.open('about:blank','cvsMapFormGw');
             window.open('about:blank','cvsMapFormGw');
             var gwForm = document.cvsMapForm;
-            // gwForm.action = this.mapUrl;
-            // gwForm.target ="cvsMapFormGw";
-            // gwForm.method ="post";
             gwForm.submit();
-        },
-
-        getMerchantId: function () {
-            return this.merchantId;
         },
 
         getMapUrl: function () {
@@ -93,12 +82,6 @@ define([
                 quoteId = quote.getQuoteId(),
                 quoteIdStr = customer.isLoggedIn() ? quoteId : quoteId.substr(0, 12);
             return prefix + this.getCurrentTimeString() + quoteIdStr;
-        },
-
-        setCvsMapFormData: function () { //todo create form dynamically
-            // console.log('cvs initialized.');
-            // this.device(this.isMobile());
-            // this.ServerReplyURL('http://192.168.0.1/ReceiverServerReply');
         },
 
         isMobile: function () {
