@@ -26,7 +26,6 @@
                 <field id="sort_order" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sort Order</label>
                 </field>
-
                 <field id="merchant_id" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Merchant ID</label>
                 </field>
@@ -36,21 +35,6 @@
                 <field id="hash_iv" translate="label" type="obscure" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Hash IV</label>
                 </field>
-                <field id="map_url" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Map Url</label>
-                </field>
-                <field id="create_logistics_order_url" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Logistics Order Url</label>
-                </field>
-                <field id="logistics_order_query_url" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Logistics Order Query Url</label>
-                </field>
-                <field id="fami_reverse_logistics_order_url" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Family Mart Reverse Logistics Order Url</label>
-                </field>
-                <field id="unimart_reverse_logistics_order_url" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Seven Eleven Reverse Logistics Order Url</label>
-                </field>
                 <field id="mode" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Mode</label>
                     <source_model>Magento\Shipping\Model\Config\Source\Online\Mode</source_model>
@@ -59,38 +43,10 @@
                     <label>Enable SMS for Return Order Number</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="message_template" translate="label" type="text" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="message_template" translate="label" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Message Template for Return Order Number</label>
                     <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
-                    <depends>
-                        <field id="*/*/send_sms_active">1</field>
-                    </depends>
                 </field>
-
-<!--                <field id="merchant_id_sandbox" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">-->
-<!--                    <label>Sandbox Merchant ID</label>-->
-<!--                </field>-->
-<!--                <field id="hash_key_sandbox" translate="label" type="text" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">-->
-<!--                    <label>Sandbox Hash Key</label>-->
-<!--                </field>-->
-<!--                <field id="hash_iv_sandbox" translate="label" type="text" sortOrder="180" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">-->
-<!--                    <label>Sandbox Hash IV</label>-->
-<!--                </field>-->
-<!--                <field id="map_url_sandbox" translate="label" type="text" sortOrder="190" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">-->
-<!--                    <label>Sandbox Map Url</label>-->
-<!--                </field>-->
-<!--                <field id="create_logistics_order_url_sandbox" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">-->
-<!--                    <label>Sandbox Logistics Order Url</label>-->
-<!--                </field>-->
-<!--                <field id="logistics_order_query_url_sandbox" translate="label" type="text" sortOrder="210" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">-->
-<!--                    <label>Sandbox Logistics Order Query Url</label>-->
-<!--                </field>-->
-<!--                <field id="fami_reverse_logistics_order_url_sandblox" translate="label" type="text" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">-->
-<!--                    <label>Sandbox Family Mart Reverse Logistics Order Url</label>-->
-<!--                </field>-->
-<!--                <field id="unimart_reverse_logistics_order_url_sandblox" translate="label" type="text" sortOrder="230" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">-->
-<!--                    <label>Sandbox Seven Eleven Reverse Logistics Order Url</label>-->
-<!--                </field>-->
             </group>
         </section>
     </system>

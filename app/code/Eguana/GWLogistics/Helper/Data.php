@@ -32,7 +32,7 @@ class Data extends AbstractHelper
     const XML_PATH_SEND_SMS_ACTIVE = 'carriers/gwlogistics/send_sms_active';
     const XML_PATH_MESSAGE_TEMPLATE = 'carriers/gwlogistics/message_template';
 
-    private $mode;
+    private $productionMode;
     /**
      * @var \Eguana\GWLogistics\Model\Lib\EcpayCheckMacValue
      */
@@ -44,7 +44,7 @@ class Data extends AbstractHelper
     ) {
         parent::__construct($context);
         $this->ecpayCheckMacValue = $ecpayCheckMacValue;
-        $mode = $this->getMode();
+        $this->productionMode = $this->getMode();
     }
 
     public function getCarrierTitle() {
@@ -68,7 +68,7 @@ class Data extends AbstractHelper
 
     public function getMerchantId()
     {
-        $suffix = $this->mode === '1' ? '' : '_sandbox';
+        $suffix = $this->productionMode === '1' ? '' : '_sandbox';
         return $this->scopeConfig->getValue(
             self::XML_PATH_MERCHANT_ID . $suffix,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
@@ -77,7 +77,7 @@ class Data extends AbstractHelper
 
     public function getMapUrl()
     {
-        $suffix = $this->mode === '1' ? '' : '_sandbox';
+        $suffix = $this->productionMode === '1' ? '' : '_sandbox';
         return $this->scopeConfig->getValue(
             self::XML_PATH_MAP_URL . $suffix,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
@@ -119,6 +119,5 @@ class Data extends AbstractHelper
             $store
         );
     }
-
 
 }
