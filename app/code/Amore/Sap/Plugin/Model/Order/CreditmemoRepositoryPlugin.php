@@ -129,7 +129,6 @@ class CreditmemoRepositoryPlugin
                                 $responseHeader = $sapResult['data']['response']['header'];
                                 if ($responseHeader['rtn_TYPE'] == 'S') {
                                     try {
-                                        $creditMemoOrder->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_SUCCESS);
                                         $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                                     } catch (\Exception $exception) {
                                         $creditMemoOrder->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
