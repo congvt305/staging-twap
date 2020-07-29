@@ -46,11 +46,6 @@ define(
                 ]
                 $(privacyPolicyPopupSelector).modal(modaloption).modal('openModal');
             });
-
-            $('#region_id').on('click', function (e) {
-                var selectedRegion = $('#region_id option:selected').text();
-                $('#dm_state').val(selectedRegion);
-            });
         });
 
     };

@@ -114,7 +114,7 @@ class POSSystem
 
     public function getMemberInfo($firstName, $lastName, $mobileNumber)
     {
-        $posData = $this->callPOSInfoAPI($firstName, $lastName, $mobileNumber);
+        $posData = $this->callPOSInfoAPI(trim($firstName), trim($lastName), trim($mobileNumber));
         if (isset($posData['birthDay'])) {
             $posData['birthDay'] = substr_replace($posData['birthDay'], '/', 4, 0);
             $posData['birthDay'] = substr_replace($posData['birthDay'], '/', 7, 0);
