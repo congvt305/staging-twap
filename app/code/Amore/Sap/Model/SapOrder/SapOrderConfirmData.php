@@ -368,7 +368,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 if ($orderItem->getProductType() != 'simple') {
                     continue;
                 }
-                $configurableCheckedItem = $this->configurableProductCheck($orderItem);
+                $configurableCheckedItem = $this->productTypeCheck($orderItem);
                 $mileagePerItem = $this->mileageSpentRateByItem(
                     $orderTotal,
                     $configurableCheckedItem->getRowTotalInclTax(),
@@ -377,8 +377,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                 $itemGrandTotal = $configurableCheckedItem->getRowTotal()
                     - $configurableCheckedItem->getDiscountAmount()
                     - $mileagePerItem;
-                $itemGrandTotalInclTax = $this->configurableProductCheck($orderItem)->getRowTotalInclTax()
-                    - $this->configurableProductCheck($orderItem)->getDiscountAmount()
+                $itemGrandTotalInclTax = $this->productTypeCheck($orderItem)->getRowTotalInclTax()
+                    - $this->productTypeCheck($orderItem)->getDiscountAmount()
                     - $mileagePerItem;
 
                 $orderItemData[] = [
@@ -415,12 +415,16 @@ class SapOrderConfirmData extends AbstractSapOrder
     /**
      * @param $orderItem \Magento\Sales\Model\Order\Item
      */
-    public function configurableProductCheck($orderItem)
+    public function productTypeCheck($orderItem)
     {
         if (empty($orderItem->getParentItem())) {
             return $orderItem;
-        } else {
+        } elseif ($orderItem->getParentItem()->getProductType() == 'bundle') {
+            return $orderItem;
+        } elseif ($orderItem->getParentItem()->getProductType() == 'configurable') {
             return $orderItem->getParentItem();
+        } else {
+            return $orderItem;
         }
     }
 
