@@ -51,6 +51,18 @@ class Register implements ArgumentInterface
     }
 
     /**
+     * Return the cms block identifier
+     * This function will get the cms block identifier set by the admin
+     * in the configuration against the pos alert for POS.
+     *
+     * @return string
+     */
+    public function getPosAlertCmsBlockId()
+    {
+        return $this->configHelper->getPosAlertCMSBlockId();
+    }
+
+    /**
      * Get the referrer code
      * It will return the referrer code from the get parameter
      *

@@ -22,6 +22,7 @@ class Data extends AbstractHelper
      * Store constants
      */
     const POS_TERMS_CMS_BLOCK_ID = 'customerregistraion/general/terms_cms_block_id';
+    const POS_ALERT_CMS_BLOCK_ID = 'customerregistraion/general/pos_alert_cms_block_id';
     const CODE_EXPIRATION_TIME_IN_MINUTES
         = 'customerregistraion/general/code_expiration_time_in_minutes';
     const MINIMUM_MOBILE_NUMBER_DIGITS
@@ -69,6 +70,20 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::POS_TERMS_CMS_BLOCK_ID,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
+     * Get cms block id set in setting
+     * Get cms block id set in setting from admin setting
+     *
+     * @return null|string
+     */
+    public function getPosAlertCMSBlockId()
+    {
+        return $this->scopeConfig->getValue(
+            self::POS_ALERT_CMS_BLOCK_ID,
             ScopeInterface::SCOPE_WEBSITE
         );
     }

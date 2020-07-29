@@ -94,17 +94,21 @@ class Pos implements ActionInterface
 
             if ($verificationResult['code'] === 6) {
                 $result['pos'] = $this->posSystem->getMemberInfo($firstName, $lastName, $mobileNumber);
-                if (isset($result['pos']['message'])) {
+                if (isset($result['pos']['message']) || isset($result['pos']['url'])) {
                     $result['verify'] = false;
-                    $result['message'] = $result['pos']['message'];
+                    if (isset($result['pos']['code'])) {
+                        $result['code'] = $result['pos']['code'];
+                    }
+                    if (isset($result['pos']['message'])) {
+                        $result['message'] = $result['pos']['message'];
+                    } else {
+                        $result['url'] = $result['pos']['url'];
+                    }
                 } else {
                     $result['verify'] = true;
                     $this->verification->currentRegistrationStep(2);
-
                 }
-
             } elseif (in_array($verificationResult['code'], [1,2,3])) {
-
                 $result['message'] = $verificationResult['message'];
                 $result['verify'] = false;
             } elseif (in_array($verificationResult['code'], [4,5])) {

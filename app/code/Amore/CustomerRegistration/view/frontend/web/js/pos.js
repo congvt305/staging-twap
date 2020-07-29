@@ -166,6 +166,7 @@ define([
                             $('.form-create-account #lastname').prop("readonly", true);
                             $('.form-create-account #mobile_number').prop("readonly", true);
                             if(response.pos.firstName){
+                                $('.customer-registration-form-create-account .pos-alert').show();
                                 $('.form-create-account #firstname').val(response.pos.firstName);
                                 $('.form-create-account #lastname').val(response.pos.lastName);
                                 $('.form-create-account #mobile_number').val($(this.options.mobileNumberSelector).val());
