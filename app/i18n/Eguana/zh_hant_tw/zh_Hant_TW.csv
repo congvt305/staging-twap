@@ -4190,7 +4190,7 @@ Your outstanding balance currently totals %outstanding_balance. You are %exceed_
 "Company credit account will be charged: ","Company credit account will be charged: ",module,Magento_CompanyCredit
 "Place Order","確認訂單",module,Magento_CompanyCredit
 "Cancel the Order","Cancel the Order",module,Magento_CompanyCredit
-"This is a required field.","這是一個必填字段。",module,Magento_CompanyCredit
+"This is a required field.","此為必填欄位。",module,Magento_CompanyCredit
 "Please enter a valid number in this field.","請在此字段中輸入有效的數字。",module,Magento_CompanyCredit
 "{oldCur}/{newCur} Rate","{oldCur}/{newCur} Rate",module,Magento_CompanyCredit
 "Reimburse","Reimburse",module,Magento_CompanyCredit
@@ -5058,7 +5058,7 @@ new products will be created. Use this step to customize images and price for yo
 "Back to Sign In","返回登錄",module,Magento_Customer
 "Change Email","更改電子郵件",module,Magento_Customer
 "Change Email and Password","更改電子郵件和密碼",module,Magento_Customer
-"Current Password","當前密碼",module,Magento_Customer
+"Current Password","舊密碼",module,Magento_Customer
 "New Password","新密碼",module,Magento_Customer
 "Password Strength","密碼強度",module,Magento_Customer
 "No Password","沒有密碼",module,Magento_Customer
@@ -5244,7 +5244,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Account Dashboard","Account Dashboard",module,Magento_Customer
 "Edit Account Information","編輯帳戶信息",module,Magento_Customer
 "Password forgotten","Password forgotten",module,Magento_Customer
-"My Dashboard","我的儀表板",module,Magento_Customer
+"My Dashboard","我的會員中心",module,Magento_Customer
 "You are signed out","您已登出",module,Magento_Customer
 "You subscribe to our newsletter.","You subscribe to our newsletter.",module,Magento_Customer
 "You don't subscribe to our newsletter.","You don't subscribe to our newsletter.",module,Magento_Customer
@@ -5545,7 +5545,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Change Password","更改密碼",module,Magento_CustomerCustomAttributes
 "Change Email and Password","更改電子郵件和密碼",module,Magento_CustomerCustomAttributes
 "Email","電子郵件",module,Magento_CustomerCustomAttributes
-"Current Password","當前密碼",module,Magento_CustomerCustomAttributes
+"Current Password","舊密碼",module,Magento_CustomerCustomAttributes
 "New Password","新密碼",module,Magento_CustomerCustomAttributes
 "Password Strength","密碼強度",module,Magento_CustomerCustomAttributes
 "No Password","沒有密碼",module,Magento_CustomerCustomAttributes
@@ -14901,7 +14901,7 @@ than a customer might expect. ",module,Magento_Tax
 "Please enter a value greater than or equal to {0}.","Please enter a value greater than or equal to {0}.",module,Magento_Ui
 "Please enter valid email addresses, separated by commas. For example, johndoe@domain.com, johnsmith@domain.com.","請輸入有效的電子郵件地址，以逗號分隔。 例如，johndoe @ domain.com，johnsmith @ domain.com。",module,Magento_Ui
 "Please enter issue number or start date for switch/solo card type.","Please enter issue number or start date for switch/solo card type.",module,Magento_Ui
-"This is a required field.","這是一個必填字段。",module,Magento_Ui
+"This is a required field.","此為必填欄位。",module,Magento_Ui
 "Please enter positive number in this field.","Please enter positive number in this field.",module,Magento_Ui
 "Please enter a valid value, ex: 10,20,30","請輸入有效值，例如：10,20,30",module,Magento_Ui
 "We don't recognize or support this file extension type.","我們無法識別或不支援此檔案類型。",module,Magento_Ui
@@ -16370,7 +16370,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Please select State/Province.","請選擇州/省。",lib,web
 "Please select a file.","請選擇一個文件。",lib,web
 "The field isn't complete.","The field isn't complete.",lib,web
-"This is a required field.","這是一個必填字段。",lib,web
+"This is a required field.","此為必填欄位。",lib,web
 "Please select one of the options.","請選擇一個選項。",lib,web
 "Please enter a value less than or equal to %s.","請輸入一個小於或等於的值 %s。",lib,web
 "Please enter a value greater than or equal to %s.","請輸入一個大於或等於的值 %s。",lib,web
