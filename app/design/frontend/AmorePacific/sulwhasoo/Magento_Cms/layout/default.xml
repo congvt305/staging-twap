@@ -14,6 +14,19 @@
                     <argument name="path" xsi:type="string">sitemap</argument>
                 </arguments>
             </block>
+            <block class="Magento\Framework\View\Element\Html\Link\Current" name="terms-link" after="sitemap-link">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Terms and Conditions</argument>
+                    <argument name="path" xsi:type="string">terms-and-conditions</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Framework\View\Element\Html\Link\Current" name="ugc-link" after="terms-link">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">UGCT&amp;C</argument>
+                    <argument name="path" xsi:type="string">ugc-terms-and-conditions</argument>
+                </arguments>
+            </block>
         </referenceBlock>
+        <referenceBlock name="privacy-policy-link" remove="true"/>
     </body>
 </page>

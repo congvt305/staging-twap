@@ -204,10 +204,19 @@
                         padding-bottom: 2px;
                     }
 
-                    .store-primary-info > p {
+                    .store-primary-info > p,
+                    .store-secondary-info > p {
                         .lib-font-size(16);
                         color: @secondary__color;
                         margin-bottom: @indent__xs;
+                    }
+
+                    .store-primary-info > p {
+                        margin-bottom: @indent__xs;
+                    }
+
+                    .store-secondary-info > p {
+                        margin-bottom: 0;
                     }
 
                     .store-info {
