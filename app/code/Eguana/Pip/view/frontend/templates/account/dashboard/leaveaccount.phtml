@@ -12,12 +12,18 @@ $viewModel = $block->getData('view_model_leave_account');
 $isEnabled = $viewModel->getHelper()->isEnabledInFrontend();
 ?>
 <?php if ($isEnabled): ?>
-
-<div class="pip-box-actions box-actions">
-    <a href="<?= $block->escapeUrl($viewModel->getLink()) ?>" class="action">
-        <span class="action">
-            <?= $block->escapeHtml(__('Click here to leave account')) ?>
-        </span>
-    </a>
+<div class="block block-dashboard-info leaveaccount">
+    <div class="box-actions">
+        <a href="javascript:void(0);" class="action" id="account-leave">
+            <span class="leave_account_action"><?= $block->escapeHtml(__('Click here to leave account')) ?></span>
+        </a>
+    </div>
 </div>
 <?php endif; ?>
+<script type="text/x-magento-init">
+   {
+       "*": {
+             "accountLeaveModal": {}
+       }
+   }
+</script>

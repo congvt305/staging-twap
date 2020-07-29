@@ -9,13 +9,13 @@
  */
 namespace Eguana\Pip\Controller\Account;
 
-use Eguana\Pip\Model\Customers;
 use Magento\Customer\Model\ResourceModel\CustomerRepository;
 use Magento\Customer\Model\SessionFactory;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Registry;
 use Magento\Framework\UrlInterface;
 use Psr\Log\LoggerInterface;
 
@@ -26,13 +26,14 @@ use Psr\Log\LoggerInterface;
  */
 class Leave extends Action
 {
+
     /**
      * @var \Magento\Framework\Controller\Result\Redirect
      */
     private $redirectFactory;
 
     /**
-     * @var \Magento\Customer\Model\Session
+     * @var SessionFactory
      */
     private $customerSession;
 
@@ -57,9 +58,9 @@ class Leave extends Action
     private $logger;
 
     /**
-     * @var Customers
+     * @var Registry
      */
-    private $customers;
+    private $registry;
 
     /**
      * Leave constructor.
@@ -70,7 +71,7 @@ class Leave extends Action
      * @param ManagerInterface $message
      * @param UrlInterface $url
      * @param LoggerInterface $logger
-     * @param Customers $customers
+     * @param Registry $registry
      */
     public function __construct(
         Context $context,
@@ -80,7 +81,7 @@ class Leave extends Action
         ManagerInterface $message,
         UrlInterface $url,
         LoggerInterface $logger,
-        Customers $customers
+        Registry $registry
     ) {
         $this->redirectFactory = $redirectFactory->create();
         $this->customerSession = $customerSession->create();
@@ -88,7 +89,7 @@ class Leave extends Action
         $this->message = $context->getMessageManager();
         $this->url = $url;
         $this->logger = $logger;
-        $this->customers = $customers;
+        $this->registry = $registry;
         return parent::__construct($context);
     }
 
@@ -100,16 +101,14 @@ class Leave extends Action
     public function execute()
     {
         $customerId = $this->customerSession->getId();
-        $this->customers->updateCustomerInformation($customerId);
         if ($customerId) {
             try {
                 $customer = $this->customerRepo->getById($customerId);
-                $customer->setCustomAttribute('is_secessioned', 1);
                 if ($customer) {
-                    $this->customerRepo->save($customer);
                     $this->message->addSuccessMessage(__('Thank you for using our services'));
-                    $this->customers->updateCustomerInformation($customerId);
                     $this->customerSession->logout();
+                    $this->registry->register('isSecureArea', true);
+                    $this->customerRepo->deleteById($customerId);
                 } else {
                     $this->message->addErrorMessage(__("we can't implement secession. please try again later"));
                 }
