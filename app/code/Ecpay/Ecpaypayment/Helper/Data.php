@@ -273,6 +273,12 @@ class Data extends AbstractHelper
                             }
                         }
 
+                        $payment = $order->getPayment();
+                        $additionalInfo = $payment->getAdditionalInformation();
+                        $rawDetailsInfo = $additionalInfo["raw_details_info"];
+                        $order->setData("ecpay_payment_method", $rawDetailsInfo["ecpay_choosen_payment"]);
+                        $order->save();
+
                         unset($status, $pattern, $comment);
                         break;
                     case 2: // ATM get code

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Commerce David
+ * @copyright Copyright (c) 2020 Eguana Commerce
+ * @package Eguana_EInvoice
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order" resource="default" engine="innodb">
+        <column xsi:type="text" name="ecpay_payment_method" nullable="true" comment="ECPay Payment Method" />
+    </table>
+</schema>
