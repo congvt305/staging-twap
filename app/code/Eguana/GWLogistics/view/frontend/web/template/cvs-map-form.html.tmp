@@ -1,7 +1,6 @@
 <div id="cvs-map-load"
      class="cvs-map-load"
      data-role="cvs-map-load"
-     data-bind="visible: isMapVisible"
      aria-hidden="true">
     <form id="cvs-map-load-form"
           name="cvsMapForm"
@@ -10,7 +9,7 @@
           method="POST"
           data-bind="attr: {'action': getMapUrl()}"
           novalidate="novalidate">
-        <input type="text"
+    <input type="text"
                name="MerchantID"
                class="input-text"
                style="display: none"
@@ -33,9 +32,9 @@
                data-bind="value: LogisticsType">
         <input type="text"
                name="LogisticsSubType"
-               style="display: none"
+               style="display: block"
                class="input-text"
-               data-bind="value: LogisticsSubType">
+               style="display: none">
         <input type="text"
                name="IsCollection"
                class="input-text"
@@ -51,9 +50,11 @@
                class="input-text"
                style="display: none"
                data-bind="value: isMobile()">
-<br/>
-        <button data-role="cvs-map-open" type="submit" class="button action">
-            <span translate="'Select 711 CVS Store in the Map'" />
-        </button>
     </form>
+    <button class="action action-unimart-map-open" data-bind="click: openCvsMap('unimart')">
+        <span translate="'Seven Eleven'" />
+    </button>
+    <button class="action action-fami-map-ope"  data-bind="click: openCvsMap('fami')">
+        <span translate="'Family Mart'" />
+    </button>
 </div>

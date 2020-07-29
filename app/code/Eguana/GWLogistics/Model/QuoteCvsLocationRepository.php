@@ -115,6 +115,7 @@ class QuoteCvsLocationRepository implements QuoteCvsLocationRepositoryInterface
         $collection = $this->collectionFactory->create();
         $this->collectionProcessor->process($searchCriteria, $collection);
         $searchResult = $this->quoteCvsLocationSearchResultInterfaceFactory->create();
+        $searchResult->setItems($collection->getItems());
         $searchResult->setSearchCriteria($searchCriteria);
         $searchResult->setTotalCount($collection->getSize());
 

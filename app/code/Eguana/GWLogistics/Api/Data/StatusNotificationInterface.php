@@ -20,13 +20,13 @@ interface StatusNotificationInterface
     const GOODS_AMOUNT = "goods_amount";
     const UPDATE_STATUS_DATE = "update_status_date";
 
-    const logistics_type = "logistics_type";
-    const logistics_sub_type = "logistics_sub_type";
-    const receiver_name = "receiver_name";
-    const receiver_phone = "receiver_phone";
-    const receiver_cell_phone = "receiver_cell_phone";
-    const receiver_email = "receiver_email";
-    const receiver_address = "receiver_address";
+    const LOGISTICS_TYPE = "logistics_type";
+    const LOGISTICS_SUB_TYPE = "logistics_sub_type";
+    const RECEIVER_NAME = "receiver_name";
+    const RECEIVER_PHONE = "receiver_phone";
+    const RECEIVER_CELL_PHONE = "receiver_cell_phone";
+    const RECEIVER_EMAIL = "receiver_email";
+    const RECEIVER_ADDRESS = "receiver_address";
 
     /**
      * @return string|null
@@ -163,10 +163,10 @@ interface StatusNotificationInterface
     public function setUpdateStatusDate($updateStatusDate);
 
     /**
-     * @param $LogisticsType
+     * @param $logisticsType
      * @return \Eguana\GWLogistics\Api\Data\StatusNotificationInterface
      */
-    public function setLogisticsType($LogisticsType);
+    public function setLogisticsType($logisticsType);
 
     /**
      * @param $logisticsSubType
