@@ -15,6 +15,7 @@ $_order = $block->getOrder();
 <?php if ($refundOnlineViewModel->canShowRefundOnlineButton($_order)): ?>
     <a href="#" class="action refund-online" data-role="refund-online-button"
        data-mage-init='{"Eguana_CustomerRefund/js/view/refund-confirmation": {"orderId": "<?= (int)$_order->getId() ?>"}}'>
-        <span><?= $block->escapeHtml(__('Refund')) ?></span>
+        <!-- Changed by Mobeen on 29/07/2020 as per ticket APT-134  -->
+        <span><?= $block->escapeHtml(__('Order cancel and refund')) ?></span>
     </a>
 <?php endif;?>
