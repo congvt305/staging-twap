@@ -30,6 +30,7 @@ $helper = $this->helper('Eguana\EcommerceStatus\Helper\Data');
                                    value="<?= $block->getProductDefaultQty() * 1 ?>"
                                    title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
                                    class="input-text qty"
+                                   readonly
                                    data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
                             />
                             <button onclick="var qty_el = document.getElementById('qty'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;return false;" class="qty-increase qty-selector">
