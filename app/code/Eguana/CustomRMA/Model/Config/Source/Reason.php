@@ -50,6 +50,7 @@ class Reason
     private function getReason(){
         $dropDown[] = ['label'=> 'Select rma reason','value'=> ''];
         $attribute = $this->attributeRepositoryInterface->get('rma_item', 'reason');
+        $attribute->setStoreId(0);
         $options = $attribute->getOptions();
         foreach ($options as $option) {
             if (!empty($option->getLabel()) && !empty($option->getValue())){

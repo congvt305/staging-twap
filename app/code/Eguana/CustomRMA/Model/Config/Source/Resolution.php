@@ -49,6 +49,7 @@ class Resolution
     private function getResolution(){
         $dropDown[] = ['label'=> 'Select rma resolution','value'=> ''];
         $attribute = $this->attributeRepositoryInterface->get('rma_item', 'resolution');
+        $attribute->setStoreId(0);
         $options = $attribute->getOptions();
         foreach ($options as $option) {
             if (!empty($option->getLabel()) && !empty($option->getValue())){

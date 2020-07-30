@@ -50,6 +50,7 @@ class Condition
     private function getCondition(){
         $dropDown[] = ['label'=> 'Select rma condition','value'=> ''];
         $attribute = $this->attributeRepositoryInterface->get('rma_item', 'condition');
+        $attribute->setStoreId(0);
         $options = $attribute->getOptions();
         foreach ($options as $option) {
             if (!empty($option->getLabel()) && !empty($option->getValue())){
