@@ -81,7 +81,7 @@ $viewModel = $block->getData('view_model');
     </fieldset>
 
     <div class="field field-mobile-number required">
-        <label class="label" for="mobile_number"><span>Mobile Number</span></label>
+        <label class="label" for="mobile_number"><span><?= $block->escapeHtml(__('Mobile Number')) ?></span></label>
         <div class="control">
             <input placeholder="Mobile Number" type="text" id="mobile_number" name="mobile_number" value="<?= $viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number') ?>" title="Mobile Number" class="input-text required-entry" data-validate="{required:true}" aria-required="true">
         </div>

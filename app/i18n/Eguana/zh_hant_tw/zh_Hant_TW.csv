@@ -2556,7 +2556,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Price indexer ""%1"" must implement %2 or %3","Price indexer ""%1"" must implement %2 or %3",module,Magento_Catalog
 "You added product %1 to the <a href=""%2"">comparison list</a>.","您添加了產品 %1 到 <a href=""%2"">比較清單</a>。",module,Magento_Catalog
 "Maximum %1 characters","Maximum %1 characters",module,Magento_Catalog
-"remaining","remaining",module,Magento_Catalog
+"remaining","剩餘的",module,Magento_Catalog
 "too many","too many",module,Magento_Catalog
 "Sending attribute values as package.","Sending attribute values as package.",module,Magento_Catalog
 "This value does not follow the specified format (for example, 200X300).","此數值不符合指定的格式（例如，200X300）。",module,Magento_Catalog
@@ -3244,7 +3244,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Quantity was recalculated from %1 to %2","Quantity was recalculated from %1 to %2",module,Magento_Checkout
 "We adjusted product quantities to fit the required increments.","We adjusted product quantities to fit the required increments.",module,Magento_Checkout
 "This quote item does not exist.","This quote item does not exist.",module,Magento_Checkout
-"Display number of items in cart","Display number of items in cart",module,Magento_Checkout
+"Display number of items in cart","顯示購物車中的物品數",module,Magento_Checkout
 "Display item quantities","Display item quantities",module,Magento_Checkout
 "An error occurred on the server. Please try to place the order again.","伺服器出現錯誤。請再次確認訂單。",module,Magento_Checkout
 "Shipping address is not set","未設置送貨地址",module,Magento_Checkout
@@ -4190,7 +4190,7 @@ Your outstanding balance currently totals %outstanding_balance. You are %exceed_
 "Company credit account will be charged: ","Company credit account will be charged: ",module,Magento_CompanyCredit
 "Place Order","確認訂單",module,Magento_CompanyCredit
 "Cancel the Order","Cancel the Order",module,Magento_CompanyCredit
-"This is a required field.","這是一個必填字段。",module,Magento_CompanyCredit
+"This is a required field.","此為必填欄位。",module,Magento_CompanyCredit
 "Please enter a valid number in this field.","請在此字段中輸入有效的數字。",module,Magento_CompanyCredit
 "{oldCur}/{newCur} Rate","{oldCur}/{newCur} Rate",module,Magento_CompanyCredit
 "Reimburse","Reimburse",module,Magento_CompanyCredit
@@ -4821,7 +4821,7 @@ new products will be created. Use this step to customize images and price for yo
 "Validate VAT Number","Validate VAT Number",module,Magento_Customer
 "Customer Login","客戶登錄",module,Magento_Customer
 "Create New Customer Account","創建新客戶帳戶",module,Magento_Customer
-"Date of Birth","Date of Birth",module,Magento_Customer
+"Date of Birth","出生日期",module,Magento_Customer
 "Bad request.","Bad request.",module,Magento_Customer
 "This confirmation key is invalid or has expired.","This confirmation key is invalid or has expired.",module,Magento_Customer
 "There was an error confirming the account","There was an error confirming the account",module,Magento_Customer
@@ -5058,7 +5058,7 @@ new products will be created. Use this step to customize images and price for yo
 "Back to Sign In","返回登錄",module,Magento_Customer
 "Change Email","更改電子郵件",module,Magento_Customer
 "Change Email and Password","更改電子郵件和密碼",module,Magento_Customer
-"Current Password","當前密碼",module,Magento_Customer
+"Current Password","舊密碼",module,Magento_Customer
 "New Password","新密碼",module,Magento_Customer
 "Password Strength","密碼強度",module,Magento_Customer
 "No Password","沒有密碼",module,Magento_Customer
@@ -5195,7 +5195,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Show Suffix","Show Suffix",module,Magento_Customer
 "The suffix that goes after name (Jr., Sr., etc.)","The suffix that goes after name (Jr., Sr., etc.)",module,Magento_Customer
 "Suffix Dropdown Options","Suffix Dropdown Options",module,Magento_Customer
-"Show Date of Birth","Show Date of Birth",module,Magento_Customer
+"Show Date of Birth","顯示出生日期",module,Magento_Customer
 "Show Tax/VAT Number","Show Tax/VAT Number",module,Magento_Customer
 "Show Gender","Show Gender",module,Magento_Customer
 "Show Telephone","顯示電話",module,Magento_Customer
@@ -5244,7 +5244,8 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Account Dashboard","Account Dashboard",module,Magento_Customer
 "Edit Account Information","編輯帳戶信息",module,Magento_Customer
 "Password forgotten","Password forgotten",module,Magento_Customer
-"My Dashboard","我的儀表板",module,Magento_Customer
+"My Dashboard","我的會員中心",module,Magento_Customer
+"Mobile Number","手機號碼",module,Magento_Customer
 "You are signed out","您已登出",module,Magento_Customer
 "You subscribe to our newsletter.","You subscribe to our newsletter.",module,Magento_Customer
 "You don't subscribe to our newsletter.","You don't subscribe to our newsletter.",module,Magento_Customer
@@ -5545,7 +5546,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Change Password","更改密碼",module,Magento_CustomerCustomAttributes
 "Change Email and Password","更改電子郵件和密碼",module,Magento_CustomerCustomAttributes
 "Email","電子郵件",module,Magento_CustomerCustomAttributes
-"Current Password","當前密碼",module,Magento_CustomerCustomAttributes
+"Current Password","舊密碼",module,Magento_CustomerCustomAttributes
 "New Password","新密碼",module,Magento_CustomerCustomAttributes
 "Password Strength","密碼強度",module,Magento_CustomerCustomAttributes
 "No Password","沒有密碼",module,Magento_CustomerCustomAttributes
@@ -6975,7 +6976,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Are you sure you want to add these products?","Are you sure you want to add these products?",module,Magento_GiftRegistry
 "Update Items and Quantities","更新項目和數量",module,Magento_GiftRegistry
 "ID","編號",module,Magento_GiftRegistry
-"Requested","Requested",module,Magento_GiftRegistry
+"Requested","已要求",module,Magento_GiftRegistry
 "Fulfilled","Fulfilled",module,Magento_GiftRegistry
 "Note","Note",module,Magento_GiftRegistry
 "Action","操作",module,Magento_GiftRegistry
@@ -6991,7 +6992,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Registrants","註冊人",module,Magento_GiftRegistry
 "Event Date","活動日期",module,Magento_GiftRegistry
 "Total Items","Total Items",module,Magento_GiftRegistry
-"Remaining","Remaining",module,Magento_GiftRegistry
+"Remaining","剩餘的",module,Magento_GiftRegistry
 "Public","Public",module,Magento_GiftRegistry
 "No","否",module,Magento_GiftRegistry
 "Yes","是",module,Magento_GiftRegistry
@@ -9016,7 +9017,7 @@ information on installing the agent is available <a target=""_blank"" href=""%1"
 "Are you sure you want to delete this template?","Are you sure you want to delete this template?",module,Magento_Newsletter
 "Sign Up for Our Newsletter:","Sign Up for Our Newsletter:",module,Magento_Newsletter
 "Enter your email address","輸入你的電子郵箱地址",module,Magento_Newsletter
-"Subscribe","Subscribe",module,Magento_Newsletter
+"Subscribe","訂閱",module,Magento_Newsletter
 "Newsletter subscription confirmation","Newsletter subscription confirmation",module,Magento_Newsletter
 "Thank you for subscribing to our newsletter.","感謝您訂閱我們的新聞通訊。",module,Magento_Newsletter
 "To begin receiving the newsletter, you must first confirm your subscription by clicking on the following link:","要開始接收該通訊,必須先點擊以下連結確認訂閱情況:",module,Magento_Newsletter
@@ -9047,7 +9048,7 @@ information on installing the agent is available <a target=""_blank"" href=""%1"
 "Status","狀態",module,Magento_Newsletter
 "Processed","Processed",module,Magento_Newsletter
 "Recipients","Recipients",module,Magento_Newsletter
-"Unsubscribe","Unsubscribe",module,Magento_Newsletter
+"Unsubscribe","退訂",module,Magento_Newsletter
 "Delete","刪除",module,Magento_Newsletter
 "CSV","CSV",module,Magento_Newsletter
 "Excel XML","Excel XML",module,Magento_Newsletter
@@ -9101,7 +9102,7 @@ information on installing the agent is available <a target=""_blank"" href=""%1"
 "Zip/Postal Code","郵政編碼",module,Magento_OfflineShipping
 "Shipping Price","運費",module,Magento_OfflineShipping
 "Export CSV","匯出 CSV",module,Magento_OfflineShipping
-"Store Pickup","Store Pickup",module,Magento_OfflineShipping
+"Store Pickup","商店提貨",module,Magento_OfflineShipping
 "Weight vs. Destination","Weight vs. Destination",module,Magento_OfflineShipping
 "Price vs. Destination","Price vs. Destination",module,Magento_OfflineShipping
 "# of Items vs. Destination","# of Items vs. Destination",module,Magento_OfflineShipping
@@ -9994,7 +9995,7 @@ or more. <a href=""https://financing.paypal.com/ppfinportal/content/forrester"" 
 "Layout","Layout",module,Magento_Paypal
 "Select Responsive to ensure the PayPal button renders correctly on mobile devices.","Select Responsive to ensure the PayPal button renders correctly on mobile devices.",module,Magento_Paypal
 "Shape","Shape",module,Magento_Paypal
-"Color","Color",module,Magento_Paypal
+"Color","顏色",module,Magento_Paypal
 "Product Pages","Product Pages",module,Magento_Paypal
 "Cart Page","Cart Page",module,Magento_Paypal
 "Mini Cart","Mini Cart",module,Magento_Paypal
@@ -10730,7 +10731,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Reviews for %1","Reviews for %1",module,Magento_Reports
 "Customer","客戶",module,Magento_Reports
 "Title","標題",module,Magento_Reports
-"Detail","Detail",module,Magento_Reports
+"Detail","詳情",module,Magento_Reports
 "Created","Created",module,Magento_Reports
 "Products Reviews","產品評論",module,Magento_Reports
 "Products Bestsellers Report","Products Bestsellers Report",module,Magento_Reports
@@ -10786,7 +10787,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "ID","編號",module,Magento_Reports
 "First Name","名字",module,Magento_Reports
 "Last Name","姓氏",module,Magento_Reports
-"Items in Cart","Items in Cart",module,Magento_Reports
+"Items in Cart","購物車中的物品",module,Magento_Reports
 "Products in carts","Products in carts",module,Magento_Reports
 "Carts","Carts",module,Magento_Reports
 "Name","姓名",module,Magento_Reports
@@ -11029,7 +11030,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We don't have as many ""%1"" as you requested.","We don't have as many ""%1"" as you requested.",module,Magento_RequisitionList
 "Save Review","Save Review",module,Magento_Review
 "New Review","New Review",module,Magento_Review
-"Review Details","Review Details",module,Magento_Review
+"Review Details","評論詳情",module,Magento_Review
 "Product","產品",module,Magento_Review
 "Product Rating","Product Rating",module,Magento_Review
 "Status","狀態",module,Magento_Review
@@ -11115,7 +11116,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "You submitted your review for moderation.","您已提交審核以進行審核。",module,Magento_Review
 "We can't post your review right now.","We can't post your review right now.",module,Magento_Review
 "Storage key was not set","Storage key was not set",module,Magento_Review
-"Approved","Approved",module,Magento_Review
+"Approved","已批准",module,Magento_Review
 "Pending","待定",module,Magento_Review
 "Not Approved","Not Approved",module,Magento_Review
 "Please enter a review summary.","請輸入評論摘要。",module,Magento_Review
@@ -11183,8 +11184,8 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Website","網站",module,Magento_Reward
 "Balance","平衡",module,Magento_Reward
 "Currency Amount","Currency Amount",module,Magento_Reward
-"Reward Points Threshold","Reward Points Threshold",module,Magento_Reward
-"Reward Points Cap","Reward Points Cap",module,Magento_Reward
+"Reward Points Threshold","獎勵積分閾值",module,Magento_Reward
+"Reward Points Cap","獎勵積分上限",module,Magento_Reward
 "Delete Orphan Points","Delete Orphan Points",module,Magento_Reward
 "Update Reward Points Balance","更新獎勵積分餘額",module,Magento_Reward
 "Store","商店",module,Magento_Reward
@@ -11223,7 +11224,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "You saved the settings.","您已保存設置。",module,Magento_Reward
 "You unsubscribed.","You unsubscribed.",module,Magento_Reward
 "You can't unsubscribed right now.","You can't unsubscribed right now.",module,Magento_Reward
-"%1 Reward points (%2)","%1 Reward points (%2)",module,Magento_Reward
+"%1 Reward points (%2)","%1 獎勵分數 (%2)",module,Magento_Reward
 "%1 Reward points","%1 獎勵分數",module,Magento_Reward
 "Updated by moderator","Updated by moderator",module,Magento_Reward
 "Refunded from order #%1","從訂單中退款 #%1",module,Magento_Reward
@@ -11241,7 +11242,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "%1 store reward points available","%1 存儲可用的獎勵積分",module,Magento_Reward
 "%1 was deducted because of refund.","%1 was deducted because of refund.",module,Magento_Reward
 "The action ID you enter must be a number.","The action ID you enter must be a number.",module,Magento_Reward
-"You don't have enough reward points to pay for this purchase.","You don't have enough reward points to pay for this purchase.",module,Magento_Reward
+"You don't have enough reward points to pay for this purchase.","您沒有足夠的獎勵積分來支付此購買費用。",module,Magento_Reward
 "Points to Currency","Points to Currency",module,Magento_Reward
 "Currency to Points","Currency to Points",module,Magento_Reward
 "All Customer Groups","All Customer Groups",module,Magento_Reward
@@ -11250,15 +11251,15 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Each","Each",module,Magento_Reward
 "First","First",module,Magento_Reward
 "All Websites","所有網站",module,Magento_Reward
-"""Minimum Reward Points Balance"" should be either a positive number or left empty.","""Minimum Reward Points Balance"" should be either a positive number or left empty.",module,Magento_Reward
-"""Cap Reward Points Balance"" should be either a positive number or left empty.","""Cap Reward Points Balance"" should be either a positive number or left empty.",module,Magento_Reward
-"""Minimum Reward Points Balance"" should be less or equal to ""Cap Reward Points Balance"".","""Minimum Reward Points Balance"" should be less or equal to ""Cap Reward Points Balance"".",module,Magento_Reward
+"""Minimum Reward Points Balance"" should be either a positive number or left empty.","""最低獎勵積分餘額"" 應該為正數或為空。",module,Magento_Reward
+"""Cap Reward Points Balance"" should be either a positive number or left empty.","""上限獎勵積分餘額"" 應該為正數或為空。",module,Magento_Reward
+"""Minimum Reward Points Balance"" should be less or equal to ""Cap Reward Points Balance"".","""最低獎勵積分餘額"" 應該小於或等於 ""上限獎勵積分餘額"".",module,Magento_Reward
 "Customer earned promotion extra %1.","Customer earned promotion extra %1.",module,Magento_Reward
 "The customer earned %1 for this order.","客戶獲得 %1 對於這個訂單。",module,Magento_Reward
 "Reward Points Balance","獎勵積分餘額",module,Magento_Reward
 "upper boundary","upper boundary",module,Magento_Reward
 "Refund Reward Points","退款積分",module,Magento_Reward
-"Reward Points refunded to customer","Reward Points refunded to customer",module,Magento_Reward
+"Reward Points refunded to customer","獎勵積分退還給客戶",module,Magento_Reward
 "Remove","移除",module,Magento_Reward
 "Back","上一步",module,Magento_Reward
 "Balance History","平衡歷史",module,Magento_Reward
@@ -11272,7 +11273,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Your balance is %1.","您的餘額是 %1.",module,Magento_Reward
 "Current exchange rates:","當前匯率：",module,Magento_Reward
 "%1 = %2","%1 = %2",module,Magento_Reward
-"%1 spent = %2 earned","%1 spent = %2 earned",module,Magento_Reward
+"%1 spent = %2 earned","%1 花費 = %2 獲得",module,Magento_Reward
 "None","無",module,Magento_Reward
 "Balance limit is %1.","餘額上限為 %1。",module,Magento_Reward
 "Maximum balance is reached","達到最大餘額",module,Magento_Reward
@@ -11286,8 +11287,8 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "%name,","%name,",module,Magento_Reward
 "You have %points_balance points that may be used in our store:","提醒您，還有%points_balance剩餘點數未使用完畢，立即登入會員帳號，即可享受多項促銷優惠喔!：",module,Magento_Reward
 "<a href=""%unsubscription_url"">Unsubscribe</a> from these notifications.","<a href=""%unsubscription_url"">取消提醒通知</a>",module,Magento_Reward
-"Reward Points Expiry Warning at %store_name","Reward Points Expiry Warning at %store_name",module,Magento_Reward
-"There are %remaining_days day(s) remaining to use %points_expiring of your reward points.","There are %remaining_days day(s) remaining to use %points_expiring of your reward points.",module,Magento_Reward
+"Reward Points Expiry Warning at %store_name","獎勵積分過期警告位於 %store_name",module,Magento_Reward
+"There are %remaining_days day(s) remaining to use %points_expiring of your reward points.","有 %remaining_days 天 剩餘使用 %points_expiring 您的獎勵積分。",module,Magento_Reward
 "After %remaining_days day(s) these points will expire.","After %remaining_days day(s) these points will expire.",module,Magento_Reward
 "You have a total of %points_balance points that may be used in our store:","您總共有 %points_balance 我們商店可能使用的積分：",module,Magento_Reward
 "Reward points","獎勵分數",module,Magento_Reward
@@ -11295,19 +11296,19 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Your reward point was successfully applied","您的獎勵積分已成功應用",module,Magento_Reward
 "Manage Reward Points Balances","管理獎勵積分餘額",module,Magento_Reward
 "Can Spend Reward Points","可以消費積分",module,Magento_Reward
-"Enable Reward Points Functionality","Enable Reward Points Functionality",module,Magento_Reward
-"Enable Reward Points Functionality on Storefront","Enable Reward Points Functionality on Storefront",module,Magento_Reward
-"Customers May See Reward Points History","Customers May See Reward Points History",module,Magento_Reward
+"Enable Reward Points Functionality","啟用獎勵積分功能",module,Magento_Reward
+"Enable Reward Points Functionality on Storefront","在店面中啟用獎勵積分功能",module,Magento_Reward
+"Customers May See Reward Points History","客戶可能會看到獎勵積分的歷史記錄",module,Magento_Reward
 "Rewards Points Balance Redemption Threshold","Rewards Points Balance Redemption Threshold",module,Magento_Reward
 "An empty value disables this limitation.","An empty value disables this limitation.",module,Magento_Reward
-"Cap Reward Points Balance At","Cap Reward Points Balance At",module,Magento_Reward
-"Reward Points Expire in (days)","Reward Points Expire in (days)",module,Magento_Reward
-"Reward Points Expiry Calculation","Reward Points Expiry Calculation",module,Magento_Reward
+"Cap Reward Points Balance At","上限獎勵積分餘額為",module,Magento_Reward
+"Reward Points Expire in (days)","獎勵積分有效期（天）",module,Magento_Reward
+"Reward Points Expiry Calculation","獎勵積分有效期計算",module,Magento_Reward
 """Static"" defines the expiration date as precisely when the balance increases. ""Dynamic"" does not have an expiration date, but calculates one when the balance is checked for expiry.","""Static"" defines the expiration date as precisely when the balance increases. ""Dynamic"" does not have an expiration date, but calculates one when the balance is checked for expiry.",module,Magento_Reward
-"Refund Reward Points Automatically","Refund Reward Points Automatically",module,Magento_Reward
-"Deduct Reward Points from Refund Amount Automatically","Deduct Reward Points from Refund Amount Automatically",module,Magento_Reward
+"Refund Reward Points Automatically","自動退款積分",module,Magento_Reward
+"Deduct Reward Points from Refund Amount Automatically","自動從退款金額中扣除獎勵積分",module,Magento_Reward
 "Landing Page","Landing Page",module,Magento_Reward
-"Actions for Acquiring Reward Points by Customers","Actions for Acquiring Reward Points by Customers",module,Magento_Reward
+"Actions for Acquiring Reward Points by Customers","客戶獲取獎勵積分的操作",module,Magento_Reward
 "Purchase","Purchase",module,Magento_Reward
 "Added for spent money according to reward exchange rates.","Added for spent money according to reward exchange rates.",module,Magento_Reward
 "Registration","Registration",module,Magento_Reward
@@ -11324,10 +11325,10 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Email Sender","Email Sender",module,Magento_Reward
 "Subscribe Customers by Default","Subscribe Customers by Default",module,Magento_Reward
 "Balance Update Email","餘額更新電子郵件",module,Magento_Reward
-"Reward Points Expiry Warning Email","Reward Points Expiry Warning Email",module,Magento_Reward
+"Reward Points Expiry Warning Email","獎勵積分到期警告電子郵件",module,Magento_Reward
 "Expiry Warning Before (days)","Expiry Warning Before (days)",module,Magento_Reward
 "Entering no value or a value greater than the expiration lifetime disables the warning notification.","Entering no value or a value greater than the expiration lifetime disables the warning notification.",module,Magento_Reward
-"Reward Points Rates","Reward Points Rates",module,Magento_Reward
+"Reward Points Rates","獎勵積分率",module,Magento_Reward
 "Amount Balance","金額餘額",module,Magento_Reward
 "Created","Created",module,Magento_Reward
 "Expires","Expires",module,Magento_Reward
@@ -11342,23 +11343,23 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "You can reward up to %s invitee purchase(s).","You can reward up to %s invitee purchase(s).",module,Magento_Reward
 "Submit a review now and earn %1 after the review is approved.","Submit a review now and earn %1 after the review is approved.",module,Magento_Reward
 "You can reward up to %1 new reviews(s).","You can reward up to %1 new reviews(s).",module,Magento_Reward
-"Reward points should be a valid integer number.","Reward points should be a valid integer number.",module,Magento_Reward
+"Reward points should be a valid integer number.","獎勵積分應為有效的整數。",module,Magento_Reward
 "Send this invitation now and earn %1 when your invitee signs up on our site.","Send this invitation now and earn %1 when your invitee signs up on our site.",module,Magento_Reward
 "You can reward up to %1 invitee registration(s).","You can reward up to %1 invitee registration(s).",module,Magento_Reward
 "Earn %1 for purchases your invitees make.","Earn %1 for purchases your invitees make.",module,Magento_Reward
 "You can reward up to %1 invitee purchase(s).","You can reward up to %1 invitee purchase(s).",module,Magento_Reward
 "Sign in now and earn %1 for this order.","立即登錄並獲得 %1 對於這個訂單。",module,Magento_Reward
-"The ""Minimum Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.","The ""Minimum Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.",module,Magento_Reward
-"The ""Cap Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.","The ""Cap Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.",module,Magento_Reward
-"The ""Minimum Reward Points Balance"" is invalid. The balance needs to be less than or equal to the ""Cap Reward Points Balance"".","The ""Minimum Reward Points Balance"" is invalid. The balance needs to be less than or equal to the ""Cap Reward Points Balance"".",module,Magento_Reward
-"Return","退貨",module,Magento_Rma
+"The ""Minimum Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.","的 ""最低獎勵積分餘額"" 是無效的。 餘額必須為正數或為空。 驗證並重試。",module,Magento_Reward
+"The ""Cap Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.","的 ""上限獎勵積分餘額"" 是無效的。 餘額必須為正數或為空。 驗證並重試。",module,Magento_Reward
+"The ""Minimum Reward Points Balance"" is invalid. The balance needs to be less than or equal to the ""Cap Reward Points Balance"".","的 ""最低獎勵積分餘額"" 是無效的。 餘額必須小於或等於""上限獎勵積分餘額""。",module,Magento_Reward
+"Return","返回",module,Magento_Rma
 "Returns","退貨",module,Magento_Rma
-"Create Returns","Create Returns",module,Magento_Rma
+"Create Returns","創建退貨",module,Magento_Rma
 "Select Items","選擇項目",module,Magento_Rma
-"New Return Request","New Return Request",module,Magento_Rma
+"New Return Request","新的退貨要求",module,Magento_Rma
 "Create New RMA for %1 in %2","Create New RMA for %1 in %2",module,Magento_Rma
 "Create New RMA for %1","Create New RMA for %1",module,Magento_Rma
-"Create New RMA","Create New RMA",module,Magento_Rma
+"Create New RMA","創建新的RMA",module,Magento_Rma
 "Please Select Order","請選擇指令",module,Magento_Rma
 "Order","訂單",module,Magento_Rma
 "Purchase Point","Purchase Point",module,Magento_Rma
@@ -11373,7 +11374,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Are you sure you want to close this returns request?","Are you sure you want to close this returns request?",module,Magento_Rma
 "Print","Print",module,Magento_Rma
 "Return #%1 - %2","退貨 #%1 - %2",module,Magento_Rma
-"RMA Item Details","RMA Item Details",module,Magento_Rma
+"RMA Item Details","RMA 項目詳細信息",module,Magento_Rma
 "OK","確定",module,Magento_Rma
 "Cancel","取消",module,Magento_Rma
 "No","否",module,Magento_Rma
@@ -11384,24 +11385,24 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Submit Comment","提交評論",module,Magento_Rma
 "Add","Add",module,Magento_Rma
 "Custom Value","Custom Value",module,Magento_Rma
-"Print Shipping Label","Print Shipping Label",module,Magento_Rma
+"Print Shipping Label","打印運輸標籤",module,Magento_Rma
 "Show Packages","Show Packages",module,Magento_Rma
 "Items","品項",module,Magento_Rma
-"Return Items","Return Items",module,Magento_Rma
+"Return Items","退換貨品",module,Magento_Rma
 "Product","產品",module,Magento_Rma
 "SKU","商品編號",module,Magento_Rma
-"Remaining","Remaining",module,Magento_Rma
-"Requested","Requested",module,Magento_Rma
+"Remaining","剩餘的",module,Magento_Rma
+"Requested","已要求",module,Magento_Rma
 "Authorized","已授權",module,Magento_Rma
-"Returned","Returned",module,Magento_Rma
-"Approved","Approved",module,Magento_Rma
+"Returned","回來",module,Magento_Rma
+"Approved","已批准",module,Magento_Rma
 "Return Reason","退貨原因",module,Magento_Rma
-"Item Condition","Item Condition",module,Magento_Rma
-"Resolution","Resolution",module,Magento_Rma
+"Item Condition","項目情況",module,Magento_Rma
+"Resolution","解析度",module,Magento_Rma
 "Details","詳細資料",module,Magento_Rma
-"Split","Split",module,Magento_Rma
+"Split","分裂",module,Magento_Rma
 "Action","操作",module,Magento_Rma
-"Return Information","Return Information",module,Magento_Rma
+"Return Information","退貨信息",module,Magento_Rma
 "RMA","RMA",module,Magento_Rma
 "Ordered","已訂購",module,Magento_Rma
 "Customer","客戶",module,Magento_Rma
@@ -11618,7 +11619,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Please Select Products to Add","請選擇要添加的產品",module,Magento_Rma
 "Remove","移除",module,Magento_Rma
 "Item","項目",module,Magento_Rma
-"Return items","Return items",module,Magento_Rma
+"Return items","退換貨品",module,Magento_Rma
 "Sub-items","Sub-items",module,Magento_Rma
 "Quantity To Return","Quantity To Return",module,Magento_Rma
 "Remaining Quantity:","Remaining Quantity:",module,Magento_Rma
@@ -12122,7 +12123,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Shipped","已寄送",module,Magento_Sales
 "Invoiced","已開票",module,Magento_Sales
 "Backordered","缺貨",module,Magento_Sales
-"Returned","Returned",module,Magento_Sales
+"Returned","回來",module,Magento_Sales
 "Partial","Partial",module,Magento_Sales
 "Mixed","Mixed",module,Magento_Sales
 "Registered a Void notification.","Registered a Void notification.",module,Magento_Sales
@@ -12816,7 +12817,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "less than","less than",module,Magento_SalesRule
 "is one of","is one of",module,Magento_SalesRule
 "is not one of","is not one of",module,Magento_SalesRule
-"If %1 %2 %3 for a subselection of items in cart matching %4 of these conditions:","If %1 %2 %3 for a subselection of items in cart matching %4 of these conditions:",module,Magento_SalesRule
+"If %1 %2 %3 for a subselection of items in cart matching %4 of these conditions:","If %1 %2 %3 用於購物車匹配中的項目的子選擇 %4 這些條件：",module,Magento_SalesRule
 "Percent of product price discount","Percent of product price discount",module,Magento_SalesRule
 "Fixed amount discount","Fixed amount discount",module,Magento_SalesRule
 "Fixed amount discount for whole cart","Fixed amount discount for whole cart",module,Magento_SalesRule
@@ -13649,7 +13650,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "The security validation of the XML document has failed.","The security validation of the XML document has failed.",module,Magento_Shipping
 "The ""%1"" carrier is invalid. Verify and try again.","The ""%1"" carrier is invalid. Verify and try again.",module,Magento_Shipping
 "Shipping labels can't be created. Verify that the store information and settings are complete and try again.","Shipping labels can't be created. Verify that the store information and settings are complete and try again.",module,Magento_Shipping
-"Approved","Approved",module,Magento_Signifyd
+"Approved","已批准",module,Magento_Signifyd
 "Declined","Declined",module,Magento_Signifyd
 "Pending","待定",module,Magento_Signifyd
 "Canceled","已取消",module,Magento_Signifyd
@@ -14241,7 +14242,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Manage Swatch (values of your attribute)","Manage Swatch (values of your attribute)",module,Magento_Swatches
 "Select values from each attribute to include in this product. Each unique combination of values creates a unigue product SKU.","Select values from each attribute to include in this product. Each unique combination of values creates a unigue product SKU.",module,Magento_Swatches
 "Swatch cannot be saved","Swatch cannot be saved",module,Magento_Swatches
-"More","More",module,Magento_Swatches
+"More","更多",module,Magento_Swatches
 "Sending swatch values as package.","Sending swatch values as package.",module,Magento_Swatches
 "Addtional data is wrong and cannot be assembled","Addtional data is wrong and cannot be assembled",module,Magento_Swatches
 "Addtional data is wrong and cannot be populated","Addtional data is wrong and cannot be populated",module,Magento_Swatches
@@ -14289,7 +14290,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Price (percentage)","Price (percentage)",module,Magento_TargetRule
 "Product Special","Product Special",module,Magento_TargetRule
 "equal to","equal to",module,Magento_TargetRule
-"more","more",module,Magento_TargetRule
+"more","更多",module,Magento_TargetRule
 "equals or greater than","equals or greater than",module,Magento_TargetRule
 "less","less",module,Magento_TargetRule
 "equals or less than","equals or less than",module,Magento_TargetRule
@@ -14901,7 +14902,7 @@ than a customer might expect. ",module,Magento_Tax
 "Please enter a value greater than or equal to {0}.","Please enter a value greater than or equal to {0}.",module,Magento_Ui
 "Please enter valid email addresses, separated by commas. For example, johndoe@domain.com, johnsmith@domain.com.","請輸入有效的電子郵件地址，以逗號分隔。 例如，johndoe @ domain.com，johnsmith @ domain.com。",module,Magento_Ui
 "Please enter issue number or start date for switch/solo card type.","Please enter issue number or start date for switch/solo card type.",module,Magento_Ui
-"This is a required field.","這是一個必填字段。",module,Magento_Ui
+"This is a required field.","此為必填欄位。",module,Magento_Ui
 "Please enter positive number in this field.","Please enter positive number in this field.",module,Magento_Ui
 "Please enter a valid value, ex: 10,20,30","請輸入有效值，例如：10,20,30",module,Magento_Ui
 "We don't recognize or support this file extension type.","我們無法識別或不支援此檔案類型。",module,Magento_Ui
@@ -15486,7 +15487,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Sample","Sample",module,Magento_Usps
 "Gift","Gift",module,Magento_Usps
 "Documents","Documents",module,Magento_Usps
-"Return","退貨",module,Magento_Usps
+"Return","返回",module,Magento_Usps
 "Other","Other",module,Magento_Usps
 "None","無",module,Magento_Usps
 "Field ","Field ",module,Magento_Usps
@@ -16335,7 +16336,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Please wait...","Please wait...",lib,web
 "Loading...","載入中...",lib,web
 "All ","All ",lib,web
-"more","more",lib,web
+"more","更多",lib,web
 "Save","儲存",lib,web
 "Translate","Translate",lib,web
 "Submit","提交",lib,web
@@ -16397,7 +16398,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Please select State/Province.","請選擇州/省。",lib,web
 "Please select a file.","請選擇一個文件。",lib,web
 "The field isn't complete.","The field isn't complete.",lib,web
-"This is a required field.","這是一個必填字段。",lib,web
+"This is a required field.","此為必填欄位。",lib,web
 "Please select one of the options.","請選擇一個選項。",lib,web
 "Please enter a value less than or equal to %s.","請輸入一個小於或等於的值 %s。",lib,web
 "Please enter a value greater than or equal to %s.","請輸入一個大於或等於的值 %s。",lib,web

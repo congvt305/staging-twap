@@ -195,7 +195,7 @@
         <referenceContainer name="product.info.media">
             <block class="Magento\Framework\View\Element\Text" name="product.media.caption">
                 <action method="setText">
-                    <argument name="text" xsi:type="string"><![CDATA[<span>Mouse over to zoom</span>]]></argument>
+                    <argument name="text" xsi:type="string" translate="true"><![CDATA[<span>Mouse over to zoom</span>]]></argument>
                 </action>
             </block>
         </referenceContainer>
