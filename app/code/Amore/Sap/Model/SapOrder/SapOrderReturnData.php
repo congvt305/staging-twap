@@ -11,8 +11,10 @@ namespace Amore\Sap\Model\SapOrder;
 use Amore\Sap\Exception\RmaTrackNoException;
 use Amore\Sap\Model\Source\Config;
 use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -54,6 +56,14 @@ class SapOrderReturnData extends AbstractSapOrder
      * @var CollectionFactory
      */
     private $itemCollectionFactory;
+    /**
+     * @var ProductRepositoryInterface
+     */
+    private $productRepository;
+    /**
+     * @var AttributeRepositoryInterface
+     */
+    private $eavAttributeRepositoryInterface;
 
     /**
      * SapOrderReturnData constructor.
@@ -67,6 +77,8 @@ class SapOrderReturnData extends AbstractSapOrder
      * @param QuoteCvsLocationRepository $quoteCvsLocationRepository
      * @param OrderItemRepositoryInterface $orderItemRepository
      * @param CollectionFactory $itemCollectionFactory
+     * @param ProductRepositoryInterface $productRepository
+     * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -78,7 +90,9 @@ class SapOrderReturnData extends AbstractSapOrder
         TimezoneInterface $timezoneInterface,
         QuoteCvsLocationRepository $quoteCvsLocationRepository,
         OrderItemRepositoryInterface $orderItemRepository,
-        CollectionFactory $itemCollectionFactory
+        CollectionFactory $itemCollectionFactory,
+        ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $eavAttributeRepositoryInterface
     ) {
         $this->rmaRepository = $rmaRepository;
         $this->customerRepository = $customerRepository;
@@ -87,6 +101,8 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->orderItemRepository = $orderItemRepository;
         $this->itemCollectionFactory = $itemCollectionFactory;
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
+        $this->productRepository = $productRepository;
+        $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
     }
 
     /**
@@ -169,7 +185,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'kunnrOri' => $this->config->getClient('store', $storeId),
             'odrnoOri' => $order->getIncrementId(),
             // 이건 물건 종류 갯수(물건 전체 수량은 아님)
-            'itemCnt' => count($rma->getItems()),
+            'itemCnt' => $this->calculateItems($rma),
             // 영업 플랜트 : 알수 없을 경우 공백
             'werks' => '',
             // 영업저장위치 : 알수 없을 경우 공백
@@ -216,6 +232,9 @@ class SapOrderReturnData extends AbstractSapOrder
                     - $orderItem->getDiscountAmount()
                     - $mileagePerItem;
 
+                $product = $this->productRepository->get($rmaItem->getProductSku());
+                $meins = $product->getData('meins');
+
                 $rmaItemData[] = [
                     'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                     'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -224,7 +243,7 @@ class SapOrderReturnData extends AbstractSapOrder
                     'itemMatnr' => $this->productTypeCheck($orderItem)->getSku(),
                     'itemMenge' => intval($rmaItem->getQtyRequested()),
                     // 아이템 단위, Default : EA
-                    'itemMeins' => 'EA',
+                    'itemMeins' => $this->getMeins($meins),
                     'itemNsamt' => $orderItem->getPriceInclTax() * $rmaItem->getQtyRequested(),
                     'itemDcamt' => $this->getRateAmount($orderItem->getDiscountAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
                     'itemSlamt' => $this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
@@ -260,6 +279,9 @@ class SapOrderReturnData extends AbstractSapOrder
                         - $bundleChildrenItem->getDiscountAmount()
                         - $mileagePerItem;
 
+                    $product = $this->productRepository->getById($bundleChildrenItem->getProductId());
+                    $meins = $product->getData('meins');
+
                     $rmaItemData[] = [
                         'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -268,7 +290,7 @@ class SapOrderReturnData extends AbstractSapOrder
                         'itemMatnr' => $this->productTypeCheck($bundleChildrenItem)->getSku(),
                         'itemMenge' => intval($rmaItem->getQtyRequested()),
                         // 아이템 단위, Default : EA
-                        'itemMeins' => 'EA',
+                        'itemMeins' => $this->getMeins($meins),
                         'itemNsamt' => $bundleChildrenItem->getPriceInclTax() * $rmaItem->getQtyRequested(),
                         'itemDcamt' => $this->getRateAmount($bundleChildrenItem->getDiscountAmount(), $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested()),
                         'itemSlamt' => $this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested()),
@@ -291,6 +313,43 @@ class SapOrderReturnData extends AbstractSapOrder
             }
         }
         return $rmaItemData;
+    }
+
+    /**
+     * @param \Magento\Rma\Model\Rma $rma
+     */
+    public function calculateItems($rma)
+    {
+        $itemCount = 0;
+        foreach ($rma->getItems() as $item) {
+            $orderItem = $this->orderItemRepository->get($item->getOrderItemId());
+            if ($orderItem->getProductType() == 'bundle') {
+                foreach ($orderItem->getChildrenItems() as $childrenItem) {
+                    $itemCount++;
+                }
+            } else {
+                $itemCount++;
+            }
+        }
+        return $itemCount;
+    }
+
+    public function getMeins($value)
+    {
+        try {
+            $attribute = $this->eavAttributeRepositoryInterface->get('catalog_product', 'meins');
+            $options = $attribute->getOptions();
+
+            $label = 'EA';
+            foreach ($options as $option) {
+                if ($option->getValue() == $value) {
+                    $label = $option->getLabel();
+                }
+            }
+            return $label;
+        } catch (\Exception $exception) {
+            return null;
+        }
     }
 
     /**
