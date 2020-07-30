@@ -12,9 +12,11 @@ use Magento\Rma\Controller\Returns\Submit;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Eguana\CustomRMA\Model\RmaConfiguration;
+use Magento\Eav\Api\AttributeRepositoryInterface;
+
 
 /**
- * This class create full rma
+ * This class create custom rma
  *
  * Class RmaManagement
  * @package Eguana\CustomRMA\Plugin
@@ -37,7 +39,10 @@ class RmaManagement
      * @param RmaConfiguration $rmaConfiguration
      */
 
-    public function __construct(RequestInterface $request, RmaConfiguration $rmaConfiguration)
+    public function __construct(
+        RequestInterface $request,
+        RmaConfiguration $rmaConfiguration
+)
     {
         $this->request = $request;
         $this->rmaConfiguration = $rmaConfiguration;
@@ -54,12 +59,11 @@ class RmaManagement
             $customer_custom_email = $this->request->getParam('customer_custom_email') ?: '';
             $rma_comment = $this->request->getParam('rma_comment') ?: '';
             $form_key = $this->request->getParam('form_key');
-            $shippingPreference = $subject->getRequest()->getParam('shipping_preference');
 
-            $resolution = '5';
-            $condition = '7';
-            $reason = 'other';
-            $reason_other = 'other';
+            $resolution = $this->rmaConfiguration->getRmaResolution();
+            $condition = $this->rmaConfiguration->getRmaCondition();
+            $reason = $this->rmaConfiguration->getRmaReason();
+            $reason_other = ($reason == 'other')? $this->rmaConfiguration->getRmaReasonOther():'' ;
 
             $postOrderDetails['customer_custom_email'] = $customer_custom_email;
 
@@ -75,14 +79,13 @@ class RmaManagement
                     $postOrderDetails['items'][$key]['resolution'] = $resolution;
                     $postOrderDetails['items'][$key]['condition'] = $condition;
                     $postOrderDetails['items'][$key]['reason'] = $reason;
-                    $postOrderDetails['items'][$key]['reason_other'] = $reason_other;
+                    if($reason == 'other') {
+                        $postOrderDetails['items'][$key]['reason_other'] = $reason_other;
+                    }
                 }
 
                 $postOrderDetails['rma_comment'] = $rma_comment;
                 $postOrderDetails['form_key'] = $form_key;
-                if ($shippingPreference) {
-                    $postOrderDetails['shipping_preference'] = $shippingPreference;
-                }
                 $this->request->setPostValue($postOrderDetails);
             }
         }

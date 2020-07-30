@@ -31,10 +31,30 @@ Requirement:
 1. Navigate to Stores ⇾ Configuration and click on **CustomRMA** under **Eguana Extensions** tab in the left panel.
 
 **i)**  **General Configuration**
+![](https://i.ibb.co/r0v7SgK/image.png)
 
 - **●●**** Enable Extension**
 
 This will decide either enable/disable StoreSms Module.
+
+- **●●**** Select resolution**
+
+This will add Item resolution for rma
+
+- **●●**** Select condition**
+
+This will add Item condition for rma
+
+- **●●**** Select reason**
+
+This will add Item reason for rma
+
+- **●●**** Reason comment**
+
+This will display when Reason will be other 
+
+**Note:** This is not a required field and defualt value for this field is "other".
+
 
 When module will be enabled the return order page will show only two fields 
 
