@@ -82,28 +82,35 @@
                     </depends>
                 </field>
 
-                <field id="sms_policy_cms_block" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1">
+                <field id="call_policy_cms_block" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1">
+                    <label>Call Policy CMS Block</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
+                <field id="sms_policy_cms_block" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1">
                     <label>SMS Policy CMS Block</label>
                     <depends>
                         <field id="active">1</field>
                     </depends>
                 </field>
 
-                <field id="dm_policy_cms_block" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1">
+                <field id="dm_policy_cms_block" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1">
                     <label>DM Policy CMS Block</label>
                     <depends>
                         <field id="active">1</field>
                     </depends>
                 </field>
 
-                <field id="terms_and_services_policy_cms_block" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1">
+                <field id="terms_and_services_policy_cms_block" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1">
                     <label>Terms and Services Policy CMS Block</label>
                     <depends>
                         <field id="active">1</field>
                     </depends>
                 </field>
 
-                <field id="sms_verification_enable" translate="label comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" >
+                <field id="sms_verification_enable" translate="label comment" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" >
                     <label>SMS Verification Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>If disabled then verification code will be 1234 at registration</comment>
