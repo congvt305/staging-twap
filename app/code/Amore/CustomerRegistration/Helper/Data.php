@@ -303,7 +303,7 @@ class Data extends AbstractHelper
     {
         if ($websiteId) {
             return $this->scopeConfig->getValue(
-                self::SALES_OFFICE_CODE,
+                self::PARTNER_ID,
                 ScopeInterface::SCOPE_WEBSITE,
                 $websiteId
             );
