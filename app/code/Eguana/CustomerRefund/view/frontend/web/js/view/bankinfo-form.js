@@ -1,6 +1,7 @@
 define([
     'uiComponent',
-], function (UiComponent) {
+    'Eguana_CustomerRefund/js/model/bank-options',
+], function (UiComponent, BankOptions) {
     'use strict';
 
     return UiComponent.extend({
@@ -37,6 +38,10 @@ define([
          */
         getValues: function () {
             return this.value();
+        },
+
+        getBankOptions: function () {
+            return BankOptions;
         }
     });
 });
