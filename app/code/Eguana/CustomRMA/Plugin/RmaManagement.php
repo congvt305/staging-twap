@@ -59,6 +59,7 @@ class RmaManagement
             $customer_custom_email = $this->request->getParam('customer_custom_email') ?: '';
             $rma_comment = $this->request->getParam('rma_comment') ?: '';
             $form_key = $this->request->getParam('form_key');
+            $shippingPreference = $subject->getRequest()->getParam('shipping_preference');
 
             $resolution = $this->rmaConfiguration->getRmaResolution();
             $condition = $this->rmaConfiguration->getRmaCondition();
@@ -86,6 +87,9 @@ class RmaManagement
 
                 $postOrderDetails['rma_comment'] = $rma_comment;
                 $postOrderDetails['form_key'] = $form_key;
+                if ($shippingPreference) {
+                    $postOrderDetails['shipping_preference'] = $shippingPreference;
+                }
                 $this->request->setPostValue($postOrderDetails);
             }
         }
