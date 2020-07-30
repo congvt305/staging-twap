@@ -57,6 +57,31 @@
     }
   }
 
+  .customer-account-edit {
+    .checkbox-wrapper .label {
+      width: auto !important;
+
+      & + span {
+        line-height: 24px;
+        margin-left: 15px;
+
+        a {
+          color: @theme__color__secondary;
+
+          &:hover,
+          &:active,
+          &:focus {
+            color: @theme__color__primary-alt;
+          }
+        }
+      }
+    }
+
+    .fieldset.dm-address {
+      margin-bottom: @indent__l !important;
+    }
+  }
+
   .customer-registration-form-create-account{
     display: none;
   }
