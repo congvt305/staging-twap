@@ -399,7 +399,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "authorize","授權",module,Magento_Authorizenet
 "authorize and capture","授權和提取",module,Magento_Authorizenet
 "capture","提取",module,Magento_Authorizenet
-"refund","退款",module,Magento_Authorizenet
+"refund","訂單取消/退款",module,Magento_Authorizenet
 "void","無效",module,Magento_Authorizenet
 "Gateway error: %1","閘道錯誤: %1",module,Magento_Authorizenet
 "Something went wrong in the payment gateway.","支付閘道錯誤",module,Magento_Authorizenet
@@ -1525,7 +1525,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Android pay card","Android Pay 卡",module,Magento_Braintree
 "Authorization expired","授權過期",module,Magento_Braintree
 "Authorizing","授權中",module,Magento_Braintree
-"Authorized","已授權",module,Magento_Braintree
+"Authorized","退貨審核完成",module,Magento_Braintree
 "Gateway rejected","閘道拒絕",module,Magento_Braintree
 "Failed","失敗",module,Magento_Braintree
 "Processor declined","處理器拒絕",module,Magento_Braintree
@@ -3405,7 +3405,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Maximum Display Recently Added Item(s)","Maximum Display Recently Added Item(s)",module,Magento_Checkout
 "of","of",module,Magento_Checkout
 "Something went wrong while saving the page. Please refresh the page and try again.","Something went wrong while saving the page. Please refresh the page and try again.",module,Magento_Checkout
-"You added %1 to your <a href=""%2"">shopping cart</a>.","您添加了 %1 <a href=""%2"">做為此次贈品</a>.",module,Magento_Checkout
+"You added %1 to your <a href=""%2"">shopping cart</a>.","您添加了 %1 給你 <a href=""%2"">購物車</a>.",module,Magento_Checkout
 "Please select at least one product to add to cart","請選擇至少一種產品添加到購物車",module,Magento_Checkout
 "The quote item isn't found. Verify the item and try again.","The quote item isn't found. Verify the item and try again.",module,Magento_Checkout
 "The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.","未下訂單。 首先，同意條款和條件，然後嘗試再次下訂單。",module,Magento_Checkout
@@ -7605,7 +7605,7 @@ e.g. var/export, var/import, var/export/some/dir",module,Magento_ImportExport
 "Update on Save","Update on Save",module,Magento_Indexer
 "Reindex required","Reindex required",module,Magento_Indexer
 "Ready","Ready",module,Magento_Indexer
-"Processing","Processing",module,Magento_Indexer
+"Processing","付款完成",module,Magento_Indexer
 "Never","Never",module,Magento_Indexer
 "%1 index is locked by another reindex process. Skipping.","%1 index is locked by another reindex process. Skipping.",module,Magento_Indexer
 "Index Management","Index Management",module,Magento_Indexer
@@ -10940,7 +10940,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't add the item to the Requisition List right now: %1.","We can't add the item to the Requisition List right now: %1.",module,Magento_RequisitionList
 "We can't specify a requisition list.","We can't specify a requisition list.",module,Magento_RequisitionList
 "We can't specify a product.","We can't specify a product.",module,Magento_RequisitionList
-"You added %1 item(s) to your shopping cart.","您添加了 %1 做為此次贈品",module,Magento_RequisitionList
+"You added %1 item(s) to your shopping cart.","您添加了 %1 項目 到您的購物車。",module,Magento_RequisitionList
 "Something went wrong.","發生錯誤",module,Magento_RequisitionList
 "We can't configure the product right now.","We can't configure the product right now.",module,Magento_RequisitionList
 "%1 item(s) were copied to %2","%1 item(s) were copied to %2",module,Magento_RequisitionList
@@ -11539,16 +11539,16 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 """%1"" is longer than allowed.","""%1"" is longer than allowed.",module,Magento_Rma
 "Unknown service","Unknown service",module,Magento_Rma
 "We can't save this RMA. No items were specified.","We can't save this RMA. No items were specified.",module,Magento_Rma
-"Pending","待定",module,Magento_Rma
+"Pending","申請退貨完成",module,Magento_Rma
 "Partially Authorized","Partially Authorized",module,Magento_Rma
-"Return Received","Return Received",module,Magento_Rma
+"Return Received","退貨驗收完成",module,Magento_Rma
 "Return Partially Received","Return Partially Received",module,Magento_Rma
 "Partially Approved","Partially Approved",module,Magento_Rma
 "Rejected","Rejected",module,Magento_Rma
 "Partially Rejected","Partially Rejected",module,Magento_Rma
 "Denied","Denied",module,Magento_Rma
-"Closed","Closed",module,Magento_Rma
-"Processed and Closed","Processed and Closed",module,Magento_Rma
+"Closed","退款完成",module,Magento_Rma
+"Processed and Closed","完成退貨",module,Magento_Rma
 "This is the wrong RMA item status.","This is the wrong RMA item status.",module,Magento_Rma
 "We placed your Return request.","We placed your Return request.",module,Magento_Rma
 "We authorized your Return request.","We authorized your Return request.",module,Magento_Rma
@@ -11841,7 +11841,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Refund Shipping","Refund Shipping",module,Magento_Sales
 "Update Qty's","更新數量",module,Magento_Sales
 "Update Totals","Update Totals",module,Magento_Sales
-"Refund","Refund",module,Magento_Sales
+"Refund","訂單取消/退款",module,Magento_Sales
 "Refund Offline","Refund Offline",module,Magento_Sales
 "Paid Amount","Paid Amount",module,Magento_Sales
 "Refund Amount","Refund Amount",module,Magento_Sales
@@ -12249,10 +12249,10 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "VAT Request Identifier","VAT Request Identifier",module,Magento_Sales
 "VAT Request Date","VAT Request Date",module,Magento_Sales
 "Pending Payment","待付款",module,Magento_Sales
-"Processing","Processing",module,Magento_Sales
+"Processing","付款完成",module,Magento_Sales
 "On Hold","On Hold",module,Magento_Sales
-"Complete","Complete",module,Magento_Sales
-"Closed","Closed",module,Magento_Sales
+"Complete","顧客取貨",module,Magento_Sales
+"Closed","退款完成",module,Magento_Sales
 "Suspected Fraud","Suspected Fraud",module,Magento_Sales
 "Payment Review","Payment Review",module,Magento_Sales
 "New","新",module,Magento_Sales
