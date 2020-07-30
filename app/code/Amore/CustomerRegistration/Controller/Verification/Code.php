@@ -73,11 +73,12 @@ class Code extends Action
     {
         $result['send'] = false;
         $mobileNumber = $this->request->getParam('mobileNumber');
-        $customerName = $this->request->getParam('firstName').' '.$this->request->getParam('lastName');
+        $firstName = trim($this->request->getParam('firstName'));
+        $lastName = trim($this->request->getParam('lastName'));
 
         try {
             $sendVerificationCodeResult = $this->verification
-                ->sendVerificationCode($mobileNumber, $customerName);
+                ->sendVerificationCode($mobileNumber, $firstName, $lastName);
 
             if ($sendVerificationCodeResult === true) {
                 $result['send'] = $sendVerificationCodeResult;
