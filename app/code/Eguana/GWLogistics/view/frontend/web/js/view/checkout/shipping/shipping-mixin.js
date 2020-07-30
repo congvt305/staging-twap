@@ -4,7 +4,7 @@ define([
     'Eguana_GWLogistics/js/view/checkout/shipping/cvs-location-form',
     'mage/translate',
 ], function ($, quote, cvsForm, $t) {
-    'use strict'
+    'use strict';
 
     return function (Shipping) {
         return Shipping.extend({
@@ -16,9 +16,8 @@ define([
                 }
                 if ((quote.shippingMethod().method_code + '_' + quote.shippingMethod().carrier_code === 'CVS_gwlogistics')
                     && ($(logisticTypeSelector)[0].value === '')
-                )
-                {
-                    cvsForm().errorMessage('Please select a cvs store');
+                ) {
+                    cvsForm().errorMessage($t('Please select a cvs store'));
                     return false;
                 }
                 return self._super(updatedShipping);
