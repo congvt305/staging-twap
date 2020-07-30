@@ -3405,7 +3405,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Maximum Display Recently Added Item(s)","Maximum Display Recently Added Item(s)",module,Magento_Checkout
 "of","of",module,Magento_Checkout
 "Something went wrong while saving the page. Please refresh the page and try again.","Something went wrong while saving the page. Please refresh the page and try again.",module,Magento_Checkout
-"You added %1 to your <a href=""%2"">shopping cart</a>.","您添加了 %1 給你 <a href=""%2"">購物車</a>.",module,Magento_Checkout
+"You added %1 to your <a href=""%2"">shopping cart</a>.","您添加了 %1 <a href=""%2"">做為此次贈品</a>.",module,Magento_Checkout
 "Please select at least one product to add to cart","請選擇至少一種產品添加到購物車",module,Magento_Checkout
 "The quote item isn't found. Verify the item and try again.","The quote item isn't found. Verify the item and try again.",module,Magento_Checkout
 "The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.","未下訂單。 首先，同意條款和條件，然後嘗試再次下訂單。",module,Magento_Checkout
@@ -10940,7 +10940,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't add the item to the Requisition List right now: %1.","We can't add the item to the Requisition List right now: %1.",module,Magento_RequisitionList
 "We can't specify a requisition list.","We can't specify a requisition list.",module,Magento_RequisitionList
 "We can't specify a product.","We can't specify a product.",module,Magento_RequisitionList
-"You added %1 item(s) to your shopping cart.","您添加了 %1 項目 到您的購物車。",module,Magento_RequisitionList
+"You added %1 item(s) to your shopping cart.","您添加了 %1 做為此次贈品",module,Magento_RequisitionList
 "Something went wrong.","發生錯誤",module,Magento_RequisitionList
 "We can't configure the product right now.","We can't configure the product right now.",module,Magento_RequisitionList
 "%1 item(s) were copied to %2","%1 item(s) were copied to %2",module,Magento_RequisitionList
