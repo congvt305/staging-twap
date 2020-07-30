@@ -15,6 +15,7 @@ Key features:
 - Notification user Order status like pending, processing, hold etc
 - Admin can enable or disable the module
 - Admin can select country for the store sms
+- Admin can select customer name format to reverse with no empty space eg. lastNameFirstName
 - Admin can enable or disable Verification code on registration
 - Admin can enable or disable order notification for a specific order status
 - Admin can edit the SMS template according to the requirement
@@ -72,7 +73,7 @@ Navigate to **Stores ⇾ Configuration** and **StoreSms** under **Eguana Extensi
 
 **i)**  **General Configuration**
 
-![](https://i.ibb.co/HF19Tp8/image.png)
+![](https://i.ibb.co/LZP1SmL/image.png)
 - **●●**** Enable Extension**
 
 This will decide either enable/disable StoreSms Module.
@@ -84,6 +85,10 @@ This will verify that new registration number is not already register.
 - **●●**** Select Country  **
 
 Select the country for your store.
+
+- **●●**** Reverse name format with no empty space  **
+
+If you set this to yes, the customer name format will be like LastNameFirstName
 
 - **●●**** Username**
 

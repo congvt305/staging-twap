@@ -124,7 +124,7 @@ class SmsSender implements SmsInterface
      * @param $number
      * @return bool
      */
-    public function setCode($number, $customer = 'customer')
+    public function setCode($number, $firstName = 'firstName', $lastName = 'lastName')
     {
         $message = '';
         $verificationCode = '';
@@ -142,6 +142,12 @@ class SmsSender implements SmsInterface
             $template->setDesignConfig(['area' => 'frontend', 'store' => $store]);
             $storePhoneNumber = $this->data->getStorePhoneNumber($store);
             $storeName = $this->storeManager->getStore()->getName();
+
+            if ($this->data->getReverseNameFormat($store)){
+                $customer = $lastName . $firstName;
+            }else{
+                $customer = $firstName . ' '. $lastName;
+            }
             $params = [
                 'code'         => $verificationCode,
                 'store_name'   => $storeName,
