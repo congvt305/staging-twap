@@ -27,6 +27,7 @@ use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\StoreManagerInterface;
+use Eguana\StoreLocator\Model\StoreInfo as StoreInfoModel;
 
 /**
  * InfoList block
@@ -168,6 +169,14 @@ class InfoList extends Template
         $this->json = $json;
         $this->messageManager = $messageManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getIdentities()
+    {
+        return [StoreInfoModel::CACHE_TAG];
     }
 
     /**

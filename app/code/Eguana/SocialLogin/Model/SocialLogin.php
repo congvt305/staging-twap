@@ -26,6 +26,7 @@ class SocialLogin extends AbstractModel implements SocialLoginInterface, Identit
      * @var string
      */
     protected $_cacheTag = 'eguana_sociallogin_customer';
+
     /**
      * @var string
      */
@@ -40,12 +41,13 @@ class SocialLogin extends AbstractModel implements SocialLoginInterface, Identit
     }
 
     /**
-     * Get Identities
-     * @return array|string[]
+     * Return unique ID(s) for each object in system
+     *
+     * @return string[]
      */
     public function getIdentities()
     {
-        return [self::CACHE_TAG . '_' . $this->getId()];
+        return [self::CACHE_TAG . '_' . $this->getId(), self::CACHE_TAG . '_' . $this->getId()];
     }
 
     /**
