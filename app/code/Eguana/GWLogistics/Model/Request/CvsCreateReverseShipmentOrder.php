@@ -8,70 +8,99 @@
 
 namespace Eguana\GWLogistics\Model\Request;
 
+use Magento\Sales\Api\Data\OrderInterface;
+
 class CvsCreateReverseShipmentOrder
 {
-    const  GATEWAY_URL_UNIMART = 'https://logistics-stage.ecpay.com.tw/express/ReturnUniMartCVS';
     /**
      * @var \Psr\Log\LoggerInterface
      */
-    private $logger;
+    protected $_logger;
     /**
      * @var \Eguana\GWLogistics\Model\Lib\EcpayLogistics
      */
-    private $ecpayLogistics;
+    protected $_ecpayLogistics;
     /**
      * @var \Eguana\GWLogistics\Helper\Data
      */
-    private $helper;
+    protected $_helper;
+    /**
+     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     */
+    protected $_orderRepository;
 
     public function __construct(
+        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Psr\Log\LoggerInterface $logger,
         \Eguana\GWLogistics\Model\Lib\EcpayLogistics $ecpayLogistics,
         \Eguana\GWLogistics\Helper\Data $helper
     ) {
-        $this->logger = $logger;
-        $this->ecpayLogistics = $ecpayLogistics;
-        $this->helper = $helper;
+        $this->_logger = $logger;
+        $this->_ecpayLogistics = $ecpayLogistics;
+        $this->_helper = $helper;
+        $this->_orderRepository = $orderRepository;
     }
 
     public function sendRequest($rma)
     {
-        //request
-        $gatewayUrl = 'https://logistics-stage.ecpay.com.tw/Express/Create';
-        $merchantId = '2000132';
-        $serverReplyURL = $this->helper->getReverseLogisticsOrderReplyUrl();
-        $goodsName = 'Test item 1'; //50
-//        $goodsAmount = (int)round($order->getSubtotal(), 0);
-        $goodsAmount = 1000;
-        $senderName = '測試寄件者'; //no space not more than 10. return sender name
-        $senderPhone = '0226550115'; // return sender phone 20
-        $platformId = '0933222111';
-
-        $params = [
-            'MerchantID' => $merchantId,
-            'AllPayLogisticsID' => '15624',
-            'ServerReplyURL' => $serverReplyURL,
-            'GoodsName' => $goodsName,
-            'GoodsAmount' => $goodsAmount,
-            'CollectionAmount' => 0, //
-            'ServiceType' => '4',
-            'SenderName' => $senderName, //
-            'SenderPhone' => $senderPhone, //
-            'Remark' => 'test remark',
-            'PlatformID' => $platformId,
-        ];
-
+        $logisticsSubType = $rma->getData('shipping_preference');
+        $hashKey = $this->_helper->getHashKey();
+        $hashIv = $this->_helper->getHashIv();
         try {
-//            $this->ecpayLogistics->ServiceURL = self::GATEWAY_URL_UNIMART;
-            $this->ecpayLogistics->HashKey = '5294y06JbISpM5x9';
-            $this->ecpayLogistics->HashIV = 'v77hoKGq4kWxNNIS';
-            $this->ecpayLogistics->Send = $params;
-            $result = $this->ecpayLogistics->CreateUnimartB2CReturnOrder();
-            $this->logger->debug('GWL create reverse logistic order result: ', $result);
+            $this->_ecpayLogistics->HashKey = $hashKey;
+            $this->_ecpayLogistics->HashIV = $hashIv;
+            $this->_ecpayLogistics->Send = $this->_getParams($rma);
+            $result = $logisticsSubType === 'UNIMART' ? $this->_ecpayLogistics->CreateUnimartB2CReturnOrder()
+                : $this->_ecpayLogistics->CreateFamilyB2CReturnOrder();
+            $this->_logger->debug('GWL create reverse logistic order result: ', $result);
             return $result; //RtnMerchantTradeNo | RtnOrderNo or |ErrorMessage result array
         } catch (\Exception $e) {
-            $this->logger->critical($e->getMessage());
+            $this->_logger->critical($e->getMessage());
         }
+    }
+
+    protected function _getParams($rma)
+    {
+        return [];
+    }
+
+    /**
+     * @param \Magento\Rma\Api\Data\RmaInterface $rma
+     */
+    protected function _getItemData($rma)
+    {
+        /** @var OrderInterface $order */
+        $order = $this->_orderRepository->get($rma->getOrderId());
+        $orderItems = $order->getItems();
+        $orderItemArr = [];
+        $quantity = '';
+        $cost = '';
+        foreach ($orderItems as $orderItem) {
+            if ($orderItem->getProductType() === 'simple') {
+                $orderItemArr[] = $orderItem;
+                $quantity .= '#' . (string)(int)$orderItem->getQtyOrdered();
+                $cost .= '#' . (string)(int)round($orderItem->getPrice(), 0);
+            }
+        }
+        $count = count($orderItemArr);
+        $item = reset($orderItemArr);
+
+        $itemName = $item->getName();
+        $itemName = (strlen($itemName) > 30) ? substr($itemName,0,30).'...': $itemName;
+        $itemName = $count > 1 ? $itemName . __(' and others.'): $itemName;
+
+        $quantity = substr($quantity,0,1);
+        $quantity = (strlen($quantity) > 50) ? substr($quantity,0,50) : $quantity;
+
+        $cost = substr($cost,0,1);
+        $cost = (strlen($cost) > 50) ? substr($cost,0,50) : $cost;
+
+        return [
+            'goodsAmount' => (int)round($order->getSubtotal(), 0),
+            'goodsName' => $itemName,
+            'quantity' => $quantity,
+            'cost' => $cost,
+        ];
     }
 
 }

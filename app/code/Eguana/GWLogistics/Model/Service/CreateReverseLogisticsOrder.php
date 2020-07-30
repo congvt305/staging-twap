@@ -64,7 +64,10 @@ class CreateReverseLogisticsOrder
     public function process($rma)
     {
         try {
+
+
             $result = $this->createReverseShipmentOrderRequest->sendRequest($rma);
+
             if (isset($result['RtnMerchantTradeNo']) && isset($result['RtnOrderNo']) && $result['RtnOrderNo']) {
                 $this->saveTrack($rma, $result);
                 $this->smsSender->sendSms($rma, $result['RtnOrderNo']);
