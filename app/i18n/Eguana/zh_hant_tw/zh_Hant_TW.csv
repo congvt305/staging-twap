@@ -2011,7 +2011,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "%1 doesn't extends \Magento\Catalog\Model\Layer\Filter\AbstractFilter","%1 doesn't extends \Magento\Catalog\Model\Layer\Filter\AbstractFilter",module,Magento_Catalog
 "The filter must be an object. Please set the correct filter.","The filter must be an object. Please set the correct filter.",module,Magento_Catalog
 "Clear Price","明確價格",module,Magento_Catalog
-"%1 and above","%1 and above",module,Magento_Catalog
+"%1 and above","新台幣%1以上",module,Magento_Catalog
 "The filters must be an array.","The filters must be an array.",module,Magento_Catalog
 "Product was not registered","Product was not registered",module,Magento_Catalog
 "Store was not registered","Store was not registered",module,Magento_Catalog
@@ -3041,7 +3041,7 @@ Time in seconds between the widget updates.,module,Magento_Catalog
 "up to %1","up to %1",module,Magento_CatalogSearch
 ". "" which is inconsistent with state of scope resolver""",". "" which is inconsistent with state of scope resolver""",module,Magento_CatalogSearch
 "Category","類別",module,Magento_CatalogSearch
-"%1 and above","%1 and above",module,Magento_CatalogSearch
+"%1 and above","新台幣%1以上",module,Magento_CatalogSearch
 "%1 - %2","%1 - %2",module,Magento_CatalogSearch
 "Sorry, something went wrong. You can find out more in the error log.","抱歉，出問題了。你可以在錯誤日志中找到更多的信息。",module,Magento_CatalogSearch
 "Bucket does not exist","Bucket does not exist",module,Magento_CatalogSearch
@@ -4190,7 +4190,7 @@ Your outstanding balance currently totals %outstanding_balance. You are %exceed_
 "Company credit account will be charged: ","Company credit account will be charged: ",module,Magento_CompanyCredit
 "Place Order","確認訂單",module,Magento_CompanyCredit
 "Cancel the Order","Cancel the Order",module,Magento_CompanyCredit
-"This is a required field.","此為必填欄位。",module,Magento_CompanyCredit
+"This is a required field.","這是一個必填字段。",module,Magento_CompanyCredit
 "Please enter a valid number in this field.","請在此字段中輸入有效的數字。",module,Magento_CompanyCredit
 "{oldCur}/{newCur} Rate","{oldCur}/{newCur} Rate",module,Magento_CompanyCredit
 "Reimburse","Reimburse",module,Magento_CompanyCredit
@@ -5058,7 +5058,7 @@ new products will be created. Use this step to customize images and price for yo
 "Back to Sign In","返回登錄",module,Magento_Customer
 "Change Email","更改電子郵件",module,Magento_Customer
 "Change Email and Password","更改電子郵件和密碼",module,Magento_Customer
-"Current Password","舊密碼",module,Magento_Customer
+"Current Password","當前密碼",module,Magento_Customer
 "New Password","新密碼",module,Magento_Customer
 "Password Strength","密碼強度",module,Magento_Customer
 "No Password","沒有密碼",module,Magento_Customer
@@ -5244,7 +5244,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Account Dashboard","Account Dashboard",module,Magento_Customer
 "Edit Account Information","編輯帳戶信息",module,Magento_Customer
 "Password forgotten","Password forgotten",module,Magento_Customer
-"My Dashboard","我的會員中心",module,Magento_Customer
+"My Dashboard","我的儀表板",module,Magento_Customer
 "You are signed out","您已登出",module,Magento_Customer
 "You subscribe to our newsletter.","You subscribe to our newsletter.",module,Magento_Customer
 "You don't subscribe to our newsletter.","You don't subscribe to our newsletter.",module,Magento_Customer
@@ -5545,7 +5545,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Change Password","更改密碼",module,Magento_CustomerCustomAttributes
 "Change Email and Password","更改電子郵件和密碼",module,Magento_CustomerCustomAttributes
 "Email","電子郵件",module,Magento_CustomerCustomAttributes
-"Current Password","舊密碼",module,Magento_CustomerCustomAttributes
+"Current Password","當前密碼",module,Magento_CustomerCustomAttributes
 "New Password","新密碼",module,Magento_CustomerCustomAttributes
 "Password Strength","密碼強度",module,Magento_CustomerCustomAttributes
 "No Password","沒有密碼",module,Magento_CustomerCustomAttributes
@@ -8194,8 +8194,8 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Wishlist","願望清單",module,Magento_MultipleWishlist
 "Customer's Wish List Report","Customer's Wish List Report",module,Magento_MultipleWishlist
 "My Wish Lists","我的願望清單",module,Magento_MultipleWishlist
-"1 item in wish list","願望清單有 1 個項目",module,Magento_MultipleWishlist
-"%1 items in wish list","願望清單有 %1 個項目",module,Magento_MultipleWishlist
+"1 item in wish list",待購清單1項",module,Magento_MultipleWishlist
+"%1 items in wish list","待購清單%1項",module,Magento_MultipleWishlist
 "Wish List Search","Wish List Search",module,Magento_MultipleWishlist
 "Select Search Type","Select Search Type",module,Magento_MultipleWishlist
 "Reports","Reports",module,Magento_MultipleWishlist
@@ -8227,7 +8227,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "We can't add the item to shopping cart.","We can't add the item to shopping cart.",module,Magento_MultipleWishlist
 "We can't add the following product(s) to shopping cart: %1.","We can't add the following product(s) to shopping cart: %1.",module,Magento_MultipleWishlist
 "Product(s) %1 have required options. Each product can only be added individually.","Product(s) %1 have required options. Each product can only be added individually.",module,Magento_MultipleWishlist
-"%1 product(s) have been added to shopping cart: %2.","%1 product(s) have been added to shopping cart: %2.",module,Magento_MultipleWishlist
+"%1 product(s) have been added to shopping cart: %2.","%1 產品已加入至購物車: %2.",module,Magento_MultipleWishlist
 "Please reenter your search options.","請重新輸入搜索選項。",module,Magento_MultipleWishlist
 "We could not perform the search.","We could not perform the search.",module,Magento_MultipleWishlist
 "All Forms","All Forms",module,Magento_MultipleWishlist
@@ -11351,14 +11351,14 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "The ""Minimum Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.","The ""Minimum Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.",module,Magento_Reward
 "The ""Cap Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.","The ""Cap Reward Points Balance"" is invalid. The balance needs to be a positive number or left empty. Verify and try again.",module,Magento_Reward
 "The ""Minimum Reward Points Balance"" is invalid. The balance needs to be less than or equal to the ""Cap Reward Points Balance"".","The ""Minimum Reward Points Balance"" is invalid. The balance needs to be less than or equal to the ""Cap Reward Points Balance"".",module,Magento_Reward
-"Return","返回",module,Magento_Rma
+"Return","退貨",module,Magento_Rma
 "Returns","退貨",module,Magento_Rma
-"Create Returns","創建退貨",module,Magento_Rma
+"Create Returns","Create Returns",module,Magento_Rma
 "Select Items","選擇項目",module,Magento_Rma
-"New Return Request","新的退貨要求",module,Magento_Rma
+"New Return Request","New Return Request",module,Magento_Rma
 "Create New RMA for %1 in %2","Create New RMA for %1 in %2",module,Magento_Rma
 "Create New RMA for %1","Create New RMA for %1",module,Magento_Rma
-"Create New RMA","創建新的RMA",module,Magento_Rma
+"Create New RMA","Create New RMA",module,Magento_Rma
 "Please Select Order","請選擇指令",module,Magento_Rma
 "Order","訂單",module,Magento_Rma
 "Purchase Point","Purchase Point",module,Magento_Rma
@@ -11372,8 +11372,8 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Close","關閉",module,Magento_Rma
 "Are you sure you want to close this returns request?","Are you sure you want to close this returns request?",module,Magento_Rma
 "Print","Print",module,Magento_Rma
-"Return #%1 - %2","Return #%1 - %2",module,Magento_Rma
-"RMA Item Details","RMA項目詳細信息",module,Magento_Rma
+"Return #%1 - %2","退貨 #%1 - %2",module,Magento_Rma
+"RMA Item Details","RMA Item Details",module,Magento_Rma
 "OK","確定",module,Magento_Rma
 "Cancel","取消",module,Magento_Rma
 "No","否",module,Magento_Rma
@@ -11384,24 +11384,24 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Submit Comment","提交評論",module,Magento_Rma
 "Add","Add",module,Magento_Rma
 "Custom Value","Custom Value",module,Magento_Rma
-"Print Shipping Label","打印運輸標籤",module,Magento_Rma
+"Print Shipping Label","Print Shipping Label",module,Magento_Rma
 "Show Packages","Show Packages",module,Magento_Rma
 "Items","品項",module,Magento_Rma
-"Return Items","退換貨品",module,Magento_Rma
+"Return Items","Return Items",module,Magento_Rma
 "Product","產品",module,Magento_Rma
 "SKU","商品編號",module,Magento_Rma
-"Remaining","剩餘的",module,Magento_Rma
-"Requested","已要求",module,Magento_Rma
+"Remaining","Remaining",module,Magento_Rma
+"Requested","Requested",module,Magento_Rma
 "Authorized","已授權",module,Magento_Rma
-"Returned","回來",module,Magento_Rma
-"Approved","已批准",module,Magento_Rma
+"Returned","Returned",module,Magento_Rma
+"Approved","Approved",module,Magento_Rma
 "Return Reason","退貨原因",module,Magento_Rma
-"Item Condition","項目情況",module,Magento_Rma
-"Resolution","解析度",module,Magento_Rma
+"Item Condition","Item Condition",module,Magento_Rma
+"Resolution","Resolution",module,Magento_Rma
 "Details","詳細資料",module,Magento_Rma
-"Split","分裂",module,Magento_Rma
+"Split","Split",module,Magento_Rma
 "Action","操作",module,Magento_Rma
-"Return Information","退貨信息",module,Magento_Rma
+"Return Information","Return Information",module,Magento_Rma
 "RMA","RMA",module,Magento_Rma
 "Ordered","已訂購",module,Magento_Rma
 "Customer","客戶",module,Magento_Rma
@@ -11504,7 +11504,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't create a return right now. Please try again later.","We can't create a return right now. Please try again later.",module,Magento_Rma
 "Create New Return","Create New Return",module,Magento_Rma
 "We can't delete the label right now.","We can't delete the label right now.",module,Magento_Rma
-"Return #%1","Return #%1",module,Magento_Rma
+"Return #%1","退貨 #%1",module,Magento_Rma
 "Cannot add message.","Cannot add message.",module,Magento_Rma
 "My Returns","我的退貨",module,Magento_Rma
 "Tracking Information","Tracking Information",module,Magento_Rma
@@ -11518,7 +11518,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Could not save the RMA comment.","Could not save the RMA comment.",module,Magento_Rma
 "Could not delete the RMA comment.","Could not delete the RMA comment.",module,Magento_Rma
 "Only one RMA is available for printing","Only one RMA is available for printing",module,Magento_Rma
-"Return # ","Return # ",module,Magento_Rma
+"Return # ","退貨 # ",module,Magento_Rma
 "Return Date: ","Return Date: ",module,Magento_Rma
 "Order # ","訂單號 ",module,Magento_Rma
 "Ordered: ","訂購： ",module,Magento_Rma
@@ -11630,13 +11630,13 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Save","儲存",module,Magento_Rma
 "Submit","提交",module,Magento_Rma
 "Back","上一步",module,Magento_Rma
-"Return #","Return #",module,Magento_Rma
+"Return #","退貨 #",module,Magento_Rma
 "Date","日期",module,Magento_Rma
 "Ship From","從寄出",module,Magento_Rma
-"Return Status","Return Status",module,Magento_Rma
+"Return Status","退貨狀態",module,Magento_Rma
 "Actions","動作",module,Magento_Rma
 "View Return","View Return",module,Magento_Rma
-"You have placed no returns.","You have placed no returns.",module,Magento_Rma
+"You have placed no returns.","您尚未退貨",module,Magento_Rma
 "Packages","Packages",module,Magento_Rma
 "Close Window","Close Window",module,Magento_Rma
 "Package","Package",module,Magento_Rma
@@ -14351,7 +14351,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "'*' - matches any; 'xyz*' - matches any that begins on 'xyz' and are not longer than %1.","'*' - matches any; 'xyz*' - matches any that begins on 'xyz' and are not longer than %1.",module,Magento_Tax
 "Range From","Range From",module,Magento_Tax
 "Range To","Range To",module,Magento_Tax
-"State","State",module,Magento_Tax
+"State","州",module,Magento_Tax
 "Country","國家",module,Magento_Tax
 "Rate Percent","Rate Percent",module,Magento_Tax
 "Tax Titles","Tax Titles",module,Magento_Tax
@@ -14539,7 +14539,7 @@ than a customer might expect. ",module,Magento_Tax
 """%fieldName"" is required. Enter and try again.","""%fieldName"" 是必須的。 輸入並重試。",module,Magento_Tax
 "Code","代號",module,Magento_TaxImportExport
 "Country","國家",module,Magento_TaxImportExport
-"State","State",module,Magento_TaxImportExport
+"State","州",module,Magento_TaxImportExport
 "Zip/Post Code","郵政編碼",module,Magento_TaxImportExport
 "Rate","Rate",module,Magento_TaxImportExport
 "Zip/Post is Range","Zip/Post is Range",module,Magento_TaxImportExport
@@ -14901,7 +14901,7 @@ than a customer might expect. ",module,Magento_Tax
 "Please enter a value greater than or equal to {0}.","Please enter a value greater than or equal to {0}.",module,Magento_Ui
 "Please enter valid email addresses, separated by commas. For example, johndoe@domain.com, johnsmith@domain.com.","請輸入有效的電子郵件地址，以逗號分隔。 例如，johndoe @ domain.com，johnsmith @ domain.com。",module,Magento_Ui
 "Please enter issue number or start date for switch/solo card type.","Please enter issue number or start date for switch/solo card type.",module,Magento_Ui
-"This is a required field.","此為必填欄位。",module,Magento_Ui
+"This is a required field.","這是一個必填字段。",module,Magento_Ui
 "Please enter positive number in this field.","Please enter positive number in this field.",module,Magento_Ui
 "Please enter a valid value, ex: 10,20,30","請輸入有效值，例如：10,20,30",module,Magento_Ui
 "We don't recognize or support this file extension type.","我們無法識別或不支援此檔案類型。",module,Magento_Ui
@@ -14999,7 +14999,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "ui/grid/filters/elements/select","ui/grid/filters/elements/select",module,Magento_Ui
 "Please enter a quantity greater than 0.","Please enter a quantity greater than 0.",module,Magento_Ui
 "The fewest you may purchase is %1.","The fewest you may purchase is %1.",module,Magento_Ui
-"The maximum you may purchase is %1.","The maximum you may purchase is %1.",module,Magento_Ui
+"The maximum you may purchase is %1.","你最多可以購買%1個",module,Magento_Ui
 "You can buy this product only in quantities of %1 at a time.","You can buy this product only in quantities of %1 at a time.",module,Magento_Ui
 "First character must be letter.","First character must be letter.",module,Magento_Ui
 "If enabled, can be used by functional tests for extended reporting","If enabled, can be used by functional tests for extended reporting",module,Magento_Ui
@@ -15486,7 +15486,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Sample","Sample",module,Magento_Usps
 "Gift","Gift",module,Magento_Usps
 "Documents","Documents",module,Magento_Usps
-"Return","Return",module,Magento_Usps
+"Return","退貨",module,Magento_Usps
 "Other","Other",module,Magento_Usps
 "None","無",module,Magento_Usps
 "Field ","Field ",module,Magento_Usps
@@ -16077,7 +16077,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "We can't add this item to your shopping cart right now.","現在無法新增至購物車",module,Magento_Wishlist
 "We couldn't add the following product(s) to the shopping cart: %1.","We couldn't add the following product(s) to the shopping cart: %1.",module,Magento_Wishlist
 "We can't update the Wish List right now.","We can't update the Wish List right now.",module,Magento_Wishlist
-"%1 product(s) have been added to shopping cart: %2.","%1 product(s) have been added to shopping cart: %2.",module,Magento_Wishlist
+"%1 product(s) have been added to shopping cart: %2.","%1 產品已加入至購物車: %2.",module,Magento_Wishlist
 "Comment:","評論:",module,Magento_Wishlist
 "We cannot retrieve the Wish List.","We cannot retrieve the Wish List.",module,Magento_Wishlist
 "%1's Wishlist","%1's Wishlist",module,Magento_Wishlist
@@ -16370,7 +16370,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Please select State/Province.","請選擇州/省。",lib,web
 "Please select a file.","請選擇一個文件。",lib,web
 "The field isn't complete.","The field isn't complete.",lib,web
-"This is a required field.","此為必填欄位。",lib,web
+"This is a required field.","這是一個必填字段。",lib,web
 "Please select one of the options.","請選擇一個選項。",lib,web
 "Please enter a value less than or equal to %s.","請輸入一個小於或等於的值 %s。",lib,web
 "Please enter a value greater than or equal to %s.","請輸入一個大於或等於的值 %s。",lib,web
@@ -16413,7 +16413,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Admin is a required field in the each row.","Admin is a required field in the each row.",lib,web
 "Please enter a quantity greater than 0.","請輸入大於0的數量。",lib,web
 "The fewest you may purchase is %1.","The fewest you may purchase is %1.",lib,web
-"The maximum you may purchase is %1.","The maximum you may purchase is %1.",lib,web
+"The maximum you may purchase is %1.","你最多可以購買%1個",lib,web
 "You can buy this product only in quantities of %1 at a time.","You can buy this product only in quantities of %1 at a time.",lib,web
 "Forbidden extensions has been used. Avoid usage of ","Forbidden extensions has been used. Avoid usage of ",lib,web
 "No marginal white space please","No marginal white space please",lib,web
