@@ -12,6 +12,7 @@ namespace Eguana\VideoBoard\Block;
 use Magento\Framework\View\Element\Template;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
+use Eguana\VideoBoard\Model\VideoBoard;
 
 /**
  * This class used to add breadcrumbs and title
@@ -47,6 +48,13 @@ class ListBlock extends Template
         $this->logger = $logger;
         $this->storeManager = $storeManager;
         parent::__construct($context, $data);
+    }
+    /**
+     * @return array
+     */
+    public function getIdentities()
+    {
+        return [VideoBoard::CACHE_TAG];
     }
 
     /**

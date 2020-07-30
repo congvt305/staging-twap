@@ -9,12 +9,9 @@
  */
 namespace Eguana\EventManager\Model;
 
-use Magento\Framework\Model\AbstractModel;
-use Eguana\EventManager\Model\ResourceModel\EventManager as EventManagerResourceModel;
 use Eguana\EventManager\Api\Data\EventManagerInterface;
+use Eguana\EventManager\Model\ResourceModel\EventManager as EventManagerResourceModel;
 use Magento\Framework\Model\AbstractExtensibleModel;
-use Magento\Framework\UrlInterface;
-use Magento\Framework\Filesystem;
 
 /**
  * This model class is used for the Curd operation of Events
@@ -23,6 +20,11 @@ use Magento\Framework\Filesystem;
  */
 class EventManager extends AbstractExtensibleModel implements EventManagerInterface
 {
+    /**
+     * @var PAGE_CACHE
+     */
+    const CACHE_TAG = 'eguana_event_manager';
+
     /**
      * @var STATUS_ENABLED
      */
@@ -34,11 +36,26 @@ class EventManager extends AbstractExtensibleModel implements EventManagerInterf
     const STATUS_DISABLED = 0;
 
     /**
+     * @var PAGE_CACHE|string
+     */
+    protected $_cacheTag = self::CACHE_TAG;
+
+    /**
      * Constructor to initialize ResourceModel
      */
     public function _construct()
     {
         $this->_init(EventManagerResourceModel::class);
+    }
+
+    /**
+     * Return unique ID(s) for each object in system
+     *
+     * @return string[]
+     */
+    public function getIdentities()
+    {
+        return [self::CACHE_TAG . '_' . $this->getId(), self::CACHE_TAG . '_' . $this->getId()];
     }
 
     /**
