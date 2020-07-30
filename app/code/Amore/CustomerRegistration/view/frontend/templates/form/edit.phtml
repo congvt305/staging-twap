@@ -27,69 +27,6 @@ $viewModel = $block->getData('view_model');
         <?php if ($_gender->isEnabled()) : ?>
             <?= $_gender->setGender($block->getCustomer()->getGender())->toHtml() ?>
         <?php endif ?>
-
-        <div class="field field-mobile-number required">
-            <label class="label" for="mobile_number"><span><?= $block->escapeHtml(__('Mobile Number')) ?></span></label>
-            <div class="control">
-                <input placeholder="Mobile Number" type="text" id="mobile_number" name="mobile_number" value="<?= $viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number') ?>" title="Mobile Number" class="input-text required-entry" data-validate="{required:true}" aria-required="true">
-            </div>
-        </div>
-        <?php $_smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'sms_subscription_status'))]]) ?>
-        <?php if ($_smsSubscriptionStatus->isEnabled()) : ?>
-            <?= $_smsSubscriptionStatus->setSmsSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'sms_subscription_status'))->toHtml() ?>
-        <?php endif ?>
-
-        <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status'))]]) ?>
-        <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
-            <?= $_dmSubscriptionStatus->setDmSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status'))->toHtml() ?>
-        <?php endif ?>
-        <div class="fieldset dm-address" style="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status')) == 1?'':'display: none'; ?>">
-            <div class="field country required">
-                <label for="country" class="label"><span><?= $block->escapeHtml(__('Country')) ?></span></label>
-                <div class="control">
-                    <?= $viewModel->getCountryHtmlSelect(); ?>
-                </div>
-            </div>
-            <div class="field required">
-                <label for="dm_state" class="label"><span><?= $block->escapeHtml(__('State')) ?></span></label>
-                <div class="control">
-                    <?php //phpcs:disable ?>
-                    <select id="region_id" name="region_id" title="<?= /* @noEscape */ $block->escapeHtml(__('State')) ?>" class="validate-select region_id">
-                        <option value=""><?= $block->escapeHtml(__('Please select a region, state or province.')) ?></option>
-                    </select>
-                    <?php //phpcs:enable ?>
-                    <input type="text" id="dm_state" name="dm_state" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_state')) ?>"  title="<?= /* @noEscape */ $block->escapeHtml(__('State')) ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('region') ?>" />
-                </div>
-            </div>
-            <div class="field required">
-                <label for="dm_city" class="label"><span><?= $block->escapeHtml(__('City')) ?></span></label>
-                <div class="control">
-                    <?php //phpcs:disable ?>
-                    <select id="city_id" name="city_id" title="<?= $block->escapeHtml(__('City')); ?>" class="validate-select region_id" ?>>
-                        <option value=""><?= $block->escapeHtml(__('Please select a city, city or district.')) ?></option>
-                    </select>
-                    <input type="text" placeholder="<?= $block->escapeHtml(__('City')) ?>" name="dm_city" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_city')) ?>" title="<?= $block->escapeHtml(__('City')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_city')) ?>" id="dm_city">
-                    <?php //phpcs:enable ?>
-                </div>
-            </div>
-            <div class="field required">
-                <label for="dm_detailed_address" class="label"><span><?= $block->escapeHtml(__('Detailed Address')) ?></span></label>
-                <div class="control">
-                    <?php //phpcs:disable ?>
-                    <input type="text" placeholder="<?= $block->escapeHtml(__('Detailed Address')) ?>" name="dm_detailed_address" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_detailed_address')) ?>" title="<?= $block->escapeHtml(__('Detailed Address')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_detailed_address')) ?>" id="dm_detailed_address">
-                    <?php //phpcs:enable ?>
-                </div>
-            </div>
-            <div class="field required">
-                <label for="dm_zipcode" class="label"><span><?= $block->escapeHtml(__('Zip Code')) ?></span></label>
-                <div class="control">
-                    <?php //phpcs:disable ?>
-                    <input type="text" readonly placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_zipcode')) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
-                    <?php //phpcs:enable ?>
-                </div>
-            </div>
-        </div>
-
         <div class="field choice">
             <input type="checkbox" name="change_email" id="change-email" data-role="change-email" value="1" title="<?= $block->escapeHtmlAttr(__('Change Email')) ?>" class="checkbox" />
             <label class="label" for="change-email"><span><?= $block->escapeHtml(__('Change Email')) ?></span></label>
@@ -142,6 +79,74 @@ $viewModel = $block->getData('view_model');
             </div>
         </div>
     </fieldset>
+
+    <div class="field field-mobile-number required">
+        <label class="label" for="mobile_number"><span><?= $block->escapeHtml(__('Mobile Number')); ?></span></label>
+        <div class="control">
+            <input placeholder="Mobile Number" type="text" id="mobile_number" name="mobile_number" value="<?= $viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number') ?>" title="Mobile Number" class="input-text required-entry" data-validate="{required:true}" aria-required="true">
+        </div>
+    </div>
+    <?php $_smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'sms_subscription_status'))]]) ?>
+    <?php if ($_smsSubscriptionStatus->isEnabled()) : ?>
+        <?= $_smsSubscriptionStatus->setSmsSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'sms_subscription_status'))->toHtml() ?>
+    <?php endif ?>
+
+    <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status'))]]) ?>
+    <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
+        <?= $_dmSubscriptionStatus->setDmSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status'))->toHtml() ?>
+    <?php endif ?>
+    <div class="fieldset dm-address" style="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status')) == 1?'':'display: none'; ?>">
+        <div class="field country required">
+            <label for="country" class="label"><span><?= $block->escapeHtml(__('Country')) ?></span></label>
+            <div class="control">
+                <?= $viewModel->getCountryHtmlSelect(); ?>
+            </div>
+        </div>
+
+        <div class="field required">
+            <label for="dm_state" class="label"><span><?= $block->escapeHtml(__('State')) ?></span></label>
+            <div class="control">
+                <?php //phpcs:disable ?>
+                <select id="region_id" name="region_id" title="<?= /* @noEscape */ $block->escapeHtml(__('State')) ?>" class="validate-select region_id">
+                    <option value=""><?= $block->escapeHtml(__('Please select a region, state or province.')) ?></option>
+                </select>
+                <?php //phpcs:enable ?>
+                <input type="text" id="dm_state" name="dm_state" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_state')) ?>"  title="<?= /* @noEscape */ $block->escapeHtml(__('State')) ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('region') ?>" />
+            </div>
+        </div>
+
+        <div class="field required">
+            <label for="dm_city" class="label"><span><?= $block->escapeHtml(__('City')) ?></span></label>
+            <div class="control">
+                <?php //phpcs:disable ?>
+                <select id="city_id" name="city_id" title="<?= $block->escapeHtml(__('City')); ?>" class="validate-select region_id" ?>>
+                    <option value=""><?= $block->escapeHtml(__('Please select a city, city or district.')) ?></option>
+                </select>
+                <input type="text" placeholder="<?= $block->escapeHtml(__('City')) ?>" name="dm_city" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_city')) ?>" title="<?= $block->escapeHtml(__('City')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_city')) ?>" id="dm_city">
+                <?php //phpcs:enable ?>
+            </div>
+        </div>
+
+        <div class="field required">
+            <label for="dm_detailed_address" class="label"><span><?= $block->escapeHtml(__('Detailed Address')) ?></span></label>
+            <div class="control">
+                <?php //phpcs:disable ?>
+                <input type="text" placeholder="<?= $block->escapeHtml(__('Detailed Address')) ?>" name="dm_detailed_address" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_detailed_address')) ?>" title="<?= $block->escapeHtml(__('Detailed Address')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_detailed_address')) ?>" id="dm_detailed_address">
+                <?php //phpcs:enable ?>
+            </div>
+        </div>
+
+        <div class="field required">
+            <label for="dm_zipcode" class="label"><span><?= $block->escapeHtml(__('Zip Code')) ?></span></label>
+            <div class="control">
+                <?php //phpcs:disable ?>
+                <input type="text" readonly placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_zipcode')) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
+                <?php //phpcs:enable ?>
+            </div>
+        </div>
+
+    </div>
+
     <?= $block->getChildHtml('form_additional_info') ?>
     <div class="actions-toolbar">
         <div class="primary">
