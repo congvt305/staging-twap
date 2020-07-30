@@ -12,6 +12,19 @@
         margin-bottom: @indent__s;
     }
 
+    .block-return-details {
+        .box-returns-shipping address {
+            strong {
+                display: block;
+
+                & + br,
+                br {
+                    display: none;
+                }
+            }
+        }
+    }
+
     .block-returns-tracking {
         .block-title {
             margin-bottom: 0 !important;
