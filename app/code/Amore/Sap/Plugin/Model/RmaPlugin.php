@@ -8,6 +8,7 @@
 
 namespace Amore\Sap\Plugin\Model;
 
+use Amore\Sap\Exception\RmaSapException;
 use Amore\Sap\Exception\RmaTrackNoException;
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Connection\Request;
@@ -128,7 +129,7 @@ class RmaPlugin
                                 } else {
                                     $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
 
-                                    throw new \Exception(
+                                    throw new RmaSapException(
                                         __(
                                             'Error returned from SAP for RMA %1. Error code : %2. Message : %3',
                                             $subject->getIncrementId(),
@@ -140,7 +141,7 @@ class RmaPlugin
                             }
                         } else {
                             $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
-                            throw new \Exception(
+                            throw new RmaSapException(
                                 __(
                                     'Error returned from SAP for RMA %1. Error code : %2. Message : %3',
                                     $subject->getIncrementId(),
@@ -151,14 +152,17 @@ class RmaPlugin
                         }
                     } else {
                         $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
-                        throw new \Exception(__('Something went wrong while sending order data to SAP. No response'));
+                        throw new RmaSapException(__('Something went wrong while sending order data to SAP. No response'));
                     }
                 } catch (NoSuchEntityException $e) {
                     $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                     throw new NoSuchEntityException(__($e->getMessage()));
                 } catch (RmaTrackNoException $e) {
                     $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
-                    throw new LocalizedException(__($e->getMessage()));
+                    throw new RmaTrackNoException(__($e->getMessage()));
+                } catch (RmaSapException $e) {
+                    $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
+                    throw new RmaSapException(__($e->getMessage()));
                 } catch (LocalizedException $e) {
                     $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                     throw new LocalizedException(__($e->getMessage()));
