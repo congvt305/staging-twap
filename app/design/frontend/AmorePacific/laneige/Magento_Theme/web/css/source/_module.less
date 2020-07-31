@@ -60,6 +60,7 @@
         .lib-vendor-prefix-display(flex);
         .lib-vendor-prefix-flex-direction(column);
         min-height: 100vh; // Stretch content area for sticky footer
+        padding-top: @navigation-desktop-level0-item__line-height + 1px;
     }
 
     .page-main {
@@ -74,8 +75,12 @@
         .lib-css(background-color, @header__background-color);
         box-sizing: border-box;
         border-bottom: 1px solid @border-color__base;
-        position: relative;
         height: @navigation-desktop-level0-item__line-height + 1px;
+        left: 0;
+        position: fixed;
+        right: 0;
+        top: 0;
+        z-index: 4;
     }
 
     .header {
