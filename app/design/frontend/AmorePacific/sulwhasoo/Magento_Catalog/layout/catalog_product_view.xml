@@ -70,6 +70,11 @@
         <referenceBlock name="upsell.product.addto.compare" remove="true" />
         <referenceBlock name="product.attributes" remove="true" />
 
+        <referenceBlock name="page.main.title">
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.default.name"
+                   template="Magento_Catalog::product/view/default-name.phtml" before="product.info.review"/>
+        </referenceBlock>
+
         <referenceContainer name="product.info.main">
             <block class="Magento\Catalog\Block\Product\View\Description"
                    name="product.info.ingredient" as="ingredient"
