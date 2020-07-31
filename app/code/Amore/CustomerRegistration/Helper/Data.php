@@ -39,6 +39,8 @@ class Data extends AbstractHelper
         = 'customerregistraion/general/sms_policy_cms_block';
     const DM_POLICY_CMS_BLOCK
         = 'customerregistraion/general/dm_policy_cms_block';
+    const CALL_POLICY_CMS_BLOCK
+        = 'customerregistraion/general/call_policy_cms_block';
     const TERMS_AND_SERVICES_POLICY_CMS_BLOCK
         = 'customerregistraion/general/terms_and_services_policy_cms_block';
     const SMS_VERIFICATION_ENABLE
@@ -213,6 +215,19 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Get Terms and Services policy CMS block id
+     *
+     * @return mixed
+     */
+    public function getCallPolicyCMSBlockId()
+    {
+        return $this->scopeConfig->getValue(
+            self::CALL_POLICY_CMS_BLOCK,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
      * Get whether SMS verification is enabled on the website or not
      *
      * @return mixed
@@ -303,7 +318,7 @@ class Data extends AbstractHelper
     {
         if ($websiteId) {
             return $this->scopeConfig->getValue(
-                self::SALES_OFFICE_CODE,
+                self::PARTNER_ID,
                 ScopeInterface::SCOPE_WEBSITE,
                 $websiteId
             );

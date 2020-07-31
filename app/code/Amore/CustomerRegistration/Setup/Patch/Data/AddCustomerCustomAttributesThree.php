@@ -312,10 +312,10 @@ class AddCustomerCustomAttributesThree implements DataPatchInterface
      */
     private function addCustomerAttributeBoolean($code, $label, $sortOrder, $required)
     {
-        $this->eavSetup->removeAttribute(
+        /*$this->eavSetup->removeAttribute(
             CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
             $code
-        );
+        );*/
         $attribute = $this->customerAttributeResource
             ->getIdByCode(
                 CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
