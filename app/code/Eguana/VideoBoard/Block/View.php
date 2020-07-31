@@ -10,11 +10,12 @@
 namespace Eguana\VideoBoard\Block;
 
 use Eguana\VideoBoard\Api\VideoBoardRepositoryInterface;
-use Magento\Framework\View\Element\Template;
-use Magento\Store\Model\StoreManagerInterface;
+use Eguana\VideoBoard\Model\VideoBoard;
 use Magento\Framework\App\RequestInterface;
-use Psr\Log\LoggerInterface;
+use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * class View
@@ -67,6 +68,14 @@ class View extends Template
     }
 
     /**
+     * @return array
+     */
+    public function getIdentities()
+    {
+        return [VideoBoard::CACHE_TAG];
+    }
+
+    /**
      * get video board method
      *
      * @return VideoBoard
@@ -112,7 +121,7 @@ class View extends Template
                     [
                         'label' => __('How to'),
                         'title' => __('How to'),
-                        'link' => $this->storeManager->getStore()->getBaseUrl(). 'videoboard'
+                        'link' => $this->storeManager->getStore()->getBaseUrl() . 'videoboard'
                     ]
                 );
                 if (!empty($this->getVideoBoard()->getData())) {

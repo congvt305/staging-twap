@@ -10,11 +10,12 @@
 namespace Eguana\EventManager\Block;
 
 use Eguana\EventManager\Api\EventManagerRepositoryInterface;
-use Magento\Framework\View\Element\Template;
-use Magento\Store\Model\StoreManagerInterface;
+use Eguana\EventManager\Model\EventManager;
 use Magento\Framework\App\RequestInterface;
-use Psr\Log\LoggerInterface;
+use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * class View
@@ -67,6 +68,14 @@ class View extends Template
     }
 
     /**
+     * @return array
+     */
+    public function getIdentities()
+    {
+        return [EventManager::CACHE_TAG];
+    }
+
+    /**
      * get event method
      *
      * @return EventManager
@@ -105,7 +114,7 @@ class View extends Template
                     [
                         'label' => __('Events'),
                         'title' => __('Events'),
-                        'link' => $this->storeManager->getStore()->getBaseUrl(). 'events'
+                        'link' => $this->storeManager->getStore()->getBaseUrl() . 'events'
                     ]
                 );
                 if (!empty($this->getEventManager()->getData())) {
