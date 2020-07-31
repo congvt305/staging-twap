@@ -81,7 +81,8 @@ class Register implements ArgumentInterface
      */
     public function getFavoriteStore()
     {
-        return $this->request->getParam('favorite_store', '');
+        $onlineUserFavoriteStore = $this->configHelper->getOnlineUserFavoriteStore();
+        return $this->request->getParam('favorite_store', $onlineUserFavoriteStore);
     }
 
     private function getSocialLoginData()
@@ -95,8 +96,7 @@ class Register implements ArgumentInterface
     {
         $socialMediaEmail = '';
         $socialMediaData = $this->getSocialLoginData();
-        if($socialMediaData != null)
-        {
+        if ($socialMediaData != null) {
             $socialMediaEmail = isset($socialMediaData['email'])?$socialMediaData['email']:'';
         }
         return $socialMediaEmail;
