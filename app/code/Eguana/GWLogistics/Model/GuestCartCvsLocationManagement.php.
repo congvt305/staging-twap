@@ -46,7 +46,7 @@ class GuestCartCvsLocationManagement implements \Eguana\GWLogistics\Api\GuestCar
      */
     public function selectCvsLocation(string $cartId, string $data = null): bool
     {
-        $this->logger->debug('cartId: ', ['cartId' => $cartId]);
+        $this->logger->info('cartId: ', ['cartId' => $cartId]);
         try {
             $address = $this->shippingAddressManagement->get($cartId);
             $cvsLocation = $this->quoteCvsLocationRepository->getByAddressId($address->getId());

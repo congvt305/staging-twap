@@ -47,7 +47,7 @@ class ReverseOrder extends Action
     {
         try {
             $Result = $this->createReverseShipmentOrder->execute();
-//            $this->logger->debug('result: ', $Result);
+//            $this->logger->info('result: ', $Result);
             echo '<pre>' . print_r($Result, true) . '</pre>';
         } catch (Exception $e) {
             echo $e->getMessage();

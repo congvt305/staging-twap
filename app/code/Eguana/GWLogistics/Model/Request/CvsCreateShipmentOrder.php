@@ -127,7 +127,7 @@ class CvsCreateShipmentOrder
                 'ReturnStoreID' => $returnStoreID //
             ];
             $result = $this->ecpayLogistics->BGCreateShippingOrder();
-            $this->logger->debug('GWL create shipment result: ', $result);
+            $this->logger->info('gwlogistics: GWL create shipment result: ', $result);
             return $result;
         } catch (\Exception $e) {
             $this->logger->critical('GWL create shipment failed');
