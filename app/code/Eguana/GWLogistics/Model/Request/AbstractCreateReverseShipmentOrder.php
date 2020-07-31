@@ -51,8 +51,6 @@ class AbstractCreateReverseShipmentOrder
             $this->_ecpayLogistics->HashIV = $hashIv;
             $this->_ecpayLogistics->Send = $this->_getParams($rma);
             $result = $this->_getResult();
-            $this->_logger->info('GWL create reverse logistic order result: ', $result);
-
         } catch (\Exception $e) {
             $this->_logger->critical($e->getMessage());
             $result = ['ErrorMessage' => $e->getMessage()];

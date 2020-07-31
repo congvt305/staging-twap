@@ -57,7 +57,6 @@ class Index extends Action implements CsrfAwareActionInterface
         $notifyData = $this->getRequest()->getParams();
 
         if (!$notifyData || $this->getRequest()->getMethod() !== 'POST') {
-            $this->logger->info('isXmlHttpRequest: ', [$this->getRequest()->isXmlHttpRequest()]);
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
         $html = '';
