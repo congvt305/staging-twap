@@ -9,7 +9,7 @@
 namespace Eguana\GWLogistics\Controller\Test;
 
 use Eguana\GWLogistics\Helper\Data;
-use Eguana\GWLogistics\Model\Request\CvsCreateReverseShipmentOrder;
+use Eguana\GWLogistics\Model\Request\FamiCreateReverseShipmentOrder;
 use Exception;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -26,14 +26,14 @@ class ReverseOrder extends Action
      */
     private $logger;
     /**
-     * @var CvsCreateReverseShipmentOrder
+     * @var FamiCreateReverseShipmentOrder
      */
     private $createReverseShipmentOrder;
 
     public function __construct(
         Data $dataHelper,
         LoggerInterface $logger,
-        CvsCreateReverseShipmentOrder $createReverseShipmentOrder,
+        FamiCreateReverseShipmentOrder $createReverseShipmentOrder,
         Context $context
     ) {
         parent::__construct($context);
