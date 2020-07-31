@@ -90,6 +90,8 @@ class OrderStatusNotificationHandler
     */
     public function process(array $notificationData)
     {
+        $this->logger->info('gwlogistics | notification for order', $notificationData);
+
         if (isset($notificationData['CheckMacValue'])) {
             try {
                 $validated = $this->dataHelper->validateCheckMackValue($notificationData['CheckMacValue']);

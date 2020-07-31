@@ -297,6 +297,7 @@ class EcpayLogistics
         }
 
         $this->PostParams = $this->GetPostParams($this->Send, $ParamList);
+        $this->logger->info('gwlogistics | params for create order', $this->PostParams);
         $MinAmount = 1; // 金額下限
         $MaxAmount = 20000; // 金額上限
 
@@ -452,6 +453,7 @@ class EcpayLogistics
         // 正確：1|MerchantID=XXX&MerchantTradeNo=XXX&RtnCode=XXX&RtnMsg=XXX&AllPayLogisticsID=XXX&LogisticsType=XXX&LogisticsSubType=XXX&GoodsAmount=XXX&UpdateStatusDate=XXX&ReceiverName=XXX&ReceiverPhone=XXX&ReceiverCellPhone=XXX&ReceiverEmail=XXX&ReceiverAddress=XXX&CVSPaymentNo=XXX&CVSValidationNo=XXX &CheckMacValue=XXX
         // 錯誤：0|ErrorMessage
         $Feedback = static::ServerPost($this->PostParams, $this->ServiceURL);
+
         $Pieces = explode('|', $Feedback);
         $Result = array();
         $Result['ResCode'] = $Pieces[0];
@@ -462,7 +464,7 @@ class EcpayLogistics
         } else {
             $Result['ErrorMessage'] = $Pieces[1];
         }
-
+        $this->logger->info('gwlogistics | response for create order', $Result);
         return $Result;
     }
 
@@ -657,6 +659,9 @@ class EcpayLogistics
         $this->PostParams['CollectionAmount'] = 0;
         $this->PostParams['ServiceType'] = 4; // 退貨不付款
 
+        $this->logger->info('gwlogistics | params for create reverse order', $this->PostParams);
+
+
         // 參數檢查
         $this->ValidateHashKey();
         $this->ValidateHashIV();
@@ -696,6 +701,7 @@ class EcpayLogistics
             $Result['RtnOrderNo'] = $Pieces[1];
         }
 
+        $this->logger->info('gwlogistics | response for reverse create order', $Result);
         return $Result;
     }
 
@@ -1045,6 +1051,8 @@ class EcpayLogistics
             'PlatformID' => ''
         );
         $this->PostParams = $this->GetPostParams($this->Send, $ParamList);
+        $this->logger->info('gwlogistics | params for query order', $this->PostParams);
+
         $this->PostParams['TimeStamp'] = strtotime('now');
 
         // 參數檢查
@@ -1064,6 +1072,7 @@ class EcpayLogistics
         $Feedback = static::ServerPost($this->PostParams, $this->ServiceURL);
         parse_str($Feedback, $Result);
 
+        $this->logger->info('gwlogistics | response for query order', $Result);
         return $Result;
     }
 
