@@ -86,6 +86,12 @@ $viewModel = $block->getData('view_model');
             <input placeholder="Mobile Number" type="text" id="mobile_number" name="mobile_number" value="<?= $viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number') ?>" title="Mobile Number" class="input-text required-entry" data-validate="{required:true}" aria-required="true">
         </div>
     </div>
+
+    <?php $callSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'call_subscription_status', ['data'=>['attribute_code'=>'call_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'call_subscription_status'))]]) ?>
+    <?php if ($callSubscriptionStatus->isEnabled()) : ?>
+        <?= $callSubscriptionStatus->setSmsSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'call_subscription_status'))->toHtml() ?>
+    <?php endif ?>
+
     <?php $_smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'sms_subscription_status'))]]) ?>
     <?php if ($_smsSubscriptionStatus->isEnabled()) : ?>
         <?= $_smsSubscriptionStatus->setSmsSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'sms_subscription_status'))->toHtml() ?>
