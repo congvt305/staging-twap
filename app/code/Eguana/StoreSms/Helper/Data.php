@@ -27,6 +27,7 @@ class Data extends AbstractHelper
     const XML_PATH_FOR_REGISTRATION_TEMPLATE = 'eguanasms/templates/customer_register_sms';
     const XML_PATH_FOR_WELCOME_SMS = 'eguanasms/templates/registration_welcome_active';
     const XML_PATH_FOR_NUMBER_ACTIVATION = 'eguanasms/general/mobile_number_validation_active';
+    const XML_PATH_FOR_REVERSE_NAME_FORMAT = 'eguanasms/general/name_format';
     const XML_PATH_FOR_DEFAULT_COUNTRY = 'general/country/default';
     const XML_PATH_FOR_COUNTRY_CODE = 'eguanasms/general/country_code';
     const XML_PATH_STORE_PHONE = 'general/store_information/phone';
@@ -252,6 +253,20 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_STORE_PHONE,
+            ScopeInterface::SCOPE_STORE,
+            $scopeCode
+        );
+    }
+
+    /**
+     * This function will check that either Reverse Name format is active or not
+     * @param null $scopeCode
+     * @return mixed
+     */
+    public function getReverseNameFormat($scopeCode = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_FOR_REVERSE_NAME_FORMAT,
             ScopeInterface::SCOPE_STORE,
             $scopeCode
         );

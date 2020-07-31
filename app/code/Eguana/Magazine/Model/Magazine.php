@@ -72,7 +72,6 @@ class Magazine extends AbstractExtensibleModel implements MagazineInterface, Ide
     }
     /**
      * Return unique ID(s) for each object in system
-     *
      * @return string[]
      */
     public function getIdentities()

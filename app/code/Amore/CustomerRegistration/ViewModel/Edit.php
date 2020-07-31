@@ -94,7 +94,7 @@ class Edit extends \Magento\Directory\Block\Data implements ArgumentInterface
             if ($regionObject) {
                 $regionId = $regionObject->getRegionId();
                 $dmCity = $customer->getCustomAttribute('dm_city');
-                if ($dmCity) {
+                if ($dmCity && $regionId) {
                     $cities = $this->cityHelper->getCityData();
                     $regionCities = $cities[$regionId];
                     $dmCityName = $dmCity->getValue();

@@ -23,6 +23,10 @@ class RmaConfiguration
      * Constants
      */
     const XML_GENERAL_PATH_ACTIVE = 'eguanacustomrma/general/active';
+    const XML_GENERAL_PATH_RESOLUTION = 'eguanacustomrma/general/resolution';
+    const XML_GENERAL_PATH_CONDITION = 'eguanacustomrma/general/condition';
+    const XML_GENERAL_PATH_REASON = 'eguanacustomrma/general/reason';
+    const XML_GENERAL_PATH_REASON_OTHER = 'eguanacustomrma/general/reason_other';
 
     /**
      * @var ScopeInterface
@@ -47,6 +51,58 @@ class RmaConfiguration
     {
         return $this->scopeConfig->getValue(
             self::XML_GENERAL_PATH_ACTIVE,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Get Config Value
+     * This Method is used to get rma resolution value
+     * @return int
+     */
+    public function getRmaResolution()
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_GENERAL_PATH_RESOLUTION,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Get Config Value
+     * This Method is used to get rma condition value
+     * @return int
+     */
+    public function getRmaCondition()
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_GENERAL_PATH_CONDITION,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Get Config Value
+     * This Method is used to get rma reason value
+     * @return int
+     */
+    public function getRmaReason()
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_GENERAL_PATH_REASON,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Get Config Value
+     * This Method is used to get rma reason other comment value
+     * @return int
+     */
+    public function getRmaReasonOther()
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_GENERAL_PATH_REASON_OTHER,
             ScopeInterface::SCOPE_STORE
         );
     }

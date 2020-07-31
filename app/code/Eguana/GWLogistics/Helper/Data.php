@@ -17,8 +17,11 @@ class Data extends AbstractHelper
     const XML_PATH_TITLE = 'carriers/gwlogistics/title';
     const XML_PATH_NAME = 'carriers/gwlogistics/name';
     const XML_PATH_SHIPPING_PRICE = 'carriers/gwlogistics/shipping_price';
+    const XML_PATH_SENDER_NAME = 'carriers/gwlogistics/sender_name';
+    const XML_PATH_SENDER_PHONE = 'carriers/gwlogistics/sender_phone';
 
     const XML_PATH_MERCHANT_ID = 'carriers/gwlogistics/merchant_id';
+    const XML_PATH_PLATFORM_ID = 'carriers/gwlogistics/platform_id';
     const XML_PATH_HASH_KEY = 'carriers/gwlogistics/hash_key';
     const XML_PATH_HASH_IV = 'carriers/gwlogistics/hash_iv';
 
@@ -64,6 +67,49 @@ class Data extends AbstractHelper
 
     public function getReverseLogisticsOrderReplyUrl() {
         return $this->_getUrl('eguana_gwlogistics/ReverseOrderStatusNotify', ['_secure' => true]);
+    }
+
+    public function getSenderName()
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_SENDER_NAME,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    public function getSenderPhone()
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_SENDER_PHONE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    public function getPlatformId()
+    {
+        $suffix = $this->productionMode === '1' ? '' : '_sandbox';
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_PLATFORM_ID . $suffix,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    public function getHashKey()
+    {
+        $suffix = $this->productionMode === '1' ? '' : '_sandbox';
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_HASH_KEY . $suffix,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    public function getHashIv()
+    {
+        $suffix = $this->productionMode === '1' ? '' : '_sandbox';
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_HASH_IV . $suffix,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
     }
 
     public function getMerchantId()

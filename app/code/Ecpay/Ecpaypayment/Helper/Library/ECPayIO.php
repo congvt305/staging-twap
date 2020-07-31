@@ -31,7 +31,7 @@ class ECPayIO
         $ch = curl_init();
 
         if (FALSE === $ch) {
-            throw new Exception('curl failed to initialize');
+            throw new \Exception('curl failed to initialize');
         }
 
         curl_setopt($ch, CURLOPT_URL, $ServiceURL);

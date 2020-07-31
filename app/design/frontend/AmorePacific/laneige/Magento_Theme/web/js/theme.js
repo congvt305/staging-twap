@@ -48,6 +48,19 @@ define([
     $('.content.footer  .links.socials').clone().appendTo('#store\\.menu');
     $('.content.header > .header.links').clone().appendTo('#store\\.links');
 
+    var stickyHeader = function () {
+        var scrollTop = $(window).scrollTop();
+        var stickyPageWrapperTop = $('.page-wrapper').offset().top;
+
+        if (scrollTop === 0) {
+            $('.page-header').css('top',stickyPageWrapperTop);
+        }else if(scrollTop <= stickyPageWrapperTop) {
+            $('.page-header').css('top',stickyPageWrapperTop - scrollTop);
+        }else {
+            $('.page-header').css('top',0);
+        }
+    };
+
     var stickyNav = function () {
         if ($('.product.data.items').offset()) {
             $('.product.data.items').removeClass('sticky');
@@ -95,9 +108,12 @@ define([
             });
         }
     };
+
+    stickyHeader();
     stickyNav();
 
     $(window).scroll(function () {
+        stickyHeader();
         stickyNav();
     });
 

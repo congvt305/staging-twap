@@ -20,6 +20,41 @@
                     <label>Enable Extension</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="resolution" translate="label comment" type="select" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Select resolution</label>
+                    <comment>Item resolution for rma</comment>
+                    <validate>required-entry</validate>
+                    <source_model>Eguana\CustomRMA\Model\Config\Source\Resolution</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                </field>
+                <field id="condition" translate="label comment" type="select" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Select condition</label>
+                    <comment>Item condition for rma</comment>
+                    <validate>required-entry</validate>
+                    <source_model>Eguana\CustomRMA\Model\Config\Source\Condition</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                </field>
+                <field id="reason" translate="label comment" type="select" sortOrder="23" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Select reason</label>
+                    <comment>Item reason for rma</comment>
+                    <validate>required-entry</validate>
+                    <source_model>Eguana\CustomRMA\Model\Config\Source\Reason</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                </field>
+                <field id="reason_other" translate="label comment" type="text" sortOrder="24" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Reason comment</label>
+                    <comment>Item reason other comment</comment>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                        <field id="*/*/reason">other</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>

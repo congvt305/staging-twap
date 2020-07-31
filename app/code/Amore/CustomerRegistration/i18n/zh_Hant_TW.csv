@@ -16,8 +16,9 @@ Telephone,電話
 "Get Code","取得驗證碼"
 "Verification code has been sent to your mobile","驗證碼已發送到您的手機"
 "Input 4 digit verification code","輸入4位數驗證碼"
-Verify,校驗
+Verify,驗證
 "Verify Registration","驗證註冊"
+"Code","驗證碼"
 "Address Information","地址信息"
 Address,地址
 "Street Address %1","街道地址%1"

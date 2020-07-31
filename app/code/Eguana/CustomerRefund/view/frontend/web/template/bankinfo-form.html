@@ -5,13 +5,16 @@
         <div class="field field-bank-name required">
             <label for="bank-name" class="label"><span data-bind="i18n: 'Bank Name'"></span></label>
             <div class="control">
-                <input type="text"
-                       class="input-text"
-                       id="bank-name"
-                       name="bank-name"
-                       data-bind="value: value().bank_name"
-                       data-validate="{required:true}"
-                       autocomplete="off"/>
+                <select  name="bank-name"
+                         class="select select-bank"
+                         id="bank-name"
+                         data-validate='{"required": true}'
+                         data-bind="
+                                options: getBankOptions(),
+                                optionsValue: 'value',
+                                optionsText: 'name',
+                                value: value().bank_name">
+                </select>
             </div>
         </div>
         <div class="field field-name required">

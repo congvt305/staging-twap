@@ -8,7 +8,6 @@
       &.mobile,
       &.verification-code {
         .control {
-          overflow: hidden;
           position: relative;
         }
 
@@ -55,6 +54,31 @@
           color: #e82b24;
         }
       }
+    }
+  }
+
+  .customer-account-edit {
+    .checkbox-wrapper .label {
+      width: auto !important;
+
+      & + span {
+        line-height: 24px;
+        margin-left: 15px;
+
+        a {
+          color: @theme__color__secondary;
+
+          &:hover,
+          &:active,
+          &:focus {
+            color: @theme__color__primary-alt;
+          }
+        }
+      }
+    }
+
+    .fieldset.dm-address {
+      margin-bottom: @indent__l !important;
     }
   }
 
@@ -149,7 +173,7 @@
         }
       }
 
-      &.first_name {
+      &.last_name {
         padding-top: @indent__base;
       }
     }
@@ -191,7 +215,7 @@
         }
       }
 
-      &.first_name {
+      &.last_name {
         padding-top: 16px;
       }
     }

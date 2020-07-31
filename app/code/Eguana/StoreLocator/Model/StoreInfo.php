@@ -22,9 +22,17 @@ use Magento\Framework\Model\AbstractExtensibleModel;
  */
 class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, IdentityInterface
 {
+    /**
+     * @var string
+     */
     protected $_eventPrefix = 'stores_info';
 
     const CACHE_TAG = 'stores_info';
+
+    /**
+     * @var string
+     */
+    protected $_cacheTag = 'stores_info';
 
     protected function _construct()
     {
@@ -48,6 +56,16 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
             'email',
             'store_type'
         ];
+    }
+
+    /**
+     * Return unique ID(s) for each object in system
+     *
+     * @return string[]
+     */
+    public function getIdentities()
+    {
+        return [self::CACHE_TAG . '_' . $this->getId(), self::CACHE_TAG . '_' . $this->getId()];
     }
 
     /**
@@ -248,14 +266,6 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
         $this->setData('stores', $storeInfoData['store_id']);
         $this->setData('email', $storeInfoData['email']);
         $this->setData('timing', $storeInfoData['timing']);
-    }
-
-    /**
-     * @return array|string[]
-     */
-    public function getIdentities()
-    {
-        return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
     /**
