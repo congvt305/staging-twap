@@ -12,10 +12,6 @@ namespace Eguana\GWLogistics\Model\Service;
 class CreateReverseLogisticsOrder
 {
     /**
-     * @var \Eguana\GWLogistics\Model\Request\CvsCreateReverseShipmentOrder
-     */
-    private $createReverseShipmentOrderRequest;
-    /**
      * @var \Magento\Rma\Api\Data\TrackInterfaceFactory
      */
     private $trackFactory;
@@ -39,9 +35,18 @@ class CreateReverseLogisticsOrder
      * @var SmsSender
      */
     private $smsSender;
+    /**
+     * @var \Eguana\GWLogistics\Model\Request\UnimartCreateReverseShipmentOrder
+     */
+    private $unimartCreateReverseShipmentOrder;
+    /**
+     * @var \Eguana\GWLogistics\Model\Request\FamiCreateReverseShipmentOrder
+     */
+    private $famiCreateReverseShipmentOrder;
 
     public function __construct(
-        \Eguana\GWLogistics\Model\Request\CvsCreateReverseShipmentOrder $createReverseShipmentOrderRequest,
+        \Eguana\GWLogistics\Model\Request\UnimartCreateReverseShipmentOrder $unimartCreateReverseShipmentOrder,
+        \Eguana\GWLogistics\Model\Request\FamiCreateReverseShipmentOrder $famiCreateReverseShipmentOrder,
         \Magento\Rma\Api\Data\TrackInterfaceFactory $trackFactory,
         \Magento\Rma\Api\TrackRepositoryInterface $trackRepository,
         \Magento\Rma\Api\Data\CommentInterfaceFactory $commentInterfaceFactory,
@@ -49,13 +54,14 @@ class CreateReverseLogisticsOrder
         \Eguana\GWLogistics\Helper\Data $helper,
         \Eguana\GWLogistics\Model\Service\SmsSender $smsSender
     ) {
-        $this->createReverseShipmentOrderRequest = $createReverseShipmentOrderRequest;
         $this->trackFactory = $trackFactory;
         $this->trackRepository = $trackRepository;
         $this->helper = $helper;
         $this->commentInterfaceFactory = $commentInterfaceFactory;
         $this->commentRepository = $commentRepository;
         $this->smsSender = $smsSender;
+        $this->unimartCreateReverseShipmentOrder = $unimartCreateReverseShipmentOrder;
+        $this->famiCreateReverseShipmentOrder = $famiCreateReverseShipmentOrder;
     }
     /**
      * @param \Magento\Rma\Api\Data\RmaInterface $rma
@@ -64,10 +70,17 @@ class CreateReverseLogisticsOrder
     public function process($rma)
     {
         try {
-
-
-            $result = $this->createReverseShipmentOrderRequest->sendRequest($rma);
-
+            $shippingPreference = $rma->getData('shipping_preference');
+            switch ($shippingPreference) {
+                case 'UNIMART':
+                    $result = $this->unimartCreateReverseShipmentOrder->sendRequest($rma);
+                    break;
+                case 'FAMI':
+                    $result = $this->famiCreateReverseShipmentOrder->sendRequest($rma);
+                    break;
+                default:
+                    break;
+            }
             if (isset($result['RtnMerchantTradeNo']) && isset($result['RtnOrderNo']) && $result['RtnOrderNo']) {
                 $this->saveTrack($rma, $result);
                 $this->smsSender->sendSms($rma, $result['RtnOrderNo']);
@@ -78,10 +91,13 @@ class CreateReverseLogisticsOrder
                 ];
                 $this->saveTrack($rma, $result);
                 $this->smsSender->sendSms($rma, $result['RtnOrderNo']);
+            } else {
+                $result = ['ErrorMessage' => 'Could not generate reverse logistics order. Please try again later'];
             }
         } catch (\Exception $e) {
             $result = ['ErrorMessage' => $e->getMessage()];
         }
+
         return $result;
     }
     /**
@@ -96,6 +112,7 @@ class CreateReverseLogisticsOrder
         $track->setRmaEntityId($rma->getEntityId());
         $track->setCarrierCode('gwlogistics');
         $track->setCarrierTitle($this->helper->getCarrierTitle());
+        $track->setMethodCode($rma->getData('shipping_preference'));
         $track->setData('rtn_merchant_trade_no', $result['RtnMerchantTradeNo']);
         $this->trackRepository->save($track);
 

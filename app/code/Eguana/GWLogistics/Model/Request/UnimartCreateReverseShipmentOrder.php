@@ -8,7 +8,7 @@
 
 namespace Eguana\GWLogistics\Model\Request;
 
-class UnimartCreateReverseShipmentOrder extends \Eguana\GWLogistics\Model\Request\CvsCreateReverseShipmentOrder
+class UnimartCreateReverseShipmentOrder extends \Eguana\GWLogistics\Model\Request\AbstractCreateReverseShipmentOrder
 {
     /**
      * @param \Magento\Rma\Api\Data\RmaInterface $rma
@@ -39,5 +39,10 @@ class UnimartCreateReverseShipmentOrder extends \Eguana\GWLogistics\Model\Reques
             'Remark' => '', //todo: need to test if can be empty
             'PlatformID' => $platformId,
         ];
+    }
+
+    protected function _getResult()
+    {
+        return $this->_ecpayLogistics->CreateUnimartB2CReturnOrder();
     }
 }

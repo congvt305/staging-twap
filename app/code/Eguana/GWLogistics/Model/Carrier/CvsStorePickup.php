@@ -254,11 +254,16 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
         if (!$this->result) {
             $this->result = $this->trackFactory->create();
         }
-        if (!is_array($trackings)) {
+        if (!is_array($trackings)) { //R|1596150953
             $trackings = [$trackings];
         }
         foreach ($trackings as $trackingValue) {
-            $responseArr = $this->getGWLTracking($trackingValue);
+            $trackingValue = explode('|', $trackingValue);
+            $isRma = count($trackingValue) > 1 ? true : false;
+            $trackingValue = $isRma ? $trackingValue[1] : $trackingValue[0];
+
+            $responseArr = $isRma ? $this->getReverseGWTracking($trackingValue) : $this->getGWLTracking($trackingValue);
+
             if(count($responseArr) > 0) {
                 $tracking = $this->trackStatusFactory->create();
                 $tracking->setCarrier($this->_code);
@@ -271,7 +276,7 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
                 $error->setCarrier($this->_code);
                 $error->setCarrierTitle($this->getConfigData('title'));
                 $error->setTracking($trackingValue);
-                $error->setErrorMessage(__('There is not tracking info'));
+                $error->setErrorMessage(__('There is no tracking info'));
                 $this->result->append($error);
             }
         }
@@ -296,10 +301,6 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
     private function getReverseGWTracking($trackingValue)
     {
         $resultArr = [];
-        if (!$this->result) {
-            $this->result = $this->trackFactory->create();
-        }
-
         $rtnMerchantTradeNo = $this->findRtnMerchantTradeNo($trackingValue);
             $sortOrder = $this->sortOrderBuilder->setField('created_at')
             ->setDirection('DESC')
@@ -339,10 +340,9 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('track_number', $tracking)
             ->create();
-        $rmatrack = $this->rmaTrackRepository->getList($searchCriteria)->getItems();
+        $rmatracks = $this->rmaTrackRepository->getList($searchCriteria)->getItems();
         /** @var \Magento\Rma\Api\Data\TrackInterface $rmatrack */
-        $rmatrack = reset($rmatrack);
-        $rmaTrackId = $rmatrack->getEntityId(); //todo debug...
+        $rmatrack = reset($rmatracks);
         return $rmatrack->getData('rtn_merchant_trade_no');
     }
 

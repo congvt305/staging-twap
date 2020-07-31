@@ -8,7 +8,7 @@
 
 namespace Eguana\GWLogistics\Model\Request;
 
-class FamiCreateReverseShipmentOrder extends \Eguana\GWLogistics\Model\Request\CvsCreateReverseShipmentOrder
+class FamiCreateReverseShipmentOrder extends \Eguana\GWLogistics\Model\Request\AbstractCreateReverseShipmentOrder
 {
     /**
      * @param \Magento\Rma\Api\Data\RmaInterface $rma
@@ -41,5 +41,10 @@ class FamiCreateReverseShipmentOrder extends \Eguana\GWLogistics\Model\Request\C
             'Cost' => $cost,
             'PlatformID' => $platformId,
         ];
+    }
+
+    protected function _getResult()
+    {
+        return $this->_ecpayLogistics->CreateFamilyB2CReturnOrder();
     }
 }
