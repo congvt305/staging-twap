@@ -9,6 +9,21 @@ define([
     'mage/url',
 ], function (ko, $, Component, quote, cvsLocation,  customer, customerData, urlBuilder) {
     'use strict';
+
+    var openGreenWorkWinow = function () {
+        var gwWin = window.open('about:blank','cvsMapFormGw');
+        var gwForm = document.cvsMapForm;
+        if(gwForm) {
+            gwForm.submit();
+            var timer = setInterval(function () {
+                if (gwWin.closed) {
+                    cvsLocation.selectCvsLocation();
+                    clearInterval(timer);
+                }
+            },500);
+        }
+    };
+
     return Component.extend({
         defaults: {
             merchantId: null,
@@ -44,16 +59,7 @@ define([
             quote.shippingMethod.subscribe(function (data) {
                 this.visible = (data.method_code + '_' + data.carrier_code === 'CVS_gwlogistics');
             }, this);
-
-            $(document).on('visibilitychange', $.proxy(this.onWindowActivated, this));
             return this;
-        },
-
-        onWindowActivated: function () {
-            this.windowActivateCount++;
-            if (this.windowActivateCount % 2 === 0) {
-                this.getSelectedCvsLocation();
-            }
         },
 
         getSelectedCvsLocation: function () {
@@ -66,11 +72,8 @@ define([
         },
 
         openCvsMap: function (cvs) { //todo open window and submit
-            console.log(this.mapUrl);
             this.LogisticsSubType = cvs;
-            window.open('about:blank','cvsMapFormGw');
-            var gwForm = document.cvsMapForm;
-            gwForm.submit();
+            return openGreenWorkWinow.bind(this);
         },
 
         getMapUrl: function () {
@@ -86,6 +89,10 @@ define([
 
         isMobile: function () {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        },
+
+        isInApBrowser: function () {
+            return /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent);
         },
 
         getExtraData: function () {
