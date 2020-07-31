@@ -40,14 +40,20 @@ class Data extends AbstractHelper
      * @var \Eguana\GWLogistics\Model\Lib\EcpayCheckMacValue
      */
     private $ecpayCheckMacValue;
+    /**
+     * @var \Magento\Framework\Encryption\EncryptorInterface
+     */
+    private $encryptor;
 
     public function __construct(
+        \Magento\Framework\Encryption\EncryptorInterface $encryptor,
         \Eguana\GWLogistics\Model\Lib\EcpayCheckMacValue $ecpayCheckMacValue,
         Context $context
     ) {
         parent::__construct($context);
         $this->ecpayCheckMacValue = $ecpayCheckMacValue;
         $this->productionMode = $this->getMode();
+        $this->encryptor = $encryptor;
     }
 
     public function getCarrierTitle() {
@@ -96,18 +102,30 @@ class Data extends AbstractHelper
 
     public function getHashKey()
     {
-        $suffix = $this->productionMode === '1' ? '' : '_sandbox';
+        if ($this->productionMode === '1') {
+            return $this->encryptor->decrypt(
+                $this->scopeConfig->getValue(
+                self::XML_PATH_HASH_KEY,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            ));
+        }
         return $this->scopeConfig->getValue(
-            self::XML_PATH_HASH_KEY . $suffix,
+            self::XML_PATH_HASH_KEY . '_sandbox',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
 
     public function getHashIv()
     {
-        $suffix = $this->productionMode === '1' ? '' : '_sandbox';
+        if ($this->productionMode === '1') {
+            return $this->encryptor->decrypt(
+                $this->scopeConfig->getValue(
+                    self::XML_PATH_HASH_IV,
+                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+                ));
+        }
         return $this->scopeConfig->getValue(
-            self::XML_PATH_HASH_IV . $suffix,
+            self::XML_PATH_HASH_IV . '_sandbox',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
