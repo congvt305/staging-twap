@@ -1858,7 +1858,7 @@ class EcpayLogistics
 //        if (!in_array($Value, $ContentList) && !empty($Value)) {
 //            throw new \Exception('Illegal ' . $Name . '.');
 //        }
-        $this->logger->debug('isLegal', [$Name, $Value]);
+        $this->logger->info('isLegal', [$Name, $Value]);
     }
 
 

@@ -59,12 +59,12 @@ class Index extends Action implements CsrfAwareActionInterface
         $cvsStoreData = $this->getRequest()->getParams();
 
         if (!$cvsStoreData || $this->getRequest()->getMethod() !== 'POST') {
-            $this->logger->debug('isXmlHttpRequest: ', [$this->getRequest()->isXmlHttpRequest()]);
+            $this->logger->info('gwlogistics: isXmlHttpRequest: ', [$this->getRequest()->isXmlHttpRequest()]);
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
         $html = '';
         try {
-            $this->logger->debug('$cvsStoreData: ', $cvsStoreData);
+            $this->logger->info('gwlogistics: $cvsStoreData: ', $cvsStoreData);
             $this->saveQuoteCvsLocation->process($cvsStoreData);
             $html = '<script>window.close();</script>';
         } catch (\Exception $e) {
