@@ -5,6 +5,7 @@
             <general>
                 <active>1</active>
                 <country_code>886</country_code>
+                <name_format>0</name_format>
                 <sender>15886983</sender>
                 <mobile_number_validation_active>1</mobile_number_validation_active>
             </general>
