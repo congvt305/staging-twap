@@ -78,6 +78,7 @@ class CvsCreateShipmentOrder
         //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
         $senderName = $this->helper->getSenderName(); //no space not more than 10.
         $senderPhone = $this->helper->getSenderPhone(); //no space not more than 10.
+        $senderCellPhone = $this->helper->getSenderCellPhone(); //no space not more than 10.
 
         //Character limit is 4-10 characters (Chinese2-5 characters, English 4-10 characters)
         $receiverName = $order->getShippingAddress()->getFirstname() . $order->getShippingAddress()->getLastname();
@@ -93,34 +94,69 @@ class CvsCreateShipmentOrder
 
         //for test, sender name, receiver name receiver phone/cellphone , ReceiverStoreID ReturnStoreID are required....!!
 
+//        $params = [
+//            'MerchantID' => $merchantId,//
+//            'MerchantTradeNo' => $merchantTradeNo,
+//            'MerchantTradeDate' => $merchantTradeDate,//
+//            'LogisticsType' => $logisticsType,//
+//            'LogisticsSubType' => $logisticsSubType,//
+//            'GoodsAmount' => $goodsAmount,//
+//            'CollectionAmount' => 0,
+//            'IsCollection' => EcpayIsCollection::NO,
+//            'GoodsName' => $goodsName,
+//            'SenderName' => $senderName, //
+//            'SenderPhone' => $senderPhone,
+//            'SenderCellPhone' => $senderCellPhone,
+//            'ReceiverName' => $receiverName, //
+//            'ReceiverPhone' => $receiverPhone, //required for c2c
+//            'ReceiverCellPhone' => $receiverPhone,
+//            'ReceiverEmail' => $receiverEmail,
+//            'TradeDesc' => '',
+//            'ServerReplyURL' => $serverReplyURL,//
+//            'ClientReplyURL' => '',
+//            'LogisticsC2CReplyURL' => '',
+//            'Remark' => $remarks,
+//            'PlatformID' => $platformId,
+//        ];
+
         $params = [
-            'MerchantID' => $merchantId,//
-            'MerchantTradeNo' => $merchantTradeNo,
-            'MerchantTradeDate' => $merchantTradeDate,//
-            'LogisticsType' => $logisticsType,//
-            'LogisticsSubType' => $logisticsSubType,//
-            'GoodsAmount' => $goodsAmount,//
+            'MerchantID' => '2000132',
+            'MerchantTradeNo' => 'no' . date('YmdHis'),
+            'MerchantTradeDate' => date('Y/m/d H:i:s'),
+            'LogisticsType' => EcpayLogisticsType::CVS,
+            'LogisticsSubType' => EcpayLogisticsSubType::UNIMART,
+            'GoodsAmount' => 1500,
             'CollectionAmount' => 0,
             'IsCollection' => EcpayIsCollection::NO,
-            'GoodsName' => $goodsName,
-            'SenderName' => $senderName, //
-            'SenderPhone' => $senderPhone,
-            'SenderCellPhone' => '',
-            'ReceiverName' => $receiverName, //
-            'ReceiverPhone' => $receiverPhone, //required for c2c
-            'ReceiverCellPhone' => $receiverPhone,
-            'ReceiverEmail' => $receiverEmail,
-            'TradeDesc' => '',
-            'ServerReplyURL' => $serverReplyURL,//
-            'ClientReplyURL' => '',
-            'LogisticsC2CReplyURL' => '',
-            'Remark' => $remarks,
-            'PlatformID' => $platformId,
+            'GoodsName' => '測試商品',
+            'SenderName' => '測試寄件者',
+            'SenderPhone' => '0226550115',
+            'SenderCellPhone' => '0911222333',
+            'ReceiverName' => '測試收件者',
+            'ReceiverPhone' => '0226550115',
+            'ReceiverCellPhone' => '0933222111',
+            'ReceiverEmail' => 'test_emjhdAJr@test.com.tw',
+            'TradeDesc' => '測試交易敘述',
+            'ServerReplyURL' => $serverReplyURL,
+            'LogisticsC2CReplyURL' => "",
+            'Remark' => '測試備註',
+            'PlatformID' => '',
         ];
 
+        $this->logger->info('gwlogistics | original params for create order', $params);
+        $this->logger->info('gwlogistics | original hashKey for create order', [$hashKey]);
+        $this->logger->info('gwlogistics | original hasIv for create order', [$hashIv]);
+
         try {
-            $this->ecpayLogistics->HashKey = $hashKey;
-            $this->ecpayLogistics->HashIV = $hashIv;
+            $this->ecpayLogistics->SendExtend = [
+                'ReceiverStoreID' => $cvsLocation->getCvsStoreId(),
+                'ReturnStoreID' => $cvsLocation->getCvsStoreId()
+            ];
+//            $this->ecpayLogistics->HashKey = $hashKey;
+//            $this->ecpayLogistics->HashIV = $hashIv;
+            $this->ecpayLogistics->HashKey = '5294y06JbISpM5x9';
+            $this->ecpayLogistics->HashIV = 'v77hoKGq4kWxNNIS';
+
             $this->ecpayLogistics->Send = $params;
             $this->ecpayLogistics->SendExtend = [
                 'ReceiverStoreID' => $receiverStoreID, //cvs store id from map request

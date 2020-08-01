@@ -29,6 +29,7 @@
                 <shipping_price>100</shipping_price>
                 <sender_name>測試寄件者</sender_name>
                 <sender_phone>0226550115</sender_phone>
+                <sender_cell_phone>0933222111</sender_cell_phone>
                 <sort_order>0</sort_order>
                 <active_rma>0</active_rma>
                 <is_online>0</is_online>

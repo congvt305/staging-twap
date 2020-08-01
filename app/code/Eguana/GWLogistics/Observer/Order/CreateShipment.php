@@ -45,13 +45,17 @@ class CreateShipment implements ObserverInterface
 
         //create shipment here
         $state = $invoice->getState();
+        $this->logger->info('gwlogistics | start creating shipment: invoice state ', [$state]);
         if ($state !== 2 || $order->getShippingMethod() !== 'gwlogistics_CVS') {
+            $this->logger->info('gwlogistics | start creating shipment: return state ');
             return;
         }
 
         try {
-            $this->createShipment->process($invoice->getOrder());
+            $this->logger->info('gwlogistics | start creating shipment: order id ', [$order->getId()]);
+            $this->createShipment->process($order);
         } catch (\Exception $e) {
+            $this->logger->critical('gwlogistics | start creating shipment failed: order id ', [$order->getId()]);
             $this->logger->error($e->getMessage());
         }
     }
