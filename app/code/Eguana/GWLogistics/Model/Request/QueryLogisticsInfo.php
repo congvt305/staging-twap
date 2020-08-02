@@ -46,20 +46,20 @@ class QueryLogisticsInfo
      */
     public function sendRequest($allPayLogisticsID)
     {
+        $this->logger->info('gwlogistics | request qeury logsitics start with allpayLogisticsId: ', [$allPayLogisticsID]);
         try {
             $this->ecpayLogistics->HashKey = $this->helper->getHashKey();
             $this->ecpayLogistics->HashIV = $this->helper->getHashIv();
             $this->ecpayLogistics->Send = [
                 'MerchantID' => $this->helper->getMerchantId(),
                 'AllPayLogisticsID' => $allPayLogisticsID, // save this in order!
-                'PlatformID' => $this->helper->getPlatformId()
+                'PlatformID' => $this->helper->getPlatformId() ?? ''
             ];
             /*
              * result:  {"AllPayLogisticsID":"1628869","BookingNote":"","GoodsAmount":"700","GoodsName":"","HandlingCharge":"55","LogisticsStatus":"300","LogisticsType":"CVS_UNIMART","MerchantID":"2000132","MerchantTradeNo":"151_20200729075335","ShipmentNo":"82420176484","TradeDate":"2020/07/29 07:53:35","CheckMacValue":"8E60E658EFA90402DBA1349ED1E42481"}
              */
             $result = $this->ecpayLogistics->QueryLogisticsInfo();
-            $this->logger->debug('GWL query logistics(track) result: ', $result);
-            return $result;
+            return $result; // if result code is 0, then throw exception
         } catch (\Exception $e) {
             $this->logger->critical('GWL query logistics(track) failed');
             $this->logger->critical($e->getMessage());

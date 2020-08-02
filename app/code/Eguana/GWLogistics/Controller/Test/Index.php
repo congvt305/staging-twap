@@ -81,7 +81,7 @@ class Index extends Action
             );
             // BGCreateShippingOrder()
             $Result = $this->ecpayLogistics->BGCreateShippingOrder();
-//            $this->logger->debug('result: ', $Result);
+//            $this->logger->info('result: ', $Result);
             echo '<pre>' . print_r($Result, true) . '</pre>';
         } catch(\Exception $e) {
             echo $e->getMessage();

@@ -70,6 +70,8 @@ class SaveQuoteCvsLocation
     */
     public function process(array $cvsStoreData)
     {
+        $this->logger->info('gwlogistics | cvs store data for a map selection', $cvsStoreData);
+
         $quoteIdString = $cvsStoreData['MerchantTradeNo'] . $cvsStoreData['ExtraData'];
         $quoteId = $this->getQuoteId($quoteIdString);
         try {

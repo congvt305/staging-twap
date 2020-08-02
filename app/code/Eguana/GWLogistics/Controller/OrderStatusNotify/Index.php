@@ -57,7 +57,6 @@ class Index extends Action implements CsrfAwareActionInterface
         $notifyData = $this->getRequest()->getParams();
 
         if (!$notifyData || $this->getRequest()->getMethod() !== 'POST') {
-            $this->logger->debug('isXmlHttpRequest: ', [$this->getRequest()->isXmlHttpRequest()]);
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
         $html = '';
@@ -73,7 +72,7 @@ class Index extends Action implements CsrfAwareActionInterface
 
     private function saveNotifyData(array $notifyData)
     {
-        $this->logger->debug('order status notification from GWLogistics: ', $notifyData);
+        $this->logger->info('order status notification from GWLogistics: ', $notifyData);
         $this->orderStatusNotificationHandler->process($notifyData);
     }
 

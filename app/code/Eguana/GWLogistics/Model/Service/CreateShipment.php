@@ -8,6 +8,8 @@
 
 namespace Eguana\GWLogistics\Model\Service;
 
+use Magento\Framework\Exception\CouldNotSaveException;
+
 class CreateShipment
 {
     /**
@@ -76,17 +78,26 @@ class CreateShipment
      */
     public function process($order)
     {
+        $this->logger->info('gwlogistics | service start for create order', [$order->getId()]);
         // do shipment order create
         // request tracking
         // create shipment
-        $allPayLogisticsID = $this->createShipmentOrder($order);
-        if ($allPayLogisticsID) {
-            $this->allPayLogisticsID = $allPayLogisticsID;
-            $shipmentNo = $this->requestTrackingInfo($allPayLogisticsID);
-        }
-        if ($shipmentNo) {
-            $this->shipmentNo = $shipmentNo;
-            $this->createShipment($order);
+        try {
+            $allPayLogisticsID = $this->createShipmentOrder($order);
+            if ($allPayLogisticsID) {
+                $this->allPayLogisticsID = $allPayLogisticsID;
+                $shipmentNo = $this->requestTrackingInfo($allPayLogisticsID);
+            }
+            if ($shipmentNo) { //만약 실패하면 일단 리턴한다.
+                $this->shipmentNo = $shipmentNo;
+                $this->createShipment($order);
+            } //todo: if not shipment, then do something!! throw exception
+        } catch (\Exception $e) {
+            $this->logger->info('gwlogistics | create order failed', [$e->getMessage()]);
+            throw new CouldNotSaveException(
+                __('An error occurred on the server while saving shipment.'),
+                $e
+            );
         }
     }
 

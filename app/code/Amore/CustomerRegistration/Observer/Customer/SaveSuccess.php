@@ -161,9 +161,13 @@ class SaveSuccess implements ObserverInterface
     {
         try {
             $posOrOnline = 'online';
-            if ($customer->getCustomAttribute('referrer_code')) {
+            /**
+             * @Abbas on the request of client. Now if customer register using bar code even than he can be online or
+             * offline. So if POS have customer information then he will be considered as offline else online
+             */
+            /*if ($customer->getCustomAttribute('referrer_code')) {
                 $posOrOnline = 'pos';
-            }
+            }*/
             if ($posOrOnline == 'online') {
                 $posOrOnline = $customer->getCustomAttribute('imported_from_pos')->getValue() == 1 ? 'pos' : 'online';
             }

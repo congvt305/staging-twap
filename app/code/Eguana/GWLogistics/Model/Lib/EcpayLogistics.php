@@ -297,6 +297,7 @@ class EcpayLogistics
         }
 
         $this->PostParams = $this->GetPostParams($this->Send, $ParamList);
+
         $MinAmount = 1; // 金額下限
         $MaxAmount = 20000; // 金額上限
 
@@ -442,16 +443,16 @@ class EcpayLogistics
 
         // 產生 CheckMacValue
         $this->PostParams['CheckMacValue'] = $this->ecpayCheckMacValue->Generate($this->PostParams, $this->HashKey, $this->HashIV);
-
+        $this->logger->info('gwlogistics | params for create order', $this->PostParams);
         // urlencode
         foreach($this->PostParams as $key => $Value) {
             $this->PostParams[$key] = urlencode($Value);
         }
-
         // 解析回傳結果
         // 正確：1|MerchantID=XXX&MerchantTradeNo=XXX&RtnCode=XXX&RtnMsg=XXX&AllPayLogisticsID=XXX&LogisticsType=XXX&LogisticsSubType=XXX&GoodsAmount=XXX&UpdateStatusDate=XXX&ReceiverName=XXX&ReceiverPhone=XXX&ReceiverCellPhone=XXX&ReceiverEmail=XXX&ReceiverAddress=XXX&CVSPaymentNo=XXX&CVSValidationNo=XXX &CheckMacValue=XXX
         // 錯誤：0|ErrorMessage
         $Feedback = static::ServerPost($this->PostParams, $this->ServiceURL);
+
         $Pieces = explode('|', $Feedback);
         $Result = array();
         $Result['ResCode'] = $Pieces[0];
@@ -462,7 +463,7 @@ class EcpayLogistics
         } else {
             $Result['ErrorMessage'] = $Pieces[1];
         }
-
+        $this->logger->info('gwlogistics | response for create order', $Result);
         return $Result;
     }
 
@@ -683,6 +684,8 @@ class EcpayLogistics
         // 產生 CheckMacValue
         $this->PostParams['CheckMacValue'] = $this->ecpayCheckMacValue->Generate($this->PostParams, $this->HashKey, $this->HashIV);
 
+        $this->logger->info('gwlogistics | params for create reverse order', $this->PostParams);
+
         // 解析回傳結果
         // 正確：RtnMerchantTradeNo | RtnOrderNo
         // 錯誤：|ErrorMessage
@@ -696,6 +699,7 @@ class EcpayLogistics
             $Result['RtnOrderNo'] = $Pieces[1];
         }
 
+        $this->logger->info('gwlogistics | response for reverse create order', $Result);
         return $Result;
     }
 
@@ -1057,6 +1061,7 @@ class EcpayLogistics
 
         // 產生 CheckMacValue
         $this->PostParams['CheckMacValue'] = $this->ecpayCheckMacValue->Generate($this->PostParams, $this->HashKey, $this->HashIV);
+        $this->logger->info('gwlogistics | params for query order', $this->PostParams);
 
         // 解析回傳結果
         // 回應訊息：MerchantID=XXX&MerchantTradeNo=XXX&AllPayLogisticsID=XXX&GoodsAmount=XXX&LogisticsType=XXX&HandlingCharge=XXX&TradeDate=XXX&LogisticsStatus=XXX&GoodsName=XXX &CheckMacValue=XXX
@@ -1064,6 +1069,7 @@ class EcpayLogistics
         $Feedback = static::ServerPost($this->PostParams, $this->ServiceURL);
         parse_str($Feedback, $Result);
 
+        $this->logger->info('gwlogistics | response for query order', $Result);
         return $Result;
     }
 
@@ -1858,7 +1864,7 @@ class EcpayLogistics
 //        if (!in_array($Value, $ContentList) && !empty($Value)) {
 //            throw new \Exception('Illegal ' . $Name . '.');
 //        }
-        $this->logger->debug('isLegal', [$Name, $Value]);
+        $this->logger->info('isLegal', [$Name, $Value]);
     }
 
 

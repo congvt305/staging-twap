@@ -17,6 +17,7 @@ define([
             gwForm.submit();
             var timer = setInterval(function () {
                 if (gwWin.closed) {
+                    console.log('win closed');
                     cvsLocation.selectCvsLocation();
                     clearInterval(timer);
                 }
@@ -96,6 +97,8 @@ define([
         },
 
         getExtraData: function () {
+            console.log('getExtraData');
+            console.log(quote.getQuoteId().substr(12, 20));
             return quote.getQuoteId().substr(12, 20);
         },
 

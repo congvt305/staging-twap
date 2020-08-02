@@ -77,21 +77,6 @@ class SaveAddressPlugin
                 }
                 $extensionAttributes->setCvsLocationId($cvsLocation->getLocationId());
                 $shippingAddress->setExtensionAttributes($extensionAttributes);
-
-
-//                try {
-                    /** @var \Magento\Quote\Model\ResourceModel\Quote\Address\Collection $collection */
-//                    $collection = $this->quoteAddressCollectionFactory->create();
-//                    $collection->addFieldToFilter('quote_id', ['eq' => $cartId]);
-//                    $collection->addFieldToFilter('address_type', ['eq' => 'shipping']);
-//                    $quoteAddress = $collection->load()->getFirstItem();
-//                    $i = $cvsLocation->getLocationId();
-//                    $quoteAddress->setData('cvs_location_id', $cvsLocation->getLocationId());
-//                    $this->quoteAddressResource->save($quoteAddress);
-//                } catch (AlreadyExistsException $e) {
-//                    $this->logger->critical($e->getMessage());
-//                }
-
             }
         }
     }

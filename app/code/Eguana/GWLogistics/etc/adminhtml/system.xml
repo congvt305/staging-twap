@@ -58,6 +58,9 @@
                 <field id="sender_phone" translate="label" type="text" sortOrder="190" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Sender Phone</label>
                 </field>
+                <field id="sender_cell_phone" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Sender Cell Phone</label>
+                </field>
             </group>
         </section>
     </system>
