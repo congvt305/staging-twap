@@ -63,7 +63,6 @@ class Index extends Action implements CsrfAwareActionInterface
         }
         $html = '';
         try {
-            $this->logger->info('gwlogistics | response for map selection', $cvsStoreData);
             $this->saveQuoteCvsLocation->process($cvsStoreData);
             $html = '<script>window.close();</script>';
         } catch (\Exception $e) {

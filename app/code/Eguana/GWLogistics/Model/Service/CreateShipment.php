@@ -78,7 +78,7 @@ class CreateShipment
      */
     public function process($order)
     {
-        $this->logger->info('gwlogistics:'. __METHOD__, $order->getId());
+        $this->logger->info('gwlogistics | service start for create order', [$order->getId()]);
         // do shipment order create
         // request tracking
         // create shipment
@@ -88,10 +88,10 @@ class CreateShipment
                 $this->allPayLogisticsID = $allPayLogisticsID;
                 $shipmentNo = $this->requestTrackingInfo($allPayLogisticsID);
             }
-            if ($shipmentNo) {
+            if ($shipmentNo) { //만약 실패하면 일단 리턴한다.
                 $this->shipmentNo = $shipmentNo;
                 $this->createShipment($order);
-            }
+            } //todo: if not shipment, then do something!! throw exception
         } catch (\Exception $e) {
             $this->logger->info('gwlogistics | create order failed', [$e->getMessage()]);
             throw new CouldNotSaveException(

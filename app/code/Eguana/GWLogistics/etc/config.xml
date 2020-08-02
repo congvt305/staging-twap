@@ -5,9 +5,9 @@
             <gwlogistics>
                 <active>1</active>
                 <merchant_id>2000132</merchant_id>
-                <platform_id>0933222111</platform_id>
+                <platform_id></platform_id>
                 <merchant_id_sandbox>2000132</merchant_id_sandbox>
-                <platform_id_sandbox>0933222111</platform_id_sandbox>
+                <platform_id_sandbox></platform_id_sandbox>
                 <hash_key>5294y06JbISpM5x9</hash_key>
                 <hash_iv>v77hoKGq4kWxNNIS</hash_iv>
                 <hash_key_sandbox>5294y06JbISpM5x9</hash_key_sandbox>
@@ -29,6 +29,7 @@
                 <shipping_price>100</shipping_price>
                 <sender_name>測試寄件者</sender_name>
                 <sender_phone>0226550115</sender_phone>
+                <sender_cell_phone>0933222111</sender_cell_phone>
                 <sort_order>0</sort_order>
                 <active_rma>0</active_rma>
                 <is_online>0</is_online>

@@ -19,6 +19,8 @@ class Data extends AbstractHelper
     const XML_PATH_SHIPPING_PRICE = 'carriers/gwlogistics/shipping_price';
     const XML_PATH_SENDER_NAME = 'carriers/gwlogistics/sender_name';
     const XML_PATH_SENDER_PHONE = 'carriers/gwlogistics/sender_phone';
+    const XML_PATH_SENDER_CELL_PHONE = 'carriers/gwlogistics/sender_cell_phone';
+    const XML_PATH_SENDER_EMAIL = 'carriers/gwlogistics/sender_email';
 
     const XML_PATH_MERCHANT_ID = 'carriers/gwlogistics/merchant_id';
     const XML_PATH_PLATFORM_ID = 'carriers/gwlogistics/platform_id';
@@ -87,6 +89,14 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_SENDER_PHONE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    public function getSenderCellPhone()
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_SENDER_CELL_PHONE,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
