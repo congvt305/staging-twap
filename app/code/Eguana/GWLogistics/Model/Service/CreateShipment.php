@@ -88,7 +88,7 @@ class CreateShipment
                 $this->allPayLogisticsID = $allPayLogisticsID;
                 $shipmentNo = $this->requestTrackingInfo($allPayLogisticsID);
             }
-            if ($shipmentNo) {
+            if ($shipmentNo) { //만약 실패하면 일단 리턴한다.
                 $this->shipmentNo = $shipmentNo;
                 $this->createShipment($order);
             } //todo: if not shipment, then do something!! throw exception
