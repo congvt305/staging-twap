@@ -497,7 +497,7 @@ class Payment extends AbstractMethod
         $ecpay_invoice->Send['CarruerType'] = '';
         $ecpay_invoice->Send['CarruerNum'] = '';
         $ecpay_invoice->Send['TaxType'] = 1;
-        $ecpay_invoice->Send['SalesAmount'] = $order->getGrandTotal() - $order->getShippingAmount();
+        $ecpay_invoice->Send['SalesAmount'] = intval($order->getGrandTotal()) - intval($order->getShippingAmount());
         $ecpay_invoice->Send['InvoiceRemark'] = 'v1.0.190822';
         $ecpay_invoice->Send['InvType'] = '07';
         $ecpay_invoice->Send['vat'] = '';
