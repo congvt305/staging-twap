@@ -38,6 +38,12 @@ class Config
 
     const SAP_RMA_ENABLE_XML_PATH = 'sap/general/rma';
 
+    const SAP_PRODUCT_STOCK_ENABLE_XML_PATH = 'sap/general/product_stock';
+
+    const SAP_PRODUCT_INFO_ENABLE_XML_PATH = 'sap/general/product_info';
+
+    const SAP_PRODUCT_PRICE_ENABLE_XML_PATH = 'sap/general/product_price';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -131,5 +137,20 @@ class Config
     public function getRmaActiveCheck($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::SAP_RMA_ENABLE_XML_PATH, $type, $storeId);
+    }
+
+    public function getProductStockActiveCheck($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::SAP_PRODUCT_STOCK_ENABLE_XML_PATH, $type, $storeId);
+    }
+
+    public function getProductInfoActiveCheck($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::SAP_PRODUCT_INFO_ENABLE_XML_PATH, $type, $storeId);
+    }
+
+    public function getProductPriceActiveCheck($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::SAP_PRODUCT_PRICE_ENABLE_XML_PATH, $type, $storeId);
     }
 }
