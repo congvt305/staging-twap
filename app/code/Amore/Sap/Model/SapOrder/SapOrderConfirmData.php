@@ -411,7 +411,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     // 상품이 무상제공인 경우 Y 아니면 N
                     'itemFgflg' => $orderItem->getPrice() == 0 ? 'Y' : 'N',
                     'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
-                    'itemAuart' => $orderItem->getPrice() == 0 ? self::SAMPLE_ORDER : self::NORMAL_ORDER,
+                    'itemAuart' => self::NORMAL_ORDER,
                     'itemAugru' => '',
                     'itemNetwr' => $itemGrandTotal,
                     'itemMwsbp' => $configurableCheckedItem->getTaxAmount(),
