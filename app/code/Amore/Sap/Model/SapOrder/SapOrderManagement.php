@@ -300,7 +300,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                 if ($rma->getStatus() == 'authorized') {
                     try {
                         $this->rmaChangeToReceived($rma);
-                        $message = "Rma status changed to received Successfully.";
+                        $message = "Rma " . $orderStatusData['odrno'] . " status changed to received Successfully.";
                         $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
                     } catch (LocalizedException $exception) {
                         $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
@@ -330,7 +330,11 @@ class SapOrderManagement implements SapOrderManagementInterface
                         if (empty($shipmentId)) {
                             $message = "Could not create shipment.";
                             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-                            // case to create shipment successfully
+
+                            $order->setData('sap_response', $message);
+                            $this->orderRepository->save($order);
+
+                        // case to create shipment successfully
                         } else {
                             try {
                                 $this->setQtyShipToOrderItem($order);
@@ -632,7 +636,8 @@ class SapOrderManagement implements SapOrderManagementInterface
         foreach ($rmaItemCollection as $rmaItem) {
             $itemData[$rmaItem->getEntityId()] = [
                 'qty_returned' => $rmaItem->getQtyAuthorized(),
-                'status' => 'received',
+                'qty_approved' => $rmaItem->getQtyAuthorized(),
+                'status' => 'approved',
                 'order_item_id' => $rmaItem->getOrderItemId(),
                 'entity_id' => $rmaItem->getEntityId(),
                 'resolution' => $rmaItem->getResolution()
