@@ -71,4 +71,8 @@
         <plugin name="eguana_gwlogistics_set_rma_traking_number"
                 type="Eguana\GWLogistics\Plugin\Rma\ShippingPlugin" sortOrder="10"/>
     </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Handler\State">
+        <plugin name="eguana_gwlogistics_set_order_status"
+                type="Eguana\GWLogistics\Plugin\Sales\OrderStatePlugin" sortOrder="10"/>
+    </type>
 </config>
