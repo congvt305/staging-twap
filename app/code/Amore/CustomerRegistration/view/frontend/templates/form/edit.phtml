@@ -163,21 +163,7 @@ $viewModel = $block->getData('view_model');
         </div>
     </div>
 </form>
-<script>
-    require([
-        'jquery',
-        'mage/mage'
-    ], function($){
 
-        $('.customer-submit').on('click', function (event) {
-
-            if ($('#region_id option:selected').val()) {
-                var selectedRegion = $('#region_id option:selected').text();
-                $('#dm_state').val(selectedRegion);
-            }
-        });
-    });
-</script>
 <script>
     require([
         "jquery",
@@ -236,6 +222,10 @@ $viewModel = $block->getData('view_model');
                 "cityJson": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityJson() ?>,
                 "defaultRegion": "<?= $viewModel->getCustomerDMStateRegionId($block->getCustomer()); ?>",
                 "defaultCity": "<?= $viewModel->getCustomerDMCityId($block->getCustomer()); ?>"
+            }
+        },
+        "*": {
+            "editform":{
             }
         }
 
