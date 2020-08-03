@@ -122,6 +122,11 @@
                 margin-top: @indent__s;
             }
         }
+
+        &.country,
+        &[name*="country_id"] {
+            display: none !important;
+        }
     }
 
     .fieldset {
