@@ -12,14 +12,19 @@ define([
 
     var openGreenWorkWinow = function () {
         window.open('about:blank','cvsMapFormGw');
-        var gwForm = document.cvsMapForm;
+        var gwForm = document.cvsMapForm,
+            windowActivateCount = 0;
         if(gwForm) {
             gwForm.submit();
-            var timer = setInterval(function () {
-                    console.log('timer');
+            document.addEventListener('visibilitychange', fetchCvsLocation, false);
+        }
+        function fetchCvsLocation() {
+                windowActivateCount++;
+                if (windowActivateCount % 2 === 0) {
+                    console.log('visibility changed');
                     cvsLocation.selectCvsLocation();
-                    clearInterval(timer);
-            },1000);
+                    document.removeEventListener('visibilitychange', fetchCvsLocation, false);
+                }
         }
     };
 
