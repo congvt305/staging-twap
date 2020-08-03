@@ -48,7 +48,14 @@ class CreateShipment
      * @var \Psr\Log\LoggerInterface
      */
     private $logger;
+    /**
+     * @var string
+     */
     private $allPayLogisticsID;
+    /**
+     * @var string
+     */
+    private $shipmentNo;
 
     public function __construct(
         \Eguana\GWLogistics\Model\Request\QueryLogisticsInfo $queryTransactionInfoRequest,

@@ -11,17 +11,15 @@ define([
     'use strict';
 
     var openGreenWorkWinow = function () {
-        var gwWin = window.open('about:blank','cvsMapFormGw');
+        window.open('about:blank','cvsMapFormGw');
         var gwForm = document.cvsMapForm;
         if(gwForm) {
             gwForm.submit();
             var timer = setInterval(function () {
-                if (gwWin.closed) {
-                    console.log('win closed');
+                    console.log('timer');
                     cvsLocation.selectCvsLocation();
                     clearInterval(timer);
-                }
-            },500);
+            },1000);
         }
     };
 
