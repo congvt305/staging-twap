@@ -13,7 +13,7 @@ class ShippingMethod extends \Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\General\S
 {
     public function canShowReverseLogisticsOrderGenerationButton()
     {
-        return true;
+       return  ($this->getShipment()->getTrackNumber() === NULL);
     }
 
     /**
