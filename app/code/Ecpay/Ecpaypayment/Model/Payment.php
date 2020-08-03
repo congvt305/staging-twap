@@ -521,8 +521,8 @@ class Payment extends AbstractMethod
             $ecpay_invoice->Invoice_Method = 'INVOICE_VOID';
             $ecpay_invoice->Invoice_Url = $this->getInvoiceApiUrl($storeId) . 'IssueInvalid';
             $ecpay_invoice->MerchantID = $this->getEcpayConfig("merchant_id");
-            $ecpay_invoice->HashKey = $this->getEcpayConfig("invoice/ecpay_invoice_hash_key");
-            $ecpay_invoice->HashIV = $this->getEcpayConfig("invoice/ecpay_invoice_hash_iv");
+            $ecpay_invoice->HashKey = $this->getEInvoiceConfig("invoice/ecpay_invoice_hash_key", $storeId);
+            $ecpay_invoice->HashIV = $this->getEInvoiceConfig("invoice/ecpay_invoice_hash_iv", $storeId);
 
             // 3.寫入發票相關資訊
             $additionalData = $payment->getAdditionalData();
