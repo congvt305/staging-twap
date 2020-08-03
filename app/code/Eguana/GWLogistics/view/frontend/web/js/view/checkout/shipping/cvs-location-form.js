@@ -92,8 +92,8 @@ define([
 
         openCvsMap: function (cvs) { //todo open window and submit
             this.LogisticsSubType = cvs;
-            // return openGreenWorldWindow.bind(this);
-            return openGreenWorldChildWindow.bind(this);
+            return openGreenWorldWindow.bind(this);
+            // return openGreenWorldChildWindow.bind(this);
         },
 
         getMapUrl: function () {
