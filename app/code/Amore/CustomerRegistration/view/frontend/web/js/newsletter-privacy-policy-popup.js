@@ -6,18 +6,18 @@ define(
     ], function($, modal) {
     'use strict';
 
-    var modaloption = {
+    /*var modaloption = {
         type: 'popup',
         modalClass: 'modal-popup',
         responsive: true,
         innerScroll: true,
         clickableOverlay: true
-    };
+    };*/
 
     return function(config, element) {
         $( document ).ready(function() {
 
-            $('#is_subscribed-read-policy').on('click', function (e) {
+           /* $('#is_subscribed-read-policy').on('click', function (e) {
                 e.preventDefault();
                 var privacyPolicyPopupSelector = '.news-letter-policy-popup';
                 var privacyPolicyLabelSelector = '.news-letter-policy-label';
@@ -45,7 +45,7 @@ define(
                     }
                 ]
                 $(privacyPolicyPopupSelector).modal(modaloption).modal('openModal');
-            });
+            });*/
         });
 
     };

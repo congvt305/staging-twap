@@ -6,13 +6,13 @@ define(
     ], function($, modal) {
     'use strict';
 
-    var modaloption = {
+    /*var modaloption = {
         type: 'popup',
         modalClass: 'modal-popup',
         responsive: true,
         innerScroll: true,
         clickableOverlay: true
-    };
+    };*/
 
     return function(config, element) {
         $( document ).ready(function() {
@@ -44,7 +44,7 @@ define(
                     $('#dm_state').val(selectedRegion);
                 }
             });
-            $("#"+config.attributeCode+'-read-policy').on('click', function (e) {
+           /* $("#"+config.attributeCode+'-read-policy').on('click', function (e) {
                 e.preventDefault();
                 var privacyPolicyPopupSelector = '.'+config.attributeCode+'-policy-popup';
                 var privacyPolicyLabelSelector = '.'+config.attributeCode+'-label';
@@ -80,7 +80,7 @@ define(
                     }
                 ]
                 $(privacyPolicyPopupSelector).modal(modaloption).modal('openModal');
-            });
+            });*/
         });
 
     };
