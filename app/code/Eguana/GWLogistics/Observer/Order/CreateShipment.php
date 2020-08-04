@@ -42,22 +42,22 @@ class CreateShipment implements ObserverInterface
         $invoice = $observer->getEvent()->getData('invoice');
         /** @var \Magento\Sales\Model\Order $order */
         $order = $invoice->getOrder();
+        $this->logger->info('gwlogistics | event sales_order_invoice_pay fired: order id ', [$order->getId()]);
 
         //create shipment here
-        $state = $invoice->getState();
-        $this->logger->info('gwlogistics | start creating shipment: invoice state ', [$state]);
-        if ($state !== 2 || $order->getShippingMethod() !== 'gwlogistics_CVS') {
-            $this->logger->info('gwlogistics | start creating shipment: return state ');
-            return;
-        }
-
-        try {
-            $this->logger->info('gwlogistics | start creating shipment: order id ', [$order->getId()]);
-            $this->createShipment->process($order);
-        } catch (\Exception $e) {
-            $this->logger->critical('gwlogistics | start creating shipment failed: order id ', [$order->getId()]);
-            $this->logger->error($e->getMessage());
-        }
+//        $state = $invoice->getState();
+//        if ($state !== 2 || $order->getShippingMethod() !== 'gwlogistics_CVS') {
+//            $this->logger->info('gwlogistics | start creating shipment: return state ');
+//            return;
+//        }
+//
+//        try {
+//            $this->logger->info('gwlogistics | start creating shipment: order id ', [$order->getId()]);
+//            $this->createShipment->process($order);
+//        } catch (\Exception $e) {
+//            $this->logger->critical('gwlogistics | start creating shipment failed: order id ', [$order->getId()]);
+//            $this->logger->error($e->getMessage());
+//        }
     }
 
 }
