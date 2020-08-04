@@ -28,6 +28,7 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\StoreManagerInterface;
 use Eguana\StoreLocator\Model\StoreInfo as StoreInfoModel;
+use Magento\Framework\DataObject\IdentityInterface;
 
 /**
  * InfoList block
@@ -35,7 +36,7 @@ use Eguana\StoreLocator\Model\StoreInfo as StoreInfoModel;
  * Class InfoList
  *  Eguana\StoreLocator\Block
  */
-class InfoList extends Template
+class InfoList extends Template implements IdentityInterface
 {
     /**
      * @var $storeInfoCollection
