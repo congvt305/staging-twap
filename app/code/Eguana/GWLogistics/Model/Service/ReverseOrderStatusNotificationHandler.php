@@ -85,8 +85,8 @@ class ReverseOrderStatusNotificationHandler
 
         if (isset($notificationData['CheckMacValue'])) {
             try {
-                $validated = $this->dataHelper->validateCheckMackValue($notificationData['CheckMacValue']);
-                if ($validated) {
+                $validated = $this->dataHelper->validateCheckMackValue($notificationData);
+                if (!$validated) {
                     return false;
                 }
             } catch (\Exception $e) {
