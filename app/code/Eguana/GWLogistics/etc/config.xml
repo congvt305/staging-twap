@@ -4,12 +4,12 @@
         <carriers>
             <gwlogistics>
                 <active>1</active>
-                <merchant_id>2000132</merchant_id>
+                <merchant_id></merchant_id>
                 <platform_id></platform_id>
+                <hash_key></hash_key>
+                <hash_iv></hash_iv>
                 <merchant_id_sandbox>2000132</merchant_id_sandbox>
                 <platform_id_sandbox></platform_id_sandbox>
-                <hash_key>5294y06JbISpM5x9</hash_key>
-                <hash_iv>v77hoKGq4kWxNNIS</hash_iv>
                 <hash_key_sandbox>5294y06JbISpM5x9</hash_key_sandbox>
                 <hash_iv_sandbox>v77hoKGq4kWxNNIS</hash_iv_sandbox>
                 <map_url>https://logistics.ecpay.com.tw/Express/map</map_url>
