@@ -14,11 +14,19 @@ $viewModel = $block->getData('view_model');
         <?= $block->getBlockHtml('formkey') ?>
         <legend class="legend"><span><?= $block->escapeHtml(__('Account Information')) ?></span></legend><br>
         <?= $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Name::class)->setObject($block->getCustomer())->toHtml() ?>
+        <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class)  ?>
+        <?php if ($_dob->isEnabled() && $block->getCustomer()->getDob()) : ?>
+        <div class="field dob">
+            <label class="label"><span><?= $block->escapeHtml(__('Date of Birth')); ?></span></label>
+            <div class="control customer-dob">
+                <span><?= $block->escapeHtml($block->getCustomer()->getDob()); ?></span>
+            </div>
+        </div>
+        <?php endif ?>
 
-        <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
         <?php $_taxvat = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Taxvat::class) ?>
         <?php $_gender = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Gender::class) ?>
-        <?php if ($_dob->isEnabled()) : ?>
+        <?php if ($_dob->isEnabled() && !$block->getCustomer()->getDob()) : ?>
             <?= $_dob->setDate($block->getCustomer()->getDob())->toHtml() ?>
         <?php endif ?>
         <?php if ($_taxvat->isEnabled()) : ?>
