@@ -5,4 +5,7 @@
     <event name="sales_order_invoice_pay">
         <observer name="eguana_gwlogistics_create_shipment" instance="Eguana\GWLogistics\Observer\Order\CreateShipment"/>
     </event>
+    <event name="checkout_submit_all_after">
+        <observer name="eguana_gwlogistics_create_shipment_test" instance="Eguana\GWLogistics\Observer\Order\CreateShipmentTest"/>
+    </event>
 </config>
