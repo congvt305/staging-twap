@@ -3,7 +3,15 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-  .form-create-account-pos {
+    .form-edit-account {
+        .field-mobile-number {
+            .label {
+                font-weight: bold;
+                font-size: 1.6rem;
+            }
+        }
+    }
+    .form-create-account-pos {
     .field {
       &.mobile,
       &.verification-code {
@@ -96,6 +104,11 @@
   }
 
   .form-create-account {
+    .field.choice.newsletter {
+      display: inline-block;
+      width: 100%;
+    }
+
     .checkbox-wrapper {
       display: inline-block;
       margin-right: 24px;
