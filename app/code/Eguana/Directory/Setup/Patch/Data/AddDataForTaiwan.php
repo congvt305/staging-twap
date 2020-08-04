@@ -160,7 +160,7 @@ class AddDataForTaiwan implements DataPatchInterface
                 ['314','北埔鄉'],
                 ['315','峨眉鄉'],
             ]],
-            ['TW', 'T007','新北市',[
+            ['TW', 'T007','桃園市',[
                 ['320','中壢區'],
                 ['324','平鎮區'],
                 ['325','龍潭區'],

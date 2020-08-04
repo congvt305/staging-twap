@@ -99,8 +99,8 @@ class Create extends \Magento\Backend\App\Action
                 } else {
                     $this->messageManager->addErrorMessage(array_key_first($response));
                 }
-            } else {
-                $this->messageManager->addErrorMessage($result['ResMsg']);
+            } elseif (isset($result['ResCode']) && $result['ResCode'] === '0' && isset($result['ErrorMessage'])) { // {"ResCode":"0","ErrorMessage":"門市不存在，請重新選擇取貨門市"}
+                $this->messageManager->addErrorMessage($result['ErrorMessage']);
             }
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
