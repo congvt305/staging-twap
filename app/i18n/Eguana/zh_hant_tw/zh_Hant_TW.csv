@@ -887,7 +887,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Country","國家",module,Magento_Backend
 "Region/State","地區／國家",module,Magento_Backend
 "ZIP/Postal Code","郵遞區號",module,Magento_Backend
-"City","城市",module,Magento_Backend
+"City","行政區",module,Magento_Backend
 "Street Address","街道地址",module,Magento_Backend
 "Street Address Line 2","次行地址",module,Magento_Backend
 "VAT Number","增值稅號",module,Magento_Backend
@@ -1470,8 +1470,8 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Last Name","姓氏",module,Magento_Braintree
 "Company","公司",module,Magento_Braintree
 "Address","位址",module,Magento_Braintree
-"City","城市",module,Magento_Braintree
-"State/Province","州/省",module,Magento_Braintree
+"City","行政區",module,Magento_Braintree
+"State/Province","城市",module,Magento_Braintree
 "Please select region, state or province","請選擇地區、 州或省",module,Magento_Braintree
 "Zip/Postal Code","郵政編碼",module,Magento_Braintree
 "Submit","提交",module,Magento_Braintree
@@ -3203,9 +3203,9 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 ",module,Magento_CatalogWidget
 "Shopping Cart","購物車",module,Magento_Checkout
 "Invalid method: %1","Invalid method: %1",module,Magento_Checkout
-"City","城市",module,Magento_Checkout
+"City","行政區",module,Magento_Checkout
 "Country","國家",module,Magento_Checkout
-"State/Province","州/省",module,Magento_Checkout
+"State/Province","城市",module,Magento_Checkout
 "Zip/Postal Code","郵政編碼",module,Magento_Checkout
 "My Cart (1 item)","My Cart (1 item)",module,Magento_Checkout
 "My Cart (%1 items)","My Cart (%1 items)",module,Magento_Checkout
@@ -3877,9 +3877,9 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Re-seller ID","Re-seller ID",module,Magento_Company
 "Legal Address","Legal Address",module,Magento_Company
 "Street Address","街道地址",module,Magento_Company
-"City","城市",module,Magento_Company
+"City","行政區",module,Magento_Company
 "Country","國家",module,Magento_Company
-"State/Province","州/省",module,Magento_Company
+"State/Province","城市",module,Magento_Company
 "Please select a region, state or province.","請選擇一個地區，州或省。",module,Magento_Company
 "ZIP/Postal Code","郵遞區號",module,Magento_Company
 "Phone Number","電話號碼",module,Magento_Company
@@ -5033,6 +5033,7 @@ new products will be created. Use this step to customize images and price for yo
 "Change Billing Address","更改帳單地址",module,Magento_Customer
 "Change Shipping Address","改變收貨地址",module,Magento_Customer
 "You have no default shipping address in your address book.","您的通訊錄中沒有默認的送貨地址。",module,Magento_Customer
+"You have no default billing address in your address book.","您的通訊錄中沒有默認的帳單地址。",module,Magento_Customer
 "Additional Address Entries","附加地址條目",module,Magento_Customer
 "Delete Address","刪除地址",module,Magento_Customer
 "You have no other address entries in your address book.","您的地址簿中沒有其他地址條目。",module,Magento_Customer
@@ -5041,8 +5042,8 @@ new products will be created. Use this step to customize images and price for yo
 "Street Address","街道地址",module,Magento_Customer
 "Street Address %1","街道地址 %1",module,Magento_Customer
 "VAT Number","增值稅號",module,Magento_Customer
-"City","城市",module,Magento_Customer
-"State/Province","州/省",module,Magento_Customer
+"City","行政區",module,Magento_Customer
+"State/Province","城市",module,Magento_Customer
 "Please select a region, state or province.","請選擇一個地區，州或省。",module,Magento_Customer
 "Zip/Postal Code","郵政編碼",module,Magento_Customer
 "Country","國家",module,Magento_Customer
@@ -5530,8 +5531,8 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Street Address","街道地址",module,Magento_CustomerCustomAttributes
 "Street Address %1","街道地址 %1",module,Magento_CustomerCustomAttributes
 "VAT Number","增值稅號",module,Magento_CustomerCustomAttributes
-"City","城市",module,Magento_CustomerCustomAttributes
-"State/Province","州/省",module,Magento_CustomerCustomAttributes
+"City","行政區",module,Magento_CustomerCustomAttributes
+"State/Province","城市",module,Magento_CustomerCustomAttributes
 "Please select a region, state or province.","請選擇一個地區，州或省。",module,Magento_CustomerCustomAttributes
 "Zip/Postal Code","郵政編碼",module,Magento_CustomerCustomAttributes
 "Country","國家",module,Magento_CustomerCustomAttributes
@@ -5767,7 +5768,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Phone","電話",module,Magento_CustomerSegment
 "ZIP","ZIP",module,Magento_CustomerSegment
 "Country","國家",module,Magento_CustomerSegment
-"State/Province","州/省",module,Magento_CustomerSegment
+"State/Province","城市",module,Magento_CustomerSegment
 "Customer Since","Customer Since",module,Magento_CustomerSegment
 "View Combined Report","View Combined Report",module,Magento_CustomerSegment
 "Set","Set",module,Magento_CustomerSegment
@@ -5975,7 +5976,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Content Type (Non Domestic)","Content Type (Non Domestic)",module,Magento_Dhl
 "Documents Allowed Methods","Documents Allowed Methods",module,Magento_Dhl
 "Non Documents Allowed Methods","Non Documents Allowed Methods",module,Magento_Dhl
-"State/Province","州/省",module,Magento_Directory
+"State/Province","城市",module,Magento_Directory
 "--Please Select--","-請選擇-",module,Magento_Directory
 "lbs","磅",module,Magento_Directory
 "kgs","公斤",module,Magento_Directory
@@ -6457,7 +6458,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Country","國家",module,Magento_Email
 "Region/State","地區／國家",module,Magento_Email
 "Zip/Postal Code","郵政編碼",module,Magento_Email
-"City","城市",module,Magento_Email
+"City","行政區",module,Magento_Email
 "Street Address 1","街道地址 1",module,Magento_Email
 "Street Address 2","街道地址 2",module,Magento_Email
 "Street Address 3","街道地址 3",module,Magento_Email
@@ -7027,7 +7028,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "New Address","新地址",module,Magento_GiftRegistry
 "Edit Gift Registry","編輯禮物註冊表",module,Magento_GiftRegistry
 "Create Gift Registry","創建禮物註冊表",module,Magento_GiftRegistry
-"State/Province","州/省",module,Magento_GiftRegistry
+"State/Province","城市",module,Magento_GiftRegistry
 "Please select a region, state or province","請選擇一個地區，州或省。",module,Magento_GiftRegistry
 "Please Select","請選擇",module,Magento_GiftRegistry
 "View Gift Registry %1","View Gift Registry %1",module,Magento_GiftRegistry
@@ -7149,7 +7150,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Address","位址",module,Magento_GiftRegistry
 "Street Address","街道地址",module,Magento_GiftRegistry
 "Street Address %1","街道地址 %1",module,Magento_GiftRegistry
-"City","城市",module,Magento_GiftRegistry
+"City","行政區",module,Magento_GiftRegistry
 "Please select a region, state or province.","請選擇一個地區，州或省。",module,Magento_GiftRegistry
 "Zip/Postal Code","郵政編碼",module,Magento_GiftRegistry
 "Country","國家",module,Magento_GiftRegistry
@@ -11687,8 +11688,8 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Use Store Address","Use Store Address",module,Magento_Rma
 "Contact Name","Contact Name",module,Magento_Rma
 "Street Address","街道地址",module,Magento_Rma
-"City","城市",module,Magento_Rma
-"State/Province","州/省",module,Magento_Rma
+"City","行政區",module,Magento_Rma
+"State/Province","城市",module,Magento_Rma
 "ZIP/Postal Code","郵遞區號",module,Magento_Rma
 "Country","國家",module,Magento_Rma
 "Enabled","啟用",module,Magento_Rma
@@ -12216,13 +12217,13 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 """Creditmemo Document Validation Error(s):\n"" .","""Creditmemo Document Validation Error(s):\n"" .",module,Magento_Sales
 "Could not save a Creditmemo, see error log for details","Could not save a Creditmemo, see error log for details",module,Magento_Sales
 "We cannot determine the field name.","We cannot determine the field name.",module,Magento_Sales
-"City","城市",module,Magento_Sales
+"City","行政區",module,Magento_Sales
 "Company","公司",module,Magento_Sales
 "Country","國家",module,Magento_Sales
 "Email","電子郵件",module,Magento_Sales
 "First Name","名字",module,Magento_Sales
 "Last Name","姓氏",module,Magento_Sales
-"State/Province","州/省",module,Magento_Sales
+"State/Province","城市",module,Magento_Sales
 "Street Address","街道地址",module,Magento_Sales
 "Phone Number","電話號碼",module,Magento_Sales
 "Zip/Postal Code","郵政編碼",module,Magento_Sales
@@ -12428,10 +12429,10 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Credit memo for your %store_name order","您的貸項通知單 %store_name 訂購",module,Magento_Sales
 "%name,","%name,",module,Magento_Sales
 "Thank you for your order from %store_name.","感謝您對我們的支持。%store_name。",module,Magento_Sales
-"You can check the status of your order by <a href=""%account_url"">logging into your account</a>.","立即<a href=""%account_url"">登入帳戶</a>，可查看最新訂單狀態 。",module,Magento_Sales
-"If you have questions about your order, you can email us at <a href=""mailto:%store_email"">%store_email</a>","如果您對訂單有疑問，可透過<a href=""mailto:%store_email"">%store_email</a>與我們聯繫。",module,Magento_Sales
-"or call us at <a href=""tel:%store_phone"">%store_phone</a>","or call us at <a href=""tel:%store_phone"">%store_phone</a>",module,Magento_Sales
-"Our hours are <span class=""no-link"">%store_hours</span>.","Our hours are <span class=""no-link"">%store_hours</span>.",module,Magento_Sales
+"You can check the status of your order by <a href=""%account_url"">logging into your account</a>.","也可立即登入帳戶至 <a href=""%account_url"">「訂單查詢」</a>, 瀏覽最新的訂購狀態。",module,Magento_Sales
+"If you have questions about your order, you can email us at <a href=""mailto:%store_email"">%store_email</a>","如果您對訂單有任何問題時,可透過<a href=""mailto:%store_email"">%store_email</a>與我們連繫",module,Magento_Sales
+"or call us at <a href=""tel:%store_phone"">%store_phone</a>","或可撥打客戶服務團隊 (免費電話)：<a href=""tel:%store_phone"">%store_phone</a>",module,Magento_Sales
+"Our hours are <span class=""no-link"">%store_hours</span>.","(辦公時間：<span class=""no-link"">%store_hours</span>)",module,Magento_Sales
     "Your Credit Memo #%creditmemo_id for Order #%order_id","您的貸項通知單 #%creditmemo_id 訂購 #%order_id",module,Magento_Sales
 "Billing Info","Billing Info",module,Magento_Sales
 "Shipping Info","Shipping Info",module,Magento_Sales
@@ -12442,7 +12443,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Update to your %store_name invoice","Update to your %store_name invoice",module,Magento_Sales
 "Your %store_name order confirmation","您的 %store_name 訂單確認",module,Magento_Sales
 "%customer_name,","%customer_name,",module,Magento_Sales
-"Once your package ships we will send you a tracking number.","Once your package ships we will send you a tracking number.",module,Magento_Sales
+"Once your package ships we will send you a tracking number.","訂購完成後, 系統會將您訂購的清單明細寄發至您的信箱中。",module,Magento_Sales
 "Your Order <span class=""no-link"">#%increment_id</span>","你的訂單 <span class=""no-link"">#%increment_id</span>",module,Magento_Sales
 "Placed on <span class=""no-link"">%created_at</span>","Placed on <span class=""no-link"">%created_at</span>",module,Magento_Sales
 "Once your package ships we will send an email with a link to track your order.","您將在包裹寄出後收到一封電子郵件，您可透過郵件中的訂單連結查詢最新訂單狀態。",module,Magento_Sales
@@ -13416,7 +13417,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "ID","編號",module,Magento_SharedCatalog
 "Company","公司",module,Magento_SharedCatalog
 "Country","國家",module,Magento_SharedCatalog
-"State/Province","州/省",module,Magento_SharedCatalog
+"State/Province","城市",module,Magento_SharedCatalog
 "Assigned","Assigned",module,Magento_SharedCatalog
 "Catalog","目錄",module,Magento_SharedCatalog
 "Action","操作",module,Magento_SharedCatalog
@@ -13630,7 +13631,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Country","國家",module,Magento_Shipping
 "Region/State","地區／國家",module,Magento_Shipping
 "ZIP/Postal Code","郵遞區號",module,Magento_Shipping
-"City","城市",module,Magento_Shipping
+"City","行政區",module,Magento_Shipping
 "Street Address","街道地址",module,Magento_Shipping
 "Street Address Line 2","次行地址",module,Magento_Shipping
 "Shipping Policy Parameters","Shipping Policy Parameters",module,Magento_Shipping
@@ -14876,7 +14877,7 @@ than a customer might expect. ",module,Magento_Tax
 "Please enter a valid email address (Ex: johndoe@domain.com).","請輸入有效的電子郵件地址（例如：johndoe@domain.com）。",module,Magento_Ui
 "Please enter 6 or more characters. Leading and trailing spaces will be ignored.","Please enter 6 or more characters. Leading and trailing spaces will be ignored.",module,Magento_Ui
 "Please enter 7 or more characters, using both numeric and alphabetic.","Please enter 7 or more characters, using both numeric and alphabetic.",module,Magento_Ui
-"Minimum length of this field must be equal or greater than %1 symbols. Leading and trailing spaces will be ignored.","此字段的最小長度必須等於或大於 %1 符號。 前導和尾隨空格將被忽略。",module,Magento_Ui
+"Minimum length of this field must be equal or greater than %1 symbols. Leading and trailing spaces will be ignored.","至少 2 種大寫和小寫字母、數字或特殊符號的 8-16 位組合",module,Magento_Ui
 "Minimum of different classes of characters in password is %1. Classes of characters: Lower Case, Upper Case, Digits, Special Characters.","密碼中不同類別字符的最小值為 %1. 人物類別: 小寫, 大寫, 位數, 特殊字符。",module,Magento_Ui
 "Please enter a valid URL. Protocol is required (http://, https:// or ftp://).","Please enter a valid URL. Protocol is required (http://, https:// or ftp://).",module,Magento_Ui
 "Please enter a valid URL. For example http://www.example.com or www.example.com.","Please enter a valid URL. For example http://www.example.com or www.example.com.",module,Magento_Ui
@@ -16290,11 +16291,11 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Hours of Operation:<br /><span class=""no-link"">%store_hours</span>.","Hours of Operation:<br /><span class=""no-link"">%store_hours</span>.",theme,frontend\Magento\luma
 "Credit memo for your %store_name order","您的貸項通知單 %store_name 訂購",theme,frontend\Magento\luma
 "Thank you for your order from %store_name.","感謝您對我們的支持。",theme,frontend\Magento\luma
-"You can check the status of your order by <a href=""%account_url"">logging into your account</a>.","立即<a href=""%account_url"">登入帳戶</a>，可查看最新訂單狀態 。",theme,frontend\Magento\luma
+"You can check the status of your order by <a href=""%account_url"">logging into your account</a>.","也可立即登入帳戶至 <a href=""%account_url"">「訂單查詢」</a>, 瀏覽最新的訂購狀態。",theme,frontend\Magento\luma
 "If you have questions about your order, you can email us at <a href=""mailto:%store_email"">%store_email</a>.","如果您對訂單有疑問，可透過<a href=""mailto:%store_email"">%store_email</a>與我們聯繫。",theme,frontend\Magento\luma
 "Your Credit Memo #%creditmemo_id for Order #%order_id","出貨明細 #%creditmemo_id 訂購 #%order_id",theme,frontend\Magento\luma
 "Billing Info","帳單資訊",theme,frontend\Magento\luma
-"Shipping Info","船舶資訊",theme,frontend\Magento\luma
+"Shipping Info","配送資訊",theme,frontend\Magento\luma
 "Payment Method","付款方式",theme,frontend\Magento\luma
 "Shipping Method","寄送方式",theme,frontend\Magento\luma
 "Update to your %store_name credit memo","Update to your %store_name credit memo",theme,frontend\Magento\luma
@@ -16304,7 +16305,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Update to your %store_name invoice","Update to your %store_name invoice",theme,frontend\Magento\luma
 "Your %store_name order confirmation","您的 %store_name 訂單確認",theme,frontend\Magento\luma
 "%customer_name,","%customer_name,",theme,frontend\Magento\luma
-"Once your package ships we will send you a tracking number.","Once your package ships we will send you a tracking number.",theme,frontend\Magento\luma
+"Once your package ships we will send you a tracking number.","訂購完成後, 系統會將您訂購的清單明細寄發至您的信箱中。",theme,frontend\Magento\luma
 "Your Order <span class=""no-link"">#%increment_id</span>","你的訂單 <span class=""no-link"">#%increment_id</span>",theme,frontend\Magento\luma
 "Placed on <span class=""no-link"">%created_at</span>","Placed on <span class=""no-link"">%created_at</span>",theme,frontend\Magento\luma
 "Update to your %store_name order","更新到您的 %store_name 訂購",theme,frontend\Magento\luma
@@ -16372,7 +16373,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Please enter a valid email address (Ex: johndoe@domain.com).","請輸入有效的電子郵件地址（例如：johndoe@domain.com）。",lib,web
 "Please enter 6 or more characters. Leading and trailing spaces will be ignored.","Please enter 6 or more characters. Leading and trailing spaces will be ignored.",lib,web
 "Please enter 7 or more characters, using both numeric and alphabetic.","Please enter 7 or more characters, using both numeric and alphabetic.",lib,web
-"Minimum length of this field must be equal or greater than %1 symbols. Leading and trailing spaces will be ignored.","此字段的最小長度必須等於或大於 %1 符號。 前導和尾隨空格將被忽略。",lib,web
+"Minimum length of this field must be equal or greater than %1 symbols. Leading and trailing spaces will be ignored.","至少 2 種大寫和小寫字母、數字或特殊符號的 8-16 位組合",lib,web
 "Minimum of different classes of characters in password is %1. Classes of characters: Lower Case, Upper Case, Digits, Special Characters.","密碼中不同類別字符的最小值為 %1. 字符類別：小寫，大寫，數字，特殊字符。",lib,web
 "Please enter a valid URL. Protocol is required (http://, https:// or ftp://).","Please enter a valid URL. Protocol is required (http://, https:// or ftp://).",lib,web
 "Please enter a valid URL. For example http://www.example.com or www.example.com.","Please enter a valid URL. For example http://www.example.com or www.example.com.",lib,web

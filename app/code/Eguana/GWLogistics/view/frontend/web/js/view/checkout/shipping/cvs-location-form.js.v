@@ -10,9 +10,9 @@ define([
 ], function (ko, $, Component, quote, cvsLocation,  customer, customerData, urlBuilder) {
     'use strict';
 
-    var openGreenWorldWindow = function () {
+    var openGreenWorkWinow = function () {
         window.open('about:blank','cvsMapFormGw');
-        let gwForm = document.cvsMapForm,
+        var gwForm = document.cvsMapForm,
             windowActivateCount = 0;
         if(gwForm) {
             gwForm.submit();
@@ -25,21 +25,6 @@ define([
                     cvsLocation.selectCvsLocation();
                     document.removeEventListener('visibilitychange', fetchCvsLocation, false);
                 }
-        }
-    };
-
-    var openGreenWorldChildWindow = function () {
-        let gwWin = window.open('about:blank','cvsMapFormGw'),
-        gwForm = document.cvsMapForm;
-        if(gwForm) {
-            gwForm.submit();
-            let timer = setInterval(function () {
-                if (gwWin.closed) {
-                    console.log('child window closed');
-                    cvsLocation.selectCvsLocation();
-                    clearInterval(timer);
-                }
-            },500);
         }
     };
 
@@ -92,8 +77,7 @@ define([
 
         openCvsMap: function (cvs) { //todo open window and submit
             this.LogisticsSubType = cvs;
-            // return openGreenWorldWindow.bind(this);
-            return openGreenWorldChildWindow.bind(this);
+            return openGreenWorkWinow.bind(this);
         },
 
         getMapUrl: function () {
@@ -116,6 +100,8 @@ define([
         },
 
         getExtraData: function () {
+            console.log('getExtraData');
+            console.log(quote.getQuoteId().substr(12, 20));
             return quote.getQuoteId().substr(12, 20);
         },
 
