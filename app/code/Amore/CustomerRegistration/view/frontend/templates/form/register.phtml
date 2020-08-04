@@ -211,17 +211,17 @@ $viewModel = $block->getData('view_model');
                 <div class="field choice newsletter">
                     <input type="checkbox" name="is_subscribed" title="<?= $block->escapeHtmlAttr(__('Sign Up for Newsletter')) ?>" value="1" id="is_subscribed"<?php if ($block->getFormData()->getIsSubscribed()) : ?> checked="checked"<?php endif; ?> class="checkbox">
                     <label for="is_subscribed" class="label news-letter-policy-label"><span><?= $block->escapeHtml(__('Sign Up for Newsletter')) ?></span></label>
-                    <span>
-                        <a href="#" id="is_subscribed-read-policy" target="_blank"><?= $block->escapeHtml(__('Read more')) ?></a>
-                    </span>
+                   <!-- <span>
+                        <a href="#" id="is_subscribed-read-policy" target="_blank"><?/*= $block->escapeHtml(__('Read more')) */?></a>
+                    </span>-->
                 </div>
-                <div class="news-letter-policy-popup" style="display: none;">
-                    <?= /* @noEscape */
+                <!--<div class="news-letter-policy-popup" style="display: none;">
+                    <?/*=
                     $block->getLayout()
                         ->createBlock('Magento\Cms\Block\Block')
                         ->setBlockId($viewModel->getNewsLetterPolicyCMSBlockId())
-                        ->toHtml(); ?>
-                </div>
+                        ->toHtml(); */?>
+                </div>-->
                 <?php /* Extensions placeholder */ ?>
                 <?= $block->getChildHtml('customer.form.register.newsletter') ?>
             <?php endif ?>
