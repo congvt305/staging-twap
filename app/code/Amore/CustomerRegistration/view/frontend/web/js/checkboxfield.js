@@ -6,13 +6,13 @@ define(
     ], function($, modal) {
     'use strict';
 
-    var modaloption = {
+    /*var modaloption = {
         type: 'popup',
         modalClass: 'modal-popup',
         responsive: true,
         innerScroll: true,
         clickableOverlay: true
-    };
+    };*/
 
     return function(config, element) {
         $( document ).ready(function() {
