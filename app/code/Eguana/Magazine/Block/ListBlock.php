@@ -15,12 +15,13 @@ use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\StoreManagerInterface;
 use Eguana\Magazine\Model\Magazine as MagazineModel;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\DataObject\IdentityInterface;
 
 /**
  * This class is used for breadcrumps for detail page
  * Class ListBlock
  */
-class ListBlock extends Template
+class ListBlock extends Template implements IdentityInterface
 {
     /**
      * @var MagazineRepositoryInterface

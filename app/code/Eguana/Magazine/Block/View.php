@@ -17,12 +17,13 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\DataObject\IdentityInterface;
 
 /**
  * This class is used for breadcrumbs
  * Class View
  */
-class View extends Template
+class View extends Template implements IdentityInterface
 {
     /**
      * @var MagazineRepositoryInterface
