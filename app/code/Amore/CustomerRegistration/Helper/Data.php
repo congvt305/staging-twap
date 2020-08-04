@@ -57,8 +57,6 @@ class Data extends AbstractHelper
         = 'customerregistraion/pos/sales_office_code';
     const PARTNER_ID
         = 'customerregistraion/pos/partner_id';
-    const ONLINE_USER_FAVORITE_STORE
-        = 'customerregistraion/pos/online_user_favorite_store';
     const SSL_VERIFICATION
         = 'customerregistraion/pos/ssl_verification';
     const DEBUG
@@ -328,14 +326,6 @@ class Data extends AbstractHelper
 
         return $this->scopeConfig->getValue(
             self::PARTNER_ID,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
-
-    public function getOnlineUserFavoriteStore($websiteId = null)
-    {
-       return $this->scopeConfig->getValue(
-            self::ONLINE_USER_FAVORITE_STORE,
             ScopeInterface::SCOPE_WEBSITE
         );
     }

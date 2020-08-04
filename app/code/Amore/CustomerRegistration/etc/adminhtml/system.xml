@@ -150,10 +150,6 @@
                     <label>Partner ID</label>
                 </field>
 
-                <field id="online_user_favorite_store" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
-                    <label>Online User Favorite Store</label>
-                </field>
-
                 <field id="ssl_verification" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" >
                     <label>SSL Verification</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

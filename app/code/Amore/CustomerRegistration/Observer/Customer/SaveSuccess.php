@@ -205,7 +205,7 @@ class SaveSuccess implements ObserverInterface
                 'sales_office_code',
                 $this->config->getOfficeSalesCode($customer->getWebsiteId())
             );
-            $customer->setCustomAttribute('partner_id', $this->config->getPartnerId($customer->getWebsiteId()));
+            //$customer->setCustomAttribute('partner_id', $this->config->getPartnerId($customer->getWebsiteId()));
             return $this->customerRepository->save($customer);
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());

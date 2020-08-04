@@ -81,7 +81,7 @@ class Register implements ArgumentInterface
      */
     public function getFavoriteStore()
     {
-        $onlineUserFavoriteStore = $this->configHelper->getOnlineUserFavoriteStore();
+        $onlineUserFavoriteStore = $this->configHelper->getPartnerId();
         return $this->request->getParam('favorite_store', $onlineUserFavoriteStore);
     }
 
