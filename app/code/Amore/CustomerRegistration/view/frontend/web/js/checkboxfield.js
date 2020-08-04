@@ -44,7 +44,7 @@ define(
                     $('#dm_state').val(selectedRegion);
                 }
             });
-            $("#"+config.attributeCode+'-read-policy').on('click', function (e) {
+           /* $("#"+config.attributeCode+'-read-policy').on('click', function (e) {
                 e.preventDefault();
                 var privacyPolicyPopupSelector = '.'+config.attributeCode+'-policy-popup';
                 var privacyPolicyLabelSelector = '.'+config.attributeCode+'-label';
@@ -80,7 +80,7 @@ define(
                     }
                 ]
                 $(privacyPolicyPopupSelector).modal(modaloption).modal('openModal');
-            });
+            });*/
         });
 
     };
