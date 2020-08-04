@@ -9,6 +9,7 @@
  */
 namespace Eguana\VideoBoard\Block;
 
+use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -20,7 +21,7 @@ use Eguana\VideoBoard\Model\VideoBoard;
  * Class ListBlock
  * Eguana\VideoBoard\Block
  */
-class ListBlock extends Template
+class ListBlock extends Template implements IdentityInterface
 {
     /**
      * @var LoggerInterface

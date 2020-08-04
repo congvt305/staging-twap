@@ -15,13 +15,14 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\DataObject\IdentityInterface;
 
 /**
  * This class used to add breadcrumbs and title
  *
  * Class ListBlock
  */
-class ListBlock extends Template
+class ListBlock extends Template implements IdentityInterface
 {
     /**
      * @var LoggerInterface
