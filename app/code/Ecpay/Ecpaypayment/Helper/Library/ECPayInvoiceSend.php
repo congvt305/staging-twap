@@ -10,6 +10,8 @@
 
 namespace Ecpay\Ecpaypayment\Helper\Library;
 
+use Psr\Log\LoggerInterface;
+
 class ECPayInvoiceSend
 {
     /**
@@ -30,8 +32,13 @@ class ECPayInvoiceSend
      * @var ECPayInvoiceVoidValidator
      */
     private $ECPayInvoiceVoidValidator;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     public function __construct(
+        \Psr\Log\LoggerInterface $logger,
         \Ecpay\Ecpaypayment\Helper\Library\ECPayIO $ECPayIO,
         \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceValidator $ECPayInvoiceValidator,
         \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceVoidValidator $ECPayInvoiceVoidValidator,
@@ -43,6 +50,7 @@ class ECPayInvoiceSend
         $this->ECPay_Invoice_CheckMacValue = $ECPay_Invoice_CheckMacValue;
         $this->ECPayEncryptType = $ECPayEncryptType;
         $this->ECPayInvoiceVoidValidator = $ECPayInvoiceVoidValidator;
+        $this->logger = $logger;
     }
 
     // 發票物件
@@ -54,6 +62,11 @@ class ECPayInvoiceSend
      */
     function CheckOut($arParameters = array(), $HashKey='', $HashIV='', $Invoice_Method = '', $ServiceURL='')
     {
+        $this->logger->info('einvoice | params for create invoice', $arParameters);
+        $this->logger->info('einvoice | HashKey for create invoice', [$HashKey]);
+        $this->logger->info('einvoice | HashIV for create invoice', [$HashIV]);
+        $this->logger->info('einvoice | Invoice_Method for create invoice', [$Invoice_Method]);
+        $this->logger->info('einvoice | ServiceURL for create invoice', [$ServiceURL]);
 
         // 發送資訊處理
         $arParameters = $this->process_send($arParameters, $HashKey, $HashIV, $Invoice_Method, $ServiceURL);
@@ -62,6 +75,7 @@ class ECPayInvoiceSend
 
         // 回傳資訊處理
         $arParameters_Return = $this->process_return($szResult, $HashKey, $HashIV, $Invoice_Method);
+        $this->logger->info('einvoice | response for create invoice', $arParameters_Return);
 
         return $arParameters_Return ;
     }
