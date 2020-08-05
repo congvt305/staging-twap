@@ -162,44 +162,7 @@ class Data extends AbstractHelper
         );
     }
 
-    /**
-     * Get Newsletter privacy policy CMS block id
-     *
-     * @return mixed
-     */
-    public function getNewsLetterPolicyCMSBlockId()
-    {
-        return $this->scopeConfig->getValue(
-            self::NEWSLETTER_POLICY_CMS_BLOCK,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
 
-    /**
-     * Get SMS privacy policy CMS block id
-     *
-     * @return mixed
-     */
-    public function getSMSPolicyCMSBlockId()
-    {
-        return $this->scopeConfig->getValue(
-            self::SMS_POLICY_CMS_BLOCK,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
-
-    /**
-     * Get DM privacy policy CMS block id
-     *
-     * @return mixed
-     */
-    public function getDMPolicyCMSBlockId()
-    {
-        return $this->scopeConfig->getValue(
-            self::DM_POLICY_CMS_BLOCK,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
 
     /**
      * Get Terms and Services policy CMS block id
@@ -213,20 +176,7 @@ class Data extends AbstractHelper
             ScopeInterface::SCOPE_WEBSITE
         );
     }
-
-    /**
-     * Get Terms and Services policy CMS block id
-     *
-     * @return mixed
-     */
-    public function getCallPolicyCMSBlockId()
-    {
-        return $this->scopeConfig->getValue(
-            self::CALL_POLICY_CMS_BLOCK,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
-
+    
     /**
      * Get whether SMS verification is enabled on the website or not
      *
