@@ -96,10 +96,11 @@ class EInvoice extends \Magento\Framework\View\Element\Template
     {
         $order = $this->orderRepository->get($orderId);
         $payment = $order->getPayment();
+        $additionalData = $payment->getAdditionalData();
         $additionalInfo = $payment->getAdditionalInformation();
         $rawDetailsInfo = $additionalInfo["raw_details_info"];
 
-        if ($rawDetailsInfo["RtnCode"] == 1
+        if (json_decode($additionalData, true)["RtnCode"] == 1
             && !empty($rawDetailsInfo["ecpay_einvoice_title"])
             && !empty($rawDetailsInfo["ecpay_einvoice_tax_id_number"])
         ) {
