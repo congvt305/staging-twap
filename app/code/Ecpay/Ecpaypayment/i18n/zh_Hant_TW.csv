@@ -18,3 +18,4 @@
 "ecpay_payment_order_comment_cvs","取號結果 : (%s)%s, 繳費代碼 : %s, 付款截止日 : %s"
 "ecpay_payment_order_comment_barcode","取號結果 : (%s)%s, 付款截止日 : %s, 第1段條碼號碼 : %s, 第2段條碼號碼 : %s, 第3段條碼號碼 : %s"
 "ecpay_payment_order_comment_payment_failure","付款失敗, 錯誤訊息 : %s"
+"Laneige Online Shopping Center", "蘭芝線上購物中心"

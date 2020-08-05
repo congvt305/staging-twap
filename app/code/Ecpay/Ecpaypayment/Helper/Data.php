@@ -162,7 +162,7 @@ class Data extends AbstractHelper
                 'clientBackUrl' => $this->_ecpayPaymentModel->getMagentoUrl('checkout/onepage/success'),
                 'orderId' => $orderId,
                 'total' => $order->getGrandTotal(),
-                'itemName' => __('A Package Of Online Goods'),
+                'itemName' => __('Laneige Online Shopping Center'),
                 'cartName' => 'magento_' . $this->getModuleVersion(),
                 'currency' => $orderCurrencyCode,
                 'needExtraPaidInfo' => 'Y',
