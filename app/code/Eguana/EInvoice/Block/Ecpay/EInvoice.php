@@ -86,4 +86,38 @@ class EInvoice extends \Magento\Framework\View\Element\Template
         $invalidateEInvoiceInformation = $this->getInvalidateEInvoiceInformation($orderId);
         return $invalidateEInvoiceInformation["InvoiceNumber"];
     }
+
+    public function hasEInvoiceTriplicateData($orderId)
+    {
+        return is_null($this->getEInvoiceTriplicateInformation($orderId)) ? 0 : count($this->getEInvoiceTriplicateInformation($orderId));
+    }
+
+    protected function getEInvoiceTriplicateInformation($orderId)
+    {
+        $order = $this->orderRepository->get($orderId);
+        $payment = $order->getPayment();
+        $additionalInfo = $payment->getAdditionalInformation();
+        $rawDetailsInfo = $additionalInfo["raw_details_info"];
+
+        if ($rawDetailsInfo["RtnCode"] == 1
+            && !empty($rawDetailsInfo["ecpay_einvoice_title"])
+            && !empty($rawDetailsInfo["ecpay_einvoice_tax_id_number"])
+        ) {
+            return $rawDetailsInfo;
+        } else {
+            return null;
+        }
+    }
+
+    public function getEInvoiceTitle($orderId)
+    {
+        $eInvoiceTriplicateInformation = $this->getEInvoiceTriplicateInformation($orderId);
+        return $eInvoiceTriplicateInformation["ecpay_einvoice_title"];
+    }
+
+    public function getEInvoiceTaxIdNumber($orderId)
+    {
+        $eInvoiceTriplicateInformation = $this->getEInvoiceTriplicateInformation($orderId);
+        return $eInvoiceTriplicateInformation["ecpay_einvoice_tax_id_number"];
+    }
 }
