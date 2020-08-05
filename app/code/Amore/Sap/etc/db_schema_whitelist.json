@@ -20,5 +20,10 @@
         "index": {
             "MAGENTO_RMA_SAP_RETURN_INCREMENT_ID": true
         }
+    },
+    "sales_creditmemo": {
+        "column": {
+            "sap_creditmemo_send_check": true
+        }
     }
 }

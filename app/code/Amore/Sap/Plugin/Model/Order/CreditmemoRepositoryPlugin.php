@@ -102,13 +102,12 @@ class CreditmemoRepositoryPlugin
         $orderStatus = $order->getStatus();
 
         $availableStatus = ['sap_processing', 'sap_success', 'sap_fail'];
-        $creditMemoOrder = $entity->getOrder();
-        $creditMemoOrder->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_BEFORE);
 
         if ($enableSapCheck && $enableCreditmemoCheck) {
             if (in_array($orderStatus, $availableStatus)) {
                 if (!$this->config->checkTestMode()) {
                     try {
+                        $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_BEFORE);
                         $orderUpdateData = $this->sapOrderCancelData->singleOrderData($order->getIncrementId());
 
                         if ($this->config->getLoggingCheck()) {
@@ -131,26 +130,26 @@ class CreditmemoRepositoryPlugin
                                     try {
                                         $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                                     } catch (\Exception $exception) {
-                                        $creditMemoOrder->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
+                                        $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
                                         throw new \Exception(__('Something went wrong while saving order %1. Message : %2', $order->getIncrementId(), $exception->getMessage()));
                                     }
                                 } else {
-                                    $creditMemoOrder->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
+                                    $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
                                     throw new \Exception(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
                                 }
                             } else {
-                                $creditMemoOrder->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
+                                $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
                                 throw new \Exception(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $sapResult['code'], $sapResult['message']));
                             }
                         } else {
-                            $creditMemoOrder->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
+                            $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
                             throw new \Exception(__('Something went wrong while sending order data to SAP. No response.'));
                         }
                     } catch (NoSuchEntityException $e) {
-                        $creditMemoOrder->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
+                        $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
                         throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
                     } catch (\Exception $e) {
-                        $creditMemoOrder->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
+                        $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
                         throw new \Exception(__('SAP : ' . $e->getMessage()));
                     }
                 } else {
