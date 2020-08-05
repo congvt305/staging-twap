@@ -13,6 +13,7 @@ namespace Amore\CustomerRegistration\ViewModel;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
+use Amore\CustomerRegistration\Helper\Data;
 
 /**
  * PLEASE ENTER ONE LINE SHORT DESCRIPTION OF CLASS
@@ -33,8 +34,13 @@ class Edit extends \Magento\Directory\Block\Data implements ArgumentInterface
      * @var \Eguana\Directory\Helper\Data
      */
     private $cityHelper;
+    /**
+     * @var Data
+     */
+    private $configHelper;
 
     public function __construct(
+        Data $configHelper,
         RegionFactory $regionFactory,
         RegionResourceModel $regionResourceModel,
         \Eguana\Directory\Helper\Data $cityHelper,
@@ -58,6 +64,7 @@ class Edit extends \Magento\Directory\Block\Data implements ArgumentInterface
         $this->regionFactory = $regionFactory;
         $this->regionResourceModel = $regionResourceModel;
         $this->cityHelper = $cityHelper;
+        $this->configHelper = $configHelper;
     }
 
     /**
@@ -138,5 +145,27 @@ class Edit extends \Magento\Directory\Block\Data implements ArgumentInterface
             $message = $e->getMessage();
         }
         return $region;
+    }
+
+    /**
+     * Get minimum mobile number digits
+     * Get minimum mobile number digits set in setting from admin setting
+     *
+     * @return null|int
+     */
+    public function getMinimumMobileNumberDigits()
+    {
+        return $this->configHelper->getMinimumMobileNumberDigits();
+    }
+
+    /**
+     * Get maximum mobile number digits
+     * Get maximum mobile number digits set in setting from admin setting
+     *
+     * @return null|int
+     */
+    public function getMaximumMobileNumberDigits()
+    {
+        return $this->configHelper->getMaximumMobileNumberDigits();
     }
 }
