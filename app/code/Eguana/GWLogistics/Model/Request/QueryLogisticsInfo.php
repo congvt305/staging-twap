@@ -46,6 +46,7 @@ class QueryLogisticsInfo
      */
     public function sendRequest($allPayLogisticsID)
     {
+        $result = [];
         $this->logger->info('gwlogistics | request qeury logsitics start with allpayLogisticsId: ', [$allPayLogisticsID]);
         try {
             $this->ecpayLogistics->HashKey = $this->helper->getHashKey();
@@ -60,11 +61,14 @@ class QueryLogisticsInfo
              */
             //todo: check checkMacValue
             $result = $this->ecpayLogistics->QueryLogisticsInfo();
-            return $result; // if result code is 0, then throw exception
+            if (!$this->helper->validateCheckMackValue($result)) {
+                throw new \Exception(__('CheckMacValue is not valid'));
+            }
         } catch (\Exception $e) {
             $this->logger->critical('GWL query logistics(track) failed');
             $this->logger->critical($e->getMessage());
         }
+        return $result;
 
     }
 

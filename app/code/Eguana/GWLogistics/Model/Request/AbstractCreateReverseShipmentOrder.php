@@ -51,6 +51,9 @@ class AbstractCreateReverseShipmentOrder
             $this->_ecpayLogistics->HashIV = $hashIv;
             $this->_ecpayLogistics->Send = $this->_getParams($rma);
             $result = $this->_getResult();
+            if (!$this->_helper->validateCheckMackValue($result)) {
+                throw new \Exception(__('CheckMacValue is not valid'));
+            }
         } catch (\Exception $e) {
             $this->_logger->critical($e->getMessage());
             $result = ['ErrorMessage' => $e->getMessage()];

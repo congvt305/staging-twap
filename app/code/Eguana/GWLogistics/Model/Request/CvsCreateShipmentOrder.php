@@ -54,48 +54,34 @@ class CvsCreateShipmentOrder
      * @param \Magento\Sales\Model\Order $order
      */
     public function sendRequest($order) {
+        $result = [];
 
         $cvsLocation = $this->getCvsLocation($order);
         $dataTime = $this->dateTimeFactory->create();
-        //request
-        //{"MerchantID":"2000132","MerchantTradeNo":"1592653900596","LogisticsSubType":"UNIMART","CVSStoreID":"991182","CVSStoreName":"馥樺門市","CVSAddress":"台北市南港區三重路23號1樓","CVSTelephone":"","CVSOutSide":"0","ExtraData":""}
         $merchantId = $this->helper->getMerchantId();
         $platformId = $this->helper->getPlatformId() ?? '';
-//        $merchantTradeNo = $cvsLocation->getMerchantTradeNo(); //todo: check questions
         $merchantTradeNo = $order->getIncrementId();
         $merchantTradeDate = $dataTime->date('Y/m/d H:i:s');
-
         $hashKey = $this->helper->getHashKey();
         $hashIv = $this->helper->getHashIv();
-
         $logisticsType = EcpayLogisticsType::CVS;
         $logisticsSubType = $cvsLocation->getLogisticsSubType();
-
         $goodsAmount = (int)round($order->getSubtotal(), 0);
-
         $items = $this->getItemData($order);
         $goodsName = (isset($items['goodsName']) && $items['goodsName']) ? $items['goodsName']  : '';
-
         //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
         $senderName = $this->helper->getSenderName(); //no space not more than 10.
         $senderPhone = $this->helper->getSenderPhone(); //no space not more than 10.
         $senderCellPhone = $this->helper->getSenderCellPhone(); //no space not more than 10.
-
         //Character limit is 4-10 characters (Chinese2-5 characters, English 4-10 characters)
         $receiverName = $order->getShippingAddress()->getLastname() . $order->getShippingAddress()->getFirstname();
         $receiverPhone = $order->getShippingAddress()->getTelephone();
         $receiverEmail = $order->getShippingAddress()->getEmail();
-
         $remarks = $order->getExtensionAttributes()->getDeliveryMessage() ?? '';
         $remarks = (strlen($remarks) > 200) ? substr($remarks,0,200) : $remarks;
-
         $serverReplyURL = $this->helper->getCreateShipmentReplyUrl();
-
         $receiverStoreID = $cvsLocation->getCvsStoreId(); //no need, only for C2C
-        $returnStoreID = $cvsLocation->getCvsStoreId(); //no need, only for C2C
-
         //for test, sender name, receiver name receiver phone/cellphone , ReceiverStoreID ReturnStoreID are required....!!
-
         $params = [
             'MerchantID' => $merchantId,//
             'MerchantTradeNo' => $merchantTradeNo,
@@ -120,7 +106,6 @@ class CvsCreateShipmentOrder
             'Remark' => $remarks,
             'PlatformID' => $platformId,
         ];
-
 //        $params = [
 //            'MerchantID' => '2000132',
 //            'MerchantTradeNo' => 'no' . date('YmdHis'),
@@ -144,7 +129,6 @@ class CvsCreateShipmentOrder
 //            'Remark' => '測試備註',
 //            'PlatformID' => '',
 //        ];
-
         $this->logger->info('gwlogistics | original params for create order', $params);
         $this->logger->info('gwlogistics | original hashKey for create order', [$hashKey]);
         $this->logger->info('gwlogistics | original hasIv for create order', [$hashIv]);
@@ -156,15 +140,17 @@ class CvsCreateShipmentOrder
             $this->ecpayLogistics->Send = $params;
             $this->ecpayLogistics->SendExtend = [
                 'ReceiverStoreID' => $receiverStoreID, //cvs store id from map request, b2c do not send
-//                'ReceiverStoreID' => '', //cvs store id from map request, b2c do not send
-                'ReturnStoreID' => $returnStoreID //
+                'ReturnStoreID' => '' //cvs store id from map request, b2c do not send
             ];
             $result = $this->ecpayLogistics->BGCreateShippingOrder();
-            return $result;
+            if (!$this->helper->validateCheckMackValue($result)) {
+                throw new \Exception(__('CheckMacValue is not valid'));
+            }
         } catch (\Exception $e) {
-            $this->logger->critical('GWL create shipment failed');
+            $this->logger->critical('GWL create shipping order failed');
             $this->logger->critical($e->getMessage());
         }
+        return $result;
     }
 
     /**

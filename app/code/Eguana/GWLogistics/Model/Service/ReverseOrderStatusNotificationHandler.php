@@ -83,16 +83,8 @@ class ReverseOrderStatusNotificationHandler
     {
         $this->logger->info('gwlogistics | notification for reverse order', $notificationData);
 
-        if (isset($notificationData['CheckMacValue'])) {
-            try {
-                $validated = $this->dataHelper->validateCheckMackValue($notificationData);
-                if (!$validated) {
-                    return false;
-                }
-            } catch (\Exception $e) {
-                $this->logger->critical($e->getMessage());
-                return false;
-            }
+        if (!$this->dataHelper->validateCheckMackValue($notificationData)) {
+            throw new \Exception(__('CheckMacValue is not valid'));
         }
 
         if (isset($notificationData['RtnMsg'], $notificationData['RtnCode'], $notificationData['UpdateStatusDate'], $notificationData['RtnMerchantTradeNo'])) {
