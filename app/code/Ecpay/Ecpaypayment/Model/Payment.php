@@ -455,17 +455,31 @@ class Payment extends AbstractMethod
     private function initOrderItems(\Magento\Sales\Api\Data\OrderInterface $order, \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice): void
     {
         $orderItems = $order->getAllVisibleItems();
+        $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
+        $mileageUsedAmount = $order->getRewardPointsBalance();
 
         foreach ($orderItems as $orderItem) {
+
+            if ($orderItem->getProductType() != 'simple') {
+                continue;
+            }
+
+            $configurableCheckedItem = $this->configurableProductCheck($orderItem);
+
+            $mileagePerItem = $this->mileageSpentRateByItem($configurableCheckedItem, $mileageUsedAmount, $orderTotal);
+            $itemGrandTotal = $configurableCheckedItem->getRowTotal()
+                - $configurableCheckedItem->getDiscountAmount()
+                - $mileagePerItem;
+
             array_push(
                 $ecpay_invoice->Send['Items'],
                 array(
                     'ItemName' => __($orderItem->getData('name')),
                     'ItemCount' => (int)$orderItem->getData('qty_ordered'),
                     'ItemWord' => '批',
-                    'ItemPrice' => $orderItem->getData('price'),
+                    'ItemPrice' => $itemGrandTotal,
                     'ItemTaxType' => 1,
-                    'ItemAmount' => $orderItem->getData('price'),
+                    'ItemAmount' => $itemGrandTotal,
                     'ItemRemark' => $orderItem->getData('sku')
                 )
             );
@@ -597,5 +611,35 @@ class Payment extends AbstractMethod
         $prefix = "payment/ecpay_ecpaypayment/ecpay_";
         $path = $prefix . $id;
         return $this->_scopeConfig->getValue($path, 'store', $storeId);
+    }
+
+    /**
+     * @param $orderItem
+     * @return mixed
+     */
+    private function configurableProductCheck($orderItem)
+    {
+        if (empty($orderItem->getParentItem())) {
+            return $orderItem;
+        } else {
+            return $orderItem->getParentItem();
+        }
+    }
+
+    /**
+     * @param $configurableCheckedItem
+     * @param $mileageUsedAmount
+     * @param float $orderTotal
+     * @return float|string
+     */
+    private function mileageSpentRateByItem($configurableCheckedItem, $mileageUsedAmount, float $orderTotal)
+    {
+        $itemTotal = round($configurableCheckedItem->getRowTotalInclTax() - $configurableCheckedItem->getDiscountAmount(), 2);
+
+        if ($mileageUsedAmount) {
+            return round(($itemTotal / $orderTotal) * $mileageUsedAmount);
+        }
+
+        return is_null($mileageUsedAmount) ? '0' : $mileageUsedAmount;
     }
 }
