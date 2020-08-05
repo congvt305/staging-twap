@@ -17,7 +17,7 @@ $viewModel = $block->getData('view_model');
         <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class)  ?>
         <?php if ($_dob->isEnabled() && $block->getCustomer()->getDob()) : ?>
         <div class="field dob">
-            <label class="label"><span><?= $block->escapeHtml(__('Date of Birth')); ?></span></label>
+            <label class="label show-dob-title"><span><?= $block->escapeHtml(__('Date of Birth')); ?></span></label>
             <div class="control customer-dob">
                 <span><?= $block->escapeHtml($block->getCustomer()->getDob()); ?></span>
             </div>
