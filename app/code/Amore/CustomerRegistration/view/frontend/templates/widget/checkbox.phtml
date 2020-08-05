@@ -17,15 +17,17 @@ $isSelected = $block->getFormValue();
     </select>
     <input type="checkbox" name="<?= $block->getAttributeCode() ?>_checkbox" class="<?= $block->getAttributeCode() ?>_checkbox" <?= $isSelected == 1?'checked':''; ?> <?= $block->getAttributeCode() == 'terms_and_services_policy'?'data-validate="{required:true}"':''; ?> />
     <label class="<?= $block->getAttributeCode().'-label' ?> label" for="<?= $block->escapeHtmlAttr($block->getFieldId($block->getAttributeCode())) ?>"><span><?= $block->escapeHtml($block->getStoreLabel($block->getAttributeCode())) ?></span></label>
+    <?php if($block->getAttributeCode() == 'terms_and_services_policy'): ?>
     <span>
         <a href="#" id="<?= $block->getAttributeCode().'-read-policy' ?>" target="_blank"><?= $block->escapeHtml(__('Read more')) ?></a>
     </span>
+    <?php endif; ?>
 </div>
-
+<?php if($block->getAttributeCode() == 'terms_and_services_policy'): ?>
 <div class="<?= $block->getAttributeCode().'-policy-popup' ?>" style="display: none;">
-    <?= /* @noEscape */ $block->getReadMoreContent(); ?>
+    <?=  $block->getReadMoreContent(); ?>
 </div>
-
+<?php endif; ?>
 <script type="text/x-magento-init">
     {
         "*": {

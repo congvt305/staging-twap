@@ -75,34 +75,6 @@
                     </depends>
                 </field>
 
-                <field id="newsletter_policy_cms_block" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1">
-                    <label>Newsletter Policy CMS Block</label>
-                    <depends>
-                        <field id="active">1</field>
-                    </depends>
-                </field>
-
-                <field id="call_policy_cms_block" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1">
-                    <label>Call Policy CMS Block</label>
-                    <depends>
-                        <field id="active">1</field>
-                    </depends>
-                </field>
-
-                <field id="sms_policy_cms_block" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1">
-                    <label>SMS Policy CMS Block</label>
-                    <depends>
-                        <field id="active">1</field>
-                    </depends>
-                </field>
-
-                <field id="dm_policy_cms_block" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1">
-                    <label>DM Policy CMS Block</label>
-                    <depends>
-                        <field id="active">1</field>
-                    </depends>
-                </field>
-
                 <field id="terms_and_services_policy_cms_block" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1">
                     <label>Terms and Services Policy CMS Block</label>
                     <depends>
@@ -148,10 +120,6 @@
 
                 <field id="partner_id" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
                     <label>Partner ID</label>
-                </field>
-
-                <field id="online_user_favorite_store" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
-                    <label>Online User Favorite Store</label>
                 </field>
 
                 <field id="ssl_verification" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" >

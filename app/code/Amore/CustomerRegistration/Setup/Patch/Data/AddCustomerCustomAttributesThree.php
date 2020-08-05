@@ -156,16 +156,6 @@ class AddCustomerCustomAttributesThree implements DataPatchInterface
                                         'sort_order' => 134
                                     ],
                                     [
-                                        'code'=>'favorite_store',
-                                        'label'=>'Favorite Store',
-                                        'type' => 'varchar',
-                                        'validation'=>'{"input_validation":"length",
-                                                                "min_text_length":1,
-                                                                "max_text_length":255}',
-                                        'required' => 0,
-                                        'sort_order' => 135
-                                    ],
-                                    [
                                         'code'=>'referrer_code',
                                         'label'=>'Referrer Code',
                                         'type' => 'varchar',
@@ -372,7 +362,6 @@ class AddCustomerCustomAttributesThree implements DataPatchInterface
             $onlyInAdmin = [
                 'customer_integration_number',
                 'status_code',
-                'partner_id',
                 'sales_organization_code',
                 'sales_office_code'
             ];

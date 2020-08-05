@@ -11,6 +11,7 @@ namespace Eguana\EventManager\Model;
 
 use Eguana\EventManager\Api\Data\EventManagerInterface;
 use Eguana\EventManager\Model\ResourceModel\EventManager as EventManagerResourceModel;
+use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractExtensibleModel;
 
 /**
@@ -18,7 +19,7 @@ use Magento\Framework\Model\AbstractExtensibleModel;
  *
  * Class EventManager
  */
-class EventManager extends AbstractExtensibleModel implements EventManagerInterface
+class EventManager extends AbstractExtensibleModel implements EventManagerInterface, IdentityInterface
 {
     /**
      * @var PAGE_CACHE
