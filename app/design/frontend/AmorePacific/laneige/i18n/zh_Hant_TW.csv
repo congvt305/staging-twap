@@ -77,3 +77,4 @@ Events,最新活動
 "You have %points_balance points that may be used in %store_name:","提醒您，還有%points_balance剩餘點數未使用完畢，立即登入%store_name會員帳號，即可享受多項促銷優惠喔!："
 "Go to shopping cart","結帳"
 "Please select a city, city or district","請選擇一個城市,城市或地區"
+"New admin user '%user_name' created %store_name","'%user_name' 您已成功加入[%store_name]"
