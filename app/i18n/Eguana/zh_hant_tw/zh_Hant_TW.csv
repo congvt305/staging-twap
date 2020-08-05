@@ -6086,7 +6086,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "URL","URL",module,Magento_Downloadable
 "attachment","attachment",module,Magento_Downloadable
 "inline","inline",module,Magento_Downloadable
-"Pending","待定",module,Magento_Downloadable
+"Pending","待付款",module,Magento_Downloadable
 "Invoiced","已開票",module,Magento_Downloadable
 "To enable the option set the weight to no","To enable the option set the weight to no",module,Magento_Downloadable
 "Is this downloadable Product?","Is this downloadable Product?",module,Magento_Downloadable
@@ -8608,7 +8608,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "has been deleted from the catalog. The items quoted list has been updated.","has been deleted from the catalog. The items quoted list has been updated.",module,Magento_NegotiableQuote
 "have been deleted from the quote. You may want to review the offer amount.","have been deleted from the quote. You may want to review the offer amount.",module,Magento_NegotiableQuote
 "have been deleted from the catalog. The items quoted list has been updated.","have been deleted from the catalog. The items quoted list has been updated.",module,Magento_NegotiableQuote
-"Pending","待定",module,Magento_NegotiableQuote
+"Pending","待付款",module,Magento_NegotiableQuote
 "Catalog prices have changed. You may want to re-submit this quote. Details about the changes are available in the History Log.","Catalog prices have changed. You may want to re-submit this quote. Details about the changes are available in the History Log.",module,Magento_NegotiableQuote
 "The discount for this quote has been removed because you have already used your discount on previous orders. Please re-submit the quote to the Seller for further negotiation.","此報價的折扣已被刪除，因為您已經在以前的訂單中使用了折扣。 請重新將報價提交給賣方，以進一步協商。",module,Magento_NegotiableQuote
 "The discount is no longer valid for this quote, and the prices have been updated. Please re-submit the quote to the Seller for further negotiation.","The discount is no longer valid for this quote, and the prices have been updated. Please re-submit the quote to the Seller for further negotiation.",module,Magento_NegotiableQuote
@@ -11118,7 +11118,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't post your review right now.","We can't post your review right now.",module,Magento_Review
 "Storage key was not set","Storage key was not set",module,Magento_Review
 "Approved","已批准",module,Magento_Review
-"Pending","待定",module,Magento_Review
+"Pending","待付款",module,Magento_Review
 "Not Approved","Not Approved",module,Magento_Review
 "Please enter a review summary.","請輸入評論摘要。",module,Magento_Review
 "Please enter a nickname.","請輸入一個暱稱。",module,Magento_Review
@@ -12088,7 +12088,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Requested entity doesn't exist","Requested entity doesn't exist",module,Magento_Sales
 "Could not delete order address","無法刪除訂單地址",module,Magento_Sales
 "Could not save order address","無法保存訂單地址",module,Magento_Sales
-"Pending","待定",module,Magento_Sales
+"Pending","待付款",module,Magento_Sales
 "Refunded","已退款",module,Magento_Sales
 "Canceled","已取消",module,Magento_Sales
 "Unknown State","Unknown State",module,Magento_Sales
@@ -13072,7 +13072,7 @@ Usage limit enforced for logged in customers only.,module,Magento_SalesRule
 "Continue Processing","Continue Processing",module,Magento_ScheduledImportExport
 "Failed","失敗",module,Magento_ScheduledImportExport
 "Successful","Successful",module,Magento_ScheduledImportExport
-"Pending","待定",module,Magento_ScheduledImportExport
+"Pending","待付款",module,Magento_ScheduledImportExport
 "label","標籤",module,Magento_ScheduledImportExport
 "Can not open file","Can not open file",module,Magento_ScheduledImportExport
 "%store_name - Scheduled Export Failed","%store_name - Scheduled Export Failed",module,Magento_ScheduledImportExport
@@ -13653,7 +13653,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Shipping labels can't be created. Verify that the store information and settings are complete and try again.","Shipping labels can't be created. Verify that the store information and settings are complete and try again.",module,Magento_Shipping
 "Approved","已批准",module,Magento_Signifyd
 "Declined","Declined",module,Magento_Signifyd
-"Pending","待定",module,Magento_Signifyd
+"Pending","待付款",module,Magento_Signifyd
 "Canceled","已取消",module,Magento_Signifyd
 "In Review","In Review",module,Magento_Signifyd
 "Unrequested","Unrequested",module,Magento_Signifyd
