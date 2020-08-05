@@ -88,10 +88,12 @@
 
             <div class="product actions">
                 <div class="secondary">
+                    <!-- ko ifnot: gift -->
                     <a href="#" data-bind="attr: {'data-cart-item': item_id, title: $t('Remove item')}"
                        class="action delete">
                         <span data-bind="i18n: 'Remove'"></span>
                     </a>
+                    <!-- /ko -->
                 </div>
             </div>
         </div>
