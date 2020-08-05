@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 5/8/20
+* Time: 7:40 PM
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Bundle\Helper\Catalog\Product\Configuration">
+        <plugin name="eguana_custombundle_format" type="Eguana\CustomBundle\Plugin\Helper\Catalog\Product\Configuration"/>
+    </type>
+</config>
