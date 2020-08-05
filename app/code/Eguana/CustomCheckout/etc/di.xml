@@ -5,4 +5,8 @@
         <plugin name="eguana_customcheckout_custom_sortorder"
                 type="Eguana\CustomCheckout\Plugin\CustomAddressSortOrder" sortOrder="10"/>
     </type>
+    <type name="Magento\Checkout\Block\Cart">
+        <plugin name="Eguana_CustomCheckout::Checkout_Cart" type="Eguana\CustomCheckout\Plugin\Checkout\Block\Cart" />
+    </type>
+    <preference for="\Magento\Checkout\CustomerData\DefaultItem" type="\Eguana\CustomCheckout\Rewrite\Checkout\CustomerData\DefaultItem" />
 </config>
