@@ -41,11 +41,15 @@ class AbstractCreateReverseShipmentOrder
         $this->_orderRepository = $orderRepository;
     }
 
+    /**
+     * @param \Magento\Rma\Model\Rma $rma
+     * @return array
+     */
     public function sendRequest($rma)
     {
         $logisticsSubType = $rma->getData('shipping_preference');
-        $hashKey = $this->_helper->getHashKey();
-        $hashIv = $this->_helper->getHashIv();
+        $hashKey = $this->_helper->getHashKey($rma->getStoreId());
+        $hashIv = $this->_helper->getHashIv($rma->getStoreId());
         try {
             $this->_ecpayLogistics->HashKey = $hashKey;
             $this->_ecpayLogistics->HashIV = $hashIv;

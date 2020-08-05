@@ -16,15 +16,15 @@ class UnimartCreateReverseShipmentOrder extends \Eguana\GWLogistics\Model\Reques
      */
     protected function _getParams($rma)
     {
-        $merchantId = $this->_helper->getMerchantId();
+        $merchantId = $this->_helper->getMerchantId($rma->getStoreId());
         $allPayLogisticsId = '';
         $serverReplyURL = $this->_helper->getReverseLogisticsOrderReplyUrl();
         $items = $this->_getItemData($rma);
         $goodsName = (isset($items['goodsName']) && $items['goodsName']) ? $items['goodsName']  : '';
         $goodsAmount = (isset($items['goodsAmount']) && $items['goodsAmount']) ? $items['goodsAmount']  : 0;
-        $senderName = $this->_helper->getSenderName(); //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
-        $senderPhone = $this->_helper->getSenderPhone();
-        $platformId = $this->_helper->getPlatformId();
+        $senderName = $this->_helper->getSenderName($rma->getStoreId()); //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
+        $senderPhone = $this->_helper->getSenderPhone($rma->getStoreId());
+        $platformId = $this->_helper->getPlatformId($rma->getStoreId());
 
         return [
             'MerchantID' => $merchantId,

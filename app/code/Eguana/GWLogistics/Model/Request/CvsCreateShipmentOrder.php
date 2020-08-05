@@ -58,21 +58,21 @@ class CvsCreateShipmentOrder
 
         $cvsLocation = $this->getCvsLocation($order);
         $dataTime = $this->dateTimeFactory->create();
-        $merchantId = $this->helper->getMerchantId();
-        $platformId = $this->helper->getPlatformId() ?? '';
+        $merchantId = $this->helper->getMerchantId($order->getStoreId());
+        $platformId = $this->helper->getPlatformId($order->getStoreId()) ?? '';
         $merchantTradeNo = $order->getIncrementId();
         $merchantTradeDate = $dataTime->date('Y/m/d H:i:s');
-        $hashKey = $this->helper->getHashKey();
-        $hashIv = $this->helper->getHashIv();
+        $hashKey = $this->helper->getHashKey($order->getStoreId());
+        $hashIv = $this->helper->getHashIv($order->getStoreId());
         $logisticsType = EcpayLogisticsType::CVS;
         $logisticsSubType = $cvsLocation->getLogisticsSubType();
         $goodsAmount = (int)round($order->getSubtotal(), 0);
         $items = $this->getItemData($order);
         $goodsName = (isset($items['goodsName']) && $items['goodsName']) ? $items['goodsName']  : '';
         //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
-        $senderName = $this->helper->getSenderName(); //no space not more than 10.
-        $senderPhone = $this->helper->getSenderPhone(); //no space not more than 10.
-        $senderCellPhone = $this->helper->getSenderCellPhone(); //no space not more than 10.
+        $senderName = $this->helper->getSenderName($order->getStoreId()); //no space not more than 10.
+        $senderPhone = $this->helper->getSenderPhone($order->getStoreId()); //no space not more than 10.
+        $senderCellPhone = $this->helper->getSenderCellPhone($order->getStoreId()); //no space not more than 10.
         //Character limit is 4-10 characters (Chinese2-5 characters, English 4-10 characters)
         $receiverName = $order->getShippingAddress()->getLastname() . $order->getShippingAddress()->getFirstname();
         $receiverPhone = $order->getShippingAddress()->getTelephone();
