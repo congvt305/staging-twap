@@ -16,17 +16,17 @@ class FamiCreateReverseShipmentOrder extends \Eguana\GWLogistics\Model\Request\A
      */
     protected function _getParams($rma)
     {
-        $merchantId = $this->_helper->getMerchantId();
+        $merchantId = $this->_helper->getMerchantId($rma->getStoreId());
         $allPayLogisticsId = '';
         $serverReplyURL = $this->_helper->getReverseLogisticsOrderReplyUrl();
         $items = $this->_getItemData($rma);
         $goodsName = (isset($items['goodsName']) && $items['goodsName']) ? $items['goodsName']  : '';
         $goodsAmount = (isset($items['goodsAmount']) && $items['goodsAmount']) ? $items['goodsAmount']  : 0;
-        $senderName = $this->_helper->getSenderName();
-        $senderPhone = $this->_helper->getSenderPhone();
+        $senderName = $this->_helper->getSenderName($rma->getStoreId());
+        $senderPhone = $this->_helper->getSenderPhone($rma->getStoreId());
         $quantity = (isset($items['quantity']) && $items['quantity']) ? $items['quantity']  : '';
         $cost = (isset($items['cost']) && $items['cost']) ? $items['cost']  : '';
-        $platformId = $this->_helper->getPlatformId();
+        $platformId = $this->_helper->getPlatformId($rma->getStoreId());
 
         return [
             'MerchantID' => $merchantId,

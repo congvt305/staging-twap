@@ -41,16 +41,23 @@ class AbstractCreateReverseShipmentOrder
         $this->_orderRepository = $orderRepository;
     }
 
+    /**
+     * @param \Magento\Rma\Model\Rma $rma
+     * @return array
+     */
     public function sendRequest($rma)
     {
         $logisticsSubType = $rma->getData('shipping_preference');
-        $hashKey = $this->_helper->getHashKey();
-        $hashIv = $this->_helper->getHashIv();
+        $hashKey = $this->_helper->getHashKey($rma->getStoreId());
+        $hashIv = $this->_helper->getHashIv($rma->getStoreId());
         try {
             $this->_ecpayLogistics->HashKey = $hashKey;
             $this->_ecpayLogistics->HashIV = $hashIv;
             $this->_ecpayLogistics->Send = $this->_getParams($rma);
             $result = $this->_getResult();
+            if (!$this->_helper->validateCheckMackValue($result)) {
+                throw new \Exception(__('CheckMacValue is not valid'));
+            }
         } catch (\Exception $e) {
             $this->_logger->critical($e->getMessage());
             $result = ['ErrorMessage' => $e->getMessage()];

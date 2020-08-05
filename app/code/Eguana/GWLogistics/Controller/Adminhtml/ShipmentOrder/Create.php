@@ -91,7 +91,7 @@ class Create extends \Magento\Backend\App\Action
                 $this->allPayLogisticsID = $result['AllPayLogisticsID'];
                 $shipment->setData('all_pay_logistics_id', $result['AllPayLogisticsID']);
                 $this->shipmentRepository->save($shipment);
-                $response = $this->queryLogisticsInfo->sendRequest($this->allPayLogisticsID);
+                $response = $this->queryLogisticsInfo->sendRequest($this->allPayLogisticsID, $order->getStoreId());
                 if (isset($response['ShipmentNo']) && $response['ShipmentNo']) {
                     $this->shipmentNo = $response['ShipmentNo'];
                     $this->saveTrack($order);

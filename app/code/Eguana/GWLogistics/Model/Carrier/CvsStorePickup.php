@@ -286,9 +286,9 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
     private function getGWLTracking($trackingValue)
     {
         $resultArr = [];
-        $allPayLogisticsId = $this->findAllPayLogisticsId($trackingValue);
-        if($allPayLogisticsId) {
-            $notifications = $this->queryLogisticsInfo->sendRequest($allPayLogisticsId);
+        $found = $this->findAllPayLogisticsId($trackingValue);
+        if(isset($found['allPayLogisticsId'], $found['storeId']) && $found['allPayLogisticsId'] && $found['storeId']) {
+            $notifications = $this->queryLogisticsInfo->sendRequest($found['allPayLogisticsId'], $found['storeId']);
             if(isset($notifications['LogisticsStatus']) && $notifications['LogisticsStatus']) {
                 $info = $this->infoStatus->getStatusInfo($notifications['LogisticsStatus']);
                 $resultArr = [
@@ -332,7 +332,8 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
         $track = reset($track);
         $shipmentId = $track->getParentId();
         $shipment = $this->shipmentRepository->get($shipmentId);
-        return $shipment->getAllPayLogisticsId();
+        $storeId = $shipment->getStoreId();
+        return [ 'allPayLogisticsId' => $shipment->getAllPayLogisticsId(), 'storeId' => $storeId];
     }
 
     private function findRtnMerchantTradeNo($tracking)
