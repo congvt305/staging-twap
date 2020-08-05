@@ -93,7 +93,7 @@ class CreateShipment
             $allPayLogisticsID = $this->createShipmentOrder($order);
             if ($allPayLogisticsID) {
                 $this->allPayLogisticsID = $allPayLogisticsID;
-                $shipmentNo = $this->requestTrackingInfo($allPayLogisticsID);
+                $shipmentNo = $this->requestTrackingInfo($allPayLogisticsID, $order->getStoreId());
             }
             if ($shipmentNo) {
                 $this->shipmentNo = $shipmentNo;
@@ -115,8 +115,8 @@ class CreateShipment
         return false;
     }
 
-    private function requestTrackingInfo($allPayLogisticsID) {
-        $result = $this->queryTransactionInfoRequest->sendRequest($allPayLogisticsID);
+    private function requestTrackingInfo($allPayLogisticsID, $storeId) {
+        $result = $this->queryTransactionInfoRequest->sendRequest($allPayLogisticsID, $storeId);
         if (isset($result['ShipmentNo'])) {
             return $result['ShipmentNo'];
         }

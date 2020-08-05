@@ -58,10 +58,11 @@ class Data extends AbstractHelper
         $this->encryptor = $encryptor;
     }
 
-    public function getCarrierTitle() {
+    public function getCarrierTitle($storeId = null) {
         return $this->scopeConfig->getValue(
             self::XML_PATH_TITLE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
 
         );
     }
@@ -77,92 +78,103 @@ class Data extends AbstractHelper
         return $this->_getUrl('eguana_gwlogistics/ReverseOrderStatusNotify', ['_secure' => true]);
     }
 
-    public function getSenderName()
+    public function getSenderName($storeId = null)
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_SENDER_NAME,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
         );
     }
 
-    public function getSenderPhone()
+    public function getSenderPhone($storeId = null)
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_SENDER_PHONE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
         );
     }
 
-    public function getSenderCellPhone()
+    public function getSenderCellPhone($storeId = null)
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_SENDER_CELL_PHONE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
         );
     }
 
-    public function getPlatformId()
+    public function getPlatformId($storeId = null)
     {
         $suffix = $this->productionMode === '1' ? '' : '_sandbox';
         return $this->scopeConfig->getValue(
             self::XML_PATH_PLATFORM_ID . $suffix,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
         );
     }
 
-    public function getHashKey()
+    public function getHashKey($storeId = null)
     {
         if ($this->productionMode === '1') {
             return $this->encryptor->decrypt(
                 $this->scopeConfig->getValue(
                 self::XML_PATH_HASH_KEY,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                    $storeId
             ));
         }
         return $this->scopeConfig->getValue(
             self::XML_PATH_HASH_KEY . '_sandbox',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
         );
     }
 
-    public function getHashIv()
+    public function getHashIv($storeId = null)
     {
         if ($this->productionMode === '1') {
             return $this->encryptor->decrypt(
                 $this->scopeConfig->getValue(
                     self::XML_PATH_HASH_IV,
-                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                    $storeId
                 ));
         }
         return $this->scopeConfig->getValue(
             self::XML_PATH_HASH_IV . '_sandbox',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
         );
     }
 
-    public function getMerchantId()
+    public function getMerchantId($storeId = null)
     {
         $suffix = $this->productionMode === '1' ? '' : '_sandbox';
         return $this->scopeConfig->getValue(
             self::XML_PATH_MERCHANT_ID . $suffix,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
         );
     }
 
-    public function getMapUrl()
+    public function getMapUrl($storeId = null)
     {
         $suffix = $this->productionMode === '1' ? '' : '_sandbox';
         return $this->scopeConfig->getValue(
             self::XML_PATH_MAP_URL . $suffix,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
         );
     }
 
-    public function getMode()
+    public function getMode($storeId = null)
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_MODE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
         );
     }
 
@@ -176,21 +188,21 @@ class Data extends AbstractHelper
         return $checkMackValue === $checkMackValueFound;
     }
 
-    public function getSendSmsActive($store = null)
+    public function getSendSmsActive($storeId = null)
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_SEND_SMS_ACTIVE,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
-            $store
+            $storeId
         );
     }
 
-    public function getMessageTemplate($store)
+    public function getMessageTemplate($storeId = null)
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_MESSAGE_TEMPLATE,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
-            $store
+            $storeId
         );
     }
 

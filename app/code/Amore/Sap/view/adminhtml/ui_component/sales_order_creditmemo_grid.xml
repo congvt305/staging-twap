@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="sales_order_creditmemo_columns">
+        <column name="sap_creditmemo_send_check" class="Amore\Sap\Ui\Component\Listing\Column\SapCreditmemoStatus" sortOrder="0">
+            <settings>
+                <filter>select</filter>
+                <options class="Amore\Sap\Ui\Component\Listing\Column\SapCreditmemo\Options"/>
+                <dataType>select</dataType>
+                <label translate="true">SAP Status</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+    </columns>
+</listing>

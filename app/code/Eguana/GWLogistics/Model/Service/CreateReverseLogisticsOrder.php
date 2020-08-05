@@ -111,7 +111,7 @@ class CreateReverseLogisticsOrder
         $track->setTrackNumber($result['RtnOrderNo']);
         $track->setRmaEntityId($rma->getEntityId());
         $track->setCarrierCode('gwlogistics');
-        $track->setCarrierTitle($this->helper->getCarrierTitle());
+        $track->setCarrierTitle($this->helper->getCarrierTitle($rma->getStoreId()));
         $track->setMethodCode($rma->getData('shipping_preference'));
         $track->setData('rtn_merchant_trade_no', $result['RtnMerchantTradeNo']);
         $this->trackRepository->save($track);

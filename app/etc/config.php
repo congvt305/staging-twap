@@ -491,6 +491,7 @@ return [
         'Eguana_BlackCat' => 1,
         'Eguana_ChangeStatus' => 1,
         'Eguana_Theme' => 1,
+        'Eguana_CustomBundle' => 1,
         'Eguana_CustomRMA' => 1,
         'Eguana_CustomerRefund' => 1,
         'Eguana_Directory' => 1,

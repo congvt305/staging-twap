@@ -129,13 +129,15 @@ class CreditmemoSapResend extends \Magento\Sales\Block\Adminhtml\Order\Creditmem
             );
         }
 
-        if ($this->config->getActiveCheck('store', $this->getCreditmemo()->getStoreId()) && !$this->config->checkTestMode()) {
-            $creditmemoSendCheck = $this->getCreditmemo()->getOrder()->getData('sap_creditmemo_send_check');
-            if ($creditmemoSendCheck == 0 || $creditmemoSendCheck == 2) {
+        if ($this->config->getActiveCheck('store', $this->getCreditmemo()->getStoreId()) &&
+            !$this->config->checkTestMode() &&
+            $this->config->getCreditmemoActiveCheck('store', $this->getCreditmemo()->getStoreId())) {
+            $creditmemoSendCheck = $this->getCreditmemo()->getData('sap_creditmemo_send_check');
+            if (!is_null($creditmemoSendCheck) && ($creditmemoSendCheck == 0 || $creditmemoSendCheck == 2)) {
                 $this->buttonList->add(
                     'sap_refund_send',
                     [
-                        'label' => __('SAP Send'),
+                        'label' => __('SAP Resend'),
                         'class' => 'sap-send',
                         'onclick' => 'confirmSetLocation(\'' . __(
                                 'Are you sure you want to resend a Order Cancel Data to SAP?'

@@ -8,7 +8,7 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
-        <column xsi:type="smallint" name="sap_creditmemo_send_check" nullable="true" comment="Check for credit memo send"/>
+        <column xsi:type="smallint" name="sap_creditmemo_send_check" nullable="true" comment="Check for credit memo send" disabled="true"/>
         <column xsi:type="smallint" name="sap_return_send_check" nullable="true" comment="Check for rma send" disabled="true"/>
         <column xsi:type="smallint" name="sap_order_send_check" nullable="true" comment="Check for order send"/>
         <column xsi:type="varchar" name="sap_order_increment_id" nullable="true" length="32" comment="New Increment Id sent to SAP by failure of origin increment id order sent" disabled="true"/>
@@ -24,5 +24,8 @@
         <index referenceId="MAGENTO_RMA_SAP_RETURN_INCREMENT_ID" indexType="btree" disabled="true">
             <column name="sap_return_increment_id"/>
         </index>
+    </table>
+    <table name="sales_creditmemo" resource="sales" engine="innodb" comment="Sales Flat Creditmemo">
+        <column xsi:type="smallint" name="sap_creditmemo_send_check" nullable="true" comment="Check for credit memo send"/>
     </table>
 </schema>
