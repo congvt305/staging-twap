@@ -80,6 +80,7 @@ define([
                 }
 
                 if (option && !this.options().length) {
+                    console.log('no options for city required');
                     registry.get(this.customName, function (input) {
                         // isCityRequired = this.is_city_required;
                         input.validation['required-entry'] = false;
