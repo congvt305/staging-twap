@@ -486,7 +486,11 @@
     }
 
     .socials.links {
-        padding: 80px @layout__width-xs-indent 60px;
+        padding: @indent__xl @layout__width-xs-indent 60px;
+
+        .social:after {
+            font-size: 30px !important;
+        }
     }
 }
 
