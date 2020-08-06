@@ -45,6 +45,39 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
             <input type="checkbox" name="change_password" id="change-password" data-role="change-password" value="1" title="<?= $block->escapeHtmlAttr(__('Change Password')) ?>"<?php if ($block->getChangePassword()) : ?> checked="checked"<?php endif; ?> class="checkbox" />
             <label class="label" for="change-password"><span><?= $block->escapeHtml(__('Change Password')) ?></span></label>
         </div>
+        <?php $mobileNumberStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'mobile_number', ['data'=>['attribute_code'=>'mobile_number', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number'))]]) ?>
+        <?php if ($mobileNumberStatus->isEnabled()) : ?>
+            <?= $mobileNumberStatus->setMobileNumberStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number'))->toHtml() ?>
+        <?php endif ?>
+    </fieldset>
+
+    <fieldset class="fieldset mobilenumber" data-container="change-mobilenumber" style="display: none">
+        <legend class="legend"><span data-title="change-mobilenumber"><?= $block->escapeHtml(__('Change mobile number')) ?></span></legend><br>
+        <div class="field field-mobile-number required">
+            <label class="label" for="mobile_number"><span><?= $block->escapeHtml(__('Mobile Number')); ?></span></label>
+            <div class="control">
+                <?php //phpcs:disable ?>
+                <input type="text" placeholder="<?= $block->escapeHtml(__('Telephone')) ?>" name="mobile_number" data-validate='{"required":true, "validate-number":true, "minlength":<?= $minimumMobileNumberDigits; ?>, "maxlength":<?= $maximumMobileNumberDigits; ?>}' value="<?= $viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number') ?>" title="<?= /* @noEscape */ $block->escapeHtml(__('Telephone')) ?>" class="input-text mobile-number" id="mobile_number">
+                <a class="action primary sms-link" disabled>
+                    <span><?= $block->escapeHtml(__('Get Code')) ?></span>
+                </a>
+                <?php //phpcs:enable ?>
+            </div>
+            <span class="note code-send-message" style="display: none"><?= $block->escapeHtml(__('Verification code has been sent to your mobile')); ?></span>
+        </div>
+        <div class="field verification-code required">
+            <label for="code" class="label"><span><?= $block->escapeHtml(__('Code')) ?></span></label>
+            <div class="control">
+                <?php //phpcs:disable ?>
+                <input type="text" placeholder="<?= $block->escapeHtml(__('Code')) ?>" name="code" value="" disabled data-validate='{"required":true, "validate-number":true, "minlength":4, "maxlength":4}' title="<?= /* @noEscape */ $block->escapeHtml(__('Input 4 digit verification code')) ?>" class="input-text code" id="code">
+                <a disabled class="action primary verify-link">
+                    <span><?= $block->escapeHtml(__('Verify')) ?></span>
+                </a>
+                <span class="note verification-message" style="display: none"><?= $block->escapeHtml(__('Code has been verified please move to the next step')); ?></span>
+                <span class="note countdown"></span>
+                <?php //phpcs:enable ?>
+            </div>
+        </div>
     </fieldset>
 
     <fieldset class="fieldset password" data-container="change-email-password">
@@ -89,13 +122,6 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
             </div>
         </div>
     </fieldset>
-
-    <div class="field field-mobile-number required">
-        <label class="label" for="mobile_number"><span><?= $block->escapeHtml(__('Mobile Number')); ?></span></label>
-        <div class="control">
-            <input placeholder="Mobile Number" type="text" id="mobile_number" name="mobile_number" value="<?= $viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number') ?>" title="Mobile Number" class="input-text required-entry" data-validate='{"required":true, "validate-number":true, "minlength":<?= $minimumMobileNumberDigits; ?>, "maxlength":<?= $maximumMobileNumberDigits; ?>}' aria-required="true">
-        </div>
-    </div>
 
     <?php $callSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'call_subscription_status', ['data'=>['attribute_code'=>'call_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'call_subscription_status'))]]) ?>
     <?php if ($callSubscriptionStatus->isEnabled()) : ?>
@@ -254,6 +280,20 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
         "[data-container=new-password]": {
             "passwordStrengthIndicator": {
                 "formSelector": "form.form-edit-account"
+            }
+        }
+    }
+</script>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "verifymobile":{
+                "sendCodeUrl": "<?= $viewModel->getSendCodeUrl(); ?>",
+                "verifyCodeUrl": "<?= $viewModel->getVerifyCodeUrl(); ?>",
+                "POSVerificationUrl": "<?= $viewModel->getPOSVerificationUrl(); ?>",
+                "codeExpirationMinutes": "<?= $viewModel->getCodeExpirationTimeInMinutes()?$viewModel->getCodeExpirationTimeInMinutes():'2:00'; ?>",
+                "mobileNumber": "<?= $viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number'); ?>"
             }
         }
     }
