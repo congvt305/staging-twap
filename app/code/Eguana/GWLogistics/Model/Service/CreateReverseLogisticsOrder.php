@@ -84,15 +84,6 @@ class CreateReverseLogisticsOrder
             if (isset($result['RtnMerchantTradeNo']) && isset($result['RtnOrderNo']) && $result['RtnOrderNo']) {
                 $this->saveTrack($rma, $result);
                 $this->smsSender->sendSms($rma, $result['RtnOrderNo']);
-            } elseif (isset($result['ErrorMessage']) && $result['ErrorMessage'] === '找不到加密金鑰，請確認是否有申請開通此物流方式!') { //need to remove when go live
-                $result = [
-                    'RtnMerchantTradeNo' => time(),
-                    'RtnOrderNo' => time()
-                ];
-                $this->saveTrack($rma, $result);
-                $this->smsSender->sendSms($rma, $result['RtnOrderNo']);
-            } else {
-                $result = ['ErrorMessage' => 'Could not generate reverse logistics order. Please try again later'];
             }
         } catch (\Exception $e) {
             $result = ['ErrorMessage' => $e->getMessage()];
