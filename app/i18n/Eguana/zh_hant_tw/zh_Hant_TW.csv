@@ -2763,7 +2763,7 @@ Time in seconds between the widget updates.,module,Magento_Catalog
 "Could not rebuild index for empty products array","Could not rebuild index for empty products array",module,Magento_CatalogInventory
 "The stock item for Product is not valid.","The stock item for Product is not valid.",module,Magento_CatalogInventory
 "This product is out of stock.","This product is out of stock.",module,Magento_CatalogInventory
-"Some of the products are out of stock.","Some of the products are out of stock.",module,Magento_CatalogInventory
+"Some of the products are out of stock.","此購物車有部分商品已售完。",module,Magento_CatalogInventory
 "The stock item for Product in option is not valid.","The stock item for Product in option is not valid.",module,Magento_CatalogInventory
 "Undefined product type","Undefined product type",module,Magento_CatalogInventory
 "%1 is not a correct comparison method.","%1 is not a correct comparison method.",module,Magento_CatalogInventory
@@ -3296,7 +3296,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Incl. Tax","含稅",module,Magento_Checkout
 "Your order number is: %1.","您的訂單號是： %1.",module,Magento_Checkout
 "Your order # is: <span>%1</span>.","您的訂單號為： <span>%1</span>。",module,Magento_Checkout
-"We'll email you an order confirmation with details and tracking info.","我們將通過電子郵件將包含詳細信息和跟踪信息的訂單確認發送給您。",module,Magento_Checkout
+"We'll email you an order confirmation with details and tracking info.","我們將寄送訂單確認信到您的電子信箱。",module,Magento_Checkout
 "Payment Transaction Failed Reminder","付款交易失敗通知",module,Magento_Checkout
 "Payment Transaction Failed","付款交易失敗",module,Magento_Checkout
 "Reason","原因",module,Magento_Checkout
@@ -3393,7 +3393,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Recently added item(s)","Recently added item(s)",module,Magento_Checkout
 "View and edit cart","查看和編輯購物車",module,Magento_Checkout
 "No Payment Methods","沒有付款方式",module,Magento_Checkout
-"Shipping Methods","運輸方式",module,Magento_Checkout
+"Shipping Methods","寄送方式",module,Magento_Checkout
 "Select Method","Select Method",module,Magento_Checkout
 "Method Title","Method Title",module,Magento_Checkout
 "Carrier Title","Carrier Title",module,Magento_Checkout
@@ -3441,7 +3441,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Content Height (css)","Content Height (css)",module,Magento_CheckoutAgreements
 "Content Height","Content Height",module,Magento_CheckoutAgreements
 "ID","編號",module,Magento_CheckoutAgreements
-"Condition","Condition",module,Magento_CheckoutAgreements
+"Condition","狀態",module,Magento_CheckoutAgreements
 "Sales","Sales",module,Magento_CheckoutAgreements
 "Checkout Conditions","Checkout Conditions",module,Magento_CheckoutAgreements
 "Checkout Terms and Conditions","Checkout Terms and Conditions",module,Magento_CheckoutAgreements
@@ -4598,12 +4598,12 @@ new products will be created. Use this step to customize images and price for yo
 "Comment is missing","Comment is missing",module,Magento_Contact
 "Invalid email address","無效的郵件地址",module,Magento_Contact
 "* Required Fields","* 為必填項",module,Magento_Contact
-"Write Us","寫信給我們",module,Magento_Contact
-"Jot us a note and we’ll get back to you as quickly as possible.","給我們寫個便條，我們會盡快與您聯繫。",module,Magento_Contact
+"Write Us","蘭芝台灣線上客服信箱服務",module,Magento_Contact
+"Jot us a note and we’ll get back to you as quickly as possible.","歡迎您留下任何意見或問題反映，我們將儘速與您聯繫、為您處理",module,Magento_Contact
 "Name","姓名",module,Magento_Contact
 "Email","電子郵件",module,Magento_Contact
 "Phone Number","電話號碼",module,Magento_Contact
-"What’s on your mind?","你在想什麼？",module,Magento_Contact
+"What’s on your mind?","我的意見與問題",module,Magento_Contact
 "Submit","提交",module,Magento_Contact
 "Contact Form","聯絡資料表",module,Magento_Contact
 "Phone","電話",module,Magento_Contact
@@ -8196,8 +8196,8 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Wishlist","願望清單",module,Magento_MultipleWishlist
 "Customer's Wish List Report","Customer's Wish List Report",module,Magento_MultipleWishlist
 "My Wish Lists","我的願望清單",module,Magento_MultipleWishlist
-"1 item in wish list",待購清單1項",module,Magento_MultipleWishlist
-"%1 items in wish list","待購清單%1項",module,Magento_MultipleWishlist
+"1 item in wish list",1個產品在願望清單中",module,Magento_MultipleWishlist
+"%1 items in wish list","%1個產品在願望清單中",module,Magento_MultipleWishlist
 "Wish List Search","Wish List Search",module,Magento_MultipleWishlist
 "Select Search Type","Select Search Type",module,Magento_MultipleWishlist
 "Reports","Reports",module,Magento_MultipleWishlist
@@ -8333,7 +8333,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Review Order - %1","查看訂單 - %1",module,Magento_Multishipping
 "Total","結帳總金額",module,Magento_Multishipping
 "Total for this address","此地址總計",module,Magento_Multishipping
-"Shipping Methods","運輸方式",module,Magento_Multishipping
+"Shipping Methods","寄送方式",module,Magento_Multishipping
 "Edit Address","編輯地址",module,Magento_Multishipping
 "Edit Billing Address","修改帳單地址",module,Magento_Multishipping
 "Edit Shipping Address","編輯收貨地址",module,Magento_Multishipping
@@ -9146,7 +9146,7 @@ information on installing the agent is available <a target=""_blank"" href=""%1"
 "Show Method if Not Applicable","Show Method if Not Applicable",module,Magento_OfflineShipping
 "Displayed Error Message","Displayed Error Message",module,Magento_OfflineShipping
 "Table Rates","Table Rates",module,Magento_OfflineShipping
-"Condition","Condition",module,Magento_OfflineShipping
+"Condition","狀態",module,Magento_OfflineShipping
 "Include Virtual Products in Price Calculation","Include Virtual Products in Price Calculation",module,Magento_OfflineShipping
 "Export","匯出",module,Magento_OfflineShipping
 "Import","匯入",module,Magento_OfflineShipping
@@ -10166,7 +10166,7 @@ offered and the currency offered by the merchant is USD.",module,Magento_Paypal
 "Shipping address is not set","未設置送貨地址",module,Magento_Quote
 "The requested Payment Method is not available.","The requested Payment Method is not available.",module,Magento_Quote
 "We found an invalid request for adding product to quote.","We found an invalid request for adding product to quote.",module,Magento_Quote
-"Product that you are trying to add is not available.","Product that you are trying to add is not available.",module,Magento_Quote
+"Product that you are trying to add is not available.","您嘗試加入的產品已經售完。",module,Magento_Quote
 "This is the wrong quote item id to update configuration.","This is the wrong quote item id to update configuration.",module,Magento_Quote
 "This shipping method is not available. To use this shipping method, please contact us.","此運輸方法不可用。 要使用這種運輸方式，請與我們聯繫。",module,Magento_Quote
 "The address model is not defined.","The address model is not defined.",module,Magento_Quote
@@ -10236,7 +10236,7 @@ offered and the currency offered by the merchant is USD.",module,Magento_Paypal
 "The address failed to save. Verify the address and try again.","The address failed to save. Verify the address and try again.",module,Magento_Quote
 "The ""%1"" Cart doesn't contain products.","The ""%1"" Cart doesn't contain products.",module,Magento_Quote
 "The coupon code couldn't be applied. Verify the coupon code and try again.","The coupon code couldn't be applied. Verify the coupon code and try again.",module,Magento_Quote
-"The coupon code isn't valid. Verify the code and try again.","The coupon code isn't valid. Verify the code and try again.",module,Magento_Quote
+"The coupon code isn't valid. Verify the code and try again.","無效折扣碼。",module,Magento_Quote
 "The coupon code couldn't be deleted. Verify the coupon code and try again.","The coupon code couldn't be deleted. Verify the coupon code and try again.",module,Magento_Quote
 "You don't have the correct permissions to assign the customer to the cart.","You don't have the correct permissions to assign the customer to the cart.",module,Magento_Quote
 "The shipping address is missing. Set the address and try again.","送貨地址丟失。 設置地址，然後重試。",module,Magento_Quote
@@ -11374,7 +11374,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Close","關閉",module,Magento_Rma
 "Are you sure you want to close this returns request?","Are you sure you want to close this returns request?",module,Magento_Rma
 "Print","Print",module,Magento_Rma
-"Return #%1 - %2","退貨 #%1 - %2",module,Magento_Rma
+"Return #%1 - %2","退貨訂單 #%1 - %2",module,Magento_Rma
 "RMA Item Details","RMA 項目詳細信息",module,Magento_Rma
 "OK","確定",module,Magento_Rma
 "Cancel","取消",module,Magento_Rma
@@ -11399,7 +11399,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Approved","已批准",module,Magento_Rma
 "Return Reason","退貨原因",module,Magento_Rma
 "Item Condition","項目情況",module,Magento_Rma
-"Resolution","解析度",module,Magento_Rma
+"Resolution","選擇",module,Magento_Rma
 "Details","詳細資料",module,Magento_Rma
 "Split","分裂",module,Magento_Rma
 "Action","操作",module,Magento_Rma
@@ -11506,7 +11506,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't create a return right now. Please try again later.","We can't create a return right now. Please try again later.",module,Magento_Rma
 "Create New Return","Create New Return",module,Magento_Rma
 "We can't delete the label right now.","We can't delete the label right now.",module,Magento_Rma
-"Return #%1","退貨 #%1",module,Magento_Rma
+"Return #%1","退貨訂單 #%1",module,Magento_Rma
 "Cannot add message.","Cannot add message.",module,Magento_Rma
 "My Returns","我的退貨",module,Magento_Rma
 "Tracking Information","Tracking Information",module,Magento_Rma
@@ -11520,13 +11520,13 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Could not save the RMA comment.","Could not save the RMA comment.",module,Magento_Rma
 "Could not delete the RMA comment.","Could not delete the RMA comment.",module,Magento_Rma
 "Only one RMA is available for printing","Only one RMA is available for printing",module,Magento_Rma
-"Return # ","退貨 # ",module,Magento_Rma
+"Return # ","退貨訂單 # ",module,Magento_Rma
 "Return Date: ","Return Date: ",module,Magento_Rma
 "Order # ","訂單編號 ",module,Magento_Rma
 "Ordered: ","訂購： ",module,Magento_Rma
 "Shipping Address:","收件地址：",module,Magento_Rma
 "Return Address:","退貨地址:",module,Magento_Rma
-"Condition","Condition",module,Magento_Rma
+"Condition","狀態",module,Magento_Rma
 "Qty","數量",module,Magento_Rma
 "There is an error in quantities for item %1.","There is an error in quantities for item %1.",module,Magento_Rma
 "Authorized Qty","Authorized Qty",module,Magento_Rma
@@ -11552,15 +11552,15 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Closed","退款完成",module,Magento_Rma
 "Processed and Closed","完成退貨",module,Magento_Rma
 "This is the wrong RMA item status.","This is the wrong RMA item status.",module,Magento_Rma
-"We placed your Return request.","We placed your Return request.",module,Magento_Rma
-"We authorized your Return request.","We authorized your Return request.",module,Magento_Rma
-"We partially authorized your Return request.","We partially authorized your Return request.",module,Magento_Rma
+"We placed your Return request.","已收到您的退貨申請",module,Magento_Rma
+"We authorized your Return request.","我們批准了你的回程要求。",module,Magento_Rma
+"We partially authorized your Return request.","我們部分地批准了你的回程要求。",module,Magento_Rma
 "We received your Return request.","我們已收到您的退貨申請。",module,Magento_Rma
-"We partially received your Return request.","We partially received your Return request.",module,Magento_Rma
-"We partially approved your Return request.","We partially approved your Return request.",module,Magento_Rma
-"We partially rejected your Return request.","We partially rejected your Return request.",module,Magento_Rma
-"We closed your Return request.","We closed your Return request.",module,Magento_Rma
-"We processed and closed your Return request.","We processed and closed your Return request.",module,Magento_Rma
+"We partially received your Return request.","我們部分地收到了你的回程要求。",module,Magento_Rma
+"We partially approved your Return request.","我們部分地批准了你的回程要求。",module,Magento_Rma
+"We partially rejected your Return request.","我們部分地拒絕了你的退回要求。",module,Magento_Rma
+"We closed your Return request.","我們關閉了你的回程請求。",module,Magento_Rma
+"We processed and closed your Return request.","我們已處理並終止了你的報稅表要求。",module,Magento_Rma
 "ID cannot be an empty","ID cannot be an empty",module,Magento_Rma
 "Requested entity doesn't exist","Requested entity doesn't exist",module,Magento_Rma
 "Could not save the RMA entity.","Could not save the RMA entity.",module,Magento_Rma
@@ -11596,7 +11596,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Notified","Notified",module,Magento_Rma
 "Not Notified","Not Notified",module,Magento_Rma
 "Return Address","退貨地址",module,Magento_Rma
-"Order Shipping Address","訂單運送地址",module,Magento_Rma
+"Order Shipping Address","訂單寄送地址",module,Magento_Rma
 "Delete Line","Delete Line",module,Magento_Rma
 "Select All","全選",module,Magento_Rma
 "Weight","Weight",module,Magento_Rma
@@ -11605,7 +11605,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Shipping Information","Shipping Information",module,Magento_Rma
 "Change shipping method.","更改運送方式。",module,Magento_Rma
 "No authorized items or allowed shipping methods","沒有授權的物品或允許的運輸方式",module,Magento_Rma
-"Carrier","Carrier",module,Magento_Rma
+"Carrier","貨運公司",module,Magento_Rma
 "Title","標題",module,Magento_Rma
 "Number","Number",module,Magento_Rma
 "Are you sure?","是否確認?",module,Magento_Rma
@@ -11632,7 +11632,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Save","儲存",module,Magento_Rma
 "Submit","提交",module,Magento_Rma
 "Back","上一步",module,Magento_Rma
-"Return #","退貨 #",module,Magento_Rma
+"Return #","退貨訂單 #",module,Magento_Rma
 "Date","日期",module,Magento_Rma
 "Ship From","從寄出",module,Magento_Rma
 "Return Status","退貨狀態",module,Magento_Rma
@@ -11650,13 +11650,13 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Items in the Package","Items in the Package",module,Magento_Rma
 "Are you sure you want to delete this tracking information?","Are you sure you want to delete this tracking information?",module,Magento_Rma
 "Request Information","Request Information",module,Magento_Rma
-"Date Requested","Date Requested",module,Magento_Rma
+"Date Requested","退貨申請日期",module,Magento_Rma
 "Shipping Address","收件地址",module,Magento_Rma
 "This won't take long . . .","This won't take long . . .",module,Magento_Rma
-"Shipping and Tracking Information","配送及貨運信息",module,Magento_Rma
-"Track this shipment","Track this shipment",module,Magento_Rma
-"Items Return Requested For","Items Return Requested For",module,Magento_Rma
-"Request Qty","Request Qty",module,Magento_Rma
+"Shipping and Tracking Information","配送狀態",module,Magento_Rma
+"Track this shipment","狀態追蹤",module,Magento_Rma
+"Items Return Requested For","退貨商品",module,Magento_Rma
+"Request Qty","數量",module,Magento_Rma
 "Hide Details","Hide Details",module,Magento_Rma
 "Show Details","Show Details",module,Magento_Rma
 "Questions and Answers","Questions and Answers",module,Magento_Rma
@@ -13582,7 +13582,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "kg","kg",module,Magento_Shipping
 "Delete Package","Delete Package",module,Magento_Shipping
 "Explanation","Explanation",module,Magento_Shipping
-"Carrier","Carrier",module,Magento_Shipping
+"Carrier","貨運公司",module,Magento_Shipping
 "Title","標題",module,Magento_Shipping
 "Number","Number",module,Magento_Shipping
 "Action","操作",module,Magento_Shipping
@@ -13590,8 +13590,8 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Shipping &amp; Handling Information","Shipping &amp; Handling Information",module,Magento_Shipping
 "Track Order","追踪訂單",module,Magento_Shipping
 "No shipping information available","No shipping information available",module,Magento_Shipping
-"Shipping and Tracking Information","配送及貨運信息",module,Magento_Shipping
-"Track this shipment","Track this shipment",module,Magento_Shipping
+"Shipping and Tracking Information","配送狀態",module,Magento_Shipping
+"Track this shipment","狀態追蹤",module,Magento_Shipping
 "Items Shipped","Items Shipped",module,Magento_Shipping
 "Order Total","合計訂單",module,Magento_Shipping
 "Shipment History","Shipment History",module,Magento_Shipping
@@ -13603,7 +13603,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "SKU","商品編號",module,Magento_Shipping
 "Order tracking","訂單跟踪",module,Magento_Shipping
 "Tracking Number:","Tracking Number:",module,Magento_Shipping
-"Carrier:","Carrier:",module,Magento_Shipping
+"Carrier:","貨運公司:",module,Magento_Shipping
 "Error:","Error:",module,Magento_Shipping
 "Tracking information is currently not available. Please ","Tracking information is currently not available. Please ",module,Magento_Shipping
 "contact us","聯繫我們",module,Magento_Shipping
@@ -13637,7 +13637,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Shipping Policy Parameters","Shipping Policy Parameters",module,Magento_Shipping
 "Apply custom Shipping Policy","Apply custom Shipping Policy",module,Magento_Shipping
 "Shipping Policy","Shipping Policy",module,Magento_Shipping
-"Shipping Methods","運輸方式",module,Magento_Shipping
+"Shipping Methods","寄送方式",module,Magento_Shipping
 "Track your order","追踪您的訂單",module,Magento_Shipping
 "Track All Shipments","Track All Shipments",module,Magento_Shipping
 "You sent the shipment.","You sent the shipment.",module,Magento_Shipping
@@ -14051,7 +14051,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Partial Refund Offline","Partial Refund Offline",module,Magento_Support
 "Payments Functionality Matrix","Payments Functionality Matrix",module,Magento_Support
 "Payment Methods","Payment Methods",module,Magento_Support
-"Shipping Methods","運輸方式",module,Magento_Support
+"Shipping Methods","寄送方式",module,Magento_Support
 "Job Code","Job Code",module,Magento_Support
 "Cron Expression","Cron Expression",module,Magento_Support
 "Run Class","Run Class",module,Magento_Support
@@ -14101,7 +14101,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Frontend Themes List","Frontend Themes List",module,Magento_Support
 "Event Name","活動姓名",module,Magento_Support
 "Observer Class","Observer Class",module,Magento_Support
-"Method","Method",module,Magento_Support
+"Method","寄送方式",module,Magento_Support
 "All Admin Events","All Admin Events",module,Magento_Support
 "All Crontab Events","All Crontab Events",module,Magento_Support
 "All Doc Events","All Doc Events",module,Magento_Support
@@ -16227,7 +16227,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "The response type is incorrect. Verify the type and try again.","The response type is incorrect. Verify the type and try again.",module,Magento_Worldpay
 "Can't check requested quantity for products without Source Items support.","Can't check requested quantity for products without Source Items support.",module,Magento_InventorySales
 "No linked stock found","No linked stock found",module,Magento_InventorySales
-"We don't have as many quantity as you requested, but we'll back order the remaining %1.","我們沒有您要求的數量,但我們會退回剩餘的%1個。",module,Magento_InventorySales
+"We don't have as many quantity as you requested, but we'll back order the remaining %1.","商品庫存不足，請重新調整。您目前訂購的商品數量為%1",module,Magento_InventorySales
 "Parameter ""object"" must be present.","Parameter ""object"" must be present.",module,Magento_InventorySales
 "Parameter ""sort_order"" must be present for unrequired conditions.","Parameter ""sort_order"" must be present for unrequired conditions.",module,Magento_InventorySales
 "Condition have to implement IsProductSalableInterface.","Condition have to implement IsProductSalableInterface.",module,Magento_InventorySales
