@@ -67,8 +67,8 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                 </dl>
                 <?php if ($messages = $block->getMessages()) :?>
                     <?php foreach ($messages as $message) :?>
-                        <div class= "cart item message <?= $block->escapeHtmlAttr($message['type']) ?>">
-                            <div <?= $_item->getData('is_gift')?'gift':''; ?>><?= $block->escapeHtml($message['text']) ?></div>
+                        <div class="cart item message <?= $block->escapeHtmlAttr($message['type']) ?> <?= $_item->getData('is_gift')?'gift':''; ?>">
+                            <div class="<?= $_item->getData('is_gift')?'gift':''; ?>"><?= $block->escapeHtml($message['text']) ?></div>
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -105,18 +105,26 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                         </button>
                         <?php endif;
                         if($_item->getData('is_gift')):?>
-                            <input id="cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty"
-                                   name="cart[<?= $block->escapeHtmlAttr($_item->getId()) ?>][qty]"
-                                   data-cart-item-id="<?= $block->escapeHtmlAttr($_item->getSku()) ?>"
-                                   value="<?= $block->escapeHtmlAttr($block->getQty()) ?>"
-                                   type="number"
-                                   size="4"
-                                   step="any"
-                                   title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
-                                   class="input-text qty"
-                                   data-validate="{required:true,'validate-greater-than-zero':true}"
-                                   data-role="cart-item-qty"
-                                   readonly/>
+                            <div class="gift-item">
+                                <button type="button" onclick="var qty_el = document.getElementById('cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty'); var qty = qty_el.value; if( !isNaN( qty ) &amp;&amp; qty > 1 ) qty_el.value--;" class="qty-decrease qty-selector">
+                                    <span class="icon"><?= $block->escapeHtml(__('decrease')) ?></span>
+                                </button>
+                                <input id="cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty"
+                                       name="cart[<?= $block->escapeHtmlAttr($_item->getId()) ?>][qty]"
+                                       data-cart-item-id="<?= $block->escapeHtmlAttr($_item->getSku()) ?>"
+                                       value="<?= $block->escapeHtmlAttr($block->getQty()) ?>"
+                                       type="number"
+                                       size="4"
+                                       step="any"
+                                       title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
+                                       class="input-text qty"
+                                       data-validate="{required:true,'validate-greater-than-zero':true}"
+                                       data-role="cart-item-qty"
+                                       readonly/>
+                                <button type="button" onclick="var qty_el = document.getElementById('cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++; " class="qty-increase qty-selector">
+                                    <span class="icon"><?= $block->escapeHtml(__('increase')) ?></span>
+                                </button>
+                            </div>
                         <?php endif;  ?>
                     </label>
                 </div>
