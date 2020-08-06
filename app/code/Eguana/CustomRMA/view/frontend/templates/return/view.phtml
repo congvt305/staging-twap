@@ -243,7 +243,7 @@
                                 <?= $block->escapeHtml($block->formatDate($_comment->getCreatedAt())); ?> <?= $block->escapeHtml($block->formatTime($_comment->getCreatedAt())); ?>
                             </dt>
                             <dd class="returns-comment-text">
-                                <?= /* @noEscape */ nl2br($block->escapeHtml($_comment->getComment())) ?>
+                                <?= $block->escapeHtml(__($_comment->getComment()))?>
                             </dd>
                         <?php endif; ?>
                     <?php endforeach; ?>
