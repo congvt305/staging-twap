@@ -36,6 +36,12 @@ define(
                 {
                     $('.dm-address').toggle();
                 }
+
+                if(config.attributeCode+'_checkbox' == 'mobile_number_checkbox')
+                {
+                    $('fieldset[data-container="change-mobilenumber"]').toggle();
+                }
+
             });
 
             $('#region_id').change(function () {
