@@ -274,9 +274,9 @@ class Data extends AbstractHelper
                                 $stringToArray[$resultExplode[0]] = $resultExplode[1];
                             }
 
-                            if ($stringToArray["RtnCode"] !== 1) {
+                            if ($stringToArray["RtnCode"] != 1) {
                                 $this->_logger->critical(__($stringToArray["RtnMsg"]));
-                                throw new Exception(__($stringToArray["RtnMsg"]));
+                                throw new \Exception(__($stringToArray["RtnMsg"]));
                             }
                         }
 
@@ -296,6 +296,11 @@ class Data extends AbstractHelper
                         $comment = $sdkHelper->getObtainingCodeComment($pattern, $feedback);
 
                         $this->setOrderCommentForFront($order, $comment, $status, EcpayOrderModel::NOTIFY_GET_CODE_RESULT);
+
+                        $payment = $order->getPayment();
+                        $additionalInfo = $payment->getAdditionalInformation();
+                        $order->setData("ecpay_payment_method", $additionalInfo["ecpay_choosen_payment"]);
+                        $this->orderRepository->save($order);
 
                         unset($status, $pattern, $comment);
                         break;
