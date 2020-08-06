@@ -143,8 +143,10 @@ class CvsCreateShipmentOrder
                 'ReturnStoreID' => '' //cvs store id from map request, b2c do not send
             ];
             $result = $this->ecpayLogistics->BGCreateShippingOrder();
-            if (!$this->helper->validateCheckMackValue($result)) {
-                throw new \Exception(__('CheckMacValue is not valid'));
+            if (isset($result['CheckMacValue'])) {
+                if (!$this->helper->validateCheckMackValue($result)) {
+                    throw new \Exception(__('CheckMacValue is not valid'));
+                }
             }
         } catch (\Exception $e) {
             $this->logger->critical('GWL create shipping order failed');
