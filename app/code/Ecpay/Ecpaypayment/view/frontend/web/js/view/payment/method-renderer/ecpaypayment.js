@@ -1,6 +1,7 @@
 define(
     [
         'jquery',
+        'ko',
         'mage/translate',
         'mage/url',
         'Magento_Checkout/js/view/payment/default',
@@ -9,13 +10,14 @@ define(
         'Magento_Checkout/js/model/quote',
         'domReady!'
     ],
-    function ($, $t, url, Component, placeOrderAction, additionalValidators, quote) {
+    function ($, ko, $t, url, Component, placeOrderAction, additionalValidators, quote) {
         'use strict';
 
         return Component.extend({
             defaults: {
                 template: 'Ecpay_Ecpaypayment/payment/payment', // path to template
-                paymentMethod: ''
+                paymentMethod: '',
+                invoiceChecked: ko.observable('greenworld-invoice')
             },
 
             /** @inheritdoc */
@@ -43,9 +45,10 @@ define(
                     'method': this.getCode(),
                     'additional_data': {
                         'ecpay_choosen_payment': this.paymentMethod(),
-                        'ecpay_einvoice_donation': $("input:radio[name=e-invoice-donation]:checked").val(),
+                        'ecpay_einvoice_type': $("input:radio[name=ecpay_einvoice_type]:checked").val(),
                         'ecpay_einvoice_title': $("input:text[name=invoice_title]").val(),
-                        'ecpay_einvoice_tax_id_number': $("input:text[name=tax_id_number]").val()
+                        'ecpay_einvoice_tax_id_number': $("input:text[name=tax_id_number]").val(),
+                        'ecpay_einvoice_cellphone_barcode': $("input:text[name=cellphone_barcode]").val(),
                     }
                 };
                 return data;
@@ -62,7 +65,7 @@ define(
                 return window.checkoutConfig.payment.ecpay_ecpaypayment.isPaymentAvailable;
             },
 
-            getPaymentMethodMsg: function() {
+            getPaymentMethodMsg: function () {
                 if (this.isPaymentAvailable() === false) {
                     var msg = window.checkoutConfig.payment.ecpay_ecpaypayment.ecpayPaymentMethods;
                     return '※ ' + msg[0];
@@ -74,9 +77,9 @@ define(
              * Get list of payment methods
              * @return {Object}
              */
-            getPaymentMethods: function() {
+            getPaymentMethods: function () {
                 var self = this;
-                return _.map(window.checkoutConfig.payment.ecpay_ecpaypayment.ecpayPaymentMethods, function(value, key) {
+                return _.map(window.checkoutConfig.payment.ecpay_ecpaypayment.ecpayPaymentMethods, function (value, key) {
                     var paymentText = self.getPaymentMethodText(value);
                     return {
                         'value': value,
@@ -89,7 +92,7 @@ define(
              * Get list of payment methods
              * @return String
              */
-            getPaymentMethodText: function(value) {
+            getPaymentMethodText: function (value) {
                 switch (value) {
                     case 'credit':
                         return 'Credit';

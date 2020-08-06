@@ -10,18 +10,20 @@ class DataAssignObserver extends AbstractDataAssignObserver
 {
 
     const KEY_ECPAY_CHOOSEN_PAYMENT = 'ecpay_choosen_payment';
-    const KEY_ECPAY_EINVOICE_DONATION = 'ecpay_einvoice_donation';
+    const KEY_ECPAY_EINVOICE_TYPE = 'ecpay_einvoice_type';
     const KEY_ECPAY_EINVOICE_TITLE = 'ecpay_einvoice_title';
     const KEY_ECPAY_EINVOICE_TAX_ID_NUMBER = 'ecpay_einvoice_tax_id_number';
+    const KEY_ECPAY_EINVOICE_CELLPHONE_BARCODE = 'ecpay_einvoice_cellphone_barcode';
 
     /**
      * @var array
      */
     private $additionalInformationList = [
         self::KEY_ECPAY_CHOOSEN_PAYMENT,
-        self::KEY_ECPAY_EINVOICE_DONATION,
+        self::KEY_ECPAY_EINVOICE_TYPE,
         self::KEY_ECPAY_EINVOICE_TITLE,
-        self::KEY_ECPAY_EINVOICE_TAX_ID_NUMBER
+        self::KEY_ECPAY_EINVOICE_TAX_ID_NUMBER,
+        self::KEY_ECPAY_EINVOICE_CELLPHONE_BARCODE
     ];
 
     /**
