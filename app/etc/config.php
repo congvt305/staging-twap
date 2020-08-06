@@ -512,6 +512,7 @@ return [
         'Amore_CustomerRegistration' => 1,
         'Eguana_CustomCheckout' => 1,
         'Eguana_VideoBoard' => 1,
+        'Eguana_CustomAmastyPromo' => 1,
         'Fastly_Cdn' => 1,
         'Klarna_Core' => 0,
         'Klarna_Ordermanagement' => 0,
