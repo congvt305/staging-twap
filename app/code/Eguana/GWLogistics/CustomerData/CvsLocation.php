@@ -33,8 +33,13 @@ class CvsLocation implements SectionSourceInterface
      * @var \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface
      */
     private $quoteCvsLocationRepository;
+    /**
+     * @var \Eguana\GWLogistics\Helper\Data
+     */
+    private $data;
 
     public function __construct(
+        \Eguana\GWLogistics\Helper\Data $data,
         StoreManagerInterface $storeManager,
         Session $checkoutSession,
         \Magento\Quote\Model\ShippingAddressManagement $shippingAddressManagement,
@@ -44,6 +49,7 @@ class CvsLocation implements SectionSourceInterface
         $this->checkoutSession = $checkoutSession;
         $this->shippingAddressManagement = $shippingAddressManagement;
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
+        $this->data = $data;
     }
 
     /**
@@ -58,14 +64,12 @@ class CvsLocation implements SectionSourceInterface
         } catch (NoSuchEntityException $exception) {
             $storeId = null;
         }
-//        $isEnabled = $this->config->isEnabled($storeId) && $this->config->isClickAndCollectEnabled($storeId); todo configuration
-        $isEnabled = true;
+        $isEnabled = $this->data->isActive($storeId);
         $quoteId = $this->checkoutSession->getQuoteId();
 
         if (!$isEnabled || empty($quoteId)) {
             return [
-                'cvs-location' => [],
-                'search-request' => []
+                'cvs-location' => []
             ];
         }
 
@@ -74,20 +78,15 @@ class CvsLocation implements SectionSourceInterface
             /** @var QuoteCvsLocationInterface $cvsLocation */
             $cvsLocation = $this->quoteCvsLocationRepository->getByAddressId($shippingAddress->getId());
             $cvsLocationData = [
-                'LogisticsSubType' => $cvsLocation->getLogisticsSubType(),
-                'CVSStoreID' => $cvsLocation->getCvsStoreId(),
                 'CVSStoreName' => $cvsLocation->getCvsStoreName(),
                 'CVSAddress' => $cvsLocation->getCvsAddress(),
-                'CVSTelephone' => $cvsLocation->getCvsTelephone(),
             ];
         } catch (LocalizedException $e) {
-            $searchRequest = [];
             $cvsLocationData = [];
         }
 
         return [
             'cvs-location' => $cvsLocationData,
-            'search-request' => ['UNIMART']
         ];
     }
 
