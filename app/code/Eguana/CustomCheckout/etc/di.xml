@@ -8,5 +8,8 @@
     <type name="Magento\Checkout\Block\Cart">
         <plugin name="Eguana_CustomCheckout::Checkout_Cart" type="Eguana\CustomCheckout\Plugin\Checkout\Block\Cart" />
     </type>
+    <type name="Magento\Checkout\Model\DefaultConfigProvider">
+        <plugin name="Eguana_CustomCheckout::Checkout_Summary" type="\Eguana\CustomCheckout\Plugin\Model\DefaultConfigProvider" />
+    </type>
     <preference for="\Magento\Checkout\CustomerData\DefaultItem" type="\Eguana\CustomCheckout\Rewrite\Checkout\CustomerData\DefaultItem" />
 </config>

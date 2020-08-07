@@ -4,6 +4,20 @@
  * See COPYING.txt for license details.
  */
 -->
-<div class="cart item message notice" if="getMessage($parents[1])">
-    <div class="gift" data-bind="text: getMessage($parents[1])"></div>
+<!-- ko if: window.checkoutConfig.quoteGifts -->
+<!-- ko if: window.checkoutConfig.quoteGifts[$parents[1].item_id] -->
+<div class="cart item message notice gift" if="getMessage($parents[1])">
+    <div data-bind="text: getMessage($parents[1])"></div>
 </div>
+<!-- /ko -->
+<!-- ko ifnot: window.checkoutConfig.quoteGifts[$parents[1].item_id] -->
+<div class="cart item message notice" if="getMessage($parents[1])">
+    <div data-bind="text: getMessage($parents[1])"></div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko ifnot: window.checkoutConfig.quoteGifts -->
+<div class="cart item message notice" if="getMessage($parents[1])">
+    <div data-bind="text: getMessage($parents[1])"></div>
+</div>
+<!-- /ko -->
