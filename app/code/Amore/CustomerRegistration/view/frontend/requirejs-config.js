@@ -9,6 +9,7 @@ var config = {
             checkboxfield: 'Amore_CustomerRegistration/js/checkboxfield',
             editform: 'Amore_CustomerRegistration/js/account-edit',
             createaccount: 'Amore_CustomerRegistration/js/account-create',
+            verifymobile: 'Amore_CustomerRegistration/js/verifymobile',
         }
     },
     config: {

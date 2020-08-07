@@ -9,4 +9,8 @@
         <plugin name="eguana_directory_price_formatter"
                 type="Eguana\Directory\Plugin\Locale\PriceFormatter" sortOrder="10"/>
     </type>
+    <type name="Magento\Directory\Model\ResourceModel\Region\Collection">
+        <plugin name="eguana_directory_custom_region_order"
+                type="Eguana\Directory\Plugin\RegionCollectionPlugin" sortOrder="10"/>
+    </type>
 </config>

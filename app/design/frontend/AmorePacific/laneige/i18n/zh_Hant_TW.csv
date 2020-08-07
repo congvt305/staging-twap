@@ -53,7 +53,7 @@ Events,最新活動
 "Check / Money order","支票/匯票"
 "Please replace this text with you Privacy Policy. Please add any additional cookies your website uses below (e.g. Google Analytics).","請用您的隱私政策替換此文本。 請在下面添加您的網站使用的所有其他Cookie（例如Google Analytics（分析））。"
 "Unable to send mail:","無法發送郵件："
-"%1 items in wish list","願望清單有 %1 個項目"
+"%1 items in wish list","%1個產品在願望清單中"
 "Invalid Form Key. Please refresh the page.","無效表單金鑰，請刷新頁面。"
 "Mouse over to zoom","鼠標懸停以縮放"
 "POS Information","POS信息"
@@ -79,3 +79,4 @@ Events,最新活動
 "Please select a city, city or district","請選擇一個城市,城市或地區"
 "New admin user '%user_name' created %store_name","'%user_name' 您已成功加入[%store_name]"
 "Order Date:","訂購日期:"
+"0 items in wish list","0個產品在願望清單中"

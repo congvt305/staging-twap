@@ -128,10 +128,16 @@ class OrderStatusSaveAfter implements ObserverInterface
                     $mobilenumber = preg_replace(self::REMOVE_SPACE_NUMBER, '', $mobilenumber);
                     $telephone = $this->sendNotification->getPhoneNumberWithCode($mobilenumber, $countryCode);
                     $firstName = $shippingAddress->getData('firstname');
+                    $lastName = $shippingAddress->getData('lastname');
+                    if ($this->data->getReverseNameFormat($storeId)) {
+                        $customerName = $lastName . $firstName;
+                    } else {
+                        $customerName = $firstName . ' ' . $lastName;
+                    }
                     $orderId = $order->getIncrementId();
                     $templateIdentifer = $this->data->getTemplateIdentifer($newStatus, $storeId);
                     $orderNotification = $this->sendNotification
-                        ->getOrderNotification($storeId, $templateIdentifer, $firstName, $orderId, $storeName, $storePhoneNumber);
+                        ->getOrderNotification($storeId, $templateIdentifer, $customerName, $orderId, $storeName, $storePhoneNumber);
                     if ($this->state->getAreaCode() != 'adminhtml' && $order->getExportProcessed()) {
                         return;
                     } else {
