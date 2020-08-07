@@ -3,7 +3,8 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-    .form-create-account-pos {
+  .form-edit-account,
+  .form-create-account-pos {
     .field {
       &.mobile,
       &.verification-code {
@@ -75,10 +76,6 @@
           }
         }
       }
-    }
-
-    .fieldset.dm-address {
-      margin-bottom: @indent__l !important;
     }
   }
 
@@ -164,6 +161,7 @@
     margin-right: -@layout__width-xs-indent !important;
   }
 
+  .form-edit-account,
   .form-create-account-pos {
     .field {
       &.mobile,
@@ -203,6 +201,7 @@
     margin-bottom: 16px !important;
   }
 
+  .form-edit-account,
   .form-create-account-pos {
     .field {
       &.mobile,
