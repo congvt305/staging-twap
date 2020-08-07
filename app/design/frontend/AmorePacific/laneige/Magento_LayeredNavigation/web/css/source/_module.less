@@ -471,34 +471,29 @@
     .page-layout-1column {
         &.page-with-filter {
             .block.filter {
-                &,
-                & ~ .search.results {
-                    & ~ .toolbar-products,
-                    & > .toolbar-products {
-                        position: absolute;
-                        top: 0;
-                        width: 100%;
-                        margin-top: 35px;
+                & ~ .toolbar-products {
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+                    margin-top: 35px;
 
-                        & ~ .products {
-                            margin-top: -@indent__s;
-                        }
-
-                        .toolbar-amount {
-                            float: none;
-                            display: inline-block;
-                            margin-top: -70px;
-                        }
-
-                        .sorter {
-                            padding-top: 15px;
-                        }
+                    & ~ .products {
+                        margin-top: -@indent__s;
                     }
 
-                    & > .products ~ .toolbar-products,
-                    & ~ .products ~ .toolbar-products {
-                        position: static;
+                    .toolbar-amount {
+                        float: none;
+                        display: inline-block;
+                        margin-top: -70px;
                     }
+
+                    .sorter {
+                        padding-top: 15px;
+                    }
+                }
+
+                & ~ .products ~ .toolbar-products {
+                    position: static;
                 }
             }
         }
