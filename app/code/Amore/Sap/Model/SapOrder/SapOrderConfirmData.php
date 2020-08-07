@@ -22,8 +22,6 @@ use Magento\Sales\Model\Order;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Customer\Api\CustomerRepositoryInterface;
-use function GuzzleHttp\Psr7\_parse_request_uri;
-use function PHPUnit\Framework\isNull;
 
 class SapOrderConfirmData extends AbstractSapOrder
 {
