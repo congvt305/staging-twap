@@ -10,7 +10,7 @@ define([
         return Shipping.extend({
             validateShippingInformation: function (updatedShipping) {
                 var self = this,
-                    logisticTypeSelector= 'input#LogisticsSubType.input-text';
+                    logisticTypeSelector= 'input#CVSStoreName.input-text';
                 if (quote.shippingMethod() === null) {
                     return self._super(updatedShipping);
                 }
