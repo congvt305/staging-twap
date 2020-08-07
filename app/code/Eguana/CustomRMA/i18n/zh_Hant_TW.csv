@@ -7,7 +7,7 @@
 "Product","產品"
 "Quantity To Return","退貨數量"
 "Remaining Quantity:","剩餘數量："
-"New Return for Order %1","訂單新退貨 %1"
+"New Return for Order %1","申請退貨的訂單 %1"
 "Order ID","訂單編號"
 "Customer Name","顧客姓名"
 "Email","電子郵件"
@@ -74,3 +74,4 @@ ID,ID
 "General Configuration","常規配置"
 "Enable Extension","啟用擴展"
 "Contact Phone Number","手機號碼"
+"Return Comments","退貨原因"

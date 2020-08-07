@@ -532,7 +532,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Views","點擊率",module,Magento_Backend
 "Revenue","收入",module,Magento_Backend
 "Tax","稅金",module,Magento_Backend
-"Shipping","物流",module,Magento_Backend
+"Shipping","出貨方式",module,Magento_Backend
 "Images (.gif, .jpg, .png)","圖片（.gif、.jpg、.png）",module,Magento_Backend
 "Media (.avi, .flv, .swf)","媒體（.avi、.flv，.swf）",module,Magento_Backend
 "All Files","所有檔案",module,Magento_Backend
@@ -1471,9 +1471,9 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Company","公司",module,Magento_Braintree
 "Address","位址",module,Magento_Braintree
 "City","行政區",module,Magento_Braintree
-"State/Province","城市",module,Magento_Braintree
+"State/Province","地址",module,Magento_Braintree
 "Please select region, state or province","請選擇地區、 州或省",module,Magento_Braintree
-"Zip/Postal Code","郵政編碼",module,Magento_Braintree
+"Zip/Postal Code","郵遞區號",module,Magento_Braintree
 "Submit","提交",module,Magento_Braintree
 "Add Credit Card","新增信用卡",module,Magento_Braintree
 "Card Number","卡號",module,Magento_Braintree
@@ -3205,8 +3205,8 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Invalid method: %1","Invalid method: %1",module,Magento_Checkout
 "City","行政區",module,Magento_Checkout
 "Country","國家",module,Magento_Checkout
-"State/Province","城市",module,Magento_Checkout
-"Zip/Postal Code","郵政編碼",module,Magento_Checkout
+"State/Province","地址",module,Magento_Checkout
+"Zip/Postal Code","郵遞區號",module,Magento_Checkout
 "My Cart (1 item)","My Cart (1 item)",module,Magento_Checkout
 "My Cart (%1 items)","My Cart (%1 items)",module,Magento_Checkout
 "My Cart","我的車",module,Magento_Checkout
@@ -3229,7 +3229,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "We can't update the shopping cart.","我們無法更新購物車 ",module,Magento_Checkout
 "One-page checkout is turned off.","One-page checkout is turned off.",module,Magento_Checkout
 "Guest checkout is disabled.","Guest checkout is disabled.",module,Magento_Checkout
-"Checkout","查看",module,Magento_Checkout
+"Checkout","我的購物車",module,Magento_Checkout
 "Page not found.","找不到頁面。",module,Magento_Checkout
 "Please agree to all the terms and conditions before placing the order.","請在提交訂單之前同意所有條款及條件。",module,Magento_Checkout
 "Something went wrong while processing your order. Please try again later.","Something went wrong while processing your order. Please try again later.",module,Magento_Checkout
@@ -3294,9 +3294,9 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Proceed to Checkout","結帳",module,Magento_Checkout
 "Product Name","商品名稱",module,Magento_Checkout
 "Incl. Tax","含稅",module,Magento_Checkout
-"Your order number is: %1.","您的訂單號是： %1.",module,Magento_Checkout
-"Your order # is: <span>%1</span>.","您的訂單號為： <span>%1</span>。",module,Magento_Checkout
-"We'll email you an order confirmation with details and tracking info.","我們將寄送訂單確認信到您的電子信箱。",module,Magento_Checkout
+"Your order number is: %1.","您的訂單編號是： %1.",module,Magento_Checkout
+"Your order # is: <span>%1</span>.","您的訂單編號是： <span>%1</span>。",module,Magento_Checkout
+"We'll email you an order confirmation with details and tracking info.","訂購完成後，系統將會發寄一份購買成功通知郵件至您註冊時所填寫的電子信箱中!再次感謝您對蘭芝的支持!",module,Magento_Checkout
 "Payment Transaction Failed Reminder","付款交易失敗通知",module,Magento_Checkout
 "Payment Transaction Failed","付款交易失敗",module,Magento_Checkout
 "Reason","原因",module,Magento_Checkout
@@ -3306,14 +3306,14 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Total:","總金額:",module,Magento_Checkout
 "Billing Address:","帳單地址：",module,Magento_Checkout
 "Shipping Address:","收件地址:",module,Magento_Checkout
-"Shipping Method:","寄送方式：",module,Magento_Checkout
+"Shipping Method:","出貨方式：",module,Magento_Checkout
 "Payment Method:","付款方式:",module,Magento_Checkout
 "Date & Time:","日期與時間:",module,Magento_Checkout
 "Sign In","登入",module,Magento_Checkout
 "Email Address","電子郵件地址",module,Magento_Checkout
 "Password","密碼",module,Magento_Checkout
 "Forgot Your Password?","忘記密碼了嗎？",module,Magento_Checkout
-"My billing and shipping address are the same","我的帳單和收貨地址相同",module,Magento_Checkout
+"My billing and shipping address are the same","收件地址與住家地址相同",module,Magento_Checkout
 "Update","更新資料",module,Magento_Checkout
 "Cancel","取消",module,Magento_Checkout
 "Save in address book","保存在通訊錄中",module,Magento_Checkout
@@ -3332,9 +3332,9 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Forgot an Item?","Forgot an Item?",module,Magento_Checkout
 "Edit Your Cart","Edit Your Cart",module,Magento_Checkout
 "Ship Here","在這裡運送",module,Magento_Checkout
-"Ship To:","運送到：",module,Magento_Checkout
+"Ship To:","收件地址：",module,Magento_Checkout
 "edit","edit",module,Magento_Checkout
-"Order Summary","訂單摘要",module,Magento_Checkout
+"Order Summary","購物車明細",module,Magento_Checkout
 "View and Edit Cart","查看和編輯購物車",module,Magento_Checkout
 "View Details","檢視詳細資料",module,Magento_Checkout
 "Field ","Field ",module,Magento_Checkout
@@ -3342,11 +3342,11 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Provided Zip/Postal Code seems to be invalid.","提供的郵遞區號似乎無效。",module,Magento_Checkout
 " Example: "," 例: ",module,Magento_Checkout
 "If you believe it is the right one you can ignore this notice.","如果您認為這是對的，則可以忽略此通知。",module,Magento_Checkout
-"New Address","新地址",module,Magento_Checkout
+"New Address","新增地址",module,Magento_Checkout
 "Are you sure you would like to remove this item from the shopping cart?","您確定要從購物車中刪除該商品嗎？",module,Magento_Checkout
-"Review & Payments","審核和付款",module,Magento_Checkout
+"Review & Payments","付款方式",module,Magento_Checkout
 "Select a new payment method","選擇一種新的付款方式",module,Magento_Checkout
-"Shipping","物流",module,Magento_Checkout
+"Shipping","出貨方式",module,Magento_Checkout
 "Save Address","保存地址",module,Magento_Checkout
 "Please specify a shipping method.","請指定運送方式。",module,Magento_Checkout
 "Checkout Options","Checkout Options",module,Magento_Checkout
@@ -3372,7 +3372,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Separate by "","".","Separate by "","".",module,Magento_Checkout
 "Send Payment Failed Email Copy Method","Send Payment Failed Email Copy Method",module,Magento_Checkout
 "Summary","概要",module,Magento_Checkout
-"Order Total","合計訂單",module,Magento_Checkout
+"Order Total","本次訂單金額",module,Magento_Checkout
 "Shipping Address","收件地址",module,Magento_Checkout
 "We'll send your order confirmation here.","我們將在此處發送您的訂單確認。",module,Magento_Checkout
 "Payment","Payment",module,Magento_Checkout
@@ -3393,7 +3393,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Recently added item(s)","Recently added item(s)",module,Magento_Checkout
 "View and edit cart","查看和編輯購物車",module,Magento_Checkout
 "No Payment Methods","沒有付款方式",module,Magento_Checkout
-"Shipping Methods","寄送方式",module,Magento_Checkout
+"Shipping Methods","出貨方式",module,Magento_Checkout
 "Select Method","Select Method",module,Magento_Checkout
 "Method Title","Method Title",module,Magento_Checkout
 "Carrier Title","Carrier Title",module,Magento_Checkout
@@ -3744,7 +3744,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Country:","Country:",module,Magento_Company
 "State/Province:","State/Province:",module,Magento_Company
 "ZIP/Postal Code:","ZIP/Postal Code:",module,Magento_Company
-"Phone Number:","電話號碼:",module,Magento_Company
+"Phone Number:","手機號碼:",module,Magento_Company
 "Job Title:","Job Title:",module,Magento_Company
 "Email Address:","電子郵件地址：",module,Magento_Company
 "Prefix:","Prefix:",module,Magento_Company
@@ -3879,10 +3879,10 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Street Address","街道地址",module,Magento_Company
 "City","行政區",module,Magento_Company
 "Country","國家",module,Magento_Company
-"State/Province","城市",module,Magento_Company
-"Please select a region, state or province.","請選擇一個地區，州或省。",module,Magento_Company
+"State/Province","地址",module,Magento_Company
+"Please select a region, state or province.","選擇城市",module,Magento_Company
 "ZIP/Postal Code","郵遞區號",module,Magento_Company
-"Phone Number","電話號碼",module,Magento_Company
+"Phone Number","手機號碼",module,Magento_Company
 "Company Administrator","Company Administrator",module,Magento_Company
 "Job Title","Job Title",module,Magento_Company
 "Email","電子郵件",module,Magento_Company
@@ -4239,7 +4239,7 @@ Maximum 255 characters are allowed.,module,Magento_CompanyCredit
 "Updated By","Updated By",module,Magento_CompanyCredit
 "Purchase Order","Purchase Order",module,Magento_CompanyCredit
 "You will be charged for","You will be charged for",module,Magento_CompanyCredit
-"Order Total","合計訂單",module,Magento_CompanyCredit
+"Order Total","本次訂單金額",module,Magento_CompanyCredit
 "%fieldName is a required field.","%fieldName 是必填的欄位。",module,Magento_CompanyCredit
 "All Payment Methods","所有付款方式",module,Magento_CompanyPayment
 "Specific Payment Methods","具體付款方式",module,Magento_CompanyPayment
@@ -4602,7 +4602,7 @@ new products will be created. Use this step to customize images and price for yo
 "Jot us a note and we’ll get back to you as quickly as possible.","歡迎您留下任何意見或問題反映，我們將儘速與您聯繫、為您處理",module,Magento_Contact
 "Name","姓名",module,Magento_Contact
 "Email","電子郵件",module,Magento_Contact
-"Phone Number","電話號碼",module,Magento_Contact
+"Phone Number","手機號碼",module,Magento_Contact
 "What’s on your mind?","我的意見與問題",module,Magento_Contact
 "Submit","提交",module,Magento_Contact
 "Contact Form","聯絡資料表",module,Magento_Contact
@@ -4620,7 +4620,7 @@ new products will be created. Use this step to customize images and price for yo
 "We can't process your request right now. Sorry, that's all we know.","我們現在無法處理您的請求。對不起，那是我們都知道。",module,Magento_Contact
 "Name: %name","Name: %name",module,Magento_Contact
 "Email: %email","Email: %email",module,Magento_Contact
-"Phone Number: %telephone","電話號碼： %電話",module,Magento_Contact
+"Phone Number: %telephone","手機號碼： %電話",module,Magento_Contact
 "Comment: %comment","評論: %comment",module,Magento_Contact
 "Enter the Name and try again.","Enter the Name and try again.",module,Magento_Contact
 "Enter the comment and try again.","Enter the comment and try again.",module,Magento_Contact
@@ -4771,7 +4771,7 @@ new products will be created. Use this step to customize images and price for yo
 "Purchased","Purchased",module,Magento_Customer
 "Bill-to Name","Bill-to Name",module,Magento_Customer
 "Ship-to Name","Ship-to Name",module,Magento_Customer
-"Order Total","合計訂單",module,Magento_Customer
+"Order Total","本次訂單金額",module,Magento_Customer
 "Purchase Point","Purchase Point",module,Magento_Customer
 "Customer View","客戶介面",module,Magento_Customer
 "There are no items in customer's shopping cart.","There are no items in customer's shopping cart.",module,Magento_Customer
@@ -5013,7 +5013,7 @@ new products will be created. Use this step to customize images and price for yo
 "Account Created on (%1):","帳戶創建於 (%1):",module,Magento_Customer
 "Account Created in:","Account Created in:",module,Magento_Customer
 "Customer Group:","Customer Group:",module,Magento_Customer
-"Default Billing Address","默認帳單地址",module,Magento_Customer
+"Default Billing Address","居住地址",module,Magento_Customer
 "Sales Statistics","Sales Statistics",module,Magento_Customer
 "Web Site","網站",module,Magento_Customer
 "Store","商店",module,Magento_Customer
@@ -5043,9 +5043,9 @@ new products will be created. Use this step to customize images and price for yo
 "Street Address %1","街道地址 %1",module,Magento_Customer
 "VAT Number","增值稅號",module,Magento_Customer
 "City","行政區",module,Magento_Customer
-"State/Province","城市",module,Magento_Customer
-"Please select a region, state or province.","請選擇一個地區，州或省。",module,Magento_Customer
-"Zip/Postal Code","郵政編碼",module,Magento_Customer
+"State/Province","地址",module,Magento_Customer
+"Please select a region, state or province.","選擇城市",module,Magento_Customer
+"Zip/Postal Code","郵遞區號",module,Magento_Customer
 "Country","國家",module,Magento_Customer
 "It's a default billing address.","這是默認的帳單地址。",module,Magento_Customer
 "Use as my default billing address","用作我的默認帳單地址",module,Magento_Customer
@@ -5087,7 +5087,7 @@ new products will be created. Use this step to customize images and price for yo
 "Gender","性別",module,Magento_Customer
 "Name","姓名",module,Magento_Customer
 "Tax/VAT number","Tax/VAT number",module,Magento_Customer
-"Phone Number","電話號碼",module,Magento_Customer
+"Phone Number","手機號碼",module,Magento_Customer
 "Welcome to %store_name","歡迎來到%store_name",module,Magento_Customer
 "%name,","%name,",module,Magento_Customer
 "Welcome to %store_name.","歡迎來到%store_name.",module,Magento_Customer
@@ -5532,9 +5532,9 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Street Address %1","街道地址 %1",module,Magento_CustomerCustomAttributes
 "VAT Number","增值稅號",module,Magento_CustomerCustomAttributes
 "City","行政區",module,Magento_CustomerCustomAttributes
-"State/Province","城市",module,Magento_CustomerCustomAttributes
-"Please select a region, state or province.","請選擇一個地區，州或省。",module,Magento_CustomerCustomAttributes
-"Zip/Postal Code","郵政編碼",module,Magento_CustomerCustomAttributes
+"State/Province","地址",module,Magento_CustomerCustomAttributes
+"Please select a region, state or province.","選擇城市",module,Magento_CustomerCustomAttributes
+"Zip/Postal Code","郵遞區號",module,Magento_CustomerCustomAttributes
 "Country","國家",module,Magento_CustomerCustomAttributes
 "This is your default billing address.","這是您的默認帳單地址。",module,Magento_CustomerCustomAttributes
 "Use as my default billing address","用作我的默認帳單地址",module,Magento_CustomerCustomAttributes
@@ -5556,7 +5556,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Sign Up for Newsletter","訂閱電子報",module,Magento_CustomerCustomAttributes
 "Address Information","地址信息",module,Magento_CustomerCustomAttributes
 "Company","公司",module,Magento_CustomerCustomAttributes
-"Phone Number","電話號碼",module,Magento_CustomerCustomAttributes
+"Phone Number","手機號碼",module,Magento_CustomerCustomAttributes
 "Sign-in Information","登錄信息",module,Magento_CustomerCustomAttributes
 "Password","密碼",module,Magento_CustomerCustomAttributes
 "Confirm Password","確認密碼",module,Magento_CustomerCustomAttributes
@@ -5565,7 +5565,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Customer Address","客戶地址",module,Magento_CustomerCustomAttributes
 "Default Values","預設值",module,Magento_CustomerCustomAttributes
 "Fax","傳真",module,Magento_CustomerCustomAttributes
-"Default Billing Address","默認帳單地址",module,Magento_CustomerCustomAttributes
+"Default Billing Address","居住地址",module,Magento_CustomerCustomAttributes
 "Default Shipping Address","默認送貨地址",module,Magento_CustomerCustomAttributes
 "Comma separated. Forbidden file extensions: %1.","Comma separated. Forbidden file extensions: %1.",module,Magento_CustomerCustomAttributes
 "The attribute couldn't be saved due to an error. Verify your information and try again. If the error persists, please try again later.","The attribute couldn't be saved due to an error. Verify your information and try again. If the error persists, please try again later.",module,Magento_CustomerCustomAttributes
@@ -5684,7 +5684,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Customer Address %1","Customer Address %1",module,Magento_CustomerSegment
 "Default Address","默認地址",module,Magento_CustomerSegment
 "Billing","Billing",module,Magento_CustomerSegment
-"Shipping","物流",module,Magento_CustomerSegment
+"Shipping","出貨方式",module,Magento_CustomerSegment
 "Customer Address %1 Default %2 Address","Customer Address %1 Default %2 Address",module,Magento_CustomerSegment
 "Has State/Province","Has State/Province",module,Magento_CustomerSegment
 "If Customer Address %1 State/Province specified","If Customer Address %1 State/Province specified",module,Magento_CustomerSegment
@@ -5768,7 +5768,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Phone","電話",module,Magento_CustomerSegment
 "ZIP","ZIP",module,Magento_CustomerSegment
 "Country","國家",module,Magento_CustomerSegment
-"State/Province","城市",module,Magento_CustomerSegment
+"State/Province","地址",module,Magento_CustomerSegment
 "Customer Since","Customer Since",module,Magento_CustomerSegment
 "View Combined Report","View Combined Report",module,Magento_CustomerSegment
 "Set","Set",module,Magento_CustomerSegment
@@ -5790,7 +5790,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Email address impact. The customer uses a free email provider, or the email address is risky","電子郵件地址的影響。 客戶使用免費的電子郵件提供商，或者電子郵件地址存在風險",module,Magento_Cybersource
 "Positive list. The customer is on your positive list. Decision Manager Developer Guide Using the Simple Order AP  January 201 10 Appendix  Information and Reply Code","Positive list. The customer is on your positive list. Decision Manager Developer Guide Using the Simple Order AP  January 201 10 Appendix  Information and Reply Code",module,Magento_Cybersource
 "Negative list. The account number, street add ess, email address, or IP address for this order appears on your negative list","負面清單。 該訂單的帳號，街道地址，電子郵件地址或IP地址顯示在您的排除列表中",module,Magento_Cybersource
-"Geolocation inconsistencies. The customer’s email domain, phone number, billing address, shipping address, or IP address is suspicious","地理位置不一致。 客戶的電子郵件域，電話號碼，帳單郵寄地址，送貨地址或IP地址可疑",module,Magento_Cybersource
+"Geolocation inconsistencies. The customer’s email domain, phone number, billing address, shipping address, or IP address is suspicious","地理位置不一致。 客戶的電子郵件域，手機號碼，帳單郵寄地址，送貨地址或IP地址可疑",module,Magento_Cybersource
 "Excessive name changes. The customer changed the name two or more times in the last six months","Excessive name changes. The customer changed the name two or more times in the last six months",module,Magento_Cybersource
 "Internet inconsistencies. The IP address  nd email domain are not consistent with the billing address","Internet inconsistencies. The IP address  nd email domain are not consistent with the billing address",module,Magento_Cybersource
 "Nonsensical input. The customer name and address fields contain meaningless words or language","Nonsensical input. The customer name and address fields contain meaningless words or language",module,Magento_Cybersource
@@ -5976,7 +5976,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Content Type (Non Domestic)","Content Type (Non Domestic)",module,Magento_Dhl
 "Documents Allowed Methods","Documents Allowed Methods",module,Magento_Dhl
 "Non Documents Allowed Methods","Non Documents Allowed Methods",module,Magento_Dhl
-"State/Province","城市",module,Magento_Directory
+"State/Province","地址",module,Magento_Directory
 "--Please Select--","-請選擇-",module,Magento_Directory
 "lbs","磅",module,Magento_Directory
 "kgs","公斤",module,Magento_Directory
@@ -5993,7 +5993,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Please correct the country code: %1.","Please correct the country code: %1.",module,Magento_Directory
 "Country and Format Type combination should be unique","Country and Format Type combination should be unique",module,Magento_Directory
 "Please correct the rates received","Please correct the rates received",module,Magento_Directory
-"Please select a region, state or province.","請選擇一個地區，州或省。",module,Magento_Directory
+"Please select a region, state or province.","選擇城市",module,Magento_Directory
 "Currency","貨幣",module,Magento_Directory
 "Your current currency is: %1.","Your current currency is: %1.",module,Magento_Directory
 "Continue","繼續",module,Magento_Directory
@@ -6457,7 +6457,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Store Hours","Store Hours",module,Magento_Email
 "Country","國家",module,Magento_Email
 "Region/State","地區／國家",module,Magento_Email
-"Zip/Postal Code","郵政編碼",module,Magento_Email
+"Zip/Postal Code","郵遞區號",module,Magento_Email
 "City","行政區",module,Magento_Email
 "Street Address 1","街道地址 1",module,Magento_Email
 "Street Address 2","街道地址 2",module,Magento_Email
@@ -6723,9 +6723,9 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "%sender has sent you a gift card for use at <a href=""%store_url"">%store_name</a> and it is now ready to be used for purchases.","%sender has sent you a gift card for use at <a href=""%store_url"">%store_name</a> and it is now ready to be used for purchases.",module,Magento_GiftCard
 "Gift Card Codes:","禮品卡代碼:",module,Magento_GiftCard
 "Gift Card Code:","禮品卡代碼:",module,Magento_GiftCard
-"Each card has a balance of %balance that can be used at <a href=""%store_url"">%store_name</a>.","每張卡的餘額為 %balance 可以在 <a href=""%store_url"">%store_name</a>。",module,Magento_GiftCard
+"Each card has a balance of %balance that can be used at <a href=""%store_url"">%store_name</a>.","每張卡有%balance 的餘額可在<a href=""%store_url"">%store_name</a>使用。",module,Magento_GiftCard
 "The card has a balance of %balance that can be used at <a href=""%store_url"">%store_name</a>.","該卡的餘額為 %balance 可以在 <a href=""%store_url"">%store_name</a>。",module,Magento_GiftCard
-"Click on the code(s) above to redeem them into Store Credit.","Click on the code(s) above to redeem them into Store Credit.",module,Magento_GiftCard
+"Click on the code(s) above to redeem them into Store Credit.","點擊上面的代碼去兌換使用",module,Magento_GiftCard
 "Message from %sender_name:","Message from %sender_name:",module,Magento_GiftCard
 "Gift Cards","禮品卡",module,Magento_GiftCard
 "Gift Card Email Settings","禮品卡電子郵件設置",module,Magento_GiftCard
@@ -7025,11 +7025,11 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "[WEBSITE]","[WEBSITE]",module,Magento_GiftRegistry
 "[STORE VIEW]","[商店總覽]",module,Magento_GiftRegistry
 "None","無",module,Magento_GiftRegistry
-"New Address","新地址",module,Magento_GiftRegistry
+"New Address","新增地址",module,Magento_GiftRegistry
 "Edit Gift Registry","編輯禮物註冊表",module,Magento_GiftRegistry
 "Create Gift Registry","創建禮物註冊表",module,Magento_GiftRegistry
-"State/Province","城市",module,Magento_GiftRegistry
-"Please select a region, state or province","請選擇一個地區，州或省。",module,Magento_GiftRegistry
+"State/Province","地址",module,Magento_GiftRegistry
+"Please select a region, state or province","選擇城市",module,Magento_GiftRegistry
 "Please Select","請選擇",module,Magento_GiftRegistry
 "View Gift Registry %1","View Gift Registry %1",module,Magento_GiftRegistry
 "Share '%1' Gift Registry","分享 '%1' 禮品登記處",module,Magento_GiftRegistry
@@ -7151,10 +7151,10 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Street Address","街道地址",module,Magento_GiftRegistry
 "Street Address %1","街道地址 %1",module,Magento_GiftRegistry
 "City","行政區",module,Magento_GiftRegistry
-"Please select a region, state or province.","請選擇一個地區，州或省。",module,Magento_GiftRegistry
-"Zip/Postal Code","郵政編碼",module,Magento_GiftRegistry
+"Please select a region, state or province.","選擇城市",module,Magento_GiftRegistry
+"Zip/Postal Code","郵遞區號",module,Magento_GiftRegistry
 "Country","國家",module,Magento_GiftRegistry
-"Phone Number","電話號碼",module,Magento_GiftRegistry
+"Phone Number","手機號碼",module,Magento_GiftRegistry
 "Fax","傳真",module,Magento_GiftRegistry
 "Add All To Gift Registry","全部添加到禮物註冊",module,Magento_GiftRegistry
 "Ship to registrant's address","運送到註冊人的地址",module,Magento_GiftRegistry
@@ -7627,7 +7627,7 @@ e.g. var/export, var/import, var/export/some/dir",module,Magento_ImportExport
 "Mode","Mode",module,Magento_Indexer
 "Status","狀態",module,Magento_Indexer
 "Updated","Updated",module,Magento_Indexer
-"Your order number is: %1.","您的訂單號是： %1.",module,Magento_InstantPurchase
+"Your order number is: %1.","您的訂單編號是： %1.",module,Magento_InstantPurchase
 "Something went wrong while processing your order. Please try again later.","處理您的訂單時出了點問題。 請稍後再試。",module,Magento_InstantPurchase
 "Payment method is not defined for instance purchase.","Payment method is not defined for instance purchase.",module,Magento_InstantPurchase
 "Shipping address is not defined for instance purchase.","未為實例購買定義送貨地址。",module,Magento_InstantPurchase
@@ -7644,7 +7644,7 @@ e.g. var/export, var/import, var/export/some/dir",module,Magento_ImportExport
 "Shipping Address","收件地址",module,Magento_InstantPurchase
 "Billing Address","帳單地址",module,Magento_InstantPurchase
 "Payment Method","付款方式",module,Magento_InstantPurchase
-"Shipping Method","寄送方式",module,Magento_InstantPurchase
+"Shipping Method","出貨方式",module,Magento_InstantPurchase
 "Enabled","啟用",module,Magento_InstantPurchase
 "Button Text","Button Text",module,Magento_InstantPurchase
 "Payment method with vault and instant purchase support should be enabled.","Payment method with vault and instant purchase support should be enabled.",module,Magento_InstantPurchase
@@ -8333,7 +8333,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Review Order - %1","查看訂單 - %1",module,Magento_Multishipping
 "Total","結帳總金額",module,Magento_Multishipping
 "Total for this address","此地址總計",module,Magento_Multishipping
-"Shipping Methods","寄送方式",module,Magento_Multishipping
+"Shipping Methods","出貨方式",module,Magento_Multishipping
 "Edit Address","編輯地址",module,Magento_Multishipping
 "Edit Billing Address","修改帳單地址",module,Magento_Multishipping
 "Edit Shipping Address","編輯收貨地址",module,Magento_Multishipping
@@ -8395,7 +8395,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Address","位址",module,Magento_Multishipping
 "of","of",module,Magento_Multishipping
 "Shipping To","運到",module,Magento_Multishipping
-"Shipping Method","寄送方式",module,Magento_Multishipping
+"Shipping Method","出貨方式",module,Magento_Multishipping
 "Incl. Tax","含稅",module,Magento_Multishipping
 "Excl. Tax","不含稅",module,Magento_Multishipping
 "Order Review","訂單審查",module,Magento_Multishipping
@@ -8437,10 +8437,10 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Thank you for your purchase!","感謝您的購買！",module,Magento_Multishipping
 "Thanks for your order. We'll email you order details and tracking information.","感謝您的訂單。 我們會通過電子郵件向您發送訂單詳細信息和跟踪信息。",module,Magento_Multishipping
 "Your order numbers are: ","您的訂單號為： ",module,Magento_Multishipping
-"Your order number is: ","您的訂單號是： ",module,Magento_Multishipping
+"Your order number is: ","您的訂單編號是： ",module,Magento_Multishipping
 "We received your order!","我們已收到您的訂單！",module,Magento_Multishipping
 "We are unable to process your request. Please, try again later.","We are unable to process your request. Please, try again later.",module,Magento_Multishipping
-"Ship to:","運送到：",module,Magento_Multishipping
+"Ship to:","收件地址：",module,Magento_Multishipping
 "Error:","Error:",module,Magento_Multishipping
 "The maximum quantity can't be more than %1 when shipping to multiple addresses. Change the quantity and try again.","The maximum quantity can't be more than %1 when shipping to multiple addresses. Change the quantity and try again.",module,Magento_Multishipping
 "Verify the shipping address information and continue.","驗證送貨地址信息，然後繼續。",module,Magento_Multishipping
@@ -8735,7 +8735,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "(Added)","(Added)",module,Magento_NegotiableQuote
 "Shipping address","收件地址",module,Magento_NegotiableQuote
 "Proposed shipping price","Proposed shipping price",module,Magento_NegotiableQuote
-"Shipping method","寄送方式",module,Magento_NegotiableQuote
+"Shipping method","出貨方式",module,Magento_NegotiableQuote
 "removed","removed",module,Magento_NegotiableQuote
 "Comment","評論",module,Magento_NegotiableQuote
 " - removed"," - removed",module,Magento_NegotiableQuote
@@ -8755,7 +8755,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Sales Rep.:","Sales Rep.:",module,Magento_NegotiableQuote
 "Select Existing Address","選擇現有地址",module,Magento_NegotiableQuote
 "Add New Address","添加新地址",module,Magento_NegotiableQuote
-"Shipping Method","寄送方式",module,Magento_NegotiableQuote
+"Shipping Method","出貨方式",module,Magento_NegotiableQuote
 "No shipping information available","No shipping information available",module,Magento_NegotiableQuote
 "Select a shipping address from your address book.","從地址簿中選擇送貨地址。",module,Magento_NegotiableQuote
 "Send for Review","Send for Review",module,Magento_NegotiableQuote
@@ -9100,7 +9100,7 @@ information on installing the agent is available <a target=""_blank"" href=""%1"
 "Purchase order number is a required field.","採購訂單號是必填字段。",module,Magento_OfflinePayments
 "Country","國家",module,Magento_OfflineShipping
 "Region/State","地區／國家",module,Magento_OfflineShipping
-"Zip/Postal Code","郵政編碼",module,Magento_OfflineShipping
+"Zip/Postal Code","郵遞區號",module,Magento_OfflineShipping
 "Shipping Price","運費",module,Magento_OfflineShipping
 "Export CSV","匯出 CSV",module,Magento_OfflineShipping
 "Store Pickup","商店提貨",module,Magento_OfflineShipping
@@ -9206,7 +9206,7 @@ If field is empty default value localhost will be saved.",module,Magento_PageCac
 "Wrong gateway response format.","Wrong gateway response format.",module,Magento_Payment
 "Validator for field %1 does not exist.","Validator for field %1 does not exist.",module,Magento_Payment
 "Discount","活動共折抵",module,Magento_Payment
-"Shipping","物流",module,Magento_Payment
+"Shipping","出貨方式",module,Magento_Payment
 "All Allowed Countries","All Allowed Countries",module,Magento_Payment
 "Specific Countries","Specific Countries",module,Magento_Payment
 "The payment method you requested is not available.","The payment method you requested is not available.",module,Magento_Payment
@@ -9282,7 +9282,7 @@ If field is empty default value localhost will be saved.",module,Magento_PageCac
 "Purchased","Purchased",module,Magento_Paypal
 "Bill-to Name","Bill-to Name",module,Magento_Paypal
 "Ship-to Name","Ship-to Name",module,Magento_Paypal
-"Order Total","合計訂單",module,Magento_Paypal
+"Order Total","本次訂單金額",module,Magento_Paypal
 "Purchase Point","Purchase Point",module,Magento_Paypal
 "Billing Agreement View","Billing Agreement View",module,Magento_Paypal
 "Are you sure you want to authorize full order amount?","您確定要授權全部訂單金額嗎？",module,Magento_Paypal
@@ -9637,7 +9637,7 @@ If field is empty default value localhost will be saved.",module,Magento_PageCac
 "Payment Method:","付款方式:",module,Magento_Paypal
 "Order #","訂單編號",module,Magento_Paypal
 "Date","日期",module,Magento_Paypal
-"Ship To","運送到",module,Magento_Paypal
+"Ship To","收件地址",module,Magento_Paypal
 "Order Status","訂單狀態",module,Magento_Paypal
 "View Order","查看訂單",module,Magento_Paypal
 "Back to Billing Agreements","返回結算協議",module,Magento_Paypal
@@ -9650,7 +9650,7 @@ If field is empty default value localhost will be saved.",module,Magento_PageCac
 "Create...","Create...",module,Magento_Paypal
 "Your credit card will be charged for","Your credit card will be charged for",module,Magento_Paypal
 "Your billing agreement # is: ","Your billing agreement # is: ",module,Magento_Paypal
-"Shipping Method","寄送方式",module,Magento_Paypal
+"Shipping Method","出貨方式",module,Magento_Paypal
 "Please select a shipping method...","請選擇一種送貨方式...",module,Magento_Paypal
 "Update Shipping Method","更新運送方式",module,Magento_Paypal
 "Sorry, no quotes are available for this order right now.","S抱歉，此訂單目前無報價。",module,Magento_Paypal
@@ -9977,7 +9977,7 @@ or more. <a href=""https://financing.paypal.com/ppfinportal/content/forrester"" 
 "Medium","介質",module,Magento_Paypal
 "Large","Large",module,Magento_Paypal
 "Responsive","Responsive",module,Magento_Paypal
-"Checkout","查看",module,Magento_Paypal
+"Checkout","我的購物車",module,Magento_Paypal
 "Pay","Pay",module,Magento_Paypal
 "Buy Now","Buy Now",module,Magento_Paypal
 "PayPal","PayPal",module,Magento_Paypal
@@ -10176,7 +10176,7 @@ offered and the currency offered by the merchant is USD.",module,Magento_Paypal
 "Grand Total","結帳總金額",module,Magento_Quote
 "Shipping & Handling (%1)","運費 (%1)",module,Magento_Quote
 "Shipping & Handling","運費",module,Magento_Quote
-"Shipping","物流",module,Magento_Quote
+"Shipping","出貨方式",module,Magento_Quote
 "Subtotal","商品總金額",module,Magento_Quote
 "We found an invalid item option format.","We found an invalid item option format.",module,Magento_Quote
 "An item option with code %1 already exists.","An item option with code %1 already exists.",module,Magento_Quote
@@ -10768,7 +10768,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Sales Tax","Sales Tax",module,Magento_Reports
 "Tax","稅金",module,Magento_Reports
 "Sales Shipping","Sales Shipping",module,Magento_Reports
-"Shipping","物流",module,Magento_Reports
+"Shipping","出貨方式",module,Magento_Reports
 "Canceled","已取消",module,Magento_Reports
 "Total Shipped Report","Total Shipped Report",module,Magento_Reports
 "Carrier/Method","Carrier/Method",module,Magento_Reports
@@ -10869,7 +10869,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "By Customers","By Customers",module,Magento_Reports
 "By Products","By Products",module,Magento_Reports
 "Refunds","退款",module,Magento_Reports
-"Order Total","合計訂單",module,Magento_Reports
+"Order Total","本次訂單金額",module,Magento_Reports
 "Order Count","訂單數",module,Magento_Reports
 "New","新",module,Magento_Reports
 "Ordered","已訂購",module,Magento_Reports
@@ -11504,7 +11504,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't create a return transaction for order #%1.","我們無法為訂單創建退貨交易 #%1.",module,Magento_Rma
 "You submitted Return #%1.","您提交了退貨 #%1。",module,Magento_Rma
 "We can't create a return right now. Please try again later.","We can't create a return right now. Please try again later.",module,Magento_Rma
-"Create New Return","Create New Return",module,Magento_Rma
+"Create New Return","退貨申請",module,Magento_Rma
 "We can't delete the label right now.","We can't delete the label right now.",module,Magento_Rma
 "Return #%1","退貨訂單 #%1",module,Magento_Rma
 "Cannot add message.","Cannot add message.",module,Magento_Rma
@@ -11609,7 +11609,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Title","標題",module,Magento_Rma
 "Number","Number",module,Magento_Rma
 "Are you sure?","是否確認?",module,Magento_Rma
-"Shipping Method","寄送方式",module,Magento_Rma
+"Shipping Method","出貨方式",module,Magento_Rma
 "Create Shipping Label","Create Shipping Label",module,Magento_Rma
 "Enabled when authorized items require a new shipment.","Enabled when authorized items require a new shipment.",module,Magento_Rma
 "Order &amp; Account Information","訂購 &amp; 帳戶信息",module,Magento_Rma
@@ -11624,7 +11624,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Sub-items","Sub-items",module,Magento_Rma
 "Quantity To Return","Quantity To Return",module,Magento_Rma
 "Remaining Quantity:","Remaining Quantity:",module,Magento_Rma
-"New Return for Order %1","訂單新退貨 %1",module,Magento_Rma
+"New Return for Order %1","申請退貨的訂單 %1",module,Magento_Rma
 "Email","電子郵件",module,Magento_Rma
 "Return Items Information","Return Items Information",module,Magento_Rma
 "Add Item To Return","Add Item To Return",module,Magento_Rma
@@ -11634,10 +11634,10 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Back","上一步",module,Magento_Rma
 "Return #","退貨訂單 #",module,Magento_Rma
 "Date","日期",module,Magento_Rma
-"Ship From","從寄出",module,Magento_Rma
+"Ship From","退貨申請人",module,Magento_Rma
 "Return Status","退貨狀態",module,Magento_Rma
 "Actions","動作",module,Magento_Rma
-"View Return","View Return",module,Magento_Rma
+"View Return","查看明細",module,Magento_Rma
 "You have placed no returns.","您尚未退貨",module,Magento_Rma
 "Packages","Packages",module,Magento_Rma
 "Close Window","Close Window",module,Magento_Rma
@@ -11671,7 +11671,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Your return request has been updated. Please see below.","我們已經收到您的退貨要求。請查看以下資訊。",module,Magento_Rma
 "You can check the status of your return by <a href=""%account_url"">logging into your account</a> or <a href=""%form_url"">using your order number</a>.","您可以通過以下方式查看退貨狀態，<a href=""%account_url"">登錄您的帳戶</a> 或 <a href=""%form_url"">使用您的訂單編號</a>。",module,Magento_Rma
 "If you have any questions, please feel free to contact us at <a href=""mailto:%support_email"">%support_email</a> or by phone at %store_phone","如果您有任何疑問，請與我們聯繫。<a href=""mailto:%support_email"">%support_email</a>",module,Magento_Rma
-"Your Return #%increment_id - %status_label","您的退貨編號 #%increment_id - %status_label",module,Magento_Rma
+"Your Return #%increment_id - %status_label","您的退貨訂單編號為 #%increment_id",module,Magento_Rma
 "%store_name: New Return #%increment_id","%store_name: 退貨申請訂單編號 #%increment_id",module,Magento_Rma
 "You can check the status of your return <a href=""%form_url"">using your order number</a>.","您可以使用訂單編號，<a href=""%form_url"">來查詢退貨狀態</a>。",module,Magento_Rma
 "If you have any questions about your return, please contact us at <a href=""mailto:%support_email"">%support_email</a>.","如果您對退貨有任何疑問，請與我們聯繫。<a href=""mailto:%support_email"">%support_email</a>.",module,Magento_Rma
@@ -11689,7 +11689,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Contact Name","Contact Name",module,Magento_Rma
 "Street Address","街道地址",module,Magento_Rma
 "City","行政區",module,Magento_Rma
-"State/Province","城市",module,Magento_Rma
+"State/Province","地址",module,Magento_Rma
 "ZIP/Postal Code","郵遞區號",module,Magento_Rma
 "Country","國家",module,Magento_Rma
 "Enabled","啟用",module,Magento_Rma
@@ -11777,7 +11777,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't get the order instance right now.","我們現在無法獲取訂單實例。",module,Magento_Sales
 "Create New Order","創建新訂單",module,Magento_Sales
 "Save Order Address","保存訂單地址",module,Magento_Sales
-"Shipping","物流",module,Magento_Sales
+"Shipping","出貨方式",module,Magento_Sales
 "Billing","Billing",module,Magento_Sales
 "Edit Order %1 %2 Address","編輯訂單 %1 %2 地址",module,Magento_Sales
 "Order Address Information","訂單地址信息",module,Magento_Sales
@@ -11821,7 +11821,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Select","Select",module,Magento_Sales
 "Quantity","數量",module,Magento_Sales
 "Shipping Address","收件地址",module,Magento_Sales
-"Shipping Method","寄送方式",module,Magento_Sales
+"Shipping Method","出貨方式",module,Magento_Sales
 "Update Changes","Update Changes",module,Magento_Sales
 "Shopping Cart","購物車",module,Magento_Sales
 "Are you sure you want to delete all items from shopping cart?","Are you sure you want to delete all items from shopping cart?",module,Magento_Sales
@@ -11924,7 +11924,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Comments History","評論歷史",module,Magento_Sales
 "Order History","訂單紀錄",module,Magento_Sales
 "Information","Information",module,Magento_Sales
-"Order Information","訂單信息",module,Magento_Sales
+"Order Information","訂單資訊",module,Magento_Sales
 "Order Invoices","訂單發票",module,Magento_Sales
 "Shipments","出貨量",module,Magento_Sales
 "Order Shipments","訂單出貨",module,Magento_Sales
@@ -12162,9 +12162,9 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Order # ","訂單編號 ",module,Magento_Sales
 "Order Date: ","訂購日期： ",module,Magento_Sales
 "Sold to:","Sold to:",module,Magento_Sales
-"Ship to:","運送到：",module,Magento_Sales
+"Ship to:","收件地址：",module,Magento_Sales
 "Payment Method:","付款方式:",module,Magento_Sales
-"Shipping Method:","寄送方式：",module,Magento_Sales
+"Shipping Method:","出貨方式：",module,Magento_Sales
 "Total Shipping Charges","Total Shipping Charges",module,Magento_Sales
 "Title","標題",module,Magento_Sales
 "Number","Number",module,Magento_Sales
@@ -12223,10 +12223,10 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Email","電子郵件",module,Magento_Sales
 "First Name","名字",module,Magento_Sales
 "Last Name","姓氏",module,Magento_Sales
-"State/Province","城市",module,Magento_Sales
+"State/Province","地址",module,Magento_Sales
 "Street Address","街道地址",module,Magento_Sales
-"Phone Number","電話號碼",module,Magento_Sales
-"Zip/Postal Code","郵政編碼",module,Magento_Sales
+"Phone Number","手機號碼",module,Magento_Sales
+"Zip/Postal Code","郵遞區號",module,Magento_Sales
 "We can't save the address:\n%1","We can't save the address:\n%1",module,Magento_Sales
 "Cannot save comment:\n%1","Cannot save comment:\n%1",module,Magento_Sales
 "We don't have enough information to save the parent transaction ID.","We don't have enough information to save the parent transaction ID.",module,Magento_Sales
@@ -12280,7 +12280,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Remove","移除",module,Magento_Sales
 "Address Information","Address Information",module,Magento_Sales
 "Payment &amp; Shipping Information","Payment &amp; Shipping Information",module,Magento_Sales
-"Order Total","合計訂單",module,Magento_Sales
+"Order Total","本次訂單金額",module,Magento_Sales
 "Order Currency:","訂單幣種：",module,Magento_Sales
 "Same As Billing Address","Same As Billing Address",module,Magento_Sales
 "Select from existing customer addresses:","Select from existing customer addresses:",module,Magento_Sales
@@ -12317,7 +12317,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Grand Total Incl. Tax","Grand Total Incl. Tax",module,Magento_Sales
 "Subtotal (Excl. Tax)","Subtotal (Excl. Tax)",module,Magento_Sales
 "Subtotal (Incl. Tax)","Subtotal (Incl. Tax)",module,Magento_Sales
-"Payment &amp; Shipping Method","付款 &amp; 寄送方式",module,Magento_Sales
+"Payment &amp; Shipping Method","付款 &amp; 出貨方式",module,Magento_Sales
 "Payment Information","付款資訊",module,Magento_Sales
 "The order was placed using %1.","訂單使用 %1.",module,Magento_Sales
 "Shipping Information","Shipping Information",module,Magento_Sales
@@ -12400,11 +12400,11 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Continue","繼續",module,Magento_Sales
 "Print All Refunds","Print All Refunds",module,Magento_Sales
 "Refund #","Refund #",module,Magento_Sales
-"Print Refund","Print Refund",module,Magento_Sales
+"Print Refund","印刷品退款",module,Magento_Sales
 "Product Name","商品名稱",module,Magento_Sales
 "Order #","訂單編號",module,Magento_Sales
 "Date","日期",module,Magento_Sales
-"Ship To","運送到",module,Magento_Sales
+"Ship To","收件地址",module,Magento_Sales
 "Actions","動作",module,Magento_Sales
 "View Order","查看訂單",module,Magento_Sales
 "You have placed no orders.","您沒有下訂單。",module,Magento_Sales
@@ -12412,10 +12412,10 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Print Order","列印訂單",module,Magento_Sales
 "Print All Invoices","Print All Invoices",module,Magento_Sales
 "Invoice #","Invoice #",module,Magento_Sales
-"Print Invoice","Print Invoice",module,Magento_Sales
+"Print Invoice","印刷品電子發票",module,Magento_Sales
 "Qty Invoiced","已開發票數量",module,Magento_Sales
 "Close","關閉",module,Magento_Sales
-"About Your Order","關於您的訂單",module,Magento_Sales
+"About Your Order","訂單交易資訊",module,Magento_Sales
 "<span class=""label"">Order Date:</span> %1","<span class=""label"">訂購日期：</span> %1",module,Magento_Sales
 "Refund #%1","Refund #%1",module,Magento_Sales
 "Shipment #%1","Shipment #%1",module,Magento_Sales
@@ -12790,7 +12790,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Subtotal","商品總金額",module,Magento_SalesRule
 "Total Items Quantity","Total Items Quantity",module,Magento_SalesRule
 "Total Weight","Total Weight",module,Magento_SalesRule
-"Shipping Method","寄送方式",module,Magento_SalesRule
+"Shipping Method","出貨方式",module,Magento_SalesRule
 "Shipping Postcode","Shipping Postcode",module,Magento_SalesRule
 "Shipping Region","Shipping Region",module,Magento_SalesRule
 "Shipping State/Province","Shipping State/Province",module,Magento_SalesRule
@@ -12835,7 +12835,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Apply Discount","申請折扣",module,Magento_SalesRule
 "Cancel coupon","Cancel coupon",module,Magento_SalesRule
 "Your coupon was successfully removed.","Your coupon was successfully removed.",module,Magento_SalesRule
-"Your coupon was successfully applied.","Your coupon was successfully applied.",module,Magento_SalesRule
+"Your coupon was successfully applied.","您已成功使用此折扣碼.",module,Magento_SalesRule
 "Promotion","晉升",module,Magento_SalesRule
 "Auto Generated Specific Coupon Codes","Auto Generated Specific Coupon Codes",module,Magento_SalesRule
 "Web Site","網站",module,Magento_SalesRule
@@ -12883,7 +12883,7 @@ Usage limit enforced for logged in customers only.,module,Magento_SalesRule
 "Usage limit enforced for logged in customers only.","Usage limit enforced for logged in customers only.",module,Magento_SalesRule
 "Payment Method","付款方式",module,Magento_SalesRule
 "Your coupon was successfully removed","Your coupon was successfully removed",module,Magento_SalesRule
-"Your coupon was successfully applied","Your coupon was successfully applied",module,Magento_SalesRule
+"Your coupon was successfully applied","您已成功使用此折扣碼",module,Magento_SalesRule
 ",module,Magento_SalesRule
 If you select and save the rule you will be able to generate multiple coupon codes.,module,Magento_SalesRule
 ",",module,Magento_SalesRule
@@ -13417,7 +13417,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "ID","編號",module,Magento_SharedCatalog
 "Company","公司",module,Magento_SharedCatalog
 "Country","國家",module,Magento_SharedCatalog
-"State/Province","城市",module,Magento_SharedCatalog
+"State/Province","地址",module,Magento_SharedCatalog
 "Assigned","Assigned",module,Magento_SharedCatalog
 "Catalog","目錄",module,Magento_SharedCatalog
 "Action","操作",module,Magento_SharedCatalog
@@ -13549,7 +13549,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Tracking information is unavailable.","Tracking information is unavailable.",module,Magento_Shipping
 "message","message",module,Magento_Shipping
 "Email has not been sent","Email has not been sent",module,Magento_Shipping
-"Payment &amp; Shipping Method","付款 &amp; 寄送方式",module,Magento_Shipping
+"Payment &amp; Shipping Method","付款 &amp; 出貨方式",module,Magento_Shipping
 "Payment Information","付款資訊",module,Magento_Shipping
 "The order was placed using %1.","訂單使用 %1。",module,Magento_Shipping
 "Shipping Information","Shipping Information",module,Magento_Shipping
@@ -13593,12 +13593,12 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Shipping and Tracking Information","配送狀態",module,Magento_Shipping
 "Track this shipment","狀態追蹤",module,Magento_Shipping
 "Items Shipped","Items Shipped",module,Magento_Shipping
-"Order Total","合計訂單",module,Magento_Shipping
+"Order Total","本次訂單金額",module,Magento_Shipping
 "Shipment History","Shipment History",module,Magento_Shipping
 "Qty Shipped","已出貨數量",module,Magento_Shipping
 "Print All Shipments","Print All Shipments",module,Magento_Shipping
 "Shipment #","Shipment #",module,Magento_Shipping
-"Print Shipment","Print Shipment",module,Magento_Shipping
+"Print Shipment","印刷裝運",module,Magento_Shipping
 "Tracking Number(s):","Tracking Number(s):",module,Magento_Shipping
 "SKU","商品編號",module,Magento_Shipping
 "Order tracking","訂單跟踪",module,Magento_Shipping
@@ -13637,7 +13637,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Shipping Policy Parameters","Shipping Policy Parameters",module,Magento_Shipping
 "Apply custom Shipping Policy","Apply custom Shipping Policy",module,Magento_Shipping
 "Shipping Policy","Shipping Policy",module,Magento_Shipping
-"Shipping Methods","寄送方式",module,Magento_Shipping
+"Shipping Methods","出貨方式",module,Magento_Shipping
 "Track your order","追踪您的訂單",module,Magento_Shipping
 "Track All Shipments","Track All Shipments",module,Magento_Shipping
 "You sent the shipment.","You sent the shipment.",module,Magento_Shipping
@@ -14051,7 +14051,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Partial Refund Offline","Partial Refund Offline",module,Magento_Support
 "Payments Functionality Matrix","Payments Functionality Matrix",module,Magento_Support
 "Payment Methods","Payment Methods",module,Magento_Support
-"Shipping Methods","寄送方式",module,Magento_Support
+"Shipping Methods","出貨方式",module,Magento_Support
 "Job Code","Job Code",module,Magento_Support
 "Cron Expression","Cron Expression",module,Magento_Support
 "Run Class","Run Class",module,Magento_Support
@@ -14349,7 +14349,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Tax Rate Information","Tax Rate Information",module,Magento_Tax
 "Tax Identifier","Tax Identifier",module,Magento_Tax
 "Zip/Post is Range","Zip/Post is Range",module,Magento_Tax
-"Zip/Post Code","郵政編碼",module,Magento_Tax
+"Zip/Post Code","郵遞區號",module,Magento_Tax
 "'*' - matches any; 'xyz*' - matches any that begins on 'xyz' and are not longer than %1.","'*' - matches any; 'xyz*' - matches any that begins on 'xyz' and are not longer than %1.",module,Magento_Tax
 "Range From","Range From",module,Magento_Tax
 "Range To","Range To",module,Magento_Tax
@@ -14524,7 +14524,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "(Incl. Tax)","(Incl. Tax)",module,Magento_Tax
 "Order Total Excl. Tax","訂單總計（不含） 稅",module,Magento_Tax
 "Order Total Incl. Tax","訂單總含稅 稅",module,Magento_Tax
-"Order Total","合計訂單",module,Magento_Tax
+"Order Total","本次訂單金額",module,Magento_Tax
 "You will be charged for","You will be charged for",module,Magento_Tax
 "Warning tax configuration can result in rounding errors. ","Warning tax configuration can result in rounding errors. ",module,Magento_Tax
 "Warning tax discount configuration might result in different discounts,module,Magento_Tax
@@ -14542,7 +14542,7 @@ than a customer might expect. ",module,Magento_Tax
 "Code","代號",module,Magento_TaxImportExport
 "Country","國家",module,Magento_TaxImportExport
 "State","州",module,Magento_TaxImportExport
-"Zip/Post Code","郵政編碼",module,Magento_TaxImportExport
+"Zip/Post Code","郵遞區號",module,Magento_TaxImportExport
 "Rate","Rate",module,Magento_TaxImportExport
 "Zip/Post is Range","Zip/Post is Range",module,Magento_TaxImportExport
 "Range From","Range From",module,Magento_TaxImportExport
@@ -14670,7 +14670,7 @@ than a customer might expect. ",module,Magento_Tax
 "Local Storage seems to be disabled in your browser.","Local Storage seems to be disabled in your browser.",module,Magento_Theme
 "For the best experience on our site, be sure to turn on Local Storage in your browser.","For the best experience on our site, be sure to turn on Local Storage in your browser.",module,Magento_Theme
 "This is demo store. No orders will be fulfilled.","This is demo store. No orders will be fulfilled.",module,Magento_Theme
-"Items %1 to %2 of %3 total","Items %1 to %2 of %3 total",module,Magento_Theme
+"Items %1 to %2 of %3 total","%3項中第%1至%2項",module,Magento_Theme
 "%1 Item","%1 物品",module,Magento_Theme
 "%1 Item(s)","%1 Item(s)",module,Magento_Theme
 "Page","Page",module,Magento_Theme
@@ -16297,7 +16297,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Billing Info","帳單資訊",theme,frontend\Magento\luma
 "Shipping Info","商品寄送資訊",theme,frontend\Magento\luma
 "Payment Method","付款方式",theme,frontend\Magento\luma
-"Shipping Method","寄送方式",theme,frontend\Magento\luma
+"Shipping Method","出貨方式",theme,frontend\Magento\luma
 "Update to your %store_name credit memo","更新您在%store_name",theme,frontend\Magento\luma
 "Your order #%increment_id has been updated with a status of <strong>%order_status</strong>.","你的訂單 #%increment_id 已更新，目前訂單狀態為 <strong>%order_status</strong>。",theme,frontend\Magento\luma
 "Invoice for your %store_name order","%store_name電子發票開立通知",theme,frontend\Magento\luma
