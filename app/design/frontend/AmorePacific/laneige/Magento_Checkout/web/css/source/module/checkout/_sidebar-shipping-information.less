@@ -30,6 +30,10 @@
     .opc-block-shipping-information {
         .lib-css(background, @checkout-summary__background-color);
 
+        .shipping-information .ship-via {
+            display: none;
+        }
+
         .shipping-information-title {
             &:extend(.abs-checkout-title all);
             .lib-css(padding, @checkout-sidebar-shipping-information__padding);
