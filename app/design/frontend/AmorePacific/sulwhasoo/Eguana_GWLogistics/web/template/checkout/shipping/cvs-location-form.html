@@ -1,82 +1,77 @@
-<td class="col col-error" id="cvs-fields" colspan="4" data-bind="visible: isVisible">
-    <!--    <input type="text"-->
-    <!--           name="MerchantTradeNo"-->
-    <!--           id="MerchantTradeNo"-->
-    <!--           class="input-text"-->
-    <!--           value="">-->
-    <!--    <label for="MerchantTradeNo" class="label">-->
-    <!--        <span>MerchantTradeNo</span>-->
-    <!--    </label>-->
+<td class="col col-error" id="cvs-fields" colspan="4" data-bind="visible: visible">
+    <render args="cvsMapFormTemplate"/>
+    <form action="#" name="gwlogistics-cvs-data-form">
     <fieldset class="fieldset">
-        <div class="field required">
+        <div class="field">
             <label class="label" for="LogisticsSubType">
                 <span data-bind="i18n: 'CVS Type'"></span>
             </label>
             <div class="control">
-                <input type="text"
+                <input readonly type="text"
                        name="LogisticsSubType"
                        id="LogisticsSubType"
                        class="input-text"
-                       disabled="disabled"
                        data-bind="value: getCvsLocation().LogisticsSubType, attr: {placeholder: $t('CVS Type')}">
             </div>
         </div>
-        <div class="field required">
+        <div class="field">
             <label class="label" for="CVSStoreID">
                 <span data-bind="i18n: 'CVS Store ID'"></span>
             </label>
             <div class="control">
-                <input type="text"
+                <input readonly type="text"
                        name="CVSStoreID"
                        id="CVSStoreID"
                        class="input-text"
-                       disabled="disabled"
                        data-bind="value: getCvsLocation().CVSStoreID, attr: {placeholder: $t('CVS Store ID')}">
             </div>
         </div>
-        <div class="field required">
+        <div class="field">
             <label class="label" for="CVSStoreName">
                 <span data-bind="i18n: 'CVS Store Name'"></span>
             </label>
             <div class="control">
-                <input type="text"
+                <input readonly type="text"
                        name="CVSStoreName"
                        id="CVSStoreName"
                        class="input-text"
-                       disabled="disabled"
                        data-bind="value: getCvsLocation().CVSStoreName, attr: {placeholder: $t('CVS Store Name')}">
             </div>
         </div>
-        <div class="field required">
+        <div class="field">
             <label class="label" for="CVSAddress">
                 <span data-bind="i18n: 'CVS Store Address'"></span>
             </label>
             <div class="control">
-                <input type="text"
+                <input readonly type="text"
                        name="CVSAddress"
                        id="CVSAddress"
                        class="input-text"
-                       disabled="disabled"
                        data-bind="value: getCvsLocation().CVSAddress, attr: {placeholder: $t('CVS Store Address')}">
             </div>
         </div>
-        <div class="field required">
+        <div class="field">
             <label class="label" for="CVSTelephone">
                 <span data-bind="i18n: 'CVS Store Telephone'"></span>
             </label>
             <div class="control">
-                <input type="text"
+                <input readonly type="text"
                        name="CVSTelephone"
                        id="CVSTelephone"
                        class="input-text"
-                       disabled="disabled"
-                       data-bind="value: getCvsLocation().CVSTelephone, attr: {placeholder: $t('CVS Store Telephone')}">
+                       data-bind="value: getCvsLocation().CVSTelephone">
             </div>
         </div>
-    </fieldset>
-    <!--    <button data-role="cvs-map-open" type="button" data-bind="'value': $t('Apply'), click: openCvsMap" class="button action">-->
-    <!--        <span translate="'Select 711 CVS Store in the Map'" />-->
-    <!--    </button>-->
 
-    <render args="cvsMapFormTemplate"/>
+    </fieldset>
+
+    </form>
+    <div role="alert"
+         if="errorMessage().length"
+         class="message notice">
+        <span text="errorMessage()" />
+    </div>
 </td>
+
+
+
