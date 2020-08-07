@@ -16,13 +16,13 @@ class Plugin
     public function afterMerge(AttributeMerger $subject, $result)
     {
         if (array_key_exists('street', $result)) {
-            $result['street']['children'][0]['placeholder'] = __('Street Address');
-            $result['street']['children'][1]['placeholder'] = __('Street Address 2');
-            $result['street']['children'][2]['placeholder'] = __('Street Address 3');
+            $result['street']['children'][0]['placeholder'] = __('Enter the street address');
+            $result['street']['children'][1]['placeholder'] = __('Enter the street address 2');
+            $result['street']['children'][2]['placeholder'] = __('Enter the street address 3');
         }
 
         if (array_key_exists('telephone', $result)) {
-            $result['telephone']['placeholder'] = __('Telephone');
+            $result['telephone']['placeholder'] = __('Phone Number');
         }
 
         if (array_key_exists('fax', $result)) {

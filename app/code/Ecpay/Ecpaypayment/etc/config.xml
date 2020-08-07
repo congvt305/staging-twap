@@ -5,7 +5,7 @@
 		<payment>
 			<ecpay_ecpaypayment>
 				<model>Ecpay\Ecpaypayment\Model\Payment</model>
-				<title>綠界整合金流</title>
+				<title>本交易透過綠界整合金流處理</title>
 				<active>0</active>
 				<order_status>pending</order_status>
 				<ecpay_merchant_id>2000132</ecpay_merchant_id>
