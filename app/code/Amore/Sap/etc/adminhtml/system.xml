@@ -110,8 +110,11 @@
                 <field id="home_delivery_contractor" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Home Delivery Ship-to Code</label>
                 </field>
-                <field id="cvs_supply_contractor" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>CVS Ship-to Code</label>
+                <field id="familymart" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Family Mart Code</label>
+                </field>
+                <field id="seveneleven" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Seven Eleven Code</label>
                 </field>
                 <field id="sales_org" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Sales Organization</label>

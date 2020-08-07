@@ -3,4 +3,7 @@
     <type name="Magento\Sales\Model\Order\AddressRepository">
         <plugin sortOrder="1" name="amoreSapAddressRepository" type="Amore\Sap\Plugin\Model\Order\AddressRepositoryPlugin"/>
     </type>
+
+    <preference for="Magento\Sales\Model\ResourceModel\Order\Creditmemo\Grid\Collection"
+                type="Amore\Sap\Model\ResourceModel\Order\Creditmemo\Grid\Collection" />
 </config>
