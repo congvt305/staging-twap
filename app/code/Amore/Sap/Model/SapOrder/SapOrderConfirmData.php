@@ -22,7 +22,6 @@ use Magento\Sales\Model\Order;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Customer\Api\CustomerRepositoryInterface;
-use function PHPUnit\Framework\isNull;
 
 class SapOrderConfirmData extends AbstractSapOrder
 {
@@ -253,7 +252,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'lgort' => '',
                 'rmano' => $this->getRma($orderData->getEntityId()) == null ? '' : $this->getRma($orderData->getEntityId())->getEntityId(),
                 // 납품처
-                'kunwe' => $this->cvsShippingCheck($orderData) ? $this->config->getSupplyContractor('store', $storeId) : $this->config->getHomeDeliveryContractor('store', $storeId),
+                'kunwe' => $this->kunweCheck($orderData),
                 'ztrackId' => $trackingNumbers
             ];
         }
@@ -272,6 +271,28 @@ class SapOrderConfirmData extends AbstractSapOrder
             $incrementIdForSap = $incrementId;
         }
         return $incrementIdForSap;
+    }
+
+    /**
+     * @param $order \Magento\Sales\Model\Order
+     */
+    public function kunweCheck($order)
+    {
+        $kunwe = $this->config->getHomeDeliveryContractor('store', $order->getStoreId());
+        if ($this->cvsShippingCheck($order)) {
+            $shippingAddress = $order->getShippingAddress();
+            $cvsLocationId = $shippingAddress->getData('cvs_location_id');
+            $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
+            $cvsType = $cvsStoreData->getLogisticsSubType();
+            if ($cvsType == 'FAMI') {
+                $kunwe = $this->config->getFamilyMartCode('store', $order->getStoreId());
+            } else {
+                $kunwe = $this->config->getSevenElevenCode('store', $order->getStoreId());
+            }
+            return $kunwe;
+        } else {
+            return $kunwe;
+        }
     }
 
     /**

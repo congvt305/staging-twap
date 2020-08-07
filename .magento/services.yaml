@@ -10,5 +10,9 @@ redis:
     type: redis:5.0
 
 elasticsearch:
-    type: elasticsearch:6.5
+    type: elasticsearch:7.7
     disk: 1024
+    configuration:
+        plugins:
+            - analysis-icu
+            - analysis-smartcn

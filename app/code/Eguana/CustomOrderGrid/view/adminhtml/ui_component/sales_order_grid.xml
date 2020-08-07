@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: umer
+* Date: 4/8/20
+* Time: 3:47 PM
+*/
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <listingToolbar name="listing_top">
+        <paging name="listing_paging">
+            <settings>
+                <sizesConfig>
+                    <component>Eguana_CustomOrderGrid/js/components/order-grid-sizes</component>
+                </sizesConfig>
+            </settings>
+        </paging>
+    </listingToolbar>
+</listing>

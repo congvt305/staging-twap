@@ -192,7 +192,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'lgort' => '',
             'rmano' => '',
             // 납품처
-            'kunwe' => $this->cvsShippingCheck($order) ? $this->config->getSupplyContractor('store', $storeId) : $this->config->getHomeDeliveryContractor('store', $storeId),
+            'kunwe' => $this->kunweCheck($order),
             // trackNo 가져와야 함
             'ztrackId' => $trackData['track_number']
         ];
@@ -313,6 +313,28 @@ class SapOrderReturnData extends AbstractSapOrder
             }
         }
         return $rmaItemData;
+    }
+
+    /**
+     * @param $order \Magento\Sales\Model\Order
+     */
+    public function kunweCheck($order)
+    {
+        $kunwe = $this->config->getHomeDeliveryContractor('store', $order->getStoreId());
+        if ($this->cvsShippingCheck($order)) {
+            $shippingAddress = $order->getShippingAddress();
+            $cvsLocationId = $shippingAddress->getData('cvs_location_id');
+            $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
+            $cvsType = $cvsStoreData->getLogisticsSubType();
+            if ($cvsType == 'FAMI') {
+                $kunwe = $this->config->getFamilyMartCode('store', $order->getStoreId());
+            } else {
+                $kunwe = $this->config->getSevenElevenCode('store', $order->getStoreId());
+            }
+            return $kunwe;
+        } else {
+            return $kunwe;
+        }
     }
 
     /**
@@ -514,8 +536,18 @@ class SapOrderReturnData extends AbstractSapOrder
                 $orderItem->getDiscountAmount(),
                 $pointsUsed
             );
-            $itemGrandTotal = $orderItem->getRowTotal() - $orderItem->getDiscountAmount() - $mileagePerItem;
-            $grandTotal += $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested());
+            if ($orderItem->getProductType() == 'bundle') {
+                $bundleChildren = $orderItem->getChildrenItems();
+                $discountAmount = 0;
+                foreach ($bundleChildren as $bundleChild) {
+                    $discountAmount += $bundleChild->getDiscountAmount();
+                }
+                $itemGrandTotal = $orderItem->getRowTotal() - $discountAmount - $mileagePerItem;
+                $grandTotal += $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested());
+            } else {
+                $itemGrandTotal = $orderItem->getRowTotal() - $orderItem->getDiscountAmount() - $mileagePerItem;
+                $grandTotal += $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested());
+            }
         }
         return $grandTotal;
     }
@@ -529,7 +561,14 @@ class SapOrderReturnData extends AbstractSapOrder
         $rmaItems = $rma->getItems();
         foreach ($rmaItems as $rmaItem) {
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
-            $discountAmount +=  ($orderItem->getDiscountAmount() * $rmaItem->getQtyRequested() / $this->getNetQty($orderItem));
+            if ($orderItem->getProductType() == 'bundle') {
+                $bundleChildren = $orderItem->getChildrenItems();
+                foreach ($bundleChildren as $bundleChild) {
+                    $discountAmount +=  ($bundleChild->getDiscountAmount() * $rmaItem->getQtyRequested() / $this->getNetQty($bundleChild));
+                }
+            } else {
+                $discountAmount +=  ($orderItem->getDiscountAmount() * $rmaItem->getQtyRequested() / $this->getNetQty($orderItem));
+            }
         }
         return $discountAmount;
     }
