@@ -20,7 +20,9 @@ class Config
 
     const SAP_CLIENT_XML_PATH = 'sap/mall_info/client';
 
-    const SAP_CVS_SUPPLY_CONTRACTOR_XML_PATH = 'sap/mall_info/cvs_supply_contractor';
+    const SAP_CVS_FAMILY_MART_XML_PATH = 'sap/mall_info/familymart';
+
+    const SAP_CVS_SEVEN_ELEVEN_XML_PATH = 'sap/mall_info/seveneleven';
 
     const SAP_HOME_DELIVERY_CONTRACTOR_XML_PATH = 'sap/mall_info/home_delivery_contractor';
 
@@ -89,9 +91,14 @@ class Config
         return $this->getValue(self::SAP_HOME_DELIVERY_CONTRACTOR_XML_PATH, $type, $storeId);
     }
 
-    public function getSupplyContractor($type, $storeId)
+    public function getFamilyMartCode($type, $storeId)
     {
-        return $this->getValue(self::SAP_CVS_SUPPLY_CONTRACTOR_XML_PATH, $type, $storeId);
+        return $this->getValue(self::SAP_CVS_FAMILY_MART_XML_PATH, $type, $storeId);
+    }
+
+    public function getSevenElevenCode($type, $storeId)
+    {
+        return $this->getValue(self::SAP_CVS_SEVEN_ELEVEN_XML_PATH, $type, $storeId);
     }
 
     public function getSalesOrg($type, $storeId)
