@@ -74,6 +74,9 @@ class SmsSender
 
     public function sendSms(\Magento\Rma\Api\Data\RmaInterface $rma, string $returnOrderNumber)
     {
+//        if (!$this->helper->getSendSmsActive()) {
+//            return;
+//        }
         try {
             $number = $rma->getData('customer_custom_phone') ??
                 $this->getOrderTelephone($rma->getOrderId());
@@ -85,6 +88,8 @@ class SmsSender
         if ($number) {
             try {
                 $message = $this->getMessage($rma, $returnOrderNumber);
+                $this->logger->info('gwlogistics | SMS message for reverse order', [$message]);
+                $this->logger->info('gwlogistics | SMS number for reverse order', [$number]);
                 $storeId = $rma->getStoreId();
                 $this->smsManagement->sendMessage($number, $message, $storeId);
             } catch (NoSuchEntityException $e) {

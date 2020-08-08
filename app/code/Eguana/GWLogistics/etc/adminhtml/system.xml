@@ -44,6 +44,10 @@
                     <label>Mode</label>
                     <source_model>Magento\Shipping\Model\Config\Source\Online\Mode</source_model>
                 </field>
+                <field id="server_type" translate="label" type="select" sortOrder="155" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Server Type</label>
+                    <source_model>Magento\Shipping\Model\Config\Source\Online\Mode</source_model>
+                </field>
                 <field id="send_sms_active" translate="label" type="select" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Enable SMS for Return Order Number</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
