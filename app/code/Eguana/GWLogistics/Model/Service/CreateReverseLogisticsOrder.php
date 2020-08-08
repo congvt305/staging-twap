@@ -69,8 +69,9 @@ class CreateReverseLogisticsOrder
      */
     public function process($rma)
     {
+        $result = ['ErrorMessage' => 'Could not create reverse logistics order.'];
         try {
-            $shippingPreference = $rma->getData('shipping_preference');
+            $shippingPreference = $rma->getData('shipping_preference') ?? 'UNIMART';
             switch ($shippingPreference) {
                 case 'UNIMART':
                     $result = $this->unimartCreateReverseShipmentOrder->sendRequest($rma);
