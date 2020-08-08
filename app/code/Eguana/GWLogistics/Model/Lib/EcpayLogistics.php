@@ -475,7 +475,6 @@ class EcpayLogistics
      */
     public function CheckOutFeedback($Feedback = array())
     {
-
         $this->ValidateHashKey();
         $this->ValidateHashIV();
 
@@ -492,6 +491,9 @@ class EcpayLogistics
             unset($Feedback['ErrorMessage']);
             $CheckMacValue = $this->ecpayCheckMacValue->Generate($Feedback, $this->HashKey, $this->HashIV);
             if ($CheckMacValue != $FeedbackCheckMacValue) {
+                $this->logger->info('gwlogistics | checkMacValue recieved from result', [$FeedbackCheckMacValue]);
+                $this->logger->info('gwlogistics | checkMacValue recieved from local', [$CheckMacValue]);
+                $this->logger->info('gwlogistics | checkMacValue validation failed', ['HashKey' => $this->HashKey, 'HashIv' => $this->HashIV]);
                 throw new \Exception('CheckMacValue verify fail.');
             }
         }

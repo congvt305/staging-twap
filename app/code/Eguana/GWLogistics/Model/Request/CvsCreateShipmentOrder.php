@@ -55,57 +55,57 @@ class CvsCreateShipmentOrder
      */
     public function sendRequest($order) {
         $result = [];
-
-        $cvsLocation = $this->getCvsLocation($order);
-        $dataTime = $this->dateTimeFactory->create();
-        $merchantId = $this->helper->getMerchantId($order->getStoreId());
-        $platformId = $this->helper->getPlatformId($order->getStoreId()) ?? '';
-        $merchantTradeNo = $order->getIncrementId();
-        $merchantTradeDate = $dataTime->date('Y/m/d H:i:s');
-        $hashKey = $this->helper->getHashKey($order->getStoreId());
-        $hashIv = $this->helper->getHashIv($order->getStoreId());
-        $logisticsType = EcpayLogisticsType::CVS;
-        $logisticsSubType = $cvsLocation->getLogisticsSubType();
-        $goodsAmount = (int)round($order->getSubtotal(), 0);
-        $items = $this->getItemData($order);
-        $goodsName = (isset($items['goodsName']) && $items['goodsName']) ? $items['goodsName']  : '';
-        //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
-        $senderName = $this->helper->getSenderName($order->getStoreId()); //no space not more than 10.
-        $senderPhone = $this->helper->getSenderPhone($order->getStoreId()); //no space not more than 10.
-        $senderCellPhone = $this->helper->getSenderCellPhone($order->getStoreId()); //no space not more than 10.
-        //Character limit is 4-10 characters (Chinese2-5 characters, English 4-10 characters)
-        $receiverName = $order->getShippingAddress()->getLastname() . $order->getShippingAddress()->getFirstname();
-        $receiverPhone = $order->getShippingAddress()->getTelephone();
-        $receiverEmail = $order->getShippingAddress()->getEmail();
-        $remarks = $order->getExtensionAttributes()->getDeliveryMessage() ?? '';
-        $remarks = (strlen($remarks) > 200) ? substr($remarks,0,200) : $remarks;
-        $serverReplyURL = $this->helper->getCreateShipmentReplyUrl();
-        $receiverStoreID = $cvsLocation->getCvsStoreId(); //no need, only for C2C
-        //for test, sender name, receiver name receiver phone/cellphone , ReceiverStoreID ReturnStoreID are required....!!
-        $params = [
-            'MerchantID' => $merchantId,//
-            'MerchantTradeNo' => $merchantTradeNo,
-            'MerchantTradeDate' => $merchantTradeDate,//
-            'LogisticsType' => $logisticsType,//
-            'LogisticsSubType' => $logisticsSubType,//
-            'GoodsAmount' => $goodsAmount,//
-            'CollectionAmount' => 0,
-            'IsCollection' => EcpayIsCollection::NO,
-            'GoodsName' => $goodsName,
-            'SenderName' => $senderName, //
-            'SenderPhone' => $senderPhone,
-            'SenderCellPhone' => $senderCellPhone,
-            'ReceiverName' => $receiverName, //
-            'ReceiverPhone' => $receiverPhone, //required for c2c
-            'ReceiverCellPhone' => $receiverPhone,
-            'ReceiverEmail' => $receiverEmail,
-            'TradeDesc' => '',
-            'ServerReplyURL' => $serverReplyURL,//
-            'ClientReplyURL' => '',
-            'LogisticsC2CReplyURL' => '',
-            'Remark' => $remarks,
-            'PlatformID' => $platformId,
-        ];
+        try {
+            $cvsLocation = $this->getCvsLocation($order);
+            $dataTime = $this->dateTimeFactory->create();
+            $merchantId = $this->helper->getMerchantId($order->getStoreId());
+            $platformId = $this->helper->getPlatformId($order->getStoreId()) ?? '';
+            $merchantTradeDate = $dataTime->date('Y/m/d H:i:s');
+            $merchantTradeNo = ($this->helper->getMode($order->getStoreId()) === '0' || $this->helper->getServerType($order->getStoreId()) === '0') ? 'no'. $dataTime->date('YmdHis') : $order->getIncrementId() ;
+            $hashKey = $this->helper->getHashKey($order->getStoreId());
+            $hashIv = $this->helper->getHashIv($order->getStoreId());
+            $logisticsType = EcpayLogisticsType::CVS;
+            $logisticsSubType = $cvsLocation->getLogisticsSubType();
+            $goodsAmount = (int)round($order->getSubtotal(), 0);
+            $items = $this->getItemData($order);
+            $goodsName = (isset($items['goodsName']) && $items['goodsName']) ? $items['goodsName']  : '';
+            //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
+            $senderName = $this->helper->getSenderName($order->getStoreId()); //no space not more than 10.
+            $senderPhone = $this->helper->getSenderPhone($order->getStoreId()); //no space not more than 10.
+            $senderCellPhone = $this->helper->getSenderCellPhone($order->getStoreId()); //no space not more than 10.
+            //Character limit is 4-10 characters (Chinese2-5 characters, English 4-10 characters)
+            $receiverName = $order->getShippingAddress()->getLastname() . $order->getShippingAddress()->getFirstname();
+            $receiverPhone = $order->getShippingAddress()->getTelephone();
+            $receiverEmail = $order->getShippingAddress()->getEmail();
+            $remarks = $order->getExtensionAttributes()->getDeliveryMessage() ?? '';
+            $remarks = (strlen($remarks) > 200) ? substr($remarks,0,200) : $remarks;
+            $serverReplyURL = $this->helper->getCreateShipmentReplyUrl();
+            $receiverStoreID = $cvsLocation->getCvsStoreId(); //no need, only for C2C
+            //for test, sender name, receiver name receiver phone/cellphone , ReceiverStoreID ReturnStoreID are required....!!
+            $params = [
+                'MerchantID' => $merchantId,//
+                'MerchantTradeNo' => $merchantTradeNo,
+                'MerchantTradeDate' => $merchantTradeDate,//
+                'LogisticsType' => $logisticsType,//
+                'LogisticsSubType' => $logisticsSubType,//
+                'GoodsAmount' => $goodsAmount,//
+                'CollectionAmount' => 0,
+                'IsCollection' => EcpayIsCollection::NO,
+                'GoodsName' => $goodsName,
+                'SenderName' => $senderName, //
+                'SenderPhone' => $senderPhone,
+                'SenderCellPhone' => $senderCellPhone,
+                'ReceiverName' => $receiverName, //
+                'ReceiverPhone' => $receiverPhone, //required for c2c
+                'ReceiverCellPhone' => $receiverPhone,
+                'ReceiverEmail' => $receiverEmail,
+                'TradeDesc' => '',
+                'ServerReplyURL' => $serverReplyURL,//
+                'ClientReplyURL' => '',
+                'LogisticsC2CReplyURL' => '',
+                'Remark' => $remarks,
+                'PlatformID' => $platformId,
+            ];
 //        $params = [
 //            'MerchantID' => '2000132',
 //            'MerchantTradeNo' => 'no' . date('YmdHis'),
@@ -129,11 +129,11 @@ class CvsCreateShipmentOrder
 //            'Remark' => '測試備註',
 //            'PlatformID' => '',
 //        ];
-        $this->logger->info('gwlogistics | original params for create order', $params);
-        $this->logger->info('gwlogistics | original hashKey for create order', [$hashKey]);
-        $this->logger->info('gwlogistics | original hasIv for create order', [$hashIv]);
+            $this->logger->info('gwlogistics | original params for create order', $params);
+            $this->logger->info('gwlogistics | original hashKey for create order', [$hashKey]);
+            $this->logger->info('gwlogistics | original hasIv for create order', [$hashIv]);
 
-        try {
+
             $this->ecpayLogistics->HashKey = $hashKey;
             $this->ecpayLogistics->HashIV = $hashIv;
 
@@ -144,13 +144,14 @@ class CvsCreateShipmentOrder
             ];
             $result = $this->ecpayLogistics->BGCreateShippingOrder();
             if (isset($result['CheckMacValue'])) {
-                if (!$this->helper->validateCheckMackValue($result)) {
+                if (!$this->helper->validateCheckMackValue($result, $order->getStoreId())) {
                     throw new \Exception(__('CheckMacValue is not valid'));
                 }
             }
         } catch (\Exception $e) {
             $this->logger->critical('GWL create shipping order failed');
             $this->logger->critical($e->getMessage());
+            throw $e;
         }
         return $result;
     }

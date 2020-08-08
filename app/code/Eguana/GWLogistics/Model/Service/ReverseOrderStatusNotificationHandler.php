@@ -10,6 +10,7 @@ namespace Eguana\GWLogistics\Model\Service;
 
 
 use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Rma\Api\RmaRepositoryInterface;
 
 class ReverseOrderStatusNotificationHandler
 {
@@ -45,9 +46,14 @@ class ReverseOrderStatusNotificationHandler
      * @var \Eguana\GWLogistics\Api\ReverseStatusNotificationRepositoryInterface
      */
     private $statusNotificationRepository;
+    /**
+     * @var RmaRepositoryInterface
+     */
+    private $rmaRepository;
 
     public function __construct(
         \Eguana\GWLogistics\Helper\Data $dataHelper,
+        \Magento\Rma\Api\RmaRepositoryInterface $rmaRepository,
         \Magento\Rma\Api\TrackRepositoryInterface $trackRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Rma\Api\Data\CommentInterfaceFactory $commentInterfaceFactory,
@@ -64,6 +70,7 @@ class ReverseOrderStatusNotificationHandler
         $this->logger = $logger;
         $this->reverseStatusNotificationFactory = $reverseStatusNotificationFactory;
         $this->statusNotificationRepository = $statusNotificationRepository;
+        $this->rmaRepository = $rmaRepository;
     }
 
     /*
@@ -91,6 +98,12 @@ class ReverseOrderStatusNotificationHandler
             try {
                 $rmaId = $this->findRmaId($notificationData['RtnMerchantTradeNo']);
                 if ($rmaId) {
+                    $rma = $this->rmaRepository->get($rmaId);
+                    $storeId = $rma->getStoreId();
+                    if (!$this->dataHelper->validateCheckMackValue($notificationData, $storeId)) {
+                        throw new \Exception(__('CheckMacValue is not valid'));
+                    }
+
                     /** @var \Magento\Rma\Api\Data\CommentInterface $rmaComment */
                     $rmaComment = $this->commentInterfaceFactory->create();
                     $rmaComment->setRmaEntityId($rmaId);

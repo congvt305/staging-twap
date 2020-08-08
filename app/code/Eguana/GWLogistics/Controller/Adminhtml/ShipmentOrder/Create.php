@@ -31,10 +31,6 @@ class Create extends \Magento\Backend\App\Action
     /**
      * @var string
      */
-    private $allPayLogisticsID;
-    /**
-     * @var string
-     */
     private $shipmentNo;
     /**
      * @var \Eguana\GWLogistics\Model\Request\QueryLogisticsInfo
@@ -71,7 +67,7 @@ class Create extends \Magento\Backend\App\Action
     /**
      * Authorization level of a basic admin session
      */
-//    const ADMIN_RESOURCE = 'Eguana_GWLogistics::reverse_order_create';
+    const ADMIN_RESOURCE = 'Eguana_GWLogistics::shipment_order_create';
 
     /**
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
@@ -87,21 +83,27 @@ class Create extends \Magento\Backend\App\Action
             /** @var \Magento\Sales\Model\Order $order */
             $order = $this->orderRepository->get(intval($orderId));
             $result = $this->createShipmentOrder->sendRequest($order);
-            if (isset($result['ResCode']) && $result['ResCode'] === '1' && isset($result['AllPayLogisticsID'])) {
-                $this->allPayLogisticsID = $result['AllPayLogisticsID'];
-                $shipment->setData('all_pay_logistics_id', $result['AllPayLogisticsID']);
-                $this->shipmentRepository->save($shipment);
-                $response = $this->queryLogisticsInfo->sendRequest($this->allPayLogisticsID, $order->getStoreId());
-                if (isset($response['ShipmentNo']) && $response['ShipmentNo']) {
-                    $this->shipmentNo = $response['ShipmentNo'];
-                    $this->saveTrack($order);
-                    $this->messageManager->addSuccessMessage(__('Green World Shipment Order is created. Shipment Number is %1', $response['ShipmentNo']));
-                } else {
-                    $this->messageManager->addErrorMessage(array_key_first($response));
-                }
-            } elseif (isset($result['ResCode']) && $result['ResCode'] === '0' && isset($result['ErrorMessage'])) { // {"ResCode":"0","ErrorMessage":"門市不存在，請重新選擇取貨門市"}
+            if (isset($result['ErrorMessage'])) {
                 $this->messageManager->addErrorMessage($result['ErrorMessage']);
+                $this->_redirect('adminhtml/order_shipment/view', ['shipment_id' => $shipmentId]);
             }
+            if (!isset($result['AllPayLogisticsID'])) {
+                $this->messageManager->addErrorMessage(__('Green World Shipment Order creation failed.'));
+                $this->_redirect('adminhtml/order_shipment/view', ['shipment_id' => $shipmentId]);
+            }
+            $shipment->setData('all_pay_logistics_id', $result['AllPayLogisticsID']);
+            $this->shipmentRepository->save($shipment);
+            //todo comment save even when error message
+
+            $response = $this->queryLogisticsInfo->sendRequest($result['AllPayLogisticsID'], $order->getStoreId());
+
+            if (!isset($response['ShipmentNo'])) {
+                $this->messageManager->addErrorMessage(array_key_first($response));
+            }
+            $this->shipmentNo = $response['ShipmentNo'];
+            $this->saveTrack($order, $response['ShipmentNo']);
+            $this->messageManager->addSuccessMessage(__('Green World Shipment Order is created. Shipment Number is %1', $response['ShipmentNo']));
+
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
             $this->_redirect('adminhtml/order_shipment/view', ['shipment_id' => $shipmentId]);
@@ -109,10 +111,10 @@ class Create extends \Magento\Backend\App\Action
         $this->_redirect('adminhtml/order_shipment/view', ['shipment_id' => $shipmentId]);
     }
 
-    private function saveTrack($order)
+    private function saveTrack($order, $shipmentNo)
     {
         $track = $this->shipmentTrackFactory->create();
-        $track->setTrackNumber($this->shipmentNo);
+        $track->setTrackNumber($shipmentNo);
         $track->setOrderId($order->getId());
         $track->setParentId($this->shipmentId);
         $track->setTitle('GWLogistics CVS');

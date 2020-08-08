@@ -58,12 +58,13 @@ class QueryLogisticsInfo
              */
             //todo: check checkMacValue
             $result = $this->ecpayLogistics->QueryLogisticsInfo();
-            if (!$this->helper->validateCheckMackValue($result)) {
+            if (!$this->helper->validateCheckMackValue($result, $storeId)) {
                 throw new \Exception(__('CheckMacValue is not valid'));
             }
         } catch (\Exception $e) {
             $this->logger->critical('GWL query logistics(track) failed');
             $this->logger->critical($e->getMessage());
+            throw $e;
         }
         return $result;
 

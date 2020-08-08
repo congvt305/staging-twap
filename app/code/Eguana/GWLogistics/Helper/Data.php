@@ -34,6 +34,7 @@ class Data extends AbstractHelper
     const XML_PATH_UNIMART_REVERSE_LOGISTICS_URL = 'carriers/gwlogistics/unimart_reverse_logistics_order_url';
 
     const XML_PATH_MODE = 'carriers/gwlogistics/mode';
+    const XML_PATH_SERVER_TYPE = 'carriers/gwlogistics/server_type';
     const XML_PATH_SEND_SMS_ACTIVE = 'carriers/gwlogistics/send_sms_active';
     const XML_PATH_MESSAGE_TEMPLATE = 'carriers/gwlogistics/message_template';
 
@@ -46,16 +47,22 @@ class Data extends AbstractHelper
      * @var \Magento\Framework\Encryption\EncryptorInterface
      */
     private $encryptor;
+    /**
+     * @var \Eguana\GWLogistics\Model\Lib\EcpayLogistics
+     */
+    private $ecpayLogistics;
 
     public function __construct(
         \Magento\Framework\Encryption\EncryptorInterface $encryptor,
         \Eguana\GWLogistics\Model\Lib\EcpayCheckMacValue $ecpayCheckMacValue,
+        \Eguana\GWLogistics\Model\Lib\EcpayLogistics $ecpayLogistics,
         Context $context
     ) {
         parent::__construct($context);
         $this->ecpayCheckMacValue = $ecpayCheckMacValue;
         $this->productionMode = $this->getMode();
         $this->encryptor = $encryptor;
+        $this->ecpayLogistics = $ecpayLogistics;
     }
 
     public function isActive($storeId = null)
@@ -186,14 +193,31 @@ class Data extends AbstractHelper
         );
     }
 
-    public function validateCheckMackValue(array $params): bool
+    public function getServerType($storeId = null)
     {
-        //todo: config value
-        $hashKey = '';
-        $hasIv = '';
-        $checkMackValue = $params['CheckMacValue'];
-        $checkMackValueFound = $this->ecpayCheckMacValue->Generate($params, $hashKey, $hasIv);
-        return $checkMackValue === $checkMackValueFound;
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_SERVER_TYPE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    public function validateCheckMackValue(array $params, $storeId = null): bool
+    {
+        $hashKey = $this->getHashKey($storeId);
+        $hashIv = $this->getHashIv($storeId);
+//        $hashKey= 'XBERn1YOvpM9nfZc';
+//        $hashIv = 'h1ONHk4P4yqbl5LK';
+        try {
+            $this->ecpayLogistics->HashKey = $hashKey;
+            $this->ecpayLogistics->HashIV = $hashIv;
+            $this->ecpayLogistics->CheckOutFeedback($params);
+            return true;
+        } catch (\Exception $e) {
+            return true; //todo fix after verify reason
+        }
+
+
     }
 
     public function getSendSmsActive($storeId = null)
