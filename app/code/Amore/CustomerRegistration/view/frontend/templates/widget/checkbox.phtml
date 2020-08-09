@@ -20,7 +20,7 @@ $isSelected = $block->getFormValue();
         <label class="<?= $block->getAttributeCode().'-label' ?> label" for="<?= $block->escapeHtmlAttr($block->getFieldId($block->getAttributeCode())) ?>"><span><?= $block->escapeHtml($block->getStoreLabel($block->getAttributeCode())) ?></span></label>
     <?php else: ?>
         <label class="<?= $block->getAttributeCode().'-label' ?> label" for="<?= $block->escapeHtmlAttr($block->getFieldId($block->getAttributeCode())) ?>"><span><?= $block->escapeHtml(__('Change mobile number')) ?></span></label>
-    <?php endif; ?>:
+    <?php endif; ?>
     <?php if($block->getAttributeCode() == 'terms_and_services_policy'): ?>
     <span>
         <a href="#" id="<?= $block->getAttributeCode().'-read-policy' ?>" target="_blank"><?= $block->escapeHtml(__('Read more')) ?></a>

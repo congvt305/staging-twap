@@ -58,12 +58,20 @@ class Data extends AbstractHelper
         $this->encryptor = $encryptor;
     }
 
+    public function isActive($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_ACTIVE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
     public function getCarrierTitle($storeId = null) {
         return $this->scopeConfig->getValue(
             self::XML_PATH_TITLE,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $storeId
-
         );
     }
     public function getMapServerReplyUrl() {
