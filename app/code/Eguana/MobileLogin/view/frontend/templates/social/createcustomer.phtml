@@ -19,13 +19,14 @@
             <legend class="legend eguanasociallogin-form-legend">
                 <span><?= $block->escapeHtml(__('Social Login')) ?></span>
             </legend>
-            <div class="msg"><?= $block->escapeHtml(__('Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!')) ?></div>
-            <div class="member-legend">
-                <label class="label" for="member">
-                    <span><?= $block->escapeHtml(__("I am already a %1 member(Login to complete the setup)", $block->getCurrentStoreName())) ?>
-                    </span>
-                </label>
-                <input type="radio" id="member" name="member" data-validate="{required:true}" value="ismember">
+            <div class="field note"><?= $block->escapeHtml(__('Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!')) ?></div>
+            <div class="field choice member-legend">
+                <div class="control">
+                    <label class="label" for="member">
+                        <span><?= $block->escapeHtml(__("I am already a %1 member(Login to complete the setup)", $block->getCurrentStoreName())) ?></span>
+                    </label>
+                    <input type="radio" id="member" name="member" data-validate="{required:true}" value="ismember">
+                </div>
             </div>
             <div class="msg"><?= $block->escapeHtml(__('Linked Account : Google ID/Facebook/Line')) ?></div>
             <div class="field email required">
@@ -37,8 +38,8 @@
                            class="input-text"
                            type="text"
                            value=""
-                           placeholder="Enter email or mobile number"
                            data-validate="{required:true, 'mobileloginvalidationrule':true}"
+                           placeholder="<?= $block->escapeHtml(__('Enter email or mobile number')) ?>"
                            aria-required="true">
                 </div>
             </div>
@@ -52,23 +53,27 @@
                            type="password"
                            value=""
                            data-validate="{required:true}"
+                           placeholder="<?= $block->escapeHtml(__('Password')) ?>"
                            aria-required="true">
                 </div>
             </div>
-            <div class="member-legend">
-                <label class="label" for="not-a-member">
-                    <span><?= $block->escapeHtml(__("I am not a %1 member(Login to complete the setup)", $block->getCurrentStoreName())) ?>
-                    </span>
-                </label>
-                <input type="radio" id="not-a-member" name="member" value="notamember">
+            <div class="field choice member-legend">
+                <div class="control">
+                    <label class="label" for="not-a-member">
+                        <span>
+                            <?= $block->escapeHtml(__("I am not a %1 member(Login to complete the setup)", $block->getCurrentStoreName())) ?>
+                        </span>
+                    </label>
+                    <input type="radio" id="not-a-member" name="member" value="notamember">
+                </div>
             </div>
             <div class="msg"><?= $block->escapeHtml(__('Linked Account : Google ID/Facebook/Line')) ?></div>
 
             <div class="sociallogin-form-actions">
                 <button class="cancel" type="button" id="cancel" data-role="action" data-action-name="Cancel">
-                    <span><?= $block->escapeHtml(__('Canel')) ?></span>
+                    <span><?= $block->escapeHtml(__('Cancel')) ?></span>
                 </button>
-                <button class="login" type="submit" id="login" data-role="action" data-action-name="Login">
+                <button class="action login" type="submit" id="login" data-role="action" data-action-name="Login">
                     <span><?= $block->escapeHtml(__('OK')) ?></span>
                 </button>
             </div>

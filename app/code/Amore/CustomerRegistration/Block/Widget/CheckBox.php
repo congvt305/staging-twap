@@ -158,20 +158,14 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
 
     public function getReadMoreContent()
     {
-        if ($this->getAttributeCode() == 'sms_subscription_status') {
-            $privacyPolicyCMSBlockId = $this->config->getSMSPolicyCMSBlockId();
-        } elseif ($this->getAttributeCode() == 'terms_and_services_policy') {
-            $privacyPolicyCMSBlockId = $this->config->getTermsAndServicesPolicyCMSBlockId();
-        } else {
-            $privacyPolicyCMSBlockId = $this->config->getDMPolicyCMSBlockId();
-        }
+        $privacyPolicyCMSBlockId = $this->config->getTermsAndServicesPolicyCMSBlockId();
 
         if (!$privacyPolicyCMSBlockId) {
             return '';
         }
 
         return $this->getLayout()
-            ->createBlock('Magento\Cms\Block\Block')
+            ->createBlock(\Magento\Cms\Block\Block::class)
             ->setBlockId($privacyPolicyCMSBlockId)
             ->toHtml();
     }

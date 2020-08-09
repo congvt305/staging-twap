@@ -194,7 +194,7 @@
                             <?php endif; ?>
                             <?php if (false !== $block->getAttributeValue($item->getId(), 'condition')) : ?>
                                 <td data-th="<?= $block->escapeHtmlAttr(__('Resolution')) ?>" class="col resolution">
-                                    <?= $block->escapeHtml(__('%1 refund',$block->getAttributeValue($item->getId(), 'resolution'))) ?>
+                                    <?= $block->escapeHtml($block->getAttributeValue($item->getId(), 'resolution')) ?>
                                 </td>
                             <?php endif; ?>
                             <td data-th="<?= $block->escapeHtmlAttr(__('Request Qty')) ?>" class="col request qty"><?= $block->escapeHtml($rmaHelper->parseQuantity($item->getQtyRequested(), $item)) ?></td>
@@ -243,7 +243,7 @@
                                 <?= $block->escapeHtml($block->formatDate($_comment->getCreatedAt())); ?> <?= $block->escapeHtml($block->formatTime($_comment->getCreatedAt())); ?>
                             </dt>
                             <dd class="returns-comment-text">
-                                <?= /* @noEscape */ nl2br($block->escapeHtml($_comment->getComment())) ?>
+                                <?= $block->escapeHtml(__($_comment->getComment()))?>
                             </dd>
                         <?php endif; ?>
                     <?php endforeach; ?>

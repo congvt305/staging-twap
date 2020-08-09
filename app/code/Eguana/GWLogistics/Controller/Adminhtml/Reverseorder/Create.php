@@ -10,7 +10,6 @@ namespace Eguana\GWLogistics\Controller\Adminhtml\Reverseorder;
 
 use Magento\Backend\App\Action;
 
-
 //class Create extends \Magento\Rma\Controller\Adminhtml\Rma
 class Create extends \Magento\Backend\App\Action
 {
@@ -41,7 +40,6 @@ class Create extends \Magento\Backend\App\Action
     const ADMIN_RESOURCE = 'Eguana_GWLogistics::reverse_order_create';
 
     /**
-     * todo: find customer's cvs choice, call service for reverseorder save reseponse, save a rma shipment, create a status history.
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
      * @throws \Exception
      */
@@ -57,15 +55,9 @@ class Create extends \Magento\Backend\App\Action
                 $this->messageManager->addSuccessMessage(__('Reverse Logistics Order Created Successfully.'));
             }
         } catch (\Exception $e) {
-            $this->messageManager->addExceptionMessage($e->getMessage());
+            $this->messageManager->addExceptionMessage($e);
         }
         $this->_redirect('adminhtml/rma/edit', ['id' => $rmaId]);
     }
-
-    private function getPreferredCvsType()
-    {
-        return '711';
-    }
-
 
 }

@@ -43,23 +43,60 @@
 
         <form id="custom-checkout-form" class="form" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
             <fieldset class="fieldset">
-                <legend data-bind="i18n: 'E-Invoice Donation'"></legend>
                 <!-- ko foreach: getRegion('custom-checkout-form-fields') -->
                 <!-- ko template: getTemplate() --><!-- /ko -->
                 <!--/ko-->
             </fieldset>
-            <input type="radio" id="donation-true" name="e-invoice-donation" value="true">
-            <label for="donation-true">Yes</label>
-            <input type="radio" id="donation-false" name="e-invoice-donation" value="false" checked="checked">
-            <label for="donation-false">No</label>
-
-            <div class="control">
-                <label for="invoice_title" class="label">Invoice Title</label>
-                <input type="text" name="invoice_title" data-validate='{"maxlength":255}' value="" title="Invoice Title" class="input-text invoice-title" id="invoice_title">
-
-                <label for="tax_id_number" class="label">Tax ID Number</label>
-                <input type="text" name="tax_id_number" data-validate='{"maxlength":255}' value="" title="Tax ID Number" class="input-text tax_id_number" id="tax_id_number">
-            </div>
+            <fieldset class="fieldset e-invoice">
+                <div class="field">
+                    <label class="label" data-bind="i18n: 'E-Invoice'"></label>
+                    <div class="control">
+                        <input type="radio" id="greenworld-invoice" name="ecpay_einvoice_type" value="greenworld-invoice" data-bind="checked: invoiceChecked">
+                        <label for="greenworld-invoice" class="label" data-bind="i18n: 'GreenWorld Invoice'"/>
+                        <div class="fieldset" id="greenworld-invoice-contents" data-bind="visible: invoiceChecked() === 'greenworld-invoice'">
+                            <div class="field note"><span data-bind="i18n: 'Green World Invoice Test'"/></div>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <input type="radio" id="triplicate-invoice" name="ecpay_einvoice_type" value="triplicate-invoice" data-bind="checked: invoiceChecked">
+                        <label for="triplicate-invoice" class="label" data-bind="i18n: 'Triplicate Invoice'"/>
+                        <div class="fieldset" id="triplicate-invoice-contents" data-bind="visible: invoiceChecked() === 'triplicate-invoice'">
+                            <div class="field">
+                                <label for="invoice_title" class="label" data-bind="i18n: 'Invoice Title'"/>
+                                <div class="control">
+                                    <input type="text" name="invoice_title" data-validate='{"maxlength":255}' value="" title="Invoice Title" class="input-text invoice-title" id="invoice_title">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="tax_id_number" class="label" data-bind="i18n: 'Tax ID Number'"/>
+                                <div class="control">
+                                    <input type="text" name="tax_id_number" data-validate='{"maxlength":255}' value="" title="Tax ID Number" class="input-text tax_id_number" id="tax_id_number">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <input type="radio" id="donation-invoice" name="ecpay_einvoice_type" value="donation-invoice" data-bind="checked: invoiceChecked">
+                        <label for="donation-invoice" class="label" data-bind="i18n: 'Donation Invoice'"/>
+                        <div class="fieldset"  id="donation-invoice-contents" data-bind="visible: invoiceChecked() === 'donation-invoice'">
+                            <p>Title : ___</p>
+                            <p>Code : ___</p>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <input type="radio" id="cellphone-barcode-invoice" name="ecpay_einvoice_type" value="cellphone-barcode-invoice" data-bind="checked: invoiceChecked">
+                        <label for="cellphone-barcode-invoice" class="label" data-bind="i18n: 'Cellphone Barcode Invoice'"/>
+                        <div class="fieldset" id="cellphone-barcode-invoice-contents" data-bind="visible: invoiceChecked() === 'cellphone-barcode-invoice'">
+                            <div class="field">
+                                <label for="cellphone_barcode" class="label" data-bind="i18n: 'Cellphone Barcode'"/>
+                                <div class="control">
+                                    <input type="text" name="cellphone_barcode" data-validate='{"maxlength":255}' value="" title="Cellphone Barcode" class="input-text cellphone-barcode" id="cellphone_barcode">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
         </form>
 
         <div class="actions-toolbar" data-bind="if: isPaymentAvailable()">

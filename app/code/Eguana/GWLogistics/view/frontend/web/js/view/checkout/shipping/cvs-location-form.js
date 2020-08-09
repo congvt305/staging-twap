@@ -6,35 +6,66 @@ define([
     'Eguana_GWLogistics/js/model/cvs-location',
     'Magento_Customer/js/model/customer',
     'Magento_Customer/js/customer-data',
-    './test',
     'mage/url',
-], function (ko, $, Component, quote, cvsLocation,  customer, customerData, test, urlBuilder) {
+], function (ko, $, Component, quote, cvsLocation,  customer, customerData, urlBuilder) {
     'use strict';
+
+    var openGreenWorldWindow = function () {
+        window.open('about:blank','cvsMapFormGw');
+        let gwForm = document.cvsMapForm,
+            windowActivateCount = 0;
+        if(gwForm) {
+            gwForm.submit();
+            document.addEventListener('visibilitychange', fetchCvsLocation, false);
+        }
+        function fetchCvsLocation() {
+                windowActivateCount++;
+                if (windowActivateCount % 2 === 0) {
+                    console.log('visibility changed');
+                    cvsLocation.selectCvsLocation();
+                    document.removeEventListener('visibilitychange', fetchCvsLocation, false);
+                }
+        }
+    };
+
+    var openGreenWorldChildWindow = function () {
+        let gwWin = window.open('about:blank','cvsMapFormGw'),
+        gwForm = document.cvsMapForm;
+        if(gwForm) {
+            gwForm.submit();
+            let timer = setInterval(function () {
+                if (gwWin.closed) {
+                    console.log('child window closed');
+                    cvsLocation.selectCvsLocation();
+                    clearInterval(timer);
+                }
+            },500);
+        }
+    };
+
     return Component.extend({
         defaults: {
             merchantId: null,
             mapUrl: null,
             visible: true,
-            isMapVisible : true,
             displayArea: 'after-shipping-method-item',
             template: 'Eguana_GWLogistics/checkout/shipping/cvs-location-form',
             cvsMapFormTemplate: 'Eguana_GWLogistics/cvs-map-form',
             MerchantTradeNo: null,
             ServerReplyURL: urlBuilder.build('eguana_gwlogistics/SelectedCvsNotify'),
             LogisticsType: 'CVS',
-            LogisticsSubType: 'UNIMART',
+            LogisticsSubType: null,
             IsCollection: 'N',
             device: null, //0: PC (default) 1: Mobile,
             tracks: {
                 visible: true,
-                isMapVisible: true,
+                LogisticsSubType: true
             },
         },
         errorMessage: ko.observable(false),
         windowActivateCount: 0,
 
         initialize: function () {
-
             this._super();
             cvsLocation.clear();
             this.visible = false;
@@ -47,16 +78,7 @@ define([
             quote.shippingMethod.subscribe(function (data) {
                 this.visible = (data.method_code + '_' + data.carrier_code === 'CVS_gwlogistics');
             }, this);
-
-            $(document).on('visibilitychange', $.proxy(this.onWindowActivated, this));
             return this;
-        },
-
-        onWindowActivated: function () {
-            this.windowActivateCount++;
-            if (this.windowActivateCount % 2 === 0) {
-                this.getSelectedCvsLocation();
-            }
         },
 
         getSelectedCvsLocation: function () {
@@ -68,13 +90,10 @@ define([
             return cvsLocation.getCvsLocation();
         },
 
-        openCvsMap: function () { //todo open window and submit
-            var mapWin = window.open('', 'cvsMapFormGw');
-            // $.proxy($('#cvs-map-load-form').submit(), this);
-        },
-
-        getMerchantId: function () {
-            return this.merchantId;
+        openCvsMap: function (cvs) { //todo open window and submit
+            this.LogisticsSubType = cvs;
+            // return openGreenWorldWindow.bind(this);
+            return openGreenWorldChildWindow.bind(this);
         },
 
         getMapUrl: function () {
@@ -88,14 +107,12 @@ define([
             return prefix + this.getCurrentTimeString() + quoteIdStr;
         },
 
-        setCvsMapFormData: function () { //todo create form dynamically
-            // console.log('cvs initialized.');
-            // this.device(this.isMobile());
-            // this.ServerReplyURL('http://192.168.0.1/ReceiverServerReply');
-        },
-
         isMobile: function () {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        },
+
+        isInApBrowser: function () {
+            return /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent);
         },
 
         getExtraData: function () {

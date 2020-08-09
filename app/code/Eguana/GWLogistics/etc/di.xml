@@ -5,6 +5,10 @@
     <preference for="Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface" type="Eguana\GWLogistics\Model\QuoteCvsLocationRepository"/>
     <preference for="Eguana\GWLogistics\Api\Data\ReverseStatusNotificationInterface" type="Eguana\GWLogistics\Model\ReverseStatusNotification"/>
     <preference for="Eguana\GWLogistics\Api\Data\StatusNotificationInterface" type="Eguana\GWLogistics\Model\StatusNotification"/>
+    <preference for="Eguana\GWLogistics\Api\ReverseStatusNotificationRepositoryInterface" type="Eguana\GWLogistics\Model\ReverseStatusNotificationRepository"/>
+    <preference for="Eguana\GWLogistics\Api\StatusNotificationRepositoryInterface" type="Eguana\GWLogistics\Model\StatusNotificationRepository"/>
+    <preference for="Eguana\GWLogistics\Api\Data\ReverseStatusNotificationSearchResultInterface" type="Eguana\GWLogistics\Model\ReverseStatusNotificationSearchResult"/>
+    <preference for="Eguana\GWLogistics\Api\Data\StatusNotificationSearchResultInterface" type="Eguana\GWLogistics\Model\StatusNotificationSearchResult"/>
 
 <!--    <preference for="Eguana\GWLogistics\Api\CartCvsLocationManagementInterface" type="Eguana\GWLogistics\Model\CartCvsLocationManagement"/>-->
 <!--    <preference for="Eguana\GWLogistics\Api\GuestCartCvsLocationManagementInterface" type="Eguana\GWLogistics\Model\GuestCartCvsLocationManagement"/>-->
@@ -62,5 +66,17 @@
     <type name="Magento\Quote\Model\Quote\Address\ToOrderAddress">
         <plugin name="eguana_gwlogistics_copy_cvs_location_field"
                 type="Eguana\GWLogistics\Plugin\Quote\CopyCvsLocationFieldPlugin" sortOrder="10"/>
+    </type>
+    <type name="Magento\Rma\Model\Shipping">
+        <plugin name="eguana_gwlogistics_set_rma_traking_number"
+                type="Eguana\GWLogistics\Plugin\Rma\ShippingPlugin" sortOrder="10"/>
+    </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Handler\State">
+        <plugin name="eguana_gwlogistics_set_order_status"
+                type="Eguana\GWLogistics\Plugin\Sales\OrderStatePlugin" sortOrder="10"/>
+    </type>
+    <type name="Magento\Sales\Model\Order\Address\Renderer">
+        <plugin name="eguana_gwlogistics_cvs_address_formatter"
+                type="Eguana\GWLogistics\Plugin\Sales\AddressRenderer" sortOrder="10"/>
     </type>
 </config>

@@ -37,6 +37,14 @@ class OrderStatusNotificationHandler
      * @var \Psr\Log\LoggerInterface
      */
     private $logger;
+    /**
+     * @var \Eguana\GWLogistics\Api\Data\StatusNotificationInterfaceFactory
+     */
+    private $statusNotificationInterfaceFactory;
+    /**
+     * @var \Eguana\GWLogistics\Api\StatusNotificationRepositoryInterface
+     */
+    private $statusNotificationRepository;
 
     public function __construct(
         \Eguana\GWLogistics\Helper\Data $dataHelper,
@@ -44,6 +52,8 @@ class OrderStatusNotificationHandler
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Sales\Api\Data\ShipmentCommentInterfaceFactory $shipmentCommentInterfaceFactory,
         \Magento\Sales\Api\ShipmentCommentRepositoryInterface $commentRepository,
+        \Eguana\GWLogistics\Api\Data\StatusNotificationInterfaceFactory $statusNotificationInterfaceFactory,
+        \Eguana\GWLogistics\Api\StatusNotificationRepositoryInterface $statusNotificationRepository,
         \Psr\Log\LoggerInterface $logger
     ) {
         $this->dataHelper = $dataHelper;
@@ -52,6 +62,8 @@ class OrderStatusNotificationHandler
         $this->shipmentCommentInterfaceFactory = $shipmentCommentInterfaceFactory;
         $this->commentRepository = $commentRepository;
         $this->logger = $logger;
+        $this->statusNotificationInterfaceFactory = $statusNotificationInterfaceFactory;
+        $this->statusNotificationRepository = $statusNotificationRepository;
     }
 
     /*
@@ -78,18 +90,10 @@ class OrderStatusNotificationHandler
     */
     public function process(array $notificationData)
     {
-        if (isset($notificationData['CheckMacValue'])) {
-            try {
-                $validated = $this->dataHelper->validateCheckMackValue($notificationData['CheckMacValue']);
-                if ($validated) {
-                    return false;
-                }
-            } catch (\Exception $e) {
-                $this->logger->critical($e->getMessage());
-                return false;
-            }
+        $this->logger->info('gwlogistics | notification for order', $notificationData);
+        if (!$this->dataHelper->validateCheckMackValue($notificationData)) {
+            throw new \Exception(__('CheckMacValue is not valid'));
         }
-
         if (isset($notificationData['RtnMsg'], $notificationData['RtnCode'], $notificationData['UpdateStatusDate'], $notificationData['AllPayLogisticsID'])) {
             try {
                 $shipment = $this->findShipment($notificationData['AllPayLogisticsID']);
@@ -100,6 +104,25 @@ class OrderStatusNotificationHandler
                     $shipmentComment->setIsVisibleOnFront(1);
                     $shipmentComment->setComment($this->makeComments($notificationData['RtnMsg'], $notificationData['RtnCode'], $notificationData['UpdateStatusDate']));
                     $this->commentRepository->save($shipmentComment);
+
+                    /** @var \Eguana\GWLogistics\Api\Data\StatusNotificationInterface $statusNotification */
+                    $statusNotification = $this->statusNotificationInterfaceFactory->create();
+                    $statusNotification->setOrderId($shipment->getOrderId());
+                    $statusNotification->setMerchantId($notificationData['MerchantID']);
+                    $statusNotification->setRtnCode($notificationData['RtnCode']);
+                    $statusNotification->setRtnMsg($notificationData['RtnMsg']);
+                    $statusNotification->setAllPayLogisticsId($notificationData['AllPayLogisticsID']);
+                    $statusNotification->setLogisticsType($notificationData['LogisticsType']);
+                    $statusNotification->setLogisticsSubType($notificationData['LogisticsSubType']);
+                    $statusNotification->setGoodsAmount($notificationData['GoodsAmount']);
+                    $statusNotification->setUpdateStatusDate($notificationData['UpdateStatusDate']);
+                    $statusNotification->setReceiverName($notificationData['ReceiverName']);
+                    $statusNotification->setReceiverPhone($notificationData['ReceiverPhone']);
+                    $statusNotification->setReceiverCellPhone($notificationData['ReceiverCellPhone']);
+                    $statusNotification->setReceiverEmail($notificationData['ReceiverEmail']);
+                    $statusNotification->setReceiverAddress($notificationData['ReceiverAddress']);
+                    $this->statusNotificationRepository->save($statusNotification);
+
                     return true;
                 }
             } catch (CouldNotSaveException $e) {

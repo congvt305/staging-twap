@@ -23,19 +23,19 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
                 ->toHtml();
             ?>
         </div>
-        <div class="field first_name required">
-            <label for="first_name" class="label"><span><?= $block->escapeHtml(__('First Name')) ?></span></label>
-            <div class="control">
-                <?php //phpcs:disable ?>
-                <input type="text" name="first_name" placeholder="<?= $block->escapeHtml(__('First Name')) ?>" data-validate='{"required":true, "maxlength":255}' value="<?= $viewModel->getSocialMediaName(); ?>" title="<?= /* @noEscape */ $block->escapeHtml(__('First Name')) ?>" class="input-text first-name" id="first_name">
-                <?php //phpcs:enable ?>
-            </div>
-        </div>
         <div class="field last_name required">
             <label for="last_name" class="label"><span><?= $block->escapeHtml(__('Last Name')) ?></span></label>
             <div class="control">
                 <?php //phpcs:disable ?>
                 <input type="text" name="last_name" placeholder="<?= $block->escapeHtml(__('Last Name')) ?>" data-validate='{"required":true, "maxlength":255}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('Last Name')) ?>" class="input-text last-name" id="last_name">
+                <?php //phpcs:enable ?>
+            </div>
+        </div>
+        <div class="field first_name required">
+            <label for="first_name" class="label"><span><?= $block->escapeHtml(__('First Name')) ?></span></label>
+            <div class="control">
+                <?php //phpcs:disable ?>
+                <input type="text" name="first_name" placeholder="<?= $block->escapeHtml(__('First Name')) ?>" data-validate='{"required":true, "maxlength":255}' value="<?= $viewModel->getSocialMediaName(); ?>" title="<?= /* @noEscape */ $block->escapeHtml(__('First Name')) ?>" class="input-text first-name" id="first_name">
                 <?php //phpcs:enable ?>
             </div>
         </div>

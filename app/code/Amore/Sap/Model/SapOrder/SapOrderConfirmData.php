@@ -11,6 +11,7 @@ namespace Amore\Sap\Model\SapOrder;
 use Amore\Sap\Model\Source\Config;
 use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
 use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
@@ -21,7 +22,6 @@ use Magento\Sales\Model\Order;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Customer\Api\CustomerRepositoryInterface;
-use function PHPUnit\Framework\isNull;
 
 class SapOrderConfirmData extends AbstractSapOrder
 {
@@ -53,6 +53,14 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @var QuoteCvsLocationRepository
      */
     private $quoteCvsLocationRepository;
+    /**
+     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     */
+    private $productRepository;
+    /**
+     * @var AttributeRepositoryInterface
+     */
+    private $eavAttributeRepositoryInterface;
 
 
     /**
@@ -66,6 +74,8 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param CustomerRepositoryInterface $customerRepository
      * @param TimezoneInterface $timezoneInterface
      * @param QuoteCvsLocationRepository $quoteCvsLocationRepository
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -76,7 +86,9 @@ class SapOrderConfirmData extends AbstractSapOrder
         RmaRepositoryInterface $rmaRepository,
         CustomerRepositoryInterface $customerRepository,
         TimezoneInterface $timezoneInterface,
-        QuoteCvsLocationRepository $quoteCvsLocationRepository
+        QuoteCvsLocationRepository $quoteCvsLocationRepository,
+        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $eavAttributeRepositoryInterface
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
@@ -84,6 +96,8 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->customerRepository = $customerRepository;
         $this->timezoneInterface = $timezoneInterface;
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
+        $this->productRepository = $productRepository;
+        $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
     }
 
     /**
@@ -96,7 +110,6 @@ class SapOrderConfirmData extends AbstractSapOrder
     {
         /** @var Order $order */
         $order = $this->getOrderInfo($incrementId);
-        $orderSendCheck = $order->getData('sap_order_send_check');
 
         $source = $this->config->getSourceByStore('store', $order->getStoreId());
         $orderData = $this->getOrderData($incrementId);
@@ -132,11 +145,8 @@ class SapOrderConfirmData extends AbstractSapOrder
         $source = $this->config->getDefaultValue('sap/mall_info/source');
         if (isset($orderData[0])) {
             $sampleOrderData = $orderData[0];
-            if (strpos($sampleOrderData['odrno'], '_')) {
-                list($incrementId, $date) = explode('_', $sampleOrderData['odrno']);
-            } else {
-                $incrementId = $sampleOrderData['odrno'];
-            }
+
+            $incrementId = $sampleOrderData['odrno'];
 
             $sampleOrder = $this->getOrderInfo($incrementId);
             $source = $this->config->getSourceByStore('store', $sampleOrder->getStoreId());
@@ -242,7 +252,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'lgort' => '',
                 'rmano' => $this->getRma($orderData->getEntityId()) == null ? '' : $this->getRma($orderData->getEntityId())->getEntityId(),
                 // 납품처
-                'kunwe' => $this->cvsShippingCheck($orderData) ? $this->config->getSupplyContractor('store', $storeId) : $this->config->getHomeDeliveryContractor('store', $storeId),
+                'kunwe' => $this->kunweCheck($orderData),
                 'ztrackId' => $trackingNumbers
             ];
         }
@@ -261,6 +271,28 @@ class SapOrderConfirmData extends AbstractSapOrder
             $incrementIdForSap = $incrementId;
         }
         return $incrementIdForSap;
+    }
+
+    /**
+     * @param $order \Magento\Sales\Model\Order
+     */
+    public function kunweCheck($order)
+    {
+        $kunwe = $this->config->getHomeDeliveryContractor('store', $order->getStoreId());
+        if ($this->cvsShippingCheck($order)) {
+            $shippingAddress = $order->getShippingAddress();
+            $cvsLocationId = $shippingAddress->getData('cvs_location_id');
+            $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
+            $cvsType = $cvsStoreData->getLogisticsSubType();
+            if ($cvsType == 'FAMI') {
+                $kunwe = $this->config->getFamilyMartCode('store', $order->getStoreId());
+            } else {
+                $kunwe = $this->config->getSevenElevenCode('store', $order->getStoreId());
+            }
+            return $kunwe;
+        } else {
+            return $kunwe;
+        }
     }
 
     /**
@@ -368,7 +400,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 if ($orderItem->getProductType() != 'simple') {
                     continue;
                 }
-                $configurableCheckedItem = $this->configurableProductCheck($orderItem);
+                $configurableCheckedItem = $this->productTypeCheck($orderItem);
                 $mileagePerItem = $this->mileageSpentRateByItem(
                     $orderTotal,
                     $configurableCheckedItem->getRowTotalInclTax(),
@@ -377,9 +409,12 @@ class SapOrderConfirmData extends AbstractSapOrder
                 $itemGrandTotal = $configurableCheckedItem->getRowTotal()
                     - $configurableCheckedItem->getDiscountAmount()
                     - $mileagePerItem;
-                $itemGrandTotalInclTax = $this->configurableProductCheck($orderItem)->getRowTotalInclTax()
-                    - $this->configurableProductCheck($orderItem)->getDiscountAmount()
+                $itemGrandTotalInclTax = $this->productTypeCheck($orderItem)->getRowTotalInclTax()
+                    - $this->productTypeCheck($orderItem)->getDiscountAmount()
                     - $mileagePerItem;
+
+                $product = $this->productRepository->getById($orderItem->getProductId());
+                $meins = $product->getData('meins');
 
                 $orderItemData[] = [
                     'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
@@ -389,7 +424,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     'itemMatnr' => $orderItem->getSku(),
                     'itemMenge' => intval($orderItem->getQtyOrdered()),
                     // 아이템 단위, Default : EA
-                    'itemMeins' => 'EA',
+                    'itemMeins' => $this->getMeins($meins),
                     'itemNsamt' => $configurableCheckedItem->getRowTotalInclTax(),
                     'itemDcamt' => $configurableCheckedItem->getDiscountAmount(),
                     'itemSlamt' => $itemGrandTotalInclTax,
@@ -412,18 +447,39 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $orderItemData;
     }
 
-    /**
-     * @param $orderItem \Magento\Sales\Model\Order\Item
-     */
-    public function configurableProductCheck($orderItem)
+    public function getMeins($value)
     {
-        if (empty($orderItem->getParentItem())) {
-            return $orderItem;
-        } else {
-            return $orderItem->getParentItem();
+        try {
+            $attribute = $this->eavAttributeRepositoryInterface->get('catalog_product', 'meins');
+            $options = $attribute->getOptions();
+
+            $label = 'EA';
+            foreach ($options as $option) {
+                if ($option->getValue() == $value) {
+                    $label = $option->getLabel();
+                }
+            }
+            return $label;
+        } catch (\Exception $exception) {
+            return null;
         }
     }
 
+    /**
+     * @param $orderItem \Magento\Sales\Model\Order\Item
+     */
+    public function productTypeCheck($orderItem)
+    {
+        if (empty($orderItem->getParentItem())) {
+            return $orderItem;
+        } elseif ($orderItem->getParentItem()->getProductType() == 'bundle') {
+            return $orderItem;
+        } elseif ($orderItem->getParentItem()->getProductType() == 'configurable') {
+            return $orderItem->getParentItem();
+        } else {
+            return $orderItem;
+        }
+    }
 
     public function mileageSpentRateByItem($orderTotal, $itemRowTotal, $itemDiscountAmount, $mileageUsed)
     {

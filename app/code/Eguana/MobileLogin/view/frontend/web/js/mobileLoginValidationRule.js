@@ -11,22 +11,22 @@ define([
     'jquery/ui',
     'jquery/validate',
     'mage/translate'
-], function($){
+], function ($) {
     'use strict';
     /**
      * Validate customer email and phone num
      * Phone num length should be between 10 and 11
      */
-    return function() {
+    return function () {
         $.validator.addMethod(
             "mobileloginvalidationrule",
-            function(value, element) {
+            function (value, element) {
                 var validator = this;
                 validator.mobileErrorMessage = $.mage.__(
                     "Please enter a valid email or phone num"
                 );
                 let regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-                if(regex.test(value)) {
+                if (regex.test(value)) {
                     return true;
                 } else {
                     validator.mobileErrorMessage = $.mage.__(
@@ -35,17 +35,17 @@ define([
                 }
                 let isnum = /^\d+$/.test(value);
                 if (isnum) {
-                    if(value.length < 10){
+                    if (value.length < 10) {
                         validator.mobileErrorMessage = $.mage.__(
                             "Please enter at least 10 characters in mobile no"
                         );
                     }
-                    if(value.length > 11){
+                    if (value.length > 11) {
                         validator.mobileErrorMessage = $.mage.__(
                             "Please enter no more than 11 characters."
                         );
                     }
-                    if(value.length >= 10 && value.length <= 11){
+                    if (value.length >= 10 && value.length <= 11) {
                         return true;
                     }
                 }
@@ -53,7 +53,7 @@ define([
             },
             function () {
                 return this.mobileErrorMessage;
-            });
-
-    }
+            }
+        );
+    };
 });

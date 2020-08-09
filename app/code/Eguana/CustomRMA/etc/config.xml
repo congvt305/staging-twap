@@ -11,7 +11,9 @@
     <default>
         <eguanacustomrma>
             <general>
-                <active>1</active>
+                <active>0</active>
+                <reason>other</reason>
+                <reason_other>other</reason_other>
             </general>
         </eguanacustomrma>
     </default>

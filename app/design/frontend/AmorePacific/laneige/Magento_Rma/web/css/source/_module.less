@@ -16,6 +16,10 @@
         .box-returns-requested .box-content {
             line-height: 24px;
         }
+
+        .box-returns-shipping {
+            display: none !important;
+        }
     }
 
     .returns-details-items {
@@ -312,7 +316,7 @@
     .form-create-return {
         > fieldset {
             &:first-child {
-                margin-bottom: 0;
+                margin-bottom: @indent__base;
 
                 .field {
                     &:nth-child(odd) {

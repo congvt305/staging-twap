@@ -13,4 +13,7 @@
     <event name="customer_save_after_data_object">
         <observer instance="Amore\CustomerRegistration\Observer\Customer\SaveSuccess" name="customer_save_succes"/>
     </event>
+    <event name="customer_delete_after">
+        <observer instance="Amore\CustomerRegistration\Observer\Customer\DeleteSuccess" name="customer_delete_succes"/>
+    </event>
 </config>

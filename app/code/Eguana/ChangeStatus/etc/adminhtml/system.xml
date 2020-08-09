@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="change_status" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Change Status</label>
+            <tab>eguana_extensions_tab</tab>
+            <resource>Eguana_ChangeStatus::changeStatus</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Change Status Active</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="date" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Days Setting</label>
+                <field id="available_return_days" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Days left for return after order complete</label>
+                </field>
+                <field id="rma_auto_authorization_days" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>RMA status auto-change days</label>
+                </field>
+            </group>
+            <group id="rma_authorization_cron" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Rma Pending to Authorized Cron</label>
+                <field id="frequency" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Frequency</label>
+                    <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
+                    <backend_model>Eguana\ChangeStatus\Model\Config\Backend\ChangeStatus\RmaCheck</backend_model>
+                </field>
+                <field id="time" translate="label" type="time" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Start Time</label>
+                </field>
+                <field id="run_cron" translate="Run Now" type="button" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Run Now</label>
+                    <frontend_model>Eguana\ChangeStatus\Block\System\Config\RmaAuthorizedRun</frontend_model>
+                </field>
+            </group>
+            <group id="change_order_status_cron" translate="label" type="text" sortOrder="270" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Change Order Status Cron</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Change Order Status Active</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="frequency" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Frequency</label>
+                    <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
+                    <backend_model>Eguana\ChangeStatus\Model\Config\Backend\ChangeStatus\OrderStatus</backend_model>
+                </field>
+                <field id="time" translate="label" type="time" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Start Time</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

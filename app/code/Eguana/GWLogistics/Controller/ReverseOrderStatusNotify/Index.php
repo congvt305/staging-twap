@@ -9,6 +9,7 @@
 namespace Eguana\GWLogistics\Controller\ReverseOrderStatusNotify;
 
 
+use Eguana\GWLogistics\Model\Service\ReverseOrderStatusNotificationHandler;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\CsrfAwareActionInterface;
@@ -28,8 +29,13 @@ class Index extends Action implements CsrfAwareActionInterface
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var ReverseOrderStatusNotificationHandler
+     */
+    private $reverseOrderStatusNotificationHandler;
 
     public function __construct(
+        ReverseOrderStatusNotificationHandler $reverseOrderStatusNotificationHandler,
         LoggerInterface $logger,
         RawFactory $rawFactory,
         Context $context
@@ -37,6 +43,7 @@ class Index extends Action implements CsrfAwareActionInterface
         parent::__construct($context);
         $this->rawFactory = $rawFactory;
         $this->logger = $logger;
+        $this->reverseOrderStatusNotificationHandler = $reverseOrderStatusNotificationHandler;
     }
 
     public function execute()
@@ -50,7 +57,6 @@ class Index extends Action implements CsrfAwareActionInterface
         $notifyData = $this->getRequest()->getParams();
 
         if (!$notifyData || $this->getRequest()->getMethod() !== 'POST') {
-            $this->logger->debug('isXmlHttpRequest: ', [$this->getRequest()->isXmlHttpRequest()]);
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
         $html = '';
@@ -66,9 +72,8 @@ class Index extends Action implements CsrfAwareActionInterface
 
     private function saveNotifyData($notifyData)
     {
-        //todo check checksum and save correctly.
-        $this->logger->debug('notifyDataforRmaFrom GWLogistics: ', $notifyData);
-        //todo save QuoteCvsLocation from repository or resource model
+        $this->logger->info('gwlogistics: reverse status notification from GWLogistics: ', $notifyData);
+        $this->reverseOrderStatusNotificationHandler->process($notifyData);
     }
 
     /**

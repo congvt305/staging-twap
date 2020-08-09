@@ -76,7 +76,7 @@ class ECPayInvoiceVoidValidator
         }
 
         if(sizeof($arErrors)>0) {
-            throw new Exception(join('<br>', $arErrors));
+            throw new \Exception(join('<br>', $arErrors));
         }
 
         return $arParameters ;

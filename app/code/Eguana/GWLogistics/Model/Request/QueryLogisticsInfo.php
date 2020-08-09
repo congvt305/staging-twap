@@ -40,27 +40,33 @@ class QueryLogisticsInfo
         $this->helper = $helper;
     }
 
-    /**
-     * @param $allPayLogisticsID
-     * @return array
-     */
-    public function sendRequest($allPayLogisticsID)
+
+    public function sendRequest($allPayLogisticsID, $storeId)
     {
+        $result = [];
+        $this->logger->info('gwlogistics | request qeury logsitics start with allpayLogisticsId: ', [$allPayLogisticsID]);
         try {
-            $this->ecpayLogistics->HashKey = '5294y06JbISpM5x9';
-            $this->ecpayLogistics->HashIV = 'v77hoKGq4kWxNNIS';
+            $this->ecpayLogistics->HashKey = $this->helper->getHashKey($storeId);
+            $this->ecpayLogistics->HashIV = $this->helper->getHashIv($storeId);
             $this->ecpayLogistics->Send = [
-                'MerchantID' => '2000132',
+                'MerchantID' => $this->helper->getMerchantId($storeId),
                 'AllPayLogisticsID' => $allPayLogisticsID, // save this in order!
-                'PlatformID' => ''
+                'PlatformID' => $this->helper->getPlatformId($storeId) ?? ''
             ];
+            /*
+             * result:  {"AllPayLogisticsID":"1628869","BookingNote":"","GoodsAmount":"700","GoodsName":"","HandlingCharge":"55","LogisticsStatus":"300","LogisticsType":"CVS_UNIMART","MerchantID":"2000132","MerchantTradeNo":"151_20200729075335","ShipmentNo":"82420176484","TradeDate":"2020/07/29 07:53:35","CheckMacValue":"8E60E658EFA90402DBA1349ED1E42481"}
+             */
+            //todo: check checkMacValue
             $result = $this->ecpayLogistics->QueryLogisticsInfo();
-            $this->logger->debug('GWL query logistics(track) result: ', $result);
-            return $result;
+            if (!$this->helper->validateCheckMackValue($result, $storeId)) {
+                throw new \Exception(__('CheckMacValue is not valid'));
+            }
         } catch (\Exception $e) {
             $this->logger->critical('GWL query logistics(track) failed');
             $this->logger->critical($e->getMessage());
+            throw $e;
         }
+        return $result;
 
     }
 

@@ -98,11 +98,8 @@ class MassSend extends AbstractAction
                 $storeId = $order->getStoreId();
                 $storeIdList[] = $storeId;
                 if ($order->getStatus() == 'processing') {
-                    $orderSendCheck = $order->getData('sap_order_send_check');
-                    $incrementIdForSap = $this->getOrderIncrementId($order->getIncrementId(), $orderSendCheck);
-
-                    $orderData = $this->sapOrderConfirmData->getOrderData($order->getIncrementId(), $incrementIdForSap);
-                    $orderItemData = $this->sapOrderConfirmData->getOrderItem($order->getIncrementId(), $incrementIdForSap);
+                    $orderData = $this->sapOrderConfirmData->getOrderData($order->getIncrementId());
+                    $orderItemData = $this->sapOrderConfirmData->getOrderItem($order->getIncrementId());
                     $orderDataList = array_merge($orderDataList, $orderData);
                     $orderItemDataList = array_merge($orderItemDataList, $orderItemData);
                 } else {
@@ -110,8 +107,16 @@ class MassSend extends AbstractAction
                 }
             } catch (NoSuchEntityException $e) {
                 $orderStatusError[] = $order->getIncrementId() . ' : ' . $e->getMessage();
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info("MASS ORDER DATA NO SUCH ENTITY EXCEPTION");
+                    $this->logger->info($order->getIncrementId() . ' : ' . $e->getMessage());
+                }
             } catch (\Exception $e) {
                 $orderStatusError[] = $order->getIncrementId() . ' : ' . $e->getMessage();
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info("MASS ORDER DATA EXCEPTION");
+                    $this->logger->info($order->getIncrementId() . ' : ' . $e->getMessage());
+                }
             }
         }
 
@@ -158,13 +163,12 @@ class MassSend extends AbstractAction
                         foreach ($outdata as $data) {
                             if ($data['retcod'] == 'S') {
                                 $ordersSucceeded[] = $this->getOriginOrderIncrementId($data);
-                                $succeededOrderObject = $this->sapOrderConfirmData->getOrderInfo($this->getOriginOrderIncrementId($data));
+                                $succeededOrderObject = $this->sapOrderConfirmData->getOrderInfo($data['odrno']);
                                 $orderSendCheck = $succeededOrderObject->getData('sap_order_send_check');
                                 $succeededOrderObject->setStatus('sap_processing');
 
                                 if ($orderSendCheck == 0 || $orderSendCheck == 2) {
                                     $succeededOrderObject->setData('sap_order_send_check', SapOrderConfirmData::ORDER_RESENT_TO_SAP_SUCCESS);
-                                    $succeededOrderObject->setData('sap_order_increment_id', $data['odrno']);
                                 } else {
                                     $succeededOrderObject->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
                                 }

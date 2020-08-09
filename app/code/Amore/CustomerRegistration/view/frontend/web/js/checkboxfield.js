@@ -16,6 +16,15 @@ define(
 
     return function(config, element) {
         $( document ).ready(function() {
+            /*
+                On account edit and create account dm_state text field become empty until we do not
+                chagne the region so I set in the start value according to the region drop down
+             */
+            if ($('#region_id option:selected').val()) {
+                var selectedRegion = $('#region_id option:selected').text();
+                $('#dm_state').val(selectedRegion);
+            }
+
             $("."+config.attributeCode+'_checkbox').change(function() {
                 if(this.checked) {
                     $("#"+config.attributeCode).val(1);
@@ -27,8 +36,20 @@ define(
                 {
                     $('.dm-address').toggle();
                 }
+
+                if(config.attributeCode+'_checkbox' == 'mobile_number_checkbox')
+                {
+                    $('fieldset[data-container="change-mobilenumber"]').toggle();
+                }
+
             });
 
+            $('#region_id').change(function () {
+                if ($(this).val()) {
+                    var selectedRegion = $('#region_id option:selected').text();
+                    $('#dm_state').val(selectedRegion);
+                }
+            });
             $("#"+config.attributeCode+'-read-policy').on('click', function (e) {
                 e.preventDefault();
                 var privacyPolicyPopupSelector = '.'+config.attributeCode+'-policy-popup';

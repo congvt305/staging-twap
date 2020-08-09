@@ -13,6 +13,7 @@ use Eguana\SocialLogin\Model\SocialLoginHandler as SocialLoginModel;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Customer\Model\SessionFactory;
 
 /**
  * Class CreateCustomer
@@ -22,26 +23,34 @@ use Magento\Framework\View\Result\PageFactory;
 class CreateCustomer extends Action
 {
     /** @var  Page */
-    protected $resultPageFactory;
+    private $resultPageFactory;
 
     /**
      * @var SocialLoginModel
      */
-    protected $socialLoginModel;
+    private $socialLoginModel;
+
+    /**
+     * @var SessionFactory
+     */
+    private $sessionFactory;
 
     /**
      * CreateCustomer constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param SocialLoginModel $socialLoginModel
+     * @param SessionFactory $sessionFactory
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
-        SocialLoginModel $socialLoginModel
+        SocialLoginModel $socialLoginModel,
+        SessionFactory $sessionFactory
     ) {
         $this->resultPageFactory               = $resultPageFactory;
         $this->socialLoginModel                = $socialLoginModel;
+        $this->sessionFactory                  = $sessionFactory;
         parent::__construct($context);
     }
 
@@ -52,13 +61,19 @@ class CreateCustomer extends Action
     public function execute()
     {
         $this->socialLoginModel->getCoreSession()->start();
+        $resultRedirect = $this->resultRedirectFactory->create();
+        // First check to see if someone is currently logged in.
+        $customerSession = $this->sessionFactory->create();
+        if ($customerSession->isLoggedIn()) {
+            $resultRedirect->setPath('customer/account/index');
+            return $resultRedirect;
+        }
         if ($this->socialLoginModel->getCoreSession()->getData('social_user_data')) {
             return $this->resultPageFactory->create();
         }
         $this->messageManager->addError(
             __('You are not authorized to view this page.')
         );
-        $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('customer/account/login');
         return $resultRedirect;
     }

@@ -179,11 +179,7 @@ class SapOrderManagement implements SapOrderManagementInterface
             $this->logger->info($this->json->serialize($parameters));
         }
 
-        if (strpos($orderStatusData['odrno'], '_')) {
-            list($incrementId, $date) = explode('_', $orderStatusData['odrno']);
-        } else {
-            $incrementId = $orderStatusData['odrno'];
-        }
+        $incrementId = $orderStatusData['odrno'];
 
 //        /** @var \Magento\Sales\Model\Order $order */
 //        $orders = $this->getOrderByIncrementId($incrementId);
@@ -224,6 +220,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
 
                 $order->setStatus('sap_success');
+                $order->setData('sap_response', $orderStatusData['ugtxt']);
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
                 $this->orderRepository->save($order);
             }
@@ -231,8 +228,6 @@ class SapOrderManagement implements SapOrderManagementInterface
         }
 
         // case that order created error in SAP
-        // 가용재고 부족 등 상태로 왔을 때 주문 취소할지 아니면 관리자에게 알릴지 다른 방법 찾아야 함
-        // 아모레쪽이랑 어떻게 처리할지 얘기 필요
         if ($orderStatusData['odrstat'] == 2) {
             if (strpos($incrementId, "R") !== false) {
                 $message = "Order Return Does not created in SAP.";
@@ -250,10 +245,12 @@ class SapOrderManagement implements SapOrderManagementInterface
                 }
             } else {
                 $message = "Order Does not created in SAP.";
-                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
 
                 $order = $this->getOrderFromList($incrementId);
+
                 $order->setStatus('sap_fail');
+                $order->setData('sap_response', $orderStatusData['ugtxt']);
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                 $this->orderRepository->save($order);
             }
@@ -268,16 +265,23 @@ class SapOrderManagement implements SapOrderManagementInterface
             } else {
                 $order = $this->getOrderFromList($incrementId);
                 try {
-                    if ($order->getStatus() == "sap_success") {
+                    if ($order->getStatus() == "sap_success" || $order->getStatus() == 'processing' || $order->getStatus() == 'sap_fail') {
                         $order->setStatus('preparing');
+                        $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                        $order->setData('sap_response', $orderStatusData['ugtxt']);
                         $this->orderRepository->save($order);
                         $message = "Order status changed to preparing successfully.";
                         $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
                     } else {
-                        $message = "Order status is not SAP Success. Please check the order.";
+                        $message = "Order status is not proper status. Please check the order.";
+
+                        $order->setData('sap_response', $message);
+                        $this->orderRepository->save($order);
                         $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                     }
                 } catch (\Exception $exception) {
+                    $order->setData('sap_response', $exception->getMessage());
+                    $this->orderRepository->save($order);
                     $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
                 }
             }
@@ -296,7 +300,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                 if ($rma->getStatus() == 'authorized') {
                     try {
                         $this->rmaChangeToReceived($rma);
-                        $message = "Rma status changed to received Successfully.";
+                        $message = "Rma " . $orderStatusData['odrno'] . " status changed to received Successfully.";
                         $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
                     } catch (LocalizedException $exception) {
                         $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
@@ -309,43 +313,56 @@ class SapOrderManagement implements SapOrderManagementInterface
                 }
             } else {
                 $order = $this->getOrderFromList($incrementId);
-                if ($order->getStatus() == 'preparing') {
+                if ($order->getStatus() == 'preparing' || $order->getStatus() == 'processing'
+                    || $order->getStatus() == 'sap_success' || $order->getStatus() == 'sap_fail') {
                     $shipmentCheck = $order->hasShipments();
 
                     if (!$shipmentCheck) {
-                        try {
-                            $shipmentId = $this->createShipment($order, $trackingNo);
-                        } catch (\Exception $exception) {
-                            return $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
-                        }
-
-                        // case that failed to creat shipment in Magento
-                        if (empty($shipmentId)) {
-                            $message = "Could not create shipment.";
-                            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-                            // case to create shipment successfully
-                        } else {
+                        if ($order->getShippingMethod() == "blackcat_homedelivery") {
                             try {
-                                $this->setQtyShipToOrderItem($order);
-                                $order->setStatus('shipment_processing');
+                                $shipmentId = $this->createShipment($order, $trackingNo);
+                            } catch (\Exception $exception) {
+                                $order->setData('sap_response', $exception->getMessage());
+                                $this->orderRepository->save($order);
+                                return $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
+                            }
+
+                            // case that failed to creat shipment in Magento
+                            if (empty($shipmentId)) {
+                                $message = "Could not create shipment.";
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+
+                                $order->setData('sap_response', $message);
                                 $this->orderRepository->save($order);
 
-                                $message = "Shipment Created Successfully.";
-                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+                                // case to create shipment successfully
+                            } else {
+                                try {
+                                    $this->setQtyShipToOrderItem($order);
+                                    $order->setStatus('shipment_processing');
+                                    $order->setData('sap_response', $orderStatusData['ugtxt']);
+                                    $this->orderRepository->save($order);
 
-                                if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                    $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
-                                    $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
-                                    if ($this->config->getLoggingCheck()) {
-                                        $this->logger->info('EINVOICE ISSUE RESULT');
-                                        $this->logger->info($this->json->serialize($ecpayInvoiceResult));
+                                    $message = "Shipment Created Successfully.";
+                                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+
+                                    if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                                        $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
+                                        $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
+                                        if ($this->config->getLoggingCheck()) {
+                                            $this->logger->info('EINVOICE ISSUE RESULT');
+                                            $this->logger->info($this->json->serialize($ecpayInvoiceResult));
+                                        }
                                     }
+                                } catch (\Exception $exception) {
+                                    $message = "Something went wrong while saving preparing order : " . $incrementId;
+                                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                                    $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
                                 }
-                            } catch (\Exception $exception) {
-                                $message = "Something went wrong while saving preparing order : " . $incrementId;
-                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-                                $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
                             }
+                        } else {
+                            $message = "Shipping method is not BlackCat and Shipment is not Exist. Please Check Order.";
+                            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                         }
                     } else {
                         if ($order->getShippingMethod() == 'gwlogistics_CVS') {
@@ -355,10 +372,12 @@ class SapOrderManagement implements SapOrderManagementInterface
 
                                     if ($order->getStatus() == 'complete') {
                                         $order->setStatus('shipment_processing');
+                                        $order->setData('sap_response', $orderStatusData['ugtxt']);
                                         $this->orderRepository->save($order);
                                     } else {
                                         $order->setState('complete');
                                         $order->setStatus('shipment_processing');
+                                        $order->setData('sap_response', $orderStatusData['ugtxt']);
                                         $this->orderRepository->save($order);
                                     }
 
@@ -386,7 +405,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                         }
                     }
                 } else {
-                    $message = "Order Status is not Preparing.";
+                    $message = "Order Status is not Proper status. Please check order status.";
                     $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                 }
             }
@@ -394,7 +413,11 @@ class SapOrderManagement implements SapOrderManagementInterface
         }
 
         if ($orderStatusData['odrstat'] == 9) {
-            $message = "Other order status returned.";
+            $order = $this->getOrderFromList($incrementId);
+            $order->setData('sap_creditmemo_send_check', 1);
+            $this->orderRepository->save($order);
+
+            $message = "Order Canceled Successfully.";
             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
             return $result;
         }
@@ -491,9 +514,10 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @param $order \Magento\Sales\Api\Data\OrderInterface
      * @param $trackingNo string
      * @param $shippingMethod string
+     * @param string $carrierCode
      * @return int|null
      */
-    public function createShipment($order, $trackingNo, $shippingMethod = "BlackCat", $carrierCode = 'flatrate_flatrate')
+    public function createShipment($order, $trackingNo, $shippingMethod = "BlackCat", $carrierCode = 'blackcat')
     {
         $shipmentItems = $this->createShipmentItem($order);
 
@@ -618,7 +642,8 @@ class SapOrderManagement implements SapOrderManagementInterface
         foreach ($rmaItemCollection as $rmaItem) {
             $itemData[$rmaItem->getEntityId()] = [
                 'qty_returned' => $rmaItem->getQtyAuthorized(),
-                'status' => 'received',
+                'qty_approved' => $rmaItem->getQtyAuthorized(),
+                'status' => 'approved',
                 'order_item_id' => $rmaItem->getOrderItemId(),
                 'entity_id' => $rmaItem->getEntityId(),
                 'resolution' => $rmaItem->getResolution()

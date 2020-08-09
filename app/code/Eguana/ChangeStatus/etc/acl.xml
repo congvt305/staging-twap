@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Eguana_ChangeStatus::changeStatus" title="Change Status Configuration" translate="title" sortOrder="2000">
+                    <resource id="Eguana_ChangeStatus::configuration" title="Change Status Configuration" translate="title" sortOrder="10"/>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

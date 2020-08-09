@@ -21,6 +21,11 @@
                     <comment>Country code for sms verification</comment>
                     <source_model>Eguana\StoreSms\Model\Config\Source\CountryCode</source_model>
                 </field>
+                <field id="name_format" translate="label comment" type="select" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Reverse name format with no empty space</label>
+                    <comment>If you set this to yes, the customer name format will be like LastNameFirstName</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <field id="api_login" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Username</label>
                 </field>

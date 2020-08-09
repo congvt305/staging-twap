@@ -22,6 +22,7 @@ class Data extends AbstractHelper
      * Store constants
      */
     const POS_TERMS_CMS_BLOCK_ID = 'customerregistraion/general/terms_cms_block_id';
+    const POS_ALERT_CMS_BLOCK_ID = 'customerregistraion/general/pos_alert_cms_block_id';
     const CODE_EXPIRATION_TIME_IN_MINUTES
         = 'customerregistraion/general/code_expiration_time_in_minutes';
     const MINIMUM_MOBILE_NUMBER_DIGITS
@@ -38,6 +39,8 @@ class Data extends AbstractHelper
         = 'customerregistraion/general/sms_policy_cms_block';
     const DM_POLICY_CMS_BLOCK
         = 'customerregistraion/general/dm_policy_cms_block';
+    const CALL_POLICY_CMS_BLOCK
+        = 'customerregistraion/general/call_policy_cms_block';
     const TERMS_AND_SERVICES_POLICY_CMS_BLOCK
         = 'customerregistraion/general/terms_and_services_policy_cms_block';
     const SMS_VERIFICATION_ENABLE
@@ -69,6 +72,20 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::POS_TERMS_CMS_BLOCK_ID,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
+     * Get cms block id set in setting
+     * Get cms block id set in setting from admin setting
+     *
+     * @return null|string
+     */
+    public function getPosAlertCMSBlockId()
+    {
+        return $this->scopeConfig->getValue(
+            self::POS_ALERT_CMS_BLOCK_ID,
             ScopeInterface::SCOPE_WEBSITE
         );
     }
@@ -145,44 +162,7 @@ class Data extends AbstractHelper
         );
     }
 
-    /**
-     * Get Newsletter privacy policy CMS block id
-     *
-     * @return mixed
-     */
-    public function getNewsLetterPolicyCMSBlockId()
-    {
-        return $this->scopeConfig->getValue(
-            self::NEWSLETTER_POLICY_CMS_BLOCK,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
 
-    /**
-     * Get SMS privacy policy CMS block id
-     *
-     * @return mixed
-     */
-    public function getSMSPolicyCMSBlockId()
-    {
-        return $this->scopeConfig->getValue(
-            self::SMS_POLICY_CMS_BLOCK,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
-
-    /**
-     * Get DM privacy policy CMS block id
-     *
-     * @return mixed
-     */
-    public function getDMPolicyCMSBlockId()
-    {
-        return $this->scopeConfig->getValue(
-            self::DM_POLICY_CMS_BLOCK,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
 
     /**
      * Get Terms and Services policy CMS block id
@@ -196,7 +176,7 @@ class Data extends AbstractHelper
             ScopeInterface::SCOPE_WEBSITE
         );
     }
-
+    
     /**
      * Get whether SMS verification is enabled on the website or not
      *
@@ -288,7 +268,7 @@ class Data extends AbstractHelper
     {
         if ($websiteId) {
             return $this->scopeConfig->getValue(
-                self::SALES_OFFICE_CODE,
+                self::PARTNER_ID,
                 ScopeInterface::SCOPE_WEBSITE,
                 $websiteId
             );

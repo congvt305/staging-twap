@@ -16,6 +16,14 @@ $viewModel = $block->getData('view_model');
     <?= $block->getChildHtml('customer.form.register.extra') ?>
     <form class="form create account form-create-account" action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>" method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
         <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
+        <div class="pos-alert" style="display: none;">
+            <?=
+            $block->getLayout()
+                ->createBlock('Magento\Cms\Block\Block')
+                ->setBlockId($viewModel->getPosAlertCmsBlockId())
+                ->toHtml();
+            ?>
+        </div>
         <fieldset class="fieldset create info">
             <input type="hidden" name="success_url" value="<?= $block->escapeUrl($block->getSuccessUrl()) ?>">
             <input type="hidden" name="error_url" value="<?= $block->escapeUrl($block->getErrorUrl()) ?>">
@@ -181,6 +189,7 @@ $viewModel = $block->getData('view_model');
             <?php $_smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getSmsSubscriptionStatus())]]) ?>
             <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus())]]) ?>
             <?php $_termsAndServicesPolicy = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'terms_and_services_policy', ['data'=>['attribute_code'=>'terms_and_services_policy', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getTermsAndServicesPolicy())]]) ?>
+            <?php $callSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'call_subscription_status', ['data'=>['attribute_code'=>'call_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getCallSubscriptionStatus())]]) ?>
 
             <?php if ($_smsSubscriptionStatus->isEnabled() || $_dmSubscriptionStatus->isEnabled()) : ?>
                 <p class="marketing-title"><?= $block->escapeHtml(__('Marketing Consent')) ?></p>
@@ -188,6 +197,10 @@ $viewModel = $block->getData('view_model');
 
             <?php if ($_termsAndServicesPolicy->isEnabled()) : ?>
                 <?= $_termsAndServicesPolicy->setDate($block->getFormData()->getTermsAndServicesPolicy())->toHtml() ?>
+            <?php endif ?>
+
+            <?php if ($callSubscriptionStatus->isEnabled()) : ?>
+                <?= $callSubscriptionStatus->setDate($block->getFormData()->getCallSubscriptionStatus())->toHtml() ?>
             <?php endif ?>
 
             <?php if ($_smsSubscriptionStatus->isEnabled()) : ?>
@@ -198,16 +211,6 @@ $viewModel = $block->getData('view_model');
                 <div class="field choice newsletter">
                     <input type="checkbox" name="is_subscribed" title="<?= $block->escapeHtmlAttr(__('Sign Up for Newsletter')) ?>" value="1" id="is_subscribed"<?php if ($block->getFormData()->getIsSubscribed()) : ?> checked="checked"<?php endif; ?> class="checkbox">
                     <label for="is_subscribed" class="label news-letter-policy-label"><span><?= $block->escapeHtml(__('Sign Up for Newsletter')) ?></span></label>
-                    <span>
-                        <a href="#" id="is_subscribed-read-policy" target="_blank"><?= $block->escapeHtml(__('Read more')) ?></a>
-                    </span>
-                </div>
-                <div class="news-letter-policy-popup" style="display: none;">
-                    <?= /* @noEscape */
-                    $block->getLayout()
-                        ->createBlock('Magento\Cms\Block\Block')
-                        ->setBlockId($viewModel->getNewsLetterPolicyCMSBlockId())
-                        ->toHtml(); ?>
                 </div>
                 <?php /* Extensions placeholder */ ?>
                 <?= $block->getChildHtml('customer.form.register.newsletter') ?>
@@ -230,7 +233,7 @@ $viewModel = $block->getData('view_model');
                 </div>
 
                 <div class="field required">
-                    <label for="dm_state" class="label"><span><?= $block->escapeHtml(__('State')) ?></span></label>
+                    <label for="dm_state" class="label"><span><?= $block->escapeHtml(__('State/Province')) ?></span></label>
                     <div class="control">
                         <?php //phpcs:disable ?>
                         <select id="region_id" name="region_id" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?>" class="validate-select region_id">
@@ -275,8 +278,8 @@ $viewModel = $block->getData('view_model');
         </fieldset>
         <div class="store-info" style="display: none">
             <input type="hidden"
-                   name="favorite_store"
-                   id="favorite_store"
+                   name="partner_id"
+                   id="partner_id"
                    value="<?= $block->escapeHtml($viewModel->getFavoriteStore()) ?>">
 
             <input type="hidden"
@@ -374,21 +377,7 @@ require([
             }
         },
         "*": {
-            "privacypolicypopup":{}
+            "createaccount":{}
         }
     }
-</script>
-
-<script>
-    require([
-        'jquery',
-        'mage/mage'
-    ], function($){
-
-        $('#customerSubmit').on('click', function (event) {
-            var dataForm = jQuery('#form-validate');
-            if(dataForm.validation('isValid') === true){
-                jQuery('body').loader('show');
-            }});
-    });
 </script>

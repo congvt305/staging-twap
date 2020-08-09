@@ -27,10 +27,23 @@
                 margin: -8px 0 @indent__base 0;
             }
 
+            .msg,
+            .field.email,
+            .field.password {
+                padding: 0 15px;
+            }
+
+            .field.password + .field.choice{
+                margin-top: 60px;
+            }
+
             .field.choice {
+                background-color: @secondary__color__light;
                 display: block !important;
+                padding: 15px;
 
                 input {
+                    background-color: @color-white;
                     float: left;
                 }
 

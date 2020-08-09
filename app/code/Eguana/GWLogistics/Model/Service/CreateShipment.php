@@ -8,6 +8,8 @@
 
 namespace Eguana\GWLogistics\Model\Service;
 
+use Magento\Framework\Exception\CouldNotSaveException;
+
 class CreateShipment
 {
     /**
@@ -46,7 +48,14 @@ class CreateShipment
      * @var \Psr\Log\LoggerInterface
      */
     private $logger;
+    /**
+     * @var string
+     */
     private $allPayLogisticsID;
+    /**
+     * @var string
+     */
+    private $shipmentNo;
 
     public function __construct(
         \Eguana\GWLogistics\Model\Request\QueryLogisticsInfo $queryTransactionInfoRequest,
@@ -76,17 +85,22 @@ class CreateShipment
      */
     public function process($order)
     {
+        $this->logger->info('gwlogistics | service start for create order', [$order->getId()]);
         // do shipment order create
         // request tracking
         // create shipment
-        $allPayLogisticsID = $this->createShipmentOrder($order);
-        if ($allPayLogisticsID) {
-            $this->allPayLogisticsID = $allPayLogisticsID;
-            $shipmentNo = $this->requestTrackingInfo($allPayLogisticsID);
-        }
-        if ($shipmentNo) {
-            $this->shipmentNo = $shipmentNo;
-            $this->createShipment($order);
+        try {
+            $allPayLogisticsID = $this->createShipmentOrder($order);
+            if ($allPayLogisticsID) {
+                $this->allPayLogisticsID = $allPayLogisticsID;
+                $shipmentNo = $this->requestTrackingInfo($allPayLogisticsID, $order->getStoreId());
+            }
+            if ($shipmentNo) {
+                $this->shipmentNo = $shipmentNo;
+                $this->createShipment($order);
+            } //todo: if not shipment, then do something!! throw exception
+        } catch (\Exception $e) {
+            $this->logger->info('gwlogistics | create order failed', [$e->getMessage()]);
         }
     }
 
@@ -101,8 +115,8 @@ class CreateShipment
         return false;
     }
 
-    private function requestTrackingInfo($allPayLogisticsID) {
-        $result = $this->queryTransactionInfoRequest->sendRequest($allPayLogisticsID);
+    private function requestTrackingInfo($allPayLogisticsID, $storeId) {
+        $result = $this->queryTransactionInfoRequest->sendRequest($allPayLogisticsID, $storeId);
         if (isset($result['ShipmentNo'])) {
             return $result['ShipmentNo'];
         }

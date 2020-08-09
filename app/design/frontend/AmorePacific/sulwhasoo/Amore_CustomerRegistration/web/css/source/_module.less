@@ -3,13 +3,6 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-  .customer-account-create {
-    .modal-popup.modal-slide {
-      .modal-inner-wrap {
-        width: 600px;
-      }
-    }
-  }
   .form-create-account-pos {
     .field {
       &.mobile,
@@ -82,6 +75,12 @@
     .checkbox-wrapper {
       display: inline-block;
       margin-right: 24px !important;
+      position: relative;
+
+      div.mage-error {
+        bottom: -@indent__base;
+        position: absolute;
+      }
     }
 
     .marketing-title {
@@ -109,6 +108,27 @@
           color: @theme__color__primary-alt;
         }
       }
+
+      input[type="checkbox"] {
+        position: relative;
+        top: 1px;
+        vertical-align: middle;
+      }
+
+      .label {
+        vertical-align: middle;
+
+        & + span {
+          vertical-align: middle;
+        }
+      }
+
+      &.required {
+        .label:after {
+          display: none;
+          margin: 0;
+        }
+      }
     }
 
     .field.newsletter {
@@ -117,6 +137,21 @@
       }
     }
   }
+    .form-edit-account {
+        .fieldset{
+            .dob{
+                .show-dob-title{
+                    display: unset;
+                    font-weight: bold;
+                }
+            }
+        }
+        .field-mobile-number {
+            .label {
+                font-weight: bold;
+            }
+        }
+    }
 }
 
 //
@@ -147,8 +182,16 @@
         }
       }
 
-      &.first_name {
+      &.last_name {
         padding-top: @indent__base;
+      }
+    }
+  }
+
+  .customer-account-create {
+    .modal-popup.modal-slide {
+      .modal-inner-wrap {
+        width: 100%;
       }
     }
   }
@@ -159,6 +202,14 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .customer-account-create {
+    .modal-popup.modal-slide {
+      .modal-inner-wrap {
+        width: 600px;
+      }
+    }
+  }
+
   .pos-verification-message {
     margin-top: -@indent__base !important;
     margin-bottom: 16px !important;
@@ -181,7 +232,7 @@
         }
       }
 
-      &.first_name {
+      &.last_name {
         padding-top: 16px;
       }
     }

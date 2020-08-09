@@ -4,10 +4,12 @@
         <carriers>
             <gwlogistics>
                 <active>1</active>
-                <merchant_id>2000132</merchant_id>
+                <merchant_id></merchant_id>
+                <platform_id></platform_id>
+                <hash_key></hash_key>
+                <hash_iv></hash_iv>
                 <merchant_id_sandbox>2000132</merchant_id_sandbox>
-                <hash_key>5294y06JbISpM5x9</hash_key>
-                <hash_iv>v77hoKGq4kWxNNIS</hash_iv>
+                <platform_id_sandbox></platform_id_sandbox>
                 <hash_key_sandbox>5294y06JbISpM5x9</hash_key_sandbox>
                 <hash_iv_sandbox>v77hoKGq4kWxNNIS</hash_iv_sandbox>
                 <map_url>https://logistics.ecpay.com.tw/Express/map</map_url>
@@ -25,13 +27,16 @@
                 <name>Convenience Store Pickup</name>
                 <max_package_weight>150</max_package_weight>
                 <shipping_price>100</shipping_price>
+                <sender_name>測試寄件者</sender_name>
+                <sender_phone>0226550115</sender_phone>
+                <sender_cell_phone>0933222111</sender_cell_phone>
                 <sort_order>0</sort_order>
                 <active_rma>0</active_rma>
                 <is_online>0</is_online>
-                <mode>1</mode>
+                <mode>0</mode>
+                <server_type>0</server_type>
                 <send_sms_active>0</send_sms_active>
-                <message_template>eguana_gwlogistics_rma_return_order_number_template</message_template>
-
+                <message_template>carriers_gwlogistics_message_template</message_template>
             </gwlogistics>
         </carriers>
     </default>

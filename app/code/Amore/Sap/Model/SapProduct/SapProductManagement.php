@@ -208,55 +208,61 @@ class SapProductManagement implements SapProductManagementInterface
         }
 
         $storeId = $store->getId();
-        /**
-         * @var $product \Magento\Catalog\Model\Product
-         */
-        $product = $this->getProductBySku($stockData['matnr'], $storeId);
-        if (gettype($product) == 'string') {
-            $result[$stockData['matnr']] = ['code' => "0001", 'message' => $product];
-        } else {
-            if (!$this->sapIntegrationCheck($product)) {
-                $websiteId = $this->getStore($stockData['mallId'])->getWebsiteId();
-                $websiteCode = $this->storeManagerInterface->getWebsite($websiteId)->getCode();
 
-                $sourceCode = $this->getSourceCodeByWebsiteCode($websiteCode);
-                $itemExistInSource = $this->sourceItemExistingCheck($stockData['matnr'], $sourceCode);
-                $itemExistInDefault = $this->sourceItemExistingCheck($stockData['matnr'], 'default');
+        $sapStockSaveActiveCheck = $this->config->getProductStockActiveCheck('store', $storeId);
 
-                if (!empty($itemExistInSource)) {
-                    $this->logger->info('PRODUCT SOURCE IS NOT DEFAULT');
-                    $sourceItems[] = $this->saveProductQtyIntoSource($sourceCode, $stockData);
-                    try {
-                        $this->sourceItemsSaveInterface->execute($sourceItems);
-                        $result[$stockData['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
-                    } catch (CouldNotSaveException $e) {
-                        $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-                    } catch (InputException $e) {
-                        $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-                    } catch (ValidationException $e) {
-                        $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-                    }
-                } elseif (!empty($itemExistInDefault)) {
-                    $this->logger->info('PRODUCT SOURCE IS DEFAULT');
-                    $sourceItems[] = $this->saveProductQtyIntoSource('default', $stockData);
-                    try {
-                        $this->sourceItemsSaveInterface->execute($sourceItems);
-                        $result[$stockData['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
-                    } catch (CouldNotSaveException $e) {
-                        $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-                    } catch (InputException $e) {
-                        $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-                    } catch (ValidationException $e) {
-                        $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+        if ($sapStockSaveActiveCheck) {
+            /**
+             * @var $product \Magento\Catalog\Model\Product
+             */
+            $product = $this->getProductBySku($stockData['matnr'], $storeId);
+            if (gettype($product) == 'string') {
+                $result[$stockData['matnr']] = ['code' => "0001", 'message' => $product];
+            } else {
+                if (!$this->sapIntegrationCheck($product)) {
+                    $websiteId = $this->getStore($stockData['mallId'])->getWebsiteId();
+                    $websiteCode = $this->storeManagerInterface->getWebsite($websiteId)->getCode();
+
+                    $sourceCode = $this->getSourceCodeByWebsiteCode($websiteCode);
+                    $itemExistInSource = $this->sourceItemExistingCheck($stockData['matnr'], $sourceCode);
+                    $itemExistInDefault = $this->sourceItemExistingCheck($stockData['matnr'], 'default');
+
+                    if (!empty($itemExistInSource)) {
+                        $this->logger->info('PRODUCT SOURCE IS NOT DEFAULT');
+                        $sourceItems[] = $this->saveProductQtyIntoSource($sourceCode, $stockData);
+                        try {
+                            $this->sourceItemsSaveInterface->execute($sourceItems);
+                            $result[$stockData['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
+                        } catch (CouldNotSaveException $e) {
+                            $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                        } catch (InputException $e) {
+                            $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                        } catch (ValidationException $e) {
+                            $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                        }
+                    } elseif (!empty($itemExistInDefault)) {
+                        $this->logger->info('PRODUCT SOURCE IS DEFAULT');
+                        $sourceItems[] = $this->saveProductQtyIntoSource('default', $stockData);
+                        try {
+                            $this->sourceItemsSaveInterface->execute($sourceItems);
+                            $result[$stockData['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
+                        } catch (CouldNotSaveException $e) {
+                            $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                        } catch (InputException $e) {
+                            $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                        } catch (ValidationException $e) {
+                            $result[$stockData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+                        }
+                    } else {
+                        $result[$stockData['matnr']] = ['code' => "0001", 'message' => $stockData['matnr'] . ' does not exist in the source.'];
                     }
                 } else {
-                    $result[$stockData['matnr']] = ['code' => "0001", 'message' => $stockData['matnr'] . ' does not exist in the source.'];
+                    $result[$stockData['matnr']] = ['code' => "0001", 'message' => 'SAP Integration option is disabled. Check product option and try again.'];
                 }
-            } else {
-                $result[$stockData['matnr']] = ['code' => "0001", 'message' => 'SAP Integration option is disabled. Check product option and try again.'];
             }
+        } else {
+            $result[$stockData['matnr']] = ['code' => "0001", 'message' => "Configuration is not enabled"];
         }
-
         return $result;
     }
 
@@ -301,7 +307,8 @@ class SapProductManagement implements SapProductManagementInterface
             $productsDetail['maktxZh'],
             $productsDetail['bctxtEn'],
             $productsDetail['bctxtZh'],
-            $productsDetail['refill']
+            $productsDetail['refill'],
+            $productsDetail['matcol']
         ];
 
         if ($this->config->getLoggingCheck()) {
@@ -313,53 +320,107 @@ class SapProductManagement implements SapProductManagementInterface
          * @var $product \Magento\Catalog\Model\Product
          */
         $product = $this->getProductBySku($productsDetail['matnr'], null);
+        $storeList = $this->getStoresByVkorg($productsDetail['vkorg']);
 
         if (gettype($product) == 'string') {
             $result[$productsDetail['matnr']] = ['code' => "0001", 'message' => $product];
         } else {
-            $product->setWeight((float)$productsDetail['brgew']);
-            // 이전 상품 코드
-//            $product->addAttributeUpdate('bismt', $productsDetail['bismt'], 0);
-            // 중량단위
-//            $product->addAttributeUpdate('gewei', $productsDetail['gewei'], 0);
-            $product->addAttributeUpdate('brand', $this->getProductAttribute('brand', $productsDetail['brand']), 0);
-            $product->addAttributeUpdate('bctxtKo', $this->getProductAttribute('bctxtKo', $productsDetail['bctxtKo']), 0);
-            $product->addAttributeUpdate('meins', $this->getProductAttribute('meins', $productsDetail['meins']), 0);
-            $product->addAttributeUpdate('mstav', $this->getProductAttribute('mstav',$productsDetail['mstav']), 0);
-            $product->addAttributeUpdate('spart', $this->getProductAttribute('spart', $productsDetail['spart']), 0);
-            $product->addAttributeUpdate('maxlz', $productsDetail['maxlz'], 0);
-            $product->addAttributeUpdate('breit', $productsDetail['breit'], 0);
-            $product->addAttributeUpdate('hoehe', $productsDetail['hoehe'], 0);
-            $product->addAttributeUpdate('laeng', $productsDetail['laeng'], 0);
-            // 세액구분코드
-//            $product->addAttributeUpdate('kondm', $productsDetail['kondm'], 0);
-            $product->addAttributeUpdate('mvgr1', $this->getProductAttribute('mvgr1', $productsDetail['mvgr1']), 0);
-            $product->addAttributeUpdate('mvgr2', $this->getProductAttribute('mvgr2', $productsDetail['mvgr2']), 0);
-            $product->addAttributeUpdate('prodh', $productsDetail['prodh'], 0);
-            $product->addAttributeUpdate('vmsta', $this->getProductAttribute('vmsta', $productsDetail['vmsta']), 0);
-            $product->addAttributeUpdate('matnr2', $productsDetail['matnr2'], 0);
-            $product->addAttributeUpdate('setid', $this->getProductAttribute('setid', $productsDetail['setid']), 0);
-            $product->addAttributeUpdate('bline', $this->getProductAttribute('bline', $productsDetail['bline']), 0);
-            $product->addAttributeUpdate('csmtp', $this->getProductAttribute('csmtp', $productsDetail['csmtp']), 0);
-            $product->addAttributeUpdate('setdi', $this->getProductAttribute('setdi', $productsDetail['setdi']), 0);
-            $product->addAttributeUpdate('matshinsun', $this->getProductAttribute('matshinsun', $productsDetail['matshinsun']), 0);
-            $product->addAttributeUpdate('matvessel', $this->getProductAttribute('matvessel', $productsDetail['matvessel']), 0);
-            // 용량
-            $product->addAttributeUpdate('prdvl', intval($productsDetail['prdvl']), 0);
-            $product->addAttributeUpdate('vlunt', $this->getProductAttribute('vlunt', $productsDetail['vlunt']), 0);
-            $product->addAttributeUpdate('cpiap', $this->getProductAttribute('cpiap', $productsDetail['cpiap']), 0);
-            $product->addAttributeUpdate('prdtp', $this->getProductAttribute('prdtp', $productsDetail['prdtp']), 0);
-            $product->addAttributeUpdate('rpfut', $this->getProductAttribute('rpfut',$productsDetail['rpfut']), 0);
-            $product->addAttributeUpdate('maktxEn', $productsDetail['maktxEn'], 0);
-            $product->addAttributeUpdate('maktxZh', $productsDetail['maktxZh'], 0);
-            $product->addAttributeUpdate('bctxtEn', $productsDetail['bctxtEn'], 0);
-            $product->addAttributeUpdate('bctxtZh', $productsDetail['bctxtZh'], 0);
-            $product->addAttributeUpdate('refill', $this->getProductAttribute('refill', $productsDetail['refill']), 0);
-
             try {
-                $this->productRepository->save($product);
+                if (gettype($storeList) == 'array') {
+                    foreach ($storeList as $store) {
+                        if ($this->config->getProductInfoActiveCheck('store', $store)) {
 
-                $result[$productsDetail['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
+                            $product->setWeight((float)$productsDetail['brgew']);
+                            // 이전 상품 코드
+                            // $product->addAttributeUpdate('bismt', $productsDetail['bismt'], 0);
+                            // 중량단위
+                            // $product->addAttributeUpdate('gewei', $productsDetail['gewei'], 0);
+                            $product->addAttributeUpdate('brand', $this->getProductAttribute('brand', $productsDetail['brand']), $store);
+                            $product->addAttributeUpdate('bctxtko', $this->getProductAttribute('bctxtKo', $productsDetail['bctxtKo']), $store);
+                            $product->addAttributeUpdate('meins', $this->getProductAttribute('meins', $productsDetail['meins']), $store);
+                            $product->addAttributeUpdate('mstav', $this->getProductAttribute('mstav',$productsDetail['mstav']), $store);
+                            $product->addAttributeUpdate('spart', $this->getProductAttribute('spart', $productsDetail['spart']), $store);
+                            $product->addAttributeUpdate('maxlz', $productsDetail['maxlz'], $store);
+                            $product->addAttributeUpdate('breit', $productsDetail['breit'], $store);
+                            $product->addAttributeUpdate('hoehe', $productsDetail['hoehe'], $store);
+                            $product->addAttributeUpdate('laeng', $productsDetail['laeng'], $store);
+                            // 세액구분코드
+                            // $product->addAttributeUpdate('kondm', $productsDetail['kondm'], 0);
+                            $product->addAttributeUpdate('mvgr1', $this->getProductAttribute('mvgr1', $productsDetail['mvgr1']), $store);
+                            $product->addAttributeUpdate('mvgr2', $this->getProductAttribute('mvgr2', $productsDetail['mvgr2']), $store);
+                            $product->addAttributeUpdate('prodh', $productsDetail['prodh'], $store);
+                            $product->addAttributeUpdate('vmsta', $this->getProductAttribute('vmsta', $productsDetail['vmsta']), $store);
+                            $product->addAttributeUpdate('matnr2', $productsDetail['matnr2'], $store);
+                            $product->addAttributeUpdate('setid', $this->getProductAttribute('setid', $productsDetail['setid']), $store);
+                            $product->addAttributeUpdate('bline', $this->getProductAttribute('bline', $productsDetail['bline']), $store);
+                            $product->addAttributeUpdate('csmtp', $this->getProductAttribute('csmtp', $productsDetail['csmtp']), $store);
+                            $product->addAttributeUpdate('setdi', $this->getProductAttribute('setdi', $productsDetail['setdi']), $store);
+                            $product->addAttributeUpdate('matshinsun', $this->getProductAttribute('matshinsun', $productsDetail['matshinsun']), $store);
+                            $product->addAttributeUpdate('matvessel', $this->getProductAttribute('matvessel', $productsDetail['matvessel']), $store);
+                            // 용량
+                            $product->addAttributeUpdate('prdvl', intval($productsDetail['prdvl']), $store);
+                            $product->addAttributeUpdate('vlunt', $this->getProductAttribute('vlunt', $productsDetail['vlunt']), $store);
+                            $product->addAttributeUpdate('cpiap', $this->getProductAttribute('cpiap', $productsDetail['cpiap']), $store);
+                            $product->addAttributeUpdate('prdtp', $this->getProductAttribute('prdtp', $productsDetail['prdtp']), $store);
+                            $product->addAttributeUpdate('rpfut', $this->getProductAttribute('rpfut',$productsDetail['rpfut']), $store);
+                            $product->addAttributeUpdate('maktxen', $productsDetail['maktxEn'], $store);
+                            $product->addAttributeUpdate('maktxzh', $productsDetail['maktxZh'], $store);
+                            $product->addAttributeUpdate('bctxten', $productsDetail['bctxtEn'], $store);
+                            $product->addAttributeUpdate('bctxtzh', $productsDetail['bctxtZh'], $store);
+                            $product->addAttributeUpdate('refill', $this->getProductAttribute('refill', $productsDetail['refill']), $store);
+                            $product->setStoreId($store);
+                            $this->productRepository->save($product);
+                        }
+                    }
+                    $result[$productsDetail['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
+                } else {
+                    if ($this->config->getProductInfoActiveCheck('default', null)) {
+                        $product->setWeight((float)$productsDetail['brgew']);
+                        // 이전 상품 코드
+                        //            $product->addAttributeUpdate('bismt', $productsDetail['bismt'], 0);
+                        // 중량단위
+                        //            $product->addAttributeUpdate('gewei', $productsDetail['gewei'], 0);
+                        $product->addAttributeUpdate('brand', $this->getProductAttribute('brand', $productsDetail['brand']), $storeList);
+                        $product->addAttributeUpdate('bctxtko', $this->getProductAttribute('bctxtKo', $productsDetail['bctxtKo']), $storeList);
+                        $product->addAttributeUpdate('meins', $this->getProductAttribute('meins', $productsDetail['meins']), $storeList);
+                        $product->addAttributeUpdate('mstav', $this->getProductAttribute('mstav',$productsDetail['mstav']), $storeList);
+                        $product->addAttributeUpdate('spart', $this->getProductAttribute('spart', $productsDetail['spart']), $storeList);
+                        $product->addAttributeUpdate('maxlz', $productsDetail['maxlz'], $storeList);
+                        $product->addAttributeUpdate('breit', $productsDetail['breit'], $storeList);
+                        $product->addAttributeUpdate('hoehe', $productsDetail['hoehe'], $storeList);
+                        $product->addAttributeUpdate('laeng', $productsDetail['laeng'], $storeList);
+                        // 세액구분코드
+                        //            $product->addAttributeUpdate('kondm', $productsDetail['kondm'], 0);
+                        $product->addAttributeUpdate('mvgr1', $this->getProductAttribute('mvgr1', $productsDetail['mvgr1']), $storeList);
+                        $product->addAttributeUpdate('mvgr2', $this->getProductAttribute('mvgr2', $productsDetail['mvgr2']), $storeList);
+                        $product->addAttributeUpdate('prodh', $productsDetail['prodh'], $storeList);
+                        $product->addAttributeUpdate('vmsta', $this->getProductAttribute('vmsta', $productsDetail['vmsta']), $storeList);
+                        $product->addAttributeUpdate('matnr2', $productsDetail['matnr2'], $storeList);
+                        $product->addAttributeUpdate('setid', $this->getProductAttribute('setid', $productsDetail['setid']), $storeList);
+                        $product->addAttributeUpdate('bline', $this->getProductAttribute('bline', $productsDetail['bline']), $storeList);
+                        $product->addAttributeUpdate('csmtp', $this->getProductAttribute('csmtp', $productsDetail['csmtp']), $storeList);
+                        $product->addAttributeUpdate('setdi', $this->getProductAttribute('setdi', $productsDetail['setdi']), $storeList);
+                        $product->addAttributeUpdate('matshinsun', $this->getProductAttribute('matshinsun', $productsDetail['matshinsun']), $storeList);
+                        $product->addAttributeUpdate('matvessel', $this->getProductAttribute('matvessel', $productsDetail['matvessel']), $storeList);
+                        // 용량
+                        $product->addAttributeUpdate('prdvl', intval($productsDetail['prdvl']), $storeList);
+                        $product->addAttributeUpdate('vlunt', $this->getProductAttribute('vlunt', $productsDetail['vlunt']), $storeList);
+                        $product->addAttributeUpdate('cpiap', $this->getProductAttribute('cpiap', $productsDetail['cpiap']), $storeList);
+                        $product->addAttributeUpdate('prdtp', $this->getProductAttribute('prdtp', $productsDetail['prdtp']), $storeList);
+                        $product->addAttributeUpdate('rpfut', $this->getProductAttribute('rpfut',$productsDetail['rpfut']), $storeList);
+                        $product->addAttributeUpdate('maktxen', $productsDetail['maktxEn'], $storeList);
+                        $product->addAttributeUpdate('maktxzh', $productsDetail['maktxZh'], $storeList);
+                        $product->addAttributeUpdate('bctxten', $productsDetail['bctxtEn'], $storeList);
+                        $product->addAttributeUpdate('bctxtzh', $productsDetail['bctxtZh'], $storeList);
+                        $product->addAttributeUpdate('refill', $this->getProductAttribute('refill', $productsDetail['refill']), $storeList);
+                        $product->setStoreId($storeList);
+                        $this->productRepository->save($product);
+
+                        $result[$productsDetail['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
+                    }
+                }
+            } catch (NoSuchEntityException $e) {
+                $result[$productsDetail['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
             } catch (\Exception $e) {
                 $result[$productsDetail['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
             }
@@ -376,45 +437,51 @@ class SapProductManagement implements SapProductManagementInterface
      */
     public function getProductAttribute($attributeCode, $requestValue)
     {
-        $attribute = $this->eavAttributeRepositoryInterface->get('catalog_product', $attributeCode);
-        $inputType = $attribute->getFrontendInput();
-        $value = '';
+        try {
+            $attribute = $this->eavAttributeRepositoryInterface->get('catalog_product', $attributeCode);
+            $inputType = $attribute->getFrontendInput();
+            $value = '';
 
-        if ($inputType == 'select') {
-            $options = $attribute->getOptions();
-            foreach ($options as $option) {
-                if ($option->getLabel() == $requestValue) {
-                    $value = $option->getValue();
-                    break;
-                }
-            }
-        } elseif ($inputType == 'boolean') {
-            switch ($requestValue) {
-                case 'Y':
-                    $value = 1;
-                    break;
-                case 'N':
-                    $value = 0;
-                    break;
-                default:
-                    $value = 0;
-            }
-        } elseif ($inputType == 'multiselect') {
-            $options = $attribute->getOptions();
-            $arrayValue = explode(",", $requestValue);
-            foreach ($options as $option) {
-                if (in_array($option->getLabel(), $arrayValue)) {
-                    if ($value == '') {
+            if ($inputType == 'select') {
+                $options = $attribute->getOptions();
+                foreach ($options as $option) {
+                    if ($option->getLabel() == $requestValue ||
+                        $option->getLabel() == strtolower($requestValue) ||
+                        $option->getLabel() == strtoupper($requestValue)) {
                         $value = $option->getValue();
-                    } else {
-                        $value = $value . "," . $option->getValue();
+                        break;
                     }
                 }
+            } elseif ($inputType == 'boolean') {
+                switch ($requestValue) {
+                    case 'Y':
+                        $value = 1;
+                        break;
+                    case 'N':
+                        $value = 0;
+                        break;
+                    default:
+                        $value = 0;
+                }
+            } elseif ($inputType == 'multiselect') {
+                $options = $attribute->getOptions();
+                $arrayValue = explode(",", $requestValue);
+                foreach ($options as $option) {
+                    if (in_array($option->getLabel(), $arrayValue)) {
+                        if ($value == '') {
+                            $value = $option->getValue();
+                        } else {
+                            $value = $value . "," . $option->getValue();
+                        }
+                    }
+                }
+            } elseif ($inputType == "text") {
+                $value = $requestValue;
             }
-        } elseif ($inputType == "text") {
-            $value = $requestValue;
+            return $value;
+        } catch (NoSuchEntityException $exception) {
+            return null;
         }
-        return $value;
     }
 
     public function sourceItemExistingCheck($sku, $sourceCode)
@@ -521,7 +588,7 @@ class SapProductManagement implements SapProductManagementInterface
 
     public function getStore($mallId)
     {
-        $exactStore = '';
+        $exactStore = 0;
         $stores = $this->storeManagerInterface->getStores();
         foreach ($stores as $store) {
             $configMallId = $this->config->getMallId('store', $store->getId());
@@ -531,6 +598,26 @@ class SapProductManagement implements SapProductManagementInterface
             }
         }
         return $exactStore;
+    }
+
+    public function getStoresByVkorg($vkorg)
+    {
+        $stores = $this->storeManagerInterface->getStores();
+        $allStoreViewId = 0;
+
+        $storeIdList = [];
+        foreach ($stores as $store) {
+            $vkorgByStore = $this->config->getSalesOrg('store', $store->getId());
+            if ($vkorg == $vkorgByStore) {
+                $storeIdList[] = $store->getId();
+            }
+        }
+
+        if (empty($storeIdList)) {
+            return $allStoreViewId;
+        } else {
+            return $storeIdList;
+        }
     }
 
     public function getSourceCodeByWebsiteCode($websiteCode)
@@ -566,20 +653,5 @@ class SapProductManagement implements SapProductManagementInterface
         }
 
         return $assignedSources[0];
-    }
-
-    public function getStoreCodeByMallCode($mallId)
-    {
-        switch ($mallId) {
-            case self::MALL_ID_SULWHASOO:
-                $storeCode = 'default';
-                break;
-            case self::MALL_ID_LANEIGE:
-                $storeCode = 'tw_laneige';
-                break;
-            default:
-                $storeCode = 'tw_laneige';
-        }
-        return $storeCode;
     }
 }

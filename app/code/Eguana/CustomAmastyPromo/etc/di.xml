@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: umer
+* Date: 5/8/20
+* Time: 6:32 PM
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amasty\Promo\Plugin\CheckoutStaging\Model\ResourceModel\PreviewQuotaPlugin" type="Eguana\CustomAmastyPromo\Plugin\CheckoutStaging\Model\ResourceModel\PreviewQuotaPlugin"/>
+</config>

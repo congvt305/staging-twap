@@ -515,7 +515,7 @@ class ECPayInvoiceValidator
         }
 
         if(sizeof($arErrors)>0){
-            throw new Exception(join('<br>', $arErrors));
+            throw new \Exception(join('<br>', $arErrors));
         }
 
         // 刪除items

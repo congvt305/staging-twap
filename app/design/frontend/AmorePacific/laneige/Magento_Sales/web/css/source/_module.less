@@ -38,6 +38,7 @@
         }
     }
 
+    .magento_rma-tracking-popup,
     .shipping-tracking-popup {
         .page-wrapper {
             min-height: 100% !important;
@@ -116,6 +117,13 @@
 
         .action {
             margin: 0 0 0 @indent__l;
+        }
+    }
+
+    .block-order-details-view {
+        .box-order-shipping-method,
+        .box-order-billing-address {
+            display: none;
         }
     }
 
@@ -639,6 +647,7 @@
         }
     }
 
+    .magento_rma-tracking-popup,
     .shipping-tracking-popup {
         .page-title {
             .lib-css(font-size, @modal-popup-title-mobile__font-size);
@@ -681,6 +690,7 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .magento_rma-tracking-popup,
     .shipping-tracking-popup {
         .page-title {
             .lib-css(border-bottom, @modal-title__border);
@@ -694,6 +704,10 @@
 
         .page.tracking {
             > .table-wrapper {
+                th.label {
+                    width: 20% !important;
+                }
+
                 td {
                     text-align: left !important;
                 }

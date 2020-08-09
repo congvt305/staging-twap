@@ -20,7 +20,9 @@ class Config
 
     const SAP_CLIENT_XML_PATH = 'sap/mall_info/client';
 
-    const SAP_CVS_SUPPLY_CONTRACTOR_XML_PATH = 'sap/mall_info/cvs_supply_contractor';
+    const SAP_CVS_FAMILY_MART_XML_PATH = 'sap/mall_info/familymart';
+
+    const SAP_CVS_SEVEN_ELEVEN_XML_PATH = 'sap/mall_info/seveneleven';
 
     const SAP_HOME_DELIVERY_CONTRACTOR_XML_PATH = 'sap/mall_info/home_delivery_contractor';
 
@@ -37,6 +39,12 @@ class Config
     const SAP_CREDITMEMO_ENABLE_XML_PATH = 'sap/general/creditmemo';
 
     const SAP_RMA_ENABLE_XML_PATH = 'sap/general/rma';
+
+    const SAP_PRODUCT_STOCK_ENABLE_XML_PATH = 'sap/general/product_stock';
+
+    const SAP_PRODUCT_INFO_ENABLE_XML_PATH = 'sap/general/product_info';
+
+    const SAP_PRODUCT_PRICE_ENABLE_XML_PATH = 'sap/general/product_price';
 
     /**
      * @var ScopeConfigInterface
@@ -83,9 +91,14 @@ class Config
         return $this->getValue(self::SAP_HOME_DELIVERY_CONTRACTOR_XML_PATH, $type, $storeId);
     }
 
-    public function getSupplyContractor($type, $storeId)
+    public function getFamilyMartCode($type, $storeId)
     {
-        return $this->getValue(self::SAP_CVS_SUPPLY_CONTRACTOR_XML_PATH, $type, $storeId);
+        return $this->getValue(self::SAP_CVS_FAMILY_MART_XML_PATH, $type, $storeId);
+    }
+
+    public function getSevenElevenCode($type, $storeId)
+    {
+        return $this->getValue(self::SAP_CVS_SEVEN_ELEVEN_XML_PATH, $type, $storeId);
     }
 
     public function getSalesOrg($type, $storeId)
@@ -131,5 +144,20 @@ class Config
     public function getRmaActiveCheck($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::SAP_RMA_ENABLE_XML_PATH, $type, $storeId);
+    }
+
+    public function getProductStockActiveCheck($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::SAP_PRODUCT_STOCK_ENABLE_XML_PATH, $type, $storeId);
+    }
+
+    public function getProductInfoActiveCheck($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::SAP_PRODUCT_INFO_ENABLE_XML_PATH, $type, $storeId);
+    }
+
+    public function getProductPriceActiveCheck($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::SAP_PRODUCT_PRICE_ENABLE_XML_PATH, $type, $storeId);
     }
 }

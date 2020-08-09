@@ -1,76 +1,38 @@
 <td class="col col-error" id="cvs-fields" colspan="4" data-bind="visible: visible">
+    <render args="cvsMapFormTemplate"/>
     <form action="#" name="gwlogistics-cvs-data-form">
-    <fieldset class="fieldset">
-        <div class="field">
-            <label class="label" for="LogisticsSubType">
-                <span data-bind="i18n: 'CVS Type'"></span>
-            </label>
-            <div class="control">
-                <input readonly type="text"
-                       name="LogisticsSubType"
-                       id="LogisticsSubType"
-                       class="input-text"
-                       data-bind="value: getCvsLocation().LogisticsSubType">
+        <fieldset class="fieldset">
+            <div class="field">
+                <label class="label" for="CVSStoreName">
+                    <span data-bind="i18n: 'CVS Store Name'"></span>
+                </label>
+                <div class="control">
+                    <input readonly type="text"
+                           name="CVSStoreName"
+                           id="CVSStoreName"
+                           class="input-text"
+                           data-bind="value: getCvsLocation().CVSStoreName">
+                </div>
             </div>
-        </div>
-        <div class="field">
-            <label class="label" for="CVSStoreID">
-                <span data-bind="i18n: 'CVS Store ID'"></span>
-            </label>
-            <div class="control">
-                <input readonly type="text"
-                       name="CVSStoreID"
-                       id="CVSStoreID"
-                       class="input-text"
-                       data-bind="value: getCvsLocation().CVSStoreID">
+            <div class="field">
+                <label class="label" for="CVSAddress">
+                    <span data-bind="i18n: 'CVS Store Address'"></span>
+                </label>
+                <div class="control">
+                    <input readonly type="text"
+                           name="CVSAddress"
+                           id="CVSAddress"
+                           class="input-text"
+                           data-bind="value: getCvsLocation().CVSAddress">
+                </div>
             </div>
-        </div>
-        <div class="field">
-            <label class="label" for="CVSStoreName">
-                <span data-bind="i18n: 'CVS Store Name'"></span>
-            </label>
-            <div class="control">
-                <input readonly type="text"
-                       name="CVSStoreName"
-                       id="CVSStoreName"
-                       class="input-text"
-                       data-bind="value: getCvsLocation().CVSStoreName">
-            </div>
-        </div>
-        <div class="field">
-            <label class="label" for="CVSAddress">
-                <span data-bind="i18n: 'CVS Store Address'"></span>
-            </label>
-            <div class="control">
-                <input readonly type="text"
-                       name="CVSAddress"
-                       id="CVSAddress"
-                       class="input-text"
-                       data-bind="value: getCvsLocation().CVSAddress">
-            </div>
-        </div>
-        <div class="field">
-            <label class="label" for="CVSTelephone">
-                <span data-bind="i18n: 'CVS Store Telephone'"></span>
-            </label>
-            <div class="control">
-                <input readonly type="text"
-                       name="CVSTelephone"
-                       id="CVSTelephone"
-                       class="input-text"
-                       data-bind="value: getCvsLocation().CVSTelephone">
-            </div>
-        </div>
-
-    </fieldset>
-
+        </fieldset>
     </form>
     <div role="alert"
          if="errorMessage().length"
          class="message notice">
         <span text="errorMessage()" />
     </div>
-    <render args="cvsMapFormTemplate"/>
 </td>
 
 

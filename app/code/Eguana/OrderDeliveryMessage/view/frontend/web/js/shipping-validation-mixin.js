@@ -10,7 +10,9 @@ define([
 
     return function (Component) {
         return Component.extend({
-
+            defaults: {
+                template: 'Eguana_OrderDeliveryMessage/shipping'
+            },
             /**
              * @return {Boolean}
              */
@@ -22,12 +24,9 @@ define([
                     var delivery_message = '[name="delivery_message"]';
 
                     delivery_message = $(delivery_message).val();
-
+                    $(".delivery-message-error").css("display", "none");
                     if (delivery_message.length > 512) {
-                        this.errorValidationMessage(
-                            $t('Delivery Message is too long. Please type less than 512 characters.')
-                        );
-
+                        $(".delivery-message-error").css("display", "block");
                         return false;
                     }
                 }

@@ -9,6 +9,7 @@
 namespace Eguana\GWLogistics\Controller\OrderStatusNotify;
 
 
+use Eguana\GWLogistics\Model\Service\OrderStatusNotificationHandler;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\CsrfAwareActionInterface;
@@ -28,8 +29,13 @@ class Index extends Action implements CsrfAwareActionInterface
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var OrderStatusNotificationHandler
+     */
+    private $orderStatusNotificationHandler;
 
     public function __construct(
+        OrderStatusNotificationHandler $orderStatusNotificationHandler,
         LoggerInterface $logger,
         RawFactory $rawFactory,
         Context $context
@@ -37,6 +43,7 @@ class Index extends Action implements CsrfAwareActionInterface
         parent::__construct($context);
         $this->rawFactory = $rawFactory;
         $this->logger = $logger;
+        $this->orderStatusNotificationHandler = $orderStatusNotificationHandler;
     }
 
     public function execute()
@@ -50,7 +57,6 @@ class Index extends Action implements CsrfAwareActionInterface
         $notifyData = $this->getRequest()->getParams();
 
         if (!$notifyData || $this->getRequest()->getMethod() !== 'POST') {
-            $this->logger->debug('isXmlHttpRequest: ', [$this->getRequest()->isXmlHttpRequest()]);
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
         $html = '';
@@ -64,11 +70,10 @@ class Index extends Action implements CsrfAwareActionInterface
         return $resultRaw->setContents($html);
     }
 
-    private function saveNotifyData($notifyData)
+    private function saveNotifyData(array $notifyData)
     {
-        //todo check checksum and save correctly.
-        $this->logger->debug('notifyDataFrom GWLogistics: ', $notifyData);
-        //todo save QuoteCvsLocation from repository or resource model
+        $this->logger->info('order status notification from GWLogistics: ', $notifyData);
+        $this->orderStatusNotificationHandler->process($notifyData);
     }
 
     /**

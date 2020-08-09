@@ -21,6 +21,8 @@ use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Newsletter\Model\Subscriber;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
+use Magento\Customer\Model\AddressFactory;
+use Magento\Framework\App\RequestInterface;
 
 /**
  * PLEASE ENTER ONE LINE SHORT DESCRIPTION OF CLASS
@@ -70,8 +72,18 @@ class SaveSuccess implements ObserverInterface
      * @var \Eguana\Directory\Helper\Data
      */
     private $cityHelper;
+    /**
+     * @var AddressFactory
+     */
+    private $shippingAddress;
+    /**
+     * @var RequestInterface
+     */
+    private $request;
 
     public function __construct(
+        RequestInterface $request,
+        AddressFactory $shippingAddress,
         RegionFactory $regionFactory,
         \Eguana\Directory\Helper\Data $cityHelper,
         RegionResourceModel $regionResourceModel,
@@ -91,6 +103,8 @@ class SaveSuccess implements ObserverInterface
         $this->regionFactory = $regionFactory;
         $this->regionResourceModel = $regionResourceModel;
         $this->cityHelper = $cityHelper;
+        $this->shippingAddress = $shippingAddress;
+        $this->request = $request;
     }
 
     /**
@@ -118,6 +132,12 @@ class SaveSuccess implements ObserverInterface
             if ($oldCustomerData == null) {
                 $this->assignIntegrationNumber($newCustomerData);
                 return;
+            }
+
+            $customerAddresses = $newCustomerData->getAddresses();
+            if ($customerAddresses == null || sizeof($customerAddresses) == 0) {
+                $customerData = $this->request->getParams();
+                $this->createAddressFromDMAddress($newCustomerData->getId(), $customerData);
             }
 
             $newDataHaveSequenceNumber = false;
@@ -161,9 +181,13 @@ class SaveSuccess implements ObserverInterface
     {
         try {
             $posOrOnline = 'online';
-            if ($customer->getCustomAttribute('referrer_code')) {
+            /**
+             * @Abbas on the request of client. Now if customer register using bar code even than he can be online or
+             * offline. So if POS have customer information then he will be considered as offline else online
+             */
+            /*if ($customer->getCustomAttribute('referrer_code')) {
                 $posOrOnline = 'pos';
-            }
+            }*/
             if ($posOrOnline == 'online') {
                 $posOrOnline = $customer->getCustomAttribute('imported_from_pos')->getValue() == 1 ? 'pos' : 'online';
             }
@@ -181,10 +205,9 @@ class SaveSuccess implements ObserverInterface
                 'sales_office_code',
                 $this->config->getOfficeSalesCode($customer->getWebsiteId())
             );
-            $customer->setCustomAttribute('partner_id', $this->config->getPartnerId($customer->getWebsiteId()));
+            //$customer->setCustomAttribute('partner_id', $this->config->getPartnerId($customer->getWebsiteId()));
             return $this->customerRepository->save($customer);
         } catch (\Exception $e) {
-            $e->getMessage();
             $this->logger->addExceptionMessage($e->getMessage());
             return $customer;
         }
@@ -202,9 +225,17 @@ class SaveSuccess implements ObserverInterface
         $parameters['email'] = trim($customer->getEmail());
         $parameters['sex'] = $customer->getGender() == '1' ? 'M' : 'F';
         $parameters['emailYN'] = $this->isCustomerSubscribToNewsLetters($customer->getId()) ? 'Y' : 'N';
-        $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y':'N';
+        if ($customer->getCustomAttribute('sms_subscription_status')) {
+            $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+        } else {
+            $parameters['smsYN'] = '';
+        }
         $parameters['callYN'] = 'N';
-        $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+        if ($customer->getCustomAttribute('dm_subscription_status')) {
+            $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+        } else {
+            $parameters['dmYN'] = '';
+        }
         $regionName = $customer->getCustomAttribute('dm_state') ?
             $customer->getCustomAttribute('dm_state')->getValue() : '';
         $regionObject = null;
@@ -282,8 +313,48 @@ class SaveSuccess implements ObserverInterface
         try {
             $this->regionResourceModel->load($region, $regionName, 'default_name');
         } catch (\Exception $e) {
-          $message = $e->getMessage();
+            $this->logger->addExceptionMessage($e->getMessage());
         }
         return $region;
+    }
+
+    /**
+     * SHORT DESCRIPTION
+     * LONG DESCRIPTION LINE BY LINE
+     * @param Customer $customer
+     */
+    private function createAddressFromDMAddress($customerId, $customerData)
+    {
+        try {
+
+            $status = isset($customerData['dm_subscription_status_checkbox'])?$customerData['dm_subscription_status_checkbox']:'';
+            if ($status == 'on') {
+                $dmCity = $customerData['dm_city'];
+                $dmZipCode = $customerData['dm_zipcode'];
+                $dmDetailedAddress = $customerData['dm_detailed_address'];
+                $dmState = $customerData['dm_state'];
+                $dmCountryId = $customerData['country_id'];
+                $regionId = $customerData['region_id'];
+                $firstName = $customerData['firstname'];
+                $lastName = $customerData['lastname'];
+                $mobileNumber = $customerData['mobile_number'];
+                $address = $this->shippingAddress->create();
+                $address->setCustomerId($customerId)
+                    ->setFirstname($firstName)
+                    ->setLastname($lastName)
+                    ->setCountryId($dmCountryId)
+                    ->setRegionId($regionId)
+                    ->setPostcode($dmZipCode)
+                    ->setCity($dmCity)
+                    ->setTelephone($mobileNumber)
+                    ->setStreet($dmDetailedAddress)
+                    ->setIsDefaultShipping('1')
+                    ->setIsDefaultBilling('1')
+                    ->setSaveInAddressBook('1');
+                $address->save();
+            }
+        } catch (\Exception $e) {
+            $this->logger->addExceptionMessage($e->getMessage());
+        }
     }
 }

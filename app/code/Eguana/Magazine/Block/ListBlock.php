@@ -11,15 +11,17 @@ namespace Eguana\Magazine\Block;
 
 use Eguana\Magazine\Api\MagazineRepositoryInterface;
 use Magento\Framework\View\Element\Template;
-use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Store\Model\StoreManagerInterface;
+use Eguana\Magazine\Model\Magazine as MagazineModel;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\DataObject\IdentityInterface;
 
 /**
  * This class is used for breadcrumps for detail page
  * Class ListBlock
  */
-class ListBlock extends Template
+class ListBlock extends Template implements IdentityInterface
 {
     /**
      * @var MagazineRepositoryInterface
@@ -51,6 +53,15 @@ class ListBlock extends Template
         $this->logger = $logger;
         parent::__construct($context, $data);
     }
+
+    /**
+     * @return array
+     */
+    public function getIdentities()
+    {
+        return [MagazineModel::CACHE_TAG];
+    }
+
     /**
      * @return $this|ListBlock
      */

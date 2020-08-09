@@ -8,6 +8,7 @@ use Ecpay\Ecpaypayment\Model\Payment as EcpayPaymentModel;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\Module\ModuleListInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
 
 include_once('Library/ECPayPaymentHelper.php');
 
@@ -50,6 +51,10 @@ class Data extends AbstractHelper
      * @var \Magento\Framework\HTTP\Client\Curl
      */
     private $curl;
+    /**
+     * @var OrderRepositoryInterface
+     */
+    private $orderRepository;
 
     public function __construct(
         EcpayOrderModel $ecpayOrderModel,
@@ -57,7 +62,8 @@ class Data extends AbstractHelper
         ModuleListInterface $moduleList,
         ProductMetadataInterface $productMetadata,
         \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue,
-        \Magento\Framework\HTTP\Client\Curl $curl
+        \Magento\Framework\HTTP\Client\Curl $curl,
+        OrderRepositoryInterface $orderRepository
     ) {
         $this->_ecpayOrderModel = $ecpayOrderModel;
         $this->_ecpayPaymentModel = $ecpayPaymentModel;
@@ -69,6 +75,7 @@ class Data extends AbstractHelper
         );
         $this->ECPayInvoiceCheckMacValue = $ECPayInvoiceCheckMacValue;
         $this->curl = $curl;
+        $this->orderRepository = $orderRepository;
     }
 
     public function getChoosenPayment()
@@ -149,13 +156,13 @@ class Data extends AbstractHelper
             // Checkout
             $helperData = array(
                 'choosePayment' => $choosenPayment,
-                'hashKey' => $this->getEcpayConfig('hash_key'),
-                'hashIv' => $this->getEcpayConfig('hash_iv'),
+                'hashKey' => $this->_ecpayPaymentModel->getEInvoiceConfig('hash_key', $order->getStoreId()),
+                'hashIv' => $this->_ecpayPaymentModel->getEInvoiceConfig('hash_iv', $order->getStoreId()),
                 'returnUrl' => $this->_ecpayPaymentModel->getModuleUrl('response'),
                 'clientBackUrl' => $this->_ecpayPaymentModel->getMagentoUrl('checkout/onepage/success'),
                 'orderId' => $orderId,
                 'total' => $order->getGrandTotal(),
-                'itemName' => __('A Package Of Online Goods'),
+                'itemName' => __('Laneige Online Shopping Center'),
                 'cartName' => 'magento_' . $this->getModuleVersion(),
                 'currency' => $orderCurrencyCode,
                 'needExtraPaidInfo' => 'Y',
@@ -267,11 +274,17 @@ class Data extends AbstractHelper
                                 $stringToArray[$resultExplode[0]] = $resultExplode[1];
                             }
 
-                            if ($stringToArray["RtnCode"] !== 1) {
+                            if ($stringToArray["RtnCode"] != 1) {
                                 $this->_logger->critical(__($stringToArray["RtnMsg"]));
-                                throw new Exception(__($stringToArray["RtnMsg"]));
+                                throw new \Exception(__($stringToArray["RtnMsg"]));
                             }
                         }
+
+                        $payment = $order->getPayment();
+                        $additionalInfo = $payment->getAdditionalInformation();
+                        $rawDetailsInfo = $additionalInfo["raw_details_info"];
+                        $order->setData("ecpay_payment_method", $rawDetailsInfo["ecpay_choosen_payment"]);
+                        $this->orderRepository->save($order);
 
                         unset($status, $pattern, $comment);
                         break;
@@ -283,6 +296,11 @@ class Data extends AbstractHelper
                         $comment = $sdkHelper->getObtainingCodeComment($pattern, $feedback);
 
                         $this->setOrderCommentForFront($order, $comment, $status, EcpayOrderModel::NOTIFY_GET_CODE_RESULT);
+
+                        $payment = $order->getPayment();
+                        $additionalInfo = $payment->getAdditionalInformation();
+                        $order->setData("ecpay_payment_method", $additionalInfo["ecpay_choosen_payment"]);
+                        $this->orderRepository->save($order);
 
                         unset($status, $pattern, $comment);
                         break;

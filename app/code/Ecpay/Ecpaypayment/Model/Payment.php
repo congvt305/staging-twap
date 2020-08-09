@@ -408,7 +408,10 @@ class Payment extends AbstractMethod
             $payment = $order->getPayment();
             $additionalInfo = $payment->getAdditionalInformation();
             $rawDetailsInfo = $additionalInfo["raw_details_info"];
-            $donationValue = $rawDetailsInfo["ecpay_einvoice_donation"];
+            $eInvoiceType = $rawDetailsInfo["ecpay_einvoice_type"];
+            $cellphoneBarcode = $rawDetailsInfo["ecpay_einvoice_cellphone_barcode"];
+            $carruerType = $this->getCarruerType($eInvoiceType);
+
             $donationCode = $this->getEInvoiceConfig("invoice/ecpay_invoice_love_code", $storeId);
 
             // 3.寫入發票相關資訊
@@ -416,7 +419,7 @@ class Payment extends AbstractMethod
             // 商品資訊
             $this->initOrderItems($order, $ecpay_invoice);
 
-            $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $donationValue, $donationCode);
+            $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $carruerType, $donationCode, $cellphoneBarcode);
 
             // 4.送出
             $aReturn_Info = $ecpay_invoice->Check_Out();
@@ -455,17 +458,31 @@ class Payment extends AbstractMethod
     private function initOrderItems(\Magento\Sales\Api\Data\OrderInterface $order, \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice): void
     {
         $orderItems = $order->getAllVisibleItems();
+        $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
+        $mileageUsedAmount = $order->getRewardPointsBalance();
 
         foreach ($orderItems as $orderItem) {
+
+            if ($orderItem->getProductType() != 'simple') {
+                continue;
+            }
+
+            $configurableCheckedItem = $this->configurableProductCheck($orderItem);
+
+            $mileagePerItem = $this->mileageSpentRateByItem($configurableCheckedItem, $mileageUsedAmount, $orderTotal);
+            $itemGrandTotal = $configurableCheckedItem->getRowTotal()
+                - $configurableCheckedItem->getDiscountAmount()
+                - $mileagePerItem;
+
             array_push(
                 $ecpay_invoice->Send['Items'],
                 array(
                     'ItemName' => __($orderItem->getData('name')),
                     'ItemCount' => (int)$orderItem->getData('qty_ordered'),
                     'ItemWord' => '批',
-                    'ItemPrice' => $orderItem->getData('price'),
+                    'ItemPrice' => $itemGrandTotal,
                     'ItemTaxType' => 1,
-                    'ItemAmount' => $orderItem->getData('price'),
+                    'ItemAmount' => $itemGrandTotal,
                     'ItemRemark' => $orderItem->getData('sku')
                 )
             );
@@ -475,13 +492,32 @@ class Payment extends AbstractMethod
     /**
      * @param \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice
      * @param \Magento\Sales\Api\Data\OrderInterface $order
-     * @param string $donationValue
+     * @param string $carruerType
      * @param $donationCode
+     * @param string $cellphoneBarcode
      * @return string
      */
-    private function initEInvoiceInfo(\Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice, \Magento\Sales\Api\Data\OrderInterface $order, string $donationValue, $donationCode): string
+    private function initEInvoiceInfo(\Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice, \Magento\Sales\Api\Data\OrderInterface $order, string $carruerType, $donationCode, $cellphoneBarcode): string
     {
         $dataTime = $this->dateTimeFactory->create();
+
+        $donationValue = '';
+        $carruerNum = '';
+        switch ($carruerType) {
+            case '':
+                $donationValue = "true";
+                $carruerNum = '';
+                break;
+            case '1':
+                $donationValue = "false";
+                $carruerNum = '';
+                break;
+            case '3':
+                $donationValue = "false";
+                $carruerNum = $cellphoneBarcode;
+                break;
+        }
+
         $RelateNumber = 'ECPAY' . $dataTime->date('YmdHis') . rand(1000000000, 2147483647); // 產生測試用自訂訂單編號
         $ecpay_invoice->Send['RelateNumber'] = $RelateNumber;
         $ecpay_invoice->Send['CustomerID'] = $order->getCustomerId();
@@ -494,10 +530,10 @@ class Payment extends AbstractMethod
         $ecpay_invoice->Send['Print'] = '0';
         $ecpay_invoice->Send['Donation'] = ($donationValue == "true") ? 1 : 0;
         $ecpay_invoice->Send['LoveCode'] = ($donationValue == "true") ? $donationCode : '';
-        $ecpay_invoice->Send['CarruerType'] = '';
-        $ecpay_invoice->Send['CarruerNum'] = '';
+        $ecpay_invoice->Send['CarruerType'] = $carruerType;
+        $ecpay_invoice->Send['CarruerNum'] = $carruerNum;
         $ecpay_invoice->Send['TaxType'] = 1;
-        $ecpay_invoice->Send['SalesAmount'] = $order->getGrandTotal() - $order->getShippingAmount();
+        $ecpay_invoice->Send['SalesAmount'] = intval($order->getGrandTotal()) - intval($order->getShippingAmount());
         $ecpay_invoice->Send['InvoiceRemark'] = 'v1.0.190822';
         $ecpay_invoice->Send['InvType'] = '07';
         $ecpay_invoice->Send['vat'] = '';
@@ -521,8 +557,8 @@ class Payment extends AbstractMethod
             $ecpay_invoice->Invoice_Method = 'INVOICE_VOID';
             $ecpay_invoice->Invoice_Url = $this->getInvoiceApiUrl($storeId) . 'IssueInvalid';
             $ecpay_invoice->MerchantID = $this->getEcpayConfig("merchant_id");
-            $ecpay_invoice->HashKey = $this->getEcpayConfig("invoice/ecpay_invoice_hash_key");
-            $ecpay_invoice->HashIV = $this->getEcpayConfig("invoice/ecpay_invoice_hash_iv");
+            $ecpay_invoice->HashKey = $this->getEInvoiceConfig("invoice/ecpay_invoice_hash_key", $storeId);
+            $ecpay_invoice->HashIV = $this->getEInvoiceConfig("invoice/ecpay_invoice_hash_iv", $storeId);
 
             // 3.寫入發票相關資訊
             $additionalData = $payment->getAdditionalData();
@@ -597,5 +633,58 @@ class Payment extends AbstractMethod
         $prefix = "payment/ecpay_ecpaypayment/ecpay_";
         $path = $prefix . $id;
         return $this->_scopeConfig->getValue($path, 'store', $storeId);
+    }
+
+    /**
+     * @param $orderItem
+     * @return mixed
+     */
+    private function configurableProductCheck($orderItem)
+    {
+        if (empty($orderItem->getParentItem())) {
+            return $orderItem;
+        } else {
+            return $orderItem->getParentItem();
+        }
+    }
+
+    /**
+     * @param $configurableCheckedItem
+     * @param $mileageUsedAmount
+     * @param float $orderTotal
+     * @return float|string
+     */
+    private function mileageSpentRateByItem($configurableCheckedItem, $mileageUsedAmount, float $orderTotal)
+    {
+        $itemTotal = round($configurableCheckedItem->getRowTotalInclTax() - $configurableCheckedItem->getDiscountAmount(), 2);
+
+        if ($mileageUsedAmount) {
+            return round(($itemTotal / $orderTotal) * $mileageUsedAmount);
+        }
+
+        return is_null($mileageUsedAmount) ? '0' : $mileageUsedAmount;
+    }
+
+    /**
+     * @param string $eInvoiceType
+     * @return string
+     */
+    private function getCarruerType(string $eInvoiceType)
+    {
+        $carruerType = '';
+
+        switch ($eInvoiceType) {
+            case 'greenworld-invoice':
+                $carruerType = '1';
+                break;
+            case 'cellphone-barcode-invoice':
+                $carruerType = '3';
+                break;
+            case 'triplicate-invoice':
+            case 'donation-invoice':
+                break;
+        }
+
+        return $carruerType;
     }
 }

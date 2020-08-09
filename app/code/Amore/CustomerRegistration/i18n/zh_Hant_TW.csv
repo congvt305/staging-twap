@@ -2,7 +2,7 @@
 "Verification code is wrong","驗證碼錯誤"
 "Please first configure POS APIs properly. Then try again.","請先正確配置POS API。 然後再試一次。"
 "Can not send verification code.","無法發送驗證碼。"
-"The requested membership information is already registered.","所請求的會員信息已被註冊。"
+"The requested membership information is already registered.","此會員帳戶已被註冊，請直接登入會員，謝謝"
 "There is a problem with the requested subscription information. Please contact our CS Center for registration.","請求的訂閱信息有問題。 請聯繫我們的CS中心進行註冊。"
 "Mobile number can not be null or empty","手機號碼不能為空或為空"
 "Mobile number should have only digits","手機號碼只能是數字"
@@ -16,8 +16,9 @@ Telephone,電話
 "Get Code","取得驗證碼"
 "Verification code has been sent to your mobile","驗證碼已發送到您的手機"
 "Input 4 digit verification code","輸入4位數驗證碼"
-Verify,校驗
+Verify,驗證
 "Verify Registration","驗證註冊"
+"Code","驗證碼"
 "Address Information","地址信息"
 Address,地址
 "Street Address %1","街道地址%1"
@@ -30,7 +31,7 @@ Password,密碼
 "Confirm Password","確認密碼"
 "Sign Up for Newsletter","訂閱電子報"
 "Read more","閱讀更多"
-"Marketing Consent","營銷同意書"
+"Marketing Consent","我已閱讀並同意"
 "Create an Account","創建一個帳戶"
 Back,背部
 Agree,同意
@@ -63,4 +64,6 @@ Api,阿皮
 "Detailed Address","詳細地址"
 "Zip Code","郵政編碼"
 "Call Marketing","電話營銷"
-"Terms And Services Policy","條款和服務政策"
+"Terms And Services Policy","會員條款及購物服務政策"
+"Please select a city, city or district.","請選擇一個城市，城市或地區。"
+"Change mobile number","更改手機號碼"

@@ -97,14 +97,14 @@ class Verification
      * @return bool|Phrase
      * @throws LocalizedException
      */
-    public function sendVerificationCode($mobileNumber, $customerName)
+    public function sendVerificationCode($mobileNumber, $firstName, $lastName)
     {
         $validateMobileNumberResult = $this->validateMobileNumber($mobileNumber);
         if ($validateMobileNumberResult !== true) {
             return $validateMobileNumberResult;
         }
 
-        if ($verificationCode = $this->sendSMS($mobileNumber, $customerName)) {
+        if ($verificationCode = $this->sendSMS($mobileNumber, $firstName, $lastName)) {
             return $this->setVerificationCode($mobileNumber, $verificationCode);
         }
         return __('Can not send verification code.');
@@ -182,7 +182,7 @@ class Verification
                 $response['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
             } else {
                 $response['message'] = __(
-                    'The requested membership information is already registered.'
+                    'There is a problem with the requested subscription information. Please contact our CS Center for registration.'
                 );
             }
             return $response;
@@ -195,8 +195,9 @@ class Verification
                 $response['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
             } else {
                 $response['message'] = __(
-                    'There is a problem with the requested subscription information. Please contact our CS Center for registration.'
+                    'The requested membership information is already registered.'
                 );
+
             }
             return $response;
         }
@@ -309,10 +310,10 @@ class Verification
      *
      * @return bool
      */
-    private function sendSMS($mobileNumber, $customerName)
+    private function sendSMS($mobileNumber, $firstName, $lastName)
     {
         if ($this->configHelper->getSMSVerificationEnable()) {
-            return $this->smsSender->setCode($mobileNumber, $customerName);
+            return $this->smsSender->setCode($mobileNumber, $firstName, $lastName);
         } else {
             return '1234';
         }

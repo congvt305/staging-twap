@@ -336,6 +336,7 @@
     .product-info-main,
     .product-options-bottom {
         .product-social-links {
+            display: block;
             position: relative;
             text-align: right;
         }
@@ -950,8 +951,10 @@
     .product-info-main,
     .product-options-bottom {
         .product-social-links {
+            display: inline-block;
             position: relative;
             top: -147px;
+            width: 100%;
         }
 
         .action-offline {
@@ -1131,7 +1134,6 @@
 
         .box-tocart {
             margin: @indent__base 0 29px 0;
-            overflow: hidden;
 
             .actions {
                 button {
@@ -1314,7 +1316,7 @@
             .fieldset {
                 margin-bottom: 0;
             }
-            
+
             .product-info-price {
                 & + .actions {
                     overflow: hidden;

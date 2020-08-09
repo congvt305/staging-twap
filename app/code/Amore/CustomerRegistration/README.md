@@ -105,6 +105,7 @@ Navigate to **Stores ⇾ Configuration** and the module **Curstomer Registration
 1. Enable Extension: To enable or disable this extension. If it will enable then while register customer will see the two step registration. As you can see in the
 above images frontend registration Step 1 & Step 2. Else you will see the default Magento registration. 
 1. Terms CMS Block Id: It will take the CMS block id which will show in the top of first step form during customer registration. **For Reference please see the image Frontend Registration Step 1-1 part**
+1. POS Alert CMS Block Id: It will take the CMS block id which will show in the top of second step If Magento get information from POS.
 1. Expiration Time in Minutes: It is a expiration time of the code which will send to the customer in step 1 for mobile verification **For Reference please see the image Frontend Registration Step 1-5 part**
 1. Minimum Mobile Number Digits:Minimum number of digits allowed in the mobile number. **For Reference please see the image Frontend Registration Step 1-2 part**
 1. Maximum Mobile Number Digits: Maximum number of digits allowed in the mobile number. **For Reference please see the image Frontend Registration Step 1-2 part**
@@ -150,13 +151,13 @@ the next number whenever customer will register
     - "birthDay": Customer brith day. format will be yyyymmdd
     - "mobileNo": Customer mobile number
     - "email": Customer email id
-    - "sex": Customer gender
-    - "emailYN": Subscribe or unsubscribe to newsletter
-    - "smsYN": Subscribe or unsubscribe to sms
-    - "callYN": Subscribe or unsubscribe to call
-    - "dmYN": Subscribe or unsubscribe to direct mail
-    - "homeCity": Home city for direct mail
-    - "homeState": Home state for direct mail
+    - "sex": Customer gender, F for female and M for male
+    - "emailYN": Subscribe or unsubscribe to newsletter, Y for subscirbe and N for unsubscribe
+    - "smsYN": Subscribe or unsubscribe to sms, Y for subscirbe and N for unsubscribe
+    - "callYN": Subscribe or unsubscribe to call, Y for subscirbe and N for unsubscribe
+    - "dmYN": Subscribe or unsubscribe to direct mail, Y for subscirbe and N for unsubscribe
+    - "homeCity": Home city for direct mail. home City code
+    - "homeState": Home state for direct mail, home state code
     - "homeAddr1": Home address for direct mail
     - "homeZip": Home zip for direct mail
     - "statusCD": Customer status

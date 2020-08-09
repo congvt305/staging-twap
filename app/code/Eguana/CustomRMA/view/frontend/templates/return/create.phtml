@@ -194,11 +194,11 @@
         <div class="field shipping-preference">
             <label class="label"><span><?= $block->escapeHtml(__('Shipping Preference')) ?></span></label>
             <div class="control">
-                <input type="radio" id="unimart" name="shipping_preference" title="Unimart" class="input-radio" data-validate="{required:true}" value="<?= $block->escapeHtmlAttr(__('unimart')) ?>">
+                <input type="radio" id="unimart" name="shipping_preference" title="7-Eleven" class="input-radio" data-validate="{required:true}" value="<?= $block->escapeHtmlAttr('UNIMART') ?>">
                 <label class="label" for="unimart">
-                    <span><?= $block->escapeHtml(__('Unimart')) ?></span>
+                    <span><?= $block->escapeHtml(__('7-Eleven')) ?></span>
                 </label>
-                <input type="radio" id="familymart" name="shipping_preference" title="Family Mart" class="input-radio" value="<?= $block->escapeHtmlAttr(__('familymart')) ?>">
+                <input type="radio" id="familymart" name="shipping_preference" title="Family Mart" class="input-radio" value="<?= $block->escapeHtmlAttr('FAMI') ?>">
                 <label class="label" for="familymart">
                     <span><?= $block->escapeHtml(__('Family Mart')) ?></span>
                 </label>
@@ -257,7 +257,7 @@
             </div>
         </div>
         <div class="field comment">
-            <label for="rma_comment" class="label"><span><?= $block->escapeHtml(__('Comments')) ?></span></label>
+            <label for="rma_comment" class="label"><span><?= $block->escapeHtml(__('Return Comments')) ?></span></label>
             <div class="control">
                 <input type="hidden" name="orderDetails" value="<?= $orderDetails;?>">
                 <textarea id="rma_comment" cols="5" rows="3" name="rma_comment" class="input-text"><?php if ($_data) : ?><?= $block->escapeHtml($_data->getRmaComment()) ?><?php endif; ?></textarea>

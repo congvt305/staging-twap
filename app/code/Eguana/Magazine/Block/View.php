@@ -11,17 +11,19 @@ namespace Eguana\Magazine\Block;
 
 use Eguana\Magazine\Api\Data\MagazineInterface as MagazineInterfaceAlias;
 use Eguana\Magazine\Api\MagazineRepositoryInterface;
+use Eguana\Magazine\Model\Magazine as MagazineModel;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Element\Template;
-use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\DataObject\IdentityInterface;
 
 /**
  * This class is used for breadcrumbs
  * Class View
  */
-class View extends Template
+class View extends Template implements IdentityInterface
 {
     /**
      * @var MagazineRepositoryInterface
@@ -81,6 +83,15 @@ class View extends Template
             $this->logger->debug($exception->getMessage());
         }
     }
+
+    /**
+     * @return array
+     */
+    public function getIdentities()
+    {
+        return [MagazineModel::CACHE_TAG];
+    }
+
     /**
      * This function is used to set pagetitle and breadcrumbs
      * @return $this|View

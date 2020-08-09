@@ -1,0 +1,19 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_edit">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Amore_CustomerRegistration::form/edit.phtml</argument>
+            </action>
+            <arguments>
+                <argument name="view_model" xsi:type="object">Amore\CustomerRegistration\ViewModel\Edit</argument>
+            </arguments>
+        </referenceBlock>
+
+        <!--<referenceBlock name="customer_edit" template="%Amore_CustomerRegistration::form/edit.phtml%"/>-->
+       <!-- <referenceContainer name="form.additional.info">
+            <block name="customer.addintional.info"
+                   class="Amore\CustomerRegistration\Block\Form\AdditionalInfo"
+                   template="Amore_CustomerRegistration::form/additional-info.phtml"/>
+        </referenceContainer>-->
+    </body>
+</page>

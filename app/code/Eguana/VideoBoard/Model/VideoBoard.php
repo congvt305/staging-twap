@@ -29,7 +29,7 @@ class VideoBoard extends AbstractExtensibleModel implements VideoBoardInterface,
     /**
      * @var CACHE_TAG
      */
-    const CACHE_TAG = 'videoBoard';
+    const CACHE_TAG = 'eguana_video_board';
 
     /**
      * @var STATUS_ENABLED

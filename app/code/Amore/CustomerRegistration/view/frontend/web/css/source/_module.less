@@ -3,12 +3,12 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+  .form-edit-account,
   .form-create-account-pos {
     .field {
       &.mobile,
       &.verification-code {
         .control {
-          overflow: hidden;
           position: relative;
         }
 
@@ -58,6 +58,27 @@
     }
   }
 
+  .customer-account-edit {
+    .checkbox-wrapper .label {
+      width: auto !important;
+
+      & + span {
+        line-height: 24px;
+        margin-left: 15px;
+
+        a {
+          color: @theme__color__secondary;
+
+          &:hover,
+          &:active,
+          &:focus {
+            color: @theme__color__primary-alt;
+          }
+        }
+      }
+    }
+  }
+
   .customer-registration-form-create-account{
     display: none;
   }
@@ -72,6 +93,11 @@
   }
 
   .form-create-account {
+    .field.choice.newsletter {
+      display: inline-block;
+      width: 100%;
+    }
+
     .checkbox-wrapper {
       display: inline-block;
       margin-right: 24px;
@@ -135,6 +161,7 @@
     margin-right: -@layout__width-xs-indent !important;
   }
 
+  .form-edit-account,
   .form-create-account-pos {
     .field {
       &.mobile,
@@ -149,7 +176,7 @@
         }
       }
 
-      &.first_name {
+      &.last_name {
         padding-top: @indent__base;
       }
     }
@@ -174,6 +201,7 @@
     margin-bottom: 16px !important;
   }
 
+  .form-edit-account,
   .form-create-account-pos {
     .field {
       &.mobile,
@@ -191,7 +219,7 @@
         }
       }
 
-      &.first_name {
+      &.last_name {
         padding-top: 16px;
       }
     }

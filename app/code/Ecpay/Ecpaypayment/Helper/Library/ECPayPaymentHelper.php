@@ -236,7 +236,7 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
                 $this->sdk->SendExtend['PaymentInfoURL'] = $this->sdk->Send['ReturnURL'];
                 break;
             default:
-                throw new Exception('Invalid payment method.');
+                throw new \Exception('Invalid payment method.');
                 break;
         }
     }
@@ -339,7 +339,7 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
 
         // Check the amount
         if (!$this->validAmount($feedback['TradeAmt'], $info['TradeAmt'])) {
-            throw new Exception('Invalid ' . $this->provider . ' feedback.(1)');
+            throw new \Exception('Invalid ' . $this->provider . ' feedback.(1)');
         }
 
         return $feedback;
@@ -421,50 +421,50 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
                 if ($this->isSuccess($inputFeedback, 'payment') === true) {
                     $responseState = $this->getSuccessState($getSuccessData);
                     if ($responseState === false) {
-                        throw new Exception($paymentFailed);
+                        throw new \Exception($paymentFailed);
                     }
                 } else {
-                    throw new Exception($paymentFailed);
+                    throw new \Exception($paymentFailed);
                 }
                 break;
             case $this->getSdkPaymentMethod('atm'):
                 if ($this->isSuccess($inputFeedback, 'payment') === true) {
                     $responseState = $this->getSuccessState($getSuccessData);
                     if ($responseState === false) {
-                        throw new Exception($paymentFailed);
+                        throw new \Exception($paymentFailed);
                     }
                 } elseif ($this->isSuccess($inputFeedback, 'atmGetCode') === true) {
                     $responseState = 2; // ATM get code
                 } else {
-                    throw new Exception($paymentFailed);
+                    throw new \Exception($paymentFailed);
                 }
                 break;
             case $this->getSdkPaymentMethod('cvs'):
                 if ($this->isSuccess($inputFeedback, 'payment') === true) {
                     $responseState = $this->getSuccessState($getSuccessData);
                     if ($responseState === false) {
-                        throw new Exception($paymentFailed);
+                        throw new \Exception($paymentFailed);
                     }
                 } elseif ($this->isSuccess($inputFeedback, 'cvsGetCode') === true) {
                     $responseState = 3; // CVS get code
                 } else {
-                    throw new Exception($paymentFailed);
+                    throw new \Exception($paymentFailed);
                 }
                 break;
             case $this->getSdkPaymentMethod('barcode'):
                 if ($this->isSuccess($inputFeedback, 'payment') === true) {
                     $responseState = $this->getSuccessState($getSuccessData);
                     if ($responseState === false) {
-                        throw new Exception($paymentFailed);
+                        throw new \Exception($paymentFailed);
                     }
                 } elseif ($this->isSuccess($inputFeedback, 'barcodeGetCode') === true) {
                     $responseState = 4; // Barcode get code
                 } else {
-                    throw new Exception($paymentFailed);
+                    throw new \Exception($paymentFailed);
                 }
                 break;
             default:
-                throw new Exception($this->getInvalidPayment($orderId));
+                throw new \Exception($this->getInvalidPayment($orderId));
         }
         return $responseState;
     }
@@ -757,7 +757,7 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
         $this->sdk->EncryptType = $this->encryptType;
         $feedback = $this->sdk->CheckOutFeedback();
         if (count($feedback) < 1) {
-            throw new Exception($this->provider . ' feedback is empty.');
+            throw new \Exception($this->provider . ' feedback is empty.');
         }
         return $feedback;
     }
@@ -788,7 +788,7 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
         $this->sdk->Query['MerchantTradeNo'] = $inputs['merchantTradeNo'];
         $info = $this->sdk->QueryTradeInfo();
         if (count($info) < 1) {
-            throw new Exception($this->provider . ' trade info is empty.');
+            throw new \Exception($this->provider . ' trade info is empty.');
         }
         return $info;
     }

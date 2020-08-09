@@ -16,6 +16,10 @@
     </extension_attributes>
     <extension_attributes for="Magento\Sales\Api\Data\OrderAddressInterface">
         <attribute code="cvs_location_id" type="int" />
+        <attribute code="cvs_store_type" type="string"/>
+        <attribute code="cvs_store_id" type="string"/>
+        <attribute code="cvs_store_name" type="string"/>
+        <attribute code="cvs_store_address" type="string"/>
     </extension_attributes>
 
 <!--    <extension_attributes for="Magento\Sales\Api\Data\OrderAddressInterface">-->
