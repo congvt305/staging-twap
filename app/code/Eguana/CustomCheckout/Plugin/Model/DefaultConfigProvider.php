@@ -79,6 +79,7 @@ class DefaultConfigProvider
             }
         } catch (\Exception $exception) {
             $this->logger->debug($exception->getMessage());
+            return $result;
         }
         return $result;
     }
