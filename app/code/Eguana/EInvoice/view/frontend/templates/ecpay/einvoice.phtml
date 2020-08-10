@@ -36,6 +36,12 @@
                 <strong class="box-title"><span><?= $block->escapeHtml(__("E-Invoice Number")) ?></span></strong>
                 <div class="box-content"><?= $block->escapeHtml(__($block->getEInvoiceNumber($block->getOrderId()))) ?></div>
             </div>
+            <?php if ($block->hasEInvoiceCellphoneBarCodeData($block->getOrderId()) > 0) : ?>
+                <div class="box">
+                    <strong class="box-title"><span><?= $block->escapeHtml(__("E-Invoice Cellphone BarCode")) ?></span></strong>
+                    <div class="box-content"><?= $block->escapeHtml(__($block->getEInvoiceCellphoneBarCode($block->getOrderId()))) ?></div>
+                </div>
+            <?php endif;?>
         </div>
     </div>
 <?php endif;?>
