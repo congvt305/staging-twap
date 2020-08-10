@@ -17,11 +17,4 @@
         <plugin name="after_place_order_operation"
                 type="Eguana\OrderDeliveryMessage\Plugin\Sales\Api\OrderManagement"/>
     </type>
-    <!--<type name="Magento\Sales\Model\Service\OrderService">
-        <plugin name="delivery_message_plugin" type="Eguana\OrderDeliveryMessage\Plugin\Checkout\Model\ShippingInformationManagement" sortOrder="1"/>
-    </type>-->
-    <!--<type name="Magento\Sales\Api\OrderRepositoryInterface">
-        <plugin name="deliverymessage_extension_attribute"
-                type="Eguana\OrderDeliveryMessage\Plugin\Sales\Model\OrderRepositoryPlugin" />
-    </type>-->
 </config>
