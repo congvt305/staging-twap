@@ -104,13 +104,11 @@
             }
 
             &-short-description {
-                .text-ellipsis(4,48px);
                 .lib-font-size(18);
                 line-height: 28px;
                 color: @primary__color__lighter;
                 word-break: keep-all;
                 word-wrap: break-word;
-                max-height: 48px;
                 font-family: 'buri', @font-family__sans-serif;
             }
 
@@ -305,18 +303,30 @@
                 &-name {
                     .text-ellipsis(2,auto);
                     .lib-font-size(18);
-                    font-weight: @font-weight__bold;
                     line-height: 1.1;
                     color: @primary__color__dark;
-                    max-height: 36px;
-                    margin: 0;
-                    height: 36px;
+                    margin: 0 0 @indent__xs;
+                }
+
+                &-name-en {
+                    font-family: 'buri', @font-family__sans-serif;
+                    font-size: 16px;
                 }
 
                 &-short-description {
                     .lib-font-size(12);
+                    color: @secondary__color;
                     line-height: 1.4;
-                    margin-top: 22px;
+                    margin-top: @indent__xs;
+
+                    ul {
+                        padding-left: @indent__base;
+                        list-style-type: square;
+
+                        li {
+                            margin-bottom: 0;
+                        }
+                    }
                 }
 
                 .actions-secondary {
@@ -631,6 +641,9 @@
     .products-list {
         .product {
             &-items {
+                border: 1px solid #e2e2e2;
+                border-top: none;
+
                 &:after {
                     display: block;
                     content: '';
@@ -641,9 +654,20 @@
             &-item {
                 width: 50%;
                 float: left;
-                border-right: 1px solid #e2e2e2;
                 padding: 40px;
                 text-align: left;
+
+                &:after {
+                    content: '';
+                    display: inline-block;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    width: 1px;
+                    background: #e2e2e2;
+                    position: absolute;
+                    z-index: 1;
+                }
 
                 &-contents-wrapper {
                     display: inline-block;
@@ -667,26 +691,34 @@
 
                 &-name {
                     .lib-font-size(23);
-                    max-height: 50px;
-                    height: 50px;
+                }
+
+                &-name-en {
+                    .lib-font-size(18);
                 }
 
                 &-short-description {
-                    .lib-font-size(15);
+                    .lib-font-size(14);
                     line-height: 1.6;
-                    margin-top: 26px;
-                    height: 72px;
-                    max-height: 72px;
+
+                    ul {
+                        margin-top: 50px;
+                    }
                 }
 
                 &:nth-child(odd) {
-                    border-left: 1px solid #e2e2e2;
                     padding-left: 39px;
+                    clear: left;
+                }
+
+                &:nth-child(even) {
+                    &:after {
+                        left: -1px;
+                    }
                 }
 
                 &:nth-last-child(1),
                 &:nth-last-child(2) {
-                    border-bottom: 1px solid #e2e2e2;
                     padding-bottom: 39px;
                 }
 
