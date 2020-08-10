@@ -10181,7 +10181,7 @@ offered and the currency offered by the merchant is USD.",module,Magento_Paypal
 "We found an invalid item option format.","We found an invalid item option format.",module,Magento_Quote
 "An item option with code %1 already exists.","An item option with code %1 already exists.",module,Magento_Quote
 "Item qty declaration error","Item qty declaration error",module,Magento_Quote
-"Some of the products below do not have all the required options.","Some of the products below do not have all the required options.",module,Magento_Quote
+"Some of the products below do not have all the required options.","下面的部分產品沒有全部所需選項。",module,Magento_Quote
 "Something went wrong during the item options declaration.","Something went wrong during the item options declaration.",module,Magento_Quote
 "We found an item options declaration error.","We found an item options declaration error.",module,Magento_Quote
 "Some of the selected options are not currently available.","Some of the selected options are not currently available.",module,Magento_Quote
