@@ -79,7 +79,6 @@ class DefaultConfigProvider
             }
         } catch (\Exception $exception) {
             $this->logger->info('CustomCheckout | afterGetConfig exception message', [$exception->getMessage()]);
-            return $result;
         }
         return $result;
     }
