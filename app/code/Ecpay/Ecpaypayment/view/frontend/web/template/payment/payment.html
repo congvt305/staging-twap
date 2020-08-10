@@ -79,8 +79,7 @@
                         <input type="radio" id="donation-invoice" name="ecpay_einvoice_type" value="donation-invoice" data-bind="checked: invoiceChecked">
                         <label for="donation-invoice" class="label" data-bind="i18n: 'Donation Invoice'"/>
                         <div class="fieldset"  id="donation-invoice-contents" data-bind="visible: invoiceChecked() === 'donation-invoice'">
-                            <p>Title : ___</p>
-                            <p>Code : ___</p>
+                            <p data-bind="i18n: 'Donate the receipt to Taiwan Cancer Foundation.'"/>
                         </div>
                     </div>
                     <div class="control">
