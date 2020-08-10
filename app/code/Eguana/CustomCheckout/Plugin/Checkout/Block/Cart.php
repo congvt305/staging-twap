@@ -29,6 +29,7 @@ class Cart
      */
     public function afterGetItems(\Magento\Checkout\Block\Cart $subject, $items)
     {
+        return $items;
        $itemsWithGiftInfo = array();
         foreach ($items as $item) {
             if ($this->promoItemHelper->isPromoItem($item)) {
