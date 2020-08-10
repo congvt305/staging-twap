@@ -50,6 +50,9 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                         <strong class="product name product-item-name">
                             <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                         </strong>
+                        <strong class="product-item-name-en">
+                            <?= $block->escapeHtml($_product->getResource()->getAttributeRawValue($_product->getId(),'name',0));?>
+                        </strong>
                         <div class="product-item-contents-wrapper">
                     <?php endif;?>
                         <div class="product-item-info" data-container="product-<?= /* @noEscape */ $viewMode ?>">

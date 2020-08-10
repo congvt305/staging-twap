@@ -240,7 +240,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : $orderData->getRewardPointsBalance(),
                 'shpwr' => $orderData->getShippingAmount(),
                 'mwsbp' => $orderData->getTaxAmount(),
-                'spitn1' => $orderData->getExtensionAttributes()->getDeliveryMessage(),
+                'spitn1' => $orderData->getDeliveryMessage(),
                 'vkorgOri' => $this->config->getSalesOrg('store', $storeId),
                 'kunnrOri' => $this->config->getClient('store', $storeId),
                 'odrnoOri' => $orderData->getIncrementId(),

@@ -121,4 +121,29 @@ class EInvoice extends \Magento\Framework\View\Element\Template
         $eInvoiceTriplicateInformation = $this->getEInvoiceTriplicateInformation($orderId);
         return $eInvoiceTriplicateInformation["ecpay_einvoice_tax_id_number"];
     }
+
+    public function hasEInvoiceCellphoneBarCodeData($orderId)
+    {
+        return is_null($this->getEInvoiceCellphoneBarCodeInformation($orderId)) ? 0 : count($this->getEInvoiceCellphoneBarCodeInformation($orderId));
+    }
+
+    protected function getEInvoiceCellphoneBarCodeInformation($orderId)
+    {
+        $order = $this->orderRepository->get($orderId);
+        $payment = $order->getPayment();
+        $additionalInfo = $payment->getAdditionalInformation();
+        $rawDetailsInfo = $additionalInfo["raw_details_info"];
+
+        if (!empty($rawDetailsInfo["ecpay_einvoice_cellphone_barcode"])) {
+            return $rawDetailsInfo;
+        } else {
+            return null;
+        }
+    }
+
+    public function getEInvoiceCellphoneBarCode($orderId)
+    {
+        $eInvoiceCellphoneBarCodeInformation = $this->getEInvoiceCellphoneBarCodeInformation($orderId);
+        return $eInvoiceCellphoneBarCodeInformation["ecpay_einvoice_cellphone_barcode"];
+    }
 }
