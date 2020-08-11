@@ -4,8 +4,8 @@
  * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  * Created by PhpStorm
  * User: abbas
- * Date: 20. 8. 4
- * Time: 오전 11:02
+ * Date: 20. 8. 11
+ * Time: 오후 1:40
  */
 
 namespace Amore\CustomerRegistration\Observer\Customer;
@@ -16,11 +16,11 @@ use Magento\Framework\Event\ObserverInterface;
 use Amore\CustomerRegistration\Model\POSSyncAPI;
 
 /**
- * To sync with POS on customer delete
- * Class DeleteSuccess
+ * To communicate with the POS on customer address change
+ * Class AfterAddressSaveObserver
  * @package Amore\CustomerRegistration\Observer\Customer
  */
-class DeleteSuccess implements ObserverInterface
+class AfterAddressSaveObserver implements ObserverInterface
 {
     /**
      * @var POSSystem
@@ -46,22 +46,23 @@ class DeleteSuccess implements ObserverInterface
         $this->posSyncAPI = $posSyncAPI;
     }
 
-    /**
-     * Observer called on successfull customer deletion
-     *
-     * @param \Magento\Framework\Event\Observer $observer
-     */
     public function execute(
         \Magento\Framework\Event\Observer $observer
     ) {
         try {
-            /** @var \Magento\Customer\Model\Data\Customer $customer */
-            $customer = $observer->getEvent()->getCustomer();
-            $customerDefaultBillingAddress = $customer->getDefaultBilling();
-            $APIParameters = $this->posSyncAPI->getAPIParameters($customer, $customerDefaultBillingAddress, 'delete');
-            $this->POSSystem->syncMember($APIParameters);
+            /** @var \Magento\Customer\Model\Address $address */
+            $address = $observer->getData('customer_address');
+            if ($address->getIsDefaultBilling()) {
+                $customer = $address->getCustomer();
+                if ($customer->getData('dm_subscription_status')) {
+                    $APIParameters = $this->posSyncAPI->getAPIParameters($customer, $address, 'update');
+                    $this->POSSystem->syncMember($APIParameters);
+
+                }
+            }
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
         }
+
     }
 }

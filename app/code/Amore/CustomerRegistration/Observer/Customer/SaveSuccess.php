@@ -326,7 +326,6 @@ class SaveSuccess implements ObserverInterface
     private function createAddressFromDMAddress($customerId, $customerData)
     {
         try {
-
             $status = isset($customerData['dm_subscription_status_checkbox'])?$customerData['dm_subscription_status_checkbox']:'';
             if ($status == 'on') {
                 $dmCity = $customerData['dm_city'];
