@@ -5,14 +5,50 @@
 & when (@media-common = true) {
     .e-invoice {
         .control {
-            margin-bottom: @indent__s;
+            margin-bottom: 15px;
+
+            input[type="radio"]:checked + label {
+                font-weight: @font-weight__bold !important;
+            }
 
             .fieldset {
-                margin-top: @indent__s;
+                margin-top: 15px;
                 
                 > .field.note {
                     text-align: left;
+
+                    span {
+                        .lib-font-size(15);
+                        color: #787878;
+                        display: block;
+                        line-height: 24px;
+                    }
                 }
+
+                > p {
+                    .lib-font-size(15);
+                    color: #787878;
+                    line-height: 24px;
+                }
+
+                label {
+                    .lib-font-size(15);
+                    font-weight: @font-weight__regular;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .e-invoice {
+        .control .fieldset {
+            input[type="text"] {
+                max-width: 221px;
             }
         }
     }

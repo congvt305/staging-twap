@@ -8,6 +8,7 @@
 
 namespace Amore\Sap\Controller\Adminhtml\SapOrder;
 
+use Amore\Sap\Exception\ShipmentNotExistException;
 use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Model\Source\Config;
@@ -131,6 +132,9 @@ class OrderSend extends AbstractAction
                         __('Something went wrong while sending order data to SAP. No response')
                     );
                 }
+            } catch (ShipmentNotExistException $e) {
+                $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                $this->messageManager->addErrorMessage($e->getMessage());
             } catch (NoSuchEntityException $e) {
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                 $this->messageManager->addErrorMessage($e->getMessage());

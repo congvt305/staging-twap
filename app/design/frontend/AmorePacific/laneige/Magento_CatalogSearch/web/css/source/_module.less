@@ -50,7 +50,7 @@
                 + .control {
                     border-top: 1px solid @border-color__base;
                     position: fixed;
-                    top: 100px;
+                    top: 60px;
                     left: 0;
                     right: 0;
                     z-index: 5;
@@ -63,7 +63,7 @@
                     height: 100%;
                     position: fixed;
                     right: 0;
-                    top: 100px;
+                    top: 60px;
                     width: 100%;
                     z-index: 2;
                 }
@@ -217,8 +217,9 @@
 
     .search-open {
         height: 100%;
-        overflow-x: hidden;
+        overflow: hidden;
         width: 100%;
+        touch-action: none;
 
         body {
             height: 100%;

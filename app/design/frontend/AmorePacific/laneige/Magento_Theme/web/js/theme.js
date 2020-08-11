@@ -50,14 +50,16 @@ define([
 
     var stickyHeader = function () {
         var scrollTop = $(window).scrollTop();
-        var stickyPageWrapperTop = $('.page-wrapper').offset().top;
+        var stickyVal = 0;
 
-        if (scrollTop === 0) {
-            $('.page-header').css('top',stickyPageWrapperTop);
-        }else if(scrollTop <= stickyPageWrapperTop) {
-            $('.page-header').css('top',stickyPageWrapperTop - scrollTop);
-        }else {
-            $('.page-header').css('top',0);
+        if ($('.laneige-top-banner').offset()) {
+            stickyVal = $('.laneige-top-banner').height();
+        }
+
+        if ($(window).scrollTop() <= stickyVal) {
+            $('.page-header').removeClass('sticky');
+        } else {
+            $('.page-header').addClass('sticky');
         }
     };
 
@@ -82,7 +84,7 @@ define([
                 var top = offsetTop - stickyHeight - 10;
                 var id = $(element).attr('id');
 
-                if(id != 'community_gallery') {
+                if (id != 'community_gallery') {
                     if (scrollTop > top && scrollTop > 0) {
                         var id = $(element).attr('id');
                         $('.product.data.items >.data.item.title').removeClass('active');

@@ -84,6 +84,12 @@ class Callback extends Action
         $clientId = $this->helper->getGoogleClientId();
         $clientSecret = $this->helper->getGoogleClientSecret();
         $clientRedirectUrl = $this->helper->getGoogleCallbackUrl();
+        $state = $this->getRequest()->getParam('state');
+        if ($this->socialLoginModel->getCoreSession()->getGoogleLoginState() != $state) {
+            $this->getResponse()->setBody(__('Warning! State mismatch. Authentication attempt may have been compromised.'));
+            return null;
+        }
+        $this->socialLoginModel->getCoreSession()->unsGoogleLoginState();
         // Google passes a parameter 'code' in the Redirect Url
         if (isset($params['code'])) {
             try {
