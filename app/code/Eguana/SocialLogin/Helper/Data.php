@@ -35,7 +35,7 @@ class Data extends AbstractHelperAlias
     const XML_SOCIAL_GOOGLE_CLIENT_ID       = 'SocialLogin/google/client_id';
     const XML_SOCIAL_GOOGLE_CLIENT_SECRET   = 'SocialLogin/google/client_secret';
     const XML_SOCIAL_GOOGLE_CALLBACK_URL    = 'SocialLogin/google/oauth_redirect_uri';
-    const XML_LINE_ADD_FRIEND               = 'SocialLogin/general/line_add_friend';
+    const XML_LINE_ADD_FRIEND               = 'SocialLogin/line/line_add_friend';
 
     /**
      * @var PageFactory
