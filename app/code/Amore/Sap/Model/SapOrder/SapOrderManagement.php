@@ -104,6 +104,10 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @var \Magento\Rma\Model\Rma\Status\HistoryFactory
      */
     private $historyFactory;
+    /**
+     * @var \Magento\Sales\Api\ShipmentTrackRepositoryInterface
+     */
+    private $shipmentTrackRepository;
 
     /**
      * SapOrderManagement constructor.
@@ -123,6 +127,7 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @param \Magento\Rma\Model\ResourceModel\Item\CollectionFactory $rmaItemFactory
      * @param \Magento\Rma\Model\Rma\Source\StatusFactory $rmaStatusFactory
      * @param \Magento\Rma\Model\Rma\Status\HistoryFactory $historyFactory
+     * @param \Magento\Sales\Api\ShipmentTrackRepositoryInterface $shipmentTrackRepository
      */
     public function __construct(
         ShipmentItemCreationInterfaceFactory $shipmentItemCreationInterfaceFactory,
@@ -140,7 +145,8 @@ class SapOrderManagement implements SapOrderManagementInterface
         RmaRepositoryInterface $rmaRepository,
         \Magento\Rma\Model\ResourceModel\Item\CollectionFactory $rmaItemFactory,
         \Magento\Rma\Model\Rma\Source\StatusFactory $rmaStatusFactory,
-        \Magento\Rma\Model\Rma\Status\HistoryFactory $historyFactory
+        \Magento\Rma\Model\Rma\Status\HistoryFactory $historyFactory,
+        \Magento\Sales\Api\ShipmentTrackRepositoryInterface $shipmentTrackRepository
     ) {
         $this->shipmentItemCreationInterfaceFactory = $shipmentItemCreationInterfaceFactory;
         $this->shipmentTrackCreationInterfaceFactory = $shipmentTrackCreationInterfaceFactory;
@@ -158,6 +164,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         $this->rmaItemFactory = $rmaItemFactory;
         $this->rmaStatusFactory = $rmaStatusFactory;
         $this->historyFactory = $historyFactory;
+        $this->shipmentTrackRepository = $shipmentTrackRepository;
     }
 
     public function orderStatus($orderStatusData)
@@ -206,13 +213,10 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $rmaIncrementId = str_replace("R", "", $incrementId);
                 /** @var \Magento\Rma\Model\Rma $rma */
                 $rma = $this->getRma($rmaIncrementId);
-                $order = $this->orderRepository->get($rma->getOrderId());
-                $returnSendCheck = $order->getData('sap_return_send_check');
 
-                if ($returnSendCheck != 1) {
-                    $rma->setData('sap_return_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
-                    $this->rmaRepository->save($rma);
-                }
+                $rma->setData('sap_return_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                $rma->setData('sap_response', $orderStatusData['ugtxt']);
+                $this->rmaRepository->save($rma);
             } else {
                 $order = $this->getOrderFromList($incrementId);
 
@@ -236,11 +240,11 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $rmaIncrementId = str_replace("R", "", $incrementId);
                 /** @var \Magento\Rma\Model\Rma $rma */
                 $rma = $this->getRma($rmaIncrementId);
-                $order = $this->orderRepository->get($rma->getOrderId());
-                $returnSendCheck = $order->getData('sap_return_send_check');
+                $returnSendCheck = $rma->getData('sap_return_send_check');
 
                 if ($returnSendCheck != 2) {
                     $rma->setData('sap_return_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                    $rma->setData('sap_response', $orderStatusData['ugtxt']);
                     $this->rmaRepository->save($rma);
                 }
             } else {
@@ -260,6 +264,13 @@ class SapOrderManagement implements SapOrderManagementInterface
         // case that DN is created
         if ($orderStatusData['odrstat'] == 3) {
             if (strpos($incrementId, "R") !== false) {
+                $rmaIncrementId = str_replace("R", "", $incrementId);
+                /** @var \Magento\Rma\Model\Rma $rma */
+                $rma = $this->getRma($rmaIncrementId);
+
+                $rma->setData('sap_response', $orderStatusData['ugtxt']);
+                $this->rmaRepository->save($rma);
+
                 $message = "Get DN Info from SAP for Return Order.";
                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
             } else {
@@ -300,8 +311,12 @@ class SapOrderManagement implements SapOrderManagementInterface
                 if ($rma->getStatus() == 'authorized') {
                     try {
                         $this->rmaChangeToReceived($rma);
-                        $message = "Rma " . $orderStatusData['odrno'] . " status changed to received Successfully.";
+                        $message = "Rma " . $orderStatusData['odrno'] . " status changed to approved Successfully.";
                         $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+                        $rma->setStatus('processed_closed');
+                        $rma->setData('sap_return_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                        $rma->setData('sap_response', $orderStatusData['ugtxt']);
+                        $this->rmaRepository->save($rma);
                     } catch (LocalizedException $exception) {
                         $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
                     } catch (\Exception $exception) {
@@ -330,11 +345,11 @@ class SapOrderManagement implements SapOrderManagementInterface
                             // case that failed to creat shipment in Magento
                             if (empty($shipmentId)) {
                                 $message = "Could not create shipment.";
-                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
 
                                 $order->setData('sap_response', $message);
                                 $this->orderRepository->save($order);
 
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                                 // case to create shipment successfully
                             } else {
                                 try {
@@ -366,40 +381,59 @@ class SapOrderManagement implements SapOrderManagementInterface
                         }
                     } else {
                         if ($order->getShippingMethod() == 'gwlogistics_CVS') {
-                            if ($order->getStatus() != 'shipment_processing') {
-                                try {
-                                    $this->setQtyShipToOrderItem($order);
+                            try {
+                                /** @var \Magento\Sales\Model\Order\Shipment\Track $track */
+                                $track = $this->getSingleTrackByOrder($order);
+                                $trackingNumber = $track->getTrackNumber();
 
-                                    if ($order->getStatus() == 'complete') {
-                                        $order->setStatus('shipment_processing');
-                                        $order->setData('sap_response', $orderStatusData['ugtxt']);
-                                        $this->orderRepository->save($order);
-                                    } else {
-                                        $order->setState('complete');
-                                        $order->setStatus('shipment_processing');
-                                        $order->setData('sap_response', $orderStatusData['ugtxt']);
-                                        $this->orderRepository->save($order);
-                                    }
-
-                                    $message = "Order already has a shipment. Order Status changed to Shipment Processing.";
-                                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
-
-                                    if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                        $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
-                                        $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
-                                    }
-                                } catch (\Exception $exception) {
-                                    $message = "Something went wrong while saving order : " . $incrementId;
-                                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-                                    if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                        $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
-                                    }
+                                if ($trackingNumber != $orderStatusData['ztrackId']) {
+                                    $trackById = $this->shipmentTrackRepository->get($track->getEntityId());
+                                    $trackById->setTrackNumber($orderStatusData['ztrackId']);
+                                    $this->shipmentTrackRepository->save($trackById);
                                 }
-                            } else {
-                                $message = "Order already has a shipment and Order Status is already Shipment Processing.";
+
+                                $this->setQtyShipToOrderItem($order);
+
+                                if ($order->getStatus() == 'complete') {
+                                    $order->setStatus('shipment_processing');
+                                    $order->setData('sap_response', $orderStatusData['ugtxt']);
+                                    $this->orderRepository->save($order);
+                                } else {
+                                    $order->setState('complete');
+                                    $order->setStatus('shipment_processing');
+                                    $order->setData('sap_response', $orderStatusData['ugtxt']);
+                                    $this->orderRepository->save($order);
+                                }
+
+                                $message = "Order already has a shipment. Order Status changed to Shipment Processing.";
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+
+                                if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                                    $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
+                                    $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
+                                }
+                            } catch (\Exception $exception) {
+                                $message = "Something went wrong while saving order : " . $incrementId;
                                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                                if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                                    $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
+                                }
                             }
                         } else {
+                            /** @var \Magento\Sales\Model\Order\Shipment\Track $track */
+                            $track = $this->getSingleTrackByOrder($order);
+                            $trackingNumber = $track->getTrackNumber();
+
+                            if ($trackingNumber != $orderStatusData['ztrackId']) {
+                                $trackById = $this->shipmentTrackRepository->get($track->getEntityId());
+                                $trackById->setTrackNumber($orderStatusData['ztrackId']);
+                                $this->shipmentTrackRepository->save($trackById);
+
+                                $message = "Shipping method is not Greenworld and Trackin number is changed.";
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+                                return $result;
+                            }
+
                             $message = "Shipping method is not Greenworld and Shipment exists. Please Check Order.";
                             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                         }
@@ -548,6 +582,17 @@ class SapOrderManagement implements SapOrderManagementInterface
         $trackNo->setTrackNumber($trackingNo);
 
         return [$trackNo];
+    }
+
+
+    /**
+     * @param $order \Magento\Sales\Model\Order
+     */
+    public function getSingleTrackByOrder($order)
+    {
+        $tracks = $order->getTracksCollection();
+
+        return $tracks->getFirstItem();
     }
 
     /**

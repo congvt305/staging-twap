@@ -8,6 +8,7 @@
 
 namespace Amore\Sap\Model\SapOrder;
 
+use Amore\Sap\Exception\ShipmentNotExistException;
 use Amore\Sap\Model\Source\Config;
 use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
 use Magento\Customer\Api\Data\CustomerInterface;
@@ -103,6 +104,7 @@ class SapOrderConfirmData extends AbstractSapOrder
     /**
      * @param $incrementId
      * @return array[]
+     * @throws ShipmentNotExistException
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -187,6 +189,7 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param $incrementId string
      * @return array
      * @throws NoSuchEntityException
+     * @throws ShipmentNotExistException
      */
     public function getOrderData($incrementId)
     {
@@ -194,12 +197,19 @@ class SapOrderConfirmData extends AbstractSapOrder
         $orderData = $this->getOrderInfo($incrementId);
         $invoice = $this->getInvoice($orderData->getEntityId());
         $storeId = $orderData->getStoreId();
+        $shippingMethod = $orderData->getShippingMethod();
 
         $bindData = [];
 
         if ($orderData == null) {
             throw new NoSuchEntityException(
                 __("Such order %1 does not exist. Check the data and try again", $incrementId)
+            );
+        }
+
+        if ($shippingMethod == 'gwlogistics_CVS' && !$orderData->hasShipments()) {
+            throw new ShipmentNotExistException(
+                __("Order %1 is CVS shipping and shipment does not Exist. Please create shipment and try again.", $incrementId)
             );
         }
 
@@ -391,7 +401,6 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         if ($invoice != null) {
 
-//            $orderItems = $order->getAllVisibleItems();
             $orderItems = $order->getAllItems();
 
             $cnt = 1;

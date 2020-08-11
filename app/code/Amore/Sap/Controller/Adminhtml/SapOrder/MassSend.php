@@ -8,6 +8,7 @@
 
 namespace Amore\Sap\Controller\Adminhtml\SapOrder;
 
+use Amore\Sap\Exception\ShipmentNotExistException;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
@@ -104,6 +105,12 @@ class MassSend extends AbstractAction
                     $orderItemDataList = array_merge($orderItemDataList, $orderItemData);
                 } else {
                     $orderStatusError[] = $order->getIncrementId();
+                }
+            } catch (ShipmentNotExistException $e) {
+                $orderStatusError[] = $order->getIncrementId() . ' : ' . $e->getMessage();
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info("MASS ORDER DATA NO SHIPMENT EXCEPTION");
+                    $this->logger->info($order->getIncrementId() . ' : ' . $e->getMessage());
                 }
             } catch (NoSuchEntityException $e) {
                 $orderStatusError[] = $order->getIncrementId() . ' : ' . $e->getMessage();
