@@ -6,4 +6,8 @@
 
     <preference for="Magento\Sales\Model\ResourceModel\Order\Creditmemo\Grid\Collection"
                 type="Amore\Sap\Model\ResourceModel\Order\Creditmemo\Grid\Collection" />
+    <preference for="Magento\Rma\Block\Adminhtml\Rma\Grid" type="Amore\Sap\Block\Adminhtml\Rma\CustomGrid" />
+    <preference for="Magento\Rma\Model\ResourceModel\Rma\Grid\Collection"
+                type="Amore\Sap\Model\ResourceModel\Rma\Grid\Collection" />
+
 </config>
