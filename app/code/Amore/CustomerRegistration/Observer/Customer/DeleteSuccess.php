@@ -96,7 +96,7 @@ class DeleteSuccess implements ObserverInterface
     {
         $parameters = [];
         $parameters['cstmIntgSeq'] = $customer->getData('integration_number');
-        $parameters['if_flag'] = 'D';
+        $parameters['if_flag'] = 'U';
         $parameters['firstName'] = trim($customer->getFirstname());
         $parameters['lastName'] = trim($customer->getLastname());
         $parameters['birthDay'] = $customer->getDob()?preg_replace('/\D/', '', $customer->getDob()):'';
@@ -150,7 +150,7 @@ class DeleteSuccess implements ObserverInterface
             $customer->getData('sales_office_code'):'';
         $parameters['prtnrid'] = $customer->getData('partner_id')?
             $customer->getData('partner_id'):'';
-        $parameters['statusCD'] = '01';
+        $parameters['statusCD'] = '02';
 
         return $parameters;
     }

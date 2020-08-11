@@ -49,6 +49,7 @@ Navigate to **Stores ⇾ Configuration** and the module **Social Login** under E
 **Configuration**
 
 1. Navigate to **Stores ⇾ Configuration** and click on **Social Login** under Eguana tab in the left panel.
+
  ![Configuration](https://i.ibb.co/hYLjrtw/social-login.png)
  
 **General Setting**
@@ -56,7 +57,9 @@ Navigate to **Stores ⇾ Configuration** and the module **Social Login** under E
 * Enable Module
 
 This is module main enable/disable button. This will decide either module is enable or disabled
+
  ![General](https://i.ibb.co/HYQGNpn/enable.png)
+
 **LINE**
 
 * Enable
@@ -74,7 +77,9 @@ Here you will enter channel secret
 * Callback URL
 
 This is the callback url for LINE Login
+
  ![Line](https://i.ibb.co/zSNPzyD/line.png)
+ 
 **Facebook**
 
 * Enable
@@ -92,7 +97,9 @@ Here you will enter app secret
 * OAuth Redirect URI
 
 This is the callback url for Facebook Login
+
  ![Facebook](https://i.ibb.co/bNJfp3W/facebook.png)
+ 
 **Google**
 
 * Enable
@@ -110,7 +117,12 @@ Here you will enter app secret
 * OAuth Redirect URI
 
 This is the callback url for Google Login
+
  ![Google](https://i.ibb.co/sVvhY06/google.png)
+
+User can add LINE Add friend link
+
+ ![LINEAddFriend](https://i.ibb.co/svt0JjH/lineaddfriendup-date.png)
 
 **Frontend**
 
@@ -126,4 +138,12 @@ If the customer is logging in for the first time then he will go to Social Login
  ![SocialLoginpage](https://i.ibb.co/TLxdz0r/sociallogin.png)
 
 At this page he can decide if he can link his existing account with social media Or create a new account.
+
+Customer can click LINE Add Friend button on customer registration to add as a friend on LINE.
+
+ ![SocialLoginpage](https://i.ibb.co/pWvLDHr/regisline.png)
+
+Customer can click LINE Add Friend button on shopping cart success page to add as a friend on LINE.
+
+ ![SocialLoginpage](https://i.ibb.co/xs8jJ22/cartline.png)
 

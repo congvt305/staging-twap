@@ -13,7 +13,4 @@
     <extension_attributes for="Magento\Checkout\Api\Data\ShippingInformationInterface">
         <attribute code="delivery_message" type="string"/>
     </extension_attributes>
-    <extension_attributes for="Magento\Sales\Api\Data\OrderInterface">
-        <attribute code="delivery_message" type="string" />
-    </extension_attributes>
 </config>

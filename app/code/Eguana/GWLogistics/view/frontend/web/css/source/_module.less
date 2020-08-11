@@ -1,0 +1,47 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    #cvs-fields {
+        .cvs-map {
+            margin-bottom: @indent__s;
+        }
+
+        .fieldset {
+            margin-bottom: 0;
+
+            & > .field {
+                margin-bottom: @indent__s;
+
+                & > .label {
+                    display: none;
+                    font-size: 15px;
+                    font-weight: @font-weight__regular;
+                }
+            }
+        }
+
+        .action {
+            width: 135px;
+            font-size: 14px;
+
+            &:before {
+                content: '';
+                background-image: url('../Eguana_GWLogistics/images/7-eleven.svg');
+                background-size: 16px;
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                vertical-align: top;
+            }
+
+            &.action-open-fami-map {
+                &:before {
+                    background-image: url('../Eguana_GWLogistics/images/familymart.svg');
+                }
+            }
+        }
+    }
+}
+

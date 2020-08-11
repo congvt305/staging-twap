@@ -15,6 +15,7 @@
         <sequence>
             <module name="Magento_Customer"/>
             <module name="Eguana_Base"/>
+            <module name="Magento_Checkout"/>
         </sequence>
     </module>
 </config>

@@ -118,9 +118,8 @@ class Callback extends Action
         $redirect_uri = $this->helper->getCallbackUrl();
         $state = $this->getRequest()->getParam('state');
         if ($this->socialLoginModel->getCoreSession()->getLineLoginState() != $state) {
-            $this->messageManager->addError(
-                __('Warning! State mismatch. Authentication attempt may have been compromised.')
-            );
+            $this->getResponse()->setBody(__('Warning! State mismatch. Authentication attempt may have been compromised.'));
+            return null;
         }
         $this->socialLoginModel->getCoreSession()->unsLineLoginState();
         if (!isset($code)) {

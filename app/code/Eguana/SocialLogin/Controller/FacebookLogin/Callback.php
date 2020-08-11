@@ -101,12 +101,11 @@ class Callback extends Action
         $client_id = $this->helper->getAppId();
         $client_secret = $this->helper->getAppSecret();
         $redirect_uri = $this->helper->getFbCallbackUrl();
-        if ($this->socialLoginModel->getCoreSession()->getLineLoginState() != $state) {
-            $this->messageManager->addError(
-                __('Warning! State mismatch. Authentication attempt may have been compromised.')
-            );
+        if ($this->socialLoginModel->getCoreSession()->getFacebookLoginState() != $state) {
+            $this->getResponse()->setBody(__('Warning! State mismatch. Authentication attempt may have been compromised.'));
+            return null;
         }
-        $this->socialLoginModel->getCoreSession()->unsLineLoginState();
+        $this->socialLoginModel->getCoreSession()->unsFacebookLoginState();
         $response = $this->getAccessToken($client_id, $client_secret, $redirect_uri, $code);
         try {
             $access_token = $response['access_token'];
