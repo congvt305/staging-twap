@@ -35,6 +35,7 @@ class Data extends AbstractHelperAlias
     const XML_SOCIAL_GOOGLE_CLIENT_ID       = 'SocialLogin/google/client_id';
     const XML_SOCIAL_GOOGLE_CLIENT_SECRET   = 'SocialLogin/google/client_secret';
     const XML_SOCIAL_GOOGLE_CALLBACK_URL    = 'SocialLogin/google/oauth_redirect_uri';
+    const XML_LINE_ADD_FRIEND               = 'SocialLogin/line/line_add_friend';
 
     /**
      * @var PageFactory
@@ -67,6 +68,15 @@ class Data extends AbstractHelperAlias
             $isEnabled = false;
         }
         return $isEnabled;
+    }
+
+    /**
+     * Get line add friend link
+     * @return mixed
+     */
+    public function getLineAddFriendLink()
+    {
+        return $this->scopeConfig->getValue(self::XML_LINE_ADD_FRIEND, ScopeInterface::SCOPE_STORE);
     }
 
     /**
