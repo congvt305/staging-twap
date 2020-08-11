@@ -17,6 +17,7 @@ use Amore\Sap\Model\SapOrder\SapOrderReturnData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Rma\Model\Rma;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -58,6 +59,10 @@ class RmaPlugin
      * @var SapOrderReturnData
      */
     private $sapOrderReturnData;
+    /**
+     * @var ManagerInterface
+     */
+    private $messageManager;
 
     /**
      * RmaPlugin constructor.
@@ -67,6 +72,7 @@ class RmaPlugin
      * @param Logger $logger
      * @param OrderRepositoryInterface $orderRepository
      * @param SapOrderReturnData $sapOrderReturnData
+     * @param ManagerInterface $messageManager
      */
     public function __construct(
         Json $json,
@@ -74,7 +80,8 @@ class RmaPlugin
         Config $config,
         Logger $logger,
         OrderRepositoryInterface $orderRepository,
-        SapOrderReturnData $sapOrderReturnData
+        SapOrderReturnData $sapOrderReturnData,
+        ManagerInterface $messageManager
     ) {
         $this->json = $json;
         $this->request = $request;
@@ -82,6 +89,7 @@ class RmaPlugin
         $this->logger = $logger;
         $this->orderRepository = $orderRepository;
         $this->sapOrderReturnData = $sapOrderReturnData;
+        $this->messageManager = $messageManager;
     }
 
     public function beforeSaveRma(Rma $subject, $data)
@@ -122,9 +130,10 @@ class RmaPlugin
                                 if ($data['retcod'] == 'S') {
                                     if ($rmaSendCheck == 0 || $rmaSendCheck == 2) {
                                         $subject->setData('sap_return_send_check', self::RMA_RESENT_TO_SAP_SUCCESS);
-                                        $subject->setData('sap_return_increment_id', $data['odrno']);
+                                        $this->messageManager->addSuccessMessage(__("Resent Return Data to Sap Successfully."));
                                     } else {
-                                        $subject->setData('sap_return_send_check', self::RMA_RESENT_TO_SAP_SUCCESS);
+                                        $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_SUCCESS);
+                                        $this->messageManager->addSuccessMessage(__("Sent Return Data to Sap Successfully."));
                                     }
                                 } else {
                                     $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
