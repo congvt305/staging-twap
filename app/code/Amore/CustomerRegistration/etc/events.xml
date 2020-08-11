@@ -16,4 +16,7 @@
     <event name="customer_delete_after">
         <observer instance="Amore\CustomerRegistration\Observer\Customer\DeleteSuccess" name="customer_delete_succes"/>
     </event>
+    <event name="customer_address_save_after">
+        <observer name="customer_address_after_save_pos_observer" instance="Amore\CustomerRegistration\Observer\Customer\AfterAddressSaveObserver" />
+    </event>
 </config>
