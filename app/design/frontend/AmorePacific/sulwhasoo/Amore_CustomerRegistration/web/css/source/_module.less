@@ -3,12 +3,17 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+  .form-edit-account {
+    .show-dob-title + .control {
+      margin-top: @indent__xs;
+    }
+  }
+  .form-edit-account,
   .form-create-account-pos {
     .field {
       &.mobile,
       &.verification-code {
         .control {
-          overflow: hidden;
           position: relative;
         }
 
@@ -53,6 +58,27 @@
         .verification-message,
         .countdown {
           color: #e82b24;
+        }
+      }
+    }
+  }
+
+  .customer-account-edit {
+    .checkbox-wrapper .label {
+      width: auto !important;
+
+      & + span {
+        line-height: 24px;
+        margin-left: 15px;
+
+        a {
+          color: @theme__color__secondary;
+
+          &:hover,
+          &:active,
+          &:focus {
+            color: @theme__color__primary-alt;
+          }
         }
       }
     }
@@ -166,6 +192,7 @@
     margin-right: -@layout__width-xs-indent !important;
   }
 
+  .form-edit-account,
   .form-create-account-pos {
     .field {
       &.mobile,
@@ -215,6 +242,7 @@
     margin-bottom: 16px !important;
   }
 
+  .form-edit-account,
   .form-create-account-pos {
     .field {
       &.mobile,

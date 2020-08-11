@@ -109,7 +109,7 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
         <div class="field password current required">
             <label class="label" for="current-password"><span><?= $block->escapeHtml(__('Current Password')) ?></span></label>
             <div class="control">
-                <input type="password" class="input-text" name="current_password" id="current-password" data-input="current-password" autocomplete="off" />
+                <input type="password" class="input-text" placeholder="<?= $block->escapeHtml(__('Current Password')) ?>" name="current_password" id="current-password" data-input="current-password" autocomplete="off" />
             </div>
         </div>
         <div class="field new password required" data-container="new-password">
@@ -120,6 +120,7 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
                        data-password-min-character-sets="<?= $block->escapeHtmlAttr($block->getRequiredCharacterClassesNumber()) ?>"
                        data-input="new-password"
                        data-validate="{required:true, 'validate-customer-password':true}"
+                       placeholder="<?= $block->escapeHtml(__('New Password')) ?>"
                        autocomplete="off" />
                 <div id="password-strength-meter-container" data-role="password-strength-meter" aria-live="polite">
                     <div id="password-strength-meter" class="password-strength-meter">
@@ -136,6 +137,7 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
             <div class="control">
                 <input type="password" class="input-text" name="password_confirmation" id="password-confirmation"
                        data-input="confirm-password"
+                       placeholder="<?= $block->escapeHtml(__('Confirm New Password')) ?>"
                        autocomplete="off" />
             </div>
         </div>
