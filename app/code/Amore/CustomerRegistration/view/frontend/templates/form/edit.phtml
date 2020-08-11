@@ -24,6 +24,7 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
                 <span><?= $block->escapeHtml($block->getCustomer()->getDob()); ?></span>
             </div>
         </div>
+            <input type="text" hidden name="dob" id="dob" value="<?= $block->escapeHtml($block->getCustomer()->getDob()); ?>">
         <?php endif ?>
 
         <?php $_taxvat = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Taxvat::class) ?>
