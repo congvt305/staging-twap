@@ -206,13 +206,10 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $rmaIncrementId = str_replace("R", "", $incrementId);
                 /** @var \Magento\Rma\Model\Rma $rma */
                 $rma = $this->getRma($rmaIncrementId);
-                $order = $this->orderRepository->get($rma->getOrderId());
-                $returnSendCheck = $order->getData('sap_return_send_check');
 
-                if ($returnSendCheck != 1) {
-                    $rma->setData('sap_return_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
-                    $this->rmaRepository->save($rma);
-                }
+                $rma->setData('sap_return_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                $rma->setData('sap_response', $orderStatusData['ugtxt']);
+                $this->rmaRepository->save($rma);
             } else {
                 $order = $this->getOrderFromList($incrementId);
 
@@ -236,11 +233,11 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $rmaIncrementId = str_replace("R", "", $incrementId);
                 /** @var \Magento\Rma\Model\Rma $rma */
                 $rma = $this->getRma($rmaIncrementId);
-                $order = $this->orderRepository->get($rma->getOrderId());
-                $returnSendCheck = $order->getData('sap_return_send_check');
+                $returnSendCheck = $rma->getData('sap_return_send_check');
 
                 if ($returnSendCheck != 2) {
                     $rma->setData('sap_return_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                    $rma->setData('sap_response', $orderStatusData['ugtxt']);
                     $this->rmaRepository->save($rma);
                 }
             } else {
@@ -260,6 +257,13 @@ class SapOrderManagement implements SapOrderManagementInterface
         // case that DN is created
         if ($orderStatusData['odrstat'] == 3) {
             if (strpos($incrementId, "R") !== false) {
+                $rmaIncrementId = str_replace("R", "", $incrementId);
+                /** @var \Magento\Rma\Model\Rma $rma */
+                $rma = $this->getRma($rmaIncrementId);
+
+                $rma->setData('sap_response', $orderStatusData['ugtxt']);
+                $this->rmaRepository->save($rma);
+
                 $message = "Get DN Info from SAP for Return Order.";
                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
             } else {
@@ -300,8 +304,12 @@ class SapOrderManagement implements SapOrderManagementInterface
                 if ($rma->getStatus() == 'authorized') {
                     try {
                         $this->rmaChangeToReceived($rma);
-                        $message = "Rma " . $orderStatusData['odrno'] . " status changed to received Successfully.";
+                        $message = "Rma " . $orderStatusData['odrno'] . " status changed to approved Successfully.";
                         $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+                        $rma->setStatus('processed_closed');
+                        $rma->setData('sap_return_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                        $rma->setData('sap_response', $orderStatusData['ugtxt']);
+                        $this->rmaRepository->save($rma);
                     } catch (LocalizedException $exception) {
                         $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
                     } catch (\Exception $exception) {
@@ -330,11 +338,11 @@ class SapOrderManagement implements SapOrderManagementInterface
                             // case that failed to creat shipment in Magento
                             if (empty($shipmentId)) {
                                 $message = "Could not create shipment.";
-                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
 
                                 $order->setData('sap_response', $message);
                                 $this->orderRepository->save($order);
 
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                                 // case to create shipment successfully
                             } else {
                                 try {
