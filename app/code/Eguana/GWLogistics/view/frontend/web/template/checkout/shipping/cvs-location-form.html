@@ -11,7 +11,7 @@
                            name="CVSStoreName"
                            id="CVSStoreName"
                            class="input-text"
-                           data-bind="value: getCvsLocation().CVSStoreName">
+                           data-bind="value: getCvsLocation().CVSStoreName, attr: {placeholder: $t('CVS Store Name')}">
                 </div>
             </div>
             <div class="field">
@@ -23,7 +23,7 @@
                            name="CVSAddress"
                            id="CVSAddress"
                            class="input-text"
-                           data-bind="value: getCvsLocation().CVSAddress">
+                           data-bind="value: getCvsLocation().CVSAddress, attr: {placeholder: $t('CVS Store Address')}">
                 </div>
             </div>
         </fieldset>
