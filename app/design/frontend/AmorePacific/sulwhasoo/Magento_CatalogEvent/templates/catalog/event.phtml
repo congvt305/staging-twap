@@ -17,7 +17,11 @@
     <div class="block block-category-event <?= $block->escapeHtmlAttr($_event->getStatus()) ?>">
         <div class="block-title">
             <strong>
-                <?= $block->escapeHtml($block->getStatusText($_event)) ?>
+                <?php if($_event->getStatus() == 'closed') : ?>
+                    <?= $block->escapeHtml(__('event closed')) ?>
+                <?php else : ?>
+                    <?= $block->escapeHtml($block->getStatusText($_event)) ?>
+                <?php endif; ?>
             </strong>
         </div>
         <div class="block-content">
