@@ -107,10 +107,10 @@ class Sequence implements SequenceInterface
         }
 
         $channel = $this->customerType == 'online'?'2':'1';
-
+        $websiteId = $this->customerWebsiteId?$this->customerWebsiteId:$this->storeManager->getStore()->getWebsiteId();
         return sprintf(
             $this->pattern,
-            $this->configHelper->getOfficeSalesCode().$channel,
+            $this->configHelper->getOfficeSalesCode($websiteId).$channel,
             $this->calculateCurrentValue(),
             ''
         );
@@ -124,12 +124,8 @@ class Sequence implements SequenceInterface
     public function getNextValue()
     {
         try {
-            $this->logger->addExceptionMessage('start');
-            $this->logger->addExceptionMessage($this->getCurrentWebsiteTable());
             $this->connection->insert($this->getCurrentWebsiteTable(), []);
-            $this->logger->addExceptionMessage('2');
             $this->lastIncrementId = $this->connection->lastInsertId($this->getCurrentWebsiteTable());
-            $this->logger->addExceptionMessage('3');
             return $this->getCurrentValue();
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
