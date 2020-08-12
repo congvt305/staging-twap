@@ -19,6 +19,8 @@ use Amore\CustomerRegistration\Api\Data\DataResponseInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
+use Magento\Customer\Api\Data\AddressInterface;
+use Magento\Customer\Api\AddressRepositoryInterface;
 
 /**
  * Implement the API module interface
@@ -82,6 +84,14 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      * @var RegionResourceModel
      */
     private $regionResourceModel;
+    /**
+     * @var AddressRepositoryInterface
+     */
+    private $addressRepository;
+    /**
+     * @var AddressInterface
+     */
+    private $addressData;
 
     public function __construct(
         RegionFactory $regionFactory,
@@ -96,7 +106,9 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         ResponseInterface $response,
         DataResponseInterface $dataResponse,
         Json $json,
-        \Magento\Framework\Event\ManagerInterface $eventManager
+        \Magento\Framework\Event\ManagerInterface $eventManager,
+        AddressRepositoryInterface $addressRepository,
+        AddressInterface $addressData
     ) {
         $this->customerRepositoryInterface = $customerRepositoryInterface;
         $this->configHelper = $configHelper;
@@ -111,6 +123,8 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $this->regionFactory = $regionFactory;
         $this->cityHelper = $cityHelper;
         $this->regionResourceModel = $regionResourceModel;
+        $this->addressRepository = $addressRepository;
+        $this->addressData = $addressData;
     }
 
     /**
@@ -289,9 +303,8 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                     $cstmIntgSeq
                 );
             }
-
+            $cityName = '';
             if ($response == '' && $region->getRegionId() && $homeState != '') {
-                $cityName = '';
                 $cities = $this->cityHelper->getCityData();
                 $regionCities = $cities[$region->getRegionId()];
                 foreach ($regionCities as $regionCity) {
@@ -324,10 +337,6 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 trim($smsYN) ? $customer->setCustomAttribute('sms_subscription_status', $smsYN == 'Y' ? 1 : 0) : '';
                 trim($dmYN) ? $customer->setCustomAttribute('dm_subscription_status', $dmYN == 'Y' ? 1 : 0) : '';
                 trim($callYN) ? $customer->setCustomAttribute('call_subscription_status', $callYN == 'Y' ? 1 : 0) : '';
-                trim($homeCity) ? $customer->setCustomAttribute('dm_state', $homeCityName) : '';
-                trim($homeState) ? $customer->setCustomAttribute('dm_city', $homeStateName) : '';
-                trim($homeAddr1) ? $customer->setCustomAttribute('dm_detailed_address', $homeAddr1) : '';
-                trim($homeZip) ? $customer->setCustomAttribute('dm_zipcode', $homeZip) : '';
                 trim($statusCD) ? $customer->setCustomAttribute('status_code', $statusCD == '1' ? 1 : 0) : '';
 
                 //Confiremd with Client sales office and organization code will never change
@@ -336,6 +345,9 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 //trim($prtnrid)?$customer->setCustomAttribute('partner_id', $prtnrid):'';
 
                 $customer = $this->customerRepositoryInterface->save($customer);
+                if ($dmYN == 'Y') {
+                    $this->handleDMAddress($customer, $cstmIntgSeq, $region, $cityName, $homeAddr1, $homeZip);
+                }
                 if (trim($emailYN) == 'Y') {
                     $this->subscriberFactory->create()->subscribeCustomerById($customer->getId());
                 } elseif (trim($emailYN) == 'N') {
@@ -379,6 +391,51 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         );
 
         return $response;
+    }
+
+    /**
+     * Update or create default billing address
+     * @param \Magento\Customer\Model\Data\Customer $customer
+     * @param string $customerIntegrationNumber
+     * @param \Magento\Directory\Model\Region $region
+     * @param string $cityName
+     * @param string $detailedAddress
+     * @param string $zipCode
+     */
+    private function handleDMAddress(
+        $customer,
+        $customerIntegrationNumber,
+        $region,
+        $cityName,
+        $detailedAddress,
+        $zipCode
+    ) {
+        $defaultBillingAddressId = $customer->getDefaultBilling();
+        if ($defaultBillingAddressId) {
+            /** @var \Magento\Customer\Api\Data\AddressInterface $defaultBillingAddress */
+            $defaultBillingAddress = $this->addressRepository->getById($defaultBillingAddressId);
+            $defaultBillingAddress->setPostcode($zipCode);
+            $defaultBillingAddress->setStreet([$detailedAddress]);
+            $defaultBillingAddress->setRegionId($region->getId());
+            $defaultBillingAddress->setCity($cityName);
+            $this->addressRepository->save($defaultBillingAddress);
+        } else {
+            $countryId = substr($customerIntegrationNumber, 0, 2);
+            $mobileNumber = $customer->getCustomAttribute('mobile_number')?
+                $customer->getCustomAttribute('mobile_number')->getValue():'';
+            $this->addressData->setCustomerId($customer->getId())
+                ->setFirstname($customer->getFirstname())
+                ->setLastname($customer->getLastname())
+                ->setRegionId($region->getId())
+                ->setPostcode($zipCode)
+                ->setCountryId($countryId)
+                ->setCity($cityName)
+                ->setTelephone($mobileNumber)
+                ->setStreet([$detailedAddress])
+                ->setIsDefaultShipping('1')
+                ->setIsDefaultBilling('1');
+            $this->addressRepository->save($this->addressData);
+        }
     }
 
     private function getResponse($code, $message, $statusCode, $statusMessage, $cstmIntgSeq)

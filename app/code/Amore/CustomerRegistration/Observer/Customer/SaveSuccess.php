@@ -19,10 +19,11 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 use Amore\CustomerRegistration\Model\POSLogger;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Newsletter\Model\Subscriber;
-use Magento\Customer\Model\AddressFactory;
 use Magento\Framework\App\RequestInterface;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
+use Magento\Customer\Api\Data\AddressInterface;
+use Magento\Customer\Api\AddressRepositoryInterface;
 
 /**
  * Call POS API on customer information change
@@ -65,10 +66,7 @@ class SaveSuccess implements ObserverInterface
      * @var \Eguana\Directory\Helper\Data
      */
     private $cityHelper;
-    /**
-     * @var AddressFactory
-     */
-    private $shippingAddress;
+
     /**
      * @var RequestInterface
      */
@@ -81,10 +79,17 @@ class SaveSuccess implements ObserverInterface
      * @var RegionResourceModel
      */
     private $regionResourceModel;
+    /**
+     * @var AddressRepositoryInterface
+     */
+    private $addressRepository;
+    /**
+     * @var AddressInterface
+     */
+    private $addressData;
 
     public function __construct(
         RequestInterface $request,
-        AddressFactory $shippingAddress,
         RegionFactory $regionFactory,
         RegionResourceModel $regionResourceModel,
         \Eguana\Directory\Helper\Data $cityHelper,
@@ -93,7 +98,9 @@ class SaveSuccess implements ObserverInterface
         CustomerRepositoryInterface $customerRepository,
         SubscriberFactory $subscriberFactory,
         POSLogger $logger,
-        POSSystem $POSSystem
+        POSSystem $POSSystem,
+        AddressRepositoryInterface $addressRepository,
+        AddressInterface $addressData
     ) {
         $this->sequence = $sequence;
         $this->POSSystem = $POSSystem;
@@ -102,10 +109,11 @@ class SaveSuccess implements ObserverInterface
         $this->customerRepository = $customerRepository;
         $this->logger = $logger;
         $this->cityHelper = $cityHelper;
-        $this->shippingAddress = $shippingAddress;
         $this->request = $request;
         $this->regionFactory = $regionFactory;
         $this->regionResourceModel = $regionResourceModel;
+        $this->addressRepository = $addressRepository;
+        $this->addressData = $addressData;
     }
 
     /**
@@ -383,20 +391,19 @@ class SaveSuccess implements ObserverInterface
                 $firstName = $customerData['firstname'];
                 $lastName = $customerData['lastname'];
                 $mobileNumber = $customerData['mobile_number'];
-                $address = $this->shippingAddress->create();
-                $address->setCustomerId($customerId)
+
+                $this->addressData->setCustomerId($customerId)
                     ->setFirstname($firstName)
                     ->setLastname($lastName)
-                    ->setCountryId($dmCountryId)
                     ->setRegionId($regionId)
                     ->setPostcode($dmZipCode)
+                    ->setCountryId($dmCountryId)
                     ->setCity($dmCity)
                     ->setTelephone($mobileNumber)
-                    ->setStreet($dmDetailedAddress)
+                    ->setStreet([$dmDetailedAddress])
                     ->setIsDefaultShipping('1')
-                    ->setIsDefaultBilling('1')
-                    ->setSaveInAddressBook('1');
-                $address->save();
+                    ->setIsDefaultBilling('1');
+                $this->addressRepository->save($this->addressData);
             }
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
