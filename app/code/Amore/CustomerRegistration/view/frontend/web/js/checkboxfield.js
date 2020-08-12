@@ -32,6 +32,11 @@ define(
                     $("#"+config.attributeCode).val(0);
                 }
 
+                if(config.attributeCode+'_checkbox' == 'dm_subscription_status_checkbox')
+                {
+                    $('.dm-address').toggle();
+                }
+
                 if(config.attributeCode+'_checkbox' == 'mobile_number_checkbox')
                 {
                     $('fieldset[data-container="change-mobilenumber"]').toggle();

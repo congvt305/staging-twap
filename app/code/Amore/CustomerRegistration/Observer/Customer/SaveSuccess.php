@@ -21,6 +21,8 @@ use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Newsletter\Model\Subscriber;
 use Magento\Customer\Model\AddressFactory;
 use Magento\Framework\App\RequestInterface;
+use Magento\Directory\Model\RegionFactory;
+use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 
 /**
  * Call POS API on customer information change
@@ -71,10 +73,20 @@ class SaveSuccess implements ObserverInterface
      * @var RequestInterface
      */
     private $request;
+    /**
+     * @var RegionFactory
+     */
+    private $regionFactory;
+    /**
+     * @var RegionResourceModel
+     */
+    private $regionResourceModel;
 
     public function __construct(
         RequestInterface $request,
         AddressFactory $shippingAddress,
+        RegionFactory $regionFactory,
+        RegionResourceModel $regionResourceModel,
         \Eguana\Directory\Helper\Data $cityHelper,
         Sequence $sequence,
         Data $config,
@@ -92,6 +104,8 @@ class SaveSuccess implements ObserverInterface
         $this->cityHelper = $cityHelper;
         $this->shippingAddress = $shippingAddress;
         $this->request = $request;
+        $this->regionFactory = $regionFactory;
+        $this->regionResourceModel = $regionResourceModel;
     }
 
     /**
@@ -232,7 +246,32 @@ class SaveSuccess implements ObserverInterface
         }
         if ($parameters['dmYN'] == 'Y') {
             $defaultBillingAddressId = $customer->getDefaultBilling();
-            if ($defaultBillingAddressId) {
+            if ($action == 'register' && !$defaultBillingAddressId) {
+                $customerData = $this->request->getParams();
+                $parameters['homeAddr1'] = $customerData['dm_detailed_address'];
+                $parameters['homeZip'] = $customerData['dm_zipcode'];
+                $regionName = $customerData['dm_state'];
+                $regionObject = null;
+                if ($regionName) {
+                    $regionObject = $this->getRegionObject($regionName);
+                    $parameters['homeCity'] = $regionObject->getCode()?$regionObject->getCode():'';
+                } else {
+                    $parameters['homeCity'] = '';
+                }
+
+                $cityName = $customerData['dm_city'];
+                $parameters['homeState'] = '';
+                if ($cityName && $regionObject) {
+                    $cities = $this->cityHelper->getCityData();
+                    $regionCities = $cities[$regionObject->getRegionId()];
+                    foreach ($regionCities as $regionCity) {
+                        if ($regionCity['name'] == $cityName) {
+                            $parameters['homeState'] = $regionCity['code'];
+                            break;
+                        }
+                    }
+                }
+            } elseif ($defaultBillingAddressId) {
                 $addresses = $customer->getAddresses();
                 $defaultBillingAddress = null;
                 foreach ($addresses as $address) {
@@ -254,6 +293,18 @@ class SaveSuccess implements ObserverInterface
         $parameters['statusCD'] = '01';
 
         return $parameters;
+    }
+
+    private function getRegionObject($regionName)
+    {
+        /** @var \Magento\Directory\Model\Region $region */
+        $region = $this->regionFactory->create();
+        try {
+            $this->regionResourceModel->load($region, $regionName, 'default_name');
+        } catch (\Exception $e) {
+            $this->logger->addExceptionMessage($e->getMessage());
+        }
+        return $region;
     }
 
     /**

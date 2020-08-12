@@ -57,7 +57,17 @@ class DeleteSuccess implements ObserverInterface
         try {
             /** @var \Magento\Customer\Model\Data\Customer $customer */
             $customer = $observer->getEvent()->getCustomer();
-            $customerDefaultBillingAddress = $customer->getDefaultBilling();
+            $customerDefaultBillingAddress = null;
+            $defaultBillingAddressId = $customer->getDefaultBilling();
+            if ($defaultBillingAddressId) {
+                $addresses = $customer->getAddresses();
+                foreach ($addresses as $address) {
+                    if ($address->getId() == $defaultBillingAddressId) {
+                        $customerDefaultBillingAddress = $address;
+                        break;
+                    }
+                }
+            }
             $APIParameters = $this->posSyncAPI->getAPIParameters($customer, $customerDefaultBillingAddress, 'delete');
             $this->POSSystem->syncMember($APIParameters);
         } catch (\Exception $e) {

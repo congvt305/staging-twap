@@ -58,7 +58,7 @@ class AfterAddressSaveObserver implements ObserverInterface
     ) {
         try {
             $actionName = $this->request->getActionName();
-            if (!$actionName != 'editPost') {
+            if ($actionName != 'editPost' && $actionName != 'createpost') {
                 /** @var \Magento\Customer\Model\Address $address */
                 $address = $observer->getData('customer_address');
                 if ($address->getIsDefaultBilling()) {
