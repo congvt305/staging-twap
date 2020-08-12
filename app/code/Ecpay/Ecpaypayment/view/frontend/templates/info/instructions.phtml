@@ -1,0 +1,21 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: david
+ * Date: 2020/08/12
+ * Time: 10:46 AM
+ */
+
+/**
+ * @var \Magento\Payment\Block\Info $block
+ * @see \Magento\Payment\Block\Info
+ */
+?>
+<dl class="payment-method">
+    <dt class="title"><?= $block->escapeHtml($block->getEcpayPaymentMethod()) ?></dt>
+    <?php if ($block->getInstructions()) : ?>
+        <dd class="content"><?= /* @noEscape */ nl2br($block->escapeHtml($block->getInstructions())) ?></dd>
+    <?php endif; ?>
+</dl>
