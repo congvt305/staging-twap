@@ -164,46 +164,6 @@ class AddCustomerCustomAttributesThree implements DataPatchInterface
                                                                 "max_text_length":255}',
                                         'required' => 0,
                                         'sort_order' => 136
-                                    ],
-                                    [
-                                        'code'=>'dm_city',
-                                        'label'=>'DM City',
-                                        'type' => 'varchar',
-                                        'validation'=>'{"input_validation":"length",
-                                        "min_text_length":1,
-                                        "max_text_length":255}',
-                                        'required' => 0,
-                                        'sort_order' => 143
-                                    ],
-                                    [
-                                        'code'=>'dm_state',
-                                        'label'=>'DM State',
-                                        'type' => 'varchar',
-                                        'validation'=>'{"input_validation":"length",
-                                        "min_text_length":1,
-                                        "max_text_length":255}',
-                                        'required' => 0,
-                                        'sort_order' => 144
-                                    ],
-                                    [
-                                        'code'=>'dm_detailed_address',
-                                        'label'=>'DM Detailed Address',
-                                        'type' => 'varchar',
-                                        'validation'=>'{"input_validation":"length",
-                                        "min_text_length":1,
-                                        "max_text_length":255}',
-                                        'required' => 0,
-                                        'sort_order' => 145
-                                    ],
-                                    [
-                                        'code'=>'dm_zipcode',
-                                        'label'=>'DM Zipcode',
-                                        'type' => 'varchar',
-                                        'validation'=>'{"input_validation":"length", 
-                                        "min_text_length":1,
-                                        "max_text_length":20}',
-                                        'required' => 0,
-                                        'sort_order' => 146
                                     ]
                                 ];
         $yesNoAttributes = [
@@ -368,10 +328,6 @@ class AddCustomerCustomAttributesThree implements DataPatchInterface
 
             $myAccountEditableAttributes = [
                 'mobile_number',
-                'dm_city',
-                'dm_state',
-                'dm_detailed_address',
-                'dm_zipcode',
                 'sms_subscription_status',
                 'dm_subscription_status'
             ];

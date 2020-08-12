@@ -130,7 +130,6 @@ class CreditmemoSapResend extends \Magento\Sales\Block\Adminhtml\Order\Creditmem
         }
 
         if ($this->config->getActiveCheck('store', $this->getCreditmemo()->getStoreId()) &&
-            !$this->config->checkTestMode() &&
             $this->config->getCreditmemoActiveCheck('store', $this->getCreditmemo()->getStoreId())) {
             $creditmemoSendCheck = $this->getCreditmemo()->getData('sap_creditmemo_send_check');
             if (!is_null($creditmemoSendCheck) && ($creditmemoSendCheck == 0 || $creditmemoSendCheck == 2)) {
