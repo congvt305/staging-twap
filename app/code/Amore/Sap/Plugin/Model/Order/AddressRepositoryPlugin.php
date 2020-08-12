@@ -8,6 +8,7 @@
 
 namespace Amore\Sap\Plugin\Model\Order;
 
+use Amore\Sap\Exception\AddressException;
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
@@ -48,6 +49,10 @@ class AddressRepositoryPlugin
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
+    /**
+     * @var \Magento\Framework\Event\ManagerInterface
+     */
+    private $eventManager;
 
     /**
      * SapOrderAddressUpdateObserver constructor.
@@ -58,6 +63,7 @@ class AddressRepositoryPlugin
      * @param ManagerInterface $messageManager
      * @param SapOrderCancelData $sapOrderCancelData
      * @param OrderRepositoryInterface $orderRepository
+     * @param \Magento\Framework\Event\ManagerInterface $eventManager
      */
     public function __construct(
         Json $json,
@@ -66,7 +72,8 @@ class AddressRepositoryPlugin
         Config $config,
         ManagerInterface $messageManager,
         SapOrderCancelData $sapOrderCancelData,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        \Magento\Framework\Event\ManagerInterface $eventManager
     ) {
         $this->json = $json;
         $this->request = $request;
@@ -75,6 +82,7 @@ class AddressRepositoryPlugin
         $this->messageManager = $messageManager;
         $this->sapOrderCancelData = $sapOrderCancelData;
         $this->orderRepository = $orderRepository;
+        $this->eventManager = $eventManager;
     }
 
     public function beforeSave(\Magento\Sales\Model\Order\AddressRepository $subject, \Magento\Sales\Api\Data\OrderAddressInterface $entity)
@@ -106,6 +114,18 @@ class AddressRepositoryPlugin
                         $this->logger->info($this->json->serialize($result));
                     }
 
+                    $this->eventManager->dispatch(
+                        "eguana_bizconnect_operation_processed",
+                        [
+                            'topic_name' => 'amore.sap.address.update.request',
+                            'direction' => 'outgoing',
+                            'to' => "SAP",
+                            'serialized_data' => $this->json->serialize($orderUpdateData),
+                            'status' => 1,
+                            'result_message' => $this->json->serialize($result)
+                        ]
+                    );
+
                     $resultSize = count($result);
                     if ($resultSize > 0) {
                         if ($result['code'] == '0000') {
@@ -113,13 +133,13 @@ class AddressRepositoryPlugin
                             if ($responseHeader['rtn_TYPE'] == 'S') {
                                 $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                             } else {
-                                throw new \Exception(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                                throw new AddressException(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
                             }
                         } else {
-                            throw new \Exception(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                            throw new AddressException(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
                         }
                     } else {
-                        throw new \Exception(__('Something went wrong while sending order data to SAP. No response.'));
+                        throw new AddressException(__('Something went wrong while sending order data to SAP. No response.'));
                     }
                 } catch (NoSuchEntityException $e) {
                     throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
@@ -127,7 +147,7 @@ class AddressRepositoryPlugin
                     throw new \Exception(__('SAP : ' . $e->getMessage()));
                 }
             } elseif (in_array($orderStatus, $unavailableStatus)) {
-                throw new \Exception(__('Cannot change the shipping address with current order status.'));
+                throw new AddressException(__('Cannot change the shipping address with current order status.'));
             }
         }
     }
