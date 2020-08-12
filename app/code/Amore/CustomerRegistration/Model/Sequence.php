@@ -15,6 +15,7 @@ use Magento\Framework\DB\Sequence\SequenceInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Store\Model\StoreManagerInterface;
 use Amore\CustomerRegistration\Helper\Data;
+use Amore\CustomerRegistration\Model\POSLogger;
 
 /**
  * To create a customer sequence number like an incrmement id
@@ -69,6 +70,10 @@ class Sequence implements SequenceInterface
      * @var Data
      */
     private $configHelper;
+    /**
+     * @var \Amore\CustomerRegistration\Model\POSLogger
+     */
+    private $logger;
 
     /**
      * @param AppResource $resource
@@ -79,13 +84,15 @@ class Sequence implements SequenceInterface
         AppResource $resource,
         StoreManagerInterface $storeManager,
         $pattern = self::DEFAULT_PATTERN,
-        $customerType = self::DEFAULT_CUSTOMER_TYPE
+        $customerType = self::DEFAULT_CUSTOMER_TYPE,
+        POSLogger $logger
     ) {
         $this->connection = $resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $this->pattern = $pattern;
         $this->customerType = $customerType;
         $this->storeManager = $storeManager;
         $this->configHelper = $configHelper;
+        $this->logger = $logger;
     }
 
     /**
@@ -116,9 +123,17 @@ class Sequence implements SequenceInterface
      */
     public function getNextValue()
     {
-        $this->connection->insert($this->getCurrentWebsiteTable(), []);
-        $this->lastIncrementId = $this->connection->lastInsertId($this->getCurrentWebsiteTable());
-        return $this->getCurrentValue();
+        try {
+            $this->logger->addExceptionMessage('start');
+            $this->logger->addExceptionMessage($this->getCurrentWebsiteTable());
+            $this->connection->insert($this->getCurrentWebsiteTable(), []);
+            $this->logger->addExceptionMessage('2');
+            $this->lastIncrementId = $this->connection->lastInsertId($this->getCurrentWebsiteTable());
+            $this->logger->addExceptionMessage('3');
+            return $this->getCurrentValue();
+        } catch (\Exception $e) {
+            $this->logger->addExceptionMessage($e->getMessage());
+        }
     }
 
     /**
