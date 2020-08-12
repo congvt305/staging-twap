@@ -240,6 +240,12 @@ class Data extends AbstractHelper
 
                         $transaction = $this->_ecpayPaymentModel->createTransaction($order, $paymentData);
 
+                        $payment = $order->getPayment();
+                        $additionalInfo = $payment->getAdditionalInformation();
+                        $rawDetailsInfo = $additionalInfo["raw_details_info"];
+                        $order->setData("ecpay_payment_method", $rawDetailsInfo["ecpay_choosen_payment"]);
+                        $this->orderRepository->save($order);
+
                         $this->_ecpayPaymentModel->createInvoice($order, $transaction);
 
                         if (!$this->getMagentoConfig("test_flag")) {
@@ -279,12 +285,6 @@ class Data extends AbstractHelper
                                 throw new \Exception(__($stringToArray["RtnMsg"]));
                             }
                         }
-
-                        $payment = $order->getPayment();
-                        $additionalInfo = $payment->getAdditionalInformation();
-                        $rawDetailsInfo = $additionalInfo["raw_details_info"];
-                        $order->setData("ecpay_payment_method", $rawDetailsInfo["ecpay_choosen_payment"]);
-                        $this->orderRepository->save($order);
 
                         unset($status, $pattern, $comment);
                         break;

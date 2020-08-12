@@ -8,7 +8,7 @@
 $viewModel = $block->getData('view_model');
 $minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
 $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
-
+$notAllowedChar = $viewModel->getNotAllowedCharList();
 /** @var \Amore\CustomerRegistration\Block\POS $block */
 
 ?>
@@ -27,15 +27,15 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
             <label for="last_name" class="label"><span><?= $block->escapeHtml(__('Last Name')) ?></span></label>
             <div class="control">
                 <?php //phpcs:disable ?>
-                <input type="text" name="last_name" placeholder="<?= $block->escapeHtml(__('Last Name')) ?>" data-validate='{"required":true, "maxlength":255}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('Last Name')) ?>" class="input-text last-name" id="last_name">
-                <?php //phpcs:enable ?>
+                <input type="text" name="last_name" placeholder="<?= $block->escapeHtml(__('Last Name')) ?>" data-validate='{"required":true, "maxlength":255, "validatenamerule":true}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('Last Name')) ?>" class="input-text last-name" id="last_name">
+                <input type="text" id="validate_name_char_hidden" hidden value="<?= $block->escapeHtml($notAllowedChar) ?>">
             </div>
         </div>
         <div class="field first_name required">
             <label for="first_name" class="label"><span><?= $block->escapeHtml(__('First Name')) ?></span></label>
             <div class="control">
                 <?php //phpcs:disable ?>
-                <input type="text" name="first_name" placeholder="<?= $block->escapeHtml(__('First Name')) ?>" data-validate='{"required":true, "maxlength":255}' value="<?= $viewModel->getSocialMediaName(); ?>" title="<?= /* @noEscape */ $block->escapeHtml(__('First Name')) ?>" class="input-text first-name" id="first_name">
+                <input type="text" name="first_name" placeholder="<?= $block->escapeHtml(__('First Name')) ?>" data-validate='{"required":true, "maxlength":255, "validatenamerule":true}' value="<?= $viewModel->getSocialMediaName(); ?>" title="<?= /* @noEscape */ $block->escapeHtml(__('First Name')) ?>" class="input-text first-name" id="first_name">
                 <?php //phpcs:enable ?>
             </div>
         </div>
@@ -85,6 +85,13 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
                 "codeExpirationMinutes": "<?= $viewModel->getCodeExpirationTimeInMinutes()?$viewModel->getCodeExpirationTimeInMinutes():'2:00'; ?>",
                 "currentStep": "<?= $viewModel->getCurrentStep(); ?>"
             }
+        }
+    }
+</script>
+<script type="text/x-magento-init">
+    {
+         "*": {
+            "validateName": {}
         }
     }
 </script>

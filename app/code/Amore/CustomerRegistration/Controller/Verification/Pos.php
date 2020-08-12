@@ -8,7 +8,7 @@
 
 namespace Amore\CustomerRegistration\Controller\Verification;
 
-use Magento\Framework\App\ActionInterface;
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
@@ -22,7 +22,7 @@ use Amore\CustomerRegistration\Model\POSSystem;
  * To verify the customer with the POS system
  * Class Pos
  */
-class Pos implements ActionInterface
+class Pos extends Action
 {
     /**
      * Json Factory
@@ -66,6 +66,7 @@ class Pos implements ActionInterface
         $this->resultJsonFactory = $resultJsonFactory;
         $this->verification = $verification;
         $this->posSystem = $posSystem;
+        parent::__construct($context);
     }
 
     /**

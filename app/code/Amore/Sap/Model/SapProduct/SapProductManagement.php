@@ -14,6 +14,7 @@ use Amore\Sap\Model\Source\Config;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ResourceModel\Product\Action;
 use Magento\Eav\Api\AttributeRepositoryInterface;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\MessageQueue\PublisherInterface;
@@ -118,6 +119,10 @@ class SapProductManagement implements SapProductManagementInterface
      * @var AttributeRepositoryInterface
      */
     private $eavAttributeRepositoryInterface;
+    /**
+     * @var ManagerInterface
+     */
+    private $eventManager;
 
 
     /**
@@ -141,6 +146,7 @@ class SapProductManagement implements SapProductManagementInterface
      * @param Logger $logger
      * @param Config $config
      * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
+     * @param ManagerInterface $eventManager
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
@@ -161,7 +167,8 @@ class SapProductManagement implements SapProductManagementInterface
         PublisherInterface $publisher,
         Logger $logger,
         Config $config,
-        AttributeRepositoryInterface $eavAttributeRepositoryInterface
+        AttributeRepositoryInterface $eavAttributeRepositoryInterface,
+        ManagerInterface $eventManager
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->productRepository = $productRepository;
@@ -182,23 +189,23 @@ class SapProductManagement implements SapProductManagementInterface
         $this->logger = $logger;
         $this->config = $config;
         $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
+        $this->eventManager = $eventManager;
     }
 
     public function inventoryStockUpdate(\Amore\Sap\Api\Data\SapInventoryStockInterface $stockData)
     {
         $result = [];
         $parameters = [
-            $stockData['source'],
-            $stockData['mallId'],
-            $stockData['matnr'],
-            $stockData['labst']
+            'source' => $stockData['source'],
+            'mallId' => $stockData['mallId'],
+            'matnr' => $stockData['matnr'],
+            'labst' => $stockData['labst']
         ];
 
         if ($this->config->getLoggingCheck()) {
             $this->logger->info('STOCK DATA');
             $this->logger->info($this->json->serialize($parameters));
         }
-
 
         $store = $this->getStore($stockData['mallId']);
 
@@ -263,6 +270,19 @@ class SapProductManagement implements SapProductManagementInterface
         } else {
             $result[$stockData['matnr']] = ['code' => "0001", 'message' => "Configuration is not enabled"];
         }
+
+        $this->eventManager->dispatch(
+            "eguana_bizconnect_operation_processed",
+            [
+                'topic_name' => 'amore.sap.product.inventory.stock',
+                'direction' => 'incoming',
+                'to' => "Magento",
+                'serialized_data' => $this->json->serialize($parameters),
+                'status' => $result[$stockData['matnr']]['code'] == "0000" ? 1 : 0,
+                'result_message' => $this->json->serialize($result)
+            ]
+        );
+
         return $result;
     }
 
@@ -271,44 +291,44 @@ class SapProductManagement implements SapProductManagementInterface
         $result = [];
 
         $parameters = [
-            $productsDetail['source'],
-            $productsDetail['matnr'],
-            $productsDetail['vkorg'],
-            $productsDetail['bismt'],
-            $productsDetail['brgew'],
-            $productsDetail['gewei'],
-            $productsDetail['brand'],
-            $productsDetail['bctxtKo'],
-            $productsDetail['meins'],
-            $productsDetail['mstav'],
-            $productsDetail['spart'],
-            $productsDetail['maxlz'],
-            $productsDetail['breit'],
-            $productsDetail['hoehe'],
-            $productsDetail['laeng'],
-            $productsDetail['kondm'],
-            $productsDetail['mvgr1'],
-            $productsDetail['mvgr2'],
-            $productsDetail['prodh'],
-            $productsDetail['vmsta'],
-            $productsDetail['matnr2'],
-            $productsDetail['setid'],
-            $productsDetail['bline'],
-            $productsDetail['csmtp'],
-            $productsDetail['setdi'],
-            $productsDetail['matshinsun'],
-            $productsDetail['matvessel'],
-            $productsDetail['prdvl'],
-            $productsDetail['vlunt'],
-            $productsDetail['cpiap'],
-            $productsDetail['prdtp'],
-            $productsDetail['rpfut'],
-            $productsDetail['maktxEn'],
-            $productsDetail['maktxZh'],
-            $productsDetail['bctxtEn'],
-            $productsDetail['bctxtZh'],
-            $productsDetail['refill'],
-            $productsDetail['matcol']
+            'source' => $productsDetail['source'],
+            'matnr' => $productsDetail['matnr'],
+            'vkorg' => $productsDetail['vkorg'],
+            'bismt' => $productsDetail['bismt'],
+            'brgew' => $productsDetail['brgew'],
+            'gewei' => $productsDetail['gewei'],
+            'brand' => $productsDetail['brand'],
+            'bctxtKo' => $productsDetail['bctxtKo'],
+            'meins' => $productsDetail['meins'],
+            'mstav' => $productsDetail['mstav'],
+            'spart' => $productsDetail['spart'],
+            'maxlz' => $productsDetail['maxlz'],
+            'breit' => $productsDetail['breit'],
+            'hoehe' => $productsDetail['hoehe'],
+            'laeng' => $productsDetail['laeng'],
+            'kondm' => $productsDetail['kondm'],
+            'mvgr1' => $productsDetail['mvgr1'],
+            'mvgr2' => $productsDetail['mvgr2'],
+            'prodh' => $productsDetail['prodh'],
+            'vmsta' => $productsDetail['vmsta'],
+            'matnr2' => $productsDetail['matnr2'],
+            'setid' => $productsDetail['setid'],
+            'bline' => $productsDetail['bline'],
+            'csmtp' => $productsDetail['csmtp'],
+            'setdi' => $productsDetail['setdi'],
+            'matshinsun' => $productsDetail['matshinsun'],
+            'matvessel' => $productsDetail['matvessel'],
+            'prdvl' => $productsDetail['prdvl'],
+            'vlunt' => $productsDetail['vlunt'],
+            'cpiap' => $productsDetail['cpiap'],
+            'prdtp' => $productsDetail['prdtp'],
+            'rpfut' => $productsDetail['rpfut'],
+            'maktxEn' => $productsDetail['maktxEn'],
+            'maktxZh' => $productsDetail['maktxZh'],
+            'bctxtEn' => $productsDetail['bctxtEn'],
+            'bctxtZh' => $productsDetail['bctxtZh'],
+            'refill' => $productsDetail['refill'],
+            'matcol' => $productsDetail['matcol']
         ];
 
         if ($this->config->getLoggingCheck()) {
@@ -426,6 +446,18 @@ class SapProductManagement implements SapProductManagementInterface
             }
         }
 
+        $this->eventManager->dispatch(
+            "eguana_bizconnect_operation_processed",
+            [
+                'topic_name' => 'amore.sap.product.detail.info',
+                'direction' => 'incoming',
+                'to' => "Magento",
+                'serialized_data' => $this->json->serialize($parameters),
+                'status' => $result[$productsDetail['matnr']]['code'] == "0000" ? 1 : 0,
+                'result_message' => $this->json->serialize($result)
+            ]
+        );
+
         return $result;
     }
 
@@ -502,11 +534,11 @@ class SapProductManagement implements SapProductManagementInterface
         $result = [];
 
         $parameters = [
-            $priceData['source'],
-            $priceData['matnr'],
-            $priceData['pltyp'],
-            $priceData['kbetrInv'],
-            $priceData['waerk'],
+            'source' => $priceData['source'],
+            'matnr' => $priceData['matnr'],
+            'pltyp' => $priceData['pltyp'],
+            'kbetrInv' => $priceData['kbetrInv'],
+            'waerk' => $priceData['waerk'],
         ];
 
         if ($this->config->getLoggingCheck()) {
@@ -514,24 +546,38 @@ class SapProductManagement implements SapProductManagementInterface
             $this->logger->info($this->json->serialize($parameters));
         }
 
-        /**
-         * @var $product \Magento\Catalog\Model\Product
-         */
-        $product = $this->getProductBySku($priceData['matnr'], null);
+//        /**
+//         * @var $product \Magento\Catalog\Model\Product
+//         */
+//        $product = $this->getProductBySku($priceData['matnr'], null);
+//
+//        if (gettype($product) == 'string') {
+//            $result[$priceData['matnr']] = ['code' => "0001", 'message' => $product];
+//        } else {
+//            try {
+//                $product->setPrice(floatval($priceData['kbetrInv']));
+//                $this->productRepository->save($product);
+//
+//                $result[$priceData['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
+//            } catch (\Exception $e) {
+//                $result[$priceData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
+//            }
+//
+//        }
+        $result[$priceData['matnr']] = ['code' => "0001", 'message' => "Price API is off."];
 
-        if (gettype($product) == 'string') {
-            $result[$priceData['matnr']] = ['code' => "0001", 'message' => $product];
-        } else {
-            try {
-                $product->setPrice(floatval($priceData['kbetrInv']));
-                $this->productRepository->save($product);
+        $this->eventManager->dispatch(
+            "eguana_bizconnect_operation_processed",
+            [
+                'topic_name' => 'amore.sap.product.price.update',
+                'direction' => 'incoming',
+                'to' => "Magento",
+                'serialized_data' => $this->json->serialize($parameters),
+                'status' => $result[$priceData['matnr']]['code'] == "0000" ? 1 : 0,
+                'result_message' => $this->json->serialize($result)
+            ]
+        );
 
-                $result[$priceData['matnr']] = ['code' => "0000", 'message' => 'SUCCESS'];
-            } catch (\Exception $e) {
-                $result[$priceData['matnr']] = ['code' => "0001", 'message' => $e->getMessage()];
-            }
-
-        }
         return $result;
     }
 

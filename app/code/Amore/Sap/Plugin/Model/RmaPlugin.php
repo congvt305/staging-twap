@@ -63,6 +63,10 @@ class RmaPlugin
      * @var ManagerInterface
      */
     private $messageManager;
+    /**
+     * @var \Magento\Framework\Event\ManagerInterface
+     */
+    private $eventManager;
 
     /**
      * RmaPlugin constructor.
@@ -73,6 +77,7 @@ class RmaPlugin
      * @param OrderRepositoryInterface $orderRepository
      * @param SapOrderReturnData $sapOrderReturnData
      * @param ManagerInterface $messageManager
+     * @param \Magento\Framework\Event\ManagerInterface $eventManager
      */
     public function __construct(
         Json $json,
@@ -81,7 +86,8 @@ class RmaPlugin
         Logger $logger,
         OrderRepositoryInterface $orderRepository,
         SapOrderReturnData $sapOrderReturnData,
-        ManagerInterface $messageManager
+        ManagerInterface $messageManager,
+        \Magento\Framework\Event\ManagerInterface $eventManager
     ) {
         $this->json = $json;
         $this->request = $request;
@@ -90,6 +96,7 @@ class RmaPlugin
         $this->orderRepository = $orderRepository;
         $this->sapOrderReturnData = $sapOrderReturnData;
         $this->messageManager = $messageManager;
+        $this->eventManager = $eventManager;
     }
 
     public function beforeSaveRma(Rma $subject, $data)
@@ -121,6 +128,18 @@ class RmaPlugin
                         $this->logger->info($this->json->serialize($result));
                     }
 
+                    $this->eventManager->dispatch(
+                        "eguana_bizconnect_operation_processed",
+                        [
+                            'topic_name' => 'amore.sap.return.request',
+                            'direction' => 'outgoing',
+                            'to' => "SAP",
+                            'serialized_data' => $this->json->serialize($orderRmaData),
+                            'status' => 1,
+                            'result_message' => $this->json->serialize($result)
+                        ]
+                    );
+
                     $resultSize = count($result);
 
                     if ($resultSize > 0) {
@@ -129,15 +148,11 @@ class RmaPlugin
                             foreach ($outdata as $data) {
                                 if ($data['retcod'] == 'S') {
                                     if ($rmaSendCheck == 0 || $rmaSendCheck == 2) {
-                                        $subject->setData('sap_return_send_check', self::RMA_RESENT_TO_SAP_SUCCESS);
                                         $this->messageManager->addSuccessMessage(__("Resent Return Data to Sap Successfully."));
                                     } else {
-                                        $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_SUCCESS);
                                         $this->messageManager->addSuccessMessage(__("Sent Return Data to Sap Successfully."));
                                     }
                                 } else {
-                                    $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
-
                                     throw new RmaSapException(
                                         __(
                                             'Error returned from SAP for RMA %1. Error code : %2. Message : %3',
@@ -149,7 +164,6 @@ class RmaPlugin
                                 }
                             }
                         } else {
-                            $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                             throw new RmaSapException(
                                 __(
                                     'Error returned from SAP for RMA %1. Error code : %2. Message : %3',
@@ -160,23 +174,17 @@ class RmaPlugin
                             );
                         }
                     } else {
-                        $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                         throw new RmaSapException(__('Something went wrong while sending order data to SAP. No response'));
                     }
                 } catch (NoSuchEntityException $e) {
-                    $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                     throw new NoSuchEntityException(__($e->getMessage()));
                 } catch (RmaTrackNoException $e) {
-                    $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                     throw new RmaTrackNoException(__($e->getMessage()));
                 } catch (RmaSapException $e) {
-                    $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                     throw new RmaSapException(__($e->getMessage()));
                 } catch (LocalizedException $e) {
-                    $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                     throw new LocalizedException(__($e->getMessage()));
                 } catch (\Exception $exception) {
-                    $subject->setData('sap_return_send_check', self::RMA_SENT_TO_SAP_FAIL);
                     throw new \Exception(__('SAP Return : Error occurred while sending RMA data to SAP'));
                 }
             }

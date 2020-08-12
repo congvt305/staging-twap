@@ -15,6 +15,7 @@ use Magento\Framework\DB\Sequence\SequenceInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Store\Model\StoreManagerInterface;
 use Amore\CustomerRegistration\Helper\Data;
+use Amore\CustomerRegistration\Model\POSLogger;
 
 /**
  * To create a customer sequence number like an incrmement id
@@ -57,6 +58,11 @@ class Sequence implements SequenceInterface
     private $customerType;
 
     /**
+     * @var string
+     */
+    private $customerWebsiteId;
+
+    /**
      * @var StoreManagerInterface
      */
     private $storeManager;
@@ -64,6 +70,10 @@ class Sequence implements SequenceInterface
      * @var Data
      */
     private $configHelper;
+    /**
+     * @var \Amore\CustomerRegistration\Model\POSLogger
+     */
+    private $logger;
 
     /**
      * @param AppResource $resource
@@ -74,13 +84,15 @@ class Sequence implements SequenceInterface
         AppResource $resource,
         StoreManagerInterface $storeManager,
         $pattern = self::DEFAULT_PATTERN,
-        $customerType = self::DEFAULT_CUSTOMER_TYPE
+        $customerType = self::DEFAULT_CUSTOMER_TYPE,
+        POSLogger $logger
     ) {
         $this->connection = $resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $this->pattern = $pattern;
         $this->customerType = $customerType;
         $this->storeManager = $storeManager;
         $this->configHelper = $configHelper;
+        $this->logger = $logger;
     }
 
     /**
@@ -95,10 +107,10 @@ class Sequence implements SequenceInterface
         }
 
         $channel = $this->customerType == 'online'?'2':'1';
-
+        $websiteId = $this->customerWebsiteId?$this->customerWebsiteId:$this->storeManager->getStore()->getWebsiteId();
         return sprintf(
             $this->pattern,
-            $this->configHelper->getOfficeSalesCode().$channel,
+            $this->configHelper->getOfficeSalesCode($websiteId).$channel,
             $this->calculateCurrentValue(),
             ''
         );
@@ -111,10 +123,13 @@ class Sequence implements SequenceInterface
      */
     public function getNextValue()
     {
-        $temp = $this->getCurrentWebsiteTable();
-        $this->connection->insert($this->getCurrentWebsiteTable(), []);
-        $this->lastIncrementId = $this->connection->lastInsertId($this->getCurrentWebsiteTable());
-        return $this->getCurrentValue();
+        try {
+            $this->connection->insert($this->getCurrentWebsiteTable(), []);
+            $this->lastIncrementId = $this->connection->lastInsertId($this->getCurrentWebsiteTable());
+            return $this->getCurrentValue();
+        } catch (\Exception $e) {
+            $this->logger->addExceptionMessage($e->getMessage());
+        }
     }
 
     /**
@@ -130,11 +145,17 @@ class Sequence implements SequenceInterface
 
     private function getCurrentWebsiteTable()
     {
-        return sprintf('sequence_customer_%s_%d', $this->customerType, $this->storeManager->getStore()->getWebsiteId());
+        $websiteId = $this->customerWebsiteId?$this->customerWebsiteId:$this->storeManager->getStore()->getWebsiteId();
+        return sprintf('sequence_customer_%s_%d', $this->customerType, $websiteId);
     }
 
     public function setCustomerType($customerType)
     {
         $this->customerType = $customerType;
+    }
+
+    public function setCustomerWebsiteid($webisteid)
+    {
+        $this->customerWebsiteId = $webisteid;
     }
 }
