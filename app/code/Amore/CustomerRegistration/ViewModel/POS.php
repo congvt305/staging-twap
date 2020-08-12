@@ -119,4 +119,14 @@ class POS implements ArgumentInterface
         }
         return $socialMediaName;
     }
+
+    /**
+     * Get Not Allowed Characters
+     * This Method is used to get configuration value of not allowed characters
+     * @return string
+     */
+    public function getNotAllowedCharList()
+    {
+        return $this->configHelper->getNotAllowedCharList();
+    }
 }

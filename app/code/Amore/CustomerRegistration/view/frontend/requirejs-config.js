@@ -10,6 +10,7 @@ var config = {
             editform: 'Amore_CustomerRegistration/js/account-edit',
             createaccount: 'Amore_CustomerRegistration/js/account-create',
             verifymobile: 'Amore_CustomerRegistration/js/verifymobile',
+            validateName: 'Amore_CustomerRegistration/js/validateNameRule',
         }
     },
     config: {

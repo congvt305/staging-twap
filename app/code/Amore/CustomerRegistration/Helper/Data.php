@@ -61,6 +61,8 @@ class Data extends AbstractHelper
         = 'customerregistraion/pos/ssl_verification';
     const DEBUG
         = 'customerregistraion/pos/debug';
+    const XML_PATH_LIST_OF_CHARACTERS
+        = 'customerregistraion/validation/list_of_character';
 
     /**
      * Get cms block id set in setting
@@ -176,7 +178,7 @@ class Data extends AbstractHelper
             ScopeInterface::SCOPE_WEBSITE
         );
     }
-    
+
     /**
      * Get whether SMS verification is enabled on the website or not
      *
@@ -301,6 +303,19 @@ class Data extends AbstractHelper
         return $this->scopeConfig->getValue(
             self::SSL_VERIFICATION,
             ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
+     * Get Config Value
+     * This Method is used to get list of not allowed characters
+     * @return string
+     */
+    public function getNotAllowedCharList()
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_LIST_OF_CHARACTERS,
+            ScopeInterface::SCOPE_STORE
         );
     }
 }

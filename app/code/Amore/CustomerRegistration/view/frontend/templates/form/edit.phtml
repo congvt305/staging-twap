@@ -10,12 +10,13 @@
 $viewModel = $block->getData('view_model');
 $minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
 $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
+$notAllowedChar = $viewModel->getNotAllowedCharList();
 ?>
 <form class="form form-edit-account" action="<?= $block->escapeUrl($block->getUrl('customer/account/editPost')) ?>" method="post" id="form-validate" enctype="multipart/form-data" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>" autocomplete="off">
     <fieldset class="fieldset info">
         <?= $block->getBlockHtml('formkey') ?>
         <legend class="legend"><span><?= $block->escapeHtml(__('Account Information')) ?></span></legend><br>
-        <?= $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Name::class)->setObject($block->getCustomer())->toHtml() ?>
+        <?= $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\Name::class)->setObject($block->getCustomer())->toHtml() ?>
         <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class)  ?>
         <?php if ($_dob->isEnabled() && $block->getCustomer()->getDob()) : ?>
         <div class="field dob">
@@ -157,6 +158,7 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
             <a class="action back" href="<?= $block->escapeUrl($block->getBackUrl()) ?>"><span><?= $block->escapeHtml(__('Go back')) ?></span></a>
         </div>
     </div>
+    <input type="text" id="validate_name_char_hidden" hidden value="<?= $block->escapeHtml($notAllowedChar) ?>">
 </form>
 
 <script>
@@ -226,6 +228,13 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
                 "codeExpirationMinutes": "<?= $viewModel->getCodeExpirationTimeInMinutes()?$viewModel->getCodeExpirationTimeInMinutes():'2:00'; ?>",
                 "mobileNumber": "<?= $viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number'); ?>"
             }
+        }
+    }
+</script>
+<script type="text/x-magento-init">
+    {
+         "*": {
+            "validateName": {}
         }
     }
 </script>
