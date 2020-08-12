@@ -83,35 +83,6 @@ class SapOrderCancelData extends AbstractSapOrder
         return $request;
     }
 
-    public function getTestCancelOrder()
-    {
-        $testData = [
-            "request" => [
-                "header" => [
-                    "source" => $this->config->getSourceByStore('default', null),
-                ],
-                "input" => [
-                    "itData" => [
-                        "vkorg" => $this->config->getDefaultValue("sap/order_cancel_test/vkorg"),
-                        "kunnr" => $this->config->getDefaultValue("sap/order_cancel_test/kunnr"),
-                        "odrno" => $this->config->getDefaultValue("sap/order_cancel_test/odrno"),
-                        "zchgind" => $this->config->getDefaultValue("sap/order_cancel_test/zchgind"),
-                        "recvnm" => $this->config->getDefaultValue("sap/order_cancel_test/recvnm"),
-                        "postCode" => $this->config->getDefaultValue("sap/order_cancel_test/postCode"),
-                        "addr1" => $this->config->getDefaultValue("sap/order_cancel_test/addr1"),
-                        "addr2" => $this->config->getDefaultValue("sap/order_cancel_test/addr2"),
-                        "addr3" => $this->config->getDefaultValue("sap/order_cancel_test/addr3"),
-                        "land1" => $this->config->getDefaultValue("sap/order_cancel_test/land1"),
-                        "telno" => $this->config->getDefaultValue("sap/order_cancel_test/telno"),
-                        "hpno" => $this->config->getDefaultValue("sap/order_cancel_test/hpno"),
-                    ]
-                ]
-            ]
-        ];
-
-        return $testData;
-    }
-
     public function getOrderAddressUpdate($incrementId, $addressData)
     {
         /** @var Order $orderData */

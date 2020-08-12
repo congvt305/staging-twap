@@ -111,11 +111,6 @@ class Config
         return $this->scopeConfig->getValue($path, "default");
     }
 
-    public function checkTestMode()
-    {
-        return $this->scopeConfig->getValue("sap/test/test_active", "default");
-    }
-
     public function getLoggingCheck()
     {
         return $this->scopeConfig->getValue(self::SAP_LOGGING_XML_PATH, 'default');

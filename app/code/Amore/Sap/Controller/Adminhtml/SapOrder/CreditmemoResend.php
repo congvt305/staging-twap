@@ -99,53 +99,51 @@ class CreditmemoResend extends Action
         }
 
         if ($enableCheck) {
-            if (!$this->config->checkTestMode()) {
-                try {
-                    $orderUpdateData = $this->sapOrderCancelData->singleOrderData($order->getIncrementId());
+            try {
+                $orderUpdateData = $this->sapOrderCancelData->singleOrderData($order->getIncrementId());
 
-                    if ($this->config->getLoggingCheck()) {
-                        $this->logger->info("Single Order Cancel Resend Data");
-                        $this->logger->info($this->json->serialize($orderUpdateData));
-                    }
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info("Single Order Cancel Resend Data");
+                    $this->logger->info($this->json->serialize($orderUpdateData));
+                }
 
-                    $sapResult = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
+                $sapResult = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
 
-                    if ($this->config->getLoggingCheck()) {
-                        $this->logger->info("Single Order Cancel Resend Result Data");
-                        $this->logger->info($this->json->serialize($sapResult));
-                    }
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info("Single Order Cancel Resend Result Data");
+                    $this->logger->info($this->json->serialize($sapResult));
+                }
 
-                    $resultSize = count($sapResult);
-                    if ($resultSize > 0) {
-                        if ($sapResult['code'] == '0000') {
-                            $responseHeader = $sapResult['data']['response']['header'];
-                            if ($responseHeader['rtn_TYPE'] == 'S') {
-                                try {
-                                    $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_RESENT_TO_SAP_SUCCESS);
-                                    $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
-                                } catch (\Exception $exception) {
-                                    $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                                    $this->messageManager->addErrorMessage(__('Something went wrong while saving order %1. Message : %2', $order->getIncrementId(),$exception->getMessage()));
-                                }
-                            } else {
+                $resultSize = count($sapResult);
+                if ($resultSize > 0) {
+                    if ($sapResult['code'] == '0000') {
+                        $responseHeader = $sapResult['data']['response']['header'];
+                        if ($responseHeader['rtn_TYPE'] == 'S') {
+                            try {
+                                $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_RESENT_TO_SAP_SUCCESS);
+                                $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
+                            } catch (\Exception $exception) {
                                 $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                                $this->messageManager->addErrorMessage(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                                $this->messageManager->addErrorMessage(__('Something went wrong while saving order %1. Message : %2', $order->getIncrementId(),$exception->getMessage()));
                             }
                         } else {
                             $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                            $this->messageManager->addErrorMessage(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $sapResult['code'], $sapResult['message']));
+                            $this->messageManager->addErrorMessage(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
                         }
                     } else {
                         $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                        $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
+                        $this->messageManager->addErrorMessage(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $sapResult['code'], $sapResult['message']));
                     }
-                } catch (NoSuchEntityException $e) {
+                } else {
                     $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                    $this->messageManager->addErrorMessage(__('SAP : ' . $e->getMessage()));
-                } catch (\Exception $e) {
-                    $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                    $this->messageManager->addErrorMessage(__('SAP : ' . $e->getMessage()));
+                    $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
                 }
+            } catch (NoSuchEntityException $e) {
+                $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
+                $this->messageManager->addErrorMessage(__('SAP : ' . $e->getMessage()));
+            } catch (\Exception $e) {
+                $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
+                $this->messageManager->addErrorMessage(__('SAP : ' . $e->getMessage()));
             }
         }
 

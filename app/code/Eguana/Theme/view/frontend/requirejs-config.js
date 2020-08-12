@@ -9,7 +9,8 @@ var config = {
             'swiper': "Eguana_Theme/js/swiper",
             'rwdImageMap': "Eguana_Theme/js/jquery.rwdImageMaps",
             'fotorama/fotorama': "Eguana_Theme/fotorama/fotorama",
-            'mage/gallery/gallery': "Eguana_Theme/mage/gallery/gallery"
+            'mage/gallery/gallery': "Eguana_Theme/mage/gallery/gallery",
+            'gsap': "Eguana_Theme/js/gsap.min"
         }
 
     }

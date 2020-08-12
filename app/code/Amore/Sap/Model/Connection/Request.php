@@ -62,93 +62,45 @@ class Request
 
     public function postRequest($requestData, $storeId, $type = 'confirm')
     {
-        if ($this->config->checkTestMode()) {
-            $url = $this->config->getDefaultValue("sap/general/url");
-            if ($type == 'confirm') {
-                $path = $this->config->getDefaultValue("sap/url_path/order_confirm_path");
-            } else {
-                $path = $this->config->getDefaultValue("sap/url_path/order_cancel_path");
-            }
-            $fullUrl = $url . $path;
+        $url = $this->getUrl($storeId);
+        $path = $this->getPath($storeId, $type);
+        $fullUrl = $url . $path;
 
-            if ($this->config->getLoggingCheck()) {
-                $this->logger->info("TEST MODE REQUEST");
-                $this->logger->info($requestData);
-                $this->logger->info("FUlL URL");
-                $this->logger->info($fullUrl);
-            }
+        if ($this->config->getLoggingCheck()) {
+            $this->logger->info('LIVE MODE REQUEST');
+            $this->logger->info($requestData);
+            $this->logger->info("FUlL URL");
+            $this->logger->info($fullUrl);
+        }
 
-            if (empty($url) || empty($path)) {
-                throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
-            } else {
-                try {
-                    $this->curl->addHeader('Content-Type', 'application/json');
-
-                    if ($this->config->getSslVerification('default', 0)) {
-                        if ($this->config->getLoggingCheck()) {
-                            $this->logger->info('TEST MODE SSL VERIFICATION DISABLED');
-                        }
-                        $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
-                        $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
-                    }
-
-                    $this->curl->post($fullUrl, $requestData);
-
-                    $response = $this->curl->getBody();
-
-                    if ($this->config->getLoggingCheck()) {
-                        $this->logger->info("TEST RESPONSE");
-                        $this->logger->info($response);
-                    }
-
-                    $serializedResult = $this->json->unserialize($response);
-
-                    return $serializedResult;
-                } catch (\Exception $exception) {
-                    return $exception->getMessage();
-                }
-            }
+        if (empty($url) || empty($path)) {
+            throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
         } else {
-            $url = $this->getUrl($storeId);
-            $path = $this->getPath($storeId, $type);
-            $fullUrl = $url . $path;
+            try {
+                $this->curl->addHeader('Content-Type', 'application/json');
 
-            if ($this->config->getLoggingCheck()) {
-                $this->logger->info('LIVE MODE REQUEST');
-                $this->logger->info($requestData);
-                $this->logger->info("FUlL URL");
-                $this->logger->info($fullUrl);
-            }
-
-            if (empty($url) || empty($path)) {
-                throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
-            } else {
-                try {
-                    $this->curl->addHeader('Content-Type', 'application/json');
-
-                    if ($this->config->getSslVerification('default', 0)) {
-                        if ($this->config->getLoggingCheck()) {
-                            $this->logger->info('SSL VERIFICATION DISABLED');
-                        }
-                        $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
-                        $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
-                    }
-
-                    $this->curl->post($fullUrl, $requestData);
-
-                    $response = $this->curl->getBody();
-
+                if ($this->config->getSslVerification('default', 0)) {
                     if ($this->config->getLoggingCheck()) {
-                        $this->logger->info('LIVE RESPONSE');
-                        $this->logger->info($response);
+                        $this->logger->info('SSL VERIFICATION DISABLED');
                     }
-
-                    $result = $this->json->unserialize($response);
-
-                    return $result;
-                } catch (\Exception $exception) {
-                    return $exception->getMessage();
+                    $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                    $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
                 }
+
+                $this->curl->post($fullUrl, $requestData);
+
+                $response = $this->curl->getBody();
+
+                if ($this->config->getLoggingCheck()) {
+                    $this->logger->info('LIVE RESPONSE');
+                    $this->logger->info($response);
+                }
+
+                $result = $this->json->unserialize($response);
+
+                return $result;
+            } catch (\Exception $exception) {
+                return $exception->getMessage();
             }
         }
     }
