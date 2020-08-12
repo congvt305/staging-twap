@@ -221,4 +221,18 @@ class Edit extends \Magento\Directory\Block\Data implements ArgumentInterface
         );
     }
 
+    /**
+     * Retrieve SMS code action url and set "secure" param to avoid confirm
+     * message when we submit form from secure page to unsecure
+     *
+     * @return string
+     */
+    public function getAddAddressUrl()
+    {
+        return $this->getUrl(
+            'customer/address',
+            ['_secure' => true]
+        );
+    }
+
 }

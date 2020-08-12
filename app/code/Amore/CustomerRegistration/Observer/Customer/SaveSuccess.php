@@ -19,13 +19,11 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 use Amore\CustomerRegistration\Model\POSLogger;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Newsletter\Model\Subscriber;
-use Magento\Directory\Model\RegionFactory;
-use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use Magento\Customer\Model\AddressFactory;
 use Magento\Framework\App\RequestInterface;
 
 /**
- * PLEASE ENTER ONE LINE SHORT DESCRIPTION OF CLASS
+ * Call POS API on customer information change
  * Class SaveSuccess
  * @package Amore\CustomerRegistration\Observer\Customer
  */
@@ -60,14 +58,7 @@ class SaveSuccess implements ObserverInterface
      * @var SubscriberFactory
      */
     private $subscriberFactory;
-    /**
-     * @var RegionFactory
-     */
-    private $regionFactory;
-    /**
-     * @var RegionResourceModel
-     */
-    private $regionResourceModel;
+
     /**
      * @var \Eguana\Directory\Helper\Data
      */
@@ -84,9 +75,7 @@ class SaveSuccess implements ObserverInterface
     public function __construct(
         RequestInterface $request,
         AddressFactory $shippingAddress,
-        RegionFactory $regionFactory,
         \Eguana\Directory\Helper\Data $cityHelper,
-        RegionResourceModel $regionResourceModel,
         Sequence $sequence,
         Data $config,
         CustomerRepositoryInterface $customerRepository,
@@ -100,8 +89,6 @@ class SaveSuccess implements ObserverInterface
         $this->config = $config;
         $this->customerRepository = $customerRepository;
         $this->logger = $logger;
-        $this->regionFactory = $regionFactory;
-        $this->regionResourceModel = $regionResourceModel;
         $this->cityHelper = $cityHelper;
         $this->shippingAddress = $shippingAddress;
         $this->request = $request;
@@ -135,7 +122,9 @@ class SaveSuccess implements ObserverInterface
             }
 
             $customerAddresses = $newCustomerData->getAddresses();
-            if ($customerAddresses == null || sizeof($customerAddresses) == 0) {
+            if ($customerAddresses == null ||
+                count($customerAddresses) == 0
+            ) {
                 $customerData = $this->request->getParams();
                 $this->createAddressFromDMAddress($newCustomerData->getId(), $customerData);
             }
@@ -172,8 +161,7 @@ class SaveSuccess implements ObserverInterface
     }
 
     /**
-     * SHORT DESCRIPTION
-     * LONG DESCRIPTION LINE BY LINE
+     * Assign integration number to the customer
      * @param $customer Customer
      * @return mixed
      */
@@ -213,6 +201,12 @@ class SaveSuccess implements ObserverInterface
         }
     }
 
+    /**
+     * To get POS API parameters
+     * @param Customer $customer
+     * @param $action
+     * @return array
+     */
     private function getAPIParameters($customer, $action)
     {
         $parameters = [];
@@ -236,35 +230,21 @@ class SaveSuccess implements ObserverInterface
         } else {
             $parameters['dmYN'] = '';
         }
-        $regionName = $customer->getCustomAttribute('dm_state') ?
-            $customer->getCustomAttribute('dm_state')->getValue() : '';
-        $regionObject = null;
-        if ($regionName) {
-            $regionObject = $this->getRegionObject($regionName);
-            $parameters['homeCity'] = $regionObject->getCode()?$regionObject->getCode():'';
-        } else {
-            $parameters['homeCity'] = '';
-        }
-
-        $cityName = $customer->getCustomAttribute('dm_city') ?
-            $customer->getCustomAttribute('dm_city')->getValue() : '';
-        $parameters['homeState'] = '';
-        if ($cityName && $regionObject) {
-            $cities = $this->cityHelper->getCityData();
-            $regionCities = $cities[$regionObject->getRegionId()];
-            foreach ($regionCities as $regionCity) {
-                if ($regionCity['name'] == $cityName) {
-                    $parameters['homeState'] = $regionCity['code'];
-                    break;
+        if ($parameters['dmYN'] == 'Y') {
+            $defaultBillingAddressId = $customer->getDefaultBilling();
+            if ($defaultBillingAddressId) {
+                $addresses = $customer->getAddresses();
+                $defaultBillingAddress = null;
+                foreach ($addresses as $address) {
+                    if ($address->getId() == $defaultBillingAddressId) {
+                        $defaultBillingAddress = $address;
+                        break;
+                    }
                 }
+                $addressParameters = $this->getAddressParameters($defaultBillingAddress);
+                $parameters = array_merge($parameters, $addressParameters);
             }
         }
-
-        $parameters['homeAddr1'] = $customer->getCustomAttribute('dm_detailed_address') ?
-            trim($customer->getCustomAttribute('dm_detailed_address')->getValue()) : '';
-        $parameters['homeZip'] = $customer->getCustomAttribute('dm_zipcode') ?
-            $customer->getCustomAttribute('dm_zipcode')->getValue() : '';
-
         $parameters['salOrgCd'] =  $customer->getCustomAttribute('sales_organization_code')?
             $customer->getCustomAttribute('sales_organization_code')->getValue():'';
         $parameters['salOffCd'] = $customer->getCustomAttribute('sales_office_code')?
@@ -273,6 +253,33 @@ class SaveSuccess implements ObserverInterface
             $customer->getCustomAttribute('partner_id')->getValue():'';
         $parameters['statusCD'] = '01';
 
+        return $parameters;
+    }
+
+    /**
+     * To get address values
+     * From default billing address get the parameters for the POS sync API
+     * @param \Magento\Customer\Model\Data\Address $address
+     * @return array
+     */
+    private function getAddressParameters($address)
+    {
+        $parameters = [];
+        $parameters['homeCity'] = $address->getRegion()->getRegionCode();
+        $parameters['homeAddr1'] = implode(' ', $address->getStreet());
+        $parameters['homeZip'] = $address->getPostcode();
+        $cityName = $address->getCity();
+        $parameters['homeState'] = '';
+        if ($cityName) {
+            $cities = $this->cityHelper->getCityData();
+            $regionCities = $cities[$address->getRegionId()];
+            foreach ($regionCities as $regionCity) {
+                if ($regionCity['name'] == $cityName) {
+                    $parameters['homeState'] = $regionCity['code'];
+                    break;
+                }
+            }
+        }
         return $parameters;
     }
 
@@ -306,27 +313,15 @@ class SaveSuccess implements ObserverInterface
         return (bool)$status;
     }
 
-    private function getRegionObject($regionName)
-    {
-        /** @var \Magento\Directory\Model\Region $region */
-        $region = $this->regionFactory->create();
-        try {
-            $this->regionResourceModel->load($region, $regionName, 'default_name');
-        } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
-        }
-        return $region;
-    }
-
     /**
-     * SHORT DESCRIPTION
-     * LONG DESCRIPTION LINE BY LINE
+     * Create address from dm address
      * @param Customer $customer
      */
     private function createAddressFromDMAddress($customerId, $customerData)
     {
         try {
-            $status = isset($customerData['dm_subscription_status_checkbox'])?$customerData['dm_subscription_status_checkbox']:'';
+            $status = isset($customerData['dm_subscription_status_checkbox'])?
+                $customerData['dm_subscription_status_checkbox']:'';
             if ($status == 'on') {
                 $dmCity = $customerData['dm_city'];
                 $dmZipCode = $customerData['dm_zipcode'];
