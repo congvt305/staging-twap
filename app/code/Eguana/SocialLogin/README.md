@@ -139,10 +139,6 @@ If the customer is logging in for the first time then he will go to Social Login
 
 At this page he can decide if he can link his existing account with social media Or create a new account.
 
-Customer can click LINE Add Friend button on customer registration to add as a friend on LINE.
-
- ![SocialLoginpage](https://i.ibb.co/pWvLDHr/regisline.png)
-
 Customer can click LINE Add Friend button on shopping cart success page to add as a friend on LINE.
 
  ![SocialLoginpage](https://i.ibb.co/xs8jJ22/cartline.png)
