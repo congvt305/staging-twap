@@ -57,6 +57,11 @@ class Sequence implements SequenceInterface
     private $customerType;
 
     /**
+     * @var string
+     */
+    private $customerWebsiteId;
+
+    /**
      * @var StoreManagerInterface
      */
     private $storeManager;
@@ -111,7 +116,6 @@ class Sequence implements SequenceInterface
      */
     public function getNextValue()
     {
-        $temp = $this->getCurrentWebsiteTable();
         $this->connection->insert($this->getCurrentWebsiteTable(), []);
         $this->lastIncrementId = $this->connection->lastInsertId($this->getCurrentWebsiteTable());
         return $this->getCurrentValue();
@@ -130,11 +134,17 @@ class Sequence implements SequenceInterface
 
     private function getCurrentWebsiteTable()
     {
-        return sprintf('sequence_customer_%s_%d', $this->customerType, $this->storeManager->getStore()->getWebsiteId());
+        $websiteId = $this->customerWebsiteId?$this->customerWebsiteId:$this->storeManager->getStore()->getWebsiteId();
+        return sprintf('sequence_customer_%s_%d', $this->customerType, $websiteId);
     }
 
     public function setCustomerType($customerType)
     {
         $this->customerType = $customerType;
+    }
+
+    public function setCustomerWebsiteid($webisteid)
+    {
+        $this->customerWebsiteId = $webisteid;
     }
 }
