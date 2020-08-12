@@ -31,17 +31,6 @@
         &-items {
             font-size: 0;
             &:extend(.abs-reset-list all);
-
-            &.list {
-                overflow: hidden;
-                position: relative;
-
-                .product-item {
-                    cursor: pointer;
-                    position: relative;
-                    overflow: hidden;
-                }
-            }
         }
 
         &-item {
@@ -296,7 +285,14 @@
 
     .products-list {
         .product {
+            &-items {
+                overflow: hidden;
+                position: relative;
+            }
+
             &-item {
+                cursor: pointer;
+                overflow: hidden;
                 position: relative;
                 width: 100%;
                 border-top: 1px solid #e2e2e2;
