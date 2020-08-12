@@ -17,6 +17,7 @@ use Amore\Sap\Controller\Adminhtml\AbstractAction;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -33,6 +34,10 @@ class OrderSend extends AbstractAction
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
+    /**
+     * @var ManagerInterface
+     */
+    private $eventManager;
 
 
     /**
@@ -44,6 +49,7 @@ class OrderSend extends AbstractAction
      * @param Config $config
      * @param OrderRepositoryInterface $orderRepository
      * @param SapOrderConfirmData $sapOrderConfirmData
+     * @param ManagerInterface $eventManager
      */
     public function __construct(
         Action\Context $context,
@@ -52,11 +58,13 @@ class OrderSend extends AbstractAction
         Logger $logger,
         Config $config,
         OrderRepositoryInterface $orderRepository,
-        SapOrderConfirmData $sapOrderConfirmData
+        SapOrderConfirmData $sapOrderConfirmData,
+        ManagerInterface $eventManager
     ) {
         parent::__construct($context, $json, $request, $logger, $config);
         $this->orderRepository = $orderRepository;
         $this->sapOrderConfirmData = $sapOrderConfirmData;
+        $this->eventManager = $eventManager;
     }
 
     public function execute()
@@ -88,6 +96,18 @@ class OrderSend extends AbstractAction
                     $this->logger->info("Single Order Result Data");
                     $this->logger->info($this->json->serialize($result));
                 }
+
+                $this->eventManager->dispatch(
+                    "eguana_bizconnect_operation_processed",
+                    [
+                        'topic_name' => 'amore.sap.order.send.request',
+                        'direction' => 'outgoing',
+                        'to' => "SAP",
+                        'serialized_data' => $this->json->serialize($orderSendData),
+                        'status' => 1,
+                        'result_message' => $this->json->serialize($result)
+                    ]
+                );
 
                 $resultSize = count($result);
 
