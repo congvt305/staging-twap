@@ -8,6 +8,7 @@
 
 namespace Amore\Sap\Plugin\Model\Order;
 
+use Amore\Sap\Exception\CrditmemoException;
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
@@ -58,6 +59,10 @@ class CreditmemoRepositoryPlugin
      * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
+    /**
+     * @var \Magento\Framework\Event\ManagerInterface
+     */
+    private $eventManager;
 
     /**
      * CreditmemoRepositoryPlugin constructor.
@@ -70,6 +75,7 @@ class CreditmemoRepositoryPlugin
      * @param OrderRepositoryInterface $orderRepository
      * @param RmaRepositoryInterface $rmaRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Magento\Framework\Event\ManagerInterface $eventManager
      */
     public function __construct(
         Json $json,
@@ -80,7 +86,8 @@ class CreditmemoRepositoryPlugin
         SapOrderCancelData $sapOrderCancelData,
         OrderRepositoryInterface $orderRepository,
         RmaRepositoryInterface $rmaRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        \Magento\Framework\Event\ManagerInterface $eventManager
     ) {
         $this->json = $json;
         $this->request = $request;
@@ -91,6 +98,7 @@ class CreditmemoRepositoryPlugin
         $this->orderRepository = $orderRepository;
         $this->rmaRepository = $rmaRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->eventManager = $eventManager;
     }
 
     public function beforeSave(\Magento\Sales\Model\Order\CreditmemoRepository $subject, \Magento\Sales\Api\Data\CreditmemoInterface $entity)
@@ -105,92 +113,53 @@ class CreditmemoRepositoryPlugin
 
         if ($enableSapCheck && $enableCreditmemoCheck) {
             if (in_array($orderStatus, $availableStatus)) {
-                if (!$this->config->checkTestMode()) {
-                    try {
-                        $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_BEFORE);
-                        $orderUpdateData = $this->sapOrderCancelData->singleOrderData($order->getIncrementId());
-
-                        if ($this->config->getLoggingCheck()) {
-                            $this->logger->info("Single Order Cancel Send Data");
-                            $this->logger->info($this->json->serialize($orderUpdateData));
-                        }
-
-                        $sapResult = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
-
-                        if ($this->config->getLoggingCheck()) {
-                            $this->logger->info("Single Order Cancel Result Data");
-                            $this->logger->info($this->json->serialize($sapResult));
-                        }
-
-                        $resultSize = count($sapResult);
-                        if ($resultSize > 0) {
-                            if ($sapResult['code'] == '0000') {
-                                $responseHeader = $sapResult['data']['response']['header'];
-                                if ($responseHeader['rtn_TYPE'] == 'S') {
-                                    try {
-                                        $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
-                                    } catch (\Exception $exception) {
-                                        $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                                        throw new \Exception(__('Something went wrong while saving order %1. Message : %2', $order->getIncrementId(), $exception->getMessage()));
-                                    }
-                                } else {
-                                    $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                                    throw new \Exception(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
-                                }
-                            } else {
-                                $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                                throw new \Exception(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $sapResult['code'], $sapResult['message']));
-                            }
-                        } else {
-                            $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                            throw new \Exception(__('Something went wrong while sending order data to SAP. No response.'));
-                        }
-                    } catch (NoSuchEntityException $e) {
-                        $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                        throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
-                    } catch (\Exception $e) {
-                        $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                        throw new \Exception(__('SAP : ' . $e->getMessage()));
-                    }
-                } else {
-                    $testData = $this->sapOrderCancelData->getTestCancelOrder();
-
-                    $jsonTestData = $this->json->serialize($testData);
+                try {
+                    $entity->setData('sap_creditmemo_send_check', SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_BEFORE);
+                    $orderUpdateData = $this->sapOrderCancelData->singleOrderData($order->getIncrementId());
 
                     if ($this->config->getLoggingCheck()) {
-                        $this->logger->info("Single Test Order Cancel Send Data");
-                        $this->logger->info($jsonTestData);
+                        $this->logger->info("Single Order Cancel Send Data");
+                        $this->logger->info($this->json->serialize($orderUpdateData));
                     }
 
-                    try {
-                        $sapResult = $this->request->postRequest($jsonTestData, 0, 'cancel');
+                    $sapResult = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
 
-                        if ($this->config->getLoggingCheck()) {
-                            $this->logger->info("Single Order Test Cancel Result Data");
-                            $this->logger->info($this->json->serialize($sapResult));
-                        }
+                    if ($this->config->getLoggingCheck()) {
+                        $this->logger->info("Single Order Cancel Result Data");
+                        $this->logger->info($this->json->serialize($sapResult));
+                    }
 
-                        $resultSize = count($sapResult);
+                    $this->eventManager->dispatch(
+                        "eguana_bizconnect_operation_processed",
+                        [
+                            'topic_name' => 'amore.sap.refund.request',
+                            'direction' => 'outgoing',
+                            'to' => "SAP",
+                            'serialized_data' => $this->json->serialize($orderUpdateData),
+                            'status' => 1,
+                            'result_message' => $this->json->serialize($sapResult)
+                        ]
+                    );
 
-                        if ($resultSize > 0) {
-                            if ($sapResult['code'] == '0000') {
-                                $responseHeader = $sapResult['data']['response']['header'];
-                                if ($responseHeader['rtn_TYPE'] == 'S') {
-                                    $this->messageManager->addSuccessMessage(__('Test Order Address Update sent to SAP Successfully.'));
-                                } else {
-                                    throw new \Exception(__('Error returned from SAP for Test order. Error code : %1. Message : %2', $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
-                                }
+                    $resultSize = count($sapResult);
+                    if ($resultSize > 0) {
+                        if ($sapResult['code'] == '0000') {
+                            $responseHeader = $sapResult['data']['response']['header'];
+                            if ($responseHeader['rtn_TYPE'] == 'S') {
+                                $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                             } else {
-                                throw new \Exception(__('Error returned from SAP for Test order. Error code : %1. Message : %2', $sapResult['code'], $sapResult['message']));
+                                throw new CrditmemoException(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
                             }
                         } else {
-                            throw new \Exception(__('Something went wrong while sending order data to SAP. No response.'));
+                            throw new CrditmemoException(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $sapResult['code'], $sapResult['message']));
                         }
-                    } catch (LocalizedException $e) {
-                        throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
-                    } catch (\Exception $e) {
-                        throw new \Exception(__('SAP : ' . $e->getMessage()));
+                    } else {
+                        throw new CrditmemoException(__('Something went wrong while sending order data to SAP. No response.'));
                     }
+                } catch (NoSuchEntityException $e) {
+                    throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
+                } catch (\Exception $e) {
+                    throw new \Exception(__('SAP : ' . $e->getMessage()));
                 }
             }
         }

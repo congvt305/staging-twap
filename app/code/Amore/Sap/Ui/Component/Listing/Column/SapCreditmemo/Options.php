@@ -12,13 +12,9 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class Options implements OptionSourceInterface
 {
-    const ERROR_BEFORE_SEND = 0;
+    const WAITING_FOR_SAP_RESPONSE = 0;
 
     const SUCCESS_TO_SAP = 1;
-
-    const FAIL_TO_SAP = 2;
-
-    const RESEND_SUCCESS = 3;
 
     /**
      * @var array
@@ -43,10 +39,8 @@ class Options implements OptionSourceInterface
     public function getSapSendCheckStatusList()
     {
         return [
-            self::ERROR_BEFORE_SEND => __("Error Before Send"),
-            self::SUCCESS_TO_SAP => __("Success"),
-            self::FAIL_TO_SAP => __("Fail"),
-            self::RESEND_SUCCESS => __("Resend Success")
+            self::WAITING_FOR_SAP_RESPONSE => __("Waiting for SAP Response."),
+            self::SUCCESS_TO_SAP => __("Success")
         ];
     }
 }

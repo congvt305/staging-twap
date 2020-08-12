@@ -12,6 +12,7 @@ use Amore\Sap\Exception\ShipmentNotExistException;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -47,6 +48,10 @@ class MassSend extends AbstractAction
      * @var TimezoneInterface
      */
     private $timezoneInterface;
+    /**
+     * @var ManagerInterface
+     */
+    private $eventManager;
 
     /**
      * MassSend constructor.
@@ -60,6 +65,7 @@ class MassSend extends AbstractAction
      * @param SapOrderConfirmData $sapOrderConfirmData
      * @param OrderRepositoryInterface $orderRepository
      * @param TimezoneInterface $timezoneInterface
+     * @param ManagerInterface $eventManager
      */
     public function __construct(
         Action\Context $context,
@@ -71,7 +77,8 @@ class MassSend extends AbstractAction
         CollectionFactory $collectionFactory,
         SapOrderConfirmData $sapOrderConfirmData,
         OrderRepositoryInterface $orderRepository,
-        TimezoneInterface $timezoneInterface
+        TimezoneInterface $timezoneInterface,
+        ManagerInterface $eventManager
     ) {
         parent::__construct($context, $json, $request, $logger, $config);
         $this->filter = $filter;
@@ -79,6 +86,7 @@ class MassSend extends AbstractAction
         $this->sapOrderConfirmData = $sapOrderConfirmData;
         $this->orderRepository = $orderRepository;
         $this->timezoneInterface = $timezoneInterface;
+        $this->eventManager = $eventManager;
     }
 
     public function execute()
@@ -145,8 +153,8 @@ class MassSend extends AbstractAction
             }
         }
 
-        $orderCount = count($orderDataList);
         try {
+            $orderCount = count($orderDataList);
             if ($orderCount > 0) {
                 $storeIdUnique = array_unique($storeIdList);
                 $sendData = $this->sapOrderConfirmData->massSendOrderData($orderDataList, $orderItemDataList);
@@ -161,6 +169,18 @@ class MassSend extends AbstractAction
                     $this->logger->info("ORDER MASS SEND RESULT");
                     $this->logger->info($this->json->serialize($result));
                 }
+
+                $this->eventManager->dispatch(
+                    "eguana_bizconnect_operation_processed",
+                    [
+                        'topic_name' => 'amore.sap.order.masssend.request',
+                        'direction' => 'outgoing',
+                        'to' => "SAP",
+                        'serialized_data' => $this->json->serialize($sendData),
+                        'status' => 1,
+                        'result_message' => $this->json->serialize($result) . "\n" . "Error Orders : " . $this->json->serialize($orderStatusError)
+                    ]
+                );
 
                 $resultSize = count($result);
                 if ($resultSize > 0) {

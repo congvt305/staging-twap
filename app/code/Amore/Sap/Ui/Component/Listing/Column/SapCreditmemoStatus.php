@@ -60,16 +60,10 @@ class SapCreditmemoStatus extends Column
 
         switch ($value) {
             case 0:
-                $label = "Error Before Send";
+                $label = "Waiting For SAP Response";
                 break;
             case 1:
                 $label = "Success";
-                break;
-            case 2:
-                $label = "Fail";
-                break;
-            case 3:
-                $label = "Resend Success";
                 break;
             default:
                 $label = '';
