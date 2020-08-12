@@ -63,6 +63,10 @@ class RmaPlugin
      * @var ManagerInterface
      */
     private $messageManager;
+    /**
+     * @var \Magento\Framework\Event\ManagerInterface
+     */
+    private $eventManager;
 
     /**
      * RmaPlugin constructor.
@@ -73,6 +77,7 @@ class RmaPlugin
      * @param OrderRepositoryInterface $orderRepository
      * @param SapOrderReturnData $sapOrderReturnData
      * @param ManagerInterface $messageManager
+     * @param \Magento\Framework\Event\ManagerInterface $eventManager
      */
     public function __construct(
         Json $json,
@@ -81,7 +86,8 @@ class RmaPlugin
         Logger $logger,
         OrderRepositoryInterface $orderRepository,
         SapOrderReturnData $sapOrderReturnData,
-        ManagerInterface $messageManager
+        ManagerInterface $messageManager,
+        \Magento\Framework\Event\ManagerInterface $eventManager
     ) {
         $this->json = $json;
         $this->request = $request;
@@ -90,6 +96,7 @@ class RmaPlugin
         $this->orderRepository = $orderRepository;
         $this->sapOrderReturnData = $sapOrderReturnData;
         $this->messageManager = $messageManager;
+        $this->eventManager = $eventManager;
     }
 
     public function beforeSaveRma(Rma $subject, $data)
@@ -120,6 +127,18 @@ class RmaPlugin
                         $this->logger->info("Order RMA Result Data");
                         $this->logger->info($this->json->serialize($result));
                     }
+
+                    $this->eventManager->dispatch(
+                        "eguana_bizconnect_operation_processed",
+                        [
+                            'topic_name' => 'amore.sap.return.request',
+                            'direction' => 'outgoing',
+                            'to' => "SAP",
+                            'serialized_data' => $this->json->serialize($orderRmaData),
+                            'status' => 1,
+                            'result_message' => $this->json->serialize($result)
+                        ]
+                    );
 
                     $resultSize = count($result);
 
