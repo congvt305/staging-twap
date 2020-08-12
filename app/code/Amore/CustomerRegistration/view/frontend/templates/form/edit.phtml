@@ -66,6 +66,10 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
         <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status'))]]) ?>
         <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
             <?= $_dmSubscriptionStatus->setDmSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status'))->toHtml() ?>
+            <p class="dm-message">
+                <?= $block->escapeHtml(__('To receive mail you should have default billing address')); ?>
+                <a class="add-address-link" href="<?= $block->escapeUrl($viewModel->getAddAddressUrl()) ?>"><span><?= $block->escapeHtml(__('Add Address')) ?></span></a>
+            </p>
         <?php endif ?>
 
     </fieldset>
@@ -144,58 +148,6 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
         </div>
     </fieldset>
 
-    <fieldset class="fieldset dm-address" style="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status')) == 1?'':'display: none'; ?>">
-        <legend class="legend"><span><?= $block->escapeHtml(__('DM Marketing')) ?></span></legend><br>
-        <div class="field country required">
-            <label for="country" class="label"><span><?= $block->escapeHtml(__('Country')) ?></span></label>
-            <div class="control">
-                <?= $viewModel->getCountryHtmlSelect(); ?>
-            </div>
-        </div>
-
-        <div class="field required">
-            <label for="dm_state" class="label"><span><?= $block->escapeHtml(__('State')) ?></span></label>
-            <div class="control">
-                <?php //phpcs:disable ?>
-                <select id="region_id" name="region_id" title="<?= /* @noEscape */ $block->escapeHtml(__('State')) ?>" class="validate-select region_id">
-                    <option value=""><?= $block->escapeHtml(__('Please select a region, state or province.')) ?></option>
-                </select>
-                <?php //phpcs:enable ?>
-                <input type="text" id="dm_state" name="dm_state" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_state')) ?>"  title="<?= /* @noEscape */ $block->escapeHtml(__('State')) ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('region') ?>" />
-            </div>
-        </div>
-
-        <div class="field required">
-            <label for="dm_city" class="label"><span><?= $block->escapeHtml(__('City')) ?></span></label>
-            <div class="control">
-                <?php //phpcs:disable ?>
-                <select id="city_id" name="city_id" title="<?= $block->escapeHtml(__('City')); ?>" class="validate-select region_id" ?>>
-                    <option value=""><?= $block->escapeHtml(__('Please select a city, city or district.')) ?></option>
-                </select>
-                <input type="text" placeholder="<?= $block->escapeHtml(__('City')) ?>" name="dm_city" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_city')) ?>" title="<?= $block->escapeHtml(__('City')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_city')) ?>" id="dm_city">
-                <?php //phpcs:enable ?>
-            </div>
-        </div>
-
-        <div class="field required">
-            <label for="dm_detailed_address" class="label"><span><?= $block->escapeHtml(__('Detailed Address')) ?></span></label>
-            <div class="control">
-                <?php //phpcs:disable ?>
-                <input type="text" placeholder="<?= $block->escapeHtml(__('Detailed Address')) ?>" name="dm_detailed_address" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_detailed_address')) ?>" title="<?= $block->escapeHtml(__('Detailed Address')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_detailed_address')) ?>" id="dm_detailed_address">
-                <?php //phpcs:enable ?>
-            </div>
-        </div>
-
-        <div class="field required">
-            <label for="dm_zipcode" class="label"><span><?= $block->escapeHtml(__('Zip Code')) ?></span></label>
-            <div class="control">
-                <?php //phpcs:disable ?>
-                <input type="text" readonly placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_zipcode')) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
-                <?php //phpcs:enable ?>
-            </div>
-        </div>
-    </fieldset>
-
     <?= $block->getChildHtml('form_additional_info') ?>
     <div class="actions-toolbar">
         <div class="primary">
@@ -239,34 +191,6 @@ $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
 </script>
 <script type="text/x-magento-init">
     {
-        "#country": {
-            "regionUpdater": {
-                "optionalRegionAllowed": <?= /* @noEscape */ $block->getConfig('general/region/display_all') ? 'true' : 'false' ?>,
-                "regionListId": "#region_id",
-                "regionInputId": "#dm_state",
-                "postcodeId": "#dm_zipcode",
-                "form": "#form-validate",
-                <?php //phpcs:disable ?>
-                "regionJson": <?= /* @noEscape */ $this->helper(\Magento\Directory\Helper\Data::class)->getRegionJson() ?>,
-                <?php //phpcs:enable ?>
-                "defaultRegion": "<?= $viewModel->getCustomerDMStateRegionId($block->getCustomer()); ?>",
-                <?php //phpcs:disable ?>
-                "countriesWithOptionalZip": <?= /* @noEscape */ $this->helper(\Magento\Directory\Helper\Data::class)->getCountriesWithOptionalZip(true) ?>
-                <?php //phpcs:enable ?>
-            }
-        },
-        "#region_id": {
-            "cityUpdater": {
-                "optionalCityAllowed": <?= /* @noEscape need to do config*/ ($block->getConfig('general/region/display_all') ? 'true' : 'false') ?>,
-                "cityListId": "#city_id",
-                "cityInputId": "#dm_city",
-                "postcodeId": "#dm_zipcode",
-                "form": "#form-validate",
-                "cityJson": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityJson() ?>,
-                "defaultRegion": "<?= $viewModel->getCustomerDMStateRegionId($block->getCustomer()); ?>",
-                "defaultCity": "<?= $viewModel->getCustomerDMCityId($block->getCustomer()); ?>"
-            }
-        },
         "*": {
             "editform":{
             }
