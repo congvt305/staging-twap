@@ -12,6 +12,7 @@ use Amore\Sap\Api\SapOrderManagementInterface;
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Rma\Api\RmaRepositoryInterface;
@@ -24,7 +25,7 @@ use Magento\Sales\Model\Order\Email\Container\ShipmentIdentity;
 use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Ecpay\Ecpaypayment\Model\Payment;
 use Magento\Setup\Exception;
-use function PHPUnit\Framework\throwException;
+use Magento\Sales\Api\CreditmemoRepositoryInterface;
 
 class SapOrderManagement implements SapOrderManagementInterface
 {
@@ -108,6 +109,14 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @var \Magento\Sales\Api\ShipmentTrackRepositoryInterface
      */
     private $shipmentTrackRepository;
+    /**
+     * @var CreditmemoRepositoryInterface
+     */
+    private $creditmemoRepository;
+    /**
+     * @var ManagerInterface
+     */
+    private $eventManager;
 
     /**
      * SapOrderManagement constructor.
@@ -128,6 +137,8 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @param \Magento\Rma\Model\Rma\Source\StatusFactory $rmaStatusFactory
      * @param \Magento\Rma\Model\Rma\Status\HistoryFactory $historyFactory
      * @param \Magento\Sales\Api\ShipmentTrackRepositoryInterface $shipmentTrackRepository
+     * @param CreditmemoRepositoryInterface $creditmemoRepository
+     * @param ManagerInterface $eventManager
      */
     public function __construct(
         ShipmentItemCreationInterfaceFactory $shipmentItemCreationInterfaceFactory,
@@ -146,7 +157,9 @@ class SapOrderManagement implements SapOrderManagementInterface
         \Magento\Rma\Model\ResourceModel\Item\CollectionFactory $rmaItemFactory,
         \Magento\Rma\Model\Rma\Source\StatusFactory $rmaStatusFactory,
         \Magento\Rma\Model\Rma\Status\HistoryFactory $historyFactory,
-        \Magento\Sales\Api\ShipmentTrackRepositoryInterface $shipmentTrackRepository
+        \Magento\Sales\Api\ShipmentTrackRepositoryInterface $shipmentTrackRepository,
+        CreditmemoRepositoryInterface $creditmemoRepository,
+        ManagerInterface $eventManager
     ) {
         $this->shipmentItemCreationInterfaceFactory = $shipmentItemCreationInterfaceFactory;
         $this->shipmentTrackCreationInterfaceFactory = $shipmentTrackCreationInterfaceFactory;
@@ -165,6 +178,8 @@ class SapOrderManagement implements SapOrderManagementInterface
         $this->rmaStatusFactory = $rmaStatusFactory;
         $this->historyFactory = $historyFactory;
         $this->shipmentTrackRepository = $shipmentTrackRepository;
+        $this->creditmemoRepository = $creditmemoRepository;
+        $this->eventManager = $eventManager;
     }
 
     public function orderStatus($orderStatusData)
@@ -172,13 +187,13 @@ class SapOrderManagement implements SapOrderManagementInterface
         $result = [];
 
         $parameters = [
-            $orderStatusData['source'],
-            $orderStatusData['odrno'],
-            $orderStatusData['odrstat'],
-            $orderStatusData['ztrackId'],
-            $orderStatusData['ugcod'],
-            $orderStatusData['ugtxt'],
-            $orderStatusData['mallId']
+            "source" => $orderStatusData['source'],
+            "odrno" => $orderStatusData['odrno'],
+            "odrstat" => $orderStatusData['odrstat'],
+            "ztrackId" => $orderStatusData['ztrackId'],
+            "ugcod" => $orderStatusData['ugcod'],
+            "ugtxt" => $orderStatusData['ugtxt'],
+            "mallId" => $orderStatusData['mallId']
         ];
 
         if ($this->config->getLoggingCheck()) {
@@ -228,6 +243,18 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
                 $this->orderRepository->save($order);
             }
+            $this->eventManager->dispatch(
+                "eguana_bizconnect_operation_processed",
+                [
+                    'topic_name' => 'amore.sap.order.status.success',
+                    'direction' => 'incoming',
+                    'to' => "Magento",
+                    'serialized_data' => $this->json->serialize($parameters),
+                    'status' => 1,
+                    'result_message' => $this->json->serialize($result)
+                ]
+            );
+
             return $result;
         }
 
@@ -235,7 +262,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         if ($orderStatusData['odrstat'] == 2) {
             if (strpos($incrementId, "R") !== false) {
                 $message = "Order Return Does not created in SAP.";
-                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
 
                 $rmaIncrementId = str_replace("R", "", $incrementId);
                 /** @var \Magento\Rma\Model\Rma $rma */
@@ -258,6 +285,17 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                 $this->orderRepository->save($order);
             }
+            $this->eventManager->dispatch(
+                "eguana_bizconnect_operation_processed",
+                [
+                    'topic_name' => 'amore.sap.order.status.fail',
+                    'direction' => 'incoming',
+                    'to' => "Magento",
+                    'serialized_data' => $this->json->serialize($parameters),
+                    'status' => 0,
+                    'result_message' => $this->json->serialize($result)
+                ]
+            );
             return $result;
         }
 
@@ -268,6 +306,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                 /** @var \Magento\Rma\Model\Rma $rma */
                 $rma = $this->getRma($rmaIncrementId);
 
+                $rma->setData('sap_return_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
                 $rma->setData('sap_response', $orderStatusData['ugtxt']);
                 $this->rmaRepository->save($rma);
 
@@ -296,6 +335,17 @@ class SapOrderManagement implements SapOrderManagementInterface
                     $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
                 }
             }
+            $this->eventManager->dispatch(
+                "eguana_bizconnect_operation_processed",
+                [
+                    'topic_name' => 'amore.sap.order.status.dn',
+                    'direction' => 'incoming',
+                    'to' => "Magento",
+                    'serialized_data' => $this->json->serialize($parameters),
+                    'status' => $result[$orderStatusData['odrno']]['code'] == "0000" ? 1 : 0,
+                    'result_message' => $this->json->serialize($result)
+                ]
+            );
             return $result;
         }
 
@@ -339,7 +389,21 @@ class SapOrderManagement implements SapOrderManagementInterface
                             } catch (\Exception $exception) {
                                 $order->setData('sap_response', $exception->getMessage());
                                 $this->orderRepository->save($order);
-                                return $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
+
+                                $this->eventManager->dispatch(
+                                    "eguana_bizconnect_operation_processed",
+                                    [
+                                        'topic_name' => 'amore.sap.order.status.gi',
+                                        'direction' => 'incoming',
+                                        'to' => "Magento",
+                                        'serialized_data' => $this->json->serialize($parameters),
+                                        'status' => $result[$orderStatusData['odrno']]['code'] == "0000" ? 1 : 0,
+                                        'result_message' => $this->json->serialize($result)
+                                    ]
+                                );
+
+                                return $result;
                             }
 
                             // case that failed to creat shipment in Magento
@@ -406,7 +470,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 }
 
                                 $message = "Order already has a shipment. Order Status changed to Shipment Processing.";
-                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
 
                                 if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
                                     $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
@@ -430,7 +494,20 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 $this->shipmentTrackRepository->save($trackById);
 
                                 $message = "Shipping method is not Greenworld and Trackin number is changed.";
-                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+
+                                $this->eventManager->dispatch(
+                                    "eguana_bizconnect_operation_processed",
+                                    [
+                                        'topic_name' => 'amore.sap.order.status.gi',
+                                        'direction' => 'incoming',
+                                        'to' => "Magento",
+                                        'serialized_data' => $this->json->serialize($parameters),
+                                        'status' => $result[$orderStatusData['odrno']]['code'] == "0000" ? 1 : 0,
+                                        'result_message' => $this->json->serialize($result)
+                                    ]
+                                );
+
                                 return $result;
                             }
 
@@ -443,16 +520,49 @@ class SapOrderManagement implements SapOrderManagementInterface
                     $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                 }
             }
+            $this->eventManager->dispatch(
+                "eguana_bizconnect_operation_processed",
+                [
+                    'topic_name' => 'amore.sap.order.status.gi',
+                    'direction' => 'incoming',
+                    'to' => "Magento",
+                    'serialized_data' => $this->json->serialize($parameters),
+                    'status' => $result[$orderStatusData['odrno']]['code'] == "0000" ? 1 : 0,
+                    'result_message' => $this->json->serialize($result)
+                ]
+            );
+
             return $result;
         }
 
         if ($orderStatusData['odrstat'] == 9) {
             $order = $this->getOrderFromList($incrementId);
-            $order->setData('sap_creditmemo_send_check', 1);
-            $this->orderRepository->save($order);
 
-            $message = "Order Canceled Successfully.";
-            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+            $creditmemo = $this->getCreditmemoByOrder($order->getEntityId());
+
+            if (empty($creditmemo)) {
+                $message = "Creditmemo for this order does not exist.";
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+            } else {
+                $creditmemo->setData('sap_creditmemo_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                $this->creditmemoRepository->save($creditmemo);
+
+                $message = "Order Canceled Successfully.";
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+            }
+
+            $this->eventManager->dispatch(
+                "eguana_bizconnect_operation_processed",
+                [
+                    'topic_name' => 'amore.sap.order.status.refund',
+                    'direction' => 'incoming',
+                    'to' => "Magento",
+                    'serialized_data' => $this->json->serialize($parameters),
+                    'status' => $result[$orderStatusData['odrno']]['code'] == "0000" ? 1 : 0,
+                    'result_message' => $this->json->serialize($result)
+                ]
+            );
+
             return $result;
         }
 
@@ -495,6 +605,18 @@ class SapOrderManagement implements SapOrderManagementInterface
     {
         $orders = $this->getOrderByIncrementId($incrementId)->getItems();
         return reset($orders);
+    }
+
+    public function getCreditmemoByOrder($orderId)
+    {
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter('order_id', $orderId)->create();
+
+        try {
+            $creditmemos = $this->creditmemoRepository->getList($searchCriteria)->getItems();
+            return reset($creditmemos);
+        } catch (\Exception $exception) {
+            return null;
+        }
     }
 
     /**
