@@ -21,6 +21,7 @@
             <form id="ecpay_payment_form">
                 <fieldset class="fieldset payment method" id="payment_form_<?php echo $this->getMethodCode() ?>">
                     <div class="field required">
+                        <label class="label" data-bind="i18n: 'Payment Methods'"></label>
                         <select name="ecpay_choosen_payment"
                                 class="validate-select validation-passed"
                                 title="Ecpaypayment"
@@ -54,7 +55,7 @@
                         <input type="radio" id="greenworld-invoice" name="ecpay_einvoice_type" value="greenworld-invoice" data-bind="checked: invoiceChecked">
                         <label for="greenworld-invoice" class="label" data-bind="i18n: 'GreenWorld Invoice'"/>
                         <div class="fieldset" id="greenworld-invoice-contents" data-bind="visible: invoiceChecked() === 'greenworld-invoice'">
-                            <div class="field note"><span data-bind="i18n: 'Green World Invoice Test'"/></div>
+                            <p data-bind="i18n: 'Invoice opening notice will be sent to you by email, and you will be notified by mail on your own initiative when you win the prize.'"/>
                         </div>
                     </div>
                     <div class="control">
@@ -64,13 +65,7 @@
                             <div class="field">
                                 <label for="invoice_title" class="label" data-bind="i18n: 'Invoice Title'"/>
                                 <div class="control">
-                                    <input type="text" name="invoice_title" data-validate='{"maxlength":255}' value="" title="Invoice Title" class="input-text invoice-title" id="invoice_title">
-                                </div>
-                            </div>
-                            <div class="field">
-                                <label for="tax_id_number" class="label" data-bind="i18n: 'Tax ID Number'"/>
-                                <div class="control">
-                                    <input type="text" name="tax_id_number" data-validate='{"maxlength":255}' value="" title="Tax ID Number" class="input-text tax_id_number" id="tax_id_number">
+                                    <input type="text" data-bind="attr: {placeholder: $t('Invoice Title')}" name="invoice_title" data-validate='{"maxlength":255}' value="" title="Invoice Title" class="input-text invoice-title" id="invoice_title">
                                 </div>
                             </div>
                         </div>
@@ -79,7 +74,7 @@
                         <input type="radio" id="donation-invoice" name="ecpay_einvoice_type" value="donation-invoice" data-bind="checked: invoiceChecked">
                         <label for="donation-invoice" class="label" data-bind="i18n: 'Donation Invoice'"/>
                         <div class="fieldset"  id="donation-invoice-contents" data-bind="visible: invoiceChecked() === 'donation-invoice'">
-                            <p data-bind="i18n: 'Donate the receipt to Taiwan Cancer Foundation.'"/>
+                            <p data-bind="html: $t('Invoice will be donated uniformly to <b>the Cancer Hope FoundationSome html</b>')"/>
                         </div>
                     </div>
                     <div class="control">
@@ -89,7 +84,7 @@
                             <div class="field">
                                 <label for="cellphone_barcode" class="label" data-bind="i18n: 'Cellphone Barcode'"/>
                                 <div class="control">
-                                    <input type="text" name="cellphone_barcode" data-validate='{"maxlength":255}' value="" title="Cellphone Barcode" class="input-text cellphone-barcode" id="cellphone_barcode">
+                                    <input type="text" data-bind="attr: {placeholder: $t('Cellphone Barcode')}" name="cellphone_barcode" data-validate='{"maxlength":255}' value="" title="Cellphone Barcode" class="input-text cellphone-barcode" id="cellphone_barcode">
                                 </div>
                             </div>
                         </div>
