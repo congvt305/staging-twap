@@ -255,8 +255,8 @@ class SaveSuccess implements ObserverInterface
         }
         if ($parameters['dmYN'] == 'Y') {
             $defaultBillingAddressId = $customer->getDefaultBilling();
-            if ($action == 'register' && !$defaultBillingAddressId) {
-                $customerData = $this->request->getParams();
+            $customerData = $this->request->getParams();
+            if (isset($customerData['dm_zipcode']) && !$defaultBillingAddressId) {
                 $parameters['homeAddr1'] = $customerData['dm_detailed_address'];
                 $parameters['homeZip'] = $customerData['dm_zipcode'];
                 $regionName = $customerData['dm_state'];
