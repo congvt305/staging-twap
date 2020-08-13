@@ -36,6 +36,10 @@
         > fieldset {
             &:first-child {
                 .field {
+                    &.address {
+                        &:extend(.abs-visually-hidden all);
+                    }
+
                     address {
                         &:extend(.abs-address-blocks all);
                     }
