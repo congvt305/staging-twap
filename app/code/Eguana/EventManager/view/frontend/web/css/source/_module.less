@@ -48,6 +48,7 @@
                     &:hover,
                     &:active {
                         color: @primary__color__dark;
+                        text-decoration: none;
 
                         &:before {
                             transform: translateY(0);
@@ -123,6 +124,12 @@
         &.event-detail-wrapper {
             .actions-toolbar {
                 margin-top: @indent__xl;
+                text-align: center;
+
+                > .primary {
+                    float: none;
+                    margin: 0;
+                }
             }
         }
 
@@ -147,6 +154,17 @@
     .events-detail-index {
         .page-title {
             text-align: left !important;
+        }
+    }
+
+    .events-index-index,
+    .events-previous-index {
+        .page-title-wrapper {
+            text-align: center;
+        }
+
+        .page-title {
+            margin-bottom: 0 !important;
         }
     }
 }
@@ -218,8 +236,8 @@
     .events-index-index,
     .events-previous-index {
         .page-main {
-            max-width: 100%;
-            padding: 0;
+            max-width: 100% !important;
+            padding: 0 !important;
         }
 
         .event-list-wrapper {
