@@ -9,9 +9,12 @@
 <?php
 /** @var \Magento\Framework\View\Element\Template $block */
 ?>
-<script>
-        console.log('before push:');
-        dataLayer.push({
-            'event': '<?= $block->getEventName() ?>'
-        });
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Amore_GaTagging/js/action/cart-page":{
+                "eventName": "cart"
+            }
+        }
+    }
 </script>
