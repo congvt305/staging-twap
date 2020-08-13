@@ -384,14 +384,10 @@
                 display: block;
                 max-width: @layout__max-width - @layout-indent__width*2;
                 margin: auto;
-                border-bottom: 1px solid @color-white;
-            }
-        }
+                border-bottom: 1px solid @border-color__base;
 
-        &:hover {
-            > ul {
-                &:after {
-                    border-bottom-color: @border-color__base;
+                .cms-home & {
+                    display: none;
                 }
             }
         }
