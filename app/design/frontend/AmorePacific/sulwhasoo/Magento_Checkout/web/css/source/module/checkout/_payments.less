@@ -23,7 +23,7 @@
 & when (@media-common = true) {
     .checkout-payment-method {
         .step-title {
-            margin-bottom: 0;
+            &:extend(.abs-visually-hidden all);
         }
 
         .payment-method {
@@ -183,7 +183,9 @@
 
         .payments {
             .legend {
-                &:extend(.abs-visually-hidden all);
+                > * {
+                    font-weight: @font-weight__regular;
+                }
             }
         }
     }
