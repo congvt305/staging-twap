@@ -13,6 +13,8 @@ namespace Amore\CustomerRegistration\Model\ResourceModel\Customer;
 use Amore\CustomerRegistration\Model\POSLogger;
 use Magento\Customer\Model\AccountConfirmation;
 use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Message\ManagerInterface;
 
 /**
  * PLEASE ENTER ONE LINE SHORT DESCRIPTION OF CLASS
@@ -31,9 +33,15 @@ class Customer extends \Magento\Customer\Model\ResourceModel\Customer
      */
     private $logger;
 
+    /**
+     * @var ManagerInterface
+     */
+    private $messageManager;
+
     public function __construct(
         \Amore\CustomerRegistration\Model\POSLogger $logger,
         \Magento\Eav\Api\AttributeRepositoryInterface $attributeRepository,
+        ManagerInterface $messageManager,
         \Magento\Eav\Model\Entity\Context $context,
         \Magento\Framework\Model\ResourceModel\Db\VersionControl\Snapshot $entitySnapshot,
         \Magento\Framework\Model\ResourceModel\Db\VersionControl\RelationComposite $entityRelationComposite,
@@ -56,8 +64,9 @@ class Customer extends \Magento\Customer\Model\ResourceModel\Customer
             $accountConfirmation
         );
 
-        $this->attributeRepository = $attributeRepository;
-        $this->logger = $logger;
+        $this->messageManager        = $messageManager;
+        $this->attributeRepository   = $attributeRepository;
+        $this->logger                = $logger;
     }
 
     /**
@@ -98,9 +107,14 @@ class Customer extends \Magento\Customer\Model\ResourceModel\Customer
                 $attributeId
             );
             if ($result) {
-                throw new AlreadyExistsException(
+                // TODO Implement method (@Abbas Sir Please verify this functionality)
+                //Edit by Arslan
+                //Add message manager because the throw AlreadyExistsException was showing message from cache.
+                //Now message manager add new message and InputException throw it to the same page
+                $this->messageManager->addError(
                     __('A customer with the same mobile number already exists in an associated website.')
                 );
+                throw new InputException();
             }
         }
 
