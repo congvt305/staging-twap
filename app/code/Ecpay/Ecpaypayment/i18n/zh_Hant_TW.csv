@@ -19,7 +19,7 @@
 "ecpay_payment_order_comment_barcode","付款截止日 : %s, 第1段條碼號碼 : %s, 第2段條碼號碼 : %s, 第3段條碼號碼 : %s"
 "ecpay_payment_order_comment_payment_failure","付款失敗, 錯誤訊息 : %s"
 "Laneige Online Shopping Center", "蘭芝線上購物中心"
-"Invoice Title","公司名稱"
+"Invoice Title","公司統編"
 "Tax ID Number","統一編號"
 "Donation Invoice","發票捐贈"
 "Invoice will be donated uniformly to <b>the Cancer Hope FoundationSome html</b>","發票將統一捐贈給<b>癌症希望基金會</b>"
