@@ -3266,7 +3266,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "DB exception","DB exception",module,Magento_Checkout
 "Message","訊息內容",module,Magento_Checkout
 "Print receipt","Print receipt",module,Magento_Checkout
-"Apply Discount Code","申請折扣碼",module,Magento_Checkout
+"Apply Discount Code","使用折扣碼",module,Magento_Checkout
 "Enter discount code","輸入折扣碼",module,Magento_Checkout
 "Apply Discount","申請折扣",module,Magento_Checkout
 "Cancel Coupon","Cancel Coupon",module,Magento_Checkout
@@ -3399,13 +3399,13 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Carrier Title","Carrier Title",module,Magento_Checkout
 "Next","下一頁",module,Magento_Checkout
 "Sorry, no quotes are available for this order at this time","Sorry, no quotes are available for this order at this time",module,Magento_Checkout
-"Item in Cart","購物車中的物品",module,Magento_Checkout
-"Items in Cart","購物車中的物品",module,Magento_Checkout
+"Item in Cart","件商品待結帳",module,Magento_Checkout
+"Items in Cart","件商品待結帳",module,Magento_Checkout
 "Require Customer To Be Logged In To Checkout","Require Customer To Be Logged In To Checkout",module,Magento_Checkout
 "Maximum Display Recently Added Item(s)","Maximum Display Recently Added Item(s)",module,Magento_Checkout
 "of","of",module,Magento_Checkout
 "Something went wrong while saving the page. Please refresh the page and try again.","Something went wrong while saving the page. Please refresh the page and try again.",module,Magento_Checkout
-"You added %1 to your <a href=""%2"">shopping cart</a>.","您添加了 %1 <a href=""%2"">做為此次贈品</a>.",module,Magento_Checkout
+"You added %1 to your <a href=""%2"">shopping cart</a>.","%1已加到我的願望清單囉!",module,Magento_Checkout
 "Please select at least one product to add to cart","請選擇至少一種產品添加到購物車",module,Magento_Checkout
 "The quote item isn't found. Verify the item and try again.","The quote item isn't found. Verify the item and try again.",module,Magento_Checkout
 "The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.","未下訂單。 首先，同意條款和條件，然後嘗試再次下訂單。",module,Magento_Checkout
@@ -4251,7 +4251,7 @@ Maximum 255 characters are allowed.,module,Magento_CompanyCredit
 "This company has no payment methods. Please contact store administrator.","該公司沒有付款方式。 請聯繫商店管理員。",module,Magento_CompanyPayment
 "Default B2B Payment Methods","Default B2B Payment Methods",module,Magento_CompanyPayment
 "Applicable Payment Methods","適用的付款方式",module,Magento_CompanyPayment
-"Payment Methods","支付方式",module,Magento_CompanyPayment
+"Payment Methods","付款方式",module,Magento_CompanyPayment
 "By default, the selected payment methods are available for all new companies. If your Magento site has multiple websites, on a specific website the buyer will be able to pay with the methods available for that website only.","By default, the selected payment methods are available for all new companies. If your Magento site has multiple websites, on a specific website the buyer will be able to pay with the methods available for that website only.",module,Magento_CompanyPayment
 "Payment Information (View)","付款信息（查看）",module,Magento_CompanyPayment
 "Use config settings","Use config settings",module,Magento_CompanyPayment
@@ -4853,7 +4853,7 @@ new products will be created. Use this step to customize images and price for yo
 "A login and a password are required.","需要登錄名和密碼。",module,Magento_Customer
 "New Password and Confirm New Password values didn't match.","New Password and Confirm New Password values didn't match.",module,Magento_Customer
 "Please enter a new password.","請輸入新密碼。",module,Magento_Customer
-"You updated your password.","You updated your password.",module,Magento_Customer
+"You updated your password.","你更新了密碼",module,Magento_Customer
 "Something went wrong while saving the new password.","Something went wrong while saving the new password.",module,Magento_Customer
 "You deleted the address.","You deleted the address.",module,Magento_Customer
 "We can't delete the address right now.","我們目前無法刪除該地址。",module,Magento_Customer
@@ -5105,7 +5105,7 @@ new products will be created. Use this step to customize images and price for yo
 "You must confirm your %customer_email email before you can sign in (link is only valid once):","You must confirm your %customer_email email before you can sign in (link is only valid once):",module,Magento_Customer
 "Confirm Your Account","確認您的帳號",module,Magento_Customer
 "Thank you for confirming your %store_name account.","多謝您確認 %store_name 帳戶。",module,Magento_Customer
-"To sign in to our site and set a password, click on the <a href=""%create_password_url"">link</a>:","To sign in to our site and set a password, click on the <a href=""%create_password_url"">link</a>:",module,Magento_Customer
+"To sign in to our site and set a password, click on the <a href=""%create_password_url"">link</a>:","要登錄我們的網站並設置密碼,請點擊 <a href=""%create_password_url"">連結</a>:",module,Magento_Customer
 "Your %store_name email has been changed","您的信箱已變更",module,Magento_Customer
 "Hello,","您好，",module,Magento_Customer
 "We have received a request to change the following information associated with your account at %store_name: email.","我們收到了您在%store_name的帳戶異動需求，包括電子郵件或密碼。: 電子郵件",module,Magento_Customer
@@ -8802,7 +8802,7 @@ You can set a new expiration date if you wish.",module,Magento_NegotiableQuote
 "The Quote expires after ","The Quote expires after ",module,Magento_NegotiableQuote
 "Item in Quote","Item in Quote",module,Magento_NegotiableQuote
 "Items in Quote","Items in Quote",module,Magento_NegotiableQuote
-"Apply Discount Code","申請折扣碼",module,Magento_NegotiableQuote
+"Apply Discount Code","使用折扣碼",module,Magento_NegotiableQuote
 "Enter discount code","輸入折扣碼",module,Magento_NegotiableQuote
 "Apply Discount","申請折扣",module,Magento_NegotiableQuote
 "Cancel coupon","Cancel coupon",module,Magento_NegotiableQuote
@@ -9250,7 +9250,7 @@ If field is empty default value localhost will be saved.",module,Magento_PageCac
 "An error occurred on the server. Please try to place the order again.","伺服器出現錯誤。請再次確認訂單。",module,Magento_Payment
 "Payment Methods Section","Payment Methods Section",module,Magento_Payment
 "Payment Services","Payment Services",module,Magento_Payment
-"Payment Methods","Payment Methods",module,Magento_Payment
+"Payment Methods","付款方式",module,Magento_Payment
 "Switch/Solo/Maestro Only","Switch/Solo/Maestro Only",module,Magento_Payment
 "Issue Number","Issue Number",module,Magento_Payment
 "Start Date","開始日期",module,Magento_Payment
@@ -10788,7 +10788,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "ID","編號",module,Magento_Reports
 "First Name","名字",module,Magento_Reports
 "Last Name","姓氏",module,Magento_Reports
-"Items in Cart","購物車中的物品",module,Magento_Reports
+"Items in Cart","件商品待結帳",module,Magento_Reports
 "Products in carts","Products in carts",module,Magento_Reports
 "Carts","Carts",module,Magento_Reports
 "Name","姓名",module,Magento_Reports
@@ -11512,7 +11512,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Tracking Information","Tracking Information",module,Magento_Rma
 "Page not found","Page not found",module,Magento_Rma
 "Please check this order for errors.","請檢查此訂單是否有錯誤。",module,Magento_Rma
-"Contact Email Address","聯絡電子郵件地址",module,Magento_Rma
+"Contact Email Address","備用電子郵件",module,Magento_Rma
 "Text Field","Text Field",module,Magento_Rma
 "Text Area","Text Area",module,Magento_Rma
 "Dropdown","Dropdown",module,Magento_Rma
@@ -11596,7 +11596,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Notified","Notified",module,Magento_Rma
 "Not Notified","Not Notified",module,Magento_Rma
 "Return Address","退貨地址",module,Magento_Rma
-"Order Shipping Address","訂單寄送地址",module,Magento_Rma
+"Order Shipping Address","退貨地址",module,Magento_Rma
 "Delete Line","Delete Line",module,Magento_Rma
 "Select All","全選",module,Magento_Rma
 "Weight","Weight",module,Magento_Rma
@@ -12272,7 +12272,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Customer","客戶",module,Magento_Sales
 "Notified","Notified",module,Magento_Sales
 "Not Notified","Not Notified",module,Magento_Sales
-"No Payment Methods","No Payment Methods",module,Magento_Sales
+"No Payment Methods","沒有付款方式",module,Magento_Sales
 "Order Comments","訂單備註",module,Magento_Sales
 "Apply Coupon Code","輸入優惠券代碼",module,Magento_Sales
 "Apply","套用",module,Magento_Sales
@@ -12830,7 +12830,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Some coupons are invalid.","Some coupons are invalid.",module,Magento_SalesRule
 "Item totals are not set for the rule.","Item totals are not set for the rule.",module,Magento_SalesRule
 "%1 Cart Price Rules based on ""%2"" attribute have been disabled.","%1 Cart Price Rules based on ""%2"" attribute have been disabled.",module,Magento_SalesRule
-"Apply Discount Code","申請折扣碼",module,Magento_SalesRule
+"Apply Discount Code","使用折扣碼",module,Magento_SalesRule
 "Enter discount code","輸入折扣碼",module,Magento_SalesRule
 "Apply Discount","申請折扣",module,Magento_SalesRule
 "Cancel coupon","Cancel coupon",module,Magento_SalesRule
@@ -14050,7 +14050,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Refund Offline","Refund Offline",module,Magento_Support
 "Partial Refund Offline","Partial Refund Offline",module,Magento_Support
 "Payments Functionality Matrix","Payments Functionality Matrix",module,Magento_Support
-"Payment Methods","Payment Methods",module,Magento_Support
+"Payment Methods","付款方式",module,Magento_Support
 "Shipping Methods","出貨方式",module,Magento_Support
 "Job Code","Job Code",module,Magento_Support
 "Cron Expression","Cron Expression",module,Magento_Support
@@ -15284,7 +15284,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "We'll email you a link to reset your password.","我們會通過電子郵件向您發送一個鏈接，以重置密碼。",module,Magento_User
 "Please correct this email address:","請更正此電子郵件地址：",module,Magento_User
 "Please enter an email address.","請輸入電子郵件地址。",module,Magento_User
-"You updated your password.","You updated your password.",module,Magento_User
+"You updated your password.","你更新了密碼",module,Magento_User
 "Locked Users","Locked Users",module,Magento_User
 "Unlocked %1 user(s).","Unlocked %1 user(s).",module,Magento_User
 "System","系統",module,Magento_User
