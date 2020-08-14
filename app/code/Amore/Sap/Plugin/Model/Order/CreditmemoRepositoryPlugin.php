@@ -109,7 +109,7 @@ class CreditmemoRepositoryPlugin
         $order = $this->orderRepository->get($entity->getOrderId());
         $orderStatus = $order->getStatus();
 
-        $availableStatus = ['sap_processing', 'sap_success', 'sap_fail'];
+        $availableStatus = ['sap_processing', 'sap_success'];
 
         if ($enableSapCheck && $enableCreditmemoCheck) {
             if (in_array($orderStatus, $availableStatus)) {

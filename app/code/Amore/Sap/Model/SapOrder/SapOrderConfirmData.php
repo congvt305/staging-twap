@@ -113,6 +113,10 @@ class SapOrderConfirmData extends AbstractSapOrder
         /** @var Order $order */
         $order = $this->getOrderInfo($incrementId);
 
+        if (is_null($order)) {
+            throw new NoSuchEntityException(__("Available order data does not exist."));
+        }
+
         $source = $this->config->getSourceByStore('store', $order->getStoreId());
         $orderData = $this->getOrderData($incrementId);
         $itemData = $this->getOrderItem($incrementId);
@@ -172,7 +176,7 @@ class SapOrderConfirmData extends AbstractSapOrder
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('increment_id', $incrementId, 'eq')
-            ->addFilter('status', 'processing', 'eq')
+            ->addFilter('status', ['processing', 'sap_fail'], 'in')
             ->create();
 
         $orderList = $this->orderRepository->getList($searchCriteria)->getItems();
@@ -231,7 +235,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'augru' => '',
                 'augruText' => 'ORDER REASON TEXT',
                 // 주문자회원코드-직영몰자체코드
-                'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
+                'custid' => $customer != '' ? $orderData->getCustomerId() : '',
                 'custnm' => $orderData->getCustomerLastname() . $orderData->getCustomerLastname(),
                 //배송지 id - 직영몰 자체코드, 없으면 공백
                 'recvid' => '',

@@ -425,18 +425,23 @@ class SapOrderManagement implements SapOrderManagementInterface
                                     $message = "Shipment Created Successfully.";
                                     $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
 
-                                    if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                                } catch (\Exception $exception) {
+                                    $message = "Something went wrong while saving item shipped to order : " . $incrementId;
+                                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                                }
+
+                                if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                                    try {
                                         $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
                                         $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
                                         if ($this->config->getLoggingCheck()) {
                                             $this->logger->info('EINVOICE ISSUE RESULT');
                                             $this->logger->info($this->json->serialize($ecpayInvoiceResult));
                                         }
+                                    } catch (\Exception $exception) {
+                                        $result[$orderStatusData['odrno']]['code'] = "0001";
+                                        $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
                                     }
-                                } catch (\Exception $exception) {
-                                    $message = "Something went wrong while saving preparing order : " . $incrementId;
-                                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-                                    $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
                                 }
                             }
                         } else {
@@ -470,16 +475,18 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 }
 
                                 $message = "Order already has a shipment. Order Status changed to Shipment Processing.";
-                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-
-                                if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                    $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
-                                    $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
-                                }
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
                             } catch (\Exception $exception) {
                                 $message = "Something went wrong while saving order : " . $incrementId;
                                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-                                if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                            }
+
+                            if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                                try {
+                                    $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
+                                    $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
+                                } catch (\Exception $exception) {
+                                    $result[$orderStatusData['odrno']]['code'] = "0001";
                                     $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
                                 }
                             }
@@ -495,6 +502,7 @@ class SapOrderManagement implements SapOrderManagementInterface
 
                                 $message = "Shipping method is not Greenworld and Trackin number is changed.";
                                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+
 
                                 $this->eventManager->dispatch(
                                     "eguana_bizconnect_operation_processed",
