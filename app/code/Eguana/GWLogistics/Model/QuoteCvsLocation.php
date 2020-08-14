@@ -24,9 +24,9 @@ class QuoteCvsLocation extends AbstractModel implements QuoteCvsLocationInterfac
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getQuoteAddressId(): int
+    public function getQuoteAddressId()
     {
         return $this->getData('quote_address_id');
     }
