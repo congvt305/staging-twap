@@ -11,7 +11,7 @@
     $containerId = $this->helper(\Amore\GaTagging\Helper\Data::class)->getContainerId();
 ?>
 <!-- Google Tag Manager -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<?= $block->escapeJs($block->escapeHtml($containerId))?>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<?=/* @noEscape */ $containerId?>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager -->
 <script>
     dataLayer = window.dataLayer || [];

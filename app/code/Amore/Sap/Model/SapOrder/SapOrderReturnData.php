@@ -161,7 +161,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'augruText' => '',
             'abrvw' => self::ABRVW_RETURN_CODE,
             // 주문자회원코드-직영몰자체코드
-            'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
+            'custid' => $customer != '' ? $rma->getCustomerId() : '',
             'custnm' => $order->getCustomerLastname() . $order->getCustomerLastname(),
             //배송지 id - 직영몰 자체코드, 없으면 공백
             'recvid' => '',
@@ -174,12 +174,12 @@ class SapOrderReturnData extends AbstractSapOrder
             'telno' => $shippingAddress->getTelephone(),
             'hpno' => $shippingAddress->getTelephone(),
             'waerk' => $order->getOrderCurrencyCode(),
-            'nsamt' => $this->getRmaSubtotalInclTax($rma),
-            'dcamt' => $this->getRmaDiscountAmount($rma),
-            'slamt' => $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->getRmaGrandTotal($rma, $orderTotal, $pointUsed),
-            'miamt' => $this->getRmaPointsUsed($rma, $pointUsed, $orderTotal),
+            'nsamt' => round($this->getRmaSubtotalInclTax($rma)),
+            'dcamt' => round($this->getRmaDiscountAmount($rma)),
+            'slamt' => $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed)),
+            'miamt' => round($this->getRmaPointsUsed($rma, $pointUsed, $orderTotal)),
             'shpwr' => '',
-            'mwsbp' => $this->getRmaTaxAmount($rma),
+            'mwsbp' => round($this->getRmaTaxAmount($rma)),
             'spitn1' => '',
             'vkorgOri' => $this->config->getSalesOrg('store', $storeId),
             'kunnrOri' => $this->config->getClient('store', $storeId),
@@ -213,6 +213,11 @@ class SapOrderReturnData extends AbstractSapOrder
         $mileageUsedAmount = $order->getRewardPointsBalance();
         $originPosnr = $this->getOrderItemPosnr($rma);
 
+        $itemsSubtotal = 0;
+        $itemsDiscountAmount = 0;
+        $itemsGrandtotal = 0;
+        $itemsMileage = 0;
+
         $cnt = 1;
         /** @var \Magento\Rma\Model\Item $rmaItem */
         foreach ($rmaItems as $rmaItem) {
@@ -244,24 +249,28 @@ class SapOrderReturnData extends AbstractSapOrder
                     'itemMenge' => intval($rmaItem->getQtyRequested()),
                     // 아이템 단위, Default : EA
                     'itemMeins' => $this->getMeins($meins),
-                    'itemNsamt' => $orderItem->getPriceInclTax() * $rmaItem->getQtyRequested(),
-                    'itemDcamt' => $this->getRateAmount($orderItem->getDiscountAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
-                    'itemSlamt' => $this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
-                    'itemMiamt' => $this->getRateAmount($mileagePerItem, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
+                    'itemNsamt' => round($orderItem->getPriceInclTax() * $rmaItem->getQtyRequested()),
+                    'itemDcamt' => round($this->getRateAmount($orderItem->getDiscountAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested())),
+                    'itemSlamt' => round($this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($orderItem), $rmaItem->getQtyRequested())),
+                    'itemMiamt' => round($this->getRateAmount($mileagePerItem, $this->getNetQty($orderItem), $rmaItem->getQtyRequested())),
                     // 상품이 무상제공인 경우 Y 아니면 N
                     'itemFgflg' => $orderItem->getPrice() == 0 ? 'Y' : 'N',
                     'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                     'itemAuart' => self::RETURN_ORDER,
                     'itemAugru' => self::AUGRU_RETURN_CODE,
                     'itemAbrvw' => self::ABRVW_RETURN_CODE,
-                    'itemNetwr' => $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
-                    'itemMwsbp' => $this->getRateAmount($orderItem->getTaxAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
+                    'itemNetwr' => round($this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested())),
+                    'itemMwsbp' => round($this->getRateAmount($orderItem->getTaxAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested())),
                     'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                     'itemKunnrOri' => $this->config->getClient('store', $storeId),
                     'itemOdrnoOri' => $order->getIncrementId(),
                     'itemPosnrOri' => $originPosnr[$configurableCheckedItem->getItemId()]
                 ];
                 $cnt++;
+                $itemsSubtotal += round($orderItem->getPriceInclTax() * $rmaItem->getQtyRequested());
+                $itemsGrandtotal += round($this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()));
+                $itemsDiscountAmount += round($this->getRateAmount($orderItem->getDiscountAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested()));
+                $itemsMileage += round($this->getRateAmount($mileagePerItem, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()));
             } else {
                 $bundleChildrenItems = $orderItem->getChildrenItems();
                 foreach ($bundleChildrenItems as $bundleChildrenItem) {
@@ -291,27 +300,40 @@ class SapOrderReturnData extends AbstractSapOrder
                         'itemMenge' => intval($rmaItem->getQtyRequested()),
                         // 아이템 단위, Default : EA
                         'itemMeins' => $this->getMeins($meins),
-                        'itemNsamt' => $bundleChildrenItem->getPriceInclTax() * $rmaItem->getQtyRequested(),
-                        'itemDcamt' => $this->getRateAmount($bundleChildrenItem->getDiscountAmount(), $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested()),
-                        'itemSlamt' => $this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested()),
-                        'itemMiamt' => $this->getRateAmount($mileagePerItem, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()),
+                        'itemNsamt' => round($bundleChildrenItem->getPriceInclTax() * $rmaItem->getQtyRequested()),
+                        'itemDcamt' => round($this->getRateAmount($bundleChildrenItem->getDiscountAmount(), $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested())),
+                        'itemSlamt' => round($this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested())),
+                        'itemMiamt' => round($this->getRateAmount($mileagePerItem, $this->getNetQty($orderItem), $rmaItem->getQtyRequested())),
                         // 상품이 무상제공인 경우 Y 아니면 N
                         'itemFgflg' => $bundleChildrenItem->getPrice() == 0 ? 'Y' : 'N',
                         'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                         'itemAuart' => self::RETURN_ORDER,
                         'itemAugru' => self::AUGRU_RETURN_CODE,
                         'itemAbrvw' => self::ABRVW_RETURN_CODE,
-                        'itemNetwr' => $this->getRateAmount($itemGrandTotal, $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested()),
-                        'itemMwsbp' => $this->getRateAmount($bundleChildrenItem->getTaxAmount(), $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested()),
+                        'itemNetwr' => round($this->getRateAmount($itemGrandTotal, $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested())),
+                        'itemMwsbp' => round($this->getRateAmount($bundleChildrenItem->getTaxAmount(), $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested())),
                         'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnrOri' => $this->config->getClient('store', $storeId),
                         'itemOdrnoOri' => $order->getIncrementId(),
                         'itemPosnrOri' => $originPosnr[$configurableCheckedItem->getItemId()]
                     ];
                     $cnt++;
+                    $itemsSubtotal += round($bundleChildrenItem->getPriceInclTax() * $rmaItem->getQtyRequested());
+                    $itemsGrandtotal += round($this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested()));
+                    $itemsDiscountAmount += round($this->getRateAmount($bundleChildrenItem->getDiscountAmount(), $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested()));
+                    $itemsMileage += round($this->getRateAmount($mileagePerItem, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()));
                 }
             }
         }
+        $orderSubtotal = round($order->getSubtotalInclTax());
+        $orderGrandtotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($order->getGrandTotal() - $order->getShippingAmount());
+        $orderDiscountAmount = round(abs($order->getDiscountAmount()));
+
+        $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'itemNsamt');
+        $rmaItemData = $this->priceCorrector($orderGrandtotal, $itemsGrandtotal, $rmaItemData, 'itemSlamt');
+        $rmaItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'itemDcamt');
+        $rmaItemData = $this->priceCorrector($mileageUsedAmount, $itemsMileage, $rmaItemData, 'itemMiamt');
+
         return $rmaItemData;
     }
 
@@ -354,6 +376,23 @@ class SapOrderReturnData extends AbstractSapOrder
             }
         }
         return $itemCount;
+    }
+
+    public function priceCorrector($orderAmount, $itemsAmount, $orderItemData, $field)
+    {
+        if ($orderAmount != $itemsAmount) {
+            $correctAmount = $orderAmount - $itemsAmount;
+
+            foreach ($orderItemData as $key => $value) {
+                if ($value['itemFgflg'] == 'Y') {
+                    continue;
+                }
+                $orderItemData[$key][$field] = $value[$field] + $correctAmount;
+                break;
+            }
+        }
+
+        return $orderItemData;
     }
 
     public function getMeins($value)
