@@ -379,7 +379,7 @@ class SaveSuccess implements ObserverInterface
         try {
             $status = isset($customerData['dm_subscription_status_checkbox'])?
                 $customerData['dm_subscription_status_checkbox']:'';
-            if ($status == 'on') {
+            if (isset($customerData['dm_zipcode'])) {
                 $dmCity = $customerData['dm_city'];
                 $dmZipCode = $customerData['dm_zipcode'];
                 $dmDetailedAddress = $customerData['dm_detailed_address'];
