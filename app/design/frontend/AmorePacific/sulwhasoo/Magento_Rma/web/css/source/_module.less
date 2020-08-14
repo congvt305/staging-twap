@@ -63,12 +63,16 @@
         }
 
         .field {
-            .label {
-                height: auto !important;
-                margin-bottom: @indent__xs;
-                overflow: visible !important;
-                text-align: left !important;
-                width: auto !important;
+            &.id,
+            &.name,
+            &.email:not(.contact) {
+                .label {
+                    height: auto !important;
+                    margin-bottom: @indent__xs;
+                    overflow: visible !important;
+                    text-align: left !important;
+                    width: auto !important;
+                }
             }
 
             &.contact {
