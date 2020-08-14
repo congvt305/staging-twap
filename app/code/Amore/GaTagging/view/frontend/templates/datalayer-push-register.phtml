@@ -1,0 +1,19 @@
+<?php
+/**
+ * Created by Eguana Team.
+ * User: sonia
+ * Date: 7/19/20
+ * Time: 12:59 PM
+ */
+?>
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+?>
+<script>
+    if (window.AP_JOIN_NAME) {
+        console.log('before push:', window.AP_JOIN_NAME);
+        dataLayer.push({
+            'event': '<?= $block->getEventName() ?>'
+        });
+    }
+</script>

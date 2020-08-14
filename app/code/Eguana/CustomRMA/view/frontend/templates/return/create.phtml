@@ -178,13 +178,13 @@
         <div class="field contact email">
             <label class="label" for="email"><span><?= $block->escapeHtml($this->helper(Magento\Rma\Helper\Data::class)->getContactEmailLabel()) ?></span></label>
             <div class="control">
-                <input type="text" name="customer_custom_email" id="email" title="Contact Email Address" class="input-text" data-validate="{'validate-email':true}" value="<?= $block->escapeHtmlAttr($block->getContactEmail()) ?>">
+                <input type="text" name="customer_custom_email" id="email" placeholder="<?= $block->escapeHtml(__('Contact Email Address')) ?>" class="input-text" data-validate="{'validate-email':true}" value="<?= $block->escapeHtmlAttr($block->getContactEmail()) ?>">
             </div>
         </div>
         <div class="field contact telephone">
             <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Contact Phone Number')) ?></span></label>
             <div class="control">
-                <input type="text" name="customer_custom_phone" id="telephone" title="Contact Phone Number" class="input-text" data-validate="{'required':true}" value="<?= $block->escapeHtmlAttr($block->getContactPhone()) ?>">
+                <input type="text" name="customer_custom_phone" placeholder="<?= $block->escapeHtml(__('Contact Phone Number')) ?>" id="telephone" class="input-text" data-validate="{'required':true}" value="<?= $block->escapeHtmlAttr($block->getContactPhone()) ?>">
             </div>
         </div>
         <div class="field address shipping">

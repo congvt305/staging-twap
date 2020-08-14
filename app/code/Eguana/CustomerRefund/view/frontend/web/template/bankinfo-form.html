@@ -24,7 +24,7 @@
                        class="input-text"
                        id="account-owner-name"
                        name="account-owner-name"
-                       data-bind="value: value().account_owner_name"
+                       data-bind="attr: {value: value().account_owner_name, placeholder: $t('Account Owner Name')}"
                        data-validate="{required:true}" />
             </div>
         </div>
@@ -35,7 +35,7 @@
                        class="input-text"
                        id="bank-account-number"
                        name="bank-account-number"
-                       data-bind="value: value().bank_account_number"
+                       data-bind="attr: {value: value().bank_account_number, placeholder: $t('Bank Account Number')}"
                        data-validate="{required:true}"
                        autocomplete="off"/>
             </div>

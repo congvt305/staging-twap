@@ -9,6 +9,8 @@
 namespace Eguana\CustomerRefund\Model;
 
 
+use Psr\Log\LoggerInterface;
+
 class Refund
 {
     /**
@@ -16,11 +18,17 @@ class Refund
      */
 
     private $dataHelper;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     public function __construct(
+        \Psr\Log\LoggerInterface $logger,
         \Eguana\CustomerRefund\Helper\Data $dataHelper
     ) {
         $this->dataHelper = $dataHelper;
+        $this->logger = $logger;
     }
 
     /**
@@ -29,7 +37,8 @@ class Refund
 
     public function canRefundOnline($order)
     {
-        if ($order->getStatus() === 'processing' && $this->isActive()) {
+//        if (($order->getStatus() === 'processing' || $order->getStatus() === 'processing_with_shipment' || $order->getStatus() === 'sap_fail') && $this->isActive()) {
+        if (($order->getStatus() === 'processing' || $order->getStatus() === 'sap_fail') && $this->isActive()) {
             if ($order->getPayment()->getMethod() === 'checkmo') { //todo: for test purpose only, should remove later
                 return true;
             }
@@ -50,10 +59,12 @@ class Refund
     {
         $paymentInfo = $order->getPayment()->getAdditionalInformation();
         if (isset($paymentInfo['ecpay_choosen_payment'])) {
+            $this->logger->info('customerRefund | payMethod from root', [$paymentInfo['ecpay_choosen_payment']]);
             return $paymentInfo['ecpay_choosen_payment'];
         }
 
         if (isset($paymentInfo['raw_details_info']['ecpay_choosen_payment'])) {
+            $this->logger->info('customerRefund | payMethod from raw detail', [$paymentInfo['raw_details_info']['ecpay_choosen_payment']]);
             return $paymentInfo['raw_details_info']['ecpay_choosen_payment'];
         }
 
@@ -67,7 +78,8 @@ class Refund
      */
     public function canRefundOffline($order)
     {
-        if ($order->getStatus() === 'processing' && $this->isActive()) {
+//        if (($order->getStatus() === 'processing' || $order->getStatus() === 'processing_with_shipment' || $order->getStatus() === 'sap_fail') && $this->isActive()) {
+        if (($order->getStatus() === 'processing' || $order->getStatus() === 'sap_fail') && $this->isActive()) {
             if ($order->getPayment()->getMethod() === 'checkmo') { //todo: for test purpose only, should remove later
                 return true;
             }

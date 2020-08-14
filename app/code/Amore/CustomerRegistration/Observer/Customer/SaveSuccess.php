@@ -245,9 +245,13 @@ class SaveSuccess implements ObserverInterface
         if ($customer->getCustomAttribute('sms_subscription_status')) {
             $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y' : 'N';
         } else {
-            $parameters['smsYN'] = '';
+            $parameters['smsYN'] = 'N';
         }
-        $parameters['callYN'] = 'N';
+        if ($customer->getCustomAttribute('call_subscription_status')) {
+            $parameters['callYN'] = $customer->getCustomAttribute('call_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+        } else {
+            $parameters['callYN'] = 'N';
+        }
         if ($customer->getCustomAttribute('dm_subscription_status')) {
             $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
         } else {
@@ -255,8 +259,8 @@ class SaveSuccess implements ObserverInterface
         }
         if ($parameters['dmYN'] == 'Y') {
             $defaultBillingAddressId = $customer->getDefaultBilling();
-            if ($action == 'register' && !$defaultBillingAddressId) {
-                $customerData = $this->request->getParams();
+            $customerData = $this->request->getParams();
+            if (isset($customerData['dm_zipcode']) && !$defaultBillingAddressId) {
                 $parameters['homeAddr1'] = $customerData['dm_detailed_address'];
                 $parameters['homeZip'] = $customerData['dm_zipcode'];
                 $regionName = $customerData['dm_state'];

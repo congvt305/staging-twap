@@ -77,7 +77,7 @@ class CvsCreateShipmentOrder
             $receiverName = $order->getShippingAddress()->getLastname() . $order->getShippingAddress()->getFirstname();
             $receiverPhone = $order->getShippingAddress()->getTelephone();
             $receiverEmail = $order->getShippingAddress()->getEmail();
-            $remarks = $order->getExtensionAttributes()->getDeliveryMessage() ?? '';
+            $remarks = $order->getDeliveryMessage() ?? '';
             $remarks = (strlen($remarks) > 200) ? substr($remarks,0,200) : $remarks;
             $serverReplyURL = $this->helper->getCreateShipmentReplyUrl();
             $receiverStoreID = $cvsLocation->getCvsStoreId(); //no need, only for C2C

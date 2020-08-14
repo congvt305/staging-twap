@@ -1,0 +1,18 @@
+<?php
+/**
+ * Created by Eguana Team.
+ * User: sonia
+ * Date: 7/19/20
+ * Time: 1:01 PM
+ */
+?>
+<?php
+/** @var \Amore\GaTagging\Block\GaTagging $block */
+?>
+<script>
+    //검색
+    var AP_SEARCH_TERM = "<?= $block->escapeHtml($block->getQueryText())?>";
+    var AP_SEARCH_PRDRESULT = "<?= $block->escapeHtml($block->getResultProductData())?>";
+    var AP_SEARCH_NUM = "<?= $block->escapeHtml($block->getSearchNumber())?>";
+    var AP_SEARCH_TYPE = "<?= $block->escapeHtml($block->getSearchType())?>";
+</script>
