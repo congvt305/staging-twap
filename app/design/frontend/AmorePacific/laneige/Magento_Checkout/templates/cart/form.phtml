@@ -15,7 +15,8 @@
           id="form-validate"
           data-mage-init='{"Magento_Checkout/js/action/update-shopping-cart":
               {"validationURL" : "<?= $block->escapeUrl($block->getUrl('checkout/cart/updateItemQty')) ?>",
-              "updateCartActionContainer": "#update_cart_action_container"}
+              "updateCartActionContainer": "#update_cart_action_container"},
+              "loader": { "icon": "<?= $block->escapeUrl($block->getViewFileUrl('images/loader-1.gif')) ?>"}
           }'
           class="form form-cart">
     <?= $block->getBlockHtml('formkey') ?>
@@ -52,6 +53,15 @@
         <input type="hidden" value="" id="update_cart_action_container" data-cart-item-update=""/>
     </div>
 </form>
+<script>
+    require([
+        'mage/url',
+        'Magento_Ui/js/block-loader'
+    ], function(url, blockLoader) {
+        blockLoader("<?= $block->escapeJs($block->escapeUrl($block->getViewFileUrl('images/loader-1.gif'))) ?>");
+        return url.setBaseUrl('<?= $block->escapeJs($block->escapeUrl($block->getBaseUrl())) ?>');
+    })
+</script>
 <?= $block->getChildHtml('checkout.cart.order.actions') ?>
 <?= $block->getChildHtml('shopping.cart.table.after') ?>
 
