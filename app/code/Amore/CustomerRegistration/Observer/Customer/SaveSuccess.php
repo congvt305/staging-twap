@@ -242,11 +242,6 @@ class SaveSuccess implements ObserverInterface
         $parameters['email'] = trim($customer->getEmail());
         $parameters['sex'] = $customer->getGender() == '1' ? 'M' : 'F';
         $parameters['emailYN'] = $this->isCustomerSubscribToNewsLetters($customer->getId()) ? 'Y' : 'N';
-        if ($customer->getCustomAttribute('sms_subscription_status')) {
-            $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-        } else {
-            $parameters['smsYN'] = 'N';
-        }
         if ($customer->getCustomAttribute('call_subscription_status')) {
             $parameters['callYN'] = $customer->getCustomAttribute('call_subscription_status')->getValue() == 1 ? 'Y' : 'N';
         } else {

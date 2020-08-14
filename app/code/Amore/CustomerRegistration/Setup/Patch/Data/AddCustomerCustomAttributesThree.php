@@ -173,8 +173,6 @@ class AddCustomerCustomAttributesThree implements DataPatchInterface
                 'sort_order' => 138, 'required'=>false],
             ['code'=>'terms_and_services_policy','label'=>'Terms And Services Policy',
                 'sort_order' => 139, 'required'=>true],
-            ['code'=>'sms_subscription_status','label'=>'SMS Marketing',
-                'sort_order' => 140, 'required'=>false],
             ['code'=>'call_subscription_status','label'=>'Call Marketing',
                 'sort_order' => 141, 'required'=>false],
             ['code'=>'dm_subscription_status','label'=>'DM Marketing',
@@ -328,7 +326,6 @@ class AddCustomerCustomAttributesThree implements DataPatchInterface
 
             $myAccountEditableAttributes = [
                 'mobile_number',
-                'sms_subscription_status',
                 'dm_subscription_status'
             ];
 

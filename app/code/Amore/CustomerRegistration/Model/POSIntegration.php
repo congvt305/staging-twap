@@ -142,7 +142,6 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      * @param string $emil
      * @param string $sex
      * @param string $emailYN
-     * @param string $smsYN
      * @param string $callYN
      * @param string $dmYN
      * @param string $homeCity
@@ -163,7 +162,6 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $email,
         $sex,
         $emailYN,
-        $smsYN,
         $callYN,
         $dmYN,
         $homeCity,
@@ -187,7 +185,6 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 'email' => $email,
                 'sex' => $sex,
                 'emailYN' => $emailYN,
-                'smsYN' => $smsYN,
                 'callYN' => $callYN,
                 'dmYN' => $dmYN,
                 'homeCity' => $homeCity,
@@ -334,7 +331,6 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 trim($mobileNo) ? $customer->setCustomAttribute('mobile_number', $mobileNo) : '';
                 trim($email) ? $customer->setEmail($email) : '';
                 trim($sex) ? $customer->setGender($sex == 'M' ? 1 : 2) : '';
-                trim($smsYN) ? $customer->setCustomAttribute('sms_subscription_status', $smsYN == 'Y' ? 1 : 0) : '';
                 trim($dmYN) ? $customer->setCustomAttribute('dm_subscription_status', $dmYN == 'Y' ? 1 : 0) : '';
                 trim($callYN) ? $customer->setCustomAttribute('call_subscription_status', $callYN == 'Y' ? 1 : 0) : '';
                 trim($statusCD) ? $customer->setCustomAttribute('status_code', $statusCD == '1' ? 1 : 0) : '';
@@ -528,5 +524,4 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
 
         return count($customers)?true:false;
     }
-
 }

@@ -13,7 +13,6 @@ DB Table Name : Added customer attributes
     - dm_zipcode: To save customer zip code for Direct Mail (DM)
     - favorite_store: To save favorite store value when custmer will register using QR Code
     - referrer_code: To save refferer code value when custmer will register using QR Code
-    - sms_subscription_status: To identify whether customer is subscribed for SMS or not
     - dm_subscription_status: To identify whether customer is subscribed for DM or not
     - terms_and_services_policy: Whether customer has been agreed with the terms and services policy or not
     - integration_number: To save customer integration number. Auto generated number like Order increment id. Further details you can read in next sections
@@ -153,7 +152,6 @@ the next number whenever customer will register
     - "email": Customer email id
     - "sex": Customer gender, F for female and M for male
     - "emailYN": Subscribe or unsubscribe to newsletter, Y for subscirbe and N for unsubscribe
-    - "smsYN": Subscribe or unsubscribe to sms, Y for subscirbe and N for unsubscribe
     - "callYN": Subscribe or unsubscribe to call, Y for subscirbe and N for unsubscribe
     - "dmYN": Subscribe or unsubscribe to direct mail, Y for subscirbe and N for unsubscribe
     - "homeCity": Home city for direct mail. home City code
