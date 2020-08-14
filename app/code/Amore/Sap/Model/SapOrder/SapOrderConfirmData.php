@@ -176,7 +176,7 @@ class SapOrderConfirmData extends AbstractSapOrder
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('increment_id', $incrementId, 'eq')
-            ->addFilter('status', 'processing', 'eq')
+            ->addFilter('status', ['processing', 'sap_fail'], 'in')
             ->create();
 
         $orderList = $this->orderRepository->getList($searchCriteria)->getItems();
