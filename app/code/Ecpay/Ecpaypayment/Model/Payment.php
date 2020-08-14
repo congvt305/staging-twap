@@ -472,9 +472,9 @@ class Payment extends AbstractMethod
             $configurableCheckedItem = $this->configurableProductCheck($orderItem);
 
             $mileagePerItem = $this->mileageSpentRateByItem($configurableCheckedItem, $mileageUsedAmount, $orderTotal);
-            $itemGrandTotal = round($configurableCheckedItem->getRowTotal()
+            $itemGrandTotal = $configurableCheckedItem->getRowTotal()
                 - $configurableCheckedItem->getDiscountAmount()
-                - $mileagePerItem);
+                - $mileagePerItem;
 
             array_push(
                 $ecpay_invoice->Send['Items'],
