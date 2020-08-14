@@ -176,7 +176,7 @@ class SapOrderConfirmData extends AbstractSapOrder
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('increment_id', $incrementId, 'eq')
-            ->addFilter('status', ['processing', 'sap_fail'], 'in')
+            ->addFilter('status', ['processing', 'sap_fail', 'processing_with_shipment'], 'in')
             ->create();
 
         $orderList = $this->orderRepository->getList($searchCriteria)->getItems();
@@ -468,29 +468,14 @@ class SapOrderConfirmData extends AbstractSapOrder
             }
         }
 
-        $writer = new \Zend\Log\Writer\Stream(BP . sprintf('/var/log/test_%s.log',date('Ymd')));
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info(__METHOD__);
-        $logger->info($itemsSubtotal);
-        $logger->info($itemsGrandtotal);
-        $logger->info($itemsDiscountAmount);
-        $logger->info($itemsMileage);
-
         $orderSubtotal = round($order->getSubtotalInclTax());
         $orderGrandtotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($order->getGrandTotal() - $order->getShippingAmount());
         $orderDiscountAmount = round(abs($order->getDiscountAmount()));
-
-        $logger->info($orderSubtotal);
-        $logger->info($orderGrandtotal);
-        $logger->info($orderDiscountAmount);
 
         $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'itemNsamt');
         $orderItemData = $this->priceCorrector($orderGrandtotal, $itemsGrandtotal, $orderItemData, 'itemSlamt');
         $orderItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $orderItemData, 'itemDcamt');
         $orderItemData = $this->priceCorrector($mileageUsedAmount, $itemsMileage, $orderItemData, 'itemMiamt');
-
-        $logger->debug($orderItemData);
 
         return $orderItemData;
     }
