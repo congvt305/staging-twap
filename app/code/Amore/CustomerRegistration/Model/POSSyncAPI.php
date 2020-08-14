@@ -75,7 +75,7 @@ class POSSyncAPI
         } else {
             $parameters['dmYN'] = 'N';
         }
-        if ($parameters['dmYN'] == 'Y' && $address) {
+        if ($address) {
             $addressParameters = $this->getAddressParameters($address);
             $parameters = array_merge($parameters, $addressParameters);
         }
