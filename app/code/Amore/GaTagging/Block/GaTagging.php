@@ -11,6 +11,7 @@ namespace Amore\GaTagging\Block;
 
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
+use Psr\Log\LoggerInterface;
 
 class GaTagging extends \Magento\Framework\View\Element\Template
 {
@@ -30,8 +31,13 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      * @var \Magento\Customer\Model\Session
      */
     private $customerSession;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     public function __construct(
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Framework\Serialize\Serializer\Json $jsonSerializer,
         \Magento\Framework\Registry $registry,
@@ -44,6 +50,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $this->registry = $registry;
         $this->jsonSerializer = $jsonSerializer;
         $this->customerSession = $customerSession;
+        $this->logger = $logger;
     }
 
     /**
@@ -67,8 +74,12 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     {
         $crumbBlock =  $this->_layout->getBlock('breadcrumbs');
 
-        $html = $crumbBlock->toHtml();
-        $crumbs = $crumbBlock->getCrumbs();
+        if($crumbBlock) {
+            $this->logger->debug('crumb exist');
+            $html = $crumbBlock->toHtml();
+        }
+
+//        $crumbs = $crumbBlock->getCrumbs();
 
 //        $result = '';
 //        foreach ($crumbs as $crumb) {
