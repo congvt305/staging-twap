@@ -7,15 +7,12 @@ Author: Abbas Ali Butt
 DB Table Name : Added customer attributes 
 
     - mobile_number: To save the customer mobile number
-    - dm_city: To save customer city for Direct Mail (DM)
-    - dm_state: To save customer state for Direct Mail (DM)
-    - dm_detailed_address: To save street address for Direct Mail (DM)
-    - dm_zipcode: To save customer zip code for Direct Mail (DM)
     - favorite_store: To save favorite store value when custmer will register using QR Code
     - referrer_code: To save refferer code value when custmer will register using QR Code
     - dm_subscription_status: To identify whether customer is subscribed for DM or not
     - terms_and_services_policy: Whether customer has been agreed with the terms and services policy or not
-    - integration_number: To save customer integration number. Auto generated number like Order increment id. Further details you can read in next sections
+    - 
+: To save customer integration number. Auto generated number like Order increment id. Further details you can read in next sections
     - sales_organization_code: To save Website based sale organization code.
     - sales_office_code: To save Website based sale organization code.
     - call_subscription_status: To save call marketing subsctiption. Currently we are not taking it while register. Only when POS want to update
@@ -35,6 +32,8 @@ Register module will be mainly used to customize the user registration process, 
 Requirements:
 
     - Check whether customer already exist in POS or not
+        - Online Customer : Those customer who does not exist in POS 
+        - Offline Customer : Those customer who exist in POS, while going to step 2 get information from POS and add in step 2 form
     - If exist in POS then fetch the infromation from POS and load into the form for registration in Magento
     - If not exist in POS then load the form without any existing infromation. But load the phone number from step 1 and
       in step 2 customer is not allowed to change first name, last name and phone number
@@ -43,7 +42,9 @@ Requirements:
     - While registration also check whether phone number already exist or not. If already exist in Magento then show 
       CS information page.
     - If customer login from social media then load social media information in registration page
-    - Create customer sequence number
+    - Create customer sequence number for online customers in case of offline get from POS
+    - Once Date of Birth (DOB) do not allow customer to change DOB
+    - On second step show the POS alert message. It means if customer information is fetched from the POS then show message else do not show.
 
 
 Key features:
@@ -83,7 +84,7 @@ Navigate to **Stores ⇾ Configuration** and the module **Curstomer Registration
 1. Navigate to **Stores ⇾ Configuration** and click on **Curstomer Registration** under Amore tab in the left panel.
 
  
-![Configuration](https://i.ibb.co/rmvHcrf/Customer-Registration-Configuration.png)
+![Configuration](https://i.ibb.co/5X0zQ9C/Customer-Registration-Configuration.png)
 
 **Frontend Registration Step 1**
 
@@ -91,15 +92,18 @@ Navigate to **Stores ⇾ Configuration** and the module **Curstomer Registration
 
 **Frontend Registration Step 2**
   
-![Step 2](https://i.ibb.co/F57b5kz/Customer-Registration-Step-2.png)
+![Step 2](https://i.ibb.co/58z1GK7/Customer-Registration-Step-2.png)
 
 **Frontend Registration Step 2 Direct Mail (DM) Subscription**
 
 ![DM Subscription](https://i.ibb.co/vdrsprW/Customer-Registration-Step-2-DM-Subscription.png)
+
  
  All the configurations are website level not store level. 
  
- **Stores -> Configuration -> Amore Extensions -> Customer Registration -> General Configuration**
+ **Stores -> Configuration -> Amore Extensions -> Customer Registration**
+ 
+ **General Configuration**
  
 1. Enable Extension: To enable or disable this extension. If it will enable then while register customer will see the two step registration. As you can see in the
 above images frontend registration Step 1 & Step 2. Else you will see the default Magento registration. 
@@ -110,14 +114,11 @@ above images frontend registration Step 1 & Step 2. Else you will see the defaul
 1. Maximum Mobile Number Digits: Maximum number of digits allowed in the mobile number. **For Reference please see the image Frontend Registration Step 1-2 part**
 1. Membership Error CMS Page: Here admin will add the CMS page URL key. In case of customer with same mobile number exist then system will redirect to this page. If there is no CMS page in configuration then show a message.
 1. Duplicate Membership CMS Page: Here admin will add the CMS page URL key. In case of customer with same name and mobile number exist then system will redirect to this page. If there is no CMS page in configuration then show a message.
-1. Newsletter Policy CMS Block: Here user will add the news letter privacy policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-13 part**
-1. SMS Policy CMS Block: Here user will add the SMS privacy policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-15 part**
-1. DM Policy CMS Block: Here user will add the DM privacy policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-17 part**
-1. Terms and Services Policy CMS Block: Here user will add the Terms and services policy content related CMS block id. And it will show in popup when user will click on read more link. **For Reference please see the image Frontend Registration Step 2-17 part**
+1. Terms and Services Policy CMS Block: Here user will add the Terms and services policy content related CMS block id. And it will show in popup when user will click on read more link.
 1. SMS Verification Enable: Here user admin can enable disable SMS verification. In case sms verification is disabled then during SMS verification 1234 will be the verification code.
 
 
- **Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System**
+ **POS System**
  
 1. Base URL: Base URL of the POS system.
 1. Member Information: URI from where system can get the memerbship information of POS members 
@@ -128,16 +129,24 @@ It will assign to all customer who register to that particulat site. You can see
 It will assign to all customer who register to that particulat site. You can see this information after customer registration from admin in his account information.
 1. Partner Id: It is a partner id which will be assigned to the customer, while resgiter from this particular website
 It will assign to all customer who register to that particulat site. You can see this information after customer registration from admin in his account information.
+1. SSL Verification: For the parameters to call POS API
 1. Debug: If yes then it will log api calls and store the exceptions. In the file var/log/pos.log
+
+ **Name Validation**
+ 
+ 1. Add not allowed characters: Those characthers which are not allowed in first name and last name during register or edit account.
  
 # Customer Integraion Number
  
-Format : CountryBrandChannelSequence Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Sales Office Code** 
+ ![Integration Number](https://i.ibb.co/NrNzcmR/Customer-Integration-Number.png)
+ 
+Format : CountryBrandChannelSequence 
 
-- CoutnryBrandh : It will be get from the configuration Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Sales Office Code** 
+Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Sales Office Code** 
+
+- CoutnryBrand : It will be get from the configuration Stores -> Configuration -> Amore Extensions -> Customer Registration -> POS System -> **Sales Office Code** 
 - Channel: If url have QR code or POS return data in case of getInfo API then it's value will be 1 else 2
-- Sequence: Module will create two tables for eachwebsite. For example customer_pos_sequence, customer_online_sequence with different stating number based on the requirement. Module will get 
-the next number whenever customer will register
+- Sequence: Module will create one table for each website. For example customer_online_sequence with different stating number one million one. Module will get the next number whenever customer will register
 
 # API
 
@@ -304,3 +313,18 @@ For example
 - URL = {BASE URL}/customer/account/create/referrer_code/{Value}/favorite_store/{Value}
 
 When customer account will be create using above url it will save the favorite store and refferer code during registration
+
+# Test Cases
+
+- We can check POS call result in SALES -> Eguana BizConnect -> Operation Log.
+    - eguana.pos.get.info call POS to get information using firstname, last name and mobile number from POS if customer exist
+    - eguana.pos.sync.info call POS to send the updated information to the POS system.
+- If customer have default billing address then send address infromation in the POS API whether customer is subscribe to DM or not
+- Whenever customer create, edit or delete from anywhere (Admin, frontend, API) send updated infromation to the POS
+- Online customer create without any address and DM subscription
+- On create a default billing address send customer information with address to the POS
+- Do not call POS API if customer edit any address other than the default billing address such as default shipping, billing and shipping addresses
+- Online customer during register add address but nott subscirbe to DM then create default address and also send to the POS
+- Using bar code registeration if get email errors then paramters in URL should remain same.
+- Update customer using API
+- If add exist mobile number or integration number then get related error message
