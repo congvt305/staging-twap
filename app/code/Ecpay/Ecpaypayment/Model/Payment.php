@@ -457,6 +457,8 @@ class Payment extends AbstractMethod
      */
     private function initOrderItems(\Magento\Sales\Api\Data\OrderInterface $order, \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice): void
     {
+        $ecpay_invoice->Send['Items'] = [];
+
         $orderItems = $order->getAllItems();
         $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
         $mileageUsedAmount = $order->getRewardPointsBalance();
