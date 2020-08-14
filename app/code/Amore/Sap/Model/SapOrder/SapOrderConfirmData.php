@@ -235,7 +235,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'augru' => '',
                 'augruText' => 'ORDER REASON TEXT',
                 // 주문자회원코드-직영몰자체코드
-                'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
+                'custid' => $customer != '' ? $orderData->getCustomerId() : '',
                 'custnm' => $orderData->getCustomerLastname() . $orderData->getCustomerLastname(),
                 //배송지 id - 직영몰 자체코드, 없으면 공백
                 'recvid' => '',
