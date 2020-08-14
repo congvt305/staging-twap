@@ -242,11 +242,6 @@ class SaveSuccess implements ObserverInterface
         $parameters['email'] = trim($customer->getEmail());
         $parameters['sex'] = $customer->getGender() == '1' ? 'M' : 'F';
         $parameters['emailYN'] = $this->isCustomerSubscribToNewsLetters($customer->getId()) ? 'Y' : 'N';
-        if ($customer->getCustomAttribute('sms_subscription_status')) {
-            $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-        } else {
-            $parameters['smsYN'] = 'N';
-        }
         if ($customer->getCustomAttribute('call_subscription_status')) {
             $parameters['callYN'] = $customer->getCustomAttribute('call_subscription_status')->getValue() == 1 ? 'Y' : 'N';
         } else {
@@ -257,45 +252,43 @@ class SaveSuccess implements ObserverInterface
         } else {
             $parameters['dmYN'] = '';
         }
-        if ($parameters['dmYN'] == 'Y') {
-            $defaultBillingAddressId = $customer->getDefaultBilling();
-            $customerData = $this->request->getParams();
-            if (isset($customerData['dm_zipcode']) && !$defaultBillingAddressId) {
-                $parameters['homeAddr1'] = $customerData['dm_detailed_address'];
-                $parameters['homeZip'] = $customerData['dm_zipcode'];
-                $regionName = $customerData['dm_state'];
-                $regionObject = null;
-                if ($regionName) {
-                    $regionObject = $this->getRegionObject($regionName);
-                    $parameters['homeCity'] = $regionObject->getCode()?$regionObject->getCode():'';
-                } else {
-                    $parameters['homeCity'] = '';
-                }
+        $defaultBillingAddressId = $customer->getDefaultBilling();
+        $customerData = $this->request->getParams();
+        if (isset($customerData['dm_zipcode']) && !$defaultBillingAddressId) {
+            $parameters['homeAddr1'] = $customerData['dm_detailed_address'];
+            $parameters['homeZip'] = $customerData['dm_zipcode'];
+            $regionName = $customerData['dm_state'];
+            $regionObject = null;
+            if ($regionName) {
+                $regionObject = $this->getRegionObject($regionName);
+                $parameters['homeCity'] = $regionObject->getCode()?$regionObject->getCode():'';
+            } else {
+                $parameters['homeCity'] = '';
+            }
 
-                $cityName = $customerData['dm_city'];
-                $parameters['homeState'] = '';
-                if ($cityName && $regionObject) {
-                    $cities = $this->cityHelper->getCityData();
-                    $regionCities = $cities[$regionObject->getRegionId()];
-                    foreach ($regionCities as $regionCity) {
-                        if ($regionCity['name'] == $cityName) {
-                            $parameters['homeState'] = $regionCity['code'];
-                            break;
-                        }
-                    }
-                }
-            } elseif ($defaultBillingAddressId) {
-                $addresses = $customer->getAddresses();
-                $defaultBillingAddress = null;
-                foreach ($addresses as $address) {
-                    if ($address->getId() == $defaultBillingAddressId) {
-                        $defaultBillingAddress = $address;
+            $cityName = $customerData['dm_city'];
+            $parameters['homeState'] = '';
+            if ($cityName && $regionObject) {
+                $cities = $this->cityHelper->getCityData();
+                $regionCities = $cities[$regionObject->getRegionId()];
+                foreach ($regionCities as $regionCity) {
+                    if ($regionCity['name'] == $cityName) {
+                        $parameters['homeState'] = $regionCity['code'];
                         break;
                     }
                 }
-                $addressParameters = $this->getAddressParameters($defaultBillingAddress);
-                $parameters = array_merge($parameters, $addressParameters);
             }
+        } elseif ($defaultBillingAddressId) {
+            $addresses = $customer->getAddresses();
+            $defaultBillingAddress = null;
+            foreach ($addresses as $address) {
+                if ($address->getId() == $defaultBillingAddressId) {
+                    $defaultBillingAddress = $address;
+                    break;
+                }
+            }
+            $addressParameters = $this->getAddressParameters($defaultBillingAddress);
+            $parameters = array_merge($parameters, $addressParameters);
         }
         $parameters['salOrgCd'] =  $customer->getCustomAttribute('sales_organization_code')?
             $customer->getCustomAttribute('sales_organization_code')->getValue():'';
@@ -386,7 +379,7 @@ class SaveSuccess implements ObserverInterface
         try {
             $status = isset($customerData['dm_subscription_status_checkbox'])?
                 $customerData['dm_subscription_status_checkbox']:'';
-            if ($status == 'on') {
+            if (isset($customerData['dm_zipcode'])) {
                 $dmCity = $customerData['dm_city'];
                 $dmZipCode = $customerData['dm_zipcode'];
                 $dmDetailedAddress = $customerData['dm_detailed_address'];

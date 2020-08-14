@@ -178,8 +178,6 @@ define([
                                 }
                                 $('.form-create-account #dob').val(response.pos.birthDay);
                                 $('.form-create-account #is_subscribed').prop('checked',response.pos.emailYN == 'Y'?true:false);
-                                $('.form-create-account .sms_subscription_status_checkbox').prop('checked',response.pos.smsYN == 'Y'?true:false);
-                                $('.form-create-account #sms_subscription_status').val(response.pos.smsYN == 'Y'?1:0);
                                 $('.form-create-account .dm_subscription_status_checkbox').prop('checked',response.pos.dmYN == 'Y'?true:false);
                                 $('.form-create-account #dm_subscription_status').val(response.pos.dmYN == 'Y'?1:0);
                                 if (response.pos.homeCity) {

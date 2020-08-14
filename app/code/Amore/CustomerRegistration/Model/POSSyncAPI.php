@@ -65,11 +65,6 @@ class POSSyncAPI
         $parameters['email'] = trim($customer->getEmail());
         $parameters['sex'] = $customer->getGender() == '1' ? 'M' : 'F';
         $parameters['emailYN'] = $this->isCustomerSubscribToNewsLetters($customer->getId()) ? 'Y' : 'N';
-        if ($customer->getData('sms_subscription_status')) {
-            $parameters['smsYN'] = $customer->getData('sms_subscription_status') == 1 ? 'Y' : 'N';
-        } else {
-            $parameters['smsYN'] = 'N';
-        }
         if ($customer->getData('call_subscription_status')) {
             $parameters['callYN'] = $customer->getData('call_subscription_status') == 1 ? 'Y' : 'N';
         } else {
@@ -80,7 +75,7 @@ class POSSyncAPI
         } else {
             $parameters['dmYN'] = 'N';
         }
-        if ($parameters['dmYN'] == 'Y' && $address) {
+        if ($address) {
             $addressParameters = $this->getAddressParameters($address);
             $parameters = array_merge($parameters, $addressParameters);
         }
