@@ -71,5 +71,5 @@ interface QuoteCvsLocationInterface
     /**
      * @return int
      */
-    public function getIsSelected(): int;
+    public function getIsSelected();
 }
