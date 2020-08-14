@@ -161,7 +161,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'augruText' => '',
             'abrvw' => self::ABRVW_RETURN_CODE,
             // 주문자회원코드-직영몰자체코드
-            'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
+            'custid' => $customer != '' ? $rma->getCustomerId() : '',
             'custnm' => $order->getCustomerLastname() . $order->getCustomerLastname(),
             //배송지 id - 직영몰 자체코드, 없으면 공백
             'recvid' => '',
