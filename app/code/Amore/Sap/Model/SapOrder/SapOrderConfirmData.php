@@ -113,6 +113,10 @@ class SapOrderConfirmData extends AbstractSapOrder
         /** @var Order $order */
         $order = $this->getOrderInfo($incrementId);
 
+        if (is_null($order)) {
+            throw new NoSuchEntityException(__("Available order data does not exist."));
+        }
+
         $source = $this->config->getSourceByStore('store', $order->getStoreId());
         $orderData = $this->getOrderData($incrementId);
         $itemData = $this->getOrderItem($incrementId);
