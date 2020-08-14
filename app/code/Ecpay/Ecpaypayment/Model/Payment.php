@@ -477,7 +477,7 @@ class Payment extends AbstractMethod
             array_push(
                 $ecpay_invoice->Send['Items'],
                 array(
-                    'ItemName' => __($orderItem->getData('name')),
+                    'ItemName' => $orderItem->getData('name'),
                     'ItemCount' => (int)$orderItem->getData('qty_ordered'),
                     'ItemWord' => '批',
                     'ItemPrice' => $itemGrandTotal,
