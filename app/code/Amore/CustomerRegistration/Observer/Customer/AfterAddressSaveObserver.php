@@ -63,11 +63,9 @@ class AfterAddressSaveObserver implements ObserverInterface
                 $address = $observer->getData('customer_address');
                 if ($address->getIsDefaultBilling()) {
                     $customer = $address->getCustomer();
-                    if ($customer->getData('dm_subscription_status')) {
-                        $APIParameters = $this->posSyncAPI->getAPIParameters($customer, $address, 'update');
-                        $this->POSSystem->syncMember($APIParameters);
+                    $APIParameters = $this->posSyncAPI->getAPIParameters($customer, $address, 'update');
+                    $this->POSSystem->syncMember($APIParameters);
 
-                    }
                 }
             }
         } catch (\Exception $e) {
