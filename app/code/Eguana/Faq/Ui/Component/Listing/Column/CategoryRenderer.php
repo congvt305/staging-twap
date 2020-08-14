@@ -92,26 +92,29 @@ class CategoryRenderer extends Column
     }
 
     /**
+     * Get the faq related category value
+     *
      * @param array $dataSource
      * @return array|string
      */
     public function prepareItem(array $dataSource)
     {
+        $faqCategoryId = (int)$dataSource['category'];
         $userStoreId = (int)$this->session->getUser()->getRole()['gws_stores'][0];
         $categories = $this->categoryOption->toOptionArray();
         $storeId = (int)$dataSource['category'][0];
         $label = $this->storeManager->getStore($storeId)->getName();
         $content = $label . "<br/>";
 
-        $storeCategoryList = $categories[$userStoreId];
-
-        $categoryIndex = substr($dataSource['category'], strlen($userStoreId)) -1;
-
-        if (array_key_exists($categoryIndex, $storeCategoryList['value'])) {
-            $value = $storeCategoryList['value'][$categoryIndex]['label'];
-            $content = $content . str_repeat('&nbsp;', 4) . $this->escaper->escapeHtml($value) . "<br/>";
-        } else {
-            $content = $this->escaper->escapeHtml(__('Wrong Category Value. Please select category again.'));
+        foreach ($categories as $category) {
+            if ($category['value']) {
+                foreach ($category['value'] as $option) {
+                    if ($option['value'] == $faqCategoryId) {
+                        $content .= $option['label'];
+                        break;
+                    }
+                }
+            }
         }
 
         return $content;
