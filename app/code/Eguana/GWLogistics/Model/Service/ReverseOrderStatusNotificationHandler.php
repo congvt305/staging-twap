@@ -133,7 +133,7 @@ class ReverseOrderStatusNotificationHandler
         }
     }
 
-    private function findRmaId(string $rtnMerchantTradeNo): int
+    private function findRmaId(string $rtnMerchantTradeNo)
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('rtn_merchant_trade_no', $rtnMerchantTradeNo)
@@ -141,8 +141,8 @@ class ReverseOrderStatusNotificationHandler
         $tracks = $this->trackRepository
             ->getList($searchCriteria)
             ->getItems();
-        $track = reset($tracks);
-        return $track->getRmaEntityId();
+        $track = is_array($tracks) ? reset($tracks) : false;
+        return $track ? $track->getRmaEntityId() : false;
 
     }
     private function makeComments($message, $code, $date)
