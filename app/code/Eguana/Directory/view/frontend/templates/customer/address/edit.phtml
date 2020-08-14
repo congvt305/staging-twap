@@ -37,7 +37,7 @@ $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked'
                 ?>required<?php endif; ?>">
                 <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
                 <div class="control">
-                    <input type="text" name="telephone" value="<?= $block->escapeHtmlAttr($block->getAddress()->getTelephone()) ?>" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" class="input-text <?= /* @noEscape */ $addressHelper->getAttributeValidationClass('telephone') ?>" id="telephone"/>
+                    <input type="text" placeholder="<?= $block->escapeHtml(__('Phone Number')) ?>" name="telephone" value="<?= $block->escapeHtmlAttr($block->getAddress()->getTelephone()) ?>" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" class="input-text <?= /* @noEscape */ $addressHelper->getAttributeValidationClass('telephone') ?>" id="telephone"/>
                 </div>
             </div>
         <?php endif; ?>
@@ -75,7 +75,7 @@ $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked'
                 <select id="city_id" name="city_id" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?>" class="validate-select region_id" <?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>>
                     <option value=""><?= $block->escapeHtml(__('Please select a city or district.')) ?></option>
                 </select>
-                <input type="text" name="city" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCity()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('city') ?>" id="city"/>
+                <input placeholder="<?= $block->escapeHtml(__('City')) ?>" type="text" name="city" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCity()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('city') ?>" id="city"/>
             </div>
         </div>
         <?php $_streetValidationClass = $addressHelper->getAttributeValidationClass('street'); ?>
