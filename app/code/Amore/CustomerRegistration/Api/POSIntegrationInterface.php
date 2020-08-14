@@ -34,7 +34,6 @@ interface POSIntegrationInterface
      * @param string $email
      * @param string $sex
      * @param string $emailYN
-     * @param string $smsYN
      * @param string $callYN
      * @param string $dmYN
      * @param string $homeCity
@@ -58,7 +57,6 @@ interface POSIntegrationInterface
         $email,
         $sex,
         $emailYN,
-        $smsYN,
         $callYN,
         $dmYN,
         $homeCity,

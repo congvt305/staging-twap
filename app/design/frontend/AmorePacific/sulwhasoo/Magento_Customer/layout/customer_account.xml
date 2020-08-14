@@ -14,5 +14,10 @@
                 <argument name="label" xsi:type="string" translate="true">My Dashboard</argument>
             </arguments>
         </referenceBlock>
+        <referenceBlock name="customer-account-navigation-account-edit-link">
+            <arguments>
+                <argument name="sortOrder" xsi:type="number">200</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>

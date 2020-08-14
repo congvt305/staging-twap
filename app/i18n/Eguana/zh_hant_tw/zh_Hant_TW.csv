@@ -1801,7 +1801,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Add New Attribute Set","Add New Attribute Set",module,Magento_Catalog
 "Add Attribute Set","Add Attribute Set",module,Magento_Catalog
 "Attribute Sets","Attribute Sets",module,Magento_Catalog
-"Close Window","Close Window",module,Magento_Catalog
+"Close Window","關上窗戶",module,Magento_Catalog
 "New Product","新產品",module,Magento_Catalog
 "Save & Edit","保存與編輯",module,Magento_Catalog
 "Save & New","保存與新增",module,Magento_Catalog
@@ -3398,7 +3398,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Method Title","Method Title",module,Magento_Checkout
 "Carrier Title","Carrier Title",module,Magento_Checkout
 "Next","下一頁",module,Magento_Checkout
-"Sorry, no quotes are available for this order at this time","Sorry, no quotes are available for this order at this time",module,Magento_Checkout
+"Sorry, no quotes are available for this order at this time","對不起,這次訂購目前沒有報價。",module,Magento_Checkout
 "Item in Cart","件商品待結帳",module,Magento_Checkout
 "Items in Cart","件商品待結帳",module,Magento_Checkout
 "Require Customer To Be Logged In To Checkout","Require Customer To Be Logged In To Checkout",module,Magento_Checkout
@@ -4620,7 +4620,7 @@ new products will be created. Use this step to customize images and price for yo
 "We can't process your request right now. Sorry, that's all we know.","我們現在無法處理您的請求。對不起，那是我們都知道。",module,Magento_Contact
 "Name: %name","Name: %name",module,Magento_Contact
 "Email: %email","Email: %email",module,Magento_Contact
-"Phone Number: %telephone","手機號碼： %電話",module,Magento_Contact
+"Phone Number: %telephone","手機號碼： %telephone",module,Magento_Contact
 "Comment: %comment","評論: %comment",module,Magento_Contact
 "Enter the Name and try again.","Enter the Name and try again.",module,Magento_Contact
 "Enter the comment and try again.","Enter the comment and try again.",module,Magento_Contact
@@ -6983,7 +6983,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Action","操作",module,Magento_GiftRegistry
 "Update Quantity","Update Quantity",module,Magento_GiftRegistry
 "Remove Item","Remove Item",module,Magento_GiftRegistry
-"Sharing Information","Sharing Information",module,Magento_GiftRegistry
+"Sharing Information","訊號資料",module,Magento_GiftRegistry
 "Emails","Emails",module,Magento_GiftRegistry
 "Send From","Send From",module,Magento_GiftRegistry
 "Message","訊息內容",module,Magento_GiftRegistry
@@ -8225,7 +8225,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "%1 items cannot be moved: %2.","%1 items cannot be moved: %2.",module,Magento_MultipleWishlist
 "We can't move %1 items.","We can't move %1 items.",module,Magento_MultipleWishlist
 "%1 items were moved to %2: %3.","%1 items were moved to %2: %3.",module,Magento_MultipleWishlist
-"%1 for ""%2""","%1 for ""%2""",module,Magento_MultipleWishlist
+"%1 for ""%2""","""%2"" %1",module,Magento_MultipleWishlist
 "We can't add the item to shopping cart.","We can't add the item to shopping cart.",module,Magento_MultipleWishlist
 "We can't add the following product(s) to shopping cart: %1.","We can't add the following product(s) to shopping cart: %1.",module,Magento_MultipleWishlist
 "Product(s) %1 have required options. Each product can only be added individually.","Product(s) %1 have required options. Each product can only be added individually.",module,Magento_MultipleWishlist
@@ -11509,7 +11509,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Return #%1","退貨訂單 #%1",module,Magento_Rma
 "Cannot add message.","Cannot add message.",module,Magento_Rma
 "My Returns","我的退貨",module,Magento_Rma
-"Tracking Information","Tracking Information",module,Magento_Rma
+"Tracking Information","跟蹤資料",module,Magento_Rma
 "Page not found","Page not found",module,Magento_Rma
 "Please check this order for errors.","請檢查此訂單是否有錯誤。",module,Magento_Rma
 "Contact Email Address","備用電子郵件",module,Magento_Rma
@@ -11528,7 +11528,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Return Address:","退貨地址:",module,Magento_Rma
 "Condition","狀態",module,Magento_Rma
 "Qty","數量",module,Magento_Rma
-"There is an error in quantities for item %1.","There is an error in quantities for item %1.",module,Magento_Rma
+"There is an error in quantities for item %1.","第 %1 項存在數量錯誤。",module,Magento_Rma
 "Authorized Qty","Authorized Qty",module,Magento_Rma
 "Returned Qty","Returned Qty",module,Magento_Rma
 "Approved Qty","Approved Qty",module,Magento_Rma
@@ -11640,7 +11640,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "View Return","查看明細",module,Magento_Rma
 "You have placed no returns.","您尚未退貨",module,Magento_Rma
 "Packages","Packages",module,Magento_Rma
-"Close Window","Close Window",module,Magento_Rma
+"Close Window","關上窗戶",module,Magento_Rma
 "Package","Package",module,Magento_Rma
 "Type","類別",module,Magento_Rma
 "Length","Length",module,Magento_Rma
@@ -11649,7 +11649,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Height","Height",module,Magento_Rma
 "Items in the Package","Items in the Package",module,Magento_Rma
 "Are you sure you want to delete this tracking information?","Are you sure you want to delete this tracking information?",module,Magento_Rma
-"Request Information","Request Information",module,Magento_Rma
+"Request Information","退貨資訊",module,Magento_Rma
 "Date Requested","退貨申請日期",module,Magento_Rma
 "Shipping Address","收件地址",module,Magento_Rma
 "This won't take long . . .","This won't take long . . .",module,Magento_Rma
@@ -11916,10 +11916,10 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Order Credit Memos","Order Credit Memos",module,Magento_Sales
 "Credit memo #%1 created","Credit memo #%1 created",module,Magento_Sales
 "Credit memo #%1 comment added","Credit memo #%1 comment added",module,Magento_Sales
-"Shipment #%1 created","Shipment #%1 created",module,Magento_Sales
-"Shipment #%1 comment added","Shipment #%1 comment added",module,Magento_Sales
-"Invoice #%1 created","Invoice #%1 created",module,Magento_Sales
-"Invoice #%1 comment added","Invoice #%1 comment added",module,Magento_Sales
+"Shipment #%1 created","裝運 #%1 created",module,Magento_Sales
+"Shipment #%1 comment added","裝運 #%1 comment added",module,Magento_Sales
+"Invoice #%1 created","發票 #%1 created",module,Magento_Sales
+"Invoice #%1 comment added","發票 #%1 comment added",module,Magento_Sales
 "Tracking number %1 for %2 assigned","Tracking number %1 for %2 assigned",module,Magento_Sales
 "Comments History","評論歷史",module,Magento_Sales
 "Order History","訂單紀錄",module,Magento_Sales
@@ -12177,7 +12177,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Tax","稅金",module,Magento_Sales
 "Total (inc)","Total (inc)",module,Magento_Sales
 "Credit Memo # ","Credit Memo # ",module,Magento_Sales
-"Invoice # ","Invoice # ",module,Magento_Sales
+"Invoice # ","發票 # ",module,Magento_Sales
 "The order object is not specified.","未指定訂單對象。",module,Magento_Sales
 "The source object is not specified.","The source object is not specified.",module,Magento_Sales
 "An item object is not specified.","An item object is not specified.",module,Magento_Sales
@@ -12375,7 +12375,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Link to the Previous Order","鏈接到上一個訂單",module,Magento_Sales
 "Placed from IP","Placed from IP",module,Magento_Sales
 "%1 / %2 rate:","%1 / %2 rate:",module,Magento_Sales
-"Edit Customer","Edit Customer",module,Magento_Sales
+"Edit Customer","編輯客戶",module,Magento_Sales
 "Customer Name","顧客姓名",module,Magento_Sales
 "Customer Group","Customer Group",module,Magento_Sales
 "Notes for this Order","此訂單的注意事項",module,Magento_Sales
@@ -12387,19 +12387,19 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Transaction Type","交易類型",module,Magento_Sales
 "Is Closed","Is Closed",module,Magento_Sales
 "Created At","新增於",module,Magento_Sales
-"Child Transactions","Child Transactions",module,Magento_Sales
-"Transaction Details","Transaction Details",module,Magento_Sales
+"Child Transactions","兒童交易",module,Magento_Sales
+"Transaction Details","交易詳情",module,Magento_Sales
 "Items","品項",module,Magento_Sales
 "Gift Message for this Order","此訂單的禮品消息",module,Magento_Sales
-"Shipped By","Shipped By",module,Magento_Sales
-"Tracking Number","Tracking Number",module,Magento_Sales
-"Billing Last Name","Billing Last Name",module,Magento_Sales
+"Shipped By","搖身一變",module,Magento_Sales
+"Tracking Number","跟蹤號",module,Magento_Sales
+"Billing Last Name","帳單最後姓名",module,Magento_Sales
 "Find Order By","查找訂單依據",module,Magento_Sales
-"ZIP Code","ZIP Code",module,Magento_Sales
-"Billing ZIP Code","Billing ZIP Code",module,Magento_Sales
+"ZIP Code","郵政編碼",module,Magento_Sales
+"Billing ZIP Code","郵政編碼",module,Magento_Sales
 "Continue","繼續",module,Magento_Sales
-"Print All Refunds","Print All Refunds",module,Magento_Sales
-"Refund #","Refund #",module,Magento_Sales
+"Print All Refunds","列印所有退款",module,Magento_Sales
+"Refund #","退款 #",module,Magento_Sales
 "Print Refund","印刷品退款",module,Magento_Sales
 "Product Name","商品名稱",module,Magento_Sales
 "Order #","訂單編號",module,Magento_Sales
@@ -12411,14 +12411,14 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "No shipping information available","No shipping information available",module,Magento_Sales
 "Print Order","列印訂單",module,Magento_Sales
 "Print All Invoices","Print All Invoices",module,Magento_Sales
-"Invoice #","Invoice #",module,Magento_Sales
+"Invoice #","發票 #",module,Magento_Sales
 "Print Invoice","印刷品電子發票",module,Magento_Sales
 "Qty Invoiced","已開發票數量",module,Magento_Sales
 "Close","關閉",module,Magento_Sales
 "About Your Order","訂單交易資訊",module,Magento_Sales
 "<span class=""label"">Order Date:</span> %1","<span class=""label"">訂購日期：</span> %1",module,Magento_Sales
 "Refund #%1","Refund #%1",module,Magento_Sales
-"Shipment #%1","Shipment #%1",module,Magento_Sales
+"Shipment #%1","裝運 #%1",module,Magento_Sales
 "Qty Shipped","已出貨數量",module,Magento_Sales
 "Recent Orders","最近的訂單",module,Magento_Sales
 "View All","查看全部",module,Magento_Sales
@@ -13473,7 +13473,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Print","Print",module,Magento_Shipping
 "the shipment email was sent","the shipment email was sent",module,Magento_Shipping
 "the shipment email is not sent","the shipment email is not sent",module,Magento_Shipping
-"Shipment #%1 | %3 (%2)","Shipment #%1 | %3 (%2)",module,Magento_Shipping
+"Shipment #%1 | %3 (%2)","裝運 #%1 | %3 (%2)",module,Magento_Shipping
 "Create Shipping Label...","Create Shipping Label...",module,Magento_Shipping
 "Print Shipping Label","Print Shipping Label",module,Magento_Shipping
 "Show Packages","Show Packages",module,Magento_Shipping
@@ -13508,7 +13508,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Tracking information must contain title, carrier code, and tracking number","追踪訊息內容必須包含標題，運營商代碼和追蹤號碼。",module,Magento_Shipping
 "There are no shipping labels related to selected shipments.","There are no shipping labels related to selected shipments.",module,Magento_Shipping
 "Page not found.","找不到頁面。",module,Magento_Shipping
-"Tracking Information","Tracking Information",module,Magento_Shipping
+"Tracking Information","跟蹤資料",module,Magento_Shipping
 "Sorry, but we can't deliver to the destination country with this shipping module.","Sorry, but we can't deliver to the destination country with this shipping module.",module,Magento_Shipping
 "The shipping module is not available.","The shipping module is not available.",module,Magento_Shipping
 "This shipping method is not available. Please specify the zip code.","此運輸方法不可用。 請指定郵政編碼。",module,Magento_Shipping
@@ -13597,12 +13597,12 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Shipment History","Shipment History",module,Magento_Shipping
 "Qty Shipped","已出貨數量",module,Magento_Shipping
 "Print All Shipments","Print All Shipments",module,Magento_Shipping
-"Shipment #","Shipment #",module,Magento_Shipping
+"Shipment #","裝運 #",module,Magento_Shipping
 "Print Shipment","印刷裝運",module,Magento_Shipping
-"Tracking Number(s):","Tracking Number(s):",module,Magento_Shipping
+"Tracking Number(s):","跟蹤號:",module,Magento_Shipping
 "SKU","商品編號",module,Magento_Shipping
 "Order tracking","訂單跟踪",module,Magento_Shipping
-"Tracking Number:","Tracking Number:",module,Magento_Shipping
+"Tracking Number:","跟蹤號:",module,Magento_Shipping
 "Carrier:","貨運公司:",module,Magento_Shipping
 "Error:","Error:",module,Magento_Shipping
 "Tracking information is currently not available. Please ","Tracking information is currently not available. Please ",module,Magento_Shipping
@@ -13614,9 +13614,9 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 ". ':'",". ':'",module,Magento_Shipping
 "Delivered on:","Delivered on:",module,Magento_Shipping
 "N/A","不適用 ",module,Magento_Shipping
-"There is no tracking available for this shipment.","There is no tracking available for this shipment.",module,Magento_Shipping
+"There is no tracking available for this shipment.","這批貨沒有可用的追蹤器。",module,Magento_Shipping
 "There is no tracking available.","There is no tracking available.",module,Magento_Shipping
-"Close Window","Close Window",module,Magento_Shipping
+"Close Window","關上窗戶",module,Magento_Shipping
 "Track history","Track history",module,Magento_Shipping
 "Location","位置",module,Magento_Shipping
 "Date","日期",module,Magento_Shipping
@@ -16075,7 +16075,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Cannot specify product.","Cannot specify product.",module,Magento_Wishlist
 "Product is not salable.","Product is not salable.",module,Magento_Wishlist
 "Invalid item option format.","Invalid item option format.",module,Magento_Wishlist
-"%1 for ""%2"".","%1 for ""%2"".",module,Magento_Wishlist
+"%1 for ""%2"".","""%2"" %1",module,Magento_Wishlist
 "We can't add this item to your shopping cart right now.","現在無法新增至購物車",module,Magento_Wishlist
 "We couldn't add the following product(s) to the shopping cart: %1.","We couldn't add the following product(s) to the shopping cart: %1.",module,Magento_Wishlist
 "We can't update the Wish List right now.","We can't update the Wish List right now.",module,Magento_Wishlist
@@ -16121,7 +16121,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Back","上一步",module,Magento_Wishlist
 "Wish List is empty now.","Wish List is empty now.",module,Magento_Wishlist
 "* Required Fields","* 為必填項",module,Magento_Wishlist
-"Sharing Information","Sharing Information",module,Magento_Wishlist
+"Sharing Information","訊號資料",module,Magento_Wishlist
 "Email addresses, separated by commas","電子郵件地址，以逗號分隔",module,Magento_Wishlist
 "Check here to link an RSS feed to your Wish List.","Check here to link an RSS feed to your Wish List.",module,Magento_Wishlist
 "Last Added Items","Last Added Items",module,Magento_Wishlist

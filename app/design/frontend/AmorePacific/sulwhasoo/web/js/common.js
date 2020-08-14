@@ -81,8 +81,16 @@ require([
      */
     if ($('input').offset()) {
         $('input').each(function (index,element) {
-            var title = $(element).attr('title');
-            $(element).attr('placeholder',title);
+            var title = $(element).closest('div.field').children('label').find('span').text();
+            var placeholder = $(element).attr('placeholder');
+
+            if(placeholder === undefined) {
+                if(title === '') {
+                    title = $(element).attr('title');
+                }
+
+                $(element).attr('placeholder',title);
+            }
         });
     }
 
@@ -91,7 +99,7 @@ require([
             var title = $(element).closest('div.field').children('label').find('span').text();
             var text = $(element).find('option:selected').text();
 
-            if (text==' ') {
+            if (text === ' ') {
                 $(element).find('option:selected').text(title);
             }
         });
