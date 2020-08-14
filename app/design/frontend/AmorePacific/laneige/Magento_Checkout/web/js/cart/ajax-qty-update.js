@@ -26,7 +26,7 @@ define([
                 data: form.serialize(),
                 type: 'post',
                 beforeSend: function () {
-                    $('body').trigger('processStart');
+                    form.trigger('processStart');
                 },
 
                 success: function (res) {
@@ -66,7 +66,7 @@ define([
                  * Complete.
                  */
                 complete: function () {
-                    $('body').trigger('processStop');
+                    form.trigger('processStop');
                 }
             });
         });
