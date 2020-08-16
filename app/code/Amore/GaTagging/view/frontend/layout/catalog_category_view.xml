@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- PAGE SPECIFIC AP -->
+        <referenceContainer name="after.body.start">
+            <block class="Amore\GaTagging\Block\GaTagging"
+                   name="ap_category"
+                   ifconfig="amore_gatagging/tagmanager/active"
+                   after="amore_gatagging_common_ap"
+                   template="Amore_GaTagging::common/ap-pagetype.phtml" >
+                <arguments>
+                    <argument name="page_type" xsi:type="string">prods</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

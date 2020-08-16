@@ -26,17 +26,7 @@ $viewModel = $block->getViewModel();
     var AP_DATA_SITENAME = "<?= $block->escapeJs($block->escapeHtml($this->helper(\Amore\GaTagging\Helper\Data::class)->getSiteName())) ?>";
     var AP_DATA_CHANNEL = "<?= $block->getChannel() ?>";
     var AP_DATA_PAGENAME = "<?= $block->getTitle() ?>";
-    var AP_DATA_PAGETYPE = "<?= $block->getChannel() ?>";
     var AP_DATA_BREAD = "<?= $block->getBreadCrumbText() ?>";
-
-    //장바구니
-    var AP_CART_PRICE = "";
-    var AP_CART_PRDPRICE = "";
-    var AP_CART_DISCOUNT = "";
-    var AP_CART_PRDS = "";
-
-    //장바구니 추가
-    //var AP_CART_PRDS
 
     //장바구니 빼기(삭제)
     var AP_RMCART_PRDS = [];
@@ -71,18 +61,6 @@ $viewModel = $block->getViewModel();
     var AP_REFUND_ORDERNUM = "";
     var AP_REFUND_CONTENT = "";
     var AP_REFUND_PRDS = "";
-
-    //검색
-    var AP_SEARCH_TERM = "";
-    var AP_SEARCH_PRDRESULT = "";
-    var AP_SEARCH_NUM = "";
-    var AP_SEARCH_TYPE = "";
-
-    //회원가입
-    var AP_JOIN_NAME = "";
-
-    //뷰티포인트금액
-    var AP_DATA_POINT = "";
 
     <!-- AP GA Tagging Data -->
 </script>

@@ -11,10 +11,13 @@
 $currentProduct = $block->getCurrentProduct();
 ?>
 <script>
-    //상품상세
+    var AP_DATA_PAGETYPE = "<?= $block->getPageType()?>";
+
+    //상품상세 todo additional AP
     var AP_PRD_NAME = "<?= $block->escapeHtml($currentProduct->getName())?>";
     var AP_PRD_CODE = "<?= $block->escapeHtml($currentProduct->getSku())?>";
     var AP_PRD_PRICE = "<?= $block->escapeHtml($currentProduct->getFinalPrice())?>";
     var AP_PRD_BRAND = "<?= $block->escapeHtml(__('Laneige'))?>";
     var AP_PRD_CATEGORY = "<?= $block->escapeHtml($block->getProductCategory($currentProduct))?>";
 </script>
+
