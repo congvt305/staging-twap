@@ -354,7 +354,7 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
         $shipmentId = $track->getParentId();
         $shipment = $this->shipmentRepository->get($shipmentId);
         $storeId = $shipment->getStoreId();
-        return [ 'allPayLogisticsId' => $shipment->getAllPayLogisticsId(), 'storeId' => $storeId]; //todo check null
+        return [ 'allPayLogisticsId' => $shipment->getAllPayLogisticsId(), 'storeId' => $storeId];
     }
 
     /**
@@ -364,8 +364,7 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
      */
     private function findRtnMerchantTradeNo($tracking)
     {
-        $tracking='12345678';
-        $searchCriteria = $this->searchCriteriaBuilder //test with NULL
+        $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('track_number', $tracking)
             ->create();
         $rmatracks = $this->rmaTrackRepository->getList($searchCriteria)->getItems();
