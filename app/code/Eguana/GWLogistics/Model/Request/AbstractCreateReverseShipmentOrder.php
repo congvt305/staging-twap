@@ -47,7 +47,6 @@ class AbstractCreateReverseShipmentOrder
      */
     public function sendRequest($rma)
     {
-        $logisticsSubType = $rma->getData('shipping_preference');
         $hashKey = $this->_helper->getHashKey($rma->getStoreId());
         $hashIv = $this->_helper->getHashIv($rma->getStoreId());
         try {

@@ -38,7 +38,7 @@ class Data extends AbstractHelper
     const XML_PATH_SEND_SMS_ACTIVE = 'carriers/gwlogistics/send_sms_active';
     const XML_PATH_MESSAGE_TEMPLATE = 'carriers/gwlogistics/message_template';
 
-    private $productionMode;
+    private $productionMode = null;
     /**
      * @var \Eguana\GWLogistics\Model\Lib\EcpayCheckMacValue
      */
@@ -60,7 +60,6 @@ class Data extends AbstractHelper
     ) {
         parent::__construct($context);
         $this->ecpayCheckMacValue = $ecpayCheckMacValue;
-        $this->productionMode = $this->getMode();
         $this->encryptor = $encryptor;
         $this->ecpayLogistics = $ecpayLogistics;
     }
@@ -122,7 +121,7 @@ class Data extends AbstractHelper
 
     public function getPlatformId($storeId = null)
     {
-        $suffix = $this->productionMode === '1' ? '' : '_sandbox';
+        $suffix = $this->getMode() === '1' ? '' : '_sandbox';
         return $this->scopeConfig->getValue(
             self::XML_PATH_PLATFORM_ID . $suffix,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
@@ -132,7 +131,7 @@ class Data extends AbstractHelper
 
     public function getHashKey($storeId = null)
     {
-        if ($this->productionMode === '1') {
+        if ($this->getMode() === '1') {
             return $this->encryptor->decrypt(
                 $this->scopeConfig->getValue(
                 self::XML_PATH_HASH_KEY,
@@ -142,14 +141,13 @@ class Data extends AbstractHelper
         }
         return $this->scopeConfig->getValue(
             self::XML_PATH_HASH_KEY . '_sandbox',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
-            $storeId
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
 
     public function getHashIv($storeId = null)
     {
-        if ($this->productionMode === '1') {
+        if ($this->getMode() === '1') {
             return $this->encryptor->decrypt(
                 $this->scopeConfig->getValue(
                     self::XML_PATH_HASH_IV,
@@ -159,14 +157,13 @@ class Data extends AbstractHelper
         }
         return $this->scopeConfig->getValue(
             self::XML_PATH_HASH_IV . '_sandbox',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
-            $storeId
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
 
     public function getMerchantId($storeId = null)
     {
-        $suffix = $this->productionMode === '1' ? '' : '_sandbox';
+        $suffix = $this->getMode() === '1' ? '' : '_sandbox';
         return $this->scopeConfig->getValue(
             self::XML_PATH_MERCHANT_ID . $suffix,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
@@ -176,7 +173,7 @@ class Data extends AbstractHelper
 
     public function getMapUrl($storeId = null)
     {
-        $suffix = $this->productionMode === '1' ? '' : '_sandbox';
+        $suffix = $this->getMode() === '1' ? '' : '_sandbox';
         return $this->scopeConfig->getValue(
             self::XML_PATH_MAP_URL . $suffix,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
@@ -186,11 +183,14 @@ class Data extends AbstractHelper
 
     public function getMode($storeId = null)
     {
-        return $this->scopeConfig->getValue(
-            self::XML_PATH_MODE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
-            $storeId
-        );
+        if (!$this->productionMode) {
+            $this->productionMode = $this->scopeConfig->getValue(
+                self::XML_PATH_MODE,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                $storeId
+            );
+        }
+        return $this->productionMode;
     }
 
     public function getServerType($storeId = null)
