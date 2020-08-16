@@ -2,7 +2,10 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-    <event name="customer_register_success">
-        <observer name="amore_gatagging" instance="Amore\GaTagging\Observer\CustomerRegisterSuccess"/>
+    <event name="checkout_onepage_controller_success_action">
+        <observer name="amore_gatagging_order_success" instance="Amore\GaTagging\Observer\OrderSuccess" />
     </event>
+<!--    <event name="checkout_onepage_controller_success_action">-->
+<!--        <observer name="googleadwords_order_success" instance="Magento\GoogleAdwords\Observer\SetConversionValueObserver" />-->
+<!--    </event>-->
 </config>

@@ -1,19 +1,24 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <!-- 2.3 주요페이지 검색 AP-->
         <referenceContainer name="after.body.start">
             <block class="Amore\GaTagging\Block\GaTagging"
                    name="ap_search_result"
                    ifconfig="amore_gatagging/tagmanager/active"
-                   after="-"
-                   template="Amore_GaTagging::ap-search-result.phtml" />
+                   after="amore_gatagging_common_ap"
+                   template="Amore_GaTagging::search/ap-search-result.phtml" >
+            <arguments>
+                <argument name="page_type" xsi:type="string">search</argument>
+            </arguments>
+            </block>
         </referenceContainer>
+        <!-- 2.3 주요페이지 검색 이벤트 트리거 -->
         <referenceContainer name="before.body.end">
-            <block class="Amore\GaTagging\Block\GaTagging"
-                   name="search_result_datalayer_push"
+            <block name="search_result_datalayer_push"
                    ifconfig="amore_gatagging/tagmanager/active"
                    after="-"
-                   template="Amore_GaTagging::datalayer-push.phtml" >
+                   template="Amore_GaTagging::common/datalayer-push.phtml" >
                 <arguments>
                     <argument name="event_name" xsi:type="string">search</argument>
                 </arguments>

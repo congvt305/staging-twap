@@ -2,13 +2,14 @@
 /**
  * Created by Eguana Team.
  * User: sonia
- * Date: 7/21/20
- * Time: 10:41 AM
+ * Date: 7/19/20
+ * Time: 9:15 AM
  */
-
+?>
+<?php
 /** @var \Amore\GaTagging\Block\GaTagging $block */
 ?>
 <script>
-    //회원가입
-    var AP_JOIN_NAME = "<?= $block->escapeHtml($block->getJoinName()) ?>";
+    var AP_DATA_PAGETYPE = "<?= $block->getPageType()?>";
 </script>
+
