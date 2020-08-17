@@ -159,10 +159,7 @@
         }
     }
 
-    .customer-account-index .line-add-friend {
-        position: relative;
-        top: -116px;
-
+    .account .line-add-friend {
         & + .actions-toolbar {
             .action.primary {
                 margin-top: @indent__l;
@@ -204,6 +201,16 @@
             width: 50%;
         }
     }
+
+    .account .sidebar-additional {
+        .lib-vendor-prefix-order(0);
+        position: relative;
+        top: -@indent__l;
+
+        .line-add-friend {
+            text-align: right;
+        }
+    }
 }
 
 //
@@ -211,6 +218,10 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .account .line-add-friend {
+        margin-left: 8px;
+    }
+
     .sociallogin-login-createcustomer {
         .page-title-wrapper,
         .columns {

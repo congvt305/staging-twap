@@ -157,10 +157,6 @@
     }
 
     .customer-account-index .line-add-friend {
-        margin-bottom: 15px;
-        position: relative;
-        top: -15px;
-
         & + .actions-toolbar {
             .action.primary {
                 margin-top: 0;
@@ -179,6 +175,16 @@
 
         a {
             padding: 10.5px 0 !important;
+        }
+    }
+
+    .account .sidebar-additional {
+        .lib-vendor-prefix-order(0);
+        position: relative;
+        top: -@indent__l;
+
+        .line-add-friend {
+            text-align: right;
         }
     }
 }

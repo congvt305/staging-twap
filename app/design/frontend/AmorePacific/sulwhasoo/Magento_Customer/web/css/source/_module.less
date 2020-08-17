@@ -262,7 +262,7 @@
         }
 
         .sidebar-additional {
-            margin-top: 40px;
+            margin-top: @indent__m;
         }
 
         .table-wrapper {
@@ -453,15 +453,6 @@
 //
 //  Mobile
 //  _____________________________________________
-
-.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
-    .account {
-        .column.main,
-        .sidebar-additional {
-            margin: 0;
-        }
-    }
-}
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .customer-account-login,
