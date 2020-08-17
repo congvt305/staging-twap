@@ -11,4 +11,7 @@
     <type name="Magento\Rma\Controller\Returns\Submit">
         <plugin name="eguana_full_refund_before" type="Eguana\CustomRMA\Plugin\RmaManagement" sortOrder="10" />
     </type>
+    <type name="Magento\Rma\Controller\Guest\Submit">
+        <plugin name="eguana_full_refund_before_guest" type="Eguana\CustomRMA\Plugin\RmaGuest" sortOrder="20" />
+    </type>
 </config>
