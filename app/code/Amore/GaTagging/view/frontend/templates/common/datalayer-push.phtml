@@ -9,12 +9,14 @@
 <?php
 /** @var \Magento\Framework\View\Element\Template $block */
 ?>
+<?php if ($block->getEventName()) : ?>
 <script type="text/x-magento-init">
     {
         "*": {
-            "Amore_GaTagging/js/action/cart-page":{
-                "eventName": "cart"
+            "Amore_GaTagging/js/action/notify":{
+                "eventName": "<?= /* @noEscape */$block->getEventName() ?>"
             }
         }
     }
 </script>
+<?php endif; ?>

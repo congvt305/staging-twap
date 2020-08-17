@@ -48,6 +48,8 @@ class SmsManagement implements \Eguana\StoreSms\Api\SmsManagementInterface
                 $storeId = $this->storeManager->getStore()->getId();
             }
 
+            $numberPrefix = $this->helper->getCountryCode($storeId);
+            $phoneNumber = $this->getPhoneNumberWithCode($number, $numberPrefix);
             $apiUserName = $this->helper->getApiCredentials('api_login', $storeId);
             $apiPassword = $this->helper->getApiCredentials('api_password', $storeId);
             $sender = $this->helper->getSender($storeId);
@@ -60,7 +62,7 @@ class SmsManagement implements \Eguana\StoreSms\Api\SmsManagementInterface
             ];
             $param = [
                 'from' => $sender,
-                'to' => $number,
+                'to' => $phoneNumber,
                 'text' => $message
             ];
             $this->curl->setOption(CURLOPT_RETURNTRANSFER, true);
@@ -81,4 +83,23 @@ class SmsManagement implements \Eguana\StoreSms\Api\SmsManagementInterface
 
         return $result;
     }
+
+    private function getPhoneNumberWithCode($number, $countryCode)
+    {
+        $phoneNumber = '';
+        $n = strlen($countryCode);
+        $result = substr($number, 0, $n);
+        if ($result == $countryCode) {
+            $phoneNumber = $number;
+        } elseif ($number[0] == 0) {
+            $phoneWithLeadingZero = ltrim($number, '0');
+            $phoneNumber = $countryCode . $phoneWithLeadingZero;
+        } else {
+            $phoneNumber = $countryCode . $number;
+        }
+
+        return $phoneNumber;
+
+    }
+
 }

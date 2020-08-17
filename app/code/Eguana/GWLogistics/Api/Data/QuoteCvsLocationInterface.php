@@ -24,9 +24,9 @@ interface QuoteCvsLocationInterface
     const IS_SELECTED = "is_selected";
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getQuoteAddressId(): int;
+    public function getQuoteAddressId();
 
     /**
      * @return string
@@ -71,5 +71,5 @@ interface QuoteCvsLocationInterface
     /**
      * @return int
      */
-    public function getIsSelected(): int;
+    public function getIsSelected();
 }

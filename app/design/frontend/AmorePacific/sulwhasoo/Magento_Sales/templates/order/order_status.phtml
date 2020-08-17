@@ -6,7 +6,7 @@
 ?>
 <?php /** @var $block \Magento\Sales\Block\Order\Info */ ?>
 <div class="order-info">
-    <span class="order-id"><?= ('Order #').$block->escapeHtml($block->getOrder()->getRealOrderId()) ?></span>
+    <span class="order-id"><?= __('Order #').$block->escapeHtml($block->getOrder()->getRealOrderId()) ?></span>
     <span class="order-status"><?= $block->escapeHtml($block->getOrder()->getStatusLabel()) ?></span>
     <?= $block->getChildHtml();?>
 </div>

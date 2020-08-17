@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- PAGE SPECIFIC AP -->
+        <referenceContainer name="after.body.start">
+            <block class="Amore\GaTagging\Block\GaTagging"
+                   name="ap_homepage"
+                   ifconfig="amore_gatagging/tagmanager/active"
+                   after="amore_gatagging_common_ap"
+                   template="Amore_GaTagging::common/ap-pagetype.phtml" >
+                <arguments>
+                    <argument name="page_type" xsi:type="string">home</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

@@ -59,11 +59,6 @@ $notAllowedChar = $viewModel->getNotAllowedCharList();
             <?= $callSubscriptionStatus->setSmsSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'call_subscription_status'))->toHtml() ?>
         <?php endif ?>
 
-        <?php $_smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'sms_subscription_status'))]]) ?>
-        <?php if ($_smsSubscriptionStatus->isEnabled()) : ?>
-            <?= $_smsSubscriptionStatus->setSmsSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'sms_subscription_status'))->toHtml() ?>
-        <?php endif ?>
-
         <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status'))]]) ?>
         <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
             <?= $_dmSubscriptionStatus->setDmSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status'))->toHtml() ?>
@@ -109,7 +104,7 @@ $notAllowedChar = $viewModel->getNotAllowedCharList();
         <div class="field email required" data-container="change-email">
             <label class="label" for="email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
             <div class="control">
-                <input type="email" name="email" id="email" autocomplete="email" data-input="change-email" value="<?= $block->escapeHtmlAttr($block->getCustomer()->getEmail()) ?>" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" class="input-text" data-validate="{required:true, 'validate-email':true}" />
+                <input placeholder="<?= $block->escapeHtml(__('Email')) ?>" type="email" name="email" id="email" autocomplete="email" data-input="change-email" value="<?= $block->escapeHtmlAttr($block->getCustomer()->getEmail()) ?>" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" class="input-text" data-validate="{required:true, 'validate-email':true}" />
             </div>
         </div>
         <div class="field password current required">

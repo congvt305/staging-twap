@@ -274,7 +274,7 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
             } else {
                 $error = $this->trackErrorFactory->create();
                 $error->setCarrier($this->_code);
-                $error->setCarrierTitle($this->getConfigData('title'));
+                $error->setCarrierTitle($this->getConfigData('title')); //todo find title for storeId
                 $error->setTracking($trackingValue);
                 $error->setErrorMessage(__('There is no tracking info'));
                 $this->result->append($error);
@@ -286,7 +286,16 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
     private function getGWLTracking($trackingValue)
     {
         $resultArr = [];
-        $found = $this->findAllPayLogisticsId($trackingValue);
+        try {
+            $found = $this->findAllPayLogisticsId($trackingValue);
+            if (!$found) {
+                return $resultArr;
+            }
+        } catch (\Exception $e) {
+            $this->_logger->critical($e);
+            return $resultArr;
+        }
+
         if(isset($found['allPayLogisticsId'], $found['storeId']) && $found['allPayLogisticsId'] && $found['storeId']) {
             $notifications = $this->queryLogisticsInfo->sendRequest($found['allPayLogisticsId'], $found['storeId']);
             if(isset($notifications['LogisticsStatus']) && $notifications['LogisticsStatus']) {
@@ -301,7 +310,16 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
     private function getReverseGWTracking($trackingValue)
     {
         $resultArr = [];
-        $rtnMerchantTradeNo = $this->findRtnMerchantTradeNo($trackingValue);
+        try {
+            $rtnMerchantTradeNo = $this->findRtnMerchantTradeNo($trackingValue);
+            if (!$rtnMerchantTradeNo) {
+                return $resultArr;
+            }
+        } catch (\Exception $e) {
+            $this->_logger->critical($e);
+            return $resultArr;
+        }
+
             $sortOrder = $this->sortOrderBuilder->setField('created_at')
             ->setDirection('DESC')
             ->create();
@@ -330,12 +348,20 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
             ->create();
         $track = $this->shipmentTrackRepository->getList($searchCriteria)->getItems();
         $track = reset($track);
+        if (!$track) {
+            return false;
+        }
         $shipmentId = $track->getParentId();
         $shipment = $this->shipmentRepository->get($shipmentId);
         $storeId = $shipment->getStoreId();
         return [ 'allPayLogisticsId' => $shipment->getAllPayLogisticsId(), 'storeId' => $storeId];
     }
 
+    /**
+     * find
+     * @param $tracking
+     * @return mixed
+     */
     private function findRtnMerchantTradeNo($tracking)
     {
         $searchCriteria = $this->searchCriteriaBuilder
@@ -344,7 +370,7 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
         $rmatracks = $this->rmaTrackRepository->getList($searchCriteria)->getItems();
         /** @var \Magento\Rma\Api\Data\TrackInterface $rmatrack */
         $rmatrack = reset($rmatracks);
-        return $rmatrack->getData('rtn_merchant_trade_no');
+        return $rmatrack ? $rmatrack->getData('rtn_merchant_trade_no') : false;
     }
 
     public function isTrackingAvailable()

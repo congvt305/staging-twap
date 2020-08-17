@@ -127,9 +127,10 @@ class Customer extends \Magento\Customer\Model\ResourceModel\Customer
                 $attributeId
             );
             if ($result) {
-                throw new AlreadyExistsException(
+                $this->messageManager->addError(
                     __('A customer with the same integration/sequence number already exists in an associated website.')
                 );
+                throw new InputException();
             }
         }
 

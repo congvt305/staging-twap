@@ -11,9 +11,15 @@ namespace Eguana\GWLogistics\Block\Adminhtml\Rma\Edit\Tab\General;
 
 class ShippingMethod extends \Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\General\Shippingmethod
 {
-    public function canShowReverseLogisticsOrderGenerationButton()
+
+    /**
+     * @param \Magento\Rma\Api\Data\RmaInterface $rma
+     * @return bool
+     */
+    public function canShowReverseLogisticsOrderGenerationButton($rma)
     {
-       return  ($this->getShipment()->getTrackNumber() === NULL);
+        $shipments = $rma->getTracks();
+        return $shipments ? false : true;
     }
 
     /**

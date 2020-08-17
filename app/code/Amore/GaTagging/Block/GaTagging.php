@@ -11,6 +11,7 @@ namespace Amore\GaTagging\Block;
 
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
+use Psr\Log\LoggerInterface;
 
 class GaTagging extends \Magento\Framework\View\Element\Template
 {
@@ -30,9 +31,19 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      * @var \Magento\Customer\Model\Session
      */
     private $customerSession;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+    /**
+     * @var \Magento\Checkout\Model\Session
+     */
+    private $checkoutSession;
 
     public function __construct(
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session $customerSession,
+        \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\Serialize\Serializer\Json $jsonSerializer,
         \Magento\Framework\Registry $registry,
         \Amore\GaTagging\Helper\Data $helper,
@@ -44,6 +55,8 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $this->registry = $registry;
         $this->jsonSerializer = $jsonSerializer;
         $this->customerSession = $customerSession;
+        $this->logger = $logger;
+        $this->checkoutSession = $checkoutSession;
     }
 
     /**
@@ -67,8 +80,12 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     {
         $crumbBlock =  $this->_layout->getBlock('breadcrumbs');
 
-        $html = $crumbBlock->toHtml();
-        $crumbs = $crumbBlock->getCrumbs();
+        if($crumbBlock) {
+            $this->logger->debug('crumb exist');
+            $html = $crumbBlock->toHtml();
+        }
+
+//        $crumbs = $crumbBlock->getCrumbs();
 
 //        $result = '';
 //        foreach ($crumbs as $crumb) {
@@ -129,21 +146,48 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         return '직접입력';
     }
 
-    public function getCustomerRegisterSuccess()
-    {
-        if ($this->customerSession->getData('customer_register_success', true)) {
-            return true;
-        }
-        return false;
-    }
-
     public function getJoinName()
     {
-        if ($this->getCustomerRegisterSuccess()) {
-            return '가입완료';
-        }
-        return '';
+        return '가입완료';
     }
+
+    public function getCartPrice()
+    {
+
+    }
+
+    public function getCartData()
+    {
+        //\Magento\GoogleTagManager\Block\ListJson::getCartContent
+        $cartData = [];
+        $quote = $this->getCheckoutSession()->getQuote();
+        $cartData['apCartPrice'] = intval($quote->getSubtotalWithDiscount());
+        $cartData['apCartProdPrice'] = intval($quote->getSubTotal());
+        $cartData['apCartDiscount'] = $cartData['apCartProdPrice'] - $cartData['apCartPrice'];
+        $visibleItems = $quote->getAllVisibleItems();
+        foreach ($visibleItems as $item) {
+            $cartData['apCartProds'][] = $this->jsonSerializer->serialize($this->formatProduct($item));
+        }
+        return $cartData;
+    }
+
+    private function getCheckoutSession()
+    {
+        if (!$this->checkoutSession->isSessionExists()) {
+            $this->checkoutSession->start();
+        }
+        return $this->checkoutSession;
+    }
+    private function formatProduct($item)
+    {
+        $product = [];
+        $product['id'] = $item->getSku();
+        $product['name'] = $item->getName();
+        $product['price'] = $item->getPrice();
+        $product['qty'] = $item->getQty();
+        return $product;
+    }
+
 
 
 }

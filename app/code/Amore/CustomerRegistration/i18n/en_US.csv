@@ -64,3 +64,6 @@ Debug,Debug
 "Add Address","Add Address"
 "These characters (%1) are not allowed.","These characters (%1) are not allowed."
 "Please accept the terms and services policy.","Please accept the terms and services policy."
+"Call Marketing","Call Marketing"
+"A customer with the same integration/sequence number already exists in an associated website.","A customer with the same integration/sequence number already exists in an associated website."
+"A customer with the same mobile number already exists in an associated website.","A customer with the same mobile number already exists in an associated website."

@@ -106,7 +106,7 @@ class MassSend extends AbstractAction
             try {
                 $storeId = $order->getStoreId();
                 $storeIdList[] = $storeId;
-                if ($order->getStatus() == 'processing') {
+                if ($order->getStatus() == 'processing' || $order->getStatus() == 'sap_fail' || $order->getStatus() == 'processing_with_shipment') {
                     $orderData = $this->sapOrderConfirmData->getOrderData($order->getIncrementId());
                     $orderItemData = $this->sapOrderConfirmData->getOrderItem($order->getIncrementId());
                     $orderDataList = array_merge($orderDataList, $orderData);

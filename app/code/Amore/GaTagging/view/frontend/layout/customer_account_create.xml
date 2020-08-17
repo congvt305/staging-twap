@@ -10,18 +10,13 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <!-- 2.3 주요페이지 로그인 가입버튼 AP & 이벤트 트리거 -->
         <referenceContainer name="after.body.start">
             <block class="Amore\GaTagging\Block\GaTagging"
-                   name="ap_customer_register_agree"
+                   name="ap_customer_register"
                    ifconfig="amore_gatagging/tagmanager/active"
                    after="-"
-                   template="Amore_GaTagging::ap-customer-register-agree.phtml" />
-        </referenceContainer>
-        <referenceContainer name="before.body.end">
-            <block name="customer_register_datalayer_push"
-                   ifconfig="amore_gatagging/tagmanager/active"
-                   after="-"
-                   template="Amore_GaTagging::datalayer-push-register.phtml" >
+                   template="Amore_GaTagging::customer/ap-customer-register.phtml" >
                 <arguments>
                     <argument name="event_name" xsi:type="string">join</argument>
                 </arguments>

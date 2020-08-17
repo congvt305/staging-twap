@@ -113,6 +113,10 @@ class SapOrderConfirmData extends AbstractSapOrder
         /** @var Order $order */
         $order = $this->getOrderInfo($incrementId);
 
+        if (is_null($order)) {
+            throw new NoSuchEntityException(__("Available order data does not exist."));
+        }
+
         $source = $this->config->getSourceByStore('store', $order->getStoreId());
         $orderData = $this->getOrderData($incrementId);
         $itemData = $this->getOrderItem($incrementId);
@@ -172,7 +176,7 @@ class SapOrderConfirmData extends AbstractSapOrder
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('increment_id', $incrementId, 'eq')
-            ->addFilter('status', 'processing', 'eq')
+            ->addFilter('status', ['processing', 'sap_fail', 'processing_with_shipment'], 'in')
             ->create();
 
         $orderList = $this->orderRepository->getList($searchCriteria)->getItems();
@@ -231,7 +235,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'augru' => '',
                 'augruText' => 'ORDER REASON TEXT',
                 // 주문자회원코드-직영몰자체코드
-                'custid' => $customer != '' ? $customer->getCustomAttribute('integration_number')->getValue() : '',
+                'custid' => $customer != '' ? $orderData->getCustomerId() : '',
                 'custnm' => $orderData->getCustomerLastname() . $orderData->getCustomerLastname(),
                 //배송지 id - 직영몰 자체코드, 없으면 공백
                 'recvid' => '',
@@ -244,12 +248,12 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'telno' => $shippingAddress->getTelephone(),
                 'hpno' => $shippingAddress->getTelephone(),
                 'waerk' => $orderData->getOrderCurrencyCode(),
-                'nsamt' => $orderData->getSubtotalInclTax(),
-                'dcamt' => abs($orderData->getDiscountAmount()),
-                'slamt' => $orderData->getGrandTotal() == 0 ? $orderData->getGrandTotal() : $orderData->getGrandTotal() - $orderData->getShippingAmount(),
-                'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : $orderData->getRewardPointsBalance(),
-                'shpwr' => $orderData->getShippingAmount(),
-                'mwsbp' => $orderData->getTaxAmount(),
+                'nsamt' => round($orderData->getSubtotalInclTax()),
+                'dcamt' => round(abs($orderData->getDiscountAmount())),
+                'slamt' => $orderData->getGrandTotal() == 0 ? $orderData->getGrandTotal() : round($orderData->getGrandTotal() - $orderData->getShippingAmount()),
+                'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : round($orderData->getRewardPointsBalance()),
+                'shpwr' => round($orderData->getShippingAmount()),
+                'mwsbp' => round($orderData->getTaxAmount()),
                 'spitn1' => $orderData->getDeliveryMessage(),
                 'vkorgOri' => $this->config->getSalesOrg('store', $storeId),
                 'kunnrOri' => $this->config->getClient('store', $storeId),
@@ -269,6 +273,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         return $bindData;
     }
+
 
     public function getOrderIncrementId($incrementId, $orderSendCheck)
     {
@@ -391,13 +396,18 @@ class SapOrderConfirmData extends AbstractSapOrder
 //        $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount());
         $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
         $invoice = $this->getInvoice($order->getEntityId());
-        $mileageUsedAmount = $order->getRewardPointsBalance();
+        $mileageUsedAmount = is_null($order->getRewardPointsBalance()) ? '0' : $order->getRewardPointsBalance();
 
         if ($order == null) {
             throw new NoSuchEntityException(
                 __("Such order does not exist. Check the data and try again")
             );
         }
+
+        $itemsSubtotal = 0;
+        $itemsDiscountAmount = 0;
+        $itemsGrandtotal = 0;
+        $itemsMileage = 0;
 
         if ($invoice != null) {
 
@@ -419,7 +429,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     - $configurableCheckedItem->getDiscountAmount()
                     - $mileagePerItem;
                 $itemGrandTotalInclTax = $this->productTypeCheck($orderItem)->getRowTotalInclTax()
-                    - $this->productTypeCheck($orderItem)->getDiscountAmount()
+                    - $configurableCheckedItem->getDiscountAmount()
                     - $mileagePerItem;
 
                 $product = $this->productRepository->getById($orderItem->getProductId());
@@ -434,25 +444,56 @@ class SapOrderConfirmData extends AbstractSapOrder
                     'itemMenge' => intval($orderItem->getQtyOrdered()),
                     // 아이템 단위, Default : EA
                     'itemMeins' => $this->getMeins($meins),
-                    'itemNsamt' => $configurableCheckedItem->getRowTotalInclTax(),
-                    'itemDcamt' => $configurableCheckedItem->getDiscountAmount(),
-                    'itemSlamt' => $itemGrandTotalInclTax,
-                    'itemMiamt' => $mileagePerItem,
+                    'itemNsamt' => round($configurableCheckedItem->getRowTotalInclTax()),
+                    'itemDcamt' => round($configurableCheckedItem->getDiscountAmount()),
+                    'itemSlamt' => round($itemGrandTotalInclTax),
+                    'itemMiamt' => round($mileagePerItem),
                     // 상품이 무상제공인 경우 Y 아니면 N
                     'itemFgflg' => $orderItem->getPrice() == 0 ? 'Y' : 'N',
                     'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                     'itemAuart' => self::NORMAL_ORDER,
                     'itemAugru' => '',
-                    'itemNetwr' => $itemGrandTotal,
-                    'itemMwsbp' => $configurableCheckedItem->getTaxAmount(),
+                    'itemNetwr' => round($itemGrandTotal),
+                    'itemMwsbp' => round($configurableCheckedItem->getTaxAmount()),
                     'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                     'itemKunnrOri' => $this->config->getClient('store', $storeId),
                     'itemOdrnoOri' => $order->getIncrementId(),
                     'itemPosnrOri' => $cnt
                 ];
                 $cnt++;
+                $itemsSubtotal += round($configurableCheckedItem->getRowTotalInclTax());
+                $itemsGrandtotal += round($itemGrandTotalInclTax);
+                $itemsDiscountAmount += round($configurableCheckedItem->getDiscountAmount());
+                $itemsMileage += round($mileagePerItem);
             }
         }
+
+        $orderSubtotal = round($order->getSubtotalInclTax());
+        $orderGrandtotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($order->getGrandTotal() - $order->getShippingAmount());
+        $orderDiscountAmount = round(abs($order->getDiscountAmount()));
+
+        $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'itemNsamt');
+        $orderItemData = $this->priceCorrector($orderGrandtotal, $itemsGrandtotal, $orderItemData, 'itemSlamt');
+        $orderItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $orderItemData, 'itemDcamt');
+        $orderItemData = $this->priceCorrector($mileageUsedAmount, $itemsMileage, $orderItemData, 'itemMiamt');
+
+        return $orderItemData;
+    }
+
+    public function priceCorrector($orderAmount, $itemsAmount, $orderItemData, $field)
+    {
+        if ($orderAmount != $itemsAmount) {
+            $correctAmount = $orderAmount - $itemsAmount;
+
+            foreach ($orderItemData as $key => $value) {
+                if ($value['itemFgflg'] == 'Y') {
+                    continue;
+                }
+                $orderItemData[$key][$field] = $value[$field] + $correctAmount;
+                break;
+            }
+        }
+
         return $orderItemData;
     }
 

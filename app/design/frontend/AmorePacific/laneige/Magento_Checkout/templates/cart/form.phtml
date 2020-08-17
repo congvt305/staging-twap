@@ -15,7 +15,8 @@
           id="form-validate"
           data-mage-init='{"Magento_Checkout/js/action/update-shopping-cart":
               {"validationURL" : "<?= $block->escapeUrl($block->getUrl('checkout/cart/updateItemQty')) ?>",
-              "updateCartActionContainer": "#update_cart_action_container"}
+              "updateCartActionContainer": "#update_cart_action_container"},
+              "loader": { "icon": "<?= $block->escapeUrl($block->getViewFileUrl('images/loader-1.gif')) ?>"}
           }'
           class="form form-cart">
     <?= $block->getBlockHtml('formkey') ?>

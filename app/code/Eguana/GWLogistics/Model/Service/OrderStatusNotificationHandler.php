@@ -97,7 +97,7 @@ class OrderStatusNotificationHandler
         if (isset($notificationData['RtnMsg'], $notificationData['RtnCode'], $notificationData['UpdateStatusDate'], $notificationData['AllPayLogisticsID'])) {
             try {
                 $shipment = $this->findShipment($notificationData['AllPayLogisticsID']);
-                if ($shipment->getEntityId()) {
+                if ($shipment && $shipment->getEntityId()) {
                     /** @var \Magento\Sales\Api\Data\ShipmentCommentInterface $shipmentComment */
                     $shipmentComment = $this->shipmentCommentInterfaceFactory->create();
                     $shipmentComment->setParentId($shipment->getEntityId());
@@ -132,7 +132,7 @@ class OrderStatusNotificationHandler
         }
     }
 
-    private function findShipment(string $allPayLogisticsID): \Magento\Sales\Api\Data\ShipmentInterface
+    private function findShipment(string $allPayLogisticsID)
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('all_pay_logistics_id', $allPayLogisticsID)
@@ -140,7 +140,7 @@ class OrderStatusNotificationHandler
         $shipments = $this->shipmentRepository
             ->getList($searchCriteria)
             ->getItems();
-        return reset($shipments);
+        return is_array($shipments) ? reset($shipments) : false;
 
     }
     private function makeComments($message, $code, $date)

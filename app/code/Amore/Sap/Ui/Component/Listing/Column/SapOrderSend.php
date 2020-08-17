@@ -81,7 +81,8 @@ class SapOrderSend extends Column
                     $viewUrlPath = $this->getData('config/viewUrlPath') ?: '#';
                     $storeId = $this->orderRepository->get($item['entity_id'])->getStoreId();
                     $urlEntityParamName = $this->getData('config/urlEntityParamName') ?: 'entity_id';
-                    if (($item['status'] == 'processing' || $item['status'] == 'sap_fail') && $this->config->getActiveCheck('store', $storeId)) {
+                    if (($item['status'] == 'processing' || $item['status'] == 'sap_fail' || $item['status'] == 'processing_with_shipment')
+                        && $this->config->getActiveCheck('store', $storeId)) {
                         $item[$this->getData('name')] = [
                             'view' => [
                                 'href' => $this->urlBuilder->getUrl(
