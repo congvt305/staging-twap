@@ -43,7 +43,7 @@
             <?php endif; ?>
             <?php $wrapOptions = false; ?>
             <?php foreach ($block->getFilters() as $filter) : ?>
-                <?php if ($filter->getItemsCount()) : ?>
+                <?php if ($filter->getItemsCount() && $filter->getName() != __('Category')) : ?>
                     <?php if (!$wrapOptions) : ?>
                         <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?= $block->escapeHtml(__('Shopping Options')) ?></strong>
                         <div class="filter-options" id="narrow-by-list" data-role="content" data-mage-init='
