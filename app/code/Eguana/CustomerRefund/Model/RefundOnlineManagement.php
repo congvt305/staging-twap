@@ -90,8 +90,8 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
             $this->refund($order);
             $this->messageManager->addSuccessMessage(__('You Refunded the order'));
         } catch (\Exception $e) {
+            $this->logger->info('customerRefund | something went wrong ', [$e->getMessage()]);
             $this->messageManager->addErrorMessage(__('Something is wrong with refund. Please contact our customer service.'));
-//            throw new CouldNotSaveException(__('Unable to save creditmemo.'), $e);
         }
         return true;
     }
