@@ -40,6 +40,18 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Get faq listings sort order
+     * @return mixed
+     */
+    public function getFaqSortOrder()
+    {
+        return $this->scopeConfig->getValue(
+            'faq/general/sort_order',
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
      * @param $storeCode
      * @return mixed
      */
