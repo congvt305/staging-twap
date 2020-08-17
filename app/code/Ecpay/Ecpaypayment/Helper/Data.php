@@ -55,6 +55,10 @@ class Data extends AbstractHelper
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     public function __construct(
         EcpayOrderModel $ecpayOrderModel,
@@ -63,7 +67,8 @@ class Data extends AbstractHelper
         ProductMetadataInterface $productMetadata,
         \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue,
         \Magento\Framework\HTTP\Client\Curl $curl,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        \Psr\Log\LoggerInterface $logger
     ) {
         $this->_ecpayOrderModel = $ecpayOrderModel;
         $this->_ecpayPaymentModel = $ecpayPaymentModel;
@@ -76,6 +81,7 @@ class Data extends AbstractHelper
         $this->ECPayInvoiceCheckMacValue = $ECPayInvoiceCheckMacValue;
         $this->curl = $curl;
         $this->orderRepository = $orderRepository;
+        $this->logger = $logger;
     }
 
     public function getChoosenPayment()
@@ -268,6 +274,10 @@ class Data extends AbstractHelper
 
                             $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate($params, $this->getEcpayConfig('hash_key'), $this->getEcpayConfig('hash_iv'));
                             $params["CheckMacValue"] = $checkMacValue;
+
+                            $this->logger->info('ecpay-payment | params for ecpay capture', $params);
+                            $this->logger->info('ecpay-payment | HashKey for ecpay capture', [$this->getEcpayConfig('hash_key')]);
+                            $this->logger->info('ecpay-payment | HashIV for ecpay capture', [$this->getEcpayConfig('hash_iv')]);
 
                             $this->curl->post($url, $params);
                             $result = $this->curl->getBody();
