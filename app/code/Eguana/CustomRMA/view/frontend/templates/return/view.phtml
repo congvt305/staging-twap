@@ -39,7 +39,7 @@
                 <?php endif ?>
                 <?php if ($_rma->getData('shipping_preference')) : ?>
                     <br>
-                    <?= $block->escapeHtml(__('Shipping Preference')); ?>: <?= $block->escapeHtml($_rma->getData('shipping_preference')) ?>
+                    <?= $block->escapeHtml(__('Shipping Preference')); ?>: <?= $block->escapeHtml(__($_rma->getData('shipping_preference'))) ?>
                 <?php endif ?>
             </div>
         </div>
