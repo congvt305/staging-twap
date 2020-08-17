@@ -80,7 +80,7 @@ class AbstractCreateReverseShipmentOrder
         $order = $this->_orderRepository->get($rma->getOrderId());
         $orderItems = $order->getItems();
         $orderItemArr = [];
-        $quantity = '';
+        $quantity = 0;
         foreach ($orderItems as $orderItem) {
             if ($orderItem->getProductType() === 'simple') {
                 $orderItemArr[] = $orderItem;
