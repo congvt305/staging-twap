@@ -41,15 +41,17 @@ Navigate to **EGUANA EXTENSION ⇾ FAQ** in the left panel.
 
 It will open configuration window for FAQ as shown in the image.
 
-![faq](https://nimbus-screenshots.s3.amazonaws.com/s/de969b726f478b23ebee67db6a918a17.png)
+![faq](https://i.ibb.co/ggmWDWn/image.png)
 
 There are two groups.
 
     - General 
     - FAQ Category
 
-(1) By clicking general tab module's Enable/Disable configuration will show. 
-
+(1) By clicking general tab module's Enable/Disable configuration will show.
+    **Faq Sort type**
+    User can sort the faq listings based on ascending and descending order.
+        
 (2) By clicking FAQ category six fields will show were categories name or title will be added.
 
 (3) By default these fileds are disabled and unable to add or change any value. To be able to add or update values just uncheck the Use system value checkbox as shown the image.

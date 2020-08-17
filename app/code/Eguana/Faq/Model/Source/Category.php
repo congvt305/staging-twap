@@ -71,7 +71,11 @@ class Category implements OptionSourceInterface
             $categoriesWithValue[$storeId . $index] = $category;
             $index++;
         }
-
+        if ($this->helper->getFaqSortOrder()) {
+            arsort($categoriesWithValue);
+        } else {
+            asort($categoriesWithValue);
+        }
         return $categoriesWithValue;
     }
 
@@ -106,7 +110,7 @@ class Category implements OptionSourceInterface
     {
         $storeCategoryList = [];
         $categoryList = [];
-         $configValueCategories = $this->storesConfig->getStoresConfigByPath('faq/category');
+        $configValueCategories = $this->storesConfig->getStoresConfigByPath('faq/category');
         // $key is store id and value is list of categories set in configuration
         foreach ($configValueCategories as $key => $value) {
             if ($key == 0 || $value == null) {
