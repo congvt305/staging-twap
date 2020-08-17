@@ -94,7 +94,7 @@ class AbstractCreateReverseShipmentOrder
         $count = count($orderItemArr);
         $item = reset($orderItemArr);
 
-        $itemName = $item->getName();
+        $itemName = str_replace(['^', '`', '\'', '!', '@','#','%', '&', '\\', '"', '<', '>', '|', '_', '[', ']',   '+', '*'], '', $item->getName());
         $itemName = (strlen($itemName) > 30) ? substr($itemName,0,30).'...': $itemName;
         $itemName = $count > 1 ? $itemName . __(' and others.'): $itemName;
 
