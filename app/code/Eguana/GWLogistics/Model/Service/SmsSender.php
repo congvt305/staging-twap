@@ -109,13 +109,14 @@ class SmsSender
      */
     private function getMessage($rma, $returnOrderNumber)
     {
+        //sms_prefix=$sms_prefix customer=$customer rtn_order_number=$rtn_order_number
+        $smsPrefix = $this->helper->getSmsPrefix($rma->getStoreId());
         $customer = $this->customerRepository->getById($rma->getCustomerId());
         $customerName = $customer->getLastname() . $customer->getFirstname();
-        $storeName = $this->storeManager->getStore($rma->getStoreId())->getName();
         $templateIdentifier = $this->helper->getMessageTemplate($rma->getStoreId());
         /** @var \Magento\Email\Model\Template $templateModel */
         $templateModel = $this->templateFactory->create();
-        $params = [ 'customer'=> $customerName,'rtn_order_number' => $returnOrderNumber, 'store_name' => $storeName];
+        $params = [ 'sms_prefix' => $smsPrefix, 'customer'=> $customerName,'rtn_order_number' => $returnOrderNumber];
         $templateModel->setDesignConfig(['area' => 'frontend', 'store' => $rma->getStoreId()]);
         $templateModel->loadDefault($templateIdentifier);
 

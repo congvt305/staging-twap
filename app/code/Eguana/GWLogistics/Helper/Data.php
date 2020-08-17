@@ -36,6 +36,7 @@ class Data extends AbstractHelper
     const XML_PATH_MODE = 'carriers/gwlogistics/mode';
     const XML_PATH_SERVER_TYPE = 'carriers/gwlogistics/server_type';
     const XML_PATH_SEND_SMS_ACTIVE = 'carriers/gwlogistics/send_sms_active';
+    const XML_PATH_SEND_SMS_PREFIX = 'carriers/gwlogistics/send_sms_prefix';
     const XML_PATH_MESSAGE_TEMPLATE = 'carriers/gwlogistics/message_template';
 
     private $productionMode = null;
@@ -227,6 +228,16 @@ class Data extends AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $storeId
         );
+    }
+
+    public function getSmsPrefix($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_SEND_SMS_PREFIX,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+
     }
 
     public function getMessageTemplate($storeId = null)
