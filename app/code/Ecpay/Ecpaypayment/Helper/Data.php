@@ -156,8 +156,8 @@ class Data extends AbstractHelper
             // Checkout
             $helperData = array(
                 'choosePayment' => $choosenPayment,
-                'hashKey' => $this->_ecpayPaymentModel->getEInvoiceConfig('hash_key', $order->getStoreId()),
-                'hashIv' => $this->_ecpayPaymentModel->getEInvoiceConfig('hash_iv', $order->getStoreId()),
+                'hashKey' => $this->_ecpayPaymentModel->getEcpayConfigFromStore('hash_key', $order->getStoreId()),
+                'hashIv' => $this->_ecpayPaymentModel->getEcpayConfigFromStore('hash_iv', $order->getStoreId()),
                 'returnUrl' => $this->_ecpayPaymentModel->getModuleUrl('response'),
                 'clientBackUrl' => $this->_ecpayPaymentModel->getMagentoUrl('checkout/onepage/success'),
                 'orderId' => $orderId,
