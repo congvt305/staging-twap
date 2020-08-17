@@ -15,19 +15,35 @@
 
 & when (@media-common = true) {
     #eguana-form-validate {
+        border-top: 2px solid @primary__color__dark;
+
         .fieldset{
-            .eguanasociallogin-form-legend{
-                margin: 15px 0 20px !important;
+            .eguanasociallogin-form-legend {
+                border: none;
+                margin-bottom: 0;
             }
 
-            .msg{
-                padding: 0 0 10px 0;
+            .msg {
+                margin: -8px 0 @indent__base 0;
+            }
+
+            .msg,
+            .field.email,
+            .field.password {
+                padding: 0 15px;
+            }
+
+            .field.password + .field.choice{
+                margin-top: 60px;
             }
 
             .field.choice {
+                background-color: @secondary__color__light;
                 display: block !important;
+                padding: 15px;
 
                 input {
+                    background-color: @color-white;
                     float: left;
                 }
 
@@ -39,20 +55,7 @@
     }
 
     .sociallogin-form-actions {
-        margin-top: @indent__base;
         text-align: center;
-
-        button {
-            width: 49%;
-
-            &.cancel {
-                float: left;
-            }
-
-            &.login {
-                float: right;
-            }
-        }
 
         button {
             &:extend(.abs-button-l all);
@@ -157,11 +160,11 @@
     }
 
     .line-add-friend {
-        margin-top: @indent__l;
+        margin-top: @indent__s;
 
         & + .actions-toolbar {
             .action.primary {
-                margin-top: 0;
+                margin-top: @indent__l;
             }
         }
     }
@@ -184,6 +187,27 @@
         }
     }
 
+    #eguana-form-validate {
+        .fieldset{
+            .eguanasociallogin-form-legend {
+                padding-top: @indent__base;
+            }
+        }
+    }
+
+    .sociallogin-form-actions {
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        right: 0;
+
+        button {
+            display: inline-block;
+            float: left;
+            width: 50%;
+        }
+    }
+
     .account .sidebar-additional {
         .lib-vendor-prefix-order(0);
         position: relative;
@@ -200,31 +224,47 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    .socialloginlogin-login {
-        margin-top: @indent__xl;
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 400px;
+    .account .line-add-friend {
+        margin-left: 8px;
     }
 
     .sociallogin-login-createcustomer {
-        .page-title-wrapper {
-            border: @indent__xl solid @border-color__base;
-            border-bottom: none;
-            padding: @indent__l @indent__l 0;
-            text-align: center;
-        }
-
+        .page-title-wrapper,
         .columns {
-            border: @indent__xl solid @border-color__base;
-            border-top: none;
-            padding: 0 @indent__l @indent__l;
+            margin: 15px auto 0;
+            max-width: 580px;
         }
 
-        #eguana-form-validate {
-            margin: 0 auto;
-            min-width: 600px;
-            width: 50%;
+        .page-title-wrapper .page-title {
+            margin-bottom: 35px !important;
+        }
+    }
+
+    .socialloginlogin-login {
+        margin-top: @indent__xl;
+    }
+
+    #eguana-form-validate {
+        .fieldset{
+            .eguanasociallogin-form-legend {
+                padding-top: 16px;
+            }
+        }
+    }
+
+    .sociallogin-form-actions {
+        margin-top: 80px;
+
+        button {
+            width: 49%;
+
+            &.cancel {
+                float: left;
+            }
+
+            &.login {
+                float: right;
+            }
         }
     }
 }

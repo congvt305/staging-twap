@@ -587,6 +587,18 @@
                 margin-bottom: 0;
             }
 
+            &.skin-concern {
+                .type + .value:before {
+                    display: none;
+                }
+
+                .value:before {
+                    content: ',';
+                    display: inline-block;
+                    padding: 0 2px 0 0;
+                }
+            }
+
             &.size {
                 >*:not(.product-count) {
                     float: left;
