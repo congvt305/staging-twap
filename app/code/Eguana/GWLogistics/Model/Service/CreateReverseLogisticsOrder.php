@@ -74,7 +74,7 @@ class CreateReverseLogisticsOrder
             $shippingPreference = $rma->getData('shipping_preference') ?? 'UNIMART';
             switch ($shippingPreference) {
                 case 'UNIMART':
-                    $result = $this->unimartCreateReverseShipmentOrder->sendRequest($rma);
+                    $result = $this->unimartCreateReverseShipmentOrder->sendRequest($rma); //shipping preference
                     break;
                 case 'FAMI':
                     $result = $this->famiCreateReverseShipmentOrder->sendRequest($rma);

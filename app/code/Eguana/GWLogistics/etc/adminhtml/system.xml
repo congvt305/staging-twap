@@ -52,6 +52,9 @@
                     <label>Enable SMS for Return Order Number</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="send_sms_prefix" translate="label" type="text" sortOrder="165" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>SMS Message Prefix</label>
+                </field>
                 <field id="message_template" translate="label" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Message Template for Return Order Number</label>
                     <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>

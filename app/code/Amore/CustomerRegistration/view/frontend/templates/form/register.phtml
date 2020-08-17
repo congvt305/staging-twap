@@ -326,6 +326,16 @@ require([
     <?php endif ?>
     }).find('input:text').attr('autocomplete', 'off');
 
+    dataForm.on("submit", function(){
+        console.log('start');
+        if (dataForm.validation() && dataForm.validation('isValid')) {
+            console.log('yyy!');
+            window.dataLayer.push({'event': 'join'})
+        }
+
+        return true;
+    })
+
 });
 </script>
 

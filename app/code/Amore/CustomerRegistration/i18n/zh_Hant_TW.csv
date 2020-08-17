@@ -71,3 +71,5 @@ Api,阿皮
 "Add Address","新增地址"
 "These characters (%1) are not allowed.","這些字符 (%1) 不允許。"
 "Please accept the terms and services policy.","請接受條款和服務政策。"
+"A customer with the same integration/sequence number already exists in an associated website.","具有相同集成/序列號的客戶已存在於關聯的網站中。"
+"A customer with the same mobile number already exists in an associated website.","具有相同手機號碼的客戶已存在於關聯的網站中。"
