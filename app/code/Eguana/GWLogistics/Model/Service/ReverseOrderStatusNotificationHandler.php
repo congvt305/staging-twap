@@ -90,18 +90,17 @@ class ReverseOrderStatusNotificationHandler
     {
         $this->logger->info('gwlogistics | notification for reverse order', $notificationData);
 
-        if (!$this->dataHelper->validateCheckMackValue($notificationData)) {
-            throw new \Exception(__('CheckMacValue is not valid'));
-        }
-
         if (isset($notificationData['RtnMsg'], $notificationData['RtnCode'], $notificationData['UpdateStatusDate'], $notificationData['RtnMerchantTradeNo'])) {
             try {
                 $rmaId = $this->findRmaId($notificationData['RtnMerchantTradeNo']);
                 if ($rmaId) {
                     $rma = $this->rmaRepository->get($rmaId);
                     $storeId = $rma->getStoreId();
-                    if (!$this->dataHelper->validateCheckMackValue($notificationData, $storeId)) {
-                        throw new \Exception(__('CheckMacValue is not valid'));
+
+                    try {
+                        $this->dataHelper->validateCheckMackValue($notificationData, $storeId);
+                    } catch (\Exception $e) {
+                        $this->logger->info('gwlogistics | CheckMacValue no vailid for reverse order notification for rma id #' . $rma->getIncrementId());
                     }
 
                     /** @var \Magento\Rma\Api\Data\CommentInterface $rmaComment */
@@ -126,8 +125,8 @@ class ReverseOrderStatusNotificationHandler
                     $this->statusNotificationRepository->save($statusNotification);
                     return true;
                 }
-            } catch (CouldNotSaveException $e) {
-                $this->logger->critical($e->getMessage());
+            } catch (\Exception $e) {
+                $this->logger->info('gwlogistics | Could no save for reverse order notification for RtnMerchantTradeNo #' . $notificationData['RtnMerchantTradeNo'], [$e->getMessage()]);
                 return false;
             }
         }
