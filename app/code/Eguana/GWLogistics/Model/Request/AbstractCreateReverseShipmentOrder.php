@@ -86,7 +86,7 @@ class AbstractCreateReverseShipmentOrder
         foreach ($orderItems as $orderItem) {
             if ($orderItem->getProductType() === 'simple') {
                 $orderItemArr[] = $orderItem;
-                $goodsName .= '#' . $orderItem->getName();
+                $goodsName .= '#' . str_replace(['^', '`', '\'', '!', '@','#','%', '&', '\\', '"', '<', '>', '|', '_', '[', ']',   '+', '*'], '', $orderItem->getName());
                 $quantity .= '#' . (string)(int)$orderItem->getQtyOrdered();
                 $cost .= '#' . (string)(int)round($orderItem->getPrice(), 0);
             }

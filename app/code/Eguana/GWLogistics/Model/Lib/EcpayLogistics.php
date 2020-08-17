@@ -686,6 +686,8 @@ class EcpayLogistics
         // 產生 CheckMacValue
         $this->PostParams['CheckMacValue'] = $this->ecpayCheckMacValue->Generate($this->PostParams, $this->HashKey, $this->HashIV);
 
+        $this->logger->info('gwlogistics | hashKey for create reverse order', [$this->HashKey]);
+        $this->logger->info('gwlogistics | hashIv for create reverse order', [$this->HashIV]);
         $this->logger->info('gwlogistics | params for create reverse order', $this->PostParams);
 
         // 解析回傳結果
@@ -842,6 +844,10 @@ class EcpayLogistics
         // 產生 CheckMacValue
         $this->PostParams['CheckMacValue'] = $this->ecpayCheckMacValue->Generate($this->PostParams, $this->HashKey, $this->HashIV);
 
+        $this->logger->info('gwlogistics | hashKey for create reverse order', [$this->HashKey]);
+        $this->logger->info('gwlogistics | hashIv for create reverse order', [$this->HashIV]);
+        $this->logger->info('gwlogistics | params for create reverse order', $this->PostParams);
+
         // 解析回傳結果
         // 正確：RtnMerchantTradeNo | RtnOrderNo
         // 錯誤：|ErrorMessage
@@ -854,6 +860,7 @@ class EcpayLogistics
             $Result['RtnMerchantTradeNo'] = $Pieces[0];
             $Result['RtnOrderNo'] = $Pieces[1];
         }
+        $this->logger->info('gwlogistics | response for reverse create order', $Result);
 
         return $Result;
     }

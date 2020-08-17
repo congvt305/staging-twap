@@ -175,9 +175,11 @@ class CvsCreateShipmentOrder
         $orderItemArr = [];
         $quantity = '';
         $cost = '';
+        $goodsName = '';
         foreach ($orderItems as $orderItem) {
             if ($orderItem->getProductType() === 'simple') {
                 $orderItemArr[] = $orderItem;
+                $goodsName .= '#' . str_replace(['^', '`', '\'', '!', '@','#','%', '&', '\\', '"', '<', '>', '|', '_', '[', ']',   '+', '*'], '', $orderItem->getName());
                 $quantity .= '#' . (string)(int)$orderItem->getQtyOrdered();
                 $cost .= '#' . (string)(int)round($orderItem->getPrice(), 0);
             }
@@ -189,15 +191,28 @@ class CvsCreateShipmentOrder
         $itemName = (strlen($itemName) > 30) ? substr($itemName,0,30).'...': $itemName;
         $itemName = $count > 1 ? $itemName . __(' and others.'): $itemName;
 
-        $quantity = substr($quantity,0,1);
-        $quantity = (strlen($quantity) > 50) ? substr($quantity,0,50) : $quantity;
+        $quantity = substr($quantity,1);
+        $goodsName = substr($goodsName,1);
+        $cost = substr($cost,1);
 
-        $cost = substr($cost,0,1);
-        $cost = (strlen($cost) > 50) ? substr($cost,0,50) : $cost;
+        //when $quantity is longer than 50 then make cost and quantity  one string
+        $goodsName = (strlen($quantity) > 50) ? $itemName : $goodsName;
+        $cost = (strlen($quantity) > 50) ? (string)(int)round($order->getSubtotal(), 0) : $cost;
+        $quantity = (strlen($quantity) > 50) ? '1' : $quantity;
+
+        //when $goodsName is longer than 50 then make cost and quantity  one string
+        $quantity = (strlen($goodsName) > 50) ? '1' : $quantity;
+        $cost = (strlen($goodsName) > 50) ? (string)(int)round($order->getSubtotal(), 0) : $cost;
+        $goodsName = (strlen($goodsName) > 50) ? $itemName : $goodsName;
+
+        //when $cost is longer than 50 then make cost and quantity  one string
+        $quantity = (strlen($cost) > 50) ? '1' : $quantity;
+        $cost = (strlen($cost) > 50) ? (string)(int)round($order->getSubtotal(), 0) : $cost;
+        $goodsName = (strlen($cost) > 50) ? $itemName : $goodsName;
 
         return [
             'goodsAmount' => (int)round($order->getSubtotal(), 0),
-            'goodsName' => $itemName,
+            'goodsName' => $goodsName,
             'quantity' => $quantity,
             'cost' => $cost,
         ];
