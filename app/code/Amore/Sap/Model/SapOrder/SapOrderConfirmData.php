@@ -262,8 +262,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'telno' => $shippingAddress->getTelephone(),
                 'hpno' => $shippingAddress->getTelephone(),
                 'waerk' => $orderData->getOrderCurrencyCode(),
-                'nsamt' => round($orderData->getSubtotalInclTax()),
-                'dcamt' => round(abs($orderData->getDiscountAmount())),
+                'nsamt' => round($orderData->getSubtotalInclTax() + $this->getBundleExtraAmount($orderData)),
+                'dcamt' => round(abs($orderData->getDiscountAmount()) + $this->getBundleExtraAmount($orderData)),
                 'slamt' => $orderData->getGrandTotal() == 0 ? $orderData->getGrandTotal() : round($orderData->getGrandTotal() - $orderData->getShippingAmount()),
                 'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : round($orderData->getRewardPointsBalance()),
                 'shpwr' => round($orderData->getShippingAmount()),
@@ -607,7 +607,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                             - $bundleChildDiscountAmount
                             - $mileagePerItem;
 
-                        $product = $this->productRepository->get($bundleChild->getSku());
+                        $product = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId());
                         $meins = $product->getData('meins');
 
                         $orderItemData[] = [
@@ -619,8 +619,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemMenge' => intval($orderItem->getQtyOrdered()),
                             // 아이템 단위, Default : EA
                             'itemMeins' => $this->getMeins($meins),
-                            'itemNsamt' => round($this->getProportionOfBundleChild($orderItem->getPrice(), $bundleChildPrice, $orderItem->getRowTotalInclTax())),
-                            'itemDcamt' => $bundleChildDiscountAmount,
+//                            'itemNsamt' => round($this->getProportionOfBundleChild($orderItem->getPrice(), $bundleChildPrice, $orderItem->getRowTotalInclTax())),
+                            'itemNsamt' => round($product->getPrice() * $orderItem->getQtyOrdered()),
+                            'itemDcamt' => round($bundleChildDiscountAmount + (($product->getPrice() - $bundleChildPrice) * $orderItem->getQtyOrdered())),
                             'itemSlamt' => round($itemGrandTotalInclTax),
                             'itemMiamt' => round($mileagePerItem),
                             // 상품이 무상제공인 경우 Y 아니면 N
@@ -676,6 +677,34 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $bundleChild;
     }
 
+    /**
+     * @param $order \Magento\Sales\Model\Order
+     */
+    public function getBundleExtraAmount($order)
+    {
+        $orderItems = $order->getAllVisibleItems();
+        $priceDifferences = 0;
+
+        /** @var \Magento\Sales\Model\Order\Item $orderItem */
+        foreach ($orderItems as $orderItem) {
+            if ($orderItem->getProductType() == 'bundle') {
+                /** @var \Magento\Catalog\Model\Product $bundleProduct */
+                $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
+                $bundleChildren = $this->getBundleChildren($orderItem->getSku());
+                $bundlePriceType = $bundleProduct->getPriceType();
+
+                if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
+                    foreach ($bundleChildren as $bundleChild) {
+                        $fixedPrice = $bundleChild->getPrice();
+                        $originItemPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
+
+                        $priceDifferences += (($originItemPrice - $fixedPrice) * $orderItem->getQtyOrdered());
+                    }
+                }
+            }
+        }
+        return $priceDifferences;
+    }
 
     public function priceCorrector($orderAmount, $itemsAmount, $orderItemData, $field)
     {
