@@ -11,7 +11,7 @@
 "Order ID","訂單編號"
 "Customer Name","顧客姓名"
 "Email","電子郵件"
-"Order Shipping Address","退貨地址"
+"Order Shipping Address","訂單運送地址"
 "Shipping Preference","選擇超商"
 "unimart","優瑪"
 "Unimart","優瑪"
@@ -31,7 +31,7 @@
 "Request Information s","退貨資訊"
 ID,ID
 "Date Requested","退貨申請日期"
-"Contact Email Address","備用電子郵件"
+"Contact Email Address","聯絡電子郵件地址"
 "Shipping Address","送貨地址"
 "This won't take long . . .","這不會花很長的時間。 。 。"
 "Shipping and Tracking Information","配送狀態"
