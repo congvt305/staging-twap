@@ -23,7 +23,7 @@
     </div>
     <div class="block-content">
         <div class="box box-returns-requested">
-            <strong class="box-title"><span><?= $block->escapeHtml(__('Request Information s')); ?></span></strong>
+            <strong class="box-title"><span><?= $block->escapeHtml(__('Request Information')); ?></span></strong>
             <div class="box-content">
                 <?= $block->escapeHtml(__('ID')); ?>: <?= $block->escapeHtml($_rma->getIncrementId()) ?><br>
                 <?= $block->escapeHtml(__('Order ID')); ?>: <a href="<?= $block->escapeUrl($block->getOrderUrl($_rma)); ?>"><?= $block->escapeHtml($_rma->getOrderIncrementId()) ?></a><br>
@@ -32,14 +32,6 @@
                 <?php if ($_rma->getCustomerCustomEmail()) : ?>
                     <br>
                     <?= $block->escapeHtml(__('Contact Email Address')); ?>: <?= $block->escapeHtml($_rma->getCustomerCustomEmail()) ?>
-                <?php endif ?>
-                <?php if ($_rma->getCustomerCustomPhone()) : ?>
-                    <br>
-                    <?= $block->escapeHtml(__('Contact Phone Number')); ?>: <?= $block->escapeHtml($_rma->getCustomerCustomEmail()) ?>
-                <?php endif ?>
-                <?php if ($_rma->getData('shipping_preference')) : ?>
-                    <br>
-                    <?= $block->escapeHtml(__('Shipping Preference')); ?>: <?= $block->escapeHtml($_rma->getData('shipping_preference')) ?>
                 <?php endif ?>
             </div>
         </div>
@@ -103,14 +95,14 @@
                             <thead>
                             <tr>
                                 <th scope="col" class="col carrier" data-bind="<?= $block->escapeHtml(__('Carrier')); ?>"><?= $block->escapeHtml(__('Carrier')); ?></th>
-                                <th scope="col" class="col method" data-bind="<?= $block->escapeHtml(__('Method')); ?>"><?= $block->escapeHtml(__('Method')); ?></th>
-                                <th scope="col" class="col id" data-bind="<?= $block->escapeHtml(__('Return Code')); ?>"><?= $block->escapeHtml(__('Return Code')); ?></th>
+                                <th scope="col" class="col id" data-bind="<?= $block->escapeHtml(__('Number')); ?>"><?= $block->escapeHtml(__('Number')); ?></th>
+                                <th scope="col" class="col actions"><?= $block->escapeHtml(__('Action')); ?></th>
                             </tr>
                             </thead>
                             <tbody id="track-info-tbody">
                             <?= /* @noEscape */ $block->getTrackingInfo('tracking') ?>
                             </tbody>
-                            <?php if (false) : ?>
+                            <?php if ($block->isPrintShippingLabelAllowed()) : ?>
                                 <tfoot>
                                 <tr>
                                     <td class="col carrier">
@@ -193,9 +185,7 @@
                                 <td data-th="<?= $block->escapeHtmlAttr(__('Condition')) ?>" class="col condition"><?= $block->escapeHtml($block->getAttributeValue($item->getId(), 'condition')) ?></td>
                             <?php endif; ?>
                             <?php if (false !== $block->getAttributeValue($item->getId(), 'condition')) : ?>
-                                <td data-th="<?= $block->escapeHtmlAttr(__('Resolution')) ?>" class="col resolution">
-                                    <?= $block->escapeHtml($block->getAttributeValue($item->getId(), 'resolution')) ?>
-                                </td>
+                                <td data-th="<?= $block->escapeHtmlAttr(__('Resolution')) ?>" class="col resolution"><?= $block->escapeHtml($block->getAttributeValue($item->getId(), 'resolution')) ?></td>
                             <?php endif; ?>
                             <td data-th="<?= $block->escapeHtmlAttr(__('Request Qty')) ?>" class="col request qty"><?= $block->escapeHtml($rmaHelper->parseQuantity($item->getQtyRequested(), $item)) ?></td>
                             <td data-th="<?= $block->escapeHtmlAttr(__('Qty')) ?>" class="col qty"><?= $block->escapeHtml($rmaHelper->getQty($item)) ?></td>
@@ -243,7 +233,7 @@
                                 <?= $block->escapeHtml($block->formatDate($_comment->getCreatedAt())); ?> <?= $block->escapeHtml($block->formatTime($_comment->getCreatedAt())); ?>
                             </dt>
                             <dd class="returns-comment-text">
-                                <?= $block->escapeHtml(__($_comment->getComment()))?>
+                                <?= /* @noEscape */ nl2br($block->escapeHtml($_comment->getComment())) ?>
                             </dd>
                         <?php endif; ?>
                     <?php endforeach; ?>
