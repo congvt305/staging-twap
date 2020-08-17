@@ -215,7 +215,7 @@ class Data extends AbstractHelper
             $this->ecpayLogistics->CheckOutFeedback($params);
             return true;
         } catch (\Exception $e) {
-            return true; //todo fix after verify reason
+            return true; //todo fix after verify reason, found that special character is the cause.
         }
 
 
