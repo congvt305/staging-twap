@@ -79,6 +79,18 @@ class Payment extends AbstractMethod
      * @var \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue
      */
     private $ECPayInvoiceCheckMacValue;
+    /**
+     * @var \Magento\Bundle\Api\ProductLinkManagementInterface
+     */
+    private $productLinkManagement;
+    /**
+     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     */
+    private $productRepository;
+    /**
+     * @var \Magento\Sales\Api\OrderItemRepositoryInterface
+     */
+    private $orderItemRepository;
 
     public function __construct(
         Context $context,
@@ -99,6 +111,9 @@ class Payment extends AbstractMethod
         \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpayInvoice,
         \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory,
         \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue,
+        \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement,
+        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
+        \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
@@ -127,6 +142,9 @@ class Payment extends AbstractMethod
         $this->ecpayInvoice = $ecpayInvoice;
         $this->dateTimeFactory = $dateTimeFactory;
         $this->ECPayInvoiceCheckMacValue = $ECPayInvoiceCheckMacValue;
+        $this->productLinkManagement = $productLinkManagement;
+        $this->productRepository = $productRepository;
+        $this->orderItemRepository = $orderItemRepository;
     }
 
     public function getValidPayments()
@@ -236,8 +254,16 @@ class Payment extends AbstractMethod
         $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
         $params = $this->getCancellingCaptureParams($merchantId, $merchantTradeNo, $tradeNo, $amount);
 
-        $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate($params, $this->getEcpayConfig('hash_key'), $this->getEcpayConfig('hash_iv'));
+        $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate(
+            $params,
+            $this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId()),
+            $this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())
+        );
         $params["CheckMacValue"] = $checkMacValue;
+
+        $this->_logger->info('ecpay-payment | params for ecpay refund action E', $params);
+        $this->_logger->info('ecpay-payment | HashKey for ecpay refund action E', $this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId()));
+        $this->_logger->info('ecpay-payment | HashIV for ecpay refund action E', $this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId()));
 
         $this->curl->post($url, $params);
         $result = $this->curl->getBody();
@@ -251,8 +277,16 @@ class Payment extends AbstractMethod
 
         $params = $this->getAbandoningTransactionParams($merchantId, $merchantTradeNo, $tradeNo, $amount);
 
-        $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate($params, $this->getEcpayConfig('hash_key'), $this->getEcpayConfig('hash_iv'));
+        $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate(
+            $params,
+            $this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId()),
+            $this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())
+        );
         $params["CheckMacValue"] = $checkMacValue;
+
+        $this->_logger->info('ecpay-payment | params for ecpay refund action N', $params);
+        $this->_logger->info('ecpay-payment | HashKey for ecpay refund action N', $this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId()));
+        $this->_logger->info('ecpay-payment | HashIV for ecpay refund action N', $this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId()));
 
         $this->curl->post($url, $params);
         $result = $this->curl->getBody();
@@ -412,7 +446,7 @@ class Payment extends AbstractMethod
             $cellphoneBarcode = $rawDetailsInfo["ecpay_einvoice_cellphone_barcode"];
             $carruerType = $this->getCarruerType($eInvoiceType);
 
-            $donationCode = $this->getEInvoiceConfig("invoice/ecpay_invoice_love_code", $storeId);
+            $donationCode = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_love_code", $storeId);
 
             // 3.寫入發票相關資訊
             $aItems = array();
@@ -446,48 +480,152 @@ class Payment extends AbstractMethod
     {
         $ecpay_invoice->Invoice_Method = 'INVOICE';
         $ecpay_invoice->Invoice_Url = $this->getInvoiceApiUrl($storeId) . 'Issue';
-        $ecpay_invoice->MerchantID = $this->getEInvoiceConfig("merchant_id", $storeId);
-        $ecpay_invoice->HashKey = $this->getEInvoiceConfig("invoice/ecpay_invoice_hash_key", $storeId);
-        $ecpay_invoice->HashIV = $this->getEInvoiceConfig("invoice/ecpay_invoice_hash_iv", $storeId);
+        $ecpay_invoice->MerchantID = $this->getEcpayConfigFromStore("merchant_id", $storeId);
+        $ecpay_invoice->HashKey = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_hash_key", $storeId);
+        $ecpay_invoice->HashIV = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_hash_iv", $storeId);
     }
 
     /**
-     * @param \Magento\Sales\Api\Data\OrderInterface $order
+     * @param \Magento\Sales\Model\Order $order
      * @param \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice
      */
-    private function initOrderItems(\Magento\Sales\Api\Data\OrderInterface $order, \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice): void
+    private function initOrderItems(\Magento\Sales\Model\Order $order, \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice): void
     {
         $ecpay_invoice->Send['Items'] = [];
 
-        $orderItems = $order->getAllItems();
+        $orderItems = $order->getAllVisibleItems();
         $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
         $mileageUsedAmount = $order->getRewardPointsBalance();
 
+        /** @var \Magento\Sales\Model\Order\Item $orderItem */
         foreach ($orderItems as $orderItem) {
+            if ($orderItem->getProductType() != 'bundle') {
+                $mileagePerItem = $this->mileageSpentRateByItem(
+                    $orderTotal,
+                    $orderItem->getRowTotalInclTax(),
+                    $orderItem->getDiscountAmount(),
+                    $mileageUsedAmount
+                );
+                $itemGrandTotalInclTax = $orderItem->getRowTotalInclTax()
+                    - $orderItem->getDiscountAmount()
+                    - $mileagePerItem;
 
-            if ($orderItem->getProductType() != 'simple') {
-                continue;
+                array_push(
+                    $ecpay_invoice->Send['Items'],
+                    array(
+                        'ItemName' => $orderItem->getData('name'),
+                        'ItemCount' => (int)$orderItem->getData('qty_ordered'),
+                        'ItemWord' => '批',
+                        'ItemPrice' => $orderItem->getPrice(),
+                        'ItemTaxType' => 1,
+                        'ItemAmount' => $itemGrandTotalInclTax,
+                        'ItemRemark' => $orderItem->getData('sku')
+                    )
+                );
+            } else {
+                /** @var \Magento\Catalog\Model\Product $bundleProduct */
+                $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
+                $bundleChildren = $this->getBundleChildren($orderItem->getSku());
+                $bundlePriceType = $bundleProduct->getPriceType();
+                $itemId = $orderItem->getItemId();
+
+                if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
+                    $fixedBundleGrandTotal = 0;
+
+                    foreach ($bundleChildren as $bundleChild) {
+
+                        $bundleChildOptions = $this->getBundleChildFromOrder($itemId, $bundleChild->getSku())->getProductOptions();
+                        $bundleChildSelectionAttributes = json_decode($bundleChildOptions["bundle_selection_attributes"], true);
+                        $bundleChildPrice = $bundleChildSelectionAttributes["price"];
+
+                        $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
+                            round($this->getProportionOfBundleChild($orderItem->getPrice(), $bundleChildPrice, $orderItem->getDiscountAmount())) :
+                            round($this->getBundleChildFromOrder($itemId, $bundleChild->getSku())->getDiscountAmount());
+
+                        $mileagePerItem = $this->mileageSpentRateByItem(
+                            $orderTotal,
+                            $this->getProportionOfBundleChild($orderItem->getPrice(), $bundleChildPrice, $orderItem->getRowTotalInclTax()),
+                            $bundleChildDiscountAmount,
+                            $mileageUsedAmount);
+
+                        $itemGrandTotal = $this->getProportionOfBundleChild($orderItem->getPrice(), $bundleChildPrice, $orderItem->getRowTotal())
+                            - $bundleChildDiscountAmount
+                            - $mileagePerItem;
+
+                        $fixedBundleGrandTotal += $itemGrandTotal;
+                    }
+
+                    array_push(
+                        $ecpay_invoice->Send['Items'],
+                        array(
+                            'ItemName' => $orderItem->getData('name'),
+                            'ItemCount' => (int)$orderItem->getData('qty_ordered'),
+                            'ItemWord' => '批',
+                            'ItemPrice' => $orderItem->getPrice(),
+                            'ItemTaxType' => 1,
+                            'ItemAmount' => $fixedBundleGrandTotal,
+                            'ItemRemark' => $orderItem->getData('sku')
+                        )
+                    );
+                } else {
+                    $mileagePerItem = $this->mileageSpentRateByItem(
+                        $orderTotal,
+                        $orderItem->getRowTotalInclTax(),
+                        $orderItem->getDiscountAmount(),
+                        $mileageUsedAmount
+                    );
+
+                    $itemGrandTotalInclTax = $orderItem->getRowTotalInclTax()
+                        - $orderItem->getDiscountAmount()
+                        - $mileagePerItem;
+
+                    array_push(
+                        $ecpay_invoice->Send['Items'],
+                        array(
+                            'ItemName' => $orderItem->getData('name'),
+                            'ItemCount' => (int)$orderItem->getData('qty_ordered'),
+                            'ItemWord' => '批',
+                            'ItemPrice' => $orderItem->getPrice(),
+                            'ItemTaxType' => 1,
+                            'ItemAmount' => $itemGrandTotalInclTax,
+                            'ItemRemark' => $orderItem->getData('sku')
+                        )
+                    );
+                }
             }
+        }
+    }
 
-            $configurableCheckedItem = $this->configurableProductCheck($orderItem);
+    public function getProportionOfBundleChild($bundleAmount, $childAmount, $valueToCalculate)
+    {
+        $rate = ($childAmount / $bundleAmount);
 
-            $mileagePerItem = $this->mileageSpentRateByItem($configurableCheckedItem, $mileageUsedAmount, $orderTotal);
-            $itemGrandTotal = $configurableCheckedItem->getRowTotal()
-                - $configurableCheckedItem->getDiscountAmount()
-                - $mileagePerItem;
+        return $valueToCalculate * $rate;
+    }
 
-            array_push(
-                $ecpay_invoice->Send['Items'],
-                array(
-                    'ItemName' => $orderItem->getData('name'),
-                    'ItemCount' => (int)$orderItem->getData('qty_ordered'),
-                    'ItemWord' => '批',
-                    'ItemPrice' => $itemGrandTotal,
-                    'ItemTaxType' => 1,
-                    'ItemAmount' => $itemGrandTotal,
-                    'ItemRemark' => $orderItem->getData('sku')
-                )
-            );
+    public function getBundleChildFromOrder($itemId, $bundleChildSku)
+    {
+        $bundleChild = null;
+        /** @var \Magento\Sales\Model\Order\Item $itemOrdered */
+        $itemOrdered = $this->orderItemRepository->get($itemId);
+        $childrenItems = $itemOrdered->getChildrenItems();
+        /** @var \Magento\Sales\Model\Order\Item $childItem */
+        foreach ($childrenItems as $childItem) {
+            if ($childItem->getSku() == $bundleChildSku) {
+                $bundleChild = $childItem;
+                break;
+            }
+        }
+        return $bundleChild;
+    }
+
+    public function getBundleChildren($bundleDynamicSku)
+    {
+        $bundleSku = explode("-", $bundleDynamicSku);
+        try {
+            return $this->productLinkManagement->getChildren($bundleSku[0]);
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage());
         }
     }
 
@@ -520,7 +658,7 @@ class Payment extends AbstractMethod
                 break;
         }
 
-        $RelateNumber = 'ECPAY' . $dataTime->date('YmdHis') . rand(1000000000, 2147483647); // 產生測試用自訂訂單編號
+        $RelateNumber = $order->getIncrementId();
         $ecpay_invoice->Send['RelateNumber'] = $RelateNumber;
         $ecpay_invoice->Send['CustomerID'] = $order->getCustomerId();
         $ecpay_invoice->Send['CustomerIdentifier'] = '';
@@ -558,9 +696,9 @@ class Payment extends AbstractMethod
             // 2.寫入基本介接參數
             $ecpay_invoice->Invoice_Method = 'INVOICE_VOID';
             $ecpay_invoice->Invoice_Url = $this->getInvoiceApiUrl($storeId) . 'IssueInvalid';
-            $ecpay_invoice->MerchantID = $this->getEcpayConfig("merchant_id");
-            $ecpay_invoice->HashKey = $this->getEInvoiceConfig("invoice/ecpay_invoice_hash_key", $storeId);
-            $ecpay_invoice->HashIV = $this->getEInvoiceConfig("invoice/ecpay_invoice_hash_iv", $storeId);
+            $ecpay_invoice->MerchantID = $this->getEcpayConfigFromStore("merchant_id");
+            $ecpay_invoice->HashKey = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_hash_key", $storeId);
+            $ecpay_invoice->HashIV = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_hash_iv", $storeId);
 
             // 3.寫入發票相關資訊
             $additionalData = $payment->getAdditionalData();
@@ -583,10 +721,10 @@ class Payment extends AbstractMethod
     public function getInvoiceApiUrl($storeId)
     {
         $apiUrl = "";
-        if ($this->getEInvoiceConfig("invoice/ecpay_invoice_test_flag", $storeId)) {
-            $apiUrl = $this->getEInvoiceConfig("invoice/ecpay_invoice_stage_url", $storeId);
+        if ($this->getEcpayConfigFromStore("invoice/ecpay_invoice_test_flag", $storeId)) {
+            $apiUrl = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_stage_url", $storeId);
         } else {
-            $apiUrl = $this->getEInvoiceConfig("invoice/ecpay_invoice_production_url", $storeId);
+            $apiUrl = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_production_url", $storeId);
         }
 
         return $apiUrl;
@@ -630,7 +768,7 @@ class Payment extends AbstractMethod
         return $params;
     }
 
-    public function getEInvoiceConfig($id, $storeId)
+    public function getEcpayConfigFromStore($id, $storeId)
     {
         $prefix = "payment/ecpay_ecpaypayment/ecpay_";
         $path = $prefix . $id;
@@ -650,21 +788,14 @@ class Payment extends AbstractMethod
         }
     }
 
-    /**
-     * @param $configurableCheckedItem
-     * @param $mileageUsedAmount
-     * @param float $orderTotal
-     * @return float|string
-     */
-    private function mileageSpentRateByItem($configurableCheckedItem, $mileageUsedAmount, float $orderTotal)
+    public function mileageSpentRateByItem($orderTotal, $itemRowTotal, $itemDiscountAmount, $mileageUsed)
     {
-        $itemTotal = round($configurableCheckedItem->getRowTotalInclTax() - $configurableCheckedItem->getDiscountAmount(), 2);
+        $itemTotal = round($itemRowTotal - $itemDiscountAmount, 2);
 
-        if ($mileageUsedAmount) {
-            return round(($itemTotal / $orderTotal) * $mileageUsedAmount);
+        if ($mileageUsed) {
+            return round(($itemTotal/$orderTotal) * $mileageUsed);
         }
-
-        return is_null($mileageUsedAmount) ? '0' : $mileageUsedAmount;
+        return is_null($mileageUsed) ? '0' : $mileageUsed;
     }
 
     /**
