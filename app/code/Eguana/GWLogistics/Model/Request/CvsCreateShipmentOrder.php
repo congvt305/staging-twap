@@ -75,6 +75,7 @@ class CvsCreateShipmentOrder
             $senderCellPhone = $this->helper->getSenderCellPhone($order->getStoreId()); //no space not more than 10.
             //Character limit is 4-10 characters (Chinese2-5 characters, English 4-10 characters)
             $receiverName = $order->getShippingAddress()->getLastname() . $order->getShippingAddress()->getFirstname();
+            $receiverName = (strlen($receiverName) > 10) ? substr($receiverName,0,10): $receiverName;
             $receiverPhone = $order->getShippingAddress()->getTelephone();
             $receiverEmail = $order->getShippingAddress()->getEmail();
             $remarks = $order->getDeliveryMessage() ?? '';
@@ -173,33 +174,27 @@ class CvsCreateShipmentOrder
         /** @var OrderInterface $order */
         $orderItems = $order->getItems();
         $orderItemArr = [];
-        $quantity = '';
-        $cost = '';
+        $quantity = 0;
         foreach ($orderItems as $orderItem) {
             if ($orderItem->getProductType() === 'simple') {
                 $orderItemArr[] = $orderItem;
-                $quantity .= '#' . (string)(int)$orderItem->getQtyOrdered();
-                $cost .= '#' . (string)(int)round($orderItem->getPrice(), 0);
+                $quantity += (int)$orderItem->getQtyOrdered();
             }
         }
         $count = count($orderItemArr);
         $item = reset($orderItemArr);
 
-        $itemName = $item->getName();
-        $itemName = (strlen($itemName) > 30) ? substr($itemName,0,30).'...': $itemName;
-        $itemName = $count > 1 ? $itemName . __(' and others.'): $itemName;
+        $goodsName = str_replace(['^', '`', '\'', '!', '@','#','%', '&', '\\', '"', '<', '>', '|', '_', '[', ']',   '+', '*'], '', $item->getName());
+        $goodsName = (strlen($goodsName) > 30) ? substr($goodsName,0,30).'...': $goodsName;
+        $goodsName = $count > 1 ? $goodsName . __(' and others.'): $goodsName;
 
-        $quantity = substr($quantity,0,1);
-        $quantity = (strlen($quantity) > 50) ? substr($quantity,0,50) : $quantity;
-
-        $cost = substr($cost,0,1);
-        $cost = (strlen($cost) > 50) ? substr($cost,0,50) : $cost;
+        $quantity = (string)$quantity;
 
         return [
-            'goodsAmount' => (int)round($order->getSubtotal(), 0),
-            'goodsName' => $itemName,
+            'goodsAmount' => (int)round($order->getBaseGrandTotal(), 0),
+            'goodsName' => $goodsName,
             'quantity' => $quantity,
-            'cost' => $cost,
+            'cost' => (int)round($order->getBaseGrandTotal(), 0),
         ];
     }
 

@@ -10,14 +10,15 @@
 namespace Eguana\Faq\Block;
 
 use Eguana\Faq\Api\Data\FaqInterface;
+use Eguana\Faq\Helper\Data;
+use Eguana\Faq\Model\Faq as FaqModel;
+use Eguana\Faq\Model\ResourceModel\Faq\Collection;
 use Eguana\Faq\Model\ResourceModel\Faq\CollectionFactory;
 use Eguana\Faq\Model\Source\Category;
-use Magento\Framework\View\Element\Template;
-use Magento\Framework\UrlInterface;
-use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Cms\Model\Template\FilterProvider;
-use Eguana\Faq\Model\ResourceModel\Faq\Collection;
-use Eguana\Faq\Model\Faq as FaqModel;
+use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\UrlInterface;
+use Magento\Framework\View\Element\Template;
 
 /**
  * class Faq
@@ -52,12 +53,18 @@ class Faq extends Template implements IdentityInterface
     private $filterProvider;
 
     /**
+     * @var Data
+     */
+    private $helper;
+
+    /**
      * Faq constructor.
      * @param Template\Context $context
      * @param CollectionFactory $collectionFactory
      * @param Category $faqCategory
      * @param UrlInterface $urlInterface
      * @param FilterProvider $filterProvider
+     * @param Data $helper
      * @param array $data
      */
     public function __construct(
@@ -66,12 +73,14 @@ class Faq extends Template implements IdentityInterface
         Category $faqCategory,
         UrlInterface $urlInterface,
         FilterProvider $filterProvider,
+        Data $helper,
         array $data = []
     ) {
         $this->faqCollectionFactory = $collectionFactory;
         $this->category = $faqCategory;
         $this->urlInterface = $urlInterface;
         $this->filterProvider = $filterProvider;
+        $this->helper = $helper;
         parent::__construct($context, $data);
     }
 
@@ -112,7 +121,11 @@ class Faq extends Template implements IdentityInterface
         $currentStoreId = $this->_storeManager->getStore()->getId();
         $faqCollection->addFieldToFilter(FaqInterface::IS_ACTIVE, ['eq' => true])
             ->addStoreFilter($currentStoreId);
-
+        if ($this->helper->getFaqSortOrder()) {
+            $faqCollection->setOrder('title', 'DESC');
+        } else {
+            $faqCollection->setOrder('title', 'ASC');
+        }
         foreach ($faqCollection as $faq) {
             $bindData[$faq->getCategory()][] = $faq;
         }
@@ -134,7 +147,7 @@ class Faq extends Template implements IdentityInterface
      */
     public function getSearchUrl()
     {
-        $url = $this->urlInterface->getBaseUrl().'faq/index/search';
+        $url = $this->urlInterface->getBaseUrl() . 'faq/index/search';
 
         return $url;
     }

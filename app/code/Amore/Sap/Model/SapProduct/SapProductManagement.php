@@ -267,21 +267,21 @@ class SapProductManagement implements SapProductManagementInterface
                     $result[$stockData['matnr']] = ['code' => "0001", 'message' => 'SAP Integration option is disabled. Check product option and try again.'];
                 }
             }
+
+            $this->eventManager->dispatch(
+                "eguana_bizconnect_operation_processed",
+                [
+                    'topic_name' => 'amore.sap.product.inventory.stock',
+                    'direction' => 'incoming',
+                    'to' => "Magento",
+                    'serialized_data' => $this->json->serialize($parameters),
+                    'status' => $result[$stockData['matnr']]['code'] == "0000" ? 1 : 0,
+                    'result_message' => $this->json->serialize($result)
+                ]
+            );
         } else {
             $result[$stockData['matnr']] = ['code' => "0001", 'message' => "Configuration is not enabled"];
         }
-
-        $this->eventManager->dispatch(
-            "eguana_bizconnect_operation_processed",
-            [
-                'topic_name' => 'amore.sap.product.inventory.stock',
-                'direction' => 'incoming',
-                'to' => "Magento",
-                'serialized_data' => $this->json->serialize($parameters),
-                'status' => $result[$stockData['matnr']]['code'] == "0000" ? 1 : 0,
-                'result_message' => $this->json->serialize($result)
-            ]
-        );
 
         return $result;
     }

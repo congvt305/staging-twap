@@ -11671,6 +11671,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Your return request has been updated. Please see below.","我們已經收到您的退貨要求。請查看以下資訊。",module,Magento_Rma
 "You can check the status of your return by <a href=""%account_url"">logging into your account</a> or <a href=""%form_url"">using your order number</a>.","您可以通過以下方式查看退貨狀態，<a href=""%account_url"">登錄您的帳戶</a> 或 <a href=""%form_url"">使用您的訂單編號</a>。",module,Magento_Rma
 "If you have any questions, please feel free to contact us at <a href=""mailto:%support_email"">%support_email</a> or by phone at %store_phone","如果您有任何疑問，請與我們聯繫。<a href=""mailto:%support_email"">%support_email</a>",module,Magento_Rma
+"If you have any questions, please feel free to contact us at <a href=""mailto:%support_email"">%support_email</a> or by phone at <a href=""tel:%store_phone"">%store_phone</a>","如果您有任何疑問，請與我們聯繫。<a href=""mailto:%support_email"">%support_email</a> 或可撥打客戶服務團隊 (免費電話)：<a href=""tel:%store_phone"">%store_phone</a>",module,Magento_Rma
 "Your Return #%increment_id - %status_label","您的退貨訂單編號為 #%increment_id",module,Magento_Rma
 "%store_name: New Return #%increment_id","%store_name: 退貨申請訂單編號 #%increment_id",module,Magento_Rma
 "You can check the status of your return <a href=""%form_url"">using your order number</a>.","您可以使用訂單編號，<a href=""%form_url"">來查詢退貨狀態</a>。",module,Magento_Rma

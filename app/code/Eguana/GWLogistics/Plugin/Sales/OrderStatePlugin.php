@@ -25,20 +25,12 @@ class OrderStatePlugin
             if ($order->getData('sap_order_send_check') === NULL) {
                 $order->setState(Order::STATE_PROCESSING)
                     ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
-            }
-            if (($order->getStatus() === $order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING)) && $this->hasShipment($order)) {
-                $order->setStatus('processing_with_shipment');
+                if (($order->getStatus() === $order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING)) && $order->hasShipments()){
+                    $order->setStatus('processing_with_shipment');
+                }
             }
         }
         return $result;
     }
 
-    /**
-     * @param Order $order
-     */
-    private function hasShipment($order)
-    {
-        $shipment = $order->getShipmentsCollection()->getFirstItem();
-        return $shipment ? true : false;
-    }
 }

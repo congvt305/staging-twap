@@ -80,48 +80,27 @@ class AbstractCreateReverseShipmentOrder
         $order = $this->_orderRepository->get($rma->getOrderId());
         $orderItems = $order->getItems();
         $orderItemArr = [];
-        $quantity = '';
-        $cost = '';
-        $goodsName = '';
+        $quantity = 0;
         foreach ($orderItems as $orderItem) {
             if ($orderItem->getProductType() === 'simple') {
                 $orderItemArr[] = $orderItem;
-                $goodsName .= '#' . $orderItem->getName();
-                $quantity .= '#' . (string)(int)$orderItem->getQtyOrdered();
-                $cost .= '#' . (string)(int)round($orderItem->getPrice(), 0);
+                $quantity += (int)$orderItem->getQtyOrdered();
             }
         }
         $count = count($orderItemArr);
         $item = reset($orderItemArr);
 
-        $itemName = $item->getName();
-        $itemName = (strlen($itemName) > 30) ? substr($itemName,0,30).'...': $itemName;
-        $itemName = $count > 1 ? $itemName . __(' and others.'): $itemName;
+        $goodsName = str_replace(['^', '`', '\'', '!', '@','#','%', '&', '\\', '"', '<', '>', '|', '_', '[', ']',   '+', '*'], '', $item->getName());
+        $goodsName = (strlen($goodsName) > 30) ? substr($goodsName,0,30).'...': $goodsName;
+        $goodsName = $count > 1 ? $goodsName . __(' and others.'): $goodsName;
 
-        $quantity = substr($quantity,1);
-        $goodsName = substr($goodsName,1);
-        $cost = substr($cost,1);
-
-        //when $quantity is longer than 50 then make cost and quantity  one string
-        $goodsName = (strlen($quantity) > 50) ? $itemName : $goodsName;
-        $cost = (strlen($quantity) > 50) ? (string)(int)round($order->getSubtotal(), 0) : $cost;
-        $quantity = (strlen($quantity) > 50) ? '1' : $quantity;
-
-        //when $goodsName is longer than 50 then make cost and quantity  one string
-        $quantity = (strlen($goodsName) > 50) ? '1' : $quantity;
-        $cost = (strlen($goodsName) > 50) ? (string)(int)round($order->getSubtotal(), 0) : $cost;
-        $goodsName = (strlen($goodsName) > 50) ? $itemName : $goodsName;
-
-        //when $cost is longer than 50 then make cost and quantity  one string
-        $quantity = (strlen($cost) > 50) ? '1' : $quantity;
-        $cost = (strlen($cost) > 50) ? (string)(int)round($order->getSubtotal(), 0) : $cost;
-        $goodsName = (strlen($cost) > 50) ? $itemName : $goodsName;
+        $quantity = (string)$quantity;
 
         return [
-            'goodsAmount' => (int)round($order->getSubtotal(), 0),
+            'goodsAmount' => (int)round($order->getBaseGrandTotal(), 0),
             'goodsName' => $goodsName,
             'quantity' => $quantity,
-            'cost' => $cost,
+            'cost' => (int)round($order->getBaseGrandTotal(), 0),
         ];
     }
 

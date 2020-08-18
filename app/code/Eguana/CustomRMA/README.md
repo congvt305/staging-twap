@@ -5,7 +5,8 @@ Author : Mobeen Sarwar
 Explanation :
 # CustomRMA
 
-Description: Disable Partial Return Request from frontend and allows only full order return.
+Description: Disable Partial Return Request from frontend and allows only full order return
+both for register user and guest user.
 
 Module Installation
 
@@ -51,7 +52,7 @@ This will add Item reason for rma
 
 - **●●**** Reason comment**
 
-This will display when Reason will be other 
+This will display when Reason will be other.
 
 **Note:** This is not a required field and defualt value for this field is "other".
 
