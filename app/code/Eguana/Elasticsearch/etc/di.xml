@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Elasticsearch\Model\Adapter\Index\Builder"
+                type="Eguana\Elasticsearch\Model\Adapter\Index\Builder"/>
+
+</config>
