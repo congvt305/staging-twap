@@ -19,7 +19,7 @@ $block->unSetSession();
     $googleUrl = $block->getUrl('sociallogin/googlelogin/connect');
     $facebookUrl = $block->getUrl('sociallogin/facebooklogin/connect'); ?>
     <div class="socialloginlogin-login">
-    <p><?= $block->escapeHtml(__('OR')) ?></p>
+    <p><?= $block->escapeHtml(__('Quick login binding')) ?></p>
     <?php if ($helper->isEnabledLine()):?>
         <a class="line-button-link"
            href="javascript:void(0);"

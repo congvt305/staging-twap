@@ -1,0 +1,18 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Rma\Block\Returns\View */
+?>
+<?php
+    $_rma = $block->getRma();
+?>
+<span class="return-status">
+    <?php if($_rma->getStatus() == 'pending'):?>
+        <?= $block->escapeHtml(__('Waiting for a refund')); ?>
+    <?php else :?>
+        <?= $block->escapeHtml($_rma->getStatusLabel()) ?>
+    <?php endif ?>
+</span>
