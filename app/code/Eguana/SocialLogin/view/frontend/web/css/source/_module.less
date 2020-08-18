@@ -168,6 +168,10 @@
             }
         }
     }
+
+    .account .line-add-friend {
+        margin-top: 0;
+    }
 }
 
 //
@@ -203,6 +207,16 @@
             width: 50%;
         }
     }
+
+    .account .sidebar-additional {
+        .lib-vendor-prefix-order(0);
+        position: relative;
+        top: -@indent__l;
+
+        .line-add-friend {
+            text-align: right;
+        }
+    }
 }
 
 //
@@ -210,6 +224,10 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .account .line-add-friend {
+        margin-left: 8px;
+    }
+
     .sociallogin-login-createcustomer {
         .page-title-wrapper,
         .columns {
