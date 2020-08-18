@@ -74,7 +74,7 @@ class SmsSender
 
     public function sendSms(\Magento\Rma\Api\Data\RmaInterface $rma, string $returnOrderNumber)
     {
-        if (!$this->helper->getSendSmsActive()) {
+        if (!$this->helper->getSendSmsActive($rma->getStoreId())) {
             return;
         }
         try {
