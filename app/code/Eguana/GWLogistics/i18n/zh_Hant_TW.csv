@@ -47,4 +47,4 @@ Mode,模式
 "FAMI","全家"
 "UNIMART","7 Eleven"
 "Reverse Logistics Order Created. Return Order Number is %1.","退貨單號為%1"
-"【""%1""】Dear ""%2", your return order number is ""%3"", please return your goods in 3 days.","【""%1""】""%2", 您好，您的超商退貨代碼為 ""%3"" 請於三天內至超商進行退貨，謝謝"
+"[%sms_prefix] Dear %customer, your return order number is %rtn_order_number, please return your goods in 3 days.","【%sms_prefix】 %customer, 您好 您的超商退貨代碼為 #%rtn_order_number 請於三天內至超商進行退貨，謝謝"
