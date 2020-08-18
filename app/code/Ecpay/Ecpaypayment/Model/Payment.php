@@ -273,15 +273,17 @@ class Payment extends AbstractMethod
         $this->curl->post($url, $params);
         $result = $this->curl->getBody();
 
+        $this->_logger->info('ecpay-payment | result for ecpay search transaction', $result);
+
         $resultArray = json_decode($result, true);
         if (count($resultArray) > 0) {
-            $transactionStatus = $resultArray["RtnValue"]["close_data"]["status"];
+            $transactionStatus = $resultArray["RtnValue"]["status"];
         } else {
             $this->_logger->critical(__('ecpay search transaction result is null.'));
             throw new LocalizedException(__('ecpay search transaction result is null.'));
         }
 
-        if ($transactionStatus == '已關帳') {
+        if (trim($transactionStatus) == 'Has been settled') {
             $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
             $params = [
                 "MerchantID" => $merchantId,
@@ -304,6 +306,8 @@ class Payment extends AbstractMethod
 
             $this->curl->post($url, $params);
             $result = $this->curl->getBody();
+
+            $this->_logger->info('ecpay-payment | result for ecpay refund action N', $result);
 
             $stringToArray = $this->ecpayResponse($result);
 
@@ -334,6 +338,8 @@ class Payment extends AbstractMethod
 
             $this->curl->post($url, $params);
             $result = $this->curl->getBody();
+
+            $this->_logger->info('ecpay-payment | result for ecpay refund action R', $result);
 
             $stringToArray = $this->ecpayResponse($result);
 
