@@ -285,8 +285,8 @@ class Payment extends AbstractMethod
         $params["CheckMacValue"] = $checkMacValue;
 
         $this->_logger->info('ecpay-payment | params for ecpay refund action N', $params);
-        $this->_logger->info('ecpay-payment | HashKey for ecpay refund action N', $this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId()));
-        $this->_logger->info('ecpay-payment | HashIV for ecpay refund action N', $this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId()));
+        $this->_logger->info('ecpay-payment | HashKey for ecpay refund action N', [$this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId())]);
+        $this->_logger->info('ecpay-payment | HashIV for ecpay refund action N', [$this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())]);
 
         $this->curl->post($url, $params);
         $result = $this->curl->getBody();
