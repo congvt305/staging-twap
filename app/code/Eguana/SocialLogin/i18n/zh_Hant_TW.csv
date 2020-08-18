@@ -15,9 +15,9 @@ Password,密碼
 Cancel,卡內爾
 OK,好
 OR,或
-"Login with LINE","用LINE登錄"
-"Login with Facebook","用Facebook登錄"
-"Login with Google","用Google登錄"
+"Login with LINE","LINE 帳號綁定"
+"Login with Facebook","Facebook 帳號綁定"
+"Login with Google","Google 帳號綁定"
 "General Setting","通用設置"
 "Enable Module","啟用模塊"
 LINE,LINE
@@ -32,3 +32,4 @@ Facebook,Facebook
 Google,Google
 "Client ID","客戶編號"
 "Client Secret","客戶機密"
+"Quick login binding","快速登入綁定"

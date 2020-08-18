@@ -30,6 +30,12 @@
         //  Totals table
         .table-totals {
             &:extend(.abs-sidebar-totals all);
+
+            .totals.shipping.excl {
+                .mark .value {
+                    display: none;
+                }
+            }
         }
 
         .table-wrapper {

@@ -95,25 +95,27 @@ define(
             getPaymentMethodText: function (value) {
                 switch (value) {
                     case 'credit':
-                        return 'Credit';
+                        return $t('Credit');
                     case 'credit_3':
-                        return 'Credit(3 Installments)';
+                        return $t('Credit(3 Installments)');
                     case 'credit_6':
-                        return 'Credit(6 Installments)';
+                        return $t('Credit(6 Installments)');
                     case 'credit_12':
-                        return 'Credit(12 Installments)';
+                        return $t('Credit(12 Installments)');
                     case 'credit_18':
-                        return 'Credit(18 Installments)';
+                        return $t('Credit(18 Installments)');
                     case 'credit_24':
-                        return 'Credit(24 Installments)';
+                        return $t('Credit(24 Installments)');
                     case 'webatm':
-                        return 'WEB-ATM';
+                        return $t('WEB-ATM');
                     case 'atm':
+                        return $t('ATM');
                     case 'cvs':
+                        return $t('cvs');
                     case 'barcode':
-                        return value.toUpperCase();
+                        return $t('Barcode');
                     default:
-                        return value;
+                        return $t(value);
                 }
             },
 
