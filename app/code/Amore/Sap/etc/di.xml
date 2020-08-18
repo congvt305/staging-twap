@@ -36,4 +36,5 @@
     <type name="Magento\Rma\Model\Rma">
         <plugin sortOrder="2" name="amoreSapRma" type="Amore\Sap\Plugin\Model\RmaPlugin"/>
     </type>
+    <preference for="Magento\Rma\Model\Rma\Create" type="Amore\Sap\Model\Rma\Create" />
 </config>
