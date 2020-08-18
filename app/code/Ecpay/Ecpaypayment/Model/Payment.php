@@ -273,7 +273,7 @@ class Payment extends AbstractMethod
         $this->curl->post($url, $params);
         $result = $this->curl->getBody();
 
-        $this->_logger->info('ecpay-payment | result for ecpay search transaction', $result);
+        $this->_logger->info('ecpay-payment | result for ecpay search transaction', [$result]);
 
         $resultArray = json_decode($result, true);
         if (count($resultArray) > 0) {
@@ -283,7 +283,7 @@ class Payment extends AbstractMethod
             throw new LocalizedException(__('ecpay search transaction result is null.'));
         }
 
-        if (trim($transactionStatus) == 'Has been settled') {
+        if (trim($transactionStatus) != 'Has been settled') {
             $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
             $params = [
                 "MerchantID" => $merchantId,
@@ -307,7 +307,7 @@ class Payment extends AbstractMethod
             $this->curl->post($url, $params);
             $result = $this->curl->getBody();
 
-            $this->_logger->info('ecpay-payment | result for ecpay refund action N', $result);
+            $this->_logger->info('ecpay-payment | result for ecpay refund action N', [$result]);
 
             $stringToArray = $this->ecpayResponse($result);
 
@@ -339,7 +339,7 @@ class Payment extends AbstractMethod
             $this->curl->post($url, $params);
             $result = $this->curl->getBody();
 
-            $this->_logger->info('ecpay-payment | result for ecpay refund action R', $result);
+            $this->_logger->info('ecpay-payment | result for ecpay refund action R', [$result]);
 
             $stringToArray = $this->ecpayResponse($result);
 
