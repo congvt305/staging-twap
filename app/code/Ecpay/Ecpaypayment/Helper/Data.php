@@ -254,48 +254,6 @@ class Data extends AbstractHelper
 
                         $this->_ecpayPaymentModel->createInvoice($order, $transaction);
 
-                        if (!$this->getMagentoConfig("test_flag")) {
-                            $payment = $order->getPayment();
-                            $additionalInfo = $payment->getAdditionalInformation();
-                            $rawDetailsInfo = $additionalInfo["raw_details_info"];
-
-                            $tradeNo = $rawDetailsInfo["TradeNo"];
-                            $merchantId = $rawDetailsInfo["MerchantID"];
-                            $merchantTradeNo = $rawDetailsInfo["MerchantTradeNo"];
-
-                            $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
-                            $params = [
-                                "MerchantID" => $merchantId,
-                                "MerchantTradeNo" => $merchantTradeNo,
-                                "TradeNo" => $tradeNo,
-                                "Action" => "C",
-                                "TotalAmount" => $rawDetailsInfo["TradeAmt"]
-                            ];
-
-                            $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate($params, $this->getEcpayConfig('hash_key'), $this->getEcpayConfig('hash_iv'));
-                            $params["CheckMacValue"] = $checkMacValue;
-
-                            $this->logger->info('ecpay-payment | params for ecpay capture', $params);
-                            $this->logger->info('ecpay-payment | HashKey for ecpay capture', [$this->getEcpayConfig('hash_key')]);
-                            $this->logger->info('ecpay-payment | HashIV for ecpay capture', [$this->getEcpayConfig('hash_iv')]);
-
-                            $this->curl->post($url, $params);
-                            $result = $this->curl->getBody();
-
-                            $resultExplode = explode("&", $result);
-                            $stringToArray = [];
-
-                            foreach ($resultExplode as $key => $value) {
-                                $resultExplode = explode("=", $value);
-                                $stringToArray[$resultExplode[0]] = $resultExplode[1];
-                            }
-
-                            if ($stringToArray["RtnCode"] != 1) {
-                                $this->_logger->critical(__($stringToArray["RtnMsg"]));
-                                throw new \Exception(__($stringToArray["RtnMsg"]));
-                            }
-                        }
-
                         unset($status, $pattern, $comment);
                         break;
                     case 2: // ATM get code

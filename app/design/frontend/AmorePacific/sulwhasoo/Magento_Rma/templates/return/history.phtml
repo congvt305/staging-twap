@@ -34,7 +34,13 @@
                         <td data-th="<?= $block->escapeHtmlAttr(__('Return #')) ?>" class="col id"><?= $block->escapeHtml($_return->getIncrementId()) ?></td>
                         <td data-th="<?= $block->escapeHtmlAttr(__('Date')) ?>" class="col date"><?= $block->escapeHtml($this->helper(Magento\Rma\Helper\Data::class)->getFormatedDate($_return->getDateRequested())) ?></td>
                         <td data-th="<?= $block->escapeHtmlAttr(__('Ship From')) ?>" class="col shipping"><?= $block->escapeHtml($_return->getCustomerName()) ?></td>
-                        <td data-th="<?= $block->escapeHtmlAttr(__('Return Status')) ?>" class="col status"><?= $block->escapeHtml($_return->getStatusLabel()) ?></td>
+                        <td data-th="<?= $block->escapeHtmlAttr(__('Return Status')) ?>" class="col status">
+                            <?php if($_return->getStatus() == 'pending'):?>
+                                <?= $block->escapeHtml(__('Waiting for a refund')); ?>
+                            <?php else :?>
+                                <?= $block->escapeHtml($_return->getStatusLabel()) ?>
+                            <?php endif ?>
+                        </td>
                         <td data-th="<?= $block->escapeHtmlAttr(__('Actions')) ?>" class="col actions">
                             <a href="<?= $block->escapeUrl($block->getViewUrl($_return)) ?>" class="action view"><span><?= $block->escapeHtml(__('View Return')) ?></span></a>
                         </td>
