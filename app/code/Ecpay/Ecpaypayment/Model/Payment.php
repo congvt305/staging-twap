@@ -278,7 +278,7 @@ class Payment extends AbstractMethod
         $this->_logger->info('ecpay-payment | result for ecpay search transaction', [$result]);
 
         $resultArray = json_decode($result, true);
-        if (count($resultArray) > 0) {
+        if (count($resultArray) > 0 || !empty($resultArray['RtnValue'])) {
             if (array_key_exists('status', $resultArray['RtnValue'])) {
                 $transactionStatus = $resultArray["RtnValue"]["status"];
             } else {
@@ -796,10 +796,9 @@ class Payment extends AbstractMethod
 
     /**
      * @param \Magento\Payment\Model\InfoInterface $payment
-     * @throws LocalizedException
-     * @throws \Magento\Framework\Exception\FileSystemException
+     * @param $storeId
      */
-    public function invalidateEInvoice(\Magento\Payment\Model\InfoInterface $payment, $storeId): void
+    public function invalidateEInvoice(\Magento\Payment\Model\InfoInterface $payment, $storeId)
     {
         try {
             $sMsg = '';
@@ -825,7 +824,7 @@ class Payment extends AbstractMethod
 
             // 5.返回
             $payment->setData("ecpay_invoice_invalidate_data", json_encode($aReturn_Info));
-        } catch (LocalizedException $e) {
+        } catch (\Exception $e) {
             // 例外錯誤處理。
             $sMsg = $e->getMessage();
             $this->_logger->info("EInvoice Cancel has been Failed : " . $sMsg);
