@@ -9,7 +9,9 @@
                 </arguments>
             </block>
         </referenceBlock>
-        <move element="yotpo_bottomline" destination="page.main.title"/>
+        <referenceBlock name="page.main.title">
+            <block class="Yotpo\Yotpo\Block\Yotpo" name="yotpo_bottomline" template="Yotpo_Yotpo::bottomline.phtml" after="-" ifconfig="yotpo/settings/active"/>
+        </referenceBlock>
         <move element="yotpo_widget_div" destination="yotpo.reviews.tab"/>
     </body>
 </page>
