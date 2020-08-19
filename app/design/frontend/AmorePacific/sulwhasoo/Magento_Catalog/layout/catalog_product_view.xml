@@ -53,12 +53,17 @@
             </block>
         </referenceBlock>
 
+        <referenceBlock name="page.main.title">
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.default.name"
+                   template="Magento_Catalog::product/view/default-name.phtml" after="page.main.title"/>
+        </referenceBlock>
+
         <move element="page.main.title" destination="product.info.content" after="product.info.flag"/>
         <move element="product.info.main" destination="product.info.main.wrapper" before="product.info.main.attribute" />
         <move element="product.info.media" destination="product.info.meida.wrapper" after="-" />
         <move element="product.info.social" destination="product.info.main" before="-" />
         <move element="product.info.addto" destination="product.info.main" after="product.info" />
-        <move element="product.info.review" destination="product.info.content" after="page.main.title" />
+        <move element="product.info.review" destination="product.info.content" after="product.default.name" />
         <move element="reviews.tab" destination="product.review.wrapper" after="-" />
         <move element="content.aside" destination="product.config.items" after="-" />
 
@@ -69,11 +74,6 @@
         <referenceBlock name="related.product.addto.compare" remove="true" />
         <referenceBlock name="upsell.product.addto.compare" remove="true" />
         <referenceBlock name="product.attributes" remove="true" />
-
-        <referenceBlock name="page.main.title">
-            <block class="Magento\Catalog\Block\Product\View\Description" name="product.default.name"
-                   template="Magento_Catalog::product/view/default-name.phtml" before="product.info.review"/>
-        </referenceBlock>
 
         <referenceContainer name="product.info.main">
             <block class="Magento\Catalog\Block\Product\View\Description"
