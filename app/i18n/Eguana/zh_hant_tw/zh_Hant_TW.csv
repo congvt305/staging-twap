@@ -4598,8 +4598,8 @@ new products will be created. Use this step to customize images and price for yo
 "Comment is missing","Comment is missing",module,Magento_Contact
 "Invalid email address","無效的郵件地址",module,Magento_Contact
 "* Required Fields","* 為必填項",module,Magento_Contact
-"Write Us","蘭芝台灣線上客服信箱服務",module,Magento_Contact
-"Jot us a note and we’ll get back to you as quickly as possible.","歡迎您留下任何意見或問題反映，我們將儘速與您聯繫、為您處理",module,Magento_Contact
+"Write Us","蘭芝台灣線上客服信箱",module,Magento_Contact
+"Jot us a note and we’ll get back to you as quickly as possible.","歡迎您留下任何意見或問題反映，我們將儘速與您聯繫，為您處理",module,Magento_Contact
 "Name","姓名",module,Magento_Contact
 "Email","電子郵件",module,Magento_Contact
 "Phone Number","手機號碼",module,Magento_Contact
