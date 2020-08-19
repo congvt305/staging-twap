@@ -6,6 +6,7 @@
 namespace Eguana\Theme\Block\Html;
 
 use Magento\Backend\Model\Menu;
+use Magento\Catalog\Api\CategoryListInterface;
 use Magento\Framework\Data\Tree\Node;
 use Magento\Framework\Data\Tree\Node\Collection;
 use Magento\Framework\Data\Tree\NodeFactory;
@@ -22,6 +23,42 @@ use Magento\Framework\View\Element\Template;
  */
 class Topmenu extends \Magento\Theme\Block\Html\Topmenu
 {
+    /**
+     * @var CollectionFactory
+     */
+    private $categoryCollectionFactory;
+    /**
+     * @var \Magento\Catalog\Api\CategoryRepositoryInterface
+     */
+    private $categoryRepository;
+
+    /**
+     * Topmenu constructor.
+     * @param Template\Context $context
+     * @param NodeFactory $nodeFactory
+     * @param TreeFactory $treeFactory
+     * @param \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository
+     * @param array $data
+     */
+    public function __construct(
+        Template\Context $context,
+        NodeFactory $nodeFactory,
+        TreeFactory $treeFactory,
+        \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
+        array $data = []
+    ) {
+        $this->categoryRepository = $categoryRepository;
+        parent::__construct($context, $nodeFactory, $treeFactory, $data);
+    }
+
+    public function getDefaultStoreCategory($categoryId, $storeId)
+    {
+        $categoryIdFiltered = explode("-", $categoryId);
+        $category = $this->categoryRepository->get(end($categoryIdFiltered), $storeId);
+
+        return $category;
+    }
+
     /**
      * Add sub menu HTML code for current menu item
      *
@@ -67,6 +104,8 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
             $html .= '</div>';
         }
 
+        $this->getDefaultCategoryName();
+
         return $html;
     }
 
@@ -103,6 +142,8 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
             $child->setIsFirst($counter === 1);
             $child->setIsLast($counter === $childrenCount);
             $child->setPositionClass($itemPositionClassPrefix . $counter);
+            /** @var \Magento\Catalog\Model\Category $childCategory */
+            $childCategory = $this->getDefaultStoreCategory($child->getId(), 0);
 
             $outermostClassCode = '';
             $outermostClass = $menuTree->getOutermostClass();
@@ -118,7 +159,8 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
 
             $parentCategoryName = 'MENU';
             if ($child->getParent()->getName()) {
-                $parentCategoryName = $child->getParent()->getName();
+                $parentCategoryId = $child->getParent()->getId();
+                $parentCategoryName = $this->getDefaultStoreCategory($parentCategoryId, 0)->getName();
             }
 
             $html .= '<li ' . $this->_getRenderedMenuItemAttributes($child) . '>';
@@ -126,7 +168,7 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
             $html .= '<a href="' . $child->getUrl() . '" ' . $outermostClassCode
                 . 'ap-click-area="GNB"'
                 . 'ap-click-name="'. $parentCategoryName .'"'
-                . 'ap-click-data="'. $child->getName() .'"'
+                . 'ap-click-data="'. $childCategory->getName() .'"'
                 .'><span>' . $this->escapeHtml(
                     $child->getName()
                 ) . '</span></a>' . $this->_addSubMenu(

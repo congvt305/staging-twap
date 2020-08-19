@@ -61,7 +61,6 @@ class Create extends \Magento\Backend\App\Action
 
         try {
             $invoiceId = $this->getRequest()->getParam('invoice_id');
-            $this->logger->info($invoiceId);
             $invoice = $this->invoiceRepository->get($invoiceId);
             $order = $this->orderRepository->get($invoice->getOrderId());
             $result = $this->ecpayPaymentModel->createEInvoice($order->getEntityId(), $order->getStoreId());
