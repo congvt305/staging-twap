@@ -13,11 +13,14 @@ use Magento\Framework\App\Action\Action;
  * Product list template
  *
  * @var $block \Magento\Catalog\Block\Product\ListProduct
+ * @var $getDefault \Eguana\CustomCatalog\ViewModel\GetDefaultCategory
+ *
  */
 ?>
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+$getDefault = $block->getData('view_model');
 ?>
 <?php if (!$_productCollection->count()) :?>
     <div class="message info empty"><div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div></div>
@@ -63,7 +66,7 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                        tabindex="-1"
                        ap-click-area="prds-search"
                        ap-click-name="prd click"
-                       ap-click-data="<?= $productName . '/' . $productSku ?>">
+                       ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
                         <span class="flags">
                         <?php if($_product->getData('new')):?>
                             <span class="flag new"><?= $block->escapeHtml($_product->getResource()->getAttribute('new')->getStoreLabel());?></span>
@@ -88,7 +91,7 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                                href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
                                ap-click-area="prds-search"
                                ap-click-name="prd click"
-                               ap-click-data="<?= $productName . '/' . $productSku ?>">
+                               ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
                                 <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a>
                         </strong>
