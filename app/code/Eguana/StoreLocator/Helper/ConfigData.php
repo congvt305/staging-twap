@@ -169,4 +169,13 @@ class ConfigData extends AbstractHelper
             ScopeInterface::SCOPE_STORE
         );
     }
+
+    /**
+     * Get StoreLocator URL
+     * @return string
+     */
+    public function getStoreLocatorUrl()
+    {
+        return $this->_urlBuilder->getUrl('stores/info/list');
+    }
 }
