@@ -2,6 +2,7 @@
 
 namespace Ecpay\Ecpaypayment\Model;
 
+use Ecpay\Ecpaypayment\Exception\EcpayException;
 use Magento\Framework\Api\AttributeValueFactory;
 use Magento\Framework\Api\ExtensionAttributesFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -254,7 +255,7 @@ class Payment extends AbstractMethod
         $url = "https://payment.ecPay.com.tw/CreditDetail/QueryTrade/V2";
         $params = [
             "MerchantID" => $merchantId,
-            "CreditRefundId" => $rawDetailsInfo["auth_code"],
+            "CreditRefundId" => $rawDetailsInfo["gwsr"],
             "CreditAmount" => $rawDetailsInfo["amount"],
             "CreditCheckCode" => 88975791
         ];
@@ -270,6 +271,7 @@ class Payment extends AbstractMethod
         $this->_logger->info('ecpay-payment | HashKey for ecpay search transaction', [$this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId())]);
         $this->_logger->info('ecpay-payment | HashIV for ecpay search transaction', [$this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())]);
 
+        $this->curl->addHeader('Content-Type', 'application/x-www-form-urlencoded');
         $this->curl->post($url, $params);
         $result = $this->curl->getBody();
 
@@ -277,10 +279,15 @@ class Payment extends AbstractMethod
 
         $resultArray = json_decode($result, true);
         if (count($resultArray) > 0) {
-            $transactionStatus = $resultArray["RtnValue"]["status"];
+            if (array_key_exists('status', $resultArray['RtnValue'])) {
+                $transactionStatus = $resultArray["RtnValue"]["status"];
+            } else {
+                $this->_logger->critical(__('Status does not exist in Credit Card transaction search result.'));
+                throw new EcpayException(__('Status does not exist in Credit Card transaction search result.'));
+            }
         } else {
             $this->_logger->critical(__('ecpay search transaction result is null.'));
-            throw new LocalizedException(__('ecpay search transaction result is null.'));
+            throw new EcpayException(__('ecpay search transaction result is null.'));
         }
 
         if (trim($transactionStatus) != 'Has been settled') {
@@ -312,8 +319,8 @@ class Payment extends AbstractMethod
             $stringToArray = $this->ecpayResponse($result);
 
             if ($stringToArray["RtnCode"] != 1) {
-                $this->_logger->critical(__($stringToArray["RtnMsg"]));
-                throw new LocalizedException(__($stringToArray["RtnMsg"]));
+                $this->_logger->critical(__("Ecpay Return Error : " . $stringToArray["RtnMsg"]));
+                throw new EcpayException(__("Ecpay Return Error : " . $stringToArray["RtnMsg"]));
             }
         } else {
             $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
@@ -344,8 +351,8 @@ class Payment extends AbstractMethod
             $stringToArray = $this->ecpayResponse($result);
 
             if ($stringToArray["RtnCode"] != 1) {
-                $this->_logger->critical(__($stringToArray["RtnMsg"]));
-                throw new LocalizedException(__($stringToArray["RtnMsg"]));
+                $this->_logger->critical(__("Ecpay Return Error2 : " . $stringToArray["RtnMsg"]));
+                throw new EcpayException(__("Ecpay Return Error2 : " . $stringToArray["RtnMsg"]));
             }
         }
 
