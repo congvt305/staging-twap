@@ -11,15 +11,41 @@ namespace Eguana\EInvoice\Block\Adminhtml\Order\Invoice\View;
 
 class Form extends \Magento\Sales\Block\Adminhtml\Order\Invoice\View\Form
 {
+    /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
+    private $json;
+
+    public function __construct(
+        \Magento\Framework\Serialize\Serializer\Json $json,
+        \Magento\Backend\Block\Template\Context $context,
+        \Magento\Framework\Registry $registry,
+        \Magento\Sales\Helper\Admin $adminHelper,
+        array $data = []
+    ) {
+        parent::__construct($context, $registry, $adminHelper, $data);
+        $this->json = $json;
+    }
+
     public function canShowCreateEInvoiceButton()
     {
-//        return  ($this->getOrder()->getShippingMethod() === 'gwlogistics_CVS') && ($this->getInvoice()->getData('all_pay_logistics_id') === NULL);
-        return  true;
+        $payment = $this->getOrder()->getPayment();
+        return !$this->hasEInvoice($payment);
     }
 
     public function getCreateEInvoiceUrl()
     {
         return $this->getUrl('eguana_einvoice/einvoice/create', ['invoice_id' => $this->getInvoice()->getEntityId()]);
+    }
+
+    private function hasEInvoice($payment)
+    {
+        $addtionalData =$payment->getAdditionalData();
+        if (!$addtionalData) {
+            return false;
+        }
+        $addtionalData = $this->json->unserialize($addtionalData);
+        return isset($addtionalData['InvoiceNumber']);
     }
 
 }
