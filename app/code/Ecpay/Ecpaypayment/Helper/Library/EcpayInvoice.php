@@ -79,7 +79,8 @@ class EcpayInvoice
 
     public function Check_Out()
     {
-        $arParameters = array_merge( array('MerchantID' => $this->MerchantID) , array('TimeStamp' => $this->TimeStamp), $this->Send);
+        $time = time();
+        $arParameters = array_merge( array('MerchantID' => $this->MerchantID) , array('TimeStamp' => $time), $this->Send);
         return $this->ECPayInvoiceSend->CheckOut($arParameters, $this->HashKey, $this->HashIV, $this->Invoice_Method, $this->Invoice_Url);
     }
 

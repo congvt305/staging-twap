@@ -290,13 +290,20 @@ class Payment extends AbstractMethod
             throw new EcpayException(__('ecpay search transaction result is null.'));
         }
 
-        $stringToArray = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment);
-        if ($stringToArray["RtnCode"] != 1) {
-//            $this->_logger->info(__("Ecpay Return Msg : " . $stringToArray["RtnMsg"]));
-            $stringToArray = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "R");
-            if ($stringToArray["RtnCode"] != 1) {
-                $this->_logger->critical(__("Ecpay Return Error2 : " . $stringToArray["RtnMsg"]));
-                throw new EcpayException(__("Ecpay Return Error2 : " . $stringToArray["RtnMsg"]));
+        if (trim($transactionStatus) == '要關帳') {
+            $actionEResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "E");
+            $this->_logger->info("E action result : ", $actionEResult);
+            $actionNResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "N");
+            $this->_logger->info("N action result : ", $actionNResult);
+            if ($actionNResult["RtnCode"] != 1) {
+                $this->_logger->critical(__("Ecpay Return Error2 : " . $actionNResult["RtnMsg"]));
+//                throw new EcpayException(__("Ecpay Return Error2 : " . $actionNResult["RtnMsg"]));
+            }
+        } elseif (trim($transactionStatus) == '已關帳') {
+            $actionRResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "R");
+            if ($actionRResult["RtnCode"] != 1) {
+                $this->_logger->critical(__("Ecpay Return Error2 : " . $actionRResult["RtnMsg"]));
+//                throw new EcpayException(__("Ecpay Return Error2 : " . $actionRResult["RtnMsg"]));
             }
         }
 
@@ -810,10 +817,11 @@ class Payment extends AbstractMethod
 
             // 5.返回
             $payment->setData("ecpay_invoice_invalidate_data", json_encode($aReturn_Info));
-        } catch (Exception $e) {
+        } catch (LocalizedException $e) {
             // 例外錯誤處理。
             $sMsg = $e->getMessage();
-            throw new LocalizedException(__($sMsg));
+            $this->_logger->info("EInvoice Cancel has been Failed : " . $sMsg);
+//            throw new LocalizedException(__($sMsg));
         }
     }
 
