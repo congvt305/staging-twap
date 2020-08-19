@@ -301,9 +301,17 @@ class Payment extends AbstractMethod
             }
         } elseif (trim($transactionStatus) == '已關帳') {
             $actionRResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "R");
+            $this->_logger->info("R action result : ", $actionRResult);
             if ($actionRResult["RtnCode"] != 1) {
                 $this->_logger->critical(__("Ecpay Return Error2 : " . $actionRResult["RtnMsg"]));
 //                throw new EcpayException(__("Ecpay Return Error2 : " . $actionRResult["RtnMsg"]));
+            }
+        } elseif (trim($transactionStatus) == '已授權') {
+            $actionNResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "N");
+            $this->_logger->info("N action result : ", $actionNResult);
+            if ($actionNResult["RtnCode"] != 1) {
+                $this->_logger->critical(__("Ecpay Return Error2 : " . $actionNResult["RtnMsg"]));
+//                throw new EcpayException(__("Ecpay Return Error2 : " . $actionNResult["RtnMsg"]));
             }
         }
 
