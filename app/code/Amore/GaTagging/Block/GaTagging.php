@@ -161,6 +161,10 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         //\Magento\GoogleTagManager\Block\ListJson::getCartContent
         $cartData = [];
         $quote = $this->getCheckoutSession()->getQuote();
+        $visibleItems = $quote->getAllVisibleItems();
+        if (count($visibleItems) < 1) {
+            return false;
+        }
         $cartData['apCartPrice'] = intval($quote->getSubtotalWithDiscount());
         $cartData['apCartProdPrice'] = intval($quote->getSubTotal());
         $cartData['apCartDiscount'] = $cartData['apCartProdPrice'] - $cartData['apCartPrice'];

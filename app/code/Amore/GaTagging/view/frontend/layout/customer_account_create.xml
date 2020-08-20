@@ -1,13 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * @author Eguana Team
- * Created by PhpStorm
- * User: Abbas
- * Date: 05/18/20
- * Time: 11:32 AM
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <!-- 2.3 주요페이지 로그인 가입버튼 AP & 이벤트 트리거 -->

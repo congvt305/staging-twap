@@ -7,16 +7,19 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <!-- 2.2 공통구현요소 (모든페이지) head 영역, GTM 코드 -->
         <referenceContainer name="head.additional">
             <block name="amore_tagging_common_head_js"
                    ifconfig="amore_gatagging/tagmanager/active"
                    template="Amore_GaTagging::common/head-js.phtml" />
         </referenceContainer>
         <referenceContainer name="after.body.start">
+            <!-- 2.2 공통구현요소 (모든페이지) body 영역, 1)GTM 코드 2) DATA Layer 변수 -->
             <block name="amore_tagging_common_body_js"
                    ifconfig="amore_gatagging/tagmanager/active"
+                   before='-'
                    template="Amore_GaTagging::common/body-js.phtml" />
-            <!--Data Layer 변수-->
+            <!-- 2.2 공통구현요소 (모든페이지) body 영역, 4) 공 변수 -->
             <block class="Amore\GaTagging\Block\GaTagging"
                    ifconfig="amore_gatagging/tagmanager/active"
                    template="Amore_GaTagging::common/ap.phtml"
@@ -26,6 +29,7 @@
                     <argument name="view_model" xsi:type="object">Amore\GaTagging\ViewModel\CommonData</argument>
                 </arguments>
             </block>
+            <!-- 2.4 트랜잭션 - 장바구니 추가 버튼 -->
             <block name="amore_tagging_cart_js"
                    ifconfig="amore_gatagging/tagmanager/active"
                    template="Amore_GaTagging::common/ap-cart-js.phtml" />
