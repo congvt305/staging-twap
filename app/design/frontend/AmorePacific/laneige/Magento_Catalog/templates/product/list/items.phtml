@@ -206,7 +206,7 @@ $_item = null;
                                    class="product photo product-item-photo"
                                    ap-click-area="product"
                                    ap-click-name="prd click"
-                                   ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                                   ap-click-data="<?= $block->escapeHtmlAttr($getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku) ?>">
                                     <span class="flags">
                                         <?php if($_item->getData('new')):?>
                                             <span class="flag new"><?= $block->escapeHtml($_item->getResource()->getAttribute('new')->getStoreLabel());?></span>
@@ -218,13 +218,13 @@ $_item = null;
                                     <?= $block->getImage($_item, $image)->toHtml() ?>
                                 </a>
                                 <div class="product details product-item-details">
-                                    <strong class="product name product-item-name"><a
-                                            class="product-item-link"
+                                    <strong class="product name product-item-name">
+                                        <a class="product-item-link"
                                             title="<?= $block->escapeHtmlAttr($_item->getName()) ?>"
                                             href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
                                             ap-click-area="product"
                                             ap-click-name="prd click"
-                                            ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                                            ap-click-data="<?= $block->escapeHtmlAttr($getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku) ?>">
                                             <?= $block->escapeHtml($_item->getName()) ?></a>
                                     </strong>
 

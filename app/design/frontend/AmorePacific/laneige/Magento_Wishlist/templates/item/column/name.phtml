@@ -21,7 +21,7 @@ $getDefault = $block->getData('view_model');
        class="product-item-link"
        ap-click-area="product"
        ap-click-name="prd click"
-       ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+       ap-click-data="<?= $block->escapeHtmlAttr($getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku) ?>">
         <?= $block->escapeHtml($product->getName()) ?>
     </a>
 </strong>
