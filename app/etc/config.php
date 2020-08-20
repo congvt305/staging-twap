@@ -492,6 +492,7 @@ return [
         'Eguana_ChangeStatus' => 1,
         'Eguana_CustomAmastyPromo' => 1,
         'Eguana_CustomBundle' => 1,
+        'Eguana_CustomCatalog' => 1,
         'Eguana_Theme' => 1,
         'Eguana_CustomOrderGrid' => 1,
         'Eguana_CustomRMA' => 1,
