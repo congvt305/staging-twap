@@ -2,13 +2,13 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <!-- 2.4 트랜잭션 주문결제 페이지 AP -->
-<!--        <referenceContainer name="after.body.start">-->
-<!--            <block class="Amore\GaTagging\Block\GaTagging"-->
-<!--                   name="ap_checkout"-->
-<!--                   ifconfig="amore_gatagging/tagmanager/active"-->
-<!--                   after="-"-->
-<!--                   template="Amore_GaTagging::checkout/ap-checkout.phtml" />-->
-<!--        </referenceContainer>-->
+        <referenceContainer name="after.body.start">
+            <block class="Amore\GaTagging\Block\GaTagging"
+                   name="ap_checkout"
+                   ifconfig="amore_gatagging/tagmanager/active"
+                   after="-"
+                   template="Amore_GaTagging::checkout/ap-checkout.phtml" />
+        </referenceContainer>
         <!-- 2.4 트랜잭션 주문결제 페이지 이벤트 트리거 -->
         <referenceContainer name="before.body.end">
             <block name="checkout_datalayer_push"
