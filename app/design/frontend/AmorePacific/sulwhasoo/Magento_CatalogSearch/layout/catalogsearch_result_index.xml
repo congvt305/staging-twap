@@ -13,5 +13,11 @@
             </action>
         </referenceBlock>
         <referenceBlock name="catalogsearch.product.addto.compare" remove="true"/>
+        <referenceContainer name="columns">
+            <container name="div.sidebar.main" htmlTag="div" htmlClass="sidebar sidebar-main" after="main">
+                <container name="sidebar.main" as="sidebar_main" label="Sidebar Main">
+                </container>
+            </container>
+        </referenceContainer>
     </body>
 </page>
