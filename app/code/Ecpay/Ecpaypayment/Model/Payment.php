@@ -747,8 +747,8 @@ class Payment extends AbstractMethod
         $ecpay_invoice->Send['CustomerPhone'] = '';
         $ecpay_invoice->Send['CustomerEmail'] = $order->getCustomerEmail();
         $ecpay_invoice->Send['ClearanceMark'] = '';
-        $ecpay_invoice->Send['Print'] = (empty($triplicateTaxId)) ? 1 : '0';
-        $ecpay_invoice->Send['Donation'] = ($donationValue == "true") ? 1 : 0;
+        $ecpay_invoice->Send['Print'] = (!empty($triplicateTaxId)) ? '1' : '0';
+        $ecpay_invoice->Send['Donation'] = ($donationValue == "true") ? '1' : '0';
         $ecpay_invoice->Send['LoveCode'] = ($donationValue == "true") ? $donationCode : '';
         $ecpay_invoice->Send['CarruerType'] = $carruerType;
         $ecpay_invoice->Send['CarruerNum'] = $carruerNum;
