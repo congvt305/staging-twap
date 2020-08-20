@@ -27,14 +27,14 @@ use Magento\Framework\App\Action\Action;
     <ol class="product-items <?= /* @noEscape */ $type ?>">
         <?php $iterator = 1; ?>
         <?php foreach ($items as $_item) : ?>
-            <?php $productSku = $_item->getSku(); ?>
+            <?php /* @noEscape */ $productSku = $_item->getSku(); ?>
             <?= /* @noEscape */ ($iterator++ == 1) ? '<li class="product-item">' : '</li><li class="product-item">' ?>
             <div class="product-item-info">
                 <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
                    class="product-item-photo"
                    ap-click-area="product"
                    ap-click-name="prd click"
-                   ap-click-data="<?= $block->escapeHtmlAttr($block->getProductDefaultName($productSku) . '/' . $productSku); ?>">
+                   ap-click-data="<?= /* @noEscape */ $block->getProductDefaultName($productSku) . '/' . $productSku; ?>">
                     <?= $block->getImage($_item, $image)->toHtml() ?>
                 </a>
                 <div class="product-item-details">
@@ -44,8 +44,7 @@ use Magento\Framework\App\Action\Action;
                            class="product-item-link"
                            ap-click-area="product"
                            ap-click-name="prd click"
-                           ap-click-data="<?= $block->escapeHtmlAttr($block->getProductDefaultName($productSku) . '/' . $productSku); ?>">
-                        >
+                           ap-click-data="<?= /* @noEscape */ $block->getProductDefaultName($productSku) . '/' . $productSku; ?>">
                             <?= $block->escapeHtml($_item->getResource()->getAttributeRawValue($_item->getId(),'name',0));?>
                         </a>
                     </strong>

@@ -184,7 +184,7 @@ $_item = null;
                                 <?php endif; ?>
                                 <?php foreach ($items as $_item): ?>
                                     <?php $available = ''; ?>
-                                    <?php $productSku = $_item->getSku(); ?>
+                                    <?php /* @noEscape */ $productSku = $_item->getSku(); ?>
                                     <?php if (!$_item->isComposite() && $_item->isSaleable() && $type == 'related'): ?>
                                         <?php if (!$_item->getRequiredOptions()): ?>
                                             <?php $available = 'related-available'; ?>
@@ -201,7 +201,7 @@ $_item = null;
                                            class="product photo product-item-photo"
                                            ap-click-area="product"
                                            ap-click-name="prd click"
-                                           ap-click-data="<?= $block->escapeHtmlAttr($getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku) ?>">
+                                           ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
                                             <?= $block->getImage($_item, $image)->toHtml() ?>
                                         </a>
                                         <div class="product details product-item-details">
@@ -211,7 +211,7 @@ $_item = null;
                                                    href="<?= /* @escapeNotVerified */ $block->escapeUrl($block->getProductUrl($_item)) ?>"
                                                    ap-click-area="product"
                                                    ap-click-name="prd click"
-                                                   ap-click-data="<?= $block->escapeHtmlAttr($getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku) ?>">
+                                                   ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
                                                     <?= $block->escapeHtml($_item->getName()) ?></a>
                                             </strong>
 

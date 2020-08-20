@@ -36,10 +36,8 @@ use Magento\Framework\App\Action\Action;
             <div class="swiper-container products-<?= /* @noEscape */ $mode ?> <?= /* @noEscape */ $mode ?>">
                 <ol class="swiper-wrapper product-items <?= /* @noEscape */ $type ?>">
                     <?php $iterator = 1; ?>
-                    <?php
-                    foreach ($items as $_item) :
-                        $productSku = $_item->getSku();
-                    ?>
+                    <?php foreach ($items as $_item) : ?>
+                    <?php /* @noEscape */ $productSku = $_item->getSku(); ?>
                         <?= /* @noEscape */ ($iterator++ == 1) ? '<li class="swiper-slide product-item">' : '</li><li class="swiper-slide product-item">' ?>
                         <div class="product-item-wrapper">
                             <div class="product-item-info">
@@ -47,7 +45,7 @@ use Magento\Framework\App\Action\Action;
                                    class="product-item-photo"
                                    ap-click-area="product"
                                    ap-click-name="prd click"
-                                   ap-click-data="<?= $block->escapeHtmlAttr($block->getProductDefaultName($productSku) . '/' . $productSku); ?>">
+                                   ap-click-data="<?= /* @noEscape */ $block->getProductDefaultName($productSku) . '/' . $productSku; ?>">
                                     <?= $block->getImage($_item, $image)->toHtml() ?>
                                 </a>
                                 <div class="product-item-details">
@@ -63,7 +61,7 @@ use Magento\Framework\App\Action\Action;
                                            class="product-item-link"
                                            ap-click-area="product"
                                            ap-click-name="prd click"
-                                           ap-click-data="<?= $block->escapeHtmlAttr($block->getProductDefaultName($productSku) . '/' . $productSku); ?>">
+                                           ap-click-data="<?= /* @noEscape */ $block->getProductDefaultName($productSku) . '/' . $productSku; ?>">
                                             <?= $block->escapeHtml($_item->getName()) ?>
                                         </a>
                                     </strong>
@@ -78,8 +76,12 @@ use Magento\Framework\App\Action\Action;
                                     <?php endif; ?>
 
                                     <div class="actions-primary">
-                                        <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>" class="action todetail primary"
-                                           type="button">
+                                        <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
+                                           class="action todetail primary"
+                                           type="button"
+                                           ap-click-area="product"
+                                           ap-click-name="prd click"
+                                           ap-click-data="<?= /* @noEscape */ $block->getProductDefaultName($productSku) . '/' . $productSku; ?>">
                                             <span><?= $block->escapeHtml(__('View')) ?></span>
                                         </a>
                                     </div>

@@ -48,7 +48,7 @@ $helper->initializePixleeAPI($websiteId);
                                 <?php
                                 $_productNameStripped = $block->stripTags($_product->getName(), null, true);
                                 ?>
-                                <?php $productSku = $_product->getSku() ?>
+                                <?php /* @noEscape */ $productSku = $_product->getSku() ?>
                                 <label class="product-item-count"><?= $block->escapeHtml($i);?></label>
                                 <h2 class="product name">
                                     <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
@@ -65,9 +65,9 @@ $helper->initializePixleeAPI($websiteId);
                                 <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
                                    title="<?= /* @noEscape */ $_productNameStripped ?>"
                                    class="action more"
-                                   ap-click-area="prds-<?= $block->escapeHtmlAttr($getDefault->getDefaultCategory($currentCategory->getEntityId())->getName()) ?>"
+                                   ap-click-area="prds-<?= /* @noEscape */ $getDefault->getDefaultCategory($currentCategory->getEntityId())->getName() ?>"
                                    ap-click-name="prd click"
-                                   ap-click-data="<?= $block->escapeHtmlAttr($getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku) ?>">
+                                   ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
                                     <?= $block->escapeHtml(__('View Details')) ?>
                                 </a>
                                 <?php if ($helper->isActive() && $helper->getPDPWidgetId() != "") : ?>
