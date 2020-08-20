@@ -296,65 +296,25 @@ class Payment extends AbstractMethod
             $actionNResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "N");
             $this->_logger->info("N action result : ", $actionNResult);
             if ($actionNResult["RtnCode"] != 1) {
-                $this->_logger->critical(__("Ecpay Return Error2 : " . $actionNResult["RtnMsg"]));
-//                throw new EcpayException(__("Ecpay Return Error2 : " . $actionNResult["RtnMsg"]));
+                $this->_logger->critical(__("Ecpay EN action Error Response : " . $actionNResult["RtnMsg"]));
+                $actionRResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "R");
+                $this->_logger->info("R action result : ", $actionRResult);
             }
         } elseif (trim($transactionStatus) == '已關帳') {
             $actionRResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "R");
             $this->_logger->info("R action result : ", $actionRResult);
             if ($actionRResult["RtnCode"] != 1) {
-                $this->_logger->critical(__("Ecpay Return Error2 : " . $actionRResult["RtnMsg"]));
-//                throw new EcpayException(__("Ecpay Return Error2 : " . $actionRResult["RtnMsg"]));
+                $this->_logger->critical(__("Ecpay R action Error Response : " . $actionRResult["RtnMsg"]));
             }
         } elseif (trim($transactionStatus) == '已授權') {
             $actionNResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "N");
             $this->_logger->info("N action result : ", $actionNResult);
             if ($actionNResult["RtnCode"] != 1) {
-                $this->_logger->critical(__("Ecpay Return Error2 : " . $actionNResult["RtnMsg"]));
-//                throw new EcpayException(__("Ecpay Return Error2 : " . $actionNResult["RtnMsg"]));
+                $this->_logger->critical(__("Ecpay N action Error Response : " . $actionNResult["RtnMsg"]));
+                $actionRResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "R");
+                $this->_logger->info("R action result : ", $actionRResult);
             }
         }
-
-//        if (trim($transactionStatus) != '已關帳') {
-//            $stringToArray = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment);
-
-//            if ($stringToArray["RtnCode"] != 1) {
-//                $this->_logger->critical(__("Ecpay Return Error : " . $stringToArray["RtnMsg"]));
-//                throw new EcpayException(__("Ecpay Return Error : " . $stringToArray["RtnMsg"]));
-//            }
-//        } else {
-//            $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
-//            $params = [
-//                "MerchantID" => $merchantId,
-//                "MerchantTradeNo" => $merchantTradeNo,
-//                "TradeNo" => $tradeNo,
-//                "Action" => "R",
-//                "TotalAmount" => $amount
-//            ];
-//
-//            $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate(
-//                $params,
-//                $this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId()),
-//                $this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())
-//            );
-//            $params["CheckMacValue"] = $checkMacValue;
-//
-//            $this->_logger->info('ecpay-payment | params for ecpay refund action R', $params);
-//            $this->_logger->info('ecpay-payment | HashKey for ecpay refund action R', [$this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId())]);
-//            $this->_logger->info('ecpay-payment | HashIV for ecpay refund action R', [$this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())]);
-//
-//            $this->curl->post($url, $params);
-//            $result = $this->curl->getBody();
-//
-//            $this->_logger->info('ecpay-payment | result for ecpay refund action R', [$result]);
-//
-//            $stringToArray = $this->ecpayResponse($result);
-//
-//            if ($stringToArray["RtnCode"] != 1) {
-//                $this->_logger->critical(__("Ecpay Return Error2 : " . $stringToArray["RtnMsg"]));
-//                throw new EcpayException(__("Ecpay Return Error2 : " . $stringToArray["RtnMsg"]));
-//            }
-//        }
 
         $this->createRefundTransaction($payment, $tradeNo, $rawDetailsInfo);
 
@@ -542,6 +502,7 @@ class Payment extends AbstractMethod
             $additionalInfo = $payment->getAdditionalInformation();
             $rawDetailsInfo = $additionalInfo["raw_details_info"];
             $eInvoiceType = $rawDetailsInfo["ecpay_einvoice_type"];
+            $triplicateTaxId = $rawDetailsInfo["ecpay_einvoice_tax_id_number"];
             $cellphoneBarcode = $rawDetailsInfo["ecpay_einvoice_cellphone_barcode"];
             $carruerType = $this->getCarruerType($eInvoiceType);
 
@@ -552,7 +513,7 @@ class Payment extends AbstractMethod
             // 商品資訊
             $this->initOrderItems($order, $ecpay_invoice);
 
-            $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $carruerType, $donationCode, $cellphoneBarcode);
+            $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $carruerType, $donationCode, $triplicateTaxId, $cellphoneBarcode);
 
             // 4.送出
             $aReturn_Info = $ecpay_invoice->Check_Out();
@@ -748,10 +709,11 @@ class Payment extends AbstractMethod
      * @param \Magento\Sales\Api\Data\OrderInterface $order
      * @param string $carruerType
      * @param $donationCode
+     * @param $triplicateTaxId
      * @param string $cellphoneBarcode
      * @return string
      */
-    private function initEInvoiceInfo(\Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice, \Magento\Sales\Api\Data\OrderInterface $order, string $carruerType, $donationCode, $cellphoneBarcode): string
+    private function initEInvoiceInfo(\Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice, \Magento\Sales\Api\Data\OrderInterface $order, string $carruerType, $donationCode, $triplicateTaxId, $cellphoneBarcode): string
     {
         $dataTime = $this->dateTimeFactory->create();
 
@@ -759,7 +721,11 @@ class Payment extends AbstractMethod
         $carruerNum = '';
         switch ($carruerType) {
             case '':
-                $donationValue = "true";
+                if (empty($triplicateTaxId)) {
+                    $donationValue = "true";
+                } else {
+                    $donationValue = "false";
+                }
                 $carruerNum = '';
                 break;
             case '1':
@@ -775,14 +741,14 @@ class Payment extends AbstractMethod
         $RelateNumber = $order->getIncrementId();
         $ecpay_invoice->Send['RelateNumber'] = $RelateNumber;
         $ecpay_invoice->Send['CustomerID'] = $order->getCustomerId();
-        $ecpay_invoice->Send['CustomerIdentifier'] = '';
+        $ecpay_invoice->Send['CustomerIdentifier'] = $triplicateTaxId;
         $ecpay_invoice->Send['CustomerName'] = $order->getCustomerFirstname() . $order->getCustomerLastname();
         $ecpay_invoice->Send['CustomerAddr'] = $order->getBillingAddress()->getCity();
         $ecpay_invoice->Send['CustomerPhone'] = '';
         $ecpay_invoice->Send['CustomerEmail'] = $order->getCustomerEmail();
         $ecpay_invoice->Send['ClearanceMark'] = '';
-        $ecpay_invoice->Send['Print'] = '0';
-        $ecpay_invoice->Send['Donation'] = ($donationValue == "true") ? 1 : 0;
+        $ecpay_invoice->Send['Print'] = (!empty($triplicateTaxId)) ? '1' : '0';
+        $ecpay_invoice->Send['Donation'] = ($donationValue == "true") ? '1' : '0';
         $ecpay_invoice->Send['LoveCode'] = ($donationValue == "true") ? $donationCode : '';
         $ecpay_invoice->Send['CarruerType'] = $carruerType;
         $ecpay_invoice->Send['CarruerNum'] = $carruerNum;
