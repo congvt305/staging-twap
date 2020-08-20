@@ -16,9 +16,6 @@
           data-mage-init='{"validation":{}}' data-hasrequired="<?= $block->escapeHtml(__('* Required Fields')) ?>">
         <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
         <fieldset class="fieldset">
-            <legend class="legend eguanasociallogin-form-legend">
-                <span><?= $block->escapeHtml(__('Social Login')) ?></span>
-            </legend>
             <div class="field note"><?= $block->escapeHtml(__('Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!')) ?></div>
             <div class="field choice member-legend">
                 <div class="control">
@@ -28,7 +25,6 @@
                     <input type="radio" id="member" name="member" data-validate="{required:true}" value="ismember">
                 </div>
             </div>
-            <div class="msg"><?= $block->escapeHtml(__('Linked Account : Google ID/Facebook/Line')) ?></div>
             <div class="field email required">
                 <label class="label" for="email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
                 <div class="control">
@@ -67,8 +63,6 @@
                     <input type="radio" id="not-a-member" name="member" value="notamember">
                 </div>
             </div>
-            <div class="msg"><?= $block->escapeHtml(__('Linked Account : Google ID/Facebook/Line')) ?></div>
-
             <div class="sociallogin-form-actions">
                 <button class="cancel" type="button" id="cancel" data-role="action" data-action-name="Cancel">
                     <span><?= $block->escapeHtml(__('Cancel')) ?></span>

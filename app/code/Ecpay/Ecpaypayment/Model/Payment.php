@@ -2,6 +2,7 @@
 
 namespace Ecpay\Ecpaypayment\Model;
 
+use Ecpay\Ecpaypayment\Exception\EcpayException;
 use Magento\Framework\Api\AttributeValueFactory;
 use Magento\Framework\Api\ExtensionAttributesFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -254,7 +255,7 @@ class Payment extends AbstractMethod
         $url = "https://payment.ecPay.com.tw/CreditDetail/QueryTrade/V2";
         $params = [
             "MerchantID" => $merchantId,
-            "CreditRefundId" => $rawDetailsInfo["auth_code"],
+            "CreditRefundId" => $rawDetailsInfo["gwsr"],
             "CreditAmount" => $rawDetailsInfo["amount"],
             "CreditCheckCode" => 88975791
         ];
@@ -270,84 +271,90 @@ class Payment extends AbstractMethod
         $this->_logger->info('ecpay-payment | HashKey for ecpay search transaction', [$this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId())]);
         $this->_logger->info('ecpay-payment | HashIV for ecpay search transaction', [$this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())]);
 
+        $this->curl->addHeader('Content-Type', 'application/x-www-form-urlencoded');
         $this->curl->post($url, $params);
         $result = $this->curl->getBody();
 
         $this->_logger->info('ecpay-payment | result for ecpay search transaction', [$result]);
 
         $resultArray = json_decode($result, true);
-        if (count($resultArray) > 0) {
-            $transactionStatus = $resultArray["RtnValue"]["status"];
+        if (count($resultArray) > 0 || !empty($resultArray['RtnValue'])) {
+            if (array_key_exists('status', $resultArray['RtnValue'])) {
+                $transactionStatus = $resultArray["RtnValue"]["status"];
+            } else {
+                $this->_logger->critical(__('Status does not exist in Credit Card transaction search result.'));
+                throw new EcpayException(__('Status does not exist in Credit Card transaction search result.'));
+            }
         } else {
             $this->_logger->critical(__('ecpay search transaction result is null.'));
-            throw new LocalizedException(__('ecpay search transaction result is null.'));
+            throw new EcpayException(__('ecpay search transaction result is null.'));
         }
 
-        if (trim($transactionStatus) != 'Has been settled') {
-            $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
-            $params = [
-                "MerchantID" => $merchantId,
-                "MerchantTradeNo" => $merchantTradeNo,
-                "TradeNo" => $tradeNo,
-                "Action" => "N",
-                "TotalAmount" => $amount
-            ];
-
-            $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate(
-                $params,
-                $this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId()),
-                $this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())
-            );
-            $params["CheckMacValue"] = $checkMacValue;
-
-            $this->_logger->info('ecpay-payment | params for ecpay refund action N', $params);
-            $this->_logger->info('ecpay-payment | HashKey for ecpay refund action N', [$this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId())]);
-            $this->_logger->info('ecpay-payment | HashIV for ecpay refund action N', [$this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())]);
-
-            $this->curl->post($url, $params);
-            $result = $this->curl->getBody();
-
-            $this->_logger->info('ecpay-payment | result for ecpay refund action N', [$result]);
-
-            $stringToArray = $this->ecpayResponse($result);
-
-            if ($stringToArray["RtnCode"] != 1) {
-                $this->_logger->critical(__($stringToArray["RtnMsg"]));
-                throw new LocalizedException(__($stringToArray["RtnMsg"]));
+        if (trim($transactionStatus) == '要關帳') {
+            $actionEResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "E");
+            $this->_logger->info("E action result : ", $actionEResult);
+            $actionNResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "N");
+            $this->_logger->info("N action result : ", $actionNResult);
+            if ($actionNResult["RtnCode"] != 1) {
+                $this->_logger->critical(__("Ecpay Return Error2 : " . $actionNResult["RtnMsg"]));
+//                throw new EcpayException(__("Ecpay Return Error2 : " . $actionNResult["RtnMsg"]));
             }
-        } else {
-            $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
-            $params = [
-                "MerchantID" => $merchantId,
-                "MerchantTradeNo" => $merchantTradeNo,
-                "TradeNo" => $tradeNo,
-                "Action" => "R",
-                "TotalAmount" => $amount
-            ];
-
-            $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate(
-                $params,
-                $this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId()),
-                $this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())
-            );
-            $params["CheckMacValue"] = $checkMacValue;
-
-            $this->_logger->info('ecpay-payment | params for ecpay refund action R', $params);
-            $this->_logger->info('ecpay-payment | HashKey for ecpay refund action R', [$this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId())]);
-            $this->_logger->info('ecpay-payment | HashIV for ecpay refund action R', [$this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())]);
-
-            $this->curl->post($url, $params);
-            $result = $this->curl->getBody();
-
-            $this->_logger->info('ecpay-payment | result for ecpay refund action R', [$result]);
-
-            $stringToArray = $this->ecpayResponse($result);
-
-            if ($stringToArray["RtnCode"] != 1) {
-                $this->_logger->critical(__($stringToArray["RtnMsg"]));
-                throw new LocalizedException(__($stringToArray["RtnMsg"]));
+        } elseif (trim($transactionStatus) == '已關帳') {
+            $actionRResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "R");
+            $this->_logger->info("R action result : ", $actionRResult);
+            if ($actionRResult["RtnCode"] != 1) {
+                $this->_logger->critical(__("Ecpay Return Error2 : " . $actionRResult["RtnMsg"]));
+//                throw new EcpayException(__("Ecpay Return Error2 : " . $actionRResult["RtnMsg"]));
+            }
+        } elseif (trim($transactionStatus) == '已授權') {
+            $actionNResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "N");
+            $this->_logger->info("N action result : ", $actionNResult);
+            if ($actionNResult["RtnCode"] != 1) {
+                $this->_logger->critical(__("Ecpay Return Error2 : " . $actionNResult["RtnMsg"]));
+//                throw new EcpayException(__("Ecpay Return Error2 : " . $actionNResult["RtnMsg"]));
             }
         }
+
+//        if (trim($transactionStatus) != '已關帳') {
+//            $stringToArray = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment);
+
+//            if ($stringToArray["RtnCode"] != 1) {
+//                $this->_logger->critical(__("Ecpay Return Error : " . $stringToArray["RtnMsg"]));
+//                throw new EcpayException(__("Ecpay Return Error : " . $stringToArray["RtnMsg"]));
+//            }
+//        } else {
+//            $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
+//            $params = [
+//                "MerchantID" => $merchantId,
+//                "MerchantTradeNo" => $merchantTradeNo,
+//                "TradeNo" => $tradeNo,
+//                "Action" => "R",
+//                "TotalAmount" => $amount
+//            ];
+//
+//            $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate(
+//                $params,
+//                $this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId()),
+//                $this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())
+//            );
+//            $params["CheckMacValue"] = $checkMacValue;
+//
+//            $this->_logger->info('ecpay-payment | params for ecpay refund action R', $params);
+//            $this->_logger->info('ecpay-payment | HashKey for ecpay refund action R', [$this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId())]);
+//            $this->_logger->info('ecpay-payment | HashIV for ecpay refund action R', [$this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())]);
+//
+//            $this->curl->post($url, $params);
+//            $result = $this->curl->getBody();
+//
+//            $this->_logger->info('ecpay-payment | result for ecpay refund action R', [$result]);
+//
+//            $stringToArray = $this->ecpayResponse($result);
+//
+//            if ($stringToArray["RtnCode"] != 1) {
+//                $this->_logger->critical(__("Ecpay Return Error2 : " . $stringToArray["RtnMsg"]));
+//                throw new EcpayException(__("Ecpay Return Error2 : " . $stringToArray["RtnMsg"]));
+//            }
+//        }
 
         $this->createRefundTransaction($payment, $tradeNo, $rawDetailsInfo);
 
@@ -390,6 +397,47 @@ class Payment extends AbstractMethod
             $resultExplode = explode("=", $value);
             $stringToArray[$resultExplode[0]] = $resultExplode[1];
         }
+        return $stringToArray;
+    }
+
+    /**
+     * @param $merchantId
+     * @param $merchantTradeNo
+     * @param $tradeNo
+     * @param $amount
+     * @param \Magento\Payment\Model\InfoInterface $payment
+     * @param string $action
+     * @return array
+     */
+    public function sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, \Magento\Payment\Model\InfoInterface $payment, $action = "N")
+    {
+        $url = "https://payment.ecpay.com.tw/CreditDetail/DoAction";
+        $params = [
+            "MerchantID" => $merchantId,
+            "MerchantTradeNo" => $merchantTradeNo,
+            "TradeNo" => $tradeNo,
+            "Action" => $action,
+            "TotalAmount" => $amount
+        ];
+
+        $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate(
+            $params,
+            $this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId()),
+            $this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())
+        );
+        $params["CheckMacValue"] = $checkMacValue;
+
+        $this->_logger->info('ECPAY | REFUND PARAM ACTION : ' . $action, $params);
+        $this->_logger->info('ECPAY | REFUND HASHKEY ACTION : ' . $action, [$this->getEcpayConfigFromStore('hash_key', $payment->getOrder()->getStoreId())]);
+        $this->_logger->info('ECPAY | REFUND HASHVI ACTION : ' . $action, [$this->getEcpayConfigFromStore('hash_iv', $payment->getOrder()->getStoreId())]);
+
+        $this->curl->post($url, $params);
+        $result = $this->curl->getBody();
+
+        $this->_logger->info('ECPAY | RESULT ACTION : ' .$action, [$result]);
+
+        $stringToArray = $this->ecpayResponse($result);
+
         return $stringToArray;
     }
 
@@ -748,10 +796,9 @@ class Payment extends AbstractMethod
 
     /**
      * @param \Magento\Payment\Model\InfoInterface $payment
-     * @throws LocalizedException
-     * @throws \Magento\Framework\Exception\FileSystemException
+     * @param $storeId
      */
-    public function invalidateEInvoice(\Magento\Payment\Model\InfoInterface $payment, $storeId): void
+    public function invalidateEInvoice(\Magento\Payment\Model\InfoInterface $payment, $storeId)
     {
         try {
             $sMsg = '';
@@ -777,10 +824,11 @@ class Payment extends AbstractMethod
 
             // 5.返回
             $payment->setData("ecpay_invoice_invalidate_data", json_encode($aReturn_Info));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // 例外錯誤處理。
             $sMsg = $e->getMessage();
-            throw new LocalizedException(__($sMsg));
+            $this->_logger->info("EInvoice Cancel has been Failed : " . $sMsg);
+//            throw new LocalizedException(__($sMsg));
         }
     }
 

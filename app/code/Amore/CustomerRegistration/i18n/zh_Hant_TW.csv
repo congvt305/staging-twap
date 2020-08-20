@@ -3,7 +3,7 @@
 "Please first configure POS APIs properly. Then try again.","請先正確配置POS API。 然後再試一次。"
 "Can not send verification code.","無法發送驗證碼。"
 "The requested membership information is already registered.","此會員帳戶已被註冊，請直接登入會員，謝謝"
-"There is a problem with the requested subscription information. Please contact our CS Center for registration.","請求的訂閱信息有問題。 請聯繫我們的CS中心進行註冊。"
+"There is a problem with the requested subscription information. Please contact our CS Center for registration.","您已是蘭芝台灣的會員，請直接登入，謝謝"
 "Mobile number can not be null or empty","手機號碼不能為空或為空"
 "Mobile number should have only digits","手機號碼只能是數字"
 "Mobile number digits can not be less than %1","手機號碼位數不能少於％1"
