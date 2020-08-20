@@ -37,19 +37,19 @@ class AddressRenderer
      * @param string $type
      * @return array
      */
-    public function beforeFormat(\Magento\Sales\Model\Order\Address\Renderer $subject, Address $address, $type)
-    {
-        if ($address->getAddressType() === 'shipping' && $address->getCvsLocationId() && $this->data->isActive()) {
-            $address->setCity(null);
-            $address->setRegion(null);
-            $address->setPostcode(null);
-            $address->setStreet(null);
-        }
-
-
-        // TODO: Implement plugin method.
-        return [$address, $type];
-    }
+//    public function beforeFormat(\Magento\Sales\Model\Order\Address\Renderer $subject, Address $address, $type)
+//    {
+//        if ($address->getAddressType() === 'shipping' && $address->getCvsLocationId() && $this->data->isActive()) {
+//            $address->setCity(null);
+//            $address->setRegion(null);
+//            $address->setPostcode(null);
+//            $address->setStreet(null);
+//        }
+//
+//
+//        // TODO: Implement plugin method.
+//        return [$address, $type];
+//    }
 
     /**
      * @param \Magento\Sales\Model\Order\Address\Renderer $subject
