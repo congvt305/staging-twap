@@ -18,8 +18,8 @@ $customerAddressView = $block->getData('customer_address');
                     <caption class="table-caption"><?= $block->escapeHtml(__('Additional addresses')) ?></caption>
                     <thead>
                     <tr>
-                        <th scope="col" class="col firstname"><?= $block->escapeHtml(__('First Name')) ?></th>
                         <th scope="col" class="col lastname"><?= $block->escapeHtml(__('Last Name')) ?></th>
+                        <th scope="col" class="col firstname"><?= $block->escapeHtml(__('First Name')) ?></th>
                         <th scope="col" class="col state"><?= $block->escapeHtml(__('State/Province')) ?></th>
                         <th scope="col" class="col city"><?= $block->escapeHtml(__('City')) ?></th>
                         <th scope="col" class="col streetaddress"><?= $block->escapeHtml(__('Street Address')) ?></th>
@@ -32,8 +32,8 @@ $customerAddressView = $block->getData('customer_address');
                     <tbody>
                     <?php foreach ($_pAddsses as $address) : ?>
                         <tr>
-                            <td data-th="<?= $block->escapeHtmlAttr(__('First Name')) ?>" class="col firstname"><?= $block->escapeHtml($address->getFirstname()) ?></td>
                             <td data-th="<?= $block->escapeHtmlAttr(__('Last Name')) ?>" class="col lastname"><?= $block->escapeHtml($address->getLastname()) ?></td>
+                            <td data-th="<?= $block->escapeHtmlAttr(__('First Name')) ?>" class="col firstname"><?= $block->escapeHtml($address->getFirstname()) ?></td>
                             <td data-th="<?= $block->escapeHtmlAttr(__('State/Province')) ?>" class="col state"><?= $block->escapeHtml($address->getRegion()->getRegion()) ?></td>
                             <td data-th="<?= $block->escapeHtmlAttr(__('City')) ?>" class="col city"><?= $block->escapeHtml($address->getCity()) ?></td>
                             <td data-th="<?= $block->escapeHtmlAttr(__('Street Address')) ?>" class="col streetaddress"><?= $block->escapeHtml($block->getStreetAddress($address)) ?></td>
