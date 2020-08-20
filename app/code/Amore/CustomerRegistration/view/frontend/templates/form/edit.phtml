@@ -63,8 +63,7 @@ $notAllowedChar = $viewModel->getNotAllowedCharList();
         <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
             <?= $_dmSubscriptionStatus->setDmSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'dm_subscription_status'))->toHtml() ?>
             <p class="dm-message">
-                <?= $block->escapeHtml(__('To receive mail you should have default billing address')); ?>
-                <a class="add-address-link" href="<?= $block->escapeUrl($viewModel->getAddAddressUrl()) ?>"><span><?= $block->escapeHtml(__('Add Address')) ?></span></a>
+                <?= $block->escapeHtml(__('To receive mail you should have default billing address<a class="add-address-link" href="%1"><span>Add Address.</span></a>', $block->escapeUrl($viewModel->getAddAddressUrl())), ['a']) ?>
             </p>
         <?php endif ?>
 
