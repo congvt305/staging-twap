@@ -137,7 +137,7 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
     }
 
     /**
-     * @param $order
+     * @param  \Magento\Sales\Model\Order $order
      * @return array
      */
     private function buildCreditmemoItems($order)
@@ -145,11 +145,14 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
         $creditmemoItems = [];
         $bundleItemIds = [];
         /** @var OrderItemInterface $orderItem */
+        $myItems = $order->getItems();
         foreach ($order->getItems() as $orderItem) {
             if ($orderItem->getProductType() === 'bundle')
             {
-                $bundleItemIds[] = $orderItem->getItemId();
-                continue;
+                if ($orderItem->isDummy()) {
+                    $bundleItemIds[] = $orderItem->getItemId();
+                    continue;
+                }
             }
             if ($orderItem->getParentItemId()) {
                 continue;
@@ -172,6 +175,7 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
         }
         return $creditmemoItems;
     }
+
 
     /**
      * @param OrderInterface $order
