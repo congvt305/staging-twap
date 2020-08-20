@@ -201,7 +201,7 @@ $_item = null;
                                            class="product photo product-item-photo"
                                            ap-click-area="product"
                                            ap-click-name="prd click"
-                                           ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                                           ap-click-data="<?= $block->escapeHtmlAttr($getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku) ?>">
                                             <?= $block->getImage($_item, $image)->toHtml() ?>
                                         </a>
                                         <div class="product details product-item-details">
@@ -211,7 +211,7 @@ $_item = null;
                                                    href="<?= /* @escapeNotVerified */ $block->escapeUrl($block->getProductUrl($_item)) ?>"
                                                    ap-click-area="product"
                                                    ap-click-name="prd click"
-                                                   ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                                                   ap-click-data="<?= $block->escapeHtmlAttr($getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku) ?>">
                                                     <?= $block->escapeHtml($_item->getName()) ?></a>
                                             </strong>
 

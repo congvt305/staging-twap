@@ -37,7 +37,7 @@ use Magento\Framework\App\Action\Action;
                     <?php $iterator = 1; ?>
                     <?php
                     foreach ($items as $_item) :
-                        $productSku = $_item->getSku();
+                    $productSku = $_item->getSku();
                     ?>
                         <?= /* @noEscape */ ($iterator++ == 1) ? '<li class="product-item">' : '</li><li class="product-item">' ?>
                         <div class="product-item-wrapper">

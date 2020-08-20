@@ -8,6 +8,7 @@ use Magento\Framework\App\Action\Action;
 // phpcs:disable Magento2.Templates.ThisInTemplate
 
 /** @var \Magento\CatalogWidget\Block\Product\ProductsList $block */
+
 ?>
 <?php if ($exist = ($block->getProductCollection() && $block->getProductCollection()->getSize())) : ?>
     <?php
@@ -26,23 +27,35 @@ use Magento\Framework\App\Action\Action;
     <ol class="product-items <?= /* @noEscape */ $type ?>">
         <?php $iterator = 1; ?>
         <?php foreach ($items as $_item) : ?>
+            <?php $productSku = $_item->getSku(); ?>
             <?= /* @noEscape */ ($iterator++ == 1) ? '<li class="product-item">' : '</li><li class="product-item">' ?>
             <div class="product-item-info">
-                <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>" class="product-item-photo">
+                <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
+                   class="product-item-photo"
+                   ap-click-area="product"
+                   ap-click-name="prd click"
+                   ap-click-data="<?= $block->escapeHtmlAttr($block->getProductDefaultName($productSku) . '/' . $productSku); ?>">
                     <?= $block->getImage($_item, $image)->toHtml() ?>
                 </a>
                 <div class="product-item-details">
                     <strong class="product-item-name-en">
                         <a title="<?= $block->escapeHtml($_item->getName()) ?>"
                            href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
-                           class="product-item-link">
+                           class="product-item-link"
+                           ap-click-area="product"
+                           ap-click-name="prd click"
+                           ap-click-data="<?= $block->escapeHtmlAttr($block->getProductDefaultName($productSku) . '/' . $productSku); ?>">
+                        >
                             <?= $block->escapeHtml($_item->getResource()->getAttributeRawValue($_item->getId(),'name',0));?>
                         </a>
                     </strong>
                     <strong class="product-item-name">
                         <a title="<?= $block->escapeHtml($_item->getName()) ?>"
                            href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
-                           class="product-item-link">
+                           class="product-item-link"
+                           ap-click-area="product"
+                           ap-click-name="prd click"
+                           ap-click-data="<?= $block->escapeHtmlAttr($block->getProductDefaultName($productSku) . '/' . $productSku); ?>">
                             <?= $block->escapeHtml($_item->getName()) ?>
                         </a>
                     </strong>
