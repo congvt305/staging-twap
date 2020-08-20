@@ -147,12 +147,11 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
         /** @var OrderItemInterface $orderItem */
         $myItems = $order->getItems();
         foreach ($order->getItems() as $orderItem) {
-            if ($orderItem->getProductType() === 'bundle')
+            //if item is dynamic price type bundle, we have to add children
+            if ($orderItem->getProductType() === 'bundle' && $orderItem->isDummy())
             {
-                if ($orderItem->isDummy()) {
-                    $bundleItemIds[] = $orderItem->getItemId();
-                    continue;
-                }
+                $bundleItemIds[] = $orderItem->getItemId();
+                continue;
             }
             if ($orderItem->getParentItemId()) {
                 continue;
@@ -163,6 +162,7 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
             $creditmemoItem->setQty($orderItem->getQtyInvoiced());
             $creditmemoItems[] = $creditmemoItem;
         }
+        //handle simple items in dynamic price type bundle
         foreach ($order->getItems() as $orderItem) {
             if (!$orderItem->getParentItemId() || !in_array($orderItem->getParentItemId(), $bundleItemIds)) {
                 continue;
