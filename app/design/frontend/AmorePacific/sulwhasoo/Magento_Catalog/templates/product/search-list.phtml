@@ -73,7 +73,7 @@ $getDefault = $block->getData('view_model');
                                tabindex="-1"
                                ap-click-area="product"
                                ap-click-name="prd click"
-                               ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                               ap-click-data="<?= $block->escapeHtmlAttr($getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku) ?>">
                                 <?= $productImage->toHtml() ?>
                             </a>
                             <div class="product details product-item-details">
@@ -109,7 +109,7 @@ $getDefault = $block->getData('view_model');
                                                    type="button"
                                                    ap-click-area="product"
                                                    ap-click-name="prd click"
-                                                   ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                                                   ap-click-data="<?= $block->escapeHtmlAttr($getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku) ?>">
                                                     <span><?= $block->escapeHtml(__('View')) ?></span>
                                                 </a>
                                             <?php endif;?>
