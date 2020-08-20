@@ -30,8 +30,11 @@
                 padding: 15px;
 
                 input {
-                    background-color: @color-white;
                     float: left;
+
+                    &:not(:checked) {
+                        background-color: @color-white;
+                    }
                 }
 
                 label {
@@ -188,12 +191,10 @@
         }
     }
 
-    .account .sidebar-additional {
-        .lib-vendor-prefix-order(0);
-        position: relative;
-        top: -@indent__l;
-
+    .account {
         .line-add-friend {
+            margin-top: -15px;
+            margin-bottom: @indent__l;
             text-align: right;
         }
     }

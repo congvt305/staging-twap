@@ -11,6 +11,7 @@
 
 $cartData = $block->getCartData();
 ?>
+<?php if ($cartData) : ?>
 <script>
     //카트  todo additional AP
     var AP_CART_PRICE = <?= $block->escapeHtml($cartData['apCartPrice'])?>;
@@ -22,4 +23,5 @@ $cartData = $block->getCartData();
         <?php endforeach; ?>
     ];
 </script>
+<?php endif; ?>
 
