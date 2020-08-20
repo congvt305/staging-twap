@@ -22,13 +22,5 @@ $getDefault = $block->getData('view_model');
    ap-click-area="product"
    ap-click-name="prd click"
    ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
-    <span class="flags">
-        <?php if($product->getData('new')):?>
-            <span class="flag new"><?= $product->getResource()->getAttribute('new')->getStoreLabel();?></span>
-        <?php endif;?>
-        <?php if($product->getData('best')):?>
-            <span class="flag best"><?= $product->getResource()->getAttribute('best')->getStoreLabel(); ?></span>
-        <?php endif;?>
-    </span>
     <?= $block->getImage($block->getProductForThumbnail($item), 'wishlist_thumbnail')->toHtml() ?>
 </a>

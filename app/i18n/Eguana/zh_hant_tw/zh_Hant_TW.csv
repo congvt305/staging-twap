@@ -12054,7 +12054,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Orders and Returns","訂單和退貨",module,Magento_Sales
 "Home","首頁",module,Magento_Sales
 "Go to Home Page","回到首頁",module,Magento_Sales
-"You entered incorrect data. Please try again.","You entered incorrect data. Please try again.",module,Magento_Sales
+"You entered incorrect data. Please try again.","你輸入了不正確的數據。 請再試一次。",module,Magento_Sales
 "We can't find this wish list.","我們找不到這個願望清單。",module,Magento_Sales
 "We could not add a product to cart by the ID ""%1"".","We could not add a product to cart by the ID ""%1"".",module,Magento_Sales
 "There is an error in one of the option rows.","There is an error in one of the option rows.",module,Magento_Sales

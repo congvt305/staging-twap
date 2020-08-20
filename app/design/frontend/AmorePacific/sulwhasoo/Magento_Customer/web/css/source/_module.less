@@ -575,6 +575,16 @@
             }
         }
     }
+
+    .form-address-edit {
+        .field.country {
+            & + div {
+                &.message.info {
+                    margin-bottom: @indent__base;
+                }
+            }
+        }
+    }
 }
 
 //
@@ -607,6 +617,18 @@
         .column.main {
             min-height: auto;
             padding-bottom: 0;
+        }
+    }
+
+    .form-address-edit {
+        .field.country {
+            & + div {
+                margin-top: 24px;
+
+                &.message.info {
+                    margin-bottom: @indent__base;
+                }
+            }
         }
     }
 

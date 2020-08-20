@@ -14,12 +14,12 @@ use Magento\Framework\App\Action\Action;
  *
  * @var $block \Magento\Catalog\Block\Product\ListProduct
  * @var $getDefault \Eguana\CustomCatalog\ViewModel\GetDefaultCategory
- *
  */
 ?>
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+
 $getDefault = $block->getData('view_model');
 ?>
 <?php if (!$_productCollection->count()) :?>
@@ -64,7 +64,7 @@ $getDefault = $block->getData('view_model');
                     <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
                        class="product photo product-item-photo"
                        tabindex="-1"
-                       ap-click-area="prds-search"
+                       ap-click-area="product"
                        ap-click-name="prd click"
                        ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
                         <span class="flags">
@@ -89,7 +89,7 @@ $getDefault = $block->getData('view_model');
                         <strong class="product name product-item-name">
                             <a class="product-item-link"
                                href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
-                               ap-click-area="prds-search"
+                               ap-click-area="product"
                                ap-click-name="prd click"
                                ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
                                 <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
