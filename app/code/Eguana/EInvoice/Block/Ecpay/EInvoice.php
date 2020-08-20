@@ -101,19 +101,12 @@ class EInvoice extends \Magento\Framework\View\Element\Template
         $rawDetailsInfo = $additionalInfo["raw_details_info"];
 
         if (json_decode($additionalData, true)["RtnCode"] == 1
-            && !empty($rawDetailsInfo["ecpay_einvoice_title"])
             && !empty($rawDetailsInfo["ecpay_einvoice_tax_id_number"])
         ) {
             return $rawDetailsInfo;
         } else {
             return null;
         }
-    }
-
-    public function getEInvoiceTitle($orderId)
-    {
-        $eInvoiceTriplicateInformation = $this->getEInvoiceTriplicateInformation($orderId);
-        return $eInvoiceTriplicateInformation["ecpay_einvoice_title"];
     }
 
     public function getEInvoiceTaxIdNumber($orderId)

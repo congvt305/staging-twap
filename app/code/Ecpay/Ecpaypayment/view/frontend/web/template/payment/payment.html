@@ -63,9 +63,9 @@
                         <label for="triplicate-invoice" class="label" data-bind="i18n: 'Triplicate Invoice'"/>
                         <div class="fieldset" id="triplicate-invoice-contents" data-bind="visible: invoiceChecked() === 'triplicate-invoice'">
                             <div class="field">
-                                <label for="invoice_title" class="label" data-bind="i18n: 'Invoice Title'"/>
+                                <label for="tax_id_number" class="label" data-bind="i18n: 'Tax ID Number'"/>
                                 <div class="control">
-                                    <input type="text" data-bind="attr: {placeholder: $t('Invoice Title')}" name="invoice_title" data-validate='{"maxlength":255}' value="" title="Invoice Title" class="input-text invoice-title" id="invoice_title">
+                                    <input type="text" name="tax_id_number" data-validate='{"maxlength":255}' value="" title="Tax ID Number" class="input-text tax_id_number" id="tax_id_number">
                                 </div>
                             </div>
                         </div>
