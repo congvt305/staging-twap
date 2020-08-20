@@ -51,7 +51,7 @@ $getDefault = $block->getData('view_model');
             <li class="item product product-item">
                 <div class="product-item-info" data-container="product-<?= /* @noEscape */ $viewMode ?>">
                     <?php /* @noEscape */ $productName = $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
-                    <?php $productSku = $_product->getSku() ?>
+                    <?php /* @noEscape */ $productSku = $_product->getSku() ?>
                     <?php
                     $productImage = $block->getImage($_product, $imageDisplayArea);
                     $productHoverImage = $block->getImage($_product, 'hover_image');
@@ -66,7 +66,7 @@ $getDefault = $block->getData('view_model');
                        tabindex="-1"
                        ap-click-area="product"
                        ap-click-name="prd click"
-                       ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                       ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
                         <span class="flags">
                         <?php if($_product->getData('new')):?>
                             <span class="flag new"><?= $block->escapeHtml($_product->getResource()->getAttribute('new')->getStoreLabel());?></span>
@@ -91,7 +91,7 @@ $getDefault = $block->getData('view_model');
                                href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
                                ap-click-area="product"
                                ap-click-name="prd click"
-                               ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                               ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
                                 <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a>
                         </strong>

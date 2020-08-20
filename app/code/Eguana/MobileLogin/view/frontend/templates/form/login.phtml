@@ -43,9 +43,9 @@
                                 class="action login primary"
                                 name="send"
                                 id="send2"
-                                ap-click-area="<?= $block->escapeHtmlAttr(__('Login')) ?>"
-                                ap-click-name="<?= $block->escapeHtmlAttr(__('Login Click')) ?>"
-                                ap-click-data="<?= $block->escapeHtmlAttr(__('General Login')) ?>">
+                                ap-click-area="<?= $block->escapeHtmlAttr('Login') ?>"
+                                ap-click-name="<?= $block->escapeHtmlAttr('Login Click') ?>"
+                                ap-click-data="<?= $block->escapeHtmlAttr('General Login') ?>">
                             <span>
                                 <?= $block->escapeHtml(__('Login')) ?>
                             </span>
@@ -54,7 +54,7 @@
                     <div class="secondary">
                         <a class="action remind"
                            href="<?= $block->escapeUrl($block->getForgotPasswordUrl()) ?>"
-                           ap-click-data="<?= $block->escapeHtmlAttr(__('Forgot Your Password?')) ?>">
+                           ap-click-data="<?= $block->escapeHtmlAttr('Forgot Password') ?>">
                             <span><?= $block->escapeHtml(__('Forgot Your Password?')) ?></span>
                         </a>
                         <?= $block->getChildHtml('customer.new') ?>

@@ -21,6 +21,6 @@ $getDefault = $block->getData('view_model');
    title="<?= $block->escapeHtmlAttr($product->getName()) ?>"
    ap-click-area="product"
    ap-click-name="prd click"
-   ap-click-data="<?= $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+   ap-click-data="<?= $block->escapeHtmlAttr($getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku) ?>">
     <?= $block->getImage($block->getProductForThumbnail($item), 'wishlist_thumbnail')->toHtml() ?>
 </a>

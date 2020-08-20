@@ -40,10 +40,10 @@ use Magento\Framework\App\Action\Action;
                         <?= /* @noEscape */ ($iterator++ == 1) ? '<li class="product-item">' : '</li><li class="product-item">' ?>
                         <div class="product-item-info">
                             <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
-                               ap-click-area="prds-<?= $block->getProductDefaultName($productSku) ?>"
+                                class="product-item-photo"
+                               ap-click-area="product"
                                ap-click-name="prd click"
-                               ap-click-data="<?= $block->getProductDefaultName($productSku) . '/' . $productSku ?>"
-                                class="product-item-photo">
+                               ap-click-data="<?= $block->escapeHtmlAttr($block->getProductDefaultName($productSku) . '/' . $productSku); ?>">
                                 <span class="flags">
                                     <?php if($_item->getData('new')):?>
                                         <span class="flag new"><?= $block->escapeHtml($_item->getResource()->getAttribute('new')->getStoreLabel());?></span>
@@ -58,10 +58,10 @@ use Magento\Framework\App\Action\Action;
                                 <strong class="product-item-name">
                                     <a title="<?= $block->escapeHtmlAttr($_item->getName()) ?>"
                                        href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
-                                       ap-click-area="prds-<?= $block->getProductDefaultName($productSku) ?>"
+                                       class="product-item-link"
+                                       ap-click-area="product"
                                        ap-click-name="prd click"
-                                       ap-click-data="<?= $block->getProductDefaultName($productSku) . '/' . $productSku ?>"
-                                       class="product-item-link">
+                                       ap-click-data="<?= $block->escapeHtmlAttr($block->getProductDefaultName($productSku) . '/' . $productSku); ?>">
                                         <?= $block->escapeHtml($_item->getName()) ?>
                                     </a>
                                 </strong>
