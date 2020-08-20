@@ -143,9 +143,25 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
     private function buildCreditmemoItems($order)
     {
         $creditmemoItems = [];
+        $bundleItemIds = [];
         /** @var OrderItemInterface $orderItem */
         foreach ($order->getItems() as $orderItem) {
+            if ($orderItem->getProductType() === 'bundle')
+            {
+                $bundleItemIds[] = $orderItem->getItemId();
+                continue;
+            }
             if ($orderItem->getParentItemId()) {
+                continue;
+            }
+            /** @var CreditmemoItemInterface $creditmemoItem */
+            $creditmemoItem = $this->creditmemoItemFactory->create();
+            $creditmemoItem->setOrderItemId($orderItem->getItemId());
+            $creditmemoItem->setQty($orderItem->getQtyInvoiced());
+            $creditmemoItems[] = $creditmemoItem;
+        }
+        foreach ($order->getItems() as $orderItem) {
+            if (!$orderItem->getParentItemId() || !in_array($orderItem->getParentItemId(), $bundleItemIds)) {
                 continue;
             }
             /** @var CreditmemoItemInterface $creditmemoItem */
