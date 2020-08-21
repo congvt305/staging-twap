@@ -202,5 +202,23 @@
                 </action>
             </block>
         </referenceContainer>
+        <referenceBlock name="skip_gallery_before" remove="true"/>
+        <referenceBlock name="skip_gallery_after" remove="true"/>
+        <referenceContainer name="skip_gallery_before.wrapper">
+            <block class="Magento\Framework\View\Element\Template" name="skip_gallery_before" template="Magento_Theme::html/skip.phtml">
+                <arguments>
+                    <argument name="target" xsi:type="string">gallery-next-area</argument>
+                    <argument name="label" translate="true" xsi:type="string">Skip to the end of the images gallery</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="skip_gallery_after.wrapper">
+            <block class="Magento\Framework\View\Element\Template" name="skip_gallery_after" template="Magento_Theme::html/skip.phtml">
+                <arguments>
+                    <argument name="target" xsi:type="string">gallery-prev-area</argument>
+                    <argument name="label" translate="true" xsi:type="string">Skip to the beginning of the images gallery</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
     </body>
 </page>
