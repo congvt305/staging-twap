@@ -407,16 +407,10 @@ class SapOrderManagement implements SapOrderManagementInterface
 
                                 $this->setQtyShipToOrderItem($order);
 
-                                if ($order->getStatus() == 'complete') {
-                                    $order->setStatus('shipment_processing');
-                                    $order->setData('sap_response', $orderStatusData['ugtxt']);
-                                    $this->orderRepository->save($order);
-                                } else {
-                                    $order->setState('complete');
-                                    $order->setStatus('shipment_processing');
-                                    $order->setData('sap_response', $orderStatusData['ugtxt']);
-                                    $this->orderRepository->save($order);
-                                }
+                                $order->setState('complete');
+                                $order->setStatus('shipment_processing');
+                                $order->setData('sap_response', $orderStatusData['ugtxt']);
+                                $this->orderRepository->save($order);
 
                                 $message = "Order already has a shipment. Order Status changed to Shipment Processing.";
                                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
