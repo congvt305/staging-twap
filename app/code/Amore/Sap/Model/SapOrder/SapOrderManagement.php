@@ -8,6 +8,7 @@
 
 namespace Amore\Sap\Model\SapOrder;
 
+use Amore\Sap\Api\Data\SapOrderStatusInterface;
 use Amore\Sap\Api\SapOrderManagementInterface;
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Source\Config;
@@ -244,18 +245,8 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
                 $this->orderRepository->save($order);
             }
-            $this->eventManager->dispatch(
-                "eguana_bizconnect_operation_processed",
-                [
-                    'topic_name' => 'amore.sap.order.status.success',
-                    'direction' => 'incoming',
-                    'to' => "Magento",
-                    'serialized_data' => $this->json->serialize($parameters),
-                    'status' => 1,
-                    'result_message' => $this->json->serialize($result)
-                ]
-            );
 
+            $this->operationLogWriter($parameters, $result, $orderStatusData, 'amore.sap.order.status.success');
             return $result;
         }
 
@@ -263,7 +254,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         if ($orderStatusData['odrstat'] == 2) {
             if (strpos($incrementId, "R") !== false) {
                 $message = "Order Return Does not created in SAP.";
-                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
 
                 $rmaIncrementId = str_replace("R", "", $incrementId);
                 /** @var \Magento\Rma\Model\Rma $rma */
@@ -277,7 +268,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                 }
             } else {
                 $message = "Order Does not created in SAP.";
-                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
 
                 $order = $this->getOrderFromList($incrementId);
 
@@ -287,17 +278,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                 $this->orderRepository->save($order);
             }
-            $this->eventManager->dispatch(
-                "eguana_bizconnect_operation_processed",
-                [
-                    'topic_name' => 'amore.sap.order.status.fail',
-                    'direction' => 'incoming',
-                    'to' => "Magento",
-                    'serialized_data' => $this->json->serialize($parameters),
-                    'status' => 0,
-                    'result_message' => $this->json->serialize($result)
-                ]
-            );
+            $this->operationLogWriter($parameters, $result, $orderStatusData, 'amore.sap.order.status.fail');
             return $result;
         }
 
@@ -330,17 +311,8 @@ class SapOrderManagement implements SapOrderManagementInterface
                     $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
                 }
             }
-            $this->eventManager->dispatch(
-                "eguana_bizconnect_operation_processed",
-                [
-                    'topic_name' => 'amore.sap.order.status.dn',
-                    'direction' => 'incoming',
-                    'to' => "Magento",
-                    'serialized_data' => $this->json->serialize($parameters),
-                    'status' => $result[$orderStatusData['odrno']]['code'] == "0000" ? 1 : 0,
-                    'result_message' => $this->json->serialize($result)
-                ]
-            );
+
+            $this->operationLogWriter($parameters, $result, $orderStatusData, 'amore.sap.order.status.dn');
             return $result;
         }
 
@@ -386,18 +358,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 $this->orderRepository->save($order);
                                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
 
-                                $this->eventManager->dispatch(
-                                    "eguana_bizconnect_operation_processed",
-                                    [
-                                        'topic_name' => 'amore.sap.order.status.gi',
-                                        'direction' => 'incoming',
-                                        'to' => "Magento",
-                                        'serialized_data' => $this->json->serialize($parameters),
-                                        'status' => $result[$orderStatusData['odrno']]['code'] == "0000" ? 1 : 0,
-                                        'result_message' => $this->json->serialize($result)
-                                    ]
-                                );
-
+                                $this->operationLogWriter($parameters, $result, $orderStatusData, 'amore.sap.order.status.gi');
                                 return $result;
                             }
 
@@ -426,17 +387,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 }
 
                                 if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                    try {
-                                        $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
-                                        $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
-                                        if ($this->config->getLoggingCheck()) {
-                                            $this->logger->info('EINVOICE ISSUE RESULT');
-                                            $this->logger->info($this->json->serialize($ecpayInvoiceResult));
-                                        }
-                                    } catch (\Exception $exception) {
-                                        $result[$orderStatusData['odrno']]['code'] = "0001";
-                                        $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
-                                    }
+                                    $result = $this->CreateEInvoice($order, $orderStatusData, $result);
                                 }
                             }
                         } else {
@@ -477,13 +428,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                             }
 
                             if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                try {
-                                    $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
-                                    $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
-                                } catch (\Exception $exception) {
-                                    $result[$orderStatusData['odrno']]['code'] = "0001";
-                                    $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
-                                }
+                                $result = $this->CreateEInvoice($order, $orderStatusData, $result);
                             }
                         } else {
                             /** @var \Magento\Sales\Model\Order\Shipment\Track $track */
@@ -498,22 +443,18 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 $message = "Shipping method is not Greenworld and Trackin number is changed.";
                                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
 
+                                if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                                    $result = $this->CreateEInvoice($order, $orderStatusData, $result);
+                                }
 
-                                $this->eventManager->dispatch(
-                                    "eguana_bizconnect_operation_processed",
-                                    [
-                                        'topic_name' => 'amore.sap.order.status.gi',
-                                        'direction' => 'incoming',
-                                        'to' => "Magento",
-                                        'serialized_data' => $this->json->serialize($parameters),
-                                        'status' => $result[$orderStatusData['odrno']]['code'] == "0000" ? 1 : 0,
-                                        'result_message' => $this->json->serialize($result)
-                                    ]
-                                );
+                                $this->operationLogWriter($parameters, $result, $orderStatusData, 'amore.sap.order.status.gi');
 
                                 return $result;
                             }
 
+                            if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                                $result = $this->CreateEInvoice($order, $orderStatusData, $result);
+                            }
                             $message = "Shipping method is not Greenworld and Shipment exists. Please Check Order.";
                             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                         }
@@ -523,17 +464,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                     $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                 }
             }
-            $this->eventManager->dispatch(
-                "eguana_bizconnect_operation_processed",
-                [
-                    'topic_name' => 'amore.sap.order.status.gi',
-                    'direction' => 'incoming',
-                    'to' => "Magento",
-                    'serialized_data' => $this->json->serialize($parameters),
-                    'status' => $result[$orderStatusData['odrno']]['code'] == "0000" ? 1 : 0,
-                    'result_message' => $this->json->serialize($result)
-                ]
-            );
+            $this->operationLogWriter($parameters, $result, $orderStatusData, 'amore.sap.order.status.gi');
 
             return $result;
         }
@@ -841,5 +772,48 @@ class SapOrderManagement implements SapOrderManagementInterface
             $statuses[$rmaItem->getId()] = 'received';
         }
         return $statuses;
+    }
+
+    /**
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
+     * @param SapOrderStatusInterface $orderStatusData
+     * @param array $result
+     * @return array
+     */
+    public function CreateEInvoice(\Magento\Sales\Api\Data\OrderInterface $order, SapOrderStatusInterface $orderStatusData, array $result)
+    {
+        try {
+            $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
+            $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
+            if ($this->config->getLoggingCheck()) {
+                $this->logger->info('EINVOICE ISSUE RESULT');
+                $this->logger->info($this->json->serialize($ecpayInvoiceResult));
+            }
+        } catch (\Exception $exception) {
+            $result[$orderStatusData['odrno']]['code'] = "0001";
+            $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
+        }
+        return $result;
+    }
+
+    /**
+     * @param array $parameters
+     * @param array $result
+     * @param SapOrderStatusInterface $orderStatusData
+     * @param string $topicName
+     */
+    public function operationLogWriter(array $parameters, array $result, SapOrderStatusInterface $orderStatusData, $topicName)
+    {
+        $this->eventManager->dispatch(
+            "eguana_bizconnect_operation_processed",
+            [
+                'topic_name' => $topicName,
+                'direction' => 'incoming',
+                'to' => "Magento",
+                'serialized_data' => $this->json->serialize($parameters),
+                'status' => $result[$orderStatusData['odrno']]['code'] == "0000" ? 1 : 0,
+                'result_message' => $this->json->serialize($result)
+            ]
+        );
     }
 }
