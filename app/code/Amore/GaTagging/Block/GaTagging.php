@@ -210,7 +210,6 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $orderData['AP_PURCHASE_COUPON'] = intval($order->getSubtotal());
         $orderData['AP_PURCHASE_ORDERNUM'] = intval($order->getSubtotal());
         $orderData['AP_PURCHASE_SHIPPING'] = intval($order->getSubtotal());
-        $orderData['apCartDiscount'] = $orderData['apCartProdPrice'] - $orderData['apCartPrice'];
         foreach ($allItems as $item) {
             if ($item->getProductType() !== 'simple') {
                 continue;
