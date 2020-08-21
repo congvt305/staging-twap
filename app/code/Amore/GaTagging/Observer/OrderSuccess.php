@@ -25,18 +25,16 @@ class OrderSuccess implements ObserverInterface
     }
 
     /**
+     *  fired from \Magento\Checkout\Controller\Onepage\Success::execute
      * @param Observer $observer
      * @return void
      */
     public function execute(Observer $observer)
     {
-        $orderIds = $observer->getEvent()->getOrderIds();
-        if (empty($orderIds) || !is_array($orderIds)) {
-            return;
-        }
+        $order = $observer->getEvent()->getOrder();
         $block = $this->layout->getBlock('amore_gatagging');
         if ($block) {
-            $block->setOrderIds($orderIds);
+            $block->setOrder($order);
         }
     }
 }

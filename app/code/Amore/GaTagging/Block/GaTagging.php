@@ -151,11 +151,6 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         return '가입완료';
     }
 
-    public function getCartPrice()
-    {
-
-    }
-
     public function getCartData()
     {
         //\Magento\GoogleTagManager\Block\ListJson::getCartContent
@@ -183,6 +178,52 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         }
         return $cartData;
     }
+    public function getOrderData()
+    {
+        $orderData = [
+            'AP_PURCHASE_PRICE' => '',
+            'AP_PURCHASE_PRDPRICE' => '',
+            'AP_PURCHASE_DCTOTAL' => '',
+            'AP_PURCHASE_DCBASIC' => '',
+            'AP_PURCHASE_COUPON' => '',
+            'AP_PURCHASE_MEMBERSHIP' => '',
+            'AP_PURCHASE_GIFTCARD' => '',
+            'AP_PURCHASE_POINT' => '',
+            'AP_PURCHASE_ONLINEGIFT' => '',
+            'AP_PURCHASE_ORDERNUM' => '',
+            'AP_PURCHASE_BEAUTYACC' => '',
+            'AP_PURCHASE_SHIPPING' => '',
+            'AP_PURCHASE_TYPE' => '',
+            'AP_PURCHASE_COUPONNAME' => '',
+            'AP_PURCHASE_PRDS' => []
+        ];
+        /** @var \Magento\Sales\Model\Order $order */
+        $order = $this->getOrder();
+        $allItems = $order->getAllItems();
+        if (count($allItems) < 1) {
+            return $orderData;
+        }
+        $orderData['AP_PURCHASE_PRICE'] = intval($order->getSubtotal());
+        $orderData['AP_PURCHASE_PRDPRICE'] = intval($order->getSubtotal());
+        $orderData['AP_PURCHASE_DCTOTAL'] = intval($order->getSubtotal());
+        $orderData['AP_PURCHASE_DCBASIC'] = intval($order->getSubtotal());
+        $orderData['AP_PURCHASE_COUPON'] = intval($order->getSubtotal());
+        $orderData['AP_PURCHASE_ORDERNUM'] = intval($order->getSubtotal());
+        $orderData['AP_PURCHASE_SHIPPING'] = intval($order->getSubtotal());
+        $orderData['apCartDiscount'] = $orderData['apCartProdPrice'] - $orderData['apCartPrice'];
+        foreach ($allItems as $item) {
+            if ($item->getProductType() !== 'simple') {
+                continue;
+            }
+            $orderData['AP_PURCHASE_PRDS'][] = $this->jsonSerializer->serialize($this->formatProduct($item));
+        }
+        return $orderData;
+        
+        
+        
+        
+    }
+    
 
     private function getCheckoutSession()
     {
@@ -206,7 +247,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $product['sapcode'] = $item->getSku();
         $product['brand'] = $this->helper->getSiteName() ?? '';
         $product['prdprice'] = intval($item->getProduct()->getPrice());
-//        $product['price'] = intval($product['prdprice'] - $item->getDiscountCalculationPrice());
+        $product['discalprice'] = intval($item->getDiscountCalculationPrice());  //test value
         $product['price'] = intval($product['prdprice'] - $item->getDiscountAmount());
         $product['quantity'] = $item->getQty();
         $product['variant'] = '';
@@ -217,13 +258,13 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param \Magento\Quote\Model\Quote\Item[] $allItems
+     * @param \Magento\Quote\Model\Quote\Item[] | \Magento\Sales\Model\Order\Item[] $allItems
      */
     protected function getOriginalTotal($allItems)
     {
         $dynamicBundleItemIds = [];
         $total = 0;
-        /** @var \Magento\Quote\Model\Quote\Item $item */
+        /** @var \Magento\Quote\Model\Quote\Item | \Magento\Sales\Model\Order\Item$item */
         foreach ($allItems as $item) {
             //dynamic bundle
             if ($item->getProductType() === 'bundle' && $item->getTaxPercent() === null)
@@ -234,13 +275,13 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             if ($item->getParentItemId()) {
                 continue;
             }
-            $total += $item->getPrice() * $item->getQty();
+            $total += $item->getProduct()->getPrice() * $item->getQty();
         }
         foreach ($allItems as $item) {
             if (!$item->getParentItemId() || !in_array($item->getParentItemId(), $dynamicBundleItemIds)) {
                 continue;
             }
-            $total += $item->getPrice() * $item->getQty();
+            $total += $item->getProduct()->getPrice() * $item->getQty();
         }
         return $total;
     }
