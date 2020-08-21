@@ -29,7 +29,7 @@ $orderData = $block->getOrderData();
     var AP_PURCHASE_TYPE = ""; // ??
     var AP_PURCHASE_COUPONNAME = ""; //??
     var AP_PURCHASE_PRDS = [
-        <?php foreach($orderData['apCartProds'] as $prod) : ?>
+        <?php foreach($orderData['AP_PURCHASE_PRDS'] as $prod) : ?>
         <?= $prod ?>,
         <?php endforeach; ?>
     ];
