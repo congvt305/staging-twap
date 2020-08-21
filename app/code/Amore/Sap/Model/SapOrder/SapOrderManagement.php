@@ -402,9 +402,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 $trackingNumber = $track->getTrackNumber();
 
                                 if ($trackingNumber != $orderStatusData['ztrackId']) {
-                                    $trackById = $this->shipmentTrackRepository->get($track->getEntityId());
-                                    $trackById->setTrackNumber($orderStatusData['ztrackId']);
-                                    $this->shipmentTrackRepository->save($trackById);
+                                    $this->UpdateTrackNo($track, $orderStatusData['ztrackId']);
                                 }
 
                                 $this->setQtyShipToOrderItem($order);
@@ -436,9 +434,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                             $trackingNumber = $track->getTrackNumber();
 
                             if ($trackingNumber != $orderStatusData['ztrackId']) {
-                                $trackById = $this->shipmentTrackRepository->get($track->getEntityId());
-                                $trackById->setTrackNumber($orderStatusData['ztrackId']);
-                                $this->shipmentTrackRepository->save($trackById);
+                                $this->UpdateTrackNo($track, $orderStatusData['ztrackId']);
 
                                 $message = "Shipping method is not Greenworld and Trackin number is changed.";
                                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
@@ -815,5 +811,17 @@ class SapOrderManagement implements SapOrderManagementInterface
                 'result_message' => $this->json->serialize($result)
             ]
         );
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order\Shipment\Track $track
+     * @param $trackNo
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     */
+    public function UpdateTrackNo(\Magento\Sales\Model\Order\Shipment\Track $track, $trackNo)
+    {
+        $trackById = $this->shipmentTrackRepository->get($track->getEntityId());
+        $trackById->setTrackNumber($trackNo);
+        $this->shipmentTrackRepository->save($trackById);
     }
 }
