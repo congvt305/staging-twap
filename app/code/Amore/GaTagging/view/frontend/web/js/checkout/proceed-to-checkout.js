@@ -1,6 +1,5 @@
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * 2.4 트랜잭션 구매하기 버튼 (장바구니)
  */
 
 define([

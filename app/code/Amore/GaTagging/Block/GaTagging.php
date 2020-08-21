@@ -159,17 +159,26 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     public function getCartData()
     {
         //\Magento\GoogleTagManager\Block\ListJson::getCartContent
-        $cartData = [];
+        $cartData = [
+            'apCartPrice' => '',
+            'apCartProdPrice' => '',
+            'apCartDiscount' => '',
+            'apCartProds' => [],
+
+        ];
         $quote = $this->getCheckoutSession()->getQuote();
-        $visibleItems = $quote->getAllVisibleItems();
-        if (count($visibleItems) < 1) {
-            return false;
+        /** @var \Magento\Quote\Model\Quote\Item[] $allItems */
+        $allItems = $quote->getAllItems();
+        if (count($allItems) < 1) {
+            return $cartData;
         }
         $cartData['apCartPrice'] = intval($quote->getSubtotalWithDiscount());
-        $cartData['apCartProdPrice'] = intval($quote->getSubTotal());
+        $cartData['apCartProdPrice'] = intval($this->getOriginalTotal($allItems)); //here to fix, calculate original price
         $cartData['apCartDiscount'] = $cartData['apCartProdPrice'] - $cartData['apCartPrice'];
-        $visibleItems = $quote->getAllVisibleItems();
-        foreach ($visibleItems as $item) {
+        foreach ($allItems as $item) {
+            if ($item->getProductType() !== 'simple') {
+                continue;
+            }
             $cartData['apCartProds'][] = $this->jsonSerializer->serialize($this->formatProduct($item));
         }
         return $cartData;
@@ -182,14 +191,58 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         }
         return $this->checkoutSession;
     }
+
+    /**
+     * @param \Magento\Quote\Model\Quote\Item $item
+     * @return array
+     */
     private function formatProduct($item)
     {
+        $product = $item->getProduct();
+        $sku = $product->getSku();
         $product = [];
-        $product['id'] = $item->getSku();
         $product['name'] = $item->getName();
-        $product['price'] = $item->getPrice();
-        $product['qty'] = $item->getQty();
+        $product['code'] = $item->getSku();
+        $product['sapcode'] = $item->getSku();
+        $product['brand'] = $this->helper->getSiteName() ?? '';
+        $product['prdprice'] = intval($item->getProduct()->getPrice());
+//        $product['price'] = intval($product['prdprice'] - $item->getDiscountCalculationPrice());
+        $product['price'] = intval($product['prdprice'] - $item->getDiscountAmount());
+        $product['quantity'] = $item->getQty();
+        $product['variant'] = '';
+        $product['promotion'] = '';
+        $product['cate'] = '';
+        $product['catecode'] = '';
         return $product;
+    }
+
+    /**
+     * @param \Magento\Quote\Model\Quote\Item[] $allItems
+     */
+    protected function getOriginalTotal($allItems)
+    {
+        $dynamicBundleItemIds = [];
+        $total = 0;
+        /** @var \Magento\Quote\Model\Quote\Item $item */
+        foreach ($allItems as $item) {
+            //dynamic bundle
+            if ($item->getProductType() === 'bundle' && $item->getTaxPercent() === null)
+            {
+                $dynamicBundleItemIds[] = $item->getItemId();
+                continue;
+            }
+            if ($item->getParentItemId()) {
+                continue;
+            }
+            $total += $item->getPrice() * $item->getQty();
+        }
+        foreach ($allItems as $item) {
+            if (!$item->getParentItemId() || !in_array($item->getParentItemId(), $dynamicBundleItemIds)) {
+                continue;
+            }
+            $total += $item->getPrice() * $item->getQty();
+        }
+        return $total;
     }
 
 
