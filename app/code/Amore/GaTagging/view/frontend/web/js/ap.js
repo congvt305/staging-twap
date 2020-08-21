@@ -25,7 +25,6 @@ define([
             window.AP_DATA_CD = sectionData()['AP_DATA_CD'];
             window.AP_DATA_CG = sectionData()['AP_DATA_CG'];
             window.AP_DATA_CT = sectionData()['AP_DATA_CT'];
-            notify(config.eventName);
         } else {
             window.AP_DATA_GCID = '';
             window.AP_DATA_CID = '';
@@ -37,5 +36,6 @@ define([
             window.AP_DATA_CG = '';
             window.AP_DATA_CT = '';
         }
+        notify(config.eventName);
     };
 });
