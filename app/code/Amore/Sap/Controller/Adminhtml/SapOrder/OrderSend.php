@@ -116,6 +116,7 @@ class OrderSend extends AbstractAction
                     foreach ($outdata as $data) {
                         if ($data['retcod'] == 'S') {
                             $order->setStatus('sap_processing');
+                            $order->setState('processing');
                             if ($orderSendCheck == 0 || $orderSendCheck == 2) {
                                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_RESENT_TO_SAP_SUCCESS);
                             } else {
@@ -124,6 +125,7 @@ class OrderSend extends AbstractAction
                             $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                         } else {
                             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                            $order->setState('processing');
                             $this->messageManager->addErrorMessage(
                                 __(
                                     'Error returned from SAP for order %1. Error code : %2. Message : %3',
@@ -136,6 +138,7 @@ class OrderSend extends AbstractAction
                     }
                 } else {
                     $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                    $order->setState('processing');
                     $this->messageManager->addErrorMessage(
                         __(
                             'Error returned from SAP for order %1. Error code : %2. Message : %3',
@@ -147,6 +150,7 @@ class OrderSend extends AbstractAction
                 }
             } else {
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                $order->setState('processing');
                 $this->messageManager->addErrorMessage(
                     __('Something went wrong while sending order data to SAP. No response')
                 );

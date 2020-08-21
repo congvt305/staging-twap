@@ -152,7 +152,7 @@
                 .lib-css(text-decoration, @navigation-level0-item__text-decoration);
                 display: block;
                 font-weight: @submenu__font-weight;
-                padding: @submenu__padding-top @submenu__padding-right @submenu__padding-bottom @submenu__padding-left;
+                padding: @submenu__padding-top @submenu__padding-right @submenu__padding-bottom @indent__l;
             }
 
             .header.links {
@@ -184,6 +184,10 @@
                     );
 
                 }
+            }
+
+            & + .store.links {
+                display: none;
             }
         }
 
