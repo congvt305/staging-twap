@@ -32,7 +32,7 @@ class OrderSuccess implements ObserverInterface
     public function execute(Observer $observer)
     {
         $order = $observer->getEvent()->getOrder();
-        $block = $this->layout->getBlock('amore_gatagging');
+        $block = $this->layout->getBlock('ap_onepage_success');
         if ($block) {
             $block->setOrder($order);
         }
