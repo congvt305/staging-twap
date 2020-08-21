@@ -34,5 +34,16 @@
                    ifconfig="amore_gatagging/tagmanager/active"
                    template="Amore_GaTagging::common/ap-cart-js.phtml" />
         </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <!-- page_ready 이벤트 트리거 (customer AP) -->
+            <block name="amore_tagging_common_pageready"
+                   ifconfig="amore_gatagging/tagmanager/active"
+                   after="-"
+                   template="Amore_GaTagging::common/customer-ap-datalayer-push.phtml" >
+                <arguments>
+                    <argument name="event_name" xsi:type="string">page_ready</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
     </body>
 </page>
