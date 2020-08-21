@@ -57,10 +57,8 @@ class ApData implements SectionSourceInterface
             'AP_DATA_CG' => $customer->getGender() ? $customer->getGender() : '',
 //            'AP_DATA_CT' => $customer->getGroupId(), //todo get customer group name
             'AP_DATA_CT' => '', //todo get customer group name
-           // 'AP_DATA_SITENAME' => '',
            // 'AP_DATA_CHANNEL' => '',
            // 'AP_DATA_PAGENAME' => '',
-           // 'AP_DATA_PAGETYPE' => '',
            // 'AP_DATA_BREAD' => '',
         ];
     }

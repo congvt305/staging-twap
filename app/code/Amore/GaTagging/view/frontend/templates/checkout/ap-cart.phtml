@@ -14,9 +14,9 @@ $cartData = $block->getCartData();
 <?php if ($cartData) : ?>
 <script>
     //카트  todo additional AP
-    var AP_CART_PRICE = <?= $block->escapeHtml($cartData['apCartPrice'])?>;
-    var AP_CART_PRDPRICE = <?= $block->escapeHtml($cartData['apCartProdPrice'])?>;
-    var AP_CART_DISCOUNT = <?= $block->escapeHtml($cartData['apCartDiscount'])?>;
+    var AP_CART_PRICE = '<?= $block->escapeHtml($cartData['apCartPrice'])?>';
+    var AP_CART_PRDPRICE = '<?= $block->escapeHtml($cartData['apCartProdPrice'])?>';
+    var AP_CART_DISCOUNT = '<?= $block->escapeHtml($cartData['apCartDiscount'])?>';
     var AP_CART_PRDS = [
         <?php foreach($cartData['apCartProds'] as $prod) : ?>
         <?= $prod ?>,

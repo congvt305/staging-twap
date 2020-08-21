@@ -1,3 +1,4 @@
+// 2.4 트랜잭션 주문결제 결제하기 버튼
 define([
     'jquery',
     'mage/utils/wrapper',
