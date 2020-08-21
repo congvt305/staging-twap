@@ -239,6 +239,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
 
                 $order->setStatus('sap_success');
+                $order->setState('processing');
                 $order->setData('sap_response', $orderStatusData['ugtxt']);
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
                 $this->orderRepository->save($order);
@@ -281,6 +282,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $order = $this->getOrderFromList($incrementId);
 
                 $order->setStatus('sap_fail');
+                $order->setState('processing');
                 $order->setData('sap_response', $orderStatusData['ugtxt']);
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                 $this->orderRepository->save($order);
@@ -315,20 +317,13 @@ class SapOrderManagement implements SapOrderManagementInterface
             } else {
                 $order = $this->getOrderFromList($incrementId);
                 try {
-                    if ($order->getStatus() == "sap_success" || $order->getStatus() == 'processing' || $order->getStatus() == 'sap_fail') {
-                        $order->setStatus('preparing');
-                        $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
-                        $order->setData('sap_response', $orderStatusData['ugtxt']);
-                        $this->orderRepository->save($order);
-                        $message = "Order status changed to preparing successfully.";
-                        $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
-                    } else {
-                        $message = "Order status is not proper status. Please check the order.";
-
-                        $order->setData('sap_response', $message);
-                        $this->orderRepository->save($order);
-                        $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-                    }
+                    $order->setStatus('preparing');
+                    $order->setState('processing');
+                    $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                    $order->setData('sap_response', $orderStatusData['ugtxt']);
+                    $this->orderRepository->save($order);
+                    $message = "Order status changed to preparing successfully.";
+                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
                 } catch (\Exception $exception) {
                     $order->setData('sap_response', $exception->getMessage());
                     $this->orderRepository->save($order);
@@ -378,7 +373,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                 }
             } else {
                 $order = $this->getOrderFromList($incrementId);
-                if ($order->getStatus() == 'preparing' || $order->getStatus() == 'processing'
+                if ($order->getStatus() == 'preparing' || $order->getStatus() == 'sap_processing' || $order->getStatus() == 'processing_with_shipment'
                     || $order->getStatus() == 'sap_success' || $order->getStatus() == 'sap_fail') {
                     $shipmentCheck = $order->hasShipments();
 
