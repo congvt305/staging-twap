@@ -30,8 +30,8 @@ define([
             return countryData()[countryId] != undefined ? countryData()[countryId].name : ''; //eslint-disable-line
         },
         getTemplate: function () {
-            console.log(quote.shippingMethod()['carrier_code'] + '_' + quote.shippingMethod()['method_code']);
-            console.log(this.template);
+            // console.log(quote.shippingMethod()['carrier_code'] + '_' + quote.shippingMethod()['method_code']);
+            // console.log(this.template);
             var addressTemplate = 'Eguana_GWLogistics/checkout/shipping-information/address-renderer/cvs-address';
            return quote.shippingMethod()['carrier_code'] + '_' + quote.shippingMethod()['method_code'] === 'gwlogistics_CVS' ? addressTemplate : this.template
         },
