@@ -5,7 +5,6 @@
         <referenceContainer name="after.body.start">
             <block class="Amore\GaTagging\Block\GaTagging"
                    name="ap_product_detail"
-                   ifconfig="amore_gatagging/tagmanager/active"
                    after="amore_gatagging_common_ap"
                    template="Amore_GaTagging::catalog/ap-product-detail.phtml" >
             <arguments>

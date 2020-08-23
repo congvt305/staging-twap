@@ -1,0 +1,27 @@
+<?php
+/**
+ * Created by Eguana Team.
+ * User: sonia
+ * Date: 7/19/20
+ * Time: 1:01 PM
+ */
+?>
+<?php
+/** @var \Amore\GaTagging\Block\GaTagging $block */
+
+$cartData = $block->getCartData();
+?>
+<?php if ($cartData) : ?>
+<script>
+    //카트  todo additional AP
+    var AP_CART_PRICE = '<?= $block->escapeHtml($cartData['AP_CART_PRICE'])?>';
+    var AP_CART_PRDPRICE = '<?= $block->escapeHtml($cartData['AP_CART_PRDPRICE'])?>';
+    var AP_CART_DISCOUNT = '<?= $block->escapeHtml($cartData['AP_CART_DISCOUNT'])?>';
+    var AP_CART_PRDS = [
+        <?php foreach($cartData['AP_CART_PRDS'] as $prod) : ?>
+        <?= $prod ?>,
+        <?php endforeach; ?>
+    ];
+</script>
+<?php endif; ?>
+

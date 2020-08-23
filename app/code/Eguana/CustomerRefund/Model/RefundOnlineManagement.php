@@ -137,15 +137,34 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
     }
 
     /**
-     * @param $order
+     * @param  \Magento\Sales\Model\Order $order
      * @return array
      */
     private function buildCreditmemoItems($order)
     {
         $creditmemoItems = [];
+        $bundleItemIds = [];
         /** @var OrderItemInterface $orderItem */
+        $myItems = $order->getItems();
         foreach ($order->getItems() as $orderItem) {
+            //if item is dynamic price type bundle, we have to add children
+            if ($orderItem->getProductType() === 'bundle' && $orderItem->isDummy())
+            {
+                $bundleItemIds[] = $orderItem->getItemId();
+                continue;
+            }
             if ($orderItem->getParentItemId()) {
+                continue;
+            }
+            /** @var CreditmemoItemInterface $creditmemoItem */
+            $creditmemoItem = $this->creditmemoItemFactory->create();
+            $creditmemoItem->setOrderItemId($orderItem->getItemId());
+            $creditmemoItem->setQty($orderItem->getQtyInvoiced());
+            $creditmemoItems[] = $creditmemoItem;
+        }
+        //handle simple items in dynamic price type bundle
+        foreach ($order->getItems() as $orderItem) {
+            if (!$orderItem->getParentItemId() || !in_array($orderItem->getParentItemId(), $bundleItemIds)) {
                 continue;
             }
             /** @var CreditmemoItemInterface $creditmemoItem */
@@ -156,6 +175,7 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
         }
         return $creditmemoItems;
     }
+
 
     /**
      * @param OrderInterface $order

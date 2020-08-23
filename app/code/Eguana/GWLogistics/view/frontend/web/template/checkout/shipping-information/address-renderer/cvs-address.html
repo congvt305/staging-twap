@@ -5,9 +5,9 @@
  */
 -->
 <if args="visible()">
-    <text args="address().prefix"/> <text args="address().firstname"/> <text args="address().middlename"/>
-    <text args="address().lastname"/> <text args="address().suffix"/><br/>
-    <a if="address().telephone" attr="'href': 'tel:' + address().telephone" text="address().telephone"></a><br/>
+    <strong><text args="address().prefix"/> <text args="address().lastname"/>
+    <text args="address().firstname"/> <text args="address().telephone"/>
+    </strong><br/>
     <text args="getSelectedCvsLocation().LogisticsSubType"/> <text args="getSelectedCvsLocation().CVSStoreName"/><br/>
     <text args="getSelectedCvsLocation().CVSAddress"/><br/>
     <text args="getSelectedCvsLocation().CVSTelephone"/><br/>

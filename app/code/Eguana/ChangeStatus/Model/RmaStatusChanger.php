@@ -110,6 +110,9 @@ class RmaStatusChanger
     {
         $dateTime = $this->dateTime->date();
         $periodForAuthorizationChanges = $this->config->getRmaAutoAuthorizationDays($storeId);
+        if (empty($periodForAuthorizationChanges)) {
+            $periodForAuthorizationChanges = 10;
+        }
 
         $periodAppliedDate = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -' . $periodForAuthorizationChanges . ' day'));
 

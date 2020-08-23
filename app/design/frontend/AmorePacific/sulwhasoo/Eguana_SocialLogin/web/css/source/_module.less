@@ -24,15 +24,31 @@
                 padding: 0 0 10px 0;
             }
 
+            .field.email,
+            .field.password {
+                padding: 0 15px;
+            }
+
+            .field.password + .field.choice{
+                margin-top: 60px;
+            }
+
             .field.choice {
+                background-color: @secondary__color__light;
                 display: block !important;
+                padding: 15px;
 
                 input {
                     float: left;
+
+                    &:not(:checked) {
+                        background-color: @color-white;
+                    }
                 }
 
                 label {
                     display: inline-block;
+                    width: calc(100% - 25px);
                 }
             }
         }
@@ -184,12 +200,10 @@
         }
     }
 
-    .account .sidebar-additional {
-        .lib-vendor-prefix-order(0);
-        position: relative;
-        top: -@indent__l;
-
+    .account {
         .line-add-friend {
+            margin-top: -15px;
+            margin-bottom: @indent__l;
             text-align: right;
         }
     }
@@ -225,6 +239,11 @@
             margin: 0 auto;
             min-width: 600px;
             width: 50%;
+
+            .fieldset >.field.note {
+                .lib-font-size(16);
+                line-height: 24px;
+            }
         }
     }
 }

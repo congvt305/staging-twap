@@ -168,6 +168,10 @@
             }
         }
     }
+
+    .account .line-add-friend {
+        margin-top: 0;
+    }
 }
 
 //
@@ -185,7 +189,7 @@
 
     #eguana-form-validate {
         .fieldset{
-            .eguanasociallogin-form-legend {
+            > .field.note {
                 padding-top: @indent__base;
             }
         }
@@ -203,6 +207,14 @@
             width: 50%;
         }
     }
+
+    .account {
+        .line-add-friend {
+            position: relative;
+            top: -@indent__l;
+            text-align: right;
+        }
+    }
 }
 
 //
@@ -210,6 +222,10 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .account .line-add-friend {
+        margin-left: 8px;
+    }
+
     .sociallogin-login-createcustomer {
         .page-title-wrapper,
         .columns {
@@ -228,7 +244,7 @@
 
     #eguana-form-validate {
         .fieldset{
-            .eguanasociallogin-form-legend {
+            > .field.note {
                 padding-top: 16px;
             }
         }

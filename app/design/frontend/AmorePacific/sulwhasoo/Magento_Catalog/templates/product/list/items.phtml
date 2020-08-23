@@ -7,6 +7,9 @@
 // @codingStandardsIgnoreFile
 
 /* @var $block \Magento\Catalog\Block\Product\AbstractProduct */
+/* @var $getDefault \Eguana\CustomCatalog\ViewModel\GetDefaultCategory */
+
+$getDefault = $block->getData('view_model_get_default_name');
 ?>
 
 <?php
@@ -181,6 +184,7 @@ $_item = null;
                                 <?php endif; ?>
                                 <?php foreach ($items as $_item): ?>
                                     <?php $available = ''; ?>
+                                    <?php /* @noEscape */ $productSku = $_item->getSku(); ?>
                                     <?php if (!$_item->isComposite() && $_item->isSaleable() && $type == 'related'): ?>
                                         <?php if (!$_item->getRequiredOptions()): ?>
                                             <?php $available = 'related-available'; ?>
@@ -193,11 +197,21 @@ $_item = null;
                                     <?php endif; ?>
                                     <div class="product-item-info <?= /* @noEscape */ $available ?>">
                                         <?= /* @escapeNotVerified */ '<!-- ' . $image . '-->' ?>
-                                        <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>" class="product photo product-item-photo">
+                                        <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
+                                           class="product photo product-item-photo"
+                                           ap-click-area="product"
+                                           ap-click-name="prd click"
+                                           ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
                                             <?= $block->getImage($_item, $image)->toHtml() ?>
                                         </a>
                                         <div class="product details product-item-details">
-                                            <strong class="product name product-item-name"><a class="product-item-link" title="<?= $block->escapeHtmlAttr($_item->getName()) ?>" href="<?= /* @escapeNotVerified */ $block->escapeUrl($block->getProductUrl($_item)) ?>">
+                                            <strong class="product name product-item-name">
+                                                <a class="product-item-link"
+                                                   title="<?= $block->escapeHtmlAttr($_item->getName()) ?>"
+                                                   href="<?= /* @escapeNotVerified */ $block->escapeUrl($block->getProductUrl($_item)) ?>"
+                                                   ap-click-area="product"
+                                                   ap-click-name="prd click"
+                                                   ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
                                                     <?= $block->escapeHtml($_item->getName()) ?></a>
                                             </strong>
 

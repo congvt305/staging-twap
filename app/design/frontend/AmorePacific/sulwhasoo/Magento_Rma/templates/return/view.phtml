@@ -54,15 +54,6 @@ $rmaHelper = $block->getRmaHelper();
                 <strong><?= $block->escapeHtml(__('Shipping and Tracking Information')); ?></strong>
                 <?php if ($trackingNumbers->count() || $block->canShowButtons()): ?>
                     <div class="actions-track">
-                        <?php if ($trackingNumbers->count()): ?>
-                            <a class="action track" href="#" data-mage-init='{"popupWindow": {
-                            "windowURL":"<?= $block->escapeUrl($rmaHelper->getTrackingPopupUrlBySalesModel($block->getRma())) ?>",
-                            "windowName":"trackshipment",
-                            "width":800,"height":600,"top":0,"left":0,"resizable":1,"scrollbars":1
-                        }}' title="<?= $block->escapeHtmlAttr(__('Track this shipment')) ?>">
-                                <span><?= $block->escapeHtml(__('Track this shipment')) ?></span>
-                            </a>
-                        <?php endif ?>
                         <?php if ($block->canShowButtons()): ?>
                             <a href="<?= $block->escapeUrl($rmaHelper->getPackagePopupUrlByRmaModel($block->getRma(), 'printlabel')) ?>"
                                title="<?= $block->escapeHtmlAttr(__('Print Shipping Label')) ?>"

@@ -32,11 +32,10 @@
             <container name="product.config.items" htmlTag="div" htmlClass="product-config-items" after="-" />
         </referenceContainer>
 
-        <referenceBlock name="product.info.content">
+        <referenceContainer name="product.info.content">
             <block class="Magento\Catalog\Block\Product\View\Description"
                    name="product.info.flag" as="flag"
-                   template="Magento_Catalog::product/view/attribute.phtml"
-                   group="detailed_info" before="page.main.title">
+                   template="Magento_Catalog::product/view/attribute.phtml" before="-">
                 <arguments>
                     <argument name="at_call" xsi:type="string">getNew</argument>
                     <argument name="at_code" xsi:type="string">new</argument>
@@ -51,7 +50,7 @@
                     <argument name="text" translate="true" xsi:type="string"><![CDATA[<span>See More</span>]]></argument>
                 </action>
             </block>
-        </referenceBlock>
+        </referenceContainer>
 
         <move element="page.main.title" destination="product.info.content" after="product.info.flag"/>
         <move element="product.info.main" destination="product.info.main.wrapper" before="product.info.main.attribute" />
@@ -59,8 +58,12 @@
         <move element="product.info.social" destination="product.info.main" before="-" />
         <move element="product.info.addto" destination="product.info.main" after="product.info" />
         <move element="product.info.review" destination="product.info.content" after="page.main.title" />
-        <move element="reviews.tab" destination="product.review.wrapper" after="-" />
         <move element="content.aside" destination="product.config.items" after="-" />
+
+        <referenceBlock name="page.main.title">
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.default.name"
+                   template="Magento_Catalog::product/view/default-name.phtml" after="-"/>
+        </referenceBlock>
 
         <referenceBlock name="product.info.type" remove="true" />
         <referenceBlock name="product.info.stock.sku" remove="true" />
@@ -69,11 +72,6 @@
         <referenceBlock name="related.product.addto.compare" remove="true" />
         <referenceBlock name="upsell.product.addto.compare" remove="true" />
         <referenceBlock name="product.attributes" remove="true" />
-
-        <referenceBlock name="page.main.title">
-            <block class="Magento\Catalog\Block\Product\View\Description" name="product.default.name"
-                   template="Magento_Catalog::product/view/default-name.phtml" before="product.info.review"/>
-        </referenceBlock>
 
         <referenceContainer name="product.info.main">
             <block class="Magento\Catalog\Block\Product\View\Description"
@@ -202,6 +200,24 @@
                 <action method="setText">
                     <argument name="text" xsi:type="string" translate="true"><![CDATA[<span>Mouse over to zoom</span>]]></argument>
                 </action>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="skip_gallery_before" remove="true"/>
+        <referenceBlock name="skip_gallery_after" remove="true"/>
+        <referenceContainer name="skip_gallery_before.wrapper">
+            <block class="Magento\Framework\View\Element\Template" name="skip_gallery_before" template="Magento_Theme::html/skip.phtml">
+                <arguments>
+                    <argument name="target" xsi:type="string">gallery-next-area</argument>
+                    <argument name="label" translate="true" xsi:type="string">Skip to the end of the images gallery</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="skip_gallery_after.wrapper">
+            <block class="Magento\Framework\View\Element\Template" name="skip_gallery_after" template="Magento_Theme::html/skip.phtml">
+                <arguments>
+                    <argument name="target" xsi:type="string">gallery-prev-area</argument>
+                    <argument name="label" translate="true" xsi:type="string">Skip to the beginning of the images gallery</argument>
+                </arguments>
             </block>
         </referenceContainer>
     </body>

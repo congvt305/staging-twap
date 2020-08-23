@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Image $block */
+
+/** @var \Magento\Wishlist\Model\Item $item */
+
+/** @var $getDefault \Eguana\CustomCatalog\ViewModel\GetDefaultCategory */
+
+$item = $block->getItem();
+$product = $item->getProduct();
+$productSku = $product->getSku();
+$getDefault = $block->getData('view_model');
+?>
+<a class="product-item-photo"
+   tabindex="-1"
+   href="<?= $block->escapeUrl($block->getProductUrl($item)) ?>"
+   title="<?= $block->escapeHtmlAttr($product->getName()) ?>"
+   ap-click-area="product"
+   ap-click-name="prd click"
+   ap-click-data="<?= $block->escapeHtmlAttr($getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku) ?>">
+    <?= $block->getImage($block->getProductForThumbnail($item), 'wishlist_thumbnail')->toHtml() ?>
+</a>

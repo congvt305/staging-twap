@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="product.info.details">
+            <block class="Yotpo\Yotpo\Block\Yotpo" name="yotpo.reviews.tab" as="yotpo.reviews" template="Yotpo_Yotpo::review.phtml" group="detailed_info" ifconfig="yotpo/settings/active">
+                <arguments>
+                    <argument name="sort_order" xsi:type="string">30</argument>
+                    <argument translate="true" name="title" xsi:type="string">Review</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceBlock name="page.main.title">
+            <block class="Yotpo\Yotpo\Block\Yotpo" name="yotpo_bottomline" template="Yotpo_Yotpo::bottomline.phtml" after="-" ifconfig="yotpo/settings/active"/>
+        </referenceBlock>
+        <move element="yotpo_widget_div" destination="yotpo.reviews.tab"/>
+    </body>
+</page>

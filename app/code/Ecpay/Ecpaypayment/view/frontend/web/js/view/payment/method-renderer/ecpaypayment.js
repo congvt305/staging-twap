@@ -46,7 +46,6 @@ define(
                     'additional_data': {
                         'ecpay_choosen_payment': this.paymentMethod(),
                         'ecpay_einvoice_type': $("input:radio[name=ecpay_einvoice_type]:checked").val(),
-                        'ecpay_einvoice_title': $("input:text[name=invoice_title]").val(),
                         'ecpay_einvoice_tax_id_number': $("input:text[name=tax_id_number]").val(),
                         'ecpay_einvoice_cellphone_barcode': $("input:text[name=cellphone_barcode]").val(),
                     }
@@ -95,25 +94,27 @@ define(
             getPaymentMethodText: function (value) {
                 switch (value) {
                     case 'credit':
-                        return 'Credit';
+                        return $t('Credit');
                     case 'credit_3':
-                        return 'Credit(3 Installments)';
+                        return $t('Credit(3 Installments)');
                     case 'credit_6':
-                        return 'Credit(6 Installments)';
+                        return $t('Credit(6 Installments)');
                     case 'credit_12':
-                        return 'Credit(12 Installments)';
+                        return $t('Credit(12 Installments)');
                     case 'credit_18':
-                        return 'Credit(18 Installments)';
+                        return $t('Credit(18 Installments)');
                     case 'credit_24':
-                        return 'Credit(24 Installments)';
+                        return $t('Credit(24 Installments)');
                     case 'webatm':
-                        return 'WEB-ATM';
+                        return $t('WEB-ATM');
                     case 'atm':
+                        return $t('ATM');
                     case 'cvs':
+                        return $t('cvs');
                     case 'barcode':
-                        return value.toUpperCase();
+                        return $t('Barcode');
                     default:
-                        return value;
+                        return $t(value);
                 }
             },
 

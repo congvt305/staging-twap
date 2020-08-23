@@ -108,7 +108,10 @@
         }
         
         &.date {
-            &:extend(.abs-field-date all);
+            .control {
+                &:extend(.abs-add-box-sizing all);
+                position: relative;
+            }
 
             .time-picker {
                 display: inline-block;

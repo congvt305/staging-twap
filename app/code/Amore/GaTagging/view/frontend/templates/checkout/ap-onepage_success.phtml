@@ -1,0 +1,36 @@
+<?php
+/**
+ * Created by Eguana Team.
+ * User: sonia
+ * Date: 7/19/20
+ * Time: 1:01 PM
+ */
+?>
+<?php
+
+/** @var \Amore\GaTagging\Block\GaTagging $block */
+$orderData = $block->getPurchaseData();
+?>
+<?php if($orderData) : ?>
+<script>
+    //주문완료
+    var AP_PURCHASE_PRICE = <?= $block->escapeHtml($orderData['AP_PURCHASE_PRICE'])?>;
+    var AP_PURCHASE_PRDPRICE = <?= $block->escapeHtml($orderData['AP_PURCHASE_PRDPRICE'])?>;
+    var AP_PURCHASE_DCTOTAL = <?= $block->escapeHtml($orderData['AP_PURCHASE_DCTOTAL'])?>;
+    var AP_PURCHASE_DCBASIC = <?= $block->escapeHtml($orderData['AP_PURCHASE_DCBASIC'])?>;
+    var AP_PURCHASE_COUPON = <?= $block->escapeHtml($orderData['AP_PURCHASE_COUPON'])?>;
+    var AP_PURCHASE_MEMBERSHIP = <?= $block->escapeHtml($orderData['AP_PURCHASE_MEMBERSHIP'])?>;
+    var AP_PURCHASE_GIFTCARD = <?= $block->escapeHtml($orderData['AP_PURCHASE_GIFTCARD'])?>;
+    var AP_PURCHASE_POINT = <?= $block->escapeHtml($orderData['AP_PURCHASE_POINT'])?>;
+    var AP_PURCHASE_ONLINEGIFT = <?= $block->escapeHtml($orderData['AP_PURCHASE_ONLINEGIFT'])?>;
+    var AP_PURCHASE_ORDERNUM = <?= $block->escapeHtml($orderData['AP_PURCHASE_ORDERNUM'])?>;
+    var AP_PURCHASE_BEAUTYACC = <?= $block->escapeHtml($orderData['AP_PURCHASE_BEAUTYACC'])?>;
+    var AP_PURCHASE_SHIPPING = <?= $block->escapeHtml($orderData['AP_PURCHASE_SHIPPING'])?>;
+    var AP_PURCHASE_PRDS = [
+        <?php foreach($orderData['AP_PURCHASE_PRDS'] as $prod) : ?>
+        <?= $prod ?>,
+        <?php endforeach; ?>
+    ];
+</script>
+<?php endif; ?>
+

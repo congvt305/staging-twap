@@ -18,25 +18,28 @@ class OrderSuccess implements ObserverInterface
      * @var \Magento\Framework\View\LayoutInterface
      */
     private $layout;
+    /**
+     * @var \Magento\Framework\Registry
+     */
+    private $registry;
 
-    public function __construct(\Magento\Framework\View\LayoutInterface $layout)
+    public function __construct(\Magento\Framework\Registry $registry)
     {
-        $this->layout = $layout;
+        $this->registry = $registry;
     }
 
     /**
+     *  fired from \Magento\Checkout\Controller\Onepage\Success::execute
      * @param Observer $observer
-     * @return void
+     * @return $this
      */
     public function execute(Observer $observer)
     {
-        $orderIds = $observer->getEvent()->getOrderIds();
-        if (empty($orderIds) || !is_array($orderIds)) {
-            return;
-        }
-        $block = $this->layout->getBlock('amore_gatagging');
-        if ($block) {
-            $block->setOrderIds($orderIds);
-        }
+        $order = $observer->getEvent()->getOrder();
+        $this->registry->register(
+            \Amore\GaTagging\Block\GaTagging::PURCHASE_DATA_REGISTRY_NAME,
+            $order
+        );
+        return $this;
     }
 }

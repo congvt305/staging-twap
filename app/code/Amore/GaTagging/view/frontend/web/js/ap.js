@@ -9,9 +9,13 @@ define([
     var cacheKey = 'customer-ap-data';
     var sectionData = customerData.get(cacheKey);
 
+    function notify(eventName) {
+        window.dataLayer.push({'event': eventName});
+    }
+
     return function (config) {
-        // console.log(sectionData());
         if (_.size( sectionData()) > 1) {
+            console.log(sectionData());
             window.AP_DATA_GCID = sectionData()['AP_DATA_GCID'];
             window.AP_DATA_CID = sectionData()['AP_DATA_CID'];
             window.AP_DATA_ISMEMBER = sectionData()['AP_DATA_ISMEMBER'];
@@ -21,6 +25,17 @@ define([
             window.AP_DATA_CD = sectionData()['AP_DATA_CD'];
             window.AP_DATA_CG = sectionData()['AP_DATA_CG'];
             window.AP_DATA_CT = sectionData()['AP_DATA_CT'];
+        } else {
+            window.AP_DATA_GCID = '';
+            window.AP_DATA_CID = '';
+            window.AP_DATA_ISMEMBER = '';
+            window.AP_DATA_ISLOGIN = '';
+            window.AP_DATA_LOGINTYPE = '';
+            window.AP_DATA_CA = '';
+            window.AP_DATA_CD = '';
+            window.AP_DATA_CG = '';
+            window.AP_DATA_CT = '';
         }
+        notify(config.eventName);
     };
 });

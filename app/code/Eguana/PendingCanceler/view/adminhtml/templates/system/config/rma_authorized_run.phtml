@@ -1,0 +1,22 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2019 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: brian
+ * Date: 2020/07/14
+ * Time: 10:25 AM
+ */
+?>
+<?= /* @noEscape */ $block->getButtonHtml(); ?>
+
+<span class="collect-indicator" id="collect_span">
+    <span id="collect_message_span"></span>
+</span>
+<script type="text/x-magento-init">
+   {
+       "*": {
+           "cancel_cron": {"statusAjaxUrl":"<?= $block->escapeUrl($block->getAjaxUrl()) ?>"}
+       }
+   }
+</script>

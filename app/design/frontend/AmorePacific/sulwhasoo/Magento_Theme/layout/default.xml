@@ -62,5 +62,7 @@
                 </arguments>
             </block>
         </referenceBlock>
+        <container name="sidebar.additional" label="Sidebar Additional" htmlTag="div"/>
+        <referenceContainer name="sidebar.additional" remove="true"/>
     </body>
 </page>
