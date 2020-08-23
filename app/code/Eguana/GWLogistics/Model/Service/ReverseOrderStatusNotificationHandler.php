@@ -88,11 +88,11 @@ class ReverseOrderStatusNotificationHandler
     */
     public function process(array $notificationData)
     {
-        $this->logger->info('gwlogistics | notification for reverse order', $notificationData);
-
         if (isset($notificationData['RtnMsg'], $notificationData['RtnCode'], $notificationData['UpdateStatusDate'], $notificationData['RtnMerchantTradeNo'])) {
             try {
+                $this->logger->info('gwlogistics | ' . $notificationData['RtnMerchantTradeNo']);
                 $rmaId = $this->findRmaId($notificationData['RtnMerchantTradeNo']);
+
                 if ($rmaId) {
                     $rma = $this->rmaRepository->get($rmaId);
                     $storeId = $rma->getStoreId();
@@ -115,8 +115,9 @@ class ReverseOrderStatusNotificationHandler
 
                     /** @var \Eguana\GWLogistics\Api\Data\ReverseStatusNotificationInterface $statusNotification */
                     $statusNotification = $this->reverseStatusNotificationFactory->create();
+                    $statusNotification->setRmaId($rmaId);
                     $statusNotification->setMerchantId($notificationData['MerchantID']);
-                    $statusNotification->setRtnMerchantTradeNo($notificationData['MerchantTradeNo']);
+                    $statusNotification->setRtnMerchantTradeNo($notificationData['RtnMerchantTradeNo']);
                     $statusNotification->setRtnCode($notificationData['RtnCode']);
                     $statusNotification->setRtnMsg($notificationData['RtnMsg']);
                     $statusNotification->setAllPayLogisticsId($notificationData['AllPayLogisticsID']);
@@ -140,7 +141,9 @@ class ReverseOrderStatusNotificationHandler
         $tracks = $this->trackRepository
             ->getList($searchCriteria)
             ->getItems();
-        $track = is_array($tracks) ? reset($tracks) : false;
+        $track = reset($tracks);
+
+        $this->logger->info('gwlogistics | rma '. $track->getRmaEntityId());
         return $track ? $track->getRmaEntityId() : false;
 
     }
