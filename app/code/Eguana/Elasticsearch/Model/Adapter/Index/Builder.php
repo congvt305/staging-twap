@@ -19,7 +19,7 @@ class Builder extends \Magento\Elasticsearch\Model\Adapter\Index\Builder
         $tokenizer = [
             'default_tokenizer' => [
                 'type' => 'edge_ngram',
-                'min_gram' => 3,
+                'min_gram' => 2,
                 'max_gram' => 30,
                 'token_chars' => [
                     'letter',
@@ -28,6 +28,20 @@ class Builder extends \Magento\Elasticsearch\Model\Adapter\Index\Builder
             ],
         ];
         return $tokenizer;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getCharFilter()
+    {
+        $charFilter = [
+            'default_char_filter' => [
+                'type' => 'html_strip',
+                'escaped_tags' => ['(', ')']
+            ],
+        ];
+        return $charFilter;
     }
 
 }
