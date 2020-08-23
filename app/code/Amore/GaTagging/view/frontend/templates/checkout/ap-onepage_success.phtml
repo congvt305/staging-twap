@@ -7,27 +7,25 @@
  */
 ?>
 <?php
-/** @var \Amore\GaTagging\Block\GaTagging $block */
 
-$orderData = $block->getOrderData();
+/** @var \Amore\GaTagging\Block\GaTagging $block */
+$orderData = $block->getPurchaseData();
 ?>
-<?php if ($orderData) : ?>
+<?php if($orderData) : ?>
 <script>
     //주문완료
-    var AP_PURCHASE_PRICE = ""; // 총결제금액 41200
-    var AP_PURCHASE_PRDPRICE = ""; //총 상품 금액 44000
-    var AP_PURCHASE_DCTOTAL = ""; //총 할인금액 2800
-    var AP_PURCHASE_DCBASIC = ""; // 기본할인 2010.... 날짜및 일련번호?
-    var AP_PURCHASE_COUPON = ""; //쿠폰할인금 11000
-    var AP_PURCHASE_MEMBERSHIP = ""; //멤버쉽 할인금 1100
-    var AP_PURCHASE_GIFTCARD = ""; // 기프트카드 사용금액 1500
-    var AP_PURCHASE_POINT = ""; //뷰티포인트 사용금액 2800
-    var AP_PURCHASE_ONLINEGIFT = ""; //온라인 상품권사용금액 1500
-    var AP_PURCHASE_ORDERNUM = ""; //주문번호
-    var AP_PURCHASE_BEAUTYACC = ""; //뷰티포인트 적립금 1500
-    var AP_PURCHASE_SHIPPING = ""; //배송비 1000
-    var AP_PURCHASE_TYPE = ""; // ??
-    var AP_PURCHASE_COUPONNAME = ""; //??
+    var AP_PURCHASE_PRICE = <?= $block->escapeHtml($orderData['AP_PURCHASE_PRICE'])?>;
+    var AP_PURCHASE_PRDPRICE = <?= $block->escapeHtml($orderData['AP_PURCHASE_PRDPRICE'])?>;
+    var AP_PURCHASE_DCTOTAL = <?= $block->escapeHtml($orderData['AP_PURCHASE_DCTOTAL'])?>;
+    var AP_PURCHASE_DCBASIC = <?= $block->escapeHtml($orderData['AP_PURCHASE_DCBASIC'])?>;
+    var AP_PURCHASE_COUPON = <?= $block->escapeHtml($orderData['AP_PURCHASE_COUPON'])?>;
+    var AP_PURCHASE_MEMBERSHIP = <?= $block->escapeHtml($orderData['AP_PURCHASE_MEMBERSHIP'])?>;
+    var AP_PURCHASE_GIFTCARD = <?= $block->escapeHtml($orderData['AP_PURCHASE_GIFTCARD'])?>;
+    var AP_PURCHASE_POINT = <?= $block->escapeHtml($orderData['AP_PURCHASE_POINT'])?>;
+    var AP_PURCHASE_ONLINEGIFT = <?= $block->escapeHtml($orderData['AP_PURCHASE_ONLINEGIFT'])?>;
+    var AP_PURCHASE_ORDERNUM = <?= $block->escapeHtml($orderData['AP_PURCHASE_ORDERNUM'])?>;
+    var AP_PURCHASE_BEAUTYACC = <?= $block->escapeHtml($orderData['AP_PURCHASE_BEAUTYACC'])?>;
+    var AP_PURCHASE_SHIPPING = <?= $block->escapeHtml($orderData['AP_PURCHASE_SHIPPING'])?>;
     var AP_PURCHASE_PRDS = [
         <?php foreach($orderData['AP_PURCHASE_PRDS'] as $prod) : ?>
         <?= $prod ?>,

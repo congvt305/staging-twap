@@ -5,8 +5,7 @@
         <referenceContainer name="after.body.start">
             <block class="Amore\GaTagging\Block\GaTagging"
                    name="ap_cart"
-                   ifconfig="amore_gatagging/tagmanager/active"
-                   after="-"
+                   after="amore_gatagging_common_ap"
                    template="Amore_GaTagging::checkout/ap-cart.phtml" />
         </referenceContainer>
         <!-- 2.4 트랜잭션 장바구니 이벤트 트리거 -->
