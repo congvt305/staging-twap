@@ -4,6 +4,7 @@
         <referenceContainer name="order.success.additional.info">
             <block class="Amore\GaTagging\Block\GaTagging"
                    name="ap_onepage_success"
+                   cacheable="false"
                    template="Amore_GaTagging::checkout/ap-onepage_success.phtml" />
         </referenceContainer>
         <referenceContainer name="before.body.end">
@@ -16,7 +17,6 @@
                     <argument name="event_name" xsi:type="string">purchase</argument>
                 </arguments>
             </block>
-<!--            <block name="test" template="Amore_GaTagging::test.phtml"/>-->
         </referenceContainer>
     </body>
 </page>
