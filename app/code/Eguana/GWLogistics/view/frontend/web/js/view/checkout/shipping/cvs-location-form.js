@@ -21,7 +21,7 @@ define([
         function fetchCvsLocation() {
                 windowActivateCount++;
                 if (windowActivateCount % 2 === 0) {
-                    console.log('visibility changed');
+                    // console.log('visibility changed');
                     cvsLocation.selectCvsLocation();
                     document.removeEventListener('visibilitychange', fetchCvsLocation, false);
                 }
@@ -35,7 +35,7 @@ define([
             gwForm.submit();
             let timer = setInterval(function () {
                 if (gwWin.closed) {
-                    console.log('child window closed');
+                    // console.log('child window closed');
                     cvsLocation.selectCvsLocation();
                     clearInterval(timer);
                 }
