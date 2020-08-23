@@ -15,7 +15,7 @@ define([
 
     return function (config) {
         if (_.size( sectionData()) > 1) {
-            console.log(sectionData());
+            // console.log(sectionData());
             window.AP_DATA_GCID = sectionData()['AP_DATA_GCID'];
             window.AP_DATA_CID = sectionData()['AP_DATA_CID'];
             window.AP_DATA_ISMEMBER = sectionData()['AP_DATA_ISMEMBER'];
