@@ -9,16 +9,16 @@
 <?php
 /** @var \Amore\GaTagging\Block\GaTagging $block */
 
-$orderData = $block->getCartData();
+$orderData = $block->getOrderData();
 ?>
-<?php if ($orderData) : ?>
+<?php if ($orderData && is_array($orderData)) : ?>
 <script>
     //카트  todo additional AP
-    var AP_ORDER_PRICE = '<?= $block->escapeHtml($orderData['apCartPrice'])?>';
-    var AP_ORDER_PRDPRICE = '<?= $block->escapeHtml($orderData['apCartProdPrice'])?>';
-    var AP_ORDER_DISCOUNT = '<?= $block->escapeHtml($orderData['apCartDiscount'])?>';
+    var AP_ORDER_PRICE = <?= $block->escapeHtml($orderData['AP_ORDER_PRICE'])?>;
+    var AP_ORDER_PRDPRICE = <?= $block->escapeHtml($orderData['AP_ORDER_PRDPRICE'])?>;
+    var AP_ORDER_DISCOUNT = <?= $block->escapeHtml($orderData['AP_ORDER_DISCOUNT'])?>;
     var AP_ORDER_PRDS = [
-        <?php foreach($orderData['apCartProds'] as $prod) : ?>
+        <?php foreach($orderData['AP_ORDER_PRDS'] as $prod) : ?>
         <?= $prod ?>,
         <?php endforeach; ?>
     ];

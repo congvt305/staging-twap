@@ -5,8 +5,7 @@
         <referenceContainer name="after.body.start">
             <block class="Amore\GaTagging\Block\GaTagging"
                    name="ap_customer_register"
-                   ifconfig="amore_gatagging/tagmanager/active"
-                   after="-"
+                   after="amore_gatagging_common_ap"
                    template="Amore_GaTagging::customer/ap-customer-register.phtml" >
                 <arguments>
                     <argument name="event_name" xsi:type="string">join</argument>
