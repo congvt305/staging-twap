@@ -93,6 +93,7 @@
 
         .action {
             display: inline-block;
+            margin-right: @indent__s;
 
             .lib-link(
                 @_link-color: @active__color,
@@ -104,10 +105,6 @@
                 @_link-color-active: @theme__color__primary-alt,
                 @_link-text-decoration-active: underline
             );
-
-            &:not(:first-child) {
-                margin-left: @indent__s;
-            }
         }
     }
 
@@ -501,18 +498,6 @@
             display: block;
             float: none;
             margin-bottom: @indent__s;
-        }
-    }
-
-    .order-actions-toolbar {
-        .action {
-            &.order {
-                margin-right: @indent__s;
-            }
-
-            &.return {
-                margin-left: 0;
-            }
         }
     }
 
