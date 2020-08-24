@@ -22,13 +22,20 @@ class Refund implements ArgumentInterface
      */
     private $registry;
 
+    /**
+     * @var \Magento\Framework\Stdlib\DateTime\Timezone
+     */
+    private $timezone;
+
     public function __construct(
+        \Magento\Framework\Stdlib\DateTime\Timezone $timezone,
         \Eguana\CustomerRefund\Model\Refund $refundModel,
         \Magento\Framework\Registry $registry
     )
     {
         $this->refundModel = $refundModel;
         $this->registry = $registry;
+        $this->timezone = $timezone;
     }
 
     /**
@@ -44,7 +51,7 @@ class Refund implements ArgumentInterface
      */
     public function canShowRefundOnlineButton($order)
     {
-        return $this->refundModel->canRefundOnline($order);
+        return $this->refundModel->getEcpayMethod($order) ? !$this->isClosingTime() && $this->refundModel->canRefundOnline($order) : $this->refundModel->canRefundOnline($order);
     }
 
     public function canShowRefundOfflineButton($order)
@@ -57,4 +64,14 @@ class Refund implements ArgumentInterface
         return $this->refundModel->canShowBankInfoPopup($order);
     }
 
+    public function isClosingTime()
+    {
+        $closingHour = '20';
+        $closingMinFrom = '15';
+        $closingMinTo = '30';
+        $localTime = $this->timezone->date();
+        $localHour = $localTime->format('H');
+        $localMin = $localTime->format('i');
+        return $localHour === $closingHour && $localMin >= $closingMinFrom && $localMin <= $closingMinTo;
+    }
 }

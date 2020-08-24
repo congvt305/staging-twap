@@ -126,11 +126,13 @@ $getDefault = $block->getData('view_model');
                                                 </form>
                                             <?php endif; ?>
                                         </div>
+                                        <?php if(!$_product->getData('offline')):?>
                                         <div data-role="add-to-links" class="actions-secondary"<?= strpos($pos, $viewMode . '-secondary') ? $block->escapeHtmlAttr($position) : '' ?>>
                                             <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
                                                 <?= $addToBlock->setProduct($_product)->getChildHtml() ?>
                                             <?php endif; ?>
                                         </div>
+                                        <?php endif;?>
                                     </div>
                                 </div>
                             </div>
