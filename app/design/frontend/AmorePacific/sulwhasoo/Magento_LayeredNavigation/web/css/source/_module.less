@@ -167,19 +167,27 @@
 
                 a {
                     display: block;
-                    font-size: 14px;
                     line-height: 1.4;
                     padding: 7px 5px 5px 10px;
                     vertical-align: middle;
                     letter-spacing: -0.4px;
                     white-space: nowrap;
                     text-decoration: none;
-                    color: @primary__color__light;
+
+                    &,
+                    .price {
+                        font-size: 14px;
+                        color: @primary__color__light;
+                    }
 
                     &:hover {
                         background-color: @secondary__color__light;
-                        color: @primary__color__darker;
                         text-decoration: none;
+
+                        &,
+                        .price {
+                            color: @primary__color__darker;
+                        }
                     }
                 }
             }
@@ -279,7 +287,10 @@
             .filter-options-content {
                 .item {
                     a {
-                        font-size: 13px;
+                        &,
+                        .price {
+                            font-size: 13px;
+                        }
                     }
                 }
             }
