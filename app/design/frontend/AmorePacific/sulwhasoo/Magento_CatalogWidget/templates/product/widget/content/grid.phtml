@@ -106,7 +106,7 @@ use Magento\Framework\App\Action\Action;
                                                         <?php endif; ?>
                                                     </div>
                                                 <?php endif; ?>
-                                                <?php if(!$_product->getData('offline')):?>
+                                                <?php if(!$_item->getData('offline')):?>
                                                     <?php if ($showWishlist || $showCompare): ?>
                                                         <div class="actions-secondary" data-role="add-to-links">
                                                             <?php if ($this->helper(Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist): ?>
