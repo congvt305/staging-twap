@@ -8,6 +8,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="sale.reorder.sidebar" remove="true"/>
+        <referenceBlock name="sales-guest-form-link" remove="true"/>
         <referenceBlock name="sales-guest-form-link">
             <arguments>
                 <argument name="label" xsi:type="string" translate="true">Order Status</argument>
@@ -22,6 +23,5 @@
                 </arguments>
             </block>
         </referenceBlock>
-        <move element="sales-guest-form-link" destination="footer_links" after="-"/>
     </body>
 </page>

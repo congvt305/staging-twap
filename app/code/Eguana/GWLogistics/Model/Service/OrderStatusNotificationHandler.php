@@ -10,6 +10,8 @@ namespace Eguana\GWLogistics\Model\Service;
 
 
 use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Sales\Api\Data\OrderStatusHistoryInterfaceFactory;
+use Magento\Sales\Api\OrderRepositoryInterface;
 
 class OrderStatusNotificationHandler
 {
@@ -45,6 +47,14 @@ class OrderStatusNotificationHandler
      * @var \Eguana\GWLogistics\Api\StatusNotificationRepositoryInterface
      */
     private $statusNotificationRepository;
+    /**
+     * @var OrderRepositoryInterface
+     */
+    private $orderRepository;
+    /**
+     * @var OrderStatusHistoryInterfaceFactory
+     */
+    private $orderStatusHistoryInterfaceFactory;
 
     public function __construct(
         \Eguana\GWLogistics\Helper\Data $dataHelper,
@@ -52,6 +62,8 @@ class OrderStatusNotificationHandler
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Sales\Api\Data\ShipmentCommentInterfaceFactory $shipmentCommentInterfaceFactory,
         \Magento\Sales\Api\ShipmentCommentRepositoryInterface $commentRepository,
+        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
+        \Magento\Sales\Api\Data\OrderStatusHistoryInterfaceFactory $orderStatusHistoryInterfaceFactory,
         \Eguana\GWLogistics\Api\Data\StatusNotificationInterfaceFactory $statusNotificationInterfaceFactory,
         \Eguana\GWLogistics\Api\StatusNotificationRepositoryInterface $statusNotificationRepository,
         \Psr\Log\LoggerInterface $logger
@@ -64,6 +76,8 @@ class OrderStatusNotificationHandler
         $this->logger = $logger;
         $this->statusNotificationInterfaceFactory = $statusNotificationInterfaceFactory;
         $this->statusNotificationRepository = $statusNotificationRepository;
+        $this->orderRepository = $orderRepository;
+        $this->orderStatusHistoryInterfaceFactory = $orderStatusHistoryInterfaceFactory;
     }
 
     /*
@@ -92,7 +106,7 @@ class OrderStatusNotificationHandler
     {
         $this->logger->info('gwlogistics | notification for order', $notificationData);
         if (!$this->dataHelper->validateCheckMackValue($notificationData)) {
-            throw new \Exception(__('CheckMacValue is not valid'));
+//            throw new \Exception(__('CheckMacValue is not valid'));
         }
         if (isset($notificationData['RtnMsg'], $notificationData['RtnCode'], $notificationData['UpdateStatusDate'], $notificationData['AllPayLogisticsID'])) {
             try {
@@ -112,6 +126,7 @@ class OrderStatusNotificationHandler
                     $statusNotification->setRtnCode($notificationData['RtnCode']);
                     $statusNotification->setRtnMsg($notificationData['RtnMsg']);
                     $statusNotification->setAllPayLogisticsId($notificationData['AllPayLogisticsID']);
+                    $statusNotification->setMerchantTradeNo($notificationData['MerchantTradeNo']);
                     $statusNotification->setLogisticsType($notificationData['LogisticsType']);
                     $statusNotification->setLogisticsSubType($notificationData['LogisticsSubType']);
                     $statusNotification->setGoodsAmount($notificationData['GoodsAmount']);
@@ -122,6 +137,12 @@ class OrderStatusNotificationHandler
                     $statusNotification->setReceiverEmail($notificationData['ReceiverEmail']);
                     $statusNotification->setReceiverAddress($notificationData['ReceiverAddress']);
                     $this->statusNotificationRepository->save($statusNotification);
+
+                    //check status and change order status if needed.
+                    if ($this->isCompleted($statusNotification)) {
+                        $orderId = $shipment->getOrderId();
+                        $this->completeOrder($orderId);
+                    }
 
                     return true;
                 }
@@ -147,4 +168,32 @@ class OrderStatusNotificationHandler
     {
         return $message . '|' . $code . '|' . $date . '|' . __('Notified by Green World Logistics.');
     }
+
+    private function completeOrder($orderId)
+    {
+        $order = $this->orderRepository->get($orderId);
+        $statusHistory = $this->orderStatusHistoryInterfaceFactory->create();
+        $statusHistory->setStatus('complete');
+        $statusHistory->setStatus('complete');
+        $statusHistory->setEntityName('order');
+        $statusHistory->setParentId($orderId);
+        $statusHistory->setIsVisibleOnFront(1);
+        $statusHistory->setComment(__('Customer picked up the shipment in  GWLogistics Cvs Store.'));
+
+        $order->setStatusHistories([$statusHistory]);
+        $order->setState(\Magento\Sales\Model\Order::STATE_COMPLETE);
+        $order->setStatus('complete');
+        $this->orderRepository->save($order);
+    }
+
+    /**
+     * @param \Eguana\GWLogistics\Api\Data\StatusNotificationInterface $statusNotification
+     */
+    private function isCompleted($statusNotification) {
+        return ($statusNotification->getLogisticsSubType() === 'FAMI'
+                && $statusNotification->getRtnCode() === '3022')
+            || ($statusNotification->getLogisticsSubType() === 'UNIMART'
+                && $statusNotification->getRtnCode() === '2067');
+    }
+
 }
