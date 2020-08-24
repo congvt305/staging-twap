@@ -55,7 +55,7 @@ class Refund
      * @param $order
      * @return bool|string
      */
-    private function getEcpayMethod($order)
+    public function getEcpayMethod($order)
     {
         $paymentInfo = $order->getPayment()->getAdditionalInformation();
         if (isset($paymentInfo['ecpay_choosen_payment'])) {
@@ -63,7 +63,7 @@ class Refund
             return $paymentInfo['ecpay_choosen_payment'];
         }
 
-        if (isset($paymentInfo['raw_details_info']['ecpay_choosen_payment'])) {
+        if (isset($paymentInfo['raw_details_info'])) {
             $this->logger->info('customerRefund | payMethod from raw detail', [$paymentInfo['raw_details_info']['ecpay_choosen_payment']]);
             return $paymentInfo['raw_details_info']['ecpay_choosen_payment'];
         }

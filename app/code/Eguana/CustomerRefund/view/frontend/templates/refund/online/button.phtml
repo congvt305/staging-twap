@@ -11,7 +11,10 @@
 $refundOnlineViewModel = $block->getRefundOnlineViewModel();
 /** @var \Magento\Sales\Model\Order $_order */
 $_order = $block->getOrder();
+
+$localTime = '11';
 ?>
+
 <?php if ($refundOnlineViewModel->canShowRefundOnlineButton($_order)): ?>
     <a href="#" class="action refund-online" data-role="refund-online-button"
        data-mage-init='{"Eguana_CustomerRefund/js/view/refund-confirmation": {"orderId": "<?= (int)$_order->getId() ?>"}}'>
@@ -19,3 +22,8 @@ $_order = $block->getOrder();
         <span><?= $block->escapeHtml(__('Order cancel and refund')) ?></span>
     </a>
 <?php endif;?>
+<div>
+</div>
+<div>
+    <?= $refundOnlineViewModel->isClosingTime() ?>
+</div>
