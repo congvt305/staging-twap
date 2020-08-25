@@ -9,8 +9,9 @@
     <text args="currentBillingAddress().firstname"/> <text args="currentBillingAddress().telephone"/><br/>
     <text args="currentBillingAddress().postcode"/>
     <span text="currentBillingAddress().region"></span>
+    <text args="currentBillingAddress().city "/>
     <text args="_.values(currentBillingAddress().street).join(', ')"/><br/>
-    <text args="currentBillingAddress().city "/>  <br/>
+
 
     <each args="data: currentBillingAddress().customAttributes, as: 'element'">
         <text args="$parent.getCustomAttributeLabel(element)"/>
