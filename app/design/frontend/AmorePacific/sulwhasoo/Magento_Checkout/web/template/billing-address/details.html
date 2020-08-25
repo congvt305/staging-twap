@@ -1,0 +1,27 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div if="isAddressDetailsVisible() && currentBillingAddress()" class="billing-address-details">
+    <text args="currentBillingAddress().prefix"/> <text args="currentBillingAddress().lastname"/> <text args="currentBillingAddress().middlename"/>
+    <text args="currentBillingAddress().firstname"/> <text args="currentBillingAddress().telephone"/><br/>
+    <text args="currentBillingAddress().postcode"/>
+    <span text="currentBillingAddress().region"></span>
+    <text args="_.values(currentBillingAddress().street).join(', ')"/><br/>
+    <text args="currentBillingAddress().city "/>  <br/>
+
+    <each args="data: currentBillingAddress().customAttributes, as: 'element'">
+        <text args="$parent.getCustomAttributeLabel(element)"/>
+        <br/>
+    </each>
+
+    <button visible="!isAddressSameAsShipping()"
+            type="button"
+            class="action action-edit-address"
+            click="editAddress">
+        <span translate="'Edit'"></span>
+    </button>
+</div>
+
