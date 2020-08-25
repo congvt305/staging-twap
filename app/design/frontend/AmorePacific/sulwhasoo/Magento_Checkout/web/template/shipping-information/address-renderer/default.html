@@ -6,12 +6,11 @@
 -->
 <if args="visible()">
     <text args="address().prefix"/> <text args="address().lastname"/> <text args="address().middlename"/>
-    <text args="address().firstname"/> <text args="address().suffix"/><br/>
+    <text args="address().firstname"/> <text args="address().telephone"/><br/>
     <text args="address().postcode"/>
     <span text="address().region"></span>
     <text args="address().city "/>
     <text args="_.values(address().street).join(', ')"/><br/>
-    <a if="address().telephone" attr="'href': 'tel:' + address().telephone" text="address().telephone"></a><br/>
 
     <each args="data: address().customAttributes, as: 'element'">
         <text args="$parent.getCustomAttributeLabel(element)"/>
