@@ -77,6 +77,12 @@
 
     .product-add-form {
         border-top: 1px solid @secondary__color;
+
+        .product-options-wrapper.offline-product-options {
+            .swatch-option.disabled:after {
+                display: none;
+            }
+        }
     }
 
     .qty-selector {
