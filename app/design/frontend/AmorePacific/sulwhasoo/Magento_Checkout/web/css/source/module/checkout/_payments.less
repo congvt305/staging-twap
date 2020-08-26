@@ -61,6 +61,10 @@
                     }
                 }
             }
+
+            .payment-method-billing-address {
+                &:extend(.abs-visually-hidden all);
+            }
         }
 
         .payment-method-title {
@@ -84,6 +88,14 @@
             .fieldset {
                 &:not(:last-child) {
                     margin: 0 0 @indent__base;
+                }
+
+                > .field {
+                    > .label {
+                        &:extend(.abs-visually-hidden-reset all);
+                        font-weight: @font-weight__semibold;
+                        margin-bottom: @indent__s;
+                    }
                 }
             }
         }

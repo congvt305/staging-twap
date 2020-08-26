@@ -49,15 +49,15 @@ class DefaultConfigProviderPlugin extends AbstractModel
             $product = $this->_productRepository->getById($quoteItem->getProduct()->getId());
 
             if ($product->getCustomAttribute('prdvl')) {
-                $result['quoteItemData'][$index]['laneige_size'] =
+                $result['quoteItemData'][$index]['ap_size'] =
                     $product->getPrdvl().$product->getAttributeText('vlunt');
                 if ($product->getCustomAttribute('product_count')) {
-                    $size = $result['quoteItemData'][$index]['laneige_size'];
-                    $result['quoteItemData'][$index]['laneige_size'] =
+                    $size = $result['quoteItemData'][$index]['ap_size'];
+                    $result['quoteItemData'][$index]['ap_size'] =
                         $size.'*'.$product->getAttributeText('product_count');
                 }
             } else {
-                $result['quoteItemData'][$index]['laneige_size'] = '';
+                $result['quoteItemData'][$index]['ap_size'] = '';
             }
         }
         return $result;

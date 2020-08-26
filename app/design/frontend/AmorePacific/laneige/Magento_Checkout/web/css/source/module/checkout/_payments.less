@@ -59,6 +59,10 @@
                     }
                 }
             }
+
+            .payment-method-billing-address {
+                &:extend(.abs-visually-hidden all);
+            }
         }
 
         .payment-method-title {
@@ -68,6 +72,7 @@
             label {
                 font-size: 18px;
                 font-weight: @font-weight__bold !important;
+                top: -1px;
             }
 
             .payment-icon {

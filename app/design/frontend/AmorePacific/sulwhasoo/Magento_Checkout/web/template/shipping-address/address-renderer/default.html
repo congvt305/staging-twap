@@ -4,7 +4,7 @@
  * See COPYING.txt for license details.
  */
 -->
-<if args="visible()">
+<div class="shipping-address-item" css="'selected-item' : isSelected() , 'not-selected-item':!isSelected()">
     <strong><text args="address().prefix"/> <text args="address().lastname"/> <text args="address().middlename"/>
     <text args="address().firstname"/> <text args="address().telephone"/></strong><br/>
     <text args="address().postcode"/>
@@ -16,4 +16,15 @@
         <text args="$parent.getCustomAttributeLabel(element)"/>
         <br/>
     </each>
-</if>
+
+    <button visible="address().isEditable()" type="button"
+            class="action edit-address-link"
+            click="editAddress">
+        <span translate="'Edit'"></span>
+    </button>
+    <!-- ko if: (!isSelected()) -->
+    <button type="button" click="selectAddress" class="action action-select-shipping-item">
+        <span translate="'Ship Here'"></span>
+    </button>
+    <!-- /ko -->
+</div>

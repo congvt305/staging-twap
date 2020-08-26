@@ -17,14 +17,14 @@ class DefaultItem
     {
         $product = $item->getProduct();
         if ($product->getCustomAttribute('prdvl')) {
-            $data['laneige_size'] = $product->getPrdvl().$product->getAttributeText('vlunt');
+            $data['ap_size'] = $product->getPrdvl().$product->getAttributeText('vlunt');
 
             if ($product->getCustomAttribute('product_count')) {
-                $size = $data['laneige_size'];
-                $data['laneige_size'] = $size.'*'.$product->getAttributeText('product_count');
+                $size = $data['ap_size'];
+                $data['ap_size'] = $size.'*'.$product->getAttributeText('product_count');
             }
         } else {
-            $data['laneige_size'] = '';
+            $data['ap_size'] = '';
         }
 
         return array_merge(

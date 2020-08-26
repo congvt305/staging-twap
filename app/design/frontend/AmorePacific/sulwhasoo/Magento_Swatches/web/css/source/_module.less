@@ -183,7 +183,9 @@
             }
 
             &.disabled {
+                box-shadow: unset;
                 cursor: default;
+                pointer-events: none;
 
                 &:after {
                     //  ToDo: improve .lib-background-gradient() to support diagonal gradient
@@ -355,6 +357,17 @@
         display: block;
         height: 0;
         visibility: hidden;
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .swatch-opt {
+        border-bottom: none;
+        padding-top: 0;
     }
 }
 
