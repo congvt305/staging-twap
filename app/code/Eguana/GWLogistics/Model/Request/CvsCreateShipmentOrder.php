@@ -55,6 +55,7 @@ class CvsCreateShipmentOrder
      */
     public function sendRequest($order) {
         $result = [];
+        $this->logger->info('gwlogistics | original orderId for create order' . $order->getId());
         try {
             $cvsLocation = $this->getCvsLocation($order);
             $dataTime = $this->dateTimeFactory->create();
