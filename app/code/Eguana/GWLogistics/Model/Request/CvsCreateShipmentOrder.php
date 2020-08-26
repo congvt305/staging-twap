@@ -51,7 +51,7 @@ class CvsCreateShipmentOrder
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $order
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
      */
     public function sendRequest($order) {
         $result = [];
@@ -166,7 +166,7 @@ class CvsCreateShipmentOrder
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $order
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
      */
     private function getCvsLocation($order)
     {
@@ -179,9 +179,12 @@ class CvsCreateShipmentOrder
      */
     private function getItemData($order)
     {
-        /** @var OrderInterface $order */
-        $orderItems = $order->getItems();
+        $this->logger->info('gwlogistics | original order ID inside getItemData for create order'. $order->getId());
+        /** @var \Magento\Sales\Model\Order $order */
+        $orderItems = $order->getAllItems();
         $firstItem = reset($orderItems);
+        $this->logger->info('gwlogistics | original orderItem ID inside getItemData for create order'. $order->getId(), [$firstItem->getName()]);
+
         $count = $order->getTotalItemCount();
         //'/[\^\'`\!@#%&\*\+\\\"<>\|_\[\]]+/'
         $goodsName = str_replace(['^', '`', '\'', '!', '@','#','%', '&', '\\', '"', '<', '>', '|', '_', '[', ']',   '+', '*'], '', $firstItem->getName());
