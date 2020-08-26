@@ -35,8 +35,13 @@ class CvsCreateShipmentOrder
      * @var \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface
      */
     private $quoteCvsLocationRepository;
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    private $scopeConfig;
 
     public function __construct(
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository,
         \Psr\Log\LoggerInterface $logger,
         \Eguana\GWLogistics\Model\Lib\EcpayLogistics $ecpayLogistics,
@@ -48,6 +53,7 @@ class CvsCreateShipmentOrder
         $this->logger = $logger;
         $this->ecpayLogistics = $ecpayLogistics;
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -87,13 +93,26 @@ class CvsCreateShipmentOrder
             $serverReplyURL = $this->helper->getCreateShipmentReplyUrl();
             $receiverStoreID = $cvsLocation->getCvsStoreId(); //no need, only for C2C
             //for test, sender name, receiver name receiver phone/cellphone , ReceiverStoreID ReturnStoreID are required....!!
-                $this->logger->info('gwlogistics | original param MerchantId | ' . $merchantId);
-                $this->logger->info('gwlogistics | original param MerchantTradeNo | ' . $merchantTradeNo);
-                $this->logger->info('gwlogistics | original param MerchantTradeDate | ' . $merchantTradeDate);
-                $this->logger->info('gwlogistics | original param LogisticsType | ' . $logisticsType);
-                $this->logger->info('gwlogistics | original param LogisticsSubType | ' . $logisticsSubType);
-                $this->logger->info('gwlogistics | original param GoodsAmount | ' . $goodsAmount);
-                $this->logger->info('gwlogistics | original param CollectionAmount | 0' );
+            $this->logger->info('gwlogistics | original order->storeid | ' . $order->getStoreId());
+            $websitetMerchantId = $this->scopeConfig->getValue(
+                'carriers/gwlogistics/merchant_id',
+                \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE,
+                $order->getStoreId()
+            );
+            $storeMerchantId = $this->scopeConfig->getValue(
+                'carriers/gwlogistics/merchant_id',
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                $order->getStoreId()
+            );
+            $this->logger->info('gwlogistics | original  direct called MerchantId | ' . $websitetMerchantId);
+            $this->logger->info('gwlogistics | original  direct called MerchantId | ' . $storeMerchantId);
+            $this->logger->info('gwlogistics | original param MerchantId | ' . $merchantId);
+            $this->logger->info('gwlogistics | original param MerchantTradeNo | ' . $merchantTradeNo);
+            $this->logger->info('gwlogistics | original param MerchantTradeDate | ' . $merchantTradeDate);
+            $this->logger->info('gwlogistics | original param LogisticsType | ' . $logisticsType);
+            $this->logger->info('gwlogistics | original param LogisticsSubType | ' . $logisticsSubType);
+            $this->logger->info('gwlogistics | original param GoodsAmount | ' . $goodsAmount);
+            $this->logger->info('gwlogistics | original param CollectionAmount | 0' );
             $this->logger->info('gwlogistics | original param IsCollection | ' . EcpayIsCollection::NO);
             $this->logger->info('gwlogistics | original param GoodsName | ' . $goodsName);
             $this->logger->info('gwlogistics | original param SenderName | ' . $senderName);
