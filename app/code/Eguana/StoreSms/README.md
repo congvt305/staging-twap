@@ -137,6 +137,12 @@ Select template for SMS order notification
 
 Same as above for the every order status user can enable/disable and set the template
 
+**Additional Configuration for Order Status SMS:**
+i)Navigate to **Stores ⇾ Configuration** ⇾ **General** ⇾ **Store Information** ⇾ **Store Name:**
+Add Some store name here 
+ii)Navigate to **Stores ⇾ Configuration** ⇾ **General** ⇾ **Store Information** ⇾ **Store Phone Number:**
+Add store phone number:
+
 iii) **Test Message**
 
 

@@ -10,6 +10,9 @@ use Psr\Log\LoggerInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Controller\Result\RawFactory;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Raw;
+use Magento\Framework\Controller\ResultInterface;
 
 /**
  * This class is responsible for sending test message
@@ -83,19 +86,30 @@ class Send extends Action
     }
 
     /**
-     * This function is used to send test message
-     *
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     * setting params for test sms
+     * @return ResponseInterface|Raw|ResultInterface
      */
     public function execute()
     {
+        $storeId = 0; //default store
+        if ($this->_request->getParam('store')) {
+            $storeId = $this->_request->getParam('store');
+        }
         try {
-            $storeId = $this->storeManager->getStore()->getId();
+            if ($this->_request->getParam('website')) {
+                $websiteId = $this->_request->getParam('website');
+                $storeIds = $this->storeManager->getWebsite($websiteId)->getStoreIds();
+                $first_key = array_key_first($storeIds);
+                $storeId = $storeIds[$first_key];
+            }
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+        try {
             $isSmsActive = $this->data->getActivation($storeId);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
-
         $telephoneNumber = $this->context->getRequest()->getParam('number');
         $message = $this->context->getRequest()->getParam('message');
         $result = $this->rawFactory->create();
@@ -112,7 +126,7 @@ class Send extends Action
             return $redirectUrl;
         }
         if ($isSmsActive) {
-            $this->sendTestMessage($message, $telephoneNumber);
+            $this->sendTestMessage($message, $telephoneNumber, $storeId);
             return $redirectUrl;
         } else {
             $this->messageManager->addErrorMessage(__('Please enable extension'));
@@ -126,9 +140,9 @@ class Send extends Action
      * @param $message
      * @param $telephoneNumber
      */
-    public function sendTestMessage($message, $telephoneNumber)
+    public function sendTestMessage($message, $telephoneNumber, $storeId)
     {
-        $isTestSmsSent = $this->sendSms->sendMessageByApi($message, $telephoneNumber);
+        $isTestSmsSent = $this->sendSms->sendMessageByApi($message, $telephoneNumber, $storeId);
 
         if ($isTestSmsSent) {
             $this->messageManager->addSuccessMessage(__('Test Sms has been sent on Your number'));

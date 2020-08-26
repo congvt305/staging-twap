@@ -76,7 +76,15 @@ class Send extends Field
      */
     public function getAjaxUrl()
     {
-        return $this->getUrl(self::XML_AJAX_URL);
+        if ($this->_request->getParam('store')) {
+            $id = $this->_request->getParam('store');
+            return $this->getUrl('storesms/system_config/send/store/'.$id.'/');
+        }
+        if ($this->_request->getParam('website')) {
+            $id = $this->_request->getParam('website');
+            return $this->getUrl('storesms/system_config/send/website/'.$id.'/');
+        }
+        return $this->getUrl('storesms/system_config/send/');
     }
 
     /**
