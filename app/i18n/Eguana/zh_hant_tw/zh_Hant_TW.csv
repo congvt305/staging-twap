@@ -15350,7 +15350,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "If you requested this change, reset your password here:","如果這項變更確實由您提出，請在此設定您的新帳戶密碼:",module,Magento_User
 "If you did not make this request, you can ignore this email and your password will remain the same.","如果您未發出此變更要求，請忽略此電子郵件，您的帳戶密碼將保持不變。",module,Magento_User
 "Thank you,","感謝您,",module,Magento_User
-"New %changes for %user_name","New %changes for %user_name",module,Magento_User
+"New %changes for %user_name","%user_name帳戶異動%changes",module,Magento_User
 "Hello,","您好，",module,Magento_User
 "We have received a request to change the following information associated with your account at %store_name: %changes.","我們收到了您在%store_name的帳戶異動需求，包括電子郵件或密碼。: %changes.",module,Magento_User
 "If you have not authorized this action, please contact us immediately at %store_email","如果您未授權此操作，請立即通過以下方式與我們聯繫 %store_email",module,Magento_User
