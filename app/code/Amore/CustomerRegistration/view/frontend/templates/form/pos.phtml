@@ -43,7 +43,7 @@ $notAllowedChar = $viewModel->getNotAllowedCharList();
             <label for="mobile_number" class="label"><span><?= $block->escapeHtml(__('Telephone')) ?></span></label>
             <div class="control">
                 <?php //phpcs:disable ?>
-                <input type="text" placeholder="<?= $block->escapeHtml(__('Telephone')) ?>" name="mobile_number" data-validate='{"required":true, "validate-number":true, "minlength":<?= $minimumMobileNumberDigits; ?>, "maxlength":<?= $maximumMobileNumberDigits; ?>}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('Telephone')) ?>" class="input-text mobile-number" id="mobile_number">
+                <input type="text" placeholder="<?= $block->escapeHtml(__('Telephone')) ?>" name="mobile_number" data-validate='{"required":true, "validate-number":true, "minlength":<?= $minimumMobileNumberDigits; ?>, "maxlength":<?= $maximumMobileNumberDigits; ?>}' value="" title="<?= /* @noEscape */ $block->escapeHtml(__('Telephone')) ?>" class="input-text mobile-number" id="pos_mobile_number">
                 <a class="action primary sms-link">
                     <span><?= $block->escapeHtml(__('Get Code')) ?></span>
                 </a>

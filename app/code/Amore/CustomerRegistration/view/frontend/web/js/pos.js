@@ -56,7 +56,7 @@ define([
             $('.pos-verification-message').hide();
             var firstNameIsValid = this.isFieldValid('first_name');
             var lastNameIsValid = this.isFieldValid('last_name');
-            var mobileNumberIsValid = this.isFieldValid('mobile_number');
+            var mobileNumberIsValid = this.isFieldValid('pos_mobile_number');
 
             if(firstNameIsValid && lastNameIsValid && mobileNumberIsValid){
                 $.ajax({
@@ -101,7 +101,7 @@ define([
             var codeIsValid = this.isFieldValid('code');
 
             if(codeIsValid){
-                var mobileNumberIsValid = this.isFieldValid('mobile_number');
+                var mobileNumberIsValid = this.isFieldValid('pos_mobile_number');
                 if(codeIsValid && mobileNumberIsValid){
                     $.ajax({
                         url: this.options.verifyCodeUrl,
@@ -137,7 +137,7 @@ define([
         },
         posVerification: function() {
             var codeIsValid = this.isFieldValid('code');
-            var mobileNumberIsValid = this.isFieldValid('mobile_number');
+            var mobileNumberIsValid = this.isFieldValid('pos_mobile_number');
             var firstNameIsValid = this.isFieldValid('first_name');
             var lastNameIsValid = this.isFieldValid('last_name');
 
