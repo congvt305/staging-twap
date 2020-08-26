@@ -7,7 +7,7 @@ Send,Send
 "Please check your api credentials","Please check your api credentials"
 "Please Enter correct verification code","Please Enter correct verification code"
 "Dear %customer Your order #%order has been canceled By %store_name","Dear %customer Your order #%order has been canceled By %store_name"
-"Dear %customer Your order #%order has been closed By %store_name","Dear %customer Your order #%order has been closed By %store_name"
+"[%store_name] Your order has been cancelled! We will complete the refund procedure within 30 days, please pay attention to whether the bank account has received a refund! If you have any questions, please call %store_phone","[%store_name] Your order has been cancelled! We will complete the refund procedure within 30 days, please pay attention to whether the bank account has received a refund! If you have any questions, please call %store_phone"
 "Dear %customer Your order #%order has been dispatched By %store_name %store_phone","Dear %customer Your order #%order has been dispatched By %store_name"
 "Dear %customer Your order #%order is in hold state By %store_name","Dear %customer Your order #%order is in hold state By %store_name"
 "Dear %customer Your order #%order is in pending state By %store_name","Dear %customer Your ordergit #%order is in pending state By %store_name"
