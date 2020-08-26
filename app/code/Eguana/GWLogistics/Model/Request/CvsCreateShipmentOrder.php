@@ -58,6 +58,7 @@ class CvsCreateShipmentOrder
         $this->logger->info('gwlogistics | original orderId for create order' . $order->getId());
         try {
             $cvsLocation = $this->getCvsLocation($order);
+            $this->logger->info('gwlogistics | original cvsLocation ID for create order' . $cvsLocation->getId());
             $dataTime = $this->dateTimeFactory->create();
             $merchantId = $this->helper->getMerchantId($order->getStoreId());
             $platformId = $this->helper->getPlatformId($order->getStoreId()) ?? '';
@@ -68,8 +69,14 @@ class CvsCreateShipmentOrder
             $logisticsType = EcpayLogisticsType::CVS;
             $logisticsSubType = $cvsLocation->getLogisticsSubType();
             $goodsAmount = (int)round($order->getSubtotal(), 0);
+            $this->logger->info('gwlogistics | original goodsAmount for create order' . $order->getId(), [$goodsAmount]);
+
             $items = $this->getItemData($order);
+            $this->logger->info('gwlogistics | original items for create order' . $order->getId(), $items);
+
             $goodsName = (isset($items['goodsName']) && $items['goodsName']) ? $items['goodsName']  : '';
+            $this->logger->info('gwlogistics | original $goodsName for create order' . $order->getId(), [$goodsName]);
+
             //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
             $senderName = $this->helper->getSenderName($order->getStoreId()); //no space not more than 10.
             $senderPhone = $this->helper->getSenderPhone($order->getStoreId()); //no space not more than 10.
@@ -145,13 +152,13 @@ class CvsCreateShipmentOrder
                 'ReturnStoreID' => '' //cvs store id from map request, b2c do not send
             ];
             $result = $this->ecpayLogistics->BGCreateShippingOrder();
-            if (isset($result['CheckMacValue'])) {
-                if (!$this->helper->validateCheckMackValue($result, $order->getStoreId())) {
-                    throw new \Exception(__('CheckMacValue is not valid'));
-                }
-            }
+//            if (isset($result['CheckMacValue'])) {
+//                if (!$this->helper->validateCheckMackValue($result, $order->getStoreId())) {
+//                    throw new \Exception(__('CheckMacValue is not valid'));
+//                }
+//            } //todo uncomment later
         } catch (\Exception $e) {
-            $this->logger->critical('GWL create shipping order failed');
+            $this->logger->critical('GWL create shipping order failed for internal valication');
             $this->logger->critical($e->getMessage());
             throw $e;
         }
