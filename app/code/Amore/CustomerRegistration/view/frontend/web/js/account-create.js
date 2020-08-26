@@ -8,8 +8,8 @@ define([
 ], function($){
 
     $('#customerSubmit').on('click', function (event) {
-        var dataForm = jQuery('#form-validate');
+        var dataForm = $('#form-validate');
         if(dataForm.validation('isValid') === true){
-            jQuery('body').loader('show');
+            $('body').loader('show');
         }});
 });
