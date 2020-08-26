@@ -174,7 +174,7 @@ class Data extends AbstractHelper
         if ($storeId) {
             $this->logger->info('gwlogistics | data getMerchantId storeId argument | '. $storeId);
         }
-        $suffix = $this->getMode() === '1' ? '' : '_sandbox';
+        $suffix = $this->getMode($storeId) === '1' ? '' : '_sandbox';
         $this->logger->info('gwlogistics | data getMerchantId suffix argument | '. $suffix);
         return $this->scopeConfig->getValue(
             self::XML_PATH_MERCHANT_ID . $suffix,
