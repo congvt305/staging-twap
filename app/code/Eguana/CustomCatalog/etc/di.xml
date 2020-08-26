@@ -2,6 +2,9 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\CatalogWidget\Block\Product\ProductsList" type="Eguana\CustomCatalog\Block\Product\ProductsList" />
     <type name="Magento\Catalog\Controller\Product\View">
-        <plugin name="Eguana_CustomCatalog::BundleProduct_Message" type="Eguana\CustomCatalog\Plugin\Controller\Product\View"/>
+        <plugin name="remove_bundle_options_error_message" type="Eguana\CustomCatalog\Plugin\Controller\Product\View"/>
+    </type>
+    <type name="Magento\Wishlist\Controller\Index\Cart">
+        <plugin name="redirect_to_product_detail_page" type="Eguana\CustomCatalog\Plugin\Controller\Index\Cart"/>
     </type>
 </config>
