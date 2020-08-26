@@ -5,8 +5,8 @@
  */
 -->
 <div if="isAddressDetailsVisible() && currentBillingAddress()" class="billing-address-details">
-    <text args="currentBillingAddress().prefix"/> <text args="currentBillingAddress().lastname"/> <text args="currentBillingAddress().middlename"/>
-    <text args="currentBillingAddress().firstname"/> <text args="currentBillingAddress().telephone"/><br/>
+    <strong><text args="currentBillingAddress().prefix"/> <text args="currentBillingAddress().lastname"/> <text args="currentBillingAddress().middlename"/>
+    <text args="currentBillingAddress().firstname"/> <text args="currentBillingAddress().telephone"/></strong><br/>
     <text args="currentBillingAddress().postcode"/>
     <span text="currentBillingAddress().region"></span>
     <text args="currentBillingAddress().city "/>
