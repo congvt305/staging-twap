@@ -11,13 +11,10 @@ $required = '';
 if ($block->hasRequiredOptions()) {
     $required = ' data-hasrequired="' . $block->escapeHtmlAttr(__('* Required Fields')) . '"';
 }
-$_product = $block->getProduct();
 ?>
+<?php $_product = $block->getProduct(); ?>
 <div class="product-options-wrapper<?php if ($_product->getData('offline')): ?> offline-product-options<?php endif; ?>" id="product-options-wrapper"<?= /* @noEscape */ $required ?>>
-    <span class="options-toggle" data-mage-init='{"toggleAdvanced": {"toggleContainers": "#options-toggle", "selectorsToggleClass": "active"}}'>
-        <?= $block->escapeHtml(__('ALL')) ?>
-    </span>
-    <div class="fieldset" tabindex="0" id="options-toggle">
+    <div class="fieldset" tabindex="0">
         <?= $block->getChildHtml('', true) ?>
     </div>
 </div>

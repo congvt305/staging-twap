@@ -26,7 +26,7 @@ define([
             var size = null;
             itemsData.forEach(function (item) {
                 if (item.item_id == itemId) {
-                    size = item.laneige_size;
+                    size = item.ap_size;
                 }
             });
             if (size != null) {

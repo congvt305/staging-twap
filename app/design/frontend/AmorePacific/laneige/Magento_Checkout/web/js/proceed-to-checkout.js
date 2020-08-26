@@ -1,5 +1,6 @@
 /**
- * 2.4 트랜잭션 구매하기 버튼 (장바구니)
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 define([
@@ -10,7 +11,6 @@ define([
     'use strict';
 
     return function (config, element) {
-
         $(element).click(function (event) {
             var cart = customerData.get('cart'),
                 customer = customerData.get('customer');
@@ -19,13 +19,9 @@ define([
 
             if (!customer().firstname && cart().isGuestCheckoutAllowed === false) {
                 location.href = window.checkout.customerLoginUrl;
+
                 return false;
             }
-            /**
-             * added to core code
-             */
-            window.dataLayer.push({'event': 'purcachecartbtn'});
-
             $(element).attr('disabled', true);
             location.href = config.checkoutUrl;
         });
