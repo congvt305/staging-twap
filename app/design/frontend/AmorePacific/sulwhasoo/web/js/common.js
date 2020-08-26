@@ -365,7 +365,7 @@ require([
     {
         var isMobile = false;
         if (navigator.userAgent.match(/Android|Mobile|iP(hone|od|ad)|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/)) {
-            if (jQuery(window).width() < 768) {
+            if ($(window).width() < 768) {
                 isMobile = true;
             }
         }
