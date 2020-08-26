@@ -20,6 +20,10 @@
         .bundle-options-wrapper {
             &:extend(.abs-visually-hidden all);
         }
+
+        .product-info-main-attribute .product.attribute {
+            overflow: hidden;
+        }
     }
 
     .bundle-options-container {
@@ -223,6 +227,16 @@
                     padding: 0;
                     float: none;
                 }
+            }
+
+            .bundle-summary {
+                margin-top: 0;
+            }
+
+            .product-details > .actions {
+                border-top: @product-content-border;
+                margin-top: 0;
+                padding-top: @indent__s;
             }
         }
 
