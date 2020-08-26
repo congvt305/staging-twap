@@ -68,14 +68,12 @@ class CvsCreateShipmentOrder
             $hashIv = $this->helper->getHashIv($order->getStoreId());
             $logisticsType = EcpayLogisticsType::CVS;
             $logisticsSubType = $cvsLocation->getLogisticsSubType();
-            $goodsAmount = (int)round($order->getSubtotal(), 0);
-            $this->logger->info('gwlogistics | original goodsAmount for create order' . $order->getId(), [$goodsAmount]);
 
             $items = $this->getItemData($order);
             $this->logger->info('gwlogistics | original items for create order' . $order->getId(), $items);
 
+            $goodsAmount = (isset($items['goodsAmount']) && $items['goodsAmount']) ? $items['goodsAmount']  : 0;
             $goodsName = (isset($items['goodsName']) && $items['goodsName']) ? $items['goodsName']  : '';
-            $this->logger->info('gwlogistics | original $goodsName for create order' . $order->getId(), [$goodsName]);
 
             //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
             $senderName = $this->helper->getSenderName($order->getStoreId()); //no space not more than 10.
@@ -84,6 +82,8 @@ class CvsCreateShipmentOrder
             //Character limit is 4-10 characters (Chinese2-5 characters, English 4-10 characters)
             $receiverName = $order->getShippingAddress()->getLastname() . $order->getShippingAddress()->getFirstname();
             $receiverName = (strlen($receiverName) > 10) ? substr($receiverName,0,10): $receiverName;
+            $this->logger->info('gwlogistics | original receiverName for create order' . $order->getId(), [$receiverName]);
+
             $receiverPhone = $order->getShippingAddress()->getTelephone();
             $receiverEmail = $order->getShippingAddress()->getEmail();
             $remarks = $order->getDeliveryMessage() ?? '';
@@ -181,28 +181,18 @@ class CvsCreateShipmentOrder
     {
         /** @var OrderInterface $order */
         $orderItems = $order->getItems();
-        $orderItemArr = [];
-        $quantity = 0;
-        foreach ($orderItems as $orderItem) {
-            if ($orderItem->getProductType() === 'simple') {
-                $orderItemArr[] = $orderItem;
-                $quantity += (int)$orderItem->getQtyOrdered();
-            }
-        }
-        $count = count($orderItemArr);
-        $item = reset($orderItemArr);
-
-        $goodsName = str_replace(['^', '`', '\'', '!', '@','#','%', '&', '\\', '"', '<', '>', '|', '_', '[', ']',   '+', '*'], '', $item->getName());
+        $firstItem = reset($orderItems);
+        $count = $order->getTotalItemCount();
+        //'/[\^\'`\!@#%&\*\+\\\"<>\|_\[\]]+/'
+        $goodsName = str_replace(['^', '`', '\'', '!', '@','#','%', '&', '\\', '"', '<', '>', '|', '_', '[', ']',   '+', '*'], '', $firstItem->getName());
         $goodsName = (strlen($goodsName) > 30) ? substr($goodsName,0,30).'...': $goodsName;
         $goodsName = $count > 1 ? $goodsName . __(' and others.'): $goodsName;
 
-        $quantity = (string)$quantity;
-
         return [
-            'goodsAmount' => (int)round($order->getBaseGrandTotal(), 0),
+            'goodsAmount' => intval($order->getSubtotal()),
             'goodsName' => $goodsName,
-            'quantity' => $quantity,
-            'cost' => (int)round($order->getBaseGrandTotal(), 0),
+            'quantity' => $order->getTotalItemCount(),
+            'cost' => intval($order->getGrandTotal()),
         ];
     }
 
