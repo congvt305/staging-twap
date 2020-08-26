@@ -55,10 +55,9 @@ class CvsCreateShipmentOrder
      */
     public function sendRequest($order) {
         $result = [];
-        $this->logger->info('gwlogistics | original orderId for create order' . $order->getId());
         try {
             $cvsLocation = $this->getCvsLocation($order);
-            $this->logger->info('gwlogistics | original cvsLocation ID for create order' . $cvsLocation->getId());
+            $this->logger->info('gwlogistics | original cvsLocation ID for create order #' . $order->getEntityId(). '|'. $cvsLocation->getId());
             $dataTime = $this->dateTimeFactory->create();
             $merchantId = $this->helper->getMerchantId($order->getStoreId());
             $platformId = $this->helper->getPlatformId($order->getStoreId()) ?? '';
@@ -70,10 +69,8 @@ class CvsCreateShipmentOrder
             $logisticsSubType = $cvsLocation->getLogisticsSubType();
 
             $items = $this->getItemData($order);
-            $this->logger->info('gwlogistics | original items for create order' . $order->getId(), $items);
-
-            $goodsAmount = (isset($items['goodsAmount']) && $items['goodsAmount']) ? $items['goodsAmount']  : 0;
-            $goodsName = (isset($items['goodsName']) && $items['goodsName']) ? $items['goodsName']  : '';
+            $goodsAmount = $items['goodsAmount'];
+            $goodsName = $items['goodsName'];
 
             //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
             $senderName = $this->helper->getSenderName($order->getStoreId()); //no space not more than 10.
@@ -82,7 +79,6 @@ class CvsCreateShipmentOrder
             //Character limit is 4-10 characters (Chinese2-5 characters, English 4-10 characters)
             $receiverName = $order->getShippingAddress()->getLastname() . $order->getShippingAddress()->getFirstname();
             $receiverName = (strlen($receiverName) > 10) ? substr($receiverName,0,10): $receiverName;
-            $this->logger->info('gwlogistics | original receiverName for create order' . $order->getId(), [$receiverName]);
 
             $receiverPhone = $order->getShippingAddress()->getTelephone();
             $receiverEmail = $order->getShippingAddress()->getEmail();
@@ -151,7 +147,7 @@ class CvsCreateShipmentOrder
                 'ReceiverStoreID' => $receiverStoreID, //cvs store id from map request, b2c do not send
                 'ReturnStoreID' => '' //cvs store id from map request, b2c do not send
             ];
-            $result = $this->ecpayLogistics->BGCreateShippingOrder();
+//            $result = $this->ecpayLogistics->BGCreateShippingOrder();
 //            if (isset($result['CheckMacValue'])) {
 //                if (!$this->helper->validateCheckMackValue($result, $order->getStoreId())) {
 //                    throw new \Exception(__('CheckMacValue is not valid'));
@@ -175,15 +171,13 @@ class CvsCreateShipmentOrder
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $order
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
      */
     private function getItemData($order)
     {
-        $this->logger->info('gwlogistics | original order ID inside getItemData for create order'. $order->getId());
         /** @var \Magento\Sales\Model\Order $order */
         $orderItems = $order->getAllItems();
         $firstItem = reset($orderItems);
-        $this->logger->info('gwlogistics | original orderItem ID inside getItemData for create order'. $order->getId(), [$firstItem->getName()]);
 
         $count = $order->getTotalItemCount();
         //'/[\^\'`\!@#%&\*\+\\\"<>\|_\[\]]+/'
