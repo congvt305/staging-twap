@@ -94,17 +94,12 @@ class CvsCreateShipmentOrder
             $receiverStoreID = $cvsLocation->getCvsStoreId(); //no need, only for C2C
             //for test, sender name, receiver name receiver phone/cellphone , ReceiverStoreID ReturnStoreID are required....!!
             $this->logger->info('gwlogistics | original order->storeid | ' . $order->getStoreId());
-            $websitetMerchantId = $this->scopeConfig->getValue(
-                'carriers/gwlogistics/merchant_id',
-                \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE,
-                $order->getStoreId()
-            );
+
             $storeMerchantId = $this->scopeConfig->getValue(
                 'carriers/gwlogistics/merchant_id',
                 \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
                 $order->getStoreId()
             );
-            $this->logger->info('gwlogistics | original  direct called MerchantId | ' . $websitetMerchantId);
             $this->logger->info('gwlogistics | original  direct called MerchantId | ' . $storeMerchantId);
             $this->logger->info('gwlogistics | original param MerchantId | ' . $merchantId);
             $this->logger->info('gwlogistics | original param MerchantTradeNo | ' . $merchantTradeNo);
@@ -129,7 +124,7 @@ class CvsCreateShipmentOrder
             $this->logger->info('gwlogistics | original param Remark | '. $remarks);
             $this->logger->info('gwlogistics | original param PlatformID | '. $platformId);
             $params = [
-                'MerchantID' => $merchantId,//
+                'MerchantID' => $storeMerchantId,//
                 'MerchantTradeNo' => $merchantTradeNo,
                 'MerchantTradeDate' => $merchantTradeDate,//
                 'LogisticsType' => $logisticsType,//
@@ -188,7 +183,7 @@ class CvsCreateShipmentOrder
                 'ReceiverStoreID' => $receiverStoreID, //cvs store id from map request, b2c do not send
                 'ReturnStoreID' => '' //cvs store id from map request, b2c do not send
             ];
-//            $result = $this->ecpayLogistics->BGCreateShippingOrder();
+            $result = $this->ecpayLogistics->BGCreateShippingOrder();
 //            if (isset($result['CheckMacValue'])) {
 //                if (!$this->helper->validateCheckMackValue($result, $order->getStoreId())) {
 //                    throw new \Exception(__('CheckMacValue is not valid'));
