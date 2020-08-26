@@ -87,6 +87,28 @@ class CvsCreateShipmentOrder
             $serverReplyURL = $this->helper->getCreateShipmentReplyUrl();
             $receiverStoreID = $cvsLocation->getCvsStoreId(); //no need, only for C2C
             //for test, sender name, receiver name receiver phone/cellphone , ReceiverStoreID ReturnStoreID are required....!!
+                $this->logger->info('gwlogistics | original param MerchantId | ' . $merchantId);
+                $this->logger->info('gwlogistics | original param MerchantTradeNo | ' . $merchantTradeNo);
+                $this->logger->info('gwlogistics | original param MerchantTradeDate | ' . $merchantTradeDate);
+                $this->logger->info('gwlogistics | original param LogisticsType | ' . $logisticsType);
+                $this->logger->info('gwlogistics | original param LogisticsSubType | ' . $logisticsSubType);
+                $this->logger->info('gwlogistics | original param GoodsAmount | ' . $goodsAmount);
+                $this->logger->info('gwlogistics | original param CollectionAmount | 0' );
+            $this->logger->info('gwlogistics | original param IsCollection | ' . EcpayIsCollection::NO);
+            $this->logger->info('gwlogistics | original param GoodsName | ' . $goodsName);
+            $this->logger->info('gwlogistics | original param SenderName | ' . $senderName);
+            $this->logger->info('gwlogistics | original param SenderPhone | ' . $senderPhone);
+            $this->logger->info('gwlogistics | original param SenderCellPhone | ' . $senderCellPhone);
+            $this->logger->info('gwlogistics | original param ReceiverName | ' . $receiverName);
+            $this->logger->info('gwlogistics | original param ReceiverPhone | ' . $receiverPhone);
+            $this->logger->info('gwlogistics | original param ReceiverCellPhone | ' . $receiverPhone);
+            $this->logger->info('gwlogistics | original param ReceiverEmail | ' . $receiverEmail);
+            $this->logger->info('gwlogistics | original param TradeDesc | '. '');
+            $this->logger->info('gwlogistics | original param ServerReplyURL | '. $serverReplyURL);
+            $this->logger->info('gwlogistics | original param ClientReplyURL | '. '');
+            $this->logger->info('gwlogistics | original param LogisticsC2CReplyURL | '. '');
+            $this->logger->info('gwlogistics | original param Remark | '. $remarks);
+            $this->logger->info('gwlogistics | original param PlatformID | '. $platformId);
             $params = [
                 'MerchantID' => $merchantId,//
                 'MerchantTradeNo' => $merchantTradeNo,
