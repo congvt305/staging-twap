@@ -72,36 +72,22 @@ class AbstractCreateReverseShipmentOrder
     }
 
     /**
-     * @param \Magento\Rma\Api\Data\RmaInterface $rma
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
+     * @return float|int|null
      */
-    protected function _getItemData($rma)
-    {
-        /** @var OrderInterface $order */
-        $order = $this->_orderRepository->get($rma->getOrderId());
-        $orderItems = $order->getItems();
-        $orderItemArr = [];
-        $quantity = 0;
-        foreach ($orderItems as $orderItem) {
-            if ($orderItem->getProductType() === 'simple') {
-                $orderItemArr[] = $orderItem;
-                $quantity += (int)$orderItem->getQtyOrdered();
+    protected function getItemCount($order) {
+        /** @var \Magento\Sales\Api\Data\OrderItemInterface[] $items */
+        $items = $order->getItems();
+        $totalQty = 0;
+
+        /** @var \Magento\Sales\Api\Data\OrderItemInterface $item */
+        foreach ($items as $item) {
+            if($item->getProductType() === 'simple') {
+                $totalQty += $item->getQtyOrdered();
             }
         }
-        $count = count($orderItemArr);
-        $item = reset($orderItemArr);
 
-        $goodsName = str_replace(['^', '`', '\'', '!', '@','#','%', '&', '\\', '"', '<', '>', '|', '_', '[', ']',   '+', '*'], '', $item->getName());
-        $goodsName = (strlen($goodsName) > 30) ? substr($goodsName,0,30).'...': $goodsName;
-        $goodsName = $count > 1 ? $goodsName . __(' and others.'): $goodsName;
-
-        $quantity = (string)$quantity;
-
-        return [
-            'goodsAmount' => (int)round($order->getBaseGrandTotal(), 0),
-            'goodsName' => $goodsName,
-            'quantity' => $quantity,
-            'cost' => (int)round($order->getBaseGrandTotal(), 0),
-        ];
+        return $totalQty;
     }
 
 }

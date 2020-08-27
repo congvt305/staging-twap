@@ -68,6 +68,9 @@
                 <field id="sender_cell_phone" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Sender Cell Phone</label>
                 </field>
+                <field id="goodsname_prefix" translate="label" type="text" sortOrder="210" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Goods Name Prefix for API Call</label>
+                </field>
             </group>
         </section>
     </system>
