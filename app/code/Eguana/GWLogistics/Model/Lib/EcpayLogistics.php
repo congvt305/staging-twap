@@ -19,7 +19,7 @@ class EcpayLogistics
     public $HashKey = '';
     public $HashIV = '';
     public $Send = array();
-    public $SendExtend = '';
+    public $SendExtend = array();
     public $PostParams = array();
     public $Encode = 'UTF-8';
     /**
@@ -291,24 +291,41 @@ class EcpayLogistics
             'PlatformID' => ''
         );
 
+        $this->logger->info('gwlogistics | lib ClientReplyURL for create order'. $this->Send['ClientReplyURL']);
         // 幕後物流訂單建立不可設定Client端回覆網址(ClientReplyURL)
         if (!empty($this->Send['ClientReplyURL'])) {
             throw new \Exception('ClientReplyURL should be null.');
         }
 
+
         $this->PostParams = $this->GetPostParams($this->Send, $ParamList);
+        $this->logger->info('gwlogistics | lib PostParams for create order', $this->PostParams);
 
         $MinAmount = 1; // 金額下限
         $MaxAmount = 20000; // 金額上限
 
         // 參數檢查
+
         $this->ValidateHashKey();
+        $this->logger->info('gwlogistics | lib HashKey for create order', [$this->HashKey]);
+
         $this->ValidateHashIV();
+        $this->logger->info('gwlogistics | lib HashIV for create order', [$this->HashIV]);
+
         $this->ValidateID('MerchantID', $this->PostParams['MerchantID'], 10);
+        $this->logger->info('gwlogistics | lib MerchantID for create order', [$this->PostParams['MerchantID']]);
+
         $this->ServiceURL = $this->GetURL('SHIPPING_ORDER');
+        $this->logger->info('gwlogistics | lib SHIPPING_ORDER for create order', [$this->ServiceURL]);
+
         $this->ValidateMerchantTradeDate();
+        $this->logger->info('gwlogistics | lib MerchantTradeDate for create order', [$this->PostParams['MerchantTradeDate']]);
+
         $this->ValidateLogisticsType();
+        $this->logger->info('gwlogistics | lib LogisticsType for create order', [$this->PostParams['LogisticsType']]);
+
         $this->ValidateLogisticsSubType();
+        $this->logger->info('gwlogistics | lib LogisticsSubType for create order', [$this->PostParams['LogisticsSubType']]);
 
         // 依不同的物流類型(LogisticsType)設定專屬參數並檢查
         switch ($this->PostParams['LogisticsType']) {
@@ -318,10 +335,15 @@ class EcpayLogistics
                     'ReturnStoreID' => ''
                 );
                 $this->PostParams = $this->GetPostParams($this->SendExtend, $CvsParamList, $this->PostParams);
+                $this->logger->info('gwlogistics | lib SendExtend for create order', $this->SendExtend);
+                $this->logger->info('gwlogistics | lib PostParams for create order', $this->PostParams);
 
 //                $this->ValidateMixTypeID('ReceiverStoreID', $this->PostParams['ReceiverStoreID'], 6); //need to check if value is requred only for test, docs says not to send this value.
                 $this->ValidateMixTypeID('ReceiverStoreID', $this->PostParams['ReceiverStoreID'], 6, true);
+                $this->logger->info('gwlogistics | lib ReceiverStoreID for create order', [$this->PostParams['ReceiverStoreID']]);
+
                 $this->ValidateMixTypeID('ReturnStoreID', $this->PostParams['ReturnStoreID'], 6, true);
+                $this->logger->info('gwlogistics | lib ReceiverStoreID for create order', [$this->PostParams['ReceiverStoreID']]);
                 break;
             case EcpayLogisticsType::HOME:
                 $HomeParamList = array(
@@ -355,10 +377,13 @@ class EcpayLogistics
         if ($this->PostParams['GoodsAmount'] < $MinAmount or $this->PostParams['GoodsAmount'] > $MaxAmount){
             throw new \Exception('Invalid GoodsAmount.');
         }
+        $this->logger->info('gwlogistics | lib GoodsAmount for create order', [$this->PostParams['GoodsAmount']]);
 
         $this->ValidateIsCollection(true);
         if ($this->PostParams['IsCollection'] == EcpayIsCollection::NO) {
             // 若設定為僅配送，清除代收金額
+            $this->logger->info('gwlogistics | lib IsCollection for create order', [$this->PostParams['IsCollection']]);
+            $this->logger->info('gwlogistics | lib CollectionAmount for create order', [$this->PostParams['CollectionAmount']]);
             unset($this->PostParams['CollectionAmount']);
         } else {
             $this->ValidateAmount('CollectionAmount', $this->PostParams['CollectionAmount']);
@@ -374,12 +399,16 @@ class EcpayLogistics
             $this->ValidateString('GoodsName', $this->PostParams['GoodsName'], 60, true);
         }
 
+        $this->logger->info('gwlogistics | lib GoodsName for create order', [$this->PostParams['GoodsName']]);
         $this->ValidateGoodsName('GoodsName', $this->PostParams['GoodsName'], true);
 
         $this->ValidateString('SenderName', $this->PostParams['SenderName'], 10);
         $this->ValidateSenderName('SenderName', $this->PostParams['SenderName'], true);
+        $this->logger->info('gwlogistics | lib SenderName for create order', [$this->PostParams['SenderName']]);
 
         $this->ValidatePhoneNumber('SenderPhone', $this->PostParams['SenderPhone'], true);
+        $this->logger->info('gwlogistics | lib SenderName for create order', [$this->PostParams['SenderPhone']]);
+
         $this->ValidateCellphoneNumber('SenderCellPhone', $this->PostParams['SenderCellPhone'], true);
         if ($this->PostParams['LogisticsType'] == EcpayLogisticsType::HOME) {
             // 物流類型(LogisticsType)為宅配(Home)時，寄件人電話(SenderPhone)或寄件人手機(SenderCellPhone)不可為空
@@ -395,9 +424,15 @@ class EcpayLogistics
 
         $this->ValidateString('ReceiverName', $this->PostParams['ReceiverName'], 10);
         $this->ValidateReceiverName('ReceiverName', $this->PostParams['ReceiverName'], true);
+        $this->logger->info('gwlogistics | lib ReceiverName for create order', [$this->PostParams['ReceiverName']]);
 
         $this->ValidatePhoneNumber('ReceiverPhone', $this->PostParams['ReceiverPhone'], true);
+        $this->logger->info('gwlogistics | lib ReceiverPhone for create order', [$this->PostParams['ReceiverPhone']]);
+
         $this->ValidateCellphoneNumber('ReceiverCellPhone', $this->PostParams['ReceiverCellPhone'], true);
+        $this->logger->info('gwlogistics | lib ReceiverCellPhone for create order', [$this->PostParams['ReceiverCellPhone']]);
+
+
         if ($this->PostParams['LogisticsType'] == EcpayLogisticsType::HOME) {
             // 物流類型(LogisticsType)為宅配(Home)時，收件人電話(ReceiverPhone)或收件人手機(ReceiverCellPhone)不可為空
             if (empty($this->PostParams['ReceiverPhone']) and empty($this->PostParams['ReceiverCellPhone'])) {
@@ -409,6 +444,7 @@ class EcpayLogistics
                 throw new \Exception('ReceiverCellPhone is required.');
             }
         }
+        $this->logger->info('gwlogistics | lib ReceiverCellPhone 2 for create order', [$this->PostParams['ReceiverCellPhone']]);
 
         if ($this->PostParams['LogisticsSubType'] == EcpayLogisticsSubType::ECAN and $this->PostParams['Temperature'] !== EcpayTemperature::ROOM) {
             // 物流子類型為宅配通(ECAN)時，溫層(Temperature)只能用常溫(ROOM)
@@ -421,8 +457,13 @@ class EcpayLogistics
         }
 
         $this->ValidateEmail('ReceiverEmail', $this->PostParams['ReceiverEmail'], 50, true);
+        $this->logger->info('gwlogistics | lib ReceiverEmail 2 for create order', [$this->PostParams['ReceiverEmail']]);
+
         $this->ValidateString('TradeDesc', $this->PostParams['TradeDesc'], 200, true);
+        $this->logger->info('gwlogistics | lib TradeDesc 2 for create order', [$this->PostParams['TradeDesc']]);
+
         $this->ValidateURL('ServerReplyURL', $this->PostParams['ServerReplyURL']);
+        $this->logger->info('gwlogistics | lib ServerReplyURL 2 for create order', [$this->PostParams['ServerReplyURL']]);
 
         if ($this->PostParams['LogisticsSubType'] == EcpayLogisticsSubType::UNIMART_C2C) {
             // 物流子類型(LogisticsSubType)為統一超商交貨便(UNIMARTC2C)時，此欄位不可為空
@@ -432,7 +473,10 @@ class EcpayLogistics
         }
 
         $this->ValidateString('Remark', $this->PostParams['Remark'], 200, true);
+        $this->logger->info('gwlogistics | lib Remark 2 for create order', [$this->PostParams['Remark']]);
+
         $this->ValidateID('PlatformID', $this->PostParams['PlatformID'], 10, true);
+        $this->logger->info('gwlogistics | lib PlatformID 2 for create order', [$this->PostParams['PlatformID']]);
 
         // 物流類型(LogisticsType)為宅配(Home)且溫層(Temperature)為冷凍(0003)時，規格(Specification)不可為 150cm(0004)
         if ($this->PostParams['LogisticsType'] == EcpayLogisticsType::HOME and $this->PostParams['Temperature'] == EcpayTemperature::FREEZE) {
@@ -443,6 +487,8 @@ class EcpayLogistics
 
         // 產生 CheckMacValue
         $this->PostParams['CheckMacValue'] = $this->ecpayCheckMacValue->Generate($this->PostParams, $this->HashKey, $this->HashIV);
+        $this->logger->info('gwlogistics | lib CheckMacValue 2 for create order', [$this->PostParams['CheckMacValue']]);
+
         $this->logger->info('gwlogistics | params for create order', $this->PostParams);
         // urlencode
         foreach($this->PostParams as $key => $Value) {
@@ -1781,6 +1827,7 @@ class EcpayLogistics
      */
     public function IsEmpty($Name, $Value)
     {
+        $this->logger->info('IsEmpty', [$Name, $Value]);
         if (empty($Value)) {
             throw new \Exception($Name . ' is required.');
         }
