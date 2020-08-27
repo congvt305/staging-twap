@@ -10,6 +10,7 @@ namespace Eguana\GWLogistics\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class Data extends AbstractHelper
@@ -57,8 +58,13 @@ class Data extends AbstractHelper
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var \Magento\Store\Api\StoreRepositoryInterface
+     */
+    private $storeRepository;
 
     public function __construct(
+        \Magento\Store\Api\StoreRepositoryInterface $storeRepository,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Encryption\EncryptorInterface $encryptor,
         \Eguana\GWLogistics\Model\Lib\EcpayCheckMacValue $ecpayCheckMacValue,
@@ -70,6 +76,7 @@ class Data extends AbstractHelper
         $this->encryptor = $encryptor;
         $this->ecpayLogistics = $ecpayLogistics;
         $this->logger = $logger;
+        $this->storeRepository = $storeRepository;
     }
 
     public function isActive($storeId = null)
@@ -88,16 +95,18 @@ class Data extends AbstractHelper
             $storeId
         );
     }
-    public function getMapServerReplyUrl() {
-       return $this->_getUrl('eguana_gwlogistics/SelectedCvsNotify', ['_secure' => true]);
+    public function getMapServerReplyUrl($storeId = null) {
+        return $this->_getUrl('eguana_gwlogistics/SelectedCvsNotify', ['_secure' => true]);
     }
 
-    public function getCreateShipmentReplyUrl() {
-        return $this->_getUrl('eguana_gwlogistics/OrderStatusNotify', ['_secure' => true]);
+    public function getCreateShipmentReplyUrl($storeId = null) {
+        $store = $this->storeRepository->getById($storeId);
+        return $store->getSecureBaseUrl() . 'eguana_gwlogistics/OrderStatusNotify';
     }
 
-    public function getReverseLogisticsOrderReplyUrl() {
-        return $this->_getUrl('eguana_gwlogistics/ReverseOrderStatusNotify', ['_secure' => true]);
+    public function getReverseLogisticsOrderReplyUrl($storeId = null) {
+        $store = $this->storeRepository->getById($storeId);
+        return $store->getSecureBaseUrl() . 'eguana_gwlogistics/ReverseOrderStatusNotify';
     }
 
     public function getSenderName($storeId = null)
