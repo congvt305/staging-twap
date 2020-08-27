@@ -559,100 +559,28 @@ class Payment extends AbstractMethod
 
         /** @var \Magento\Sales\Model\Order\Item $orderItem */
         foreach ($orderItems as $orderItem) {
-            if ($orderItem->getProductType() != 'bundle') {
-                $mileagePerItem = $this->mileageSpentRateByItem(
-                    $orderTotal,
-                    $orderItem->getRowTotalInclTax(),
-                    $orderItem->getDiscountAmount(),
-                    $mileageUsedAmount
-                );
-                $itemGrandTotalInclTax = $orderItem->getRowTotalInclTax()
-                    - $orderItem->getDiscountAmount()
-                    - $mileagePerItem;
+            $mileagePerItem = $this->mileageSpentRateByItem(
+                $orderTotal,
+                $orderItem->getRowTotalInclTax(),
+                $orderItem->getDiscountAmount(),
+                $mileageUsedAmount
+            );
+            $itemGrandTotalInclTax = $orderItem->getRowTotalInclTax()
+                - $orderItem->getDiscountAmount()
+                - $mileagePerItem;
 
-                array_push(
-                    $ecpay_invoice->Send['Items'],
-                    array(
-                        'ItemName' => $orderItem->getData('name'),
-                        'ItemCount' => (int)$orderItem->getData('qty_ordered'),
-                        'ItemWord' => '批',
-                        'ItemPrice' => $orderItem->getPrice(),
-                        'ItemTaxType' => 1,
-                        'ItemAmount' => $itemGrandTotalInclTax,
-                        'ItemRemark' => $orderItem->getData('sku')
-                    )
-                );
-            } else {
-                /** @var \Magento\Catalog\Model\Product $bundleProduct */
-                $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku());
-                $bundlePriceType = $bundleProduct->getPriceType();
-                $itemId = $orderItem->getItemId();
-
-                if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
-                    $fixedBundleGrandTotal = 0;
-
-                    foreach ($bundleChildren as $bundleChild) {
-
-                        $bundleChildOptions = $this->getBundleChildFromOrder($itemId, $bundleChild->getSku())->getProductOptions();
-                        $bundleChildSelectionAttributes = json_decode($bundleChildOptions["bundle_selection_attributes"], true);
-                        $bundleChildPrice = $bundleChildSelectionAttributes["price"];
-
-                        $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
-                            round($this->getProportionOfBundleChild($orderItem->getPrice(), $bundleChildPrice, $orderItem->getDiscountAmount())) :
-                            round($this->getBundleChildFromOrder($itemId, $bundleChild->getSku())->getDiscountAmount());
-
-                        $mileagePerItem = $this->mileageSpentRateByItem(
-                            $orderTotal,
-                            $this->getProportionOfBundleChild($orderItem->getPrice(), $bundleChildPrice, $orderItem->getRowTotalInclTax()),
-                            $bundleChildDiscountAmount,
-                            $mileageUsedAmount);
-
-                        $itemGrandTotal = $this->getProportionOfBundleChild($orderItem->getPrice(), $bundleChildPrice, $orderItem->getRowTotal())
-                            - $bundleChildDiscountAmount
-                            - $mileagePerItem;
-
-                        $fixedBundleGrandTotal += $itemGrandTotal;
-                    }
-
-                    array_push(
-                        $ecpay_invoice->Send['Items'],
-                        array(
-                            'ItemName' => $orderItem->getData('name'),
-                            'ItemCount' => (int)$orderItem->getData('qty_ordered'),
-                            'ItemWord' => '批',
-                            'ItemPrice' => $orderItem->getPrice(),
-                            'ItemTaxType' => 1,
-                            'ItemAmount' => $fixedBundleGrandTotal,
-                            'ItemRemark' => $orderItem->getData('sku')
-                        )
-                    );
-                } else {
-                    $mileagePerItem = $this->mileageSpentRateByItem(
-                        $orderTotal,
-                        $orderItem->getRowTotalInclTax(),
-                        $orderItem->getDiscountAmount(),
-                        $mileageUsedAmount
-                    );
-
-                    $itemGrandTotalInclTax = $orderItem->getRowTotalInclTax()
-                        - $orderItem->getDiscountAmount()
-                        - $mileagePerItem;
-
-                    array_push(
-                        $ecpay_invoice->Send['Items'],
-                        array(
-                            'ItemName' => $orderItem->getData('name'),
-                            'ItemCount' => (int)$orderItem->getData('qty_ordered'),
-                            'ItemWord' => '批',
-                            'ItemPrice' => $orderItem->getPrice(),
-                            'ItemTaxType' => 1,
-                            'ItemAmount' => $itemGrandTotalInclTax,
-                            'ItemRemark' => $orderItem->getData('sku')
-                        )
-                    );
-                }
-            }
+            array_push(
+                $ecpay_invoice->Send['Items'],
+                array(
+                    'ItemName' => $orderItem->getData('name'),
+                    'ItemCount' => (int)$orderItem->getData('qty_ordered'),
+                    'ItemWord' => '批',
+                    'ItemPrice' => $orderItem->getPrice(),
+                    'ItemTaxType' => 1,
+                    'ItemAmount' => $itemGrandTotalInclTax,
+                    'ItemRemark' => $orderItem->getData('sku')
+                )
+            );
         }
 
         if ($order->getShippingAmount() > 0) {
