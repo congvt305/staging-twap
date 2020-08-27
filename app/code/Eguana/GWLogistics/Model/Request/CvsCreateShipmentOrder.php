@@ -73,10 +73,8 @@ class CvsCreateShipmentOrder
             $hashIv = $this->helper->getHashIv($order->getStoreId());
             $logisticsType = EcpayLogisticsType::CVS;
             $logisticsSubType = $cvsLocation->getLogisticsSubType();
-
-            $items = $this->getItemData($order);
-            $goodsAmount = $items['goodsAmount'];
-            $goodsName = $items['goodsName'];
+            $goodsAmount = intval($order->getSubtotal());
+            $goodsName = $this->helper->getGoodsNamePrefix($order->getStoreId()) . ' Item X ' . (string)$order->getTotalItemCount() ;
 
             //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
             $senderName = $this->helper->getSenderName($order->getStoreId()); //no space not more than 10.
