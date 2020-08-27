@@ -40,6 +40,7 @@ class Data extends AbstractHelper
     const XML_PATH_SEND_SMS_ACTIVE = 'carriers/gwlogistics/send_sms_active';
     const XML_PATH_SEND_SMS_PREFIX = 'carriers/gwlogistics/send_sms_prefix';
     const XML_PATH_MESSAGE_TEMPLATE = 'carriers/gwlogistics/message_template';
+    const XML_PATH_MESSAGE_GOODSNAME_PREFIX = 'carriers/gwlogistics/goodsname_prefix';
 
     private $productionMode = null;
     /**
@@ -268,6 +269,15 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_MESSAGE_TEMPLATE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    public function getGoodsNamePrefix($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_MESSAGE_GOODSNAME_PREFIX,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $storeId
         );
