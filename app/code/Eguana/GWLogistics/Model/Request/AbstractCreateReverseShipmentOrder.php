@@ -71,4 +71,23 @@ class AbstractCreateReverseShipmentOrder
         return [];
     }
 
+    /**
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
+     * @return float|int|null
+     */
+    protected function getItemCount($order) {
+        /** @var \Magento\Sales\Api\Data\OrderItemInterface[] $items */
+        $items = $order->getItems();
+        $totalQty = 0;
+
+        /** @var \Magento\Sales\Api\Data\OrderItemInterface $item */
+        foreach ($items as $item) {
+            if($item->getProductType() === 'simple') {
+                $totalQty += $item->getQtyOrdered();
+            }
+        }
+
+        return $totalQty;
+    }
+
 }

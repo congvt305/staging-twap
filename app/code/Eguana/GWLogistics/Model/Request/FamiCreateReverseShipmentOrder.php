@@ -21,7 +21,7 @@ class FamiCreateReverseShipmentOrder extends \Eguana\GWLogistics\Model\Request\A
         $allPayLogisticsId = '';
         $serverReplyURL = $this->_helper->getReverseLogisticsOrderReplyUrl($order->getStoreId());
 
-        $goodsName = $this->_helper->getGoodsNamePrefix($order->getStoreId()) . ' Item X ' . (string)$order->getTotalItemCount() ;
+        $goodsName = $this->_helper->getGoodsNamePrefix($order->getStoreId()) . ' Item X ' . (string)$this->getItemCount($order) ;
         $goodsAmount = intval($order->getSubtotal()); //todo this meets only full return, need to fix when partial refund
 
         $senderName = $this->_helper->getSenderName($order->getStoreId()); //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)

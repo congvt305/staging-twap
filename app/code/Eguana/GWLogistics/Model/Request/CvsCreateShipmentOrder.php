@@ -73,8 +73,9 @@ class CvsCreateShipmentOrder
             $hashIv = $this->helper->getHashIv($order->getStoreId());
             $logisticsType = EcpayLogisticsType::CVS;
             $logisticsSubType = $cvsLocation->getLogisticsSubType();
+
             $goodsAmount = intval($order->getSubtotal());
-            $goodsName = $this->helper->getGoodsNamePrefix($order->getStoreId()) . ' Item X ' . (string)$order->getTotalItemCount() ;
+            $goodsName = $this->helper->getGoodsNamePrefix($order->getStoreId()) . ' Item X ' . (string)$this->getItemCount($order) ;
 
             //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
             $senderName = $this->helper->getSenderName($order->getStoreId()); //no space not more than 10.
@@ -225,6 +226,21 @@ class CvsCreateShipmentOrder
             'quantity' => $order->getTotalItemCount(),
             'cost' => intval($order->getGrandTotal()),
         ];
+    }
+
+    private function getItemCount($order) {
+        /** @var \Magento\Sales\Api\Data\OrderItemInterface[] $items */
+        $items = $order->getItems();
+        $totalQty = 0;
+
+        /** @var \Magento\Sales\Api\Data\OrderItemInterface $item */
+        foreach ($items as $item) {
+            if($item->getProductType() === 'simple') {
+                $totalQty += $item->getQtyOrdered();
+            }
+        }
+
+        return $totalQty;
     }
 
 }
