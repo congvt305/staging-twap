@@ -90,7 +90,7 @@ class CvsCreateShipmentOrder
             $receiverEmail = $order->getShippingAddress()->getEmail();
             $remarks = $order->getDeliveryMessage() ?? '';
             $remarks = (strlen($remarks) > 200) ? substr($remarks,0,200) : $remarks;
-            $serverReplyURL = $this->helper->getCreateShipmentReplyUrl();
+            $serverReplyURL = $this->helper->getCreateShipmentReplyUrl($order->getStoreId());
             $receiverStoreID = $cvsLocation->getCvsStoreId(); //no need, only for C2C
             //for test, sender name, receiver name receiver phone/cellphone , ReceiverStoreID ReturnStoreID are required....!!
             $this->logger->info('gwlogistics | original order->storeid | ' . $order->getStoreId());
