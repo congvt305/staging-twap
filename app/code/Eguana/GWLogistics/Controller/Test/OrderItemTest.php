@@ -48,15 +48,32 @@ class OrderItemTest extends Action
      */
     public function execute()
     {
-        $shipmentId = $this->getRequest()->getParam('shipment_id');
-        $this->shipmentId = intval($shipmentId);
-            $shipment = $this->shipmentRepository->get($this->shipmentId);
-            $orderId = $shipment->getOrderId();
-            /** @var \Magento\Sales\Api\Data\OrderInterface $order */
-            $order = $this->orderRepository->get(intval($orderId));
-            $items = $this->getItemData($order);
-//            $firstItem = $this->getItemData($order);
-            var_dump($items);
+//        $shipmentId = $this->getRequest()->getParam('shipment_id');
+//        $this->shipmentId = intval($shipmentId);
+//        $shipment = $this->shipmentRepository->get($this->shipmentId);
+//        $orderId = $shipment->getOrderId();
+        $orderId = 1285;
+//        $orderId = 1219;
+        $order = $this->orderRepository->get($orderId);
+        /** @var \Magento\Sales\Api\Data\OrderItemInterface[] $items */
+        $items = $order->getItems();
+        $totalQty = 0;
+
+        /** @var \Magento\Sales\Api\Data\OrderItemInterface $item */
+        foreach ($items as $item) {
+            if($item->getProductType() === 'simple') {
+                $totalQty += $item->getQtyOrdered();
+            }
+            print_r($item->getName(). "<br/>");
+        }
+//        $itemCount = count($visibleItems);
+
+        print_r($totalQty) ;
+        /** @var \Magento\Sales\Api\Data\OrderInterface $order */
+//        $order = $this->orderRepository->get($orderId);
+//        $items = $this->getItemData($order);
+////            $firstItem = $this->getItemData($order);
+//        var_dump($items);
 
     }
 
@@ -81,4 +98,6 @@ class OrderItemTest extends Action
             'cost' => intval($order->getGrandTotal()),
         ];
     }
+
+
 }

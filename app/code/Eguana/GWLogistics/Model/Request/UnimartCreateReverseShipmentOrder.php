@@ -16,15 +16,17 @@ class UnimartCreateReverseShipmentOrder extends \Eguana\GWLogistics\Model\Reques
      */
     protected function _getParams($rma)
     {
-        $merchantId = $this->_helper->getMerchantId($rma->getStoreId());
+        $order = $this->_orderRepository->get($rma->getOrderId());
+        $merchantId = $this->_helper->getMerchantId($order->getStoreId());
         $allPayLogisticsId = '';
-        $serverReplyURL = $this->_helper->getReverseLogisticsOrderReplyUrl($rma->getStoreId());
-        $items = $this->_getItemData($rma);
-        $goodsName = (isset($items['goodsName']) && $items['goodsName']) ? $items['goodsName']  : '';
-        $goodsAmount = (isset($items['goodsAmount']) && $items['goodsAmount']) ? $items['goodsAmount']  : 0;
-        $senderName = $this->_helper->getSenderName($rma->getStoreId()); //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
-        $senderPhone = $this->_helper->getSenderPhone($rma->getStoreId());
-        $platformId = $this->_helper->getPlatformId($rma->getStoreId());
+        $serverReplyURL = $this->_helper->getReverseLogisticsOrderReplyUrl($order->getStoreId());
+
+        $goodsName = $this->_helper->getGoodsNamePrefix($order->getStoreId()) . ' Item X ' . (string)$this->getItemCount($order);
+        $goodsAmount = intval($order->getSubtotal()); //todo this meets only full return, need to fix when partial refund
+
+        $senderName = $this->_helper->getSenderName($order->getStoreId()); //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
+        $senderPhone = $this->_helper->getSenderPhone($order->getStoreId());
+        $platformId = $this->_helper->getPlatformId($order->getStoreId());
 
         return [
             'MerchantID' => $merchantId,
