@@ -58,13 +58,8 @@ class Data extends AbstractHelper
      * @var LoggerInterface
      */
     private $logger;
-    /**
-     * @var \Magento\Store\Api\StoreRepositoryInterface
-     */
-    private $storeRepository;
 
     public function __construct(
-        \Magento\Store\Api\StoreRepositoryInterface $storeRepository,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Encryption\EncryptorInterface $encryptor,
         \Eguana\GWLogistics\Model\Lib\EcpayCheckMacValue $ecpayCheckMacValue,
@@ -76,7 +71,6 @@ class Data extends AbstractHelper
         $this->encryptor = $encryptor;
         $this->ecpayLogistics = $ecpayLogistics;
         $this->logger = $logger;
-        $this->storeRepository = $storeRepository;
     }
 
     public function isActive($storeId = null)
@@ -100,13 +94,23 @@ class Data extends AbstractHelper
     }
 
     public function getCreateShipmentReplyUrl($storeId = null) {
-        $store = $this->storeRepository->getById($storeId);
-        return $store->getSecureBaseUrl() . 'eguana_gwlogistics/OrderStatusNotify';
+        $storeBaseUrl = $this->scopeConfig->getValue(
+            'web/secure/base_url',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
+
+        );
+        return $storeBaseUrl . 'eguana_gwlogistics/OrderStatusNotify';
     }
 
     public function getReverseLogisticsOrderReplyUrl($storeId = null) {
-        $store = $this->storeRepository->getById($storeId);
-        return $store->getSecureBaseUrl() . 'eguana_gwlogistics/ReverseOrderStatusNotify';
+        $storeBaseUrl = $this->scopeConfig->getValue(
+            'web/secure/base_url',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
+
+        );
+        return $storeBaseUrl . 'eguana_gwlogistics/ReverseOrderStatusNotify';
     }
 
     public function getSenderName($storeId = null)
