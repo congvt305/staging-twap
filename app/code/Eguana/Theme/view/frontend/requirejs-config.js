@@ -5,7 +5,6 @@
 var config = {
     map: {
         '*': {
-            'pagepiling': "Eguana_Theme/js/jquery.pagepiling",
             'swiper': "Eguana_Theme/js/swiper",
             'rwdImageMap': "Eguana_Theme/js/jquery.rwdImageMaps",
             'fotorama/fotorama': "Eguana_Theme/fotorama/fotorama",
