@@ -11,8 +11,9 @@ define([
     'uiComponent',
     'Magento_Customer/js/customer-data',
     'underscore',
+    'escaper',
     'jquery/jquery-storageapi'
-], function ($, Component, customerData, _) {
+], function ($, Component, customerData, _, escaper) {
     'use strict';
 
     return Component.extend({
@@ -20,7 +21,8 @@ define([
             cookieMessages: [],
             messages: [],
             selector: '.page.messages .message',
-            removeButton: '.page.messages .message-visible .remove'
+            removeButton: '.page.messages .message-visible .remove',
+            allowedTags: ['div', 'span', 'b', 'strong', 'i', 'em', 'u', 'a']
         },
 
         /**
@@ -37,6 +39,7 @@ define([
             var removeButton = this.removeButton;
             $(removeButton).show();
 
+            // Force to clean obsolete messages
             if (!_.isEmpty(this.messages().messages)) {
                 customerData.set('messages', {});
             }
@@ -47,5 +50,15 @@ define([
                 $(event.target).closest('div.message').slideUp();
             });
         },
+
+        /**
+         * Prepare the given message to be rendered as HTML
+         *
+         * @param {String} message
+         * @return {String}
+         */
+        prepareMessageForHtml: function (message) {
+            return escaper.escapeHtml(message, this.allowedTags);
+        }
     });
 });
