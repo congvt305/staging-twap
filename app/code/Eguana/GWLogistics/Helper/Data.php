@@ -10,6 +10,7 @@ namespace Eguana\GWLogistics\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Psr\Log\LoggerInterface;
 
 class Data extends AbstractHelper
 {
@@ -52,8 +53,13 @@ class Data extends AbstractHelper
      * @var \Eguana\GWLogistics\Model\Lib\EcpayLogistics
      */
     private $ecpayLogistics;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     public function __construct(
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Encryption\EncryptorInterface $encryptor,
         \Eguana\GWLogistics\Model\Lib\EcpayCheckMacValue $ecpayCheckMacValue,
         \Eguana\GWLogistics\Model\Lib\EcpayLogistics $ecpayLogistics,
@@ -63,6 +69,7 @@ class Data extends AbstractHelper
         $this->ecpayCheckMacValue = $ecpayCheckMacValue;
         $this->encryptor = $encryptor;
         $this->ecpayLogistics = $ecpayLogistics;
+        $this->logger = $logger;
     }
 
     public function isActive($storeId = null)
@@ -164,7 +171,11 @@ class Data extends AbstractHelper
 
     public function getMerchantId($storeId = null)
     {
-        $suffix = $this->getMode() === '1' ? '' : '_sandbox';
+        if ($storeId) {
+            $this->logger->info('gwlogistics | data getMerchantId storeId argument | '. $storeId);
+        }
+        $suffix = $this->getMode($storeId) === '1' ? '' : '_sandbox';
+        $this->logger->info('gwlogistics | data getMerchantId suffix argument | '. $suffix);
         return $this->scopeConfig->getValue(
             self::XML_PATH_MERCHANT_ID . $suffix,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,

@@ -12,7 +12,7 @@
 
 $item = $block->getItem();
 $product = $item->getProduct();
-$productSku = $product->getSku();
+$productSku = $product->getData('sku');
 $getDefault = $block->getData('view_model');
 ?>
 <strong class="product-item-name">

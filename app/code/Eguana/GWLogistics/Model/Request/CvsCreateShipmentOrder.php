@@ -35,8 +35,13 @@ class CvsCreateShipmentOrder
      * @var \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface
      */
     private $quoteCvsLocationRepository;
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    private $scopeConfig;
 
     public function __construct(
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository,
         \Psr\Log\LoggerInterface $logger,
         \Eguana\GWLogistics\Model\Lib\EcpayLogistics $ecpayLogistics,
@@ -48,15 +53,17 @@ class CvsCreateShipmentOrder
         $this->logger = $logger;
         $this->ecpayLogistics = $ecpayLogistics;
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $order
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
      */
     public function sendRequest($order) {
         $result = [];
         try {
             $cvsLocation = $this->getCvsLocation($order);
+            $this->logger->info('gwlogistics | original cvsLocation ID for create order #' . $order->getEntityId(). '|'. $cvsLocation->getId());
             $dataTime = $this->dateTimeFactory->create();
             $merchantId = $this->helper->getMerchantId($order->getStoreId());
             $platformId = $this->helper->getPlatformId($order->getStoreId()) ?? '';
@@ -66,9 +73,11 @@ class CvsCreateShipmentOrder
             $hashIv = $this->helper->getHashIv($order->getStoreId());
             $logisticsType = EcpayLogisticsType::CVS;
             $logisticsSubType = $cvsLocation->getLogisticsSubType();
-            $goodsAmount = (int)round($order->getSubtotal(), 0);
+
             $items = $this->getItemData($order);
-            $goodsName = (isset($items['goodsName']) && $items['goodsName']) ? $items['goodsName']  : '';
+            $goodsAmount = $items['goodsAmount'];
+            $goodsName = $items['goodsName'];
+
             //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
             $senderName = $this->helper->getSenderName($order->getStoreId()); //no space not more than 10.
             $senderPhone = $this->helper->getSenderPhone($order->getStoreId()); //no space not more than 10.
@@ -76,6 +85,7 @@ class CvsCreateShipmentOrder
             //Character limit is 4-10 characters (Chinese2-5 characters, English 4-10 characters)
             $receiverName = $order->getShippingAddress()->getLastname() . $order->getShippingAddress()->getFirstname();
             $receiverName = (strlen($receiverName) > 10) ? substr($receiverName,0,10): $receiverName;
+
             $receiverPhone = $order->getShippingAddress()->getTelephone();
             $receiverEmail = $order->getShippingAddress()->getEmail();
             $remarks = $order->getDeliveryMessage() ?? '';
@@ -83,8 +93,38 @@ class CvsCreateShipmentOrder
             $serverReplyURL = $this->helper->getCreateShipmentReplyUrl();
             $receiverStoreID = $cvsLocation->getCvsStoreId(); //no need, only for C2C
             //for test, sender name, receiver name receiver phone/cellphone , ReceiverStoreID ReturnStoreID are required....!!
+            $this->logger->info('gwlogistics | original order->storeid | ' . $order->getStoreId());
+
+            $storeMerchantId = $this->scopeConfig->getValue(
+                'carriers/gwlogistics/merchant_id',
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                $order->getStoreId()
+            );
+            $this->logger->info('gwlogistics | original  direct called MerchantId | ' . $storeMerchantId);
+            $this->logger->info('gwlogistics | original param MerchantId | ' . $merchantId);
+            $this->logger->info('gwlogistics | original param MerchantTradeNo | ' . $merchantTradeNo);
+            $this->logger->info('gwlogistics | original param MerchantTradeDate | ' . $merchantTradeDate);
+            $this->logger->info('gwlogistics | original param LogisticsType | ' . $logisticsType);
+            $this->logger->info('gwlogistics | original param LogisticsSubType | ' . $logisticsSubType);
+            $this->logger->info('gwlogistics | original param GoodsAmount | ' . $goodsAmount);
+            $this->logger->info('gwlogistics | original param CollectionAmount | 0' );
+            $this->logger->info('gwlogistics | original param IsCollection | ' . EcpayIsCollection::NO);
+            $this->logger->info('gwlogistics | original param GoodsName | ' . $goodsName);
+            $this->logger->info('gwlogistics | original param SenderName | ' . $senderName);
+            $this->logger->info('gwlogistics | original param SenderPhone | ' . $senderPhone);
+            $this->logger->info('gwlogistics | original param SenderCellPhone | ' . $senderCellPhone);
+            $this->logger->info('gwlogistics | original param ReceiverName | ' . $receiverName);
+            $this->logger->info('gwlogistics | original param ReceiverPhone | ' . $receiverPhone);
+            $this->logger->info('gwlogistics | original param ReceiverCellPhone | ' . $receiverPhone);
+            $this->logger->info('gwlogistics | original param ReceiverEmail | ' . $receiverEmail);
+            $this->logger->info('gwlogistics | original param TradeDesc | '. '');
+            $this->logger->info('gwlogistics | original param ServerReplyURL | '. $serverReplyURL);
+            $this->logger->info('gwlogistics | original param ClientReplyURL | '. '');
+            $this->logger->info('gwlogistics | original param LogisticsC2CReplyURL | '. '');
+            $this->logger->info('gwlogistics | original param Remark | '. $remarks);
+            $this->logger->info('gwlogistics | original param PlatformID | '. $platformId);
             $params = [
-                'MerchantID' => $merchantId,//
+                'MerchantID' => $storeMerchantId,//
                 'MerchantTradeNo' => $merchantTradeNo,
                 'MerchantTradeDate' => $merchantTradeDate,//
                 'LogisticsType' => $logisticsType,//
@@ -144,13 +184,13 @@ class CvsCreateShipmentOrder
                 'ReturnStoreID' => '' //cvs store id from map request, b2c do not send
             ];
             $result = $this->ecpayLogistics->BGCreateShippingOrder();
-            if (isset($result['CheckMacValue'])) {
-                if (!$this->helper->validateCheckMackValue($result, $order->getStoreId())) {
-                    throw new \Exception(__('CheckMacValue is not valid'));
-                }
-            }
+//            if (isset($result['CheckMacValue'])) {
+//                if (!$this->helper->validateCheckMackValue($result, $order->getStoreId())) {
+//                    throw new \Exception(__('CheckMacValue is not valid'));
+//                }
+//            } //todo uncomment later
         } catch (\Exception $e) {
-            $this->logger->critical('GWL create shipping order failed');
+            $this->logger->critical('GWL create shipping order failed for internal valication');
             $this->logger->critical($e->getMessage());
             throw $e;
         }
@@ -158,7 +198,7 @@ class CvsCreateShipmentOrder
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $order
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
      */
     private function getCvsLocation($order)
     {
@@ -167,34 +207,25 @@ class CvsCreateShipmentOrder
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $order
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
      */
     private function getItemData($order)
     {
-        /** @var OrderInterface $order */
-        $orderItems = $order->getItems();
-        $orderItemArr = [];
-        $quantity = 0;
-        foreach ($orderItems as $orderItem) {
-            if ($orderItem->getProductType() === 'simple') {
-                $orderItemArr[] = $orderItem;
-                $quantity += (int)$orderItem->getQtyOrdered();
-            }
-        }
-        $count = count($orderItemArr);
-        $item = reset($orderItemArr);
+        /** @var \Magento\Sales\Model\Order $order */
+        $orderItems = $order->getAllItems();
+        $firstItem = reset($orderItems);
 
-        $goodsName = str_replace(['^', '`', '\'', '!', '@','#','%', '&', '\\', '"', '<', '>', '|', '_', '[', ']',   '+', '*'], '', $item->getName());
+        $count = $order->getTotalItemCount();
+        //'/[\^\'`\!@#%&\*\+\\\"<>\|_\[\]]+/'
+        $goodsName = str_replace(['^', '`', '\'', '!', '@','#','%', '&', '\\', '"', '<', '>', '|', '_', '[', ']',   '+', '*'], '', $firstItem->getName());
         $goodsName = (strlen($goodsName) > 30) ? substr($goodsName,0,30).'...': $goodsName;
         $goodsName = $count > 1 ? $goodsName . __(' and others.'): $goodsName;
 
-        $quantity = (string)$quantity;
-
         return [
-            'goodsAmount' => (int)round($order->getBaseGrandTotal(), 0),
+            'goodsAmount' => intval($order->getSubtotal()),
             'goodsName' => $goodsName,
-            'quantity' => $quantity,
-            'cost' => (int)round($order->getBaseGrandTotal(), 0),
+            'quantity' => $order->getTotalItemCount(),
+            'cost' => intval($order->getGrandTotal()),
         ];
     }
 

@@ -158,7 +158,7 @@ class SmsSender implements SmsInterface
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
-        if ($this->sendMessageByApi($message, $phoneNumber)){
+        if ($this->sendMessageByApi($message, $phoneNumber, $store)){
             return $verificationCode;
         };
 
@@ -202,7 +202,7 @@ class SmsSender implements SmsInterface
     {
         $result = true;
         try {
-            if ($storeId == null) {
+            if ($storeId === null) {
                 $storeId = $this->storeManager->getStore()->getId();
             }
 

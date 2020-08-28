@@ -23,8 +23,7 @@ var prevMarkerIcon;
 function multi_map_initialize(multi_location, map_zoom, isStore, markerImages) {
 
     let locations = multi_location.split('||');
-    let markerImagesObj = JSON.parse(markerImages)
-    //TODO this has to be change with images. currently live kipling images are using
+    let markerImagesObj = JSON.parse(markerImages);
     var map, myLatLng, count, info, markerIcon, address, storeTitle, storeViewUrl, storeType, telephone;
     for (count = 0; count < locations.length; count++) {
         info = locations[count].split('=>');
@@ -117,15 +116,15 @@ function closeInfoWindowAndRevertMarker(infoWindow, marker, markerIcon ) {
 function getStoreOfMarker(title) {
 
     let count = 0;
-    jQuery(".store-list").each(function() {
+    $(".store-list").each(function() {
         let targetElementId = 'store_map_viewer';
-        if (jQuery(this).attr("store-expand") == title + count) {
-            jQuery(this).find('.store-secondary-info').slideDown();
-            jQuery(this).addClass('selected-store');
+        if ($(this).attr("store-expand") == title + count) {
+            $(this).find('.store-secondary-info').slideDown();
+            $(this).addClass('selected-store');
             scrollToTragetElememt("#"+targetElementId);
         } else {
-            jQuery("#"+targetElementId).removeClass('selected-store');
-            jQuery(this).find('.store-secondary-info').slideUp();
+            $("#"+targetElementId).removeClass('selected-store');
+            $(this).find('.store-secondary-info').slideUp();
         }
         count ++;
     });
@@ -151,5 +150,5 @@ function closeInfoWindowAndRevertMarker_naver(infoWindow, marker, markerIcon ){
  * @param id
  */
 function scrollToTragetElememt(id) {
-    jQuery(id).get(0).scrollIntoView();
+    $(id).get(0).scrollIntoView();
 }

@@ -81,7 +81,7 @@ class Create extends \Magento\Backend\App\Action
             $shipment = $this->shipmentRepository->get($this->shipmentId);
             $orderId = $shipment->getOrderId();
             /** @var \Magento\Sales\Model\Order $order */
-            $order = $this->orderRepository->get(intval($orderId));
+            $order = $this->orderRepository->get($orderId);
             $result = $this->createShipmentOrder->sendRequest($order);
             if (isset($result['ErrorMessage'])) {
                 $this->messageManager->addErrorMessage($result['ErrorMessage']);

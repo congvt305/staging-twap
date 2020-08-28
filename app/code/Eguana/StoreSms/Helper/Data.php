@@ -31,6 +31,7 @@ class Data extends AbstractHelper
     const XML_PATH_FOR_DEFAULT_COUNTRY = 'general/country/default';
     const XML_PATH_FOR_COUNTRY_CODE = 'eguanasms/general/country_code';
     const XML_PATH_STORE_PHONE = 'general/store_information/phone';
+    const XML_PATH_STORE_NAME = 'general/store_information/name';
 
     /**
      * @var EncryptorInterface
@@ -257,6 +258,21 @@ class Data extends AbstractHelper
             $scopeCode
         );
     }
+
+    /**
+     * This function is use to get store name
+     * @param null $scopeCode
+     * @return mixed
+     */
+    public function getStoreName($scopeCode = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_STORE_NAME,
+            ScopeInterface::SCOPE_STORE,
+            $scopeCode
+        );
+    }
+
 
     /**
      * This function will check that either Reverse Name format is active or not

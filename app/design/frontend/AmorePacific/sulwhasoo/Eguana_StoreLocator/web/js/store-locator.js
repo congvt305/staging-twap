@@ -81,8 +81,8 @@ define([
         $('.stores-map .expend').click(function () {
             $(this).closest('.stores-map').toggleClass('active');
         });
-        let x = window.matchMedia("(max-width: 959px)")
-        laodMobileView(x) // Call listener function at run time
-        x.addListener(laodMobileView) // Attach listener function on state changes
+        let x = window.matchMedia("(max-width: 959px)");
+        laodMobileView(x); // Call listener function at run time
+        x.addListener(laodMobileView); // Attach listener function on state changes
     };
 });
