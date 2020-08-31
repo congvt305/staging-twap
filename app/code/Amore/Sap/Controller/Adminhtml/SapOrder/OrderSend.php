@@ -169,15 +169,23 @@ class OrderSend extends AbstractAction
             }
         } catch (ShipmentNotExistException $e) {
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+            $order->setState('processing');
+            $order->setStatus($order->getStatus());
             $this->messageManager->addErrorMessage($e->getMessage());
         } catch (NoSuchEntityException $e) {
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+            $order->setState('processing');
+            $order->setStatus($order->getStatus());
             $this->messageManager->addErrorMessage($e->getMessage());
         } catch (LocalizedException $e) {
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+            $order->setState('processing');
+            $order->setStatus($order->getStatus());
             $this->messageManager->addErrorMessage($e->getMessage());
         } catch (\Exception $e) {
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+            $order->setState('processing');
+            $order->setStatus($order->getStatus());
             $this->messageManager->addErrorMessage($e->getMessage());
         }
         $this->orderRepository->save($order);
