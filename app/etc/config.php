@@ -172,7 +172,7 @@ return [
         'Magento_AuthorizenetGraphQl' => 1,
         'Magento_Cms' => 1,
         'Magento_Backup' => 1,
-        'Magento_Baler' => 0,
+        'Magento_Baler' => 1,
         'Magento_Catalog' => 1,
         'Magento_Quote' => 1,
         'Magento_SalesSequence' => 1,
