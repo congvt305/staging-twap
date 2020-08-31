@@ -60,6 +60,7 @@ class Index extends Action implements CsrfAwareActionInterface
         $html = '';
 
         $cvsStoreData = $this->getRequest()->getParams();
+        $resultRedirect = $this->resultRedirectFactory->create();
 
         if (!$cvsStoreData || $this->getRequest()->getMethod() !== 'POST') {
             $response->setHttpResponseCode($httpBadRequestCode);
@@ -70,24 +71,12 @@ class Index extends Action implements CsrfAwareActionInterface
 
         try {
             $this->saveQuoteCvsLocation->process($cvsStoreData);
-//            $html = '<div>hello world</div>';
-            $html = '<script>window.close();</script>';
         } catch (\Exception $e) {
-            $html = $e->getMessage();
-            $response->setHttpResponseCode($httpErrorCode);
-            $response->setHeader('Content-Type', 'text/plain');
-            $response->setBody($html);
-            $response->sendResponse();
-
+            $this->logger->error('gwlogistics | cvs store data for a map selection', [$e->getMessage()]);
         }
-//        $resultRedirect = $this->resultRedirectFactory->create();
-//        $resultRedirect->setPath('*/index/index');
-//        return $resultRedirect;
 
-        $response->setHttpResponseCode($httpSuccessCode);
-        $response->setHeader('Content-Type', 'text/plain');
-        $response->setBody($html);
-        $response->sendResponse();
+        $resultRedirect->setPath('*/index/index');
+        return $resultRedirect;
     }
 
     /**
