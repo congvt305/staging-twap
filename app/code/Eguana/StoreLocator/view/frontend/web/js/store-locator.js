@@ -1,6 +1,5 @@
 define([
     'jquery',
-    'jquery/ui',
     'map-viewer'
 ], function ($) {
     return function (config) {
