@@ -70,8 +70,9 @@ class Cart
             $this->logger->error($exception->getMessage());
         }
         if ($productType == 'bundle') {
+            $qty = (int)$subject->getRequest()->getParam('qty');
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-            return $resultRedirect->setPath($item->getProductUrl());
+            return $resultRedirect->setPath($item->getProduct()->getProductUrl() . '?qty=' . $qty);
         } else {
             return $result = $proceed();
         }
