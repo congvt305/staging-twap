@@ -90,4 +90,23 @@ abstract class AbstractSapOrder
         }
     }
 
+    public function getTelephone($phone)
+    {
+        $phone = preg_replace("/[^0-9]/", "", $phone);
+
+        if (substr($phone, 0, 1) != '0') {
+            $phone = '0' . $phone;
+        }
+
+        $length = strlen($phone);
+
+        switch ($length) {
+            case 11 :
+                return preg_replace("/([0-9]{3})([0-9]{4})([0-9]{4})/", "$1-$2-$3", $phone);
+                break;
+            default:
+                return preg_replace("/([0-9]{2})([0-9]{4})([0-9]{4})/", "$1-$2-$3", $phone);
+                break;
+        }
+    }
 }

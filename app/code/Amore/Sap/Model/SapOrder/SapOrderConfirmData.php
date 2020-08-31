@@ -71,7 +71,6 @@ class SapOrderConfirmData extends AbstractSapOrder
      */
     private $orderItemRepository;
 
-
     /**
      * SapOrderConfirmData constructor.
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -250,17 +249,17 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'augruText' => 'ORDER REASON TEXT',
                 // 주문자회원코드-직영몰자체코드
                 'custid' => $customer != '' ? $orderData->getCustomerId() : '',
-                'custnm' => $orderData->getCustomerLastname() . $orderData->getCustomerLastname(),
+                'custnm' => $orderData->getCustomerLastname() . $orderData->getCustomerFirstname(),
                 //배송지 id - 직영몰 자체코드, 없으면 공백
                 'recvid' => '',
-                'recvnm' => $shippingAddress->getName(),
+                'recvnm' => $shippingAddress->getLastname() . ' ' . $shippingAddress->getFirstname(),
                 'postCode' => $this->cvsShippingCheck($orderData) ? '00000' : $shippingAddress->getPostcode(),
                 'addr1' => $this->cvsShippingCheck($orderData) ? $this->getCsvAddress($shippingAddress) : $shippingAddress->getRegion(),
                 'addr2' => $this->cvsShippingCheck($orderData) ? '.' : $shippingAddress->getCity(),
                 'addr3' => $this->cvsShippingCheck($orderData) ? '.' : preg_replace('/\r\n|\r|\n/', ' ', implode(PHP_EOL, $shippingAddress->getStreet())),
                 'land1' => $shippingAddress->getCountryId(),
-                'telno' => $shippingAddress->getTelephone(),
-                'hpno' => $shippingAddress->getTelephone(),
+                'telno' => $this->getTelephone($shippingAddress->getTelephone()),
+                'hpno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'waerk' => $orderData->getOrderCurrencyCode(),
                 'nsamt' => round($orderData->getSubtotalInclTax() + $this->getBundleExtraAmount($orderData)),
                 'dcamt' => round(abs($orderData->getDiscountAmount()) + $this->getBundleExtraAmount($orderData)),
