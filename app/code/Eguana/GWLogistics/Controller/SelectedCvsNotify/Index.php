@@ -52,24 +52,42 @@ class Index extends Action implements CsrfAwareActionInterface
     {
         $refundData = null;
         $httpBadRequestCode = 400;
+        $httpErrorCode = 502;
         $httpSuccessCode = 200;
 
-        /** @var \Magento\Framework\Controller\Result\Raw $resultRaw */
-        $resultRaw = $this->rawFactory->create();
+        /** @var \Magento\Framework\App\ResponseInterface $response */
+        $response = $this->getResponse();
+        $html = '';
+
         $cvsStoreData = $this->getRequest()->getParams();
 
         if (!$cvsStoreData || $this->getRequest()->getMethod() !== 'POST') {
-            return $resultRaw->setHttpResponseCode($httpBadRequestCode);
+            $response->setHttpResponseCode($httpBadRequestCode);
+            $response->setHeader('Content-Type', 'text/plain');
+            $response->setBody($html);
+            $response->sendResponse();
         }
-        $html = '';
+
         try {
             $this->saveQuoteCvsLocation->process($cvsStoreData);
+//            $html = '<div>hello world</div>';
             $html = '<script>window.close();</script>';
         } catch (\Exception $e) {
             $html = $e->getMessage();
-            $this->logger->error($e->getMessage());
+            $response->setHttpResponseCode($httpErrorCode);
+            $response->setHeader('Content-Type', 'text/plain');
+            $response->setBody($html);
+            $response->sendResponse();
+
         }
-        return $resultRaw->setContents($html);
+//        $resultRedirect = $this->resultRedirectFactory->create();
+//        $resultRedirect->setPath('*/index/index');
+//        return $resultRedirect;
+
+        $response->setHttpResponseCode($httpSuccessCode);
+        $response->setHeader('Content-Type', 'text/plain');
+        $response->setBody($html);
+        $response->sendResponse();
     }
 
     /**

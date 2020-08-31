@@ -47,7 +47,9 @@ class QueryLogisticsInfo
         $this->logger->info('gwlogistics | request qeury logsitics start with allpayLogisticsId: ', [$allPayLogisticsID]);
         try {
             $this->ecpayLogistics->HashKey = $this->helper->getHashKey($storeId);
+            $this->logger->info('gwlogistics | request qeury logsitics getHashKey: ', [$this->helper->getHashKey($storeId)]);
             $this->ecpayLogistics->HashIV = $this->helper->getHashIv($storeId);
+            $this->logger->info('gwlogistics | request qeury logsitics getHashIv: ', [$this->helper->getHashIv($storeId)]);
             $this->ecpayLogistics->Send = [
                 'MerchantID' => $this->helper->getMerchantId($storeId),
                 'AllPayLogisticsID' => $allPayLogisticsID, // save this in order!
