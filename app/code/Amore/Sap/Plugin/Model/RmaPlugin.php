@@ -184,8 +184,8 @@ class RmaPlugin
                     throw new RmaSapException(__($e->getMessage()));
                 } catch (LocalizedException $e) {
                     throw new LocalizedException(__($e->getMessage()));
-                } catch (\Exception $exception) {
-                    throw new \Exception(__('SAP Return : Error occurred while sending RMA data to SAP'));
+                } catch (\Exception $e) {
+                    throw new \Exception(__('SAP Return : ' . $e->getMessage()));
                 }
             }
         }
