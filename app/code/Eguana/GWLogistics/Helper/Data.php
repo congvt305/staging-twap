@@ -143,7 +143,7 @@ class Data extends AbstractHelper
 
     public function getPlatformId($storeId = null)
     {
-        $suffix = $this->getMode() === '1' ? '' : '_sandbox';
+        $suffix = $this->getMode($storeId) === '1' ? '' : '_sandbox';
         return $this->scopeConfig->getValue(
             self::XML_PATH_PLATFORM_ID . $suffix,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
@@ -153,7 +153,7 @@ class Data extends AbstractHelper
 
     public function getHashKey($storeId = null)
     {
-        if ($this->getMode() === '1') {
+        if ($this->getMode($storeId) === '1') {
             return $this->encryptor->decrypt(
                 $this->scopeConfig->getValue(
                 self::XML_PATH_HASH_KEY,
@@ -169,7 +169,7 @@ class Data extends AbstractHelper
 
     public function getHashIv($storeId = null)
     {
-        if ($this->getMode() === '1') {
+        if ($this->getMode($storeId) === '1') {
             return $this->encryptor->decrypt(
                 $this->scopeConfig->getValue(
                     self::XML_PATH_HASH_IV,
@@ -199,7 +199,7 @@ class Data extends AbstractHelper
 
     public function getMapUrl($storeId = null)
     {
-        $suffix = $this->getMode() === '1' ? '' : '_sandbox';
+        $suffix = $this->getMode($storeId) === '1' ? '' : '_sandbox';
         return $this->scopeConfig->getValue(
             self::XML_PATH_MAP_URL . $suffix,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
