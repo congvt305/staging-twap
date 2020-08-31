@@ -61,9 +61,14 @@ if ($_attributeType && $_attributeType == 'text') {
                 </div>
             <?php endif?>
             <?php if($_code == 'skin_concern'):?>
-                <?php foreach($_attributeValue as $_value): ?>
-                    <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_value ?></div>
-                <?php endforeach;?>
+                <?php if(is_array($_attributeValue)):?>
+                    <?php foreach($_attributeValue as $_value): ?>
+                        <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_value ?></div>
+                    <?php endforeach;?>
+                <?php else:?>
+                    <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_attributeValue ?></div>
+                <?php endif?>
+
             <?php else:?>
                 <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_attributeValue ?></div>
             <?php endif?>
