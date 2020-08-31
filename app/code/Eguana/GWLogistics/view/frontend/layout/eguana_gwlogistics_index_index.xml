@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<page label="empty" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="before.body.end">
+            <block name="eguana_gwlogistics_map_selection_result" template="Eguana_GWLogistics::map-selection-result.phtml" after="-" />
+        </referenceBlock>
+    </body>
+</page>
+
+
