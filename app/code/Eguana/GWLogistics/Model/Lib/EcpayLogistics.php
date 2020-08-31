@@ -1318,7 +1318,7 @@ class EcpayLogistics
     public function ValidateHashIV()
     {
         $Name = 'HashIV'; // 參數名稱
-        $Value = $this->HashKey; // 參數內容
+        $Value = $this->HashIV; // 參數內容
 
         // 空值檢查
         $this->IsEmpty($Name, $Value);
