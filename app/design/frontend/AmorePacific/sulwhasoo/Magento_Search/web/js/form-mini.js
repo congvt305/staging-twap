@@ -11,7 +11,8 @@ define([
     'underscore',
     'mage/template',
     'matchMedia',
-    'jquery/ui',
+    'jquery-ui-modules/widget',
+    'jquery-ui-modules/core',
     'mage/translate'
 ], function ($, _, mageTemplate, mediaCheck) {
     'use strict';
@@ -29,17 +30,17 @@ define([
     $.widget('mage.quickSearch', {
         options: {
             autocomplete: 'off',
-            minSearchLength: 2,
+            minSearchLength: 3,
             responseFieldElements: 'ul li',
             selectClass: 'selected',
             template:
                 '<li class="<%- data.row_class %>" id="qs-option-<%- data.index %>" role="option">' +
-                    '<span class="qs-option-name">' +
-                       ' <%- data.title %>' +
-                    '</span>' +
-                    '<span aria-hidden="true" class="amount">' +
-                        '<%- data.num_results %>' +
-                    '</span>' +
+                '<span class="qs-option-name">' +
+                ' <%- data.title %>' +
+                '</span>' +
+                '<span aria-hidden="true" class="amount">' +
+                '<%- data.num_results %>' +
+                '</span>' +
                 '</li>',
             submitBtn: 'button[type="submit"]',
             searchLabel: '[data-role=minisearch-label]',
@@ -134,6 +135,8 @@ define([
          * @param {Boolean} isActive
          */
         setActiveState: function (isActive) {
+            var searchValue;
+
             this.searchForm.toggleClass('active', isActive);
             this.searchLabel.toggleClass('active', isActive);
 
@@ -155,6 +158,9 @@ define([
 
             if (this.isExpandable) {
                 this.element.attr('aria-expanded', isActive);
+                searchValue = this.element.val();
+                this.element.val('');
+                this.element.val(searchValue);
             }
         },
 
