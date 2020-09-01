@@ -81,6 +81,10 @@ class OrderSend extends AbstractAction
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_BEFORE);
         }
 
+        /** @var Redirect $resultRedirect */
+        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+        $resultRedirect->setPath('sales/order/index');
+
         try {
             $orderSendData = $this->sapOrderConfirmData->singleOrderData($order->getIncrementId());
 
@@ -103,10 +107,15 @@ class OrderSend extends AbstractAction
                     'direction' => 'outgoing',
                     'to' => "SAP",
                     'serialized_data' => $this->json->serialize($orderSendData),
-                    'status' => 1,
+                    'status' => $this->successCheck($orderSendData),
                     'result_message' => $this->json->serialize($result)
                 ]
             );
+
+            if (!$this->successCheck($orderSendData) && array_key_exists('message', $orderSendData)) {
+                $this->messageManager->addErrorMessage(__($orderSendData['message']));
+                return $resultRedirect;
+            }
 
             $resultSize = count($result);
 
@@ -160,22 +169,26 @@ class OrderSend extends AbstractAction
             }
         } catch (ShipmentNotExistException $e) {
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+            $order->setState('processing');
+            $order->setStatus($order->getStatus());
             $this->messageManager->addErrorMessage($e->getMessage());
         } catch (NoSuchEntityException $e) {
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+            $order->setState('processing');
+            $order->setStatus($order->getStatus());
             $this->messageManager->addErrorMessage($e->getMessage());
         } catch (LocalizedException $e) {
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+            $order->setState('processing');
+            $order->setStatus($order->getStatus());
             $this->messageManager->addErrorMessage($e->getMessage());
         } catch (\Exception $e) {
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+            $order->setState('processing');
+            $order->setStatus($order->getStatus());
             $this->messageManager->addErrorMessage($e->getMessage());
         }
         $this->orderRepository->save($order);
-
-        /** @var Redirect $resultRedirect */
-        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-        $resultRedirect->setPath('sales/order/index');
 
         return $resultRedirect;
     }
@@ -183,5 +196,14 @@ class OrderSend extends AbstractAction
     protected function _isAllowed()
     {
         return $this->_authorization->isAllowed('Amore_Sap::sap');
+    }
+
+    public function successCheck($result)
+    {
+        if (array_key_exists('code', $result)) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }

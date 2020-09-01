@@ -142,7 +142,7 @@
 "Availability: Out of stock.","庫存: 缺貨。",module,Magento_AdvancedCheckout
 "We don't have as many of these as you want.","我們沒有你想要的那麼多",module,Magento_AdvancedCheckout
 "You can't add this many to your cart.","您不能添加這麼多到您的購物車。",module,Magento_AdvancedCheckout
-"You need to choose options for your item.","您需要為您的項目選擇選項。",module,Magento_AdvancedCheckout
+"You need to choose options for your item.","點數查詢",module,Magento_AdvancedCheckout
 "We can't add the item to your cart.","我們不能添加這項目到您的購物車。",module,Magento_AdvancedCheckout
 "Please enter an actual number in the ""Qty"" field.","請在""數量""欄位中輸入的實際數。",module,Magento_AdvancedCheckout
 "This product is assigned to another website.","本產品被分配給另一個網站。",module,Magento_AdvancedCheckout
@@ -2762,7 +2762,7 @@ Time in seconds between the widget updates.,module,Magento_Catalog
 "We can't rebuild the index for an undefined product.","我們不能為未定義的產品重建索引。",module,Magento_CatalogInventory
 "Could not rebuild index for empty products array","Could not rebuild index for empty products array",module,Magento_CatalogInventory
 "The stock item for Product is not valid.","The stock item for Product is not valid.",module,Magento_CatalogInventory
-"This product is out of stock.","This product is out of stock.",module,Magento_CatalogInventory
+"This product is out of stock.","這產品脫銷了。",module,Magento_CatalogInventory
 "Some of the products are out of stock.","此購物車有部分商品已售完。",module,Magento_CatalogInventory
 "The stock item for Product in option is not valid.","The stock item for Product in option is not valid.",module,Magento_CatalogInventory
 "Undefined product type","Undefined product type",module,Magento_CatalogInventory
@@ -4421,7 +4421,7 @@ Maximum 255 characters are allowed.,module,Magento_CompanyCredit
 "Product with id ""%1"" does not contain required attribute ""%2"".","Product with id ""%1"" does not contain required attribute ""%2"".",module,Magento_ConfigurableProduct
 "Products ""%1"" and ""%2"" have the same set of attribute values.","Products ""%1"" and ""%2"" have the same set of attribute values.",module,Magento_ConfigurableProduct
 "You can't add the item to shopping cart.","You can't add the item to shopping cart.",module,Magento_ConfigurableProduct
-"You need to choose options for your item.","您需要為您的項目選擇選項。",module,Magento_ConfigurableProduct
+"You need to choose options for your item.","點數查詢",module,Magento_ConfigurableProduct
 "Some product variations fields are not valid.","Some product variations fields are not valid.",module,Magento_ConfigurableProduct
 "Configuration must have specified attributes","Configuration must have specified attributes",module,Magento_ConfigurableProduct
 "Type %1 is not an instance of %2","Type %1 is not an instance of %2",module,Magento_ConfigurableProduct
@@ -5048,9 +5048,9 @@ new products will be created. Use this step to customize images and price for yo
 "Zip/Postal Code","郵遞區號",module,Magento_Customer
 "Country","國家",module,Magento_Customer
 "It's a default billing address.","這是默認的帳單地址。",module,Magento_Customer
-"Use as my default billing address","用作我的默認帳單地址",module,Magento_Customer
+"Use as my default billing address","設定為「我的住家地址」",module,Magento_Customer
 "It's a default shipping address.","這是默認的送貨地址。",module,Magento_Customer
-"Use as my default shipping address","用作我的默認送貨地址",module,Magento_Customer
+"Use as my default shipping address","設定為「我的送貨地址」",module,Magento_Customer
 "Save Address","保存地址",module,Magento_Customer
 "Go back","回去",module,Magento_Customer
 "Please enter your email below and we will send you the confirmation link.","Please enter your email below and we will send you the confirmation link.",module,Magento_Customer
@@ -5536,10 +5536,10 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Please select a region, state or province.","選擇城市",module,Magento_CustomerCustomAttributes
 "Zip/Postal Code","郵遞區號",module,Magento_CustomerCustomAttributes
 "Country","國家",module,Magento_CustomerCustomAttributes
-"This is your default billing address.","這是您的默認帳單地址。",module,Magento_CustomerCustomAttributes
-"Use as my default billing address","用作我的默認帳單地址",module,Magento_CustomerCustomAttributes
-"This is your default shipping address.","這是您的默認收貨地址。",module,Magento_CustomerCustomAttributes
-"Use as my default shipping address","用作我的默認送貨地址",module,Magento_CustomerCustomAttributes
+"This is your default billing address.","已設定為「我的住家地址」",module,Magento_CustomerCustomAttributes
+"Use as my default billing address","設定為「我的住家地址」",module,Magento_CustomerCustomAttributes
+"This is your default shipping address.","已設定為「我的送貨地址」",module,Magento_CustomerCustomAttributes
+"Use as my default shipping address","設定為「我的送貨地址」",module,Magento_CustomerCustomAttributes
 "Save Address","保存地址",module,Magento_CustomerCustomAttributes
 "Go back","回去",module,Magento_CustomerCustomAttributes
 "Account Information","個人資訊",module,Magento_CustomerCustomAttributes
@@ -16252,7 +16252,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Stock has at least one sale channel and could not be deleted.","Stock has at least one sale channel and could not be deleted.",module,Magento_InventorySales
 "Could not replace Sales Channels for Stock","Could not replace Sales Channels for Stock",module,Magento_InventorySales
 "Wrong condition.","Wrong condition.",module,Magento_InventorySales
-"There are no source items with the in stock status","There are no source items with the in stock status",module,Magento_InventorySales
+"There are no source items with the in stock status","沒有庫存品的原產地商品",module,Magento_InventorySales
 "Summary","概要",theme,frontend\Magento\blank
 "Account Dashboard","Account Dashboard",theme,frontend\Magento\blank
 "Account Information","個人資訊",theme,frontend\Magento\blank
