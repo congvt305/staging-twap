@@ -1,0 +1,40 @@
+"We can't save the cron expression.","We can't save the cron expression."
+"Payment &amp; Shipping Method","Payment &amp; Shipping Method"
+"Payment Information","Payment Information"
+"The order was placed using %1.","The order was placed using %1."
+"Shipping Information","Shipping Information"
+"Total Shipping Charges","Total Shipping Charges"
+"Incl. Tax","Incl. Tax"
+"E-Invoice Invalidation","E-Invoice Invalidation"
+"Items Refunded","Items Refunded"
+"No Items","No Items"
+"Memo Total","Memo Total"
+"Credit Memo History","Credit Memo History"
+"Credit Memo Totals","Credit Memo Totals"
+"Items Invoiced","Items Invoiced"
+"E-Invoice Creation","E-Invoice Creation"
+"Order Total","Order Total"
+"Invoice History","Invoice History"
+"Invoice Totals","Invoice Totals"
+"E-Invoice Information","E-Invoice Information"
+"E-Invoice Tax ID Number","E-Invoice Tax ID Number"
+"E-Invoice Date","E-Invoice Date"
+"E-Invoice Number","E-Invoice Number"
+"E-Invoice Cellphone BarCode","E-Invoice Cellphone BarCode"
+"Invalidate E-Invoice Information","Invalidate E-Invoice Information"
+"Invalidate E-Invoice Number","Invalidate E-Invoice Number"
+"Print Refund","Print Refund"
+Refund,Refund
+"Product Name","Product Name"
+Price,Price
+Qty,Qty
+Subtotal,Subtotal
+"Discount Amount","Discount Amount"
+"Row Total","Row Total"
+"Print Invoice","Print Invoice"
+Invoice,Invoice
+"Ecpay E-Invoice","Ecpay E-Invoice"
+"E-Invoice Issue Cron","E-Invoice Issue Cron"
+Active,Active
+Frequency,Frequency
+"Start Time","Start Time"

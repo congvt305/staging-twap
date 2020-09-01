@@ -20,7 +20,7 @@
                     <th scope="col" class="col id"><?= $block->escapeHtml(__('Order #')) ?></th>
                     <th scope="col" class="col date"><?= $block->escapeHtml(__('Date')) ?></th>
                     <?= $block->getChildHtml('extra.column.header') ?>
-                    <th scope="col" class="col shipping"><?= $block->escapeHtml(__('Ship To')) ?></th>
+                    <th scope="col" class="col shipping"><?= $block->escapeHtml(__('Name')) ?></th>
                     <th scope="col" class="col total"><?= $block->escapeHtml(__('Total')) ?></th>
                     <th scope="col" class="col status"><?= $block->escapeHtml(__('Status')) ?></th>
                     <th scope="col" class="col actions"><?= $block->escapeHtml(__('Action')) ?></th>
@@ -37,7 +37,7 @@
                                 <?php $extra->setOrder($_order); ?>
                                 <?= $extra->getChildHtml() ?>
                             <?php endif; ?>
-                            <td data-th="<?= $block->escapeHtmlAttr(__('Ship To')) ?>" class="col shipping"><?= $_order->getShippingAddress() ? $block->escapeHtml($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
+                            <td data-th="<?= $block->escapeHtmlAttr(__('Name')) ?>" class="col shipping"><?= $_order->getShippingAddress() ? $block->escapeHtml($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
                             <td data-th="<?= $block->escapeHtmlAttr(__('Total')) ?>" class="col total"><?= /* @noEscape */ $_order->formatPrice($_order->getGrandTotal()) ?></td>
                             <td data-th="<?= $block->escapeHtmlAttr(__('Status')) ?>" class="col status"><?= $block->escapeHtml($_order->getStatusLabel()) ?></td>
                             <td data-th="<?= $block->escapeHtmlAttr(__('Actions')) ?>" class="col actions">

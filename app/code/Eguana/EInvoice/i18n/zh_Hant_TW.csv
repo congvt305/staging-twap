@@ -1,0 +1,40 @@
+"We can't save the cron expression.","我們不能儲存 Cron 運算式。"
+"Payment &amp; Shipping Method","付款 &amp; 出貨方式"
+"Payment Information","付款資訊"
+"The order was placed using %1.","訂單使用 %1。"
+"Shipping Information","船舶資料"
+"Total Shipping Charges","總船費"
+"Incl. Tax","含稅"
+"E-Invoice Invalidation","電子訊息無效"
+"Items Refunded","退還品目"
+"No Items","沒有項目"
+"Memo Total","總數"
+"Credit Memo History","信用備忘錄歷史"
+"Credit Memo Totals","貸記總賬"
+"Items Invoiced","已開票"
+"E-Invoice Creation","電子信息創造"
+"Order Total","本次訂單金額"
+"Invoice History","發票歷史"
+"Invoice Totals","發票總額"
+"E-Invoice Information","電子發票資訊"
+"E-Invoice Tax ID Number","公司統編"
+"E-Invoice Date","電子發票開立日期"
+"E-Invoice Number","電子發票號碼"
+"E-Invoice Cellphone BarCode","手機條碼載具"
+"Invalidate E-Invoice Information","Invalidate E-Invoice Information"
+"Invalidate E-Invoice Number","Invalidate E-Invoice Number"
+"Print Refund","印刷品退款"
+Refund,訂單取消/退款
+"Product Name","商品名稱"
+Price,價格
+Qty,數量
+Subtotal,商品總金額
+"Discount Amount","折扣金額"
+"Row Total","總行數"
+"Print Invoice","列印電子發票"
+Invoice,發票號碼
+"Ecpay E-Invoice","Ecpay E-Invoice"
+"E-Invoice Issue Cron","E-Invoice Issue Cron"
+Active,激活
+Frequency,頻率
+"Start Time","開始時間"
