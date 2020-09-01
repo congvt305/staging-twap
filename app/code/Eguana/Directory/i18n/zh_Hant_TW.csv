@@ -10,9 +10,9 @@ Address,地址
 "Please select a city or district.","選擇行政區"
 "Please select a region, state or province.","請選擇一個地區，州或省."
 "This is your default billing address.","這是您的默認帳單地址."
-"Use as my default billing address","用作我的默認帳單地址"
+"Use as my default billing address","設定為「我的住家地址」"
 "This is your default shipping address.","這是您的默認送貨地址."
-"Use as my default shipping address","用作我的默認送貨地址"
+"Use as my default shipping address","設定為「我的送貨地址」"
 "Save Address","保存地址"
 "Go back","保存地址"
 City/District,行政區
