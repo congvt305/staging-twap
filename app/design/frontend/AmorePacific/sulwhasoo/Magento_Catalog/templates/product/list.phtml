@@ -114,7 +114,7 @@ $getDefault = $block->getData('view_model');
                                                    ap-click-area="prds-<?= /* @noEscape */ $getDefault->getDefaultCategory($currentCategory->getEntityId())->getName() ?>"
                                                    ap-click-name="prd click"
                                                    ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
-                                                    <span><?= $block->escapeHtml(__('View')) ?></span>
+                                                    <span><?= $block->escapeHtml(__('Detail')) ?></span>
                                                 </a>
                                             <?php endif;?>
                                             <?php if ($_product->isSaleable()): ?>
