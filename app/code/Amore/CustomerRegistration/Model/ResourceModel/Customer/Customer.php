@@ -15,6 +15,7 @@ use Magento\Customer\Model\AccountConfirmation;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * PLEASE ENTER ONE LINE SHORT DESCRIPTION OF CLASS
@@ -109,12 +110,12 @@ class Customer extends \Magento\Customer\Model\ResourceModel\Customer
             if ($result) {
                 // TODO Implement method (@Abbas Sir Please verify this functionality)
                 //Edit by Arslan
-                //Add message manager because the throw AlreadyExistsException was showing message from cache.
-                //Now message manager add new message and InputException throw it to the same page
-                $this->messageManager->addError(
+                // Remove InputException because, that was throwing two exceptions one for duplicae mobile number message
+                // and second exception that "customer can't save"
+                // Add LocalizedException to throw the required exception message
+                throw new LocalizedException(
                     __('A customer with the same mobile number already exists in an associated website.')
                 );
-                throw new InputException();
             }
         }
 
