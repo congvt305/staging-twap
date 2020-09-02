@@ -202,6 +202,36 @@
             }
         }
     }
+
+    .order-details-items {
+        tbody {
+            tr.item-options-container > td {
+                border-top: none !important;
+
+                &.value {
+                    text-align: left !important;
+                }
+            }
+
+            tr.item-options-container {
+                td, span {
+                    color: @primary__color__lighter !important;
+                }
+
+                > td {
+                    padding: 0 @table-cell__padding-horizontal;
+                }
+
+                &:nth-last-child(1) > td {
+                    padding-bottom: @table-cell__padding-vertical;
+                }
+            }
+
+            tr.options-label {
+                display: none !important;
+            }
+        }
+    }
 }
 
 //
@@ -248,6 +278,61 @@
 
         .nested {
             margin-top: @indent__base;
+        }
+    }
+
+    .order-details-items {
+        &.ordered tbody {
+            tr.item-parent {
+                td.qty {
+                    display: block !important;
+                }
+            }
+        }
+
+        tbody {
+            tr.item-parent {
+                td:not(.name) {
+                    display: none !important;
+                }
+            }
+
+            tr.item-options-container {
+                border-top: none !important;
+
+                td:first-child {
+                    padding-top: 0 !important;
+
+                    &:before {
+                        top: 0 !important;
+                    }
+                }
+
+                td {
+                    &.value {
+                        text-align: right !important;
+                    }
+
+                    &.value:before,
+                    &:not(.value) {
+                        display: none !important;
+                    }
+
+                    span {
+                        float: none !important;
+                    }
+                }
+
+                &:not(:nth-last-child(1)) {
+                    > td.value {
+                        padding-bottom: 0 !important;
+                    }
+                }
+
+                &:nth-last-child(1) > td:last-child {
+                    padding-bottom: @indent__l !important;
+                }
+            }
         }
     }
 }
