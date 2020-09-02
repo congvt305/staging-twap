@@ -38,7 +38,7 @@ define([
                         });
 
                         let tweenAnimation = function () {
-                            let u = $(".products.list .product-item"),
+                            let u = $(".products.list .product-item-container"),
                                 o = $(".list-contents"),
                                 q = 0,
                                 s = 0.5,
