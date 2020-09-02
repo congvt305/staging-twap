@@ -104,6 +104,33 @@
             &:extend(.abs-visually-hidden all);
         }
     }
+
+    .order-details-items {
+        tbody {
+            tr.item-parent,
+            tr.item-options-container:not(:nth-last-child(1)) {
+                border-bottom: none !important;
+            }
+
+            tr.item-options-container {
+                td, span {
+                    color: @primary__color__lighter !important;
+                }
+
+                > td {
+                    padding: 0 @table-cell__padding-horizontal;
+                }
+
+                &:nth-last-child(1) > td {
+                    padding-bottom: @table-cell__padding-vertical;
+                }
+            }
+
+            tr.options-label {
+                display: none !important;
+            }
+        }
+    }
 }
 
 //
@@ -119,6 +146,51 @@
                 .price-from,
                 .price-to {
                     width: 100%;
+                }
+            }
+        }
+    }
+
+    .order-details-items {
+        &.ordered tbody {
+            tr.item-parent {
+                td.qty {
+                    display: block !important;
+                }
+            }
+        }
+
+        tbody {
+            tr.item-parent {
+                td:not(.name) {
+                    display: none !important;
+                }
+            }
+
+            tr.item-options-container {
+                td:first-child {
+                    padding-top: 0 !important;
+
+                    &:before {
+                        top: 0 !important;
+                    }
+                }
+
+                td {
+                    &.value:before,
+                    &:not(.value) {
+                        display: none !important;
+                    }
+                }
+
+                &:not(:nth-last-child(1)) {
+                    > td.value {
+                        padding-bottom: 0 !important;
+                    }
+                }
+
+                &:nth-last-child(1) > td:last-child {
+                    padding-bottom: @indent__l !important;
                 }
             }
         }
