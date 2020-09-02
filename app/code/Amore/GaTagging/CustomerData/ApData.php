@@ -14,20 +14,20 @@ use Magento\Customer\CustomerData\SectionSourceInterface;
 class ApData implements SectionSourceInterface
 {
     /**
-     * @var \Magento\Customer\Helper\Session\CurrentCustomer
-     */
-    private $currentCustomer;
-    /**
      * @var \Magento\Framework\Stdlib\DateTime\DateTimeFactory
      */
     private $dateTimeFactory;
+    /**
+     * @var \Magento\Customer\Model\Session
+     */
+    private $customerSession;
 
     public function __construct(
-        \Magento\Customer\Helper\Session\CurrentCustomer $currentCustomer,
+        \Magento\Customer\Model\Session $customerSession,
         \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory
     ) {
-        $this->currentCustomer = $currentCustomer;
         $this->dateTimeFactory = $dateTimeFactory;
+        $this->customerSession = $customerSession;
     }
 
     /**
@@ -37,12 +37,12 @@ class ApData implements SectionSourceInterface
      */
     public function getSectionData()
     {
-        if (!$this->currentCustomer->getCustomerId()) {
+        if (!$this->customerSession->isLoggedIn()) {
             return [];
         }
 
         /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
-        $customer = $this->currentCustomer->getCustomer();
+        $customer = $this->customerSession->getCustomer();
 
         return [
             'AP_DATA_GCID' => hash('sha512', $customer->getId()),
