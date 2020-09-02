@@ -14,7 +14,7 @@
 <!--                   template="Amore_GaTagging::common/head-js.phtml" />-->
 <!--        </referenceContainer>-->
         <referenceContainer name="after.body.start">
-             2.2 공통구현요소 (모든페이지) body 영역, 1)GTM 코드 2) DATA Layer 변수
+<!--             2.2 공통구현요소 (모든페이지) body 영역, 1)GTM 코드 2) DATA Layer 변수-->
 <!--            <block name="amore_tagging_common_body_js"-->
 <!--                   ifconfig="amore_gatagging/tagmanager/active"-->
 <!--                   before='-'-->
@@ -23,8 +23,7 @@
             <block class="Amore\GaTagging\Block\GaTagging"
                    ifconfig="amore_gatagging/tagmanager/active"
                    template="Amore_GaTagging::common/ap.phtml"
-                   name="amore_gatagging_common_ap"
-                   after="amore_tagging_common_body_js">
+                   name="amore_gatagging_common_ap">
                 <arguments>
                     <argument name="view_model" xsi:type="object">Amore\GaTagging\ViewModel\CommonData</argument>
                 </arguments>
