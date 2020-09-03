@@ -1,9 +1,10 @@
 define([
     'underscore',
     'jquery',
+    'Magento_Customer/js/model/customer',
     'Magento_Customer/js/customer-data',
     'mage/translate'
-], function (_, $, customerData) {
+], function (_, $, customer, customerData) {
     'user strict';
 
     var cacheKey = 'customer-ap-data';
@@ -14,6 +15,7 @@ define([
     }
 
     return function (config) {
+        console.log('isLoggedIn', customer.isLoggedIn());
         if (_.size( sectionData()) > 1) {
             // console.log(sectionData());
             window.AP_DATA_GCID = sectionData()['AP_DATA_GCID'];

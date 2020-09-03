@@ -10,6 +10,7 @@
 
 namespace Amore\CustomerRegistration\Observer\Customer;
 
+use Magento\Customer\Api\Data\AddressInterfaceFactory;
 use Magento\Framework\Event\ObserverInterface;
 use Amore\CustomerRegistration\Model\POSSystem;
 use \Magento\Customer\Model\Data\Customer;
@@ -22,7 +23,6 @@ use Magento\Newsletter\Model\Subscriber;
 use Magento\Framework\App\RequestInterface;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
-use Magento\Customer\Api\Data\AddressInterface;
 use Magento\Customer\Api\AddressRepositoryInterface;
 
 /**
@@ -84,9 +84,9 @@ class SaveSuccess implements ObserverInterface
      */
     private $addressRepository;
     /**
-     * @var AddressInterface
+     * @var AddressInterfaceFactory
      */
-    private $addressData;
+    private $addressDataFactory;
 
     public function __construct(
         RequestInterface $request,
@@ -100,7 +100,7 @@ class SaveSuccess implements ObserverInterface
         POSLogger $logger,
         POSSystem $POSSystem,
         AddressRepositoryInterface $addressRepository,
-        AddressInterface $addressData
+        AddressInterfaceFactory $addressDataFactory
     ) {
         $this->sequence = $sequence;
         $this->POSSystem = $POSSystem;
@@ -113,7 +113,7 @@ class SaveSuccess implements ObserverInterface
         $this->regionFactory = $regionFactory;
         $this->regionResourceModel = $regionResourceModel;
         $this->addressRepository = $addressRepository;
-        $this->addressData = $addressData;
+        $this->addressDataFactory = $addressDataFactory;
     }
 
     /**
@@ -389,8 +389,9 @@ class SaveSuccess implements ObserverInterface
                 $firstName = $customerData['firstname'];
                 $lastName = $customerData['lastname'];
                 $mobileNumber = $customerData['mobile_number'];
-
-                $this->addressData->setCustomerId($customerId)
+                /** @var \Magento\Customer\Api\Data\AddressInterface $addressData */
+                $defaultShippingAddressData = $this->addressDataFactory->create();
+                $defaultShippingAddressData->setCustomerId($customerId)
                     ->setFirstname($firstName)
                     ->setLastname($lastName)
                     ->setRegionId($regionId)
@@ -399,9 +400,21 @@ class SaveSuccess implements ObserverInterface
                     ->setCity($dmCity)
                     ->setTelephone($mobileNumber)
                     ->setStreet([$dmDetailedAddress])
-                    ->setIsDefaultShipping('1')
+                    ->setIsDefaultShipping('1');
+                $this->addressRepository->save($defaultShippingAddressData);
+                /** @var \Magento\Customer\Api\Data\AddressInterface $addressData */
+                $defaultBillingAddressData = $this->addressDataFactory->create();
+                $defaultBillingAddressData->setCustomerId($customerId)
+                    ->setFirstname($firstName)
+                    ->setLastname($lastName)
+                    ->setRegionId($regionId)
+                    ->setPostcode($dmZipCode)
+                    ->setCountryId($dmCountryId)
+                    ->setCity($dmCity)
+                    ->setTelephone($mobileNumber)
+                    ->setStreet([$dmDetailedAddress])
                     ->setIsDefaultBilling('1');
-                $this->addressRepository->save($this->addressData);
+                $this->addressRepository->save($defaultBillingAddressData);
             }
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
