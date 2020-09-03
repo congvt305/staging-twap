@@ -10,6 +10,7 @@ namespace Amore\GaTagging\CustomerData;
 
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
+use Magento\Customer\Model\Context;
 
 class ApData implements SectionSourceInterface
 {
@@ -21,13 +22,19 @@ class ApData implements SectionSourceInterface
      * @var \Magento\Customer\Model\Session
      */
     private $customerSession;
+    /**
+     * @var \Magento\Framework\App\Http\Context
+     */
+    private $httpContext;
 
     public function __construct(
+        \Magento\Framework\App\Http\Context $httpContext,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory
     ) {
         $this->dateTimeFactory = $dateTimeFactory;
         $this->customerSession = $customerSession;
+        $this->httpContext = $httpContext;
     }
 
     /**
@@ -37,7 +44,7 @@ class ApData implements SectionSourceInterface
      */
     public function getSectionData()
     {
-        if (!$this->customerSession->isLoggedIn()) {
+        if (!$this->isLoggedIn()) {
             return [];
         }
 
@@ -84,6 +91,10 @@ class ApData implements SectionSourceInterface
         } catch (\Exception $e) {
             return '';
         }
+    }
+    public function isLoggedIn()
+    {
+        return $this->httpContext->getValue(Context::CONTEXT_AUTH);
     }
 
 }
