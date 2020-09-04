@@ -10,7 +10,19 @@ define([
     var sectionData = customerData.get(cacheKey);
 
     function notify(eventName) {
-        window.dataLayer.push({'event': eventName});
+        console.log('ap-customer AP_DATA_GCID ', window.AP_DATA_GCID);
+        console.log('ap-customer AP_DATA_CID ', window.AP_DATA_CID);
+        console.log('ap-customer AP_DATA_ISMEMBER ', window.AP_DATA_ISMEMBER);
+        console.log('ap-customer AP_DATA_ISLOGIN ', window.AP_DATA_ISLOGIN);
+        console.log('ap-customer AP_DATA_LOGINTYPE ', window.AP_DATA_LOGINTYPE);
+        console.log('ap-customer AP_DATA_CA ', window.AP_DATA_CA);
+        console.log('ap-customer AP_DATA_CD ', window.AP_DATA_CD);
+        console.log('ap-customer AP_DATA_CG ', window.AP_DATA_CG);
+        console.log('ap-customer AP_DATA_CT ', window.AP_DATA_CT);
+        console.log('ap-customer push ', eventName);
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': eventName});
+        }
     }
 
     return function (config) {
