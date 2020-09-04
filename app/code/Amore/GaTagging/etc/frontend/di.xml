@@ -8,8 +8,8 @@
             </argument>
         </arguments>
     </type>
-<!--    <type name="Magento\Theme\Block\Html\Breadcrumbs">-->
-<!--        <plugin name="amore_gatagging_get_breadcrumbs"-->
-<!--                type="Amore\GaTagging\Plugin\BreadCrumbsPlugin" sortOrder="10"/>-->
-<!--    </type>-->
+    <type name="Magento\Theme\Block\Html\Breadcrumbs">
+        <plugin name="amore_gatagging_get_breadcrumbs"
+                type="Amore\GaTagging\Plugin\BreadCrumbsPlugin" sortOrder="10"/>
+    </type>
 </config>
