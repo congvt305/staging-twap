@@ -108,11 +108,6 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         return parent::_toHtml();
     }
 
-    public function getChannel()
-    {
-        return 'PC';
-    }
-
     public function getBreadCrumbText() //todo: javascript
     {
         $crumbBlock =  $this->_layout->getBlock('breadcrumbs');
