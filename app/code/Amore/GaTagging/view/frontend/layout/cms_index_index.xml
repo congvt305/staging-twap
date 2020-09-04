@@ -14,7 +14,7 @@
                    after="amore_gatagging_common_ap"
                    template="Amore_GaTagging::common/ap-pagetype.phtml" >
                 <arguments>
-                    <argument name="page_type" xsi:type="string">home</argument>
+                    <argument name="page_type" xsi:type="string">main</argument>
                 </arguments>
             </block>
         </referenceContainer>
