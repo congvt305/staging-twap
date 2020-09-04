@@ -147,6 +147,9 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $attributeCode = 'product_types';
 //        $productTypesAttr = $product->getCustomAttribute($attributeCode);
 //        return $productTypesAttr->getFrontend()->getValue($product);
+        $categoryIds = $product->getCategoryIds();
+        //skincare => 16,256, make up => 19,259, homme =>  22,262
+
         return '스킨케어';
     }
 

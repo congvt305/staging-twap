@@ -24,11 +24,8 @@
             <block class="Amore\GaTagging\Block\GaTagging"
                    ifconfig="amore_gatagging/tagmanager/active"
                    template="Amore_GaTagging::common/ap.phtml"
-                   name="amore_gatagging_common_ap">
-                <arguments>
-                    <argument name="view_model" xsi:type="object">Amore\GaTagging\ViewModel\CommonData</argument>
-                </arguments>
-            </block>
+                   name="amore_gatagging_common_ap" />
+
 
             <!-- 2.4 트랜잭션 - 장바구니 추가 버튼 -->
             <block name="amore_tagging_cart_js"
