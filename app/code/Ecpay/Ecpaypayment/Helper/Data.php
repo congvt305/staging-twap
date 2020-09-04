@@ -155,6 +155,11 @@ class Data extends AbstractHelper
 
             // Update order status and comments
             $createStatus = $this->getMagentoConfig('order_status');
+
+            if ($choosenPayment == 'atm') {
+                $createStatus = \Magento\Sales\Model\Order::STATE_PENDING_PAYMENT;
+            }
+
             $comment = __('Payment Method: %1', $paymentName);
 
             $this->setOrderCommentForFront($order, $comment, $createStatus, false);

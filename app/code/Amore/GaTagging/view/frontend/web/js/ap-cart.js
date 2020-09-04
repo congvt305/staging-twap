@@ -38,6 +38,7 @@ define([
             var events = this.options.events;
 
             this.options.actions[events.AJAX_ADD_TO_CART] = function (product) {
+                console.log('addcart')
                 this.options.dataLayer.push({'event': 'addcart'});
             }.bind(this);
         },
@@ -152,7 +153,7 @@ define([
                 .on(
                     opt.events.AJAX_ADD_TO_CART,
                     handlerWrapper.bind(this, this._setToTemporaryEventStorage, opt.events.AJAX_ADD_TO_CART)
-                )
+                );
         }
     });
 
