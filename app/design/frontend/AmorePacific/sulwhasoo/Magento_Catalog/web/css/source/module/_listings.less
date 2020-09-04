@@ -312,6 +312,7 @@
                     height: 1px;
                     background: #e2e2e2;
                     position: absolute;
+                    margin-top: -1px;
                     z-index: 11;
                 }
 
@@ -529,6 +530,13 @@
 
                 .actions-primary {
                     display: flex;
+
+                    .todetail{
+                        &:last-child {
+                            width: 100%;
+                            margin: 0;
+                        }
+                    }
 
                     > form {
                         width: calc(~'50% - 5px');
@@ -772,6 +780,20 @@
 
                     &:after {
                         left: -1px;
+                    }
+                }
+
+                &:nth-last-child(2):nth-last-child(even) {
+                    &:after {
+                        content: '';
+                        display: inline-block;
+                        left: 0;
+                        right: 0;
+                        height: 1px;
+                        background: #e2e2e2;
+                        position: absolute;
+                        margin-top: -1px;
+                        z-index: 11;
                     }
                 }
 
