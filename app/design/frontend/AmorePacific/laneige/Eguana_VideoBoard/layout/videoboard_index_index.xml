@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 16/6/20
+* Time: 12:35 PM
+*/
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link rel="alternate" hreflang="ko-kr" src="http://www.laneige.com/kr/ko/how-to/online-class.html" src_type="url"/>
+        <link rel="alternate" hreflang="en" src="https://www.laneige.com/int/en/how-to/how-to.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-hk" src="https://www.laneige.com/hk/en/How-to/how-to.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-sg" src="https://www.laneige.com/sg/en/how-to/how-to.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-my" src="https://www.laneige.com/my/en/how-to/how-to.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-hant-hk" src="https://www.laneige.com/hk/zh/how-to/how-to.html" src_type="url"/>
+        <link rel="alternate" hreflang="vi-vn" src="http://www.laneige.com/vn/vi/how-to.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/brand/how-to.html" src_type="url"/>
+        <link rel="alternate" hreflang="id-id" src="https://www.laneige.com/id/id/how-to/how-to.html" src_type="url"/>
+        <link rel="alternate" hreflang="th-th" src="https://www.laneige.com/th/th/how-to/how-to.html" src_type="url"/>
+    </head>
+</page>
