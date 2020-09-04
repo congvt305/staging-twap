@@ -1,0 +1,17 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+
+<meta property="twitter:card" content="summary" />
+<meta property="twitter:title"
+      content="<?= /* @noEscape */ $block->stripTags($block->getProduct()->getName()) ?>" />
+<meta property="twitter:image"
+      content="<?= $block->escapeUrl($block->getImage($block->getProduct(), 'product_base_image')->getImageUrl()) ?>" />
+<meta property="twitter:description"
+      content="<?= /* @noEscape */ $block->stripTags($block->getProduct()->getShortDescription()) ?>" />
+<meta property="twitter:url" content="<?= $block->escapeUrl($block->getProduct()->getProductUrl()) ?>" />
