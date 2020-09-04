@@ -12,7 +12,6 @@ define([
         payload = {'orderId': orderId};
 
         serviceUrl = url.build(refundUrl);
-
         $('body').trigger('processStart');
 
         return storage.post(
@@ -20,7 +19,8 @@ define([
             JSON.stringify(payload)
         ).done(
             function (response) {
-                location.reload();
+                window.location.href = url.build('sales/order/view/order_id/') + orderId
+                    + '?refund=' + 'true';
                 // $('body').trigger('processStop');
 
             }
