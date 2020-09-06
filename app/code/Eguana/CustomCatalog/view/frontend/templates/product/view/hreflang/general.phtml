@@ -1,0 +1,25 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+?>
+<?php /* @noEscape */
+$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+$_product = $block->getProduct();
+
+if (!$_product instanceof \Magento\Catalog\Model\Product) {
+    return;
+}
+
+$_call = $block->getAtCall();
+$_code = $block->getAtCode();
+$_attributeAddAttribute = $block->getAddAttribute();
+
+$_attributeValue = $_helper->productAttribute($_product, $_product->$_call(), $_code);
+?>
+<?php if ($_attributeValue) :?>
+    <?= /* @noEscape */ $_attributeValue ?>
+<?php endif;?>
+
