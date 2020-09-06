@@ -29,7 +29,7 @@ define([
         },
 
         reloadCheckoutData: function () {
-            return customerData.reload([cacheKey]);
+            return customerData.reload([cacheKey], false);
         },
 
         clear: function() {
