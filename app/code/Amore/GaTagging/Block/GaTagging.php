@@ -45,34 +45,18 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      * @var CollectionFactory
      */
     private $selectionCollectionFactory;
-
     /**
-     * @var \Magento\Sales\Model\ResourceModel\Order
+     * @var OrderRepositoryInterface
      */
-    private $orderResource;
+    private $orderRepository;
     /**
-     * @var \Magento\Sales\Model\OrderFactory
+     * @var \Magento\Framework\Message\ManagerInterface
      */
-    private $orderFactory;
+    private $messageManager;
 
-
-    /**
-     * GaTagging constructor.
-     * @param \Magento\Sales\Model\OrderFactory $orderFactory
-     * @param \Magento\Sales\Model\ResourceModel\Order $orderResource
-     * @param CollectionFactory $selectionCollectionFactory
-     * @param LoggerInterface $logger
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param Json $jsonSerializer
-     * @param \Magento\Framework\Registry $registry
-     * @param \Amore\GaTagging\Helper\Data $helper
-     * @param Template\Context $context
-     * @param array $data
-     */
     public function __construct(
-        \Magento\Sales\Model\OrderFactory $orderFactory,
-        \Magento\Sales\Model\ResourceModel\Order $orderResource,
+        \Magento\Framework\Message\ManagerInterface $messageManager,
+        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Bundle\Model\ResourceModel\Selection\CollectionFactory $selectionCollectionFactory,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Model\Session $customerSession,
@@ -91,8 +75,8 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $this->logger = $logger;
         $this->checkoutSession = $checkoutSession;
         $this->selectionCollectionFactory = $selectionCollectionFactory;
-        $this->orderResource = $orderResource;
-        $this->orderFactory = $orderFactory;
+        $this->orderRepository = $orderRepository;
+        $this->messageManager = $messageManager;
     }
 
     /**
@@ -147,6 +131,9 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $attributeCode = 'product_types';
 //        $productTypesAttr = $product->getCustomAttribute($attributeCode);
 //        return $productTypesAttr->getFrontend()->getValue($product);
+        $categoryIds = $product->getCategoryIds();
+        //skincare => 16,256, make up => 19,259, homme =>  22,262
+
         return '스킨케어';
     }
 
@@ -157,12 +144,12 @@ class GaTagging extends \Magento\Framework\View\Element\Template
 
     public function getResultProductData()
     {
-       $resultProducts = $this->_layout->getBlock('search_result_list')->getLoadedProductCollection();
-       $productData = [];
+        $resultProducts = $this->_layout->getBlock('search_result_list')->getLoadedProductCollection();
+        $productData = [];
         /** @var \Magento\Catalog\Model\Product $product */
         foreach ($resultProducts as $product) {
-           $productData[] = ['name' => $product->getName(), 'brand' => $this->helper->getSiteName()];
-       }
+            $productData[] = ['name' => $product->getName(), 'brand' => $this->helper->getSiteName()];
+        }
         return $this->jsonSerializer->serialize($productData);
 
     }
@@ -359,10 +346,9 @@ class GaTagging extends \Magento\Framework\View\Element\Template
 //            'AP_PURCHASE_COUPONNAME' => '',
             'AP_PURCHASE_PRDS' => []
         ];
-        /** @var \Magento\Sales\Model\Order $order */
+        /** @var \Magento\Sales\Api\Data\OrderInterface $order */
         $orderId = $this->checkoutSession->getLastOrderId();
-        $order = $this->orderFactory->create();
-        $this->orderResource->load($order, $orderId);
+        $this->orderRepository->get($orderId);
         $allItems = $order->getAllItems();
         if (count($allItems) < 1) {
             return $orderData;
@@ -384,13 +370,44 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $orderData['AP_PURCHASE_ORDERNUM'] = $order->getIncrementId();
         return $orderData;
     }
-    
+
     private function getCheckoutSession()
     {
         if (!$this->checkoutSession->isSessionExists()) {
             $this->checkoutSession->start();
         }
         return $this->checkoutSession;
+    }
+
+    public function getCanceledOrderData()
+    {
+        $message = $this->messageManager->getMessages();
+        $orderId = $this->getRequest()->getParam('order_id');
+        /** @var \Magento\Sales\Api\Data\OrderInterface $order */
+        $order = $this->orderRepository->get($orderId);
+        if (!$order) {
+            return false;
+        }
+        $canceledOrderData = [
+            'AP_REFUND_PRICE' => 0,
+            'AP_REFUND_ORDERNUM' => 0,
+            'AP_REFUND_CONTENT' => 0,
+            'AP_REFUND_PRDS' => []
+        ];
+        $allItems = $order->getAllItems();
+        if (count($allItems) < 1) {
+            return false;
+        }
+        $realItemsData = $this->getRealItemsData($allItems, 'order');
+        $orderProdPrice = 0;
+        foreach ($realItemsData as $item) {
+            $orderProdPrice += $item['prdprice'] * $item['quantity'];
+            $canceledOrderData['AP_REFUND_PRDS'][] = $this->jsonSerializer->serialize($item);
+        }
+        $canceledOrderData['AP_REFUND_PRICE'] = intval($order->getTotalRefunded());
+        $canceledOrderData['AP_REFUND_ORDERNUM'] = intval($order->getGrandTotal());
+        $canceledOrderData['AP_REFUND_CONTENT'] = '단순변심';
+        return $canceledOrderData;
     }
 }
 

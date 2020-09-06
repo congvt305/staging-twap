@@ -67,7 +67,6 @@ class ApData implements SectionSourceInterface
             'AP_DATA_CD' => $customer->getDob() ? $this->getCustomerBirthYear($customer->getDob()) : '',
             'AP_DATA_CG' => $customer->getGender() ? $customer->getGender() : '',
             'AP_DATA_CT' => '', //todo get customer group name 멤버쉽 운영시 구현
-            'AP_DATA_CHANNEL' => $this->isMobile() ? 'MOBILE' : 'PC',
         ];
     }
 
