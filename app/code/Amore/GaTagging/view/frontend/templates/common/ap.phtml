@@ -8,15 +8,13 @@
 ?>
 <?php
 /** @var \Amore\GaTagging\Block\GaTagging $block */
-/* @var $viewModel \Amore\GaTagging\ViewModel\CommonData */
-$viewModel = $block->getViewModel();
 ?>
+<!-- AP GA Tagging Data -->
 <script>
-    <!-- AP GA Tagging Data -->
     //공동변수
     var AP_DATA_GCID = "";
     var AP_DATA_CID = "";
-    var AP_DATA_ISMEMBER = "X";
+    var AP_DATA_ISMEMBER = "";
     var AP_DATA_ISLOGIN = "N";
     var AP_DATA_LOGINTYPE = "";
     var AP_DATA_CA = "";
@@ -24,18 +22,9 @@ $viewModel = $block->getViewModel();
     var AP_DATA_CG = "";
     var AP_DATA_CT = "";
     var AP_DATA_SITENAME = "<?= $block->escapeJs($block->escapeHtml($this->helper(\Amore\GaTagging\Helper\Data::class)->getSiteName())) ?>";
-    var AP_DATA_CHANNEL = "<?= $block->getChannel() ?>";
+    var AP_DATA_CHANNEL = "PC";
     var AP_DATA_PAGENAME = "<?= $block->getTitle() ?>";
-    var AP_DATA_BREAD = "<?= $block->getBreadCrumbText() ?>";
-
-    //장바구니 빼기(삭제)
-    var AP_RMCART_PRDS = [];
-
-    //주문취소
-    var AP_REFUND_PRICE = "";
-    var AP_REFUND_ORDERNUM = "";
-    var AP_REFUND_CONTENT = "";
-    var AP_REFUND_PRDS = "";
+    var AP_DATA_PAGETYPE = "";
 </script>
 
 

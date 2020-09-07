@@ -11,6 +11,10 @@
                 <argument name="page_type" xsi:type="string">prod</argument>
             </arguments>
         </block>
+            <!-- 2.4 트랜잭션 - 구매하기 버튼 -->
+            <block name="amore_tagging_buynow"
+                   ifconfig="amore_gatagging/tagmanager/active"
+                   template="Amore_GaTagging::catalog/buy-now.phtml" />
         </referenceContainer>
         <!-- 2.3 주요페이지 제품상세 이벤트 트리거 -->
         <referenceContainer name="before.body.end">
