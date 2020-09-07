@@ -550,7 +550,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             }
         }
 
-        $orderSubtotal = round($order->getSubtotalInclTax());
+        $orderSubtotal = round($order->getSubtotalInclTax() + $this->getBundleExtraAmount($order));
         $orderGrandtotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($order->getGrandTotal() - $order->getShippingAmount());
         $orderDiscountAmount = round(abs($order->getDiscountAmount()));
 
