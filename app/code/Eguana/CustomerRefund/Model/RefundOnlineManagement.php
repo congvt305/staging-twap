@@ -92,6 +92,7 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
         } catch (\Exception $e) {
             $this->logger->info('customerRefund | something went wrong ', [$e->getMessage()]);
             $this->messageManager->addErrorMessage(__('Something is wrong with refund. Please contact our customer service.'));
+            return false;
         }
         return true;
     }
