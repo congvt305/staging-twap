@@ -539,7 +539,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemPosnrOri' => $cnt
                         ];
                         $cnt++;
-                        $itemsSubtotal += round($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getRowTotalInclTax()));
+                        $itemsSubtotal += round($bundleChildPrice * $bundleChildFromOrder->getQtyOrdered());
                         $itemsGrandTotalInclTax += round($itemGrandTotalInclTax);
                         $itemsGrandTotal += round($itemGrandTotal);
                         $itemsDiscountAmount += $bundleChildDiscountAmount;
@@ -550,7 +550,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             }
         }
 
-        $orderSubtotal = round($order->getSubtotalInclTax());
+        $orderSubtotal = round($order->getSubtotalInclTax() + $this->getBundleExtraAmount($order));
         $orderGrandtotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($order->getGrandTotal() - $order->getShippingAmount());
         $orderDiscountAmount = round(abs($order->getDiscountAmount()));
 

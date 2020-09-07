@@ -22,7 +22,7 @@ define([
                             let nextIndex = parseInt(index) + 1;
                             let height = $(this).outerHeight();
 
-                            if(index%2 === 0) {
+                            if(index%2 !== 0) {
                                 let nextElement = '.product-item[data-index="' + nextIndex + '"]';
                                 let nextHeight = $(nextElement).outerHeight();
 
@@ -39,30 +39,13 @@ define([
 
                         let tweenAnimation = function () {
                             let u = $(".products.list .product-item-container"),
-                                o = $(".list-contents"),
-                                q = 0,
                                 s = 0.5,
                                 p = 0.5,
                                 n = Sine.easeOut;
-
-                            TweenMax.set(o, {
-                                y: '0%',
-                                opacity: 1,
-                                cursor: 'pointer'
-                            });
                             u.append('<div class="cover"></div>');
                             u.each(function() {
                                 let v = $(this),
                                     x = v.find('.cover');
-                                v.one('inview', {
-                                    offset: 0.9
-                                }, function() {
-                                    t(v.find('.list-contents'), q);
-                                    q++;
-                                    setTimeout(function() {
-                                        q--
-                                    }, 200)
-                                });
                                 v.on('mouseenter mouseleave', function(z) {
                                     let B = z.pageX,
                                         A = z.pageY,
@@ -116,16 +99,6 @@ define([
                                     TweenMax.fromTo(x, s, G, F, p)
                                 })
                             });
-
-                            function t(w, index) {
-                                let v = (index === undefined) ? 0 : index;
-                                TweenMax.to(w, 0.5, {
-                                    y: '0%',
-                                    opacity: 1,
-                                    ease: n,
-                                    delay: v * 0.3
-                                })
-                            }
                         };
 
                         tweenAnimation();

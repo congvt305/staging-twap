@@ -51,7 +51,7 @@ $getDefault = $block->getData('view_model');
         <ol class="products list items product-items">
             <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
             <?php foreach ($_productCollection as $_product): ?>
-                <li class="item product product-item" data-index="<?= $i ?>">
+                <li class="<?php if( $viewMode == 'list' && $i == 0 ):?>product-item-first<?php else: ?>item product product-item<?php endif;?>" data-index="<?= $i ?>">
                     <?php /* @noEscape */ $productSku = $_product->getSku() ?>
                     <?php if( $viewMode == 'list' ):?>
                         <div class="product-item-container">
@@ -145,6 +145,9 @@ $getDefault = $block->getData('view_model');
                         <?php if( $viewMode == 'list' ):?>
                             </div></div>
                         </div>
+                        <?php if( $i == 0 ):?>
+                            <?= $block->getChildHtml('bestseller_top_product_info') ?>
+                        <?php endif;?>
                     </div>
                     <?php endif;?>
                 </li>
