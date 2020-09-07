@@ -539,7 +539,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemPosnrOri' => $cnt
                         ];
                         $cnt++;
-                        $itemsSubtotal += round($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getRowTotalInclTax()));
+                        $itemsSubtotal += round($bundleChildPrice * $bundleChildFromOrder->getQtyOrdered());
                         $itemsGrandTotalInclTax += round($itemGrandTotalInclTax);
                         $itemsGrandTotal += round($itemGrandTotal);
                         $itemsDiscountAmount += $bundleChildDiscountAmount;
