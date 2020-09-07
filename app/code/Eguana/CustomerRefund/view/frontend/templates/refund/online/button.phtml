@@ -11,8 +11,6 @@
 $refundOnlineViewModel = $block->getRefundOnlineViewModel();
 /** @var \Magento\Sales\Model\Order $_order */
 $_order = $block->getOrder();
-
-$localTime = '11';
 ?>
 
 <?php if ($refundOnlineViewModel->canShowRefundOnlineButton($_order)): ?>
@@ -22,8 +20,4 @@ $localTime = '11';
         <span><?= $block->escapeHtml(__('Order cancel and refund')) ?></span>
     </a>
 <?php endif;?>
-<div>
-</div>
-<div>
-    <?= $refundOnlineViewModel->isClosingTime() ?>
-</div>
+

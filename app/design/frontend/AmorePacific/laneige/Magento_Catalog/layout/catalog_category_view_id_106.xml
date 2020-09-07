@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link rel="alternate" hreflang="en-hk" src="https://www.laneige.com/hk/en/product/collagen/collagen.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-sg" src="https://www.laneige.com/sg/en/product/collagen/collagen.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-hant-hk" src="https://www.laneige.com/hk/zh/product/collagen/collagen.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/skincare/category/collagen-drink.html" src_type="url"/>
+    </head>
+</page>

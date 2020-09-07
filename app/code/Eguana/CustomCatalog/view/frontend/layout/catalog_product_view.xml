@@ -9,6 +9,14 @@
     <body>
         <referenceBlock name="head.additional">
             <block class="Magento\Catalog\Block\Product\View" name="twitter.general" template="Eguana_CustomCatalog::product/view/twitter/general.phtml"/>
+            <block class="Magento\Catalog\Block\Product\View\Description" name="hreflang.general" template="Eguana_CustomCatalog::product/view/hreflang/general.phtml">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getHreflang</argument>
+                    <argument name="at_code" xsi:type="string">hreflang</argument>
+                    <argument name="css_class" xsi:type="string">hreflang</argument>
+                    <argument name="at_label" xsi:type="string">none</argument>
+                </arguments>
+            </block>
         </referenceBlock>
         <referenceBlock name="product.info.upsell">
             <arguments>

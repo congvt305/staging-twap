@@ -7,12 +7,14 @@ define([
     'use strict';
 
     return function (orderId) {
-        var refundUrl, serviceUrl, payload;
+        var refundUrl, serviceUrl, payload, orderViewUrl;
         refundUrl = 'rest/V1/eguana_customerrefund/mine/refund/online';
+        orderViewUrl = url.build('sales/order/view/order_id/') + orderId
+            + '?refund=';
+        console.log('orderViewUrl : ', orderViewUrl);
         payload = {'orderId': orderId};
 
         serviceUrl = url.build(refundUrl);
-
         $('body').trigger('processStart');
 
         return storage.post(
@@ -20,9 +22,7 @@ define([
             JSON.stringify(payload)
         ).done(
             function (response) {
-                location.reload();
-                // $('body').trigger('processStop');
-
+               window.location.href = orderViewUrl + response;
             }
         );
     };
