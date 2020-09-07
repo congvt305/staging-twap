@@ -542,7 +542,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $itemsSubtotal += round($bundleChildPrice * $bundleChildFromOrder->getQtyOrdered());
                         $itemsGrandTotalInclTax += round($itemGrandTotalInclTax);
                         $itemsGrandTotal += round($itemGrandTotal);
-                        $itemsDiscountAmount += $bundleChildDiscountAmount;
+                        $itemsDiscountAmount += round($bundleChildDiscountAmount + (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()));
 
                         $itemsMileage += round($mileagePerItem);
                     }
@@ -552,7 +552,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         $orderSubtotal = round($order->getSubtotalInclTax() + $this->getBundleExtraAmount($order));
         $orderGrandtotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($order->getGrandTotal() - $order->getShippingAmount());
-        $orderDiscountAmount = round(abs($order->getDiscountAmount()));
+        $orderDiscountAmount = round(abs($order->getDiscountAmount()) + $this->getBundleExtraAmount($order));
 
         $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'itemNsamt');
         $orderItemData = $this->priceCorrector($orderGrandtotal, $itemsGrandTotalInclTax, $orderItemData, 'itemSlamt');
