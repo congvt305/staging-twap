@@ -47,8 +47,6 @@ class RefundOfflineManagement implements \Eguana\CustomerRefund\Api\RefundOfflin
      */
     public function process(\Eguana\CustomerRefund\Api\Data\BankInfoDataInterface $bankInfoData): bool
     {
-
-        //todo 1. save bankinfo, create a creditmemo state with 1 change order status to wating?? save a message, return...
         try {
             $this->saveBankInfo($bankInfoData);
             $order = $this->orderRepository->get($bankInfoData->getOrderId());
@@ -57,6 +55,7 @@ class RefundOfflineManagement implements \Eguana\CustomerRefund\Api\RefundOfflin
             $this->messageManager->addSuccessMessage(__('You requested to refund.'));
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
+            return false;
 //            $this->messageManager->addErrorMessage(__('Something is wrong with the refund request. Please contact our customer service.'));
         }
         return true;

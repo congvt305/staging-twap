@@ -188,7 +188,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             return $cartData;
         }
         $cartData['AP_CART_PRICE'] = intval($quote->getSubtotalWithDiscount());
-        $realItemsData = $this->getRealItemsData($allItems, 'quote');
+        $realItemsData = $this->getQuoteRealItemsData($allItems);
         $cartProds = 0;
         foreach ($realItemsData as $item) {
             $cartProds += $item['prdprice'] * $item['quantity'];
@@ -201,11 +201,10 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param \Magento\Quote\Model\Quote\Item[] | \Magento\Sales\Model\Order\Item[] $allItems
-     * @param string $entityType
+     * @param \Magento\Sales\Model\Order\Item[] $allItems
      * @return array
      */
-    private function getRealItemsData($allItems, $entityType)
+    private function getOrderRealItemsData($allItems)
     {
         $products = [];
         $allItemsArr = [];
@@ -223,9 +222,9 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             $product['brand'] = $this->helper->getSiteName() ?? '';
             $product['prdprice'] = intval($item->getProduct()->getPrice());
             $product['price'] =  intval($item->getPrice()); // // cat rule applied, need an attention 얼마에 팔았냐? 일단 로우토탈을 qty로 나눈다.
-            $product['quantity'] = $entityType === 'order' ? intval($item->getQtyOrdered()) : intval($item->getQty());
+            $product['quantity'] =intval($item->getQtyOrdered());
             $product['variant'] =  '';
-            $product['promotion'] = '';
+            $product['promotion'] = ''; //todo simple promotion??
             $product['cate'] = '';
             $product['catecode'] = '';
 
@@ -235,24 +234,108 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 if ($parentItem->getAppliedRuleIds()) {
                     $product['promotion'] = $parentItem->getAppliedRuleIds();
                 }
-                if ($entityType === 'quote') {
-                    $product['quantity'] = intval($product['quantity'] * $parentItem->getQty());
-                }
                 //dynamic bundle's child
                 if ($parentItem->getProductType() === 'bundle' && $parentItem->getTaxPercent() === null) {
                     $product['price'] =  intval($item->getPrice()); // cat rule applied
                 }
                 //fixed bundle's child
                 if ($parentItem->getProductType() === 'bundle' && $parentItem->getTaxPercent() !== null) {
-
-                    $bundleSelectionItems = $entityType === 'order' ? $this->getBundleSelectionsFromOrderItem($parentItem) : $this->getBundleSelectionsFromQuoteItem($parentItem);
+                    $bundleSelectionItems = $this->getBundleSelectionsFromOrderItem($parentItem);
                     $productId = $item->getData('product_id');
                     $bundleSelectionTotal = 0;
+                    $hasChidlenPrice = true;
                     foreach ($bundleSelectionItems as $bundleSelectionItem) {
                         $bundleSelectionTotal += $bundleSelectionItem['price'] * $bundleSelectionItem['qty'];
                     }
-                    $proportionRate = $bundleSelectionItems[$productId]['price'] / $bundleSelectionTotal; //전체 가격중에 이 상품이 차지하는 가격비율. 할인전 개당 가격 /전체 가격(할인전) * qty
+                    if (intval($bundleSelectionTotal) === 0) {
+                        $hasChidlenPrice = false;
+                        $children = $parentItem->getChildrenItems();
+                        foreach ($children as $child) {
+                                $bundleSelectionTotal += $child->getPrice() * $child->getQtyOrdered() / $parentItem->getQtyOrdered();
+                        }
+                        $proportionRate = $item->getPrice() / $bundleSelectionTotal;
+                    }
+
+                    if ($hasChidlenPrice) {
+                        $proportionRate = $bundleSelectionItems[$productId]['price'] / $bundleSelectionTotal;
+                    }
+                     //전체 가격중에 이 상품이 차지하는 가격비율. 할인전 개당 가격 /전체 가격(할인전) * qty
                     $product['price'] =  intval($proportionRate * $parentItem->getPrice()); //cart rule not applied
+                }
+                //configurable's child
+                if ($parentItem->getProductType() === 'configurable') {
+                    $product['price'] =  intval($parentItem->getPrice()); // cat rule applied
+                    $nameArr = explode(' ', $item->getName());
+                    $product['variant'] = $nameArr[(count($nameArr) - 1)];
+                }
+            }
+            $products[] = $product;
+        }
+        return $products;
+    }
+
+    /**
+     * @param \Magento\Quote\Model\Quote\Item[] $allItems
+     * @return array
+     */
+    private function getQuoteRealItemsData($allItems)
+    {
+        $products = [];
+        $allItemsArr = [];
+        foreach ($allItems as $item) {
+            $allItemsArr[] = $item->getData();
+        }
+        foreach ($allItems as $item) {
+            $product = [];
+            if ($item->getProductType() !== 'simple') {
+                continue;
+            }
+            $product['name'] = $item->getName();
+            $product['code'] = $item->getSku();
+            $product['sapcode'] = $item->getSku();
+            $product['brand'] = $this->helper->getSiteName() ?? '';
+            $product['prdprice'] = intval($item->getProduct()->getPrice());
+            $product['price'] =  intval($item->getPrice()); // // cat rule applied, need an attention 얼마에 팔았냐? 일단 로우토탈을 qty로 나눈다.
+            $product['quantity'] = intval($item->getQty());
+            $product['variant'] =  '';
+            $product['promotion'] = ''; //todo simple promotion??
+            $product['cate'] = '';
+            $product['catecode'] = '';
+
+            if ($item->getParentItemId()) {
+                //common child
+                $parentItem = $allItems[array_search($item->getParentItemId(), array_column($allItemsArr, 'item_id'))];
+                if ($parentItem->getAppliedRuleIds()) {
+                    $product['promotion'] = $parentItem->getAppliedRuleIds();
+                }
+                    $product['quantity'] = intval($product['quantity'] * $parentItem->getQty());
+                //dynamic bundle's child
+                if ($parentItem->getProductType() === 'bundle' && $parentItem->getTaxPercent() === null) {
+                    $product['price'] =  intval($item->getPrice()); // cat rule applied
+                }
+                //fixed bundle's child
+                if ($parentItem->getProductType() === 'bundle' && $parentItem->getTaxPercent() !== null) {
+                    $bundleSelectionItems = $this->getBundleSelectionsFromQuoteItem($parentItem);
+                    $productId = $item->getData('product_id');
+                    $bundleSelectionTotal = 0;
+                    $hasChidlenPrice = true;
+                    foreach ($bundleSelectionItems as $bundleSelectionItem) {
+                        $bundleSelectionTotal += $bundleSelectionItem['price'] * $bundleSelectionItem['qty'];
+                    }
+                    if (intval($bundleSelectionTotal) === 0) {
+                        $hasChidlenPrice = false;
+                        $children = $parentItem->getChildren();
+                        foreach ($children as $child) {
+                                $bundleSelectionTotal += $child->getProduct()->getPrice() * $child->getQty();
+                        }
+                        $proportionRate = $item->getProduct()->getPrice() / $bundleSelectionTotal;
+                    }
+
+                    if ($hasChidlenPrice) {
+                        $proportionRate = $bundleSelectionItems[$productId]['price'] / $bundleSelectionTotal;
+                    }
+                    //전체 가격중에 이 상품이 차지하는 가격비율. 할인전 개당 가격 /전체 가격(할인전) * qty
+                    $product['price'] =  intval($proportionRate * $parentItem->getProduct()->getPrice()); //cart rule not applied
                 }
                 //configurable's child
                 if ($parentItem->getProductType() === 'configurable') {
@@ -311,7 +394,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         if (count($allItems) < 1) {
             return $orderData;
         }
-        $realItemsData = $this->getRealItemsData($allItems, 'quote');
+        $realItemsData = $this->getQuoteRealItemsData($allItems);
         $orderProdPrice = 0;
         foreach ($realItemsData as $item) {
             $orderProdPrice += $item['prdprice'] * $item['quantity'];
@@ -348,12 +431,12 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         ];
         /** @var \Magento\Sales\Api\Data\OrderInterface $order */
         $orderId = $this->checkoutSession->getLastOrderId();
-        $this->orderRepository->get($orderId);
-        $allItems = $order->getAllItems();
-        if (count($allItems) < 1) {
+        $order = $this->orderRepository->get($orderId);
+        if (!$order) {
             return $orderData;
         }
-        $realItemsData = $this->getRealItemsData($allItems, 'order');
+        $allItems = $order->getAllItems();
+        $realItemsData = $this->getOrderRealItemsData($allItems);
         $orderProdPrice = 0;
         foreach ($realItemsData as $item) {
             $orderProdPrice += $item['prdprice'] * $item['quantity'];
@@ -381,7 +464,10 @@ class GaTagging extends \Magento\Framework\View\Element\Template
 
     public function getCanceledOrderData()
     {
-        $message = $this->messageManager->getMessages();
+        $hasRefunded = $this->getRequest()->getParam('refund');
+        if (!$hasRefunded) {
+            return false;
+        }
         $orderId = $this->getRequest()->getParam('order_id');
         /** @var \Magento\Sales\Api\Data\OrderInterface $order */
         $order = $this->orderRepository->get($orderId);
@@ -398,7 +484,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         if (count($allItems) < 1) {
             return false;
         }
-        $realItemsData = $this->getRealItemsData($allItems, 'order');
+        $realItemsData = $this->getOrderRealItemsData($allItems);
         $orderProdPrice = 0;
         foreach ($realItemsData as $item) {
             $orderProdPrice += $item['prdprice'] * $item['quantity'];
