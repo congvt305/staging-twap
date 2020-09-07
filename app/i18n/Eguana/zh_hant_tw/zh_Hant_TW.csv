@@ -3209,7 +3209,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Zip/Postal Code","郵遞區號",module,Magento_Checkout
 "My Cart (1 item)","My Cart (1 item)",module,Magento_Checkout
 "My Cart (%1 items)","My Cart (%1 items)",module,Magento_Checkout
-"My Cart","我的車",module,Magento_Checkout
+"My Cart","購物車",module,Magento_Checkout
 "For delivery questions.","對於交貨問題。",module,Magento_Checkout
 "Customer is already registered","Customer is already registered",module,Magento_Checkout
 "Your session has expired","Your session has expired",module,Magento_Checkout

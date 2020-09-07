@@ -16,5 +16,12 @@
                 </arguments>
             </referenceBlock>
         </referenceContainer>
+        <referenceBlock name="category.products.list">
+            <block class="Magento\Cms\Block\Block" name="bestseller_top_product_info">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">bestseller-top-product-info</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
     </body>
 </page>

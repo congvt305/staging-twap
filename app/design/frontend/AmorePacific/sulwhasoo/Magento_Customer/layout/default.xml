@@ -15,13 +15,18 @@
                 </arguments>
             </block>
         </referenceBlock>
+        <referenceBlock name="register-link">
+            <arguments>
+                <argument name="label" xsi:type="string" translate="true">Create a new account</argument>
+            </arguments>
+        </referenceBlock>
         <referenceBlock name="my-account-link">
             <arguments>
                 <argument name="label" xsi:type="string" translate="true">My Dashboard</argument>
             </arguments>
         </referenceBlock>
         <referenceBlock name="authorization-link" remove="true"/>
-        <move element="register-link" destination="header.links"/>
+        <move element="register-link" destination="header.links" before="-"/>
         <move element="top.links" destination="customer"/>
     </body>
 </page>
