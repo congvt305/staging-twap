@@ -22,8 +22,7 @@ class OrderStatePlugin
     {
         $currentState = $order->getState();
         if ($currentState == Order::STATE_PROCESSING || $currentState == Order::STATE_COMPLETE) {
-            if ($order->getData('sap_order_send_check') === NULL
-                || $order->getData('sap_order_send_check') === 2) {
+            if ($order->getData('sap_order_send_check') === NULL) {
                 $order->setState(Order::STATE_PROCESSING)
                     ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
                 if (($order->getStatus() === $order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING)) && $order->hasShipments()){
