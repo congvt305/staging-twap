@@ -240,7 +240,6 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
 
                 $order->setStatus('sap_success');
-                $order->setState('processing');
                 $order->setData('sap_response', $orderStatusData['ugtxt']);
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
                 $this->orderRepository->save($order);
@@ -273,7 +272,6 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $order = $this->getOrderFromList($incrementId);
 
                 $order->setStatus('sap_fail');
-                $order->setState('processing');
                 $order->setData('sap_response', $orderStatusData['ugtxt']);
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                 $this->orderRepository->save($order);
@@ -299,7 +297,6 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $order = $this->getOrderFromList($incrementId);
                 try {
                     $order->setStatus('preparing');
-                    $order->setState('processing');
                     $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
                     $order->setData('sap_response', $orderStatusData['ugtxt']);
                     $this->orderRepository->save($order);
@@ -650,6 +647,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         $shipmentItems = [];
 
         $orderItems = $order->getAllItems();
+        /** @var \Magento\Sales\Model\Order\Item $item */
         foreach ($orderItems as $item) {
             /** @var \Magento\Sales\Model\Order\Shipment\ItemCreation $shipmentItem */
             $shipmentItem = $this->shipmentItemCreationInterfaceFactory->create();
