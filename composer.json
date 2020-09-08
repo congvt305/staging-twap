@@ -21,7 +21,9 @@
     "require": {
         "dotmailer/dotmailer-magento2-extension": "4.5.1 as 4.4.0",
         "magento/magento-cloud-metapackage": ">=2.3.5 <2.3.6",
-        "magento/module-baler": "dev-master"
+        "magento/module-baler": "dev-master",
+        "magento/module-page-builder-product-recommendations": "^1.0",
+        "magento/product-recommendations": "^3.0"
     },
     "suggest": {
         "ext-pcntl": "Need for run processes in parallel mode"
