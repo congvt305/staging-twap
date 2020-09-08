@@ -125,7 +125,6 @@ class OrderSend extends AbstractAction
                     foreach ($outdata as $data) {
                         if ($data['retcod'] == 'S') {
                             $order->setStatus('sap_processing');
-                            $order->setState('processing');
                             if ($orderSendCheck == 0 || $orderSendCheck == 2) {
                                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_RESENT_TO_SAP_SUCCESS);
                             } else {
@@ -135,7 +134,6 @@ class OrderSend extends AbstractAction
                         } else {
                             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                             $order->setStatus('sap_fail');
-                            $order->setState('processing');
                             $this->messageManager->addErrorMessage(
                                 __(
                                     'Error returned from SAP for order %1. Error code : %2. Message : %3',
@@ -148,7 +146,6 @@ class OrderSend extends AbstractAction
                     }
                 } else {
                     $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
-                    $order->setState('processing');
                     $order->setStatus('sap_fail');
                     $this->messageManager->addErrorMessage(
                         __(
@@ -161,7 +158,6 @@ class OrderSend extends AbstractAction
                 }
             } else {
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
-                $order->setState('processing');
                 $order->setStatus('sap_fail');
                 $this->messageManager->addErrorMessage(
                     __('Something went wrong while sending order data to SAP. No response')
@@ -169,22 +165,18 @@ class OrderSend extends AbstractAction
             }
         } catch (ShipmentNotExistException $e) {
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
-            $order->setState('processing');
             $order->setStatus($order->getStatus());
             $this->messageManager->addErrorMessage($e->getMessage());
         } catch (NoSuchEntityException $e) {
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
-            $order->setState('processing');
             $order->setStatus($order->getStatus());
             $this->messageManager->addErrorMessage($e->getMessage());
         } catch (LocalizedException $e) {
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
-            $order->setState('processing');
             $order->setStatus($order->getStatus());
             $this->messageManager->addErrorMessage($e->getMessage());
         } catch (\Exception $e) {
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
-            $order->setState('processing');
             $order->setStatus($order->getStatus());
             $this->messageManager->addErrorMessage($e->getMessage());
         }
