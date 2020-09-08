@@ -1469,9 +1469,9 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "First Name","名字",module,Magento_Braintree
 "Last Name","姓氏",module,Magento_Braintree
 "Company","公司",module,Magento_Braintree
-"Address","位址",module,Magento_Braintree
+"Address","地址",module,Magento_Braintree
 "City","行政區",module,Magento_Braintree
-"State/Province","地址",module,Magento_Braintree
+"State/Province","縣市",module,Magento_Braintree
 "Please select region, state or province","請選擇地區、 州或省",module,Magento_Braintree
 "Zip/Postal Code","郵遞區號",module,Magento_Braintree
 "Submit","提交",module,Magento_Braintree
@@ -3205,7 +3205,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Invalid method: %1","Invalid method: %1",module,Magento_Checkout
 "City","行政區",module,Magento_Checkout
 "Country","國家",module,Magento_Checkout
-"State/Province","地址",module,Magento_Checkout
+"State/Province","縣市",module,Magento_Checkout
 "Zip/Postal Code","郵遞區號",module,Magento_Checkout
 "My Cart (1 item)","My Cart (1 item)",module,Magento_Checkout
 "My Cart (%1 items)","My Cart (%1 items)",module,Magento_Checkout
@@ -3742,7 +3742,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Street Address:","街道地址:",module,Magento_Company
 "City:","City:",module,Magento_Company
 "Country:","Country:",module,Magento_Company
-"State/Province:","State/Province:",module,Magento_Company
+"State/Province:","地址:",module,Magento_Company
 "ZIP/Postal Code:","ZIP/Postal Code:",module,Magento_Company
 "Phone Number:","手機號碼:",module,Magento_Company
 "Job Title:","Job Title:",module,Magento_Company
@@ -3879,7 +3879,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Street Address","街道地址",module,Magento_Company
 "City","行政區",module,Magento_Company
 "Country","國家",module,Magento_Company
-"State/Province","地址",module,Magento_Company
+"State/Province","縣市",module,Magento_Company
 "Please select a region, state or province.","選擇城市",module,Magento_Company
 "ZIP/Postal Code","郵遞區號",module,Magento_Company
 "Phone Number","手機號碼",module,Magento_Company
@@ -5038,12 +5038,12 @@ new products will be created. Use this step to customize images and price for yo
 "Delete Address","刪除地址",module,Magento_Customer
 "You have no other address entries in your address book.","目前沒有額外的地址資訊",module,Magento_Customer
 "* Required Fields","* 為必填項",module,Magento_Customer
-"Address","位址",module,Magento_Customer
+"Address","地址",module,Magento_Customer
 "Street Address","街道地址",module,Magento_Customer
 "Street Address %1","街道地址 %1",module,Magento_Customer
 "VAT Number","增值稅號",module,Magento_Customer
 "City","行政區",module,Magento_Customer
-"State/Province","地址",module,Magento_Customer
+"State/Province","縣市",module,Magento_Customer
 "Please select a region, state or province.","選擇城市",module,Magento_Customer
 "Zip/Postal Code","郵遞區號",module,Magento_Customer
 "Country","國家",module,Magento_Customer
@@ -5527,12 +5527,12 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Please confirm site switching. All data that hasn't been saved will be lost.","Please confirm site switching. All data that hasn't been saved will be lost.",module,Magento_CustomerCustomAttributes
 "* Required Fields","* 為必填項",module,Magento_CustomerCustomAttributes
 "Contact Information","個人資訊",module,Magento_CustomerCustomAttributes
-"Address","位址",module,Magento_CustomerCustomAttributes
+"Address","地址",module,Magento_CustomerCustomAttributes
 "Street Address","街道地址",module,Magento_CustomerCustomAttributes
 "Street Address %1","街道地址 %1",module,Magento_CustomerCustomAttributes
 "VAT Number","增值稅號",module,Magento_CustomerCustomAttributes
 "City","行政區",module,Magento_CustomerCustomAttributes
-"State/Province","地址",module,Magento_CustomerCustomAttributes
+"State/Province","縣市",module,Magento_CustomerCustomAttributes
 "Please select a region, state or province.","選擇城市",module,Magento_CustomerCustomAttributes
 "Zip/Postal Code","郵遞區號",module,Magento_CustomerCustomAttributes
 "Country","國家",module,Magento_CustomerCustomAttributes
@@ -5768,7 +5768,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Phone","電話",module,Magento_CustomerSegment
 "ZIP","ZIP",module,Magento_CustomerSegment
 "Country","國家",module,Magento_CustomerSegment
-"State/Province","地址",module,Magento_CustomerSegment
+"State/Province","縣市",module,Magento_CustomerSegment
 "Customer Since","Customer Since",module,Magento_CustomerSegment
 "View Combined Report","View Combined Report",module,Magento_CustomerSegment
 "Set","Set",module,Magento_CustomerSegment
@@ -5976,7 +5976,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Content Type (Non Domestic)","Content Type (Non Domestic)",module,Magento_Dhl
 "Documents Allowed Methods","Documents Allowed Methods",module,Magento_Dhl
 "Non Documents Allowed Methods","Non Documents Allowed Methods",module,Magento_Dhl
-"State/Province","地址",module,Magento_Directory
+"State/Province","縣市",module,Magento_Directory
 "--Please Select--","-請選擇-",module,Magento_Directory
 "lbs","磅",module,Magento_Directory
 "kgs","公斤",module,Magento_Directory
@@ -7028,7 +7028,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "New Address","新增地址",module,Magento_GiftRegistry
 "Edit Gift Registry","編輯禮物註冊表",module,Magento_GiftRegistry
 "Create Gift Registry","創建禮物註冊表",module,Magento_GiftRegistry
-"State/Province","地址",module,Magento_GiftRegistry
+"State/Province","縣市",module,Magento_GiftRegistry
 "Please select a region, state or province","選擇城市",module,Magento_GiftRegistry
 "Please Select","請選擇",module,Magento_GiftRegistry
 "View Gift Registry %1","View Gift Registry %1",module,Magento_GiftRegistry
@@ -7147,7 +7147,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Is Default","是預設",module,Magento_GiftRegistry
 "Select a shipping address from your address book or enter a new address.","從地址簿中選擇送貨地址或輸入新地址。",module,Magento_GiftRegistry
 "Company","公司",module,Magento_GiftRegistry
-"Address","位址",module,Magento_GiftRegistry
+"Address","地址",module,Magento_GiftRegistry
 "Street Address","街道地址",module,Magento_GiftRegistry
 "Street Address %1","街道地址 %1",module,Magento_GiftRegistry
 "City","行政區",module,Magento_GiftRegistry
@@ -8392,7 +8392,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Check Out with Multiple Addresses","簽出多個地址",module,Magento_Multishipping
 "Please see","Please see",module,Magento_Multishipping
 "details below","details below",module,Magento_Multishipping
-"Address","位址",module,Magento_Multishipping
+"Address","地址",module,Magento_Multishipping
 "of","of",module,Magento_Multishipping
 "Shipping To","運到",module,Magento_Multishipping
 "Shipping Method","出貨方式",module,Magento_Multishipping
@@ -11690,7 +11690,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Contact Name","Contact Name",module,Magento_Rma
 "Street Address","街道地址",module,Magento_Rma
 "City","行政區",module,Magento_Rma
-"State/Province","地址",module,Magento_Rma
+"State/Province","縣市",module,Magento_Rma
 "ZIP/Postal Code","郵遞區號",module,Magento_Rma
 "Country","國家",module,Magento_Rma
 "Enabled","啟用",module,Magento_Rma
@@ -12224,7 +12224,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Email","電子郵件",module,Magento_Sales
 "First Name","名字",module,Magento_Sales
 "Last Name","姓氏",module,Magento_Sales
-"State/Province","地址",module,Magento_Sales
+"State/Province","縣市",module,Magento_Sales
 "Street Address","街道地址",module,Magento_Sales
 "Phone Number","手機號碼",module,Magento_Sales
 "Zip/Postal Code","郵遞區號",module,Magento_Sales
@@ -12474,7 +12474,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Your default logo will be used in PDF and HTML documents.<br />(jpeg, tiff, png) If your pdf image is distorted, try to use larger file-size image.","Your default logo will be used in PDF and HTML documents.<br />(jpeg, tiff, png) If your pdf image is distorted, try to use larger file-size image.",module,Magento_Sales
 "Logo for HTML Print View","Logo for HTML Print View",module,Magento_Sales
 "Logo for HTML documents only. If empty, default will be used.<br />(jpeg, gif, png)","Logo for HTML documents only. If empty, default will be used.<br />(jpeg, gif, png)",module,Magento_Sales
-"Address","位址",module,Magento_Sales
+"Address","地址",module,Magento_Sales
 "Minimum Order Amount","最低訂購量",module,Magento_Sales
 "Enable","啟用",module,Magento_Sales
 "Minimum Amount","Minimum Amount",module,Magento_Sales
@@ -13418,7 +13418,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "ID","編號",module,Magento_SharedCatalog
 "Company","公司",module,Magento_SharedCatalog
 "Country","國家",module,Magento_SharedCatalog
-"State/Province","地址",module,Magento_SharedCatalog
+"State/Province","縣市",module,Magento_SharedCatalog
 "Assigned","Assigned",module,Magento_SharedCatalog
 "Catalog","目錄",module,Magento_SharedCatalog
 "Action","操作",module,Magento_SharedCatalog
