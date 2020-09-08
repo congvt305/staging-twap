@@ -2763,7 +2763,7 @@ Time in seconds between the widget updates.,module,Magento_Catalog
 "Could not rebuild index for empty products array","Could not rebuild index for empty products array",module,Magento_CatalogInventory
 "The stock item for Product is not valid.","The stock item for Product is not valid.",module,Magento_CatalogInventory
 "This product is out of stock.","這產品脫銷了。",module,Magento_CatalogInventory
-"Some of the products are out of stock.","此購物車有部分商品已售完。",module,Magento_CatalogInventory
+"Some of the products are out of stock.","部分商品已售完",module,Magento_CatalogInventory
 "The stock item for Product in option is not valid.","The stock item for Product in option is not valid.",module,Magento_CatalogInventory
 "Undefined product type","Undefined product type",module,Magento_CatalogInventory
 "%1 is not a correct comparison method.","%1 is not a correct comparison method.",module,Magento_CatalogInventory
