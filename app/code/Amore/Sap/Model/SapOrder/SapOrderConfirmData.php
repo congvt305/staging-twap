@@ -262,8 +262,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'telno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'hpno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'waerk' => $orderData->getOrderCurrencyCode(),
-                'nsamt' => round($orderData->getSubtotalInclTax() + $this->getBundleExtraAmount($orderData)),
-                'dcamt' => round(abs($orderData->getDiscountAmount()) + $this->getBundleExtraAmount($orderData)),
+                'nsamt' => round($orderData->getSubtotalInclTax() + $this->getBundleExtraAmount($orderData) + $this->getCatalogRuleDiscountAmount($orderData)),
+                'dcamt' => round(abs($orderData->getDiscountAmount()) + $this->getBundleExtraAmount($orderData) + $this->getCatalogRuleDiscountAmount($orderData)),
                 'slamt' => $orderData->getGrandTotal() == 0 ? $orderData->getGrandTotal() : round($orderData->getGrandTotal() - $orderData->getShippingAmount()),
                 'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : round($orderData->getRewardPointsBalance()),
                 'shpwr' => round($orderData->getShippingAmount()),
@@ -456,12 +456,12 @@ class SapOrderConfirmData extends AbstractSapOrder
                         'itemMenge' => intval($orderItem->getQtyOrdered()),
                         // 아이템 단위, Default : EA
                         'itemMeins' => $this->getMeins($meins),
-                        'itemNsamt' => round($orderItem->getRowTotalInclTax()),
-                        'itemDcamt' => round($orderItem->getDiscountAmount()),
+                        'itemNsamt' => round($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered()),
+                        'itemDcamt' => round($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered())),
                         'itemSlamt' => round($itemGrandTotalInclTax),
                         'itemMiamt' => round($mileagePerItem),
                         // 상품이 무상제공인 경우 Y 아니면 N
-                        'itemFgflg' => $orderItem->getPrice() == 0 ? 'Y' : 'N',
+                        'itemFgflg' => $orderItem->getOriginalPrice() == 0 ? 'Y' : 'N',
                         'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                         'itemAuart' => self::NORMAL_ORDER,
                         'itemAugru' => '',
@@ -473,10 +473,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                         'itemPosnrOri' => $cnt
                     ];
                     $cnt++;
-                    $itemsSubtotal += round($orderItem->getRowTotalInclTax());
+                    $itemsSubtotal += round($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered());
                     $itemsGrandTotal += round($itemGrandTotal);
                     $itemsGrandTotalInclTax += round($itemGrandTotalInclTax);
-                    $itemsDiscountAmount += round($orderItem->getDiscountAmount());
+                    $itemsDiscountAmount += round($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()));
                     $itemsMileage += round($mileagePerItem);
                 } else {
                     /** @var \Magento\Catalog\Model\Product $bundleProduct */
@@ -490,7 +490,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                         if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
                             $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
                         } else {
-                            $bundleChildPrice = $bundleChildFromOrder->getPrice();
+                            $bundleChildPrice = $bundleChildFromOrder->getOriginalPrice();
                         }
 
                         $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
@@ -511,7 +511,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $product = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId());
                         $meins = $product->getData('meins');
 
-                        $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getPrice()) / $bundleChild->getQty();
+                        $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $bundleChild->getQty();
+                        $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $bundleChild->getQty();
 
                         $orderItemData[] = [
                             'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
@@ -523,11 +524,12 @@ class SapOrderConfirmData extends AbstractSapOrder
                             // 아이템 단위, Default : EA
                             'itemMeins' => $this->getMeins($meins),
                             'itemNsamt' => round($bundleChildPrice * $bundleChildFromOrder->getQtyOrdered()),
-                            'itemDcamt' => round($bundleChildDiscountAmount + (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered())),
+                            'itemDcamt' => round($bundleChildDiscountAmount +
+                                (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) + $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered()),
                             'itemSlamt' => round($itemGrandTotalInclTax),
                             'itemMiamt' => round($mileagePerItem),
                             // 상품이 무상제공인 경우 Y 아니면 N
-                            'itemFgflg' => $orderItem->getPrice() == 0 ? 'Y' : 'N',
+                            'itemFgflg' => $orderItem->getOriginalPrice() == 0 ? 'Y' : 'N',
                             'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                             'itemAuart' => self::NORMAL_ORDER,
                             'itemAugru' => '',
@@ -542,7 +544,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $itemsSubtotal += round($bundleChildPrice * $bundleChildFromOrder->getQtyOrdered());
                         $itemsGrandTotalInclTax += round($itemGrandTotalInclTax);
                         $itemsGrandTotal += round($itemGrandTotal);
-                        $itemsDiscountAmount += round($bundleChildDiscountAmount + (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()));
+                        $itemsDiscountAmount += round($bundleChildDiscountAmount +
+                            (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) + $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered());
 
                         $itemsMileage += round($mileagePerItem);
                     }
@@ -550,9 +553,9 @@ class SapOrderConfirmData extends AbstractSapOrder
             }
         }
 
-        $orderSubtotal = round($order->getSubtotalInclTax() + $this->getBundleExtraAmount($order));
+        $orderSubtotal = round($order->getSubtotalInclTax() + $this->getBundleExtraAmount($order) + $this->getCatalogRuleDiscountAmount($order));
         $orderGrandtotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($order->getGrandTotal() - $order->getShippingAmount());
-        $orderDiscountAmount = round(abs($order->getDiscountAmount()) + $this->getBundleExtraAmount($order));
+        $orderDiscountAmount = round(abs($order->getDiscountAmount()) + $this->getBundleExtraAmount($order) + $this->getCatalogRuleDiscountAmount($order));
 
         $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'itemNsamt');
         $orderItemData = $this->priceCorrector($orderGrandtotal, $itemsGrandTotalInclTax, $orderItemData, 'itemSlamt');
@@ -599,7 +602,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
                 if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
                     foreach ($bundleChildren as $bundleChild) {
-                        $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getPrice()) / $bundleChild->getQty();
+                        $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $bundleChild->getQty();
                         $originItemPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
                         $bundleChildByOrder = $this->getBundleChildFromOrder($orderItem->getItemId(), $bundleChild->getSku());
 
@@ -609,6 +612,38 @@ class SapOrderConfirmData extends AbstractSapOrder
             }
         }
         return $priceDifferences;
+    }
+
+    /**
+     * @param $order \Magento\Sales\Model\Order
+     * @throws NoSuchEntityException
+     * @throws \Exception
+     */
+    public function getCatalogRuleDiscountAmount($order)
+    {
+        $catalogRuleDiscount = 0;
+        $orderItems = $order->getAllVisibleItems();
+        /** @var \Magento\Sales\Model\Order\Item $orderItem */
+        foreach ($orderItems as $orderItem) {
+           if ($orderItem->getProductType() != 'bundle') {
+               $catalogRuleDiscount += ($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered();
+           } else {
+               /** @var \Magento\Catalog\Model\Product $bundleProduct */
+               $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
+               $bundleChildren = $this->getBundleChildren($orderItem->getSku());
+               $bundlePriceType = $bundleProduct->getPriceType();
+
+               if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
+                   foreach ($bundleChildren as $bundleChild) {
+                       $bundleChildByOrder = $this->getBundleChildFromOrder($orderItem->getItemId(), $bundleChild->getSku());
+                       $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $bundleChild->getQty();
+
+                       $catalogRuleDiscount += $catalogRuledPriceRatio * $bundleChildByOrder->getQtyOrdered();
+                   }
+               }
+           }
+        }
+        return $catalogRuleDiscount;
     }
 
     public function priceCorrector($orderAmount, $itemsAmount, $orderItemData, $field)
