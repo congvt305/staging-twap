@@ -193,7 +193,6 @@ class MassSend extends AbstractAction
                                 $succeededOrderObject = $this->sapOrderConfirmData->getOrderInfo($data['odrno']);
                                 $orderSendCheck = $succeededOrderObject->getData('sap_order_send_check');
                                 $succeededOrderObject->setStatus('sap_processing');
-                                $succeededOrderObject->setState('processing');
 
                                 if ($orderSendCheck == 0 || $orderSendCheck == 2) {
                                     $succeededOrderObject->setData('sap_order_send_check', SapOrderConfirmData::ORDER_RESENT_TO_SAP_SUCCESS);
@@ -281,7 +280,6 @@ class MassSend extends AbstractAction
         $orderIncrementId = $this->getOriginOrderIncrementId($data);
         $order = $this->sapOrderConfirmData->getOrderInfo($orderIncrementId);
         $order->setData('sap_order_send_check', $sapSendCheckStatus);
-        $order->setState('processing');
         $order->setStatus($orderStatus);
         $this->orderRepository->save($order);
     }
