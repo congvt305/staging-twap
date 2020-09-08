@@ -6,7 +6,8 @@
 "* Required Fields","* Required Fields"
 "Social Login","Social Login"
 "Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!","Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!"
-"I am already a '%1' member(Login to complete the setup)","I am already a '%1' member(Login to complete the setup)"
+"I am a %1 Taiwan member! Login now to complete the setup","I am a %1 Taiwan member! Login now to complete the setup"
+"Join Taiwan %1 member! Complete binding","Join Taiwan %1 member! Complete binding"
 "Linked Account : Google ID/Facebook/Line","Linked Account : Google ID/Facebook/Line"
 Email,Email
 Password,Password

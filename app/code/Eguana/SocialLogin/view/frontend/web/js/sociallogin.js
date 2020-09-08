@@ -10,7 +10,8 @@ require(
     [
         'jquery',
         'mage/url',
-    ], function($, url) {
+        'Magento_Customer/js/customer-data'
+    ], function($, url, customerData) {
     'use strict';
     let buttonDataRole = $('[data-role="eguana_sociallogin"]');
     buttonDataRole.click(function(){
@@ -32,6 +33,7 @@ require(
                     type: "POST",
                     async:true
                 }).done(function (data) {
+                    customerData.invalidate(['customer']);
                     window.location.href = data['url']
                 });
             }
