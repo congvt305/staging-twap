@@ -619,7 +619,11 @@ class SapProductManagement implements SapProductManagementInterface
         $sourceItem->setSourceCode($source);
         $sourceItem->setSku($stockData['matnr']);
         $sourceItem->setQuantity($stockData['labst']);
-        $sourceItem->setStatus(1);
+        if ($stockData['labst'] > 0) {
+            $sourceItem->setStatus(1);
+        } else {
+            $sourceItem->setStatus(0);
+        }
 
         return $sourceItem;
     }

@@ -578,7 +578,7 @@ class Payment extends AbstractMethod
                     'ItemPrice' => $orderItem->getPrice(),
                     'ItemTaxType' => 1,
                     'ItemAmount' => $itemGrandTotalInclTax,
-                    'ItemRemark' => $orderItem->getData('sku')
+                    'ItemRemark' => '商品備註'
                 )
             );
         }
@@ -593,7 +593,7 @@ class Payment extends AbstractMethod
                     'ItemPrice' => $order->getShippingAmount(),
                     'ItemTaxType' => 1,
                     'ItemAmount' => $order->getShippingAmount(),
-                    'ItemRemark' => $order->getIncrementId()
+                    'ItemRemark' => '商品備註'
                 )
             );
         }
