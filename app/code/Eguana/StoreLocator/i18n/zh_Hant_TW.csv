@@ -17,7 +17,7 @@ Edit,編輯
 "Please enter the address or counter name","請輸入地址或櫃檯名稱"
 Search,搜索
 "Please enter your current location","請輸入您當前的位置"
-"Total <strong> %1 </strong> Articals Found","總 <strong> %1 </strong> 找到的文章"
+"Total <strong> %1 </strong> Articals Found","共找到<strong> %1 </strong>家門市"
 "We found <strong>%1 stores</strong> near your location","我們找到 <strong>%1 商店</strong> 在您所在地附近"
 address,地址
 Tel,電話號碼
@@ -51,4 +51,4 @@ ID,ID
 "Created At","創建於"
 location,位置
 Home,家
-"Find Store","查找店鋪"
+"Find Store","尋找門市"
