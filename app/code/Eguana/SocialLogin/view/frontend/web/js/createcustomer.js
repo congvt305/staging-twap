@@ -16,6 +16,25 @@ define([
         var AjaxUrl = config.url;
         var url = config.customerurl;
         var registrationUrl = config.registrationurl;
+        $(document).ready(function (){
+
+            $("#member").click(function(){
+                if(!$('div[class*="email"]').hasClass('active')){
+                    $('div[class*="email"]').slideDown();
+                    $('div[class*="email"]').addClass("active");
+                }
+                if(!$('div[class*="password"]').hasClass('active')){
+                    $('div[class*="password"]').slideDown();
+                    $('div[class*="password"]').addClass("active");
+                }
+            });
+            $("#not-a-member").click(function(){
+                $('div[class*="email"]').slideUp();
+                $('div[class*="password"]').slideUp();
+                $('div[class*="email"]').removeClass('active');
+                $('div[class*="password"]').removeClass('active');
+            });
+        });
         $(document).on('click', '#not-a-member', function(ev){
             $("form[id=eguana-form-validate] input[id=email]").prop('disabled', true);
             $("form[id=eguana-form-validate] input[id=password]").prop('disabled', true);
@@ -43,7 +62,7 @@ define([
                     data: form_data,
                     type: "POST"
                 }).done(function (data) {
-                    window.location.href= url;
+                    window.location.href = url;
                 });
             }
         });

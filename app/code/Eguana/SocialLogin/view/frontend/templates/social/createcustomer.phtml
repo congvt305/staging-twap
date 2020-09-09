@@ -20,7 +20,7 @@
             <div class="field choice member-legend">
                 <div class="control">
                     <label class="label" for="member">
-                        <span><?= $block->escapeHtml(__("I am already a %1 member(Login to complete the setup)", $block->getCurrentStoreName())) ?></span>
+                        <span><?= $block->escapeHtml(__("I am a %1 Taiwan member! Login now to complete the setup", $block->getCurrentStoreName())) ?></span>
                     </label>
                     <input type="radio" id="member" name="member" data-validate="{required:true}" value="ismember">
                 </div>
@@ -57,7 +57,7 @@
                 <div class="control">
                     <label class="label" for="not-a-member">
                         <span>
-                            <?= $block->escapeHtml(__("I am not a %1 member(Login to complete the setup)", $block->getCurrentStoreName())) ?>
+                            <?= $block->escapeHtml(__("Join Taiwan %1 member! Complete binding", $block->getCurrentStoreName())) ?>
                         </span>
                     </label>
                     <input type="radio" id="not-a-member" name="member" value="notamember">
