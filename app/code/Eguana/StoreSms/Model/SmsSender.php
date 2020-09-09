@@ -8,11 +8,9 @@ use Magento\Email\Model\TemplateFactory;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Math\Random;
 use Magento\Framework\Session\SessionManagerInterface;
-use Magento\Framework\View\Asset\NotationResolver\Variable;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 use Magento\Email\Model\ResourceModel\TemplateFactory as ResourceModelFactory;
-use Eguana\StoreSms\Model\CountryCode;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Customer\Model\ResourceModel\Customer\Collection;
 
@@ -59,11 +57,6 @@ class SmsSender implements SmsInterface
     private $templateFactory;
 
     /**
-     * @var CountryCode
-     */
-    private $countryCode;
-
-    /**
      * @var CollectionFactory
      */
     private $collectionFactory;
@@ -81,8 +74,8 @@ class SmsSender implements SmsInterface
      * @param StoreManagerInterface $storeManager
      * @param LoggerInterface $logger
      * @param TemplateFactory $templateFactory
-     * @param CountryCode $countryCode
      * @param CollectionFactory $collectionFactory
+     * @param ResourceModelFactory $resourceModelFactory
      */
     public function __construct(
         SessionManagerInterface $sessionManager,
@@ -91,7 +84,6 @@ class SmsSender implements SmsInterface
         StoreManagerInterface $storeManager,
         LoggerInterface $logger,
         TemplateFactory $templateFactory,
-        CountryCode $countryCode,
         CollectionFactory $collectionFactory,
         ResourceModelFactory $resourceModelFactory
     ) {
@@ -101,7 +93,6 @@ class SmsSender implements SmsInterface
         $this->storeManager = $storeManager;
         $this->logger = $logger;
         $this->templateFactory = $templateFactory;
-        $this->countryCode = $countryCode;
         $this->collectionFactory = $collectionFactory;
         $this->resourceModelFactory = $resourceModelFactory;
     }
@@ -122,6 +113,8 @@ class SmsSender implements SmsInterface
      * This function is set verification code in session
      *
      * @param $number
+     * @param string $firstName
+     * @param string $lastName
      * @return bool
      */
     public function setCode($number, $firstName = 'firstName', $lastName = 'lastName')
@@ -133,7 +126,6 @@ class SmsSender implements SmsInterface
             $verificationCode = Random::getRandomNumber(1000, 9999);
             $this->sessionManager->start();
             $this->sessionManager->setVerificationCode($verificationCode);
-            $countryCode = $this->countryCode->getCountryCallCode();
             $store = $this->storeManager->getStore()->getId();
             $numberPrefix = $this->data->getCountryCode($store);
             $phoneNumber = $this->getPhoneNumberWithCode($number, $numberPrefix);
@@ -141,7 +133,7 @@ class SmsSender implements SmsInterface
             $template = $this->templateFactory->create();
             $template->setDesignConfig(['area' => 'frontend', 'store' => $store]);
             $storePhoneNumber = $this->data->getStorePhoneNumber($store);
-            $storeName = $this->storeManager->getStore()->getName();
+            $storeName = $this->data->getStoreName($store);
 
             if ($this->data->getReverseNameFormat($store)){
                 $customer = $lastName . $firstName;
@@ -158,7 +150,7 @@ class SmsSender implements SmsInterface
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
-        if ($this->sendMessageByApi($message, $phoneNumber)){
+        if ($this->sendMessageByApi($message, $phoneNumber, $store)){
             return $verificationCode;
         };
 
@@ -169,14 +161,17 @@ class SmsSender implements SmsInterface
     /**
      * This function will return order template notification content
      *
+     * @param $storeId
      * @param $templatePath
      * @param $customer
      * @param $order
+     * @param $storeName
+     * @param $storePhoneNumber
      * @return mixed
+     * @throws \Magento\Framework\Exception\MailException
      */
     public function getOrderNotification($storeId, $templatePath, $customer, $order, $storeName, $storePhoneNumber)
     {
-        $message = '';
         $templateModel = $this->templateFactory->create();
         $template = $this->resourceModelFactory->create();
         $params = [ 'customer'=> $customer,'order' => $order, 'store_name' => $storeName, 'store_phone' => $storePhoneNumber];
@@ -202,7 +197,7 @@ class SmsSender implements SmsInterface
     {
         $result = true;
         try {
-            if ($storeId == null) {
+            if ($storeId === null) {
                 $storeId = $this->storeManager->getStore()->getId();
             }
 
