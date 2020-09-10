@@ -7,4 +7,7 @@
     <type name="Magento\Wishlist\Controller\Index\Cart">
         <plugin name="redirect_to_product_detail_page" type="Eguana\CustomCatalog\Plugin\Controller\Index\Cart"/>
     </type>
+    <type name="Magento\CatalogInventory\Model\Quote\Item\QuantityValidator">
+        <plugin name="remove_unnecessary_error_message" type="Eguana\CustomCatalog\Plugin\Model\Quote\Item\QuantityValidator"/>
+    </type>
 </config>

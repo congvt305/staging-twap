@@ -82,6 +82,7 @@ class Code extends Action
 
             if ($sendVerificationCodeResult === true) {
                 $result['send'] = $sendVerificationCodeResult;
+                $result['message'] = __('Verification code has been sent to your mobile');
             } else {
                 $result['message'] = $sendVerificationCodeResult;
             }
