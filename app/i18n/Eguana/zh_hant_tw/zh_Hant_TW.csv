@@ -12401,7 +12401,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Continue","繼續",module,Magento_Sales
 "Print All Refunds","列印所有退款",module,Magento_Sales
 "Refund #","退款 #",module,Magento_Sales
-"Print Refund","印刷品退款",module,Magento_Sales
+"Print Refund","商品退款",module,Magento_Sales
 "Product Name","商品名稱",module,Magento_Sales
 "Order #","訂單編號",module,Magento_Sales
 "Date","日期",module,Magento_Sales
