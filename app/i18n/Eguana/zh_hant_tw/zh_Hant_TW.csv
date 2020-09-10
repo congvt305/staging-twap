@@ -1446,7 +1446,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Voided capture.","作廢的捕捉。",module,Magento_Braintree
 "There was an error voiding the transaction: %1.","交易作廢時發生錯誤：%1。",module,Magento_Braintree
 "Invoice","發票號碼",module,Magento_Braintree
-"Shipment","裝運",module,Magento_Braintree
+"Shipment","系統預設值",module,Magento_Braintree
 "Invalid Customer ID provided","提供的客戶編號無效",module,Magento_Braintree
 "some error","一些錯誤",module,Magento_Braintree
 "a,b,c","a,b,c",module,Magento_Braintree
@@ -3405,7 +3405,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Maximum Display Recently Added Item(s)","Maximum Display Recently Added Item(s)",module,Magento_Checkout
 "of","of",module,Magento_Checkout
 "Something went wrong while saving the page. Please refresh the page and try again.","Something went wrong while saving the page. Please refresh the page and try again.",module,Magento_Checkout
-"You added %1 to your <a href=""%2"">shopping cart</a>.","%1已加到我的願望清單囉!",module,Magento_Checkout
+"You added %1 to your <a href=""%2"">shopping cart</a>.","%1已加到購物車囉!",module,Magento_Checkout
 "Please select at least one product to add to cart","請選擇至少一種產品添加到購物車",module,Magento_Checkout
 "The quote item isn't found. Verify the item and try again.","The quote item isn't found. Verify the item and try again.",module,Magento_Checkout
 "The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.","未下訂單。 首先，同意條款和條件，然後嘗試再次下訂單。",module,Magento_Checkout
@@ -11654,7 +11654,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Shipping Address","收件地址",module,Magento_Rma
 "This won't take long . . .","This won't take long . . .",module,Magento_Rma
 "Shipping and Tracking Information","配送狀態",module,Magento_Rma
-"Track this shipment","狀態追蹤",module,Magento_Rma
+"Track this shipment","貨態管理碼",module,Magento_Rma
 "Items Return Requested For","退貨商品",module,Magento_Rma
 "Request Qty","數量",module,Magento_Rma
 "Hide Details","Hide Details",module,Magento_Rma
@@ -11917,8 +11917,8 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Order Credit Memos","Order Credit Memos",module,Magento_Sales
 "Credit memo #%1 created","Credit memo #%1 created",module,Magento_Sales
 "Credit memo #%1 comment added","Credit memo #%1 comment added",module,Magento_Sales
-"Shipment #%1 created","裝運 #%1 created",module,Magento_Sales
-"Shipment #%1 comment added","裝運 #%1 comment added",module,Magento_Sales
+"Shipment #%1 created","系統預設值 #%1 created",module,Magento_Sales
+"Shipment #%1 comment added","系統預設值 #%1 comment added",module,Magento_Sales
 "Invoice #%1 created","發票號碼 #%1 created",module,Magento_Sales
 "Invoice #%1 comment added","發票號碼 #%1 comment added",module,Magento_Sales
 "Tracking number %1 for %2 assigned","Tracking number %1 for %2 assigned",module,Magento_Sales
@@ -11954,10 +11954,10 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Order # %1","訂單編號 %1",module,Magento_Sales
 "Back to My Orders","返回我的訂單",module,Magento_Sales
 "View Another Order","查看其他訂單",module,Magento_Sales
-"About Your Refund","About Your Refund",module,Magento_Sales
+"About Your Refund","關於退款",module,Magento_Sales
 "My Orders","我的訂單",module,Magento_Sales
 "Subscribe to Order Status","訂閱訂單狀態",module,Magento_Sales
-"About Your Invoice","About Your Invoice",module,Magento_Sales
+"About Your Invoice","關於你的發票",module,Magento_Sales
 "Print Order # %1","打印訂單號 %1",module,Magento_Sales
 "Grand Total to be Charged","Grand Total to be Charged",module,Magento_Sales
 "Unassign","Unassign",module,Magento_Sales
@@ -12413,13 +12413,13 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Print Order","列印訂單",module,Magento_Sales
 "Print All Invoices","Print All Invoices",module,Magento_Sales
 "Invoice #","發票號碼 #",module,Magento_Sales
-"Print Invoice","列印電子發票",module,Magento_Sales
+"Print Invoice","列印購物明細",module,Magento_Sales
 "Qty Invoiced","已開發票數量",module,Magento_Sales
 "Close","關閉",module,Magento_Sales
 "About Your Order","訂單交易資訊",module,Magento_Sales
 "<span class=""label"">Order Date:</span> %1","<span class=""label"">訂購日期：</span> %1",module,Magento_Sales
 "Refund #%1","Refund #%1",module,Magento_Sales
-"Shipment #%1","裝運 #%1",module,Magento_Sales
+"Shipment #%1","系統預設值 #%1",module,Magento_Sales
 "Qty Shipped","已出貨數量",module,Magento_Sales
 "Recent Orders","最近的訂單",module,Magento_Sales
 "View All","查看全部",module,Magento_Sales
@@ -12517,7 +12517,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Invoice Comment Email Template for Guest","Invoice Comment Email Template for Guest",module,Magento_Sales
 "Send Invoice Comment Email Copy To","Send Invoice Comment Email Copy To",module,Magento_Sales
 "Send Invoice Comments Email Copy Method","Send Invoice Comments Email Copy Method",module,Magento_Sales
-"Shipment","裝運",module,Magento_Sales
+"Shipment","系統預設值",module,Magento_Sales
 "Shipment Email Sender","Shipment Email Sender",module,Magento_Sales
 "Shipment Email Template","Shipment Email Template",module,Magento_Sales
 "Shipment Email Template for Guest","Shipment Email Template for Guest",module,Magento_Sales
@@ -12703,7 +12703,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Order #","訂單編號",module,Magento_SalesArchive
 "Amount","金額",module,Magento_SalesArchive
 "PDF Shipments","PDF Shipments",module,Magento_SalesArchive
-"Shipment","裝運",module,Magento_SalesArchive
+"Shipment","系統預設值",module,Magento_SalesArchive
 "Ship Date","發貨日期",module,Magento_SalesArchive
 "Total Quantity","Total Quantity",module,Magento_SalesArchive
 "Go to Archive","去存檔",module,Magento_SalesArchive
@@ -13474,11 +13474,11 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Print","Print",module,Magento_Shipping
 "the shipment email was sent","the shipment email was sent",module,Magento_Shipping
 "the shipment email is not sent","the shipment email is not sent",module,Magento_Shipping
-"Shipment #%1 | %3 (%2)","裝運 #%1 | %3 (%2)",module,Magento_Shipping
+"Shipment #%1 | %3 (%2)","系統預設值 #%1 | %3 (%2)",module,Magento_Shipping
 "Create Shipping Label...","Create Shipping Label...",module,Magento_Shipping
 "Print Shipping Label","Print Shipping Label",module,Magento_Shipping
 "Show Packages","Show Packages",module,Magento_Shipping
-"About Your Shipment","About Your Shipment",module,Magento_Shipping
+"About Your Shipment","訂單處理狀態",module,Magento_Shipping
 "Order # %1","訂單編號 %1",module,Magento_Shipping
 "Back to My Orders","返回我的訂單",module,Magento_Shipping
 "View Another Order","查看其他訂單",module,Magento_Shipping
@@ -13592,18 +13592,18 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Track Order","追踪訂單",module,Magento_Shipping
 "No shipping information available","No shipping information available",module,Magento_Shipping
 "Shipping and Tracking Information","配送狀態",module,Magento_Shipping
-"Track this shipment","狀態追蹤",module,Magento_Shipping
+"Track this shipment","貨態管理碼",module,Magento_Shipping
 "Items Shipped","Items Shipped",module,Magento_Shipping
 "Order Total","本次訂單金額",module,Magento_Shipping
 "Shipment History","Shipment History",module,Magento_Shipping
 "Qty Shipped","已出貨數量",module,Magento_Shipping
 "Print All Shipments","Print All Shipments",module,Magento_Shipping
-"Shipment #","裝運 #",module,Magento_Shipping
-"Print Shipment","印刷裝運",module,Magento_Shipping
-"Tracking Number(s):","跟蹤號:",module,Magento_Shipping
+"Shipment #","系統預設值 #",module,Magento_Shipping
+"Print Shipment","列印出貨明細",module,Magento_Shipping
+"Tracking Number(s):","貨態管理碼:",module,Magento_Shipping
 "SKU","商品編號",module,Magento_Shipping
 "Order tracking","訂單跟踪",module,Magento_Shipping
-"Tracking Number:","跟蹤號:",module,Magento_Shipping
+"Tracking Number:","貨態管理碼:",module,Magento_Shipping
 "Carrier:","貨運公司:",module,Magento_Shipping
 "Error:","Error:",module,Magento_Shipping
 "Tracking information is currently not available. Please ","Tracking information is currently not available. Please ",module,Magento_Shipping
