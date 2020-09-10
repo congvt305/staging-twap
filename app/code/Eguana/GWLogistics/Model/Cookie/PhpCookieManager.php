@@ -8,39 +8,21 @@
 
 namespace Eguana\GWLogistics\Model\Cookie;
 
+
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\InputException;
+use Magento\Framework\HTTP\Header as HttpHeader;
+use Magento\Framework\Phrase;
 use Magento\Framework\Stdlib\Cookie\CookieMetadata;
 use Magento\Framework\Stdlib\Cookie\CookieReaderInterface;
 use Magento\Framework\Stdlib\Cookie\CookieScopeInterface;
 use Magento\Framework\Stdlib\Cookie\CookieSizeLimitReachedException;
 use Magento\Framework\Stdlib\Cookie\FailureToSendException;
 use Magento\Framework\Stdlib\Cookie\PublicCookieMetadata;
-use Magento\Framework\Stdlib\Cookie\SensitiveCookieMetadata;
-use Magento\Framework\Stdlib\CookieManagerInterface;
-use Magento\Framework\Phrase;
-use Magento\Framework\HTTP\Header as HttpHeader;
 use Psr\Log\LoggerInterface;
 
-class PhpCookieManager implements CookieManagerInterface
+class PhpCookieManager extends \Magento\Framework\Stdlib\Cookie\PhpCookieManager
 {
-    /**#@+
-     * Constants for Cookie manager.
-     * RFC 2109 - Page 15
-     * http://www.ietf.org/rfc/rfc6265.txt
-     */
-    const MAX_NUM_COOKIES = 50;
-    const MAX_COOKIE_SIZE = 4096;
-    const EXPIRE_NOW_TIME = 1;
-    const EXPIRE_AT_END_OF_SESSION_TIME = 0;
-    /**#@-*/
-
-    /**#@+
-     * Constant for metadata array key
-     */
-    const KEY_EXPIRE_TIME = 'expiry';
-    /**#@-*/
-
     /**#@-*/
     private $scope;
 
@@ -63,103 +45,42 @@ class PhpCookieManager implements CookieManagerInterface
      */
     private $httpHeader;
 
-    /**
-     * @param CookieScopeInterface $scope
-     * @param CookieReaderInterface $reader
-     * @param LoggerInterface $logger
-     * @param HttpHeader $httpHeader
-     */
     public function __construct(
         CookieScopeInterface $scope,
         CookieReaderInterface $reader,
         LoggerInterface $logger = null,
         HttpHeader $httpHeader = null
     ) {
+        parent::__construct($scope, $reader, $logger, $httpHeader);
         $this->scope = $scope;
-        $this->reader = $reader;
         $this->logger = $logger ?: ObjectManager::getInstance()->get(LoggerInterface::class);
         $this->httpHeader = $httpHeader ?: ObjectManager::getInstance()->get(HttpHeader::class);
     }
 
-    /**
-     * Set a value in a private cookie with the given $name $value pairing.
-     *
-     * Sensitive cookies cannot be accessed by JS. HttpOnly will always be set to true for these cookies.
-     *
-     * @param string $name
-     * @param string $value
-     * @param SensitiveCookieMetadata $metadata
-     * @return void
-     * @throws FailureToSendException Cookie couldn't be sent to the browser.  If this exception isn't thrown,
-     * there is still no guarantee that the browser received and accepted the cookie.
-     * @throws CookieSizeLimitReachedException Thrown when the cookie is too big to store any additional data.
-     * @throws InputException If the cookie name is empty or contains invalid characters.
-     */
-    public function setSensitiveCookie($name, $value, SensitiveCookieMetadata $metadata = null)
-    {
-        $metadataArray = $this->scope->getSensitiveCookieMetadata($metadata)->__toArray();
-        $this->setCookie($name, $value, $metadataArray);
-    }
-
-    /**
-     * Set a value in a public cookie with the given $name $value pairing.
-     *
-     * Public cookies can be accessed by JS. HttpOnly will be set to false by default for these cookies,
-     * but can be changed to true.
-     *
-     * @param string $name
-     * @param string $value
-     * @param PublicCookieMetadata $metadata
-     * @return void
-     * @throws FailureToSendException If cookie couldn't be sent to the browser.
-     * @throws CookieSizeLimitReachedException Thrown when the cookie is too big to store any additional data.
-     * @throws InputException If the cookie name is empty or contains invalid characters.
-     */
     public function setPublicCookie($name, $value, PublicCookieMetadata $metadata = null)
     {
         $metadataArray = $this->scope->getPublicCookieMetadata($metadata)->__toArray();
-        $this->setCookie($name, $value, $metadataArray);
+        $this->setSecureCookie($name, $value, $metadataArray);
     }
 
-    /**
-     * Set a value in a cookie with the given $name $value pairing.
-     *
-     * @param string $name
-     * @param string $value
-     * @param array $metadataArray
-     * @return void
-     * @throws FailureToSendException If cookie couldn't be sent to the browser.
-     * @throws CookieSizeLimitReachedException Thrown when the cookie is too big to store any additional data.
-     * @throws InputException If the cookie name is empty or contains invalid characters.
-     */
-    protected function setCookie($name, $value, array $metadataArray)
+    private function setSecureCookie($name, $value, $metadataArray)
     {
         $expire = $this->computeExpirationTime($metadataArray);
 
         $this->checkAbilityToSendCookie($name, $value);
 
-//        $phpSetcookieSuccess = setcookie(
-//            $name,
-//            $value,
-//            $expire,
-//            $this->extractValue(CookieMetadata::KEY_PATH, $metadataArray, ''),
-//            $this->extractValue(CookieMetadata::KEY_DOMAIN, $metadataArray, ''),
-//            $this->extractValue(CookieMetadata::KEY_SECURE, $metadataArray, false),
-//            $this->extractValue(CookieMetadata::KEY_HTTP_ONLY, $metadataArray, false)
-//        );
-
-        $phpSetcookieSuccess = setcookie(
-            $name,
-            $value,
-            [
-                'expires' => $expire,
-                'path' => $this->extractValue(CookieMetadata::KEY_PATH, $metadataArray, ''),
-                'domain' => $this->extractValue(CookieMetadata::KEY_DOMAIN, $metadataArray, ''),
-                'samesite' => 'None',
-                'secure' => true,
-                'httponly' => $this->extractValue(CookieMetadata::KEY_HTTP_ONLY, $metadataArray, false)
-            ]
-        );
+            $phpSetcookieSuccess = setcookie(
+                $name,
+                $value,
+                [
+                    'expires' => $expire,
+                    'path' => $this->extractValue(CookieMetadata::KEY_PATH, $metadataArray, ''),
+                    'domain' => $this->extractValue(CookieMetadata::KEY_DOMAIN, $metadataArray, ''),
+                    'samesite' => 'None',
+                    'secure' => true,
+                    'httponly' => $this->extractValue(CookieMetadata::KEY_HTTP_ONLY, $metadataArray, false)
+                ]
+            );
 
         if (!$phpSetcookieSuccess) {
             $params['name'] = $name;
@@ -174,6 +95,7 @@ class PhpCookieManager implements CookieManagerInterface
             }
         }
     }
+
 
     /**
      * Retrieve the size of a cookie.
@@ -276,45 +198,6 @@ class PhpCookieManager implements CookieManagerInterface
         } else {
             return $defaultValue;
         }
-    }
-
-    /**
-     * Retrieve a value from a cookie.
-     *
-     * @param string $name
-     * @param string|null $default The default value to return if no value could be found for the given $name.
-     * @return string|null
-     */
-    public function getCookie($name, $default = null)
-    {
-        return $this->reader->getCookie($name, $default);
-    }
-
-    /**
-     * Deletes a cookie with the given name.
-     *
-     * @param string $name
-     * @param CookieMetadata $metadata
-     * @return void
-     * @throws FailureToSendException If cookie couldn't be sent to the browser.
-     *     If this exception isn't thrown, there is still no guarantee that the browser
-     *     received and accepted the request to delete this cookie.
-     * @throws InputException If the cookie name is empty or contains invalid characters.
-     */
-    public function deleteCookie($name, CookieMetadata $metadata = null)
-    {
-        $metadataArray = $this->scope->getCookieMetadata($metadata)->__toArray();
-
-        // explicitly set an expiration time in the metadataArray.
-        $metadataArray[PhpCookieManager::KEY_EXPIRE_TIME] = PhpCookieManager::EXPIRE_NOW_TIME;
-
-        $this->checkAbilityToSendCookie($name, '');
-
-        // cookie value set to empty string to delete from the remote client
-        $this->setCookie($name, '', $metadataArray);
-
-        // Remove the cookie
-        unset($_COOKIE[$name]);
     }
 
 }
