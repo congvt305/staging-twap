@@ -13,4 +13,10 @@
     <type name="Magento\Sales\Model\Order\Email\Container\Template">
         <plugin name="change_name_order_in_sales_email" type="Eguana\NameSorter\Plugin\Model\Order\Email\Container\Template" />
     </type>
+    <type name="Magento\Reward\Model\Reward">
+        <plugin name="change_name_order_in_reward_email" type="Eguana\NameSorter\Plugin\Model\Reward" />
+    </type>
+    <type name="Magento\User\Model\Notificator">
+        <plugin name="change_name_order_reset_admin_password" type="Eguana\NameSorter\Plugin\Model\Notificator" />
+    </type>
 </config>
