@@ -7,14 +7,14 @@
  * Date: 8/9/20
  * Time: 4:29 PM
  */
-
 namespace Eguana\NameSorter\Plugin\Model\Order\Email\Container;
 
 use Magento\Framework\App\Request\Http;
 use Magento\Sales\Model\Order\Email\Container\Template as TemplateAlias;
 
 /**
- * This class is used for the before pligun which swap the First and Last Name for transaction email vars
+ * This class is used for the before pligun which swap
+ * the First and Last Name for transaction email vars
  *
  * Class Template
  */

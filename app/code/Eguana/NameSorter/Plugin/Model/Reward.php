@@ -12,7 +12,8 @@ namespace Eguana\NameSorter\Plugin\Model;
 use Magento\Reward\Model\Reward as RewardAlias;
 
 /**
- * This class is used for the plugins which swap the First and Last Name for Reward points emails
+ * This class is used for the plugins which swap the First and
+ * Last Name for Reward points emails
  * Class Reward
  */
 class Reward

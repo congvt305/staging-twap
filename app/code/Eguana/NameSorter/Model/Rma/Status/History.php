@@ -13,7 +13,9 @@ use Magento\Framework\Api\AttributeValueFactory;
 use Magento\Framework\Api\ExtensionAttributesFactory as ExtensionAttributesFactoryAlias;
 use Magento\Framework\App\Area as AreaAlias;
 use Magento\Framework\Data\Collection\AbstractDb as AbstractDbAlias;
+use Magento\Framework\Exception\MailException;
 use Magento\Framework\Mail\Template\TransportBuilder as TransportBuilderAlias;
+use Magento\Framework\Model\Context;
 use Magento\Framework\Model\ResourceModel\AbstractResource as AbstractResourceAlias;
 use Magento\Framework\Registry as RegistryAlias;
 use Magento\Framework\Stdlib\DateTime\DateTime as DateTimeAlias;
@@ -23,22 +25,21 @@ use Magento\Rma\Api\RmaAttributesManagementInterface;
 use Magento\Rma\Api\RmaRepositoryInterface;
 use Magento\Rma\Helper\Data as DataAlias;
 use Magento\Rma\Model\Config as ConfigAlias;
+use Magento\Rma\Model\Rma;
 use Magento\Rma\Model\Rma\Status\History as HistoryAlias;
 use Magento\Rma\Model\RmaFactory as RmaFactoryAlias;
 use Magento\Sales\Model\Order\Address\Renderer as AddressRenderer;
 use Magento\Store\Model\Store as StoreAlias;
 use Magento\Store\Model\StoreManagerInterface as StoreManagerInterfaceAlias;
-use Magento\Framework\Model\Context;
 
 /**
- * This class is used for the preference of History Model which Swap the First and Last Name in
- * comment email
+ * This class is used for the preference of History Model which
+ * Swap the First and Last Name in comment email
  *
  * Class History
  */
 class History extends HistoryAlias
 {
-
     /**
      * Rma configuration
      *
@@ -64,6 +65,16 @@ class History extends HistoryAlias
      * @var TransportBuilderAlias
      */
     private $transportBuilder;
+
+    /**
+     * @var AddressRenderer
+     */
+    protected $addressRenderer;
+
+    /**
+     * @var DataAlias
+     */
+    protected $rmaHelper;
 
     /**
      * History constructor.
@@ -130,6 +141,8 @@ class History extends HistoryAlias
         $this->inlineTranslation = $inlineTranslation;
         $this->storeManager = $storeManager;
         $this->transportBuilder = $transportBuilder;
+        $this->addressRenderer = $addressRenderer;
+        $this->rmaHelper = $rmaHelper;
     }
 
     /**
@@ -219,6 +232,102 @@ class History extends HistoryAlias
             $transport->sendMessage();
         }
         $this->setEmailSent(true);
+        $this->inlineTranslation->resume();
+        return $this;
+    }
+
+    /**
+     * Sending authorizing email with RMA data
+     *
+     * @param Rma $rma
+     * @param string $rootConfig
+     * @return HistoryAlias
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    protected function _sendRmaEmailWithItems(Rma $rma, $rootConfig)
+    {
+        $storeId = $rma->getStoreId();
+        $order = $rma->getOrder();
+
+        $this->rmaConfig->init($rootConfig, $storeId);
+        if (!$this->rmaConfig->isEnabled()) {
+            return $this;
+        }
+
+        $this->inlineTranslation->suspend();
+
+        $copyTo = $this->rmaConfig->getCopyTo();
+        $copyMethod = $this->rmaConfig->getCopyMethod();
+
+        if ($order->getCustomerIsGuest()) {
+            $template = $this->rmaConfig->getGuestTemplate();
+            $customerName = $order->getBillingAddress()->getName();
+        } else {
+            $template = $this->rmaConfig->getTemplate();
+            $customerName = $rma->getCustomerName();
+        }
+
+        $sendTo = [['email' => $order->getCustomerEmail(), 'name' => $customerName]];
+        if ($rma->getCustomerCustomEmail() && $rma->getCustomerCustomEmail() !== $order->getCustomerEmail()) {
+            $sendTo[] = ['email' => $rma->getCustomerCustomEmail(), 'name' => $customerName];
+        }
+        if ($copyTo && $copyMethod == 'copy') {
+            foreach ($copyTo as $email) {
+                $sendTo[] = ['email' => $email, 'name' => null];
+            }
+        }
+
+        $returnAddress = $this->rmaHelper->getReturnAddress('html', [], $storeId);
+
+        $bcc = [];
+        if ($copyTo && $copyMethod == 'bcc') {
+            $bcc = $copyTo;
+        }
+        $store = $this->storeManager->getStore($storeId);
+        $identity = $this->rmaConfig->getIdentity('', $storeId);
+
+        try {
+            foreach ($sendTo as $recipient) {
+                $transport = $this->transportBuilder->setTemplateIdentifier($template)
+                    ->setTemplateOptions(['area' => AreaAlias::AREA_FRONTEND, 'store' => $storeId])
+                    ->setTemplateVars(
+                        [
+                            'rma' => $rma,
+                            'rma_data' => [
+                                'status_label' => $rma->getStatusLabel(),
+                            ],
+                            'order' => $order,
+                            'order_data' => [
+                                'customer_name' => $order->getCustomerLastname() . ' ' . $order->getCustomerFirstname(),
+                            ],
+                            'created_at_formatted_1' => $rma->getCreatedAtFormated(1),
+                            'store' => $store,
+                            'return_address' => $returnAddress,
+                            'item_collection' => $rma->getItemsForDisplay(),
+                            'formattedShippingAddress' => $this->addressRenderer->format(
+                                $order->getShippingAddress(),
+                                'html'
+                            ),
+                            'formattedBillingAddress' => $this->addressRenderer->format(
+                                $order->getBillingAddress(),
+                                'html'
+                            ),
+                            'supportEmail' => $store->getConfig('trans_email/ident_support/email'),
+                            'storePhone' => $store->getConfig('general/store_information/phone'),
+                        ]
+                    )
+                    ->setFromByScope($identity, $storeId)
+                    ->addTo($recipient['email'], $recipient['name'])
+                    ->addBcc($bcc)
+                    ->getTransport();
+
+                $transport->sendMessage();
+            }
+            $this->setEmailSent(true);
+        } catch (MailException $exception) {
+            $this->_logger->critical($exception->getMessage());
+        }
         $this->inlineTranslation->resume();
         return $this;
     }
