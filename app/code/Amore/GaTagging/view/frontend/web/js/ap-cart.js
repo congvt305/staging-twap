@@ -36,11 +36,54 @@ define([
          */
         _initActions: function () {
             var events = this.options.events;
-
+            var apCartAddProds = [];
             this.options.actions[events.AJAX_ADD_TO_CART] = function (product) {
-                console.log('addcart')
+                if(product.product_type === 'bundle') {
+                    this.getBundleProductData(product).forEach(function (info) {
+                        apCartAddProds.push(JSON.stringify(info));
+                    });
+                } else if (product.product_type === 'configurable') {
+                    this.getConfigurableProductData(product).forEach(function (info) {
+                        apCartAddProds.push(JSON.stringify(info));
+                    });
+                } else {
+                    this.getSimpleProductData(product).forEach(function (info) {
+                        apCartAddProds.push(JSON.stringify(info));
+                    });
+                }
+                window.AP_CART_ADDPRDS = apCartAddProds;
                 this.options.dataLayer.push({'event': 'addcart'});
             }.bind(this);
+        },
+
+        getBundleProductData: function (product) {
+            var productInfosArr = window.PRD_DATA;
+            productInfosArr.forEach(function (productInfo) {
+                productInfo.price = parseInt(product.product_price_value * productInfo.rate);
+                productInfo.quantity = parseInt(productInfo.quantity * product.qty);
+                delete productInfo.rate;
+            });
+            return productInfosArr;
+        },
+        getSimpleProductData: function (product) {
+            var productInfosArr = window.PRD_DATA;
+            productInfosArr.forEach(function (productInfo) {
+                productInfo.quantity = parseInt(product.qty);
+            });
+            return productInfosArr;
+        },
+        getConfigurableProductData: function (product) {
+            var productInfosArr = window.PRD_DATA;
+            var selectedProductInfo = [];
+            productInfosArr.forEach(function (productInfo) {
+                if (productInfo.code === product.product_sku) {
+                    productInfo.quantity = parseInt(product.qty);
+                    productInfo.variant = productInfo.name.replace(product.product_name, '');
+                    selectedProductInfo.push(productInfo);
+
+                }
+            });
+            return selectedProductInfo;
         },
 
         /**
@@ -154,7 +197,9 @@ define([
                     opt.events.AJAX_ADD_TO_CART,
                     handlerWrapper.bind(this, this._setToTemporaryEventStorage, opt.events.AJAX_ADD_TO_CART)
                 );
-        }
+        },
+
+
     });
 
     return $.mage.apCart;

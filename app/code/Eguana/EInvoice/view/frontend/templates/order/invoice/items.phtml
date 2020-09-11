@@ -15,7 +15,6 @@
                 <span><?= $block->escapeHtml(__('Print Invoice')) ?></span>
             </a>
         </div>
-        <strong><?= $block->escapeHtml(__('Invoice')) ?></strong><?= $block->escapeHtml($_invoice->getIncrementId()) ?>
     </div>
     <div class="table-wrapper table-order-items invoice">
         <table class="data table table-order-items invoice" id="my-invoice-table-<?= (int) $_invoice->getId() ?>">

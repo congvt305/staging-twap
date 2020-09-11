@@ -9,6 +9,7 @@
 namespace Amore\GaTagging\Block;
 
 use Magento\Bundle\Model\ResourceModel\Selection\CollectionFactory;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -53,8 +54,13 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      * @var \Magento\Framework\Message\ManagerInterface
      */
     private $messageManager;
+    /**
+     * @var ProductRepositoryInterface
+     */
+    private $productRepository;
 
     public function __construct(
+        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Bundle\Model\ResourceModel\Selection\CollectionFactory $selectionCollectionFactory,
@@ -77,6 +83,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $this->selectionCollectionFactory = $selectionCollectionFactory;
         $this->orderRepository = $orderRepository;
         $this->messageManager = $messageManager;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -90,25 +97,6 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             return '';
         }
         return parent::_toHtml();
-    }
-
-    public function getBreadCrumbText() //todo: javascript
-    {
-        $crumbBlock =  $this->_layout->getBlock('breadcrumbs');
-
-        if($crumbBlock) {
-            $this->logger->debug('crumb exist');
-            $html = $crumbBlock->toHtml();
-        }
-
-//        $crumbs = $crumbBlock->getCrumbs();
-
-//        $result = '';
-//        foreach ($crumbs as $crumb) {
-//            $result . $crumb->getText();
-//        }
-//        return $result;
-        return 'home';
     }
 
     public function getTitle()
@@ -125,6 +113,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * todo get Category Data
      * @param \Magento\Catalog\Model\Product $product
      */
     public function getProductCategory($product) {
@@ -199,6 +188,91 @@ class GaTagging extends \Magento\Framework\View\Element\Template
 
         return $cartData;
     }
+
+    /**
+     * @param \Magento\Catalog\Model\Product $product
+     */
+    public function getProductInfo($product) {
+        $productDataArr = [];
+        if ($product->getTypeId() === 'bundle') {
+            $productData = $this->getBundleProductInfo($product);
+            foreach ($productData as $productDatum) {
+                $productDataArr[] = $this->jsonSerializer->serialize($productDatum);
+            }
+        } elseif ($product->getTypeId() === 'configurable') {
+            $productData = $this->getConfigurableProductInfo($product);
+            foreach ($productData as $productDatum) {
+                $productDataArr[] = $this->jsonSerializer->serialize($productDatum);
+            }
+        } else {
+            $productData = $this->getSimpleProductInfo($product);
+            $productDataArr[] = $this->jsonSerializer->serialize($productData);
+        }
+        return $productDataArr;
+    }
+
+    /**
+     * @param \Magento\Catalog\Api\Data\ProductInterface $product
+     */
+    private function getSimpleProductInfo($product, $qty=null, $rate=null)
+    {
+        $productInfo = [];
+        $productInfo['name'] = $product->getName();
+        $productInfo['code'] = $product->getSku();
+        $productInfo['sapcode'] = $product->getSku();
+        $productInfo['brand'] = $this->helper->getSiteName() ?? '';
+        $productInfo['prdprice'] = intval($product->getPrice());
+        $productInfo['variant'] = '';
+        $productInfo['promotion'] = '';
+        $productInfo['cate'] = '';
+        $productInfo['catecode'] = '';
+        $productInfo['quantity'] = $qty ? intval($qty) : 0;
+        if ($rate) {
+            $productInfo['rate'] = $rate;
+        }
+        return $productInfo;
+    }
+
+    /**
+     * @param \Magento\Catalog\Model\Product $product
+     */
+    private function getBundleProductInfo($product)
+    {
+        $productInfos = [];
+        /** @var \Magento\Bundle\Model\Product\Type $bundleType */
+        $bundleType = $product->getTypeInstance();
+        $optionIds = $bundleType->getOptionsIds($product);
+        $selections = $bundleType->getSelectionsCollection($optionIds, $product);
+        $selectionProducts = [];
+        $selectionsTotal = 0;
+        foreach ($selections as $selection) {
+            $selectionProduct = $this->productRepository->getById($selection->getProductId());
+            $selectionProducts[$selection->getProductId()]['product'] = $selectionProduct;
+            $selectionProducts[$selection->getProductId()]['qty'] = $selection->getSelectionQty();
+            $selectionsTotal += $selectionProduct->getPrice() * $selection->getSelectionQty();
+        }
+        foreach ($selectionProducts as $productId => $productInfo) {
+            $product = $productInfo['product'];
+            $productInfos[] = $this->getSimpleProductInfo($product, $productInfo['qty'], $product->getPrice() / $selectionsTotal * $productInfo['qty']);
+        }
+        return $productInfos;
+    }
+
+    /**
+     * @param \Magento\Catalog\Model\Product $product
+     */
+    private function getConfigurableProductInfo($product)
+    {
+        $productInfos = [];
+        $childrenIds = $product->getTypeInstance()->getChildrenIds($product->getId());
+        $childrenIds = reset($childrenIds);
+        foreach ($childrenIds as $key => $childProductId) {
+            $childProduct = $this->productRepository->getById($childProductId);
+            $productInfos[] = $this->getSimpleProductInfo($childProduct);
+        }
+        return $productInfos;
+    }
+    
 
     /**
      * @param \Magento\Sales\Model\Order\Item[] $allItems

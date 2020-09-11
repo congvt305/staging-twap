@@ -18,3 +18,4 @@
 "ecpay_payment_order_comment_cvs","Getting Code Result : (%s)%s, Trade Code : %s, Deadline : %s"
 "ecpay_payment_order_comment_barcode","Getting Code Result : (%s)%s, Payment Deadline : %s, BARCODE 1 : %s, BARCODE 2 : %s, BARCODE 3 : %s"
 "ecpay_payment_order_comment_payment_failure","Paid Failed, Error : %s"
+"Triplicate Title","Triplicate Title"

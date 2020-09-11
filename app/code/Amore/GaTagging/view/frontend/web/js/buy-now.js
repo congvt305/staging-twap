@@ -5,13 +5,13 @@ define([
 
     function notify(eventName) {
         if (window.dataLayer) {
-            console.log('dataLayer.push ', eventName);
+            //console.log('dataLayer.push ', eventName);
             window.dataLayer.push({'event': eventName});
         }
     }
 
     return function (config) {
-        console.log(config);
+        //console.log(config);
         $(config.buttonSelect)
             .on(
                 'click',
