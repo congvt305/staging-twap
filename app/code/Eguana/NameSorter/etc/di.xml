@@ -19,4 +19,5 @@
     <type name="Magento\User\Model\Notificator">
         <plugin name="change_name_order_reset_admin_password" type="Eguana\NameSorter\Plugin\Model\Notificator" />
     </type>
+    <preference for="Magento\Rma\Model\Rma\Status\History" type="Eguana\NameSorter\Model\Rma\Status\History" />
 </config>
