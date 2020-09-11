@@ -214,6 +214,7 @@ class POSSystem
                 }
             } elseif ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'N') {
                 $result = [];
+
             } else {
                 $result['message'] = $response['message'];
             }
@@ -236,17 +237,22 @@ class POSSystem
         $log['request'] = $parameters;
         $log['response'] = $response;
 
-        $websiteCode = $this->storeManager->getWebsite()->getCode();
+        $websiteName = $this->storeManager->getWebsite()->getName();
+
+        $resultMessage = isset($result['message'])?$result['message']:'Fail';
+        if ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'N') {
+            $resultMessage = 'No information exist in POS';
+        }
 
         $this->eventManager->dispatch(
             'eguana_bizconnect_operation_processed',
             [
                 'topic_name' => 'eguana.pos.get.info',
                 'direction' => 'outgoing',
-                'to' => $websiteCode, //from or to
+                'to' => $websiteName, //from or to
                 'serialized_data' => $this->json->serialize($log),
                 'status' => $callSuccess,
-                'result_message' => isset($result['message'])?$result['message']:'Fail'
+                'result_message' => $resultMessage
             ]
         );
 
@@ -331,14 +337,14 @@ class POSSystem
         $log['request'] = $parameters;
         $log['response'] = $response;
 
-        $websiteCode = $this->storeManager->getWebsite()->getCode();
+        $websiteName = $this->storeManager->getWebsite()->getName();
 
         $this->eventManager->dispatch(
             'eguana_bizconnect_operation_processed',
             [
                 'topic_name' => 'eguana.pos.sync.info',
                 'direction' => 'outgoing',
-                'to' => $websiteCode, //from or to
+                'to' => $websiteName, //from or to
                 'serialized_data' => $this->json->serialize($log),
                 'status' => $callSuccess,
                 'result_message' => isset($result['message'])?$result['message']:'Fail'
