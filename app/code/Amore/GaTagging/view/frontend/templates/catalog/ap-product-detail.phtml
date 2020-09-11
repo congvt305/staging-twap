@@ -9,6 +9,7 @@
 <?php
 /** @var \Amore\GaTagging\Block\GaTagging $block */
 $currentProduct = $block->getCurrentProduct();
+$productInfo = $block->getProductInfo($currentProduct);
 ?>
 <script>
     var AP_DATA_PAGETYPE = "<?= $block->getPageType()?>";
@@ -19,5 +20,10 @@ $currentProduct = $block->getCurrentProduct();
     var AP_PRD_PRICE = "<?= $block->escapeHtml($currentProduct->getFinalPrice())?>";
     var AP_PRD_BRAND = "<?= $block->escapeHtml($currentProduct->getBctxten())?>";
     var AP_PRD_CATEGORY = "<?= $block->escapeHtml($block->getProductCategory($currentProduct))?>";
+    var PRD_DATA = [
+        <?php foreach($productInfo as $info) : ?>
+        <?= $info ?>,
+        <?php endforeach; ?>
+    ];
 </script>
 

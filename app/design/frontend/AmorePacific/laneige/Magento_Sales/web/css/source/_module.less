@@ -166,6 +166,13 @@
             display: none;
         }
 
+        .order.comments.details {
+            .subtitle {
+                .lib-font-size(18);
+                margin-bottom: 0;
+            }
+        }
+
         .block.details[class*="e-invoices"] {
             margin: @indent__xl 0 @indent__base 0 !important;
         }
@@ -560,8 +567,24 @@
             width: auto !important;
         }
 
+        &:not(.shipments) {
+            .order.comments.details {
+                margin-bottom: 35px;
+
+                .subtitle {
+                    margin-top: 0;
+                }
+            }
+        }
+
         &.shipments {
             padding-bottom: 32px;
+
+            .order.comments.details {
+                .subtitle {
+                    margin-top: 32px;
+                }
+            }
         }
 
         &.rma {
@@ -756,6 +779,10 @@
     .order-details-items {
         .item-options {
             margin-top: @indent__s;
+        }
+
+        .order.comments.details {
+            margin-top: @indent__base;
         }
     }
 

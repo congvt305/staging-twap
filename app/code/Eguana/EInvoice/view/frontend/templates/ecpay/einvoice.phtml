@@ -20,6 +20,10 @@
         <div class="block-content order e-invoice">
             <?php if ($block->hasEInvoiceTriplicateData($block->getOrderId()) > 0) : ?>
                 <div class="box">
+                    <strong class="box-title"><span><?= $block->escapeHtml(__("E-Invoice Triplicate Title")) ?></span></strong>
+                    <div class="box-content"><?= $block->escapeHtml(__($block->getEInvoiceTriplicateTitle($block->getOrderId()))) ?></div>
+                </div>
+                <div class="box">
                     <strong class="box-title"><span><?= $block->escapeHtml(__("E-Invoice Tax ID Number")) ?></span></strong>
                     <div class="box-content"><?= $block->escapeHtml(__($block->getEInvoiceTaxIdNumber($block->getOrderId()))) ?></div>
                 </div>
