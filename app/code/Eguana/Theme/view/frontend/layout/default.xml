@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="head.additional">
+            <block class="Eguana\Theme\Block\Html\Metatag" name="default.opengraph" template="Eguana_Theme::head/opengraph.phtml"/>
+            <block class="Eguana\Theme\Block\Html\Metatag" name="default.twitter" template="Eguana_Theme::head/twitter.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,8 @@
+<meta property="og:type" content="website" />
+<meta property="og:title"
+      content="<?= /* @noEscape */ $block->stripTags($block->getMetaTitle()) ?>" />
+<meta property="og:image"
+      content="<?= $block->escapeUrl($block->getViewFileUrl('Eguana_Theme::images/og.jpg')) ?>" />
+<meta property="og:description"
+      content="<?= /* @noEscape */ $block->stripTags($block->getDescription()) ?>" />
+<meta property="og:url" content="<?= $block->escapeUrl($block->getCurrentUrl()) ?>" />
