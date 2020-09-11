@@ -24,7 +24,7 @@ define([
             /**
              * added to core code
              */
-            window.dataLayer.push({'event': 'purcachecartbtn'});
+            window.dataLayer.push({'event': 'purchasecartbtn'});
 
             $(element).attr('disabled', true);
             location.href = config.checkoutUrl;
