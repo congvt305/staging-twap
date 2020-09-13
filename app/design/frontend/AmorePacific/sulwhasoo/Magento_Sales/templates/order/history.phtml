@@ -40,7 +40,7 @@
                             <?php $extra->setOrder($_order); ?>
                             <?= $extra->getChildHtml() ?>
                         <?php endif; ?>
-                        <td data-th="<?= $block->escapeHtmlAttr(__('Name')) ?>" class="col shipping"><?= $_order->getShippingAddress() ? $block->escapeHtml($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
+                        <td data-th="<?= $block->escapeHtmlAttr(__('Name')) ?>" class="col shipping"><?= $_order->getShippingAddress() ? $block->escapeHtml($_order->getShippingAddress()->getLastName()) . '&nbsp;' . $block->escapeHtml($_order->getShippingAddress()->getFirstName()) : '&nbsp;' ?></td>
                         <td data-th="<?= $block->escapeHtmlAttr(__('Order Total')) ?>" class="col total"><?= $_order->formatPrice($_order->getGrandTotal()) ?></td>
                         <td data-th="<?= $block->escapeHtmlAttr(__('Status')) ?>" class="col status"><?= $block->escapeHtml($_order->getStatusLabel()) ?></td>
                         <td data-th="<?= $block->escapeHtmlAttr(__('Actions')) ?>" class="col actions">

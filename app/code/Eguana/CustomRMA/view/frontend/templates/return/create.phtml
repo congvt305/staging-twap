@@ -169,7 +169,7 @@
         </div>
         <div class="field name">
             <span class="label"><span><?= $block->escapeHtml(__('Customer Name')) ?></span></span>
-            <div class="control"><span><?= $block->escapeHtml($_order->getCustomerName()) ?></span></div>
+            <div class="control"><span><?= $block->escapeHtml($_order->getCustomerLastname() .' '. $_order->getCustomerFirstname()) ?></span></div>
         </div>
         <div class="field email">
             <span class="label"><span><?= $block->escapeHtml(__('Email')) ?></span></span>
