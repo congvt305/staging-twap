@@ -1,0 +1,20 @@
+<?php
+/**
+ * Created by Eguana.
+ * User: Brian
+ * Date: 2020-09-11
+ * Time: 오후 2:58
+ */
+?>
+<?= /* @noEscape */ $block->getButtonHtml(); ?>
+
+<span class="collect-indicator" id="collect_span_order">
+    <span id="collect_message_span_order"></span>
+</span>
+<script type="text/x-magento-init">
+   {
+       "*": {
+           "order_status_cron": {"orderStatusAjaxUrl":"<?= $block->escapeUrl($block->getAjaxUrl()) ?>"}
+       }
+   }
+</script>
