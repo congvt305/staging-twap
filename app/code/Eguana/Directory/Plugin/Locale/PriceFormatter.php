@@ -21,7 +21,7 @@ class PriceFormatter
      */
     public function afterGetPriceFormat(\Magento\Framework\Locale\Format $subject, $result, $localeCode = null, $currencyCode = null)
     {
-        if ($localeCode == 'zh_Hant_TW' && isset($result['precision']) && isset($result['requiredPrecision'])) {
+        if ($currencyCode === 'TWD' && isset($result['precision']) && isset($result['requiredPrecision'])) {
             $result['precision'] = 0;
             $result['requiredPrecision'] = 0;
 

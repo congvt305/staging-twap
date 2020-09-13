@@ -386,7 +386,7 @@ return [
         'Magento_PersistentHistory' => 1,
         'Magento_PricePermissions' => 1,
         'Magento_GiftRegistry' => 1,
-        'Magento_ProductRecommendationsLayout' => 1,
+        'Magento_ProductRecommendationsLayout' => 0,
         'Magento_PageBuilderProductRecommendations' => 1,
         'Magento_ProductVideo' => 1,
         'Magento_CatalogStaging' => 1,
