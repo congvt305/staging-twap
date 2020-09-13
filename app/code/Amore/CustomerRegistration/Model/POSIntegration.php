@@ -379,7 +379,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
             [
                 'topic_name' => 'eguana.pos.update.customer',
                 'direction' => 'incoming',
-                'to' => 'base', //from or to
+                'to' => 'api', //from or to
                 'serialized_data' => $this->json->serialize($log),
                 'status' => $callSuccess,
                 'result_message' => $response->getMessage()
