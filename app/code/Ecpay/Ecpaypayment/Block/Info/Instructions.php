@@ -22,9 +22,14 @@ class Instructions extends \Magento\Payment\Block\Info\Instructions
     public function getEcpayPaymentMethod()
     {
         $additionalInfo = $this->getInfo()->getAdditionalInformation();
-        $rawDetailsInfo = $additionalInfo["raw_details_info"];
-        $ecpayChoosenPayment = $rawDetailsInfo["ecpay_choosen_payment"];
         $ecpayPaymentMethod = '';
+
+        if (isset($additionalInfo["raw_details_info"]) && !empty($additionalInfo["raw_details_info"])) {
+            $rawDetailsInfo = $additionalInfo["raw_details_info"];
+            $ecpayChoosenPayment = $rawDetailsInfo["ecpay_choosen_payment"];
+        } else {
+            $ecpayChoosenPayment = $additionalInfo["ecpay_choosen_payment"];
+        }
 
         if (strpos($ecpayChoosenPayment, 'credit') !== false) {
             $ecpayPaymentMethod = '信用卡付款';
