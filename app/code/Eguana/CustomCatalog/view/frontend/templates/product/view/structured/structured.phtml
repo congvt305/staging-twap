@@ -1,0 +1,23 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": "<?= /* @noEscape */ $block->escapeHtml($block->getProduct()->getName()) ?>",
+        "image": [
+            "<?= $block->escapeUrl($block->getImage($block->getProduct(), 'product_base_image')->getImageUrl()) ?>"
+        ],
+        "description": "<?= /* @noEscape */ $block->escapeHtml($block->getProduct()->getShortDescription()) ?>",
+        "brand": {
+            "@type": "Thing",
+            "name": "Laneige"
+        }
+    }
+</script>

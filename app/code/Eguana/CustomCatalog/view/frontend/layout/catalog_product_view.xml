@@ -7,6 +7,9 @@
 -->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Catalog\Block\Product\View" name="structured.data" template="Eguana_CustomCatalog::product/view/structured/structured.phtml"/>
+        </referenceContainer>
         <referenceBlock name="head.additional">
             <block class="Magento\Catalog\Block\Product\View" name="twitter.general" template="Eguana_CustomCatalog::product/view/twitter/general.phtml"/>
             <block class="Magento\Catalog\Block\Product\View\Description" name="hreflang.general" template="Eguana_CustomCatalog::product/view/hreflang/general.phtml">
