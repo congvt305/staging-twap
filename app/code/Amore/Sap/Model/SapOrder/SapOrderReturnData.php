@@ -353,7 +353,7 @@ class SapOrderReturnData extends AbstractSapOrder
                         'itemAuart' => self::RETURN_ORDER,
                         'itemAugru' => self::AUGRU_RETURN_CODE,
                         'itemAbrvw' => self::ABRVW_RETURN_CODE,
-                        'itemNetwr' => abs($itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount),
+                        'itemNetwr' => $itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount,
                         'itemMwsbp' => $itemTaxAmount,
                         'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnrOri' => $this->config->getClient('store', $storeId),
@@ -364,7 +364,7 @@ class SapOrderReturnData extends AbstractSapOrder
                     $cnt++;
                     $itemsSubtotal += $itemSubtotal;
                     $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount - round($mileagePerItem));
-                    $itemsGrandTotalInclTax += abs($itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount);
+                    $itemsGrandTotalInclTax += ($itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount);
                     $itemsDiscountAmount += $itemTotalDiscount;
 
                     $itemsMileage += round($this->getRateAmount($mileagePerItem, $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()));
