@@ -59,8 +59,13 @@ class Data extends AbstractHelper
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface
+     */
+    private $quoteCvsLocationRepository;
 
     public function __construct(
+        \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Encryption\EncryptorInterface $encryptor,
         \Eguana\GWLogistics\Model\Lib\EcpayCheckMacValue $ecpayCheckMacValue,
@@ -72,6 +77,7 @@ class Data extends AbstractHelper
         $this->encryptor = $encryptor;
         $this->ecpayLogistics = $ecpayLogistics;
         $this->logger = $logger;
+        $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
     }
 
     public function isActive($storeId = null)
@@ -281,6 +287,28 @@ class Data extends AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $storeId
         );
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     */
+    public function hasCvsLocation($order)
+    {
+        return $order->getShippingMethod() === 'gwlogistics_CVS' && $this->getCvsStoreData($order); //need to check if cvs location exists?
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     */
+    public function getCvsStoreData($order)
+    {
+        $cvsLocationId = $order->getShippingAddress()->getData('cvs_location_id');
+        $cvsLocation = null;
+        if ($cvsLocationId) {
+            $cvsLocation = $this->quoteCvsLocationRepository->getById($cvsLocationId);
+        }
+        return $cvsLocation;
+
     }
 
 }

@@ -12,4 +12,8 @@
         <plugin name="eguana_gwlogistics_set_carrier_config"
                 type="Eguana\GWLogistics\Plugin\Checkout\LayoutProcessor" sortOrder="10"/>
     </type>
+    <type name="Magento\Sales\Model\Order\Address\Renderer">
+            <plugin name="eguana_gwlogistics_cvs_address_formatter"
+                    type="Eguana\GWLogistics\Plugin\Sales\AddressRenderer" sortOrder="10"/>
+        </type>
 </config>
