@@ -286,8 +286,8 @@ class SapOrderReturnData extends AbstractSapOrder
                 ];
                 $cnt++;
                 $itemsSubtotal += $itemSubtotal;
-                $itemsGrandTotal += round($this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()));
-                $itemsGrandTotalInclTax += round($this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()));
+                $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount - $itemMileageUsed);
+                $itemsGrandTotalInclTax += ($itemSubtotal - $itemTotalDiscount - $itemMileageUsed - $itemTaxAmount);
                 $itemsDiscountAmount += $itemTotalDiscount;
                 $itemsMileage += round($this->getRateAmount($mileagePerItem, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()));
             } else {
@@ -363,8 +363,8 @@ class SapOrderReturnData extends AbstractSapOrder
 
                     $cnt++;
                     $itemsSubtotal += $itemSubtotal;
-                    $itemsGrandTotal += $itemGrandTotalValue;
-                    $itemsGrandTotalInclTax += $itemGrandTotalInclTaxValue;
+                    $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount - round($mileagePerItem));
+                    $itemsGrandTotalInclTax += ($itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount);
                     $itemsDiscountAmount += $itemTotalDiscount;
 
                     $itemsMileage += round($this->getRateAmount($mileagePerItem, $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()));
