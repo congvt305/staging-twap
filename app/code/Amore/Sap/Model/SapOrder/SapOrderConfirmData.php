@@ -468,7 +468,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                         'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                         'itemAuart' => self::NORMAL_ORDER,
                         'itemAugru' => '',
-                        'itemNetwr' => abs($itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount),
+                        'itemNetwr' => $itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount,
                         'itemMwsbp' => $itemTaxAmount,
                         'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnrOri' => $this->config->getClient('store', $storeId),
@@ -478,8 +478,8 @@ class SapOrderConfirmData extends AbstractSapOrder
 
                     $cnt++;
                     $itemsSubtotal += round($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered());
-                    $itemsGrandTotal += round($itemGrandTotal);
-                    $itemsGrandTotalInclTax += round($itemGrandTotalInclTax);
+                    $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem)));
+                    $itemsGrandTotalInclTax += ($itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount);
                     $itemsDiscountAmount += round($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()));
                     $itemsMileage += round($mileagePerItem);
                 } else {
@@ -544,7 +544,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                             'itemAuart' => self::NORMAL_ORDER,
                             'itemAugru' => '',
-                            'itemNetwr' => abs($itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount),
+                            'itemNetwr' => $itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount,
                             'itemMwsbp' => $itemTaxAmount,
                             'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                             'itemKunnrOri' => $this->config->getClient('store', $storeId),
@@ -553,8 +553,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                         ];
                         $cnt++;
                         $itemsSubtotal += $itemSubtotal;
-                        $itemsGrandTotalInclTax += round($itemGrandTotalInclTax);
-                        $itemsGrandTotal += round($itemGrandTotal);
+                        $itemsGrandTotalInclTax += ($itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount);
+                        $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem)));
                         $itemsDiscountAmount += $itemTotalDiscount;
 
                         $itemsMileage += round($mileagePerItem);

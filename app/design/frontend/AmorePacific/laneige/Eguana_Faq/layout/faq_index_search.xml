@@ -11,6 +11,8 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
+        <meta name="keywords" content="FAQ,常見問題與回答,問題,疑問,客戶諮詢服務"/>
+        <meta name="description" content="本章顯示蘭芝客戶提出的常見問題及回答。"/>
         <link rel="alternate" hreflang="en-hk" src="https://www.laneige.com/hk/en/customer-center/faq/faq.html" src_type="url"/>
         <link rel="alternate" hreflang="en-ca" src="https://www.laneige.com/ca/en/customer-center/faq/faq.html" src_type="url"/>
         <link rel="alternate" hreflang="zh-hant-hk" src="https://www.laneige.com/hk/zh/customer-center/faq/faq.html" src_type="url"/>

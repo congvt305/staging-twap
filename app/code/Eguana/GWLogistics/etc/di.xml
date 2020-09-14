@@ -76,8 +76,4 @@
         <plugin name="eguana_gwlogistics_set_order_status"
                 type="Eguana\GWLogistics\Plugin\Sales\OrderStatePlugin" sortOrder="10"/>
     </type>
-    <type name="Magento\Sales\Model\Order\Address\Renderer">
-        <plugin name="eguana_gwlogistics_cvs_address_formatter"
-                type="Eguana\GWLogistics\Plugin\Sales\AddressRenderer" sortOrder="10"/>
-    </type>
 </config>

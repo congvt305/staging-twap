@@ -6,6 +6,19 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <meta name="keywords" content="問題,疑問,聯絡我們,諮詢服務"/>
+        <meta name="description" content="如果您想詢問有關LANEIGE的任何資訊，請將您的詢問發送給我們。您很快就會收到LANEIGE客戶服務團隊的來信 | LANEIGE"/>
+        <link rel="alternate" hreflang="en" src="https://www.laneige.com/int/en/customer-center/send-your-inquiry/send-your-inquiry.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-hk" src="https://www.laneige.com/hk/en/customer-center/send-your-inquiry/send-your-inquiry.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-sg" src="https://www.laneige.com/sg/en/customer-center/send-your-inquiry/send-your-inquiry.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-my" src="https://www.laneige.com/my/en/customer-center/send-your-inquiry/send-your-inquiry.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-ca" src="https://www.laneige.com/ca/en/customer-center/send-your-inquiry/send-your-inquiry.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-hant-hk" src="https://www.laneige.com/hk/zh/customer-center/send-your-inquiry/send-your-inquiry.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/contact/" src_type="url"/>
+        <link rel="alternate" hreflang="id-id" src="https://www.laneige.com/id/id/customer-center/send-your-inquiry/send-your-inquiry.html" src_type="url"/>
+        <link rel="alternate" hreflang="th-th" src="https://www.laneige.com/th/th/customer-center/send-your-inquiry/send-your-inquiry.html" src_type="url"/>
+    </head>
     <body>
         <referenceBlock name="breadcrumbs">
             <action method="addCrumb">
