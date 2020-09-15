@@ -66,3 +66,15 @@ ii) Return Order Reason
 
 Enter the reason and submit the form. The Complete order will be returned.
 
+- **●●**** RMA Bundle Product Errors**
+
+Added Preference in module Eguana\CustomRMA\Model\Rma to show Bundle Products
+Errors on one line while creating the RMA Request.
+
+Bundle Product Error on different lines
+
+![](https://i.ibb.co/PwHpRBw/bundleerror1.png)
+
+After added preference Bundle Product Error on same line separated by comma
+
+![](https://i.ibb.co/ZWp6ZNw/bundle2.png)

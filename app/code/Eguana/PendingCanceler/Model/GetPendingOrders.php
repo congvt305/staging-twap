@@ -63,6 +63,7 @@ class GetPendingOrders
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('status', 'pending', 'eq')
             ->addFilter('created_at', $coveredDate, 'lteq')
+            ->addFilter('store_id', $storeId, 'eq')
             ->create();
 
         return $this->orderRepository->getList($searchCriteria);

@@ -14,4 +14,7 @@
     <type name="Magento\Bundle\Helper\Catalog\Product\Configuration">
         <plugin name="eguana_custombundle_format" type="Eguana\CustomBundle\Plugin\Helper\Catalog\Product\Configuration"/>
     </type>
+    <type name="Magento\Bundle\Block\Sales\Order\Items\Renderer">
+        <plugin name="change_bundle_product_format_my_orders" type="Eguana\CustomBundle\Plugin\Block\Sales\Order\Items\Renderer"/>
+    </type>
 </config>

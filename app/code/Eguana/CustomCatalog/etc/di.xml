@@ -10,4 +10,7 @@
     <type name="Magento\CatalogInventory\Model\Quote\Item\QuantityValidator">
         <plugin name="remove_unnecessary_error_message" type="Eguana\CustomCatalog\Plugin\Model\Quote\Item\QuantityValidator"/>
     </type>
+    <type name="Magento\Wishlist\Controller\Index\Add">
+        <plugin name="add_to_wish_list_redirect" type="Eguana\CustomCatalog\Plugin\Controller\Index\Add"/>
+    </type>
 </config>

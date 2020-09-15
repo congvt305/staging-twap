@@ -24,6 +24,8 @@ define([
             verifyPosSelector : '.verify-registration-link',
             mobileNumberSelector : '.mobile-number',
             codeSelector : '.code',
+            firstNameSelector : '#firstname',
+            lastNameSelector : '#lastname',
         },
         _init: function() {
         },
@@ -53,8 +55,10 @@ define([
             $('.pos-verification-message').hide();
             $('.customer-submit').attr('disabled', true);
             var mobileNumberIsValid = this.isFieldValid('mobile_number');
+            var firstNameIsValid = this.isFieldValid('firstname');
+            var lastNameIsValid = this.isFieldValid('lastname');
 
-            if(mobileNumberIsValid){
+            if(mobileNumberIsValid && lastNameIsValid && firstNameIsValid){
                 $.ajax({
                     url: this.options.sendCodeUrl,
                     type: 'post',
@@ -63,7 +67,9 @@ define([
                     context: this,
                     cache: false,
                     data: {
-                        'mobileNumber':$(this.options.mobileNumberSelector).val()
+                        'mobileNumber':$(this.options.mobileNumberSelector).val(),
+                        'firstName':$(this.options.firstNameSelector).val(),
+                        'lastName':$(this.options.lastNameSelector).val()
                     },
 
                     /**

@@ -119,6 +119,7 @@ class RmaStatusChanger
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('status', 'pending', 'eq')
             ->addFilter('date_requested', $periodAppliedDate, 'lteq')
+            ->addFilter('store_id', $storeId, 'eq')
             ->create();
 
         $pendingRmaList = $this->rmaRepository->getList($searchCriteria)->getItems();

@@ -109,4 +109,6 @@
 "Account Leave Confirmation","解除會員帳號"
 "Are you sure you want to leave your account?","您確定要解除您的會員帳號嗎?"
 "You have signed out and will go to our homepage in 5 seconds.","你已登出，將在5秒內回到官網首頁。"
-
+"Thank you for your subscription to the latest news on %store_name.","感謝您訂閱【%store_name】最新消息"
+"You have successfully subscribed to the latest news from %store_name.","您已經成功訂閱【%store_name】最新消息"
+"You have successfully cancelled the latest news from %store_name.","您已經成功取消【%store_name】最新消息"
