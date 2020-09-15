@@ -45,6 +45,7 @@ class Template
     public function beforeSetTemplateVars(TemplateAlias $subject, array $vars)
     {
         $order = $vars['order'];
+        $orderData  = $order->getData();
         $fullActionName   = $this->request->getFullActionName();
         $controllerName   = $this->request->getControllerName();
         $isGuest    = $order->getData('customer_is_guest');
