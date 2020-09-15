@@ -180,6 +180,10 @@ class InfoList extends Template implements IdentityInterface
         return [StoreInfoModel::CACHE_TAG];
     }
 
+    /**
+     * Added breadcrumbs
+     * @return $this|InfoList
+     */
     public function _prepareLayout()
     {
         try {
