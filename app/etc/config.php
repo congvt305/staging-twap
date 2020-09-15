@@ -529,6 +529,7 @@ return [
         'Eguana_StoreLocator' => 1,
         'Amore_CustomerRegistration' => 1,
         'Eguana_CustomCheckout' => 1,
+        'Eguana_ImportExport' => 1,
         'Eguana_VideoBoard' => 1,
         'Fastly_Cdn' => 1,
         'Klarna_Core' => 0,
