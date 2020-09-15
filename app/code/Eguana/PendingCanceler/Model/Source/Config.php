@@ -14,7 +14,7 @@ class Config
 {
     const PENDING_CANCEL_ACTIVE_CHECK_XML_PATH = 'pending_canceler/general/active';
 
-    const PENDING_ORDERS_CANCEL_DAYS_XML_PATH = 'pending_canceler/days/days_to_cancel';
+    const PENDING_ORDERS_CANCEL_TIME_XML_PATH = 'pending_canceler/time/minutes_after_to_cancel';
 
     /**
      * @var ScopeConfigInterface
@@ -36,8 +36,8 @@ class Config
         return $this->scopeConfig->getValue(self::PENDING_CANCEL_ACTIVE_CHECK_XML_PATH, 'store', $storeId);
     }
 
-    public function getDaysToCancel($storeId)
+    public function getMinutesToCancel($storeId)
     {
-        return $this->scopeConfig->getValue(self::PENDING_ORDERS_CANCEL_DAYS_XML_PATH, 'store', $storeId);
+        return $this->scopeConfig->getValue(self::PENDING_ORDERS_CANCEL_TIME_XML_PATH, 'store', $storeId);
     }
 }

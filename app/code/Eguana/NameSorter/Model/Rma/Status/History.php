@@ -31,6 +31,7 @@ use Magento\Rma\Model\RmaFactory as RmaFactoryAlias;
 use Magento\Sales\Model\Order\Address\Renderer as AddressRenderer;
 use Magento\Store\Model\Store as StoreAlias;
 use Magento\Store\Model\StoreManagerInterface as StoreManagerInterfaceAlias;
+use Magento\Framework\App\Request\Http;
 
 /**
  * This class is used for the preference of History Model which
@@ -40,6 +41,11 @@ use Magento\Store\Model\StoreManagerInterface as StoreManagerInterfaceAlias;
  */
 class History extends HistoryAlias
 {
+    /**
+     * @var Http
+     */
+    private $request;
+
     /**
      * Rma configuration
      *
@@ -95,6 +101,7 @@ class History extends HistoryAlias
      * @param AddressRenderer $addressRenderer
      * @param AbstractResourceAlias|null $resource
      * @param AbstractDbAlias|null $resourceCollection
+     * @param Http $request
      * @param array $data
      */
     public function __construct(
@@ -115,6 +122,7 @@ class History extends HistoryAlias
         AddressRenderer $addressRenderer,
         AbstractResourceAlias $resource = null,
         AbstractDbAlias $resourceCollection = null,
+        Http $request,
         array $data = []
     ) {
         parent::__construct(
@@ -143,6 +151,7 @@ class History extends HistoryAlias
         $this->transportBuilder = $transportBuilder;
         $this->addressRenderer = $addressRenderer;
         $this->rmaHelper = $rmaHelper;
+        $this->request = $request;
     }
 
     /**
@@ -287,6 +296,12 @@ class History extends HistoryAlias
         $store = $this->storeManager->getStore($storeId);
         $identity = $this->rmaConfig->getIdentity('', $storeId);
 
+        $fullActionName   = $this->request->getFullActionName();
+        if (($order->getCustomerIsGuest()) && ($fullActionName == 'magento_rma_guest_submit')) {
+            $customerNameOnEmail = $order->getCustomerName();
+        } else {
+            $customerNameOnEmail = $order->getCustomerLastname() . ' ' . $order->getCustomerFirstname();
+        }
         try {
             foreach ($sendTo as $recipient) {
                 $transport = $this->transportBuilder->setTemplateIdentifier($template)
@@ -299,7 +314,7 @@ class History extends HistoryAlias
                             ],
                             'order' => $order,
                             'order_data' => [
-                                'customer_name' => $order->getCustomerLastname() . ' ' . $order->getCustomerFirstname(),
+                                'customer_name' => $customerNameOnEmail,
                             ],
                             'created_at_formatted_1' => $rma->getCreatedAtFormated(1),
                             'store' => $store,

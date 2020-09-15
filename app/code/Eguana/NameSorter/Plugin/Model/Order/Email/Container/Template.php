@@ -52,7 +52,8 @@ class Template
         if (($isGuest == '1' && $controllerName == 'order_invoice' && $entityType == 'invoice')
             || ($isGuest == '1' && $entityType == 'order')
             || ($isGuest == '1' && $entityType == 'shipment')
-            || ($isGuest == '1' && $entityType == 'order_edit')) {
+            || ($isGuest == '1' && $entityType == 'order_edit')
+            || (empty($vars['order_data']))) {
             return [$vars];
         }
         $firstname  = $order->getData('customer_firstname');
