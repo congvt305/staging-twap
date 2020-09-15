@@ -45,9 +45,18 @@ class Template
     public function beforeSetTemplateVars(TemplateAlias $subject, array $vars)
     {
         $order = $vars['order'];
-        $orderData  = $order->getData();
+        $fullActionName   = $this->request->getFullActionName();
         $controllerName   = $this->request->getControllerName();
         $isGuest    = $order->getData('customer_is_guest');
+        if (($isGuest == '1') && ($fullActionName == 'sales_order_addComment')
+            || ($isGuest == '1') && ($fullActionName == 'sales_order_creditmemo_save')
+            || ($isGuest == '1') && ($fullActionName == 'sales_order_creditmemo_addComment')) {
+            $firstname  = $order->getData('customer_firstname');
+            $lastname   = $order->getData('customer_lastname');
+            $vars['billing']['lastname'] = $firstname;
+            $vars['billing']['firstname'] = $lastname;
+            return [$vars];
+        }
         $entityType  = $order->getEntityType();
         if (($isGuest == '1' && $controllerName == 'order_invoice' && $entityType == 'invoice')
             || ($isGuest == '1' && $entityType == 'order')
