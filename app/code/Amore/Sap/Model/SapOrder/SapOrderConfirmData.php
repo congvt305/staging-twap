@@ -540,7 +540,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemSlamt' => $itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem)),
                             'itemMiamt' => abs(round($mileagePerItem)),
                             // 상품이 무상제공인 경우 Y 아니면 N
-                            'itemFgflg' => $orderItem->getOriginalPrice() == 0 ? 'Y' : 'N',
+                            'itemFgflg' => $product->getPrice() == 0 ? 'Y' : 'N',
                             'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                             'itemAuart' => self::NORMAL_ORDER,
                             'itemAugru' => '',
