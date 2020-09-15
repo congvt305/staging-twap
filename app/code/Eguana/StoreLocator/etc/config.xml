@@ -14,6 +14,7 @@
         <stores_board>
             <general_stores>
                 <enabled>1</enabled>
+                <title>尋找門市</title>
             </general_stores>
             <frontend_stores>
                 <map_height>420px</map_height>
