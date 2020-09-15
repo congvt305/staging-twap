@@ -62,7 +62,7 @@ define([
                     data: form_data,
                     type: "POST"
                 }).done(function (data) {
-                    window.location.href = url;
+                    window.location.href= url;
                 });
             }
         });

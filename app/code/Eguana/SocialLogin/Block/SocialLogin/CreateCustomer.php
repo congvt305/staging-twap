@@ -90,4 +90,19 @@ class CreateCustomer extends Template
         }
         return $storeName;
     }
+
+    /**
+     * Get website code
+     * @return string|null
+     */
+    public function getCurrentStoreCode()
+    {
+        $storeCode = null;
+        try {
+            $storeCode = $this->storeManager->getStore()->getCode();
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+        return $storeCode;
+    }
 }
