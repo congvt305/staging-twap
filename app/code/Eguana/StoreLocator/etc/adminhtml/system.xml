@@ -28,6 +28,9 @@
                 <field id="bottom_block_id" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Store Locator Bottom Block Id</label>
                 </field>
+                <field id="title" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Store Locator Title</label>
+                </field>
             </group>
             <group id="frontend_stores" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Frontend Stores Map</label>

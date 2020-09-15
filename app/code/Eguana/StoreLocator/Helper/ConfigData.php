@@ -25,6 +25,7 @@ class ConfigData extends AbstractHelper
     const ADMIN_STORES = 'stores_board/admin_stores/';
     const ADMIN_STORES_PAGIANTION = 'stores_board/admin_stores_pagination/stores_pagination_per_page';
     const GENERAL_BOTTOM_BLOCK_ID = 'stores_board/general_stores/bottom_block_id';
+    const GENERAL_STORES_TITLE = 'stores_board/general_stores/title';
 
     /**
      * get config value
@@ -34,6 +35,18 @@ class ConfigData extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::GENERAL_STORES . 'enabled',
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Get Store Title
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->scopeConfig->getValue(
+            self::GENERAL_STORES_TITLE,
             ScopeInterface::SCOPE_STORE
         );
     }

@@ -180,6 +180,36 @@ class InfoList extends Template implements IdentityInterface
         return [StoreInfoModel::CACHE_TAG];
     }
 
+    public function _prepareLayout()
+    {
+        try {
+            parent::_prepareLayout();
+
+            if ($breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs')) {
+                $breadcrumbsBlock->addCrumb(
+                    'home',
+                    [
+                        'label' => __('Home'),
+                        'title' => __('Home'),
+                        'link' => $this->_storeManager->getStore()->getBaseUrl()
+                    ]
+                );
+                $this->pageConfig->getTitle()->set(__($this->storesHelper->getTitle()));
+
+                $breadcrumbsBlock->addCrumb(
+                    $this->storesHelper->getTitle(),
+                    [
+                        'label' => __($this->storesHelper->getTitle()),
+                        'title' => __($this->storesHelper->getTitle())
+                    ]
+                );
+            }
+        } catch (\Exception $exception) {
+            $this->_logger->debug($exception->getMessage());
+        }
+        return $this;
+    }
+
     /**
      * This function will return stores collection
      * @return StoreCollectionFactory
