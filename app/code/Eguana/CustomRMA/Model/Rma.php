@@ -161,7 +161,6 @@ class Rma extends \Magento\Rma\Model\Rma
         $this->messageManager = $messageManager;
         $this->_rmaItemFactory = $rmaItemFactory;
         $this->_session = $session;
-     //   $this->bundleItemsError = $bundleItemsError;
     }
 
     /**
