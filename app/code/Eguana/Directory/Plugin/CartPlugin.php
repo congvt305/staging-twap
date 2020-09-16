@@ -20,9 +20,9 @@ class CartPlugin
      */
     public function afterGetSectionData(\Magento\Checkout\CustomerData\Cart $subject, $result)
     {
-        if (isset($result['subtotal_incl_tax'], $result['subtotal_excl_tax']) && $result['subtotalAmount'] === null) {
-            $result['subtotal_incl_tax'] = null;
-            $result['subtotal_excl_tax'] = null;
+        if (isset($result['subtotal_incl_tax'], $result['subtotal_excl_tax']) && ($result['subtotalAmount'] === null || $result['subtotalAmount'] === "0.0000")) {
+            $result['subtotal_incl_tax'] = "0.0000";
+            $result['subtotal_excl_tax'] = "0.0000";
         }
         return $result;
     }
