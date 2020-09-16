@@ -790,4 +790,46 @@ class Payment extends AbstractMethod
 
         return $carruerType;
     }
+
+    public function checkMobileBarCode($eInvoiceData, $storeId)
+    {
+        try
+        {
+            $sMsg = '' ;
+            // 1.載入SDK程式
+            $ecpay_invoice = $this->ecpayInvoice;
+            // 2.寫入基本介接參數
+            $ecpay_invoice->Invoice_Method = 'CHECK_MOBILE_BARCODE'; 					// 請見16.1操作發票功能類別
+            $ecpay_invoice->Invoice_Url = $this->getCheckMobileBarCodeApiUrl();
+            $ecpay_invoice->MerchantID = $this->getEcpayConfigFromStore("merchant_id", $storeId);
+            $ecpay_invoice->HashKey = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_hash_key", $storeId);
+            $ecpay_invoice->HashIV = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_hash_iv", $storeId);
+            // 3.寫入發票傳送資訊
+            $ecpay_invoice->Send['BarCode'] = $eInvoiceData["barCodeValue"]; 							// 手機條碼
+            // 4.送出
+            $aReturn_Info = $ecpay_invoice->Check_Out();
+
+            // 5.返回
+            return [
+                "IsExist" => $aReturn_Info["IsExist"],
+                "RtnCode" => $aReturn_Info["RtnCode"],
+                "RtnMsg" => $aReturn_Info["RtnMsg"]
+            ];
+        } catch (\Exception $e) {
+            // 例外錯誤處理。
+            $sMsg = $e->getMessage();
+            return [
+                "RtnMsg" => $sMsg
+            ];
+        }
+    }
+
+    public function getCheckMobileBarCodeApiUrl()
+    {
+        if ($this->getMagentoConfig("test_flag")) {
+            return "https://einvoice-stage.ecpay.com.tw/Query/CheckMobileBarCode";
+        } else {
+            return "https://einvoice.ecpay.com.tw/Query/CheckMobileBarCode";
+        }
+    }
 }

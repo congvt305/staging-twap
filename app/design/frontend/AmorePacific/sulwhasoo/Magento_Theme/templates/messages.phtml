@@ -21,6 +21,7 @@
         <!-- ko if: messages().messages && messages().messages.length > 0 -->
         <!-- ko foreach: { data: messages().messages, as: 'message'}  -->
         <!-- ko if: message.type != undefined -->
+        <!-- ko if: (message.text != '點數查詢') -->
         <div role="alert" class="messages">
             <div data-bind="attr: {
                             class: 'message-' + message.type + ' ' + message.type + ' message',
@@ -30,6 +31,7 @@
                 <div class="remove"></div>
             </div>
         </div>
+        <!-- /ko -->
         <!-- /ko -->
         <!-- /ko -->
         <!-- /ko -->

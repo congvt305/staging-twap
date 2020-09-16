@@ -18,10 +18,10 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-            <group id="days" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="time" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Days Setting</label>
-                <field id="days_to_cancel" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Days Setting to Cancel Pending Orders</label>
+                <field id="minutes_after_to_cancel" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Minutes Setting to Cancel Pending Orders</label>
                 </field>
             </group>
             <group id="pending_canceler_cron" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="0" showInStore="0">

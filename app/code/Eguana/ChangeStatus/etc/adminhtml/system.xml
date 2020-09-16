@@ -42,7 +42,7 @@
                     <frontend_model>Eguana\ChangeStatus\Block\System\Config\RmaAuthorizedRun</frontend_model>
                 </field>
             </group>
-            <group id="change_order_status_cron" translate="label" type="text" sortOrder="270" showInDefault="1" showInWebsite="0" showInStore="0">
+            <group id="change_order_status_cron" translate="label" type="text" sortOrder="270" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Change Order Status Cron</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Change Order Status Active</label>
@@ -55,6 +55,10 @@
                 </field>
                 <field id="time" translate="label" type="time" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Start Time</label>
+                </field>
+                <field id="order_status_cron" translate="Run Now" type="button" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Run Now</label>
+                    <frontend_model>Eguana\ChangeStatus\Block\System\Config\OrderCompleteRun</frontend_model>
                 </field>
             </group>
         </section>

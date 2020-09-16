@@ -443,6 +443,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $itemGrandTotalInclTax = $orderItem->getRowTotalInclTax()
                         - $orderItem->getDiscountAmount()
                         - $mileagePerItem;
+                    $itemSubtotal = abs(round($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered()));
+                    $itemTotalDiscount = abs(round($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered())));
+                    $itemTaxAmount = abs(round($orderItem->getTaxAmount()));
 
                     $product = $this->productRepository->getById($orderItem->getProductId());
                     $meins = $product->getData('meins');
@@ -456,26 +459,27 @@ class SapOrderConfirmData extends AbstractSapOrder
                         'itemMenge' => intval($orderItem->getQtyOrdered()),
                         // 아이템 단위, Default : EA
                         'itemMeins' => $this->getMeins($meins),
-                        'itemNsamt' => abs(round($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered())),
-                        'itemDcamt' => abs(round($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()))),
-                        'itemSlamt' => abs(round($itemGrandTotalInclTax)),
+                        'itemNsamt' => $itemSubtotal,
+                        'itemDcamt' => $itemTotalDiscount,
+                        'itemSlamt' => $itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem)),
                         'itemMiamt' => abs(round($mileagePerItem)),
                         // 상품이 무상제공인 경우 Y 아니면 N
                         'itemFgflg' => $orderItem->getOriginalPrice() == 0 ? 'Y' : 'N',
                         'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                         'itemAuart' => self::NORMAL_ORDER,
                         'itemAugru' => '',
-                        'itemNetwr' => abs(round($itemGrandTotal)),
-                        'itemMwsbp' => abs(round($orderItem->getTaxAmount())),
+                        'itemNetwr' => $itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount,
+                        'itemMwsbp' => $itemTaxAmount,
                         'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnrOri' => $this->config->getClient('store', $storeId),
                         'itemOdrnoOri' => $order->getIncrementId(),
                         'itemPosnrOri' => $cnt
                     ];
+
                     $cnt++;
                     $itemsSubtotal += round($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered());
-                    $itemsGrandTotal += round($itemGrandTotal);
-                    $itemsGrandTotalInclTax += round($itemGrandTotalInclTax);
+                    $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem)));
+                    $itemsGrandTotalInclTax += ($itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount);
                     $itemsDiscountAmount += round($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()));
                     $itemsMileage += round($mileagePerItem);
                 } else {
@@ -514,6 +518,14 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $bundleChild->getQty();
                         $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $bundleChild->getQty();
 
+                        $itemSubtotal = abs(round($bundleChildPrice * $bundleChildFromOrder->getQtyOrdered()));
+                        $itemTotalDiscount = abs(round(
+                            $bundleChildDiscountAmount +
+                            (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) +
+                            $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered())
+                        );
+                        $itemTaxAmount = abs(round($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getTaxAmount())));
+
                         $orderItemData[] = [
                             'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                             'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -523,29 +535,27 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemMenge' => intval($bundleChildFromOrder->getQtyOrdered()),
                             // 아이템 단위, Default : EA
                             'itemMeins' => $this->getMeins($meins),
-                            'itemNsamt' => abs(round($bundleChildPrice * $bundleChildFromOrder->getQtyOrdered())),
-                            'itemDcamt' => abs(round($bundleChildDiscountAmount +
-                                (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) + $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered())),
-                            'itemSlamt' => abs(round($itemGrandTotalInclTax)),
+                            'itemNsamt' => $itemSubtotal,
+                            'itemDcamt' => $itemTotalDiscount,
+                            'itemSlamt' => $itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem)),
                             'itemMiamt' => abs(round($mileagePerItem)),
                             // 상품이 무상제공인 경우 Y 아니면 N
-                            'itemFgflg' => $orderItem->getOriginalPrice() == 0 ? 'Y' : 'N',
+                            'itemFgflg' => $product->getPrice() == 0 ? 'Y' : 'N',
                             'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                             'itemAuart' => self::NORMAL_ORDER,
                             'itemAugru' => '',
-                            'itemNetwr' => abs(round($itemGrandTotal)),
-                            'itemMwsbp' => abs(round($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getTaxAmount()))),
+                            'itemNetwr' => $itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount,
+                            'itemMwsbp' => $itemTaxAmount,
                             'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                             'itemKunnrOri' => $this->config->getClient('store', $storeId),
                             'itemOdrnoOri' => $order->getIncrementId(),
                             'itemPosnrOri' => $cnt
                         ];
                         $cnt++;
-                        $itemsSubtotal += round($bundleChildPrice * $bundleChildFromOrder->getQtyOrdered());
-                        $itemsGrandTotalInclTax += round($itemGrandTotalInclTax);
-                        $itemsGrandTotal += round($itemGrandTotal);
-                        $itemsDiscountAmount += round($bundleChildDiscountAmount +
-                            (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) + $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered());
+                        $itemsSubtotal += $itemSubtotal;
+                        $itemsGrandTotalInclTax += ($itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount);
+                        $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem)));
+                        $itemsDiscountAmount += $itemTotalDiscount;
 
                         $itemsMileage += round($mileagePerItem);
                     }

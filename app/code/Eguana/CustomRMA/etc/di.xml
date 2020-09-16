@@ -16,4 +16,5 @@
         <plugin name="eguana_customrma_save_guest_shipping_preference"
                 type="Eguana\CustomRMA\Plugin\GuestSubmitPlugin" sortOrder="10"/>
     </type>
+    <preference for="Magento\Rma\Model\Rma" type="Eguana\CustomRMA\Model\Rma" />
 </config>

@@ -54,6 +54,7 @@ define([
                     } else {
                         processors.default.getRates(quote.shippingAddress());
                     }
+                    $('body').trigger('processStop');
                 },
 
                 error: function () {

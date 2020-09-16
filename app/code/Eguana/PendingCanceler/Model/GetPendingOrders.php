@@ -53,16 +53,17 @@ class GetPendingOrders
 
     public function getPendingOrders($storeId)
     {
-        $daysLeftToCancel = $this->config->getDaysToCancel($storeId);
+        $daysLeftToCancel = $this->config->getMinutesToCancel($storeId);
         if (empty($daysLeftToCancel)) {
             $daysLeftToCancel = 0;
         }
 
-        $coveredDate = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -' . $daysLeftToCancel . ' day'));
+        $coveredDate = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -' . $daysLeftToCancel . ' minutes'));
 
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('status', 'pending', 'eq')
             ->addFilter('created_at', $coveredDate, 'lteq')
+            ->addFilter('store_id', $storeId, 'eq')
             ->create();
 
         return $this->orderRepository->getList($searchCriteria);

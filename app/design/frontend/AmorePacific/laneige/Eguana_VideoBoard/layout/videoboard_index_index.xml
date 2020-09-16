@@ -11,6 +11,8 @@
 -->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
+        <meta name="keywords" content="K-Beauty,K-Beauty 技巧,如何使用蘭芝產品"/>
+        <meta name="description" content="組成LANEIGE K-Beauty學院的教學視頻片段。 LANEIGE的時尚化妝方法將使您瞭解時尚的樂趣 | LANEIGE"/>
         <link rel="alternate" hreflang="ko-kr" src="http://www.laneige.com/kr/ko/how-to/online-class.html" src_type="url"/>
         <link rel="alternate" hreflang="en" src="https://www.laneige.com/int/en/how-to/how-to.html" src_type="url"/>
         <link rel="alternate" hreflang="en-hk" src="https://www.laneige.com/hk/en/How-to/how-to.html" src_type="url"/>
