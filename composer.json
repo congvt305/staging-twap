@@ -19,7 +19,8 @@
         }
     },
     "require": {
-        "dotmailer/dotmailer-magento2-extension": "4.5.1 as 4.4.0",
+        "dotmailer/dotmailer-magento2-extension": "4.7.1 as 4.4.0",
+        "dotmailer/dotmailer-magento2-extension-enterprise": "1.0.7 as 1.0.2",
         "magento/magento-cloud-metapackage": ">=2.3.5 <2.3.6",
         "magento/module-baler": "dev-master",
         "magento/module-page-builder-product-recommendations": "^1.0",
@@ -61,7 +62,7 @@
             "Magento\\TestFramework\\Utility\\": "dev/tests/static/framework/Magento/TestFramework/Utility/"
         }
     },
-    "minimum-stability": "alpha",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
         "component_paths": {
