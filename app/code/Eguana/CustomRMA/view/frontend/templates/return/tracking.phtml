@@ -6,34 +6,39 @@
 //phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
 //phpcs:disable Magento2.Files.LineLength.MaxExceeded
 /** @var $block \Magento\Rma\Block\Returns\Tracking */
+$rma = $block->getRma();
 ?>
 
 <?php if ($block->getErrorMessage()) : ?>
-<tr>
-    <td colspan="3">
-        <div class="message error">
-             <div><?= $block->escapeHtml($block->getErrorMessage()) ?></div>
-        </div>
-    </td>
-</tr>
+    <tr>
+        <td colspan="3">
+            <div class="message error">
+                <div><?= $block->escapeHtml($block->getErrorMessage()) ?></div>
+            </div>
+        </td>
+    </tr>
 <?php endif ?>
 <?php foreach ($block->getTrackingNumbers() as $number) : ?>
-<tr>
-    <td data-th="<?= $block->escapeHtmlAttr(__('Carrier')) ?>" class="col carrier"><?= $block->escapeHtml($number->getCarrierTitle()) ?></td>
-    <td data-th="<?= $block->escapeHtmlAttr(__('Method')) ?>" class="col method"><?= $block->escapeHtml($number->getMethodTitle()) ?></td>
-    <td data-th="<?= $block->escapeHtmlAttr(__('Return Code')) ?>" class="col id">
-        <a href="#" data-mage-init='{"popupWindow": {
+    <tr>
+        <td data-th="<?= $block->escapeHtmlAttr(__('Carrier')) ?>" class="col carrier"><?= $block->escapeHtml($number->getCarrierTitle()) ?></td>
+        <?php if ($rma->getData('shipping_preference')) : ?>
+        <td data-th="<?= $block->escapeHtmlAttr(__('Method')) ?>" class="col method"><?= $block->escapeHtml(__($rma->getData('shipping_preference'))) ?></td>
+        <?php else : ?>
+        <td data-th="<?= $block->escapeHtmlAttr(__('Method')) ?>" class="col method"><?= $block->escapeHtml($number->getMethodTitle()) ?></td>
+        <?php endif ?>
+        <td data-th="<?= $block->escapeHtmlAttr(__('Return Code')) ?>" class="col id">
+            <a href="#" data-mage-init='{"popupWindow": {
             "windowURL":"<?= $block->escapeUrl($this->helper(Magento\Rma\Helper\Data::class)->getTrackingPopupUrlBySalesModel($number)) ?>",
             "windowName":"trackshipment",
             "width":800,"height":600,"top":0,"left":0,"resizable":1,"scrollbars":1
         }}' title="<?= $block->escapeHtmlAttr($number->getTrackNumber()) ?>" class="action tracking">
-            <span><?= $block->escapeHtml($number->getTrackNumber()) ?></span>
-        </a>
-    </td>
-</tr>
+                <span><?= $block->escapeHtml($number->getTrackNumber()) ?></span>
+            </a>
+        </td>
+    </tr>
 <?php endforeach; ?>
 <?php if ($block->isPrintShippingLabelAllowed()) : ?>
-<script type="text/x-magento-init">
+    <script type="text/x-magento-init">
     {
         "#rma_track_info": {
             "Magento_Rma/set-options": {
