@@ -7,18 +7,24 @@
 /** @var Magento\Wishlist\Block\Catalog\Product\ProductList\Item\AddTo\Wishlist $block */
 ?>
 <?php
-$product = $block->getProduct();
-$optionsCollection = $product->getTypeInstance(true)
-    ->getSelectionsCollection(
-        $product->getTypeInstance(true)->getOptionsIds($product),
-        $product
-    );
-$requestData = [];
-foreach ($optionsCollection as $options) {
-    $requestData['bundle_option['.$options->getOptionId().']'] = (int) $options->getSelectionId();
-    $requestData['bundle_option_qty['.$options->getOptionId().']'] = (int) $options->getSelectionQty();
+$productType = $block->getProduct()->getTypeId();
+if ($productType == 'bundle')
+{
+    $product = $block->getProduct();
+    $optionsCollection = $product->getTypeInstance(true)
+        ->getSelectionsCollection(
+            $product->getTypeInstance(true)->getOptionsIds($product),
+            $product
+        );
+    $requestData = [];
+    foreach ($optionsCollection as $options) {
+        $requestData['bundle_option['.$options->getOptionId().']'] = (int) $options->getSelectionId();
+        $requestData['bundle_option_qty['.$options->getOptionId().']'] = (int) $options->getSelectionQty();
+    }
+    $requestData['qty'] = 1;
+} else {
+    $requestData = [];
 }
-$requestData['qty'] = 1;
 ?>
 <?php if ($block->getWishlistHelper()->isAllow()) : ?>
     <a href="#"
