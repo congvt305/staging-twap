@@ -501,19 +501,13 @@ class Payment extends AbstractMethod
             $payment = $order->getPayment();
             $additionalInfo = $payment->getAdditionalInformation();
             $rawDetailsInfo = $additionalInfo["raw_details_info"];
-            $eInvoiceType = $rawDetailsInfo["ecpay_einvoice_type"];
-            $triplicateTaxId = $rawDetailsInfo["ecpay_einvoice_tax_id_number"];
-            $cellphoneBarcode = $rawDetailsInfo["ecpay_einvoice_cellphone_barcode"];
-            $carruerType = $this->getCarruerType($eInvoiceType);
-
-            $donationCode = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_love_code", $storeId);
 
             // 3.寫入發票相關資訊
             $aItems = array();
             // 商品資訊
             $this->initOrderItems($order, $ecpay_invoice);
 
-            $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $carruerType, $donationCode, $triplicateTaxId, $cellphoneBarcode);
+            $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $rawDetailsInfo);
 
             // 4.送出
             $aReturn_Info = $ecpay_invoice->Check_Out();
@@ -635,15 +629,20 @@ class Payment extends AbstractMethod
     /**
      * @param \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice
      * @param \Magento\Sales\Api\Data\OrderInterface $order
-     * @param string $carruerType
-     * @param $donationCode
-     * @param $triplicateTaxId
-     * @param string $cellphoneBarcode
+     * @param $rawDetailsInfo
      * @return string
      */
-    private function initEInvoiceInfo(\Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice, \Magento\Sales\Api\Data\OrderInterface $order, string $carruerType, $donationCode, $triplicateTaxId, $cellphoneBarcode): string
+    private function initEInvoiceInfo($ecpay_invoice, $order, $rawDetailsInfo): string
     {
         $dataTime = $this->dateTimeFactory->create();
+
+        $triplicateTaxId = $rawDetailsInfo["ecpay_einvoice_tax_id_number"];
+        $cellphoneBarcode = $rawDetailsInfo["ecpay_einvoice_cellphone_barcode"];
+        $eInvoiceType = $rawDetailsInfo["ecpay_einvoice_type"];
+        $carruerType = $this->getCarruerType($eInvoiceType);
+
+        $donationCode = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_love_code", $order->getStoreId());
+        $customerName = $order->getCustomerLastname() . $order->getCustomerFirstname();
 
         $donationValue = '';
         $carruerNum = '';
@@ -653,6 +652,7 @@ class Payment extends AbstractMethod
                     $donationValue = "true";
                 } else {
                     $donationValue = "false";
+                    $customerName = $rawDetailsInfo['ecpay_einvoice_triplicate_title'];
                 }
                 $carruerNum = '';
                 break;
@@ -670,7 +670,7 @@ class Payment extends AbstractMethod
         $ecpay_invoice->Send['RelateNumber'] = $RelateNumber;
         $ecpay_invoice->Send['CustomerID'] = $order->getCustomerId();
         $ecpay_invoice->Send['CustomerIdentifier'] = $triplicateTaxId;
-        $ecpay_invoice->Send['CustomerName'] = $order->getCustomerLastname() . $order->getCustomerFirstname();
+        $ecpay_invoice->Send['CustomerName'] = $customerName;
         $ecpay_invoice->Send['CustomerAddr'] = $order->getBillingAddress()->getCity();
         $ecpay_invoice->Send['CustomerPhone'] = '';
         $ecpay_invoice->Send['CustomerEmail'] = $order->getCustomerEmail();
