@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- pass custom data to checkout page -->
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="checkout_custom_payment_block" xsi:type="object">Eguana\EInvoice\Model\CustomConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Eguana\EInvoice\Model\CustomConfigProvider">
+        <arguments>
+            <argument name="blockId" xsi:type="string">checkout_warning_msg</argument>
+        </arguments>
+    </type>
+</config>
