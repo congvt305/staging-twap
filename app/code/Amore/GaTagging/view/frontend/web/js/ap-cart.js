@@ -51,6 +51,7 @@ define([
                         apCartAddProds.push(JSON.stringify(info));
                     });
                 }
+                console.log('apCartAddProds:',apCartAddProds);
                 window.AP_CART_ADDPRDS = apCartAddProds;
                 this.options.dataLayer.push({'event': 'addcart'});
             }.bind(this);
@@ -66,10 +67,21 @@ define([
             return productInfosArr;
         },
         getSimpleProductData: function (product) {
-            var productInfosArr = window.PRD_DATA;
-            productInfosArr.forEach(function (productInfo) {
-                productInfo.quantity = parseInt(product.qty);
-            });
+            var productInfosArr = [];
+            var productInfo = {
+                'name': product.product_name,
+                'code': product.product_sku,
+                'sapcode': product.product_sku,
+                'brand': product.product_brand,
+                'price': product.product_price_value,
+                'prdprice': parseInt(product.product_original_price),
+                'variant': '',
+                'promotion': '',
+                'cate': '',
+                'catecode': '',
+                'quantity': product.qty,
+            }
+            productInfosArr.push(productInfo);
             return productInfosArr;
         },
         getConfigurableProductData: function (product) {
