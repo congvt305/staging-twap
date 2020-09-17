@@ -1,0 +1,33 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var Magento\Wishlist\Block\Catalog\Product\ProductList\Item\AddTo\Wishlist $block */
+?>
+<?php
+$product = $block->getProduct();
+$optionsCollection = $product->getTypeInstance(true)
+    ->getSelectionsCollection(
+        $product->getTypeInstance(true)->getOptionsIds($product),
+        $product
+    );
+$requestData = [];
+foreach ($optionsCollection as $options) {
+    $requestData['bundle_option['.$options->getOptionId().']'] = (int) $options->getSelectionId();
+    $requestData['bundle_option_qty['.$options->getOptionId().']'] = (int) $options->getSelectionQty();
+}
+$requestData['qty'] = 1;
+?>
+<?php if ($block->getWishlistHelper()->isAllow()) : ?>
+    <a href="#"
+       class="action towishlist"
+       title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>"
+       aria-label="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>"
+       data-post='<?= /* @noEscape */ $block->getWishlistHelper()->getAddParams($block->getProduct(), $requestData) ?>'
+       data-action="add-to-wishlist"
+       role="button">
+        <span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
+    </a>
+<?php endif; ?>
