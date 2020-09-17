@@ -219,16 +219,16 @@
 "Order by SKU Template","按SKU排序的範本",module,Magento_AdvancedCheckout
 "SKU not found in catalog.","SKU not found in catalog.",module,Magento_AdvancedCheckout
 "This file needs to be in .csv format.","此檔必須以.csv 格式。",module,Magento_AdvancedCheckout
-"This customer couldn't be found. Verify the customer and try again.","This customer couldn't be found. Verify the customer and try again.",module,Magento_AdvancedCheckout
-"This store couldn't be found. Verify the store and try again.","This store couldn't be found. Verify the store and try again.",module,Magento_AdvancedCheckout
-"An error occurred. For details, see the error log.","An error occurred. For details, see the error log.",module,Magento_AdvancedCheckout
-"Orders can only be completed in an active store. Verify the store and try again.","Orders can only be completed in an active store. Verify the store and try again.",module,Magento_AdvancedCheckout
-"The ordered item needs to be loaded. Load the item and try again.","The ordered item needs to be loaded. Load the item and try again.",module,Magento_AdvancedCheckout
-"The quote item ID needs to be received. Set the ID and try again.","The quote item ID needs to be received. Set the ID and try again.",module,Magento_AdvancedCheckout
-"The quote item needs to be loaded. Load the item and try again.","The quote item needs to be loaded. Load the item and try again.",module,Magento_AdvancedCheckout
-"The wish list item ID needs to be received. Set the ID and try again.","The wish list item ID needs to be received. Set the ID and try again.",module,Magento_AdvancedCheckout
-"The wish list item needs to be loaded. Load the item and try again.","The wish list item needs to be loaded. Load the item and try again.",module,Magento_AdvancedCheckout
-"The file is corrupt and can't be used.","The file is corrupt and can't be used.",module,Magento_AdvancedCheckout
+"This customer couldn't be found. Verify the customer and try again.","這個顧客找不到。 確認顧客,再試一次。",module,Magento_AdvancedCheckout
+"This store couldn't be found. Verify the store and try again.","這家商店找不到。 檢查一下商店,再試一次。",module,Magento_AdvancedCheckout
+"An error occurred. For details, see the error log.","發生錯誤。 詳情請參閱錯誤日誌。",module,Magento_AdvancedCheckout
+"Orders can only be completed in an active store. Verify the store and try again.","訂單隻能在活躍的商店完成。 檢查一下商店,再試一次。",module,Magento_AdvancedCheckout
+"The ordered item needs to be loaded. Load the item and try again.","訂購的單品需要加載。 裝上物品再試一次。",module,Magento_AdvancedCheckout
+"The quote item ID needs to be received. Set the ID and try again.","引述項目ID需要收到。 設定身份,再試一次。",module,Magento_AdvancedCheckout
+"The quote item needs to be loaded. Load the item and try again.","引文需要加載。 裝上物品再試一次。",module,Magento_AdvancedCheckout
+"The wish list item ID needs to be received. Set the ID and try again.","願望清單項目ID需要收到。 設定身份,再試一次。",module,Magento_AdvancedCheckout
+"The wish list item needs to be loaded. Load the item and try again.","願望清單項目需要加載。 裝上物品再試一次。",module,Magento_AdvancedCheckout
+"The file is corrupt and can't be used.","文件腐爛了,不能用了。",module,Magento_AdvancedCheckout
 "Please correct the data sent.","請更正發送的資料。",module,Magento_AdvancedPricingImportExport
 "Entity type model '%1' is not found","找不到實體類型模型 '%1'",module,Magento_AdvancedPricingImportExport
 "Entity type model must be an instance of \Magento\CatalogImportExport\Model\Export\Product\Type\AbstractType","實體類型必須屬於 \Magento\CatalogImportExport\Model\Export\Product\Type\AbstractType 裡的其中一個類型",module,Magento_AdvancedPricingImportExport
@@ -249,8 +249,8 @@
 "Enable Search Suggestions","啟用搜索的建議",module,Magento_AdvancedSearch
 "Search Suggestions Count","搜索建議數",module,Magento_AdvancedSearch
 "Show Results Count for Each Suggestion","顯示每個建議的結果數",module,Magento_AdvancedSearch
-"Related search terms","Related search terms",module,Magento_AdvancedSearch
-"Did you mean","Did you mean",module,Magento_AdvancedSearch
+"Related search terms","相關搜尋條款",module,Magento_AdvancedSearch
+"Did you mean","你是說...",module,Magento_AdvancedSearch
 "ID","編號",module,Magento_AdvancedSearch
 "Search Query","搜尋查詢",module,Magento_AdvancedSearch
 "Store","商店",module,Magento_AdvancedSearch
@@ -268,10 +268,10 @@
 "Error while checking if topic is synchronous","檢查主題是否同步時出錯",module,Magento_Amqp
 "Subscription status","訂閱狀態",module,Magento_Analytics
 "Sorry, there has been an error processing your request. Please try again later.","對不起，在處理您的請求時出現錯誤。請稍後重試。",module,Magento_Analytics
-"Time value has an unsupported format","Time value has an unsupported format",module,Magento_Analytics
-"Cron settings can't be saved","Cron settings can't be saved",module,Magento_Analytics
+"Time value has an unsupported format","時間值有一個不支持的格式",module,Magento_Analytics
+"Cron settings can't be saved","電子設置無法保存",module,Magento_Analytics
 "There was an error save new configuration value.","保存新配值時出現錯誤。",module,Magento_Analytics
-"Please select a vertical.","Please select a vertical.",module,Magento_Analytics
+"Please select a vertical.","請選擇垂直方向。",module,Magento_Analytics
 "--Please Select--","-請選擇-",module,Magento_Analytics
 "Command was not found.","找不到命令。",module,Magento_Analytics
 "Input data must be string or convertible into string.","Input data must be string or convertible into string.",module,Magento_Analytics
@@ -2947,7 +2947,7 @@ Time in seconds between the widget updates.,module,Magento_Catalog
 "Inactive","閒置",module,Magento_CatalogRule
 "Web Site","網站",module,Magento_CatalogRule
 "Back","上一步",module,Magento_CatalogRule
-"Rule Information","Rule Information",module,Magento_CatalogRule
+"Rule Information","規則信息",module,Magento_CatalogRule
 "Rule Name","Rule Name",module,Magento_CatalogRule
 "Description","描述",module,Magento_CatalogRule
 "Websites","網站",module,Magento_CatalogRule
@@ -2981,16 +2981,16 @@ Time in seconds between the widget updates.,module,Magento_Catalog
 "Web Site","網站",module,Magento_CatalogRuleStaging
 "Action","操作",module,Magento_CatalogRuleStaging
 "Edit","編輯",module,Magento_CatalogRuleStaging
-"Scheduled Changes","Scheduled Changes",module,Magento_CatalogRuleStaging
+"Scheduled Changes","計劃性改變",module,Magento_CatalogRuleStaging
 "Name","姓名",module,Magento_CatalogRuleStaging
 "Description","描述",module,Magento_CatalogRuleStaging
-"Update Information","Update Information",module,Magento_CatalogRuleStaging
-"Remove Catalog Price Rule from Update","Remove Catalog Price Rule from Update",module,Magento_CatalogRuleStaging
-"Schedule Update","Schedule Update",module,Magento_CatalogRuleStaging
-"Update Name","Update Name",module,Magento_CatalogRuleStaging
+"Update Information","更新資料",module,Magento_CatalogRuleStaging
+"Remove Catalog Price Rule from Update","從更新中刪除目錄價格規則",module,Magento_CatalogRuleStaging
+"Schedule Update","附表更新",module,Magento_CatalogRuleStaging
+"Update Name","更新名稱",module,Magento_CatalogRuleStaging
 "Start Date","開始日期",module,Magento_CatalogRuleStaging
 "End Date","結束日期",module,Magento_CatalogRuleStaging
-"Rule Information","Rule Information",module,Magento_CatalogRuleStaging
+"Rule Information","規則信息",module,Magento_CatalogRuleStaging
 "Rule Name","Rule Name",module,Magento_CatalogRuleStaging
 "Status","狀態",module,Magento_CatalogRuleStaging
 "Active","激活",module,Magento_CatalogRuleStaging
@@ -3044,62 +3044,62 @@ Time in seconds between the widget updates.,module,Magento_Catalog
 "%1 and above","新台幣%1以上",module,Magento_CatalogSearch
 "%1 - %2","%1 - %2",module,Magento_CatalogSearch
 "Sorry, something went wrong. You can find out more in the error log.","抱歉，出問題了。你可以在錯誤日志中找到更多的信息。",module,Magento_CatalogSearch
-"Bucket does not exist","Bucket does not exist",module,Magento_CatalogSearch
+"Bucket does not exist","水桶不存在",module,Magento_CatalogSearch
 "Product","產品",module,Magento_CatalogSearch
-"Search Settings","Search Settings",module,Magento_CatalogSearch
+"Search Settings","搜尋設定",module,Magento_CatalogSearch
 "Search","搜尋",module,Magento_CatalogSearch
-"Advanced Search","Advanced Search",module,Magento_CatalogSearch
+"Advanced Search","高級查冊",module,Magento_CatalogSearch
 "<strong>%1 item</strong> were found using the following search criteria","<strong>%1 item</strong> were found using the following search criteria",module,Magento_CatalogSearch
 "<strong>%1 items</strong> were found using the following search criteria","<strong>%1 items</strong> were found using the following search criteria",module,Magento_CatalogSearch
 "We can't find any items matching these search criteria.","我們找不到任何這些搜尋條件匹配的項目。",module,Magento_CatalogSearch
 "Modify your search.","修改您的搜索。",module,Magento_CatalogSearch
 "name","姓名",module,Magento_CatalogSearch
-"Don't see what you're looking for?","Don't see what you're looking for?",module,Magento_CatalogSearch
+"Don't see what you're looking for?","看不出來你在找什麼嗎?",module,Magento_CatalogSearch
 "Your search returned no results.","您的搜索未返回任何結果。",module,Magento_CatalogSearch
-"Catalog Section","Catalog Section",module,Magento_CatalogSearch
-"Catalog Search","Catalog Search",module,Magento_CatalogSearch
-"Popular Search Terms","Popular Search Terms",module,Magento_CatalogSearch
-"Minimal Query Length","Minimal Query Length",module,Magento_CatalogSearch
-"Maximum Query Length","Maximum Query Length",module,Magento_CatalogSearch
-"Number of top search results to cache","Number of top search results to cache",module,Magento_CatalogSearch
-"Rebuild Catalog product fulltext search index","Rebuild Catalog product fulltext search index",module,Magento_CatalogSearch
+"Catalog Section","目錄組",module,Magento_CatalogSearch
+"Catalog Search","目錄檢索",module,Magento_CatalogSearch
+"Popular Search Terms","流行檢索語",module,Magento_CatalogSearch
+"Minimal Query Length","最小查詢長度",module,Magento_CatalogSearch
+"Maximum Query Length","最高查詢長度",module,Magento_CatalogSearch
+"Number of top search results to cache","搜索結果緩存的最大值",module,Magento_CatalogSearch
+"Rebuild Catalog product fulltext search index","重建目錄產品全文搜索索引",module,Magento_CatalogSearch
 "Bucket do not exists","桶並不存在",module,Magento_CatalogSearch
 "Modify your search","修改您的搜索",module,Magento_CatalogSearch
-"Test Exception","Test Exception",module,Magento_CatalogSearch
+"Test Exception","測試例外",module,Magento_CatalogSearch
 "Please enter a valid price range.","請輸入有效的價格範圍。",module,Magento_CatalogSearch
-"Number of popular search terms to be cached for faster response. Use “0” to cache all results after a term is searched for the second time.","Number of popular search terms to be cached for faster response. Use “0” to cache all results after a term is searched for the second time.",module,Magento_CatalogSearch
+"Number of popular search terms to be cached for faster response. Use “0” to cache all results after a term is searched for the second time.","爲快速反應而暫停使用的常用搜索術語數目。 在第二次檢索學期後,用“0”保存所有結果。",module,Magento_CatalogSearch
 "Enable EAV Indexer","Enable EAV Indexer",module,Magento_CatalogSearch
-"Enter a search term and try again.","Enter a search term and try again.",module,Magento_CatalogSearch
-"An error occurred. For details, see the error log.","An error occurred. For details, see the error log.",module,Magento_CatalogSearch
-"The bucket doesn't exist.","The bucket doesn't exist.",module,Magento_CatalogSearch
-"Deprecation Notice","Deprecation Notice",module,Magento_CatalogSearch
-"Autocomplete Limit","Autocomplete Limit",module,Magento_CatalogSearch
+"Enter a search term and try again.","請輸入搜索術語,再試一次。",module,Magento_CatalogSearch
+"An error occurred. For details, see the error log.","發生錯誤。 詳情請參閱錯誤日誌。",module,Magento_CatalogSearch
+"The bucket doesn't exist.","水桶不存在。",module,Magento_CatalogSearch
+"Deprecation Notice","撤銷通知書",module,Magento_CatalogSearch
+"Autocomplete Limit","自動完成極限",module,Magento_CatalogSearch
 "ProductSku should be specified","應指定產品Sku",module,Magento_CatalogStaging
 "Attribute ""%1"" is required.","必須有 ""%1"" 屬性",module,Magento_CatalogStaging
 "Enabled","啟用",module,Magento_CatalogStaging
 "Disabled","停用",module,Magento_CatalogStaging
-"Future Update in this time range already exists. Select a different range to add a new Future Update.","Future Update in this time range already exists. Select a different range to add a new Future Update.",module,Magento_CatalogStaging
+"Future Update in this time range already exists. Select a different range to add a new Future Update.","在這個時間段中的未來更新已經存在。 選擇一個不同的範圍來添加新的未來更新。",module,Magento_CatalogStaging
 "Unable to save product","無法保存產品",module,Magento_CatalogStaging
 "The image cannot be removed as it has been assigned to the other image role","圖像無法被刪除，因為它已被分配給其他圖像角色",module,Magento_CatalogStaging
-"Could not save Prices.","Could not save Prices.",module,Magento_CatalogStaging
-"Invalid attribute %fieldName = %fieldValue.","Invalid attribute %fieldName = %fieldValue.",module,Magento_CatalogStaging
-"The requested price is not found.","The requested price is not found.",module,Magento_CatalogStaging
+"Could not save Prices.","不能節約物價",module,Magento_CatalogStaging
+"Invalid attribute %fieldName = %fieldValue.","無效屬性 %fieldName = %fieldValue。",module,Magento_CatalogStaging
+"The requested price is not found.","找不到所需價格。",module,Magento_CatalogStaging
 "Could not delete Prices","不能刪除價格",module,Magento_CatalogStaging
 "Update %1 from %2 to %3.","Update %1 from %2 to %3.",module,Magento_CatalogStaging
 "Design","設計",module,Magento_CatalogStaging
-"View/Edit","View/Edit",module,Magento_CatalogStaging
+"View/Edit","檢視/編輯",module,Magento_CatalogStaging
 "Delete","刪除",module,Magento_CatalogStaging
-"Preview","Preview",module,Magento_CatalogStaging
-"Set Product as New","Set Product as New",module,Magento_CatalogStaging
+"Preview","預覽",module,Magento_CatalogStaging
+"Set Product as New","把產品設定爲新的",module,Magento_CatalogStaging
 "Store View:","店面：",module,Magento_CatalogStaging
 "Stores Configuration","商店設置",module,Magento_CatalogStaging
-"Scheduled Changes","Scheduled Changes",module,Magento_CatalogStaging
+"Scheduled Changes","計劃性改變",module,Magento_CatalogStaging
 "Name","姓名",module,Magento_CatalogStaging
 "Description","描述",module,Magento_CatalogStaging
 "Action","操作",module,Magento_CatalogStaging
-"Update Information","Update Information",module,Magento_CatalogStaging
-"Schedule Update","Schedule Update",module,Magento_CatalogStaging
-"Update Name","Update Name",module,Magento_CatalogStaging
+"Update Information","更新資料",module,Magento_CatalogStaging
+"Schedule Update","附表更新",module,Magento_CatalogStaging
+"Update Name","更新名稱",module,Magento_CatalogStaging
 "Start Date","開始日期",module,Magento_CatalogStaging
 "End Date","結束日期",module,Magento_CatalogStaging
 "Enable Category","Enable Category",module,Magento_CatalogStaging
@@ -3492,7 +3492,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Created","Created",module,Magento_Cms
 "Modified","Modified",module,Magento_Cms
 "Action","操作",module,Magento_Cms
-"Preview","Preview",module,Magento_Cms
+"Preview","預覽",module,Magento_Cms
 "Media Storage","Media Storage",module,Magento_Cms
 "Create Folder...","Create Folder...",module,Magento_Cms
 "Delete Folder","Delete Folder",module,Magento_Cms
@@ -3673,13 +3673,13 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Currently Active","Currently Active",module,Magento_CmsStaging
 "New Theme","New Theme",module,Magento_CmsStaging
 "-- Please Select --","-- 請選擇 --",module,Magento_CmsStaging
-"Scheduled Changes","Scheduled Changes",module,Magento_CmsStaging
+"Scheduled Changes","計劃性改變",module,Magento_CmsStaging
 "Name","姓名",module,Magento_CmsStaging
 "Description","描述",module,Magento_CmsStaging
 "Action","操作",module,Magento_CmsStaging
-"Update Information","Update Information",module,Magento_CmsStaging
-"Schedule Update","Schedule Update",module,Magento_CmsStaging
-"Update Name","Update Name",module,Magento_CmsStaging
+"Update Information","更新資料",module,Magento_CmsStaging
+"Schedule Update","附表更新",module,Magento_CmsStaging
+"Update Name","更新名稱",module,Magento_CmsStaging
 "Start Date","開始日期",module,Magento_CmsStaging
 "End Date","結束日期",module,Magento_CmsStaging
 "General Information","一般信息",module,Magento_CmsStaging
@@ -6425,7 +6425,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Insert Variable...","Insert Variable...",module,Magento_Email
 "Template Content","Template Content",module,Magento_Email
 "Template Styles","Template Styles",module,Magento_Email
-"Preview","Preview",module,Magento_Email
+"Preview","預覽",module,Magento_Email
 "Unknown","Unknown",module,Magento_Email
 "You deleted the email template.","You deleted the email template.",module,Magento_Email
 "The email template is currently being used.","The email template is currently being used.",module,Magento_Email
@@ -7333,7 +7333,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Other Gift Options","其他禮品選擇",module,Magento_GiftWrapping
 "Excl. Tax","不含稅",module,Magento_GiftWrapping
 "Incl. Tax","含稅",module,Magento_GiftWrapping
-"Preview","Preview",module,Magento_GiftWrapping
+"Preview","預覽",module,Magento_GiftWrapping
 "Gift wrapping","Gift wrapping",module,Magento_GiftWrapping
 "Printed card","印刷卡",module,Magento_GiftWrapping
 "Gift receipt","禮物收據",module,Magento_GiftWrapping
@@ -8936,7 +8936,7 @@ information on installing the agent is available <a target=""_blank"" href=""%1"
 "Do you really want to cancel the queue?","Do you really want to cancel the queue?",module,Magento_Newsletter
 "Cancel","取消",module,Magento_Newsletter
 "Resume","Resume",module,Magento_Newsletter
-"Preview","Preview",module,Magento_Newsletter
+"Preview","預覽",module,Magento_Newsletter
 "Add New Template","新增範本",module,Magento_Newsletter
 "Newsletter Templates","Newsletter Templates",module,Magento_Newsletter
 "Convert to Plain Text","Convert to Plain Text",module,Magento_Newsletter
@@ -10139,7 +10139,7 @@ offered and the currency offered by the merchant is USD.",module,Magento_Paypal
 "You should correct the quantity for the product.","You should correct the quantity for the product.",module,Magento_QuickOrder
 "The SKU is out of stock.","The SKU is out of stock.",module,Magento_QuickOrder
 "We don't have the quantity you requested.","We don't have the quantity you requested.",module,Magento_QuickOrder
-"An error occurred. For details, see the error log.","An error occurred. For details, see the error log.",module,Magento_QuickOrder
+"An error occurred. For details, see the error log.","發生錯誤。 詳情請參閱錯誤日誌。",module,Magento_QuickOrder
 "Exception message","Exception message",module,Magento_QuickOrder
 "The file could not be uploaded because it is in the wrong format. Please select a CSV file to upload.","該文件格式錯誤，因此無法上傳。 請選擇要上傳的CSV文件。",module,Magento_QuickOrder
 "Add from File","Add from File",module,Magento_QuickOrder
@@ -10580,7 +10580,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Rule Description for All Store Views","Rule Description for All Store Views",module,Magento_Reminder
 "Titles and Descriptions Per Store View","Titles and Descriptions Per Store View",module,Magento_Reminder
 "Overrides default titles and descriptions. Note that if an email template is not specified for this store view, the respective variable values will be deleted.","Overrides default titles and descriptions. Note that if an email template is not specified for this store view, the respective variable values will be deleted.",module,Magento_Reminder
-"Rule Information","Rule Information",module,Magento_Reminder
+"Rule Information","規則信息",module,Magento_Reminder
 "Emails and Labels","Emails and Labels",module,Magento_Reminder
 "Matched Customers","Matched Customers",module,Magento_Reminder
 "Please correct the reminder rule you requested.","Please correct the reminder rule you requested.",module,Magento_Reminder
@@ -12844,7 +12844,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Cart Price Rule","Cart Price Rule",module,Magento_SalesRule
 "Back","上一步",module,Magento_SalesRule
 "Currently Active","Currently Active",module,Magento_SalesRule
-"Rule Information","Rule Information",module,Magento_SalesRule
+"Rule Information","規則信息",module,Magento_SalesRule
 "Rule Name","Rule Name",module,Magento_SalesRule
 "Description","描述",module,Magento_SalesRule
 "Websites","網站",module,Magento_SalesRule
@@ -12916,14 +12916,14 @@ Usage limit enforced for logged in customers only.,module,Magento_SalesRule
 "Web Site","網站",module,Magento_SalesRuleStaging
 "Action","操作",module,Magento_SalesRuleStaging
 "Edit","編輯",module,Magento_SalesRuleStaging
-"Scheduled Changes","Scheduled Changes",module,Magento_SalesRuleStaging
+"Scheduled Changes","計劃性改變",module,Magento_SalesRuleStaging
 "Name","姓名",module,Magento_SalesRuleStaging
 "Description","描述",module,Magento_SalesRuleStaging
-"Update Information","Update Information",module,Magento_SalesRuleStaging
-"Update Name","Update Name",module,Magento_SalesRuleStaging
+"Update Information","更新資料",module,Magento_SalesRuleStaging
+"Update Name","更新名稱",module,Magento_SalesRuleStaging
 "Start Date","開始日期",module,Magento_SalesRuleStaging
 "End Date","結束日期",module,Magento_SalesRuleStaging
-"Rule Information","Rule Information",module,Magento_SalesRuleStaging
+"Rule Information","規則信息",module,Magento_SalesRuleStaging
 "Websites","網站",module,Magento_SalesRuleStaging
 "Customer Groups","客戶群組",module,Magento_SalesRuleStaging
 "Public In RSS Feed","Public In RSS Feed",module,Magento_SalesRuleStaging
@@ -13785,7 +13785,7 @@ We back our approvals with 100% chargeback protection, reimbursing you the full 
 "Successful! Test again?","成功 ！再次測試嗎？",module,Magento_Solr
 "Connection failed! Test again?","連接失敗 ！再次測試嗎？",module,Magento_Solr
 "Cancel","取消",module,Magento_Staging
-"Preview","Preview",module,Magento_Staging
+"Preview","預覽",module,Magento_Staging
 "Done","完成",module,Magento_Staging
 "Remove from Update","從更新中刪除",module,Magento_Staging
 "Save","儲存",module,Magento_Staging
@@ -13841,7 +13841,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Share","分享",module,Magento_Staging
 "Close","關閉",module,Magento_Staging
 "Scope","範圍",module,Magento_Staging
-"Scheduled Changes","Scheduled Changes",module,Magento_Staging
+"Scheduled Changes","計劃性改變",module,Magento_Staging
 "Start","Start",module,Magento_Staging
 "End","End",module,Magento_Staging
 "Belongs to ","Belongs to ",module,Magento_Staging
@@ -13852,7 +13852,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Back","上一步",module,Magento_Staging
 "General","一般",module,Magento_Staging
 "Status","狀態",module,Magento_Staging
-"Update Name","Update Name",module,Magento_Staging
+"Update Name","更新名稱",module,Magento_Staging
 "Includes","Includes",module,Magento_Staging
 "Start Time","開始時間",module,Magento_Staging
 "End Time","End Time",module,Magento_Staging
@@ -14253,7 +14253,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Save and Continue Edit","保存並繼續編輯",module,Magento_TargetRule
 "Edit Rule '%1'","Edit Rule '%1'",module,Magento_TargetRule
 "New Rule","新規則",module,Magento_TargetRule
-"Rule Information","Rule Information",module,Magento_TargetRule
+"Rule Information","規則信息",module,Magento_TargetRule
 "Product Result Conditions (leave blank for matching all products)","Product Result Conditions (leave blank for matching all products)",module,Magento_TargetRule
 "Products to Display","產品展示",module,Magento_TargetRule
 "Product Match Conditions (leave blank for matching all products)","Product Match Conditions (leave blank for matching all products)",module,Magento_TargetRule
@@ -15589,7 +15589,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Page Properties","Page Properties",module,Magento_VersionsCms
 "Title","標題",module,Magento_VersionsCms
 "URL Key","URL Key",module,Magento_VersionsCms
-"Preview","Preview",module,Magento_VersionsCms
+"Preview","預覽",module,Magento_VersionsCms
 "Preview is not available.","Preview is not available.",module,Magento_VersionsCms
 "Render Metadata in HTML Head.","Render Metadata in HTML Head.",module,Magento_VersionsCms
 "First","First",module,Magento_VersionsCms
