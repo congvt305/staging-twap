@@ -191,9 +191,6 @@ class Data extends AbstractHelper
 
     public function getMerchantId($storeId = null)
     {
-        if ($storeId) {
-            $this->logger->info('gwlogistics | data getMerchantId storeId argument | '. $storeId);
-        }
         $suffix = $this->getMode($storeId) === '1' ? '' : '_sandbox';
         $this->logger->info('gwlogistics | data getMerchantId suffix argument | '. $suffix);
         return $this->scopeConfig->getValue(
