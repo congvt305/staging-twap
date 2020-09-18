@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 17/9/20
+ * Time: 2:11 PM
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="rma.returns.history">
+            <arguments>
+                <argument name="custom_name_view_model" xsi:type="object">Eguana\CustomRMA\ViewModel\CustomName</argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>
