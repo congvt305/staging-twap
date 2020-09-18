@@ -644,7 +644,7 @@
 "Unknown block type","未知的區塊類型",module,Magento_Backend
 "Please correct the tab configuration and try again. Tab Id should be not empty","請更正分頁配置然後重試，分頁編號不能為空。",module,Magento_Backend
 "Please correct the tab configuration and try again.","請更正分頁配置然後重試。",module,Magento_Backend
-"You have logged out.","您已登出。",module,Magento_Backend
+"You have logged out.","您已成功登出",module,Magento_Backend
 "Specified cache type(s) don't exist: %1","指定緩存類型不存在︰%1",module,Magento_Backend
 "The image cache was cleaned.","已清空圖像緩存。",module,Magento_Backend
 "An error occurred while clearing the image cache.","清空圖像緩存時出錯。",module,Magento_Backend
@@ -1636,7 +1636,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Product Name","商品名稱",module,Magento_Bundle
 "Subtotal","商品總金額",module,Magento_Bundle
 "Discount Amount","折扣金額",module,Magento_Bundle
-"Row Total","總行數",module,Magento_Bundle
+"Row Total","小計",module,Magento_Bundle
 "Qty Invoiced","已開發票數量",module,Magento_Bundle
 "Qty Shipped","已出貨數量",module,Magento_Bundle
 "Add Products to New Option","將產品添加到新的選項",module,Magento_Bundle
@@ -4590,8 +4590,8 @@ new products will be created. Use this step to customize images and price for yo
 "Searchable","Searchable",module,Magento_ConfigurableProductStaging
 "Comparable","Comparable",module,Magento_ConfigurableProductStaging
 "Page not found.","找不到頁面。",module,Magento_Contact
-"Thanks for contacting us with your comments and questions. We'll respond to you very soon.","感謝您您和我們聯繫及您的評論和提問。我們很快就會回覆您。",module,Magento_Contact
-"An error occurred while processing your form. Please try again later.","An error occurred while processing your form. Please try again later.",module,Magento_Contact
+"Thanks for contacting us with your comments and questions. We'll respond to you very soon.","感謝您提供寶貴的資訊，我們將盡快回覆您 ! 謝謝",module,Magento_Contact
+"An error occurred while processing your form. Please try again later.","處理表格時出現錯誤。 請稍後再試。",module,Magento_Contact
 "Name is missing","Name is missing",module,Magento_Contact
 "Comment is missing","Comment is missing",module,Magento_Contact
 "Invalid email address","無效的郵件地址",module,Magento_Contact
@@ -5077,7 +5077,7 @@ new products will be created. Use this step to customize images and price for yo
 "Confirm Password","確認密碼",module,Magento_Customer
 "Create an Account","新會員註冊",module,Magento_Customer
 "Set a New Password","設定新的密碼",module,Magento_Customer
-"You have signed out and will go to our homepage in 5 seconds.","您已退出，將在5秒鐘內轉到我們的主頁。",module,Magento_Customer
+"You have signed out and will go to our homepage in 5 seconds.","系統將在五秒鐘內回到官網首頁",module,Magento_Customer
 "New Customers","新客戶",module,Magento_Customer
 "Creating an account has many benefits: check out faster, keep more than one address, track orders and more.","創建帳戶有很多好處：結帳更快，保留多個地址，跟踪訂單等等。",module,Magento_Customer
 "Company","公司",module,Magento_Customer
@@ -5245,7 +5245,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Password forgotten","Password forgotten",module,Magento_Customer
 "My Dashboard","基本資料",module,Magento_Customer
 "Mobile Number","手機號碼",module,Magento_Customer
-"You are signed out","您已登出",module,Magento_Customer
+"You are signed out","您已成功登出",module,Magento_Customer
 "You subscribe to our newsletter.","You subscribe to our newsletter.",module,Magento_Customer
 "You don't subscribe to our newsletter.","You don't subscribe to our newsletter.",module,Magento_Customer
 "Maximum length must be less then %1 symbols","Maximum length must be less then %1 symbols",module,Magento_Customer
@@ -5279,7 +5279,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Semicolon (;) separated values.<br/>Put semicolon in the beginning for empty first option.<br/>Leave empty for open text field.","Semicolon (;) separated values.<br/>Put semicolon in the beginning for empty first option.<br/>Leave empty for open text field.",module,Magento_Customer
 "Last Logged In","Last Logged In",module,Magento_Customer
 "If your Magento site has multiple views, you can set the scope to apply to a specific view.","If your Magento site has multiple views, you can set the scope to apply to a specific view.",module,Magento_Customer
-"You are signed out.","您已登出.",module,Magento_Customer
+"You are signed out.","您已成功登出",module,Magento_Customer
 "Invalid value of ""%value"" provided for the %fieldName field. Possible values are %template1 or %template2.","Invalid value of ""%value"" provided for the %fieldName field. Possible values are %template1 or %template2.",module,Magento_Customer
 "Could not authenticate. Please try again later","Could not authenticate. Please try again later",module,Magento_Customer
 "Page not found","Page not found",module,Magento_Customer
@@ -6137,7 +6137,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Qty","數量",module,Magento_Downloadable
 "Subtotal","商品總金額",module,Magento_Downloadable
 "Discount Amount","折扣金額",module,Magento_Downloadable
-"Row Total","總行數",module,Magento_Downloadable
+"Row Total","小計",module,Magento_Downloadable
 "Qty Invoiced","已開發票數量",module,Magento_Downloadable
 "Ordered","已訂購",module,Magento_Downloadable
 "Shipped","已寄送",module,Magento_Downloadable
@@ -11551,7 +11551,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Processed and Closed","完成退貨",module,Magento_Rma
 "This is the wrong RMA item status.","This is the wrong RMA item status.",module,Magento_Rma
 "We placed your Return request.","已收到您的退貨申請",module,Magento_Rma
-"We authorized your Return request.","我們批准了你的回程要求。",module,Magento_Rma
+"We authorized your Return request.","退貨需求已通過審核",module,Magento_Rma
 "We partially authorized your Return request.","我們部分地批准了你的回程要求。",module,Magento_Rma
 "We received your Return request.","我們已收到您的退貨申請。",module,Magento_Rma
 "We partially received your Return request.","我們部分地收到了你的回程要求。",module,Magento_Rma
@@ -11603,7 +11603,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Shipping Information","Shipping Information",module,Magento_Rma
 "Change shipping method.","更改運送方式。",module,Magento_Rma
 "No authorized items or allowed shipping methods","沒有授權的物品或允許的運輸方式",module,Magento_Rma
-"Carrier","貨運公司",module,Magento_Rma
+"Carrier","配送方式",module,Magento_Rma
 "Title","標題",module,Magento_Rma
 "Number","Number",module,Magento_Rma
 "Are you sure?","是否確認?",module,Magento_Rma
@@ -12325,7 +12325,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Qty to Refund","Qty to Refund",module,Magento_Sales
 "Tax Amount","Tax Amount",module,Magento_Sales
 "Discount Amount","折扣金額",module,Magento_Sales
-"Row Total","總行數",module,Magento_Sales
+"Row Total","小計",module,Magento_Sales
 "No Items To Refund","No Items To Refund",module,Magento_Sales
 "Credit Memo Comments","貸項通知單註釋",module,Magento_Sales
 "Refund Totals","Refund Totals",module,Magento_Sales
@@ -13581,7 +13581,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "kg","kg",module,Magento_Shipping
 "Delete Package","Delete Package",module,Magento_Shipping
 "Explanation","Explanation",module,Magento_Shipping
-"Carrier","貨運公司",module,Magento_Shipping
+"Carrier","配送方式",module,Magento_Shipping
 "Title","標題",module,Magento_Shipping
 "Number","Number",module,Magento_Shipping
 "Action","操作",module,Magento_Shipping
@@ -13602,7 +13602,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "SKU","商品編號",module,Magento_Shipping
 "Order tracking","訂單跟踪",module,Magento_Shipping
 "Tracking Number:","貨態管理碼:",module,Magento_Shipping
-"Carrier:","貨運公司:",module,Magento_Shipping
+"Carrier:","配送方式:",module,Magento_Shipping
 "Error:","Error:",module,Magento_Shipping
 "Tracking information is currently not available. Please ","Tracking information is currently not available. Please ",module,Magento_Shipping
 "contact us","聯繫我們",module,Magento_Shipping
@@ -14444,7 +14444,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Subtotal (Incl. Tax)","Subtotal (Incl. Tax)",module,Magento_Tax
 "Subtotal","商品總金額",module,Magento_Tax
 "Unit Price","Unit Price",module,Magento_Tax
-"Row Total","總行數",module,Magento_Tax
+"Row Total","小計",module,Magento_Tax
 "Total","結帳總金額",module,Magento_Tax
 "Before Discount","Before Discount",module,Magento_Tax
 "After Discount","After Discount",module,Magento_Tax
@@ -16110,7 +16110,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Remove item","刪除項目",module,Magento_Wishlist
 "Add to Compare","加入比較",module,Magento_Wishlist
 "This Wish List has no Items","This Wish List has no Items",module,Magento_Wishlist
-"%1 has been added to your Wish List.","%1 已添加到您的收藏夾。",module,Magento_Wishlist
+"%1 has been added to your Wish List.","%1 已加到我的願望清單囉!",module,Magento_Wishlist
 "Click <a href=""%1"">here</a> to continue shopping.","請點擊 <a href=""%1"">這裡</a> 繼續購物。",module,Magento_Wishlist
 "See Details","See Details",module,Magento_Wishlist
 "Options Details","Options Details",module,Magento_Wishlist
@@ -16161,7 +16161,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "255 by default","255 by default",module,Magento_Wishlist
 "The Wish List item can't load at this time. Please try again later.","“願望清單”項目目前無法加載。 請稍後再試。",module,Magento_Wishlist
 "The cart item doesn't exist.","The cart item doesn't exist.",module,Magento_Wishlist
-"You must login or register to add items to your wishlist.","您必須登錄或註冊才能將商品添加到心願單。",module,Magento_Wishlist
+"You must login or register to add items to your wishlist.","您必須登入會員才能將產品到我的願望清單。",module,Magento_Wishlist
 "Show in Sidebar","Show in Sidebar",module,Magento_Wishlist
 "Missing key ""model"" in Wishlist Item value data","Missing key ""model"" in Wishlist Item value data",module,Magento_WishlistGraphQl
 "Missing key ""model"" in Wishlist value data","Missing key ""model"" in Wishlist value data",module,Magento_WishlistGraphQl

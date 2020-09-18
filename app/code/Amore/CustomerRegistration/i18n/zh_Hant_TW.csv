@@ -1,4 +1,4 @@
-"Code has been verified please move to the next step","代碼已通過驗證，請轉到下一步"
+"Code has been verified please move to the next step","驗證成功"
 "Verification code is wrong","驗證碼錯誤"
 "Please first configure POS APIs properly. Then try again.","請先正確配置POS API。 然後再試一次。"
 "Can not send verification code.","無法發送驗證碼。"
@@ -17,7 +17,7 @@ Telephone,電話
 "Verification code has been sent to your mobile","驗證碼已發送到您的手機"
 "Input 4 digit verification code","輸入4位數驗證碼"
 Verify,驗證
-"Verify Registration","驗證註冊"
+"Verify Registration","註冊"
 "Code","驗證碼"
 "Address Information","地址信息"
 Address,地址

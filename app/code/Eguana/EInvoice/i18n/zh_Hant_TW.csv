@@ -21,8 +21,8 @@
 "E-Invoice Date","電子發票開立日期"
 "E-Invoice Number","電子發票號碼"
 "E-Invoice Cellphone BarCode","手機條碼載具"
-"Invalidate E-Invoice Information","Invalidate E-Invoice Information"
-"Invalidate E-Invoice Number","Invalidate E-Invoice Number"
+"Invalidate E-Invoice Information","發票折讓資訊"
+"Invalidate E-Invoice Number","折讓發票號碼"
 "Print Refund","印刷品退款"
 Refund,訂單取消/退款
 "Product Name","商品名稱"
