@@ -3200,74 +3200,74 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 <br/>Widget will not show products that begin to match the specified conditions until cache is refreshed.,module,Magento_CatalogWidget
 ",module,Magento_CatalogWidget
 "Shopping Cart","購物車",module,Magento_Checkout
-"Invalid method: %1","Invalid method: %1",module,Magento_Checkout
+"Invalid method: %1","無效法: %1",module,Magento_Checkout
 "City","行政區",module,Magento_Checkout
 "Country","國家",module,Magento_Checkout
 "State/Province","縣市",module,Magento_Checkout
 "Zip/Postal Code","郵遞區號",module,Magento_Checkout
-"My Cart (1 item)","My Cart (1 item)",module,Magento_Checkout
-"My Cart (%1 items)","My Cart (%1 items)",module,Magento_Checkout
+"My Cart (1 item)","購物車 (1 物品)",module,Magento_Checkout
+"My Cart (%1 items)","購物車 (%1 物品)",module,Magento_Checkout
 "My Cart","購物車",module,Magento_Checkout
 "For delivery questions.","對於交貨問題。",module,Magento_Checkout
-"Customer is already registered","Customer is already registered",module,Magento_Checkout
-"Your session has expired","Your session has expired",module,Magento_Checkout
-"A letter with further instructions will be sent to your email.","A letter with further instructions will be sent to your email.",module,Magento_Checkout
+"Customer is already registered","客戶已登記在冊",module,Magento_Checkout
+"Your session has expired","你的會期已經過期了",module,Magento_Checkout
+"A letter with further instructions will be sent to your email.","一封附有進一步指示的信件將發送到你的電子郵件。",module,Magento_Checkout
 "You added %1 to your shopping cart.","您已添加 %1 到您的購物車",module,Magento_Checkout
 "We can't add this item to your shopping cart right now.","現在無法新增至購物車",module,Magento_Checkout
 "Out of stock","缺貨",module,Magento_Checkout
-"We can't find the quote item.","We can't find the quote item.",module,Magento_Checkout
-"We cannot configure the product.","We cannot configure the product.",module,Magento_Checkout
-"You used coupon code ""%1"".","You used coupon code ""%1"".",module,Magento_Checkout
+"We can't find the quote item.","我們找不到引用的項目。",module,Magento_Checkout
+"We cannot configure the product.","我們無法配置該產品。",module,Magento_Checkout
+"You used coupon code ""%1"".","你使用了""%1""的優惠券代碼。",module,Magento_Checkout
 "The coupon code ""%1"" is not valid.","優惠券代碼""%1""無效。",module,Magento_Checkout
-"You canceled the coupon code.","You canceled the coupon code.",module,Magento_Checkout
-"We cannot apply the coupon code.","We cannot apply the coupon code.",module,Magento_Checkout
+"You canceled the coupon code.","你取消了優惠券代碼",module,Magento_Checkout
+"We cannot apply the coupon code.","我們不能使用優惠券代碼。",module,Magento_Checkout
 "We can't remove the item.","我們不能刪除產品",module,Magento_Checkout
 "%1 was updated in your shopping cart.","%1 已在您的購物車中更新。",module,Magento_Checkout
 "We can't update the item right now.","我們現在無法更新",module,Magento_Checkout
 "We can't update the shopping cart.","我們無法更新購物車 ",module,Magento_Checkout
-"One-page checkout is turned off.","One-page checkout is turned off.",module,Magento_Checkout
-"Guest checkout is disabled.","Guest checkout is disabled.",module,Magento_Checkout
+"One-page checkout is turned off.","一頁的結帳關掉了。",module,Magento_Checkout
+"Guest checkout is disabled.","客人退房被禁用。",module,Magento_Checkout
 "Checkout","我的購物車",module,Magento_Checkout
 "Page not found.","找不到頁面。",module,Magento_Checkout
 "Please agree to all the terms and conditions before placing the order.","請在提交訂單之前同意所有條款及條件。",module,Magento_Checkout
-"Something went wrong while processing your order. Please try again later.","Something went wrong while processing your order. Please try again later.",module,Magento_Checkout
+"Something went wrong while processing your order. Please try again later.","在處理你的訂單時出了問題。 請稍後再試。",module,Magento_Checkout
 "%1 doesn't extend \Magento\Checkout\CustomerData\ItemInterface","%1 不能延伸 \Magento\Checkout\CustomerData\ItemInterface",module,Magento_Checkout
 "Payment Method","付款方式",module,Magento_Checkout
-"Payment Page","Payment Page",module,Magento_Checkout
+"Payment Page","付款頁",module,Magento_Checkout
 "We can't find the product.","找不到產品",module,Magento_Checkout
-"We found an invalid request for adding product to quote.","We found an invalid request for adding product to quote.",module,Magento_Checkout
-"The product does not exist.","The product does not exist.",module,Magento_Checkout
-"We don't have some of the products you want.","We don't have some of the products you want.",module,Magento_Checkout
-"We don't have as many of some products as you want.","We don't have as many of some products as you want.",module,Magento_Checkout
+"We found an invalid request for adding product to quote.","我們發現一個無用的請求,要求在報價中添加產品。",module,Magento_Checkout
+"The product does not exist.","產品不存在。",module,Magento_Checkout
+"We don't have some of the products you want.","我們沒有你想要的產品。",module,Magento_Checkout
+"We don't have as many of some products as you want.","我們有些產品沒有你想的那麼多。",module,Magento_Checkout
 "Quantity was recalculated from %1 to %2","Quantity was recalculated from %1 to %2",module,Magento_Checkout
-"We adjusted product quantities to fit the required increments.","We adjusted product quantities to fit the required increments.",module,Magento_Checkout
-"This quote item does not exist.","This quote item does not exist.",module,Magento_Checkout
+"We adjusted product quantities to fit the required increments.","我們調整了產品數量以適應所需增量。",module,Magento_Checkout
+"This quote item does not exist.","此引文不存在。",module,Magento_Checkout
 "Display number of items in cart","顯示購物車中的物品數",module,Magento_Checkout
-"Display item quantities","Display item quantities",module,Magento_Checkout
+"Display item quantities","顯示品目數量",module,Magento_Checkout
 "An error occurred on the server. Please try to place the order again.","伺服器出現錯誤。請再次確認訂單。",module,Magento_Checkout
 "Shipping address is not set","未設置送貨地址",module,Magento_Checkout
-"Unable to save shipping information. Please check input data.","Unable to save shipping information. Please check input data.",module,Magento_Checkout
-"Carrier with such method not found: %1, %2","Carrier with such method not found: %1, %2",module,Magento_Checkout
+"Unable to save shipping information. Please check input data.","無法保存裝運信息。 請檢查輸入數據。",module,Magento_Checkout
+"Carrier with such method not found: %1, %2","未找到此類方法的承運人: %1, %2",module,Magento_Checkout
 "Shipping method is not applicable for empty cart","運送方式不適用於空車",module,Magento_Checkout
-" item"," item",module,Magento_Checkout
-" items"," items",module,Magento_Checkout
-"Totals calculation is not applicable to empty cart","Totals calculation is not applicable to empty cart",module,Magento_Checkout
-"Invalid data","Invalid data",module,Magento_Checkout
-"The customer address is not valid.","The customer address is not valid.",module,Magento_Checkout
+" item"," 物品",module,Magento_Checkout
+" items"," 物品",module,Magento_Checkout
+"Totals calculation is not applicable to empty cart","總計不適用於空車",module,Magento_Checkout
+"Invalid data","無效數據",module,Magento_Checkout
+"The customer address is not valid.","客戶地址無效。",module,Magento_Checkout
 "Invalid shipping method","無效的運送方式",module,Magento_Checkout
 "There are more than one shipping addresses.","有多個送貨地址。",module,Magento_Checkout
-"Sorry, guest checkout is not available.","Sorry, guest checkout is not available.",module,Magento_Checkout
-"You must confirm your account. Please check your email for the confirmation link or <a href=""%1"">click here</a> for a new link.","You must confirm your account. Please check your email for the confirmation link or <a href=""%1"">click here</a> for a new link.",module,Magento_Checkout
-"Load customer quote error","Load customer quote error",module,Magento_Checkout
-"Error message!","Error message!",module,Magento_Checkout
-"Error!","Error!",module,Magento_Checkout
+"Sorry, guest checkout is not available.","對不起,客人沒有退房。",module,Magento_Checkout
+"You must confirm your account. Please check your email for the confirmation link or <a href=""%1"">click here</a> for a new link.","你必須確認你的帳戶。 請檢查你的電郵以取得確認連結,<a href=""%1"">或按此處</a>以取得新的連結。",module,Magento_Checkout
+"Load customer quote error","裝載客戶報價錯誤",module,Magento_Checkout
+"Error message!","錯誤消息!",module,Magento_Checkout
+"Error!","錯誤!",module,Magento_Checkout
 "DB exception","DB exception",module,Magento_Checkout
 "Message","訊息內容",module,Magento_Checkout
-"Print receipt","Print receipt",module,Magento_Checkout
+"Print receipt","打印收據",module,Magento_Checkout
 "Apply Discount Code","使用折扣碼",module,Magento_Checkout
 "Enter discount code","輸入折扣碼",module,Magento_Checkout
 "Apply Discount","申請折扣",module,Magento_Checkout
-"Cancel Coupon","Cancel Coupon",module,Magento_Checkout
+"Cancel Coupon","取消扣款機",module,Magento_Checkout
 "Shopping Cart Items","購物車項目",module,Magento_Checkout
 "Item","項目",module,Magento_Checkout
 "Price","價格",module,Magento_Checkout
@@ -3284,7 +3284,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Remove item","刪除項目",module,Magento_Checkout
 "You have no items in your shopping cart.","您的購物車中沒有商品。",module,Magento_Checkout
 "Click <a href=""%1"">here</a> to continue shopping.","請點擊 <a href=""%1"">這裡</a> 繼續購物。",module,Magento_Checkout
-"Estimate Tax","Estimate Tax",module,Magento_Checkout
+"Estimate Tax","估計稅",module,Magento_Checkout
 "Estimate Shipping and Tax","估計運費和稅",module,Magento_Checkout
 "Excl. Tax","不含稅",module,Magento_Checkout
 "Loading...","載入中...",module,Magento_Checkout
@@ -3315,28 +3315,28 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Update","更新資料",module,Magento_Checkout
 "Cancel","取消",module,Magento_Checkout
 "Save in address book","保存在通訊錄中",module,Magento_Checkout
-"Estimated Total","Estimated Total",module,Magento_Checkout
+"Estimated Total","估計總數",module,Magento_Checkout
 "You can create an account after checkout.","您可以在結帳後創建一個帳戶。",module,Magento_Checkout
 "You already have an account with us. Sign in or continue as guest.","您已經在我們這裡有一個帳戶。 登錄或以訪客身份繼續。",module,Magento_Checkout
 "Login","登入",module,Magento_Checkout
-"See Details","See Details",module,Magento_Checkout
-"Options Details","Options Details",module,Magento_Checkout
+"See Details","詳情",module,Magento_Checkout
+"Options Details","選擇詳情",module,Magento_Checkout
 "Remove","移除",module,Magento_Checkout
 "Cart Subtotal","購物車小計",module,Magento_Checkout
 "Payment Information","付款資訊",module,Magento_Checkout
 "No Payment method available.","沒有可用的付款方式。",module,Magento_Checkout
 "You can track your order status by creating an account.","您可以通過創建帳戶來跟踪訂單狀態。",module,Magento_Checkout
 "Place Order","確認訂單",module,Magento_Checkout
-"Forgot an Item?","Forgot an Item?",module,Magento_Checkout
-"Edit Your Cart","Edit Your Cart",module,Magento_Checkout
+"Forgot an Item?","忘了東西?",module,Magento_Checkout
+"Edit Your Cart","編輯你的車",module,Magento_Checkout
 "Ship Here","在這裡運送",module,Magento_Checkout
 "Ship To:","收件地址：",module,Magento_Checkout
-"edit","edit",module,Magento_Checkout
+"edit","編輯",module,Magento_Checkout
 "Order Summary","購物車明細",module,Magento_Checkout
 "View and Edit Cart","查看和編輯購物車",module,Magento_Checkout
 "View Details","檢視詳細資料",module,Magento_Checkout
 "Field ","Field ",module,Magento_Checkout
-" is required."," is required.",module,Magento_Checkout
+" is required."," 必須有",module,Magento_Checkout
 "Provided Zip/Postal Code seems to be invalid.","提供的郵遞區號似乎無效。",module,Magento_Checkout
 " Example: "," 例: ",module,Magento_Checkout
 "If you believe it is the right one you can ignore this notice.","如果您認為這是對的，則可以忽略此通知。",module,Magento_Checkout
@@ -3382,7 +3382,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Unable to save shipping information. Please, check input data.","無法儲存寄件資訊。請檢查輸入資料",module,Magento_Checkout
 "Cart contains virtual product(s) only. Shipping address is not applicable.","購物車僅包含虛擬產品。 送貨地址不適用。",module,Magento_Checkout
 "Wrong minimum amount.","Wrong minimum amount.",module,Magento_Checkout
-"<a href=""%1"" onclick=""this.target='_blank'"" class=""print"">Print receipt</a>","<a href=""%1"" onclick=""this.target='_blank'"" class=""print"">Print receipt</a>",module,Magento_Checkout
+"<a href=""%1"" onclick=""this.target='_blank'"" class=""print"">Print receipt</a>","<a href=""%1"" onclick=""this.target='_blank'"" class=""print"">打印收據</a>",module,Magento_Checkout
 "Forgot Password","忘記密碼",module,Magento_Checkout
 "Close","關閉",module,Magento_Checkout
 "item","item",module,Magento_Checkout
@@ -4592,8 +4592,8 @@ new products will be created. Use this step to customize images and price for yo
 "Page not found.","找不到頁面。",module,Magento_Contact
 "Thanks for contacting us with your comments and questions. We'll respond to you very soon.","感謝您提供寶貴的資訊，我們將盡快回覆您 ! 謝謝",module,Magento_Contact
 "An error occurred while processing your form. Please try again later.","處理表格時出現錯誤。 請稍後再試。",module,Magento_Contact
-"Name is missing","Name is missing",module,Magento_Contact
-"Comment is missing","Comment is missing",module,Magento_Contact
+"Name is missing","名字不見了",module,Magento_Contact
+"Comment is missing","缺評",module,Magento_Contact
 "Invalid email address","無效的郵件地址",module,Magento_Contact
 "* Required Fields","* 為必填項",module,Magento_Contact
 "Write Us","蘭芝台灣線上客服信箱",module,Magento_Contact
@@ -4606,14 +4606,14 @@ new products will be created. Use this step to customize images and price for yo
 "Contact Form","聯絡資料表",module,Magento_Contact
 "Phone","電話",module,Magento_Contact
 "Message","訊息內容",module,Magento_Contact
-"Contacts Section","Contacts Section",module,Magento_Contact
-"Contacts","Contacts",module,Magento_Contact
+"Contacts Section","聯絡組",module,Magento_Contact
+"Contacts","聯繫我們",module,Magento_Contact
 "Contact Us","聯繫我們",module,Magento_Contact
 "Enable Contact Us","Enable Contact Us",module,Magento_Contact
 "Email Options","Email Options",module,Magento_Contact
 "Send Emails To","Send Emails To",module,Magento_Contact
-"Email Sender","Email Sender",module,Magento_Contact
-"Email Template","Email Template",module,Magento_Contact
+"Email Sender","電子郵件寄件者",module,Magento_Contact
+"Email Template","Email模板",module,Magento_Contact
 "Email template chosen based on theme fallback when ""Default"" option is selected.","選擇「預設」後，電子郵件範本將根據佈景主題順序選擇。",module,Magento_Contact
 "We can't process your request right now. Sorry, that's all we know.","我們現在無法處理您的請求。對不起，那是我們都知道。",module,Magento_Contact
 "Name: %name","Name: %name",module,Magento_Contact
@@ -4639,7 +4639,7 @@ new products will be created. Use this step to customize images and price for yo
 "<strong style=""color:red"">Warning</strong>:  Do not set to ""No"". User security could be compromised.","<strong style=""color:red"">Warning</strong>:  Do not set to ""No"". User security could be compromised.",module,Magento_Cookie
 "'Invalid domain name: ' .","'Invalid domain name: ' .",module,Magento_Cookie
 "'Invalid cookie lifetime: ' .","'Invalid cookie lifetime: ' .",module,Magento_Cookie
-"We can't save the cron expression.","We can't save the cron expression.",module,Magento_Cron
+"We can't save the cron expression.","我們不能儲存 Cron 運算式。",module,Magento_Cron
 "Daily","每天",module,Magento_Cron
 "Weekly","每週",module,Magento_Cron
 "Monthly","每月",module,Magento_Cron
@@ -5157,7 +5157,7 @@ new products will be created. Use this step to customize images and price for yo
 "This email will be sent instead of the Default Welcome Email, if a customer was created without password. <br /><br />,module,Magento_Customer
 Email template chosen based on theme fallback when ""Default"" option is selected.","This email will be sent instead of the Default Welcome Email, if a customer was created without password. <br /><br />,module,Magento_Customer
 Email template chosen based on theme fallback when ""Default"" option is selected.",module,Magento_Customer
-"Email Sender","Email Sender",module,Magento_Customer
+"Email Sender","電子郵件寄件者",module,Magento_Customer
 "Require Emails Confirmation","Require Emails Confirmation",module,Magento_Customer
 "Confirmation Link Email","確認鏈接電子郵件",module,Magento_Customer
 "Welcome Email","Welcome Email",module,Magento_Customer
@@ -5939,7 +5939,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Security validation of XML document has been failed.","Security validation of XML document has been failed.",module,Magento_Dhl
 "The response is in the wrong format","The response is in the wrong format",module,Magento_Dhl
 "Field ","Field ",module,Magento_Dhl
-" is required."," is required.",module,Magento_Dhl
+" is required."," 必須有",module,Magento_Dhl
 "Enabled for Checkout","Enabled for Checkout",module,Magento_Dhl
 "Gateway URL","閘道網址",module,Magento_Dhl
 "Title","標題",module,Magento_Dhl
@@ -6618,7 +6618,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Empty response","Empty response",module,Magento_Fedex
 "None","無",module,Magento_Fedex
 "Field ","Field ",module,Magento_Fedex
-" is required."," is required.",module,Magento_Fedex
+" is required."," 必須有",module,Magento_Fedex
 "FedEx","FedEx",module,Magento_Fedex
 "Enabled for Checkout","Enabled for Checkout",module,Magento_Fedex
 "Title","標題",module,Magento_Fedex
@@ -6690,7 +6690,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Lifetime (days)","Lifetime (days)",module,Magento_GiftCard
 "Allow Message","Allow Message",module,Magento_GiftCard
 "[STORE VIEW]","[商店總覽]",module,Magento_GiftCard
-"Email Template","Email Template",module,Magento_GiftCard
+"Email Template","Email模板",module,Magento_GiftCard
 "All Websites [%1]","All Websites [%1]",module,Magento_GiftCard
 "%1 [%2]","%1 [%2]",module,Magento_GiftCard
 "Availability:","庫存:",module,Magento_GiftCard
@@ -7114,7 +7114,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Please correct the gift registry item ID.","Please correct the gift registry item ID.",module,Magento_GiftRegistry
 "The quantity of ""%1"" product added to cart exceeds the quantity desired by the Gift Registry owner. The quantity added has been adjusted to meet remaining quantity %2.","The quantity of ""%1"" product added to cart exceeds the quantity desired by the Gift Registry owner. The quantity added has been adjusted to meet remaining quantity %2.",module,Magento_GiftRegistry
 "Existing quantity of ""%1"" product in the cart has been replaced with quantity %2 just requested.","Existing quantity of ""%1"" product in the cart has been replaced with quantity %2 just requested.",module,Magento_GiftRegistry
-"This product(s) is out of stock.","This product(s) is out of stock.",module,Magento_GiftRegistry
+"This product(s) is out of stock.","這產品脫銷了。",module,Magento_GiftRegistry
 "Please correct the product for adding the item to the quote.","Please correct the product for adding the item to the quote.",module,Magento_GiftRegistry
 "Please correct the item option format.","Please correct the item option format.",module,Magento_GiftRegistry
 "An item option with code %1 already exists.","An item option with code %1 already exists.",module,Magento_GiftRegistry
@@ -7247,12 +7247,12 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "My event special","我的活動特別",module,Magento_GiftRegistry
 "My special attribute","My special attribute",module,Magento_GiftRegistry
 "Gift Registry Section","Gift Registry Section",module,Magento_GiftRegistry
-"General Options","General Options",module,Magento_GiftRegistry
+"General Options","一般選擇",module,Magento_GiftRegistry
 "Enable Gift Registry","啟用禮物註冊",module,Magento_GiftRegistry
 "Maximum Registrants","Maximum Registrants",module,Magento_GiftRegistry
 "Owner Notification","Owner Notification",module,Magento_GiftRegistry
-"Email Template","Email Template",module,Magento_GiftRegistry
-"Email Sender","Email Sender",module,Magento_GiftRegistry
+"Email Template","Email模板",module,Magento_GiftRegistry
+"Email Sender","電子郵件寄件者",module,Magento_GiftRegistry
 "Gift Registry Sharing","Gift Registry Sharing",module,Magento_GiftRegistry
 "Maximum Sent Emails Threshold","Maximum Sent Emails Threshold",module,Magento_GiftRegistry
 "Gift Registry Update","Gift Registry Update",module,Magento_GiftRegistry
@@ -8803,7 +8803,7 @@ You can set a new expiration date if you wish.",module,Magento_NegotiableQuote
 "Apply Discount Code","使用折扣碼",module,Magento_NegotiableQuote
 "Enter discount code","輸入折扣碼",module,Magento_NegotiableQuote
 "Apply Discount","申請折扣",module,Magento_NegotiableQuote
-"Cancel coupon","Cancel coupon",module,Magento_NegotiableQuote
+"Cancel coupon","取消扣款機",module,Magento_NegotiableQuote
 "Apply Gift Card","申請禮品卡",module,Magento_NegotiableQuote
 "Enter the gift card code","輸入禮品卡代碼",module,Magento_NegotiableQuote
 "Gift Card:","Gift Card:",module,Magento_NegotiableQuote
@@ -9069,7 +9069,7 @@ information on installing the agent is available <a target=""_blank"" href=""%1"
 "A confirmation request has been sent.","A confirmation request has been sent.",module,Magento_Newsletter
 "We have removed your newsletter subscription.","We have removed your newsletter subscription.",module,Magento_Newsletter
 "We have updated your subscription.","我們已更新您的訂閱。",module,Magento_Newsletter
-"General Options","General Options",module,Magento_Newsletter
+"General Options","一般選擇",module,Magento_Newsletter
 "Enabled","啟用",module,Magento_Newsletter
 "Make Check payable to:","Make Check payable to:",module,Magento_OfflinePayments
 "Send Check to:","Send Check to:",module,Magento_OfflinePayments
@@ -9129,7 +9129,7 @@ information on installing the agent is available <a target=""_blank"" href=""%1"
 "For matching items only","For matching items only",module,Magento_OfflineShipping
 "For shipment with matching items","For shipment with matching items",module,Magento_OfflineShipping
 "Field ","Field ",module,Magento_OfflineShipping
-" is required."," is required.",module,Magento_OfflineShipping
+" is required."," 必須有",module,Magento_OfflineShipping
 "Flat Rate","扁平率",module,Magento_OfflineShipping
 "Enabled","啟用",module,Magento_OfflineShipping
 "Method Name","Method Name",module,Magento_OfflineShipping
@@ -10016,7 +10016,7 @@ offered and the currency offered by the merchant is USD.",module,Magento_Paypal
 "Check &quot;Remember Me&quot; to access your shopping cart on this computer even if you are not signed in.","校驗 &quot;記住賬號&quot; 即使您尚未登錄，也可以在此計算機上訪問購物車。",module,Magento_Persistent
 "Check 'Remember Me' to access your shopping cart on this computer even if you are not signed in.","Check 'Remember Me' to access your shopping cart on this computer even if you are not signed in.",module,Magento_Persistent
 "Persistent Shopping Cart","Persistent Shopping Cart",module,Magento_Persistent
-"General Options","General Options",module,Magento_Persistent
+"General Options","一般選擇",module,Magento_Persistent
 "Enable Persistence","Enable Persistence",module,Magento_Persistent
 "Persistence Lifetime (seconds)","Persistence Lifetime (seconds)",module,Magento_Persistent
 "Enable ""Remember Me""","Enable ""Remember Me""",module,Magento_Persistent
@@ -10918,7 +10918,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Compared Product Names Only Template","Compared Product Names Only Template",module,Magento_Reports
 "Compared Product Images Only Template","Compared Product Images Only Template",module,Magento_Reports
 "System configuration is not found for report event type ""%1""","找不到報告事件類型的系統配置 ""%1""",module,Magento_Reports
-"General Options","General Options",module,Magento_Reports
+"General Options","一般選擇",module,Magento_Reports
 "Enable Reports","Enable Reports",module,Magento_Reports
 "If disabled, all report events will be disabled","如果禁用，則所有報告事件將被禁用",module,Magento_Reports
 "Enable ""Product View"" Report","Enable ""Product View"" Report",module,Magento_Reports
@@ -10939,7 +10939,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't update your requisition list right now.","We can't update your requisition list right now.",module,Magento_RequisitionList
 "We can't add the item to the Requisition List right now: %1.","We can't add the item to the Requisition List right now: %1.",module,Magento_RequisitionList
 "We can't specify a requisition list.","We can't specify a requisition list.",module,Magento_RequisitionList
-"We can't specify a product.","We can't specify a product.",module,Magento_RequisitionList
+"We can't specify a product.","我們無法指定產品。",module,Magento_RequisitionList
 "You added %1 item(s) to your shopping cart.","您添加了 %1 做為此次贈品",module,Magento_RequisitionList
 "Something went wrong.","發生錯誤",module,Magento_RequisitionList
 "We can't configure the product right now.","We can't configure the product right now.",module,Magento_RequisitionList
@@ -11128,7 +11128,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Product Name","商品名稱",module,Magento_Review
 "Rating","Rating",module,Magento_Review
 "Actions","動作",module,Magento_Review
-"See Details","See Details",module,Magento_Review
+"See Details","詳情",module,Magento_Review
 "You have submitted no reviews.","您尚未提交評論。",module,Magento_Review
 "Back","上一步",module,Magento_Review
 "My Recent Reviews","我最近的評論",module,Magento_Review
@@ -11321,7 +11321,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Review Submission","Review Submission",module,Magento_Reward
 "After approval by administrator.","After approval by administrator.",module,Magento_Reward
 "Rewarded Reviews Submission Quantity Limit","Rewarded Reviews Submission Quantity Limit",module,Magento_Reward
-"Email Sender","Email Sender",module,Magento_Reward
+"Email Sender","電子郵件寄件者",module,Magento_Reward
 "Subscribe Customers by Default","Subscribe Customers by Default",module,Magento_Reward
 "Balance Update Email","餘額更新電子郵件",module,Magento_Reward
 "Reward Points Expiry Warning Email","獎勵積分到期警告電子郵件",module,Magento_Reward
@@ -12832,7 +12832,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Apply Discount Code","使用折扣碼",module,Magento_SalesRule
 "Enter discount code","輸入折扣碼",module,Magento_SalesRule
 "Apply Discount","申請折扣",module,Magento_SalesRule
-"Cancel coupon","Cancel coupon",module,Magento_SalesRule
+"Cancel coupon","取消扣款機",module,Magento_SalesRule
 "Your coupon was successfully removed.","Your coupon was successfully removed.",module,Magento_SalesRule
 "Your coupon was successfully applied.","您已成功使用此折扣碼.",module,Magento_SalesRule
 "Promotion","晉升",module,Magento_SalesRule
@@ -14671,7 +14671,7 @@ than a customer might expect. ",module,Magento_Tax
 "This is demo store. No orders will be fulfilled.","This is demo store. No orders will be fulfilled.",module,Magento_Theme
 "Items %1 to %2 of %3 total","%3項中第%1至%2項",module,Magento_Theme
 "%1 Item","%1 物品",module,Magento_Theme
-"%1 Item(s)","%1 Item(s)",module,Magento_Theme
+"%1 Item(s)","%1 物品",module,Magento_Theme
 "Page","Page",module,Magento_Theme
 "Previous","上一頁",module,Magento_Theme
 "You're currently reading page","You're currently reading page",module,Magento_Theme
@@ -15117,7 +15117,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "United Parcel Service","United Parcel Service",module,Magento_Ups
 "United Parcel Service XML","United Parcel Service XML",module,Magento_Ups
 "Field ","Field ",module,Magento_Ups
-" is required."," is required.",module,Magento_Ups
+" is required."," 必須有",module,Magento_Ups
 "UPS","UPS",module,Magento_Ups
 "Access License Number","Access License Number",module,Magento_Ups
 "Enabled for Checkout","Enabled for Checkout",module,Magento_Ups
@@ -15491,7 +15491,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Other","Other",module,Magento_Usps
 "None","無",module,Magento_Usps
 "Field ","Field ",module,Magento_Usps
-" is required."," is required.",module,Magento_Usps
+" is required."," 必須有",module,Magento_Usps
 "USPS","USPS",module,Magento_Usps
 "Enabled for Checkout","Enabled for Checkout",module,Magento_Usps
 "Gateway URL","閘道網址",module,Magento_Usps
@@ -15859,7 +15859,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Off","Off",module,Magento_VisualMerchandiser
 "Visual Merchandiser Options","Visual Merchandiser Options",module,Magento_VisualMerchandiser
 "Visual Merchandiser","Visual Merchandiser",module,Magento_VisualMerchandiser
-"General Options","General Options",module,Magento_VisualMerchandiser
+"General Options","一般選擇",module,Magento_VisualMerchandiser
 "Visible Attributes for Category Rules","Visible Attributes for Category Rules",module,Magento_VisualMerchandiser
 "Additional attributes usable in category rules","Additional attributes usable in category rules",module,Magento_VisualMerchandiser
 "Minimum Stock Threshold","Minimum Stock Threshold",module,Magento_VisualMerchandiser
@@ -16039,51 +16039,51 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "My Wish List","我的願望清單",module,Magento_Wishlist
 "%1's Wish List","%1's Wish List",module,Magento_Wishlist
 "Page not found.","找不到頁面。",module,Magento_Wishlist
-"We can't specify a product.","We can't specify a product.",module,Magento_Wishlist
-"We can't add the item to Wish List right now: %1.","We can't add the item to Wish List right now: %1.",module,Magento_Wishlist
-"We can't add the item to Wish List right now.","We can't add the item to Wish List right now.",module,Magento_Wishlist
+"We can't specify a product.","我們無法指定產品。",module,Magento_Wishlist
+"We can't add the item to Wish List right now: %1.","我們現在不能把這個項目添加到願望清單中: %1.",module,Magento_Wishlist
+"We can't add the item to Wish List right now.","我們現在不能把這個項目添加到願望清單中",module,Magento_Wishlist
 "You added %1 to your shopping cart.","您已添加 %1 到您的購物車",module,Magento_Wishlist
-"This product(s) is out of stock.","This product(s) is out of stock.",module,Magento_Wishlist
-"We can't add the item to the cart right now.","We can't add the item to the cart right now.",module,Magento_Wishlist
-"We can't load the Wish List item right now.","We can't load the Wish List item right now.",module,Magento_Wishlist
-"We can't configure the product right now.","We can't configure the product right now.",module,Magento_Wishlist
-"The requested cart item doesn't exist.","The requested cart item doesn't exist.",module,Magento_Wishlist
+"This product(s) is out of stock.","這產品脫銷了。",module,Magento_Wishlist
+"We can't add the item to the cart right now.","我們現在不能把東西加到車子裏。",module,Magento_Wishlist
+"We can't load the Wish List item right now.","我們現在不能裝入願望清單項目。",module,Magento_Wishlist
+"We can't configure the product right now.","我們現在不能配置這個產品。",module,Magento_Wishlist
+"The requested cart item doesn't exist.","請求的推車項目不存在。",module,Magento_Wishlist
 "%1 has been moved to your wish list.","%1 已移至您的願望清單。",module,Magento_Wishlist
-"We can't move the item to the wish list.","We can't move the item to the wish list.",module,Magento_Wishlist
-"We can't delete the item from Wish List right now because of an error: %1.","We can't delete the item from Wish List right now because of an error: %1.",module,Magento_Wishlist
-"We can't delete the item from the Wish List right now.","We can't delete the item from the Wish List right now.",module,Magento_Wishlist
-"Message length must not exceed %1 symbols","Message length must not exceed %1 symbols",module,Magento_Wishlist
+"We can't move the item to the wish list.","我們不能把項目移到願望清單上。",module,Magento_Wishlist
+"We can't delete the item from Wish List right now because of an error: %1.","我們不能因爲一個錯誤就從願望清單上刪除這個項目: %1.",module,Magento_Wishlist
+"We can't delete the item from the Wish List right now.","我們現在不能從願望清單上刪除這個項目。",module,Magento_Wishlist
+"Message length must not exceed %1 symbols","消息長度不能超過 %1 符號",module,Magento_Wishlist
 "Please enter an email address.","請輸入電子郵件地址。",module,Magento_Wishlist
 "This wish list can be shared %1 more times.","這個願望清單可以共享 %1 更多次。",module,Magento_Wishlist
 "Please enter a valid email address.","請輸入有效的電子郵件地址。",module,Magento_Wishlist
 "Your wish list has been shared.","您的願望清單已被共享。",module,Magento_Wishlist
-"We can't delete item from Wish List right now.","We can't delete item from Wish List right now.",module,Magento_Wishlist
-"Can't save description %1","Can't save description %1",module,Magento_Wishlist
+"We can't delete item from Wish List right now.","我們現在不能刪除願望清單中的條目",module,Magento_Wishlist
+"Can't save description %1","難以形容 %1",module,Magento_Wishlist
 "Can't update wish list","無法更新願望清單",module,Magento_Wishlist
-"%1 has been updated in your Wish List.","%1 has been updated in your Wish List.",module,Magento_Wishlist
-"We can't update your Wish List right now.","We can't update your Wish List right now.",module,Magento_Wishlist
-"The requested Wish List doesn't exist.","The requested Wish List doesn't exist.",module,Magento_Wishlist
-"We can't create the Wish List right now.","We can't create the Wish List right now.",module,Magento_Wishlist
+"%1 has been updated in your Wish List.","%1已在你的願望清單中更新。",module,Magento_Wishlist
+"We can't update your Wish List right now.","我們現在不能更新你的願望清單",module,Magento_Wishlist
+"The requested Wish List doesn't exist.","請求的願望清單不存在。",module,Magento_Wishlist
+"We can't create the Wish List right now.","我們現在不能創建願望清單",module,Magento_Wishlist
 "%1 items","%1 項目",module,Magento_Wishlist
 "1 item","1個項目",module,Magento_Wishlist
 "Comment","評論",module,Magento_Wishlist
 "Display number of items in wish list","顯示願望清單中的項目數",module,Magento_Wishlist
-"Display item quantities","Display item quantities",module,Magento_Wishlist
-"An item option with code %1 already exists.","An item option with code %1 already exists.",module,Magento_Wishlist
-"We can't specify a wish list.","We can't specify a wish list.",module,Magento_Wishlist
-"Cannot specify product.","Cannot specify product.",module,Magento_Wishlist
-"Product is not salable.","Product is not salable.",module,Magento_Wishlist
-"Invalid item option format.","Invalid item option format.",module,Magento_Wishlist
+"Display item quantities","顯示品目數量",module,Magento_Wishlist
+"An item option with code %1 already exists.","具有代碼 %1 的條目選項已經存在。",module,Magento_Wishlist
+"We can't specify a wish list.","我們不能指定願望清單。",module,Magento_Wishlist
+"Cannot specify product.","無法指定產品。",module,Magento_Wishlist
+"Product is not salable.","產品不值得稱道。",module,Magento_Wishlist
+"Invalid item option format.","無效的項目選擇格式。",module,Magento_Wishlist
 "%1 for ""%2"".","""%2"" %1",module,Magento_Wishlist
 "We can't add this item to your shopping cart right now.","現在無法新增至購物車",module,Magento_Wishlist
-"We couldn't add the following product(s) to the shopping cart: %1.","We couldn't add the following product(s) to the shopping cart: %1.",module,Magento_Wishlist
-"We can't update the Wish List right now.","We can't update the Wish List right now.",module,Magento_Wishlist
+"We couldn't add the following product(s) to the shopping cart: %1.","我們無法在購物車中添加下列產品。: %1.",module,Magento_Wishlist
+"We can't update the Wish List right now.","我們現在不能更新願望清單",module,Magento_Wishlist
 "%1 product(s) have been added to shopping cart: %2.","%1 產品已加入至購物車: %2.",module,Magento_Wishlist
 "Comment:","評論:",module,Magento_Wishlist
-"We cannot retrieve the Wish List.","We cannot retrieve the Wish List.",module,Magento_Wishlist
+"We cannot retrieve the Wish List.","我們無法檢索願望清單。",module,Magento_Wishlist
 "%1's Wishlist","%1's Wishlist",module,Magento_Wishlist
-"We can't specify a wish list item.","We can't specify a wish list item.",module,Magento_Wishlist
-"The product does not exist.","The product does not exist.",module,Magento_Wishlist
+"We can't specify a wish list item.","我們不能指定一個願望清單項目。",module,Magento_Wishlist
+"The product does not exist.","產品不存在。",module,Magento_Wishlist
 "Test Phrase","Test Phrase",module,Magento_Wishlist
 "message","message",module,Magento_Wishlist
 "Message","訊息內容",module,Magento_Wishlist
@@ -16109,20 +16109,20 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Remove Item","Remove Item",module,Magento_Wishlist
 "Remove item","刪除項目",module,Magento_Wishlist
 "Add to Compare","加入比較",module,Magento_Wishlist
-"This Wish List has no Items","This Wish List has no Items",module,Magento_Wishlist
+"This Wish List has no Items","此願望清單沒有項目",module,Magento_Wishlist
 "%1 has been added to your Wish List.","%1 已加到我的願望清單囉!",module,Magento_Wishlist
 "Click <a href=""%1"">here</a> to continue shopping.","請點擊 <a href=""%1"">這裡</a> 繼續購物。",module,Magento_Wishlist
-"See Details","See Details",module,Magento_Wishlist
-"Options Details","Options Details",module,Magento_Wishlist
-"RSS link to %1's wishlist","RSS link to %1's wishlist",module,Magento_Wishlist
+"See Details","詳情",module,Magento_Wishlist
+"Options Details","選擇詳情",module,Magento_Wishlist
+"RSS link to %1's wishlist","RSS連結至%1的願望清單",module,Magento_Wishlist
 "RSS Feed","RSS Feed",module,Magento_Wishlist
 "Product","產品",module,Magento_Wishlist
 "Back","上一步",module,Magento_Wishlist
-"Wish List is empty now.","Wish List is empty now.",module,Magento_Wishlist
+"Wish List is empty now.","願望清單現在空了",module,Magento_Wishlist
 "* Required Fields","* 為必填項",module,Magento_Wishlist
 "Sharing Information","訊號資料",module,Magento_Wishlist
 "Email addresses, separated by commas","電子郵件地址，以逗號分隔",module,Magento_Wishlist
-"Check here to link an RSS feed to your Wish List.","Check here to link an RSS feed to your Wish List.",module,Magento_Wishlist
+"Check here to link an RSS feed to your Wish List.","檢查此處可連接RSS頻道至你的願望清單。",module,Magento_Wishlist
 "Last Added Items","Last Added Items",module,Magento_Wishlist
 "Remove This Item","移除此物品",module,Magento_Wishlist
 "Go to Wish List","轉到願望清單",module,Magento_Wishlist
@@ -16131,38 +16131,38 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "%customer_name wants to share this Wish List from %store_name with you:","%customer_name 這個是您在 [%store_name] 的願望清單",module,Magento_Wishlist
 "Message from %customer_name:","Message from %customer_name:",module,Magento_Wishlist
 "View all Wish List items","查看完整願望清單品項",module,Magento_Wishlist
-"Wish List Section","Wish List Section",module,Magento_Wishlist
+"Wish List Section","願望清單組",module,Magento_Wishlist
 "Share Options","購股權",module,Magento_Wishlist
 "Email Sender","電子郵件寄件者",module,Magento_Wishlist
-"Email Template","Email Template",module,Magento_Wishlist
+"Email Template","Email模板",module,Magento_Wishlist
 "Email template chosen based on theme fallback when ""Default"" option is selected.","選擇「預設」後，電子郵件範本將根據佈景主題順序選擇。",module,Magento_Wishlist
 "Max Emails Allowed to be Sent","Max Emails Allowed to be Sent",module,Magento_Wishlist
-"Email Text Length Limit","Email Text Length Limit",module,Magento_Wishlist
-"General Options","General Options",module,Magento_Wishlist
+"Email Text Length Limit","電子郵件文本長度限制",module,Magento_Wishlist
+"General Options","一般選擇",module,Magento_Wishlist
 "Enabled","啟用",module,Magento_Wishlist
 "My Wish List Link","我的願望清單鏈接",module,Magento_Wishlist
-"Display Wish List Summary","Display Wish List Summary",module,Magento_Wishlist
+"Display Wish List Summary","顯示願望清單摘要",module,Magento_Wishlist
 "Enable RSS","Enable RSS",module,Magento_Wishlist
-"No Items Found","No Items Found",module,Magento_Wishlist
+"No Items Found","沒有發現任何物件",module,Magento_Wishlist
 "Product Name","商品名稱",module,Magento_Wishlist
-"User Description","User Description",module,Magento_Wishlist
+"User Description","用戶說明",module,Magento_Wishlist
 "Quantity","數量",module,Magento_Wishlist
 "Add Locale","Add Locale",module,Magento_Wishlist
 "Add Date","Add Date",module,Magento_Wishlist
-"Days in Wish List","Days in Wish List",module,Magento_Wishlist
+"Days in Wish List","願望清單上的日子",module,Magento_Wishlist
 "Action","操作",module,Magento_Wishlist
 "Configure","設定",module,Magento_Wishlist
 "Delete","刪除",module,Magento_Wishlist
-"Product Details and Comment","Product Details and Comment",module,Magento_Wishlist
-"Add To Wishlist","Add To Wishlist",module,Magento_Wishlist
-"Are you sure you want to remove this product from your Wish List?","Are you sure you want to remove this product from your Wish List?",module,Magento_Wishlist
+"Product Details and Comment","產品詳情及評論",module,Magento_Wishlist
+"Add To Wishlist","加入願望清單中",module,Magento_Wishlist
+"Are you sure you want to remove this product from your Wish List?","你確定要把這個產品從你的願望清單上除掉嗎?",module,Magento_Wishlist
 "%1 has been removed from your Wish List.","%1 已從您的願望清單中刪除。",module,Magento_Wishlist
 "10 by default. Max - 10000","10 by default. Max - 10000",module,Magento_Wishlist
 "255 by default","255 by default",module,Magento_Wishlist
 "The Wish List item can't load at this time. Please try again later.","“願望清單”項目目前無法加載。 請稍後再試。",module,Magento_Wishlist
-"The cart item doesn't exist.","The cart item doesn't exist.",module,Magento_Wishlist
+"The cart item doesn't exist.","大車項目不存在。",module,Magento_Wishlist
 "You must login or register to add items to your wishlist.","您必須登入會員才能將產品到我的願望清單。",module,Magento_Wishlist
-"Show in Sidebar","Show in Sidebar",module,Magento_Wishlist
+"Show in Sidebar","在側欄中顯示",module,Magento_Wishlist
 "Missing key ""model"" in Wishlist Item value data","Missing key ""model"" in Wishlist Item value data",module,Magento_WishlistGraphQl
 "Missing key ""model"" in Wishlist value data","Missing key ""model"" in Wishlist value data",module,Magento_WishlistGraphQl
 "Credit card type","信用卡類型",module,Magento_Worldpay
