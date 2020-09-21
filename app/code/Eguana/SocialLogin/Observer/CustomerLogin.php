@@ -10,6 +10,7 @@
 namespace Eguana\SocialLogin\Observer;
 
 use Eguana\SocialLogin\Model\SocialLoginHandler as SocialLoginModel;
+use Eguana\SocialLogin\Model\SocialLoginRepository;
 use Magento\Framework\Event\Observer as ObserverAlias;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Session\SessionManagerInterface as SessionManagerInterfaceAlias;
@@ -28,16 +29,24 @@ class CustomerLogin implements ObserverInterface
     protected $socialLoginModel;
 
     /**
+     * @var SocialLoginRepository
+     */
+    private $socialLoginRepository;
+
+    /**
      * CustomerLogin constructor.
-     * @param Session $customerSession
+     * @param SessionManagerInterfaceAlias $customerSession
      * @param SocialLoginModel $socialLoginModel
+     * @param SocialLoginRepository $socialLoginRepository
      */
     public function __construct(
         SessionManagerInterfaceAlias $customerSession,
-        SocialLoginModel $socialLoginModel
+        SocialLoginModel $socialLoginModel,
+        SocialLoginRepository $socialLoginRepository
     ) {
-        $this->session          = $customerSession;
-        $this->socialLoginModel = $socialLoginModel;
+        $this->session                           = $customerSession;
+        $this->socialLoginModel                  = $socialLoginModel;
+        $this->socialLoginRepository             = $socialLoginRepository;
     }
 
     /**
@@ -54,6 +63,11 @@ class CustomerLogin implements ObserverInterface
             $socialMediaType = $customerData['socialmedia_type'];
             if ($customer->getId()) {
                 $customerId = $customer->getId();
+                if ($this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType)) {
+                    $socialLoginId = $this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType);
+                    $socialLoginUser = $this->socialLoginRepository->getById($socialLoginId);
+                    $this->socialLoginRepository->delete($socialLoginUser);
+                }
                 $this->socialLoginModel->setSocialMediaCustomer($appid, $customerId, $username, $socialMediaType);
             }
         }
