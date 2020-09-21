@@ -46,5 +46,6 @@ Mode,模式
 "Seven Eleven","7 Eleven"
 "FAMI","全家"
 "UNIMART","7 Eleven"
-"Reverse Logistics Order Created. Return Order Number is %1.","退貨單號為%1"
+"Reverse Logistics Order Created. Return Order Number is %1.","已進入退貨流程，退貨單號為%1"
 "[%sms_prefix] Dear %customer, your return order number is %rtn_order_number, please return your goods in 3 days.","【%sms_prefix】 %customer, 您好 您的超商退貨代碼為 #%rtn_order_number 請於三天內至超商進行退貨，謝謝"
+"Notified by Green World Logistics.","來自 綠界科技"

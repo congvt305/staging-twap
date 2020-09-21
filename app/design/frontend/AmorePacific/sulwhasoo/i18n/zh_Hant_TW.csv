@@ -29,7 +29,7 @@
 "Enter your destination to get a shipping estimate.","輸入目的地以獲取運輸估算。"
 "Get Code","取得驗證碼"
 "Verify","驗證"
-"Verify Registration","驗證註冊"
+"Verify Registration","註冊"
 "Code","驗證碼"
 "Input 4 digit verification code","輸入4位數驗證碼"
 "POS Information","POS信息"
@@ -112,3 +112,4 @@
 "Thank you for your subscription to the latest news on %store_name.","感謝您訂閱【%store_name】最新消息"
 "You have successfully subscribed to the latest news from %store_name.","您已經成功訂閱【%store_name】最新消息"
 "You have successfully cancelled the latest news from %store_name.","您已經成功取消【%store_name】最新消息"
+"View / Order","查看 / 訂購"

@@ -30,12 +30,13 @@ class EInvoiceIssueInvalidObserver implements ObserverInterface
     {
         /** @var \Magento\Sales\Model\Order\Payment $payment */
         $payment = $observer->getEvent()->getPayment();
+        $order = $payment->getOrder();
 
         if (!empty($payment->getAdditionalData())) {
             $eInvoiceData = json_decode($payment->getAdditionalData(), true);
 
             if (isset($eInvoiceData["InvoiceNumber"]) && ($eInvoiceData["RtnCode"] == 1)) {
-                $this->ecpayPaymentModel->invalidateEInvoice($payment, $payment->getOrder()->getStoreId());
+                $this->ecpayPaymentModel->issueAllowance($payment, $order);
             }
         }
     }
