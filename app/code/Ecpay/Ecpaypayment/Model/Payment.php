@@ -726,6 +726,100 @@ class Payment extends AbstractMethod
         }
     }
 
+    /**
+     * @param \Magento\Payment\Model\InfoInterface $payment
+     * @param \Magento\Sales\Model\Order $order
+     */
+    public function issueAllowance(\Magento\Payment\Model\InfoInterface $payment, $order)
+    {
+        try {
+            // 1.載入SDK
+            $ecpay_invoice = $this->ecpayInvoice;
+
+            $storeId = $order->getStoreId();
+
+            // 2.寫入基本介接參數
+            $ecpay_invoice->Invoice_Method = 'ALLOWANCE';
+            $ecpay_invoice->Invoice_Url = $this->getInvoiceApiUrl($storeId) . 'Allowance';
+            $ecpay_invoice->MerchantID = $this->getEcpayConfigFromStore("merchant_id", $storeId);
+            $ecpay_invoice->HashKey = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_hash_key", $storeId);
+            $ecpay_invoice->HashIV = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_hash_iv", $storeId);
+
+            // 3.寫入發票相關資訊
+            $additionalData = $payment->getAdditionalData();
+            $invalidateInvoiceData = json_decode($additionalData, true);
+            $ecpay_invoice->Send['InvoiceNo'] = $invalidateInvoiceData["InvoiceNumber"];
+            $ecpay_invoice->Send['AllowanceNotify'] = $this->getEcpayConfigFromStore('invoice/issue_allowance', $storeId);
+            $ecpay_invoice->Send['CustomerName'] = $order->getCustomerLastname() . $order->getCustomerFirstname();
+            $ecpay_invoice->Send['NotifyMail'] = $order->getShippingAddress()->getEmail();
+            $ecpay_invoice->Send['NotifyPhone'] = $order->getShippingAddress()->getTelephone();
+            $this->getOrderItems($order, $ecpay_invoice);
+
+
+            // 4.送出
+            $aReturn_Info = $ecpay_invoice->Check_Out();
+
+            // 5.返回
+            $payment->setData("ecpay_invoice_invalidate_data", json_encode($aReturn_Info));
+        } catch (\Exception $e) {
+            // 例外錯誤處理。
+            $sMsg = $e->getMessage();
+            $this->_logger->info("EInvoice Cancel has been Failed : " . $sMsg);
+//            throw new LocalizedException(__($sMsg));
+        }
+    }
+
+    public function getOrderItems(\Magento\Sales\Model\Order $order, \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice)
+    {
+        $ecpay_invoice->Send['AllowanceAmount'] = round($order->getTotalRefunded());
+        $ecpay_invoice->Send['Items'] = [];
+
+        $orderItems = $order->getAllVisibleItems();
+        $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
+        $mileageUsedAmount = $order->getRewardPointsBalance();
+
+        /** @var \Magento\Sales\Model\Order\Item $orderItem */
+        foreach ($orderItems as $orderItem) {
+            $mileagePerItem = $this->mileageSpentRateByItem(
+                $orderTotal,
+                $orderItem->getRowTotalInclTax(),
+                $orderItem->getDiscountAmount(),
+                $mileageUsedAmount
+            );
+            $itemGrandTotalInclTax = $orderItem->getRowTotalInclTax()
+                - $orderItem->getDiscountAmount()
+                - $mileagePerItem;
+
+            array_push(
+                $ecpay_invoice->Send['Items'],
+                array(
+                    'ItemName' => $orderItem->getData('name'),
+                    'ItemCount' => (int)$orderItem->getData('qty_ordered'),
+                    'ItemWord' => '批',
+                    'ItemPrice' => $orderItem->getPrice(),
+                    'ItemTaxType' => 1,
+                    'ItemAmount' => $itemGrandTotalInclTax,
+                    'ItemRemark' => '商品備註'
+                )
+            );
+        }
+
+        if (!empty($order->getShippingRefunded())) {
+            array_push(
+                $ecpay_invoice->Send['Items'],
+                array(
+                    'ItemName' => $order->getShippingDescription(),
+                    'ItemCount' => 1,
+                    'ItemWord' => '批',
+                    'ItemPrice' => $order->getShippingRefunded(),
+                    'ItemTaxType' => 1,
+                    'ItemAmount' => $order->getShippingRefunded(),
+                    'ItemRemark' => '商品備註'
+                )
+            );
+        }
+    }
+
     public function getInvoiceApiUrl($storeId)
     {
         $apiUrl = "";
