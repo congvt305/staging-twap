@@ -1799,7 +1799,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Add New Attribute Set","Add New Attribute Set",module,Magento_Catalog
 "Add Attribute Set","Add Attribute Set",module,Magento_Catalog
 "Attribute Sets","Attribute Sets",module,Magento_Catalog
-"Close Window","關上窗戶",module,Magento_Catalog
+"Close Window","關閉",module,Magento_Catalog
 "New Product","新產品",module,Magento_Catalog
 "Save & Edit","保存與編輯",module,Magento_Catalog
 "Save & New","保存與新增",module,Magento_Catalog
@@ -11638,7 +11638,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "View Return","查看明細",module,Magento_Rma
 "You have placed no returns.","您尚未退貨",module,Magento_Rma
 "Packages","Packages",module,Magento_Rma
-"Close Window","關上窗戶",module,Magento_Rma
+"Close Window","關閉",module,Magento_Rma
 "Package","Package",module,Magento_Rma
 "Type","類別",module,Magento_Rma
 "Length","Length",module,Magento_Rma
@@ -13598,14 +13598,14 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Print All Shipments","Print All Shipments",module,Magento_Shipping
 "Shipment #","系統預設值 #",module,Magento_Shipping
 "Print Shipment","列印出貨明細",module,Magento_Shipping
-"Tracking Number(s):","貨態管理碼:",module,Magento_Shipping
+"Tracking Number(s):","配送代碼:",module,Magento_Shipping
 "SKU","商品編號",module,Magento_Shipping
 "Order tracking","訂單跟踪",module,Magento_Shipping
-"Tracking Number:","貨態管理碼:",module,Magento_Shipping
+"Tracking Number:","配送代碼:",module,Magento_Shipping
 "Carrier:","配送方式:",module,Magento_Shipping
-"Error:","Error:",module,Magento_Shipping
-"Tracking information is currently not available. Please ","Tracking information is currently not available. Please ",module,Magento_Shipping
-"contact us","聯繫我們",module,Magento_Shipping
+"Error:","錯誤訊息:",module,Magento_Shipping
+"Tracking information is currently not available. Please ","配送代碼目前無法提供服務",module,Magento_Shipping
+"contact us","若您有任何問題, 可透過聯繫我們進行服務或撥打 ",module,Magento_Shipping
 " for more information or "," for more information or ",module,Magento_Shipping
 "email us at ","email us at ",module,Magento_Shipping
 "Info:","Info:",module,Magento_Shipping
@@ -13615,7 +13615,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "N/A","不適用 ",module,Magento_Shipping
 "There is no tracking available for this shipment.","這批貨沒有可用的追蹤器。",module,Magento_Shipping
 "There is no tracking available.","There is no tracking available.",module,Magento_Shipping
-"Close Window","關上窗戶",module,Magento_Shipping
+"Close Window","關閉",module,Magento_Shipping
 "Track history","Track history",module,Magento_Shipping
 "Location","位置",module,Magento_Shipping
 "Date","日期",module,Magento_Shipping
