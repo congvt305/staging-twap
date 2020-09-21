@@ -84,7 +84,7 @@ class EInvoice extends \Magento\Framework\View\Element\Template
     public function getInvalidateEInvoiceNumber($orderId)
     {
         $invalidateEInvoiceInformation = $this->getInvalidateEInvoiceInformation($orderId);
-        return $invalidateEInvoiceInformation["InvoiceNumber"];
+        return $invalidateEInvoiceInformation["IA_Invoice_No"];
     }
 
     public function hasEInvoiceTriplicateData($orderId)
