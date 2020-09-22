@@ -29,7 +29,7 @@ define([
     };
 
     var openGreenWorldChildWindow = function () {
-        let gwWin = window.open('about:system','cvsMapFormGw'),
+        let gwWin = window.open('https://logistics-stage.ecpay.com.tw/','cvsMapFormGw'),
         gwForm = document.cvsMapForm;
         if(gwForm) {
             gwForm.submit();
