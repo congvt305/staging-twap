@@ -29,7 +29,7 @@ define([
     };
 
     var openGreenWorldChildWindow = function () {
-        let gwWin = window.open('about:blank','cvsMapFormGw'),
+        let gwWin = window.open('about:system','cvsMapFormGw'),
         gwForm = document.cvsMapForm;
         if(gwForm) {
             gwForm.submit();
