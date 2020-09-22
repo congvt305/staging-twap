@@ -13507,7 +13507,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Tracking information must contain title, carrier code, and tracking number","追踪訊息內容必須包含標題，運營商代碼和追蹤號碼。",module,Magento_Shipping
 "There are no shipping labels related to selected shipments.","There are no shipping labels related to selected shipments.",module,Magento_Shipping
 "Page not found.","找不到頁面。",module,Magento_Shipping
-"Tracking Information","跟蹤資料",module,Magento_Shipping
+"Tracking Information","貨態查詢",module,Magento_Shipping
 "Sorry, but we can't deliver to the destination country with this shipping module.","Sorry, but we can't deliver to the destination country with this shipping module.",module,Magento_Shipping
 "The shipping module is not available.","The shipping module is not available.",module,Magento_Shipping
 "This shipping method is not available. Please specify the zip code.","此運輸方法不可用。 請指定郵政編碼。",module,Magento_Shipping
@@ -13581,7 +13581,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "kg","kg",module,Magento_Shipping
 "Delete Package","Delete Package",module,Magento_Shipping
 "Explanation","Explanation",module,Magento_Shipping
-"Carrier","配送方式",module,Magento_Shipping
+"Carrier","貨運公司",module,Magento_Shipping
 "Title","標題",module,Magento_Shipping
 "Number","Number",module,Magento_Shipping
 "Action","操作",module,Magento_Shipping
@@ -13602,20 +13602,20 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "SKU","商品編號",module,Magento_Shipping
 "Order tracking","訂單跟踪",module,Magento_Shipping
 "Tracking Number:","配送代碼:",module,Magento_Shipping
-"Carrier:","配送方式:",module,Magento_Shipping
+"Carrier:","貨運公司:",module,Magento_Shipping
 "Error:","錯誤訊息:",module,Magento_Shipping
 "Tracking information is currently not available. Please ","配送代碼目前無法提供服務",module,Magento_Shipping
 "contact us","若您有任何問題, 可透過聯繫我們進行服務或撥打 ",module,Magento_Shipping
 " for more information or "," for more information or ",module,Magento_Shipping
 "email us at ","email us at ",module,Magento_Shipping
 "Info:","Info:",module,Magento_Shipping
-"Track:","Track:",module,Magento_Shipping
+"Track:","點擊查看貨態資訊:",module,Magento_Shipping
 ". ':'",". ':'",module,Magento_Shipping
 "Delivered on:","Delivered on:",module,Magento_Shipping
 "N/A","不適用 ",module,Magento_Shipping
 "There is no tracking available for this shipment.","這批貨沒有可用的追蹤器。",module,Magento_Shipping
 "There is no tracking available.","There is no tracking available.",module,Magento_Shipping
-"Close Window","關閉",module,Magento_Shipping
+"Close Window","關閉視窗",module,Magento_Shipping
 "Track history","Track history",module,Magento_Shipping
 "Location","位置",module,Magento_Shipping
 "Date","日期",module,Magento_Shipping
@@ -13640,7 +13640,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Track your order","追踪您的訂單",module,Magento_Shipping
 "Track All Shipments","Track All Shipments",module,Magento_Shipping
 "You sent the shipment.","You sent the shipment.",module,Magento_Shipping
-"Status:","Status:",module,Magento_Shipping
+"Status:","貨態進度：",module,Magento_Shipping
 "Signed by:","Signed by:",module,Magento_Shipping
 "Delivered to:","Delivered to:",module,Magento_Shipping
 "Shipped or billed on:","Shipped or billed on:",module,Magento_Shipping
