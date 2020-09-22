@@ -541,7 +541,9 @@ return [
         'Temando_ShippingRemover' => 1,
         'Vertex_Tax' => 0,
         'Vertex_AddressValidation' => 0,
-        'Yotpo_Yotpo' => 1
+        'Yotpo_Yotpo' => 1,
+        'Eguana_CustomStagingContent' => 1,
+
     ],
     'admin_user' => [
         'locale' => [
