@@ -27,6 +27,8 @@ use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Ecpay\Ecpaypayment\Model\Payment;
 use Magento\Setup\Exception;
 use Magento\Sales\Api\CreditmemoRepositoryInterface;
+use Magento\Sales\Api\ShipmentRepositoryInterface;
+use Magento\Sales\Model\Order\Shipment\TrackFactory;
 
 class SapOrderManagement implements SapOrderManagementInterface
 {
@@ -118,6 +120,14 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @var ManagerInterface
      */
     private $eventManager;
+    /**
+     * @var ShipmentRepositoryInterface
+     */
+    private $shipmentRepository;
+    /**
+     * @var TrackFactory
+     */
+    private $trackFactory;
 
     /**
      * SapOrderManagement constructor.
@@ -140,6 +150,8 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @param \Magento\Sales\Api\ShipmentTrackRepositoryInterface $shipmentTrackRepository
      * @param CreditmemoRepositoryInterface $creditmemoRepository
      * @param ManagerInterface $eventManager
+     * @param ShipmentRepositoryInterface $shipmentRepository
+     * @param TrackFactory $trackFactory
      */
     public function __construct(
         ShipmentItemCreationInterfaceFactory $shipmentItemCreationInterfaceFactory,
@@ -160,7 +172,9 @@ class SapOrderManagement implements SapOrderManagementInterface
         \Magento\Rma\Model\Rma\Status\HistoryFactory $historyFactory,
         \Magento\Sales\Api\ShipmentTrackRepositoryInterface $shipmentTrackRepository,
         CreditmemoRepositoryInterface $creditmemoRepository,
-        ManagerInterface $eventManager
+        ManagerInterface $eventManager,
+        ShipmentRepositoryInterface $shipmentRepository,
+        \Magento\Sales\Model\Order\Shipment\TrackFactory $trackFactory
     ) {
         $this->shipmentItemCreationInterfaceFactory = $shipmentItemCreationInterfaceFactory;
         $this->shipmentTrackCreationInterfaceFactory = $shipmentTrackCreationInterfaceFactory;
@@ -181,6 +195,8 @@ class SapOrderManagement implements SapOrderManagementInterface
         $this->shipmentTrackRepository = $shipmentTrackRepository;
         $this->creditmemoRepository = $creditmemoRepository;
         $this->eventManager = $eventManager;
+        $this->shipmentRepository = $shipmentRepository;
+        $this->trackFactory = $trackFactory;
     }
 
     public function orderStatus($orderStatusData)
@@ -349,7 +365,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                     if (!$shipmentCheck) {
                         if ($order->getShippingMethod() == "blackcat_homedelivery") {
                             try {
-                                $shipmentId = $this->createShipment($order, $trackingNo);
+                                $shipmentId = $this->createShipment($order, $trackingNo, $this->getCarrierTitle('blackcat', $order->getStoreId()) ?: "宅配-黑貓宅急便");
                             } catch (\Exception $exception) {
                                 $order->setData('sap_response', $exception->getMessage());
                                 $this->orderRepository->save($order);
@@ -399,7 +415,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 $trackingNumber = $track->getTrackNumber();
 
                                 if ($trackingNumber != $orderStatusData['ztrackId']) {
-                                    $this->UpdateTrackNo($track, $orderStatusData['ztrackId']);
+                                    $this->UpdateTrackNo($track, $orderStatusData['ztrackId'], "gwlogistics", $this->getCarrierTitle('gwlogistics', $order->getStoreId()) ?: "超取-全家超商/7-Eleven");
                                 }
 
                                 $this->setQtyShipToOrderItem($order);
@@ -420,30 +436,11 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 $result = $this->CreateEInvoice($order, $orderStatusData, $result);
                             }
                         } else {
-                            /** @var \Magento\Sales\Model\Order\Shipment\Track $track */
-                            $track = $this->getSingleTrackByOrder($order);
-                            $trackingNumber = $track->getTrackNumber();
-
-                            if ($trackingNumber != $orderStatusData['ztrackId']) {
-                                $this->UpdateTrackNo($track, $orderStatusData['ztrackId']);
-
-                                $message = "Shipping method is not Greenworld and Trackin number is changed.";
-                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-
-                                if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                    $result = $this->CreateEInvoice($order, $orderStatusData, $result);
-                                }
-
-                                $this->operationLogWriter($parameters, $result, $orderStatusData, 'amore.sap.order.status.gi');
-
-                                return $result;
-                            }
+                            $result = $this->trackNoManager($order, $orderStatusData);
 
                             if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
                                 $result = $this->CreateEInvoice($order, $orderStatusData, $result);
                             }
-                            $message = "Shipping method is not Greenworld and Shipment exists. Please Check Order.";
-                            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
                         }
                     }
                 } else {
@@ -505,6 +502,50 @@ class SapOrderManagement implements SapOrderManagementInterface
     }
 
     /**
+     * @param \Magento\Sales\Model\Order $order
+     * @param $orderStatusData
+     */
+    public function trackNoManager($order, $orderStatusData)
+    {
+        /** @var \Magento\Sales\Model\Order\Shipment\Track $track */
+        $track = $this->getSingleTrackByOrder($order);
+        $result = [];
+
+        if (empty($track->getData())) {
+            /** @var \Magento\Sales\Model\Order\Shipment $shipment */
+            $shipment = $this->getShipmentListByOrder($order->getEntityId());
+            $trackData = [
+                "number" => $orderStatusData['ztrackId'],
+                "carrier_code" => 'blackcat',
+                "title" => $this->getCarrierTitle('blackcat', $order->getStoreId()) ?: "宅配-黑貓宅急便"
+            ];
+            $track = $this->trackFactory->create()->addData($trackData);
+            $shipment->addTrack($track);
+
+            try {
+                $this->shipmentRepository->save($shipment);
+                $message = "Shipping method is not Greenworld and Tracking number was not Existed. Tracking no is created.";
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+            } catch (\Magento\Framework\Exception\CouldNotSaveException $exception) {
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $exception->getMessage(), "0001");
+            }
+        } else {
+            $trackingNumber = $track->getTrackNumber();
+
+            if ($trackingNumber != $orderStatusData['ztrackId']) {
+                $this->UpdateTrackNo($track, $orderStatusData['ztrackId'], "blackcat", $this->getCarrierTitle('blackcat', $order->getStoreId()) ?: "宅配-黑貓宅急便");
+
+                $message = "Shipping method is not Greenworld and Tracking number is changed.";
+                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+            }
+
+            $message = "Shipping method is not Greenworld and Tracking number is same as current Tracking number.";
+            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+        }
+        return $result;
+    }
+
+    /**
      * @param $order \Magento\Sales\Model\Order
      */
     public function setQtyShipToOrderItem($order)
@@ -520,6 +561,21 @@ class SapOrderManagement implements SapOrderManagementInterface
             }
             $this->orderRepository->save($order);
         }
+    }
+
+    /**
+     * @param int $orderId
+     * @return \Magento\Sales\Api\Data\ShipmentInterface|null
+     */
+    public function getShipmentListByOrder($orderId)
+    {
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('order_id', $orderId)->create();
+
+        $shipments = $this->shipmentRepository->getList($searchCriteria);
+        $shipmentRecords = $shipments->getItems();
+
+        return reset($shipmentRecords);
     }
 
     public function getOrderFromList($incrementId)
@@ -538,6 +594,13 @@ class SapOrderManagement implements SapOrderManagementInterface
         } catch (\Exception $exception) {
             return null;
         }
+    }
+
+    public function getCarrierTitle($code, $storeId)
+    {
+        $path = 'carriers/' . $code . '/title';
+
+        return $this->config->getValue($path, 'store', $storeId);
     }
 
     /**
@@ -594,7 +657,7 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @param string $carrierCode
      * @return int|null
      */
-    public function createShipment($order, $trackingNo, $shippingMethod = "BlackCat", $carrierCode = 'blackcat')
+    public function createShipment($order, $trackingNo, $shippingMethod, $carrierCode = 'blackcat')
     {
         $shipmentItems = $this->createShipmentItem($order);
 
@@ -808,12 +871,16 @@ class SapOrderManagement implements SapOrderManagementInterface
     /**
      * @param \Magento\Sales\Model\Order\Shipment\Track $track
      * @param $trackNo
+     * @param $carrierCode
+     * @param $title
      * @throws \Magento\Framework\Exception\CouldNotSaveException
      */
-    public function UpdateTrackNo(\Magento\Sales\Model\Order\Shipment\Track $track, $trackNo)
+    public function UpdateTrackNo(\Magento\Sales\Model\Order\Shipment\Track $track, $trackNo, $carrierCode, $title)
     {
         $trackById = $this->shipmentTrackRepository->get($track->getEntityId());
         $trackById->setTrackNumber($trackNo);
+        $trackById->setCarrierCode($carrierCode);
+        $trackById->setTitle($title);
         $this->shipmentTrackRepository->save($trackById);
     }
 }
