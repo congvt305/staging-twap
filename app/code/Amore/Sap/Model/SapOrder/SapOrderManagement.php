@@ -365,7 +365,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                     if (!$shipmentCheck) {
                         if ($order->getShippingMethod() == "blackcat_homedelivery") {
                             try {
-                                $shipmentId = $this->createShipment($order, $trackingNo);
+                                $shipmentId = $this->createShipment($order, $trackingNo, $this->getCarrierTitle('blackcat', $order->getStoreId()) ?: "宅配-黑貓宅急便");
                             } catch (\Exception $exception) {
                                 $order->setData('sap_response', $exception->getMessage());
                                 $this->orderRepository->save($order);
@@ -657,7 +657,7 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @param string $carrierCode
      * @return int|null
      */
-    public function createShipment($order, $trackingNo, $shippingMethod = "BlackCat", $carrierCode = 'blackcat')
+    public function createShipment($order, $trackingNo, $shippingMethod, $carrierCode = 'blackcat')
     {
         $shipmentItems = $this->createShipmentItem($order);
 
