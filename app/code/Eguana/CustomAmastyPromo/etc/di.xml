@@ -11,4 +11,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Amasty\Promo\Plugin\CheckoutStaging\Model\ResourceModel\PreviewQuotaPlugin" type="Eguana\CustomAmastyPromo\Plugin\CheckoutStaging\Model\ResourceModel\PreviewQuotaPlugin"/>
+    <type name="Amasty\Promo\Model\Rule\Action\Discount\AbstractDiscount">
+        <plugin name="final_price_not_fond" type="Eguana\CustomAmastyPromo\Model\Rule\Action\Discount\AbstractDiscount" sortOrder="1"/>
+    </type>
 </config>

@@ -803,7 +803,7 @@ class Payment extends AbstractMethod
                     'ItemName' => $orderItem->getData('name'),
                     'ItemCount' => (int)$orderItem->getData('qty_ordered'),
                     'ItemWord' => '批',
-                    'ItemPrice' => $orderItem->getPrice(),
+                    'ItemPrice' => $itemGrandTotalInclTax / (int)$orderItem->getData('qty_ordered'),
                     'ItemTaxType' => 1,
                     'ItemAmount' => $itemGrandTotalInclTax,
                     'ItemRemark' => '商品備註'
