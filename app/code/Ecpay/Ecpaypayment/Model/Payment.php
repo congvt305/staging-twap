@@ -92,6 +92,10 @@ class Payment extends AbstractMethod
      * @var \Magento\Sales\Api\OrderItemRepositoryInterface
      */
     private $orderItemRepository;
+    /**
+     * @var \Magento\Sales\Model\Order\Email\Sender\InvoiceSender
+     */
+    private $invoiceSender;
 
     public function __construct(
         Context $context,
@@ -115,6 +119,7 @@ class Payment extends AbstractMethod
         \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement,
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository,
+        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
@@ -146,6 +151,7 @@ class Payment extends AbstractMethod
         $this->productLinkManagement = $productLinkManagement;
         $this->productRepository = $productRepository;
         $this->orderItemRepository = $orderItemRepository;
+        $this->invoiceSender = $invoiceSender;
     }
 
     public function getValidPayments()
@@ -482,6 +488,7 @@ class Payment extends AbstractMethod
             );
 
             $transactionSave->save();
+            $this->invoiceSender->send($invoice);
             $order->save();
         }
     }
