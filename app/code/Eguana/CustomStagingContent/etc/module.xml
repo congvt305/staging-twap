@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2019 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: Shahroz
+ * Date: 8/28/20
+ * Time: 12:41 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+	<module name="Eguana_CustomStagingContent"/>
+</config>
