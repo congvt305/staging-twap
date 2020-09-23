@@ -34,8 +34,13 @@ class Index extends Action implements CsrfAwareActionInterface
      * @var RawFactory
      */
     private $rawFactory;
+    /**
+     * @var \Magento\Framework\HTTP\Header
+     */
+    private $header;
 
     public function __construct(
+        \Magento\Framework\HTTP\Header $header,
         \Eguana\GWLogistics\Model\Service\SaveQuoteCvsLocation $saveQuoteCvsLocation, //todo move business logic to here.
         LoggerInterface $logger,
         RawFactory $rawFactory,
@@ -46,6 +51,7 @@ class Index extends Action implements CsrfAwareActionInterface
         $this->saveQuoteCvsLocation = $saveQuoteCvsLocation;
         $this->logger = $logger;
         $this->rawFactory = $rawFactory;
+        $this->header = $header;
     }
 
     public function execute()
@@ -61,6 +67,7 @@ class Index extends Action implements CsrfAwareActionInterface
 
         $cvsStoreData = $this->getRequest()->getParams();
         $resultRedirect = $this->resultRedirectFactory->create();
+        $redirectUrl = $this->isLineApp() ? 'checkout/index/index/#shipping' : '*/index/index';
 
         if (!$cvsStoreData || $this->getRequest()->getMethod() !== 'POST') {
             $response->setHttpResponseCode($httpBadRequestCode);
@@ -75,8 +82,14 @@ class Index extends Action implements CsrfAwareActionInterface
             $this->logger->error('gwlogistics | cvs store data for a map selection', [$e->getMessage()]);
         }
 
-        $resultRedirect->setPath('*/index/index');
+        $resultRedirect->setPath($redirectUrl);
         return $resultRedirect;
+    }
+
+    private function isLineApp()
+    {
+        $userAgent = $this->header->getHttpUserAgent();
+        return preg_match('/(iPhone|iPod|iPad|Android).*AppleWebKit.*Line/', $userAgent);
     }
 
     /**
