@@ -168,6 +168,21 @@ $viewModel = $block->getData('view_model');
                 </div>
             </div>
             <?= $block->getChildHtml('form_additional_info') ?>
+
+            <?php $_mobile = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'mobile_number', ['data'=>['attribute_code'=>'mobile_number', 'read_only' => 1, 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getMobileNumber())]]) ?>
+            <?php if ($_mobile->isEnabled()) : ?>
+                <?= $_mobile->setDate($block->getFormData()->getMobileNumber())->toHtml() ?>
+            <?php endif ?>
+
+            <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
+            <?php if ($_dob->isEnabled()) : ?>
+                <?= $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>
+            <?php endif ?>
+
+            <?php $_gender = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Gender::class) ?>
+            <?php if ($_gender->isEnabled()) : ?>
+                <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
+            <?php endif ?>
         </fieldset>
         <fieldset class="fieldset address">
             <div class="fieldset dm-address">
@@ -223,21 +238,6 @@ $viewModel = $block->getData('view_model');
             </div>
         </fieldset>
         <fieldset class="fieldset extra-info">
-
-            <?php $_mobile = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\TextField::class, 'mobile_number', ['data'=>['attribute_code'=>'mobile_number', 'read_only' => 1, 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getMobileNumber())]]) ?>
-            <?php if ($_mobile->isEnabled()) : ?>
-                <?= $_mobile->setDate($block->getFormData()->getMobileNumber())->toHtml() ?>
-            <?php endif ?>
-
-            <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
-            <?php if ($_dob->isEnabled()) : ?>
-                <?= $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>
-            <?php endif ?>
-
-            <?php $_gender = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Gender::class) ?>
-            <?php if ($_gender->isEnabled()) : ?>
-                <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
-            <?php endif ?>
 
             <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus())]]) ?>
             <?php $_termsAndServicesPolicy = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'terms_and_services_policy', ['data'=>['attribute_code'=>'terms_and_services_policy', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getTermsAndServicesPolicy())]]) ?>
