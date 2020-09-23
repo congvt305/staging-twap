@@ -19,18 +19,18 @@ define([
             document.addEventListener('visibilitychange', fetchCvsLocation, false);
         }
         function fetchCvsLocation() {
-                windowActivateCount++;
-                if (windowActivateCount % 2 === 0) {
-                    // console.log('visibility changed');
-                    cvsLocation.selectCvsLocation();
-                    document.removeEventListener('visibilitychange', fetchCvsLocation, false);
-                }
+            windowActivateCount++;
+            if (windowActivateCount % 2 === 0) {
+                // console.log('visibility changed');
+                cvsLocation.selectCvsLocation();
+                document.removeEventListener('visibilitychange', fetchCvsLocation, false);
+            }
         }
     };
 
     var openGreenWorldChildWindow = function () {
-        let gwWin = window.open('https://logistics-stage.ecpay.com.tw/','cvsMapFormGw'),
-        gwForm = document.cvsMapForm;
+        let gwWin = window.open('about:blank','cvsMapFormGw'),
+            gwForm = document.cvsMapForm;
         if(gwForm) {
             gwForm.submit();
             let timer = setInterval(function () {
@@ -40,6 +40,14 @@ define([
                     clearInterval(timer);
                 }
             },500);
+        }
+    };
+
+    var redirectGreenWorldMapUrl = function () {
+        var gwForm = document.cvsMapForm;
+        if(gwForm) {
+            gwForm.target = "_self";
+            gwForm.submit();
         }
     };
 
@@ -68,6 +76,9 @@ define([
         initialize: function () {
             this._super();
             cvsLocation.clear();
+            if (window.location.pathname === '/checkout/index/index/') {
+                cvsLocation.selectCvsLocation();
+            }
             this.visible = false;
             this.windowActivateCount = 0;
             return this;
@@ -92,8 +103,10 @@ define([
 
         openCvsMap: function (cvs) { //todo open window and submit
             this.LogisticsSubType = cvs;
-            // return openGreenWorldWindow.bind(this);
-            return openGreenWorldChildWindow.bind(this);
+            if (this.isLineAppBrowser()) {
+                return redirectGreenWorldMapUrl.bind(this);
+            }
+            return openGreenWorldWindow.bind(this);
         },
 
         getMapUrl: function () {
@@ -113,6 +126,10 @@ define([
 
         isInApBrowser: function () {
             return /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent);
+        },
+
+        isLineAppBrowser: function () {
+            return /(iPhone|iPod|iPad|Android).*AppleWebKit.*Line/i.test(navigator.userAgent);
         },
 
         getExtraData: function () {
