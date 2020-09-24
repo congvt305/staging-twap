@@ -343,8 +343,19 @@ class Data extends AbstractHelper
               ->save();
     }
 
+
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     * @param string $comment
+     * @param string $status
+     * @param $notify
+     */
     private function setOrderCommentForFront($order, $comment, $status, $notify)
     {
+        if ($status == 'holded') {
+            $order->setHoldBeforeState($order->getState())->setHoldBeforeStatus($order->getStatus());
+        }
+
         $order->setState($this->_ecpayOrderModel->getOrderState($status))
               ->setStatus($status);
 

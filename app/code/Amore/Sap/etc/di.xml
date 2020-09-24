@@ -39,4 +39,6 @@
     <preference for="Magento\Rma\Model\Rma\Create" type="Amore\Sap\Model\Rma\Create" />
     <preference for="Magento\Sales\Model\ResourceModel\Order\Handler\State"
                 type="Amore\Sap\Model\ResourceModel\Order\Handler\CustomState" />
+    <preference for="Magento\InventoryShipping\Observer\SourceDeductionProcessor"
+                type="Amore\Sap\Observer\SourceDeductionProcessor" />
 </config>

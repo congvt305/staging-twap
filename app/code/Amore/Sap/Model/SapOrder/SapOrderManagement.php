@@ -420,8 +420,10 @@ class SapOrderManagement implements SapOrderManagementInterface
 
                                 $this->setQtyShipToOrderItem($order);
 
-                                $order->setState('complete');
-                                $order->setStatus('shipment_processing');
+                                if ($order->getStatus() != 'shipment_processing' || $order->getState() != 'complete') {
+                                    $order->setState('complete');
+                                    $order->setStatus('shipment_processing');
+                                }
                                 $order->setData('sap_response', $orderStatusData['ugtxt']);
                                 $this->orderRepository->save($order);
 
@@ -437,6 +439,13 @@ class SapOrderManagement implements SapOrderManagementInterface
                             }
                         } else {
                             $result = $this->trackNoManager($order, $orderStatusData);
+
+                            if ($order->getStatus() != 'shipment_processing' || $order->getState() != 'complete') {
+                                $order->setState('complete');
+                                $order->setStatus('shipment_processing');
+                            }
+                            $order->setData('sap_response', $orderStatusData['ugtxt']);
+                            $this->orderRepository->save($order);
 
                             if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
                                 $result = $this->CreateEInvoice($order, $orderStatusData, $result);
@@ -542,6 +551,7 @@ class SapOrderManagement implements SapOrderManagementInterface
             $message = "Shipping method is not Greenworld and Tracking number is same as current Tracking number.";
             $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
         }
+
         return $result;
     }
 
