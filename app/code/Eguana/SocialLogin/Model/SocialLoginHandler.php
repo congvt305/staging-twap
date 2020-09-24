@@ -167,14 +167,19 @@ class SocialLoginHandler
 
     /**
      * Save social media customer data
-     * @param $lineId
+     * @param $socialId
      * @param $customerId
      * @param $username
      * @param $socialMediaType
      */
     public function setSocialMediaCustomer($socialId, $customerId, $username, $socialMediaType)
     {
-        $websiteId = $this->storeManager->getStore()->getWebsiteId();
+        $websiteId = null;
+        try {
+            $websiteId = $this->storeManager->getStore()->getWebsiteId();
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
         $lineCustomer = $this->lineCustomerModelFactory->create();
         $lineCustomer->setData('social_id', $socialId);
         $lineCustomer->setData('username', $username);
