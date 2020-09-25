@@ -59,11 +59,11 @@ class Invalidate extends \Magento\Backend\App\Action
             $creditmemoId = $this->getRequest()->getParam('creditmemo_id');
             $creditmemo = $this->creditmemoRepository->get($creditmemoId);
             $order = $this->orderRepository->get($creditmemo->getOrderId());
-            $result = $this->ecpayPaymentModel->invalidateEInvoice($order->getPayment(), $order->getStoreId());
+            $result = $this->ecpayPaymentModel->issueAllowance($order->getPayment(), $order);
             if (isset($result['RtnCode'], $result['RtnMsg']) && $result['RtnCode'] === '1') {
                 $this->messageManager->addSuccessMessage($result['RtnMsg']);
             } else {
-                $this->messageManager->addErrorMessage('create E-Invoice Invalidate failed.');
+                $this->messageManager->addErrorMessage('create E-Invoice Allowance failed.');
             }
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
