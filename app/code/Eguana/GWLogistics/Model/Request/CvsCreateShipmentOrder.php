@@ -63,7 +63,6 @@ class CvsCreateShipmentOrder
         $result = [];
         try {
             $cvsLocation = $this->getCvsLocation($order);
-            $this->logger->info('gwlogistics | original cvsLocation ID for create order #' . $order->getEntityId(). '|'. $cvsLocation->getId());
             $dataTime = $this->dateTimeFactory->create();
             $merchantId = $this->helper->getMerchantId($order->getStoreId());
             $platformId = $this->helper->getPlatformId($order->getStoreId()) ?? '';
@@ -92,38 +91,31 @@ class CvsCreateShipmentOrder
             $serverReplyURL = $this->helper->getCreateShipmentReplyUrl($order->getStoreId());
             $receiverStoreID = $cvsLocation->getCvsStoreId(); //no need, only for C2C
             //for test, sender name, receiver name receiver phone/cellphone , ReceiverStoreID ReturnStoreID are required....!!
-            $this->logger->info('gwlogistics | original order->storeid | ' . $order->getStoreId());
-
-            $storeMerchantId = $this->scopeConfig->getValue(
-                'carriers/gwlogistics/merchant_id',
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
-                $order->getStoreId()
-            );
-            $this->logger->info('gwlogistics | original  direct called MerchantId | ' . $storeMerchantId);
-            $this->logger->info('gwlogistics | original param MerchantId | ' . $merchantId);
-            $this->logger->info('gwlogistics | original param MerchantTradeNo | ' . $merchantTradeNo);
-            $this->logger->info('gwlogistics | original param MerchantTradeDate | ' . $merchantTradeDate);
-            $this->logger->info('gwlogistics | original param LogisticsType | ' . $logisticsType);
-            $this->logger->info('gwlogistics | original param LogisticsSubType | ' . $logisticsSubType);
-            $this->logger->info('gwlogistics | original param GoodsAmount | ' . $goodsAmount);
-            $this->logger->info('gwlogistics | original param CollectionAmount | 0' );
-            $this->logger->info('gwlogistics | original param IsCollection | ' . EcpayIsCollection::NO);
-            $this->logger->info('gwlogistics | original param GoodsName | ' . $goodsName);
-            $this->logger->info('gwlogistics | original param SenderName | ' . $senderName);
-            $this->logger->info('gwlogistics | original param SenderPhone | ' . $senderPhone);
-            $this->logger->info('gwlogistics | original param SenderCellPhone | ' . $senderCellPhone);
-            $this->logger->info('gwlogistics | original param ReceiverName | ' . $receiverName);
-            $this->logger->info('gwlogistics | original param ReceiverPhone | ' . $receiverPhone);
-            $this->logger->info('gwlogistics | original param ReceiverCellPhone | ' . $receiverPhone);
-            $this->logger->info('gwlogistics | original param ReceiverEmail | ' . $receiverEmail);
-            $this->logger->info('gwlogistics | original param TradeDesc | '. '');
-            $this->logger->info('gwlogistics | original param ServerReplyURL | '. $serverReplyURL);
-            $this->logger->info('gwlogistics | original param ClientReplyURL | '. '');
-            $this->logger->info('gwlogistics | original param LogisticsC2CReplyURL | '. '');
-            $this->logger->info('gwlogistics | original param Remark | '. $remarks);
-            $this->logger->info('gwlogistics | original param PlatformID | '. $platformId);
+//            $this->logger->info('gwlogistics | original order->storeid | ' . $order->getStoreId());
+//            $this->logger->info('gwlogistics | original param MerchantId | ' . $merchantId);
+//            $this->logger->info('gwlogistics | original param MerchantTradeNo | ' . $merchantTradeNo);
+//            $this->logger->info('gwlogistics | original param MerchantTradeDate | ' . $merchantTradeDate);
+//            $this->logger->info('gwlogistics | original param LogisticsType | ' . $logisticsType);
+//            $this->logger->info('gwlogistics | original param LogisticsSubType | ' . $logisticsSubType);
+//            $this->logger->info('gwlogistics | original param GoodsAmount | ' . $goodsAmount);
+//            $this->logger->info('gwlogistics | original param CollectionAmount | 0' );
+//            $this->logger->info('gwlogistics | original param IsCollection | ' . EcpayIsCollection::NO);
+//            $this->logger->info('gwlogistics | original param GoodsName | ' . $goodsName);
+//            $this->logger->info('gwlogistics | original param SenderName | ' . $senderName);
+//            $this->logger->info('gwlogistics | original param SenderPhone | ' . $senderPhone);
+//            $this->logger->info('gwlogistics | original param SenderCellPhone | ' . $senderCellPhone);
+//            $this->logger->info('gwlogistics | original param ReceiverName | ' . $receiverName);
+//            $this->logger->info('gwlogistics | original param ReceiverPhone | ' . $receiverPhone);
+//            $this->logger->info('gwlogistics | original param ReceiverCellPhone | ' . $receiverPhone);
+//            $this->logger->info('gwlogistics | original param ReceiverEmail | ' . $receiverEmail);
+//            $this->logger->info('gwlogistics | original param TradeDesc | '. '');
+//            $this->logger->info('gwlogistics | original param ServerReplyURL | '. $serverReplyURL);
+//            $this->logger->info('gwlogistics | original param ClientReplyURL | '. '');
+//            $this->logger->info('gwlogistics | original param LogisticsC2CReplyURL | '. '');
+//            $this->logger->info('gwlogistics | original param Remark | '. $remarks);
+//            $this->logger->info('gwlogistics | original param PlatformID | '. $platformId);
             $params = [
-                'MerchantID' => $storeMerchantId,//
+                'MerchantID' => $merchantId,//
                 'MerchantTradeNo' => $merchantTradeNo,
                 'MerchantTradeDate' => $merchantTradeDate,//
                 'LogisticsType' => $logisticsType,//

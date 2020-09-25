@@ -119,13 +119,18 @@ class SocialLoginRepository implements SocialLoginRepositoryInterface
 
     /**
      * Get social media customer data
-     * @param $facebookId
+     * @param $socialId
      * @param $socialMediaType
      * @return |null
      */
     public function getSocialMediaCustomer($socialId, $socialMediaType)
     {
-        $websiteId = $this->storeManager->getStore()->getWebsiteId();
+        $websiteId = null;
+        try {
+            $websiteId = $this->storeManager->getStore()->getWebsiteId();
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
         $customer = $this->socialLoginCollectionFactory->create();
         $dataUser = $customer->addFieldToFilter('social_id', $socialId)
             ->addFieldToFilter('socialmedia', $socialMediaType)
@@ -133,6 +138,32 @@ class SocialLoginRepository implements SocialLoginRepositoryInterface
             ->getFirstItem();
         if ($dataUser && $dataUser->getId()) {
             return $dataUser->getCustomerId();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get already linked customer with social media account
+     * @param $customerId
+     * @param $socialMediaType
+     * @return |null
+     */
+    public function getAlreadyLinkedCustomer($customerId, $socialMediaType)
+    {
+        $websiteId = null;
+        try {
+            $websiteId = $this->storeManager->getStore()->getWebsiteId();
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+        $customer = $this->socialLoginCollectionFactory->create();
+        $dataUser = $customer->addFieldToFilter('customer_id', $customerId)
+            ->addFieldToFilter('socialmedia', $socialMediaType)
+            ->addFieldToFilter('website_id', $websiteId)
+            ->getFirstItem();
+        if ($dataUser && $dataUser->getId()) {
+            return $dataUser->getSocialloginId();
         } else {
             return null;
         }

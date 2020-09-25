@@ -12,4 +12,8 @@
         <plugin name="amore_gatagging_get_breadcrumbs"
                 type="Amore\GaTagging\Plugin\BreadCrumbsPlugin" sortOrder="10"/>
     </type>
+    <type name="Magento\Checkout\CustomerData\Cart">
+        <plugin name="amore_gatagging_product_orginal_price_setter"
+                type="Amore\GaTagging\Plugin\Cart" sortOrder="10"/>
+    </type>
 </config>

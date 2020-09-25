@@ -7,8 +7,10 @@
 // @codingStandardsIgnoreFile
 
 /** @var $block \Magento\Rma\Block\Returns\History */
+/** @var $viewModel Eguana\CustomRMA\ViewModel\CustomName */
 ?>
 <?php $_returns = $block->getReturns(); ?>
+<?php $viewModel = $block->getData('custom_name_view_model'); ?>
 <?= $block->getChildHtml('info') ?>
 <div class="block block-returns-history">
     <div class="block-title">
@@ -33,7 +35,7 @@
                     <tr>
                         <td data-th="<?= $block->escapeHtmlAttr(__('Return #')) ?>" class="col id"><?= $block->escapeHtml($_return->getIncrementId()) ?></td>
                         <td data-th="<?= $block->escapeHtmlAttr(__('Date')) ?>" class="col date"><?= $block->escapeHtml($this->helper(Magento\Rma\Helper\Data::class)->getFormatedDate($_return->getDateRequested())) ?></td>
-                        <td data-th="<?= $block->escapeHtmlAttr(__('Ship From')) ?>" class="col shipping"><?= $block->escapeHtml($_return->getCustomerName()) ?></td>
+                        <td data-th="<?= $block->escapeHtmlAttr(__('Ship From')) ?>" class="col shipping"><?= $block->escapeHtml($viewModel->getCustomName($_return->getCustomerId())) ?></td>
                         <td data-th="<?= $block->escapeHtmlAttr(__('Return Status')) ?>" class="col status">
                             <?php if($_return->getStatus() == 'pending'):?>
                                 <?= $block->escapeHtml(__('Waiting for a refund')); ?>

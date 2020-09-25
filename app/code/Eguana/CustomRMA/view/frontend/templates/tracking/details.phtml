@@ -41,14 +41,9 @@ $number = is_string($track)? $track : '';
                 <td class="col error">
                     <?= $block->escapeHtml(__('Tracking information is currently not available. Please ')) ?>
                     <?php if ($parentBlock->getContactUsEnabled()) : ?>
-                        <a href="<?= $block->escapeUrl($parentBlock->getContactUs()) ?>" target="_blank"
-                           title="<?= $block->escapeHtmlAttr(__('contact us')) ?>">
-                            <?= $block->escapeHtml(__('contact us')) ?>
-                        </a>
-                        <?= $block->escapeHtml(__(' for more information or ')) ?>
+                        <?= $block->escapeHtml(__('contact us')) ?>
                     <?php endif; ?>
-                    <?= $block->escapeHtml(__('email us at ')) ?>
-                    <a href="mailto:<?= /* @noEscape */ $email ?>"><?= /* @noEscape */ $email ?></a>
+                    <?= $block->escapeHtml(__('0800-600-308')) ?>
                 </td>
             </tr>
         <?php elseif ($track->getTrackSummary()) : ?>

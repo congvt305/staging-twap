@@ -219,16 +219,16 @@
 "Order by SKU Template","按SKU排序的範本",module,Magento_AdvancedCheckout
 "SKU not found in catalog.","SKU not found in catalog.",module,Magento_AdvancedCheckout
 "This file needs to be in .csv format.","此檔必須以.csv 格式。",module,Magento_AdvancedCheckout
-"This customer couldn't be found. Verify the customer and try again.","This customer couldn't be found. Verify the customer and try again.",module,Magento_AdvancedCheckout
-"This store couldn't be found. Verify the store and try again.","This store couldn't be found. Verify the store and try again.",module,Magento_AdvancedCheckout
-"An error occurred. For details, see the error log.","An error occurred. For details, see the error log.",module,Magento_AdvancedCheckout
-"Orders can only be completed in an active store. Verify the store and try again.","Orders can only be completed in an active store. Verify the store and try again.",module,Magento_AdvancedCheckout
-"The ordered item needs to be loaded. Load the item and try again.","The ordered item needs to be loaded. Load the item and try again.",module,Magento_AdvancedCheckout
-"The quote item ID needs to be received. Set the ID and try again.","The quote item ID needs to be received. Set the ID and try again.",module,Magento_AdvancedCheckout
-"The quote item needs to be loaded. Load the item and try again.","The quote item needs to be loaded. Load the item and try again.",module,Magento_AdvancedCheckout
-"The wish list item ID needs to be received. Set the ID and try again.","The wish list item ID needs to be received. Set the ID and try again.",module,Magento_AdvancedCheckout
-"The wish list item needs to be loaded. Load the item and try again.","The wish list item needs to be loaded. Load the item and try again.",module,Magento_AdvancedCheckout
-"The file is corrupt and can't be used.","The file is corrupt and can't be used.",module,Magento_AdvancedCheckout
+"This customer couldn't be found. Verify the customer and try again.","這個顧客找不到。 確認顧客,再試一次。",module,Magento_AdvancedCheckout
+"This store couldn't be found. Verify the store and try again.","這家商店找不到。 檢查一下商店,再試一次。",module,Magento_AdvancedCheckout
+"An error occurred. For details, see the error log.","發生錯誤。 詳情請參閱錯誤日誌。",module,Magento_AdvancedCheckout
+"Orders can only be completed in an active store. Verify the store and try again.","訂單隻能在活躍的商店完成。 檢查一下商店,再試一次。",module,Magento_AdvancedCheckout
+"The ordered item needs to be loaded. Load the item and try again.","訂購的單品需要加載。 裝上物品再試一次。",module,Magento_AdvancedCheckout
+"The quote item ID needs to be received. Set the ID and try again.","引述項目ID需要收到。 設定身份,再試一次。",module,Magento_AdvancedCheckout
+"The quote item needs to be loaded. Load the item and try again.","引文需要加載。 裝上物品再試一次。",module,Magento_AdvancedCheckout
+"The wish list item ID needs to be received. Set the ID and try again.","願望清單項目ID需要收到。 設定身份,再試一次。",module,Magento_AdvancedCheckout
+"The wish list item needs to be loaded. Load the item and try again.","願望清單項目需要加載。 裝上物品再試一次。",module,Magento_AdvancedCheckout
+"The file is corrupt and can't be used.","文件腐爛了,不能用了。",module,Magento_AdvancedCheckout
 "Please correct the data sent.","請更正發送的資料。",module,Magento_AdvancedPricingImportExport
 "Entity type model '%1' is not found","找不到實體類型模型 '%1'",module,Magento_AdvancedPricingImportExport
 "Entity type model must be an instance of \Magento\CatalogImportExport\Model\Export\Product\Type\AbstractType","實體類型必須屬於 \Magento\CatalogImportExport\Model\Export\Product\Type\AbstractType 裡的其中一個類型",module,Magento_AdvancedPricingImportExport
@@ -249,8 +249,8 @@
 "Enable Search Suggestions","啟用搜索的建議",module,Magento_AdvancedSearch
 "Search Suggestions Count","搜索建議數",module,Magento_AdvancedSearch
 "Show Results Count for Each Suggestion","顯示每個建議的結果數",module,Magento_AdvancedSearch
-"Related search terms","Related search terms",module,Magento_AdvancedSearch
-"Did you mean","Did you mean",module,Magento_AdvancedSearch
+"Related search terms","相關搜尋條款",module,Magento_AdvancedSearch
+"Did you mean","你是說...",module,Magento_AdvancedSearch
 "ID","編號",module,Magento_AdvancedSearch
 "Search Query","搜尋查詢",module,Magento_AdvancedSearch
 "Store","商店",module,Magento_AdvancedSearch
@@ -268,108 +268,106 @@
 "Error while checking if topic is synchronous","檢查主題是否同步時出錯",module,Magento_Amqp
 "Subscription status","訂閱狀態",module,Magento_Analytics
 "Sorry, there has been an error processing your request. Please try again later.","對不起，在處理您的請求時出現錯誤。請稍後重試。",module,Magento_Analytics
-"Time value has an unsupported format","Time value has an unsupported format",module,Magento_Analytics
-"Cron settings can't be saved","Cron settings can't be saved",module,Magento_Analytics
+"Time value has an unsupported format","時間值有一個不支持的格式",module,Magento_Analytics
+"Cron settings can't be saved","電子設置無法保存",module,Magento_Analytics
 "There was an error save new configuration value.","保存新配值時出現錯誤。",module,Magento_Analytics
-"Please select a vertical.","Please select a vertical.",module,Magento_Analytics
+"Please select a vertical.","請選擇垂直方向。",module,Magento_Analytics
 "--Please Select--","-請選擇-",module,Magento_Analytics
 "Command was not found.","找不到命令。",module,Magento_Analytics
-"Input data must be string or convertible into string.","Input data must be string or convertible into string.",module,Magento_Analytics
-"Input data must be non-empty string.","Input data must be non-empty string.",module,Magento_Analytics
-"Not valid cipher method.","Not valid cipher method.",module,Magento_Analytics
-"Encryption key can't be empty.","Encryption key can't be empty.",module,Magento_Analytics
-"Source ""%1"" is not exist","Source ""%1"" is not exist",module,Magento_Analytics
-"These arguments can't be empty ""%1""","These arguments can't be empty ""%1""",module,Magento_Analytics
-"Cannot find predefined integration user!","Cannot find predefined integration user!",module,Magento_Analytics
-"File is not ready yet.","File is not ready yet.",module,Magento_Analytics
-"Your Base URL has been changed and your reports are being updated. Advanced Reporting will be available once this change has been processed. Please try again later.","Your Base URL has been changed and your reports are being updated. Advanced Reporting will be available once this change has been processed. Please try again later.",module,Magento_Analytics
-"Failed to synchronize data to the Magento Business Intelligence service. ","Failed to synchronize data to the Magento Business Intelligence service. ",module,Magento_Analytics
-"<a href=""%1"">Retry Synchronization</a>","<a href=""%1"">Retry Synchronization</a>",module,Magento_Analytics
+"Input data must be string or convertible into string.","輸入數據必須爲串或可轉換爲串。",module,Magento_Analytics
+"Input data must be non-empty string.","輸入數據必須是非空字符串。",module,Magento_Analytics
+"Not valid cipher method.","沒有有效的密碼方法。",module,Magento_Analytics
+"Encryption key can't be empty.","加密密鑰不可能是空的",module,Magento_Analytics
+"Source ""%1"" is not exist","源""%1""不存在",module,Magento_Analytics
+"These arguments can't be empty ""%1""","這些論據不可能是空的""%1""",module,Magento_Analytics
+"Cannot find predefined integration user!","無法找到預先定義的集成用戶!",module,Magento_Analytics
+"File is not ready yet.","文件還沒有準備好。",module,Magento_Analytics
+"Your Base URL has been changed and your reports are being updated. Advanced Reporting will be available once this change has been processed. Please try again later.","您的URL已更改,報告正在更新中。 一旦處理好這一變更,將提供高級報告。 請稍後再試。",module,Magento_Analytics
+"Failed to synchronize data to the Magento Business Intelligence service. ","無法將數據與Magento商業情報局同步。",module,Magento_Analytics
+"<a href=""%1"">Retry Synchronization</a>","<a href=""%1"">複試同步</a>",module,Magento_Analytics
 "TestMessage","測試訊息內容",module,Magento_Analytics
 "Apps and Games","應用程式和遊戲",module,Magento_Analytics
 "Athletic/Sporting Goods","體育/運動用品",module,Magento_Analytics
 "Art and Design","藝術與設計",module,Magento_Analytics
-"Advanced Reporting","Advanced Reporting",module,Magento_Analytics
-"Gain new insights and take command of your business' performance, using our dynamic product, order, and customer reports tailored to your customer data.","Gain new insights and take command of your business' performance, using our dynamic product, order, and customer reports tailored to your customer data.",module,Magento_Analytics
-"Go to Advanced Reporting","Go to Advanced Reporting",module,Magento_Analytics
+"Advanced Reporting","高級報告",module,Magento_Analytics
+"Gain new insights and take command of your business' performance, using our dynamic product, order, and customer reports tailored to your customer data.","贏得新的洞見,掌握你的業務表現,利用我們根據你的客戶數據量身定做的動態產品,訂單和客戶報告。",module,Magento_Analytics
+"Go to Advanced Reporting","前往高級報告",module,Magento_Analytics
 "Analytics","分析",module,Magento_Analytics
 "API","API",module,Magento_Analytics
 "Configuration","配置",module,Magento_Analytics
-"Business Intelligence","Business Intelligence",module,Magento_Analytics
-"BI Essentials","BI Essentials",module,Magento_Analytics
-"This service provides a dynamic suite of reports with rich insights about your business.,module,Magento_Analytics
-Your reports can be accessed securely on a personalized dashboard outside of the admin panel by clicking on the,module,Magento_Analytics
-""Go to Advanced Reporting"" link. </br> For more information, see our <a href=""https://magento.com/legal/terms/cloud-terms"">,module,Magento_Analytics
-terms and conditions</a>.","This service provides a dynamic suite of reports with rich insights about your business.,module,Magento_Analytics
-Your reports can be accessed securely on a personalized dashboard outside of the admin panel by clicking on the,module,Magento_Analytics
-""Go to Advanced Reporting"" link. </br> For more information, see our <a href=""https://magento.com/legal/terms/cloud-terms"">,module,Magento_Analytics
-terms and conditions</a>.",module,Magento_Analytics
-"Advanced Reporting Service","Advanced Reporting Service",module,Magento_Analytics
-"Time of day to send data","Time of day to send data",module,Magento_Analytics
-"Industry","Industry",module,Magento_Analytics
-"In order to personalize your Advanced Reporting experience, please select your industry.","In order to personalize your Advanced Reporting experience, please select your industry.",module,Magento_Analytics
-"<strong>Get more insights from Magento Business Intelligence</strong>","<strong>Get more insights from Magento Business Intelligence</strong>",module,Magento_Analytics
-"Magento Business Intelligence provides you with a simple and clear path to,module,Magento_Analytics
-becoming more data driven.</br> Learn more about <a target=""_blank"",module,Magento_Analytics
-href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essentials and BI Pro</a> tiers.","Magento Business Intelligence provides you with a simple and clear path to,module,Magento_Analytics
-becoming more data driven.</br> Learn more about <a target=""_blank"",module,Magento_Analytics
-href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essentials and BI Pro</a> tiers.",module,Magento_Analytics
-"Auto Parts","Auto Parts",module,Magento_Analytics
-"Baby/Children’s Apparel, Gear and Toys","Baby/Children’s Apparel, Gear and Toys",module,Magento_Analytics
-"Beauty and Cosmetics","Beauty and Cosmetics",module,Magento_Analytics
-"Books, Music and Magazines","Books, Music and Magazines",module,Magento_Analytics
-"Crafts and Stationery","Crafts and Stationery",module,Magento_Analytics
-"Consumer Electronics","Consumer Electronics",module,Magento_Analytics
-"Deal Site","Deal Site",module,Magento_Analytics
-"Fashion Apparel and Accessories","Fashion Apparel and Accessories",module,Magento_Analytics
-"Food, Beverage and Grocery","Food, Beverage and Grocery",module,Magento_Analytics
-"Home Goods and Furniture","Home Goods and Furniture",module,Magento_Analytics
-"Home Improvement","Home Improvement",module,Magento_Analytics
-"Jewelry and Watches","Jewelry and Watches",module,Magento_Analytics
-"Mass Merchant","Mass Merchant",module,Magento_Analytics
-"Office Supplies","Office Supplies",module,Magento_Analytics
-"Outdoor and Camping Gear","Outdoor and Camping Gear",module,Magento_Analytics
-"Pet Goods","Pet Goods",module,Magento_Analytics
-"Pharma and Medical Devices","Pharma and Medical Devices",module,Magento_Analytics
-"Technology B2B","Technology B2B",module,Magento_Analytics
-"Other","Other",module,Magento_Analytics
-"The time value is using an unsupported format. Enter a supported format and try again.","The time value is using an unsupported format. Enter a supported format and try again.",module,Magento_Analytics
+"Business Intelligence","商業情報",module,Magento_Analytics
+"BI Essentials","必修課",module,Magento_Analytics
+"This service provides a dynamic suite of reports with rich insights about your business.
+                 Your reports can be accessed securely on a personalized dashboard outside of the admin panel by clicking on the
+                 ""Go to Advanced Reporting"" link. </br> For more information, see our <a target=""_blank"" href=""https://magento.com/legal/terms/cloud-terms"">
+                 terms and conditions</a>.","這項服務提供動態的報告,對你的業務有豐富的洞察力。
+                                                             點擊""走向高級報告""鏈接,即可安全地在行政面板外的個性化儀表盤上查看您的報告。
+                                                             </br>欲知更多資料,請參閱本局的<a target=""_blank"" href=""https://magento.com/legal/terms/cloud-terms"">條款</a>及條件",module,Magento_Analytics
+"Advanced Reporting Service","高級報告服務",module,Magento_Analytics
+"Time of day to send data","日間發送數據的時間",module,Magento_Analytics
+"Industry","產業界",module,Magento_Analytics
+"In order to personalize your Advanced Reporting experience, please select your industry.","爲了使您的先進報告經驗個性化,請選擇您的行業。",module,Magento_Analytics
+"<strong>Get more insights from Magento Business Intelligence</strong>","<strong>從Magento商業情報局獲得更多的洞察力</strong>",module,Magento_Analytics
+"Magento Business Intelligence provides you with a simple and clear path to
+                     becoming more data driven.</br> Learn more about <a target=""_blank""
+                     href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essentials and BI Pro</a> tiers.","Magento Business Intelligence 爲你提供了一條簡單而清晰的道路,讓你獲得更多數據驅動。</br> 你可在此瞭解<a target=""_blank""
+                                                                                                                                                    href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essentials and BI Pro</a>的詳情。",module,Magento_Analytics
+"Auto Parts","汽車零件",module,Magento_Analytics
+"Baby/Children’s Apparel, Gear and Toys","嬰兒/兒童服裝,齒輪及玩具",module,Magento_Analytics
+"Beauty and Cosmetics","美容",module,Magento_Analytics
+"Books, Music and Magazines","書籍,音樂及雜誌",module,Magento_Analytics
+"Crafts and Stationery","工藝和文具",module,Magento_Analytics
+"Consumer Electronics","消費電子學",module,Magento_Analytics
+"Deal Site","交易網站",module,Magento_Analytics
+"Fashion Apparel and Accessories","時尚服飾與配件",module,Magento_Analytics
+"Food, Beverage and Grocery","食物,飲料和食品雜貨店",module,Magento_Analytics
+"Home Goods and Furniture","家居用品及傢俱",module,Magento_Analytics
+"Home Improvement","家居改善",module,Magento_Analytics
+"Jewelry and Watches","珠寶鐘錶",module,Magento_Analytics
+"Mass Merchant","大宗商販",module,Magento_Analytics
+"Office Supplies","辦公室用品",module,Magento_Analytics
+"Outdoor and Camping Gear","戶外及露營用具",module,Magento_Analytics
+"Pet Goods","寵物用品",module,Magento_Analytics
+"Pharma and Medical Devices","藥物及醫療儀器",module,Magento_Analytics
+"Technology B2B","科技B2B",module,Magento_Analytics
+"Other","其他",module,Magento_Analytics
+"The time value is using an unsupported format. Enter a supported format and try again.","時間值使用的是非支持的格式。 請輸入支持格式,然後重試。",module,Magento_Analytics
 "Please select an industry.","請選擇一個行業。",module,Magento_Analytics
-"The data is invalid. Enter the data as a string or data that can be converted into a string and try again.","The data is invalid. Enter the data as a string or data that can be converted into a string and try again.",module,Magento_Analytics
-"The data is invalid. Enter the data as a string and try again.","The data is invalid. Enter the data as a string and try again.",module,Magento_Analytics
-"The data is invalid. Use a valid cipher method and try again.","The data is invalid. Use a valid cipher method and try again.",module,Magento_Analytics
-"Enter the encryption key and try again.","Enter the encryption key and try again.",module,Magento_Analytics
-"The ""%1"" source doesn't exist.","The ""%1"" source doesn't exist.",module,Magento_Analytics
-"Retry Synchronization","Retry Synchronization",module,Magento_Analytics
+"The data is invalid. Enter the data as a string or data that can be converted into a string and try again.","數據無效。 將數據輸入爲可以轉換成字符串並重試的字符串或數據。",module,Magento_Analytics
+"The data is invalid. Enter the data as a string and try again.","數據無效。 將數據作爲字符串輸入,然後再試一次。",module,Magento_Analytics
+"The data is invalid. Use a valid cipher method and try again.","數據無效。 使用有效的密碼方法,再試一次。",module,Magento_Analytics
+"Enter the encryption key and try again.","請輸入加密鍵,再試一次。",module,Magento_Analytics
+"The ""%1"" source doesn't exist.","The ""%1"" 源並不存在。",module,Magento_Analytics
+"Retry Synchronization","複試同步",module,Magento_Analytics
 "Back","上一步",module,Magento_AsynchronousOperations
 "Done","完成",module,Magento_AsynchronousOperations
 "Retry","重試",module,Magento_AsynchronousOperations
-"'Action Details - #' .","'Action Details - #' .",module,Magento_AsynchronousOperations
+"'Action Details - #' .","'行動詳情 - #' .",module,Magento_AsynchronousOperations
 "%1 item(s) have been scheduled for update.""","%1 項目已經安排更新。""",module,Magento_AsynchronousOperations
 "Bulk Actions Log","批量操作記錄",module,Magento_AsynchronousOperations
-"Bulk uuid %bulkUuid not exist","Bulk uuid %bulkUuid not exist",module,Magento_AsynchronousOperations
-"Topic %1","Topic %1",module,Magento_AsynchronousOperations
-"Something went wrong while processing the request.","Something went wrong while processing the request.",module,Magento_AsynchronousOperations
-"Error processing %key element of input data","Error processing %key element of input data",module,Magento_AsynchronousOperations
-"Sorry, something went wrong during product prices update. Please see log for details.","Sorry, something went wrong during product prices update. Please see log for details.",module,Magento_AsynchronousOperations
+"Bulk uuid %bulkUuid not exist","大容量uuid%bulkUuid不存在",module,Magento_AsynchronousOperations
+"Topic %1","講題 %1",module,Magento_AsynchronousOperations
+"Something went wrong while processing the request.","在處理請求時出了問題。",module,Magento_AsynchronousOperations
+"Error processing %key element of input data","錯誤處理輸入數據的%key元素",module,Magento_AsynchronousOperations
+"Sorry, something went wrong during product prices update. Please see log for details.","對不起,產品更新期間出了問題。 詳情請參閱日誌。",module,Magento_AsynchronousOperations
 "%1 item(s) are currently being updated.","%1項目正在更新。",module,Magento_AsynchronousOperations
-"Task ""%1"": ","Task ""%1"": ",module,Magento_AsynchronousOperations
+"Task ""%1"": ","任務 ""%1"": ",module,Magento_AsynchronousOperations
 "%1 item(s) have been scheduled for update.","%1 項目已經安排更新。",module,Magento_AsynchronousOperations
 "%1 item(s) have been successfully updated.","%1 項目已成功更新。",module,Magento_AsynchronousOperations
 "%1 item(s) failed to update","%1 項目更新失敗",module,Magento_AsynchronousOperations
 "Details","詳細資料",module,Magento_AsynchronousOperations
 "View Details","檢視詳細資料",module,Magento_AsynchronousOperations
 "Dismiss","忽略",module,Magento_AsynchronousOperations
-"Pending, in queue...","Pending, in queue...",module,Magento_AsynchronousOperations
+"Pending, in queue...","等待,排成行...",module,Magento_AsynchronousOperations
 "%1 items selected for mass update","大規模更新%1 項目",module,Magento_AsynchronousOperations
 ", %1 successfully updated","%1 已成功更新",module,Magento_AsynchronousOperations
 ", %1 failed to update","%1 更新失敗",module,Magento_AsynchronousOperations
 "Something went wrong.","發生錯誤",module,Magento_AsynchronousOperations
 "Action Log","操作記錄",module,Magento_AsynchronousOperations
-"Report","Report",module,Magento_AsynchronousOperations
+"Report","報告",module,Magento_AsynchronousOperations
 "Bulk Actions","批量操作",module,Magento_AsynchronousOperations
-"Action Logs","Action Logs",module,Magento_AsynchronousOperations
-"Days Saved in Log","Days Saved in Log",module,Magento_AsynchronousOperations
+"Action Logs","作業日誌",module,Magento_AsynchronousOperations
+"Days Saved in Log","日誌救星",module,Magento_AsynchronousOperations
 "Description of Operation","操作說明",module,Magento_AsynchronousOperations
 "Summary","概要",module,Magento_AsynchronousOperations
 "Start Time","開始時間",module,Magento_AsynchronousOperations
@@ -385,7 +383,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Number of Records Affected","受影響的記錄數目",module,Magento_AsynchronousOperations
 "We can't find the role for the user you wanted.","我們找不到你想要的使用者的角色。",module,Magento_Authorization
 "Something went wrong while compiling a list of allowed resources. You can find out more in the exceptions log.","編譯允許的資源列表時出錯。您可以在例外日誌中找到更多內容。",module,Magento_Authorization
-"The role wasn't found for the user. Verify the role and try again.","The role wasn't found for the user. Verify the role and try again.",module,Magento_Authorization
+"The role wasn't found for the user. Verify the role and try again.","這個角色不是爲用戶找到的。 確認角色再試一次。",module,Magento_Authorization
 "You created the order.","您建立了訂單。",module,Magento_Authorizenet
 "Order saving error: %1","訂單保存錯誤：%1",module,Magento_Authorizenet
 "Please choose a payment method.","請選擇您的付款方式。",module,Magento_Authorizenet
@@ -419,7 +417,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Authorize Only","僅授權",module,Magento_Authorizenet
 "Authorize and Capture","授權和提取",module,Magento_Authorizenet
 "Unable to get transaction details. Try again later.","無法獲取交易記錄詳細資訊。稍後再試。",module,Magento_Authorizenet
-"Electronic payments save the trees.","Electronic payments save the trees.",module,Magento_Authorizenet
+"Electronic payments save the trees.","電子付款拯救了樹木。",module,Magento_Authorizenet
 "Credit Card Type","信用卡類型",module,Magento_Authorizenet
 "Please Select","請選擇",module,Magento_Authorizenet
 "Credit Card Number","信用卡卡號",module,Magento_Authorizenet
@@ -456,16 +454,16 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Maximum Order Total","最大訂單總計",module,Magento_Authorizenet
 "Sort Order","訂單排序",module,Magento_Authorizenet
 "Cannot place order.","不能下訂單。",module,Magento_Authorizenet
-"'Gateway error: ' .","'Gateway error: ' .",module,Magento_Authorizenet
-"Unable to place order. Please try again later.","Unable to place order. Please try again later.",module,Magento_Authorizenet
-"A server error stopped your order from being placed. Please try to place your order again.","A server error stopped your order from being placed. Please try to place your order again.",module,Magento_Authorizenet
-"The transaction details are unavailable. Please try again later.","The transaction details are unavailable. Please try again later.",module,Magento_Authorizenet
-"Authorize.Net Direct Post (Deprecated)","Authorize.Net Direct Post (Deprecated)",module,Magento_Authorizenet
-"Signature Key","Signature Key",module,Magento_Authorizenet
-"There was an error while trying to process the request.","There was an error while trying to process the request.",module,Magento_AuthorizenetAcceptjs
-"This transaction cannot be refunded with its current status.","This transaction cannot be refunded with its current status.",module,Magento_AuthorizenetAcceptjs
+"'Gateway error: ' .","'網關誤差: ' .",module,Magento_Authorizenet
+"Unable to place order. Please try again later.","無法下訂單。 請稍後再試。",module,Magento_Authorizenet
+"A server error stopped your order from being placed. Please try to place your order again.","服務器錯誤阻止您下訂單。 請嘗試再次下訂單。",module,Magento_Authorizenet
+"The transaction details are unavailable. Please try again later.","交易明細無法提供。 請稍後再試。",module,Magento_Authorizenet
+"Authorize.Net Direct Post (Deprecated)","Authorize.Net 直接郵遞(已結帳)",module,Magento_Authorizenet
+"Signature Key","簽名鍵",module,Magento_Authorizenet
+"There was an error while trying to process the request.","試圖處理請求時出了差錯。",module,Magento_AuthorizenetAcceptjs
+"This transaction cannot be refunded with its current status.","此項交易不能以目前的狀態退回。",module,Magento_AuthorizenetAcceptjs
 "Something went wrong in the payment gateway.","支付閘道錯誤",module,Magento_AuthorizenetAcceptjs
-"The authenticity of the gateway response could not be verified.","The authenticity of the gateway response could not be verified.",module,Magento_AuthorizenetAcceptjs
+"The authenticity of the gateway response could not be verified.","網關響應的真實性無法證實。",module,Magento_AuthorizenetAcceptjs
 "Authorize Only","僅授權",module,Magento_AuthorizenetAcceptjs
 "Authorize and Capture","授權和提取",module,Magento_AuthorizenetAcceptjs
 "Credit Card Type","信用卡類型",module,Magento_AuthorizenetAcceptjs
@@ -474,29 +472,29 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Card Verification Number","信用卡驗證號碼",module,Magento_AuthorizenetAcceptjs
 "Authorize.Net","Authorize.Net",module,Magento_AuthorizenetAcceptjs
 "Enabled","啟用",module,Magento_AuthorizenetAcceptjs
-"Basic Authorize.Net Settings","Basic Authorize.Net Settings",module,Magento_AuthorizenetAcceptjs
+"Basic Authorize.Net Settings","基本的 Authorize.Net 設置",module,Magento_AuthorizenetAcceptjs
 "Title","標題",module,Magento_AuthorizenetAcceptjs
 "Environment","環境",module,Magento_AuthorizenetAcceptjs
 "Payment Action","付款操作",module,Magento_AuthorizenetAcceptjs
 "API Login ID","API 的登入識別碼",module,Magento_AuthorizenetAcceptjs
 "Transaction Key","交易金鑰",module,Magento_AuthorizenetAcceptjs
-"Public Client Key","Public Client Key",module,Magento_AuthorizenetAcceptjs
-"Signature Key","Signature Key",module,Magento_AuthorizenetAcceptjs
-"Merchant MD5 (deprecated)","Merchant MD5 (deprecated)",module,Magento_AuthorizenetAcceptjs
-"Advanced Authorize.Net Settings","Advanced Authorize.Net Settings",module,Magento_AuthorizenetAcceptjs
+"Public Client Key","公開客戶密碼匙",module,Magento_AuthorizenetAcceptjs
+"Signature Key","簽名鍵",module,Magento_AuthorizenetAcceptjs
+"Merchant MD5 (deprecated)","Merchant MD5 (折舊了的)",module,Magento_AuthorizenetAcceptjs
+"Advanced Authorize.Net Settings","先進 Authorize.Net 設置",module,Magento_AuthorizenetAcceptjs
 "Accepted Currency","接受的貨幣",module,Magento_AuthorizenetAcceptjs
 "Debug","除錯",module,Magento_AuthorizenetAcceptjs
 "Email Customer","電子郵件客戶",module,Magento_AuthorizenetAcceptjs
-"Enable Credit Card Verification Field","Enable Credit Card Verification Field",module,Magento_AuthorizenetAcceptjs
+"Enable Credit Card Verification Field","啓用信用卡驗證領域",module,Magento_AuthorizenetAcceptjs
 "Credit Card Types","信用卡類型",module,Magento_AuthorizenetAcceptjs
 "Payment from Applicable Countries","適用國家的付款",module,Magento_AuthorizenetAcceptjs
 "Payment from Specific Countries","特定國家的付款",module,Magento_AuthorizenetAcceptjs
 "Minimum Order Total","最小訂單總數",module,Magento_AuthorizenetAcceptjs
 "Maximum Order Total","最大訂單總計",module,Magento_AuthorizenetAcceptjs
 "Sort Order","訂單排序",module,Magento_AuthorizenetAcceptjs
-"Invalid request to gateway.","Invalid request to gateway.",module,Magento_AuthorizenetAcceptjs
-"Invalid gateway credentials.","Invalid gateway credentials.",module,Magento_AuthorizenetAcceptjs
-"Transaction has been declined. Please try again later.","Transaction has been declined. Please try again later.",module,Magento_AuthorizenetAcceptjs
+"Invalid request to gateway.","請求進入網關無效。",module,Magento_AuthorizenetAcceptjs
+"Invalid gateway credentials.","無效的網關憑據。",module,Magento_AuthorizenetAcceptjs
+"Transaction has been declined. Please try again later.","交易已遭拒絕。 請稍後再試。",module,Magento_AuthorizenetAcceptjs
 "Close","關閉",module,Magento_B2b
 "options","選項",module,Magento_B2b
 "Select all","全部選取",module,Magento_B2b
@@ -635,7 +633,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Date selector","選擇日期",module,Magento_Backend
 "[ deleted ]","[已刪除]",module,Magento_Backend
 "Select All","全選",module,Magento_Backend
-" [deleted]"," [deleted]",module,Magento_Backend
+" [deleted]"," [已刪除]",module,Magento_Backend
 "We couldn't find any records.","我們找不到任何記錄。",module,Magento_Backend
 "Add New","新增",module,Magento_Backend
 "Invalid export type supplied for grid export block","網格匯出區塊指定了無效的匯出類型",module,Magento_Backend
@@ -646,7 +644,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Unknown block type","未知的區塊類型",module,Magento_Backend
 "Please correct the tab configuration and try again. Tab Id should be not empty","請更正分頁配置然後重試，分頁編號不能為空。",module,Magento_Backend
 "Please correct the tab configuration and try again.","請更正分頁配置然後重試。",module,Magento_Backend
-"You have logged out.","您已登出。",module,Magento_Backend
+"You have logged out.","您已成功登出",module,Magento_Backend
 "Specified cache type(s) don't exist: %1","指定緩存類型不存在︰%1",module,Magento_Backend
 "The image cache was cleaned.","已清空圖像緩存。",module,Magento_Backend
 "An error occurred while clearing the image cache.","清空圖像緩存時出錯。",module,Magento_Backend
@@ -722,13 +720,13 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Admin session lifetime must be greater than or equal to 60 seconds","管理員登錄有效時限必須等於或多於60秒",module,Magento_Backend
 "Order","訂單",module,Magento_Backend
 "Order #%1","訂單 #%1",module,Magento_Backend
-"Sorry, you need permissions to view this content.","Sorry, you need permissions to view this content.",module,Magento_Backend
-"Next steps","Next steps",module,Magento_Backend
-"If you think this is an error, try signing out and signing in again.","If you think this is an error, try signing out and signing in again.",module,Magento_Backend
-"Contact a system administrator or store owner to gain permissions.","Contact a system administrator or store owner to gain permissions.",module,Magento_Backend
-"Return to ","Return to ",module,Magento_Backend
+"Sorry, you need permissions to view this content.","對不起,您需要權限查看此內容。",module,Magento_Backend
+"Next steps","下一步",module,Magento_Backend
+"If you think this is an error, try signing out and signing in again.","如果你認爲這是個錯誤,就試着簽出來再籤一次名。",module,Magento_Backend
+"Contact a system administrator or store owner to gain permissions.","聯絡系統管理員或店主獲取權限。",module,Magento_Backend
+"Return to ","返回 ",module,Magento_Backend
 "HTTP_REFERER","HTTP_REFERER",module,Magento_Backend
-"previous page","previous page",module,Magento_Backend
+"previous page","上一頁",module,Magento_Backend
 ".",".",module,Magento_Backend
 "javascript:history.back()","javascript:history.back()",module,Magento_Backend
 "Welcome, please sign in","歡迎光臨，請先登錄",module,Magento_Backend
@@ -804,7 +802,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Loading...","載入中...",module,Magento_Backend
 "We could not detect a size.","我們無法檢測到大小。",module,Magento_Backend
 "We don't recognize or support this file extension type.","我們無法識別或不支援此檔案類型。",module,Magento_Backend
-"Warning message","Warning message",module,Magento_Backend
+"Warning message","警告信息",module,Magento_Backend
 "This operation can take a long time","此操作可能需要很長時間",module,Magento_Backend
 "Allow everything","允許一切",module,Magento_Backend
 "Magento Admin","Magento 管理員",module,Magento_Backend
@@ -816,22 +814,22 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Elements","元素",module,Magento_Backend
 "Design","設計",module,Magento_Backend
 "Schedule","日程表 ",module,Magento_Backend
-"Content translation","Content translation",module,Magento_Backend
+"Content translation","內容翻譯",module,Magento_Backend
 "Settings","設定",module,Magento_Backend
 "Attributes","屬性",module,Magento_Backend
 "Other Settings","其他設定",module,Magento_Backend
 "Data Transfer","檔案傳輸",module,Magento_Backend
-"Magento Connect","Magento Connect",module,Magento_Backend
+"Magento Connect","Magento連接",module,Magento_Backend
 "Connect Manager","連線管理員",module,Magento_Backend
 "Package Extensions","擴充包",module,Magento_Backend
 "Tools","工具",module,Magento_Backend
-"Clean Cache Actions","Clean Cache Actions",module,Magento_Backend
-"Cache Types Management","Cache Types Management",module,Magento_Backend
-"Toggle Cache Type","Toggle Cache Type",module,Magento_Backend
-"Refresh Cache Type","Refresh Cache Type",module,Magento_Backend
-"Catalog Images Cache","Catalog Images Cache",module,Magento_Backend
-"Flush Js/Css","Flush Js/Css",module,Magento_Backend
-"Flush Static Files","Flush Static Files",module,Magento_Backend
+"Clean Cache Actions","清潔緩存操作",module,Magento_Backend
+"Cache Types Management","緩存類型管理",module,Magento_Backend
+"Toggle Cache Type","切換緩存類型",module,Magento_Backend
+"Refresh Cache Type","刷新高速緩存類型",module,Magento_Backend
+"Catalog Images Cache","目錄圖像緩存",module,Magento_Backend
+"Flush Js/Css","噴水器Js/Css",module,Magento_Backend
+"Flush Static Files","激流靜止文件",module,Magento_Backend
 "Web Setup Wizard","網路安裝精靈",module,Magento_Backend
 "Currency","貨幣",module,Magento_Backend
 "Communications","通信",module,Magento_Backend
@@ -1000,18 +998,18 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Recovery Link Expiration Period (days)","恢復連結過期期限 （天）",module,Magento_Backend
 "Values less than 60 are ignored.","數值小於 60 的將被忽略。",module,Magento_Backend
 "Copyright &copy; %1 Magento, Inc. All rights reserved.","&copy; %1 Magento Commerce Inc. 版權所有，並保留所有權利。",module,Magento_Backend
-"Add New User Agent Rule","Add New User Agent Rule",module,Magento_Backend
+"Add New User Agent Rule","添加新用戶代理規則",module,Magento_Backend
 "Magento_Ui/js/dynamic-rows/record","Magento_Ui/js/dynamic-rows/record",module,Magento_Backend
-"Search String","Search String",module,Magento_Backend
+"Search String","搜索字符串",module,Magento_Backend
 "Page not found.","找不到頁面。",module,Magento_Backend
-"Add Block Class Type to Hints","Add Block Class Type to Hints",module,Magento_Backend
-"When the adapter was changed, please flush Catalog Images Cache.","When the adapter was changed, please flush Catalog Images Cache.",module,Magento_Backend
-"For Windows server only.","For Windows server only.",module,Magento_Backend
-"Images Upload Configuration","Images Upload Configuration",module,Magento_Backend
-"Maximum Width","Maximum Width",module,Magento_Backend
-"Maximum allowed width for uploaded image.","Maximum allowed width for uploaded image.",module,Magento_Backend
-"Maximum Height","Maximum Height",module,Magento_Backend
-"Maximum allowed height for uploaded image.","Maximum allowed height for uploaded image.",module,Magento_Backend
+"Add Block Class Type to Hints","在提示中添加塊類類型",module,Magento_Backend
+"When the adapter was changed, please flush Catalog Images Cache.","更換適配器時,請沖洗目錄圖像緩存。",module,Magento_Backend
+"For Windows server only.","只適用於視窗伺服器。",module,Magento_Backend
+"Images Upload Configuration","圖像上載配置",module,Magento_Backend
+"Maximum Width","最大寬度",module,Magento_Backend
+"Maximum allowed width for uploaded image.","上載圖像的最高允許寬度。",module,Magento_Backend
+"Maximum Height","最高高度",module,Magento_Backend
+"Maximum allowed height for uploaded image.","上載圖像的最高允許高度。",module,Magento_Backend
 "<strong style=""color:red"">Warning!</strong> When using Store Code in URLs, in some cases system may not work properly if URLs without Store Codes are specified in the third-party services (e.g. PayPal etc.).","<strong style=""color:red"">Warning!</strong> When using Store Code in URLs, in some cases system may not work properly if URLs without Store Codes are specified in the third-party services (e.g. PayPal etc.).",module,Magento_Backend
 "I.e. redirect from http://example.com/store/ to http://www.example.com/store/","I.e. redirect from http://example.com/store/ to http://www.example.com/store/",module,Magento_Backend
 "Any of the fields allow fully qualified URLs that end with '/' (slash) e.g. http://example.com/magento/","Any of the fields allow fully qualified URLs that end with '/' (slash) e.g. http://example.com/magento/",module,Magento_Backend
@@ -1022,24 +1020,24 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Enter https protocol to use Secure URLs in Admin.","Enter https protocol to use Secure URLs in Admin.",module,Magento_Backend
 "See <a href=""https://www.owasp.org/index.php/HTTP_Strict_Transport_Security"" target=""_blank"">HTTP Strict Transport Security</a> page for details.","See <a href=""https://www.owasp.org/index.php/HTTP_Strict_Transport_Security"" target=""_blank"">HTTP Strict Transport Security</a> page for details.",module,Magento_Backend
 "See <a href=""http://www.w3.org/TR/upgrade-insecure-requests/"" target=""_blank"">Upgrade Insecure Requests</a> page for details.","See <a href=""http://www.w3.org/TR/upgrade-insecure-requests/"" target=""_blank"">Upgrade Insecure Requests</a> page for details.",module,Magento_Backend
-"If no value is specified, the system default is used. The system default may be modified by third-party extensions.","If no value is specified, the system default is used. The system default may be modified by third-party extensions.",module,Magento_Backend
+"If no value is specified, the system default is used. The system default may be modified by third-party extensions.","如果沒有指定值,則使用系統默認值。 系統默認可以通過第三方擴展來修改。",module,Magento_Backend
 "label","標籤",module,Magento_Backend
-"Enable Frontend Resize","Enable Frontend Resize",module,Magento_Backend
-"Invalid security or form key. Please refresh the page.","Invalid security or form key. Please refresh the page.",module,Magento_Backend
-"An item needs to be selected. Select and try again.","An item needs to be selected. Select and try again.",module,Magento_Backend
-"These cache type(s) don't exist: %1","These cache type(s) don't exist: %1",module,Magento_Backend
+"Enable Frontend Resize","啓用前端調整",module,Magento_Backend
+"Invalid security or form key. Please refresh the page.","無效的保安或密碼匙 請刷新頁面。",module,Magento_Backend
+"An item needs to be selected. Select and try again.","需要選擇一個項目。 選擇並重試。",module,Magento_Backend
+"These cache type(s) don't exist: %1","這些緩存類型不存在。: %1",module,Magento_Backend
 "The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.","帳戶登錄不正確或您的帳戶被暫時禁用。 請稍候，然後重試。",module,Magento_Backend
-"An authentication error occurred. Verify and try again.","An authentication error occurred. Verify and try again.",module,Magento_Backend
-"The Admin session lifetime is invalid. Set the lifetime to 31536000 seconds (one year) or shorter and try again.","The Admin session lifetime is invalid. Set the lifetime to 31536000 seconds (one year) or shorter and try again.",module,Magento_Backend
-"The Admin session lifetime is invalid. Set the lifetime to 60 seconds or longer and try again.","The Admin session lifetime is invalid. Set the lifetime to 60 seconds or longer and try again.",module,Magento_Backend
-"Save &amp; Continue","Save &amp; Continue",module,Magento_Backend
-"Save &amp; Close","Save &amp; Close",module,Magento_Backend
-"Save &amp; New","Save &amp; New",module,Magento_Backend
+"An authentication error occurred. Verify and try again.","發生了認證錯誤。 確認再試一次。",module,Magento_Backend
+"The Admin session lifetime is invalid. Set the lifetime to 31536000 seconds (one year) or shorter and try again.","行政會議終身無效。 將使用壽命設定爲31536000秒(一年),或更短,然後再試一次。",module,Magento_Backend
+"The Admin session lifetime is invalid. Set the lifetime to 60 seconds or longer and try again.","行政會議終身無效。 將壽命設定爲60秒或更長,再試一次。",module,Magento_Backend
+"Save &amp; Continue","拯救 &amp; 繼續",module,Magento_Backend
+"Save &amp; Close","拯救 &amp; 關閉",module,Magento_Backend
+"Save &amp; New","拯救 &amp; 最新消息",module,Magento_Backend
 "Edit","編輯",module,Magento_Backend
-"Enable Hints for Storefront with URL Parameter","Enable Hints for Storefront with URL Parameter",module,Magento_Backend
-"Parameter Value","Parameter Value",module,Magento_Backend
-"Enable Template Path Hints for Storefront","Enable Template Path Hints for Storefront",module,Magento_Backend
-"Enable Template Path Hints for Admin","Enable Template Path Hints for Admin",module,Magento_Backend
+"Enable Hints for Storefront with URL Parameter","使用URL參數配置的店面使用提示",module,Magento_Backend
+"Parameter Value","參數值",module,Magento_Backend
+"Enable Template Path Hints for Storefront","啓用樣板間通路提示",module,Magento_Backend
+"Enable Template Path Hints for Admin","啓用範本管理提示",module,Magento_Backend
 "System Backup","系統備份",module,Magento_Backup
 "Database and Media Backup","資料庫和媒體備份",module,Magento_Backup
 "Database Backup","資料庫備份",module,Magento_Backup
@@ -1118,11 +1116,11 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Type","類別",module,Magento_Backup
 "Download","下載",module,Magento_Backup
 "Action","操作",module,Magento_Backup
-"Backup functionality is disabled","Backup functionality is disabled",module,Magento_Backup
-"Backup Settings","Backup Settings",module,Magento_Backup
-"Enable Backup","Enable Backup",module,Magento_Backup
-"Scheduled Backup Type","Scheduled Backup Type",module,Magento_Backup
-"Disabled by default for security reasons","Disabled by default for security reasons",module,Magento_Backup
+"Backup functionality is disabled","備份功能被禁用",module,Magento_Backup
+"Backup Settings","備份設置",module,Magento_Backup
+"Enable Backup","啓用備份",module,Magento_Backup
+"Scheduled Backup Type","時間表備份類別",module,Magento_Backup
+"Disabled by default for security reasons","因安全原因缺勤致殘",module,Magento_Backup
 "Banners","橫幅",module,Magento_Banner
 "Add Banner","添加橫幅",module,Magento_Banner
 "Save Banner","保存橫幅",module,Magento_Banner
@@ -1173,7 +1171,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Please specify default content for at least one store view.","請最少於商店總覽內指定一項預設的內容",module,Magento_Banner
 "-- None --","-- 無 --",module,Magento_Banner
 "Error","錯誤 ",module,Magento_Banner
-"Related Cart Price Rules","Related Cart Price Rules",module,Magento_Banner
+"Related Cart Price Rules","相關汽車價格規則",module,Magento_Banner
 "Related Catalog Price Rules","相關目錄價格規則",module,Magento_Banner
 "Content Area","Content Area",module,Magento_Banner
 "Footer","Footer",module,Magento_Banner
@@ -1270,7 +1268,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "expires","到期",module,Magento_Braintree
 "PayPal","PayPal",module,Magento_Braintree
 "Please agree to all the terms and conditions before placing the order.","請在提交訂單之前同意所有條款及條件。",module,Magento_Braintree
-"Transaction was failed.","Transaction was failed.",module,Magento_Braintree
+"Transaction was failed.","交易失敗。",module,Magento_Braintree
 "Credit Card Type","信用卡類型",module,Magento_Braintree
 "Credit Card Number","信用卡卡號",module,Magento_Braintree
 "Please, enter valid Credit Card Number","請輸入有效的信用卡號碼",module,Magento_Braintree
@@ -1278,7 +1276,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Please, enter valid Expiration Date","請輸入有效的到期日期",module,Magento_Braintree
 "Card Verification Number","信用卡驗證號碼",module,Magento_Braintree
 "Please, enter valid Card Verification Number","請輸入有效的信用卡驗證號碼",module,Magento_Braintree
-"Are you sure you want to delete this PayPal account","Are you sure you want to delete this PayPal account",module,Magento_Braintree
+"Are you sure you want to delete this PayPal account","你確定要刪除這個PayPal帳戶嗎?",module,Magento_Braintree
 "PayPal Account","PayPal 帳戶",module,Magento_Braintree
 "PayPal Logo","PayPal 商標",module,Magento_Braintree
 "Actions","動作",module,Magento_Braintree
@@ -1293,27 +1291,27 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Please try again with another form of payment.","請以其他付款方式再試一次。",module,Magento_Braintree
 "Sorry, but something went wrong.","對不起，出了問題。",module,Magento_Braintree
 "Payment ","付款",module,Magento_Braintree
-"Credit card type is not accepted by this merchant account.","Credit card type is not accepted by this merchant account.",module,Magento_Braintree
+"Credit card type is not accepted by this merchant account.","本商戶不接受信用卡類型。",module,Magento_Braintree
 "Transaction can only be voided if status is authorized, submitted_for_settlement, or - for PayPal - settlement_pending.","Transaction can only be voided if status is authorized, submitted_for_settlement, or - for PayPal - settlement_pending.",module,Magento_Braintree
-"Credit transactions cannot be refunded.","Credit transactions cannot be refunded.",module,Magento_Braintree
-"Cannot refund a transaction unless it is settled.","Cannot refund a transaction unless it is settled.",module,Magento_Braintree
-"Cannot submit for settlement unless status is authorized.","Cannot submit for settlement unless status is authorized.",module,Magento_Braintree
-"Customer does not have any credit cards.","Customer does not have any credit cards.",module,Magento_Braintree
-"Transaction has already been completely refunded.","Transaction has already been completely refunded.",module,Magento_Braintree
-"Payment instrument type is not accepted by this merchant account.","Payment instrument type is not accepted by this merchant account.",module,Magento_Braintree
-"Processor authorization code cannot be set unless for a voice authorization.","Processor authorization code cannot be set unless for a voice authorization.",module,Magento_Braintree
-"Refund amount is too large.","Refund amount is too large.",module,Magento_Braintree
-"Settlement amount is too large.","Settlement amount is too large.",module,Magento_Braintree
-"Cannot provide a billing address unless also providing a credit card.","Cannot provide a billing address unless also providing a credit card.",module,Magento_Braintree
-"Cannot refund a transaction with a suspended merchant account.","Cannot refund a transaction with a suspended merchant account.",module,Magento_Braintree
-"Merchant account does not support refunds.","Merchant account does not support refunds.",module,Magento_Braintree
-"Cannot refund a transaction transaction in settling status on this merchant account. Try again after the transaction has settled.","Cannot refund a transaction transaction in settling status on this merchant account. Try again after the transaction has settled.",module,Magento_Braintree
-"PayPal is not enabled for your merchant account.","PayPal is not enabled for your merchant account.",module,Magento_Braintree
-"Partial settlements are not supported by this processor.","Partial settlements are not supported by this processor.",module,Magento_Braintree
-"Cannot submit for partial settlement.","Cannot submit for partial settlement.",module,Magento_Braintree
+"Credit transactions cannot be refunded.","信用交易不能退款。",module,Magento_Braintree
+"Cannot refund a transaction unless it is settled.","交易不成交,不能退款。",module,Magento_Braintree
+"Cannot submit for settlement unless status is authorized.","除非授權身份,否則不能提交結算書。",module,Magento_Braintree
+"Customer does not have any credit cards.","顧客沒有信用卡。",module,Magento_Braintree
+"Transaction has already been completely refunded.","交易已經完全退款了。",module,Magento_Braintree
+"Payment instrument type is not accepted by this merchant account.","本商號不接受付款憑證類型。",module,Magento_Braintree
+"Processor authorization code cannot be set unless for a voice authorization.","除非有語音授權,否則不能設置處理器授權代碼。",module,Magento_Braintree
+"Refund amount is too large.","退款金額太大。",module,Magento_Braintree
+"Settlement amount is too large.","結算金額太大。",module,Magento_Braintree
+"Cannot provide a billing address unless also providing a credit card.","除非還提供信用卡,否則無法提供帳單地址。",module,Magento_Braintree
+"Cannot refund a transaction with a suspended merchant account.","不能用暫停營業的商戶帳戶退款。",module,Magento_Braintree
+"Merchant account does not support refunds.","商戶不支持退款。",module,Magento_Braintree
+"Cannot refund a transaction transaction in settling status on this merchant account. Try again after the transaction has settled.","無法在此商號帳戶結算交易時退款。 交易結束後再試一次。",module,Magento_Braintree
+"PayPal is not enabled for your merchant account.","您的商號帳戶不能使用支付寶。",module,Magento_Braintree
+"Partial settlements are not supported by this processor.","這種處理機不支持局部沉降。",module,Magento_Braintree
+"Cannot submit for partial settlement.","不能提交部分結算。",module,Magento_Braintree
 "Transaction can not be voided if status of a PayPal partial settlement child transaction is settlement_pending.","Transaction can not be voided if status of a PayPal partial settlement child transaction is settlement_pending.",module,Magento_Braintree
-"Too many concurrent attempts to refund this transaction. Try again later.","Too many concurrent attempts to refund this transaction. Try again later.",module,Magento_Braintree
-"Too many concurrent attempts to void this transaction. Try again later.","Too many concurrent attempts to void this transaction. Try again later.",module,Magento_Braintree
+"Too many concurrent attempts to refund this transaction. Try again later.","太多同時嘗試退回這筆交易。 以後再試。",module,Magento_Braintree
+"Too many concurrent attempts to void this transaction. Try again later.","太多同時試圖取消這筆交易。 以後再試。",module,Magento_Braintree
 "Braintree","Braintree",module,Magento_Braintree
 "Accept credit/debit cards and PayPal in your Magento store.<br/>No setup or monthly fees and your customers never leave your store to complete the purchase.","在您的 Magento 商店接受信用卡/借記卡和PayPal。<br/>沒有設置費或月費，客戶不需要離開你的商店來完成購買。",module,Magento_Braintree
 "Enable this Solution","啟用此解決方案",module,Magento_Braintree
@@ -1355,45 +1353,45 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Phone","電話",module,Magento_Braintree
 "URL","URL",module,Magento_Braintree
 "CVV is required.","CVV is required.",module,Magento_Braintree
-"CVV must be 4 digits for American Express and 3 digits for other card types.","CVV must be 4 digits for American Express and 3 digits for other card types.",module,Magento_Braintree
-"Expiration date is required.","Expiration date is required.",module,Magento_Braintree
-"Expiration date is invalid.","Expiration date is invalid.",module,Magento_Braintree
-"Expiration year is invalid. It must be between 1975 and 2201.","Expiration year is invalid. It must be between 1975 and 2201.",module,Magento_Braintree
-"Expiration month is invalid.","Expiration month is invalid.",module,Magento_Braintree
-"Expiration year is invalid.","Expiration year is invalid.",module,Magento_Braintree
-"Credit card number is required.","Credit card number is required.",module,Magento_Braintree
-"Credit card number is invalid.","Credit card number is invalid.",module,Magento_Braintree
-"Credit card number must be 12-19 digits.","Credit card number must be 12-19 digits.",module,Magento_Braintree
-"Cardholder name is too long.","Cardholder name is too long.",module,Magento_Braintree
-"CVV verification failed.","CVV verification failed.",module,Magento_Braintree
-"Postal code verification failed.","Postal code verification failed.",module,Magento_Braintree
-"Credit card number is prohibited.","Credit card number is prohibited.",module,Magento_Braintree
-"Addresses must have at least one field filled in.","Addresses must have at least one field filled in.",module,Magento_Braintree
-"Company is too long.","Company is too long.",module,Magento_Braintree
-"Extended address is too long.","Extended address is too long.",module,Magento_Braintree
+"CVV must be 4 digits for American Express and 3 digits for other card types.","CVV必須爲美國運通公司的4位數字,其他卡類公司的3位數字。",module,Magento_Braintree
+"Expiration date is required.","需要到期日。",module,Magento_Braintree
+"Expiration date is invalid.","截止日期無效。",module,Magento_Braintree
+"Expiration year is invalid. It must be between 1975 and 2201.","期滿年度無效。 一定是在1975年到2201年之間。",module,Magento_Braintree
+"Expiration month is invalid.","期滿月份無效。",module,Magento_Braintree
+"Expiration year is invalid.","期滿年度無效。",module,Magento_Braintree
+"Credit card number is required.","需要信用卡號碼。",module,Magento_Braintree
+"Credit card number is invalid.","信用卡號碼無效。",module,Magento_Braintree
+"Credit card number must be 12-19 digits.","信用卡號碼必須爲12-19位數字。",module,Magento_Braintree
+"Cardholder name is too long.","持卡人的名字太長了。",module,Magento_Braintree
+"CVV verification failed.","CVV驗證失敗。",module,Magento_Braintree
+"Postal code verification failed.","郵政編碼驗證失敗。",module,Magento_Braintree
+"Credit card number is prohibited.","禁止使用信用卡號碼。",module,Magento_Braintree
+"Addresses must have at least one field filled in.","地址必須至少填入一個字段。",module,Magento_Braintree
+"Company is too long.","公司的時間太長了。",module,Magento_Braintree
+"Extended address is too long.","擴展地址太長。",module,Magento_Braintree
 "First name is too long.","名太長。",module,Magento_Braintree
 "Last name is too long.","姓氏太長。",module,Magento_Braintree
-"Locality is too long.","Locality is too long.",module,Magento_Braintree
-"Postal code is required.","Postal code is required.",module,Magento_Braintree
-"Postal code may contain no more than 9 letter or number characters.","Postal code may contain no more than 9 letter or number characters.",module,Magento_Braintree
-"Region is too long.","Region is too long.",module,Magento_Braintree
-"Street address is required.","Street address is required.",module,Magento_Braintree
-"Street address is too long.","Street address is too long.",module,Magento_Braintree
-"Postal code can only contain letters, numbers, spaces, and hyphens.","Postal code can only contain letters, numbers, spaces, and hyphens.",module,Magento_Braintree
-"US state codes must be two characters to meet PayPal Seller Protection requirements.","US state codes must be two characters to meet PayPal Seller Protection requirements.",module,Magento_Braintree
-"Incomplete PayPal account information.","Incomplete PayPal account information.",module,Magento_Braintree
-"Invalid PayPal account information.","Invalid PayPal account information.",module,Magento_Braintree
-"PayPal Accounts are not accepted by this merchant account.","PayPal Accounts are not accepted by this merchant account.",module,Magento_Braintree
-"Billing address format is invalid.","Billing address format is invalid.",module,Magento_Braintree
-"Country name is not an accepted country.","Country name is not an accepted country.",module,Magento_Braintree
-"Country code is not accepted. Please contact the store administrator.","Country code is not accepted. Please contact the store administrator.",module,Magento_Braintree
-"Provided country information is inconsistent.","Provided country information is inconsistent.",module,Magento_Braintree
-"Customer has already reached the maximum of 50 addresses.","Customer has already reached the maximum of 50 addresses.",module,Magento_Braintree
-"Address is invalid. Please contact the store administrator.","Address is invalid. Please contact the store administrator.",module,Magento_Braintree
-"Error communicating with PayPal.","Error communicating with PayPal.",module,Magento_Braintree
-"PayPal authentication expired.","PayPal authentication expired.",module,Magento_Braintree
-"Error executing PayPal order.","Error executing PayPal order.",module,Magento_Braintree
-"Error executing PayPal billing agreement.","Error executing PayPal billing agreement.",module,Magento_Braintree
+"Locality is too long.","地點太長。",module,Magento_Braintree
+"Postal code is required.","需要郵政編碼。",module,Magento_Braintree
+"Postal code may contain no more than 9 letter or number characters.","郵政編碼可包含不超過9個字母或數字字符。",module,Magento_Braintree
+"Region is too long.","區域太長。",module,Magento_Braintree
+"Street address is required.","需要街道地址。",module,Magento_Braintree
+"Street address is too long.","街道地址太長。",module,Magento_Braintree
+"Postal code can only contain letters, numbers, spaces, and hyphens.","郵政編碼只能包含字母,數字,空格和連字號。",module,Magento_Braintree
+"US state codes must be two characters to meet PayPal Seller Protection requirements.","爲了滿足PayPal賣方保護要求,美國國家代碼必須是兩個字符。",module,Magento_Braintree
+"Incomplete PayPal account information.","PayPal賬戶信息不完整。",module,Magento_Braintree
+"Invalid PayPal account information.","PayPal賬戶信息無效。",module,Magento_Braintree
+"PayPal Accounts are not accepted by this merchant account.","本商號帳戶不接受PayPal的帳戶。",module,Magento_Braintree
+"Billing address format is invalid.","帳單地址格式無效。",module,Magento_Braintree
+"Country name is not an accepted country.","國名不是被接受的國家。",module,Magento_Braintree
+"Country code is not accepted. Please contact the store administrator.","國家代碼不獲受理。 請與店長聯繫。",module,Magento_Braintree
+"Provided country information is inconsistent.","提供的國家信息不一致。",module,Magento_Braintree
+"Customer has already reached the maximum of 50 addresses.","顧客已經達到了最多50個地址。",module,Magento_Braintree
+"Address is invalid. Please contact the store administrator.","地址無效。 請與店長聯繫。",module,Magento_Braintree
+"Error communicating with PayPal.","與PayPal通訊錯誤。",module,Magento_Braintree
+"PayPal authentication expired.","PayPal認證過期了。",module,Magento_Braintree
+"Error executing PayPal order.","執行PayPal命令時出錯。",module,Magento_Braintree
+"Error executing PayPal billing agreement.","執行PayPal賬單協議時出錯。",module,Magento_Braintree
 "Apply filters in order to get results. Only first 100 records will be displayed in the grid, you will be able to download full version of the report in .csv format.","應用篩選器以獲得結果。 網格中只會顯示前100條記錄，您將能夠以.csv格式下載完整的報告。",module,Magento_Braintree
 "Select...","選擇… ",module,Magento_Braintree
 "Status","狀態",module,Magento_Braintree
@@ -1481,8 +1479,8 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Yes","是",module,Magento_Braintree
 "No","否",module,Magento_Braintree
 "Edit","編輯",module,Magento_Braintree
-"An error occured with payment processing.","An error occured with payment processing.",module,Magento_Braintree
-"Can not initialize PayPal (Braintree)","Can not initialize PayPal (Braintree)",module,Magento_Braintree
+"An error occured with payment processing.","支付過程出現錯誤。",module,Magento_Braintree
+"Can not initialize PayPal (Braintree)","無法初始化PayPal(Braintree)",module,Magento_Braintree
 "&nbsp;","&nbsp;",module,Magento_Braintree
 "Capture action","Capture action",module,Magento_Braintree
 "New Order Status","新訂單狀態",module,Magento_Braintree
@@ -1512,11 +1510,11 @@ please <a href=""mailto:support@getbraintree.com"">Braintree Support</a>.",modul
 "The value in the business name field of a customer's statement. Company name/DBA section must be either 3, 7 or 12 characters,module,Magento_Braintree
 and the product descriptor can be up to 18, 14, or 9 characters respectively (with an * in between for a total descriptor name of 22 characters).","The value in the business name field of a customer's statement. Company name/DBA section must be either 3, 7 or 12 characters,module,Magento_Braintree
 and the product descriptor can be up to 18, 14, or 9 characters respectively (with an * in between for a total descriptor name of 22 characters).",module,Magento_Braintree
-"The value in the phone number field of a customer's statement. Phone must be 10-14 characters and can only contain numbers, dashes, parentheses and periods.","The value in the phone number field of a customer's statement. Phone must be 10-14 characters and can only contain numbers, dashes, parentheses and periods.",module,Magento_Braintree
-"The value in the URL/web address field of a customer's statement. The URL must be 13 characters or shorter.","The value in the URL/web address field of a customer's statement. The URL must be 13 characters or shorter.",module,Magento_Braintree
-"The Payment Token is not available to perform the request.","The Payment Token is not available to perform the request.",module,Magento_Braintree
-"Checkout failed to initialize. Verify and try again.","Checkout failed to initialize. Verify and try again.",module,Magento_Braintree
-"The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.","The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.",module,Magento_Braintree
+"The value in the phone number field of a customer's statement. Phone must be 10-14 characters and can only contain numbers, dashes, parentheses and periods.","客戶陳述書中的電話號碼字段中的值。 電話必須是10-14字符,只能包含數字,劃線,括號及句號。",module,Magento_Braintree
+"The value in the URL/web address field of a customer's statement. The URL must be 13 characters or shorter.","用戶聲明URL/Web地址域中的值。 URL必須爲13個字符或更短。",module,Magento_Braintree
+"The Payment Token is not available to perform the request.","無法使用繳費靈執行此要求。",module,Magento_Braintree
+"Checkout failed to initialize. Verify and try again.","退房沒有初始化。 確認再試一次。",module,Magento_Braintree
+"The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.","命令沒有下達。 首先,同意條件,再嘗試重新點菜。",module,Magento_Braintree
 "Paypal account","PayPal 帳戶",module,Magento_Braintree
 "Coinbase account","Coinbase 帳戶",module,Magento_Braintree
 "Europe bank account","歐洲銀行帳戶",module,Magento_Braintree
@@ -1638,7 +1636,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Product Name","商品名稱",module,Magento_Bundle
 "Subtotal","商品總金額",module,Magento_Bundle
 "Discount Amount","折扣金額",module,Magento_Bundle
-"Row Total","總行數",module,Magento_Bundle
+"Row Total","小計",module,Magento_Bundle
 "Qty Invoiced","已開發票數量",module,Magento_Bundle
 "Qty Shipped","已出貨數量",module,Magento_Bundle
 "Add Products to New Option","將產品添加到新的選項",module,Magento_Bundle
@@ -1648,14 +1646,14 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Thumbnail","縮圖",module,Magento_Bundle
 "Type","類別",module,Magento_Bundle
 "Special Price","特價",module,Magento_Bundle
-"This is implemented for bundle products only.","This is implemented for bundle products only.",module,Magento_Bundle
-"The product with the ""%1"" SKU isn't a bundle product.","The product with the ""%1"" SKU isn't a bundle product.",module,Magento_Bundle
-"The bundle product can't contain another composite product.","The bundle product can't contain another composite product.",module,Magento_Bundle
-"The product link needs an ID field entered. Enter and try again.","The product link needs an ID field entered. Enter and try again.",module,Magento_Bundle
-"The product link with the ""%1"" ID field wasn't found. Verify the ID and try again.","The product link with the ""%1"" ID field wasn't found. Verify the ID and try again.",module,Magento_Bundle
-"The bundle product doesn't exist. Review your request and try again.","The bundle product doesn't exist. Review your request and try again.",module,Magento_Bundle
-"The option that was requested doesn't exist. Verify the entity and try again.","The option that was requested doesn't exist. Verify the entity and try again.",module,Magento_Bundle
-"The option couldn't be saved.","The option couldn't be saved.",module,Magento_Bundle
+"This is implemented for bundle products only.","此方法只適用於包裝產品。",module,Magento_Bundle
+"The product with the ""%1"" SKU isn't a bundle product.","帶有""%1""SKU 的產品不是包袱產品。",module,Magento_Bundle
+"The bundle product can't contain another composite product.","包裝產品不能包含另外一種複合產品。",module,Magento_Bundle
+"The product link needs an ID field entered. Enter and try again.","產品鏈路需要輸入ID字段。 進來再試一次。",module,Magento_Bundle
+"The product link with the ""%1"" ID field wasn't found. Verify the ID and try again.","沒有找到與""%1""ID 字段相關的產品鏈接。 確認身份,再試一次。",module,Magento_Bundle
+"The bundle product doesn't exist. Review your request and try again.","包裹產品不存在。 複習你的要求,再試一次。",module,Magento_Bundle
+"The option that was requested doesn't exist. Verify the entity and try again.","所要求的選項不存在。 確認實體後再試一次。",module,Magento_Bundle
+"The option couldn't be saved.","這個選擇無法挽救。",module,Magento_Bundle
 """%fieldName"" is required. Enter and try again.","""%fieldName"" 是必須的。 輸入並重試。",module,Magento_Bundle
 "The option with ""%1"" ID can't be deleted.","The option with ""%1"" ID can't be deleted.",module,Magento_Bundle
 """option_id"" and ""parent_id"" values should be specified","""option_id"" and ""parent_id"" values should be specified",module,Magento_BundleGraphQl
@@ -1801,7 +1799,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Add New Attribute Set","Add New Attribute Set",module,Magento_Catalog
 "Add Attribute Set","Add Attribute Set",module,Magento_Catalog
 "Attribute Sets","Attribute Sets",module,Magento_Catalog
-"Close Window","關上窗戶",module,Magento_Catalog
+"Close Window","關閉",module,Magento_Catalog
 "New Product","新產品",module,Magento_Catalog
 "Save & Edit","保存與編輯",module,Magento_Catalog
 "Save & New","保存與新增",module,Magento_Catalog
@@ -2101,7 +2099,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "We can't create writeable directory ""%1"".","We can't create writeable directory ""%1"".",module,Magento_Catalog
 "The file upload failed.","上載文件夾失敗",module,Magento_Catalog
 "The product has required options.","The product has required options.",module,Magento_Catalog
-"Something went wrong while processing the request.","Something went wrong while processing the request.",module,Magento_Catalog
+"Something went wrong while processing the request.","在處理請求時出了問題。",module,Magento_Catalog
 "%1 doesn't extends \Magento\Catalog\Model\Product\Type\AbstractType","%1 doesn't extends \Magento\Catalog\Model\Product\Type\AbstractType",module,Magento_Catalog
 "%1 doesn't extends \Magento\Catalog\Model\Product\Type\Price","%1 doesn't extends \Magento\Catalog\Model\Product\Type\Price",module,Magento_Catalog
 "Not Visible Individually","Not Visible Individually",module,Magento_Catalog
@@ -2321,7 +2319,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Loading...","載入中...",module,Magento_Catalog
 "* Required Fields","* 為必填項",module,Magento_Catalog
 "Availability","庫存",module,Magento_Catalog
-"Warning message","Warning message",module,Magento_Catalog
+"Warning message","警告信息",module,Magento_Catalog
 "Submit","提交",module,Magento_Catalog
 "We don't recognize or support this file extension type.","我們無法識別或不支援此檔案類型。",module,Magento_Catalog
 "Configure Product","Configure Product",module,Magento_Catalog
@@ -2947,7 +2945,7 @@ Time in seconds between the widget updates.,module,Magento_Catalog
 "Inactive","閒置",module,Magento_CatalogRule
 "Web Site","網站",module,Magento_CatalogRule
 "Back","上一步",module,Magento_CatalogRule
-"Rule Information","Rule Information",module,Magento_CatalogRule
+"Rule Information","規則信息",module,Magento_CatalogRule
 "Rule Name","Rule Name",module,Magento_CatalogRule
 "Description","描述",module,Magento_CatalogRule
 "Websites","網站",module,Magento_CatalogRule
@@ -2981,16 +2979,16 @@ Time in seconds between the widget updates.,module,Magento_Catalog
 "Web Site","網站",module,Magento_CatalogRuleStaging
 "Action","操作",module,Magento_CatalogRuleStaging
 "Edit","編輯",module,Magento_CatalogRuleStaging
-"Scheduled Changes","Scheduled Changes",module,Magento_CatalogRuleStaging
+"Scheduled Changes","計劃性改變",module,Magento_CatalogRuleStaging
 "Name","姓名",module,Magento_CatalogRuleStaging
 "Description","描述",module,Magento_CatalogRuleStaging
-"Update Information","Update Information",module,Magento_CatalogRuleStaging
-"Remove Catalog Price Rule from Update","Remove Catalog Price Rule from Update",module,Magento_CatalogRuleStaging
-"Schedule Update","Schedule Update",module,Magento_CatalogRuleStaging
-"Update Name","Update Name",module,Magento_CatalogRuleStaging
+"Update Information","更新資料",module,Magento_CatalogRuleStaging
+"Remove Catalog Price Rule from Update","從更新中刪除目錄價格規則",module,Magento_CatalogRuleStaging
+"Schedule Update","附表更新",module,Magento_CatalogRuleStaging
+"Update Name","更新名稱",module,Magento_CatalogRuleStaging
 "Start Date","開始日期",module,Magento_CatalogRuleStaging
 "End Date","結束日期",module,Magento_CatalogRuleStaging
-"Rule Information","Rule Information",module,Magento_CatalogRuleStaging
+"Rule Information","規則信息",module,Magento_CatalogRuleStaging
 "Rule Name","Rule Name",module,Magento_CatalogRuleStaging
 "Status","狀態",module,Magento_CatalogRuleStaging
 "Active","激活",module,Magento_CatalogRuleStaging
@@ -3044,62 +3042,62 @@ Time in seconds between the widget updates.,module,Magento_Catalog
 "%1 and above","新台幣%1以上",module,Magento_CatalogSearch
 "%1 - %2","%1 - %2",module,Magento_CatalogSearch
 "Sorry, something went wrong. You can find out more in the error log.","抱歉，出問題了。你可以在錯誤日志中找到更多的信息。",module,Magento_CatalogSearch
-"Bucket does not exist","Bucket does not exist",module,Magento_CatalogSearch
+"Bucket does not exist","水桶不存在",module,Magento_CatalogSearch
 "Product","產品",module,Magento_CatalogSearch
-"Search Settings","Search Settings",module,Magento_CatalogSearch
+"Search Settings","搜尋設定",module,Magento_CatalogSearch
 "Search","搜尋",module,Magento_CatalogSearch
-"Advanced Search","Advanced Search",module,Magento_CatalogSearch
+"Advanced Search","高級查冊",module,Magento_CatalogSearch
 "<strong>%1 item</strong> were found using the following search criteria","<strong>%1 item</strong> were found using the following search criteria",module,Magento_CatalogSearch
 "<strong>%1 items</strong> were found using the following search criteria","<strong>%1 items</strong> were found using the following search criteria",module,Magento_CatalogSearch
 "We can't find any items matching these search criteria.","我們找不到任何這些搜尋條件匹配的項目。",module,Magento_CatalogSearch
 "Modify your search.","修改您的搜索。",module,Magento_CatalogSearch
 "name","姓名",module,Magento_CatalogSearch
-"Don't see what you're looking for?","Don't see what you're looking for?",module,Magento_CatalogSearch
+"Don't see what you're looking for?","看不出來你在找什麼嗎?",module,Magento_CatalogSearch
 "Your search returned no results.","您的搜索未返回任何結果。",module,Magento_CatalogSearch
-"Catalog Section","Catalog Section",module,Magento_CatalogSearch
-"Catalog Search","Catalog Search",module,Magento_CatalogSearch
-"Popular Search Terms","Popular Search Terms",module,Magento_CatalogSearch
-"Minimal Query Length","Minimal Query Length",module,Magento_CatalogSearch
-"Maximum Query Length","Maximum Query Length",module,Magento_CatalogSearch
-"Number of top search results to cache","Number of top search results to cache",module,Magento_CatalogSearch
-"Rebuild Catalog product fulltext search index","Rebuild Catalog product fulltext search index",module,Magento_CatalogSearch
+"Catalog Section","目錄組",module,Magento_CatalogSearch
+"Catalog Search","目錄檢索",module,Magento_CatalogSearch
+"Popular Search Terms","流行檢索語",module,Magento_CatalogSearch
+"Minimal Query Length","最小查詢長度",module,Magento_CatalogSearch
+"Maximum Query Length","最高查詢長度",module,Magento_CatalogSearch
+"Number of top search results to cache","搜索結果緩存的最大值",module,Magento_CatalogSearch
+"Rebuild Catalog product fulltext search index","重建目錄產品全文搜索索引",module,Magento_CatalogSearch
 "Bucket do not exists","桶並不存在",module,Magento_CatalogSearch
 "Modify your search","修改您的搜索",module,Magento_CatalogSearch
-"Test Exception","Test Exception",module,Magento_CatalogSearch
+"Test Exception","測試例外",module,Magento_CatalogSearch
 "Please enter a valid price range.","請輸入有效的價格範圍。",module,Magento_CatalogSearch
-"Number of popular search terms to be cached for faster response. Use “0” to cache all results after a term is searched for the second time.","Number of popular search terms to be cached for faster response. Use “0” to cache all results after a term is searched for the second time.",module,Magento_CatalogSearch
+"Number of popular search terms to be cached for faster response. Use “0” to cache all results after a term is searched for the second time.","爲快速反應而暫停使用的常用搜索術語數目。 在第二次檢索學期後,用“0”保存所有結果。",module,Magento_CatalogSearch
 "Enable EAV Indexer","Enable EAV Indexer",module,Magento_CatalogSearch
-"Enter a search term and try again.","Enter a search term and try again.",module,Magento_CatalogSearch
-"An error occurred. For details, see the error log.","An error occurred. For details, see the error log.",module,Magento_CatalogSearch
-"The bucket doesn't exist.","The bucket doesn't exist.",module,Magento_CatalogSearch
-"Deprecation Notice","Deprecation Notice",module,Magento_CatalogSearch
-"Autocomplete Limit","Autocomplete Limit",module,Magento_CatalogSearch
+"Enter a search term and try again.","請輸入搜索術語,再試一次。",module,Magento_CatalogSearch
+"An error occurred. For details, see the error log.","發生錯誤。 詳情請參閱錯誤日誌。",module,Magento_CatalogSearch
+"The bucket doesn't exist.","水桶不存在。",module,Magento_CatalogSearch
+"Deprecation Notice","撤銷通知書",module,Magento_CatalogSearch
+"Autocomplete Limit","自動完成極限",module,Magento_CatalogSearch
 "ProductSku should be specified","應指定產品Sku",module,Magento_CatalogStaging
 "Attribute ""%1"" is required.","必須有 ""%1"" 屬性",module,Magento_CatalogStaging
 "Enabled","啟用",module,Magento_CatalogStaging
 "Disabled","停用",module,Magento_CatalogStaging
-"Future Update in this time range already exists. Select a different range to add a new Future Update.","Future Update in this time range already exists. Select a different range to add a new Future Update.",module,Magento_CatalogStaging
+"Future Update in this time range already exists. Select a different range to add a new Future Update.","在這個時間段中的未來更新已經存在。 選擇一個不同的範圍來添加新的未來更新。",module,Magento_CatalogStaging
 "Unable to save product","無法保存產品",module,Magento_CatalogStaging
 "The image cannot be removed as it has been assigned to the other image role","圖像無法被刪除，因為它已被分配給其他圖像角色",module,Magento_CatalogStaging
-"Could not save Prices.","Could not save Prices.",module,Magento_CatalogStaging
-"Invalid attribute %fieldName = %fieldValue.","Invalid attribute %fieldName = %fieldValue.",module,Magento_CatalogStaging
-"The requested price is not found.","The requested price is not found.",module,Magento_CatalogStaging
+"Could not save Prices.","不能節約物價",module,Magento_CatalogStaging
+"Invalid attribute %fieldName = %fieldValue.","無效屬性 %fieldName = %fieldValue。",module,Magento_CatalogStaging
+"The requested price is not found.","找不到所需價格。",module,Magento_CatalogStaging
 "Could not delete Prices","不能刪除價格",module,Magento_CatalogStaging
 "Update %1 from %2 to %3.","Update %1 from %2 to %3.",module,Magento_CatalogStaging
 "Design","設計",module,Magento_CatalogStaging
-"View/Edit","View/Edit",module,Magento_CatalogStaging
+"View/Edit","檢視/編輯",module,Magento_CatalogStaging
 "Delete","刪除",module,Magento_CatalogStaging
-"Preview","Preview",module,Magento_CatalogStaging
-"Set Product as New","Set Product as New",module,Magento_CatalogStaging
+"Preview","預覽",module,Magento_CatalogStaging
+"Set Product as New","把產品設定爲新的",module,Magento_CatalogStaging
 "Store View:","店面：",module,Magento_CatalogStaging
 "Stores Configuration","商店設置",module,Magento_CatalogStaging
-"Scheduled Changes","Scheduled Changes",module,Magento_CatalogStaging
+"Scheduled Changes","計劃性改變",module,Magento_CatalogStaging
 "Name","姓名",module,Magento_CatalogStaging
 "Description","描述",module,Magento_CatalogStaging
 "Action","操作",module,Magento_CatalogStaging
-"Update Information","Update Information",module,Magento_CatalogStaging
-"Schedule Update","Schedule Update",module,Magento_CatalogStaging
-"Update Name","Update Name",module,Magento_CatalogStaging
+"Update Information","更新資料",module,Magento_CatalogStaging
+"Schedule Update","附表更新",module,Magento_CatalogStaging
+"Update Name","更新名稱",module,Magento_CatalogStaging
 "Start Date","開始日期",module,Magento_CatalogStaging
 "End Date","結束日期",module,Magento_CatalogStaging
 "Enable Category","Enable Category",module,Magento_CatalogStaging
@@ -3202,74 +3200,74 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 <br/>Widget will not show products that begin to match the specified conditions until cache is refreshed.,module,Magento_CatalogWidget
 ",module,Magento_CatalogWidget
 "Shopping Cart","購物車",module,Magento_Checkout
-"Invalid method: %1","Invalid method: %1",module,Magento_Checkout
+"Invalid method: %1","無效法: %1",module,Magento_Checkout
 "City","行政區",module,Magento_Checkout
 "Country","國家",module,Magento_Checkout
 "State/Province","縣市",module,Magento_Checkout
 "Zip/Postal Code","郵遞區號",module,Magento_Checkout
-"My Cart (1 item)","My Cart (1 item)",module,Magento_Checkout
-"My Cart (%1 items)","My Cart (%1 items)",module,Magento_Checkout
+"My Cart (1 item)","購物車 (1 物品)",module,Magento_Checkout
+"My Cart (%1 items)","購物車 (%1 物品)",module,Magento_Checkout
 "My Cart","購物車",module,Magento_Checkout
 "For delivery questions.","對於交貨問題。",module,Magento_Checkout
-"Customer is already registered","Customer is already registered",module,Magento_Checkout
-"Your session has expired","Your session has expired",module,Magento_Checkout
-"A letter with further instructions will be sent to your email.","A letter with further instructions will be sent to your email.",module,Magento_Checkout
+"Customer is already registered","客戶已登記在冊",module,Magento_Checkout
+"Your session has expired","你的會期已經過期了",module,Magento_Checkout
+"A letter with further instructions will be sent to your email.","一封附有進一步指示的信件將發送到你的電子郵件。",module,Magento_Checkout
 "You added %1 to your shopping cart.","您已添加 %1 到您的購物車",module,Magento_Checkout
 "We can't add this item to your shopping cart right now.","現在無法新增至購物車",module,Magento_Checkout
 "Out of stock","缺貨",module,Magento_Checkout
-"We can't find the quote item.","We can't find the quote item.",module,Magento_Checkout
-"We cannot configure the product.","We cannot configure the product.",module,Magento_Checkout
-"You used coupon code ""%1"".","You used coupon code ""%1"".",module,Magento_Checkout
+"We can't find the quote item.","我們找不到引用的項目。",module,Magento_Checkout
+"We cannot configure the product.","我們無法配置該產品。",module,Magento_Checkout
+"You used coupon code ""%1"".","你使用了""%1""的優惠券代碼。",module,Magento_Checkout
 "The coupon code ""%1"" is not valid.","優惠券代碼""%1""無效。",module,Magento_Checkout
-"You canceled the coupon code.","You canceled the coupon code.",module,Magento_Checkout
-"We cannot apply the coupon code.","We cannot apply the coupon code.",module,Magento_Checkout
+"You canceled the coupon code.","你取消了優惠券代碼",module,Magento_Checkout
+"We cannot apply the coupon code.","我們不能使用優惠券代碼。",module,Magento_Checkout
 "We can't remove the item.","我們不能刪除產品",module,Magento_Checkout
 "%1 was updated in your shopping cart.","%1 已在您的購物車中更新。",module,Magento_Checkout
 "We can't update the item right now.","我們現在無法更新",module,Magento_Checkout
 "We can't update the shopping cart.","我們無法更新購物車 ",module,Magento_Checkout
-"One-page checkout is turned off.","One-page checkout is turned off.",module,Magento_Checkout
-"Guest checkout is disabled.","Guest checkout is disabled.",module,Magento_Checkout
+"One-page checkout is turned off.","一頁的結帳關掉了。",module,Magento_Checkout
+"Guest checkout is disabled.","客人退房被禁用。",module,Magento_Checkout
 "Checkout","我的購物車",module,Magento_Checkout
 "Page not found.","找不到頁面。",module,Magento_Checkout
 "Please agree to all the terms and conditions before placing the order.","請在提交訂單之前同意所有條款及條件。",module,Magento_Checkout
-"Something went wrong while processing your order. Please try again later.","Something went wrong while processing your order. Please try again later.",module,Magento_Checkout
+"Something went wrong while processing your order. Please try again later.","在處理你的訂單時出了問題。 請稍後再試。",module,Magento_Checkout
 "%1 doesn't extend \Magento\Checkout\CustomerData\ItemInterface","%1 不能延伸 \Magento\Checkout\CustomerData\ItemInterface",module,Magento_Checkout
 "Payment Method","付款方式",module,Magento_Checkout
-"Payment Page","Payment Page",module,Magento_Checkout
+"Payment Page","付款頁",module,Magento_Checkout
 "We can't find the product.","找不到產品",module,Magento_Checkout
-"We found an invalid request for adding product to quote.","We found an invalid request for adding product to quote.",module,Magento_Checkout
-"The product does not exist.","The product does not exist.",module,Magento_Checkout
-"We don't have some of the products you want.","We don't have some of the products you want.",module,Magento_Checkout
-"We don't have as many of some products as you want.","We don't have as many of some products as you want.",module,Magento_Checkout
+"We found an invalid request for adding product to quote.","我們發現一個無用的請求,要求在報價中添加產品。",module,Magento_Checkout
+"The product does not exist.","產品不存在。",module,Magento_Checkout
+"We don't have some of the products you want.","我們沒有你想要的產品。",module,Magento_Checkout
+"We don't have as many of some products as you want.","我們有些產品沒有你想的那麼多。",module,Magento_Checkout
 "Quantity was recalculated from %1 to %2","Quantity was recalculated from %1 to %2",module,Magento_Checkout
-"We adjusted product quantities to fit the required increments.","We adjusted product quantities to fit the required increments.",module,Magento_Checkout
-"This quote item does not exist.","This quote item does not exist.",module,Magento_Checkout
+"We adjusted product quantities to fit the required increments.","我們調整了產品數量以適應所需增量。",module,Magento_Checkout
+"This quote item does not exist.","此引文不存在。",module,Magento_Checkout
 "Display number of items in cart","顯示購物車中的物品數",module,Magento_Checkout
-"Display item quantities","Display item quantities",module,Magento_Checkout
+"Display item quantities","顯示品目數量",module,Magento_Checkout
 "An error occurred on the server. Please try to place the order again.","伺服器出現錯誤。請再次確認訂單。",module,Magento_Checkout
 "Shipping address is not set","未設置送貨地址",module,Magento_Checkout
-"Unable to save shipping information. Please check input data.","Unable to save shipping information. Please check input data.",module,Magento_Checkout
-"Carrier with such method not found: %1, %2","Carrier with such method not found: %1, %2",module,Magento_Checkout
+"Unable to save shipping information. Please check input data.","無法保存裝運信息。 請檢查輸入數據。",module,Magento_Checkout
+"Carrier with such method not found: %1, %2","未找到此類方法的承運人: %1, %2",module,Magento_Checkout
 "Shipping method is not applicable for empty cart","運送方式不適用於空車",module,Magento_Checkout
-" item"," item",module,Magento_Checkout
-" items"," items",module,Magento_Checkout
-"Totals calculation is not applicable to empty cart","Totals calculation is not applicable to empty cart",module,Magento_Checkout
-"Invalid data","Invalid data",module,Magento_Checkout
-"The customer address is not valid.","The customer address is not valid.",module,Magento_Checkout
+" item"," 物品",module,Magento_Checkout
+" items"," 物品",module,Magento_Checkout
+"Totals calculation is not applicable to empty cart","總計不適用於空車",module,Magento_Checkout
+"Invalid data","無效數據",module,Magento_Checkout
+"The customer address is not valid.","客戶地址無效。",module,Magento_Checkout
 "Invalid shipping method","無效的運送方式",module,Magento_Checkout
 "There are more than one shipping addresses.","有多個送貨地址。",module,Magento_Checkout
-"Sorry, guest checkout is not available.","Sorry, guest checkout is not available.",module,Magento_Checkout
-"You must confirm your account. Please check your email for the confirmation link or <a href=""%1"">click here</a> for a new link.","You must confirm your account. Please check your email for the confirmation link or <a href=""%1"">click here</a> for a new link.",module,Magento_Checkout
-"Load customer quote error","Load customer quote error",module,Magento_Checkout
-"Error message!","Error message!",module,Magento_Checkout
-"Error!","Error!",module,Magento_Checkout
+"Sorry, guest checkout is not available.","對不起,客人沒有退房。",module,Magento_Checkout
+"You must confirm your account. Please check your email for the confirmation link or <a href=""%1"">click here</a> for a new link.","你必須確認你的帳戶。 請檢查你的電郵以取得確認連結,<a href=""%1"">或按此處</a>以取得新的連結。",module,Magento_Checkout
+"Load customer quote error","裝載客戶報價錯誤",module,Magento_Checkout
+"Error message!","錯誤消息!",module,Magento_Checkout
+"Error!","錯誤!",module,Magento_Checkout
 "DB exception","DB exception",module,Magento_Checkout
 "Message","訊息內容",module,Magento_Checkout
-"Print receipt","Print receipt",module,Magento_Checkout
+"Print receipt","打印收據",module,Magento_Checkout
 "Apply Discount Code","使用折扣碼",module,Magento_Checkout
 "Enter discount code","輸入折扣碼",module,Magento_Checkout
 "Apply Discount","申請折扣",module,Magento_Checkout
-"Cancel Coupon","Cancel Coupon",module,Magento_Checkout
+"Cancel Coupon","取消扣款機",module,Magento_Checkout
 "Shopping Cart Items","購物車項目",module,Magento_Checkout
 "Item","項目",module,Magento_Checkout
 "Price","價格",module,Magento_Checkout
@@ -3286,7 +3284,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Remove item","刪除項目",module,Magento_Checkout
 "You have no items in your shopping cart.","您的購物車中沒有商品。",module,Magento_Checkout
 "Click <a href=""%1"">here</a> to continue shopping.","請點擊 <a href=""%1"">這裡</a> 繼續購物。",module,Magento_Checkout
-"Estimate Tax","Estimate Tax",module,Magento_Checkout
+"Estimate Tax","估計稅",module,Magento_Checkout
 "Estimate Shipping and Tax","估計運費和稅",module,Magento_Checkout
 "Excl. Tax","不含稅",module,Magento_Checkout
 "Loading...","載入中...",module,Magento_Checkout
@@ -3317,28 +3315,28 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Update","更新資料",module,Magento_Checkout
 "Cancel","取消",module,Magento_Checkout
 "Save in address book","保存在通訊錄中",module,Magento_Checkout
-"Estimated Total","Estimated Total",module,Magento_Checkout
+"Estimated Total","估計總數",module,Magento_Checkout
 "You can create an account after checkout.","您可以在結帳後創建一個帳戶。",module,Magento_Checkout
 "You already have an account with us. Sign in or continue as guest.","您已經在我們這裡有一個帳戶。 登錄或以訪客身份繼續。",module,Magento_Checkout
 "Login","登入",module,Magento_Checkout
-"See Details","See Details",module,Magento_Checkout
-"Options Details","Options Details",module,Magento_Checkout
+"See Details","詳情",module,Magento_Checkout
+"Options Details","選擇詳情",module,Magento_Checkout
 "Remove","移除",module,Magento_Checkout
 "Cart Subtotal","購物車小計",module,Magento_Checkout
 "Payment Information","付款資訊",module,Magento_Checkout
 "No Payment method available.","沒有可用的付款方式。",module,Magento_Checkout
 "You can track your order status by creating an account.","您可以通過創建帳戶來跟踪訂單狀態。",module,Magento_Checkout
 "Place Order","確認訂單",module,Magento_Checkout
-"Forgot an Item?","Forgot an Item?",module,Magento_Checkout
-"Edit Your Cart","Edit Your Cart",module,Magento_Checkout
+"Forgot an Item?","忘了東西?",module,Magento_Checkout
+"Edit Your Cart","編輯你的車",module,Magento_Checkout
 "Ship Here","在這裡運送",module,Magento_Checkout
 "Ship To:","收件地址：",module,Magento_Checkout
-"edit","edit",module,Magento_Checkout
+"edit","編輯",module,Magento_Checkout
 "Order Summary","購物車明細",module,Magento_Checkout
 "View and Edit Cart","查看和編輯購物車",module,Magento_Checkout
 "View Details","檢視詳細資料",module,Magento_Checkout
 "Field ","Field ",module,Magento_Checkout
-" is required."," is required.",module,Magento_Checkout
+" is required."," 必須有",module,Magento_Checkout
 "Provided Zip/Postal Code seems to be invalid.","提供的郵遞區號似乎無效。",module,Magento_Checkout
 " Example: "," 例: ",module,Magento_Checkout
 "If you believe it is the right one you can ignore this notice.","如果您認為這是對的，則可以忽略此通知。",module,Magento_Checkout
@@ -3384,7 +3382,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Unable to save shipping information. Please, check input data.","無法儲存寄件資訊。請檢查輸入資料",module,Magento_Checkout
 "Cart contains virtual product(s) only. Shipping address is not applicable.","購物車僅包含虛擬產品。 送貨地址不適用。",module,Magento_Checkout
 "Wrong minimum amount.","Wrong minimum amount.",module,Magento_Checkout
-"<a href=""%1"" onclick=""this.target='_blank'"" class=""print"">Print receipt</a>","<a href=""%1"" onclick=""this.target='_blank'"" class=""print"">Print receipt</a>",module,Magento_Checkout
+"<a href=""%1"" onclick=""this.target='_blank'"" class=""print"">Print receipt</a>","<a href=""%1"" onclick=""this.target='_blank'"" class=""print"">打印收據</a>",module,Magento_Checkout
 "Forgot Password","忘記密碼",module,Magento_Checkout
 "Close","關閉",module,Magento_Checkout
 "item","item",module,Magento_Checkout
@@ -3418,7 +3416,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Something went wrong with your request. Please try again later.","Something went wrong with your request. Please try again later.",module,Magento_Checkout
 "The shipping method is missing. Select the shipping method and try again.","缺少送貨方式。 選擇運送方式，然後重試。",module,Magento_Checkout
 "Show Cross-sell Items in the Shopping Cart","Show Cross-sell Items in the Shopping Cart",module,Magento_Checkout
-"Unable to place order. Please try again later.","Unable to place order. Please try again later.",module,Magento_Checkout
+"Unable to place order. Please try again later.","無法下訂單。 請稍後再試。",module,Magento_Checkout
 "Please specify a regionId in shipping address.","請在送貨地址中指定regionId。",module,Magento_Checkout
 "Terms and Conditions","Terms and Conditions",module,Magento_CheckoutAgreements
 "Add New Condition","Add New Condition",module,Magento_CheckoutAgreements
@@ -3492,7 +3490,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Created","Created",module,Magento_Cms
 "Modified","Modified",module,Magento_Cms
 "Action","操作",module,Magento_Cms
-"Preview","Preview",module,Magento_Cms
+"Preview","預覽",module,Magento_Cms
 "Media Storage","Media Storage",module,Magento_Cms
 "Create Folder...","Create Folder...",module,Magento_Cms
 "Delete Folder","Delete Folder",module,Magento_Cms
@@ -3673,13 +3671,13 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Currently Active","Currently Active",module,Magento_CmsStaging
 "New Theme","New Theme",module,Magento_CmsStaging
 "-- Please Select --","-- 請選擇 --",module,Magento_CmsStaging
-"Scheduled Changes","Scheduled Changes",module,Magento_CmsStaging
+"Scheduled Changes","計劃性改變",module,Magento_CmsStaging
 "Name","姓名",module,Magento_CmsStaging
 "Description","描述",module,Magento_CmsStaging
 "Action","操作",module,Magento_CmsStaging
-"Update Information","Update Information",module,Magento_CmsStaging
-"Schedule Update","Schedule Update",module,Magento_CmsStaging
-"Update Name","Update Name",module,Magento_CmsStaging
+"Update Information","更新資料",module,Magento_CmsStaging
+"Schedule Update","附表更新",module,Magento_CmsStaging
+"Update Name","更新名稱",module,Magento_CmsStaging
 "Start Date","開始日期",module,Magento_CmsStaging
 "End Date","結束日期",module,Magento_CmsStaging
 "General Information","一般信息",module,Magento_CmsStaging
@@ -4592,10 +4590,10 @@ new products will be created. Use this step to customize images and price for yo
 "Searchable","Searchable",module,Magento_ConfigurableProductStaging
 "Comparable","Comparable",module,Magento_ConfigurableProductStaging
 "Page not found.","找不到頁面。",module,Magento_Contact
-"Thanks for contacting us with your comments and questions. We'll respond to you very soon.","感謝您您和我們聯繫及您的評論和提問。我們很快就會回覆您。",module,Magento_Contact
-"An error occurred while processing your form. Please try again later.","An error occurred while processing your form. Please try again later.",module,Magento_Contact
-"Name is missing","Name is missing",module,Magento_Contact
-"Comment is missing","Comment is missing",module,Magento_Contact
+"Thanks for contacting us with your comments and questions. We'll respond to you very soon.","感謝您提供寶貴的資訊，我們將盡快回覆您 ! 謝謝",module,Magento_Contact
+"An error occurred while processing your form. Please try again later.","處理表格時出現錯誤。 請稍後再試。",module,Magento_Contact
+"Name is missing","名字不見了",module,Magento_Contact
+"Comment is missing","缺評",module,Magento_Contact
 "Invalid email address","無效的郵件地址",module,Magento_Contact
 "* Required Fields","* 為必填項",module,Magento_Contact
 "Write Us","蘭芝台灣線上客服信箱",module,Magento_Contact
@@ -4608,14 +4606,14 @@ new products will be created. Use this step to customize images and price for yo
 "Contact Form","聯絡資料表",module,Magento_Contact
 "Phone","電話",module,Magento_Contact
 "Message","訊息內容",module,Magento_Contact
-"Contacts Section","Contacts Section",module,Magento_Contact
-"Contacts","Contacts",module,Magento_Contact
+"Contacts Section","聯絡組",module,Magento_Contact
+"Contacts","聯繫我們",module,Magento_Contact
 "Contact Us","聯繫我們",module,Magento_Contact
 "Enable Contact Us","Enable Contact Us",module,Magento_Contact
 "Email Options","Email Options",module,Magento_Contact
 "Send Emails To","Send Emails To",module,Magento_Contact
-"Email Sender","Email Sender",module,Magento_Contact
-"Email Template","Email Template",module,Magento_Contact
+"Email Sender","電子郵件寄件者",module,Magento_Contact
+"Email Template","Email模板",module,Magento_Contact
 "Email template chosen based on theme fallback when ""Default"" option is selected.","選擇「預設」後，電子郵件範本將根據佈景主題順序選擇。",module,Magento_Contact
 "We can't process your request right now. Sorry, that's all we know.","我們現在無法處理您的請求。對不起，那是我們都知道。",module,Magento_Contact
 "Name: %name","Name: %name",module,Magento_Contact
@@ -4641,7 +4639,7 @@ new products will be created. Use this step to customize images and price for yo
 "<strong style=""color:red"">Warning</strong>:  Do not set to ""No"". User security could be compromised.","<strong style=""color:red"">Warning</strong>:  Do not set to ""No"". User security could be compromised.",module,Magento_Cookie
 "'Invalid domain name: ' .","'Invalid domain name: ' .",module,Magento_Cookie
 "'Invalid cookie lifetime: ' .","'Invalid cookie lifetime: ' .",module,Magento_Cookie
-"We can't save the cron expression.","We can't save the cron expression.",module,Magento_Cron
+"We can't save the cron expression.","我們不能儲存 Cron 運算式。",module,Magento_Cron
 "Daily","每天",module,Magento_Cron
 "Weekly","每週",module,Magento_Cron
 "Monthly","每月",module,Magento_Cron
@@ -5079,7 +5077,7 @@ new products will be created. Use this step to customize images and price for yo
 "Confirm Password","確認密碼",module,Magento_Customer
 "Create an Account","新會員註冊",module,Magento_Customer
 "Set a New Password","設定新的密碼",module,Magento_Customer
-"You have signed out and will go to our homepage in 5 seconds.","您已退出，將在5秒鐘內轉到我們的主頁。",module,Magento_Customer
+"You have signed out and will go to our homepage in 5 seconds.","系統將在五秒鐘內回到官網首頁",module,Magento_Customer
 "New Customers","新客戶",module,Magento_Customer
 "Creating an account has many benefits: check out faster, keep more than one address, track orders and more.","創建帳戶有很多好處：結帳更快，保留多個地址，跟踪訂單等等。",module,Magento_Customer
 "Company","公司",module,Magento_Customer
@@ -5159,7 +5157,7 @@ new products will be created. Use this step to customize images and price for yo
 "This email will be sent instead of the Default Welcome Email, if a customer was created without password. <br /><br />,module,Magento_Customer
 Email template chosen based on theme fallback when ""Default"" option is selected.","This email will be sent instead of the Default Welcome Email, if a customer was created without password. <br /><br />,module,Magento_Customer
 Email template chosen based on theme fallback when ""Default"" option is selected.",module,Magento_Customer
-"Email Sender","Email Sender",module,Magento_Customer
+"Email Sender","電子郵件寄件者",module,Magento_Customer
 "Require Emails Confirmation","Require Emails Confirmation",module,Magento_Customer
 "Confirmation Link Email","確認鏈接電子郵件",module,Magento_Customer
 "Welcome Email","Welcome Email",module,Magento_Customer
@@ -5247,7 +5245,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Password forgotten","Password forgotten",module,Magento_Customer
 "My Dashboard","基本資料",module,Magento_Customer
 "Mobile Number","手機號碼",module,Magento_Customer
-"You are signed out","您已登出",module,Magento_Customer
+"You are signed out","您已成功登出",module,Magento_Customer
 "You subscribe to our newsletter.","You subscribe to our newsletter.",module,Magento_Customer
 "You don't subscribe to our newsletter.","You don't subscribe to our newsletter.",module,Magento_Customer
 "Maximum length must be less then %1 symbols","Maximum length must be less then %1 symbols",module,Magento_Customer
@@ -5281,7 +5279,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Semicolon (;) separated values.<br/>Put semicolon in the beginning for empty first option.<br/>Leave empty for open text field.","Semicolon (;) separated values.<br/>Put semicolon in the beginning for empty first option.<br/>Leave empty for open text field.",module,Magento_Customer
 "Last Logged In","Last Logged In",module,Magento_Customer
 "If your Magento site has multiple views, you can set the scope to apply to a specific view.","If your Magento site has multiple views, you can set the scope to apply to a specific view.",module,Magento_Customer
-"You are signed out.","您已登出.",module,Magento_Customer
+"You are signed out.","您已成功登出",module,Magento_Customer
 "Invalid value of ""%value"" provided for the %fieldName field. Possible values are %template1 or %template2.","Invalid value of ""%value"" provided for the %fieldName field. Possible values are %template1 or %template2.",module,Magento_Customer
 "Could not authenticate. Please try again later","Could not authenticate. Please try again later",module,Magento_Customer
 "Page not found","Page not found",module,Magento_Customer
@@ -5941,7 +5939,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Security validation of XML document has been failed.","Security validation of XML document has been failed.",module,Magento_Dhl
 "The response is in the wrong format","The response is in the wrong format",module,Magento_Dhl
 "Field ","Field ",module,Magento_Dhl
-" is required."," is required.",module,Magento_Dhl
+" is required."," 必須有",module,Magento_Dhl
 "Enabled for Checkout","Enabled for Checkout",module,Magento_Dhl
 "Gateway URL","閘道網址",module,Magento_Dhl
 "Title","標題",module,Magento_Dhl
@@ -6139,7 +6137,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Qty","數量",module,Magento_Downloadable
 "Subtotal","商品總金額",module,Magento_Downloadable
 "Discount Amount","折扣金額",module,Magento_Downloadable
-"Row Total","總行數",module,Magento_Downloadable
+"Row Total","小計",module,Magento_Downloadable
 "Qty Invoiced","已開發票數量",module,Magento_Downloadable
 "Ordered","已訂購",module,Magento_Downloadable
 "Shipped","已寄送",module,Magento_Downloadable
@@ -6425,7 +6423,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Insert Variable...","Insert Variable...",module,Magento_Email
 "Template Content","Template Content",module,Magento_Email
 "Template Styles","Template Styles",module,Magento_Email
-"Preview","Preview",module,Magento_Email
+"Preview","預覽",module,Magento_Email
 "Unknown","Unknown",module,Magento_Email
 "You deleted the email template.","You deleted the email template.",module,Magento_Email
 "The email template is currently being used.","The email template is currently being used.",module,Magento_Email
@@ -6620,7 +6618,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Empty response","Empty response",module,Magento_Fedex
 "None","無",module,Magento_Fedex
 "Field ","Field ",module,Magento_Fedex
-" is required."," is required.",module,Magento_Fedex
+" is required."," 必須有",module,Magento_Fedex
 "FedEx","FedEx",module,Magento_Fedex
 "Enabled for Checkout","Enabled for Checkout",module,Magento_Fedex
 "Title","標題",module,Magento_Fedex
@@ -6692,7 +6690,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Lifetime (days)","Lifetime (days)",module,Magento_GiftCard
 "Allow Message","Allow Message",module,Magento_GiftCard
 "[STORE VIEW]","[商店總覽]",module,Magento_GiftCard
-"Email Template","Email Template",module,Magento_GiftCard
+"Email Template","Email模板",module,Magento_GiftCard
 "All Websites [%1]","All Websites [%1]",module,Magento_GiftCard
 "%1 [%2]","%1 [%2]",module,Magento_GiftCard
 "Availability:","庫存:",module,Magento_GiftCard
@@ -7116,7 +7114,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Please correct the gift registry item ID.","Please correct the gift registry item ID.",module,Magento_GiftRegistry
 "The quantity of ""%1"" product added to cart exceeds the quantity desired by the Gift Registry owner. The quantity added has been adjusted to meet remaining quantity %2.","The quantity of ""%1"" product added to cart exceeds the quantity desired by the Gift Registry owner. The quantity added has been adjusted to meet remaining quantity %2.",module,Magento_GiftRegistry
 "Existing quantity of ""%1"" product in the cart has been replaced with quantity %2 just requested.","Existing quantity of ""%1"" product in the cart has been replaced with quantity %2 just requested.",module,Magento_GiftRegistry
-"This product(s) is out of stock.","This product(s) is out of stock.",module,Magento_GiftRegistry
+"This product(s) is out of stock.","這產品脫銷了。",module,Magento_GiftRegistry
 "Please correct the product for adding the item to the quote.","Please correct the product for adding the item to the quote.",module,Magento_GiftRegistry
 "Please correct the item option format.","Please correct the item option format.",module,Magento_GiftRegistry
 "An item option with code %1 already exists.","An item option with code %1 already exists.",module,Magento_GiftRegistry
@@ -7249,12 +7247,12 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "My event special","我的活動特別",module,Magento_GiftRegistry
 "My special attribute","My special attribute",module,Magento_GiftRegistry
 "Gift Registry Section","Gift Registry Section",module,Magento_GiftRegistry
-"General Options","General Options",module,Magento_GiftRegistry
+"General Options","一般選擇",module,Magento_GiftRegistry
 "Enable Gift Registry","啟用禮物註冊",module,Magento_GiftRegistry
 "Maximum Registrants","Maximum Registrants",module,Magento_GiftRegistry
 "Owner Notification","Owner Notification",module,Magento_GiftRegistry
-"Email Template","Email Template",module,Magento_GiftRegistry
-"Email Sender","Email Sender",module,Magento_GiftRegistry
+"Email Template","Email模板",module,Magento_GiftRegistry
+"Email Sender","電子郵件寄件者",module,Magento_GiftRegistry
 "Gift Registry Sharing","Gift Registry Sharing",module,Magento_GiftRegistry
 "Maximum Sent Emails Threshold","Maximum Sent Emails Threshold",module,Magento_GiftRegistry
 "Gift Registry Update","Gift Registry Update",module,Magento_GiftRegistry
@@ -7333,7 +7331,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Other Gift Options","其他禮品選擇",module,Magento_GiftWrapping
 "Excl. Tax","不含稅",module,Magento_GiftWrapping
 "Incl. Tax","含稅",module,Magento_GiftWrapping
-"Preview","Preview",module,Magento_GiftWrapping
+"Preview","預覽",module,Magento_GiftWrapping
 "Gift wrapping","Gift wrapping",module,Magento_GiftWrapping
 "Printed card","印刷卡",module,Magento_GiftWrapping
 "Gift receipt","禮物收據",module,Magento_GiftWrapping
@@ -8008,7 +8006,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "All Users","All Users",module,Magento_Logging
 "Admin Actions Log","Admin Actions Log",module,Magento_Logging
 "Admin Actions Archive","Admin Actions Archive",module,Magento_Logging
-"Report","Report",module,Magento_Logging
+"Report","報告",module,Magento_Logging
 "label","標籤",module,Magento_Logging
 "actions' 'label","actions' 'label",module,Magento_Logging
 "%1 & applied","%1 & applied",module,Magento_Logging
@@ -8036,7 +8034,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Logging","Logging",module,Magento_Logging
 "Action Log","操作記錄",module,Magento_Logging
 "Archive","Archive",module,Magento_Logging
-"Action Logs","Action Logs",module,Magento_Logging
+"Action Logs","作業日誌",module,Magento_Logging
 "Admin Actions Log Archiving","Admin Actions Log Archiving",module,Magento_Logging
 "Log Entry Lifetime, Days","Log Entry Lifetime, Days",module,Magento_Logging
 "Log Archiving Frequency","Log Archiving Frequency",module,Magento_Logging
@@ -8805,7 +8803,7 @@ You can set a new expiration date if you wish.",module,Magento_NegotiableQuote
 "Apply Discount Code","使用折扣碼",module,Magento_NegotiableQuote
 "Enter discount code","輸入折扣碼",module,Magento_NegotiableQuote
 "Apply Discount","申請折扣",module,Magento_NegotiableQuote
-"Cancel coupon","Cancel coupon",module,Magento_NegotiableQuote
+"Cancel coupon","取消扣款機",module,Magento_NegotiableQuote
 "Apply Gift Card","申請禮品卡",module,Magento_NegotiableQuote
 "Enter the gift card code","輸入禮品卡代碼",module,Magento_NegotiableQuote
 "Gift Card:","Gift Card:",module,Magento_NegotiableQuote
@@ -8936,7 +8934,7 @@ information on installing the agent is available <a target=""_blank"" href=""%1"
 "Do you really want to cancel the queue?","Do you really want to cancel the queue?",module,Magento_Newsletter
 "Cancel","取消",module,Magento_Newsletter
 "Resume","Resume",module,Magento_Newsletter
-"Preview","Preview",module,Magento_Newsletter
+"Preview","預覽",module,Magento_Newsletter
 "Add New Template","新增範本",module,Magento_Newsletter
 "Newsletter Templates","Newsletter Templates",module,Magento_Newsletter
 "Convert to Plain Text","Convert to Plain Text",module,Magento_Newsletter
@@ -9071,7 +9069,7 @@ information on installing the agent is available <a target=""_blank"" href=""%1"
 "A confirmation request has been sent.","A confirmation request has been sent.",module,Magento_Newsletter
 "We have removed your newsletter subscription.","We have removed your newsletter subscription.",module,Magento_Newsletter
 "We have updated your subscription.","我們已更新您的訂閱。",module,Magento_Newsletter
-"General Options","General Options",module,Magento_Newsletter
+"General Options","一般選擇",module,Magento_Newsletter
 "Enabled","啟用",module,Magento_Newsletter
 "Make Check payable to:","Make Check payable to:",module,Magento_OfflinePayments
 "Send Check to:","Send Check to:",module,Magento_OfflinePayments
@@ -9131,7 +9129,7 @@ information on installing the agent is available <a target=""_blank"" href=""%1"
 "For matching items only","For matching items only",module,Magento_OfflineShipping
 "For shipment with matching items","For shipment with matching items",module,Magento_OfflineShipping
 "Field ","Field ",module,Magento_OfflineShipping
-" is required."," is required.",module,Magento_OfflineShipping
+" is required."," 必須有",module,Magento_OfflineShipping
 "Flat Rate","扁平率",module,Magento_OfflineShipping
 "Enabled","啟用",module,Magento_OfflineShipping
 "Method Name","Method Name",module,Magento_OfflineShipping
@@ -10018,7 +10016,7 @@ offered and the currency offered by the merchant is USD.",module,Magento_Paypal
 "Check &quot;Remember Me&quot; to access your shopping cart on this computer even if you are not signed in.","校驗 &quot;記住賬號&quot; 即使您尚未登錄，也可以在此計算機上訪問購物車。",module,Magento_Persistent
 "Check 'Remember Me' to access your shopping cart on this computer even if you are not signed in.","Check 'Remember Me' to access your shopping cart on this computer even if you are not signed in.",module,Magento_Persistent
 "Persistent Shopping Cart","Persistent Shopping Cart",module,Magento_Persistent
-"General Options","General Options",module,Magento_Persistent
+"General Options","一般選擇",module,Magento_Persistent
 "Enable Persistence","Enable Persistence",module,Magento_Persistent
 "Persistence Lifetime (seconds)","Persistence Lifetime (seconds)",module,Magento_Persistent
 "Enable ""Remember Me""","Enable ""Remember Me""",module,Magento_Persistent
@@ -10139,7 +10137,7 @@ offered and the currency offered by the merchant is USD.",module,Magento_Paypal
 "You should correct the quantity for the product.","You should correct the quantity for the product.",module,Magento_QuickOrder
 "The SKU is out of stock.","The SKU is out of stock.",module,Magento_QuickOrder
 "We don't have the quantity you requested.","We don't have the quantity you requested.",module,Magento_QuickOrder
-"An error occurred. For details, see the error log.","An error occurred. For details, see the error log.",module,Magento_QuickOrder
+"An error occurred. For details, see the error log.","發生錯誤。 詳情請參閱錯誤日誌。",module,Magento_QuickOrder
 "Exception message","Exception message",module,Magento_QuickOrder
 "The file could not be uploaded because it is in the wrong format. Please select a CSV file to upload.","該文件格式錯誤，因此無法上傳。 請選擇要上傳的CSV文件。",module,Magento_QuickOrder
 "Add from File","Add from File",module,Magento_QuickOrder
@@ -10580,7 +10578,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Rule Description for All Store Views","Rule Description for All Store Views",module,Magento_Reminder
 "Titles and Descriptions Per Store View","Titles and Descriptions Per Store View",module,Magento_Reminder
 "Overrides default titles and descriptions. Note that if an email template is not specified for this store view, the respective variable values will be deleted.","Overrides default titles and descriptions. Note that if an email template is not specified for this store view, the respective variable values will be deleted.",module,Magento_Reminder
-"Rule Information","Rule Information",module,Magento_Reminder
+"Rule Information","規則信息",module,Magento_Reminder
 "Emails and Labels","Emails and Labels",module,Magento_Reminder
 "Matched Customers","Matched Customers",module,Magento_Reminder
 "Please correct the reminder rule you requested.","Please correct the reminder rule you requested.",module,Magento_Reminder
@@ -10900,7 +10898,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Are you sure you want to refresh lifetime statistics right now? This operation may slow down your customers' shopping experience.","Are you sure you want to refresh lifetime statistics right now? This operation may slow down your customers' shopping experience.",module,Magento_Reports
 "Refresh Statistics for the Last Day","Refresh Statistics for the Last Day",module,Magento_Reports
 "Are you sure you want to refresh statistics for the last day?","Are you sure you want to refresh statistics for the last day?",module,Magento_Reports
-"Report","Report",module,Magento_Reports
+"Report","報告",module,Magento_Reports
 "Description","描述",module,Magento_Reports
 "undefined","undefined",module,Magento_Reports
 "Best Sellers Report","暢銷書報告",module,Magento_Reports
@@ -10920,7 +10918,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Compared Product Names Only Template","Compared Product Names Only Template",module,Magento_Reports
 "Compared Product Images Only Template","Compared Product Images Only Template",module,Magento_Reports
 "System configuration is not found for report event type ""%1""","找不到報告事件類型的系統配置 ""%1""",module,Magento_Reports
-"General Options","General Options",module,Magento_Reports
+"General Options","一般選擇",module,Magento_Reports
 "Enable Reports","Enable Reports",module,Magento_Reports
 "If disabled, all report events will be disabled","如果禁用，則所有報告事件將被禁用",module,Magento_Reports
 "Enable ""Product View"" Report","Enable ""Product View"" Report",module,Magento_Reports
@@ -10941,7 +10939,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't update your requisition list right now.","We can't update your requisition list right now.",module,Magento_RequisitionList
 "We can't add the item to the Requisition List right now: %1.","We can't add the item to the Requisition List right now: %1.",module,Magento_RequisitionList
 "We can't specify a requisition list.","We can't specify a requisition list.",module,Magento_RequisitionList
-"We can't specify a product.","We can't specify a product.",module,Magento_RequisitionList
+"We can't specify a product.","我們無法指定產品。",module,Magento_RequisitionList
 "You added %1 item(s) to your shopping cart.","您添加了 %1 做為此次贈品",module,Magento_RequisitionList
 "Something went wrong.","發生錯誤",module,Magento_RequisitionList
 "We can't configure the product right now.","We can't configure the product right now.",module,Magento_RequisitionList
@@ -10964,7 +10962,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Could not save Requisition List. Maximum number of requisition lists was exceeded.","Could not save Requisition List. Maximum number of requisition lists was exceeded.",module,Magento_RequisitionList
 "Exception","Exception",module,Magento_RequisitionList
 "exception","例外",module,Magento_RequisitionList
-"Warning message.","Warning message.",module,Magento_RequisitionList
+"Warning message.","警告信息",module,Magento_RequisitionList
 "No such entity","No such entity",module,Magento_RequisitionList
 "Could not save","Could not save",module,Magento_RequisitionList
 "Exception Message","Exception Message",module,Magento_RequisitionList
@@ -11130,7 +11128,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Product Name","商品名稱",module,Magento_Review
 "Rating","Rating",module,Magento_Review
 "Actions","動作",module,Magento_Review
-"See Details","See Details",module,Magento_Review
+"See Details","詳情",module,Magento_Review
 "You have submitted no reviews.","您尚未提交評論。",module,Magento_Review
 "Back","上一步",module,Magento_Review
 "My Recent Reviews","我最近的評論",module,Magento_Review
@@ -11323,7 +11321,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Review Submission","Review Submission",module,Magento_Reward
 "After approval by administrator.","After approval by administrator.",module,Magento_Reward
 "Rewarded Reviews Submission Quantity Limit","Rewarded Reviews Submission Quantity Limit",module,Magento_Reward
-"Email Sender","Email Sender",module,Magento_Reward
+"Email Sender","電子郵件寄件者",module,Magento_Reward
 "Subscribe Customers by Default","Subscribe Customers by Default",module,Magento_Reward
 "Balance Update Email","餘額更新電子郵件",module,Magento_Reward
 "Reward Points Expiry Warning Email","獎勵積分到期警告電子郵件",module,Magento_Reward
@@ -11553,7 +11551,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Processed and Closed","完成退貨",module,Magento_Rma
 "This is the wrong RMA item status.","This is the wrong RMA item status.",module,Magento_Rma
 "We placed your Return request.","已收到您的退貨申請",module,Magento_Rma
-"We authorized your Return request.","我們批准了你的回程要求。",module,Magento_Rma
+"We authorized your Return request.","退貨需求已通過審核",module,Magento_Rma
 "We partially authorized your Return request.","我們部分地批准了你的回程要求。",module,Magento_Rma
 "We received your Return request.","我們已收到您的退貨申請。",module,Magento_Rma
 "We partially received your Return request.","我們部分地收到了你的回程要求。",module,Magento_Rma
@@ -11605,7 +11603,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Shipping Information","Shipping Information",module,Magento_Rma
 "Change shipping method.","更改運送方式。",module,Magento_Rma
 "No authorized items or allowed shipping methods","沒有授權的物品或允許的運輸方式",module,Magento_Rma
-"Carrier","貨運公司",module,Magento_Rma
+"Carrier","配送方式",module,Magento_Rma
 "Title","標題",module,Magento_Rma
 "Number","Number",module,Magento_Rma
 "Are you sure?","是否確認?",module,Magento_Rma
@@ -11640,7 +11638,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "View Return","查看明細",module,Magento_Rma
 "You have placed no returns.","您尚未退貨",module,Magento_Rma
 "Packages","Packages",module,Magento_Rma
-"Close Window","關上窗戶",module,Magento_Rma
+"Close Window","關閉",module,Magento_Rma
 "Package","Package",module,Magento_Rma
 "Type","類別",module,Magento_Rma
 "Length","Length",module,Magento_Rma
@@ -12327,7 +12325,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Qty to Refund","Qty to Refund",module,Magento_Sales
 "Tax Amount","Tax Amount",module,Magento_Sales
 "Discount Amount","折扣金額",module,Magento_Sales
-"Row Total","總行數",module,Magento_Sales
+"Row Total","小計",module,Magento_Sales
 "No Items To Refund","No Items To Refund",module,Magento_Sales
 "Credit Memo Comments","貸項通知單註釋",module,Magento_Sales
 "Refund Totals","Refund Totals",module,Magento_Sales
@@ -12834,7 +12832,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Apply Discount Code","使用折扣碼",module,Magento_SalesRule
 "Enter discount code","輸入折扣碼",module,Magento_SalesRule
 "Apply Discount","申請折扣",module,Magento_SalesRule
-"Cancel coupon","Cancel coupon",module,Magento_SalesRule
+"Cancel coupon","取消扣款機",module,Magento_SalesRule
 "Your coupon was successfully removed.","Your coupon was successfully removed.",module,Magento_SalesRule
 "Your coupon was successfully applied.","您已成功使用此折扣碼.",module,Magento_SalesRule
 "Promotion","晉升",module,Magento_SalesRule
@@ -12844,7 +12842,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Cart Price Rule","Cart Price Rule",module,Magento_SalesRule
 "Back","上一步",module,Magento_SalesRule
 "Currently Active","Currently Active",module,Magento_SalesRule
-"Rule Information","Rule Information",module,Magento_SalesRule
+"Rule Information","規則信息",module,Magento_SalesRule
 "Rule Name","Rule Name",module,Magento_SalesRule
 "Description","描述",module,Magento_SalesRule
 "Websites","網站",module,Magento_SalesRule
@@ -12916,14 +12914,14 @@ Usage limit enforced for logged in customers only.,module,Magento_SalesRule
 "Web Site","網站",module,Magento_SalesRuleStaging
 "Action","操作",module,Magento_SalesRuleStaging
 "Edit","編輯",module,Magento_SalesRuleStaging
-"Scheduled Changes","Scheduled Changes",module,Magento_SalesRuleStaging
+"Scheduled Changes","計劃性改變",module,Magento_SalesRuleStaging
 "Name","姓名",module,Magento_SalesRuleStaging
 "Description","描述",module,Magento_SalesRuleStaging
-"Update Information","Update Information",module,Magento_SalesRuleStaging
-"Update Name","Update Name",module,Magento_SalesRuleStaging
+"Update Information","更新資料",module,Magento_SalesRuleStaging
+"Update Name","更新名稱",module,Magento_SalesRuleStaging
 "Start Date","開始日期",module,Magento_SalesRuleStaging
 "End Date","結束日期",module,Magento_SalesRuleStaging
-"Rule Information","Rule Information",module,Magento_SalesRuleStaging
+"Rule Information","規則信息",module,Magento_SalesRuleStaging
 "Websites","網站",module,Magento_SalesRuleStaging
 "Customer Groups","客戶群組",module,Magento_SalesRuleStaging
 "Public In RSS Feed","Public In RSS Feed",module,Magento_SalesRuleStaging
@@ -13328,7 +13326,7 @@ Usage limit enforced for logged in customers only.,module,Magento_SalesRule
 "Something went wrong while scheduling operations.","Something went wrong while scheduling operations.",module,Magento_SharedCatalog
 "Sorry, something went wrong during product prices update. Please see log for details.","Sorry, something went wrong during product prices update. Please see log for details.",module,Magento_SharedCatalog
 "Assign custom prices to selected products","Assign custom prices to selected products",module,Magento_SharedCatalog
-"Something went wrong while processing the request.","Something went wrong while processing the request.",module,Magento_SharedCatalog
+"Something went wrong while processing the request.","在處理請求時出了問題。",module,Magento_SharedCatalog
 "Could not save shared catalog.","Could not save shared catalog.",module,Magento_SharedCatalog
 "Custom","自訂",module,Magento_SharedCatalog
 "Public","上市",module,Magento_SharedCatalog
@@ -13509,7 +13507,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Tracking information must contain title, carrier code, and tracking number","追踪訊息內容必須包含標題，運營商代碼和追蹤號碼。",module,Magento_Shipping
 "There are no shipping labels related to selected shipments.","There are no shipping labels related to selected shipments.",module,Magento_Shipping
 "Page not found.","找不到頁面。",module,Magento_Shipping
-"Tracking Information","跟蹤資料",module,Magento_Shipping
+"Tracking Information","貨態查詢",module,Magento_Shipping
 "Sorry, but we can't deliver to the destination country with this shipping module.","Sorry, but we can't deliver to the destination country with this shipping module.",module,Magento_Shipping
 "The shipping module is not available.","The shipping module is not available.",module,Magento_Shipping
 "This shipping method is not available. Please specify the zip code.","此運輸方法不可用。 請指定郵政編碼。",module,Magento_Shipping
@@ -13600,24 +13598,24 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Print All Shipments","Print All Shipments",module,Magento_Shipping
 "Shipment #","系統預設值 #",module,Magento_Shipping
 "Print Shipment","列印出貨明細",module,Magento_Shipping
-"Tracking Number(s):","貨態管理碼:",module,Magento_Shipping
+"Tracking Number(s):","配送代碼:",module,Magento_Shipping
 "SKU","商品編號",module,Magento_Shipping
 "Order tracking","訂單跟踪",module,Magento_Shipping
-"Tracking Number:","貨態管理碼:",module,Magento_Shipping
+"Tracking Number:","配送代碼:",module,Magento_Shipping
 "Carrier:","貨運公司:",module,Magento_Shipping
-"Error:","Error:",module,Magento_Shipping
-"Tracking information is currently not available. Please ","Tracking information is currently not available. Please ",module,Magento_Shipping
-"contact us","聯繫我們",module,Magento_Shipping
+"Error:","錯誤訊息:",module,Magento_Shipping
+"Tracking information is currently not available. Please ","配送代碼目前無法提供服務",module,Magento_Shipping
+"contact us","若您有任何問題, 可透過聯繫我們進行服務或撥打 ",module,Magento_Shipping
 " for more information or "," for more information or ",module,Magento_Shipping
 "email us at ","email us at ",module,Magento_Shipping
 "Info:","Info:",module,Magento_Shipping
-"Track:","Track:",module,Magento_Shipping
+"Track:","點擊查看貨態資訊:",module,Magento_Shipping
 ". ':'",". ':'",module,Magento_Shipping
 "Delivered on:","Delivered on:",module,Magento_Shipping
 "N/A","不適用 ",module,Magento_Shipping
 "There is no tracking available for this shipment.","這批貨沒有可用的追蹤器。",module,Magento_Shipping
 "There is no tracking available.","There is no tracking available.",module,Magento_Shipping
-"Close Window","關上窗戶",module,Magento_Shipping
+"Close Window","關閉視窗",module,Magento_Shipping
 "Track history","Track history",module,Magento_Shipping
 "Location","位置",module,Magento_Shipping
 "Date","日期",module,Magento_Shipping
@@ -13642,7 +13640,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Track your order","追踪您的訂單",module,Magento_Shipping
 "Track All Shipments","Track All Shipments",module,Magento_Shipping
 "You sent the shipment.","You sent the shipment.",module,Magento_Shipping
-"Status:","Status:",module,Magento_Shipping
+"Status:","貨態進度：",module,Magento_Shipping
 "Signed by:","Signed by:",module,Magento_Shipping
 "Delivered to:","Delivered to:",module,Magento_Shipping
 "Shipped or billed on:","Shipped or billed on:",module,Magento_Shipping
@@ -13785,7 +13783,7 @@ We back our approvals with 100% chargeback protection, reimbursing you the full 
 "Successful! Test again?","成功 ！再次測試嗎？",module,Magento_Solr
 "Connection failed! Test again?","連接失敗 ！再次測試嗎？",module,Magento_Solr
 "Cancel","取消",module,Magento_Staging
-"Preview","Preview",module,Magento_Staging
+"Preview","預覽",module,Magento_Staging
 "Done","完成",module,Magento_Staging
 "Remove from Update","從更新中刪除",module,Magento_Staging
 "Save","儲存",module,Magento_Staging
@@ -13841,7 +13839,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Share","分享",module,Magento_Staging
 "Close","關閉",module,Magento_Staging
 "Scope","範圍",module,Magento_Staging
-"Scheduled Changes","Scheduled Changes",module,Magento_Staging
+"Scheduled Changes","計劃性改變",module,Magento_Staging
 "Start","Start",module,Magento_Staging
 "End","End",module,Magento_Staging
 "Belongs to ","Belongs to ",module,Magento_Staging
@@ -13852,7 +13850,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Back","上一步",module,Magento_Staging
 "General","一般",module,Magento_Staging
 "Status","狀態",module,Magento_Staging
-"Update Name","Update Name",module,Magento_Staging
+"Update Name","更新名稱",module,Magento_Staging
 "Includes","Includes",module,Magento_Staging
 "Start Time","開始時間",module,Magento_Staging
 "End Time","End Time",module,Magento_Staging
@@ -13955,7 +13953,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Are you sure you want to delete the system report?","Are you sure you want to delete the system report?",module,Magento_Support
 "Download","下載",module,Magento_Support
 "Go to Top","回到頂部",module,Magento_Support
-"Report","Report",module,Magento_Support
+"Report","報告",module,Magento_Support
 "System Report Information","System Report Information",module,Magento_Support
 "Requested system report has no data to display.","Requested system report has no data to display.",module,Magento_Support
 "Output path %1 doesn't exist","Output path %1 doesn't exist",module,Magento_Support
@@ -14253,7 +14251,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Save and Continue Edit","保存並繼續編輯",module,Magento_TargetRule
 "Edit Rule '%1'","Edit Rule '%1'",module,Magento_TargetRule
 "New Rule","新規則",module,Magento_TargetRule
-"Rule Information","Rule Information",module,Magento_TargetRule
+"Rule Information","規則信息",module,Magento_TargetRule
 "Product Result Conditions (leave blank for matching all products)","Product Result Conditions (leave blank for matching all products)",module,Magento_TargetRule
 "Products to Display","產品展示",module,Magento_TargetRule
 "Product Match Conditions (leave blank for matching all products)","Product Match Conditions (leave blank for matching all products)",module,Magento_TargetRule
@@ -14446,7 +14444,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Subtotal (Incl. Tax)","Subtotal (Incl. Tax)",module,Magento_Tax
 "Subtotal","商品總金額",module,Magento_Tax
 "Unit Price","Unit Price",module,Magento_Tax
-"Row Total","總行數",module,Magento_Tax
+"Row Total","小計",module,Magento_Tax
 "Total","結帳總金額",module,Magento_Tax
 "Before Discount","Before Discount",module,Magento_Tax
 "After Discount","After Discount",module,Magento_Tax
@@ -14673,7 +14671,7 @@ than a customer might expect. ",module,Magento_Tax
 "This is demo store. No orders will be fulfilled.","This is demo store. No orders will be fulfilled.",module,Magento_Theme
 "Items %1 to %2 of %3 total","%3項中第%1至%2項",module,Magento_Theme
 "%1 Item","%1 物品",module,Magento_Theme
-"%1 Item(s)","%1 Item(s)",module,Magento_Theme
+"%1 Item(s)","%1 物品",module,Magento_Theme
 "Page","Page",module,Magento_Theme
 "Previous","上一頁",module,Magento_Theme
 "You're currently reading page","You're currently reading page",module,Magento_Theme
@@ -15119,7 +15117,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "United Parcel Service","United Parcel Service",module,Magento_Ups
 "United Parcel Service XML","United Parcel Service XML",module,Magento_Ups
 "Field ","Field ",module,Magento_Ups
-" is required."," is required.",module,Magento_Ups
+" is required."," 必須有",module,Magento_Ups
 "UPS","UPS",module,Magento_Ups
 "Access License Number","Access License Number",module,Magento_Ups
 "Enabled for Checkout","Enabled for Checkout",module,Magento_Ups
@@ -15493,7 +15491,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Other","Other",module,Magento_Usps
 "None","無",module,Magento_Usps
 "Field ","Field ",module,Magento_Usps
-" is required."," is required.",module,Magento_Usps
+" is required."," 必須有",module,Magento_Usps
 "USPS","USPS",module,Magento_Usps
 "Enabled for Checkout","Enabled for Checkout",module,Magento_Usps
 "Gateway URL","閘道網址",module,Magento_Usps
@@ -15589,7 +15587,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Page Properties","Page Properties",module,Magento_VersionsCms
 "Title","標題",module,Magento_VersionsCms
 "URL Key","URL Key",module,Magento_VersionsCms
-"Preview","Preview",module,Magento_VersionsCms
+"Preview","預覽",module,Magento_VersionsCms
 "Preview is not available.","Preview is not available.",module,Magento_VersionsCms
 "Render Metadata in HTML Head.","Render Metadata in HTML Head.",module,Magento_VersionsCms
 "First","First",module,Magento_VersionsCms
@@ -15861,7 +15859,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Off","Off",module,Magento_VisualMerchandiser
 "Visual Merchandiser Options","Visual Merchandiser Options",module,Magento_VisualMerchandiser
 "Visual Merchandiser","Visual Merchandiser",module,Magento_VisualMerchandiser
-"General Options","General Options",module,Magento_VisualMerchandiser
+"General Options","一般選擇",module,Magento_VisualMerchandiser
 "Visible Attributes for Category Rules","Visible Attributes for Category Rules",module,Magento_VisualMerchandiser
 "Additional attributes usable in category rules","Additional attributes usable in category rules",module,Magento_VisualMerchandiser
 "Minimum Stock Threshold","Minimum Stock Threshold",module,Magento_VisualMerchandiser
@@ -16041,51 +16039,51 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "My Wish List","我的願望清單",module,Magento_Wishlist
 "%1's Wish List","%1's Wish List",module,Magento_Wishlist
 "Page not found.","找不到頁面。",module,Magento_Wishlist
-"We can't specify a product.","We can't specify a product.",module,Magento_Wishlist
-"We can't add the item to Wish List right now: %1.","We can't add the item to Wish List right now: %1.",module,Magento_Wishlist
-"We can't add the item to Wish List right now.","We can't add the item to Wish List right now.",module,Magento_Wishlist
+"We can't specify a product.","我們無法指定產品。",module,Magento_Wishlist
+"We can't add the item to Wish List right now: %1.","我們現在不能把這個項目添加到願望清單中: %1.",module,Magento_Wishlist
+"We can't add the item to Wish List right now.","我們現在不能把這個項目添加到願望清單中",module,Magento_Wishlist
 "You added %1 to your shopping cart.","您已添加 %1 到您的購物車",module,Magento_Wishlist
-"This product(s) is out of stock.","This product(s) is out of stock.",module,Magento_Wishlist
-"We can't add the item to the cart right now.","We can't add the item to the cart right now.",module,Magento_Wishlist
-"We can't load the Wish List item right now.","We can't load the Wish List item right now.",module,Magento_Wishlist
-"We can't configure the product right now.","We can't configure the product right now.",module,Magento_Wishlist
-"The requested cart item doesn't exist.","The requested cart item doesn't exist.",module,Magento_Wishlist
+"This product(s) is out of stock.","這產品脫銷了。",module,Magento_Wishlist
+"We can't add the item to the cart right now.","我們現在不能把東西加到車子裏。",module,Magento_Wishlist
+"We can't load the Wish List item right now.","我們現在不能裝入願望清單項目。",module,Magento_Wishlist
+"We can't configure the product right now.","我們現在不能配置這個產品。",module,Magento_Wishlist
+"The requested cart item doesn't exist.","請求的推車項目不存在。",module,Magento_Wishlist
 "%1 has been moved to your wish list.","%1 已移至您的願望清單。",module,Magento_Wishlist
-"We can't move the item to the wish list.","We can't move the item to the wish list.",module,Magento_Wishlist
-"We can't delete the item from Wish List right now because of an error: %1.","We can't delete the item from Wish List right now because of an error: %1.",module,Magento_Wishlist
-"We can't delete the item from the Wish List right now.","We can't delete the item from the Wish List right now.",module,Magento_Wishlist
-"Message length must not exceed %1 symbols","Message length must not exceed %1 symbols",module,Magento_Wishlist
+"We can't move the item to the wish list.","我們不能把項目移到願望清單上。",module,Magento_Wishlist
+"We can't delete the item from Wish List right now because of an error: %1.","我們不能因爲一個錯誤就從願望清單上刪除這個項目: %1.",module,Magento_Wishlist
+"We can't delete the item from the Wish List right now.","我們現在不能從願望清單上刪除這個項目。",module,Magento_Wishlist
+"Message length must not exceed %1 symbols","消息長度不能超過 %1 符號",module,Magento_Wishlist
 "Please enter an email address.","請輸入電子郵件地址。",module,Magento_Wishlist
 "This wish list can be shared %1 more times.","這個願望清單可以共享 %1 更多次。",module,Magento_Wishlist
 "Please enter a valid email address.","請輸入有效的電子郵件地址。",module,Magento_Wishlist
 "Your wish list has been shared.","您的願望清單已被共享。",module,Magento_Wishlist
-"We can't delete item from Wish List right now.","We can't delete item from Wish List right now.",module,Magento_Wishlist
-"Can't save description %1","Can't save description %1",module,Magento_Wishlist
+"We can't delete item from Wish List right now.","我們現在不能刪除願望清單中的條目",module,Magento_Wishlist
+"Can't save description %1","難以形容 %1",module,Magento_Wishlist
 "Can't update wish list","無法更新願望清單",module,Magento_Wishlist
-"%1 has been updated in your Wish List.","%1 has been updated in your Wish List.",module,Magento_Wishlist
-"We can't update your Wish List right now.","We can't update your Wish List right now.",module,Magento_Wishlist
-"The requested Wish List doesn't exist.","The requested Wish List doesn't exist.",module,Magento_Wishlist
-"We can't create the Wish List right now.","We can't create the Wish List right now.",module,Magento_Wishlist
+"%1 has been updated in your Wish List.","%1已在你的願望清單中更新。",module,Magento_Wishlist
+"We can't update your Wish List right now.","我們現在不能更新你的願望清單",module,Magento_Wishlist
+"The requested Wish List doesn't exist.","請求的願望清單不存在。",module,Magento_Wishlist
+"We can't create the Wish List right now.","我們現在不能創建願望清單",module,Magento_Wishlist
 "%1 items","%1 項目",module,Magento_Wishlist
 "1 item","1個項目",module,Magento_Wishlist
 "Comment","評論",module,Magento_Wishlist
 "Display number of items in wish list","顯示願望清單中的項目數",module,Magento_Wishlist
-"Display item quantities","Display item quantities",module,Magento_Wishlist
-"An item option with code %1 already exists.","An item option with code %1 already exists.",module,Magento_Wishlist
-"We can't specify a wish list.","We can't specify a wish list.",module,Magento_Wishlist
-"Cannot specify product.","Cannot specify product.",module,Magento_Wishlist
-"Product is not salable.","Product is not salable.",module,Magento_Wishlist
-"Invalid item option format.","Invalid item option format.",module,Magento_Wishlist
+"Display item quantities","顯示品目數量",module,Magento_Wishlist
+"An item option with code %1 already exists.","具有代碼 %1 的條目選項已經存在。",module,Magento_Wishlist
+"We can't specify a wish list.","我們不能指定願望清單。",module,Magento_Wishlist
+"Cannot specify product.","無法指定產品。",module,Magento_Wishlist
+"Product is not salable.","產品不值得稱道。",module,Magento_Wishlist
+"Invalid item option format.","無效的項目選擇格式。",module,Magento_Wishlist
 "%1 for ""%2"".","""%2"" %1",module,Magento_Wishlist
 "We can't add this item to your shopping cart right now.","現在無法新增至購物車",module,Magento_Wishlist
-"We couldn't add the following product(s) to the shopping cart: %1.","We couldn't add the following product(s) to the shopping cart: %1.",module,Magento_Wishlist
-"We can't update the Wish List right now.","We can't update the Wish List right now.",module,Magento_Wishlist
+"We couldn't add the following product(s) to the shopping cart: %1.","我們無法在購物車中添加下列產品。: %1.",module,Magento_Wishlist
+"We can't update the Wish List right now.","我們現在不能更新願望清單",module,Magento_Wishlist
 "%1 product(s) have been added to shopping cart: %2.","%1 產品已加入至購物車: %2.",module,Magento_Wishlist
 "Comment:","評論:",module,Magento_Wishlist
-"We cannot retrieve the Wish List.","We cannot retrieve the Wish List.",module,Magento_Wishlist
+"We cannot retrieve the Wish List.","我們無法檢索願望清單。",module,Magento_Wishlist
 "%1's Wishlist","%1's Wishlist",module,Magento_Wishlist
-"We can't specify a wish list item.","We can't specify a wish list item.",module,Magento_Wishlist
-"The product does not exist.","The product does not exist.",module,Magento_Wishlist
+"We can't specify a wish list item.","我們不能指定一個願望清單項目。",module,Magento_Wishlist
+"The product does not exist.","產品不存在。",module,Magento_Wishlist
 "Test Phrase","Test Phrase",module,Magento_Wishlist
 "message","message",module,Magento_Wishlist
 "Message","訊息內容",module,Magento_Wishlist
@@ -16111,20 +16109,20 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Remove Item","Remove Item",module,Magento_Wishlist
 "Remove item","刪除項目",module,Magento_Wishlist
 "Add to Compare","加入比較",module,Magento_Wishlist
-"This Wish List has no Items","This Wish List has no Items",module,Magento_Wishlist
-"%1 has been added to your Wish List.","%1 已添加到您的收藏夾。",module,Magento_Wishlist
+"This Wish List has no Items","此願望清單沒有項目",module,Magento_Wishlist
+"%1 has been added to your Wish List.","%1 已加到我的願望清單囉!",module,Magento_Wishlist
 "Click <a href=""%1"">here</a> to continue shopping.","請點擊 <a href=""%1"">這裡</a> 繼續購物。",module,Magento_Wishlist
-"See Details","See Details",module,Magento_Wishlist
-"Options Details","Options Details",module,Magento_Wishlist
-"RSS link to %1's wishlist","RSS link to %1's wishlist",module,Magento_Wishlist
+"See Details","詳情",module,Magento_Wishlist
+"Options Details","選擇詳情",module,Magento_Wishlist
+"RSS link to %1's wishlist","RSS連結至%1的願望清單",module,Magento_Wishlist
 "RSS Feed","RSS Feed",module,Magento_Wishlist
 "Product","產品",module,Magento_Wishlist
 "Back","上一步",module,Magento_Wishlist
-"Wish List is empty now.","Wish List is empty now.",module,Magento_Wishlist
+"Wish List is empty now.","願望清單現在空了",module,Magento_Wishlist
 "* Required Fields","* 為必填項",module,Magento_Wishlist
 "Sharing Information","訊號資料",module,Magento_Wishlist
 "Email addresses, separated by commas","電子郵件地址，以逗號分隔",module,Magento_Wishlist
-"Check here to link an RSS feed to your Wish List.","Check here to link an RSS feed to your Wish List.",module,Magento_Wishlist
+"Check here to link an RSS feed to your Wish List.","檢查此處可連接RSS頻道至你的願望清單。",module,Magento_Wishlist
 "Last Added Items","Last Added Items",module,Magento_Wishlist
 "Remove This Item","移除此物品",module,Magento_Wishlist
 "Go to Wish List","轉到願望清單",module,Magento_Wishlist
@@ -16133,38 +16131,38 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "%customer_name wants to share this Wish List from %store_name with you:","%customer_name 這個是您在 [%store_name] 的願望清單",module,Magento_Wishlist
 "Message from %customer_name:","Message from %customer_name:",module,Magento_Wishlist
 "View all Wish List items","查看完整願望清單品項",module,Magento_Wishlist
-"Wish List Section","Wish List Section",module,Magento_Wishlist
+"Wish List Section","願望清單組",module,Magento_Wishlist
 "Share Options","購股權",module,Magento_Wishlist
 "Email Sender","電子郵件寄件者",module,Magento_Wishlist
-"Email Template","Email Template",module,Magento_Wishlist
+"Email Template","Email模板",module,Magento_Wishlist
 "Email template chosen based on theme fallback when ""Default"" option is selected.","選擇「預設」後，電子郵件範本將根據佈景主題順序選擇。",module,Magento_Wishlist
 "Max Emails Allowed to be Sent","Max Emails Allowed to be Sent",module,Magento_Wishlist
-"Email Text Length Limit","Email Text Length Limit",module,Magento_Wishlist
-"General Options","General Options",module,Magento_Wishlist
+"Email Text Length Limit","電子郵件文本長度限制",module,Magento_Wishlist
+"General Options","一般選擇",module,Magento_Wishlist
 "Enabled","啟用",module,Magento_Wishlist
 "My Wish List Link","我的願望清單鏈接",module,Magento_Wishlist
-"Display Wish List Summary","Display Wish List Summary",module,Magento_Wishlist
+"Display Wish List Summary","顯示願望清單摘要",module,Magento_Wishlist
 "Enable RSS","Enable RSS",module,Magento_Wishlist
-"No Items Found","No Items Found",module,Magento_Wishlist
+"No Items Found","沒有發現任何物件",module,Magento_Wishlist
 "Product Name","商品名稱",module,Magento_Wishlist
-"User Description","User Description",module,Magento_Wishlist
+"User Description","用戶說明",module,Magento_Wishlist
 "Quantity","數量",module,Magento_Wishlist
 "Add Locale","Add Locale",module,Magento_Wishlist
 "Add Date","Add Date",module,Magento_Wishlist
-"Days in Wish List","Days in Wish List",module,Magento_Wishlist
+"Days in Wish List","願望清單上的日子",module,Magento_Wishlist
 "Action","操作",module,Magento_Wishlist
 "Configure","設定",module,Magento_Wishlist
 "Delete","刪除",module,Magento_Wishlist
-"Product Details and Comment","Product Details and Comment",module,Magento_Wishlist
-"Add To Wishlist","Add To Wishlist",module,Magento_Wishlist
-"Are you sure you want to remove this product from your Wish List?","Are you sure you want to remove this product from your Wish List?",module,Magento_Wishlist
+"Product Details and Comment","產品詳情及評論",module,Magento_Wishlist
+"Add To Wishlist","加入願望清單中",module,Magento_Wishlist
+"Are you sure you want to remove this product from your Wish List?","你確定要把這個產品從你的願望清單上除掉嗎?",module,Magento_Wishlist
 "%1 has been removed from your Wish List.","%1 已從您的願望清單中刪除。",module,Magento_Wishlist
 "10 by default. Max - 10000","10 by default. Max - 10000",module,Magento_Wishlist
 "255 by default","255 by default",module,Magento_Wishlist
 "The Wish List item can't load at this time. Please try again later.","“願望清單”項目目前無法加載。 請稍後再試。",module,Magento_Wishlist
-"The cart item doesn't exist.","The cart item doesn't exist.",module,Magento_Wishlist
-"You must login or register to add items to your wishlist.","您必須登錄或註冊才能將商品添加到心願單。",module,Magento_Wishlist
-"Show in Sidebar","Show in Sidebar",module,Magento_Wishlist
+"The cart item doesn't exist.","大車項目不存在。",module,Magento_Wishlist
+"You must login or register to add items to your wishlist.","您必須登入會員才能將產品到我的願望清單。",module,Magento_Wishlist
+"Show in Sidebar","在側欄中顯示",module,Magento_Wishlist
 "Missing key ""model"" in Wishlist Item value data","Missing key ""model"" in Wishlist Item value data",module,Magento_WishlistGraphQl
 "Missing key ""model"" in Wishlist value data","Missing key ""model"" in Wishlist value data",module,Magento_WishlistGraphQl
 "Credit card type","信用卡類型",module,Magento_Worldpay

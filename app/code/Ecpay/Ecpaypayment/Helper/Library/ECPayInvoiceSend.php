@@ -40,6 +40,10 @@ class ECPayInvoiceSend
      * @var ECPayCheckMobileBarCode
      */
     private $ECPayCheckMobileBarCode;
+    /**
+     * @var ECPayALLOWANCE
+     */
+    private $ECPayALLOWANCE;
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
@@ -48,7 +52,8 @@ class ECPayInvoiceSend
         \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceVoidValidator $ECPayInvoiceVoidValidator,
         \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPay_Invoice_CheckMacValue,
         \Ecpay\Ecpaypayment\Helper\Library\ECPayEncryptType $ECPayEncryptType,
-        \Ecpay\Ecpaypayment\Helper\Library\ECPayCheckMobileBarCode $ECPayCheckMobileBarCode
+        \Ecpay\Ecpaypayment\Helper\Library\ECPayCheckMobileBarCode $ECPayCheckMobileBarCode,
+        \Ecpay\Ecpaypayment\Helper\Library\ECPayALLOWANCE $ECPayALLOWANCE
     ) {
         $this->ECPayIO = $ECPayIO;
         $this->ECPayInvoiceValidator = $ECPayInvoiceValidator;
@@ -57,6 +62,7 @@ class ECPayInvoiceSend
         $this->ECPayInvoiceVoidValidator = $ECPayInvoiceVoidValidator;
         $this->logger = $logger;
         $this->ECPayCheckMobileBarCode = $ECPayCheckMobileBarCode;
+        $this->ECPayALLOWANCE = $ECPayALLOWANCE;
     }
 
     // 發票物件
@@ -97,6 +103,8 @@ class ECPayInvoiceSend
             $this->InvoiceObj = $this->ECPayInvoiceVoidValidator;
         } elseif ($Invoice_Method === 'CHECK_MOBILE_BARCODE') {
             $this->InvoiceObj = $this->ECPayCheckMobileBarCode;
+        } elseif ($Invoice_Method === 'ALLOWANCE') {
+            $this->InvoiceObj = $this->ECPayALLOWANCE;
         }
 
         // 1寫入參數
@@ -134,6 +142,8 @@ class ECPayInvoiceSend
             $this->InvoiceObj_Return = $this->ECPayInvoiceVoidValidator;
         } elseif ($Invoice_Method === 'CHECK_MOBILE_BARCODE') {
             $this->InvoiceObj_Return = $this->ECPayCheckMobileBarCode;
+        } elseif ($Invoice_Method === 'ALLOWANCE') {
+            $this->InvoiceObj_Return = $this->ECPayALLOWANCE;
         }
         $this->ECPayInvoiceValidator_Return = $this->ECPayInvoiceValidator;
 

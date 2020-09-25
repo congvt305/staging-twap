@@ -92,6 +92,10 @@ class Payment extends AbstractMethod
      * @var \Magento\Sales\Api\OrderItemRepositoryInterface
      */
     private $orderItemRepository;
+    /**
+     * @var \Magento\Sales\Model\Order\Email\Sender\InvoiceSender
+     */
+    private $invoiceSender;
 
     public function __construct(
         Context $context,
@@ -115,6 +119,7 @@ class Payment extends AbstractMethod
         \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement,
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository,
+        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
@@ -146,6 +151,7 @@ class Payment extends AbstractMethod
         $this->productLinkManagement = $productLinkManagement;
         $this->productRepository = $productRepository;
         $this->orderItemRepository = $orderItemRepository;
+        $this->invoiceSender = $invoiceSender;
     }
 
     public function getValidPayments()
@@ -482,6 +488,7 @@ class Payment extends AbstractMethod
             );
 
             $transactionSave->save();
+            $this->invoiceSender->send($invoice);
             $order->save();
         }
     }
@@ -501,19 +508,13 @@ class Payment extends AbstractMethod
             $payment = $order->getPayment();
             $additionalInfo = $payment->getAdditionalInformation();
             $rawDetailsInfo = $additionalInfo["raw_details_info"];
-            $eInvoiceType = $rawDetailsInfo["ecpay_einvoice_type"];
-            $triplicateTaxId = $rawDetailsInfo["ecpay_einvoice_tax_id_number"];
-            $cellphoneBarcode = $rawDetailsInfo["ecpay_einvoice_cellphone_barcode"];
-            $carruerType = $this->getCarruerType($eInvoiceType);
-
-            $donationCode = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_love_code", $storeId);
 
             // 3.寫入發票相關資訊
             $aItems = array();
             // 商品資訊
             $this->initOrderItems($order, $ecpay_invoice);
 
-            $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $carruerType, $donationCode, $triplicateTaxId, $cellphoneBarcode);
+            $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $rawDetailsInfo);
 
             // 4.送出
             $aReturn_Info = $ecpay_invoice->Check_Out();
@@ -575,7 +576,7 @@ class Payment extends AbstractMethod
                     'ItemName' => $orderItem->getData('name'),
                     'ItemCount' => (int)$orderItem->getData('qty_ordered'),
                     'ItemWord' => '批',
-                    'ItemPrice' => $orderItem->getPrice(),
+                    'ItemPrice' => $itemGrandTotalInclTax / (int)$orderItem->getData('qty_ordered'),
                     'ItemTaxType' => 1,
                     'ItemAmount' => $itemGrandTotalInclTax,
                     'ItemRemark' => '商品備註'
@@ -635,15 +636,20 @@ class Payment extends AbstractMethod
     /**
      * @param \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice
      * @param \Magento\Sales\Api\Data\OrderInterface $order
-     * @param string $carruerType
-     * @param $donationCode
-     * @param $triplicateTaxId
-     * @param string $cellphoneBarcode
+     * @param $rawDetailsInfo
      * @return string
      */
-    private function initEInvoiceInfo(\Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice, \Magento\Sales\Api\Data\OrderInterface $order, string $carruerType, $donationCode, $triplicateTaxId, $cellphoneBarcode): string
+    private function initEInvoiceInfo($ecpay_invoice, $order, $rawDetailsInfo): string
     {
         $dataTime = $this->dateTimeFactory->create();
+
+        $triplicateTaxId = $rawDetailsInfo["ecpay_einvoice_tax_id_number"];
+        $cellphoneBarcode = $rawDetailsInfo["ecpay_einvoice_cellphone_barcode"];
+        $eInvoiceType = $rawDetailsInfo["ecpay_einvoice_type"];
+        $carruerType = $this->getCarruerType($eInvoiceType);
+
+        $donationCode = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_love_code", $order->getStoreId());
+        $customerName = $order->getCustomerLastname() . $order->getCustomerFirstname();
 
         $donationValue = '';
         $carruerNum = '';
@@ -653,6 +659,7 @@ class Payment extends AbstractMethod
                     $donationValue = "true";
                 } else {
                     $donationValue = "false";
+                    $customerName = $rawDetailsInfo['ecpay_einvoice_triplicate_title'];
                 }
                 $carruerNum = '';
                 break;
@@ -670,7 +677,7 @@ class Payment extends AbstractMethod
         $ecpay_invoice->Send['RelateNumber'] = $RelateNumber;
         $ecpay_invoice->Send['CustomerID'] = $order->getCustomerId();
         $ecpay_invoice->Send['CustomerIdentifier'] = $triplicateTaxId;
-        $ecpay_invoice->Send['CustomerName'] = $order->getCustomerLastname() . $order->getCustomerFirstname();
+        $ecpay_invoice->Send['CustomerName'] = $customerName;
         $ecpay_invoice->Send['CustomerAddr'] = $order->getBillingAddress()->getCity();
         $ecpay_invoice->Send['CustomerPhone'] = '';
         $ecpay_invoice->Send['CustomerEmail'] = $order->getCustomerEmail();
@@ -723,6 +730,100 @@ class Payment extends AbstractMethod
             $sMsg = $e->getMessage();
             $this->_logger->info("EInvoice Cancel has been Failed : " . $sMsg);
 //            throw new LocalizedException(__($sMsg));
+        }
+    }
+
+    /**
+     * @param \Magento\Payment\Model\InfoInterface $payment
+     * @param \Magento\Sales\Model\Order $order
+     */
+    public function issueAllowance(\Magento\Payment\Model\InfoInterface $payment, $order)
+    {
+        try {
+            // 1.載入SDK
+            $ecpay_invoice = $this->ecpayInvoice;
+
+            $storeId = $order->getStoreId();
+
+            // 2.寫入基本介接參數
+            $ecpay_invoice->Invoice_Method = 'ALLOWANCE';
+            $ecpay_invoice->Invoice_Url = $this->getInvoiceApiUrl($storeId) . 'Allowance';
+            $ecpay_invoice->MerchantID = $this->getEcpayConfigFromStore("merchant_id", $storeId);
+            $ecpay_invoice->HashKey = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_hash_key", $storeId);
+            $ecpay_invoice->HashIV = $this->getEcpayConfigFromStore("invoice/ecpay_invoice_hash_iv", $storeId);
+
+            // 3.寫入發票相關資訊
+            $additionalData = $payment->getAdditionalData();
+            $invalidateInvoiceData = json_decode($additionalData, true);
+            $ecpay_invoice->Send['InvoiceNo'] = $invalidateInvoiceData["InvoiceNumber"];
+            $ecpay_invoice->Send['AllowanceNotify'] = $this->getEcpayConfigFromStore('invoice/issue_allowance', $storeId);
+            $ecpay_invoice->Send['CustomerName'] = $order->getCustomerLastname() . $order->getCustomerFirstname();
+            $ecpay_invoice->Send['NotifyMail'] = $order->getShippingAddress()->getEmail();
+            $ecpay_invoice->Send['NotifyPhone'] = $order->getShippingAddress()->getTelephone();
+            $this->getOrderItems($order, $ecpay_invoice);
+
+
+            // 4.送出
+            $aReturn_Info = $ecpay_invoice->Check_Out();
+
+            // 5.返回
+            $payment->setData("ecpay_invoice_invalidate_data", json_encode($aReturn_Info));
+        } catch (\Exception $e) {
+            // 例外錯誤處理。
+            $sMsg = $e->getMessage();
+            $this->_logger->info("EInvoice Cancel has been Failed : " . $sMsg);
+//            throw new LocalizedException(__($sMsg));
+        }
+    }
+
+    public function getOrderItems(\Magento\Sales\Model\Order $order, \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpay_invoice)
+    {
+        $ecpay_invoice->Send['AllowanceAmount'] = round($order->getTotalRefunded());
+        $ecpay_invoice->Send['Items'] = [];
+
+        $orderItems = $order->getAllVisibleItems();
+        $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
+        $mileageUsedAmount = $order->getRewardPointsBalance();
+
+        /** @var \Magento\Sales\Model\Order\Item $orderItem */
+        foreach ($orderItems as $orderItem) {
+            $mileagePerItem = $this->mileageSpentRateByItem(
+                $orderTotal,
+                $orderItem->getRowTotalInclTax(),
+                $orderItem->getDiscountAmount(),
+                $mileageUsedAmount
+            );
+            $itemGrandTotalInclTax = $orderItem->getRowTotalInclTax()
+                - $orderItem->getDiscountAmount()
+                - $mileagePerItem;
+
+            array_push(
+                $ecpay_invoice->Send['Items'],
+                array(
+                    'ItemName' => $orderItem->getData('name'),
+                    'ItemCount' => (int)$orderItem->getData('qty_ordered'),
+                    'ItemWord' => '批',
+                    'ItemPrice' => $itemGrandTotalInclTax / (int)$orderItem->getData('qty_ordered'),
+                    'ItemTaxType' => 1,
+                    'ItemAmount' => $itemGrandTotalInclTax,
+                    'ItemRemark' => '商品備註'
+                )
+            );
+        }
+
+        if (!empty($order->getShippingRefunded())) {
+            array_push(
+                $ecpay_invoice->Send['Items'],
+                array(
+                    'ItemName' => $order->getShippingDescription(),
+                    'ItemCount' => 1,
+                    'ItemWord' => '批',
+                    'ItemPrice' => $order->getShippingRefunded(),
+                    'ItemTaxType' => 1,
+                    'ItemAmount' => $order->getShippingRefunded(),
+                    'ItemRemark' => '商品備註'
+                )
+            );
         }
     }
 
