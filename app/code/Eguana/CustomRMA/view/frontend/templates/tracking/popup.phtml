@@ -7,7 +7,9 @@
 use Magento\Framework\View\Element\Template;
 
 /** @var $block \Magento\Rma\Block\Returns\Tracking\Popup */
+/** @var \Eguana\CustomRMA\ViewModel\GetStoreInfo $viewModel */
 
+$viewModel = $block->getData('store_view_model');
 $results = $block->getTrackingInfo();
 ?>
 <div class="page tracking">
@@ -24,7 +26,8 @@ $results = $block->getTrackingInfo();
                             $block->addChild('shipping.tracking.details.' . $shipmentBlockIdentifier, Template::class, [
                                 'track' => $track,
                                 'template' => 'Eguana_CustomRMA::tracking/details.phtml',
-                                'storeSupportEmail' => $block->getStoreSupportEmail()
+                                'storeSupportEmail' => $block->getStoreSupportEmail(),
+                                'storePhoneNumber' => $viewModel->getStorePhoneNumber()
                             ]);
                         ?>
                         <?= /* @noEscape */ $block->getChildHtml('shipping.tracking.details.' . $shipmentBlockIdentifier) ?>

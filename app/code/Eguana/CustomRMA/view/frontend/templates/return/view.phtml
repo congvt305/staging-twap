@@ -234,7 +234,18 @@
                                 <?= $block->escapeHtml($block->formatDate($_comment->getCreatedAt())); ?> <?= $block->escapeHtml($block->formatTime($_comment->getCreatedAt())); ?>
                             </dt>
                             <dd class="returns-comment-text">
-                                <?= $block->escapeHtml(__($_comment->getComment()))?>
+                                <?php
+                                $string = $block->escapeHtml(__($_comment->getComment()));
+                                if (strpos($string, 'Reverse Logistics Order Created. Return Order Number is') !== false) {
+                                    $stringArray = explode("Number is", $string);
+                                    echo $block->escapeHtml(__('Reverse Logistics Order Created. Return Order Number is %1',$stringArray[1]));
+                                } elseif (strpos($string, 'Notified by Green World Logistics.') !== false) {
+                                    $stringArray = explode("Notified by Green World Logistics", $string);
+                                    echo $block->escapeHtml($stringArray[0] . __('Notified by Green World Logistics.'));
+                                } else {
+                                    echo $block->escapeHtml(__($_comment->getComment()));
+                                }
+                                ?>
                             </dd>
                         <?php endif; ?>
                     <?php endforeach; ?>
