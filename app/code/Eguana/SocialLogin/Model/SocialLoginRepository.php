@@ -149,7 +149,7 @@ class SocialLoginRepository implements SocialLoginRepositoryInterface
      * @param $socialMediaType
      * @return |null
      */
-    public function getAlreadyLinkedCustomer($customerId, $socialMediaType)
+    public function getAlreadyLinkedCustomer($customerId, $socialMediaType, $socialId)
     {
         $websiteId = null;
         try {
@@ -160,10 +160,10 @@ class SocialLoginRepository implements SocialLoginRepositoryInterface
         $customer = $this->socialLoginCollectionFactory->create();
         $dataUser = $customer->addFieldToFilter('customer_id', $customerId)
             ->addFieldToFilter('socialmedia', $socialMediaType)
-            ->addFieldToFilter('website_id', $websiteId)
-            ->getFirstItem();
-        if ($dataUser && $dataUser->getId()) {
-            return $dataUser->getSocialloginId();
+            ->addFieldToFilter('social_id', ['neq' => $socialId])
+            ->addFieldToFilter('website_id', $websiteId);
+        if ($dataUser && $dataUser->getItems()) {
+            return $dataUser->getItems();
         } else {
             return null;
         }

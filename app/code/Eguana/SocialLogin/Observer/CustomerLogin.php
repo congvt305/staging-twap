@@ -14,6 +14,7 @@ use Eguana\SocialLogin\Model\SocialLoginRepository;
 use Magento\Framework\Event\Observer as ObserverAlias;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Session\SessionManagerInterface as SessionManagerInterfaceAlias;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class CustomerLogin
@@ -34,19 +35,27 @@ class CustomerLogin implements ObserverInterface
     private $socialLoginRepository;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * CustomerLogin constructor.
      * @param SessionManagerInterfaceAlias $customerSession
      * @param SocialLoginModel $socialLoginModel
      * @param SocialLoginRepository $socialLoginRepository
+     * @param LoggerInterface $logger
      */
     public function __construct(
         SessionManagerInterfaceAlias $customerSession,
         SocialLoginModel $socialLoginModel,
-        SocialLoginRepository $socialLoginRepository
+        SocialLoginRepository $socialLoginRepository,
+        LoggerInterface $logger
     ) {
         $this->session                           = $customerSession;
         $this->socialLoginModel                  = $socialLoginModel;
         $this->socialLoginRepository             = $socialLoginRepository;
+        $this->logger                            = $logger;
     }
 
     /**
@@ -63,12 +72,35 @@ class CustomerLogin implements ObserverInterface
             $socialMediaType = $customerData['socialmedia_type'];
             if ($customer->getId()) {
                 $customerId = $customer->getId();
-                if ($this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType)) {
-                    $socialLoginId = $this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType);
-                    $socialLoginUser = $this->socialLoginRepository->getById($socialLoginId);
-                    $this->socialLoginRepository->delete($socialLoginUser);
+                if ($this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType, $appid)) {
+                    $users = $this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType, $appid);
+                    if ($users) {
+                        foreach ($users as $user) {
+                            try {
+                                $socialLoginUser = $this->socialLoginRepository->getById($user->getData('sociallogin_id'));
+                            } catch (\Exception $e) {
+                                $this->logger->error($e->getMessage());
+                            }
+                            $this->socialLoginRepository->delete($socialLoginUser);
+                        }
+                    }
                 }
                 $this->socialLoginModel->setSocialMediaCustomer($appid, $customerId, $username, $socialMediaType);
+            }
+        } else {
+            $customerId = $customer->getId();
+            $socialMediaType = $this->socialLoginModel->getCoreSession()->getSocialmediaType();
+            $socialId = $this->socialLoginModel->getCoreSession()->getSocialmediaId();
+            $users = $this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType, $socialId);
+            if ($users) {
+                foreach ($users as $user) {
+                    try {
+                        $socialLoginUser = $this->socialLoginRepository->getById($user->getData('sociallogin_id'));
+                    } catch (\Exception $e) {
+                        $this->logger->error($e->getMessage());
+                    }
+                    $this->socialLoginRepository->delete($socialLoginUser);
+                }
             }
         }
     }
