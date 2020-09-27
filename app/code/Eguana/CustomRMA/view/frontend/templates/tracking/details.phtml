@@ -10,6 +10,7 @@
 $parentBlock = $block->getParentBlock();
 $track = $block->getData('track');
 $email = $block->getData('storeSupportEmail');
+$phone = $block->getData('storePhoneNumber');
 $fields = [
     'Status' => 'getStatus',
     'Signed by' => 'getSignedby',
@@ -43,7 +44,7 @@ $number = is_string($track)? $track : '';
                     <?php if ($parentBlock->getContactUsEnabled()) : ?>
                         <?= $block->escapeHtml(__('contact us')) ?>
                     <?php endif; ?>
-                    <?= $block->escapeHtml(__('0800-600-308')) ?>
+                    <?= $block->escapeHtml($phone) ?>
                 </td>
             </tr>
         <?php elseif ($track->getTrackSummary()) : ?>

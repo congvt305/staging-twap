@@ -71,7 +71,7 @@ class CreateReverseLogisticsOrder
     {
         $result = ['ErrorMessage' => 'Could not create reverse logistics order.'];
         try {
-            $shippingPreference = $rma->getData('shipping_preference') ?? 'UNIMART';
+            $shippingPreference = $rma->getData('shipping_preference');
             switch ($shippingPreference) {
                 case 'UNIMART':
                     $result = $this->unimartCreateReverseShipmentOrder->sendRequest($rma); //shipping preference
@@ -80,6 +80,7 @@ class CreateReverseLogisticsOrder
                     $result = $this->famiCreateReverseShipmentOrder->sendRequest($rma);
                     break;
                 default:
+                    throw new \Exception(__('Could not find shipping preference. Please try later'));
                     break;
             }
             if (isset($result['RtnMerchantTradeNo']) && isset($result['RtnOrderNo']) && $result['RtnOrderNo']) {

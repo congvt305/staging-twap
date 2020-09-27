@@ -143,6 +143,10 @@ class Callback extends Action
         if ($customerId) {
             $this->socialLoginModel->getCoreSession()->unsSocialCustomerId();
             $this->socialLoginModel->getCoreSession()->setSocialCustomerId($customerId);
+            $this->socialLoginModel->getCoreSession()->unsSocialmediaType();
+            $this->socialLoginModel->getCoreSession()->setSocialmediaType('line');
+            $this->socialLoginModel->getCoreSession()->unsSocialmediaId();
+            $this->socialLoginModel->getCoreSession()->setSocialmediaId($userid);
         } else {
             $this->socialLoginModel->redirectCustomer($dataUser, $userid, $socialMediaType);
         }
