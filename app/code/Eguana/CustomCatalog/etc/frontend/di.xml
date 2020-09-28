@@ -13,4 +13,13 @@
     <type name="Magento\ConfigurableProduct\Helper\Data">
         <plugin name="show_price_for_out_of_stock_configurable_product" type="Eguana\CustomCatalog\Plugin\Helper\Data"/>
     </type>
+    <type name="Magento\ConfigurableProduct\Model\ConfigurableAttributeData">
+        <plugin name="add_out_of_stock_for_configurable_product" type="Eguana\CustomCatalog\Plugin\Model\ConfigurableAttributeData"/>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Pricing\Renderer\SalableResolver">
+        <plugin name="show_out_of_stock_configurable_product_price" type="Eguana\CustomCatalog\Plugin\Model\Product\Pricing\Renderer\SalableResolver"/>
+    </type>
+    <type name="Magento\ConfigurableProduct\Pricing\Price\ConfigurablePriceResolver">
+        <plugin name="show_out_of_stock_child_configurable_product_price" type="Eguana\CustomCatalog\Plugin\Pricing\Price\ConfigurablePriceResolver"/>
+    </type>
 </config>

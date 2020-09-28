@@ -19,5 +19,6 @@
         <link rel="alternate" hreflang="id-id" src="https://www.laneige.com/id/id/index.html" src_type="url"/>
         <link rel="alternate" hreflang="th-th" src="https://www.laneige.com/th/th/index.html" src_type="url"/>
         <link rel="alternate" hreflang="zh-cn" src="https://www.laneige.com.cn/index.html" src_type="url"/>
+        <link rel="canonical" src="https://tw.laneige.com/" src_type="url"/>
     </head>
 </page>

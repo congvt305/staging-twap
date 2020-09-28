@@ -508,25 +508,33 @@ class Payment extends AbstractMethod
             $payment = $order->getPayment();
             $additionalInfo = $payment->getAdditionalInformation();
             $rawDetailsInfo = $additionalInfo["raw_details_info"];
+            $addtionalData = json_decode($payment->getAdditionalData(), true);
 
-            // 3.寫入發票相關資訊
-            $aItems = array();
-            // 商品資訊
-            $this->initOrderItems($order, $ecpay_invoice);
+            if (isset($addtionalData["RtnCode"]) && $addtionalData["RtnCode"] == 1) {
+                return [
+                    "RtnCode" => $addtionalData["RtnCode"],
+                    "RtnMsg" => $addtionalData["RtnMsg"]
+                ];
+            } else {
+                // 3.寫入發票相關資訊
+                $aItems = array();
+                // 商品資訊
+                $this->initOrderItems($order, $ecpay_invoice);
 
-            $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $rawDetailsInfo);
+                $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $rawDetailsInfo);
 
-            // 4.送出
-            $aReturn_Info = $ecpay_invoice->Check_Out();
+                // 4.送出
+                $aReturn_Info = $ecpay_invoice->Check_Out();
 
-            // 5.返回
-            $aReturn_Info["RelateNumber"] = $RelateNumber;
-            $payment->setAdditionalData(json_encode($aReturn_Info));
-            $payment->save();
-            return [
-                "RtnCode" => $aReturn_Info["RtnCode"],
-                "RtnMsg" => $aReturn_Info["RtnMsg"]
-            ];
+                // 5.返回
+                $aReturn_Info["RelateNumber"] = $RelateNumber;
+                $payment->setAdditionalData(json_encode($aReturn_Info));
+                $payment->save();
+                return [
+                    "RtnCode" => $aReturn_Info["RtnCode"],
+                    "RtnMsg" => $aReturn_Info["RtnMsg"]
+                ];
+            }
         } catch (\Exception $e) {
             // 例外錯誤處理。
             $sMsg = $e->getMessage();
@@ -569,6 +577,10 @@ class Payment extends AbstractMethod
             $itemGrandTotalInclTax = $orderItem->getRowTotalInclTax()
                 - $orderItem->getDiscountAmount()
                 - $mileagePerItem;
+
+            if ($orderItem->getOriginalPrice() == 0) {
+                continue;
+            }
 
             array_push(
                 $ecpay_invoice->Send['Items'],
@@ -734,10 +746,10 @@ class Payment extends AbstractMethod
     }
 
     /**
-     * @param \Magento\Payment\Model\InfoInterface $payment
+     * @param \Magento\Sales\Model\Order\Payment $payment
      * @param \Magento\Sales\Model\Order $order
      */
-    public function issueAllowance(\Magento\Payment\Model\InfoInterface $payment, $order)
+    public function issueAllowance(\Magento\Sales\Model\Order\Payment $payment, $order)
     {
         try {
             // 1.載入SDK
@@ -796,6 +808,10 @@ class Payment extends AbstractMethod
             $itemGrandTotalInclTax = $orderItem->getRowTotalInclTax()
                 - $orderItem->getDiscountAmount()
                 - $mileagePerItem;
+
+            if ($orderItem->getOriginalPrice() == 0) {
+                continue;
+            }
 
             array_push(
                 $ecpay_invoice->Send['Items'],
