@@ -578,6 +578,10 @@ class Payment extends AbstractMethod
                 - $orderItem->getDiscountAmount()
                 - $mileagePerItem;
 
+            if ($orderItem->getOriginalPrice() == 0) {
+                continue;
+            }
+
             array_push(
                 $ecpay_invoice->Send['Items'],
                 array(
@@ -804,6 +808,10 @@ class Payment extends AbstractMethod
             $itemGrandTotalInclTax = $orderItem->getRowTotalInclTax()
                 - $orderItem->getDiscountAmount()
                 - $mileagePerItem;
+
+            if ($orderItem->getOriginalPrice() == 0) {
+                continue;
+            }
 
             array_push(
                 $ecpay_invoice->Send['Items'],
