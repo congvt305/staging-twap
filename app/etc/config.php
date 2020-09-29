@@ -25,6 +25,14 @@ return [
                 'sort_order' => '0',
                 'default_group_id' => '4',
                 'is_default' => '0'
+            ],
+            'vn_laneige_website' => [
+                'website_id' => '8',
+                'code' => 'vn_laneige_website',
+                'name' => 'VN Laneige Website',
+                'sort_order' => '0',
+                'default_group_id' => '8',
+                'is_default' => '0'
             ]
         ],
         'groups' => [
@@ -51,6 +59,14 @@ return [
                 'root_category_id' => '4',
                 'default_store_id' => '4',
                 'code' => 'tw_laneige_website_store'
+            ],
+            8 => [
+                'group_id' => '8',
+                'website_id' => '8',
+                'name' => 'VN Laneige Website Store',
+                'root_category_id' => '284',
+                'default_store_id' => '8',
+                'code' => 'vn_laneige_website_store'
             ]
         ],
         'stores' => [
@@ -77,7 +93,16 @@ return [
                 'code' => 'tw_laneige',
                 'website_id' => '4',
                 'group_id' => '4',
-                'name' => 'TW Laneige Store View',
+                'name' => '我已經是台灣蘭芝實體門市會員',
+                'sort_order' => '0',
+                'is_active' => '1'
+            ],
+            'vn_laneige' => [
+                'store_id' => '8',
+                'code' => 'vn_laneige',
+                'website_id' => '8',
+                'group_id' => '8',
+                'name' => 'VN Laneige Store View',
                 'sort_order' => '0',
                 'is_active' => '1'
             ]
@@ -109,8 +134,10 @@ return [
                         'authorizenet_acceptjs' => '\\.authorize\\.net/v1/Accept'
                     ],
                     'move_script_to_bottom' => '0',
+                    'enable_baler_js_bundling' => '1',
                     'session_storage_logging' => '0',
-                    'translate_strategy' => 'dictionary'
+                    'translate_strategy' => 'dictionary',
+                    'enable_js_bundling' => '0'
                 ],
                 'css' => [
                     'minify_files' => '0',
@@ -136,6 +163,13 @@ return [
                 'general' => [
                     'locale' => [
                         'code' => 'zh_Hant_TW'
+                    ]
+                ]
+            ],
+            'vn_lageige_website' => [
+                'general' => [
+                    'locale' => [
+                        'code' => 'vi_VN'
                     ]
                 ]
             ]
@@ -509,6 +543,7 @@ return [
         'Eguana_Theme' => 1,
         'Eguana_CustomOrderGrid' => 1,
         'Eguana_CustomRMA' => 1,
+        'Eguana_CustomStagingContent' => 1,
         'Eguana_CustomerRefund' => 1,
         'Eguana_Directory' => 1,
         'Eguana_EInvoice' => 1,
@@ -541,14 +576,14 @@ return [
         'Temando_ShippingRemover' => 1,
         'Vertex_Tax' => 0,
         'Vertex_AddressValidation' => 0,
-        'Yotpo_Yotpo' => 1,
-        'Eguana_CustomStagingContent' => 1,
-
+        'Yotpo_Yotpo' => 1
     ],
     'admin_user' => [
         'locale' => [
             'code' => [
-                'en_US'
+                'en_US',
+                'zh_Hant_TW',
+                'vi_VN'
             ]
         ]
     ]
