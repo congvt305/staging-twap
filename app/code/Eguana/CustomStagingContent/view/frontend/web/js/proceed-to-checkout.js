@@ -11,7 +11,7 @@ define([
                 customer = customerData.get('customer');
             event.preventDefault();
             if (!customer().firstname && cart().isGuestCheckoutAllowed === false) {
-                authenticationPopup.showModal();
+                location.href = window.checkout.customerLoginUrl;
                 return false;
             }
             $(element).attr('disabled', true);
