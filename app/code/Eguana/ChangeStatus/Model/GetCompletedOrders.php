@@ -87,12 +87,13 @@ class GetCompletedOrders
         $currentTimezoneDate = date('Y-m-d H:i:s', strtotime($storeTime));
         $settledTimezoneDate = date('Y-m-d H:i:s', strtotime($currentTimezoneDate . "-" . $toBeCompletedDays . ' days'));
 
-        $coveredDate = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -' . $toBeCompletedDays . ' day'));
+        $coveredDate = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -' . $toBeCompletedDays . ' days'));
 
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('status', 'shipment_processing', 'eq')
             ->addFilter('updated_at', $coveredDate, 'lteq')
             ->addFilter('store_id', $storeId, 'eq')
+            ->addFilter('shipping_method', 'blackcat_homedelivery', 'eq')
             ->create();
 
         $orderList = $this->orderRepository->getList($searchCriteria);
