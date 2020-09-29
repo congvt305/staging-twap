@@ -6,5 +6,10 @@
                 <argument name="template" xsi:type="helper" helper="Eguana\CustomRMA\Model\RmaConfiguration::getTemplate"/>
             </action>
         </referenceBlock>
+        <referenceBlock name="magento.rma.info.button">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Eguana_CustomRMA::order/button.phtml</argument>
+            </action>
+        </referenceBlock>
     </body>
 </page>
