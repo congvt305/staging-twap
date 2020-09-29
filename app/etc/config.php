@@ -166,7 +166,7 @@ return [
                     ]
                 ]
             ],
-            'vn_lageige_website' => [
+            'vn_laneige_website' => [
                 'general' => [
                     'locale' => [
                         'code' => 'vi_VN'
