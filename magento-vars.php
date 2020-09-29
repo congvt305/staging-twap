@@ -54,6 +54,13 @@ if (isHttpHost("tw.sulwhasoo.com")
     || isHttpHost("mcstaging.tw.laneige.com")) {
     $_SERVER["MAGE_RUN_CODE"] = "tw_laneige";
     $_SERVER["MAGE_RUN_TYPE"] = "store";
+} elseif (isHttpHost("vn.laneige.com")
+        || isHttpHost("mcprod.vn.laneige.com")
+        || isHttpHost("vl.integration-5ojmyuq-kqevkj6gpg7si.ap-3.magentosite.cloud")
+        || isHttpHost("vl.dev-54ta5gq-kqevkj6gpg7si.ap-3.magentosite.cloud")
+        || isHttpHost("mcstaging.vn.laneige.com")) {
+    $_SERVER["MAGE_RUN_CODE"] = "vn_laneige";
+    $_SERVER["MAGE_RUN_TYPE"] = "store";
 } elseif (isHttpHost("gapm-bo1.amorepacific.com")
     || isHttpHost("mcprod.gapm-bo1.amorepacific.com")
     || isHttpHost("integration-5ojmyuq-kqevkj6gpg7si.ap-3.magentosite.cloud")
