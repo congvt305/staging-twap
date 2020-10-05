@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="magento.rma.info.button">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Eguana_CustomRMA::order/button.phtml</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>
