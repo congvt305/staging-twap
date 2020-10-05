@@ -138,6 +138,11 @@ class OrderStatusNotificationHandler
                     $statusNotification->setReceiverAddress($notificationData['ReceiverAddress']);
                     $this->statusNotificationRepository->save($statusNotification);
 
+                    if ($this->isFailure($statusNotification)) {
+                        $orderId = $shipment->getOrderId();
+                        $this->failOrder($orderId);
+                    }
+
                     //check status and change order status if needed.
                     if ($this->isCompleted($statusNotification)) {
                         $orderId = $shipment->getOrderId();
@@ -174,7 +179,6 @@ class OrderStatusNotificationHandler
         $order = $this->orderRepository->get($orderId);
         $statusHistory = $this->orderStatusHistoryInterfaceFactory->create();
         $statusHistory->setStatus('complete');
-        $statusHistory->setStatus('complete');
         $statusHistory->setEntityName('order');
         $statusHistory->setParentId($orderId);
         $statusHistory->setIsVisibleOnFront(1);
@@ -195,5 +199,40 @@ class OrderStatusNotificationHandler
             || ($statusNotification->getLogisticsSubType() === 'UNIMART'
                 && $statusNotification->getRtnCode() === '2067');
     }
+
+    /**
+     * @param \Eguana\GWLogistics\Api\Data\StatusNotificationInterface $statusNotification
+     */
+    private function isFailure($statusNotification) {
+        $FamiFailureCode = '5009';
+        $UnimartFalureCodes = [
+            '2060', '2028', '2050', '2016', '2049', '2043', '2027'
+        ];
+
+        return ($statusNotification->getLogisticsSubType() === 'FAMI'
+                && $statusNotification->getRtnCode() === $FamiFailureCode)
+            || ($statusNotification->getLogisticsSubType() === 'UNIMART'
+                && in_array($statusNotification->getRtnCode(), $UnimartFalureCodes));
+
+    }
+
+    private function failOrder($orderId)
+    {
+        $order = $this->orderRepository->get($orderId);
+        $statusHistory = $this->orderStatusHistoryInterfaceFactory->create();
+        $statusHistory->setStatus('complete');
+        $statusHistory->setEntityName('order');
+        $statusHistory->setParentId($orderId);
+        $statusHistory->setIsVisibleOnFront(1);
+        $statusHistory->setComment(__('Due to the abnormal delivery of the CVS, please contact the customer service and place the order again.'));
+
+        $order->setStatusHistories([$statusHistory]);
+        $order->setState(\Magento\Sales\Model\Order::STATE_COMPLETE);
+        $order->setStatus('failure');
+        $this->orderRepository->save($order);
+
+    }
+
+
 
 }
