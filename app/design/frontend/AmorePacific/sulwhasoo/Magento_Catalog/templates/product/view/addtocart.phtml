@@ -14,6 +14,14 @@ $helper = $this->helper('Eguana\EcommerceStatus\Helper\Data');
 $storeLocatorHelper = $this->helper('Eguana\StoreLocator\Helper\ConfigData');
 ?>
 <?php $_product = $block->getProduct(); ?>
+<?php
+$outOfStock = false;
+/** @var $viewModel \Eguana\CustomCatalog\ViewModel\DisableAddToCart */
+if ($block->getData('disable_addtocart_bundle')) {
+    $viewModel = $block->getData('disable_addtocart_bundle');
+    $outOfStock = $viewModel->getBundleItemsStockStatus($_product);
+}
+?>
 <?php $buttonTitle = __('Add to Cart'); ?>
 <?php if ($_product->isSaleable()): ?>
     <div class="box-tocart">
@@ -44,18 +52,24 @@ $storeLocatorHelper = $this->helper('Eguana\StoreLocator\Helper\ConfigData');
                 </div>
             <?php endif; ?>
             <div class="actions">
-                <button type="submit"
-                        title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
-                        class="action primary tocart"
-                        id="product-addtocart-button">
-                    <span><?= $block->escapeHtml($buttonTitle) ?></span>
-                </button>
-                <button type="submit"
-                        title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
-                        class="action primary tocheckout"
-                        id="product-addtocheckout-button" onclick="return setCheckoutURL()">
-                    <span><?php /* @escapeNotVerified */ echo __('Go to shopping cart'); ?></span>
-                </button>
+                <?php if($outOfStock): ?>
+                    <button type="submit" title="<?= $block->escapeHtmlAttr($buttonTitle) ?>" class="action tocart disabled" id="product-addtocart-button">
+                        <span><?php /* @escapeNotVerified */ echo __('Out of stock'); ?></span>
+                    </button>
+                <?php else: ?>
+                    <button type="submit"
+                            title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                            class="action primary tocart"
+                            id="product-addtocart-button">
+                        <span><?= $block->escapeHtml($buttonTitle) ?></span>
+                    </button>
+                    <button type="submit"
+                            title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+                            class="action primary tocheckout"
+                            id="product-addtocheckout-button" onclick="return setCheckoutURL()">
+                        <span><?php /* @escapeNotVerified */ echo __('Go to shopping cart'); ?></span>
+                    </button>
+                <?php endif; ?>
                 <?= $block->getChildHtml('', true) ?>
             </div>
         </div>
