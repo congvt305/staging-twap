@@ -35,7 +35,7 @@ Enabled,啟用
 "Secure Gateway URL","安全網關URL"
 "Map URL","地圖URL"
 "Secure Map URL","安全地圖URL"
-Title,標題
+Title,標題class="order-info"
 Mode,模式
 "Method Name","方法名稱"
 "Shipping Cost","運費"
@@ -49,3 +49,5 @@ Mode,模式
 "Reverse Logistics Order Created. Return Order Number is %1","已進入退貨流程，退貨單號為 %1"
 "[%sms_prefix] Dear %customer, your return order number is %rtn_order_number, please return your goods in 3 days.","【%sms_prefix】 %customer, 您好 您的超商退貨代碼為 #%rtn_order_number 請於三天內至超商進行退貨，謝謝"
 "Notified by Green World Logistics.","來自 綠界科技"
+"Due to the abnormal delivery of the CVS, please contact the customer service and place the order again.", "由於超商運送異常，請與客服中心聯繫再重新下單."
+"Shipment Failure", "出貨異常"
