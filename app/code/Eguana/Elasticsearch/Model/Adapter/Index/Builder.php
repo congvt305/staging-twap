@@ -12,13 +12,44 @@ namespace Eguana\Elasticsearch\Model\Adapter\Index;
 class Builder extends \Magento\Elasticsearch\Model\Adapter\Index\Builder
 {
     /**
+     * {@inheritdoc}
+     */
+    public function build()
+    {
+        $tokenizer = $this->getTokenizer();
+        $filter = $this->getFilter();
+        $charFilter = $this->getCharFilter();
+
+        $settings = [
+            'analysis' => [
+                'analyzer' => [
+                    'default' => [
+                        'type' => 'custom',
+                        'tokenizer' => key($tokenizer),
+                        'filter' => array_merge(
+                            ['lowercase', 'keyword_repeat'],
+                            array_keys($filter)
+                        ),
+                        'char_filter' => array_keys($charFilter)
+                    ]
+                ],
+                'tokenizer' => $tokenizer,
+                'filter' => $filter,
+                'char_filter' => $charFilter,
+            ],
+            'max_ngram_diff' => '30'
+        ];
+
+        return $settings;
+    }
+    /**
      * @return array
      */
     protected function getTokenizer()
     {
         $tokenizer = [
             'default_tokenizer' => [
-                'type' => 'edge_ngram',
+                'type' => 'ngram',
                 'min_gram' => 2,
                 'max_gram' => 30,
                 'token_chars' => [
