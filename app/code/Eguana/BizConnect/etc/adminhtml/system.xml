@@ -12,13 +12,19 @@
                     <label>Active</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="numbers_to_delete" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="days_to_delete" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Days To Delete</label>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                </field>
+                <field id="numbers_to_delete" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Numbers To Delete</label>
                     <depends>
                         <field id="*/*/active">1</field>
                     </depends>
                 </field>
-                <field id="frequency" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="frequency" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Frequency</label>
                     <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
                     <backend_model>Eguana\BizConnect\Model\Config\CronConfig</backend_model>
@@ -26,7 +32,7 @@
                         <field id="*/*/active">1</field>
                     </depends>
                 </field>
-                <field id="time" translate="label comment" sortOrder="40" type="time" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="time" translate="label comment" sortOrder="50" type="time" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Start Time</label>
                     <depends>
                         <field id="*/*/active">1</field>

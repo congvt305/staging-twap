@@ -59,23 +59,28 @@ class LogDeleter
 
     public function logDeleter()
     {
-        $date = $this->date->gmtDate();
+        $stores = $this->storeManagerInterface->getStores();
 
-        if ($this->helper->getActive()) {
-            /** @var \Eguana\BizConnect\Model\ResourceModel\LoggedOperation\Collection $collection */
-            $collection = $this->loggedOperationCollectionFactory->create();
-            $collection->addFieldToFilter('start_time', array('lteq' => $date));
-            $collection->getSelect()->limit($this->getSelectLimit());
+        foreach ($stores as $store) {
+            if ($this->helper->getActive($store->getId())) {
+                $daysLeftToDelete = $this->helper->getDaysToDelete($store->getId());
+                $coveredDate = $this->date->date('Y-m-d H:i:s', strtotime('now -' . $daysLeftToDelete . ' days'));
 
-            /** @var \Eguana\BizConnect\Model\LoggedOperation $loggedOperation */
-            foreach ($collection as $loggedOperation) {
-                $loggedOperation->delete();
+                /** @var \Eguana\BizConnect\Model\ResourceModel\LoggedOperation\Collection $collection */
+                $collection = $this->loggedOperationCollectionFactory->create();
+                $collection->addFieldToFilter('start_time', array('lteq' => $coveredDate));
+                $collection->getSelect()->limit($this->getSelectLimit($store->getId()));
+
+                /** @var \Eguana\BizConnect\Model\LoggedOperation $loggedOperation */
+                foreach ($collection as $loggedOperation) {
+                    $loggedOperation->delete();
+                }
             }
         }
     }
 
-    protected function getSelectLimit()
+    protected function getSelectLimit($storeId)
     {
-        return $this->helper->getNumbersToDelete() ? $this->helper->getNumbersToDelete() : 100;
+        return $this->helper->getNumbersToDelete($storeId) ? $this->helper->getNumbersToDelete($storeId) : 100;
     }
 }

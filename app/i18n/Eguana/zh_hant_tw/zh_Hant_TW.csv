@@ -12390,8 +12390,8 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Transaction Details","交易詳情",module,Magento_Sales
 "Items","品項",module,Magento_Sales
 "Gift Message for this Order","此訂單的禮品消息",module,Magento_Sales
-"Shipped By","搖身一變",module,Magento_Sales
-"Tracking Number","跟蹤號",module,Magento_Sales
+"Shipped By","配送方式",module,Magento_Sales
+"Tracking Number","貨態追蹤",module,Magento_Sales
 "Billing Last Name","帳單最後姓名",module,Magento_Sales
 "Find Order By","查找訂單依據",module,Magento_Sales
 "ZIP Code","郵政編碼",module,Magento_Sales
