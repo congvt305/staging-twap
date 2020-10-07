@@ -55,7 +55,7 @@ class Save extends \Magento\Backend\Controller\Adminhtml\System\Store\Save
         }
 
         $websiteModel->save();
-        if ($postData['website']['website_id'] == '') {
+        if ($postData['website']['website_id'] == '8') {
             $this->sequenceBuilder->setStartValue(10000000)
                 ->setWebsiteId($websiteModel->getId())
                 ->setEntityType('customer_online')->create();
