@@ -3292,7 +3292,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Excl. Tax","Chưa bao gồm thuế",module,Magento_Checkout
 "Loading...","Đang tải...",module,Magento_Checkout
 "Order #","Đơn hàng #",module,Magento_Checkout
-"Proceed to Checkout","Tiến hành thanh toán",module,Magento_Checkout
+"Proceed to Checkout","Thanh toán",module,Magento_Checkout
 "Product Name","Tên sản phẩm",module,Magento_Checkout
 "Incl. Tax","Đã bao gồm thuế",module,Magento_Checkout
 "Your order number is: %1.","Mã số đơn hàng của bạn là: %1.",module,Magento_Checkout
@@ -3336,7 +3336,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Ship To:","Gửi đến:",module,Magento_Checkout
 "edit","sửa",module,Magento_Checkout
 "Order Summary","Tóm tắt đơn hàng",module,Magento_Checkout
-"View and Edit Cart","Xem và sửa giỏ hàng",module,Magento_Checkout
+"View and Edit Cart","Giỏ mua hàng",module,Magento_Checkout
 "View Details","Xem chi tiết",module,Magento_Checkout
 "Field ","Trường ",module,Magento_Checkout
 " is required."," là bắt buộc.",module,Magento_Checkout
@@ -3392,7 +3392,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "items","sản phẩm",module,Magento_Checkout
 "Go to Checkout","Đi đến thanh toán",module,Magento_Checkout
 "Recently added item(s)","Sản phẩm thêm vào gần đây",module,Magento_Checkout
-"View and edit cart","Xem và sửa giỏ hàng",module,Magento_Checkout
+"View and edit cart","Giỏ mua hàng",module,Magento_Checkout
 "No Payment Methods","Không có phương thức thanh toán",module,Magento_Checkout
 "Shipping Methods","Phương thức vận chuyển",module,Magento_Checkout
 "Select Method","Chọn phương thức",module,Magento_Checkout
@@ -3406,7 +3406,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Maximum Display Recently Added Item(s)","Màn hình hiển thị tối đa sản phẩm mới thêm gần đây",module,Magento_Checkout
 "of","của",module,Magento_Checkout
 "Something went wrong while saving the page. Please refresh the page and try again.","Something went wrong while saving the page. Please refresh the page and try again.",module,Magento_Checkout
-"You added %1 to your <a href=""%2"">shopping cart</a>.","You added %1 to your <a href=""%2"">shopping cart</a>.",module,Magento_Checkout
+"You added %1 to your <a href=""%2"">shopping cart</a>.","Bạn đã thêm %1 vào <a href=""%2"">máy bán hàng</a>.",module,Magento_Checkout
 "Please select at least one product to add to cart","Please select at least one product to add to cart",module,Magento_Checkout
 "The quote item isn't found. Verify the item and try again.","The quote item isn't found. Verify the item and try again.",module,Magento_Checkout
 "The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.","The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.",module,Magento_Checkout
@@ -8755,7 +8755,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "No shipping information available","Không có thông tin vận chuyển",module,Magento_NegotiableQuote
 "Select a shipping address from your address book.","Select a shipping address from your address book.",module,Magento_NegotiableQuote
 "Send for Review","Send for Review",module,Magento_NegotiableQuote
-"Proceed to Checkout","Tiến hành thanh toán",module,Magento_NegotiableQuote
+"Proceed to Checkout","Thanh toán",module,Magento_NegotiableQuote
 "Close quote","Close quote",module,Magento_NegotiableQuote
 "Delete","Xóa bỏ",module,Magento_NegotiableQuote
 "Remove item","Xóa sản phẩm",module,Magento_NegotiableQuote
@@ -16148,12 +16148,12 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "%1 has been removed from your Wish List.","%1 has been removed from your Wish List.",module,Magento_Wishlist
 "10 by default. Max - 10000","10 theo mặc định. Lớn nhất - 10000",module,Magento_Wishlist
 "255 by default","255 theo mặc định",module,Magento_Wishlist
-"The Wish List item can't load at this time. Please try again later.","The Wish List item can't load at this time. Please try again later.",module,Magento_Wishlist
-"The cart item doesn't exist.","The cart item doesn't exist.",module,Magento_Wishlist
-"You must login or register to add items to your wishlist.","You must login or register to add items to your wishlist.",module,Magento_Wishlist
-"Show in Sidebar","Show in Sidebar",module,Magento_Wishlist
-"Missing key ""model"" in Wishlist Item value data","Missing key ""model"" in Wishlist Item value data",module,Magento_WishlistGraphQl
-"Missing key ""model"" in Wishlist value data","Missing key ""model"" in Wishlist value data",module,Magento_WishlistGraphQl
+"The Wish List item can't load at this time. Please try again later.","Hiện tại thì Wish List không được tải lên. Vui lòng gọi lại sau.",module,Magento_Wishlist
+"The cart item doesn't exist.","Vật phẩm xe đẩy không tồn tại.",module,Magento_Wishlist
+"You must login or register to add items to your wishlist.","Bạn phải đăng nhập hoặc đăng ký để bổ sung các khoản vào danh sách mong muốn của mình.",module,Magento_Wishlist
+"Show in Sidebar","Thể hiện trong thanh ngang",module,Magento_Wishlist
+"Missing key ""model"" in Wishlist Item value data","Thiếu chìa khóa ""model"" trong dữ liệu giá trị của hạng mục wishlist",module,Magento_WishlistGraphQl
+"Missing key ""model"" in Wishlist value data","Thiếu ""model"" khóa trong dữ liệu giá trị wishlist",module,Magento_WishlistGraphQl
 "Credit card type","Loại thẻ tín dụng",module,Magento_Worldpay
 "CVV result","Kết quả CVV",module,Magento_Worldpay
 "Postcode AVS check","Kiểm tra mã SVS",module,Magento_Worldpay
