@@ -3,6 +3,13 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="general">
+            <group id="country">
+                <field id="is_zipcode_autofilled" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Zip/Postal Code is Autofilled</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
             <group id="city" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>City Options</label>
                 <field id="city_required" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
@@ -10,7 +17,7 @@
                     <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                     <can_be_empty>1</can_be_empty>
                 </field>
-                <field id="display_all" translate="label" type="select" sortOrder="8" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="display_all" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Allow to Choose City if It is Optional for Country</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>

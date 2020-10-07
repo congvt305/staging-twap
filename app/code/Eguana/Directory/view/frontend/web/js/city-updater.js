@@ -16,6 +16,7 @@ define([
                 '</option>',
             isCityRequired: true,
             currentCity: null,
+            autofilledZipcode: false,
         },
 
         /**
@@ -226,13 +227,18 @@ define([
         },
 
         _updateZipcode: function (cityId) {
-            $(this.options.postcodeId).val(cityId);
+            if (this.options.autofilledZipcode) {
+                $(this.options.postcodeId).val(cityId);
+            }
         },
 
         _initCountryElement: function () {
+
             if (!this.options.isMultipleCountriesAllowed) {
                 $(this.options.countryId).parents('div.field').hide();
             }
+            console.log('_initCountryElement');
+            console.log($(this.options.countryId).select);
         },
 
         /**
