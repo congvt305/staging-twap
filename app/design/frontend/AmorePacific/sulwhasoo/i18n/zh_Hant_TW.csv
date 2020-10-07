@@ -113,4 +113,5 @@
 "You have successfully subscribed to the latest news from %store_name.","您已經成功訂閱【%store_name】最新消息"
 "You have successfully cancelled the latest news from %store_name.","您已經成功取消【%store_name】最新消息"
 "View / Order","查看 / 訂購"
-"Create New Customer Account","新會員註冊",module,Magento_Customer
+"Create New Customer Account","新會員註冊"
+"Brand","關於我們"
