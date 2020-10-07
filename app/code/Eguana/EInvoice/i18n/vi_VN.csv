@@ -1,0 +1,41 @@
+"We can't save the cron expression.","Chúng tôi không thể lưu biểu thức cron."
+"Payment &amp; Shipping Method","Thanh toán &amp; phương pháp vận chuyển"
+"Payment Information","Thông tin thanh toán"
+"The order was placed using %1.","Đơn hàng được đặt bằng cách sử dụng %1."
+"Shipping Information","Thông tin vận chuyển"
+"Total Shipping Charges","Tổng Chi phí vận chuyển"
+"Incl. Tax","Đã bao gồm thuế"
+"E-Invoice Invalidation","Vô hiệu hóa điện tử"
+"Items Refunded","Mặt hàng hoàn trả"
+"No Items","Không có mục nào"
+"Memo Total","Tổng số bản ghi nhớ"
+"Credit Memo History","Bản ghi nhớ lịch sử tín dụng"
+"Credit Memo Totals","Tổng số Ghi Nhớ Tín Dụng"
+"Items Invoiced","Hoá đơn sản phẩm"
+"E-Invoice Creation","Tạo ra âm thanh điện tử"
+"Order Total","Tổng đơn đặt hàng"
+"Invoice History","Lịch sử hoá đơn"
+"Invoice Totals","Tổng số hóa đơn"
+"E-Invoice Information","Thông tin điện thoại"
+"E-Invoice Tax ID Number","Số chứng minh thư thuế điện tử"
+"E-Invoice Date","Ngày phát hành điện tử"
+"E-Invoice Number","Số điện thoại"
+"E-Invoice Cellphone BarCode","Mã điện thoại di động bằng giọng nói"
+"Invalidate E-Invoice Information","Vô hiệu hóa thông tin điện tử - hoá đơn"
+"Invalidate E-Invoice Number","Hợp lệ số điện tử hoá đơn"
+"Print Refund","In hoàn lại tiền"
+Refund,Hoàn lại tiền
+"Product Name","Tên sản phẩm"
+Price,Giá
+Qty,Số lượng
+Subtotal,Tổng phụ
+"Discount Amount","Lượng chiết khấu"
+"Row Total","Tổng số dòng"
+"Print Invoice","In hóa đơn"
+Invoice,Hoá đơn
+"Ecpay E-Invoice","Ecpay E-Invoice"
+"E-Invoice Issue Cron","Vấn đề điện tử phát hành Cron"
+Active,Kích hoạt
+Frequency,Tần Suất
+"Start Time","Thời Gian Bắt Đầu"
+"E-Invoice Triplicate Title","Tựa đề ba bản quyền điện tử"

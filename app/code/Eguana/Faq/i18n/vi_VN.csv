@@ -1,0 +1,51 @@
+Back,Trở lại
+"Delete Faq","Xóa Faq"
+"Are you sure you want to do this?","Bạn có chắc rằng bạn muốn làm điều này?"
+Reset,Thiết lập lại
+"Save and Continue Edit","Lưu và tiếp tục chỉnh sửa"
+"Save Faq","Lưu Faq"
+"Save & Duplicate","Lưu & trùng lặp"
+"Save & Close","Lưu & đóng"
+FAQ,FAQ
+"Manage FAQ","Quản lý các câu hỏi thường xuyên"
+"row was successfully deleted","Hàng đã được xóa thành công"
+"row could not be deleted","Hàng không thể xóa được"
+"A total of %1 record(s) have been deleted.","Tổng cộng %1 bản ghi (s) đã bị xóa."
+"This faq no longer exists.","Khu ổ chuột này không còn tồn tại nữa."
+"You saved the faq.","Anh đã cứu được khu ổ chuột."
+"Something went wrong while saving the faq.","Có chuyện gì đó không ổn trong khi cứu khu ổ chuột."
+"You duplicated the faq.","Cậu đã sao chép khu ổ chuột."
+Enabled,Cho phép
+Disabled,Vô hiệu hóa
+"Faq with id ""%1"" does not exist.","Faq với ID ""%1"" không tồn tại."
+"A block identifier with the same properties already exists in the selected store.","Khối được chỉ định với thuộc tính như vậy đã tồn tại trong cửa hàng được chọn."
+"Wrong Category Value. Please select category again.","Giá trị nhóm sai. Vui lòng chọn lại hạng mục."
+Edit,Chỉnh sửa
+Delete,Xóa bỏ
+"Delete ""${ $.$data.title }""","Xóa ""${ $.$data.title }"""
+"Are you sure you wan't to delete a ""${ $.$data.title }"" record?","Bạn chắc chắn muốn xóa bản ghi ""${ $.$data.title }""?"
+General,Chung
+Search,Tìm kiếm
+Remove,Loại bỏ
+"There is no search result.","Không có kết quả tìm kiếm."
+Faq,Faq
+"FAQ Category","FAQ Nhóm"
+"Category 1","Nhóm 1"
+"Category 2","Nhóm 2"
+"Category 3","Nhóm 3"
+"Category 4","Nhóm 4"
+"Category 5","Nhóm 5"
+"Category 6","Nhóm 6"
+"General Information","Thông tin chung"
+"Enable Faq","Sử dụng Faq"
+"Faq Title","Tiêu đề Faq"
+Category,Nhóm
+"Store View","Xem cửa hàng"
+Description,Mô tả
+"Add New Faq","Thêm Fauk mới"
+ID,ID
+Title,Tiêu đề
+"Created At","Đã tạo vào"
+"Updated At","Cập nhật lúc"
+Status,Trạng thái
+Home,Trang chủ
