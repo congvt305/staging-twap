@@ -9,7 +9,6 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Magento\Backend\Controller\Adminhtml\System\Store\Save" type="Amore\CustomerRegistration\Controller\Adminhtml\Backend\System\Store\Save" />
     <type name="Magento\Customer\Model\ResourceModel\CustomerRepository">
         <plugin name="admin_customer_account_save_validation" type="Amore\CustomerRegistration\Plugin\ValidateCustomer" sortOrder="1" disabled="false"  />
     </type>
