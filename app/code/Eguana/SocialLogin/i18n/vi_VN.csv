@@ -1,0 +1,35 @@
+"Warning! State mismatch. Authentication attempt may have been compromised.","Cảnh cáo! Tình trạng không phù hợp. Cố gắng xác nhận có thể đã bị ảnh hưởng."
+"Unspecified OAuth error occurred.","Lỗi OAuth không xác định đã xảy ra."
+"Warning! Visitor may have declined access or navigated to the page without being redirected.","Cảnh cáo! Người truy cập có thể từ chối truy cập hoặc đã định hướng tới trang mà không bị chuyển hướng."
+"We can't process your request right now. Sorry, that's all we know.","Chúng tôi không thể xử lý yêu cầu của bạn ngay lúc này. Xin lỗi, đó là tất cả những gì chúng tôi biết."
+"Unable to find Social Login User with ID ""%1""","Không thể tìm thấy người dùng đăng nhập xã hội với ID ""%1"""
+"* Required Fields","* Bắt buộc"
+"Social Login","Đăng nhập xã hội"
+"Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!","Chào mừng đến với việc sử dụng tài khoản FB, Google và LINE để đăng nhập nhanh chóng. Sau khi xác lập, bạn có thể trực tiếp đăng nhập bằng tài khoản FB và Google!"
+"I am a member of Sulwhasoo Taiwan! Login now to complete the binding","Tôi là thành viên của Sulwhasoo! Hãy đăng nhập ngay để hoàn thành việc ràng buộc"
+"I am a member of Laneige Taiwan! Login now to complete the binding","Tôi là thành viên của Laneige! Hãy đăng nhập ngay để hoàn thành việc ràng buộc"
+"Join Taiwan Laneige member! Complete binding","Cùng tham gia với Laneige! Sự ràng buộc hoàn toàn"
+"Join Taiwan Sulwhasoo member! Complete binding","Cùng tham gia Sulwhasoo nào! Sự ràng buộc hoàn toàn"
+"Linked Account : Google ID/Facebook/Line","Tài khoản kết nối : Google ID/Facebook/Line"
+Email,Email
+Password,Mật khẩu
+Canel,Hủy bỏ
+OK,Đồng ý
+OR,Hoặc
+"Login with LINE","Đăng nhập bằng LINE"
+"Login with Facebook","Đăng nhập bằng Facebook"
+"Login with Google","Đăng nhập bằng Google"
+"General Setting","Thiết lập chung"
+"Enable Module","Kích hoạt mô-đun"
+LINE,LINE
+Enable,Cho phép
+"Channel ID","ID của kênh"
+"Channel Secret","Bí mật kênh"
+"Callback URL","URL gọi lại"
+Facebook,Facebook
+"App ID","ID ứng dụng"
+"App Secret","Bí mật ứng dụng"
+"OAuth Redirect URI","OAuth Redirect URI"
+Google,Google
+"Client ID","ID khách hàng"
+"Client Secret","Bí mật khách hàng"

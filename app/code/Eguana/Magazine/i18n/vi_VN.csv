@@ -1,0 +1,55 @@
+Back,Trở lại
+"Delete Magazine","Xóa tạp chí"
+"Are you sure you want to do this?","Bạn có chắc rằng bạn muốn làm điều này?"
+Save,Lưu lại
+"Save & Duplicate","Lưu & trùng lặp"
+"Save & Close","Lưu & đóng"
+Home,Trang chủ
+"Go to Home Page","Đi đến trang chủ"
+"I'm LANEIGE","I'm LANEIGE"
+Magazine,Tạp chí
+"Manage Magazine","Quản lý tạp chí"
+"row was successfully deleted","Hàng đã được xóa thành công"
+"row could not be deleted","Hàng không thể xóa được"
+"Manage Magazines","Quản lý tạp chí"
+"This magazine no longer exists.","Tạp chí này không còn tồn tại nữa."
+"Edit Magazine","Tạp chí biên tập"
+"New Magazine","Tạp chí mới"
+Magazines,Tạp chí
+"A total of %1 magazine(s) have been deleted.","Tổng cộng có %1 tạp chí đã bị xóa."
+"Magazine has been successfully saved.","Tạp chí đã được lưu thành công."
+"Something went wrong while saving the magazine.","Có gì đó không ổn trong khi lưu tạp chí."
+"You duplicated the magazine.","Anh đã sao chép tạp chí."
+"Main Banner","Ban chính"
+Image,Hình ảnh
+Video,Video
+Enabled,Cho phép
+Disabled,Vô hiệu hóa
+Edit,Chỉnh sửa
+Delete,Xóa bỏ
+"Delete ""${ $.$data.title }""","Xóa ""${ $.$data.title }"""
+"Are you sure you wan't to delete a ""${ $.$data.title }"" record?","Bạn chắc chắn muốn xóa bản ghi ""${ $.$data.title }""?"
+"Sorry there is no Magazine for %1","Xin lỗi, không có tạp chí cho %1."
+"Other Magazines","Các tạp chí khác"
+"Eguana Magazine Config","Eguana Magazine Config"
+General,Chung
+"Magazine Enabled","Được sử dụng tạp chí"
+"Magazine Information","Thông tin tạp chí"
+"Enable Magazine","Sử dụng tạp chí"
+"Magazine Title","Tiêu đề tạp chí"
+"Sort Order","Xếp thứ tự"
+"Thumbnail Image","Hình ảnh ngón tay cái"
+"Thumbnail Alt","Ngón tay cái Alt"
+"Short Description","Mô tả ngắn gọn"
+Type,Loại
+"Select Month To show","Chọn tháng để hiển thị"
+"Store View","Xem cửa hàng"
+Content,Nội dung
+"Add New Magazine","Thêm tạp chí mới"
+ID,ID
+Title,Tiêu đề
+Status,Trạng thái
+Thumbnail,Hình ảnh thu nhỏ
+Alt,Văn bản thay thế
+"Created At","Đã tạo vào"
+"Updated At","Cập nhật lúc"

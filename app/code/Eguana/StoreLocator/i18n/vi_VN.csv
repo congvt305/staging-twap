@@ -1,0 +1,53 @@
+Back,Trở lại
+Delete,Xóa bỏ
+"Are you sure you want to do this?","Bạn có chắc rằng bạn muốn làm điều này?"
+Reset,Thiết lập lại
+Save,Lưu lại
+"Save and Continue Edit","Lưu và tiếp tục chỉnh sửa"
+Stores,Cửa hàng
+"You Delete this Store Information.","Bạn xóa thông tin cửa hàng này."
+"You saved this Store Information.","Anh đã lưu thông tin cửa hàng này."
+"Please correct the data sent.","Vui lòng chỉnh sửa dữ liệu đã gửi."
+"A total of %1 Store(s) have been deleted.","Tổng cộng có %1 cửa hàng đã bị xóa."
+"Unable to find history with ID ""%1""","Không thể tìm thấy lịch sử với ID ""%1"""
+Edit,Chỉnh sửa
+"Delete ""${ $.$data.title }""","Xóa ""${ $.$data.title }"""
+"Are you sure you wan't to delete a ""${ $.$data.title }"" record?","Bạn chắc chắn muốn xóa bản ghi ""${ $.$data.title }""?"
+"All Store Views","Tất cả lượt xem cửa hàng"
+"Please enter the address or counter name","Xin hãy nhập địa chỉ hoặc tên phản ứng"
+"Please enter your current location","Hãy nhập vị trí hiện tại của bạn"
+"Total <strong> %1 </strong> Articals Found","Tổng cộng tìm thấy <strong> %1 </strong>tác phẩm nghệ thuật"
+"We found <strong>%1 stores</strong> near your location","Chúng tôi tìm thấy<strong>%1 cửa hàng</strong> gần vị trí của bạn"
+address,địa chỉ
+Tel,Điện thoại
+Email,Email
+Timing,Thời gian
+"No store exist for this address in this store view","Không có cửa hàng nào cho địa chỉ này trong khung nhìn của cửa hàng này"
+"Store Locator","Tìm cửa hàng"
+"Manage Store Locations","Quản lý vị trí cửa hàng"
+"Eguana Stores Config","Eguana Lưu trữ cấu hình định vị."
+"Eguana Store Locator","Eguana Tìm cửa hàng"
+"General StoreLocator","Cửa hàng bách hóa"
+Enabled,Cho phép
+"Google Map Api key","Chìa khóa Google Map Api"
+"Store Locator Bottom Block Id","Cửa hàng định vị tầng hầm"
+"Frontend Stores Map","Bản đồ các cửa hàng ở tiền tuyến"
+Map_Height,Map_Height
+"Map Zoom","Bản đồ phóng to"
+"Store Locator Information","Lưu trữ thông tin định vị."
+"Store View","Xem cửa hàng"
+"Store Title","Tựa đề cửa hàng"
+"Store Type","Loại cửa hàng"
+Address,Địa chỉ
+Telephone,Điện thoại
+"Store Timing","Tiết kiệm thời gian"
+"Store Country","Nước bán hàng"
+"Map Location","Địa điểm bản đồ"
+"Add New","Thêm cái mới"
+"Are you sure you want to delete the selected stores?","Bạn có chắc là muốn xóa các cửa hàng đã chọn không?"
+"Delete items","Xóa các khoản mục"
+ID,ID
+"Created At","Đã tạo vào"
+location,vị trí
+Home,Trang chủ
+"Find Store","Tìm cửa hàng"

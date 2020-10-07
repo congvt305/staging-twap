@@ -1,0 +1,52 @@
+Back,Trở lại
+"Delete Video","Xóa đoạn phim"
+"Are you sure you want to do this?","Bạn có chắc rằng bạn muốn làm điều này?"
+Save,Lưu lại
+"Save & Duplicate","Lưu & trùng lặp"
+"Save & Close","Lưu & đóng"
+Home,Trang chủ
+"Go to Home Page","Đi đến trang chủ"
+Brand,Nhãn hiệu
+"How To","How To"
+"How to","How to"
+Video,Video
+HowTo,HowTo
+"Manage Video Board","Quản lý bảng video"
+"Video was successfully deleted","Video đã được xóa thành công"
+"Video could not be deleted","Không thể xóa đoạn phim được"
+"This video no longer exists.","Video này không còn tồn tại nữa."
+"Edit Video","Biên tập video"
+"New Video","Video mới"
+Videos,Videos
+"A total of %1 video(s) have been deleted.","Tổng cộng có %1 video đã bị xóa."
+"You saved the video.","Cậu đã lưu lại đoạn video."
+"Something went wrong while saving the video.","Có chuyện gì đó không ổn trong khi lưu lại."
+"You duplicated the Video.","Cậu đã sao chép đoạn video."
+Ascending,tăng dần
+Descending,giảm dần
+Enabled,Cho phép
+Disabled,Vô hiệu hóa
+Edit,Chỉnh sửa
+Delete,Xóa bỏ
+"Delete ""${ $.$data.video_title }""","Xóa ""${ $.$data.video_title }"""
+"Are you sure you wan't to delete a ""${ $.$data.video_title }"" record?","Bạn chắc chắn muốn xóa bản ghi ""${ $.$data.video_title }""?"
+"Thumbnail Image","Hình ảnh ngón tay cái"
+"No video found!.","Không tìm thấy video!"
+More,Nhiều hơn
+"Video Board","Video Board"
+General,Chung
+"Video Board top banner Id","ID của ban nhạc trên cùng của bảng điện tử"
+"Video sort type","Kiểu phân loại video"
+"Video Information","Thông tin video"
+"Enable Video","Sử dụng video"
+"Video URLs can be links to videos on YouTube or HTTP(S) links to files with valid video extensions (we recommend .mp4)","Các URL video có thể là các liên kết tới các video trên YouTube hoặc HTTP (S) tới các tập tin có phần mở rộng video hợp lệ (chúng tôi khuyến cáo .mp4)"
+"Store View","Xem cửa hàng"
+Description,Mô tả
+"Add New Video","Thêm video mới"
+ID,ID
+"Video Title","Tiêu đề video"
+"Video URL","Video URL"
+Status,Trạng thái
+Thumbnail,Hình ảnh thu nhỏ
+Created,Đã tạo
+Modified,Đã sửa
