@@ -1,0 +1,75 @@
+Remove,Loại bỏ
+Item,Sản phẩm
+"Return items","Sản phẩm hoàn trả"
+Sub-items,Tiểu mục
+"Remaining Qty","Số lượng còn lại"
+Qty,Số lượng
+Product,Sản phẩm
+"Quantity To Return","Số lượng để trả lại"
+"Remaining Quantity:","Số lượng còn lại:"
+"New Return for Order %1","Trả lại Mới cho đơn hàng %1"
+"Order ID","ID đặt hàng"
+"Customer Name","Tên khách hàng"
+Email,Email
+"Order Shipping Address","địa chỉ vận chuyển của đơn hàng"
+"Shipping Preference","Ưu tiên vận chuyển"
+unimart,unimart
+Unimart,Unimart
+familymart,familymart
+"Family Mart","Family Mart"
+"Return Items Information","Trở lại mục thông tin"
+"Add Item To Return","Thêm khoản mục vào trả lại"
+Comments,Bình luận
+Save,Lưu lại
+Submit,Gửi
+Back,Trở lại
+Carrier,Nhà mạng
+Method,Phương thức
+"Return Code","Mã trả lại"
+"Are you sure you want to delete this tracking information?","Bạn có chắc bạn muốn xóa bỏ thông theo dõi tin này?"
+"Return #","Trả lại #"
+"Request Information s","Yêu cầu thông tin"
+ID,ID
+"Date Requested","Ngày yêu cầu"
+"Contact Email Address","Địa chỉ Email liên hệ"
+"Shipping Address","Địa chỉ giao hàng"
+"This won't take long . . .","Hãy vui lòng đợi một chút . . ."
+"Shipping and Tracking Information","Vận chuyển và theo dõi thông tin"
+"Track this shipment","Theo dõi lô hàng này"
+"Print Shipping Label","In nhãn vận chuyển"
+"Show Packages","Hiển thị các gói"
+Add,Thêm vào
+"Items Return Requested For","Trở lại mục yêu cầu"
+"Product Name","Tên sản phẩm"
+Condition,Điều kiện
+Resolution,Độ phân giải
+"Request Qty","Số lượng Yêu cầu"
+Status,Trạng thái
+"Hide Details","Ẩn chi tiết"
+"Show Details","Hiển thị chi tiết"
+"%1 translated refund","Trả lại %1 bản dịch"
+"Questions and Answers","Câu hỏi và câu trả lời"
+Questions,Câu hỏi
+Answers,Câu trả lời
+"Customer Service","Dịch vụ khách hàng"
+"Leave Comment","Để lại bình luận"
+"Submit Comment","Gửi bình luận"
+"Order tracking","Thứ tự theo dõi"
+"Tracking Number:","Số theo dõi:"
+Carrier:,Đơn vị vận chuyển:
+Error:,Lỗi:
+"Tracking information is currently not available. Please ","Thông tin Theo dõi là hiện nay không có sẵn. Vui lòng "
+"contact us","liên hệ với chúng tôi"
+" for more information or "," để biết thêm thông tin hoặc "
+"email us at ","gửi email cho chúng tôi tại "
+Info:,Thông tin:
+Track:,Theo dõi:
+". ':'",". ':'"
+N/A,N/A
+"Shipment #","Lô hàng #"
+"There is no tracking available for this shipment.","Không Có sẵn theo dõi cho lô hàng này."
+"There is no tracking available.","Đó là theo dõi không có sẵn."
+"Close Window","Đóng cửa sổ"
+"Eguana CustomRMA","Eguana CustomRMA"
+"General Configuration","Cấu hình chung"
+"Enable Extension","Enable Extension"
