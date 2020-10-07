@@ -6,8 +6,10 @@ define([
     'use strict';
 
     function notify(eventName) {
-        // console.log('window.dataLayer.push notifyOrderButn');
-        window.dataLayer.push({'event': eventName});
+        if (window.dataLayer) {
+            window.dataLayer.push({'event': eventName});
+        }
+
     }
     return function (placeOrderAction) {
 
