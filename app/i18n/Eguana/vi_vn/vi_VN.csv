@@ -3405,22 +3405,22 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Require Customer To Be Logged In To Checkout","Yêu cầu khách hàng đăng nhập trước khi thanh toán",module,Magento_Checkout
 "Maximum Display Recently Added Item(s)","Màn hình hiển thị tối đa sản phẩm mới thêm gần đây",module,Magento_Checkout
 "of","của",module,Magento_Checkout
-"Something went wrong while saving the page. Please refresh the page and try again.","Something went wrong while saving the page. Please refresh the page and try again.",module,Magento_Checkout
+"Something went wrong while saving the page. Please refresh the page and try again.","Có chuyện gì đó không ổn trong khi lưu lại trang đó. Vui lòng làm mới trang đó và thử lại.",module,Magento_Checkout
 "You added %1 to your <a href=""%2"">shopping cart</a>.","Bạn đã thêm %1 vào <a href=""%2"">máy bán hàng</a>.",module,Magento_Checkout
-"Please select at least one product to add to cart","Please select at least one product to add to cart",module,Magento_Checkout
-"The quote item isn't found. Verify the item and try again.","The quote item isn't found. Verify the item and try again.",module,Magento_Checkout
-"The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.","The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.",module,Magento_Checkout
-"The product wasn't found. Verify the product and try again.","The product wasn't found. Verify the product and try again.",module,Magento_Checkout
-"A server error stopped your order from being placed. Please try to place your order again.","A server error stopped your order from being placed. Please try to place your order again.",module,Magento_Checkout
-"The shipping address is missing. Set the address and try again.","The shipping address is missing. Set the address and try again.",module,Magento_Checkout
-"The shipping information was unable to be saved. Verify the input data and try again.","The shipping information was unable to be saved. Verify the input data and try again.",module,Magento_Checkout
-"The shipping method can't be set for an empty cart. Add an item to cart and try again.","The shipping method can't be set for an empty cart. Add an item to cart and try again.",module,Magento_Checkout
+"Please select at least one product to add to cart","Vui lòng chọn ít nhất một sản phẩm để bổ sung vào xe đẩy",module,Magento_Checkout
+"The quote item isn't found. Verify the item and try again.","Không tìm thấy mục trích dẫn. Kiểm tra mục rồi thử lại.",module,Magento_Checkout
+"The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.","Chưa đặt hàng. Trước tiên, hãy đồng ý với các điều khoản và điều kiện, sau đó thử đặt hàng lại.",module,Magento_Checkout
+"The product wasn't found. Verify the product and try again.","Không tìm thấy sản phẩm. Kiểm tra sản phẩm rồi thử lại.",module,Magento_Checkout
+"A server error stopped your order from being placed. Please try to place your order again.","Một lỗi máy chủ đã ngăn chặn đơn đặt hàng của bạn. Xin hãy thử đặt hàng lại.",module,Magento_Checkout
+"The shipping address is missing. Set the address and try again.","Địa chỉ vận chuyển bị mất. Xác lập địa chỉ và thử lại.",module,Magento_Checkout
+"The shipping information was unable to be saved. Verify the input data and try again.","Thông tin vận chuyển không thể lưu được. Kiểm tra dữ liệu nhập liệu rồi thử lại.",module,Magento_Checkout
+"The shipping method can't be set for an empty cart. Add an item to cart and try again.","Phương pháp vận chuyển không thể được xác lập cho một chiếc xe đẩy rỗng. Thêm một món đồ vào xe đẩy và thử lại.",module,Magento_Checkout
 "Billing Address","Địa chỉ thanh toán",module,Magento_Checkout
-"Something went wrong with your request. Please try again later.","Something went wrong with your request. Please try again later.",module,Magento_Checkout
-"The shipping method is missing. Select the shipping method and try again.","The shipping method is missing. Select the shipping method and try again.",module,Magento_Checkout
-"Show Cross-sell Items in the Shopping Cart","Show Cross-sell Items in the Shopping Cart",module,Magento_Checkout
+"Something went wrong with your request. Please try again later.","Có gì đó không ổn với yêu cầu của anh. Vui lòng gọi lại sau.",module,Magento_Checkout
+"The shipping method is missing. Select the shipping method and try again.","Phương pháp vận chuyển bị thiếu. Chọn phương pháp vận chuyển và thử lại.",module,Magento_Checkout
+"Show Cross-sell Items in the Shopping Cart","Trình bày các mặt hàng bán chéo trong xe bán hàng",module,Magento_Checkout
 "Unable to place order. Please try again later.","Không thể đặt hàng. Xin vui lòng thử lại sau.",module,Magento_Checkout
-"Please specify a regionId in shipping address.","Please specify a regionId in shipping address.",module,Magento_Checkout
+"Please specify a regionId in shipping address.","Vui lòng xác định một dịch vụ regionId trong địa chỉ vận chuyển.",module,Magento_Checkout
 "Terms and Conditions","Điều khoản và điều kiện",module,Magento_CheckoutAgreements
 "Add New Condition","Thêm điều kiện",module,Magento_CheckoutAgreements
 "Save Condition","Lưu điều kiện",module,Magento_CheckoutAgreements
@@ -16166,7 +16166,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Not matched","Không phù hợp",module,Magento_Worldpay
 "Partially matched","Phù hợp phần nào",module,Magento_Worldpay
 "No such order id.","Không có id đơn đặt hàng này.",module,Magento_Worldpay
-"Your purchase process has been cancelled.","Your purchase process has been cancelled.",module,Magento_Worldpay
+"Your purchase process has been cancelled.","Quy trình mua hàng của bạn đã bị hủy bỏ.",module,Magento_Worldpay
 "Something went wrong while processing your order. Please try again later.","Có lỗi xảy ra khi xử lý đơn hàng của bạn. Xin vui lòng thử lại sau.",module,Magento_Worldpay
 "Gateway response is not valid.","Phản ứng Gateway là không hợp lệ.",module,Magento_Worldpay
 "Wrong response type","Loại phản ứng sai",module,Magento_Worldpay
