@@ -27,19 +27,18 @@ define([
                 value: true,
             }
         },
+        countryOptions: {},
 
         initialize: function () {
             this._super();
-            this.hideOrigCity();
-            this.disablePostcode();
-            this.initAttr();
+            this.resetFields();
             return this;
         },
 
         onUpdate: function (value) {
             this._super();
 
-            if ( this.indexedOptions[value]) {
+            if ( this.indexedOptions[value] && this.indexedOptions[value] !== '0000') {
                 this.cityValue = this.indexedOptions[value]['title'];
                 this.postcodeValue = this.indexedOptions[value]['code'];
             }
@@ -50,6 +49,7 @@ define([
          * @param {String} value
          */
         update: function (value) {
+            this.resetFields();
             var region = registry.get(this.parentName + '.' + 'region_id'),
                 options = region.indexedOptions,
                 isCityRequired,
@@ -93,6 +93,18 @@ define([
         },
 
         hideOrigCity: function () {
+            if (this.countryOptions.currentCountry === 'VN') {
+                registry.get((this.parentName + '.' + 'city_id'), function (city) { //customName == custom Entry??
+                    city.validation['required-entry'] = false;
+                    city.visible(false);
+                });
+
+                registry.get((this.parentName + '.' + 'city_id_input'), function (city) { //customName == custom Entry??
+                    city.validation['required-entry'] = false;
+                    city.visible(false);
+                });
+                return;
+            }
             registry.get((this.parentName + '.' + 'city'), function (city) { //customName == custom Entry??
                 city.validation['required-entry'] = false;
                 city.visible(false);
@@ -100,17 +112,28 @@ define([
         },
 
         disablePostcode: function () {
+            if (this.countryOptions.currentCountry === 'VN') {
+                return;
+            }
             registry.get((this.parentName + '.' + 'postcode'), function (postcode) { //customName == custom Entry??
                 // postcode.validation['required-entry'] = true;
                 postcode.disabled(true);
             });
         },
 
-        initAttr: function () {
-            // this.required(this.is_city_required);
-            // registry.get((this.parentName + '.' + 'city_id_input'), function (cityId) { //customName == custom Entry??
-            //     cityId.required(true);
-            // });
+        getCountryOptions: function () {
+            var country = registry.get(this.parentName + '.' + 'country_id'),
+            currentCountry = country.value();
+
+            this.countryOptions =  {
+                'currentCountry': currentCountry,
+            }
+        },
+
+        resetFields: function () {
+            this.getCountryOptions();
+            this.hideOrigCity();
+            this.disablePostcode();
         }
 
     });

@@ -13,6 +13,7 @@
     <preference for="Amore\CustomerRegistration\Api\Data\ResponseInterface" type="Amore\CustomerRegistration\Model\Response" />
     <preference for="Amore\CustomerRegistration\Api\Data\DataResponseInterface" type="Amore\CustomerRegistration\Model\DataResponse" />
     <preference for="Magento\Customer\Model\ResourceModel\Customer" type="Amore\CustomerRegistration\Model\ResourceModel\Customer\Customer" />
+    <preference for="Magento\Backend\Controller\Adminhtml\System\Store\Save" type="Amore\CustomerRegistration\Controller\Adminhtml\Backend\System\Store\Save" />
     <type name="Amore\CustomerRegistration\Logger\Handler">
         <arguments>
             <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>

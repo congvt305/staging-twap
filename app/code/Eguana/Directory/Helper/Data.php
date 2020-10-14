@@ -21,6 +21,7 @@ class Data extends \Magento\Directory\Helper\Data
 {
     const XML_PATH_CITIES_REQUIRED = 'general/city/state_required';
     const XML_PATH_DISPLAY_ALL_CITIES = 'general/city/display_all';
+    const XML_PATH_IS_ZIPCODE_AUTOFILLED = 'general/country/is_zipcode_autofilled';
     /**
      * @var \Eguana\Directory\Model\ResourceModel\City\CollectionFactory
      */
@@ -168,5 +169,21 @@ class Data extends \Magento\Directory\Helper\Data
             self::XML_PATH_DISPLAY_ALL_CITIES,
             ScopeInterface::SCOPE_STORE
         );
+    }
+
+    public function isZipCodeAutofilled()
+    {
+        $defaultCountry = $this->scopeConfig->getValue(
+            'general/country/default',
+            ScopeInterface::SCOPE_WEBSITE
+        );
+        $autofilledCountries = $this->scopeConfig->getValue(
+            self::XML_PATH_IS_ZIPCODE_AUTOFILLED,
+            ScopeInterface::SCOPE_STORE
+        );
+
+        $autofilledCountries = explode(',', $autofilledCountries);
+
+        return in_array($defaultCountry, $autofilledCountries);
     }
 }

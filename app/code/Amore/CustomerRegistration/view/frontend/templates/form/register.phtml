@@ -8,6 +8,7 @@
 
 /** @var \Amore\CustomerRegistration\ViewModel\Register $viewModel */
 $viewModel = $block->getData('view_model');
+$autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCodeAutofilled();
 ?>
 <!-- This div is added by Abbas so in first step to hide all the content of registration and secnodly in case of disable module from admin panel to not effect the css -->
 <div class="customer-registration-form-create-account">
@@ -231,7 +232,11 @@ $viewModel = $block->getData('view_model');
                     <label for="dm_zipcode" class="label"><span><?= $block->escapeHtml(__('Zip Code')) ?></span></label>
                     <div class="control">
                         <?php //phpcs:disable ?>
+                        <?php if ($autofilledFlag): ?>
                         <input type="text" readonly placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
+                        <?php else: ?>
+                        <input type="text" placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
+                        <?php endif; ?>
                         <?php //phpcs:enable ?>
                     </div>
                 </div>
@@ -368,7 +373,8 @@ require([
                 "form": "#form-validate",
                 "cityJson": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityJson() ?>,
                 "defaultRegion": "<?= /* @noEscape */ $block->getRegionId() ?>",
-                "defaultCity": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityCodeByRegionName((int)$block->getRegionId(), $block->getFormData()->getDmCity()) ?>
+                "defaultCity": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityCodeByRegionName((int)$block->getRegionId(), $block->getFormData()->getDmCity()) ?>,
+                "autofilledZipcode": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCodeAutofilled() ? 'true' : 'false' ?>
             }
         }
 

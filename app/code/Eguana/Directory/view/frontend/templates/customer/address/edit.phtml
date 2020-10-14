@@ -11,10 +11,12 @@
  * Edit customer address template
  *
  * @var $block \Magento\Customer\Block\Address\Edit
+ *
  */
 /** @var \Magento\Customer\Helper\Address $addressHelper */
 $addressHelper = $this->helper(\Magento\Customer\Helper\Address::class);
 $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked');
+$autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCodeAutofilled();
 ?>
 <form class="form-address-edit" action="<?= $block->escapeUrl($block->getSaveUrl()) ?>" method="post" id="form-validate" enctype="multipart/form-data" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>">
     <fieldset class="fieldset">
@@ -101,7 +103,11 @@ $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked'
         <div class="field zip required">
             <label class="label" for="zip"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?></span></label>
             <div class="control">
+                <?php if ($autofilledFlag): ?>
                 <input type="text" placeholder="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>" readonly name="postcode" value="<?= $block->escapeHtmlAttr($block->getAddress()->getPostcode()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>" id="zip" class="input-text validate-zip-international <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('postcode') ?>"/>
+               <?php else: ?>
+                <input type="text" placeholder="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>" name="postcode" value="<?= $block->escapeHtmlAttr($block->getAddress()->getPostcode()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>" id="zip" class="input-text validate-zip-international <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('postcode') ?>"/>
+                <?php endif; ?>
                 <div role="alert" class="message warning" style="display:none">
                     <span></span>
                 </div>
@@ -185,7 +191,8 @@ $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked'
                 "form": "#form-validate",
                 "cityJson": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityJson() ?>,
                 "defaultRegion": "<?= /* @noEscape */ $block->getRegionId() ?>",
-                "defaultCity": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityCodeByRegionName((int)$block->getRegionId(), $block->getAddress()->getCity()) ?>
+                "defaultCity": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityCodeByRegionName((int)$block->getRegionId(), $block->getAddress()->getCity()) ?>,
+                "autofilledZipcode": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCodeAutofilled() ? 'true' : 'false' ?>
             }
         }
     }

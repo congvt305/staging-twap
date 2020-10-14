@@ -196,7 +196,7 @@
 "Edit","Chỉnh sửa",module,Magento_AdvancedCheckout
 "Remove item","Xóa sản phẩm",module,Magento_AdvancedCheckout
 "Products Requiring Attention","Products Requiring Attention",module,Magento_AdvancedCheckout
-"Add to Cart","Thêm vào giỏ hàng",module,Magento_AdvancedCheckout
+"Add to Cart","Chọn mua",module,Magento_AdvancedCheckout
 "Sku","Mã sản phẩm",module,Magento_AdvancedCheckout
 "File","Tệp",module,Magento_AdvancedCheckout
 "File extensions allowed: .csv","File extensions allowed: .csv",module,Magento_AdvancedCheckout
@@ -2292,10 +2292,10 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Compare Products","So sánh sản phẩm",module,Magento_Catalog
 "Print This Page","In Trang này",module,Magento_Catalog
 "Remove Product","Loại bỏ sản phẩm",module,Magento_Catalog
-"Add to Cart","Thêm vào giỏ hàng",module,Magento_Catalog
+"Add to Cart","Chọn mua",module,Magento_Catalog
 "In stock","Còn trong kho",module,Magento_Catalog
 "Out of stock","Tạm hết hàng",module,Magento_Catalog
-"Add to Wish List","Thêm vào danh sách yêu thích",module,Magento_Catalog
+"Add to Wish List","Đã thích",module,Magento_Catalog
 "You have no items to compare.","Bạn có không có mục nào để so sánh.",module,Magento_Catalog
 "Remove This Item","Loại bỏ mục này",module,Magento_Catalog
 "Compare","So sánh",module,Magento_Catalog
@@ -2440,7 +2440,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Image","Hình ảnh",module,Magento_Catalog
 "Learn More Link","Liên kết tìm hiểu thêm",module,Magento_Catalog
 "Buttons to show","Các nút để hiển thị",module,Magento_Catalog
-"Add to Wishlist","Thêm vào danh sách yêu thích",module,Magento_Catalog
+"Add to Wishlist","Đã thích",module,Magento_Catalog
 "Viewed Products Grid Template","Mẫu lưới các sản phẩm đã xem",module,Magento_Catalog
 "Viewed Products List Template","Mẫu danh sách các sản phẩm đã xem",module,Magento_Catalog
 "Viewed Products Sidebar Template","Mẫu thanh bên các sản phẩm đã xem",module,Magento_Catalog
@@ -2501,7 +2501,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Skip to the beginning of the images gallery","Chuyển đến phần đầu của thư viện hình ảnh",module,Magento_Catalog
 "Details","Chi tiết",module,Magento_Catalog
 "Recently Compared","So sánh gần đây",module,Magento_Catalog
-"Add To Cart","Thêm vào giỏ hàng",module,Magento_Catalog
+"Add To Cart","Chọn mua",module,Magento_Catalog
 "Add To Compare","Thêm vào so sánh",module,Magento_Catalog
 "Learn more","Tìm hiểu thêm",module,Magento_Catalog
 "Recently Viewed","Xem gần đây",module,Magento_Catalog
@@ -2851,7 +2851,7 @@ Time in seconds between the widget updates.,module,Magento_Catalog
 "Category Permissions","Cấp phép nhóm",module,Magento_CatalogPermissions
 "Browsing Category","Duyệt nhóm",module,Magento_CatalogPermissions
 "Display Product Prices","Hiển thị giá sản phẩm",module,Magento_CatalogPermissions
-"Add to Cart","Thêm vào giỏ hàng",module,Magento_CatalogPermissions
+"Add to Cart","Chọn mua",module,Magento_CatalogPermissions
 "Yes, for Everyone","Vâng, cho mọi người",module,Magento_CatalogPermissions
 "Yes, for Specified Customer Groups","Yeah, cho các nhóm khách hàng được chỉ định",module,Magento_CatalogPermissions
 "No","Không",module,Magento_CatalogPermissions
@@ -3177,10 +3177,10 @@ Time in seconds between the widget updates.,module,Magento_Catalog
 "Product Attribute","Thuộc tính sản phẩm",module,Magento_CatalogWidget
 "SKU","MÃ SẢN PHẨM",module,Magento_CatalogWidget
 "Please choose a condition to add.","Vui lòng chọn một điều kiện để thêm.",module,Magento_CatalogWidget
-"Add to Cart","Thêm vào giỏ hàng",module,Magento_CatalogWidget
+"Add to Cart","Chọn mua",module,Magento_CatalogWidget
 "In stock","Còn trong kho",module,Magento_CatalogWidget
 "Out of stock","Tạm hết hàng",module,Magento_CatalogWidget
-"Add to Wish List","Thêm vào danh sách yêu thích",module,Magento_CatalogWidget
+"Add to Wish List","Đã thích",module,Magento_CatalogWidget
 "Add to Compare","Thêm vào so sánh",module,Magento_CatalogWidget
 "Catalog Products List","Danh mục danh sách sản phẩm",module,Magento_CatalogWidget
 "List of Products","Danh sách sản phẩm",module,Magento_CatalogWidget
@@ -3292,7 +3292,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Excl. Tax","Chưa bao gồm thuế",module,Magento_Checkout
 "Loading...","Đang tải...",module,Magento_Checkout
 "Order #","Đơn hàng #",module,Magento_Checkout
-"Proceed to Checkout","Tiến hành thanh toán",module,Magento_Checkout
+"Proceed to Checkout","Thanh toán",module,Magento_Checkout
 "Product Name","Tên sản phẩm",module,Magento_Checkout
 "Incl. Tax","Đã bao gồm thuế",module,Magento_Checkout
 "Your order number is: %1.","Mã số đơn hàng của bạn là: %1.",module,Magento_Checkout
@@ -3336,7 +3336,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Ship To:","Gửi đến:",module,Magento_Checkout
 "edit","sửa",module,Magento_Checkout
 "Order Summary","Tóm tắt đơn hàng",module,Magento_Checkout
-"View and Edit Cart","Xem và sửa giỏ hàng",module,Magento_Checkout
+"View and Edit Cart","Giỏ mua hàng",module,Magento_Checkout
 "View Details","Xem chi tiết",module,Magento_Checkout
 "Field ","Trường ",module,Magento_Checkout
 " is required."," là bắt buộc.",module,Magento_Checkout
@@ -3392,7 +3392,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "items","sản phẩm",module,Magento_Checkout
 "Go to Checkout","Đi đến thanh toán",module,Magento_Checkout
 "Recently added item(s)","Sản phẩm thêm vào gần đây",module,Magento_Checkout
-"View and edit cart","Xem và sửa giỏ hàng",module,Magento_Checkout
+"View and edit cart","Giỏ mua hàng",module,Magento_Checkout
 "No Payment Methods","Không có phương thức thanh toán",module,Magento_Checkout
 "Shipping Methods","Phương thức vận chuyển",module,Magento_Checkout
 "Select Method","Chọn phương thức",module,Magento_Checkout
@@ -3405,22 +3405,22 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Require Customer To Be Logged In To Checkout","Yêu cầu khách hàng đăng nhập trước khi thanh toán",module,Magento_Checkout
 "Maximum Display Recently Added Item(s)","Màn hình hiển thị tối đa sản phẩm mới thêm gần đây",module,Magento_Checkout
 "of","của",module,Magento_Checkout
-"Something went wrong while saving the page. Please refresh the page and try again.","Something went wrong while saving the page. Please refresh the page and try again.",module,Magento_Checkout
-"You added %1 to your <a href=""%2"">shopping cart</a>.","You added %1 to your <a href=""%2"">shopping cart</a>.",module,Magento_Checkout
-"Please select at least one product to add to cart","Please select at least one product to add to cart",module,Magento_Checkout
-"The quote item isn't found. Verify the item and try again.","The quote item isn't found. Verify the item and try again.",module,Magento_Checkout
-"The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.","The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.",module,Magento_Checkout
-"The product wasn't found. Verify the product and try again.","The product wasn't found. Verify the product and try again.",module,Magento_Checkout
-"A server error stopped your order from being placed. Please try to place your order again.","A server error stopped your order from being placed. Please try to place your order again.",module,Magento_Checkout
-"The shipping address is missing. Set the address and try again.","The shipping address is missing. Set the address and try again.",module,Magento_Checkout
-"The shipping information was unable to be saved. Verify the input data and try again.","The shipping information was unable to be saved. Verify the input data and try again.",module,Magento_Checkout
-"The shipping method can't be set for an empty cart. Add an item to cart and try again.","The shipping method can't be set for an empty cart. Add an item to cart and try again.",module,Magento_Checkout
+"Something went wrong while saving the page. Please refresh the page and try again.","Có chuyện gì đó không ổn trong khi lưu lại trang đó. Vui lòng làm mới trang đó và thử lại.",module,Magento_Checkout
+"You added %1 to your <a href=""%2"">shopping cart</a>.","Bạn đã thêm %1 vào <a href=""%2"">máy bán hàng</a>.",module,Magento_Checkout
+"Please select at least one product to add to cart","Vui lòng chọn ít nhất một sản phẩm để bổ sung vào xe đẩy",module,Magento_Checkout
+"The quote item isn't found. Verify the item and try again.","Không tìm thấy mục trích dẫn. Kiểm tra mục rồi thử lại.",module,Magento_Checkout
+"The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.","Chưa đặt hàng. Trước tiên, hãy đồng ý với các điều khoản và điều kiện, sau đó thử đặt hàng lại.",module,Magento_Checkout
+"The product wasn't found. Verify the product and try again.","Không tìm thấy sản phẩm. Kiểm tra sản phẩm rồi thử lại.",module,Magento_Checkout
+"A server error stopped your order from being placed. Please try to place your order again.","Một lỗi máy chủ đã ngăn chặn đơn đặt hàng của bạn. Xin hãy thử đặt hàng lại.",module,Magento_Checkout
+"The shipping address is missing. Set the address and try again.","Địa chỉ vận chuyển bị mất. Xác lập địa chỉ và thử lại.",module,Magento_Checkout
+"The shipping information was unable to be saved. Verify the input data and try again.","Thông tin vận chuyển không thể lưu được. Kiểm tra dữ liệu nhập liệu rồi thử lại.",module,Magento_Checkout
+"The shipping method can't be set for an empty cart. Add an item to cart and try again.","Phương pháp vận chuyển không thể được xác lập cho một chiếc xe đẩy rỗng. Thêm một món đồ vào xe đẩy và thử lại.",module,Magento_Checkout
 "Billing Address","Địa chỉ thanh toán",module,Magento_Checkout
-"Something went wrong with your request. Please try again later.","Something went wrong with your request. Please try again later.",module,Magento_Checkout
-"The shipping method is missing. Select the shipping method and try again.","The shipping method is missing. Select the shipping method and try again.",module,Magento_Checkout
-"Show Cross-sell Items in the Shopping Cart","Show Cross-sell Items in the Shopping Cart",module,Magento_Checkout
+"Something went wrong with your request. Please try again later.","Có gì đó không ổn với yêu cầu của anh. Vui lòng gọi lại sau.",module,Magento_Checkout
+"The shipping method is missing. Select the shipping method and try again.","Phương pháp vận chuyển bị thiếu. Chọn phương pháp vận chuyển và thử lại.",module,Magento_Checkout
+"Show Cross-sell Items in the Shopping Cart","Trình bày các mặt hàng bán chéo trong xe bán hàng",module,Magento_Checkout
 "Unable to place order. Please try again later.","Không thể đặt hàng. Xin vui lòng thử lại sau.",module,Magento_Checkout
-"Please specify a regionId in shipping address.","Please specify a regionId in shipping address.",module,Magento_Checkout
+"Please specify a regionId in shipping address.","Vui lòng xác định một dịch vụ regionId trong địa chỉ vận chuyển.",module,Magento_Checkout
 "Terms and Conditions","Điều khoản và điều kiện",module,Magento_CheckoutAgreements
 "Add New Condition","Thêm điều kiện",module,Magento_CheckoutAgreements
 "Save Condition","Lưu điều kiện",module,Magento_CheckoutAgreements
@@ -7212,7 +7212,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Search By","Tìm kiếm theo",module,Magento_GiftRegistry
 "Please enter at least two letters.","Vui lòng nhập ít nhất hai chữ.",module,Magento_GiftRegistry
 "Unit Price","Đơn giá",module,Magento_GiftRegistry
-"Add to Cart","Thêm vào giỏ hàng",module,Magento_GiftRegistry
+"Add to Cart","Chọn mua",module,Magento_GiftRegistry
 "Gift Registry created at %store_name","Tạo Đăng ký quà tại %store_name",module,Magento_GiftRegistry
 "%name,","%name,",module,Magento_GiftRegistry
 "You have successfully created the new gift registry ""%registry_name"".","Bạn đã tạo thành công đăng ký Quà tặng mới ""% registry_name"".",module,Magento_GiftRegistry
@@ -8182,7 +8182,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "You will see the order total before you submit the order.","Bạn sẽ thấy tổng đơn hàng trước khi bạn gửi đơn đặt hàng.",module,Magento_Msrp
 "Price","Giá",module,Magento_Msrp
 "Actual Price","Giá thực tế",module,Magento_Msrp
-"Add to Cart","Thêm vào giỏ hàng",module,Magento_Msrp
+"Add to Cart","Chọn mua",module,Magento_Msrp
 "Minimum Advertised Price","Giá quảng cáo Tối thiểu",module,Magento_Msrp
 "Enable MAP","Cho phép MAP",module,Magento_Msrp
 "Display Actual Price","Hiển thị giá thực tế",module,Magento_Msrp
@@ -8259,7 +8259,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Updated","Đã cập nhật",module,Magento_MultipleWishlist
 "Wish List Items","Các sản phẩm trong danh sách yêu thích",module,Magento_MultipleWishlist
 "You must select items to add to the cart.","Bạn phải chọn sản phẩm để thêm vào giỏ hàng.",module,Magento_MultipleWishlist
-"Add to Cart","Thêm vào giỏ hàng",module,Magento_MultipleWishlist
+"Add to Cart","Chọn mua",module,Magento_MultipleWishlist
 "Back","Trở lại",module,Magento_MultipleWishlist
 "Add to:","Thêm vào:",module,Magento_MultipleWishlist
 "Create New Wish List","Tạo danh sách yêu thích mới",module,Magento_MultipleWishlist
@@ -8319,7 +8319,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "All Websites","Tất cả trang Web",module,Magento_MultipleWishlist
 "Product Info","Thông tin sản phẩm",module,Magento_MultipleWishlist
 "Unit Price","Đơn giá",module,Magento_MultipleWishlist
-"Add to Wish List","Thêm vào danh sách yêu thích",module,Magento_MultipleWishlist
+"Add to Wish List","Đã thích",module,Magento_MultipleWishlist
 "Could not create a wish list.","Could not create a wish list.",module,Magento_MultipleWishlist
 "The default wish list can't be deleted.","The default wish list can't be deleted.",module,Magento_MultipleWishlist
 "Edit wish list","Edit wish list",module,Magento_MultipleWishlist
@@ -8753,32 +8753,32 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Add New Address","Thêm địa chỉ mới",module,Magento_NegotiableQuote
 "Shipping Method","Phương thức vận chuyển",module,Magento_NegotiableQuote
 "No shipping information available","Không có thông tin vận chuyển",module,Magento_NegotiableQuote
-"Select a shipping address from your address book.","Select a shipping address from your address book.",module,Magento_NegotiableQuote
-"Send for Review","Send for Review",module,Magento_NegotiableQuote
-"Proceed to Checkout","Tiến hành thanh toán",module,Magento_NegotiableQuote
-"Close quote","Close quote",module,Magento_NegotiableQuote
+"Select a shipping address from your address book.","Hãy chọn địa chỉ vận chuyển từ sổ địa chỉ của bạn.",module,Magento_NegotiableQuote
+"Send for Review","Gửi để xem xét lại",module,Magento_NegotiableQuote
+"Proceed to Checkout","Thanh toán",module,Magento_NegotiableQuote
+"Close quote","Lời trích dẫn chặt chẽ",module,Magento_NegotiableQuote
 "Delete","Xóa bỏ",module,Magento_NegotiableQuote
 "Remove item","Xóa sản phẩm",module,Magento_NegotiableQuote
 "Product Name","Tên sản phẩm",module,Magento_NegotiableQuote
 "Price","Giá",module,Magento_NegotiableQuote
 "Quote Items","Quote Items",module,Magento_NegotiableQuote
 "Update","Cập nhật",module,Magento_NegotiableQuote
-"No shipping information available.","No shipping information available.",module,Magento_NegotiableQuote
+"No shipping information available.","Không có thông tin vận chuyển.",module,Magento_NegotiableQuote
 "Contact Us","Liên hệ với chúng tôi",module,Magento_NegotiableQuote
-"Your quote number is: %1.","Your quote number is: %1.",module,Magento_NegotiableQuote
-"The quote has been sent to the merchant.","The quote has been sent to the merchant.",module,Magento_NegotiableQuote
+"Your quote number is: %1.","Số báo giá của bạn là: %1.",module,Magento_NegotiableQuote
+"The quote has been sent to the merchant.","Bản báo giá đã được gửi cho thương nhân.",module,Magento_NegotiableQuote
 "Continue Shopping","Tiếp tục mua sắm",module,Magento_NegotiableQuote
-"Please specify the reason","Please specify the reason",module,Magento_NegotiableQuote
-"Dear %merchant_name,","Dear %merchant_name,",module,Magento_NegotiableQuote
-"New quote ","New quote ",module,Magento_NegotiableQuote
-" submitted by buyer"," submitted by buyer",module,Magento_NegotiableQuote
+"Please specify the reason","Xin hãy xác định rõ ràng buộc",module,Magento_NegotiableQuote
+"Dear %merchant_name,","%merchant_name thân mến,",module,Magento_NegotiableQuote
+"New quote ","Lời trích dẫn mới ",module,Magento_NegotiableQuote
+" submitted by buyer"," Người mua nộp",module,Magento_NegotiableQuote
 "Thank you,","Cảm ơn bạn,",module,Magento_NegotiableQuote
 "%store_name","%store_name",module,Magento_NegotiableQuote
-"Dear %customer_name,","Dear %customer_name,",module,Magento_NegotiableQuote
-"Your quote ","Your quote ",module,Magento_NegotiableQuote
-" has been declined by the seller."," has been declined by the seller.",module,Magento_NegotiableQuote
-"Reason: %reason.","Reason: %reason.",module,Magento_NegotiableQuote
-" expires on "," expires on ",module,Magento_NegotiableQuote
+"Dear %customer_name,","%customer_name thân mến,",module,Magento_NegotiableQuote
+"Your quote ","Lời trích dẫn của bạn ",module,Magento_NegotiableQuote
+" has been declined by the seller."," đã bị người bán từ chối.",module,Magento_NegotiableQuote
+"Reason: %reason.","Lý do: %reason.",module,Magento_NegotiableQuote
+" expires on "," hết hạn vào ngày ",module,Magento_NegotiableQuote
 " after which time you can’t order the items in the quote. After the expiration,,module,Magento_NegotiableQuote
 you’ll have to negotiate the price with the seller again."," after which time you can’t order the items in the quote. After the expiration,,module,Magento_NegotiableQuote
 you’ll have to negotiate the price with the seller again.",module,Magento_NegotiableQuote
@@ -8794,10 +8794,10 @@ You can set a new expiration date if you wish.","Expiration date for the Quote %
 You can set a new expiration date if you wish.",module,Magento_NegotiableQuote
 "Quote ","Quote ",module,Magento_NegotiableQuote
 " updated by buyer"," updated by buyer",module,Magento_NegotiableQuote
-"The seller responded to your quote ","The seller responded to your quote ",module,Magento_NegotiableQuote
-"The Quote expires after ","The Quote expires after ",module,Magento_NegotiableQuote
-"Item in Quote","Item in Quote",module,Magento_NegotiableQuote
-"Items in Quote","Items in Quote",module,Magento_NegotiableQuote
+"The seller responded to your quote ","Người bán đáp lại lời trích dẫn của bạn ",module,Magento_NegotiableQuote
+"The Quote expires after ","Lời trích dẫn hết hạn sau ",module,Magento_NegotiableQuote
+"Item in Quote","Các mục trích dẫn",module,Magento_NegotiableQuote
+"Items in Quote","Các mục trích dẫn",module,Magento_NegotiableQuote
 "Apply Discount Code","Áp dụng mã giảm giá",module,Magento_NegotiableQuote
 "Enter discount code","Nhập mã giảm giá",module,Magento_NegotiableQuote
 "Apply Discount","Áp dụng giảm giá",module,Magento_NegotiableQuote
@@ -8810,15 +8810,15 @@ You can set a new expiration date if you wish.",module,Magento_NegotiableQuote
 "See Balance","Xem số dư",module,Magento_NegotiableQuote
 "Edit","Chỉnh sửa",module,Magento_NegotiableQuote
 "Ship Here","Gửi ở đây",module,Magento_NegotiableQuote
-"Update Catalog Prices","Update Catalog Prices",module,Magento_NegotiableQuote
-"If you proceed, catalog prices and cart discounts on this quote will be updated as per the latest changes in the catalog and the price rules.","If you proceed, catalog prices and cart discounts on this quote will be updated as per the latest changes in the catalog and the price rules.",module,Magento_NegotiableQuote
+"Update Catalog Prices","Cập nhật giá thành catalog",module,Magento_NegotiableQuote
+"If you proceed, catalog prices and cart discounts on this quote will be updated as per the latest changes in the catalog and the price rules.","Nếu bạn tiếp tục tiến hành, giá catalog và chiết khấu xe đẩy trên báo giá này sẽ được cập nhật theo những thay đổi mới nhất trong catalog và các quy tắc giá cả.",module,Magento_NegotiableQuote
 "No ordered items","Không có sản phẩm nào được đặt",module,Magento_NegotiableQuote
-"Please enter a number greater than 0 in this field","Please enter a number greater than 0 in this field",module,Magento_NegotiableQuote
+"Please enter a number greater than 0 in this field","Vui lòng nhập một số lớn hơn 0 trong trường này.",module,Magento_NegotiableQuote
 "This is a required field.","Đây là trường bắt buộc.",module,Magento_NegotiableQuote
-"Please enter a non-decimal number please","Please enter a non-decimal number please",module,Magento_NegotiableQuote
+"Please enter a non-decimal number please","Xin hãy nhập một số không thập phân",module,Magento_NegotiableQuote
 "This is a required option.","Đây là một bắt buộc lựa chọn.",module,Magento_NegotiableQuote
 "The field isn't complete.","Các lĩnh vực không phải là hoàn tất.",module,Magento_NegotiableQuote
-"Maximum length of the message is ","Maximum length of the message is ",module,Magento_NegotiableQuote
+"Maximum length of the message is ","Độ dài tối đa của thông điệp là ",module,Magento_NegotiableQuote
 "Decline Quote?","Decline Quote?",module,Magento_NegotiableQuote
 "If you click [Confirm], all custom pricing from the selected quotes will be removed. The buyers will be able to place orders using their standard catalog prices.","If you click [Confirm], all custom pricing from the selected quotes will be removed. The buyers will be able to place orders using their standard catalog prices.",module,Magento_NegotiableQuote
 "Decline Quotes?","Decline Quotes?",module,Magento_NegotiableQuote
@@ -10145,7 +10145,7 @@ offered and the currency offered by the merchant is USD.",module,Magento_Paypal
 "Order by SKU","Order by SKU",module,Magento_QuickOrder
 "Enter SKU or Product Name","Enter SKU or Product Name",module,Magento_QuickOrder
 "Qty","Số lượng",module,Magento_QuickOrder
-"Add to Cart","Thêm vào giỏ hàng",module,Magento_QuickOrder
+"Add to Cart","Chọn mua",module,Magento_QuickOrder
 "Remove Row","Remove Row",module,Magento_QuickOrder
 " product(s) require(s) your attention."," product(s) require(s) your attention.",module,Magento_QuickOrder
 "Enable Quick Order","Enable Quick Order",module,Magento_QuickOrder
@@ -10848,10 +10848,10 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Show Report For:","Hiển thị các báo cáo cho:",module,Magento_Reports
 "All Websites","Tất cả trang Web",module,Magento_Reports
 "Recently Viewed","Xem gần đây",module,Magento_Reports
-"Add to Cart","Thêm vào giỏ hàng",module,Magento_Reports
+"Add to Cart","Chọn mua",module,Magento_Reports
 "In stock","Còn trong kho",module,Magento_Reports
 "Out of stock","Tạm hết hàng",module,Magento_Reports
-"Add to Wish List","Thêm vào danh sách yêu thích",module,Magento_Reports
+"Add to Wish List","Đã thích",module,Magento_Reports
 "Add to Compare","Thêm vào so sánh",module,Magento_Reports
 "Recently Compared","So sánh gần đây",module,Magento_Reports
 "Learn More","Tìm hiểu thêm",module,Magento_Reports
@@ -10974,7 +10974,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "item","sản phẩm",module,Magento_RequisitionList
 "in requisition list","in requisition list",module,Magento_RequisitionList
 "Contact Us","Liên hệ với chúng tôi",module,Magento_RequisitionList
-"Add to Cart","Thêm vào giỏ hàng",module,Magento_RequisitionList
+"Add to Cart","Chọn mua",module,Magento_RequisitionList
 "Update List","Update List",module,Magento_RequisitionList
 "Delete Requisition List","Delete Requisition List",module,Magento_RequisitionList
 "You have no items in this requisition list.","You have no items in this requisition list.",module,Magento_RequisitionList
@@ -12417,7 +12417,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "View All","Xem tất cả",module,Magento_Sales
 "Gift Message for This Order","Tin nhắn Quà tặng cho đơn đặt hàng này",module,Magento_Sales
 "Recently Ordered","Mới đặt hàng",module,Magento_Sales
-"Add to Cart","Thêm vào giỏ hàng",module,Magento_Sales
+"Add to Cart","Chọn mua",module,Magento_Sales
 "Search","Tìm kiếm",module,Magento_Sales
 "Credit memo for your %store_name order","Bản ghi nhớ tín dụng cho đơn đặt hàng %store_name",module,Magento_Sales
 "%name,","%name,",module,Magento_Sales
@@ -16087,10 +16087,10 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Add All to Cart","Thêm tất cả vào giỏ hàng",module,Magento_Wishlist
 "Update Wish List","Cập nhật danh sách yêu thích",module,Magento_Wishlist
 "Move to Wishlist","Chuyển tới danh sách yêu thích",module,Magento_Wishlist
-"Add to Wish List","Thêm vào danh sách yêu thích",module,Magento_Wishlist
+"Add to Wish List","Đã thích",module,Magento_Wishlist
 "View Product","Xem sản phẩm",module,Magento_Wishlist
 "Qty","Số lượng",module,Magento_Wishlist
-"Add to Cart","Thêm vào giỏ hàng",module,Magento_Wishlist
+"Add to Cart","Chọn mua",module,Magento_Wishlist
 "Availability","Sẵn có",module,Magento_Wishlist
 "In stock","Còn trong kho",module,Magento_Wishlist
 "Out of stock","Tạm hết hàng",module,Magento_Wishlist
@@ -16148,12 +16148,12 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "%1 has been removed from your Wish List.","%1 has been removed from your Wish List.",module,Magento_Wishlist
 "10 by default. Max - 10000","10 theo mặc định. Lớn nhất - 10000",module,Magento_Wishlist
 "255 by default","255 theo mặc định",module,Magento_Wishlist
-"The Wish List item can't load at this time. Please try again later.","The Wish List item can't load at this time. Please try again later.",module,Magento_Wishlist
-"The cart item doesn't exist.","The cart item doesn't exist.",module,Magento_Wishlist
-"You must login or register to add items to your wishlist.","You must login or register to add items to your wishlist.",module,Magento_Wishlist
-"Show in Sidebar","Show in Sidebar",module,Magento_Wishlist
-"Missing key ""model"" in Wishlist Item value data","Missing key ""model"" in Wishlist Item value data",module,Magento_WishlistGraphQl
-"Missing key ""model"" in Wishlist value data","Missing key ""model"" in Wishlist value data",module,Magento_WishlistGraphQl
+"The Wish List item can't load at this time. Please try again later.","Hiện tại thì Wish List không được tải lên. Vui lòng gọi lại sau.",module,Magento_Wishlist
+"The cart item doesn't exist.","Vật phẩm xe đẩy không tồn tại.",module,Magento_Wishlist
+"You must login or register to add items to your wishlist.","Bạn phải đăng nhập hoặc đăng ký để bổ sung các khoản vào danh sách mong muốn của mình.",module,Magento_Wishlist
+"Show in Sidebar","Thể hiện trong thanh ngang",module,Magento_Wishlist
+"Missing key ""model"" in Wishlist Item value data","Thiếu chìa khóa ""model"" trong dữ liệu giá trị của hạng mục wishlist",module,Magento_WishlistGraphQl
+"Missing key ""model"" in Wishlist value data","Thiếu ""model"" khóa trong dữ liệu giá trị wishlist",module,Magento_WishlistGraphQl
 "Credit card type","Loại thẻ tín dụng",module,Magento_Worldpay
 "CVV result","Kết quả CVV",module,Magento_Worldpay
 "Postcode AVS check","Kiểm tra mã SVS",module,Magento_Worldpay
@@ -16166,7 +16166,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Not matched","Không phù hợp",module,Magento_Worldpay
 "Partially matched","Phù hợp phần nào",module,Magento_Worldpay
 "No such order id.","Không có id đơn đặt hàng này.",module,Magento_Worldpay
-"Your purchase process has been cancelled.","Your purchase process has been cancelled.",module,Magento_Worldpay
+"Your purchase process has been cancelled.","Quy trình mua hàng của bạn đã bị hủy bỏ.",module,Magento_Worldpay
 "Something went wrong while processing your order. Please try again later.","Có lỗi xảy ra khi xử lý đơn hàng của bạn. Xin vui lòng thử lại sau.",module,Magento_Worldpay
 "Gateway response is not valid.","Phản ứng Gateway là không hợp lệ.",module,Magento_Worldpay
 "Wrong response type","Loại phản ứng sai",module,Magento_Worldpay
@@ -16288,9 +16288,9 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "No records found.","Không có hồ sơ tìm thấy.",lib,web
 "Recent items","Gần đây Item",lib,web
 "Show all...","Hiển thị tất cả...",lib,web
-"Please enter a number greater 0 in this field.","Please enter a number greater 0 in this field.",lib,web
-"Please select one of each ratings above.","Please select one of each ratings above.",lib,web
-"Please specify Url.","Please specify Url.",lib,web
+"Please enter a number greater 0 in this field.","Vui lòng nhập một con số lớn hơn 0 trong trường này.",lib,web
+"Please select one of each ratings above.","Vui lòng chọn một trong các xếp hạng trên.",lib,web
+"Please specify Url.","Vui lòng xác định cụ thể Url.",lib,web
 "Method %s does not exist on jQuery.decorate","Phương pháp %s không tồn tại trên jQuery.decorate",lib,web
 "Close","Đóng lại",lib,web
 "Next","Tiếp theo",lib,web
@@ -16318,7 +16318,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Please specify a valid phone number","Hãy chỉ định số điện thoại hợp lệ",lib,web
 "Please specify a valid mobile number","Hãy chỉ ra một số điện thoại di động hợp lệ",lib,web
 "Please enter at least {0} characters","Vui lòng nhập ít nhất {0} ký tự",lib,web
-"Please remove invalid characters: {0}.","Please remove invalid characters: {0}.",lib,web
+"Please remove invalid characters: {0}.","Xin hãy loại bỏ các ký tự sai: {0}.",lib,web
 "Please enter a valid credit card number.","Vui lòng nhập một số thẻ tín dụng hợp lệ.",lib,web
 "Please enter a valid IP v4 address.","Vui lòng nhập một địa chỉ IP v4 hợp lệ.",lib,web
 "Please enter a valid IP v6 address.","Vui lòng nhập một địa chỉ IP v6 hợp lệ.",lib,web
@@ -16364,54 +16364,54 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Please select one of the options.","Vui lòng chọn một trong các tùy chọn này.",lib,web
 "Please enter a value less than or equal to %s.","Vui lòng nhập một giá trị ít hơn hoặc bằng với %s.",lib,web
 "Please enter a value greater than or equal to %s.","Vui lòng nhập một giá trị lớn hơn hoặc bằng %s.",lib,web
-"Please enter valid email addresses, separated by commas. For example, johndoe@domain.com, johnsmith@domain.com.","Please enter valid email addresses, separated by commas. For example, johndoe@domain.com, johnsmith@domain.com.",lib,web
+"Please enter valid email addresses, separated by commas. For example, johndoe@domain.com, johnsmith@domain.com.","Vui lòng nhập địa chỉ email hợp lệ, được tách riêng ra bởi các dấu phẩy. Ví dụ, johndoe@domain.com, johnsmith@domain.com.",lib,web
 "Card type does not match credit card number.","Loại thẻ không khớp với số thẻ tín dụng.",lib,web
 "Credit card number does not match credit card type.","Số thẻ tín dụng không khớp với loại thẻ tín dụng.",lib,web
 "Incorrect credit card expiration date.","Ngày hết hạn thẻ tín dụng không chính xác.",lib,web
 "Please enter a valid credit card verification number.","Vui lòng nhập một số xác minh thẻ tín dụng hợp lệ.",lib,web
 "Please enter issue number or start date for switch/solo card type.","Hãy nhập số hoặc ngày bắt đầu cho loại thẻ switch/solo.",lib,web
-"Please enter less or equal than %1 symbols.","Please enter less or equal than %1 symbols.",lib,web
-"Please enter more or equal than %1 symbols.","Please enter more or equal than %1 symbols.",lib,web
+"Please enter less or equal than %1 symbols.","Vui lòng nhập ít hơn hoặc bằng %1 ký tự.",lib,web
+"Please enter more or equal than %1 symbols.","Vui lòng nhập hoặc nhiều hơn %1 ký tự.",lib,web
 "Please enter positive number in this field.","Vui lòng nhập số dương trong trường này.",lib,web
 "Please enter a valid value, ex: 10,20,30","Vui lòng nhập một giá trị hợp lệ, ví dụ: 10,20,30",lib,web
-"Please enter a valid value from list","Please enter a valid value from list",lib,web
-"Please enter valid SKU key.","Please enter valid SKU key.",lib,web
-"Please enter a valid number.","Please enter a valid number.",lib,web
-"This is required field","This is required field",lib,web
-"Admin is a required field in each row.","Admin is a required field in each row.",lib,web
-"Password cannot be the same as email address.","Password cannot be the same as email address.",lib,web
-"Please fix this field.","Please fix this field.",lib,web
+"Please enter a valid value from list","Hãy nhập một trị giá hợp lệ từ danh sách",lib,web
+"Please enter valid SKU key.","Vui lòng nhập khóa SKU hợp lệ.",lib,web
+"Please enter a valid number.","Vui lòng nhập một số hợp lệ.",lib,web
+"This is required field","Đây là trường cần thiết",lib,web
+"Admin is a required field in each row.","Quản trị là một trường cần thiết trong mỗi dòng.",lib,web
+"Password cannot be the same as email address.","Mật khẩu không thể bằng địa chỉ email.",lib,web
+"Please fix this field.","Xin hãy sửa lại trường này.",lib,web
 "Please enter a valid email address.","Vui lòng nhập một địa chỉ email hợp lệ.",lib,web
-"Please enter a valid URL.","Please enter a valid URL.",lib,web
-"Please enter a valid date (ISO).","Please enter a valid date (ISO).",lib,web
-"Please enter only digits.","Please enter only digits.",lib,web
-"Please enter the same value again.","Please enter the same value again.",lib,web
-"Please enter no more than {0} characters.","Please enter no more than {0} characters.",lib,web
-"Please enter at least {0} characters.","Please enter at least {0} characters.",lib,web
-"Please enter a value between {0} and {1} characters long.","Please enter a value between {0} and {1} characters long.",lib,web
-"Please enter a value between {0} and {1}.","Please enter a value between {0} and {1}.",lib,web
+"Please enter a valid URL.","Vui lòng nhập một URL hợp lệ.",lib,web
+"Please enter a valid date (ISO).","Vui lòng nhập một ngày hợp lệ (ISO).",lib,web
+"Please enter only digits.","Vui lòng chỉ nhập các con số.",lib,web
+"Please enter the same value again.","Vui lòng nhập lại cùng một giá trị.",lib,web
+"Please enter no more than {0} characters.","Vui lòng nhập không quá {0} ký tự.",lib,web
+"Please enter at least {0} characters.","Vui lòng nhập ít nhất {0} ký tự.",lib,web
+"Please enter a value between {0} and {1} characters long.","Vui lòng nhập một giá trị trong khoảng từ {0} đến {1} ký tự.",lib,web
+"Please enter a value between {0} and {1}.","Vui lòng nhập một giá trị từ {0} đến {1}.",lib,web
 "Please enter a value less than or equal to {0}.","Vui lòng nhập một giá trị ít hơn hoặc bằng với {0}.",lib,web
 "Please enter a value greater than or equal to {0}.","Vui lòng nhập một giá trị lớn hơn hoặc bằng {0}.",lib,web
 "Please specify the quantity of product(s).","Hãy chỉ ra số lượng sản phẩm.",lib,web
 "Please enter a date between %min and %max.","Vui lòng nhập một ngày giữa % min và % max.",lib,web
-"Please enter a valid full date.","Please enter a valid full date.",lib,web
+"Please enter a valid full date.","Vui lòng nhập một ngày đầy đủ hợp lệ.",lib,web
 "Please enter a valid month (1-12).","Vui lòng nhập một tháng hợp lệ (1-12).",lib,web
 "Please enter a valid year (1900-%1).","Vui lòng nhập một năm hợp lệ (1900-%1).",lib,web
 "Please enter a valid day (1-%1).","Vui lòng nhập một ngày hợp lệ (1-%1).",lib,web
 "Please enter a date from the past.","Vui lòng nhập một ngày từ quá khứ.",lib,web
 "Maximum length of this field must be equal or less than %1 symbols.","Chiều dài tối đa của lĩnh vực này phải bằng hoặc ít hơn %1 biểu tượng.",lib,web
-"Admin is a required field in the each row.","Admin is a required field in the each row.",lib,web
-"Please enter a quantity greater than 0.","Please enter a quantity greater than 0.",lib,web
+"Admin is a required field in the each row.","Quản trị là một trường cần thiết trong mỗi dòng.",lib,web
+"Please enter a quantity greater than 0.","Vui lòng nhập một số lượng lớn hơn 0.",lib,web
 "The fewest you may purchase is %1.","Số lượng ít nhất bạn có thể mua là %1.",lib,web
 "The maximum you may purchase is %1.","The maximum you may purchase is %1.",lib,web
 "You can buy this product only in quantities of %1 at a time.","Bạn chỉ có thể mua sản phẩm này với số lượng %1 một lần.",lib,web
-"Forbidden extensions has been used. Avoid usage of ","Forbidden extensions has been used. Avoid usage of ",lib,web
-"No marginal white space please","No marginal white space please",lib,web
+"Forbidden extensions has been used. Avoid usage of ","Các phần mở rộng bị cấm đã được sử dụng. Tránh sử dụng ",lib,web
+"No marginal white space please","Vui lòng không có khoảng trống biên.",lib,web
 "Please enter 6 or more characters. Leading or trailing spaces will be ignored.","Vui lòng nhập 6 kí tự trở lên. Hàng đầu hoặc chuỗi dấu cách sẽ bị bỏ qua.",lib,web
-"Enter valid SKU key","Enter valid SKU key",lib,web
-"Swatch and Admin are the required fields in the each row.","Swatch and Admin are the required fields in the each row.",lib,web
-"Insert Variable","Insert Variable",lib,web
+"Enter valid SKU key","Nhập khóa SKU hợp lệ",lib,web
+"Swatch and Admin are the required fields in the each row.","Swatch và admin là các trường cần thiết trong mỗi dòng.",lib,web
+"Insert Variable","Nhét vào biến",lib,web
 "Insert Widget","Chèn Widget",lib,web
-"The widget %1 is no longer available. Select a different widget.","The widget %1 is no longer available. Select a different widget.",lib,web
-"First character must be letter.","First character must be letter.",lib,web
-"The password can't be the same as the email address. Create a new password and try again.","The password can't be the same as the email address. Create a new password and try again.",lib,web
+"The widget %1 is no longer available. Select a different widget.","Widget %1 không còn dùng được nữa. Chọn một widget khác.",lib,web
+"First character must be letter.","Ký tự đầu tiên phải là chữ cái.",lib,web
+"The password can't be the same as the email address. Create a new password and try again.","Mật khẩu không thể bằng địa chỉ email. Tạo một mật khẩu mới và thử lại.",lib,web
