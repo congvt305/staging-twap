@@ -93,7 +93,6 @@ define([
         },
 
         hideOrigCity: function () {
-            console.log(this.countryOptions.currentCountry);
             if (this.countryOptions.currentCountry === 'VN') {
                 registry.get((this.parentName + '.' + 'city_id'), function (city) { //customName == custom Entry??
                     city.validation['required-entry'] = false;
@@ -113,7 +112,6 @@ define([
         },
 
         disablePostcode: function () {
-            console.log(this.countryOptions.currentCountry);
             if (this.countryOptions.currentCountry === 'VN') {
                 return;
             }
@@ -125,14 +123,10 @@ define([
 
         getCountryOptions: function () {
             var country = registry.get(this.parentName + '.' + 'country_id'),
-                options = country.indexedOptions,
-                option, currentCountry;
             currentCountry = country.value();
-            option = options[currentCountry];
 
             this.countryOptions =  {
                 'currentCountry': currentCountry,
-                'countryOption': option
             }
         },
 
