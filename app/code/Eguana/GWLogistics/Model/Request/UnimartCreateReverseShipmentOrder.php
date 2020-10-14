@@ -24,8 +24,8 @@ class UnimartCreateReverseShipmentOrder extends \Eguana\GWLogistics\Model\Reques
         $goodsName = $this->_helper->getGoodsNamePrefix($order->getStoreId()) . ' Item X ' . (string)$this->getItemCount($order);
         $goodsAmount = intval($order->getSubtotal()); //todo this meets only full return, need to fix when partial refund
 
-        $senderName = $this->_helper->getSenderName($order->getStoreId()); //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
-        $senderPhone = $this->_helper->getSenderPhone($order->getStoreId());
+        $senderName = $order->getCustomerLastname() . $order->getCustomerFirstname(); //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
+        $senderPhone = $rma->getData('customer_custom_phone') ?? $order->getShippingAddress()->getTelephone();
         $platformId = $this->_helper->getPlatformId($order->getStoreId());
 
         return [
