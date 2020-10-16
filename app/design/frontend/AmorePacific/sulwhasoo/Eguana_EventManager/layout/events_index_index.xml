@@ -13,5 +13,7 @@
     <head>
         <meta name="keywords" content="雪花秀, 大事記, 時事"/>
         <meta name="description" content="雪花秀大事記, 請確認在雪花秀進行的活動信息。| Sulwhasoo"/>
+        <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.sulwhasoo.com/events" src_type="url"/>
+        <link rel="canonical" src="https://tw.sulwhasoo.com/events" src_type="url"/>
     </head>
 </page>
