@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link rel="alternate" hreflang="ko-kr" src="https://www.laneige.com/kr/ko/makeup/etc/" src_type="url"/>
+        <link rel="alternate" hreflang="en" src="https://www.laneige.com/int/en/makeup/etc/" src_type="url"/>
+        <link rel="alternate" hreflang="en-hk" src="https://www.laneige.com/hk/en/product/makeup/etc/all/all.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-sg" src="https://www.laneige.com/sg/en/product/makeup/etc/all/index.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-hant-hk" src="https://www.laneige.com/hk/zh/product/makeup/etc/all/all.html" src_type="url"/>
+        <link rel="alternate" hreflang="vi-vn" src="https://www.laneige.com/vn/vi/product/makeup/etc.all.html" src_type="url"/>
+        <link rel="alternate" hreflang="id-id" src="https://www.laneige.com/id/id/product/makeup/etc/all/index.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/make-up/others.html" src_type="url"/>
+    </head>
+</page>

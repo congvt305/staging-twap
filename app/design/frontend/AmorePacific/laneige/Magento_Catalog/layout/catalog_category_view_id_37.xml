@@ -20,5 +20,8 @@
             </block>
         </referenceBlock>
         <referenceBlock name="breadcrumbs" remove="true"/>
+        <link rel="alternate" hreflang="ko-kr" src="https://www.laneige.com/kr/ko/best-new/best-seller/" src_type="url"/>
+        <link rel="alternate" hreflang="en" src="https://www.laneige.com/int/en/best-new/best-seller/" src_type="url"/>
+        <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/best-new/best-seller.html" src_type="url"/>
     </body>
 </page>
