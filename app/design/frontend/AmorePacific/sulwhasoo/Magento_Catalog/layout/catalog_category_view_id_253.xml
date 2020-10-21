@@ -6,6 +6,19 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link rel="alternate" hreflang="ko-kr" src="https://www.sulwhasoo.com/kr/ko/products/best/best_seller.html" src_type="url"/>
+        <link rel="alternate" hreflang="en" src="https://www.sulwhasoo.com/int/en/products/best_seller/best_seller.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-hk" src="https://www.sulwhasoo.com/hk/en/products/best/index.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-sg" src="https://www.sulwhasoo.com/sg/en/products/best_seller.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-my" src="https://www.sulwhasoo.com/my/en/products/best_seller.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-hant-hk" src="https://www.sulwhasoo.com/hk/zh/products/best/index.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.sulwhasoo.com/best.html" src_type="url"/>
+        <link rel="alternate" hreflang="vi-vn" src="https://www.sulwhasoo.com/vn/vi/products/best/index.html" src_type="url"/>
+        <link rel="alternate" hreflang="th-th" src="https://www.sulwhasoo.com/th/th/products/best_seller.html" src_type="url"/>
+        <link rel="alternate" hreflang="id-id" src="https://www.sulwhasoo.com/id/idproducts/best_seller.html" src_type="url"/>
+        <link rel="alternate" hreflang="fr-fr" src="https://www.sulwhasoo.com/fr/fr/products/best/index.html" src_type="url"/>
+    </head>
     <body>
         <referenceBlock name="catalog.leftnav" remove="true"/>
         <move element="category.view.container" destination="page.wrapper" before="main.content" />

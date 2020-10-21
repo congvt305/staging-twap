@@ -236,6 +236,9 @@ class SapOrderConfirmData extends AbstractSapOrder
             $trackingNumbers = implode(",", $this->getTrackNumber($orderData));
             $customer = $this->getCustomerByOrder($orderData);
 
+            $orderSubTotal = abs(round($orderData->getSubtotalInclTax() + $this->getBundleExtraAmount($orderData) + $this->getCatalogRuleDiscountAmount($orderData)));
+            $orderGrandTotal = $orderData->getGrandTotal() == 0 ? $orderData->getGrandTotal() : abs(round($orderData->getGrandTotal() - $orderData->getShippingAmount()));
+
             $bindData[] = [
                 'vkorg' => $this->config->getSalesOrg('store', $storeId),
                 'kunnr' => $this->config->getClient('store', $storeId),
@@ -262,9 +265,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'telno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'hpno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'waerk' => $orderData->getOrderCurrencyCode(),
-                'nsamt' => abs(round($orderData->getSubtotalInclTax() + $this->getBundleExtraAmount($orderData) + $this->getCatalogRuleDiscountAmount($orderData))),
-                'dcamt' => abs(round(abs($orderData->getDiscountAmount()) + $this->getBundleExtraAmount($orderData) + $this->getCatalogRuleDiscountAmount($orderData))),
-                'slamt' => $orderData->getGrandTotal() == 0 ? $orderData->getGrandTotal() : abs(round($orderData->getGrandTotal() - $orderData->getShippingAmount())),
+                'nsamt' => $orderSubTotal,
+                'dcamt' => $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal),
+                'slamt' => $orderGrandTotal,
                 'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : round($orderData->getRewardPointsBalance()),
                 'shpwr' => round($orderData->getShippingAmount()),
                 'mwsbp' => round($orderData->getTaxAmount()),
@@ -288,6 +291,23 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $bindData;
     }
 
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     * @param $orderSubtotal
+     * @param $orderGrandTotal
+     * @throws NoSuchEntityException
+     */
+    public function getOrderDiscountAmount($order, $orderSubtotal, $orderGrandTotal)
+    {
+        $differenceBtwSubAndGrand = $orderSubtotal - $orderGrandTotal;
+
+        $orderDiscountAmount = abs(round(abs($order->getDiscountAmount()) + $this->getBundleExtraAmount($order) + $this->getCatalogRuleDiscountAmount($order)));
+
+        if ($differenceBtwSubAndGrand != $orderDiscountAmount) {
+            $orderDiscountAmount = $differenceBtwSubAndGrand;
+        }
+        return $orderDiscountAmount;
+    }
 
     public function getOrderIncrementId($incrementId, $orderSendCheck)
     {
@@ -565,7 +585,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         $orderSubtotal = round($order->getSubtotalInclTax() + $this->getBundleExtraAmount($order) + $this->getCatalogRuleDiscountAmount($order));
         $orderGrandtotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($order->getGrandTotal() - $order->getShippingAmount());
-        $orderDiscountAmount = round(abs($order->getDiscountAmount()) + $this->getBundleExtraAmount($order) + $this->getCatalogRuleDiscountAmount($order));
+        $orderDiscountAmount = $this->getOrderDiscountAmount($order, $orderSubtotal, $orderGrandtotal);
 
         $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'itemNsamt');
         $orderItemData = $this->priceCorrector($orderGrandtotal, $itemsGrandTotalInclTax, $orderItemData, 'itemSlamt');

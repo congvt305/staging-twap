@@ -241,7 +241,9 @@ class POSSystem
 
         $resultMessage = isset($result['message'])?$result['message']:'Fail';
         if ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'N') {
-            $resultMessage = 'No information exist in POS';
+            $resultMessage = __('No information exist in POS');
+        }elseif ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'Y' && $resultMessage == 'Fail') {
+            $resultMessage = __('Information loaded successfully');
         }
 
         $this->eventManager->dispatch(

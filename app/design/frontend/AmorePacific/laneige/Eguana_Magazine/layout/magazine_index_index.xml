@@ -13,8 +13,9 @@
     <head>
         <meta name="keywords" content="麗人,趨勢,時尚,文化"/>
         <meta name="description" content="按類別發現LANEIGE雜誌-美容，時尚，文化和潮流 | LANEIGE"/>
-        <link rel="alternate" hreflang="ko-kr" src="http://www.laneige.com/kr/ko/magazine-new.html" src_type="url"/>
-        <link rel="alternate" hreflang="vi-vn" src="http://www.laneige.com/vn/vi/magazine.html" src_type="url"/>
-        <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/brand/magazine.html" src_type="url"/>
+        <link  rel="alternate" hreflang="ko-kr" src="http://www.laneige.com/kr/ko/magazine-new.html" src_type="url"/>
+        <link  rel="alternate" hreflang="vi-vn" src="http://www.laneige.com/vn/vi/magazine.html" src_type="url"/>
+        <link  rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/magazine" src_type="url"/>
+        <link rel="canonical" src="https://tw.laneige.com/magazine" src_type="url"/>
     </head>
 </page>
