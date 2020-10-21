@@ -6,6 +6,11 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link rel="alternate" hreflang="ko-kr" src="https://www.laneige.com/kr/ko/best-new/best-seller/" src_type="url"/>
+        <link rel="alternate" hreflang="en" src="https://www.laneige.com/int/en/best-new/best-seller/" src_type="url"/>
+        <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/best-new/best-seller.html" src_type="url"/>
+    </head>
     <body>
         <attribute name="class" value="bestseller-parallax"/>
         <referenceBlock name="catalog.leftnav" remove="true"/>
