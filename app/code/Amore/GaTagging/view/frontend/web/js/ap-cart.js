@@ -40,15 +40,15 @@ define([
             this.options.actions[events.AJAX_ADD_TO_CART] = function (product) {
                 if(product.product_type === 'bundle') {
                     this.getBundleProductData(product).forEach(function (info) {
-                        apCartAddProds.push(JSON.stringify(info));
+                        apCartAddProds.push(info);
                     });
                 } else if (product.product_type === 'configurable') {
                     this.getConfigurableProductData(product).forEach(function (info) {
-                        apCartAddProds.push(JSON.stringify(info));
+                        apCartAddProds.push(info);
                     });
                 } else {
                     this.getSimpleProductData(product).forEach(function (info) {
-                        apCartAddProds.push(JSON.stringify(info));
+                        apCartAddProds.push(info);
                     });
                 }
                 console.log('apCartAddProds:',apCartAddProds);
