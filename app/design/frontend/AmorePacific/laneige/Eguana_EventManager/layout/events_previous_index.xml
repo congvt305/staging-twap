@@ -12,7 +12,7 @@
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <link rel="alternate" hreflang="ko-kr" src="https://www.laneige.com/kr/ko/event/" src_type="url"/>
-        <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/events" src_type="url"/>
+        <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/events/" src_type="url"/>
         <link rel="canonical" src="https://tw.laneige.com/events" src_type="url"/>
     </head>
 </page>
