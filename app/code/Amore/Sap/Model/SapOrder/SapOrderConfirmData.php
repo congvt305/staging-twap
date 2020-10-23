@@ -216,6 +216,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         $invoice = $this->getInvoice($orderData->getEntityId());
         $storeId = $orderData->getStoreId();
         $shippingMethod = $orderData->getShippingMethod();
+        $trackingNumbers = implode(",", $this->getTrackNumber($orderData));
 
         $bindData = [];
 
@@ -231,9 +232,14 @@ class SapOrderConfirmData extends AbstractSapOrder
             );
         }
 
+        if ($shippingMethod == 'gwlogistics_CVS' && empty($trackingNumbers)) {
+            throw new ShipmentNotExistException(
+                __("Order %1 is CVS shipping and does not have Tracking numbers. Please create track and try again.", $incrementId)
+            );
+        }
+
         if ($invoice != null) {
             $shippingAddress = $orderData->getShippingAddress();
-            $trackingNumbers = implode(",", $this->getTrackNumber($orderData));
             $customer = $this->getCustomerByOrder($orderData);
 
             $orderSubTotal = abs(round($orderData->getSubtotalInclTax() + $this->getBundleExtraAmount($orderData) + $this->getCatalogRuleDiscountAmount($orderData)));
