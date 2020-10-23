@@ -177,16 +177,18 @@ class MassSend extends AbstractAction
                         'direction' => 'outgoing',
                         'to' => "SAP",
                         'serialized_data' => $this->json->serialize($sendData),
-                        'status' => 1,
+                        'status' => empty($orderStatusError) ? 1 : 0,
                         'result_message' => $this->json->serialize($result) . "\n" . "Error Orders : " . $this->json->serialize($orderStatusError)
                     ]
                 );
 
                 $resultSize = count($result);
+
                 if ($resultSize > 0) {
                     if ($result['code'] == '0000') {
                         $outdata = $result['data']['response']['output']['outdata'];
                         $ordersSucceeded = [];
+                        $orderFailed = [];
                         foreach ($outdata as $data) {
                             if ($data['retcod'] == 'S') {
                                 $ordersSucceeded[] = $this->getOriginOrderIncrementId($data);
@@ -202,6 +204,8 @@ class MassSend extends AbstractAction
 
                                 $this->orderRepository->save($succeededOrderObject);
                             } else {
+                                $error = ['increment_id' => $data['odrno'], 'code' => $data['ugcod'], 'error_code' => $data['ugtxt']];
+                                array_push($orderFailed, $error);
                                 $this->changeOrderSendCheckValue($data, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL, "sap_fail");
                                 $this->messageManager->addErrorMessage(
                                     __(
@@ -216,6 +220,20 @@ class MassSend extends AbstractAction
                         $countOrderSucceeded = count($ordersSucceeded);
                         if ($countOrderSucceeded > 0) {
                             $this->messageManager->addSuccessMessage(__('%1 orders sent to SAP Successfully.', $countOrderSucceeded));
+                        }
+
+                        if (count($orderFailed)) {
+                            $this->eventManager->dispatch(
+                                "eguana_bizconnect_operation_processed",
+                                [
+                                    'topic_name' => 'amore.sap.order.masssend.failed',
+                                    'direction' => 'outgoing',
+                                    'to' => "SAP",
+                                    'serialized_data' => $this->json->serialize($sendData),
+                                    'status' => 0,
+                                    'result_message' => $this->json->serialize($orderFailed)
+                                ]
+                            );
                         }
                     } else {
                         $outdata = $result['data']['response']['output']['outdata'];
