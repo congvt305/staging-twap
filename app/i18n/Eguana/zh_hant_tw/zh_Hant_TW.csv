@@ -3340,7 +3340,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Provided Zip/Postal Code seems to be invalid.","提供的郵遞區號似乎無效。",module,Magento_Checkout
 " Example: "," 例: ",module,Magento_Checkout
 "If you believe it is the right one you can ignore this notice.","如果您認為這是對的，則可以忽略此通知。",module,Magento_Checkout
-"New Address","編輯/新增",module,Magento_Checkout
+"New Address","編輯 / 新增",module,Magento_Checkout
 "Are you sure you would like to remove this item from the shopping cart?","您確定要從購物車中刪除該商品嗎？",module,Magento_Checkout
 "Review & Payments","付款方式",module,Magento_Checkout
 "Select a new payment method","選擇一種新的付款方式",module,Magento_Checkout
@@ -7023,7 +7023,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "[WEBSITE]","[WEBSITE]",module,Magento_GiftRegistry
 "[STORE VIEW]","[商店總覽]",module,Magento_GiftRegistry
 "None","無",module,Magento_GiftRegistry
-"New Address","編輯/新增",module,Magento_GiftRegistry
+"New Address","編輯 / 新增",module,Magento_GiftRegistry
 "Edit Gift Registry","編輯禮物註冊表",module,Magento_GiftRegistry
 "Create Gift Registry","創建禮物註冊表",module,Magento_GiftRegistry
 "State/Province","縣市",module,Magento_GiftRegistry
