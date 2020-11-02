@@ -56,6 +56,10 @@ class AddressRenderer
      */
     public function afterFormat(\Magento\Sales\Model\Order\Address\Renderer $subject, $result, Address $address, $type)
     {
+        if ($address->getOrder()->getShippingMethod() !== 'gwlogistics_CVS')
+        {
+            return $result;
+        }
         if ($address->getAddressType() === 'shipping' && $address->getCvsLocationId() && $this->data->isActive()) {
             $cvsLocation = $this->quoteCvsLocationRepository->getById($address->getCvsLocationId());
             $name = $cvsLocation->getCvsStoreName();
