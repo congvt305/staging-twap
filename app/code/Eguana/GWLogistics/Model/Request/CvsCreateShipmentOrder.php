@@ -82,6 +82,7 @@ class CvsCreateShipmentOrder
             $senderCellPhone = $this->helper->getSenderCellPhone($order->getStoreId()); //no space not more than 10.
             //Character limit is 4-10 characters (Chinese2-5 characters, English 4-10 characters)
             $receiverName = $order->getShippingAddress()->getLastname() . $order->getShippingAddress()->getFirstname();
+            $receiverName = str_replace(' ', '', $receiverName);
             $receiverName = (strlen($receiverName) > 10) ? substr($receiverName,0,10): $receiverName;
 
             $receiverPhone = $order->getShippingAddress()->getTelephone();
