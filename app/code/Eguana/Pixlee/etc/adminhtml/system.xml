@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+		<section id="pixlee_pixlee">
+			<group id="existing_customers">
+				<group id="account_settings" translate="label" type="text" sortOrder="1" showInDefault="0" showInWebsite="1" showInStore="0">
+					<!-- Region Code -->
+					<field id="region_code" translate="label" type="text" sortOrder="5"  showInDefault="0" showInWebsite="1" showInStore="0">
+						<label>Region Code</label>
+						<comment>If the value does not exits, Magento Store Code will be use.</comment>
+					</field>
+				</group>
+			</group>
+		</section>
+	</system>
+</config>
