@@ -78,7 +78,7 @@ class DataPlugin
         return json_encode($payload);
     }
 
-    private function getRegionCodeConfig($storeId): string
+    private function getRegionCodeConfig($storeId): ?string
     {
         $regionCode = $this->storeConfig->getValue(
             self::XML_PATH_REGION_CODE,
@@ -89,7 +89,7 @@ class DataPlugin
         return $regionCode;
     }
 
-    private function getWebsiteRegionCodeConfig($websiteId): string
+    private function getWebsiteRegionCodeConfig($websiteId): ?string
     {
         $regionCode = $this->storeConfig->getValue(
             self::XML_PATH_REGION_CODE,
