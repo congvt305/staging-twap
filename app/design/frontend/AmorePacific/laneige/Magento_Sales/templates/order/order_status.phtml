@@ -11,5 +11,5 @@
     <div class="order-status"><?= $block->escapeHtml($block->getOrder()->getStatusLabel()) ?></div>
     <?php if ($block->getOrder()->getStatus() === 'shipment_failure'): ?>
     <div class="order-status-message"><?= $block->escapeHtml(__('Due to the abnormal delivery of the CVS, please contact the customer service and place the order again.')) ?></div>
-    <?php endif; ?>>
+    <?php endif; ?>
 </div>
