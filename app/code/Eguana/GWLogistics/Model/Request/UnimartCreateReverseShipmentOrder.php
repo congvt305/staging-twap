@@ -18,7 +18,7 @@ class UnimartCreateReverseShipmentOrder extends \Eguana\GWLogistics\Model\Reques
     {
         $order = $this->_orderRepository->get($rma->getOrderId());
         $merchantId = $this->_helper->getMerchantId($order->getStoreId());
-        $allPayLogisticsId = '';
+        $allPayLogisticsId = $rma->getIncrementId();
         $serverReplyURL = $this->_helper->getReverseLogisticsOrderReplyUrl($order->getStoreId());
 
         $goodsName = $this->_helper->getGoodsNamePrefix($order->getStoreId()) . ' Item X ' . (string)$this->getItemCount($order);
