@@ -25,6 +25,10 @@ class Options implements OptionSourceInterface
                 'value' => 0,
                 'label' => 'FAILED'
             ],
+            [
+                'value' => 2,
+                'label' => 'N/A'
+            ],
         ];
     }
 }
