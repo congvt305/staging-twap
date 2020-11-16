@@ -224,7 +224,7 @@ class SapProductManagement implements SapProductManagementInterface
              */
             $product = $this->getProductBySku($stockData['matnr'], $storeId);
             if (gettype($product) == 'string') {
-                $result[$stockData['matnr']] = ['code' => "0001", 'message' => $product];
+                $result[$stockData['matnr']] = ['code' => "0002", 'message' => $product];
             } else {
                 if (!$this->sapIntegrationCheck($product)) {
                     $websiteId = $this->getStore($stockData['mallId'])->getWebsiteId();
@@ -275,7 +275,7 @@ class SapProductManagement implements SapProductManagementInterface
                     'direction' => 'incoming',
                     'to' => "Magento",
                     'serialized_data' => $this->json->serialize($parameters),
-                    'status' => $result[$stockData['matnr']]['code'] == "0000" ? 1 : 0,
+                    'status' => $this->setOperationLogStatus($result[$stockData['matnr']]['code']),
                     'result_message' => $this->json->serialize($result)
                 ]
             );
@@ -283,6 +283,24 @@ class SapProductManagement implements SapProductManagementInterface
             $result[$stockData['matnr']] = ['code' => "0001", 'message' => "Configuration is not enabled"];
         }
 
+        return $result;
+    }
+
+    public function setOperationLogStatus($code)
+    {
+        switch ($code) {
+            case "0001":
+                $result = 0;
+                break;
+            case "0000":
+                $result = 1;
+                break;
+            case "0002":
+                $result = 2;
+                break;
+            default:
+                $result = 0;
+        }
         return $result;
     }
 
