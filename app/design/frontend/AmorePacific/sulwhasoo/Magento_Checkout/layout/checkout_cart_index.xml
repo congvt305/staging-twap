@@ -29,7 +29,7 @@
         <referenceContainer name="checkout.cart.order.actions">
             <container name="cart.discount" label="Cart Discount Container" htmlTag="div" htmlClass="cart-discount" before="-" />
         </referenceContainer>
-        <move element="checkout.cart.coupon" destination="cart.discount" />
+        <referenceBlock name="checkout.cart.coupon" remove="true"/>
         <referenceBlock name="checkout.cart.shipping">
             <arguments>
                 <argument name="jsLayout" xsi:type="array">
