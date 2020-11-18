@@ -247,10 +247,11 @@ class Payment extends AbstractMethod
             return $this;
         }
 
+        $roundedAmount = round($amount);
         $additionalInfo = $payment->getAdditionalInformation();
         $rawDetailsInfo = $additionalInfo["raw_details_info"];
 
-        if ($amount != $rawDetailsInfo["TradeAmt"]) {
+        if ($roundedAmount != $rawDetailsInfo["TradeAmt"]) {
             throw new LocalizedException(__($rawDetailsInfo["RtnMsg"]));
         }
 
@@ -297,27 +298,27 @@ class Payment extends AbstractMethod
         }
 
         if (trim($transactionStatus) == '要關帳') {
-            $actionEResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "E");
+            $actionEResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $roundedAmount, $payment, "E");
             $this->_logger->info("E action result : ", $actionEResult);
-            $actionNResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "N");
+            $actionNResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $roundedAmount, $payment, "N");
             $this->_logger->info("N action result : ", $actionNResult);
             if ($actionNResult["RtnCode"] != 1) {
                 $this->_logger->critical(__("Ecpay EN action Error Response : " . $actionNResult["RtnMsg"]));
-                $actionRResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "R");
+                $actionRResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $roundedAmount, $payment, "R");
                 $this->_logger->info("R action result : ", $actionRResult);
             }
         } elseif (trim($transactionStatus) == '已關帳') {
-            $actionRResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "R");
+            $actionRResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $roundedAmount, $payment, "R");
             $this->_logger->info("R action result : ", $actionRResult);
             if ($actionRResult["RtnCode"] != 1) {
                 $this->_logger->critical(__("Ecpay R action Error Response : " . $actionRResult["RtnMsg"]));
             }
         } elseif (trim($transactionStatus) == '已授權') {
-            $actionNResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "N");
+            $actionNResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $roundedAmount, $payment, "N");
             $this->_logger->info("N action result : ", $actionNResult);
             if ($actionNResult["RtnCode"] != 1) {
                 $this->_logger->critical(__("Ecpay N action Error Response : " . $actionNResult["RtnMsg"]));
-                $actionRResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $amount, $payment, "R");
+                $actionRResult = $this->sendRefundRequest($merchantId, $merchantTradeNo, $tradeNo, $roundedAmount, $payment, "R");
                 $this->_logger->info("R action result : ", $actionRResult);
             }
         }
