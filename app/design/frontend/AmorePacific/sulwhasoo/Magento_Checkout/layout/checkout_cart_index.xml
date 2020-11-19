@@ -35,20 +35,8 @@
                 <argument name="jsLayout" xsi:type="array">
                     <item name="components" xsi:type="array">
                         <item name="block-summary" xsi:type="array">
-                            <item name="children" xsi:type="array">
-                                <item name="block-shipping" xsi:type="array">
-                                    <item name="children" xsi:type="array">
-                                        <item name="address-fieldsets" xsi:type="array">
-                                            <item name="children" xsi:type="array">
-                                                <item name="postcode" xsi:type="array">
-                                                    <item name="config" xsi:type="array">
-                                                        <item name="placeholder" xsi:type="string" translate="true">Zip/Postal Code</item>
-                                                    </item>
-                                                </item>
-                                            </item>
-                                        </item>
-                                    </item>
-                                </item>
+                            <item name="config" xsi:type="array">
+                                <item name="componentDisabled" xsi:type="boolean">true</item>
                             </item>
                         </item>
                     </item>
