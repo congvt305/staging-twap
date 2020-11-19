@@ -116,7 +116,12 @@ class Callback extends Action
             } else {
                 $this->socialLoginModel->redirectCustomer($user_info, $userid, $socialMediaType);
             }
-            $this->helper->closePopUpWindow($this);
+            if ($this->helper->isMobile()) {
+                $url = $this->_url->getUrl('sociallogin/login/validatelogin');
+                $this->_redirect($url);
+            } else {
+                $this->helper->closePopUpWindow($this);
+            }
         }
     }
 
