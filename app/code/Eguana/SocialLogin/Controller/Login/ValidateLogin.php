@@ -9,7 +9,9 @@
  */
 namespace Eguana\SocialLogin\Controller\Login;
 
+use Eguana\SocialLogin\Helper\Data as Helper;
 use Eguana\SocialLogin\Model\SocialLoginHandler as SocialLoginModel;
+use Magento\Backend\Model\View\Result\RedirectFactory;
 use Magento\Customer\Model\Session as SessionAlias;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -58,6 +60,11 @@ class ValidateLogin extends Action
     private $logger;
 
     /**
+     * @var Helper
+     */
+    private $helper;
+
+    /**
      * ValidateLogin constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
@@ -66,6 +73,7 @@ class ValidateLogin extends Action
      * @param StoreManagerInterface $storemanager
      * @param JsonFactoryAlias $resultJsonFactory
      * @param LoggerInterface $logger
+     * @param Helper $helper
      */
     public function __construct(
         Context $context,
@@ -74,7 +82,8 @@ class ValidateLogin extends Action
         SocialLoginModel $socialLoginModel,
         StoreManagerInterface $storemanager,
         JsonFactoryAlias $resultJsonFactory,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Helper $helper
     ) {
         $this->resultPageFactory               = $resultPageFactory;
         $this->customerSession                 = $session;
@@ -82,6 +91,7 @@ class ValidateLogin extends Action
         $this->storemanager                    = $storemanager;
         $this->resultJsonFactory               = $resultJsonFactory;
         $this->logger                          = $logger;
+        $this->helper                          = $helper;
         parent::__construct($context);
     }
 
@@ -93,6 +103,7 @@ class ValidateLogin extends Action
     public function execute()
     {
         $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
+        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $this->socialLoginModel->getCoreSession()->start();
         if ($this->socialLoginModel->getCoreSession()->getData('social_user_data')) {
             $url = $this->_url->getUrl('sociallogin/login/createcustomer');
@@ -100,8 +111,13 @@ class ValidateLogin extends Action
                 'errors' => false,
                 'url'   => $url
             ];
-            $resultJson = $this->resultJsonFactory->create();
-            return $resultJson->setData($response);
+            if ($this->helper->isMobile()) {
+                $resultRedirect->setUrl($url);
+                return $resultRedirect;
+            } else {
+                $resultJson = $this->resultJsonFactory->create();
+                return $resultJson->setData($response);
+            }
         } elseif ($this->socialLoginModel->getCoreSession()->getSocialCustomerId()) {
             try {
                 $customerId = $this->socialLoginModel->getCoreSession()->getSocialCustomerId();
@@ -118,16 +134,26 @@ class ValidateLogin extends Action
                 'messages' => __('Login successful.'),
                 'url'   => $url
             ];
-            $resultJson = $this->resultJsonFactory->create();
-            return $resultJson->setData($response);
+            if ($this->helper->isMobile()) {
+                $resultRedirect->setUrl($url);
+                return $resultRedirect;
+            } else {
+                $resultJson = $this->resultJsonFactory->create();
+                return $resultJson->setData($response);
+            }
         } else {
             $url = $this->_url->getUrl('customer/account/login');
             $response = [
                 'errors' => false,
                 'url'   => $url
             ];
-            $resultJson = $this->resultJsonFactory->create();
-            return $resultJson->setData($response);
+            if ($this->helper->isMobile()) {
+                $resultRedirect->setUrl($url);
+                return $resultRedirect;
+            } else {
+                $resultJson = $this->resultJsonFactory->create();
+                return $resultJson->setData($response);
+            }
         }
     }
 }
