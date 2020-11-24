@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 18/11/20
+ * Time: 12:30 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Eguana\Pip\Api\Data\TerminatedCustomerSearchResultsInterface"
+                type="Eguana\Pip\Model\TerminatedCustomerSearchResults" />
+    <preference for="Eguana\Pip\Api\Data\TerminatedCustomerInterface" type="Eguana\Pip\Model\TerminatedCustomer" />
+    <preference for="Eguana\Pip\Api\TerminatedCustomerRepositoryInterface" type="Eguana\Pip\Model\TerminatedCustomerRepository" />
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="pip_terminatedcustomer_listing_data_source" xsi:type="string">Eguana\Pip\Model\ResourceModel\TerminatedCustomer\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Eguana\Pip\Model\ResourceModel\TerminatedCustomer\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">eguana_pip_terminated_customer</argument>
+            <argument name="_eventPrefix" xsi:type="string">eguana_pip_terminatedcustomer_collection</argument>
+            <argument name="_eventObject" xsi:type="string">terminatedcustomer_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Eguana\Pip\Model\ResourceModel\TerminatedCustomer</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="TerminatedCustomerGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\Model\Entity\RepositoryFactory">
+        <arguments>
+            <argument name="entities" xsi:type="array">
+                <item name="Eguana\Pip\Api\Data\TerminatedCustomerInterface" xsi:type="string">Eguana\Pip\Api\Data\TerminatedCustomerInterface</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Eguana\Pip\Api\Data\TerminatedCustomerInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">eguana_pip_terminated_customer</item>
+                    <item name="identifierField" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\HydratorPool">
+        <arguments>
+            <argument name="hydrators" xsi:type="array">
+                <item name="Eguana\Pip\Api\Data\TerminatedCustomerInterface" xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

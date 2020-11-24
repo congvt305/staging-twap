@@ -10,6 +10,9 @@
 namespace Eguana\Pip\Controller\Account;
 
 use Magento\Customer\Model\ResourceModel\CustomerRepository;
+use Eguana\Pip\Api\TerminatedCustomerRepositoryInterface;
+use Eguana\Pip\Model\TerminatedCustomerFactory;
+use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Customer\Model\SessionFactory;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -63,6 +66,21 @@ class Leave extends Action
     private $registry;
 
     /**
+     * @var TerminatedCustomerRepositoryInterface
+     */
+    private $terminatedCustomerRepository;
+
+    /**
+     * @var TerminatedCustomerFactory
+     */
+    private $terminatedCustomerFactory;
+
+    /**
+     * @var RemoteAddress
+     */
+    private $remoteAddress;
+
+    /**
      * Leave constructor.
      * @param Context $context
      * @param RedirectFactory $redirectFactory
@@ -72,6 +90,9 @@ class Leave extends Action
      * @param UrlInterface $url
      * @param LoggerInterface $logger
      * @param Registry $registry
+     * @param TerminatedCustomerRepositoryInterface $terminatedCustomerRepository
+     * @param TerminatedCustomerFactory $terminatedCustomerFactory
+     * @param RemoteAddress $remoteAddress
      */
     public function __construct(
         Context $context,
@@ -81,7 +102,10 @@ class Leave extends Action
         ManagerInterface $message,
         UrlInterface $url,
         LoggerInterface $logger,
-        Registry $registry
+        Registry $registry,
+        TerminatedCustomerRepositoryInterface $terminatedCustomerRepository,
+        TerminatedCustomerFactory $terminatedCustomerFactory,
+        RemoteAddress $remoteAddress
     ) {
         $this->redirectFactory = $redirectFactory->create();
         $this->customerSession = $customerSession->create();
@@ -90,6 +114,9 @@ class Leave extends Action
         $this->url = $url;
         $this->logger = $logger;
         $this->registry = $registry;
+        $this->terminatedCustomerRepository = $terminatedCustomerRepository;
+        $this->terminatedCustomerFactory = $terminatedCustomerFactory;
+        $this->remoteAddress = $remoteAddress;
         return parent::__construct($context);
     }
 
@@ -104,11 +131,19 @@ class Leave extends Action
         if ($customerId) {
             try {
                 $customer = $this->customerRepo->getById($customerId);
+                $customerIntegrationNumber = $customer->getCustomAttribute('integration_number')->getValue();
+                $customerIpAddress = $this->remoteAddress->getRemoteAddress();
                 if ($customer) {
                     $this->message->addSuccessMessage(__('Thank you for using our services'));
                     $this->customerSession->logout();
                     $this->registry->register('isSecureArea', true);
-                    $this->customerRepo->deleteById($customerId);
+                    if ($this->customerRepo->deleteById($customerId)) {
+                        $model = $this->terminatedCustomerFactory->create();
+                        $model->setData('customer_id', $customerId);
+                        $model->setData('integration_number', $customerIntegrationNumber);
+                        $model->setData('ip_address', $customerIpAddress);
+                        $this->terminatedCustomerRepository->save($model);
+                    }
                 } else {
                     $this->message->addErrorMessage(__("we can't implement secession. please try again later"));
                 }

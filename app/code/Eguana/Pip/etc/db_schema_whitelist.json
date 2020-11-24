@@ -1,0 +1,18 @@
+{
+    "eguana_pip_terminated_customer": {
+        "column": {
+            "entity_id": true,
+            "customer_id": true,
+            "integration_number": true,
+            "ip_address": true,
+            "creation_time": true,
+            "update_time": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "EGUANA_PIP_TERMINATED_CUSTOMER_INTEGRATION_NUMBER_IP_ADDRESS": true
+        }
+    }
+}

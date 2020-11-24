@@ -13,6 +13,7 @@ Explanation: This module will allow customer to leave account and become secessi
 Description:
 
 PIP is the abbreviation for Personal Information Protection. Egauna Pip allows you to manage the consent information and provide the easy approach to manage all the users. It allows the user to access their personal information usage and perform secession.
+It allows the admin to view the list of terminated customers in the Terminated Customers Grid.
 
 Requirements:
 
@@ -21,6 +22,7 @@ Requirements:
 Key features:
 
       1. Admin can enable disable whole module
+      2. Admin can view the list of Terminated Customers
 
 Module Installation
 
@@ -58,3 +60,27 @@ After enabling module.
 You can see "Click here to leave account" on Customer My Account page.
 
 By clicking the button, it will delete customer account.
+
+**Admin Panel Terminated Customers Grid**
+
+Admin can view the list by nevigate to 
+1. Navigate to **Customers** and click on **Terminated Customers**
+
+![terminated-customers](https://nimbus-screenshots.s3.amazonaws.com/s/0bfc338a493306104f596f6d5a9ad14a.png)
+
+2. Admin can view the grid of the terminated customers grid.
+
+![terminated-customers-grid](https://nimbus-screenshots.s3.amazonaws.com/s/a25cf125b40b911e2a27d9deef88f033.png)
+
+## 1) Search by keyword
+
+Search by keyword is used to search specific keywords (for integration number and IP address) available list of record. Just write the keyword (for integration number and IP address) in input field and press the enter button. 
+
+## 2) Filters
+
+Filter option is used to search data but in this you can select range of different options. as you can add ID from 5 to 10, it will show data between 5 and 10 IDs. Similarly you can filter data between two created at dates. Also you can filter data according to the Customer ID, Integration No and IP Address.
+Add the parameters and click Apply Filters Button.
+
+## 3) Export
+
+Export option is used to export the terminated customers list in CSV file.
