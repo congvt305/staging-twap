@@ -6581,7 +6581,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Express Saver","Express Saver",module,Magento_Fedex
 "Ground","Ground",module,Magento_Fedex
 "First Overnight","First Overnight",module,Magento_Fedex
-"Home Delivery","宅配",module,Magento_Fedex
+"Home Delivery","Home Delivery",module,Magento_Fedex
 "International Economy","International Economy",module,Magento_Fedex
 "Intl Economy Freight","Intl Economy Freight",module,Magento_Fedex
 "International First","International First",module,Magento_Fedex
