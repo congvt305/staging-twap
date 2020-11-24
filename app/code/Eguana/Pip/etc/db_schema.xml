@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 17/11/20
+ * Time: 4:00 PM
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="eguana_pip_terminated_customer" resource="default" engine="innodb" comment="Eguana Pip Terminated Customer">
+        <column xsi:type="smallint" padding="6" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="smallint" name="customer_id" padding="5" unsigned="true" nullable="false" identity="false"
+                comment="Customer ID"/>
+        <column xsi:type="varchar" name="integration_number" nullable="true" comment="Customer Integration Number"/>
+        <column xsi:type="varchar" name="ip_address"  nullable="true" comment="Customer IP Address"/>
+        <column xsi:type="timestamp" name="creation_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Creation Time"/>
+        <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Update Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="EGUANA_PIP_TERMINATED_CUSTOMER_INTEGRATION_NUMBER_IP_ADDRESS" indexType="fulltext">
+            <column name="integration_number"/>
+            <column name="ip_address"/>
+        </index>
+    </table>
+</schema>

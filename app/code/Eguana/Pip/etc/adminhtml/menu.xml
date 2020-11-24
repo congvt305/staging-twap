@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 18/11/20
+* Time: 12:30 PM
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Eguana_Pip::pip" title="Eguana Pip" module="Eguana_Pip" sortOrder="110" resource="Eguana_Pip::pip" parent="Magento_Customer::customer"/>
+        <add id="Eguana_Pip::terminated_customer_view" title="Terminated Customers" module="Eguana_Pip" sortOrder="10" resource="Eguana_Pip::terminated_customer_view" parent="Eguana_Pip::pip" action="pip/terminatedcustomer/"/>
+    </menu>
+</config>
