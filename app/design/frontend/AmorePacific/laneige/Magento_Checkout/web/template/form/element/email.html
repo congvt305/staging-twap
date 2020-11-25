@@ -17,19 +17,17 @@
             <label class="label" for="customer-email">
                 <span data-bind="i18n: 'Email Address'"></span>
             </label>
-            <div class="control">
+            <div class="control _with-tooltip">
                 <input class="input-text"
                        type="email"
                        data-bind="
                             textInput: email,
                             hasFocus: emailFocused,
-                            mageInit: {'mage/trim-input':{}},
-                            attr: {
-                                    placeholder: $t('Email'),
-                             }"
+                            mageInit: {'mage/trim-input':{}}"
                        name="username"
                        data-validate="{required:true, 'validate-email':true}"
                        id="customer-email" />
+                <!-- ko template: 'ui/form/element/helper/tooltip' --><!-- /ko -->
                 <span class="note" data-bind="fadeVisible: isPasswordVisible() == false">
                     <a class="action" data-bind="attr: { href: window.checkoutConfig.registerUrl }">
                         <span data-bind="i18n: 'join a member'"></span>

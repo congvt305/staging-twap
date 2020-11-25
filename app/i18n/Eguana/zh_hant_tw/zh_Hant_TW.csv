@@ -3317,7 +3317,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Save in address book","保存在通訊錄中",module,Magento_Checkout
 "Estimated Total","估計總數",module,Magento_Checkout
 "You can create an account after checkout.","您可以在結帳後創建一個帳戶。",module,Magento_Checkout
-"You already have an account with us. Sign in or continue as guest.","您已經在我們這裡有一個帳戶。 登錄或以訪客身份繼續。",module,Magento_Checkout
+"You already have an account with us. Sign in or continue as guest.","登入會員累積會員點數",module,Magento_Checkout
 "Login","登入",module,Magento_Checkout
 "See Details","詳情",module,Magento_Checkout
 "Options Details","選擇詳情",module,Magento_Checkout
