@@ -11,6 +11,7 @@
         <referenceContainer name="after.body.start">
             <block class="Amore\GaTagging\Block\GaTagging"
                    name="ap_homepage"
+                   ifconfig="amore_gatagging/tagmanager/active"
                    after="amore_gatagging_common_ap"
                    template="Amore_GaTagging::common/ap-pagetype.phtml" >
                 <arguments>

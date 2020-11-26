@@ -39,6 +39,9 @@ class Cart
      */
     public function afterGetSectionData(\Magento\Checkout\CustomerData\Cart $subject, $result)
     {
+        if (!$this->data->isActive()) {
+            return $result;
+        }
         $storeId =
         $items =$this->getQuote()->getAllVisibleItems();
 

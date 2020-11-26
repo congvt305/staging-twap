@@ -21,13 +21,19 @@ class BreadCrumbsPlugin
      * @var \Magento\Framework\App\RequestInterface
      */
     private $request;
+    /**
+     * @var \Amore\GaTagging\Helper\Data
+     */
+    private $data;
 
     public function __construct(
+        \Amore\GaTagging\Helper\Data $data,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\App\RequestInterface $request
     ) {
         $this->registry = $registry;
         $this->request = $request;
+        $this->data = $data;
     }
 
     /**
@@ -36,6 +42,10 @@ class BreadCrumbsPlugin
      */
     public function afterToHtml(\Magento\Theme\Block\Html\Breadcrumbs $subject, $result)
     {
+        if (!$this->data->isActive()) {
+            return $result;
+        }
+
         $breadCrumbText = "";
         if (!$result) {
             return $this->makeScript($breadCrumbText, $result);

@@ -4,6 +4,7 @@
         <referenceContainer name="after.body.start">
             <block class="Amore\GaTagging\Block\GaTagging"
                    name="ap_order_cancel"
+                   ifconfig="amore_gatagging/tagmanager/active"
                    cacheable="false"
                    template="Amore_GaTagging::sales/ap-order_cancel.phtml">
                 <arguments>
