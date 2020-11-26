@@ -18,6 +18,9 @@
                 <field id="shipping_price" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Shipping Price</label>
                 </field>
+                <field id="shipping_message" translate="label" type="textarea" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Shipping Message</label>
+                </field>
                 <field id="showmethod" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Show Method if Not Applicable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
