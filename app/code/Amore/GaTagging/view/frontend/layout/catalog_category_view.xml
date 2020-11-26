@@ -4,6 +4,7 @@
         <!-- PAGE SPECIFIC AP -->
         <referenceContainer name="after.body.start">
             <block class="Amore\GaTagging\Block\GaTagging"
+                   ifconfig="amore_gatagging/tagmanager/active"
                    name="ap_category"
                    after="amore_gatagging_common_ap"
                    template="Amore_GaTagging::common/ap-pagetype.phtml" >

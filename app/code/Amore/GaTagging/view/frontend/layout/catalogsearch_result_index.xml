@@ -4,6 +4,7 @@
         <!-- 2.3 주요페이지 검색 AP-->
         <referenceContainer name="after.body.start">
             <block class="Amore\GaTagging\Block\GaTagging"
+                   ifconfig="amore_gatagging/tagmanager/active"
                    name="ap_search_result"
                    after="amore_gatagging_common_ap"
                    template="Amore_GaTagging::search/ap-search-result.phtml" >

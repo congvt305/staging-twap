@@ -1,8 +1,9 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <!-- 2.4 트랜잭션 주문 완료 페이지 AP -->
-        <referenceContainer name="order.success.additional.info">
+        <referenceContainer name="after.body.start">
             <block class="Amore\GaTagging\Block\GaTagging"
+                   ifconfig="amore_gatagging/tagmanager/active"
                    name="ap_onepage_success"
                    cacheable="false"
                    template="Amore_GaTagging::checkout/ap-onepage_success.phtml" />
@@ -12,10 +13,7 @@
             <block name="order_success_datalayer_push"
                    ifconfig="amore_gatagging/tagmanager/active"
                    after="-"
-                   template="Amore_GaTagging::common/datalayer-push.phtml" >
-                <arguments>
-                    <argument name="event_name" xsi:type="string">purchase</argument>
-                </arguments>
+                   template="Amore_GaTagging::checkout/ap-onepage_success_push.phtml" >
             </block>
         </referenceContainer>
     </body>
