@@ -17,6 +17,8 @@
 
 @checkout-pickup-location-popup-note_margin: 0 0 @indent__base;
 
+@checkout-tab-disable-color: #dddddd;
+
 & when (@media-common = true) {
     /**
      * @codingStandardsIgnoreStart
@@ -35,10 +37,14 @@
                 height: 0;
                 overflow: hidden;
             }
+
+            .form-continue .actions-toolbar {
+                margin-top: @indent__l;
+            }
         }
 
         .shipping-message {
-            padding: @indent__m 0 0 @indent__base;
+            padding: 0 0 @indent__base 0;
         }
     }
 
@@ -69,14 +75,14 @@
             &:not(.selected) {
                 .lib-button-revert-secondary-color(
                     @_button-color: @primary__color__light,
-                    @_button-background: @secondary__color,
-                    @_button-border: 1px solid @secondary__color,
+                    @_button-background: @checkout-tab-disable-color,
+                    @_button-border: 1px solid @checkout-tab-disable-color,
                     @_button-color-hover: @primary__color__light,
-                    @_button-background-hover: @secondary__color,
-                    @_button-border-hover: 1px solid @secondary__color,
+                    @_button-background-hover: @checkout-tab-disable-color,
+                    @_button-border-hover: 1px solid @checkout-tab-disable-color,
                     @_button-color-active: @primary__color__light,
-                    @_button-background-active: @secondary__color,
-                    @_button-border-active: 1px solid @secondary__color
+                    @_button-background-active: @checkout-tab-disable-color,
+                    @_button-border-active: 1px solid @checkout-tab-disable-color
                 );
             }
 
@@ -108,7 +114,7 @@
         }
 
         .actions {
-            padding: 15px 0 @indent__s 0;
+            padding: 0 0 @indent__base 0;
         }
 
         .actions .action {
@@ -139,6 +145,20 @@
             }
         }
     }
-
-
 }
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .opc-wrapper {
+        .selected-cvs-pickup {
+            .form-continue .actions-toolbar {
+                max-width: 300px;
+                margin-left: auto;
+            }
+        }
+    }
+}
+
