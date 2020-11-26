@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Magento\Customer\CustomerData\SectionPool">
-        <arguments>
-            <argument name="sectionSourceMap" xsi:type="array">
-                <item name="cvs-location-result" xsi:type="string">Eguana\GWLogistics\CustomerData\CvsLocation</item>
-            </argument>
-        </arguments>
-    </type>
+<!--    <type name="Magento\Customer\CustomerData\SectionPool">-->
+<!--        <arguments>-->
+<!--            <argument name="sectionSourceMap" xsi:type="array">-->
+<!--                <item name="cvs-location-result" xsi:type="string">Eguana\GWLogistics\CustomerData\CvsLocation</item>-->
+<!--            </argument>-->
+<!--        </arguments>-->
+<!--    </type>-->
     <type name="Magento\Checkout\Block\Checkout\LayoutProcessor">
         <plugin name="eguana_gwlogistics_set_carrier_config"
                 type="Eguana\GWLogistics\Plugin\Checkout\LayoutProcessor" sortOrder="10"/>
     </type>
-<!--    <type name="Magento\Checkout\Model\CompositeConfigProvider">-->
-<!--        <arguments>-->
-<!--            <argument name="configProviders" xsi:type="array">-->
-<!--                <item name="eguana_gwlogistics_checkout_config_provider" xsi:type="object">Eguana\GWLogistics\Model\Ui\ConfigProvider</item>-->
-<!--            </argument>-->
-<!--        </arguments>-->
-<!--    </type>-->
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="eguana_gwlogistics_checkout_config_provider" xsi:type="object">Eguana\GWLogistics\Model\Ui\ConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
     <type name="Magento\Sales\Model\Order\Address\Renderer">
         <plugin name="eguana_gwlogistics_cvs_address_formatter"
                 type="Eguana\GWLogistics\Plugin\Sales\AddressRenderer" sortOrder="10"/>
