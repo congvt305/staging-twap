@@ -48,4 +48,5 @@ Mode,Mode
 "[%sms_prefix] Dear %customer, your return order number is %rtn_order_number, please return your goods in 3 days.","[%sms_prefix] Dear %customer, your return order number is %rtn_order_number, please return your goods in 3 days."
 "Due to the abnormal delivery of the CVS, please contact the customer service and place the order again.", "Due to the abnormal delivery of the CVS, please contact the customer service and place the order again."
 "Shipment Failure", "Shipment Failure"
+"Check the correct delivery (address/phone/receiver name)","Check the correct delivery (address/phone/receiver name)"
 

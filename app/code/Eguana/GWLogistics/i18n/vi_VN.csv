@@ -48,4 +48,5 @@ Mode,Phương thức
 "[%sms_prefix] Dear %customer, your return order number is %rtn_order_number, please return your goods in 3 days.","[%sms_prefix] Kính gửi %customer, số hiệu trả lại của bạn là %rtn_order_number Vui lòng trả lại hàng trong vòng 3 ngày."
 "Due to the abnormal delivery of the CVS, please contact the customer service and place the order again.", "Do việc giao hàng bất thường của CVS, xin liên hệ với dịch vụ khách hàng và đặt hàng lại."
 "Shipment Failure", "Thất bại trong việc vận chuyển hàng hóa"
+"Check the correct delivery (address/phone/receiver name)","Kiểm tra xem giao hàng có chính xác không (địa chỉ/di động/tên người nhận)"
 

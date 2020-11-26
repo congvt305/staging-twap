@@ -101,12 +101,13 @@ define([
             return cvsLocation.getCvsLocation();
         },
 
-        openCvsMap: function (cvs) { //todo open window and submit
+        openCvsMap: function (cvs) {
             this.LogisticsSubType = cvs;
             if (this.isLineAppBrowser()) {
                 return redirectGreenWorldMapUrl.bind(this);
             }
-            return openGreenWorldWindow.bind(this);
+            // return openGreenWorldWindow.bind(this);
+            return openGreenWorldChildWindow.bind(this);
         },
 
         getMapUrl: function () {
