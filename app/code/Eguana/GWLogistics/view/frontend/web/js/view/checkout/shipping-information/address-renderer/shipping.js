@@ -4,14 +4,14 @@ define([
     'Magento_Customer/js/customer-data',
     'Magento_Checkout/js/checkout-data',
     'Magento_Checkout/js/model/quote',
-    'Eguana_GWLogistics/js/model/cvs-location'
+    'Eguana_GWLogistics/js/model/cvs-location-service'
 ], function (
     _,
     Component,
     customerData,
     checkoutData,
     quote,
-    cvsLocation
+    pickupLocationService
 ) {
     'use strict';
 
@@ -21,7 +21,7 @@ define([
         defaults: {
             template: 'Magento_Checkout/shipping-information/address-renderer/default'
         },
-        cvsLocation: cvsLocation,
+        cvsLocation: pickupLocationService.selectedLocation,
         /**
          * @param {*} countryId
          * @return {String}
@@ -33,10 +33,10 @@ define([
             // console.log(quote.shippingMethod()['carrier_code'] + '_' + quote.shippingMethod()['method_code']);
             // console.log(this.template);
             var addressTemplate = 'Eguana_GWLogistics/checkout/shipping-information/address-renderer/cvs-address';
-           return quote.shippingMethod()['carrier_code'] + '_' + quote.shippingMethod()['method_code'] === 'gwlogistics_CVS' ? addressTemplate : this.template
+           return quote.shippingMethod()['carrier_code'] + '_' + quote.shippingMethod()['method_code'] === 'gwlogistics_CVS' ? addressTemplate : this.template;
         },
         getSelectedCvsLocation: function () {
-            return this.cvsLocation.getCvsLocation()
+            return this.cvsLocation();
         }
     });
 

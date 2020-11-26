@@ -20,6 +20,9 @@ class OrderStatePlugin
      */
     public function afterCheck(\Magento\Sales\Model\ResourceModel\Order\Handler\State $subject, $result, Order $order)
     {
+        if (!$order->getId()) {
+            return $result;
+        }
         $currentState = $order->getState();
         if ($currentState == Order::STATE_PROCESSING || $currentState == Order::STATE_COMPLETE) {
             if ($order->getData('sap_order_send_check') === NULL) {

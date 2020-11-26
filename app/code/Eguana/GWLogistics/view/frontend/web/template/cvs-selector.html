@@ -1,0 +1,39 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div id="cvs-selector" data-bind="blockLoader: $parent.isLoading" css="'cvs-selected': $parent.selectedLocation">
+    <each if="!quoteIsVirtual()" args="getRegion('customer-email')" render="" />
+    <div class="step-title" data-role="title">
+        <translate args="'Select Cvs from Map'"/>
+    </div>
+    <div id="checkout-step-cvs-selector" class="step-content" data-role="content">
+
+        <div>
+            <form class="form form-continue"
+                  data-role="cvs-map-load-form"
+                  submit="setPickupInformation">
+                <render args="cvsAddressFormTemplate"/>
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button data-role="opc-continue"
+                                type="submit"
+                                class="button action continue primary"
+                                css="disabled: !selectedLocation"
+                                enable="selectedLocation"
+                                disabled
+                        >
+                        <span>
+                            <translate args="'Next'"/>
+                        </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
