@@ -77,14 +77,12 @@ class CreateShipments
 
     private function findOrdersToShip()
     {
-        $lastOrderId = 2546;
         $orderStatuses = explode(',', $this->helper->getOrderStatusToCreateShipment());
         $enabledStores = $this->getEnabledStores();
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('store_id', $enabledStores, 'in')
             ->addFilter('status', $orderStatuses, 'in')
             ->addFilter('shipping_method', 'gwlogistics_CVS', 'eq')
-            ->addFilter('entity_id', $lastOrderId, 'gt')
             ->create();
         $ordersToShip = $this->orderRepository->getList($searchCriteria);
         return $ordersToShip->getTotalCount() > 0 ? $ordersToShip->getItems() : false;
