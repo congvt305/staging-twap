@@ -29,7 +29,7 @@ class ConfigProvider implements ConfigProviderInterface
     {
         $isActive = $this->helper->isActive();
         if (!$isActive) {
-            [];
+            return [];
         }
         return [
             self::CODE => [

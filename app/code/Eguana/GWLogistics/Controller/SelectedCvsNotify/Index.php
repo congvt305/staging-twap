@@ -67,7 +67,9 @@ class Index extends Action implements CsrfAwareActionInterface
 
         $cvsStoreData = $this->getRequest()->getParams();
         $resultRedirect = $this->resultRedirectFactory->create();
-        $redirectUrl = $this->isLineApp() ? 'checkout/index/index/#shipping' : '*/index/index';
+        $redirectUrl = $this->isMobile() ? 'checkout/index/index/#shipping' : '*/index/index';
+//        $redirectUrl = $this->isMobile() ? 'checkout/#shipping' : '*/index/index';
+//        $redirectUrl = $this->isLineApp() ? 'checkout/index/index/#shipping' : '*/index/index';
 
         if (!$cvsStoreData || $this->getRequest()->getMethod() !== 'POST') {
             $response->setHttpResponseCode($httpBadRequestCode);
@@ -88,8 +90,16 @@ class Index extends Action implements CsrfAwareActionInterface
 
     private function isLineApp()
     {
+//        $userAgent = $this->header->getHttpUserAgent();
+//        return preg_match('/(iPhone|iPod|iPad|Android).*AppleWebKit.*Line/', $userAgent);
+        return true;
+    }
+
+    private function isMobile()
+    {
         $userAgent = $this->header->getHttpUserAgent();
-        return preg_match('/(iPhone|iPod|iPad|Android).*AppleWebKit.*Line/', $userAgent);
+        return preg_match('/(Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini)/i', $userAgent);
+//        return true;
     }
 
     /**

@@ -15,38 +15,46 @@
                             <item name="children" xsi:type="array">
                                 <item name="steps" xsi:type="array">
                                     <item name="children" xsi:type="array">
-                                        <item name="shipping-step" xsi:type="array">
+                                        <item name="cvs-pickup" xsi:type="array">
+                                            <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/cvs-pickup</item>
+                                            <item name="sortOrder" xsi:type="string">0</item>
+                                            <item name="deps" xsi:type="array">
+                                                <item name="0" xsi:type="string">checkout.steps.shipping-step.shippingAddress</item>
+                                            </item>
                                             <item name="children" xsi:type="array">
-                                                <item name="step-config" xsi:type="array">
-                                                    <item name="children" xsi:type="array">
-                                                        <item name="shipping-rates-validation" xsi:type="array">
-                                                            <item name="children" xsi:type="array">
-                                                                <item name="gwlogistics-rates-validation" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/shipping-rates-validation</item>
-                                                                </item>
-                                                            </item>
-                                                        </item>
-                                                    </item>
+                                                <item name="cvs-shipping-message" xsi:type="array">
+                                                    <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/shipping-message</item>
+                                                    <item name="displayArea" xsi:type="string">shipping-messages</item>
                                                 </item>
-<!--                                                <item name="eguana-gwlogistics-cvs-location-provider" xsi:type="array">-->
-<!--                                                    <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/shipping-address/cvs-location-provider</item>-->
-<!--                                                </item>-->
-                                                <item name="shippingAddress" xsi:type="array">
-                                                    <item name="config" xsi:type="array">
-                                                        <item name="shippingMethodItemTemplate" xsi:type="string">Eguana_GWLogistics/shipping-address/shipping-method-item</item>
-                                                    </item>
+                                                <item name="cvs-selector" xsi:type="array">
+                                                    <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/cvs-selector</item>
+                                                    <item name="displayArea" xsi:type="string">cvs-selector</item>
                                                     <item name="children" xsi:type="array">
-                                                        <item name="after-shipping-method-item" xsi:type="array">
-                                                            <item name="sortOrder" xsi:type="string">300</item>
-                                                            <item name="component" xsi:type="string">uiComponent</item>
-                                                            <item name="displayArea" xsi:type="string">after-shipping-method-item</item>
+                                                        <item name="customer-email" xsi:type="array">
+                                                            <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/form/element/email</item>
+                                                            <item name="displayArea" xsi:type="string">customer-email</item>
+                                                            <item name="tooltip" xsi:type="array">
+                                                                <item name="description" xsi:type="string" translate="true">We'll send your order confirmation here.</item>
+                                                            </item>
                                                             <item name="children" xsi:type="array">
-                                                                <item name="gwlogistics-cvs" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/checkout/shipping/cvs-location-form</item>
+                                                                <item name="before-login-form" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">uiComponent</item>
+                                                                    <item name="displayArea" xsi:type="string">before-login-form</item>
+                                                                    <item name="children" xsi:type="array">
+                                                                        <!-- before login form fields -->
+                                                                    </item>
+                                                                </item>
+                                                                <item name="additional-login-form-fields" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">uiComponent</item>
+                                                                    <item name="displayArea" xsi:type="string">additional-login-form-fields</item>
+                                                                    <item name="children" xsi:type="array">
+                                                                        <!-- additional login form fields -->
+                                                                    </item>
                                                                 </item>
                                                             </item>
                                                         </item>
                                                     </item>
+
                                                 </item>
                                             </item>
                                         </item>
@@ -62,6 +70,9 @@
                                                             <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/checkout/shipping-information/address-renderer/shipping</item>
                                                         </item>
                                                         <item name="new-customer-address" xsi:type="array">
+                                                            <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/checkout/shipping-information/address-renderer/shipping</item>
+                                                        </item>
+                                                        <item name="cvs-pickup-address" xsi:type="array">
                                                             <item name="component" xsi:type="string">Eguana_GWLogistics/js/view/checkout/shipping-information/address-renderer/shipping</item>
                                                         </item>
                                                     </item>

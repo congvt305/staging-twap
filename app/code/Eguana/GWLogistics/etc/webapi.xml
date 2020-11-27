@@ -8,15 +8,15 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
 
     <!-- Managing Cvs Locations in Checkout  -->
-    <route method="POST" url="/V1/guest-carts/:cartId/checkout-cvs-location/select">
-        <service class="Eguana\GWLogistics\Api\GuestCartCvsLocationManagementInterface" method="selectCvsLocation"/>
+    <route url="/V1/gwlogistics/guest/:cartId/checkout-cvs-location" method="GET">
+        <service class="Eguana\GWLogistics\Api\GuestCartCvsLocationManagementInterface" method="getSelectedCvsLocation"/>
         <resources>
             <resource ref="anonymous"/>
         </resources>
     </route>
 
-    <route method="POST" url="/V1/carts/mine/checkout-cvs-location/select">
-        <service class="Eguana\GWLogistics\Api\CartCvsLocationManagementInterface" method="selectCvsLocation"/>
+    <route url="/V1/gwlogistics/mine/checkout-cvs-location" method="GET">
+        <service class="Eguana\GWLogistics\Api\CartCvsLocationManagementInterface" method="getSelectedCvsLocation"/>
         <resources>
             <resource ref="self"/>
         </resources>

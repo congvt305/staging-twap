@@ -18,6 +18,9 @@
                 <field id="shipping_price" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Shipping Price</label>
                 </field>
+                <field id="shipping_message" translate="label" type="textarea" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Shipping Message</label>
+                </field>
                 <field id="showmethod" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Show Method if Not Applicable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -70,6 +73,29 @@
                 </field>
                 <field id="goodsname_prefix" translate="label" type="text" sortOrder="210" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Goods Name Prefix for API Call</label>
+                </field>
+            </group>
+        </section>
+        <section id="eguana_gwlogistics" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>Green World Logistics</label>
+            <tab>eguana_extensions_tab</tab>
+            <resource>Eguana_GWLogistics::config</resource>
+            <group id="cron_settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Cron Settings</label>
+                <field id="order_status_to_create_shipment" translate="label" sortOrder="10" type="multiselect" showInStore="0" showInWebsite="0"
+                       showInDefault="1" canRestore="1">
+                    <label>Choose Order Status To Create Shipment</label>
+                    <source_model>Eguana\GWLogistics\Model\Config\Source\OrderStatus</source_model>
+                </field>
+                <field id="create_shipment" translate="label" sortOrder="20" showInStore="0" showInWebsite="0"
+                       showInDefault="1" >
+                    <label>Create Shipments</label>
+                    <frontend_model>Eguana\GWLogistics\Model\Config\Frontend\CreateShipments</frontend_model>
+                </field>
+                <field id="create_shipment_cron_schedule" translate="label" sortOrder="30" type="select" showInStore="0" showInWebsite="0"
+                       showInDefault="1" canRestore="1">
+                    <label>Create Shipment Cron Schedule</label>
+                    <source_model>Eguana\GWLogistics\Model\Config\Source\CronExpressions</source_model>
                 </field>
             </group>
         </section>
