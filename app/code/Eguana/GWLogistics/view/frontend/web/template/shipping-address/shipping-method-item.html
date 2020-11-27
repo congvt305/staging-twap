@@ -5,8 +5,9 @@
  */
 -->
 <tr class="row"
-    click="element.selectShippingMethod">
-    <td class="col col-method">
+    click="element.selectShippingMethod"
+    attr="'id': method.carrier_code">
+    <td class="col col-method col-radio">
         <input type="radio"
                class="radio"
                ifnot="method.error_message"
@@ -24,6 +25,8 @@
     <td class="col col-carrier"
         attr="'id': 'label_carrier_' + method.method_code + '_' + method.carrier_code"
         text="method.carrier_title" />
+    <td class="col col-note"
+        data-bind="i18n: 'Check the correct delivery (address/phone/receiver name)'" />
 </tr>
 <!-- ko if: (method.method_code + '_' + method.carrier_code == "CVS_gwlogistics") -->
 <tr class="row">

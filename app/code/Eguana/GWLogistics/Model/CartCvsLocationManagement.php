@@ -10,7 +10,9 @@ namespace Eguana\GWLogistics\Model;
 
 
 use Eguana\GWLogistics\Api\Data\QuoteCvsLocationInterface;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\LocalizedException;
 
 class CartCvsLocationManagement implements \Eguana\GWLogistics\Api\CartCvsLocationManagementInterface
 {
@@ -49,5 +51,39 @@ class CartCvsLocationManagement implements \Eguana\GWLogistics\Api\CartCvsLocati
             throw new CouldNotSaveException(__('Unable to select or save cvs location.'), $e);
         }
         return true;
+    }
+
+    /**
+     * @param int $cartId
+     * @return string
+     */
+    public function getSelectedCvsLocation(int $cartId): string
+    {
+        $cvsLocationData = new DataObject();
+        try {
+            $shippingAddress = $this->shippingAddressManagement->get($cartId);
+            /** @var QuoteCvsLocationInterface $cvsLocation */
+            $cvsLocation = $this->quoteCvsLocationRepository->getByAddressId($shippingAddress->getId());
+
+            $cvsLocationData['CVSStoreName'] = $cvsLocation->getCvsStoreName();
+            $cvsLocationData['CVSAddress'] = $cvsLocation->getCvsAddress();
+//            $cvsLocationData = [ //todo add location id
+//                'selectedCvsLocation' => [
+//                    'CVSStoreName' => $cvsLocation->getCvsStoreName(),
+//                    'CVSAddress' => $cvsLocation->getCvsAddress(),
+//                ]
+//            ];
+        } catch (LocalizedException $e) {
+            $cvsLocationData['CVSStoreName'] = '';
+            $cvsLocationData['CVSAddress'] = '';
+//            $cvsLocationData = [
+//                'selectedCvsLocation' => [
+//                    'CVSStoreName' => '',
+//                    'CVSAddress' => '',
+//                ]
+//            ];
+        }
+
+        return $cvsLocationData->toJson();
     }
 }

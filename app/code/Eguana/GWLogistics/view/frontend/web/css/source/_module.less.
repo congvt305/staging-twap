@@ -1,0 +1,114 @@
+//
+//  Common
+//  _____________________________________________
+
+@checkout-source-selector-popup-location_border: @border-width__base solid
+@color-gray80;
+@checkout-delivery-method-selector-action__background: @color-white;
+
+@checkout-pickup-location-name_font-size: @font-size__l;
+@checkout-pickup-location-name_font-weight: @font-weight__bold;
+
+@checkout-pickup-location-name-popup_font-size: @font-size__l;
+
+@checkout-pickup-location-popup-search_padding: 0 0 @indent__s;
+@checkout-pickup-location-popup-search_margin: 0 0 @indent__base;
+@checkout-pickup-location-popup-search_border: @modal-title__border;
+
+@checkout-pickup-location-popup-note_margin: 0 0 @indent__base;
+
+& when (@media-common = true) {
+    /**
+     * @codingStandardsIgnoreStart
+     */
+    #cvs-pickup {
+        &.selected-shipping {
+            ~ #cvs-selector {
+                display: none;
+            }
+        }
+
+        &.selected-cvs-pickup {
+            ~ #shipping,
+            ~ #opc-shipping_method {
+                visibility: hidden;
+                height: 0;
+                overflow: hidden;
+            }
+        }
+    }
+
+    #delivery-method-selector {
+        //  @codingStandardsIgnoreEnd
+        .lib-vendor-prefix-display(flex);
+
+        .action {
+            .lib-button-l();
+
+            &.selected {
+                .lib-css(
+                        background,
+                        @checkout-delivery-method-selector-action__background
+                );
+            }
+        }
+
+        .action-select-shipping {
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .action-select-cvs-pickup {
+            border-bottom-left-radius: 0;
+            border-left: 0;
+            border-top-left-radius: 0;
+        }
+    }
+
+    #cvs-fields {
+        .cvs-map {
+            margin-bottom: @indent__s;
+        }
+
+        .fieldset {
+            margin-bottom: 0;
+
+            & > .field {
+                margin-bottom: @indent__s;
+
+                & > .label {
+                    display: none;
+                    font-size: 15px;
+                    font-weight: @font-weight__regular;
+                }
+            }
+        }
+
+        .action {
+            width: 135px;
+            font-size: @font-size__base;
+            font-weight: @font-weight__regular;
+            line-height: 1;
+            padding: 11px 0;
+
+            &:before {
+                content: '';
+                background-image: url('../Eguana_GWLogistics/images/7-eleven.svg');
+                background-size: 16px;
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                vertical-align: top;
+            }
+
+            &.action-open-fami-map {
+                &:before {
+                    background-image: url('../Eguana_GWLogistics/images/familymart.svg');
+                }
+            }
+        }
+    }
+
+
+}
+

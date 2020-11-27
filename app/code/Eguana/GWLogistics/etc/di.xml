@@ -11,8 +11,10 @@
     <preference for="Eguana\GWLogistics\Api\Data\ReverseStatusNotificationSearchResultInterface" type="Eguana\GWLogistics\Model\ReverseStatusNotificationSearchResult"/>
     <preference for="Eguana\GWLogistics\Api\Data\StatusNotificationSearchResultInterface" type="Eguana\GWLogistics\Model\StatusNotificationSearchResult"/>
 
-<!--    <preference for="Eguana\GWLogistics\Api\CartCvsLocationManagementInterface" type="Eguana\GWLogistics\Model\CartCvsLocationManagement"/>-->
-<!--    <preference for="Eguana\GWLogistics\Api\GuestCartCvsLocationManagementInterface" type="Eguana\GWLogistics\Model\GuestCartCvsLocationManagement"/>-->
+    <preference for="Eguana\GWLogistics\Api\CartCvsLocationManagementInterface" type="Eguana\GWLogistics\Model\CartCvsLocationManagement"/>
+    <preference for="Eguana\GWLogistics\Api\GuestCartCvsLocationManagementInterface" type="Eguana\GWLogistics\Model\GuestCartCvsLocationManagement"/>
+
+    <preference for="Eguana\GWLogistics\Model\Gateway\Validator\ResultInterface" type="Eguana\GWLogistics\Model\Gateway\Validator\Result"/>
 
     <type name="Magento\Config\Model\Config\TypePool">
         <arguments>
@@ -75,5 +77,16 @@
     <type name="Magento\Sales\Model\ResourceModel\Order\Handler\State">
         <plugin name="eguana_gwlogistics_set_order_status"
                 type="Eguana\GWLogistics\Plugin\Sales\OrderStatePlugin" sortOrder="10"/>
+    </type>
+    <type name="Eguana\GWLogistics\Model\Gateway\Command\CreateShipmentCommand">
+        <arguments>
+            <argument name="createShipmentRequestBuilder" xsi:type="object">Eguana\GWLogistics\Model\Gateway\Request\CreateShipmentRequestBuilder</argument>
+            <argument name="queryLogisticsRequestBuilder" xsi:type="object">Eguana\GWLogistics\Model\Gateway\Request\QueryLogisticsInfoRequestBuilder</argument>
+            <argument name="createShipmentClient" xsi:type="object">Eguana\GWLogistics\Model\Gateway\Client\CreateShipmentClient</argument>
+            <argument name="queryLogisticsInfoClient" xsi:type="object">Eguana\GWLogistics\Model\Gateway\Client\QueryLogisticsInfoClient</argument>
+            <argument name="createShipmentValidator" xsi:type="object">Eguana\GWLogistics\Model\Gateway\Validator\CreateShipmentValidator</argument>
+            <argument name="queryLogisticsInfoValidator" xsi:type="object">Eguana\GWLogistics\Model\Gateway\Validator\QueryLogisticsInfoValidator</argument>
+            <argument name="handler" xsi:type="object">Eguana\GWLogistics\Model\Gateway\Response\CreateShipmentResponseHandler</argument>
+        </arguments>
     </type>
 </config>
