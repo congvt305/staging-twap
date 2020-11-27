@@ -3,7 +3,7 @@
     <default>
         <carriers>
             <gwlogistics>
-                <active>0</active>
+                <active>1</active>
                 <merchant_id></merchant_id>
                 <platform_id></platform_id>
                 <hash_key></hash_key>
@@ -38,14 +38,7 @@
                 <send_sms_active>0</send_sms_active>
                 <send_sms_prefix>蘭芝線上購物中心</send_sms_prefix>
                 <message_template>carriers_gwlogistics_message_template</message_template>
-
             </gwlogistics>
         </carriers>
-        <eguana_gwlogistics>
-            <cron_settings>
-                <order_status_to_create_shipment>processing</order_status_to_create_shipment>
-                <create_shipment_cron_schedule>*/15 * * * *</create_shipment_cron_schedule>
-            </cron_settings>
-        </eguana_gwlogistics>
     </default>
 </config>

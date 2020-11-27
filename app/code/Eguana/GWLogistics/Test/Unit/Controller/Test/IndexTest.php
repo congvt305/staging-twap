@@ -15,7 +15,7 @@ class IndexTest extends TestCase
 {
     private $test;
 
-    protected function setUp():void
+    protected function setUp()
     {
         $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
         $this->test = $objectManager->getObject(Index::class);

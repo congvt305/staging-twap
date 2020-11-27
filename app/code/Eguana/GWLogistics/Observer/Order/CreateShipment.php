@@ -14,13 +14,13 @@ use Magento\Framework\Event\ObserverInterface;
 class CreateShipment implements ObserverInterface
 {
     /**
+     * @var \Eguana\GWLogistics\Model\Service\CreateShipment
+     */
+    private $createShipment;
+    /**
      * @var \Psr\Log\LoggerInterface
      */
     private $logger;
-    /**
-     * @var \Eguana\GWLogistics\Model\Gateway\Command\CreateShipmentCommand
-     */
-    private $createShipmentCommand;
 
     /**
      * CreateShipment constructor.
@@ -28,12 +28,12 @@ class CreateShipment implements ObserverInterface
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
-        \Eguana\GWLogistics\Model\Gateway\Command\CreateShipmentCommand $createShipmentCommand,
+        \Eguana\GWLogistics\Model\Service\CreateShipment $createShipment,
         \Psr\Log\LoggerInterface $logger
     ) {
 
+        $this->createShipment = $createShipment;
         $this->logger = $logger;
-        $this->createShipmentCommand = $createShipmentCommand;
     }
 
     public function execute(Observer $observer)
@@ -43,11 +43,21 @@ class CreateShipment implements ObserverInterface
         /** @var \Magento\Sales\Model\Order $order */
         $order = $invoice->getOrder();
         $this->logger->info('gwlogistics | event sales_order_invoice_pay fired: order id ', [$order->getId()]);
-        try {
-            $this->createShipmentCommand->execute($order);
-        } catch (\Exception $e) {
-            $this->logger->error('gwlogistics | ' . $e->getMessage());
-        }
+
+        //create shipment here
+//        $state = $invoice->getState();
+//        if ($state !== 2 || $order->getShippingMethod() !== 'gwlogistics_CVS') {
+//            $this->logger->info('gwlogistics | start creating shipment: return state ');
+//            return;
+//        }
+//
+//        try {
+//            $this->logger->info('gwlogistics | start creating shipment: order id ', [$order->getId()]);
+//            $this->createShipment->process($order);
+//        } catch (\Exception $e) {
+//            $this->logger->critical('gwlogistics | start creating shipment failed: order id ', [$order->getId()]);
+//            $this->logger->error($e->getMessage());
+//        }
     }
 
 }

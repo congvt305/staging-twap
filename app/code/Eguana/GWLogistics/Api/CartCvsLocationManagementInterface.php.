@@ -12,17 +12,11 @@ namespace Eguana\GWLogistics\Api;
 use Eguana\GWLogistics\Api\Data\QuoteCvsLocationInterface;
 
 /**
- * Manage GWLogistics CVS Location
- * @api
+ * Interface CartCvsLocationManagementInterface
+ * @package Eguana\GWLogistics\Api
  */
 interface CartCvsLocationManagementInterface
 {
-    /**
-     * @param int $cartId
-     * @return string
-     */
-    public function getSelectedCvsLocation(int $cartId): string;
-
     /**
      * @param string $cartId
      * @return bool

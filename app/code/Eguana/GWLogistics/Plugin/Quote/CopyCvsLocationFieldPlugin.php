@@ -23,7 +23,7 @@ class CopyCvsLocationFieldPlugin
      */
     public function afterConvert(\Magento\Quote\Model\Quote\Address\ToOrderAddress $subject, $result, Address $object, $data = [])
     {
-        if ($object->getShippingMethod() === 'gwlogistics_CVS' && $object->getCvsLocationId()) {
+        if ($object->getCvsLocationId()) {
             $result->setCvsLocationId($object->getCvsLocationId());
         }
         return $result;

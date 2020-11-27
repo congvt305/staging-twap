@@ -10,15 +10,6 @@
                         <resource id="Eguana_GWLogistics::shipment_order_create" title="Create Shiment Order" translate="title" sortOrder="60" />
                     </resource>
                 </resource>
-                <resource id="Magento_Backend::stores">
-                    <resource id="Magento_Backend::stores_settings">
-                        <resource id="Magento_Config::config">
-                            <resource id="Eguana_Base::config">
-                                <resource id="Eguana_GWLogistics::config" title="Green World Logistics Configuration" translate="title" />
-                            </resource>
-                        </resource>
-                    </resource>
-                </resource>
             </resource>
         </resources>
     </acl>
