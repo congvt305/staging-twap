@@ -72,23 +72,14 @@ class SaveQuoteCvsLocation
     {
         $this->logger->info('gwlogistics | cvs store data for a map selection', $cvsStoreData);
 
-
         $quoteIdString = $cvsStoreData['MerchantTradeNo'] . $cvsStoreData['ExtraData'];
-//        $quoteId = $this->getQuoteId($quoteIdString);
-        $quoteId = $cvsStoreData['ExtraData'];
+        $quoteId = $this->getQuoteId($quoteIdString);
         try {
 
             /** @var Quote $quote */
             $quoteAddress = $this->shippingAddressManagement->get($quoteId);
-//          //$this->setShippingAmount(0)->setBaseShippingAmount(0)->setShippingMethod('')->setShippingDescription('');
-            $quoteAddress->setShippingMethod('gwlogistics_CVS');
-            $quoteAddress->setSaveInAddressBook(0);
-            $quoteAddress->setSameAsBilling(1);
-            $quoteAddress->setCountryId('TW');
-            $this->shippingAddressManagement->assign($quoteId, $quoteAddress);
-
-        } catch (\Exception $e) {
-            throw new \Exception(__('Quote Address id for Quote "%1" does not exist.', $quoteId), $e);
+        } catch (NoSuchEntityException $e) {
+            throw new NoSuchEntityException(__('Quote Address id for Quote "%1" does not exist.', $quoteId), $e);
         }
 
         if ($this->findOldLocation($quoteAddress->getId())) {

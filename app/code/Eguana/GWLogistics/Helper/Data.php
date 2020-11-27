@@ -10,8 +10,6 @@ namespace Eguana\GWLogistics\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Magento\Rma\Api\RmaRepositoryInterface;
-use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -21,7 +19,6 @@ class Data extends AbstractHelper
     const XML_PATH_TITLE = 'carriers/gwlogistics/title';
     const XML_PATH_NAME = 'carriers/gwlogistics/name';
     const XML_PATH_SHIPPING_PRICE = 'carriers/gwlogistics/shipping_price';
-    const XML_PATH_SHIPPING_MESSAGE = 'carriers/gwlogistics/shipping_message';
     const XML_PATH_SENDER_NAME = 'carriers/gwlogistics/sender_name';
     const XML_PATH_SENDER_PHONE = 'carriers/gwlogistics/sender_phone';
     const XML_PATH_SENDER_CELL_PHONE = 'carriers/gwlogistics/sender_cell_phone';
@@ -45,9 +42,6 @@ class Data extends AbstractHelper
     const XML_PATH_MESSAGE_TEMPLATE = 'carriers/gwlogistics/message_template';
     const XML_PATH_MESSAGE_GOODSNAME_PREFIX = 'carriers/gwlogistics/goodsname_prefix';
 
-    const XML_PATH_ORDER_STATUS_TO_CREATE_SHIPMENT = 'eguana_gwlogistics/cron_settings/order_status_to_create_shipment';
-    const XML_PATH_CREATE_SHIPMENT_CRON_SCHEDULE = 'eguana_gwlogistics/cron_settings/create_shipment_cron_schedule';
-
     private $productionMode = null;
     /**
      * @var \Eguana\GWLogistics\Model\Lib\EcpayCheckMacValue
@@ -69,14 +63,6 @@ class Data extends AbstractHelper
      * @var \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface
      */
     private $quoteCvsLocationRepository;
-    /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-    /**
-     * @var RmaRepositoryInterface
-     */
-    private $rmaRepository;
 
     public function __construct(
         \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository,
@@ -84,8 +70,6 @@ class Data extends AbstractHelper
         \Magento\Framework\Encryption\EncryptorInterface $encryptor,
         \Eguana\GWLogistics\Model\Lib\EcpayCheckMacValue $ecpayCheckMacValue,
         \Eguana\GWLogistics\Model\Lib\EcpayLogistics $ecpayLogistics,
-        OrderRepositoryInterface $orderRepository,
-        RmaRepositoryInterface $rmaRepository,
         Context $context
     ) {
         parent::__construct($context);
@@ -94,8 +78,6 @@ class Data extends AbstractHelper
         $this->ecpayLogistics = $ecpayLogistics;
         $this->logger = $logger;
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
-        $this->orderRepository = $orderRepository;
-        $this->rmaRepository = $rmaRepository;
     }
 
     public function isActive($storeId = null)
@@ -107,44 +89,33 @@ class Data extends AbstractHelper
         );
     }
 
-    public function getCarrierTitle($storeId = null)
-    {
+    public function getCarrierTitle($storeId = null) {
         return $this->scopeConfig->getValue(
             self::XML_PATH_TITLE,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $storeId
         );
     }
-
-    public function getCarrierShippingMessage($storeId = null)
-    {
-        return $this->scopeConfig->getValue(
-            self::XML_PATH_SHIPPING_MESSAGE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
-            $storeId
-        );
-    }
-    public function getMapServerReplyUrl($storeId = null)
-    {
+    public function getMapServerReplyUrl($storeId = null) {
         return $this->_getUrl('eguana_gwlogistics/SelectedCvsNotify', ['_secure' => true]);
     }
 
-    public function getCreateShipmentReplyUrl($storeId = null)
-    {
+    public function getCreateShipmentReplyUrl($storeId = null) {
         $storeBaseUrl = $this->scopeConfig->getValue(
             'web/secure/base_url',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $storeId
+
         );
         return $storeBaseUrl . 'eguana_gwlogistics/OrderStatusNotify';
     }
 
-    public function getReverseLogisticsOrderReplyUrl($storeId = null)
-    {
+    public function getReverseLogisticsOrderReplyUrl($storeId = null) {
         $storeBaseUrl = $this->scopeConfig->getValue(
             'web/secure/base_url',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $storeId
+
         );
         return $storeBaseUrl . 'eguana_gwlogistics/ReverseOrderStatusNotify';
     }
@@ -191,11 +162,10 @@ class Data extends AbstractHelper
         if ($this->getMode($storeId) === '1') {
             return $this->encryptor->decrypt(
                 $this->scopeConfig->getValue(
-                    self::XML_PATH_HASH_KEY,
-                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                self::XML_PATH_HASH_KEY,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
                     $storeId
-                )
-            );
+            ));
         }
         return $this->scopeConfig->getValue(
             self::XML_PATH_HASH_KEY . '_sandbox',
@@ -211,8 +181,7 @@ class Data extends AbstractHelper
                     self::XML_PATH_HASH_IV,
                     \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
                     $storeId
-                )
-            );
+                ));
         }
         return $this->scopeConfig->getValue(
             self::XML_PATH_HASH_IV . '_sandbox',
@@ -266,6 +235,8 @@ class Data extends AbstractHelper
     {
         $hashKey = $this->getHashKey($storeId);
         $hashIv = $this->getHashIv($storeId);
+//        $hashKey= 'XBERn1YOvpM9nfZc';
+//        $hashIv = 'h1ONHk4P4yqbl5LK';
         try {
             $this->ecpayLogistics->HashKey = $hashKey;
             $this->ecpayLogistics->HashIV = $hashIv;
@@ -274,6 +245,8 @@ class Data extends AbstractHelper
         } catch (\Exception $e) {
             return true; //todo fix after verify reason, found that special character is the cause.
         }
+
+
     }
 
     public function getSendSmsActive($storeId = null)
@@ -292,6 +265,7 @@ class Data extends AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $storeId
         );
+
     }
 
     public function getMessageTemplate($storeId = null)
@@ -317,7 +291,7 @@ class Data extends AbstractHelper
      */
     public function hasCvsLocation($order)
     {
-        return $order->getShippingMethod() === 'gwlogistics_CVS' && $this->getCvsStoreData($order);
+        return $order->getShippingMethod() === 'gwlogistics_CVS' && $this->getCvsStoreData($order); //need to check if cvs location exists?
     }
 
     /**
@@ -331,32 +305,7 @@ class Data extends AbstractHelper
             $cvsLocation = $this->quoteCvsLocationRepository->getById($cvsLocationId);
         }
         return $cvsLocation;
+
     }
 
-    public function getMyOrderTrackingUrl($orderId)
-    {
-        $order = $this->orderRepository->get($orderId);
-        $customerId = $order->getCustomerId();
-        $url = 'sales/order/shipment/order_id/' . $orderId;
-        return $customerId ? $this->_urlBuilder->getUrl($url) : null;
-    }
-
-    public function getMyRmaTrackingUrl($rmaId)
-    {
-        $rma = $this->rmaRepository->get($rmaId);
-        $customerId = $rma->getCustomerId();
-        $url = 'sales/order/shipment/order_id/' . $rmaId;
-        return $customerId ? $this->_urlBuilder->getUrl($url) : null;
-    }
-
-    public function getOrderStatusToCreateShipment()
-    {
-        return $this->scopeConfig->getValue(self::XML_PATH_ORDER_STATUS_TO_CREATE_SHIPMENT);
-    }
-
-    public function getCreateShipmentCronSchedule()
-    {
-        return $this->scopeConfig->getValue(self::XML_PATH_CREATE_SHIPMENT_CRON_SCHEDULE);
-    }
 }
-

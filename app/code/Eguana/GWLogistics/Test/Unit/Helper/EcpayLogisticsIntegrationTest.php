@@ -18,7 +18,7 @@ class EcpayLogisticsIntegrationTest extends TestCase
      */
     private $ecpayLogisticsIntegrationHelper;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
         $this->ecpayLogisticsIntegrationHelper = $objectManager->getObject(EcpayLogisticsIntegration::class);

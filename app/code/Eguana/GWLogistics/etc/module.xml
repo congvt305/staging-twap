@@ -8,7 +8,6 @@
             <module name="Magento_Quote"/>
             <module name="Magento_SalesRule"/>
             <module name="Magento_Rma"/>
-            <module name="Eguana_Base"/>
         </sequence>
     </module>
 </config>

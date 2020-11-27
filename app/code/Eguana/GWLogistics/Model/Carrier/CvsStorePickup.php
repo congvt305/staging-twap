@@ -17,8 +17,6 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
     \Magento\Shipping\Model\Carrier\CarrierInterface
 {
     const XML_PATH_SHIPPING_PRICE = 'carriers/gwlogistics/shipping_price';
-    const SEVEN_ELEVEN_CODE = 'UNIMART';
-    const FAMILY_MART_CODE = 'FAMI';
     /**
      * @var string
      */
@@ -81,15 +79,10 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
      * @var \Magento\Rma\Api\TrackRepositoryInterface
      */
     private $rmaTrackRepository;
-    /**
-     * @var \Eguana\GWLogistics\Helper\Data
-     */
-    private $dataHelper;
 
     public function __construct(
         \Eguana\GWLogistics\Model\Request\QueryLogisticsInfo $queryLogisticsInfo,
         \Eguana\GWLogistics\Model\Carrier\LogisticsInfoStatus $infoStatus,
-        \Eguana\GWLogistics\Helper\Data $dataHelper,
         \Magento\Rma\Api\TrackRepositoryInterface $rmaTrackRepository,
         \Eguana\GWLogistics\Api\ReverseStatusNotificationRepositoryInterface $reverseStatusNotificationRepository,
         \Magento\Framework\Api\SortOrderBuilder $sortOrderBuilder,
@@ -120,7 +113,6 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
         $this->queryLogisticsInfo = $queryLogisticsInfo;
         $this->reverseStatusNotificationRepository = $reverseStatusNotificationRepository;
         $this->rmaTrackRepository = $rmaTrackRepository;
-        $this->dataHelper = $dataHelper;
     }
 
     public function collectRates(RateRequest $request)
@@ -271,9 +263,6 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
             $trackingValue = $isRma ? $trackingValue[1] : $trackingValue[0];
 
             $responseArr = $isRma ? $this->getReverseGWTracking($trackingValue) : $this->getGWLTracking($trackingValue);
-            $trackUrl = $isRma ?
-                $this->dataHelper->getMyRmaTrackingUrl($this->findRmaShipmentTrack($trackingValue)->getRmaEntityId())
-                : $this->dataHelper->getMyOrderTrackingUrl($this->findOrderShipmentTrack($trackingValue)->getOrderId());
 
             if(count($responseArr) > 0) {
                 $tracking = $this->trackStatusFactory->create();
@@ -281,10 +270,6 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
                 $tracking->setCarrierTitle($this->getConfigData('title'));
                 $tracking->setTracking($trackingValue);
                 $tracking->addData($responseArr);
-                $tracking->setPopup(1);
-                if ($trackUrl) {
-                    $tracking->setUrl($trackUrl);
-                }
                 $this->result->append($tracking);
             } else {
                 $error = $this->trackErrorFactory->create();
@@ -358,8 +343,11 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
 
     private function findAllPayLogisticsId($tracking)
     {
-        $track = $this->findOrderShipmentTrack($tracking);
-
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('track_number', $tracking)
+            ->create();
+        $track = $this->shipmentTrackRepository->getList($searchCriteria)->getItems();
+        $track = reset($track);
         if (!$track) {
             return false;
         }
@@ -369,17 +357,6 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
         return [ 'allPayLogisticsId' => $shipment->getAllPayLogisticsId(), 'storeId' => $storeId];
     }
 
-    private function findOrderShipmentTrack(string $trackNumber)
-    {
-        $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('track_number', $trackNumber)
-            ->create();
-        $track = $this->shipmentTrackRepository->getList($searchCriteria)->getItems();
-        $track = reset($track);
-        return $track;
-    }
-
-
     /**
      * find
      * @param $tracking
@@ -387,18 +364,13 @@ class CvsStorePickup extends \Magento\Shipping\Model\Carrier\AbstractCarrier imp
      */
     private function findRtnMerchantTradeNo($tracking)
     {
-        $rmatrack = $this->findRmaShipmentTrack($tracking);
-        return $rmatrack ? $rmatrack->getData('rtn_merchant_trade_no') : false;
-    }
-
-    private function findRmaShipmentTrack(string $trackNumber)
-    {
         $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('track_number', $trackNumber)
+            ->addFilter('track_number', $tracking)
             ->create();
         $rmatracks = $this->rmaTrackRepository->getList($searchCriteria)->getItems();
         /** @var \Magento\Rma\Api\Data\TrackInterface $rmatrack */
-        return reset($rmatracks);
+        $rmatrack = reset($rmatracks);
+        return $rmatrack ? $rmatrack->getData('rtn_merchant_trade_no') : false;
     }
 
     public function isTrackingAvailable()
