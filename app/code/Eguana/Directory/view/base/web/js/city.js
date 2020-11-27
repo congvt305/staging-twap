@@ -25,9 +25,9 @@ define([
                 cityValue: true,
                 postcodeValue: true,
                 value: true,
-            }
+            },
+            defaultCountry: window.checkoutConfig.defaultCountryId,
         },
-        countryOptions: {},
 
         initialize: function () {
             this._super();
@@ -93,18 +93,6 @@ define([
         },
 
         hideOrigCity: function () {
-            if (this.countryOptions.currentCountry === 'VN') {
-                registry.get((this.parentName + '.' + 'city_id'), function (city) { //customName == custom Entry??
-                    city.validation['required-entry'] = false;
-                    city.visible(false);
-                });
-
-                registry.get((this.parentName + '.' + 'city_id_input'), function (city) { //customName == custom Entry??
-                    city.validation['required-entry'] = false;
-                    city.visible(false);
-                });
-                return;
-            }
             registry.get((this.parentName + '.' + 'city'), function (city) { //customName == custom Entry??
                 city.validation['required-entry'] = false;
                 city.visible(false);
@@ -112,26 +100,13 @@ define([
         },
 
         disablePostcode: function () {
-            if (this.countryOptions.currentCountry === 'VN') {
-                return;
-            }
             registry.get((this.parentName + '.' + 'postcode'), function (postcode) { //customName == custom Entry??
                 // postcode.validation['required-entry'] = true;
                 postcode.disabled(true);
             });
         },
 
-        getCountryOptions: function () {
-            var country = registry.get(this.parentName + '.' + 'country_id'),
-            currentCountry = country.value();
-
-            this.countryOptions =  {
-                'currentCountry': currentCountry,
-            }
-        },
-
         resetFields: function () {
-            this.getCountryOptions();
             this.hideOrigCity();
             this.disablePostcode();
         }
