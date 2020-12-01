@@ -55,7 +55,7 @@
 
         li.checkout-shipping-address {
             .step-title span {
-                &:last-child {
+                &:last-child:not(:first-child) {
                     color: @primary__color__darker;
                     font-size: @font-size__base !important;
                     font-weight: @font-weight__regular;
@@ -250,7 +250,7 @@
 
         li.checkout-shipping-address {
             .step-title span {
-                &:first-child {
+                &:last-child:not(:first-child) {
                     margin-right: @indent__s;
                 }
             }

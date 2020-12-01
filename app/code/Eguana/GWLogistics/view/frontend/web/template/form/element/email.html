@@ -28,8 +28,12 @@
                            id="store-pickup-checkout-customer-email" />
                     <!-- ko template: 'ui/form/element/helper/tooltip' --><!-- /ko -->
                     <span class="note" data-bind="fadeVisible: isPasswordVisible() == false">
-                        <translate args="'You can create an account after checkout.'"/>
-                    </span>
+                        <!-- ko i18n: 'Shopping using non-members will not be able to get member rights and distribution information to suggest that you'--><!-- /ko -->
+                    <a class="action" data-bind="attr: { href: window.checkoutConfig.registerUrl }">
+                        <span data-bind="i18n: 'join a member'"></span>
+                    </a>
+                        <!-- ko i18n: 'first.'--><!-- /ko -->
+                </span>
                 </div>
             </div>
 

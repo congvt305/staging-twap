@@ -3325,7 +3325,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Cart Subtotal","購物車小計",module,Magento_Checkout
 "Payment Information","付款資訊",module,Magento_Checkout
 "No Payment method available.","沒有可用的付款方式。",module,Magento_Checkout
-"You can track your order status by creating an account.","您可以通過創建帳戶來跟踪訂單狀態。",module,Magento_Checkout
+"You can track your order status by creating an account.","加入會員並獲得更多購物回饋",module,Magento_Checkout
 "Place Order","確認訂單",module,Magento_Checkout
 "Forgot an Item?","忘了東西?",module,Magento_Checkout
 "Edit Your Cart","編輯你的車",module,Magento_Checkout

@@ -49,6 +49,32 @@
                                         </item>
                                     </item>
                                 </item>
+                                <item name="steps" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="shipping-step" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="shippingAddress" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="shipping-address-fieldset" xsi:type="array">
+                                                            <item name="children" xsi:type="array">
+                                                                <item name="lastname" xsi:type="array">
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="placeholder" xsi:type="string" translate="true">Be sure to fill out the name on your ID card in case you can't collect the goods</item>
+                                                                    </item>
+                                                                </item>
+                                                                <item name="firstname" xsi:type="array">
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="placeholder" xsi:type="string" translate="true">Be sure to fill out the name on your ID card in case you can't collect the goods</item>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
                             </item>
                         </item>
                     </item>
