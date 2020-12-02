@@ -31,10 +31,11 @@
                        data-validate="{required:true, 'validate-email':true}"
                        id="customer-email" />
                 <span class="note" data-bind="fadeVisible: isPasswordVisible() == false">
+                    <!-- ko i18n: 'Shopping using non-members will not be able to get member rights and distribution information to suggest that you'--><!-- /ko -->
                     <a class="action" data-bind="attr: { href: window.checkoutConfig.registerUrl }">
                         <span data-bind="i18n: 'join a member'"></span>
                     </a>
-                    <!-- ko i18n: 'And get more shopping feedback.'--><!-- /ko -->
+                    <!-- ko i18n: 'first.'--><!-- /ko -->
                 </span>
             </div>
         </div>

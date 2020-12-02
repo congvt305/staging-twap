@@ -245,6 +245,16 @@
                     width: 20px;
                     padding-left: 0;
                     padding-right: 0;
+
+                    input[type="radio"] {
+                        &:checked {
+                            border-color: @primary__color;
+
+                            &:after {
+                                background-color: @primary__color;
+                            }
+                        }
+                    }
                 }
             }
 
