@@ -43,7 +43,9 @@
         </carriers>
         <eguana_gwlogistics>
             <cron_settings>
+                <enable_cron>0</enable_cron>
                 <order_status_to_create_shipment>processing</order_status_to_create_shipment>
+                <last_order_id></last_order_id>
                 <create_shipment_cron_schedule>*/15 * * * *</create_shipment_cron_schedule>
             </cron_settings>
         </eguana_gwlogistics>
