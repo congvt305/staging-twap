@@ -22,8 +22,9 @@ class CreateShipmentValidator extends \Eguana\GWLogistics\Model\Gateway\Validato
             $isValid = true;
             return $this->createResult($isValid);
         }
+        //response for create order {"ResCode":"0","ErrorMessage":"全家廠商資訊不正確(未通過全家一段標測試)"}
         //response for create order {"ResCode":"1","AllPayLogisticsID":"14256261","BookingNote":"","CheckMacValue":"2C22CEC495A329DCFC08F9AABE2FC8D9","CVSPaymentNo":"","CVSValidationNo":"","GoodsAmount":"1595","LogisticsSubType":"FAMI","LogisticsType":"CVS","MerchantID":"3210271","MerchantTradeNo":"4000000066","ReceiverAddress":"","ReceiverCellPhone":"0966221403","ReceiverEmail":"bonglee@tw.amorepacific.com","ReceiverName":"李奉炯","ReceiverPhone":"0966221403","RtnCode":"300","RtnMsg":"訂單處理中(已收到訂單資料)","UpdateStatusDate":"2020/08/28 17:03:24"} []
-        $failsDescription = new Phrase($validateSubject['RtnMsg']);
+        $failsDescription = new Phrase($validateSubject['ErrorMessage']);
         $errorCode = $validateSubject['ResCode'];
 
         return $this->createResult($isValid, [$failsDescription], [$errorCode]);

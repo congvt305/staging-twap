@@ -45,7 +45,9 @@ class Data extends AbstractHelper
     const XML_PATH_MESSAGE_TEMPLATE = 'carriers/gwlogistics/message_template';
     const XML_PATH_MESSAGE_GOODSNAME_PREFIX = 'carriers/gwlogistics/goodsname_prefix';
 
+    const XML_PATH_ENABLE_CRON = 'eguana_gwlogistics/cron_settings/enable_cron';
     const XML_PATH_ORDER_STATUS_TO_CREATE_SHIPMENT = 'eguana_gwlogistics/cron_settings/order_status_to_create_shipment';
+    const XML_PATH_LAST_ORDER_ID = 'eguana_gwlogistics/cron_settings/last_order_id';
     const XML_PATH_CREATE_SHIPMENT_CRON_SCHEDULE = 'eguana_gwlogistics/cron_settings/create_shipment_cron_schedule';
 
     private $productionMode = null;
@@ -357,6 +359,16 @@ class Data extends AbstractHelper
     public function getCreateShipmentCronSchedule()
     {
         return $this->scopeConfig->getValue(self::XML_PATH_CREATE_SHIPMENT_CRON_SCHEDULE);
+    }
+
+    public function isCronEnabled()
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_ENABLE_CRON);
+    }
+
+    public function getLastOrderId()
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_LAST_ORDER_ID);
     }
 }
 

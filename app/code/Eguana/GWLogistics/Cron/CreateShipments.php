@@ -14,6 +14,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Eguana\GWLogistics\Model\Gateway\Command\CreateShipmentCommandFactory;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class CreateShipments
@@ -42,6 +43,10 @@ class CreateShipments
      * @var StoreManagerInterface
      */
     private $storeManager;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * CreateShipments constructor.
@@ -51,6 +56,7 @@ class CreateShipments
      * @param reateShipmentCommandFactory $createShipmentCommandFactory
      */
     public function __construct(
+        LoggerInterface $logger,
         StoreManagerInterface $storeManager,
         Data $helper,
         OrderRepositoryInterface $orderRepository,
@@ -62,10 +68,14 @@ class CreateShipments
         $this->createShipmentCommandFactory = $createShipmentCommandFactory;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->storeManager = $storeManager;
+        $this->logger = $logger;
     }
 
     public function execute()
     {
+        if (!$this->helper->isCronEnabled() || !$this->helper->getOrderStatusToCreateShipment()) {
+            return;
+        }
         $this->ordersToShip = $this->findOrdersToShip();
         if (!$this->ordersToShip) {
             return;
@@ -77,7 +87,7 @@ class CreateShipments
 
     private function findOrdersToShip()
     {
-        $lastOrderId = 2546;
+        $lastOrderId = (int)$this->helper->getLastOrderId();
         $orderStatuses = explode(',', $this->helper->getOrderStatusToCreateShipment());
         $enabledStores = $this->getEnabledStores();
         $searchCriteria = $this->searchCriteriaBuilder
@@ -87,6 +97,7 @@ class CreateShipments
             ->addFilter('entity_id', $lastOrderId, 'gt')
             ->create();
         $ordersToShip = $this->orderRepository->getList($searchCriteria);
+        $this->logger->info('gwlogistics | cron findOrdersToShip count | '. $ordersToShip->getTotalCount());
         return $ordersToShip->getTotalCount() > 0 ? $ordersToShip->getItems() : false;
     }
 
