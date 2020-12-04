@@ -9,16 +9,16 @@
  */
 namespace Eguana\ImportExport\Plugin\Ui\Component\DataProvider;
 
-use Magento\Customer\Ui\Component\DataProvider\Document as CoreDocument;
 use Magento\Customer\Api\CustomerMetadataInterface;
+use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Customer\Model\AccountManagement;
+use Magento\Customer\Ui\Component\DataProvider\Document as CoreDocument;
 use Magento\Framework\Api\AttributeValueFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Customer\Api\GroupRepositoryInterface;
+use Magento\Framework\View\Element\UiComponent\DataProvider\Document as CoreParentDocument;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Framework\View\Element\UiComponent\DataProvider\Document as CoreParentDocument;
 
 class Document extends CoreDocument
 {
@@ -71,7 +71,6 @@ class Document extends CoreDocument
      * @var ScopeConfigInterface
      */
     private $scopeConfig;
-
 
     /**
      * @var CoreParentDocument
@@ -146,12 +145,11 @@ class Document extends CoreDocument
 
         try {
             $attributeMetadata = $this->customerMetadata->getAttributeMetadata(self::$genderAttributeCode);
-            foreach ($attributeMetadata->getOptions() as $key=>$option){
-                if($option->getValue() == $value){
+            foreach ($attributeMetadata->getOptions() as $key=>$option) {
+                if ($option->getValue() == $value) {
                     $this->setCustomAttribute(self::$genderAttributeCode, $option->getLabel());
                 }
             }
-
         } catch (NoSuchEntityException $e) {
             $this->setCustomAttribute(self::$genderAttributeCode, 'N/A');
         }
@@ -229,5 +227,4 @@ class Document extends CoreDocument
 
         $this->setCustomAttribute(self::$accountLockAttributeCode, $valueText);
     }
-
 }
