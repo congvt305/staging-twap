@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="\Eguana\EventReservation\Api\Data\EventSearchResultsInterface"
+                type="Eguana\EventReservation\Model\EventSearchResults" />
+    <preference for="Eguana\EventReservation\Api\Data\EventInterface" type="Eguana\EventReservation\Model\Event" />
+    <preference for="Eguana\EventReservation\Api\EventRepositoryInterface" type="Eguana\EventReservation\Model\EventRepository" />
+    <preference for="\Eguana\EventReservation\Api\Data\CounterSearchResultsInterface"
+                type="Eguana\EventReservation\Model\CounterSearchResults" />
+    <preference for="Eguana\EventReservation\Api\Data\CounterInterface" type="Eguana\EventReservation\Model\Counter" />
+    <preference for="Eguana\EventReservation\Api\CounterRepositoryInterface" type="Eguana\EventReservation\Model\CounterRepository" />
+    <preference for="\Eguana\EventReservation\Api\Data\UserReservationSearchResultsInterface"
+                type="Eguana\EventReservation\Model\UserReservationSearchResults" />
+    <preference for="Eguana\EventReservation\Api\Data\UserReservationInterface" type="Eguana\EventReservation\Model\UserReservation" />
+    <preference for="Eguana\EventReservation\Api\UserReservationRepositoryInterface" type="Eguana\EventReservation\Model\UserReservationRepository" />
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="event_reservation_listing_data_source" xsi:type="string">Eguana\EventReservation\Model\ResourceModel\Event\Grid\Collection</item>
+                <item name="event_counter_listing_data_source" xsi:type="string">Eguana\EventReservation\Model\ResourceModel\Counter\Grid\Collection</item>
+                <item name="reservations_listing_data_source" xsi:type="string">Eguana\EventReservation\Model\ResourceModel\UserReservation\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Eguana\EventReservation\Model\ResourceModel\Event\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">eguana_event_reservation</argument>
+            <argument name="eventPrefix" xsi:type="string">event_reservation_collection</argument>
+            <argument name="eventObject" xsi:type="string">event_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Eguana\EventReservation\Model\ResourceModel\Event</argument>
+        </arguments>
+    </type>
+    <type name="Eguana\EventReservation\Model\ResourceModel\Counter\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">eguana_event_reservation_counter</argument>
+            <argument name="eventPrefix" xsi:type="string">event_counter_collection</argument>
+            <argument name="eventObject" xsi:type="string">counter_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Eguana\EventReservation\Model\ResourceModel\Counter</argument>
+        </arguments>
+    </type>
+    <type name="Eguana\EventReservation\Model\ResourceModel\UserReservation\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">eguana_user_event_reserve</argument>
+            <argument name="eventPrefix" xsi:type="string">event_user_reserve_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">user_reserve_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Eguana\EventReservation\Model\ResourceModel\UserReservation</argument>
+        </arguments>
+    </type>
+    <virtualType name="EventGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\Model\Entity\RepositoryFactory">
+        <arguments>
+            <argument name="entities" xsi:type="array">
+                <item name="Eguana\EventReservation\Api\Data\EventInterface" xsi:type="string">Eguana\EventReservation\Api\Data\EventInterface</item>
+                <item name="Eguana\EventReservation\Api\Data\CounterInterface" xsi:type="string">Eguana\EventReservation\Api\Data\CounterInterface</item>
+                <item name="Eguana\EventReservation\Api\Data\UserReservationInterface" xsi:type="string">Eguana\EventReservation\Api\Data\UserReservationInterface</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Eguana\EventReservation\Api\Data\EventInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">eguana_event_reservation</item>
+                    <item name="identifierField" xsi:type="string">event_id</item>
+                </item>
+                <item name="Eguana\EventReservation\Api\Data\CounterInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">eguana_event_reservation_counter</item>
+                    <item name="identifierField" xsi:type="string">reservation_counter_id</item>
+                </item>
+                <item name="Eguana\EventReservation\Api\Data\UserReservationInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">eguana_user_event_reserve</item>
+                    <item name="identifierField" xsi:type="string">user_reserve_id</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
+        <arguments>
+            <argument name="extensionActions" xsi:type="array">
+                <item name="Eguana\EventReservation\Api\Data\EventInterface" xsi:type="array">
+                    <item name="read" xsi:type="array">
+                        <item name="storeReader" xsi:type="string">Eguana\EventReservation\Model\ResourceModel\Event\Relation\Store\ReadHandler</item>
+                    </item>
+                    <item name="create" xsi:type="array">
+                        <item name="storeCreator" xsi:type="string">Eguana\EventReservation\Model\ResourceModel\Event\Relation\Store\SaveHandler</item>
+                    </item>
+                    <item name="update" xsi:type="array">
+                        <item name="storeUpdater" xsi:type="string">Eguana\EventReservation\Model\ResourceModel\Event\Relation\Store\SaveHandler</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\HydratorPool">
+        <arguments>
+            <argument name="hydrators" xsi:type="array">
+                <item name="Eguana\EventReservation\Api\Data\EventInterface" xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+                <item name="Eguana\EventReservation\Api\Data\CounterInterface" xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+                <item name="Eguana\EventReservation\Api\Data\UserReservationInterface" xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

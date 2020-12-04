@@ -1,0 +1,40 @@
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 22/10/20
+ * Time: 10:00 PM
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block
+                class="Eguana\EventReservation\Block\Event\Reservation"
+                name="event.reservation.cms.block"
+                template="Eguana_EventReservation::reservation-cms-block.phtml">
+                <arguments>
+                    <argument name="reservation_view_model" xsi:type="object">Eguana\EventReservation\ViewModel\Event\Reservation</argument>
+                </arguments>
+            </block>
+            <block
+                class="Eguana\EventReservation\Block\Event\Reservation"
+                name="event.reservation.image"
+                template="Eguana_EventReservation::reservation-image.phtml">
+                <arguments>
+                    <argument name="reservation_view_model" xsi:type="object">Eguana\EventReservation\ViewModel\Event\Reservation</argument>
+                </arguments>
+            </block>
+            <block
+                class="Eguana\EventReservation\Block\Event\Reservation"
+                name="event.reservation.form"
+                template="Eguana_EventReservation::reservation-form.phtml" cacheable="false">
+                <arguments>
+                    <argument name="reservation_view_model" xsi:type="object">Eguana\EventReservation\ViewModel\Event\Reservation</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

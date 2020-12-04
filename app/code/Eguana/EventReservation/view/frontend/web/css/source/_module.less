@@ -1,0 +1,86 @@
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 23/10/20
+ * Time: 03:34 PM
+ */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .event-block-image {
+        .event-image-box {
+            text-align: center;
+        }
+    }
+
+    .event-reservation-form {
+        .agreement-checkbox {
+            position: relative;
+
+            div.mage-error {
+                position: absolute;
+                bottom: -25px;
+            }
+        }
+
+        .actions-toolbar {
+            margin-top: @indent__xl;
+
+            .action.primary {
+                &:extend(.abs-button-l all);
+            }
+        }
+
+        .event-error-message {
+            color: #e22626;
+            font-size: 15px;
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .event-reservation-form {
+        .fieldset {
+            margin: 0;
+        }
+
+        .actions-toolbar {
+            .action.primary {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 4;
+            }
+        }
+    }
+
+    .event-reservation-index {
+        .column.main {
+            padding: 0;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .event-reservation-form {
+        .actions-toolbar {
+            .action.primary {
+                width: 380px;
+            }
+        }
+    }
+}

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: raheel
+* Date: 20/10/20
+* Time: 11:10 PM
+*/
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">event_counter_listing.event_counter_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>columns</spinner>
+        <deps>
+            <dep>event_counter_listing.event_counter_listing_data_source</dep>
+        </deps>
+    </settings>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <dataSource name="event_counter_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">reservation_counter_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Eguana_EventReservation::event_reservation</aclResource>
+        <dataProvider class="Eguana\EventReservation\Ui\DataProvider\Counter\Listing\DataProvider" name="event_counter_listing_data_source">
+            <settings>
+                <requestFieldName>entity_id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <columns name="columns">
+        <column name="title" sortOrder="30">
+            <settings>
+                <label translate="true">Store Name</label>
+            </settings>
+        </column>
+        <column name="staff_email" sortOrder="40">
+            <settings>
+                <label translate="true">Staff Email</label>
+            </settings>
+        </column>
+        <column name="status" class="Eguana\EventReservation\Ui\Component\Counter\Listing\Column\Status" sortOrder="43">
+            <settings>
+                <label translate="true">Status</label>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+            </settings>
+        </column>
+        <column name="from_date" sortOrder="44">
+            <settings>
+                <dataType>date</dataType>
+                <label translate="true">From Date</label>
+            </settings>
+        </column>
+        <column name="to_date" sortOrder="50">
+            <settings>
+                <dataType>date</dataType>
+                <label translate="true">To Date</label>
+            </settings>
+        </column>
+        <column name="slot_time" class="Eguana\EventReservation\Ui\Component\Counter\Listing\Column\SlotTimeBreak" sortOrder="60">
+            <settings>
+                <label translate="true">Time Slot</label>
+            </settings>
+        </column>
+        <column name="break" sortOrder="70">
+            <settings>
+                <label translate="true">Break</label>
+            </settings>
+        </column>
+        <column name="per_time_slot_seats" sortOrder="80">
+            <settings>
+                <label translate="true">Per Time Slot Seats</label>
+            </settings>
+        </column>
+        <column name="start_time" class="Eguana\EventReservation\Ui\Component\Counter\Listing\Column\StartEndTime" sortOrder="90">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Start Time</label>
+            </settings>
+        </column>
+        <column name="end_time" class="Eguana\EventReservation\Ui\Component\Counter\Listing\Column\StartEndTime" sortOrder="100">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">End Time</label>
+            </settings>
+        </column>
+        <column name="close_days" sortOrder="110">
+            <settings>
+                <label translate="true">Close Days</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Eguana\EventReservation\Ui\Component\Counter\Listing\Column\CounterActions">
+            <settings>
+                <indexField>entity_id</indexField>
+                <resizeEnabled>false</resizeEnabled>
+                <resizeDefaultWidth>107</resizeDefaultWidth>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

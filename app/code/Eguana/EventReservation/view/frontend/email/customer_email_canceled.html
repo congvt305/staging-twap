@@ -1,0 +1,32 @@
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 12/10/20
+ * Time: 08:10 PM
+ */
+-->
+<!--@subject {{trans "Hi %name," name=$customer_name}} @-->
+<!--@vars {
+"var customer_name":"Customer Name",
+"var event_title":"Event Title",
+"var event_time":"Event Reserve Time",
+"var physical_store":"Store Locator Name",
+"var store_name":"Store Name"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<p class="greeting">{{trans "Hi %name," name=$customer_name}}</p>
+<p>{{trans "Your reservation for %event_title has been canceled on %time at %phy_store from %store. If you have questions about your reservation, you can email us at info@amore.com."
+event_title=$event_title
+time=$event_time
+phy_store=$physical_store
+store=$store_name}}</p>
+
+<p>{{trans "Have a lovely day!"}}</p>
+<p>{{trans "Your Amore Team"}}</p>
+
+{{template config_path="design/email/footer_template"}}

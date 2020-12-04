@@ -1,0 +1,40 @@
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 12/10/20
+ * Time: 08:30 PM
+ */
+-->
+<!--@subject {{trans "Hi Admin,"}} @-->
+<!--@vars {
+"var customer_name":"Customer Name",
+"var event_title":"Event Title",
+"var event_time":"Event Reserve Time",
+"var physical_store":"Store Locator Name",
+"var confirm_link":"Confirm Reservation Link",
+"var cancel_link":"Cancel Reservation Link"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<p class="greeting">{{trans "Hi Admin,"}}</p>
+<p>{{trans "You have new request reservation for %event_title on %time at %phy_store from %customer. Please verify and confirm the reservation."
+event_title=$event_title
+time=$event_time
+phy_store=$physical_store
+customer=$customer_name}}</p>
+
+<p>{{trans "Reservation Status : Pending"}}</p>
+
+<p>
+    <a href="{{var cancel_link}}" style="margin-right: 15px;">Cancel</a>
+    <a href="{{var confirm_link}}">Confirm Reservation</a>
+</p>
+
+<p>{{trans "Have a lovely day!"}}</p>
+<p>{{trans "Your Amore Team"}}</p>
+
+{{template config_path="design/email/footer_template"}}

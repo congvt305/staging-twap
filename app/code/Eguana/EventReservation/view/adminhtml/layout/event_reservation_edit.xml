@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: raheel
+* Date: 16/10/20
+* Time: 05:30 PM
+*/
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="editor"/>
+    <body>
+        <referenceContainer name="content">
+            <uiComponent name="event_reservation_form"/>
+        </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block name="countermodal" template="Eguana_EventReservation::counter.phtml">
+                <arguments>
+                    <argument name="counter_view_model" xsi:type="object">Eguana\EventReservation\ViewModel\Counter\CounterModel</argument>
+                </arguments>
+            </block>
+            <block name="showcounters_js"
+                   template="Eguana_EventReservation::show-counters.phtml">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

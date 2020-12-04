@@ -1,0 +1,117 @@
+{
+    "eguana_event_reservation": {
+        "column": {
+            "event_id": true,
+            "title": true,
+            "thumbnail": true,
+            "is_active": true,
+            "description": true,
+            "block_id": true,
+            "identifier": true,
+            "meta_title": true,
+            "meta_keywords": true,
+            "meta_description": true,
+            "available_slots": true,
+            "creation_time": true,
+            "update_time": true
+        },
+        "index": {
+            "EGUANA_EVENT_RESERVATION_IDENTIFIER": true,
+            "FTI_E7C007781607CB320E1AEECFE9ECE26C": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "eguana_event_reservation_store": {
+        "column": {
+            "event_id": true,
+            "store_id": true
+        },
+        "index": {
+            "EGUANA_EVENT_RESERVATION_STORE_STORE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_0F50B01D09FBCA6CAD63890C0026794C": true,
+            "EGUANA_EVENT_RESERVATION_STORE_STORE_ID_STORE_STORE_ID": true
+        }
+    },
+    "eguana_event_reservation_counter": {
+        "column": {
+            "reservation_counter_id": true,
+            "event_id": true,
+            "staff_email": true,
+            "from_date": true,
+            "to_date": true,
+            "slot_time": true,
+            "break": true,
+            "per_time_slot_seats": true,
+            "start_time": true,
+            "end_time": true,
+            "close_days": true,
+            "creation_time": true,
+            "update_time": true,
+            "counter_id": true,
+            "offline_store_id": true,
+            "status": true,
+            "total_seats": true,
+            "total_slots": true
+        },
+        "index": {
+            "EGUANA_EVENT_RESERVATION_COUNTER_EVENT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_6222CE74E042C3AE8138A394A3BA6932": true,
+            "FK_FB6931AB337D37BA29247748F3303466": true,
+            "FK_92116A192CD649AC57626024A50B3B32": true
+        }
+    },
+    "eguana_user_event_reserve": {
+        "column": {
+            "user_reserve_id": true,
+            "name": true,
+            "email": true,
+            "time_slot": true,
+            "date": true,
+            "phone": true,
+            "status": true,
+            "agreement": true,
+            "counter_id": true,
+            "event_id": true,
+            "creation_time": true,
+            "update_time": true,
+            "offline_store_id": true,
+            "auth_token": true,
+            "store_id": true,
+            "email_action": true
+        },
+        "index": {
+            "EGUANA_USER_EVENT_RESERVE_COUNTER_ID": true,
+            "EGUANA_USER_EVENT_RESERVE_EVENT_ID_COUNTER_ID": true,
+            "EGUANA_USER_EVENT_RESERVE_NAME_EMAIL": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_2C0C2A029E9F40EB8884004064E5E5CF": true,
+            "FK_2677A7BC27D98BCADC258E196FFE5EF9": true,
+            "FK_2FC6883D38643413AB070982B54A84A8": true,
+            "EGUANA_USER_EVENT_RESERVE_OFFLINE_STORE_ID_STOREINFO_ENTITY_ID": true,
+            "EGUANA_USER_EVENT_RESERVE_STORE_ID_STORE_STORE_ID": true
+        }
+    },
+    "eguana_event_counter": {
+        "column": {
+            "counter_id": true,
+            "offline_store_id": true
+        },
+        "index": {
+            "EGUANA_EVENT_COUNTER_OFFLINE_STORE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "EGUANA_EVENT_COUNTER_OFFLINE_STORE_ID_STOREINFO_ENTITY_ID": true
+        }
+    }
+}

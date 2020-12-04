@@ -1,0 +1,26 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 22/10/20
+ * Time: 11:00 PM
+ */
+
+/** @var \Eguana\EventReservation\Block\Event\Reservation $block */
+/** @var \Eguana\EventReservation\ViewModel\Event\Reservation $viewModel */
+$viewModel = $block->getData('reservation_view_model');
+$event = $viewModel->getEvent();
+$cmsBlockIdentifier = $viewModel->getCmsBlockIdentifier($event->getBlockId());
+?>
+<div class="event-block-image">
+    <?php if ($cmsBlockIdentifier): ?>
+        <div class="event-cms-block">
+            <?= $block->getLayout()
+                ->createBlock(Magento\Cms\Block\Block::class)
+                ->setBlockId($cmsBlockIdentifier)
+                ->toHtml();
+            ?>
+        </div>
+    <?php endif; ?>

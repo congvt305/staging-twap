@@ -1,0 +1,331 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: raheel
+* Date: 20/10/20
+* Time: 11:10 AM
+*/
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">event_reservation_form.event_reservation_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">New Event</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="back" class="Eguana\EventReservation\Block\Adminhtml\Event\Edit\BackButton"/>
+            <button name="delete" class="Eguana\EventReservation\Block\Adminhtml\Event\Edit\DeleteButton"/>
+            <button name="save" class="Eguana\EventReservation\Block\Adminhtml\Event\Edit\SaveButton"/>
+        </buttons>
+        <namespace>event_reservation_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>event_reservation_form.event_reservation_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="event_reservation_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="event/reservation/save"/>
+        </settings>
+        <aclResource>Eguana_EventReservation::event_reservation</aclResource>
+        <dataProvider class="Eguana\EventReservation\Ui\DataProvider\Event\Form\DataProvider" name="event_reservation_form_data_source">
+            <settings>
+                <primaryFieldName>event_id</primaryFieldName>
+                <requestFieldName>event_id</requestFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="event_reservation">
+        <settings>
+            <collapsible>false</collapsible>
+            <label translate="true">General Information</label>
+        </settings>
+        <field name="event_id" formElement="hidden">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">event_reservation</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+                <dataScope>event_id</dataScope>
+            </settings>
+        </field>
+        <field name="is_active" sortOrder="10" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">event_reservation</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                </validation>
+                <dataType>boolean</dataType>
+                <label translate="true">Enable</label>
+                <dataScope>is_active</dataScope>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="title" sortOrder="20" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">event_reservation</item>
+                </item>
+            </argument>
+            <settings>
+                <required>true</required>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Title</label>
+                <dataScope>title</dataScope>
+            </settings>
+        </field>
+        <field name="thumbnail" sortOrder="30" formElement="imageUploader">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">event_reservation</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Image</label>
+                <componentType>imageUploader</componentType>
+                <required>true</required>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <imageUploader>
+                    <settings>
+                        <required>false</required>
+                        <uploaderConfig>
+                            <param xsi:type="string" name="url">event/reservation_thumbnail/upload</param>
+                        </uploaderConfig>
+                        <previewTmpl>Eguana_EventReservation/image-preview</previewTmpl>
+                        <allowedExtensions>jpg jpeg gif png</allowedExtensions>
+                        <maxFileSize>4194304</maxFileSize>
+                    </settings>
+                </imageUploader>
+            </formElements>
+        </field>
+        <field name="block_id" sortOrder="40" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">event_reservation</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <label translate="true">CMS Block</label>
+                <dataScope>block_id</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Eguana\EventReservation\Ui\Component\Event\Form\Block\Options"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+    <fieldset name="description" sortOrder="50">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Description</label>
+        </settings>
+        <field name="description" template="ui/form/field" sortOrder="60" formElement="wysiwyg">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="wysiwygConfigData" xsi:type="array">
+                        <item name="height" xsi:type="string">100px</item>
+                        <item name="add_variables" xsi:type="boolean">false</item>
+                        <item name="add_widgets" xsi:type="boolean">false</item>
+                        <item name="add_images" xsi:type="boolean">true</item>
+                        <item name="add_directives" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="source" xsi:type="string">event_reservation</item>
+                </item>
+            </argument>
+            <settings>
+                <additionalClasses>
+                    <class name="admin__field-wide">true</class>
+                </additionalClasses>
+                <label translate="true">Description</label>
+                <dataScope>description</dataScope>
+            </settings>
+            <formElements>
+                <wysiwyg class="Magento\Catalog\Ui\Component\Category\Form\Element\Wysiwyg">
+                    <settings>
+                        <rows>8</rows>
+                        <wysiwyg>true</wysiwyg>
+                    </settings>
+                </wysiwyg>
+            </formElements>
+        </field>
+    </fieldset>
+    <fieldset name="websites" class="Magento\Store\Ui\Component\Form\Fieldset\Websites" sortOrder="60">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Event in Websites</label>
+        </settings>
+        <field name="store_id" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">event_reservation</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <label translate="true">Store View</label>
+                <dataScope>store_id</dataScope>
+                <imports>
+                    <link name="disabled">${ $.provider }:data.disabled</link>
+                </imports>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Eguana\EventReservation\Ui\Component\Event\Form\Store\StoreOptions"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+    <fieldset name="search_engine_optimisation" sortOrder="70">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Search Engine Optimization</label>
+        </settings>
+        <field name="identifier" sortOrder="10" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">event_reservation</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">URL key</label>
+                <dataScope>identifier</dataScope>
+            </settings>
+        </field>
+        <field name="meta_title" sortOrder="20" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">event_reservation</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Meta Title</label>
+                <dataScope>meta_title</dataScope>
+            </settings>
+        </field>
+        <field name="meta_keywords" sortOrder="30" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">event_reservation</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Meta Keywords</label>
+                <dataScope>meta_keywords</dataScope>
+            </settings>
+        </field>
+        <field name="meta_description" sortOrder="30" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">event_reservation</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Meta Description</label>
+                <dataScope>meta_description</dataScope>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="event_reservation_counter" sortOrder="80">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Event Reservation Counters</label>
+        </settings>
+        <insertListing name="event_counter_listing">
+            <settings>
+                <dataLinks>
+                    <exports>false</exports>
+                    <imports>true</imports>
+                </dataLinks>
+                <autoRender>true</autoRender>
+                <externalProvider>event_counter_listing.event_counter_listing_data_source</externalProvider>
+                <selectionsProvider>event_counter_listing.event_counter_listing.columns.ids</selectionsProvider>
+                <dataScope>event_counter_listing</dataScope>
+                <ns>event_counter_listing</ns>
+                <exports>
+                    <link name="event_id">${ $.externalProvider }:params.event_id</link>
+                </exports>
+                <imports>
+                    <link name="event_id">${ $.provider }:data.event_id</link>
+                </imports>
+            </settings>
+        </insertListing>
+    </fieldset>
+    <fieldset name="event_reservations" sortOrder="90">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Event Reservations</label>
+        </settings>
+        <insertListing name="reservations_listing">
+            <settings>
+                <dataLinks>
+                    <exports>false</exports>
+                    <imports>true</imports>
+                </dataLinks>
+                <autoRender>true</autoRender>
+                <externalProvider>reservations_listing.reservations_listing_data_source</externalProvider>
+                <selectionsProvider>reservations_listing.reservations_listing.reservations_columns.ids</selectionsProvider>
+                <dataScope>reservations_listing</dataScope>
+                <ns>reservations_listing</ns>
+                <exports>
+                    <link name="event_id">${ $.externalProvider }:params.event_id</link>
+                </exports>
+                <imports>
+                    <link name="event_id">${ $.provider }:data.event_id</link>
+                </imports>
+            </settings>
+        </insertListing>
+    </fieldset>
+</form>
