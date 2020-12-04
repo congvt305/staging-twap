@@ -1,0 +1,37 @@
+<?php
+/** @var \Eguana\NewsBoard\Block\Index\Index $block */
+?>
+
+<?php $result = $block->getNewsCollection();?>
+<?php if ($result && count($result)): ?>
+    <div class="l-wrap">
+        <ul class="news-list">
+            <?php foreach ($result as $news): ?>
+                <li>
+                    <a href="<?= $block->escapeUrl($block->getNewsDetailUrl($news->getIdentifier()))?>" class="news-links">
+                        <div class="news-thumb">
+                            <img src="<?= $block->escapeUrl($block->getImageUrl($news->getThumbnailImage()))?>" alt="No pice">
+                        </div>
+                        <div class="news-cont">
+                            <span class="news-date">
+                                <span class="category"><?= $block->escapeHtml($block->getCategoryName($news->getData('category')));?></span>
+                                <span class="date"><?= $block->escapeHtml($block->getNewsDate($news->getDate()))?></span>
+                            </span>
+
+                            <h2 class="news-name break-word">
+                                <span>
+                                    <?= $block->escapeHtml($news->getTitle())?>
+                                </span>
+                            </h2>
+                        </div>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <?php if ($block->getPagerHtml()): ?>
+            <div class="news-toolbar toolbar"><?= $block->getPagerHtml(); ?></div>
+        <?php endif ?>
+    </div>
+<?php else: ?>
+    <div class="message info empty" align="center"><span><?= $block->escapeHtml(__('There is no news.')); ?></span></div>
+<?php endif ?>

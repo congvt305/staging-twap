@@ -1,0 +1,53 @@
+<?php
+/** @var \Eguana\NewsBoard\ViewModel\Detail $viewmodel */
+/** @var \Eguana\NewsBoard\Block\Index\Detail $block */
+$viewmodel = $block->getData('news_detail');
+$news = $viewmodel->getNewsDetail();
+?>
+<main id="main" role="main" ap-type="content">
+    <div class="news-detail">
+        <div class="l-wrap l-skinny">
+            <div class="content static parbase">
+                <div class="detail-thumb">
+                    <img src="<?= $block->escapeUrl($viewmodel->getImageUrl($news->getThumbnailImage()))?>" alt="<?= $block->escapeHtmlAttr($news->getTitle());?>">
+                </div>
+                <div class="l-wrap">
+                    <div class="detail-header">
+                        <div class="basic">
+                            <h1 class="detail-h">
+                                <?= $block->escapeHtml($news->getTitle())?>
+                            </h1>
+                            <span class="detail-date">
+                                <span class="category"><?= $block->escapeHtml($viewmodel->getCategoryName($news['category']));?></span>
+                                <span class="date"><?= $block->escapeHtml($viewmodel->getNewsDate($news->getDate()))?></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="l-pd">
+                    <div class="detail-desc">
+                        <?= /* @noEscape */ $viewmodel->getNewsDiscription($news['description']); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<?php if (!empty($viewmodel->getNewsCollection())): ?>
+    <ul class="news-related-list">
+        <?php $newscollection = $viewmodel->getNewsCollection();
+        foreach ($newscollection as $news): ?>
+            <li>
+                <a href="<?= $block->escapeUrl($viewmodel->getDetailPageUrl().$news->getIdentifier())?>">
+                    <img src="<?= $block->escapeUrl($viewmodel->getImageUrl($news->getThumbnailImage()))?>"
+                         alt="<?= $block->escapeHtmlAttr($news->getTitle());?>"/>
+                    <div class="overlay">
+                        <p><?= $block->escapeHtml($viewmodel->getCategoryName($news['category']));?></p>
+                    </div>
+                </a>
+            </li>
+        <?php endforeach;?>
+    </ul>
+<?php endif; ?>
+
+

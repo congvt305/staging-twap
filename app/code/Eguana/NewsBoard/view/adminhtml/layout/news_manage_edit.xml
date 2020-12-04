@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: bilalyounas
+* Date: 29/6/20
+* Time: 1:25 PM
+*/
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="styles"/>
+    <update handle="editor"/>
+    <body>
+    <referenceContainer name="content">
+        <uiComponent name="news_add_form"/>
+    </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block name="additional_js" template="Eguana_NewsBoard::additionaljs.phtml"> </block>
+        </referenceContainer>
+    </body>
+</page>

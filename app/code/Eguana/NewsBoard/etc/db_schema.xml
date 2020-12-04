@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: bilalyounas
+* Date: 29/6/20
+* Time: 12:15 PM
+*/
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="eguana_news" resource="default" engine="innodb" comment="Eguana News">
+        <column xsi:type="smallint" name="news_id" padding="10" identity="true" unsigned="true" nullable="false" comment="News ID"/>
+        <column xsi:type="varchar" name="title" nullable="false" length="255" comment="News Title"/>
+        <column xsi:type="text" name="description" nullable="true" comment="Description"/>
+        <column xsi:type="varchar" name="thumbnail_image" nullable="true" comment="Thumbnail Image"/>
+        <column xsi:type="varchar" name="category" disabled="true" nullable="true" comment="News Category"/>
+        <column xsi:type="smallint" name="is_active" padding="5" unsigned="true" nullable="false" identity="false"
+                default="1" comment="Visibility status 1 for Enable and 0 for Disable"/>
+        <column xsi:type="timestamp" name="date" nullable="false" comment="News Date"/>
+        <column xsi:type="varchar" name="identifier" nullable="false" length="100" comment="Url Key"/>
+        <column xsi:type="varchar" name="meta_title" nullable="true" length="255" comment="Meta Title"/>
+        <column xsi:type="text" name="meta_keywords" nullable="true" comment="Meta Keywords"/>
+        <column xsi:type="text" name="meta_description" nullable="true" comment="Meta Description"/>
+        <column xsi:type="timestamp" name="creation_time" on_update="false" nullable="false" comment="Created at" default="CURRENT_TIMESTAMP"/>
+        <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" comment="Updated at" default="CURRENT_TIMESTAMP"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="news_id"/>
+        </constraint>
+        <index referenceId="EGUANA_NEWS_TITLE_DESCRIPTION" indexType="fulltext">
+            <column name="title"/>
+            <column name="description"/>
+        </index>
+    </table>
+
+    <table name="eguana_news_store" resource="default" engine="innodb" comment="News To Store Linkage Table">
+        <column xsi:type="smallint" name="news_id" padding="10" identity="true" unsigned="true" nullable="false"
+                comment="News ID"/>
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false" identity="false"
+                comment="Store ID"/>
+        <column xsi:type="varchar" name="category" nullable="true" comment="News Category"/>
+        <index referenceId="EGUANA_NEWS_STORE_STORE_ID" indexType="btree">
+            <column name="store_id"/>
+        </index>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="news_id"/>
+            <column name="store_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="EGUANA_NEWS_STORE_NEWS_ID_EGUANA_NEWS_NEWS_ID"
+                    table="eguana_news_store" column="news_id" referenceTable="eguana_news"
+                    referenceColumn="news_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="EGUANA_NEWS_STORE_STORE_ID_STORE_STORE_ID"
+                    table="eguana_news_store" column="store_id" referenceTable="store"
+                    referenceColumn="store_id" onDelete="CASCADE"/>
+    </table>
+</schema>

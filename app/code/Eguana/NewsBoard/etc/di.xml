@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: bilalyounas
+* Date: 29/6/20
+* Time: 4:00 PM
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="\Eguana\NewsBoard\Api\Data\NewsSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults" />
+    <preference for="Eguana\NewsBoard\Api\Data\NewsInterface" type="Eguana\NewsBoard\Model\News" />
+    <preference for="Eguana\NewsBoard\Api\NewsRepositoryInterface" type="Eguana\NewsBoard\Model\NewsRepository" />
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="news_manage_listing_data_source" xsi:type="string">Eguana\NewsBoard\Model\ResourceModel\News\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Eguana\NewsBoard\Model\ResourceModel\News\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">eguana_news</argument>
+            <argument name="eventPrefix" xsi:type="string">news_board_collection</argument>
+            <argument name="eventObject" xsi:type="string">news_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Eguana\NewsBoard\Model\ResourceModel\News</argument>
+        </arguments>
+    </type>
+    <virtualType name="NewsGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\Model\Entity\RepositoryFactory">
+        <arguments>
+            <argument name="entities" xsi:type="array">
+                <item name="Eguana\NewsBoard\Api\Data\NewsInterface" xsi:type="string">Eguana\NewsBoard\Api\Data\NewsInterface</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Eguana\NewsBoard\Api\Data\NewsInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">eguana_news</item>
+                    <item name="identifierField" xsi:type="string">news_id</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
+        <arguments>
+            <argument name="extensionActions" xsi:type="array">
+                <item name="Eguana\NewsBoard\Api\Data\NewsInterface" xsi:type="array">
+                    <item name="read" xsi:type="array">
+                        <item name="storeReader" xsi:type="string">Eguana\NewsBoard\Model\ResourceModel\News\Relation\Store\ReadHandler</item>
+                    </item>
+                    <item name="create" xsi:type="array">
+                        <item name="storeCreator" xsi:type="string">Eguana\NewsBoard\Model\ResourceModel\News\Relation\Store\SaveHandler</item>
+                    </item>
+                    <item name="update" xsi:type="array">
+                        <item name="storeUpdater" xsi:type="string">Eguana\NewsBoard\Model\ResourceModel\News\Relation\Store\SaveHandler</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\HydratorPool">
+        <arguments>
+            <argument name="hydrators" xsi:type="array">
+                <item name="Eguana\NewsBoard\Api\Data\NewsInterface" xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Eguana\NewsBoard\ReferenceImageUpload" type="Eguana\NewsBoard\Model\News\Thumbnail\Upload">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">NewsBoard</argument>
+            <argument name="basePath" xsi:type="string">NewsBoard</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+            <argument name="allowedMimeTypes" xsi:type="array">
+                <item name="jpg" xsi:type="string">image/jpg</item>
+                <item name="jpeg" xsi:type="string">image/jpeg</item>
+                <item name="gif" xsi:type="string">image/gif</item>
+                <item name="png" xsi:type="string">image/png</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Eguana\NewsBoard\Controller\Adminhtml\Manage\Thumbnail\Upload">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Eguana\NewsBoard\ReferenceImageUpload</argument>
+        </arguments>
+    </type>
+    <type name="Eguana\NewsBoard\Controller\Adminhtml\Manage\MassDelete">
+        <arguments>
+            <argument name="successMessage" xsi:type="string" translate="true">A total of %1 record(s) have been deleted.</argument>
+            <argument name="errorMessage" xsi:type="string" translate="true">An error occurred while deleting record(s).</argument>
+        </arguments>
+    </type>
+    <type name="Eguana\NewsBoard\Controller\Adminhtml\Manage\MassDisable">
+        <arguments>
+            <argument name="successMessage" xsi:type="string" translate="true">A total of %1 record(s) have been Disable.</argument>
+            <argument name="errorMessage" xsi:type="string" translate="true">An error occurred while disable selected news.</argument>
+        </arguments>
+    </type>
+    <type name="Eguana\NewsBoard\Controller\Adminhtml\Manage\MassEnable">
+        <arguments>
+            <argument name="successMessage" xsi:type="string" translate="true">A total of %1 record(s) have been Enable.</argument>
+            <argument name="errorMessage" xsi:type="string" translate="true">An error occurred while enable news.</argument>
+        </arguments>
+    </type>
+</config>
