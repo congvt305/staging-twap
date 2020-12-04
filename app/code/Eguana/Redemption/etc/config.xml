@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 24/11/20
+ * Time: 10:08 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <redemption>
+            <configuration>
+                <enabled>0</enabled>
+                <sender_email_identity>general</sender_email_identity>
+                <send_email_to_customer>0</send_email_to_customer>
+                <automatically_registration_email_templates>redemption_configuration_automatically_registration_email_templates</automatically_registration_email_templates>
+                <send_sms_to_customer_automatically>0</send_sms_to_customer_automatically>
+                <registration_sms_templates>redemption_configuration_registration_sms_templates</registration_sms_templates>
+                <enabled_recaptcha>0</enabled_recaptcha>
+                <resend_email_sms_time>1</resend_email_sms_time>
+                <minimum_mobile_number_digits>10</minimum_mobile_number_digits>
+                <maximum_mobile_number_digits>11</maximum_mobile_number_digits>
+            </configuration>
+        </redemption>
+    </default>
+</config>

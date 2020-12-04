@@ -1,0 +1,137 @@
+Back,Back
+"Delete Redemption","Delete Redemption"
+"Are you sure you want to do this?","Are you sure you want to do this?"
+Save,Save
+"Save & Duplicate","Save & Duplicate"
+"Save & Close","Save & Close"
+Home,Home
+"Go to Home Page","Go to Home Page"
+Redemption,Redemption
+Manage,Manage
+"Manage Redemption","Manage Redemption"
+"A total of %1 record(s) have been expired.","A total of %1 record(s) have been expired."
+"A total of %1 record(s) have been redeemed.","A total of %1 record(s) have been redeemed."
+"A total of %1 record(s) have been registered.","A total of %1 record(s) have been registered."
+"Redemption was successfully deleted","Redemption was successfully deleted"
+"Redemption could not be deleted","Redemption could not be deleted"
+"Edit Redemption","Edit Redemption"
+"New Redemption","New Redemption"
+Redemptions,Redemptions
+"A total of %1 redemption(s) have been deleted.","A total of %1 redemption(s) have been deleted."
+"A total of %1 record(s) have been disabled.","A total of %1 record(s) have been disabled."
+"A total of %1 record(s) have been enabled.","A total of %1 record(s) have been enabled."
+"The value specified in the URL Key is already exists. Please use a unique identifier key","The value specified in the URL Key is already exists. Please use a unique identifier key"
+"Start Date should be before End Date","Start Date should be before End Date"
+"This redemption no longer exists.","This redemption no longer exists."
+"The redemption URL key can't use capital letters or disallowed symbols. Remove the letters and symbols and try again.","The redemption URL key can't use capital letters or disallowed symbols. Remove the letters and symbols and try again."
+"The redemption URL key can't use only numbers. Add letters or words and try again.","The redemption URL key can't use only numbers. Add letters or words and try again."
+"You saved the redemption.","You saved the redemption."
+"Something went wrong while saving the redemption.","Something went wrong while saving the redemption."
+"You duplicated the redemption.","You duplicated the redemption."
+"The redemption module is disable by admin.","The redemption module is disable by admin."
+"The redemption process has been completed.","The redemption process has been completed."
+"This redemption has been expired!","This redemption has been expired!"
+"This redemption will be available at %1","This redemption will be available at %1"
+"Email or SMS sending failed.","Email or SMS sending failed."
+"You have successfully applied for redemption check your email or SMS.","You have successfully applied for redemption check your email or SMS."
+"Something went wrong while saving the counter.","Something went wrong while saving the counter."
+"No redemption exsit with ' . . ' id","No redemption exsit with ' . . ' id"
+"No counter exsit with ' . . ' id","No counter exsit with ' . . ' id"
+"You are not authorized for this redemption.","You are not authorized for this redemption."
+Registration,Registration
+Expired,Expired
+"Could not get counter fields: %1","Could not get counter fields: %1"
+"Could not save the counter: %1","Could not save the counter: %1"
+"Could not delete the counter: %1","Could not delete the counter: %1"
+Enabled,Enabled
+Disabled,Disabled
+"Something went wrong while saving the file(s).","Something went wrong while saving the file(s)."
+"File can not be saved to the destination folder.","File can not be saved to the destination folder."
+"Could not save the redemption: %1","Could not save the redemption: %1"
+"Could not delete the redemption: %1","Could not delete the redemption: %1"
+"A Redemption identifier with the same properties already exists in the selected store.","A Redemption identifier with the same properties already exists in the selected store."
+"There is no information about associated entity type ""%1"".","There is no information about associated entity type ""%1""."
+Edit,Edit
+Delete,Delete
+"Delete %1","Delete %1"
+"Are you sure you want to delete a %1 record?","Are you sure you want to delete a %1 record?"
+View,View
+Description,Description
+Name,Name
+Phone,Phone
+Email,Email
+Counter,Counter
+"Select Counter","Select Counter"
+"Line ID ","Line ID "
+(Optional),(Optional)
+Precautions,Precautions
+"Send SMS/Email","Send SMS/Email"
+"Resend message","Resend message"
+"Resend SMS/Email","Resend SMS/Email"
+"The registraion for this redemption is full.","The registraion for this redemption is full."
+"This redemption has been already completed.","This redemption has been already completed."
+"Please click on confirm button to complete the registration process.","Please click on confirm button to complete the registration process."
+"Hi %name,","Hi %name,"
+"Your redemption has been successfully registered. Please go to the %counter_name. and show this email to BA for completing your redemption. Below is the redemption confirmation link","Your redemption has been successfully registered. Please go to the %counter_name. and show this email to BA for completing your redemption. Below is the redemption confirmation link"
+"Have a lovely day!","Have a lovely day!"
+"Thank You!","Thank You!"
+"Dear %customer,
+Your redemption has been successfully registered. Please go to the %counter and show this SMS to BA for completing your redemption.
+Here are the redemption confirmation links %link.
+Thank You!","Dear %customer,
+Your redemption has been successfully registered. Please go to the %counter and show this SMS to BA for completing your redemption.
+Here are the redemption confirmation links %link.
+Thank You!"
+"Redemption Config","Redemption Config"
+"Redemption Configurations","Redemption Configurations"
+"Email Sender","Email Sender"
+"Send Email To Customer","Send Email To Customer"
+"Automatically Registration","Automatically Registration"
+"Send SMS To Customer Automatically","Send SMS To Customer Automatically"
+"Google Recaptcha","Google Recaptcha"
+"Store Counter","Store Counter"
+"Store View","Store View"
+"Are you sure you want to change status to registration?","Are you sure you want to change status to registration?"
+"Are you sure you want to change status to redemption?","Are you sure you want to change status to redemption?"
+"Are you sure you want to change status to expired?","Are you sure you want to change status to expired?"
+CSV,CSV
+"Excel XML","Excel XML"
+"Excel XLS","Excel XLS"
+ID,ID
+"Redeem date","Redeem date"
+Telephone,Telephone
+"Line Id","Line Id"
+"Registration Date","Registration Date"
+Status,Status
+utm_source,utm_source
+utm_medium,utm_medium
+utm_content,utm_content
+Enable,Enable
+Title,Title
+Image,Image
+"Counter Name","Counter Name"
+"Total Quantity","Total Quantity"
+"CMS Block","CMS Block"
+From,From
+To,To
+"Content Description","Content Description"
+"Content Precautions","Content Precautions"
+"Search Engine Optimization","Search Engine Optimization"
+"URL key","URL key"
+"Meta Title","Meta Title"
+"Meta Keywords","Meta Keywords"
+"Meta Description","Meta Description"
+"Redemption Participants","Redemption Participants"
+"Add New Redemption","Add New Redemption"
+"Are you sure you want to delete selected items?","Are you sure you want to delete selected items?"
+"Delete items","Delete items"
+"Are you sure you want to enable selected items?","Are you sure you want to enable selected items?"
+"Enable items","Enable items"
+"Are you sure you want to disable selected items?","Are you sure you want to disable selected items?"
+"Disable items","Disable items"
+Disable,Disable
+Thumbnail,Thumbnail
+"Start Date","Start Date"
+"End Date","End Date"
+Created,Created
+Modified,Modified

@@ -1,0 +1,142 @@
+Back,Trở lại
+"Delete Redemption","Xóa phần thưởng"
+"Are you sure you want to do this?","Bạn có chắc chắn muốn làm điều này?"
+Save,Tiết kiệm
+"Save & Duplicate","Lưu & sao chép"
+"Save & Close","Lưu & Đóng"
+Home,Trang Chủ
+"Go to Home Page","Đi tới Trang chủ"
+Redemption,chuộc lỗi
+Manage,Quản lý
+"Manage Redemption","Quản lý quy đổi"
+"A total of %1 record(s) have been expired.","Tổng cộng %1 (các) bản ghi đã hết hạn."
+"A total of %1 record(s) have been redeemed.","Tổng cộng %1 (các) bản ghi đã được đổi."
+"A total of %1 record(s) have been registered.","Tổng cộng %1 (các) bản ghi đã được đăng ký."
+"Redemption was successfully deleted","Đổi thưởng đã được xóa thành công"
+"Redemption could not be deleted","Không thể xóa phần đổi thưởng"
+"Edit Redemption","Edit Redemption"
+"New Redemption","New Redemption"
+Redemptions,Redemptions
+"A total of %1 redemption(s) have been deleted.","Tổng cộng %1 redemption(s) have been deleted."
+"A total of %1 record(s) have been disabled.","Tổng cộng %1 record(s) have been disabled."
+"A total of %1 record(s) have been enabled.","Tổng cộng %1 record(s) have been enabled."
+"The value specified in the URL Key is already exists. Please use a unique identifier key","Giá trị được chỉ định trong Khóa URL đã tồn tại. Vui lòng sử dụng khóa định danh duy nhất"
+"Start Date should be before End Date","Ngày bắt đầu phải trước Ngày kết thúc"
+"This redemption no longer exists.","Sự đổi thưởng này không còn tồn tại."
+"The redemption URL key can't use capital letters or disallowed symbols. Remove the letters and symbols and try again.","Khóa URL đổi quà không được sử dụng chữ in hoa hoặc ký hiệu không được phép. Xóa các chữ cái và ký hiệu và thử lại."
+"The redemption URL key can't use only numbers. Add letters or words and try again.","Khóa URL đổi quà không thể chỉ sử dụng số. Thêm chữ cái hoặc từ và thử lại."
+"You saved the redemption.","Bạn đã lưu phần thưởng."
+"Something went wrong while saving the redemption.","Đã xảy ra sự cố khi lưu đổi quà."
+"You duplicated the redemption.","Bạn đã nhân bản đổi quà."
+"The redemption module is disable by admin.","Mô-đun đổi quà bị quản trị viên tắt."
+"The redemption process has been completed.","Quá trình đổi quà đã hoàn tất."
+"This redemption has been expired!","Phần thưởng này đã hết hạn!"
+"This redemption will be available at %1","Đổi thưởng này sẽ có sẵn tại %1"
+"Email or SMS sending failed.","Gửi email hoặc SMS không thành công."
+"You have successfully applied for redemption check your email or SMS.","Bạn đã đăng ký đổi quà thành công, hãy kiểm tra email hoặc SMS của bạn."
+"Something went wrong while saving the counter.","Đã xảy ra sự cố khi lưu bộ đếm."
+"No redemption exsit with ' . . ' id","Không có quy đổi tồn tại với ' . . ' id"
+"No counter exsit with ' . . ' id","Không có bộ đếm nào thoát với ' . . ' id"
+"You are not authorized for this redemption.","Bạn không được phép đổi quà này."
+Registration,Đăng ký
+Expired,Đã hết hạn
+"Could not get counter fields: %1","Không thể nhận các trường bộ đếm: %1"
+"Could not save the counter: %1","Không thể lưu bộ đếm: %1"
+"Could not delete the counter: %1","Không thể xóa bộ đếm: %1"
+Enabled,Đã bật
+Disabled,Tàn tật
+"Something went wrong while saving the file(s).","Đã xảy ra sự cố khi lưu (các) tệp."
+"File can not be saved to the destination folder.","Không thể lưu tệp vào thư mục đích."
+"Could not save the redemption: %1","Không thể lưu đổi: %1"
+"Could not delete the redemption: %1","Không thể xóa phần đổi: %1"
+"A Redemption identifier with the same properties already exists in the selected store.","Mã định danh Đổi quà có cùng thuộc tính đã tồn tại trong cửa hàng được chọn."
+"There is no information about associated entity type ""%1"".","Không có thông tin về loại thực thể được liên kết ""%1""."
+Edit,Biên tập
+Delete,Xóa bỏ
+"Delete %1","Xóa bỏ %1"
+"Are you sure you want to delete a %1 record?","Bạn có chắc chắn muốn xóa một %1 ghi lại?"
+View,Lượt xem
+Description,Sự miêu tả
+Name,Tên
+Phone,Điện thoại
+Email,E-mail
+Counter,Quầy tính tiền
+"Select Counter","Chọn bộ đếm"
+"Line ID ","Số dòng "
+(Optional),(Không bắt buộc)
+Precautions,Các biện pháp phòng ngừa
+"Send SMS/Email","Send SMS/Email"
+"Resend message","Resend message"
+"Resend SMS/Email","Gửi lại SMS / Email"
+"The registraion for this redemption is full.","Đăng ký cho việc đổi thưởng này đã đầy đủ."
+"This redemption has been already completed.","Việc đổi thưởng này đã được hoàn thành."
+"Please click on confirm button to complete the registration process.","Vui lòng nhấp vào nút xác nhận để hoàn tất quá trình đăng ký."
+"Hi %name,","Chào %name,"
+"Your redemption has been successfully registered. Please go to the %counter_name. and show this email to BA for completing your redemption. Below is the redemption confirmation link","Đổi quà của bạn đã được đăng ký thành công. Vui lòng đi đến %counter_name. và hiển thị email này cho BA để hoàn thành việc đổi quà của bạn. Dưới đây là liên kết xác nhận đổi thưởng"
+"Have a lovely day!","Chúc một ngày tốt lành!"
+"Thank You!","Cảm ơn bạn!"
+"Dear %customer,
+Your redemption has been successfully registered. Please go to the %counter and show this SMS to BA for completing your redemption.
+Here are the redemption confirmation links %link.
+Thank You!","kính thưa %customer,
+Đổi quà của bạn đã được đăng ký thành công. Vui lòng đi đến %counter và hiển thị SMS này cho BA để hoàn thành việc đổi quà của bạn.
+Đây là các liên kết xác nhận đổi quà %link.
+Cảm ơn bạn!"
+"Redemption Config","Cấu hình quy đổi"
+"Redemption Configurations","Cấu hình đổi thưởng"
+"Email Sender","Người gửi Email"
+"Send Email To Customer","Gửi email cho khách hàng"
+"Automatically Registration","Đăng ký tự động"
+"Send SMS To Customer Automatically","Tự động gửi SMS cho khách hàng"
+"Google Recaptcha","Google Recaptcha"
+"Store Counter","Quầy hàng"
+"Store View","Chế độ xem cửa hàng"
+"Are you sure you want to change status to registration?","Bạn có chắc chắn muốn thay đổi trạng thái thành đăng ký không?"
+"Are you sure you want to change status to redemption?","Bạn có chắc chắn muốn thay đổi trạng thái thành đổi điểm không?"
+"Are you sure you want to change status to expired?","Bạn có chắc chắn muốn thay đổi trạng thái thành đã hết hạn không?"
+CSV,CSV
+"Excel XML","Excel XML"
+"Excel XLS","Excel XLS"
+ID,ID
+"Redeem date","Đổi ngày"
+Telephone,Điện thoại
+"Line Id","Số dòng"
+"Registration Date","ngày đăng kí"
+Status,Trạng thái
+utm_source,utm_source
+utm_medium,utm_medium
+utm_content,utm_content
+Enable,Kích hoạt
+Title,Tiêu đề
+Image,Image
+"Counter Name","Tên quầy"
+"Total Quantity","Tổng số lượng"
+"CMS Block","CMS Khối"
+From,Từ
+To,Đến
+"Content Description","Mô tả nội dung"
+"Content Precautions","Đề phòng nội dung"
+"Search Engine Optimization","Tối ưu hóa công cụ tìm kiếm"
+"URL key","Khóa URL"
+"Meta Title","Tiêu đề meta"
+"Meta Keywords","Từ khóa meta"
+"Meta Description","Mô tả meta"
+"Redemption Participants","Người tham gia đổi thưởng"
+"Add New Redemption","Thêm phần thưởng mới"
+"Are you sure you want to delete selected items?","Bạn có chắc chắn muốn xóa các mục đã chọn không?"
+"Delete items","Xóa mục"
+"Are you sure you want to enable selected items?","Bạn có chắc chắn muốn bật các mục đã chọn không?"
+"Enable items","Bật các mục"
+"Are you sure you want to disable selected items?","Bạn có chắc chắn muốn tắt các mục đã chọn không?"
+"Disable items","Tắt các mục"
+Disable,Vô hiệu hóa
+Thumbnail,Hình nhỏ
+"Start Date","Ngày bắt đầu"
+"End Date","Ngày cuối"
+Created,Tạo
+Modified,Đã sửa đổi
+"If you did not recieved an email or SMS. Click on Resend after.","Nếu bạn không nhận được email hoặc tin nhắn SMS. Nhấp vào Gửi lại sau."
+"Counter information not found","Không tìm thấy thông tin truy cập"
+"This redemption is not available.","Việc đổi thưởng này không khả dụng."
+"click here to register new redemption","bấm vào đây để đăng ký đổi mới"
+" * This is a required field.","* Đây là một lĩnh vực cần thiết."

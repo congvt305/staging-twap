@@ -1,0 +1,99 @@
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 22/10/20
+ * Time: 7:00 PM
+ */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .block-redemption-detail {
+        .block {
+            &:extend(.abs-account-blocks all);
+        }
+
+        .block-image-banner {
+            text-align: center;
+        }
+
+        .redemption-form > .block-content {
+            padding-top: 0 !important;
+        }
+    }
+
+    .redemption-confirm-page .redemption-image {
+        text-align: center;
+    }
+
+    .block-redemption-detail,
+    .redemption-confirm-page {
+        .actions-toolbar {
+            margin-top: @indent__xl;
+
+            .action {
+                &:extend(.abs-button-l all);
+            }
+        }
+    }
+
+    .redemption-details-index {
+        .column.main {
+            .lib-vendor-prefix-display(flex);
+            .lib-vendor-prefix-flex-direction(column);
+
+            > div {
+                &.message {
+                    .lib-vendor-prefix-order(0);
+                }
+
+                &.redemption-cms-block {
+                    .lib-vendor-prefix-order(1);
+                }
+
+                &.block-redemption-detail {
+                    .lib-vendor-prefix-order(2);
+                }
+            }
+        }
+    }
+
+    .page-title-wrapper {
+        display: none;
+    }
+}
+
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .block-redemption-detail,
+    .redemption-confirm-page {
+        .actions-toolbar {
+            text-align: center;
+
+            div.primary {
+                float: none !important;
+            }
+
+            .action {
+                margin: 0 auto;
+                width: 380px !important;
+            }
+        }
+    }
+}

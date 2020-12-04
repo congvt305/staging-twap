@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 12/10/20
+ * Time: 08:13 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="redemption_configuration_automatically_registration_email_templates" label="Redemption Registration Email" file="customer_email_registration.html" type="html" module="Eguana_Redemption" area="frontend"/>
+    <template id="redemption_configuration_registration_sms_templates" label="Redemption Registration SMS" file="customer_sms_registration.html" type="html" module="Eguana_Redemption" area="frontend"/>
+</config>

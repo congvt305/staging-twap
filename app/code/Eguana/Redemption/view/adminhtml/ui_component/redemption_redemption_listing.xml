@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 12/10/20
+* Time: 06:15 PM
+*/
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">redemption_redemption_listing.redemption_redemption_listing_data_source</item>
+            <item name="deps" xsi:type="string">redemption_redemption_listing.redemption_redemption_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">redemption</item>
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Add New Redemption</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/new</item>
+            </item>
+        </item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="add">
+                <url path="*/*/new"/>
+                <class>primary</class>
+                <label translate="true">Add New Redemption</label>
+            </button>
+        </buttons>
+        <spinner>redemption</spinner>
+        <deps>
+            <dep>redemption_redemption_listing.redemption_redemption_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="redemption_redemption_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">redemption_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Eguana_Redemption::redemption</aclResource>
+        <dataProvider class="Eguana\Redemption\Ui\Component\DataProvider\Redemption\Listing\DataProvider" name="redemption_redemption_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>redemption_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="observers" xsi:type="array">
+                    <item name="column" xsi:type="string">column</item>
+                </item>
+            </argument>
+            <settings>
+                <templates>
+                    <filters>
+                        <select>
+                            <param name="template" xsi:type="string">ui/grid/filters/elements/ui-select</param>
+                            <param name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</param>
+                        </select>
+                    </filters>
+                </templates>
+            </settings>
+            <filterSelect name="store_id" provider="${ $.parentName }">
+                <settings>
+                    <captionValue>0</captionValue>
+                    <options class="Eguana\Redemption\Ui\Component\Listing\Column\StoreOptions"/>
+                    <label translate="true">Store View</label>
+                    <dataScope>store_id</dataScope>
+                    <imports>
+                        <link name="visible">componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction">
+            <action name="delete">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to delete selected items?</message>
+                        <title translate="true">Delete items</title>
+                    </confirm>
+                    <url path="redemption/redemption/massDelete"/>
+                    <type>delete</type>
+                    <label translate="true">Delete</label>
+                </settings>
+            </action>
+            <action name="enable">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to enable selected items?</message>
+                        <title translate="true">Enable items</title>
+                    </confirm>
+                    <url path="redemption/redemption/massEnable"/>
+                    <type>enable</type>
+                    <label translate="true">Enable</label>
+                </settings>
+            </action>
+            <action name="disable">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to disable selected items?</message>
+                        <title translate="true">Disable items</title>
+                    </confirm>
+                    <url path="redemption/redemption/massDisable"/>
+                    <type>disable</type>
+                    <label translate="true">Disable</label>
+                </settings>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="redemption">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">redemption_redemption_listing.redemption_redemption_listing.redemption_editor</item>
+                    <item name="target" xsi:type="string">startEdit</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                        <item name="1" xsi:type="boolean">true</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <selectionsColumn name="ids">
+            <settings>
+                <indexField>redemption_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="redemption_id">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="title">
+            <settings>
+                <filter>text</filter>
+                <editor>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                    <editorType>text</editorType>
+                </editor>
+                <label translate="true">Title</label>
+            </settings>
+        </column>
+        <column name="image" component="Magento_Ui/js/grid/columns/thumbnail" class="Eguana\Redemption\Ui\Component\Listing\Column\Image">
+            <settings>
+                <hasPreview>0</hasPreview>
+                <visible>true</visible>
+                <label translate="true">Thumbnail</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="start_date" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Start Date</label>
+            </settings>
+        </column>
+        <column name="end_date" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">End Date</label>
+            </settings>
+        </column>
+        <column name="is_active" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Eguana\Redemption\Model\Source\IsActive"/>
+                <filter>select</filter>
+                <editor>
+                    <editorType>select</editorType>
+                </editor>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        <column name="store_id" class="Magento\Store\Ui\Component\Listing\Column\Store">
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <label translate="true">Store View</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="creation_time" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Created</label>
+            </settings>
+        </column>
+        <column name="update_time" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Modified</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Eguana\Redemption\Ui\Component\Listing\Column\RedemptionActions">
+            <settings>
+                <indexField>redemption_id</indexField>
+                <resizeEnabled>false</resizeEnabled>
+                <resizeDefaultWidth>107</resizeDefaultWidth>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>
