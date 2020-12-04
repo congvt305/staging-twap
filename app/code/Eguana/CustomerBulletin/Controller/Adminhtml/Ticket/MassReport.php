@@ -142,8 +142,8 @@ class MassReport extends Action
             $this->directory->create('export');
             $stream = $this->directory->openFile($filepath, 'w+');
             $stream->lock();
-            $columns = ['ID','Customer name','Subject','Category','Store View','status',
-                'created time','modified time','note status',' '];
+            $columns = ['ID','Customer name','Subject','Category','Store View','Status',
+                'Created Time','Modified Time','Note Status','Note'];
             foreach ($columns as $column) {
                 $header[] = $column;
             }
