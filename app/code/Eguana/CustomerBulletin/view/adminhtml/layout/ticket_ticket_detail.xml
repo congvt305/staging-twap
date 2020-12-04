@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: bilalyounas
+ * Date: 30/9/20
+ * Time: 06:48 PM
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Eguana\CustomerBulletin\Block\Adminhtml\Ticket\View" name="ticket.edit"/>
+            <block name="ticket.main" template="Eguana_CustomerBulletin::ticket/detail.phtml">
+                <arguments>
+                    <argument name="ticket_detail" xsi:type="object">Eguana\CustomerBulletin\ViewModel\Detail</argument>
+                </arguments>
+                <block name="ticket_info"
+                       class="Eguana\CustomerBulletin\Block\Adminhtml\Ticket\Detail"
+                       template="Eguana_CustomerBulletin::ticket/info.phtml">
+                    <arguments>
+                        <argument name="ticket_info" xsi:type="object">Eguana\CustomerBulletin\ViewModel\Detail</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Template" name="ticket_notestitle" template="Eguana_CustomerBulletin::ticket/notesTitle.phtml">
+                    <block class="Eguana\CustomerBulletin\Block\Adminhtml\Ticket\Detail" name="ticket_notes"  template="Eguana_CustomerBulletin::ticket/notes.phtml">
+                        <arguments>
+                            <argument name="ticket_detail" xsi:type="object">Eguana\CustomerBulletin\ViewModel\Detail</argument>
+                        </arguments>
+                    </block>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

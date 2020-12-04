@@ -1,0 +1,46 @@
+{
+    "eguana_ticket": {
+        "column": {
+            "ticket_id": true,
+            "account": true,
+            "customer_id": true,
+            "subject": true,
+            "category": true,
+            "store_view": true,
+            "store_id": true,
+            "status": true,
+            "is_read_customer": true,
+            "is_read_admin": true,
+            "attachment": true,
+            "message": true,
+            "creation_time": true,
+            "update_time": true
+        },
+        "index": {
+            "EGUANA_TICKET_SUBJECT_CATEGORY_ACCOUNT": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "EGUANA_TICKET_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID": true
+        }
+    },
+    "eguana_ticket_note": {
+        "column": {
+            "note_id": true,
+            "ticket_id": true,
+            "user_id": true,
+            "user_type": true,
+            "note_message": true,
+            "note_attachment": true,
+            "creation_time": true,
+            "update_time": true
+        },
+        "index": {
+            "EGUANA_TICKET_NOTE_TICKET_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "EGUANA_TICKET_NOTE_TICKET_ID_EGUANA_TICKET_TICKET_ID": true
+        }
+    }
+}

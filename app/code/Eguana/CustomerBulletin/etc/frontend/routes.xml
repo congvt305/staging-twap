@@ -1,0 +1,17 @@
+<!--
+/**
+    * @author Eguana Team
+    * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+    * Created by PhpStorm
+    * User: bilalyounas
+    * Date: 17/9/20
+    * Time: 06:40 PM
+    */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="standard">
+        <route id="ticket" frontName="ticket">
+            <module name="Eguana_CustomerBulletin" />
+        </route>
+    </router>
+</config>

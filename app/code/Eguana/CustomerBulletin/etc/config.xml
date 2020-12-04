@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: bilalyounas
+ * Date: 12/10/20
+ * Time: 08:30 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ticket_managment>
+            <configuration>
+                <enabled>0</enabled>
+                <sender_email_identity>sales</sender_email_identity>
+                <file_types>pdf,doc,png,jpeg,jpg,zip</file_types>
+                <file_size>2</file_size>
+            </configuration>
+            <email>
+                <customer_email_auto>0</customer_email_auto>
+                <customer_email_reply>ticket_managment_email_customer_email_reply</customer_email_reply>
+            </email>
+        </ticket_managment>
+    </default>
+</config>

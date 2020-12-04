@@ -1,0 +1,668 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+.lib-font-face(
+    @family-name: @icons-magento__font-name,
+    @font-path: @icons-magento__font-path,
+    @font-weight: @font-weight__regular,
+    @font-style: normal
+);
+
+//  Colors
+@quote-button__color: @color-blue1;
+@quote-button-active__color: @color-blue2;
+@quote-table__background-color: @color-gray95;
+@quote-table__border-color: @color-gray-middle1;
+@quote-title__border-color: @color-gray80;
+@quote-title__border-bottom-color: @color-white;
+@quote-popup-message__color: @color-gray68;
+@quote-popup-message__background-color: @color-white-smoke;
+@quote-comments__border-color: @color-gray80;
+@header-icons__color: @color-gray56;
+@quote-print__text-color: @color-black;
+
+//  Fonts
+@font-weight__extra-light: 200;
+@quote-comment__font-size: 1.4rem;
+
+//  Colors
+@order-table__color: @color-gray20;
+@order-icons__color: @color-gray56;
+@order-error__color: @color-red10;
+
+//  Icons
+@icons-magento__font-path: '@{baseDir}Eguana_CustomerBulletin/fonts/Magento-Icons';
+@icons-magento__font-name: 'magento-icons';
+@icon-gripper: '\e900';
+@quote-icons-color: @header-icons__color;
+@order-link__color: @link__color;
+@order-link__color-hover: @link__hover__color;
+
+//
+//  Common
+//  _____________________________________________
+@flex__1: 1;
+& when (@media-common = true) {
+    body{
+        margin: 0 !important;
+    }
+
+    .container {
+        max-width: 60em;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .note-message{
+        display: none;
+    }
+
+    .layout {
+        .left-col,
+        .right-col {
+            flex: @flex__1;
+            padding: 1em;
+            margin: 0 20px 2px 0;
+            background:#ffffff;
+            overflow: hidden;
+            box-shadow: 0 5px 15px 0 rgba(0,0,0,.13);
+            border: 1px solid #ececec;
+
+            img{
+                width: 18px;
+                margin-right: 5px;
+                vertical-align: middle;
+            }
+        }
+
+        .left-col{
+            position: relative;
+
+            p{
+                margin: 0.5em 0 0.5em;
+            }
+
+            ul{
+                padding-left: 5px;
+                margin-bottom: 0px;
+                list-style: none;
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+
+                li{
+                    margin-bottom: 5px;
+                    padding-right: 5px;
+                    display: inline-block;
+                    a{
+                        color: #0043ffd1;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        .right-col {
+            margin-right: 2px !important;
+
+            ul{
+                margin: 0.5em 0 0 0.5em;
+            }
+
+            li{
+                width: 50%;
+                float: left;
+                list-style: none;
+                margin-bottom: 1rem;
+            }
+        }
+    }
+
+    .btn-row{
+        float: right;
+        margin-top: 20px;
+
+        .btn-default{
+            border: 2px solid #dedede;
+            border-radius: 3px;
+            background-color: #ddd;
+            padding: 8px;
+            text-decoration: none;
+            color: #000000;
+            font-weight: 600;
+        }
+    }
+
+    .note-error{
+        color: #ff0000;
+        font-size: 1.3rem;
+    }
+
+    .chat-container{
+        padding-top: 30px;
+        margin-top: 25px;
+
+        .left-container,
+        .right-container{
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .left-container{
+            float: left;
+
+            .info-box{
+                float: left;
+            }
+
+            .message-attachment-box{
+                max-width: 460px;
+                width: 100%;
+                margin-left: 120px;
+
+                p,ul{
+                    padding-left: 0;
+                }
+            }
+
+            a{
+                left: 128px !important;
+            }
+        }
+
+        .right-container{
+            float: right;
+
+            .info-box{
+                float: right;
+                margin-right: 0 !important;
+                border-right: none !important;
+                border-left: 2px solid #dedede;
+            }
+
+            .message-attachment-box{
+                max-width: 460px;
+                width: 100%;
+            }
+        }
+
+        .chat-box {
+            border: 2px solid #dedede;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            margin: 10px 0;
+            position: relative;
+
+            ul{
+                padding-left: 10px;
+                margin-bottom: 0px;
+                list-style: none;
+                position: absolute;
+                bottom: 0;
+                width: 75%;
+
+                li{
+                    display: inline-block;
+                    margin-bottom: 5px;
+                    padding-right: 5px;
+
+                    a{
+                        color: #0043ffd1;
+                        text-decoration: underline;
+
+                        i{
+                            margin-right: 3px;
+                            -webkit-transform: scaleX(-1);
+                            transform: scaleX(-1);
+                        }
+                    }
+                }
+            }
+
+            p{
+                margin: 0;
+                padding: 10px;
+            }
+
+            .info-box{
+                max-width: 110px;
+                width: 100%;
+                margin-right: 20px;
+                border-right: 2px solid #dedede;
+                height: 100%;
+                padding: 10px;
+
+                span{
+                    display: block;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+
+    .note-panel{
+        display: none;
+        background-color: #ffffff;
+        margin-top: 60px;
+        margin-bottom: 10px;
+        clear: both;
+        box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.13);
+        border: 1px solid #ececec;
+
+        .panel-header {
+            h4{
+                margin: 0;
+                padding: 15px;
+                border-bottom: 1px solid #ddd;
+                font-family: 'Noto Sans', sans-serif;
+                font-size: 18px;
+            }
+        }
+
+        .panel-body{
+            padding: 10px;
+
+            textarea{
+                width: 50%;
+                border: 1px solid #ddd;
+            }
+        }
+
+
+
+        .panel-footer{
+            padding: 15px;
+            border-top: 1px solid #ddd;
+
+            .btn-group{
+                text-align: right;
+
+                .btn{
+                    padding: 8px;
+                    text-decoration: none;
+                    color: #000000;
+                    border-radius: 3px;
+                }
+
+                .btn-primary{
+                    border:none;
+                    background-color: aqua;
+                    color: #ffffff;
+                    line-height: 1.5rem;
+                    margin-top: 3px;
+                    text-transform: capitalize;
+                }
+
+                .btn-default{
+                    background-color: #ddd;
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    .quote-view-account-information .quote-account-information {
+        float: right;
+        #mix-grid .width(6,12);
+    }
+    .quote-information{
+        float: left;
+        #mix-grid .width(6,12);
+    }
+    .quote-information-table {
+        &:extend(.abs-admin__table-secondary-edit-order all);
+
+        ._has-datepicker {
+            & + .ui-datepicker-trigger {
+                display: inline-block;
+                margin: 0;
+                padding: 0 .5rem;
+                position: relative;
+                vertical-align: middle;
+
+                &:focus {
+                    box-shadow: none;
+                    outline: 0;
+                }
+
+                &:after {
+                    line-height: 1;
+                }
+            }
+
+            &[disabled] {
+                opacity: 0.5;
+            }
+        }
+
+        .control {
+            margin: -@indent__s;
+        }
+    }
+
+    .quote-account-information {
+        float: right;
+        #mix-grid .width(6,12);
+    }
+    .quote-account-information {
+        text-align: right;
+    }
+
+
+    .quote-view-shipping {
+        .admin__page-section-item-title {
+            .title {
+                font-size: @font-size__base;
+                font-weight: @font-weight__bold;
+            }
+        }
+
+        .get-shipping-method-link {
+            display: none;
+        }
+
+        .admin__quote-shipment-methods-title {
+            font-weight: @font-weight__semibold;
+        }
+
+        .admin__quote-shipment-methods-options {
+            strong {
+                font-weight: @font-weight__semibold;
+            }
+        }
+    }
+    .quote-comments-history {
+        float: left;
+        #mix-grid .width(6,12);
+    }
+    .quote-comments-block {
+        .comments-block-item {
+            border-bottom: 1px solid @quote-table__border-color;
+            margin-bottom: @indent__s;
+            padding-bottom: @indent__s;
+        }
+
+        .comments-block-item-date-time {
+            font-size: @quote-comment__font-size;
+            font-weight: @font-weight__semibold;
+            margin-bottom: @indent__xs;
+        }
+
+        .attachments-list {
+            padding-top: 0;
+        }
+    }
+
+    #comment {
+        padding-left: 0;
+    }
+
+    .quote-comments-block {
+        .comments-block-item {
+            border-bottom: 1px solid @quote-table__border-color;
+            margin-bottom: @indent__s;
+            padding-bottom: @indent__s;
+        }
+
+        .comments-block-item-date-time {
+            font-size: @quote-comment__font-size;
+            font-weight: @font-weight__semibold;
+            margin-bottom: @indent__xs;
+        }
+
+        .attachments-list {
+            padding-top: 0;
+        }
+    }
+    .comments-field {
+        .comments-field-label {
+            display: block;
+            font-size: @font-size__l;
+            font-weight: @font-weight__semibold;
+            margin-bottom: @indent__s;
+        }
+
+        textarea {
+            background: @textarea__background;
+            border: @textarea__border;
+            border-radius: @textarea__border-radius;
+            box-sizing: border-box;
+            font-family: @textarea__font-family;
+            font-size: @textarea__font-size;
+            height: @textarea__height;
+            line-height: @textarea__line-height;
+            margin: @textarea__margin;
+            padding: @textarea__padding;
+            resize: vertical;
+            vertical-align: @textarea__vertical-align;
+            width: @textarea__width;
+        }
+
+        .field-attachment {
+            padding-bottom: @indent__s;
+
+            input {
+                display: none;
+            }
+
+
+            label {
+                .lib-icon-font(
+                    @icon-gripper,
+                    @_icon-font: @icons-magento__font-name,
+                    @_icon-font-size: @quote-comment__font-size,
+                    @_icon-font-line-height: 1.4,
+                    @_icon-font-color: @quote-button__color
+                );
+                color: @quote-button__color;
+                cursor: pointer;
+                font-size: @quote-comment__font-size;
+                margin-left: @indent__base;
+                margin-top: @indent__s;
+                position: relative;
+            }
+
+            &.loading {
+                label {
+                    color: inherit;
+                    pointer-events: none;
+                }
+            }
+
+            &:after {
+                content: attr(data-progress);
+                padding-left: @indent__base;
+            }
+        }
+    }
+
+    .quote-comments-block {
+        .comments-block-item {
+            border-bottom: 1px solid @quote-comments__border-color;
+            margin-bottom: @indent__l;
+            padding-bottom: @indent__l;
+
+            .comments-block-item-date-time {
+                display: block;
+                font-size: @quote-comment__font-size;
+                font-weight: @font-weight__semibold;
+                margin-bottom: @indent__xs;
+            }
+
+            .comments-block-item-comment {
+                font-size: @quote-comment__font-size;
+                word-break: break-all;
+            }
+
+            .attachments-list {
+                span {
+                    &.attachments-item {
+                        .lib-text-overflow();
+                        display: block;
+                        width: 250px;
+                    }
+                }
+            }
+        }
+
+        .comments-field {
+            .comments-field-label {
+                display: block;
+                font-size: @font-size__l;
+                font-weight: @font-weight__semibold;
+                margin-bottom: @indent__s;
+            }
+
+            textarea {
+                background: @textarea__background;
+                border: @textarea__border;
+                border-radius: @textarea__border-radius;
+                box-sizing: border-box;
+                font-family: @textarea__font-family;
+                font-size: @textarea__font-size;
+                height: @textarea__height;
+                line-height: @textarea__line-height;
+                margin: @textarea__margin;
+                padding: @textarea__padding;
+                resize: vertical;
+                vertical-align: @textarea__vertical-align;
+                width: @textarea__width;
+            }
+
+            .field-attachment {
+                padding-bottom: @indent__s;
+
+                .attachment-icon{
+                    width: 16px;
+                    position: relative;
+                    top: 3px;
+                }
+
+                input {
+                    display: none;
+                }
+
+                label {
+                    .lib-icon-font(
+                        @icon-gripper,
+                        @_icon-font: @icons-magento__font-name,
+                        @_icon-font-size: @quote-comment__font-size,
+                        @_icon-font-line-height: 1.4,
+                        @_icon-font-color: @quote-button__color
+                    );
+                    color: @quote-button__color;
+                    cursor: pointer;
+                    font-size: @quote-comment__font-size;
+                    margin-left: 0;
+                    margin-top: @indent__s;
+                    position: relative;
+
+                    &:before {
+                        left: -@indent__base;
+                        position: absolute;
+                    }
+                }
+
+                &.loading {
+                    label {
+                        color: inherit;
+                        pointer-events: none;
+                    }
+                }
+
+                &:after {
+                    content: attr(data-progress);
+                    padding-left: @indent__base;
+                }
+            }
+        }
+
+        .attachments-list {
+            .attachments-item {
+                padding-bottom: @indent__xs;
+                display: inline-block;
+                padding-right: 10px;
+
+                span {
+                    padding-right: @indent__xs;
+                }
+
+                .action-delete {
+                    .lib-icon-font(
+                        @_icon-font: @icons-admin__font-name,
+                        @_icon-font-content: @icon-delete__content,
+                        @_icon-font-size: 1.4rem,
+                        @_icon-font-line-height: 1.2,
+                        @_icon-font-color: @order-icons__color,
+                        @_icon-font-color-hover: @order-create-icon-plus__hover__color,
+                        @_icon-font-text-hide: false,
+                        @_icon-font-position: before,
+                        @_icon-font-display: inline-block
+                    );
+                    background: none;
+                    border: none;
+                    padding: 0;
+
+                    &:before {
+                        position: relative;
+                        top: -.2rem;
+                    }
+
+                    > span {
+                        .lib-visually-hidden();
+                    }
+                }
+            }
+        }
+
+        ._disabled {
+            opacity: .5;
+            pointer-events: none;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @media only screen and (min-width: 640px) {
+        .layout {
+            display: flex;
+        }
+    }
+
+    @media only screen and (max-width: 640px) {
+        .left-col,
+        .right-col {
+            margin: 0 2px 20px 0 !important;
+        }
+    }
+}

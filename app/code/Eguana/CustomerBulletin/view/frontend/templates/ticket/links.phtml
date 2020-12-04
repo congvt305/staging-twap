@@ -1,0 +1,71 @@
+<?php
+/** @var \Eguana\CustomerBulletin\ViewModel\Detail $viewmodel */
+/** @var \Eguana\CustomerBulletin\Block\Index\Detail $block */
+/** @var \Eguana\CustomerBulletin\Api\Data\TicketInterface $ticket */
+
+$viewmodel = $block->getData('ticket_detail');
+$ticket = $viewmodel->getTicketDetail();
+?>
+<?php if ($ticket->getStatus() != 0) :?>
+    <div class="actions-toolbar">
+        <a href="javascript:void(0);" class="action primary action-add custom-tkt-btn"  id="add_note">
+            <span><?= $block->escapeHtml(__('Add Note'));?></span>
+        </a>
+    </div>
+<?php endif;?>
+<div class="note-panel">
+    <form class="messages" method="post" enctype="multipart/form-data">
+        <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
+        <div class="panel-body">
+            <label for="note" class="note-message"><?= $block->escapeHtml(__('Message')); ?></label>
+            <textarea name="note" id="note" cols="30" rows="10"></textarea>
+            <div class="note-error" style="display: none;">
+                <?= $block->escapeHtml(__('Please fill the required field'));?>
+            </div>
+        </div>
+        <div data-mage-init='{"Eguana_CustomerBulletin/js/note/add-files": {
+                                        "maxSizeB" : "<?= $block->escapeJs($block->getMaxFileSize()) ?>",
+                                        "maxSizeMb" : "<?= $block->escapeJs($block->getMaxFileSizeMb()) ?>",
+                                        "extensions" : "<?= $block->escapeJs($block->getAllowedExtensions()) ?>",
+                                        "modal" : "true"
+                                    }}'
+             class="field-attachment"
+             data-role="send-files">
+            <label data-role="wrap-file"
+                   data-mage-init='{"Eguana_CustomerBulletin/js/note/add-file": {}}'
+                   for="add-file-0">
+                <input name="files[0]"
+                       data-role="add-file"
+                       id="add-file-0"
+                       type="file">
+                <?= $block->escapeHtml(__('Attach file')) ?>
+            </label>
+
+        </div>
+        <div class="attachments-list" data-role="added-files"></div>
+        <div class="control">
+            <input type="hidden" id="ticket_id" name="ticket_id"
+                   value="<?= $block->escapeHtml($viewmodel->getTicketId()); ?>"/>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group">
+                <a href="javascript:void(0);" class="action action-cancel custom-tkt-btn" id="cancel"">
+                <span><?= $block->escapeHtml(__('Cancel'));?></span>
+                </a>
+                <button class="action primary custom-tkt-btn"
+                        type="button" value="Create" id="add-msg">
+                    <span><?= $block->escapeHtml(__('create'));?></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "send-note-message":{
+                "ticket_id":"<?= $block->escapeHtml($viewmodel->getTicketId()) ?>"
+            }
+        }
+    }
+</script>

@@ -1,0 +1,83 @@
+<?php
+/** @var \Eguana\CustomerBulletin\Block\Index\CreateTicket $block */
+/** @var \Eguana\CustomerBulletin\ViewModel\CreateTicket $viewmodel */
+$viewmodel = $block->getData('ticket_createticket');
+$category = $viewmodel->getCategory();
+?>
+<form action="<?= $block->escapeUrl($block->getFormAction()); ?>"
+      class="create-ticket-form"
+      method="post" enctype="multipart/form-data" data-mage-init='{"validation":{}}'>
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?= $block->escapeHtml(__('Ticket Information')) ?></span></legend><br>
+        <div class="field category">
+            <label class="label" for="category"><span><?= $block->escapeHtml(__('Category')); ?></span></label>
+            <div class="control">
+                <select name="category" id="category" title="<?= $block->escapeHtml(__('Category')); ?>"
+                        class="input-text" required>
+                    <option value=""><?= $block->escapeHtml(__("--Select Category--")); ?></option>
+                    <?php foreach ($category as $value) : ?>
+                        <option value="<?= $block->escapeHtml(__($value)); ?>" >
+                            <span><?= $block->escapeHtml(__($value)); ?></span>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        <div class="field Subject required">
+            <label class="label" for="subject"><span><?= $block->escapeHtml(__('Ticket Subject')); ?></span></label>
+            <div class="control">
+                <input name="subject" id="subject" title="<?= $block->escapeHtml(__('Ticket Subject')); ?>"
+                       class="input-text" type="text" required />
+            </div>
+        </div>
+        <div class="field message required">
+            <label class="label" for="message"><span><?= $block->escapeHtml(__('Message')); ?></span></label>
+            <div class="control">
+                <textarea name="message" id="message" title="<?= $block->escapeHtml(__('Message')); ?>"
+                          class="" cols="5" rows="3" data-validate="{required:true}"
+                          placeholder="<?= $block->escapeHtml(__('Message')); ?>" required ></textarea>
+            </div>
+        </div>
+        <div class="field file">
+            <label class="label file-label-txt" for="attachment">
+                <span><?= $block->escapeHtml(__('File')); ?></span>
+            </label>
+            <div data-mage-init='{"Eguana_CustomerBulletin/js/note/add-files": {
+                                        "maxSizeB" : "<?= $block->escapeJs($block->getMaxFileSize()) ?>",
+                                        "maxSizeMb" : "<?= $block->escapeJs($block->getMaxFileSizeMb()) ?>",
+                                        "extensions" : "<?= $block->escapeJs($block->getAllowedExtensions()) ?>",
+                                        "modal" : "true"
+                                    }}'
+                 class="field-attachment"
+                 data-role="send-files">
+                <label data-role="wrap-file"
+                       data-mage-init='{"Eguana_CustomerBulletin/js/note/add-file": {}}'
+                       for="add-file-0">
+                    <input name="files[0]"
+                           data-role="add-file"
+                           id="add-file-0"
+                           type="file">
+                    <?= $block->escapeHtml(__('Attach file')); ?>
+                </label>
+
+            </div>
+            <div class="attachments-list minicart-items" data-role="added-files"></div>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit"
+                    title="<?= $block->escapeHtml(__('Submit')); ?>"
+                    class="action submit primary">
+                <span><?= $block->escapeHtml(__('Submit')); ?></span>
+            </button>
+        </div>
+    </div>
+</form>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "send-note-message":{}
+        }
+    }
+</script>

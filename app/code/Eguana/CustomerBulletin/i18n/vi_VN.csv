@@ -1,0 +1,162 @@
+Name,Tên
+Add,Thêm vào
+Back,Trở lại
+"Delete Ticket","Xóa vé"
+Reset,Cài lại
+Save,Tiết kiệm
+"Save & Duplicate","Lưu & sao chép"
+"Save & Close","Lưu & Đóng"
+Send,Gửi
+"New Ticket","Vé mới"
+Home,Trang Chủ
+"Go to Home Page","Đi tới Trang chủ"
+"My Account","Tài khoản của tôi"
+"Support Ticket","Vé ủng hộ"
+"Add new ticket","Thêm vé mới"
+"My Tickets","vé của tôi"
+"Current Tickets","Vé hiện tại"
+"Run Cron","Chạy Cron"
+"Something went wrong while saving the ticket.","Đã xảy ra sự cố khi lưu vé."
+"The ticket has been deleted.","Vé đã bị xóa."
+"The ticket no longer exists.","Vé không còn tồn tại."
+"There was a problem while deleting the data","Đã xảy ra sự cố khi xóa dữ liệu"
+"We can't find the ticket to delete.","Chúng tôi không thể tìm thấy vé để xóa."
+"Ticket #%1","Vé #% 1"
+"Edit Ticket","Chỉnh sửa vé"
+"Manage Tickets","Quản lý vé"
+"You saved this data.","Bạn đã lưu dữ liệu này."
+"Something went wrong while saving the data.","Đã xảy ra lỗi khi lưu dữ liệu."
+"Please Login Yourself","Vui lòng tự đăng nhập"
+"Something went wrong while saving the note.","
+Đã xảy ra sự cố khi lưu ghi chú."
+"Email hase been successfully sent to Customer","Đã gửi thành công email đến Khách hàng"
+"Email hase been successfully sent to Administation","Đã gửi thành công email tới Quản trị viên"
+"Could not save the data: %1","Không thể lưu dữ liệu:% 1"
+"Requested note doesn't exist","Ghi chú được yêu cầu không tồn tại"
+Open,Mở
+Hold,Giữ
+Clos,Clos
+Read,Đọc
+Unread,Chưa đọc
+Close,Đóng
+"Requested ticket doesn't exist","Vé yêu cầu không tồn tại"
+"Unable to remove data %1","Không thể xóa dữ liệu% 1"
+Detail,Chi tiết
+Delete,Xóa bỏ
+"Delete ""Ticket""","Xóa" "Vé" ""
+"Are you sure you want to delete the Ticket?","Bạn có chắc chắn muốn xóa Vé không?"
+"All Store Views","Tất cả lượt xem cửa hàng"
+"Sorry There is no Ticket with Id ","Xin lỗi Không có vé có Id"
+" Against Your Account","Chống lại tài khoản của bạn"
+"Ticket & Notes Information","Thông tin về Vé & Ghi chú"
+"Ticket # %1","Vé #% 1"
+Category,thể loại
+Requester,Người yêu cầu
+Created,Tạo
+Status,Trạng thái
+"Ticket Information","thông tin vé"
+Message,Thông điệp
+Attchments,Tệp đính kèm
+"The information in this tab has been changed.","Thông tin trong tab này đã được thay đổi."
+"This tab contains invalid data. Please resolve this before saving.","Tab này chứa dữ liệu không hợp lệ. Vui lòng giải quyết vấn đề này trước khi lưu."
+Loading...,Đang tải...
+Notes,Ghi chú
+"Add your Note","Thêm ghi chú của bạn"
+"Attach file","Đính kèm tệp"
+"Notes Information","Thông tin Ghi chú"
+Subject,Môn học
+File,Tập tin
+Submit,Gửi đi
+"FAQ!","Câu hỏi thường gặp!"
+"Note Status","Ghi chú Trạng thái"
+Action,Hoạt động
+view,lượt xem
+"You have not Created a Ticket.","Bạn chưa tạo vé."
+Information,Thông tin
+"Add Note","Thêm ghi chú"
+"Close this ticket","Đóng vé này"
+create,tạo nên
+Cancel,Huỷ bỏ
+"Hi %name,","Chào %name,"
+"Your ticket for %ticket_subject has been close on %time at %phy_store. If you have questions about your ticket, you can email us at %email.","Vé của bạn cho %ticket_subject đã kết thúc %time tại %phy_store. Nếu bạn có thắc mắc về vé của mình, bạn có thể gửi email cho chúng tôi theo địa chỉ %email."
+"Have a lovely day!","Chúc một ngày tốt lành!"
+"Your Amore Team","Nhóm Amore của bạn"
+"Your Ticket for %ticket_subject has been open on %time at %phy_store. If you have questions about your ticket, you can email us at %email.","Vé của bạn cho% ticket_subject đã được mở vào% time tại% phy_store. Nếu bạn có thắc mắc về vé của mình, bạn có thể gửi email cho chúng tôi tại% email."
+"Thank you for the reply of %ticket_subject Ticket on %time at %phy_store . If you have questions about your ticket, you can email us at %email.","Cảm ơn bạn đã trả lời% ticket_subject Ticket vào% time tại% phy_store. Nếu bạn có thắc mắc về vé của mình, bạn có thể gửi email cho chúng tôi tại% email."
+"Hi Admin,","Hi Admin,"
+"The ticket %ticket_id has been close with subject %ticket_subject on %time at %phy_store from %customer.","Vé% ticket_id đã được đóng với chủ đề% ticket_subject vào% time tại% phy_store từ% customer."
+"Ticket Status : Closed","Tình trạng vé: Đã đóng"
+"You have new ticket about %ticket_subject on %time at %phy_store from %customer.Please reply the customer query","Bạn có vé mới về% ticket_subject vào% time tại% phy_store từ% customer. Vui lòng trả lời câu hỏi của khách hàng"
+"Ticket Status : Open","Tình trạng vé: Mở"
+"You have new reply on %ticket_id ticket about %ticket_subject on %time at %phy_store from %customer.Please reply the customer query.","Bạn có câu trả lời mới cho% ticket_id ticket về% ticket_subject vào% time tại% phy_store từ% customer. Vui lòng trả lời câu hỏi của khách hàng."
+"Ticket Status : Hold","Tình trạng vé: Giữ"
+Proceed,Tiến hành
+"Your file could not be uploaded. Please try again.","Không thể tải lên tệp của bạn. Vui lòng thử lại."
+"You cannot attach more than ten files per note.","Bạn không thể đính kèm nhiều hơn mười tệp cho mỗi ghi chú."
+"Cannot Upload File","Không thể tải lên tệp"
+"The maximum allowed file size is %1 MB. Please select a different file.","Kích thước tệp tối đa cho phép là% 1 MB. Vui lòng chọn một tệp khác."
+"The maximum file name length is %1 characters.","Độ dài tên tệp tối đa là% 1 ký tự."
+"The only special symbols that are allowed in the file name are dash (-) and underscore (_).","Các ký hiệu đặc biệt duy nhất được phép trong tên tệp là dấu gạch ngang (-) và dấu gạch dưới (_)."
+"%1 is not an allowed file type. Please select a different file.","% 1 không phải là loại tệp được phép. Vui lòng chọn một tệp khác."
+"Allowed file formats: %1.","Định dạng tệp được phép:% 1."
+"Ticket Support","Hỗ trợ vé"
+"Ticket Support Config","Cấu hình hỗ trợ vé"
+"Ticket Configuration","Cấu hình vé"
+"Enable Feature","Bật tính năng"
+"Email Sender","Người gửi Email"
+Categories,Thể loại
+"File Types","Loại tập tin"
+"File Size In Mbs","Kích thước tệp tính bằng Mbs"
+"Clsoed Ticket Action Duration","Thời hạn xử lý hành động mua vé"
+"Staff and Customer Email Template Configuration","Cấu hình mẫu email nhân viên và khách hàng"
+"Send Email To Staff Automatically","Tự động gửi email cho nhân viên"
+"Staff Emails","Email của nhân viên"
+"Select email template for opening ticket","Chọn mẫu email để mở vé"
+Reply,Đáp lại
+"Select email template for hold Ticket","Chọn mẫu email để giữ Vé"
+"Select email template for close ticket","Chọn mẫu email cho phiếu đóng"
+"Send Email To Customer Automatically","Gửi email cho khách hàng tự động"
+"Select email template for opning ticket","Chọn mẫu email cho phiếu chọn"
+"Select email template for hold ticket","Chọn mẫu email cho phiếu giữ"
+"Closing Ticket Configuration","Đóng cấu hình vé"
+"Close Ticket Cron Frequency","Đóng tần suất Cron vé"
+"Cron Start Time","Thời gian bắt đầu Cron"
+"A total of %1 record(s) have been deleted.","Tổng số% 1 (các) bản ghi đã bị xóa."
+"An error occurred while deleting record(s).","Đã xảy ra lỗi khi xóa (các) bản ghi."
+"A total of %1 ticket have been Open.","Tổng số% 1 vé đã được Mở."
+"An error occurred while opening selected ticket.","Đã xảy ra lỗi khi mở vé đã chọn."
+"A total of %1 ticket have been close.","Tổng số% 1 vé đã được đóng."
+"An error occurred while closing ticket.","Đã xảy ra lỗi khi đóng vé."
+"Are you sure you want to delete selected items?","Bạn có chắc chắn muốn xóa các mục đã chọn không?"
+"Delete items","Xóa mục"
+Re-Open,Mở lại
+ID,TÔI
+"Customer Name","tên khách hàng"
+"Store View","Chế độ xem cửa hàng"
+"Hi ","Chào "
+"Have a lovely day!","Chúc một ngày tốt lành!"
+"Click ","Nhấp chuột "
+" to view Ticket"," để xem vé"
+here,đây
+"Your Amore Team","Nhóm Amore của bạn"
+"You have new  reply on Ticket from admin","Bạn có câu trả lời mới về Vé từ quản trị viên"
+"Your file could not be uploaded. Please try again.","Không thể tải lên tệp của bạn. Vui lòng thử lại."
+"You cannot attach more than ten files per note.","Bạn không thể đính kèm nhiều hơn mười tệp cho mỗi ghi chú."
+"Cannot Upload File","Không thể tải lên tệp"
+"The maximum allowed file size is %1 .","Kích thước tệp tối đa được phép là %1 ."
+"MB Please select a different file.","MB Vui lòng chọn một tệp khác."
+"The maximum file name length is %1","Độ dài tên tệp tối đa là %1"
+"characters. The only special symbols that are allowed in the file name are dash (-) and underscore (_).","nhân vật. Các ký hiệu đặc biệt duy nhất được phép trong tên tệp là dấu gạch ngang (-) và dấu gạch dưới (_)."
+%1,%1
+" is not an allowed file type. Please select a different file."," không phải là loại tệp được phép. Vui lòng chọn một tệp khác."
+"Allowed file formats:","Các định dạng tệp được phép:"
+"Ticket Information","thông tin vé"
+"Created At","Được tạo lúc"
+"Ticket List","DANH SÁCH VÉ"
+"Select Category","Chọn loại"
+"My Ticket View","Khung vé của tôi"
+"Checked our <a href=""%1"">FAQ</a> and still need help? Please send us a message using the form below.","Đã kiểm tra <a href=""%1"">FAQ</a> của chúng tôi và vẫn cần giúp đỡ? Vui lòng gửi cho chúng tôi một thông điệp sử dụng mẫu dưới đây."
+"Your Ticket has been created!","Vé của bạn đã được tạo!"
+"--Select Category--","--Chọn thể loại--"
+"Click <a href=""%ticket_url"">here</a> to view the ticket","<a href=""%ticket_url"">Nhấp vào đây để xem vé</a>"
+

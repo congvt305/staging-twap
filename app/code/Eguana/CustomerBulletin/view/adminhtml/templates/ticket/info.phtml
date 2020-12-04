@@ -1,0 +1,101 @@
+<?php
+/** @var \Eguana\CustomerBulletin\ViewModel\Detail $viewmodel */
+/** @var \Eguana\CustomerBulletin\Block\Adminhtml\Ticket\Detail $block */
+/** @var \Eguana\CustomerBulletin\Api\Data\TicketInterface $ticket */
+$viewmodel = $block->getData('ticket_info');
+$ticket = $viewmodel->getTicketDetail();
+?>
+<section class="admin__page-section quote-view-account-information">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $block->escapeHtml(__('Ticket & Notes Information')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item quote-information">
+            <?php /* Quote Information */ ?>
+            <div class="admin__page-section-item-title">
+                <span class="title">
+                    <?= $block->escapeHtml(__('Ticket # %1', $ticket->getId())) ?>
+                </span>
+                <input type="hidden" name="ticket_id" value="<?= (int) $ticket->getId() ?>">
+            </div>
+            <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary quote-information-table">
+                    <tr>
+                        <th>
+                            <?= $block->escapeHtml(__('Category')) ?>
+                        </th>
+                        <td>
+                            <span id="quote_company">
+                                <?= $block->escapeHtml($ticket->getCategory()) ?>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <?= $block->escapeHtml(__('Requester')) ?>
+                        </th>
+                        <td>
+                            <span id="quote_mailto">
+                                <?= $block->escapeHtml($viewmodel->getCustomerName($ticket->getCustomerId())) ?>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <?= $block->escapeHtml(__('Created')) ?>
+                        </th>
+                        <td>
+                            <span id="quote_salesrep">
+                                <?= $block->escapeHtml($viewmodel->getCreationTime($ticket->getCreationTime()));?>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <?= $block->escapeHtml(__('Status')) ?>
+                        </th>
+                        <td>
+                            <span id="quote_salesrep">
+                                <?= $block->escapeHtml($viewmodel->getStatus($ticket->getStatus())) ?>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="admin__page-section-item quote-account-information">
+            <?php /* Account Information */ ?>
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= $block->escapeHtml(__('Ticket Information')) ?></span>
+            </div>
+            <table class="admin__table-secondary quote-information-table">
+                <tr>
+                    <th>
+                        <?= $block->escapeHtml(__('Message')) ?></th>
+                    <td>
+                        <span id="quote_msg"><?= $block->escapeHtml($ticket->getMassege()) ?></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <?= $block->escapeHtml(__('Attchments')) ?>
+                    </th>
+                    <td class="left-col">
+                        <?php if (!empty($ticket->getAttachment())) :
+                            $files = $viewmodel->getFiles($ticket->getAttachment());?>
+                            <ul style="list-style: none;">
+                                <?php foreach ($files as $file) : ?>
+                                    <li>
+                                        <a href="<?= $block->escapeUrl($viewmodel->mediaUrl($file));?>" download>
+                                            <?= $block->escapeHtml($viewmodel->changeFileName($file));?>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif;?>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</section>

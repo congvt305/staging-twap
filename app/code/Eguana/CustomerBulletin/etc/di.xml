@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: bilalyounas
+ * Date: 30/9/20
+ * Time: 06:48 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Eguana\CustomerBulletin\Api\TicketRepositoryInterface" type="Eguana\CustomerBulletin\Model\TicketRepository" />
+    <preference for="Eguana\CustomerBulletin\Api\NoteRepositoryInterface" type="Eguana\CustomerBulletin\Model\NoteRepository" />
+    <preference for="Eguana\CustomerBulletin\Api\Data\TicketInterface" type="Eguana\CustomerBulletin\Model\Ticket" />
+    <preference for="Eguana\CustomerBulletin\Api\Data\NoteInterface" type="Eguana\CustomerBulletin\Model\Note" />
+    <preference for="Eguana\CustomerBulletin\Api\Data\NoteSearchResultsInterface" type="Eguana\CustomerBulletin\Model\NoteSearchResult" />
+    <preference for="Eguana\CustomerBulletin\Api\Data\TicketSearchResultsInterface" type="Eguana\CustomerBulletin\Model\TicketSearchResult" />
+    <virtualType name="TicketGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="TicketGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Eguana\CustomerBulletin\Model\Resource\Ticket\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">TicketGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Eguana\CustomerBulletin\Model\ResourceModel\Ticket\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">eguana_ticket</argument>
+            <argument name="resourceModel" xsi:type="string">Eguana\CustomerBulletin\Model\ResourceModel\Ticket</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="ticket_data_grid_data_source" xsi:type="string">Eguana\CustomerBulletin\Model\ResourceModel\Ticket\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Eguana\CustomerBulletin\Controller\Adminhtml\Ticket\MassDelete">
+        <arguments>
+            <argument name="successMessage" xsi:type="string" translate="true">A total of %1 record(s) have been deleted.</argument>
+            <argument name="errorMessage" xsi:type="string" translate="true">An error occurred while deleting record(s).</argument>
+        </arguments>
+    </type>
+    <type name="Eguana\CustomerBulletin\Controller\Adminhtml\Ticket\MassOpen">
+        <arguments>
+            <argument name="successMessage" xsi:type="string" translate="true">A total of %1 ticket have been Open.</argument>
+            <argument name="errorMessage" xsi:type="string" translate="true">An error occurred while opening selected ticket.</argument>
+        </arguments>
+    </type>
+    <type name="Eguana\CustomerBulletin\Controller\Adminhtml\Ticket\MassClose">
+        <arguments>
+            <argument name="successMessage" xsi:type="string" translate="true">A total of %1 ticket have been close.</argument>
+            <argument name="errorMessage" xsi:type="string" translate="true">An error occurred while closing ticket.</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Translation\Model\Js\Config">
+        <arguments>
+            <argument name="patterns" xsi:type="array">
+                <item name="custom_pattern" xsi:type="string">~regex-pattern~</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

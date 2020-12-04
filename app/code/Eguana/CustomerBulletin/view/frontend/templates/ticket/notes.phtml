@@ -1,0 +1,65 @@
+<?php
+/** @var \Eguana\CustomerBulletin\ViewModel\Detail $viewmodel */
+/** @var \Eguana\CustomerBulletin\Block\Index\Detail $block */
+/** @var \Eguana\CustomerBulletin\Api\Data\TicketInterface $ticket */
+
+$viewmodel = $block->getData('ticket_detail');
+$ticket = $viewmodel->getTicketDetail();
+$notes = $block->getNoteCollection();
+
+?>
+<div class="chat-container">
+    <?php foreach ($notes as $note):?>
+        <?php if ($note['user_type'] == 1) : ?>
+            <div class="left-container chat-box">
+                <div class="message-attachment-box<?php if (!empty($note['note_attachment'])):?> attachment-list<?php endif;?>">
+                    <p><?= $block->escapeHtml($note['note_message']);?></p>
+                    <?php if (!empty($note['note_attachment'])):
+                        $files = $viewmodel->getFiles($note['note_attachment']);?>
+                        <ul>
+                            <?php foreach ($files as $file): ?>
+                                <li>
+                                    <a href="<?= $block->escapeUrl($viewmodel->mediaUrl($file));?>"
+                                       download><i class="fa fa-paperclip"></i>
+                                        <?= $block->escapeHtml($viewmodel->changeFileName($file));?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif;?>
+                </div>
+                <div class="info-box">
+                    <span>
+                        <?= $block->escapeHtml($viewmodel->getAdminName());?>
+                        <?= $block->escapeHtml($viewmodel->getCreationTime($note['creation_time']));?>
+                    </span>
+                </div>
+            </div>
+        <?php elseif ($note['user_type'] == 0) :?>
+            <div class="right-container chat-box">
+                <div class="message-attachment-box<?php if (!empty($note['note_attachment'])):?> attachment-list<?php endif;?>">
+                    <p><?= $block->escapeHtml($note['note_message']);?></p>
+                    <?php if (!empty($note['note_attachment'])):
+                        $files = $viewmodel->getFiles($note['note_attachment']);?>
+                        <ul>
+                            <?php foreach ($files as $file): ?>
+                                <li>
+                                    <a href="<?= $block->escapeUrl($viewmodel->mediaUrl($file));?>"
+                                       download><i class="fa fa-paperclip"></i>
+                                        <?= $block->escapeHtml($viewmodel->changeFileName($file));?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif;?>
+                </div>
+                <div class="info-box">
+                    <span>
+                        <?= $block->escapeHtml($viewmodel->getCustomerName($note['user_id']));?>
+                        <?= $block->escapeHtml($viewmodel->getCreationTime($note['creation_time'])); ?>
+                    </span>
+                </div>
+            </div>
+        <?php endif; ?>
+    <?php endforeach;?>
+</div>
