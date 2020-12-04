@@ -65,11 +65,12 @@ class Refund
 
         if (isset($paymentInfo['raw_details_info'])) {
             $this->logger->info('customerRefund | payMethod from raw detail', [$paymentInfo['raw_details_info']['ecpay_choosen_payment']]);
-            return $paymentInfo['raw_details_info']['ecpay_choosen_payment'];
+            if (isset($paymentInfo['raw_details_info']['ecpay_choosen_payment'])) {
+                return $paymentInfo['raw_details_info']['ecpay_choosen_payment'];
+            }
         }
 
         return false;
-
     }
 
     /**
