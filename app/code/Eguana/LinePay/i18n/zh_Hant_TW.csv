@@ -1,3 +1,5 @@
+"We can't initialize LINEPay Checkout.","無法初始化 LINEPay 結帳。"
+"LINEPay can't process orders with a zero balance due. To finish your purchase, please go through the standard checkout process.","LINEPay 無法處理到期餘額為零的訂單。要完成您的購買，請通過標準結帳流程。"
 "Sorry, but something went wrong","抱歉，出了點問題"
 "No authorization transaction to proceed authorize.","沒有授權交易可進行授權。"
 "Linepay error response.","Linepay錯誤響應。"

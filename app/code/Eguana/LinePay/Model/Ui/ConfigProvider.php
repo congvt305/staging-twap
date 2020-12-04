@@ -11,6 +11,7 @@ namespace Eguana\LinePay\Model\Ui;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Helper\Data as PaymentHelper;
+use Eguana\LinePay\Helper\Data;
 
 /**
  * Class ConfigProvider logo src
@@ -20,16 +21,16 @@ class ConfigProvider implements ConfigProviderInterface
     const CODE = 'linepay_payment';
 
     /**
-     * @var \Eguana\LinePay\Helper\Data
+     * @var Data
      */
     private $linePayHelper;
 
     /**
      * ConfigProvider constructor.
-     * @param \Eguana\LinePay\Helper\Data $linePayHelper
+     * @param Data $linePayHelper
      */
     public function __construct(
-        \Eguana\LinePay\Helper\Data $linePayHelper
+        Data $linePayHelper
     ) {
         $this->linePayHelper = $linePayHelper;
     }

@@ -16,11 +16,12 @@ use Magento\Framework\UrlInterface;
 use Magento\Framework\Serialize\SerializerInterface;
 use Psr\Log\LoggerInterface;
 use Magento\Store\Api\StoreRepositoryInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 /**
  * Class Payment
  *
- * Short Description
+ * Get payment
  */
 class Payment
 {
@@ -60,6 +61,11 @@ class Payment
     private $logger;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
+    /**
      * Payment constructor.
      * @param Curl $curl
      * @param Data $linePayHelper
@@ -67,6 +73,7 @@ class Payment
      * @param UrlInterface $url
      * @param SerializerInterface $serializer
      * @param StoreRepositoryInterface $storeManager
+     * @param ScopeConfigInterface $scopeConfig
      * @param LoggerInterface $logger
      */
     public function __construct(
@@ -76,6 +83,7 @@ class Payment
         UrlInterface $url,
         SerializerInterface $serializer,
         StoreRepositoryInterface $storeManager,
+        ScopeConfigInterface $scopeConfig,
         LoggerInterface $logger
     ) {
         $this->curlClient                        = $curl;
@@ -84,6 +92,7 @@ class Payment
         $this->url                               = $url;
         $this->serializer                        = $serializer;
         $this->storeManager                      = $storeManager;
+        $this->scopeConfig                       = $scopeConfig;
         $this->logger                            = $logger;
     }
 
@@ -418,7 +427,7 @@ class Payment
         $package['amount'] = (int)$shippingTax;
         $product['id'] = '1';
         $product['name'] = 'Shipping incl Tax';
-        $product['imageUrl'] = 'https://image.shutterstock.com/image-vector/banner-hot-item-260nw-753431149.jpg';
+        $product['imageUrl'] = $this->scopeConfig->getValue('catalog/placeholder/thumbnail_placeholder');
         $product['quantity'] = 1;
         $product['priceInPoints'] = $shippingTax - (int)$shippingTax;
         $product['price'] = (int)$shippingTax;
@@ -439,7 +448,7 @@ class Payment
         $package['amount'] = (int)round($priceInPoints, 0);
         $product['id'] = '1';
         $product['name'] = 'Products price';
-        $product['imageUrl'] = 'https://image.shutterstock.com/image-vector/banner-hot-item-260nw-753431149.jpg';
+        $product['imageUrl'] = $this->scopeConfig->getValue('catalog/placeholder/thumbnail_placeholder');
         $product['quantity'] = 1;
         $product['price'] = (int)round($priceInPoints, 0);
         $products[] = $product;

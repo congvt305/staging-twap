@@ -1,6 +1,9 @@
+"We can't initialize LINEPay Checkout.","We can't initialize LINEPay Checkout."
+"LINEPay can't process orders with a zero balance due. To finish your purchase, please go through the standard checkout process.","LINEPay can't process orders with a zero balance due. To finish your purchase, please go through the standard checkout process."
 "Sorry, but something went wrong","Sorry, but something went wrong"
 "No authorization transaction to proceed authorize.","No authorization transaction to proceed authorize."
 "Linepay error response.","Linepay error response."
+"Quote instance is required.","Quote instance is required."
 E-Invoice,E-Invoice
 "GreenWorld Invoice","GreenWorld Invoice"
 "Invoice opening notice will be sent to you by email, and you will be notified by mail on your own initiative when you win the prize.","Invoice opening notice will be sent to you by email, and you will be notified by mail on your own initiative when you win the prize."
