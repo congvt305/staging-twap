@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: umer
+* Date: 27/10/20
+* Time: 12:00 PM
+*/
+-->
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Payment:etc/error_mapping.xsd">
+    <message_list>
+        <message code="1101" translate="true">Not a LINE Pay member</message>
+        <message code="1102" translate="true">The member is unable to proceed the transaction.</message>
+        <message code="1104" translate="true">Non-existing merchant</message>
+        <message code="1105" translate="true">The merchant cannot use the LINE Pay.</message>
+        <message code="1106" translate="true">A header info error</message>
+        <message code="1110" translate="true">Unacceptable credit card</message>
+        <message code="1124" translate="true">Amount info error (scale)</message>
+        <message code="1141" translate="true">A payment account error</message>
+        <message code="1142" translate="true">Low balance</message>
+        <message code="1150" translate="true">Cannot find the transaction history</message>
+        <message code="1152" translate="true">There is a history of transactions with the same transactionId.</message>
+        <message code="1153 " translate="true">The payment amount is different than the requested amount.</message>
+        <message code="1159" translate="true">Payment request information is not found.</message>
+        <message code="1169" translate="true">Must select a payment method and password authorization at the LINE Pay.</message>
+        <message code="1170" translate="true">Balance of the member's account has been changed.</message>
+        <message code="1172" translate="true">A record of transaction with the same order number already exists.</message>
+        <message code="1180" translate="true">The payment has been expired.</message>
+        <message code="1198" translate="true">API call request has been duplicated.</message>
+        <message code="1199" translate="true">Internal request error</message>
+        <message code="1280" translate="true">A temporary error occurred while processing the credit card payment.</message>
+        <message code="1281" translate="true">A credit card payment error</message>
+        <message code="1282" translate="true">A credit card authorization error</message>
+        <message code="1283" translate="true">The payment was refused due to suspected fraud.</message>
+        <message code="1284" translate="true">The credit card payment has temporarily stopped.</message>
+        <message code="1285" translate="true">Missing credit card payment information</message>
+        <message code="1286" translate="true">Wrong credit card payment information</message>
+        <message code="1287" translate="true">The credit card has been expired</message>
+        <message code="1288" translate="true">The credit card has low balance</message>
+        <message code="1289" translate="true">Exceeded the credit card limit</message>
+        <message code="1290" translate="true">Exceeded the limit of the credit card per payment</message>
+        <message code="1291" translate="true">The card has been reported as a stolen card.</message>
+        <message code="1292" translate="true">The card has been suspended.</message>
+        <message code="1293" translate="true">A CVN input error</message>
+        <message code="1294" translate="true">The card is listed on the blacklist.</message>
+        <message code="1295" translate="true">A wrong credit card number</message>
+        <message code="1296" translate="true">Unable to proceed the amount</message>
+        <message code="1298" translate="true">The card has been declined.</message>
+        <message code="9000" translate="true">An internal error</message>
+    </message_list>
+</mapping>
