@@ -54,8 +54,13 @@
                                id="store-pickup-customer-password"
                                data-validate="{required:true}"
                                autocomplete="off"/>
-                        <span class="note"
-                              translate="'You already have an account with us. Sign in or continue as guest.'"/>
+                        <span class="note">
+                        <!-- ko i18n: 'Shopping using non-members will not be able to get member rights and distribution information to suggest that you'--><!-- /ko -->
+                            <a class="action" data-bind="attr: { href: window.checkoutConfig.registerUrl }">
+                                <span data-bind="i18n: 'join a member'"></span>
+                            </a>
+                            <!-- ko i18n: 'first.'--><!-- /ko -->
+                        </span>
                     </div>
 
                 </div>
