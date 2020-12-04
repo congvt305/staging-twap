@@ -1,0 +1,67 @@
+<?php
+/** @var \Eguana\CustomerBulletin\Block\Index\Index $block */
+?>
+
+<?php $tickets = $block->getTicketCollection();?>
+<div class="table-wrapper ticket-history cb-ticket-list">
+    <div class="block block-ticket-history">
+        <div class="block-title">
+            <strong><?= $block->escapeHtml(__('Ticket List')); ?></strong>
+            <div class="note"><?= /* @noEscape */ __('Checked our <a href="%1">FAQ</a> and still need help? Please send us a message using the form below.', $block->escapeUrl($block->getUrl('faq'))) ?></div>
+        </div>
+        <table class="data table history">
+            <caption class="table-caption">Ticket</caption>
+            <thead>
+                <tr>
+                    <th class="col"><?= $block->escapeHtml(__('Ticket Subject')); ?></th>
+                    <th class="col"><?= $block->escapeHtml(__('Category')); ?></th>
+                    <th class="col"><?= $block->escapeHtml(__('Status')); ?></th>
+                    <th class="col"><?= $block->escapeHtml(__('Note Status')); ?></th>
+                    <th class="col"><?= $block->escapeHtml(__('Action')); ?></th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php if ($tickets && count($tickets)) : ?>
+                <?php foreach ($tickets as $ticket) : ?>
+                <tr>
+                    <td data-th="<?= $block->escapeHtml(__('Ticket Subject')); ?>" class="col">
+                        <?= $block->escapeHtml($ticket->getSubject()); ?>
+                    </td>
+                    <td data-th="<?= $block->escapeHtml(__('Category')); ?>" class="col">
+                        <?= $block->escapeHtml($ticket->getCategory()); ?>
+                    </td>
+                    <td data-th="<?= $block->escapeHtml(__('Status')); ?>" class="col">
+                        <?= $block->escapeHtml($block->getStatus($ticket['status'])); ?>
+                    </td>
+                    <td data-th="<?= $block->escapeHtml(__('Note Status')); ?>" class="col">
+                        <?= $block->escapeHtml($block->getNoteStatus($ticket['is_read_customer'])); ?>
+                    </td>
+                    <td data-th="<?= $block->escapeHtml(__('view')); ?>" class="col actions">
+                        <a href="<?= $block->escapeUrl($block->getTicketUrl($ticket['ticket_id'])); ?>
+                              "class="action view">
+                            <span><?= $block->escapeHtml(__('view'));?></span>
+                        </a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="5">
+                        <span><?= $block->escapeHtml(__('You have not Created a Ticket.')); ?></span>
+                    </td>
+                </tr>
+            <?php endif ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="actions-toolbar new-ticket-button">
+    <div class="primary">
+        <a href="<?= $block->escapeUrl($block->getFormUrl());?>"
+           class="action view"><?= $block->escapeHtml(__('New Ticket')); ?>
+        </a>
+    </div>
+</div>
+<?php if ($block->getPagerHtml()) : ?>
+    <div class="ticket-toolbar toolbar bottom table-bottom"><?= $block->getPagerHtml(); ?></div>
+<?php endif ?>

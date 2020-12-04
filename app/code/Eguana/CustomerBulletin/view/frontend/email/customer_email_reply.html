@@ -1,0 +1,25 @@
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: BilalYounas
+ * Date: 12/10/20
+ * Time: 09:24 PM
+ */
+-->
+<!--@subject {{trans "Hi "}}{{trans "%customer_name," customer_name=$customer_name}} @-->
+<!--@vars {
+"var customer_name":"Customer Name",
+"var ticket_url":"Ticket URL"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<p class="greeting">{{trans "Hi "}}{{trans "%customer_name," customer_name=$customer_name}}</p>
+<p>{{trans "You have new  reply on Ticket from admin"}}</p>
+<span>
+    {{trans 'Click <a href="%ticket_url">here</a> to view the ticket' ticket_url=$ticket_url|raw}}
+</span>
+
+{{template config_path="design/email/footer_template"}}

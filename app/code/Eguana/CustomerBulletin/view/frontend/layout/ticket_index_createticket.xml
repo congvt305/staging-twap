@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+    * @author Eguana Team
+    * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+    * Created by PhpStorm
+    * User: bilalyounas
+    * Date: 17/9/20
+    * Time: 05:32 PM
+    */
+-->
+<page layout="2columns-left" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Eguana\CustomerBulletin\Block\Index\CreateTicket" name="ticket_createticket" template="Eguana_CustomerBulletin::createticket.phtml">
+                <arguments>
+                    <argument name="ticket_createticket" xsi:type="object">Eguana\CustomerBulletin\ViewModel\CreateTicket</argument>
+                </arguments>
+            </block>
+            <referenceBlock name="customer-account-navigation-ticket-link">
+                <arguments>
+                    <argument name="is_highlighted" xsi:type="boolean">true</argument>
+                </arguments>
+            </referenceBlock>
+        </referenceContainer>
+    </body>
+</page>

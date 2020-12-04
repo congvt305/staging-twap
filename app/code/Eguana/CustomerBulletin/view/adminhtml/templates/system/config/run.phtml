@@ -1,0 +1,25 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2019 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: Shahroz
+ * Date: 13/12/19
+ * Time: 8:03 PM
+ */
+
+/** @var \Magento\Framework\View\Element\Template $block */
+?>
+
+<?= /* @noEscape */ $block->getButtonHtml()?>
+
+<span class="collect-indicator" id="collect_span">
+    <span id="collect_message_span"></span>
+</span>
+<script type="text/x-magento-init">
+   {
+       "*": {
+           "run-close-cron": {"statusAjaxUrl":"<?= $block->escapeUrl($block->getAjaxUrl()) ?>"}
+       }
+   }
+</script>

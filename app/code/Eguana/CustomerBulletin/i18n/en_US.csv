@@ -1,0 +1,146 @@
+Name,Name
+Add,Add
+Back,Back
+"Delete Ticket","Delete Ticket"
+Reset,Reset
+Save,Save
+"Save & Duplicate","Save & Duplicate"
+"Save & Close","Save & Close"
+Send,Send
+"New Ticket","New Ticket"
+Home,Home
+"Go to Home Page","Go to Home Page"
+"My Account","My Account"
+"Support Ticket","Support Ticket"
+"Add new ticket","Add new ticket"
+"My Tickets","My Tickets"
+"Run Now","Run Now"
+"This Ticket is not longer exist","This Ticket is not longer exist"
+"You do not have access of this ticket","You do not have access of this ticket"
+"Something went wrong while saving the ticket.","Something went wrong while saving the ticket."
+"The ticket has been deleted.","The ticket has been deleted."
+"The ticket no longer exists.","The ticket no longer exists."
+"There was a problem while deleting the data","There was a problem while deleting the data"
+"We can't find the ticket to delete.","We can't find the ticket to delete."
+"Ticket #%1","Ticket #%1"
+"Edit Ticket","Edit Ticket"
+"Manage Tickets","Manage Tickets"
+"You saved this data.","You saved this data."
+"Something went wrong while saving the data.","Something went wrong while saving the data."
+"Your Ticket has been created!","Your Ticket has been created!"
+"Please Login Yourself","Please Login Yourself"
+"Something went wrong while saving the note.","Something went wrong while saving the note."
+"Email hase been successfully sent to Customer","Email hase been successfully sent to Customer"
+"Email hase been successfully sent to Administation","Email hase been successfully sent to Administation"
+"Could not save the data: %1","Could not save the data: %1"
+"Requested note doesn't exist","Requested note doesn't exist"
+Open,Open
+Hold,Hold
+Clos,Clos
+Read,Read
+Unread,Unread
+Close,Close
+"Requested ticket doesn't exist","Requested ticket doesn't exist"
+"Unable to remove data %1","Unable to remove data %1"
+Detail,Detail
+Delete,Delete
+"Delete ""Ticket""","Delete ""Ticket"""
+"Are you sure you want to delete the Ticket?","Are you sure you want to delete the Ticket?"
+"Sorry There is no Ticket with Id ","Sorry There is no Ticket with Id "
+" Against Your Account"," Against Your Account"
+"Ticket & Notes Information","Ticket & Notes Information"
+"Ticket # %1","Ticket # %1"
+Category,Category
+Requester,Requester
+Created,Created
+Status,Status
+"Ticket Information","Ticket Information"
+Message,Message
+Attchments,Attchments
+"The information in this tab has been changed.","The information in this tab has been changed."
+"This tab contains invalid data. Please resolve this before saving.","This tab contains invalid data. Please resolve this before saving."
+Loading...,Loading...
+Notes,Notes
+"Add your Note","Add your Note"
+"Please fill the required field","Please fill the required field"
+"Attach file","Attach file"
+"Notes Information","Notes Information"
+"Ticket Subject","Ticket Subject"
+"--Select Category--","--Select Category--"
+File,File
+Submit,Submit
+FAQ!,FAQ!
+"Ticket List","Ticket List"
+"Note Status","Note Status"
+Action,Action
+view,view
+"You have not Created a Ticket.","You have not Created a Ticket."
+"Created At","Created At"
+"Add Note","Add Note"
+"Close this ticket","Close this ticket"
+create,create
+Cancel,Cancel
+"Hi %name,","Hi %name,"
+"Your ticket for %ticket_subject has been close on %time at %phy_store. If you have questions about your ticket, you can email us at %email.","Your ticket for %ticket_subject has been close on %time at %phy_store. If you have questions about your ticket, you can email us at %email."
+"Have a lovely day!","Have a lovely day!"
+"Your Amore Team","Your Amore Team"
+"Your Ticket for %ticket_subject has been open on %time at %phy_store. If you have questions about your ticket, you can email us at %email.","Your Ticket for %ticket_subject has been open on %time at %phy_store. If you have questions about your ticket, you can email us at %email."
+"Hi ","Hi "
+"%customer_name,","%customer_name,"
+"You have new  reply on Ticket from admin","You have new  reply on Ticket from admin"
+"Click ","Click "
+%ticket_url,%ticket_url
+here,here
+" to view Ticket"," to view Ticket"
+"Hi Admin,","Hi Admin,"
+"The ticket %ticket_id has been close with subject %ticket_subject on %time at %phy_store from %customer.","The ticket %ticket_id has been close with subject %ticket_subject on %time at %phy_store from %customer."
+"Ticket Status : Closed","Ticket Status : Closed"
+"You have new ticket about %ticket_subject on %time at %phy_store from %customer.Please reply the customer query","You have new ticket about %ticket_subject on %time at %phy_store from %customer.Please reply the customer query"
+"Ticket Status : Open","Ticket Status : Open"
+"You have new reply on %ticket_id ticket about %ticket_subject on %time at %phy_store from %customer.Please reply the customer query.","You have new reply on %ticket_id ticket about %ticket_subject on %time at %phy_store from %customer.Please reply the customer query."
+"Ticket Status : Hold","Ticket Status : Hold"
+Proceed,Proceed
+"Your file could not be uploaded. Please try again.","Your file could not be uploaded. Please try again."
+"You cannot attach more than ten files per note.","You cannot attach more than ten files per note."
+"Cannot Upload File","Cannot Upload File"
+"The maximum allowed file size is %1 .","The maximum allowed file size is %1 ."
+"MB Please select a different file.","MB Please select a different file."
+"The maximum file name length is %1","The maximum file name length is %1"
+"characters. The only special symbols that are allowed in the file name are dash (-) and underscore (_).","characters. The only special symbols that are allowed in the file name are dash (-) and underscore (_)."
+%1,%1
+" is not an allowed file type. Please select a different file."," is not an allowed file type. Please select a different file."
+"Allowed file formats:","Allowed file formats:"
+"Ticket Support","Ticket Support"
+"Ticket Support Config","Ticket Support Config"
+"Ticket Configuration","Ticket Configuration"
+"Enable Feature","Enable Feature"
+"Email Sender","Email Sender"
+Categories,Categories
+"File Types","File Types"
+"File Size In Mbs","File Size In Mbs"
+"Clsoed Ticket Action Duration","Clsoed Ticket Action Duration"
+"Customer Email Template Configuration","Customer Email Template Configuration"
+"Send Email To Customer Automatically","Send Email To Customer Automatically"
+Reply,Reply
+"Select email template for hold ticket","Select email template for hold ticket"
+"Closing Ticket Configuration","Closing Ticket Configuration"
+"Close Ticket Cron Frequency","Close Ticket Cron Frequency"
+"Cron Start Time","Cron Start Time"
+"A total of %1 record(s) have been deleted.","A total of %1 record(s) have been deleted."
+"An error occurred while deleting record(s).","An error occurred while deleting record(s)."
+"A total of %1 ticket have been Open.","A total of %1 ticket have been Open."
+"An error occurred while opening selected ticket.","An error occurred while opening selected ticket."
+"A total of %1 ticket have been close.","A total of %1 ticket have been close."
+"An error occurred while closing ticket.","An error occurred while closing ticket."
+"Store View","Store View"
+"Are you sure you want to delete selected items?","Are you sure you want to delete selected items?"
+"Delete items","Delete items"
+Re-Open,Re-Open
+ID,ID
+"Customer Name","Customer Name"
+Subject,Subject
+"Store View","Store View"
+"My Ticket View","My Ticket View"
+"Checked our <a href=""%1"">FAQ</a> and still need help? Please send us a message using the form below.","Checked our <a href=""%1"">FAQ</a> and still need help? Please send us a message using the form below."
+Modified,Modified
+"Click <a href=""%ticket_url"">here</a> to view the ticket","Click <a href=""%ticket_url"">here</a> to view the ticket"

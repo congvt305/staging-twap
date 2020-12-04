@@ -1,0 +1,62 @@
+<?php
+/** @var \Eguana\CustomerBulletin\ViewModel\Detail $viewmodel */
+/** @var \Eguana\CustomerBulletin\Block\Index\Detail $block */
+/** @var \Eguana\CustomerBulletin\Api\Data\TicketInterface $ticket */
+$viewmodel = $block->getData('ticket_detail');
+$viewmodel->changeReadStatus();
+$ticket = $viewmodel->getTicketDetail();
+?>
+<div class="block block-ticket-info">
+    <div class="block-title">
+        <strong><?= $block->escapeHtml(__('Ticket Information')); ?></strong>
+    </div>
+    <div class="ticket-info">
+        <div class="ticket-type">
+            <strong><?= $block->escapeHtml(__('Category'));?></strong>
+            <?= $block->escapeHtml($ticket->getCategory());?>
+            <div class="ticket-status">
+                <?= $block->escapeHtml($viewmodel->getStatus($ticket->getStatus()));?>
+            </div>
+        </div>
+        <?php if ($ticket->getStatus() != 0):?>
+            <div class="actions-toolbar">
+                <a href="<?= $block->escapeUrl($viewmodel->getTicketCloseAction($ticket->getId()));?>"
+                   class="action secondary action-close custom-tkt-btn"><span><?= $block->escapeHtml(__('Close this ticket'));?></span>
+                </a>
+            </div>
+        <?php endif;?>
+    </div>
+    <div class="block-title">
+        <strong><?= $block->escapeHtml(__('Message')); ?></strong>
+    </div>
+    <div class="block-content">
+        <div class="chat-container">
+            <div class="right-container chat-box">
+                <div class="message-attachment-box<?php if(!empty($ticket->getAttachment())):?> attachment-list<?php endif;?>">
+                    <p><?= $block->escapeHtml($ticket->getMassege());?></p>
+                    <?php if (!empty($ticket->getAttachment())) :
+                        $files = $viewmodel->getFiles($ticket->getAttachment());?>
+                        <ul>
+                            <?php foreach ($files as $file) : ?>
+                                <li>
+                                    <a href="<?= $block->escapeUrl($viewmodel->mediaUrl($file));?>" download>
+                                        <?= $block->escapeHtml($viewmodel->changeFileName($file));?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif;?>
+                </div>
+                <div class="info-box">
+                    <span>
+                        <?= $block->escapeHtml($viewmodel->getCustomerName($ticket->getCustomerId()));?>
+                        <?= $block->escapeHtml($viewmodel->getCreationTime($ticket->getCreationTime()));?>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?= $block->getChildHtml('ticket_notes') ?>
+<?= $block->getChildHtml('ticket_links') ?>
+
