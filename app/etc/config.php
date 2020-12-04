@@ -505,6 +505,7 @@ return [
         'Magento_CmsStaging' => 1,
         'Magento_VersionsCmsUrlRewrite' => 1,
         'Magento_CatalogUrlRewriteStaging' => 1,
+        'Magento_VisualProductRecommendations' => 1,
         'Magento_Swagger' => 1,
         'Magento_WebapiAsync' => 1,
         'Magento_WebapiSecurity' => 1,
