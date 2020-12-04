@@ -1,0 +1,26 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 22/10/20
+ * Time: 7:00 PM
+ */
+
+/** @var \Eguana\Redemption\ViewModel\RedemptionDetail $viewModel */
+$viewModel = $block->getData('details_view_model');
+$redemptionDetails = $viewModel->getRedemption();
+$cmsBlockIdentifier = $viewModel->getCmsBlockIdentifier($redemptionDetails->getCmsBlock());
+?>
+<div class="redemption-cms-block">
+    <div id="error-and-success-message">
+    </div>
+    <?php if (isset($cmsBlockIdentifier)): ?>
+        <?= $block->getLayout()
+            ->createBlock(Magento\Cms\Block\Block::class)
+            ->setBlockId($cmsBlockIdentifier)
+            ->toHtml();
+        ?>
+    <?php endif;?>
+</div>

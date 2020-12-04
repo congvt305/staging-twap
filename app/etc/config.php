@@ -567,6 +567,7 @@ return [
         'Eguana_Share' => 1,
         'Eguana_MobileLogin' => 1,
         'Eguana_StoreLocator' => 1,
+        'Eguana_Redemption' => 1,
         'Amore_CustomerRegistration' => 1,
         'Eguana_CustomCheckout' => 1,
         'Eguana_VideoBoard' => 1,

@@ -1,0 +1,154 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 22/10/20
+ * Time: 7:00 PM
+ */
+
+/** @var \Eguana\Redemption\Block\RedemptionDetails $block */
+/** @var \Eguana\Redemption\ViewModel\RedemptionDetail $viewModel */
+$viewModel = $block->getData('details_view_model');
+$redemptionDetails = $viewModel->getRedemption();
+$redemptionCounters = $redemptionDetails->getData('offline_store_id');
+$minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
+$maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
+$storeId = $viewModel->getStoreId();
+?>
+<div class="block block-redemption-detail">
+    <div class="block block-image-banner">
+        <img
+            alt="<?= $block->escapeHtml($redemptionDetails->getTitle());?>"
+            src="<?= $block->escapeHtml($viewModel->getThumbnailImageURL($redemptionDetails->getImage()));?>"
+            title="<?= $block->escapeHtml($redemptionDetails->getTitle());?>"
+        >
+    </div>
+    <div class="block block-description">
+        <div class="block-title">
+            <strong><?= $block->escapeHtml(__('Description')) ?></strong>
+        </div>
+        <div class="block-content">
+            <div class="description-content">
+                <?= /* @noEscape */  $viewModel->contentFiltering($redemptionDetails->getDescription()); ?>
+            </div>
+        </div>
+    </div>
+    <div class="block redemption-form">
+        <div class="block-content">
+            <form
+                    action="<?= $block->escapeUrl(__($viewModel->getFormAction())); ?>"
+                    data-mage-init='{"validation":{}}'
+                    id="counter-form"
+                    method="post"
+            >
+                <input
+                        type="hidden"
+                        id="redemption_id"
+                        name="redemption_id"
+                        value="<?= $block->escapeHtml($redemptionDetails->getRedemptionId()) ?>"
+                >
+                <input
+                        type="hidden"
+                        id="store_id"
+                        name="store_id"
+                        value="<?= $block->escapeHtml((int)$storeId) ?>"
+                >
+                <fieldset class="fieldset redemption">
+                    <div class="field name required">
+                        <label class="label" for="name">
+                            <span><?= $block->escapeHtml(__('Name')); ?></span></label>
+                        </label>
+                        <div class="control">
+                            <input id="name" name="name" type="text" title="<?= $block->escapeHtml(__('Name')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('Name')) ?>" data-validate='{"required":true}'>
+                        </div>
+                    </div>
+                    <div class="field phone required">
+                        <label class="label" for="phone">
+                            <span><?= $block->escapeHtml(__('Phone')) ?></span></label>
+                        </label>
+                        <div class="control">
+                            <input id="phone" name="phone" type="text" title="<?= $block->escapeHtml(__('Phone')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('Phone')) ?>" data-validate='{"required":true, "validate-number":true, "minlength":<?= $minimumMobileNumberDigits; ?>, "maxlength":<?= $maximumMobileNumberDigits; ?>}'>
+                        </div>
+                    </div>
+                    <div class="field email required">
+                        <label class="label" for="email">
+                            <span><?= $block->escapeHtml(__('Email')); ?></span></label>
+                        </label>
+                        <div class="control">
+                            <input id="email" name="email" type="email" title="<?= $block->escapeHtml(__('Email')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('Email')) ?>" data-validate="{required:true}">
+                        </div>
+                    </div>
+                    <div class="field counter required">
+                        <label class="label" for="email">
+                            <span><?= $block->escapeHtml(__('Counter')); ?></span></label>
+                        </label>
+                        <div class="control">
+                            <select id="counter" name="counter" title="<?= $block->escapeHtml(__('Counter')) ?>" class="select" data-validate="{required:true}">
+                                <option value="">-- <?= $block->escapeHtml(__('Select Counter')) ?> --</option>
+                                <?php foreach ($redemptionCounters as $counter):
+                                    if ($viewModel->checkStoreLocatorInWebsite($counter)) : ?>
+                                        <option
+                                            value="<?= $block->escapeHtml($counter) ?>">
+                                            <?= $block->escapeHtml($viewModel->getCounterName($counter)); ?>
+                                        </option>
+                                    <?php
+                                    endif;
+                                endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field line">
+                        <label class="label" for="email">
+                            <span><?= /* @noEscape */ __('<b>Line ID</b> (Optional)') ?></span>
+                        </label>
+                        <div class="control">
+                            <input id="line" name="line" type="text" title="<?= $block->escapeHtml(__('Line ID')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('Your line..')) ?>">
+                        </div>
+                    </div>
+                    <?= $block->getChildHtml('form.additional.info') ?>
+                    <span id="recaptcha-response"><?= $block->escapeHtml(__(' * This is a required field.')) ?></span>
+                </fieldset>
+                <div class="block block-precautions">
+                    <div class="block-title">
+                        <strong><?= $block->escapeHtml(__('Precautions')) ?></strong>
+                    </div>
+                    <div class="block-content">
+                        <div class="precautions-content">
+                            <?= /* @noEscape */  $viewModel->contentFiltering($redemptionDetails->getPrecautions()); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions-toolbar">
+                    <div class="primary">
+                            <button id="counter-form-submit" class="button action primary send sbt-button" type="button">
+                                <span><?= $block->escapeHtml(__('Send SMS/Email')) ?></span>
+                            </button>
+                        <br>
+                        <button class="action primary action-resend" style="display: none;" id="resend-button" type="button">
+                            <span><?= $block->escapeHtml(__('Resend SMS/Email')) ?></span>
+                        </button>
+                        <br>
+                        <br>
+                        <p style="color: red;" id="info-message">
+                            <?= $block->escapeHtml(__('If you did not recieved an email or SMS. Click on Resend after.')) ?>
+                            <span id="countTime"></span>
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+         "*": {
+            "registerForm": {
+                "countersaveurl":"<?=$block->escapeHtml($viewModel->getCounterSaveUrl())?>",
+                "counterTime":"<?=$block->escapeHtml($viewModel->getTimeForResendEmailButton())?>",
+                "resendUrl":"<?= $block->escapeUrl(__($viewModel->getResendAction())); ?>"
+            }
+        }
+    }
+</script>

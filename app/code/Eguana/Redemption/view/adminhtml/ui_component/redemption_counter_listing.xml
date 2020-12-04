@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 28/10/20
+* Time: 11:46 AM
+*/
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">redemption_counter_listing.redemption_counter_listing_data_source</item>
+            <item name="deps" xsi:type="string">redemption_counter_listing.redemption_counter_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">redemption_counter_columns</item>
+    </argument>
+    <settings>
+        <spinner>redemption_counter_columns</spinner>
+        <deps>
+            <dep>redemption_counter_listing.redemption_counter_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="redemption_counter_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <updateUrl path="mui/index/render"/>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">entity_id</param>
+            </storageConfig>
+        </settings>
+        <dataProvider class="Eguana\Redemption\Ui\Component\DataProvider\Redemption\CounterListing\DataProvider" name="redemption_counter_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="observers" xsi:type="array">
+                    <item name="column" xsi:type="string">column</item>
+                </item>
+            </argument>
+            <settings>
+                <templates>
+                    <filters>
+                        <select>
+                            <param name="template" xsi:type="string">ui/grid/filters/elements/ui-select</param>
+                            <param name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</param>
+                        </select>
+                    </filters>
+                </templates>
+            </settings>
+            <filterSelect name="counter_id" provider="${ $.parentName }">
+                <settings>
+                    <captionValue>0</captionValue>
+                    <options class="Eguana\Redemption\Model\Source\AvailableStores"/>
+                    <label translate="true">Store Counter</label>
+                    <dataScope>counter_id</dataScope>
+                    <imports>
+                        <link name="visible">componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+            <filterSelect name="store_id" provider="${ $.parentName }">
+                <settings>
+                    <captionValue>0</captionValue>
+                    <options class="Eguana\Redemption\Ui\Component\Listing\Column\StoreOptions"/>
+                    <label translate="true">Store View</label>
+                    <dataScope>store_id</dataScope>
+                    <imports>
+                        <link name="visible">componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction">
+            <action name="registration">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to change status to registration?</message>
+                        <title translate="true">Registration</title>
+                    </confirm>
+                    <url path="redemption/counter/massRegistration"/>
+                    <type>registration</type>
+                    <label translate="true">Registration</label>
+                </settings>
+            </action>
+            <action name="redemption">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to change status to redemption?</message>
+                        <title translate="true">Redemption</title>
+                    </confirm>
+                    <url path="redemption/counter/massRedemption"/>
+                    <type>redemption</type>
+                    <label translate="true">Redemption</label>
+                </settings>
+            </action>
+            <action name="expired">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to change status to expired?</message>
+                        <title translate="true">Expired</title>
+                    </confirm>
+                    <url path="redemption/counter/massExpired"/>
+                    <type>expired</type>
+                    <label translate="true">Expired</label>
+                </settings>
+            </action>
+        </massaction>
+        <exportButton name="export_button" class="Eguana\Redemption\Ui\Component\Listing\Counter\ExportButton" component="Magento_Ui/js/grid/export" displayArea="dataGridActions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">redemption_counter_listing.redemption_counter_listing.redemption_counter_columns.ids</item>
+                    <item name="options" xsi:type="array">
+                        <item name="csv" xsi:type="array">
+                            <item name="value" xsi:type="string">csv</item>
+                            <item name="label" xsi:type="string" translate="true">CSV</item>
+                            <item name="url" xsi:type="string">redemption/counter_export/gridToCsv</item>
+                        </item>
+                        <item name="xml" xsi:type="array">
+                            <item name="visibility" xsi:type="boolean">false</item>
+                            <item name="value" xsi:type="string">xml</item>
+                            <item name="label" xsi:type="string" translate="true">Excel XML</item>
+                        </item>
+                        <item name="xls" xsi:type="array">
+                            <item name="value" xsi:type="string">xls</item>
+                            <item name="label" xsi:type="string" translate="true">Excel XLS</item>
+                            <item name="url" xsi:type="string">redemption/counter_export/gridToXls</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </exportButton>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="redemption_counter_columns">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">redemption_counter_listing.redemption_counter_listing.redemption_counter_editor</item>
+                    <item name="target" xsi:type="string">startEdit</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                        <item name="1" xsi:type="boolean">true</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <selectionsColumn name="ids" sortOrder="10">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="entity_id" sortOrder="20">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="redeem_date" sortOrder="30">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Redeem date</label>
+            </settings>
+        </column>
+        <column name="customer_name" sortOrder="40">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Name</label>
+            </settings>
+        </column>
+        <column name="email" sortOrder="50">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Email</label>
+            </settings>
+        </column>
+        <column name="telephone" sortOrder="60">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Telephone</label>
+            </settings>
+        </column>
+        <column name="counter_id" sortOrder="70">
+            <settings>
+                <options class="Eguana\Redemption\Model\Source\AvailableStores"/>
+                <dataType>select</dataType>
+                <label translate="true">Store Counter</label>
+            </settings>
+        </column>
+        <column name="store_id" class="Magento\Store\Ui\Component\Listing\Column\Store">
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <label translate="true">Store View</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="line_id" sortOrder="80">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Line Id</label>
+            </settings>
+        </column>
+        <column name="registration_date" sortOrder="90">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Registration Date</label>
+            </settings>
+        </column>
+        <column name="status" sortOrder="70" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Eguana\Redemption\Model\Source\RedemptionUserStatus"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+
+        <column name="utm_source" sortOrder="110">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">utm_source</label>
+            </settings>
+        </column>
+        <column name="utm_medium" sortOrder="120">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">utm_medium</label>
+            </settings>
+        </column>
+        <column name="utm_content" sortOrder="130">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">utm_content</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

@@ -1,0 +1,25 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 29/10/20
+ * Time: 12:11 PM
+ */
+
+/** @var \Eguana\Redemption\Block\RedemptionDetails $block */
+/** @var \Eguana\Redemption\ViewModel\RedemptionDetail $viewModel */
+$viewModel = $block->getData('details_view_model');
+$redemptionDetails = $viewModel->getRedemption();
+?>
+<div class="redemption-confirm-page">
+    <div class="message info">
+        <span><?= $block->escapeHtml(__('This redemption has been already completed.')) ?></span>
+    </div>
+    <div class="redemption-image">
+        <div class="image-container">
+            <img src="<?= $block->escapeHtml($viewModel->getThumbnailImageURL($redemptionDetails->getImage()));?>">
+        </div>
+    </div>
+</div>

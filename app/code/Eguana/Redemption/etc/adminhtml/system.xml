@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 19/10/20
+ * Time: 11:00 AM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="redemption" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Redemption</label>
+            <tab>eguana_extensions_tab</tab>
+            <resource>Eguana_Redemption::config_redemption</resource>
+            <group id="configuration" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Redemption Configurations</label>
+                <field id="enabled" translate="label" sortOrder="1" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="sender_email_identity" translate="label" sortOrder="20" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="send_email_to_customer" translate="label" sortOrder="30" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Send Email To Customer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="automatically_registration_email_templates" translate="label" sortOrder="40" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Automatically Registration</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                        <field id="*/*/send_email_to_customer">1</field>
+                    </depends>
+                </field>
+                <field id="send_sms_to_customer_automatically" translate="label" sortOrder="50" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Send SMS To Customer Automatically</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="registration_sms_templates" translate="label" sortOrder="60" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Registration</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                        <field id="*/*/send_sms_to_customer_automatically">1</field>
+                    </depends>
+                </field>
+                <field id="enabled_recaptcha"
+                       translate="label"
+                       type="select"
+                       sortOrder="70"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="0"
+                       canRestore="1">
+                    <label>Google Recaptcha</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="resend_email_sms_time" translate="label" sortOrder="70" type="text" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Resend Email And Sms Interval</label>
+                    <validate>required-entry validate-digits validate-not-negative-number validate-digits-range digits-range-1-100</validate>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                    <comment>Add time in minutes after that time resend button will be enable.</comment>
+                </field>
+                <field id="minimum_mobile_number_digits" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Minimum Mobile Number Digits</label>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="maximum_mobile_number_digits" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Maximum Mobile Number Digits</label>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

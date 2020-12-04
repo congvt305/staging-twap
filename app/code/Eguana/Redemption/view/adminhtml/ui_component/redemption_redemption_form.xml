@@ -1,0 +1,381 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 15/10/20
+* Time: 1:10 PM
+*/
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">redemption_redemption_form.redemption_redemption_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">New Redemption</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+
+    <settings>
+        <buttons>
+            <button name="back" class="Eguana\Redemption\Block\Adminhtml\Edit\BackButton"/>
+            <button name="delete" class="Eguana\Redemption\Block\Adminhtml\Edit\DeleteButton"/>
+            <button name="save" class="Eguana\Redemption\Block\Adminhtml\Edit\SaveButton"/>
+        </buttons>
+        <namespace>redemption_redemption_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>redemption_redemption_form.redemption_redemption_form_data_source</dep>
+        </deps>
+    </settings>
+
+    <dataSource name="redemption_redemption_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="redemption/redemption/save"/>
+        </settings>
+        <aclResource>Eguana_Redemption::redemption</aclResource>
+        <dataProvider class="\Eguana\Redemption\Ui\Component\DataProvider\Redemption\Form\DataProvider" name="redemption_redemption_form_data_source">
+            <settings>
+                <primaryFieldName>redemption_id</primaryFieldName>
+                <requestFieldName>redemption_id</requestFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+
+    <fieldset name="eguana_redemption">
+        <settings>
+            <label/>
+        </settings>
+        <!-- This field represents form id and is hidden -->
+        <field name="redemption_id" formElement="hidden">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataScope" xsi:type="string">redemption_id</item>
+                    <item name="source" xsi:type="string">eguana_redemption</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+            </settings>
+        </field>
+
+        <field name="is_active" sortOrder="10" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataScope" xsi:type="string">is_active</item>
+                    <item name="source" xsi:type="string">eguana_redemption</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                </validation>
+                <dataType>boolean</dataType>
+                <label translate="true">Enable</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="title" sortOrder="20" formElement="input">
+            <settings>
+                <required>true</required>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>string</dataType>
+                <label translate="true">Title</label>
+                <dataScope>title</dataScope>
+                <componentType>field</componentType>
+            </settings>
+        </field>
+        <field name="image" sortOrder="30" formElement="imageUploader">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">eguana_redemption</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <elementTmpl>ui/form/element/uploader/image</elementTmpl>
+                <dataType>string</dataType>
+                <visible>true</visible>
+                <required>false</required>
+                <label translate="true">Image</label>
+            </settings>
+            <formElements>
+                <imageUploader>
+                    <settings>
+                        <required>false</required>
+                        <uploaderConfig>
+                            <param xsi:type="url" name="url" path="redemption/feature_image/upload"/>
+                        </uploaderConfig>
+                        <previewTmpl>Eguana_Redemption/image-preview</previewTmpl>
+                        <allowedExtensions>jpg jpeg gif png</allowedExtensions>
+                        <maxFileSize>4194304</maxFileSize>
+                    </settings>
+                </imageUploader>
+            </formElements>
+        </field>
+        <field name="store_id_name" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">block</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <tooltip>
+                    <link>https://docs.magento.com/m2/ce/user_guide/configuration/scope.html</link>
+                    <description>What is this?</description>
+                </tooltip>
+                <label translate="true">Store View</label>
+                <dataScope>store_id_name</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Eguana\Redemption\Ui\Component\Listing\Column\StoreOptions"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="offline_store_id" sortOrder="50" formElement="multiselect">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">eguana_redemption</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <label translate="true">Counter Name</label>
+                <dataScope>offline_store_id</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="\Eguana\Redemption\Model\Source\AvailableStores"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+        <field name="total_qty" sortOrder="60" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-integer" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <required>true</required>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>string</dataType>
+                <label translate="true">Total Quantity</label>
+                <dataScope>total_qty</dataScope>
+                <componentType>field</componentType>
+            </settings>
+        </field>
+        <field name="cms_block" sortOrder="70" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataScope" xsi:type="string">cms_block</item>
+                    <item name="source" xsi:type="string">eguana_redemption</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <label translate="true">CMS Block</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Eguana\Redemption\Ui\Component\Form\Block\Options"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="start_date" sortOrder="80" formElement="date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">eguana_redemption</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">From</label>
+                <visible>true</visible>
+                <dataScope>start_date</dataScope>
+            </settings>
+        </field>
+        <field name="end_date" sortOrder="90" formElement="date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">eguana_redemption</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">To</label>
+                <visible>true</visible>
+                <dataScope>end_date</dataScope>
+            </settings>
+        </field>
+        <fieldset name="description" sortOrder="100">
+            <settings>
+                <collapsible>true</collapsible>
+                <label translate="true">Content Description</label>
+            </settings>
+            <field name="description" sortOrder="10" formElement="wysiwyg">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">eguana_redemption</item>
+                    </item>
+                </argument>
+                <settings>
+                    <additionalClasses>
+                        <class name="admin__field-wide">true</class>
+                    </additionalClasses>
+                    <label translate="true">Description</label>
+                    <dataScope>description</dataScope>
+                </settings>
+                <formElements>
+                    <wysiwyg>
+                        <settings>
+                            <wysiwyg>true</wysiwyg>
+                        </settings>
+                    </wysiwyg>
+                </formElements>
+            </field>
+        </fieldset>
+        <fieldset name="precautions" sortOrder="110">
+            <settings>
+                <collapsible>true</collapsible>
+                <label translate="true">Content Precautions</label>
+            </settings>
+            <field name="precautions" sortOrder="10" formElement="wysiwyg">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">eguana_redemption</item>
+                    </item>
+                </argument>
+                <settings>
+                    <additionalClasses>
+                        <class name="admin__field-wide">true</class>
+                    </additionalClasses>
+                    <label translate="true">Precautions</label>
+                    <dataScope>precautions</dataScope>
+                </settings>
+                <formElements>
+                    <wysiwyg>
+                        <settings>
+                            <wysiwyg>true</wysiwyg>
+                        </settings>
+                    </wysiwyg>
+                </formElements>
+            </field>
+        </fieldset>
+        <fieldset name="search_engine_optimisation" sortOrder="120">
+            <settings>
+                <collapsible>true</collapsible>
+                <label translate="true">Search Engine Optimization</label>
+            </settings>
+            <field name="identifier" sortOrder="10" formElement="input">
+                <settings>
+                    <required>true</required>
+                    <dataType>string</dataType>
+                    <label translate="true">URL key</label>
+                    <dataScope>identifier</dataScope>
+                    <componentType>field</componentType>
+                </settings>
+            </field>
+            <field name="meta_title" sortOrder="20" formElement="input">
+                <settings>
+                    <required>true</required>
+                    <dataType>string</dataType>
+                    <label translate="true">Meta Title</label>
+                    <dataScope>meta_title</dataScope>
+                    <componentType>field</componentType>
+                </settings>
+            </field>
+            <field name="meta_keywords" sortOrder="30" formElement="textarea">
+                <settings>
+                    <required>true</required>
+                    <dataType>string</dataType>
+                    <label translate="true">Meta Keywords</label>
+                    <dataScope>meta_keywords</dataScope>
+                    <componentType>field</componentType>
+                </settings>
+            </field>
+            <field name="meta_description" sortOrder="40" formElement="textarea">
+                <settings>
+                    <required>true</required>
+                    <dataType>string</dataType>
+                    <label translate="true">Meta Description</label>
+                    <dataScope>meta_description</dataScope>
+                    <componentType>field</componentType>
+                </settings>
+            </field>
+        </fieldset>
+        <fieldset name="redemption_counter" sortOrder="130">
+            <settings>
+                <collapsible>true</collapsible>
+                <label translate="true">Redemption Participants</label>
+            </settings>
+            <insertListing name="redemption_counter_listing">
+                <settings>
+                    <dataLinks>
+                        <exports>false</exports>
+                        <imports>true</imports>
+                    </dataLinks>
+                    <autoRender>true</autoRender>
+                    <externalProvider>redemption_counter_listing.redemption_counter_listing_data_source</externalProvider>
+                    <selectionsProvider>redemption_counter_listing.redemption_counter_listing.columns.ids</selectionsProvider>
+                    <dataScope>redemption_counter_listing</dataScope>
+                    <ns>redemption_counter_listing</ns>
+                    <exports>
+                        <link name="redemption_id">${ $.externalProvider }:params.redemption_id</link>
+                    </exports>
+                    <imports>
+                        <link name="redemption_id">${ $.provider }:data.redemption_id</link>
+                    </imports>
+                </settings>
+            </insertListing>
+        </fieldset>
+    </fieldset>
+</form>

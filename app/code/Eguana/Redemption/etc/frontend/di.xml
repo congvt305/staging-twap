@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 11/11/20
+ * Time: 12:30 PM
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="MSP\ReCaptcha\Model\LayoutSettings">
+        <plugin name="redemption_recaptcha_zone"
+                type="Eguana\Redemption\Plugin\ReCaptcha\Model\LayoutSettings"
+                sortOrder="10" />
+    </type>
+</config>
