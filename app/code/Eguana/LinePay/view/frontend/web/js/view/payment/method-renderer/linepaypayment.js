@@ -67,10 +67,10 @@ define(
                 var data = {
                     'method': this.getCode(),
                     'additional_data': {
-                        'ecpay_einvoice_type': $("input:radio[name=ecpay_einvoice_type]:checked").val(),
-                        'ecpay_einvoice_triplicate_title': $("input:text[name=ecpay_triplicate_title]").val(),
-                        'ecpay_einvoice_tax_id_number': $("input:text[name=ecpay_tax_id_number]").val(),
-                        'ecpay_einvoice_cellphone_barcode': $("input:text[name=ecpay_cellphone_barcode]").val(),
+                        'ecpay_einvoice_type': $("input:radio[name=linepay_einvoice_type]:checked").val(),
+                        'ecpay_einvoice_triplicate_title': $("input:text[id=line_pay_triplicate_title]").val(),
+                        'ecpay_einvoice_tax_id_number': $("input:text[id=line_pay_tax_id_number]").val(),
+                        'ecpay_einvoice_cellphone_barcode': $("input:text[id=line_pay_ecpay_cellphone_barcode]").val(),
                     }
                 };
                 return data;
@@ -90,6 +90,7 @@ define(
                     customerData.invalidate(['cart']);
                     let linepay = url.build('linepay/payment/redirect');
                     if (self.isMobile()) {
+                        linepay = url.build('linepay/payment/redirect'+'?data='+JSON.stringify(this.getData()));
                         $.mage.redirect(linepay);
                     } else {
                         let body = $('body').loader();
