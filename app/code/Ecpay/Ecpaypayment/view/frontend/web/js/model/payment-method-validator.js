@@ -21,7 +21,7 @@ define(
                 let barCodeValid = true;
                 const eInvoiceForm = $('#custom-checkout-form');
                 const choosenEInvoice = eInvoiceForm.find('input:radio[name="ecpay_einvoice_type"]:checked').val();
-                const barCodeValue = $("input:text[name=cellphone_barcode]").val();
+                const barCodeValue = $("input:text[id=cellphone_barcode]").val();
 
                 if (paymentMethod === 'ecpay_ecpaypayment') {
                     if (paymentMethods.indexOf(choosenPayment) === -1) {
@@ -37,7 +37,7 @@ define(
                             cache: false,
                             type: 'post',
                             success: function (result) {
-                                if (typeof result.IsExist === 'undefined' || result.IsExist === 'N') {
+                                if (typeof result.IsExist === 'undefined' || result.IsExist !== 'Y') {
                                     isValid = false;
                                     barCodeValid = false;
                                 }

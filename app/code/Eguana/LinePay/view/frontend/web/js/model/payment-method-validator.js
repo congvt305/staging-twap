@@ -22,8 +22,8 @@ define(
                 let isValid = true;
                 let barCodeValid = true;
                 const eInvoiceForm = $('#linepay-custom-checkout-form');
-                const choosenEInvoice = eInvoiceForm.find('input:radio[name="ecpay_einvoice_type"]:checked').val();
-                const barCodeValue = $("input:text[name=ecpay_cellphone_barcode]").val();
+                const choosenEInvoice = eInvoiceForm.find('input:radio[name="linepay_einvoice_type"]:checked').val();
+                const barCodeValue = $("input:text[id=line_pay_ecpay_cellphone_barcode]").val();
                 if (choosenEInvoice === 'cellphone-barcode-invoice') {
                     $.ajax({
                         dataType: 'json',
@@ -33,7 +33,7 @@ define(
                         cache: false,
                         type: 'post',
                         success: function (result) {
-                            if (typeof result.IsExist === 'undefined' || result.IsExist === 'N') {
+                            if (typeof result.IsExist === 'undefined' || result.IsExist !== 'Y') {
                                 isValid = false;
                                 barCodeValid = false;
                             }
