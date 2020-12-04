@@ -161,15 +161,21 @@ Add the parameters and click Apply Filters Button
 
 For Ticket delete and View Detail of ticket, go in the last column of Grid **Action** click the **select** Arrow then show two options detail and delete. Where you can add note and see detail of ticket or delete.
 
-![action](https://i.ibb.co/H4yWcmF/5.png)
+![action](https://nimbus-screenshots.s3.amazonaws.com/s/8685414250ce64277159f1e5829fd3ab.png)
 
 ## 5) Delete
 
 Delete Action is used to delete the selected tickets.
 
-## 5) Close
+## 6) Print Order
+export report of ticket in csv.
+
+## 7) Close
 
 Close Action is used to Close the selected tickets. 
+## 8) Open
+
+ReOpen Action is used to ReOpen the selected tickets.
 
 #Ticket Frontend Examples
 
