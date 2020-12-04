@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: bilalyounas
+ * Date: 29/6/20
+ * Time: 12:15 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Eguana_NewsBoard::manage_news" title="News" translate="title" module="Eguana_NewsBoard" sortOrder="10" parent="Eguana_Base::base" resource="Eguana_NewsBoard::manage_news" action="news/manage/index"/>
+    </menu>
+</config>
