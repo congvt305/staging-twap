@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: raheel
+* Date: 16/10/20
+* Time: 2:50 PM
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Eguana\EventReservation\ReferenceThumbnailUpload" type="Eguana\EventReservation\Model\Event\Thumbnail\Uploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">eventreservation/tmp/thumbnail</argument>
+            <argument name="basePath" xsi:type="string">eventreservation/thumbnail</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+            <argument name="allowedMimeTypes" xsi:type="array">
+                <item name="jpg" xsi:type="string">image/jpg</item>
+                <item name="jpeg" xsi:type="string">image/jpeg</item>
+                <item name="gif" xsi:type="string">image/gif</item>
+                <item name="png" xsi:type="string">image/png</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Eguana\EventReservation\Controller\Adminhtml\Reservation\Thumbnail\Upload">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Eguana\EventReservation\ReferenceThumbnailUpload</argument>
+        </arguments>
+    </type>
+</config>

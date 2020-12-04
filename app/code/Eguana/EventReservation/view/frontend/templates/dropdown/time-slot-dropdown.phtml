@@ -1,0 +1,22 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 03/11/20
+ * Time: 6:50 PM
+ */
+
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Eguana\EventReservation\ViewModel\Event\Reservation $viewModel */
+$viewModel = $block->getData('reservation_view_model');
+$counterTimeSlots = $viewModel->getCounterTimeSlots();
+?>
+
+<option value="">-- <?= $block->escapeHtml(__('Select Time Slot')) ?> --</option>
+<?php foreach ($counterTimeSlots as $slot): ?>
+    <option value="<?= $block->escapeHtml($slot['slot']); ?>" <?= $slot['seats'] ? '' : 'disabled="true"'; ?>>
+        <?= $block->escapeHtml($slot['slot']); ?>
+    </option>
+<?php endforeach; ?>

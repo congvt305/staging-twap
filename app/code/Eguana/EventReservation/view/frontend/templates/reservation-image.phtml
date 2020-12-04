@@ -1,0 +1,34 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 22/10/20
+ * Time: 11:00 PM
+ */
+
+/** @var \Eguana\EventReservation\Block\Event\Reservation $block */
+/** @var \Eguana\EventReservation\ViewModel\Event\Reservation $viewModel */
+$viewModel = $block->getData('reservation_view_model');
+$event = $viewModel->getEvent();
+$eventImage = $viewModel->getImageUrl($event->getThumbnail());
+$eventDescription = $viewModel->contentFiltering($event->getDescription());
+?>
+    <div class="event-image-description">
+        <?php if ($eventImage): ?>
+            <div class="event-image-box">
+                <img
+                    class="event-image image-responsive"
+                    src="<?= $block->escapeHtml($eventImage); ?>"
+                    alt="<?= $block->escapeHtml($event->getTitle()); ?>"/>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($eventDescription): ?>
+            <div class="event-description">
+                <?= /* @noEscape */ $eventDescription; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

@@ -1,0 +1,147 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 22/10/20
+ * Time: 11:20 PM
+ */
+
+/** @var \Eguana\EventReservation\Block\Event\Reservation $block */
+/** @var \Eguana\EventReservation\ViewModel\Event\Reservation $viewModel */
+$viewModel = $block->getData('reservation_view_model');
+$counters = $viewModel->getCounters();
+$eventExpired = $viewModel->isEventExpired($counters);
+?>
+<div class="block event-reservation-form">
+    <div class="block-content">
+        <form action="<?= $block->escapeUrl($viewModel->getFormAction()); ?>"
+              id="reservation-form"
+              method="post"
+              data-mage-init='{"validation":{}}'>
+
+            <fieldset class="fieldset">
+                <div class="field name required">
+                    <label class="label" for="name">
+                        <span><?= $block->escapeHtml(__('Name')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="text"
+                               id="name"
+                               name="name"
+                               placeholder="<?= $block->escapeHtml(__('Name')) ?>"
+                               data-validate="{required:true}"/>
+                    </div>
+                </div>
+                <div class="field email required">
+                    <label class="label" for="email">
+                        <span><?= $block->escapeHtml(__('Email')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               placeholder="<?= $block->escapeHtml(__('Email')) ?>"
+                               data-validate="{required:true}"/>
+                    </div>
+                </div>
+                <div class="field phone">
+                    <label class="label" for="phone">
+                        <span><?= $block->escapeHtml(__('Phone Number')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="number"
+                               id="phone"
+                               name="phone"
+                               placeholder="<?= $block->escapeHtml(__('Phone Number')) ?>">
+                    </div>
+                </div>
+                <div class="field counter_id required">
+                    <label class="label" for="counter_id">
+                        <span><?= $block->escapeHtml(__('Event Counter & Date')) ?></span>
+                    </label>
+                    <div class="control">
+                        <select id="counter_id" name="counter_id" required="true">
+                            <option value="">-- <?= $block->escapeHtml(__('Please select')) ?> --</option>
+                            <?php foreach ($counters as $counter):
+                                if ($viewModel->checkStoreLocatorInWebsite($counter['offline_store_id'])): ?>
+                                <option
+                                    value="<?= $block->escapeHtml($counter['reservation_counter_id']); ?>"
+                                    <?= $viewModel->isCounterExpired($counter) ? 'disabled="true"' : ''; ?>>
+                                    <?= $block->escapeHtml($viewModel->counterDropdownText($counter)); ?>
+                                </option>
+                            <?php endif;
+                                endforeach;
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="field date required">
+                    <label class="label" for="date">
+                        <span><?= $block->escapeHtml(__('Event Date')) ?></span>
+                    </label>
+                    <div class="control">
+                        <select id="date" name="date" required="true">
+                            <option value="">-- <?= $block->escapeHtml(__('Please select')) ?> --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field time_slot required">
+                    <label class="label" for="time_slot">
+                        <span><?= $block->escapeHtml(__('Time Slot')) ?></span>
+                    </label>
+                    <div class="control">
+                        <select id="time_slot" name="time_slot" required="true">
+                            <option value="">-- <?= $block->escapeHtml(__('Please select')) ?> --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field choice agreement-checkbox required">
+                    <input
+                        type="checkbox"
+                        name="agreement"
+                        id="agreement"
+                        class="agreement-checkbox checkbox"
+                        required="true"
+                        title="<?= $block->escapeHtmlAttr(__('My age is above 18 and I agree the private policy')) ?>"/>
+                    <label
+                        class="label"
+                        for="agreement">
+                        <span><?= $block->escapeHtml(__('My age is above 18 and I agree the private policy')); ?></span>
+                    </label>
+                </div>
+
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button
+                            type="submit"
+                            class="action primary sbt-button"
+                            <?= ($eventExpired && $counters) ? ' disabled' : '' ?>>
+                            <span><?= $block->escapeHtml(__('Submit')) ?></span>
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+            <?php if ($eventExpired && $counters): ?>
+                <p class="event-error-message">
+                    <?= $block->escapeHtml(__('Note: This event has been expired')); ?>
+                </p>
+            <?php endif; ?>
+            <input
+                type="hidden"
+                id="event_id"
+                name="event_id"
+                value="<?= $block->escapeHtml($viewModel->getEventId()); ?>"/>
+        </form>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "date-dropdown": {},
+            "time-dropdown": {}
+        }
+    }
+</script>

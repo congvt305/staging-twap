@@ -1,0 +1,47 @@
+Back,Back
+"Delete Event","Delete Event"
+"Are you sure you want to do this?","Are you sure you want to do this?"
+Save,Save
+"Save & Duplicate","Save & Duplicate"
+"Save & Close","Save & Close"
+Home,Home
+"Go to Home Page","Go to Home Page"
+Events,Events
+"Current Events","Current Events"
+"Previous Events","Previous Events"
+Event,Event
+Manager,Manager
+"Manage Events","Manage Events"
+"Event was successfully deleted","Event was successfully deleted"
+"Event could not be deleted","Event could not be deleted"
+"Manage Event","Manage Event"
+"This event no longer exists.","This event no longer exists."
+"Edit Event","Edit Event"
+"New Event","New Event"
+"A total of %1 event(s) have been deleted.","A total of %1 event(s) have been deleted."
+"Start Date should be before End Date","Start Date should be before End Date"
+"You saved the event.","You saved the event."
+"Something went wrong while saving the event.","Something went wrong while saving the event."
+"You duplicated the event.","You duplicated the event."
+Enabled,Enabled
+Disabled,Disabled
+Edit,Edit
+Delete,Delete
+"Delete ""${ $.$data.event_title }""","Delete ""${ $.$data.event_title }"""
+"Are you sure you wan't to delete a ""${ $.$data.title }"" record?","Are you sure you wan't to delete a ""${ $.$data.title }"" record?"
+"Back to list","Back to list"
+"No Event found!.","No Event found!."
+"Enable Event","Enable Event"
+"Thumbnail Image","Thumbnail Image"
+"Start Date","Start Date"
+"End Date","End Date"
+"Store View","Store View"
+Description,Description
+"Add New Event","Add New Event"
+ID,ID
+"Event Title","Event Title"
+Thumbnail,Thumbnail
+Status,Status
+Created,Created
+Modified,Modified
+"More","More"

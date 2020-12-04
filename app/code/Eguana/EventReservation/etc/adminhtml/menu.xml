@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 14/10/20
+ * Time: 08:10 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Eguana_EventReservation::event_reservation" title="Events Reservation" translate="title" module="Eguana_EventReservation" sortOrder="11" parent="Eguana_Base::base" action="event/reservation" resource="Eguana_EventReservation::event_reservation"/>
+    </menu>
+</config>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 12/10/20
+ * Time: 08:13 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="event_reservation_email_staff_email_pending" label="Email Pending for Staff" file="staff_email_pending.html" type="html" module="Eguana_EventReservation" area="frontend"/>
+    <template id="event_reservation_email_staff_email_confirmed" label="Email Confirmed for Staff" file="staff_email_confirmed.html" type="html" module="Eguana_EventReservation" area="frontend"/>
+    <template id="event_reservation_email_staff_email_canceled" label="Email Canceled for Staff" file="staff_email_canceled.html" type="html" module="Eguana_EventReservation" area="frontend"/>
+    <template id="event_reservation_email_customer_email_pending" label="Email Pending for Customer" file="customer_email_pending.html" type="html" module="Eguana_EventReservation" area="frontend"/>
+    <template id="event_reservation_email_customer_email_confirmed" label="Email Confirmed for Customer" file="customer_email_confirmed.html" type="html" module="Eguana_EventReservation" area="frontend"/>
+    <template id="event_reservation_email_customer_email_canceled" label="Email Canceled for Customer" file="customer_email_canceled.html" type="html" module="Eguana_EventReservation" area="frontend"/>
+</config>

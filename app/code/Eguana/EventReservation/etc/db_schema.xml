@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: raheel
+* Date: 13/10/20
+* Time: 07:00 PM
+*/
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="eguana_event_reservation" resource="default" engine="innodb" comment="Eguana Event Reservation Table">
+        <column xsi:type="smallint" name="event_id" padding="10" identity="true" unsigned="true" nullable="false"
+                comment="Event Reservation ID"/>
+        <column xsi:type="varchar" name="title" nullable="false" length="255" comment="Event Title"/>
+        <column xsi:type="varchar" name="thumbnail" nullable="true" comment="Thumbnail Image"/>
+        <column xsi:type="smallint" name="is_active" padding="6" unsigned="false" nullable="false" identity="false"
+                default="1" comment="Is Event Active"/>
+        <column xsi:type="mediumtext" name="description" nullable="true" comment="Description"/>
+        <column xsi:type="smallint" name="block_id" padding="6" unsigned="false" nullable="false" identity="false"
+                comment="CMS Block ID"/>
+        <column xsi:type="varchar" name="identifier" nullable="true" length="100"
+                comment="Event Reservation String Identifier"/>
+        <column xsi:type="varchar" name="meta_title" nullable="true" length="255" comment="Event Reservation Meta Title"/>
+        <column xsi:type="text" name="meta_keywords" nullable="true" comment="Event Reservation Meta Keywords"/>
+        <column xsi:type="text" name="meta_description" nullable="true" comment="Event Reservation Meta Description"/>
+        <column xsi:type="smallint" name="available_slots" padding="6" unsigned="false" nullable="false" identity="false"
+                default="0" comment="Available Slots"/>
+        <column xsi:type="timestamp" name="creation_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Event Reservation Creation Time"/>
+        <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Event Reservation Modification Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="event_id"/>
+        </constraint>
+        <index referenceId="EGUANA_EVENT_RESERVATION_IDENTIFIER" indexType="btree">
+            <column name="identifier"/>
+        </index>
+        <index referenceId="FTI_E7C007781607CB320E1AEECFE9ECE26C" indexType="fulltext">
+            <column name="title"/>
+            <column name="meta_keywords"/>
+            <column name="meta_description"/>
+            <column name="identifier"/>
+            <column name="description"/>
+        </index>
+    </table>
+    <table name="eguana_event_reservation_store" resource="default" engine="innodb"
+           comment="Eguana Event Reservation To Store Linkage Table">
+        <column xsi:type="smallint" name="event_id" padding="10" unsigned="true" identity="false" nullable="false"
+                comment="Event Reservation ID"/>
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" identity="false" nullable="false"
+                comment="Store ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="event_id"/>
+            <column name="store_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="FK_0F50B01D09FBCA6CAD63890C0026794C"
+                    table="eguana_event_reservation_store" column="event_id" referenceTable="eguana_event_reservation"
+                    referenceColumn="event_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="EGUANA_EVENT_RESERVATION_STORE_STORE_ID_STORE_STORE_ID"
+                    table="eguana_event_reservation_store" column="store_id" referenceTable="store"
+                    referenceColumn="store_id" onDelete="CASCADE"/>
+        <index referenceId="EGUANA_EVENT_RESERVATION_STORE_STORE_ID" indexType="btree">
+            <column name="store_id"/>
+        </index>
+    </table>
+    <table name="eguana_event_reservation_counter" resource="default" engine="innodb"
+           comment="Eguana Event Reservation Counter Table">
+        <column xsi:type="smallint" name="reservation_counter_id" padding="10" unsigned="true" identity="true"
+                nullable="false" comment="Event Reservation Counter ID"/>
+        <column xsi:type="smallint" name="event_id" padding="10" unsigned="true" identity="false" nullable="false"
+                comment="Event Reservation ID"/>
+        <column xsi:type="smallint" name="offline_store_id" padding="10" unsigned="true" nullable="false"
+                identity="false" comment="Offline Store ID"/>
+        <column xsi:type="varchar" name="staff_email" nullable="false" length="100" comment="Staff Email"/>
+        <column xsi:type="date" name="from_date" comment="Event Date From"/>
+        <column xsi:type="date" name="to_date" comment="Event Date To"/>
+        <column xsi:type="smallint" name="slot_time" padding="6" unsigned="true" identity="false" nullable="false"
+                comment="Event Slot Time"/>
+        <column xsi:type="smallint" name="break" padding="6" identity="false" unsigned="true" nullable="false"
+                comment="Event Break Time"/>
+        <column xsi:type="smallint" name="per_time_slot_seats" padding="6" identity="false" unsigned="true"
+                nullable="false" comment="Event Per Time Slot Seats"/>
+        <column xsi:type="datetime" name="start_time" nullable="false" comment="Event Start Time"/>
+        <column xsi:type="datetime" name="end_time" nullable="false" comment="Event End Time"/>
+        <column xsi:type="varchar" name="close_days" nullable="true" length="100" comment="Close Days"/>
+        <column xsi:type="smallint" name="status" padding="6" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Counter Status"/>
+        <column xsi:type="smallint" name="total_slots" padding="6" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Total Slots"/>
+        <column xsi:type="timestamp" name="creation_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Event Reservation Creation Time"/>
+        <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Event Reservation Modification Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="reservation_counter_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="FK_6222CE74E042C3AE8138A394A3BA6932"
+                    table="eguana_event_reservation_counter" column="event_id" referenceTable="eguana_event_reservation"
+                    referenceColumn="event_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="FK_92116A192CD649AC57626024A50B3B32"
+                    table="eguana_event_reservation_counter" column="offline_store_id" referenceTable="storeinfo"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="EGUANA_EVENT_RESERVATION_COUNTER_EVENT_ID" indexType="btree">
+            <column name="event_id"/>
+        </index>
+    </table>
+    <table name="eguana_user_event_reserve" resource="default" engine="innodb" comment="Eguana User Event Reservation Table">
+        <column xsi:type="smallint" name="user_reserve_id" padding="10" identity="true" unsigned="true" nullable="false"
+                comment="User Event Reservation ID"/>
+        <column xsi:type="varchar" name="name" nullable="false" length="255" comment="User Name"/>
+        <column xsi:type="varchar" name="email" nullable="false" length="100" comment="User Email"/>
+        <column xsi:type="varchar" name="time_slot" nullable="false" length="50" comment="Event Slot Time"/>
+        <column xsi:type="date" name="date" comment="Event Date"/>
+        <column xsi:type="varchar" name="phone" length="50" nullable="false" comment="User Phone"/>
+        <column xsi:type="smallint" name="status" padding="6" identity="false" unsigned="true" nullable="false"
+                default="0" comment="Event Reservation Status"/>
+        <column xsi:type="smallint" name="agreement" padding="5" identity="false" unsigned="true" nullable="false"
+                default="0" comment="Event Reservation Agreement"/>
+        <column xsi:type="smallint" name="event_id" padding="10" identity="false" unsigned="true" nullable="false"
+                comment="Event Reservation ID"/>
+        <column xsi:type="smallint" name="counter_id" padding="10" identity="false" unsigned="true" nullable="false"
+                comment="Event Reservation Counter ID"/>
+        <column xsi:type="smallint" name="offline_store_id" padding="10" unsigned="true" nullable="false"
+                identity="false" comment="Offline Store ID"/>
+        <column xsi:type="varchar" name="auth_token" nullable="true" length="20" comment="Authentication Token"/>
+        <column xsi:type="smallint" name="email_action" padding="5" identity="false" unsigned="true" nullable="false"
+                default="0" comment="Customer Email Action"/>
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" identity="false" nullable="false"
+                comment="Store ID"/>
+        <column xsi:type="timestamp" name="creation_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Event Reservation Creation Time"/>
+        <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Event Reservation Modification Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="user_reserve_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="FK_2677A7BC27D98BCADC258E196FFE5EF9"
+                    table="eguana_user_event_reserve" column="event_id" referenceTable="eguana_event_reservation"
+                    referenceColumn="event_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="FK_2FC6883D38643413AB070982B54A84A8"
+                    table="eguana_user_event_reserve" column="counter_id" referenceTable="eguana_event_reservation_counter"
+                    referenceColumn="reservation_counter_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="EGUANA_USER_EVENT_RESERVE_OFFLINE_STORE_ID_STOREINFO_ENTITY_ID"
+                    table="eguana_user_event_reserve" column="offline_store_id" referenceTable="storeinfo"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="EGUANA_USER_EVENT_RESERVE_STORE_ID_STORE_STORE_ID"
+                    table="eguana_user_event_reserve" column="store_id" referenceTable="store"
+                    referenceColumn="store_id" onDelete="CASCADE"/>
+        <index referenceId="EGUANA_USER_EVENT_RESERVE_EVENT_ID_COUNTER_ID" indexType="btree">
+            <column name="event_id"/>
+            <column name="counter_id"/>
+        </index>
+        <index referenceId="EGUANA_USER_EVENT_RESERVE_NAME_EMAIL" indexType="fulltext">
+            <column name="name"/>
+            <column name="email"/>
+        </index>
+    </table>
+</schema>
