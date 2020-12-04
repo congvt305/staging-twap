@@ -22,6 +22,8 @@ interface StoreInfoInterface
     const TITLE = 'title';
     const ADDRESS = 'address';
     const TELEPHONE = 'telephone';
+    const AVAILABLE_FOR_EVENTS = 'available_for_events';
+    const AVAILABLE_FOR_REDEMPTION = 'available_for_redemption';
     const LOCATION = 'location';
     const CREATED_AT = 'created_at';
     const EMAIL = 'email';
@@ -36,6 +38,8 @@ interface StoreInfoInterface
     public function getTitle();
     public function getAddress();
     public function getTelephone();
+    public function getAvailableForEvents();
+    public function getAvailableForRedemption();
     public function getLocation();
     public function getCreatedAt();
     public function getEmail();
@@ -50,6 +54,8 @@ interface StoreInfoInterface
     public function setTitle($title);
     public function setAddress($address);
     public function setTelephone($telephone);
+    public function setAvailableForEvents($availableForEvents);
+    public function setAvailableForRedemption($availableForRedemption);
     public function setLocation($location);
     public function setCreatedAt($createdAt);
     public function setEmail($email);
