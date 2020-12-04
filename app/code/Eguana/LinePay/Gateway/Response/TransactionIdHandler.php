@@ -57,11 +57,12 @@ class TransactionIdHandler implements HandlerInterface
                 if ($response['object']['returnCode'] == '0000') {
                     if (isset($response['object']['info']['transactionId'])) {
                         $transaction = $response['object']['info']['transactionId'];
-
+                        $orderId = $response['object']['info']['orderId'];
                         /** @var Payment $orderPayment */
                         $orderPayment = $paymentDO->getPayment();
                         $quote = $this->quoteModel->getQuote();
                         $quoteInfo = $quote->getPayment()->getAdditionalInformation();
+                        $quoteInfo["raw_details_info"]["linepay_order_id"] = $orderId;
                         $quoteInfo = $quoteInfo["raw_details_info"];
                         $transactionInfo = $response['object']['info']['payInfo'][0];
                         $data = array_merge($quoteInfo, $transactionInfo);

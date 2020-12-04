@@ -15,6 +15,8 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Result\PageFactory;
 use Eguana\LinePay\Helper\Data;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultInterface;
 
 /**
  * Class Authorize
@@ -59,7 +61,7 @@ class Authorize extends Action
 
     /**
      * Authorize payment
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @return ResponseInterface|ResultInterface|void
      * @throws \Exception
      */
     public function execute()

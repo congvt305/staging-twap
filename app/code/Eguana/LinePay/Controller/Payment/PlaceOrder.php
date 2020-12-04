@@ -13,45 +13,57 @@ use Magento\Framework\App\Action\Action as AppAction;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Quote\Api\Data\CartInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Quote\Model\Quote;
+use Eguana\LinePay\Model\LinePay\Checkout;
+use Magento\Framework\Session\Generic;
+use Magento\Checkout\Model\Session;
+use Magento\Quote\Api\CartManagementInterface;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Eguana\LinePay\Model\LinePay\Checkout\Factory;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultInterface;
 
 /**
  * Class PlaceOrder
  *
- * Line pay place order
+ * Place Order LinePay
  */
 class PlaceOrder extends AppAction implements
     HttpGetActionInterface,
     HttpPostActionInterface
 {
+    const LINE = 'line';
 
     /**
-     * @var
+     * @var Checkout
      */
-    private $_order;
+    private $checkout;
 
     /**
-     * @var
+     * @var Quote
      */
     private $_quote;
 
     /**
-     * @var \Magento\Framework\Session\Generic
+     * @var Generic
      */
     private $linepaySession;
 
     /**
-     * @var \Magento\Checkout\Model\Session
+     * @var Session
      */
-    private $_checkoutSession;
+    private $checkoutSession;
 
     /**
-     * @var \Magento\Quote\Api\CartManagementInterface
+     * @var CartManagementInterface
      */
     private $quoteManagement;
 
     /**
-     * @var \Magento\Quote\Api\CartRepositoryInterface
+     * @var CartRepositoryInterface
      */
     private $quoteRepository;
 
@@ -61,90 +73,111 @@ class PlaceOrder extends AppAction implements
     private $logger;
 
     /**
+     * @var array
+     */
+    protected $checkoutTypes = [];
+
+    /**
+     * @var Factory
+     */
+    protected $checkoutFactory;
+
+    /**
+     * @var
+     */
+    private $linePayCheckout;
+
+    /**
      * PlaceOrder constructor.
-     * @param \Magento\Framework\App\Action\Context $context
-     * @param \Magento\Quote\Api\CartManagementInterface $quoteManagement
-     * @param \Magento\Framework\Session\Generic $linepaySession
-     * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
+     * @param Context $context
+     * @param CartManagementInterface $quoteManagement
+     * @param Generic $linepaySession
+     * @param Session $checkoutSession
+     * @param CartRepositoryInterface $quoteRepository
+     * @param Factory $checkoutFactory
+     * @param LoggerInterface $logger
      */
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Magento\Quote\Api\CartManagementInterface $quoteManagement,
-        \Magento\Framework\Session\Generic $linepaySession,
-        \Magento\Checkout\Model\Session $checkoutSession,
-        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
+        Context $context,
+        CartManagementInterface $quoteManagement,
+        Generic $linepaySession,
+        Session $checkoutSession,
+        CartRepositoryInterface $quoteRepository,
+        Factory $checkoutFactory,
         LoggerInterface $logger
     ) {
         $this->quoteManagement = $quoteManagement;
         $this->linepaySession = $linepaySession;
-        $this->_checkoutSession = $checkoutSession;
+        $this->checkoutSession = $checkoutSession;
         $this->quoteRepository = $quoteRepository;
+        $this->checkoutFactory = $checkoutFactory;
         $this->logger = $logger;
         parent::__construct($context);
     }
 
     /**
-     * Place Order
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * Place order
+     * @return ResponseInterface|ResultInterface|void
      */
     public function execute()
     {
         try {
-            $this->_quote = $this->_checkoutSession->getQuote();
-            $this->_quote->collectTotals();
-            $order = $this->quoteManagement->submit($this->_quote);
-            if (!$order) {
-                return;
-            }
-            switch ($order->getState()) {
-                case \Magento\Sales\Model\Order::STATE_PENDING_PAYMENT:
-                    break;
-                case \Magento\Sales\Model\Order::STATE_PROCESSING:
-                case \Magento\Sales\Model\Order::STATE_COMPLETE:
-                case \Magento\Sales\Model\Order::STATE_PAYMENT_REVIEW:
-                    try {
-                        if (!$order->getEmailSent()) {
-                            $this->orderSender->send($order);
-                        }
-                    } catch (\Exception $e) {
-                        $this->logger->critical($e);
-                    }
-                    $this->_checkoutSession->start();
-                    break;
-                default:
-                    break;
-            }
-            $this->_order = $order;
-            $quoteId = $this->_getQuote()->getId();
-            $this->_getCheckoutSession()->setLastQuoteId($quoteId)->setLastSuccessQuoteId($quoteId);
-
+            $this->initCheckout();
+            $this->checkout->place();
+            $quoteId = $this->getQuote()->getId();
+            $this->getCheckoutSession()->setLastQuoteId($quoteId)->setLastSuccessQuoteId($quoteId);
             // an order may be created
-            $order = $this->getOrder();
+            $order = $this->checkout->getOrder();
             if ($order) {
-                $this->_getCheckoutSession()->setLastOrderId($order->getId())
+                $this->getCheckoutSession()->setLastOrderId($order->getId())
                     ->setLastRealOrderId($order->getIncrementId())
                     ->setLastOrderStatus($order->getStatus());
             }
             $this->_redirect('checkout/onepage/success');
+            return;
         } catch (LocalizedException $e) {
             $this->processException($e, $e->getRawMessage());
+            return;
         } catch (\Exception $e) {
             $this->processException($e, 'We can\'t place the order.');
+            return;
         }
     }
 
     /**
-     * Get order
-     * @return \Magento\Sales\Model\Order
+     * Initialize checkout data
+     * @param CartInterface|null $quoteObject
+     * @throws LocalizedException
      */
-    public function getOrder()
+    private function initCheckout(CartInterface $quoteObject = null)
     {
-        return $this->_order;
+        $quote = $quoteObject ? $quoteObject : $this->getQuote();
+        if (!$quote->hasItems() || $quote->getHasError()) {
+            $this->getResponse()->setStatusHeader(403, '1.1', 'Forbidden');
+            throw new LocalizedException(__('We can\'t initialize LINEPay Checkout.'));
+        }
+        if (!(float)$quote->getGrandTotal()) {
+            throw new LocalizedException(
+                __(
+                    'LINEPay can\'t process orders with a zero balance due. '
+                    . 'To finish your purchase, please go through the standard checkout process.'
+                )
+            );
+        }
+        if (!isset($this->checkoutTypes[self::LINE])) {
+            $parameters = [
+                'params' => [
+                    'quote' => $quote
+                ],
+            ];
+            $this->checkoutTypes[self::LINE] = $this->checkoutFactory
+                ->create(Checkout::class, $parameters);
+        }
+        $this->checkout = $this->checkoutTypes[self::LINE];
     }
 
     /**
-     * Process Exception
+     * Process line pay exceptions
      * @param \Exception $exception
      * @param string $message
      */
@@ -155,20 +188,18 @@ class PlaceOrder extends AppAction implements
     }
 
     /**
-     * Get Quote
-     * @return \Magento\Quote\Api\Data\CartInterface|\Magento\Quote\Model\Quote
-     * @throws LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * Get current quote
+     * @return CartInterface|Quote
      */
-    private function _getQuote()
+    private function getQuote()
     {
         if (!$this->_quote) {
             try {
-                if ($this->_getSession()->getQuoteId()) {
+                if ($this->getSession()->getQuoteId()) {
                     $this->_quote = $this->quoteRepository->get($this->_getSession()->getQuoteId());
-                    $this->_getCheckoutSession()->replaceQuote($this->_quote);
+                    $this->getCheckoutSession()->replaceQuote($this->_quote);
                 } else {
-                    $this->_quote = $this->_getCheckoutSession()->getQuote();
+                    $this->_quote = $this->getCheckoutSession()->getQuote();
                 }
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
@@ -179,33 +210,18 @@ class PlaceOrder extends AppAction implements
 
     /**
      * Get checkout session
-     * @return \Magento\Checkout\Model\Session
+     * @return Session
      */
-    private function _getCheckoutSession()
+    private function getCheckoutSession()
     {
-        return $this->_checkoutSession;
-    }
-
-    /**
-     * Prepare quote for guest checkout order submit
-     *
-     * @return $this
-     */
-    private function prepareGuestQuote()
-    {
-        $quote = $this->_quote;
-        $quote->setCustomerId(null)
-            ->setCustomerEmail($quote->getBillingAddress()->getEmail())
-            ->setCustomerIsGuest(true)
-            ->setCustomerGroupId(\Magento\Customer\Model\Group::NOT_LOGGED_IN_ID);
-        return $this;
+        return $this->checkoutSession;
     }
 
     /**
      * Get session
-     * @return \Magento\Framework\Session\Generic
+     * @return Generic
      */
-    private function _getSession()
+    private function getSession()
     {
         return $this->linepaySession;
     }

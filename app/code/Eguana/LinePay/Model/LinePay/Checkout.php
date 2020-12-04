@@ -220,6 +220,13 @@ class Checkout
             ->setCustomerEmail($quote->getBillingAddress()->getEmail())
             ->setCustomerIsGuest(true)
             ->setCustomerGroupId(Group::NOT_LOGGED_IN_ID);
+        if ($quote->getCustomerFirstname() === null && $quote->getCustomerLastname() === null) {
+            $quote->setCustomerFirstname($quote->getBillingAddress()->getFirstname());
+            $quote->setCustomerLastname($quote->getBillingAddress()->getLastname());
+            if ($quote->getBillingAddress()->getMiddlename() === null) {
+                $quote->setCustomerMiddlename($quote->getBillingAddress()->getMiddlename());
+            }
+        }
         return $this;
     }
 

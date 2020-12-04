@@ -78,7 +78,7 @@ abstract class AbstractTransaction implements ClientInterface
     /**
      * Process http request
      * @param array $data
-     * @return \Braintree\Result\Error|\Braintree\Result\Successful
+     * @return mixed
      */
     abstract protected function process(array $data);
 }

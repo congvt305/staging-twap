@@ -32,7 +32,7 @@ class Data extends AbstractHelper
     private $assetRepo;
 
     /**
-     * @var \Magento\Framework\HTTP\Header
+     * @var Header
      */
     private $httpHeader;
 
