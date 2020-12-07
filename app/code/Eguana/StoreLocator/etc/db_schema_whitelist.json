@@ -5,6 +5,8 @@
             "title": true,
             "address": true,
             "telephone": true,
+            "available_for_events": true,
+            "available_for_redemption": true,
             "location": true,
             "created_at": true,
             "store_id": true,

@@ -274,6 +274,28 @@
                 </item>
             </argument>
         </column>
+        <column name="available_for_events" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Eguana\StoreLocator\Model\Source\AvailableForEvents"/>
+                <filter>select</filter>
+                <editor>
+                    <editorType>select</editorType>
+                </editor>
+                <dataType>select</dataType>
+                <label translate="true">Events</label>
+            </settings>
+        </column>
+        <column name="available_for_redemption" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Eguana\StoreLocator\Model\Source\AvailableForRedemption"/>
+                <filter>select</filter>
+                <editor>
+                    <editorType>select</editorType>
+                </editor>
+                <dataType>select</dataType>
+                <label translate="true">Redemption</label>
+            </settings>
+        </column>
         <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date" sortOrder="70">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
