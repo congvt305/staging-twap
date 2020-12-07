@@ -530,6 +530,7 @@ return [
         'Amore_Base' => 1,
         'Eguana_Base' => 1,
         'Amore_GaTagging' => 1,
+        'Amore_PointsIntegration' => 1,
         'Ecpay_Ecpaypayment' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Dotdigitalgroup_Chat' => 1,
