@@ -1,0 +1,21 @@
+<?php
+/**
+ * Created by Eguana.
+ * User: Brian
+ * Date: 2020-11-18
+ * Time: 오후 4:12
+ */
+
+/** @var \Amore\PointsIntegration\ViewModel\Points\RedeemAjax  $viewModel */
+$viewModel = $block->getData('redeem_view_model');
+$pointSearchResults = $viewModel->getPageData();
+?>
+<?php foreach ($pointSearchResults as $pointSearchResult) :?>
+    <tr>
+        <td data-th="<?=$block->escapeHtmlAttr(__('Product Name')) ?>" class="col product-name"><?=$pointSearchResult['prdNM'] ?></td>
+        <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Points')) ?>" class="col redeem-points"><?=$pointSearchResult['usePoint'] ?></td>
+        <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Date')) ?>" class="col redeem-date"><?=$pointSearchResult['redeemDate'] ?></td>
+        <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Location')) ?>" class="col redeem-location"><?=$pointSearchResult['redeemStoreNM'] ?></td>
+        <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Quantity')) ?>" class="col redeem-qty"><?=$pointSearchResult['redeemQty'] ?></td>
+    </tr>
+<?php endforeach; ?>

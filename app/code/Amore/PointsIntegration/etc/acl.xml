@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * Created by PhpStorm
+ * User: Abbas
+ * Date: 05/18/20
+ * Time: 11:32 AM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Amore_PointsIntegration::pos" title="Points Integration" translate="title" sortOrder="2000">
+                    <resource id="Amore_PointsIntegration::api" title="Api" translate="title" sortOrder="10"/>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

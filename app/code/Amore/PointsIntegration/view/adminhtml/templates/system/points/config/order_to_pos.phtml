@@ -1,0 +1,23 @@
+<?php
+/**
+ * Created by Eguana.
+ * User: Brian
+ * Date: 2020-12-02
+ * Time: 오후 1:29
+ */
+?>
+<?= /* @noEscape */ $block->getButtonHtml(); ?>
+
+<span class="collect-indicator" id="collect-span-pos-order">
+    <span id="collect-message-span-pos-order"></span>
+</span>
+<script type="text/x-magento-init">
+   {
+       "*": {
+           "orderToPos": {
+                    "orderToPosAjaxUrl":"<?= $block->escapeUrl($block->getAjaxUrl()); ?>",
+                    "websiteId":"<?= $block->resolveCurrentWebsiteId(); ?>"
+                }
+       }
+   }
+</script>

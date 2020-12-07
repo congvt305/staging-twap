@@ -1,0 +1,60 @@
+<?php
+/**
+ * Created by Eguana.
+ * User: Brian
+ * Date: 2020-12-07
+ * Time: 오전 10:42
+ */
+/** @var $block \Amore\PointsIntegration\Block\Points\PointsHistorySearch */
+$pointsHistoryResult = $block->getPointsHistoryResult();
+?>
+<div class="item title" data-role="collapsible">
+    <a class="switch" data-toggle="trigger" href="#tab-3">TAB 3</a>
+</div>
+<div id="tab-3" class="item content" data-role="content">
+    <?php if (count($pointsHistoryResult) > 0) : ?>
+        <div class="table-wrapper point-history">
+            <table class="data, table, table-point history" id="point-history-table">
+                <thead>
+                <tr>
+                    <th scope="col" class="col product-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
+                    <th scope="col" class="col redeem-points"><?= $block->escapeHtml(__('Points')) ?></th>
+                    <th scope="col" class="col redeem-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
+                </tr>
+                </thead>
+                <tbody class="points-history-list">
+                <?php foreach ($pointsHistoryResult as $pointsHistory) :?>
+                    <tr>
+                        <td data-th="<?=$block->escapeHtmlAttr(__('Name of Point')) ?>" class="col point-type-name"><?=$pointsHistory['typeNM'] ?></td>
+                        <td data-th="<?=$block->escapeHtmlAttr(__('Points')) ?>" class="col points"><?=$pointsHistory['point'] ?></td>
+                        <td data-th="<?=$block->escapeHtmlAttr(__('Points Valid Period')) ?>" class="col redeem-date"><?=$pointsHistory['validPeriod'] ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="pages" id="points-history-pager">
+            <ul class="items pages-items pagination">
+                <?php if ($pointsHistoryResult[0]['totPage'] > 1): ?>
+                    <?php for ($i = 1; $i <= $pointsHistoryResult[0]['totPage']; $i++) : ?>
+                        <li class="item history-pager active" data-page="<?=$i; ?>"><?=$i; ?></li>
+                    <?php endfor; ?>
+                <?php endif; ?>
+                <?php if ($pointsHistoryResult[0]['totPage'] == 1): ?>
+                    <li class="item history-pager" data-page="<?$pointsHistoryResult[0]['totPage']; ?>">
+                        <?=$pointsHistoryResult[0]['totPage']?>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    <?php else : ?>
+        <div class="message info empty"><span><?= $block->escapeHtml(__('You have no point history')) ?></span></div>
+    <?php endif ?>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "historySearch": {}
+        }
+    }
+</script>

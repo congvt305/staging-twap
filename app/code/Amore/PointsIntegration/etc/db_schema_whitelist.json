@@ -1,0 +1,7 @@
+{
+    "sales_order": {
+        "column": {
+            "pos_order_send_check": true
+        }
+    }
+}
