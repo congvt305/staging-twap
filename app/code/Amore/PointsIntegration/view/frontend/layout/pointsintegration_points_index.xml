@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <head>
+        <title>Points</title>
+    </head>
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">Customer Points</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Amore\PointsIntegration\Block\Points\Index" name="member.points" template="Amore_PointsIntegration::points/member_points.phtml" >
+                <block class="Magento\Framework\View\Element\Template" name="membership.program.introduction.cms" template="Amore_PointsIntegration::points/membership_program_intro.phtml" />
+                <block class="Amore\PointsIntegration\Block\Points\RedeemPointsSearch" name="redeem.points" template="Amore_PointsIntegration::points/redeem_points.phtml" >
+                    <arguments>
+                        <argument name="redeem_view_model" xsi:type="object">Amore\PointsIntegration\ViewModel\Points\RedeemAjax</argument>
+                    </arguments>
+                </block>
+                <block class="Amore\PointsIntegration\Block\Points\PointsHistorySearch" name="points.history" template="Amore_PointsIntegration::points/history_points.phtml" >
+                    <arguments>
+                        <argument name="history_view_model" xsi:type="object">Amore\PointsIntegration\ViewModel\Points\HistoryAjax</argument>
+                    </arguments>
+                </block>
+            </block>
+<!--            <block class="Magento\Framework\View\Element\Template" name="membership.program.introduction.cms" template="Amore_PointsIntegration::points/membership_program_intro.phtml" />-->
+<!--            <block class="Amore\PointsIntegration\Block\Points\RedeemPointsSearch" name="redeem.points" template="Amore_PointsIntegration::points/redeem_points.phtml" >-->
+<!--                <arguments>-->
+<!--                    <argument name="redeem_view_model" xsi:type="object">Amore\PointsIntegration\ViewModel\Points\RedeemAjax</argument>-->
+<!--                </arguments>-->
+<!--            </block>-->
+        </referenceContainer>
+    </body>
+</page>

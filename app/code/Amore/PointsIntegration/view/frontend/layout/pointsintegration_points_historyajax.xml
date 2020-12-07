@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="points.history.ajax" template="Amore_PointsIntegration::points/history_ajax.phtml" >
+                <arguments>
+                    <argument name="history_view_model" xsi:type="object">Amore\PointsIntegration\ViewModel\Points\HistoryAjax</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

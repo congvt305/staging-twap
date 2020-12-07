@@ -1,0 +1,65 @@
+<?php
+/**
+ * Created by Eguana.
+ * User: Brian
+ * Date: 2020-11-11
+ * Time: 오후 5:36
+ */
+/** @var $block \Amore\PointsIntegration\Block\Points\RedeemPointsSearch */
+$pointSearchResult = $block->getPointsRedeemSearchResult();
+$membershipProgramCmsBlock = $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('point_policy_block')->toHtml();
+?>
+<div class="item title" data-role="collapsible">
+    <a class="switch" data-toggle="trigger" href="#tab-2">TAB 2</a>
+</div>
+<div id="tab-2" class="item content" data-role="content">
+    <?php if (count($pointSearchResult) > 0) : ?>
+        <div class="table-wrapper point-redeem">
+            <table class="data, table, table-point history" id="point-redeem-table">
+                <thead>
+                <tr>
+                    <th scope="col" class="col product-name"><?= $block->escapeHtml(__('Product Name')) ?></th>
+                    <th scope="col" class="col redeem-points"><?= $block->escapeHtml(__('Redeemed Points')) ?></th>
+                    <th scope="col" class="col redeem-date"><?= $block->escapeHtml(__('Redeemed Date')) ?></th>
+                    <th scope="col" class="col redeem-location"><?= $block->escapeHtml(__('Redeemed Location')) ?></th>
+                    <th scope="col" class="col redeem-qty"><?= $block->escapeHtml(__('Redeemed Quantity')) ?></th>
+                </tr>
+                </thead>
+                <tbody class="redeem-points-list">
+                <?php foreach ($pointSearchResult as $redeemSearch) :?>
+                    <tr>
+                        <td data-th="<?=$block->escapeHtmlAttr(__('Product Name')) ?>" class="col product-name"><?=$redeemSearch['prdNM'] ?></td>
+                        <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Points')) ?>" class="col redeem-points"><?=$redeemSearch['usePoint'] ?></td>
+                        <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Date')) ?>" class="col redeem-date"><?=$redeemSearch['redeemDate'] ?></td>
+                        <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Location')) ?>" class="col redeem-location"><?=$redeemSearch['redeemStoreNM'] ?></td>
+                        <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Quantity')) ?>" class="col redeem-qty"><?=$redeemSearch['redeemQty'] ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="pages" id="redeem-points-pager">
+            <ul class="items pages-items pagination">
+                <?php if ($pointSearchResult[0]['totPage'] > 1): ?>
+                    <?php for ($i = 1; $i <= $pointSearchResult[0]['totPage']; $i++) : ?>
+                        <li class="item redeem-pager active" data-page="<?=$i; ?>"><?=$i; ?></li>
+                    <?php endfor; ?>
+                <?php endif; ?>
+                <?php if ($pointSearchResult[0]['totPage'] == 1): ?>
+                    <li class="item redeem-pager" data-page="<?$pointSearchResult[0]['totPage']; ?>">
+                        <?=$pointSearchResult[0]['totPage']?>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    <?php else : ?>
+        <div class="message info empty"><span><?= $block->escapeHtml(__('You have no point redeem history')) ?></span></div>
+    <?php endif ?>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "redeemSearch": {}
+        }
+    }
+</script>
