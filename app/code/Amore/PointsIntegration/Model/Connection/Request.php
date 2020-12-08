@@ -53,8 +53,9 @@ class Request
     public function sendRequest($requestData, $websiteId, $type)
     {
         $url = $this->getUrl($type, $websiteId);
+        $active = $this->config->getActive($websiteId);
 
-        if (!empty($url)) {
+        if (!empty($url) && $active) {
 
             $this->curl->addHeader('Content-Type', 'application/json');
 
