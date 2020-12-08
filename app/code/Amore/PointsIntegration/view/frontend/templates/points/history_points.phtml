@@ -48,7 +48,24 @@ $pointsHistoryResult = $block->getPointsHistoryResult();
             </ul>
         </div>
     <?php else : ?>
-        <div class="message info empty"><span><?= $block->escapeHtml(__('You have no point history')) ?></span></div>
+        <div class="table-wrapper point-history">
+            <table class="data, table, table-point history" id="point-history-table">
+                <thead>
+                <tr>
+                    <th scope="col" class="col product-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
+                    <th scope="col" class="col redeem-points"><?= $block->escapeHtml(__('Points')) ?></th>
+                    <th scope="col" class="col redeem-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
+                </tr>
+                </thead>
+                <tbody class="points-history-list">
+                    <tr>
+                        <td colspan="3">
+                            <span><?= $block->escapeHtml(__('You have no point history')) ?></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     <?php endif ?>
 </div>
 <script type="text/x-magento-init">
