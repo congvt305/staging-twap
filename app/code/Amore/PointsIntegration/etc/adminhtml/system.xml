@@ -37,17 +37,17 @@
                 <field id="sales_office_code" translate="label" type="text" sortOrder="70" showInWebsite="1">
                     <label>Sales Office Code</label>
                 </field>
+                <field id="member_search" translate="label" type="text" sortOrder="51" showInDefault="1" showInWebsite="1">
+                    <label>Member Points Search Path</label>
+                </field>
                 <field id="redeem_search" translate="label" type="text" sortOrder="52" showInDefault="1" showInWebsite="1">
-                    <label>Member Points Redemption Search URI</label>
-                    <comment>Member Points Redemption Search URI. Complete URL = BASE URL + Member Points Redemption Search URI</comment>
+                    <label>Points Redemption Search Path</label>
                 </field>
                 <field id="point_search" translate="label" type="text" sortOrder="53" showInDefault="1" showInWebsite="1">
-                    <label>Member Points Search URI</label>
-                    <comment>Member Points Search URI. Complete URL = BASE URL + Member Points Search URI</comment>
+                    <label>Points History Search Path</label>
                 </field>
                 <field id="customer_order" translate="label" type="text" sortOrder="54" showInDefault="1" showInWebsite="1">
-                    <label>Member Order URI</label>
-                    <comment>Member Order URI. Complete URL = BASE URL + Member Order URI</comment>
+                    <label>Member Order Path</label>
                 </field>
             </group>
         </section>
