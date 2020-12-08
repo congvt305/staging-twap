@@ -8,49 +8,50 @@
 /** @var $block \Amore\PointsIntegration\Block\Points\Index */
 $pointSearchResult = $block->getPointsSearchResult();
 ?>
-<div class="table-wrapper block pos-integration-points">
-    <div class="block-title title">
-        <strong><?= __('Integration Points'); ?></strong>
-    </div>
-
-    <div class="block-content content">
-        <?php if (count($pointSearchResult) > 0) : ?>
-            <div class="pos-customer-info">
-                <div class="pos-customer-name">
-                    <strong><?= $block->escapeHtml(__('Name')) . ' : '; ?><?= $pointSearchResult['lastname'] . $pointSearchResult['firstname']; ?></strong>
+<div class="table-wrapper pos-integration-points">
+    <div class="block block-points-integration">
+        <div class="block-title">
+            <strong><?= __('Integration Points'); ?></strong>
+        </div>
+        <div class="block-content content">
+            <?php if (count($pointSearchResult) > 0) : ?>
+                <div class="pos-customer-info">
+                    <div class="pos-customer-name">
+                        <strong><?= $block->escapeHtml(__('Name')) . ' : '; ?><?= $pointSearchResult['lastname'] . $pointSearchResult['firstname']; ?></strong>
+                    </div>
+                    <div class="pos-customer-integration-code">
+                        <span><?= $block->escapeHtml(__('Customer Code')) . ' : '; ?><?= $pointSearchResult['cstmIntgSeq']; ?></span>
+                    </div>
+                    <div class="pos-customer-grade-code">
+                        <?= $block->escapeHtml(__('Customer Grade Code')) . ' : '; ?>
+                        <?= $pointSearchResult['cstmGradeCD']; ?>
+                    </div>
+                    <div class="pos-customer-grade-name">
+                        <?= $block->escapeHtml(__('Customer Grade')) . ' : '; ?>
+                        <?= $pointSearchResult['cstmGradeNM']; ?>
+                    </div>
+                    <div class="pos-customer-available-points">
+                        <?= $block->escapeHtml(__('Available Points')) . ' : '; ?>
+                        <?= $pointSearchResult['availablePoint']; ?>
+                    </div>
+                    <div class="pos-customer-expire-points">
+                        <?= $block->escapeHtml(__('Expire Points')) . ' : '; ?>
+                        <?= $pointSearchResult['expirePoint']; ?>
+                    </div>
+                    <div class="pos-customer-expireDate">
+                        <?= $block->escapeHtml(__('Expiry Date')) . ' : '; ?>
+                        <?= $pointSearchResult['expireDate']; ?>
+                    </div>
                 </div>
-                <div class="pos-customer-integration-code">
-                    <span><?= $block->escapeHtml(__('Customer Code')) . ' : '; ?><?= $pointSearchResult['cstmIntgSeq']; ?></span>
+            <?php else : ?>
+                <div class="message info empty">
+                    <span><?= $block->escapeHtml(__('Customer Points Info is not Exist')) ?></span>
                 </div>
-                <div class="pos-customer-grade-code">
-                    <?= $block->escapeHtml(__('Customer Grade Code')) . ' : '; ?>
-                    <?= $pointSearchResult['cstmGradeCD']; ?>
-                </div>
-                <div class="pos-customer-grade-name">
-                    <?= $block->escapeHtml(__('Customer Grade')) . ' : '; ?>
-                    <?= $pointSearchResult['cstmGradeNM']; ?>
-                </div>
-                <div class="pos-customer-available-points">
-                    <?= $block->escapeHtml(__('Available Points')) . ' : '; ?>
-                    <?= $pointSearchResult['availablePoint']; ?>
-                </div>
-                <div class="pos-customer-expire-points">
-                    <?= $block->escapeHtml(__('Expire Points')) . ' : '; ?>
-                    <?= $pointSearchResult['expirePoint']; ?>
-                </div>
-                <div class="pos-customer-expireDate">
-                    <?= $block->escapeHtml(__('Expiry Date')) . ' : '; ?>
-                    <?= $pointSearchResult['expireDate']; ?>
-                </div>
-            </div>
-        <?php else : ?>
-            <div class="message info empty">
-                <span><?= $block->escapeHtml(__('Customer Points Info is not Exist')) ?></span>
-            </div>
-        <?php endif ?>
+            <?php endif ?>
+        </div>
     </div>
 </div>
 <div class="points-integration"
-     data-mage-init='{"mage/tabs": {"openedState": "active", "animate": {"duration": 100}, "active": 1, "disabledState": "disabled"}}'>
+     data-mage-init='{"mage/tabs": {"openedState": "active", "animate": {"duration": 100}, "disabledState": "disabled"}}'>
     <?= $block->getChildHtml(); ?>
 </div>
