@@ -31,6 +31,8 @@ class Config
 
     const SSL_VERIFICATION_CHECK = 'points_integration/general/ssl_verification';
 
+    const POINTS_INTEGRATION_ACTIVE_CHECK = 'points_integration/general/active';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -49,6 +51,11 @@ class Config
     public function getValue($path, $type, $storeId)
     {
         return $this->scopeConfig->getValue($path, $type, $storeId);
+    }
+
+    public function getActive($websiteId)
+    {
+        return $this->getValue(self::POINTS_INTEGRATION_ACTIVE_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
     }
 
     public function getPosUrl($websiteId)

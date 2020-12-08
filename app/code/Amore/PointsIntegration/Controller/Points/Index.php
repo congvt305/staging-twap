@@ -9,6 +9,7 @@
 namespace Amore\PointsIntegration\Controller\Points;
 
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
+use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
@@ -21,6 +22,10 @@ class Index extends AbstractController
      * @var CustomerPointsSearch
      */
     private $customerPointsSearch;
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * Index constructor.
@@ -28,20 +33,25 @@ class Index extends AbstractController
      * @param Session $customerSession
      * @param PageFactory $resultPageFactory
      * @param CustomerPointsSearch $customerPointsSearch
+     * @param Config $config
      */
     public function __construct(
         Context $context,
         Session $customerSession,
         PageFactory $resultPageFactory,
-        CustomerPointsSearch $customerPointsSearch
+        CustomerPointsSearch $customerPointsSearch,
+        Config $config
     ) {
         parent::__construct($context, $customerSession, $resultPageFactory);
         $this->customerPointsSearch = $customerPointsSearch;
+        $this->config = $config;
     }
 
     public function execute()
     {
-        if (!$this->customerSession->isLoggedIn()) {
+        $customer = $this->getCustomer();
+        $active = $this->config->getActive($customer->getWebsiteId());
+        if (!$this->customerSession->isLoggedIn() || !$active) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('customer/account/login');
             return $resultRedirect;
