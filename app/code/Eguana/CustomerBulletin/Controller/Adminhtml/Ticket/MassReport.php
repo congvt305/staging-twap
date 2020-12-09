@@ -16,7 +16,6 @@ use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
-use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Response\Http\FileFactory;
 use Magento\Framework\App\ResponseInterface as ResponseInterfaceAlias;
 use Magento\Framework\Controller\ResultFactory;
@@ -24,6 +23,9 @@ use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Filesystem\Directory\WriteInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\Ui\Component\MassAction\Filter;
 use Magento\User\Model\UserFactory;
 use Psr\Log\LoggerInterface;
@@ -86,6 +88,11 @@ class MassReport extends Action
     private $storeManagerInterface;
 
     /**
+     * @var TimezoneInterface
+     */
+    private $timezone;
+
+    /**
      * MassReport constructor.
      *
      * @param Context $context
@@ -99,6 +106,7 @@ class MassReport extends Action
      * @param Filesystem $filesystem
      * @param NoteCollectionFactory $noteCollectionFactory
      * @param CollectionFactory $collectionFactory
+     * @param TimezoneInterface $timezone
      * @throws \Magento\Framework\Exception\FileSystemException
      */
     public function __construct(
@@ -112,7 +120,8 @@ class MassReport extends Action
         FileFactory $fileFactory,
         Filesystem $filesystem,
         NoteCollectionFactory $noteCollectionFactory,
-        CollectionFactory $collectionFactory
+        CollectionFactory $collectionFactory,
+        TimezoneInterface $timezone
     ) {
         $this->logger = $logger;
         $this->storeManagerInterface = $storeManagerInterface;
@@ -123,12 +132,13 @@ class MassReport extends Action
         $this->date = $date;
         $this->customerRepository = $customerRepository;
         $this->collectionFactory = $collectionFactory;
+        $this->timezone = $timezone;
         $this->directory = $filesystem->getDirectoryWrite(DirectoryList::VAR_DIR);
         parent::__construct($context);
     }
 
     /**
-     * Execute action to delete news
+     * Execute action to export ticket
      *
      * @return Redirect|ResponseInterfaceAlias|ResultInterfaceAlias
      */
@@ -143,7 +153,7 @@ class MassReport extends Action
             $stream = $this->directory->openFile($filepath, 'w+');
             $stream->lock();
             $columns = ['ID','Customer name','Subject','Category','Store View','Status',
-                'Created Time','Modified Time','Note Status','Note'];
+                'Created Time','Modified Time','Ticket Message','Note Status','Note'];
             foreach ($columns as $column) {
                 $header[] = $column;
             }
@@ -156,11 +166,12 @@ class MassReport extends Action
                 $itemData[] = $ticket->getData('category');
                 $itemData[] = $this->getStoreViewName($ticket->getData('store_id'));
                 $itemData[] = $this->getStatus($ticket->getData('status'));
-                $itemData[] = $this->getCreationTime($ticket->getData('creation_time'));
-                $itemData[] = $this->getCreationTime($ticket->getData('update_time'));
+                $itemData[] = $this->getCreationTime($ticket->getData('creation_time'), $ticket->getData('store_id'));
+                $itemData[] = $this->getCreationTime($ticket->getData('update_time'), $ticket->getData('store_id'));
+                $itemData[] = $ticket->getData('message');
                 $itemData[] = 'Customer : ' . $this->getNoteStatus($ticket->getData('is_read_customer')) . "\r\n" .
                     'Admin : ' . $this->getNoteStatus($ticket->getData('is_read_admin'));
-                $itemData[] = $this->getNoteCollection($ticket->getData('ticket_id'));
+                $itemData[] = $this->getNoteCollection($ticket->getData('ticket_id'), $ticket->getData('store_id'));
 
                 $stream->writeCsv($itemData);
             }
@@ -201,7 +212,7 @@ class MassReport extends Action
      * @param $ticket_id
      * @return string
      */
-    public function getNoteCollection($ticket_id)
+    public function getNoteCollection($ticket_id, $storeId)
     {
         $noteCollection = $this->noteCollectionFactory->create();
         $collection = $noteCollection->addFieldToFilter('ticket_id', [ 'eq' => [$ticket_id]]);
@@ -214,10 +225,11 @@ class MassReport extends Action
                 $name = $this->getCustomerName($note['user_id']);
             }
             if (empty($notes)) {
-                $notes = $this->getCreationTime($note['creation_time']) . ' ' . $name . ' : ' . $note['note_message'];
+                $notes = $this->getCreationTime($note['creation_time'], $storeId)
+                    . ' ' . $name . ' : ' . $note['note_message'];
             } else {
-                $notes = $notes . "\r\n" . $this->getCreationTime($note['creation_time']) . ' ' . $name .
-                    ' : ' . $note['note_message'];
+                $notes = $notes . "\r\n" . $this->getCreationTime($note['creation_time'], $storeId)
+                    . ' ' . $name . ' : ' . $note['note_message'];
             }
         }
         return $notes;
@@ -257,13 +269,19 @@ class MassReport extends Action
      * get time from creation date time
      *
      * @param $dateTime
+     * @param $storeId
      * @return string
      */
-    public function getCreationTime($dateTime)
+    private function getCreationTime($dateTime, $storeId)
     {
-        $time = $this->date->date('H:m A', strtotime($dateTime));
-        $am = explode(" ", $time);
-        return $dateTime . ' ' . $am[1];
+        $defaultTimeZone = $this->timezone->getConfigTimezone(ScopeInterface::SCOPE_STORE, $storeId);
+        $formatedDate = $this->timezone->formatDateTime($dateTime, 3, 3, null, $defaultTimeZone);
+        $search = ', ';
+        if (strpos($formatedDate, $search) === false) {
+            $search = ' ';
+        }
+        $exp = explode($search, $formatedDate);
+        return $this->date->date('Y-m-d', $exp[0]) . ' ' . $exp[1];
     }
 
     /**

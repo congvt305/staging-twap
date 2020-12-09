@@ -46,7 +46,10 @@ $ticket = $viewmodel->getTicketDetail();
                         </th>
                         <td>
                             <span id="quote_salesrep">
-                                <?= $block->escapeHtml($viewmodel->getCreationTime($ticket->getCreationTime()));?>
+                                <?=
+                                $block->escapeHtml(
+                                    $viewmodel->getCreationTime($ticket->getCreationTime(), $ticket->getStoreId())
+                                ) ?>
                             </span>
                         </td>
                     </tr>
