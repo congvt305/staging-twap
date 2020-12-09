@@ -82,6 +82,8 @@ class Request
                 $response = $this->curl->getBody();
 
                 if ($this->config->getLoggerActiveCheck($websiteId)) {
+                    $this->logger->info("========== REQUEST ==========");
+                    $this->logger->info($this->json->serialize($requestData));
                     $this->logger->info("========== RESPONSE ==========");
                     $this->logger->info($response);
                 }
