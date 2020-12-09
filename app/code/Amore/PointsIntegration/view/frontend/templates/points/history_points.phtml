@@ -9,7 +9,7 @@
 $pointsHistoryResult = $block->getPointsHistoryResult();
 ?>
 <div class="item title" data-role="collapsible">
-    <a class="switch" data-toggle="trigger" href="#tab-3">TAB 3</a>
+    <a class="switch" data-toggle="trigger" href="#tab-3"><?= $block->escapeHtml(__('History of Point Reward'))?></a>
 </div>
 <div id="tab-3" class="item content" data-role="content">
     <?php if (count($pointsHistoryResult) > 0) : ?>

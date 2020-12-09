@@ -10,7 +10,7 @@
 $membershipProgramCmsBlock = $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('point_policy_block')->toHtml();
 ?>
 <div class="item title" data-role="collapsible">
-    <a class="switch" data-toggle="trigger" href="#tab-1">TAB 1</a>
+    <a class="switch" data-toggle="trigger" href="#tab-1"><?= $block->escapeHtml(__('Introduction of Membership Program'))?></a>
 </div>
 <div id="tab-1" class="item content" data-role="content">
     <?php if ($membershipProgramCmsBlock): ?>
