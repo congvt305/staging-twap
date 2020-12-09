@@ -25,8 +25,10 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\User\Model\UserFactory;
 use Psr\Log\LoggerInterface;
@@ -133,6 +135,11 @@ class Detail implements ArgumentInterface
     private $logger;
 
     /**
+     * @var TimezoneInterface
+     */
+    private $timezone;
+
+    /**
      * Detail constructor.
      *
      * @param CollectionFactory $ticketCollectionFactory
@@ -152,6 +159,7 @@ class Detail implements ArgumentInterface
      * @param RequestInterface $request
      * @param NoteCollectionFactory $noteCollectionFactory
      * @param LoggerInterface $logger
+     * @param TimezoneInterface $timezone
      */
     public function __construct(
         CollectionFactory $ticketCollectionFactory,
@@ -170,7 +178,8 @@ class Detail implements ArgumentInterface
         UserFactory $userFactory,
         RequestInterface $request,
         NoteCollectionFactory $noteCollectionFactory,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        TimezoneInterface $timezone
     ) {
         $this->ticketCollectionFactory = $ticketCollectionFactory;
         $this->helperData = $helperData;
@@ -190,6 +199,7 @@ class Detail implements ArgumentInterface
         $this->request = $request;
         $this->filterProvider = $filterProvider;
         $this->logger = $logger;
+        $this->timezone = $timezone;
     }
     /**
      * get note of Subject
@@ -349,13 +359,19 @@ class Detail implements ArgumentInterface
      * get time from creation date time
      *
      * @param $dateTime
+     * @param $storeId
      * @return string
      */
-    public function getCreationTime($dateTime)
+    public function getCreationTime($dateTime, $storeId)
     {
-        $time = $this->date->date('H:m A', strtotime($dateTime));
-        $am = explode(" ", $time);
-        return $dateTime . ' ' . $am[1];
+        $defaultTimeZone = $this->timezone->getConfigTimezone(ScopeInterface::SCOPE_STORE, $storeId);
+        $formatedDate = $this->timezone->formatDateTime($dateTime, 3, 3, null, $defaultTimeZone);
+        $search = ', ';
+        if (strpos($formatedDate, $search) === false) {
+            $search = ' ';
+        }
+        $exp = explode($search, $formatedDate);
+        return $this->date->date('Y-m-d', $exp[0]) . ' ' . (isset($exp[1]) ? $exp[1] : '');
     }
 
     /**

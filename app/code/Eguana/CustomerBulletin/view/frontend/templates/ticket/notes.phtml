@@ -31,7 +31,11 @@ $notes = $block->getNoteCollection();
                 <div class="info-box">
                     <span>
                         <?= $block->escapeHtml($viewmodel->getAdminName());?>
-                        <?= $block->escapeHtml($viewmodel->getCreationTime($note['creation_time']));?>
+                        <?=
+                            $block->escapeHtml(
+                                $viewmodel->getCreationTime($note['creation_time'], $ticket->getStoreId())
+                            )
+                        ?>
                     </span>
                 </div>
             </div>
@@ -56,7 +60,11 @@ $notes = $block->getNoteCollection();
                 <div class="info-box">
                     <span>
                         <?= $block->escapeHtml($viewmodel->getCustomerName($note['user_id']));?>
-                        <?= $block->escapeHtml($viewmodel->getCreationTime($note['creation_time'])); ?>
+                        <?=
+                            $block->escapeHtml(
+                                $viewmodel->getCreationTime($note['creation_time'], $ticket->getStoreId())
+                            )
+                        ?>
                     </span>
                 </div>
             </div>
