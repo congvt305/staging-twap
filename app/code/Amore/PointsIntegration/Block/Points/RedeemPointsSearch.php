@@ -8,6 +8,8 @@
 
 namespace Amore\PointsIntegration\Block\Points;
 
+use Amore\PointsIntegration\Logger\Logger;
+use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Data\CollectionFactory;
 use Magento\Framework\View\Element\Template;
@@ -24,16 +26,20 @@ class RedeemPointsSearch extends AbstractPointsBlock
      * RedeemPointsSearch constructor.
      * @param Template\Context $context
      * @param Session $customerSession
+     * @param Config $config
+     * @param Logger $logger
      * @param \Amore\PointsIntegration\Model\RedeemPointsSearch $redeemPointsSearch
      * @param array $data
      */
     public function __construct(
         Template\Context $context,
         Session $customerSession,
+        Config $config,
+        Logger $logger,
         \Amore\PointsIntegration\Model\RedeemPointsSearch $redeemPointsSearch,
         array $data = []
     ) {
-        parent::__construct($context, $customerSession, $data);
+        parent::__construct($context, $customerSession, $config, $logger, $data );
         $this->redeemPointsSearch = $redeemPointsSearch;
     }
 
@@ -41,6 +47,13 @@ class RedeemPointsSearch extends AbstractPointsBlock
     {
         $customer = $this->getCustomer();
 
-        return $this->redeemPointsSearch->getRedeemSearchResult($customer->getId(), $customer->getWebsiteId(), 1);
+        $redeemPointsResult = $this->redeemPointsSearch->getRedeemSearchResult($customer->getId(), $customer->getWebsiteId(), 1);
+
+        if ($this->config->getLoggerActiveCheck($customer->getWebsiteId())) {
+            $this->logger->info("REDEMPTION POINTS INFO");
+            $this->logger->debug($redeemPointsResult);
+        }
+
+        return $redeemPointsResult;
     }
 }

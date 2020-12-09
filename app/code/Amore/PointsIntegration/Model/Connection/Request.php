@@ -12,7 +12,7 @@ use Amore\PointsIntegration\Exception\PosPointsException;
 use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Serialize\Serializer\Json;
-use Psr\Log\LoggerInterface;
+use Amore\PointsIntegration\Logger\Logger;
 
 class Request
 {
@@ -29,7 +29,7 @@ class Request
      */
     private $config;
     /**
-     * @var LoggerInterface
+     * @var Logger
      */
     private $logger;
 
@@ -38,13 +38,13 @@ class Request
      * @param Curl $curl
      * @param Json $json
      * @param Config $config
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      */
     public function __construct(
         Curl $curl,
         Json $json,
         Config $config,
-        LoggerInterface $logger
+        Logger $logger
     ) {
         $this->curl = $curl;
         $this->json = $json;
@@ -63,6 +63,11 @@ class Request
         $url = $this->getUrl($type, $websiteId);
         $active = $this->config->getActive($websiteId);
 
+        if ($this->config->getLoggerActiveCheck($websiteId)) {
+            $this->logger->info("BEFORE SEND REQUEST");
+            $this->logger->debug($requestData);
+        }
+
         if (!empty($url) && $active) {
             try {
                 $this->curl->addHeader('Content-Type', 'application/json');
@@ -76,12 +81,18 @@ class Request
 
                 $response = $this->curl->getBody();
 
+                if ($this->config->getLoggerActiveCheck($websiteId)) {
+                    $this->logger->info("========== RESPONSE ==========");
+                    $this->logger->info($response);
+                }
+
                 return $this->json->unserialize($response);
             } catch (PosPointsException $exception) {
                 $this->logger->error($exception->getMessage());
                 return [];
             }
         } else {
+            $this->logger->info("URL IS EMPTY OR MODULE INACTIVE");
             return [];
         }
     }
