@@ -6,8 +6,7 @@ var config = {
     "map": {
         '*': {
             redeemSearch: 'Amore_PointsIntegration/js/points/redeem-search',
-            historySearch : 'Amore_PointsIntegration/js/points/history-search',
-            pointsMenu: 'Amore_PointsIntegration/js/points/points-menu',
+            historySearch : 'Amore_PointsIntegration/js/points/history-search'
         }
     }
 };
