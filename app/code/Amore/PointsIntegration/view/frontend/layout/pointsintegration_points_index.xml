@@ -13,6 +13,31 @@
                 <argument translate="true" name="title" xsi:type="string">Customer Points</argument>
             </action>
         </referenceBlock>
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">My Account</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">My Account</item>
+                    <item name="label" xsi:type="string" translate="true">My Account</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}customer/account/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Customer Points</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Customer Points</item>
+                    <item name="label" xsi:type="string" translate="true">Customer Points</item>
+                </argument>
+            </action>
+        </referenceBlock>
         <referenceContainer name="content">
             <block class="Amore\PointsIntegration\Block\Points\Index" name="member.points" template="Amore_PointsIntegration::points/member_points.phtml" cacheable="false" />
             <block class="Magento\Framework\View\Element\Template" name="member.points.tab" template="Amore_PointsIntegration::points/member_points_tab.phtml" cacheable="false">
