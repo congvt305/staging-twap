@@ -8,6 +8,8 @@
 
 namespace Amore\PointsIntegration\Block\Points;
 
+use Amore\PointsIntegration\Logger\Logger;
+use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Customer\Model\Session;
 use Magento\Framework\View\Element\Template;
 
@@ -22,16 +24,20 @@ class PointsHistorySearch extends AbstractPointsBlock
      * PointsHistorySearch constructor.
      * @param Template\Context $context
      * @param Session $customerSession
+     * @param Config $config
+     * @param Logger $logger
      * @param \Amore\PointsIntegration\Model\PointsHistorySearch $pointsHistorySearch
      * @param array $data
      */
     public function __construct(
         Template\Context $context,
         Session $customerSession,
+        Config $config,
+        Logger $logger,
         \Amore\PointsIntegration\Model\PointsHistorySearch $pointsHistorySearch,
         array $data = []
     ) {
-        parent::__construct($context, $customerSession, $data);
+        parent::__construct($context, $customerSession, $config, $logger, $data);
         $this->pointsHistorySearch = $pointsHistorySearch;
     }
 
@@ -39,6 +45,13 @@ class PointsHistorySearch extends AbstractPointsBlock
     {
         $customer = $this->getCustomer();
 
-        return $this->pointsHistorySearch->getPointsHistoryResult($customer->getId(), $customer->getWebsiteId(), 1);
+        $pointsHistoryResult = $this->pointsHistorySearch->getPointsHistoryResult($customer->getId(), $customer->getWebsiteId(), 1);
+
+        if ($this->config->getLoggerActiveCheck($customer->getWebsiteId())) {
+            $this->logger->info("REDEMPTION POINTS INFO");
+            $this->logger->debug($pointsHistoryResult);
+        }
+
+        return $pointsHistoryResult;
     }
 }
