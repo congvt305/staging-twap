@@ -8,10 +8,11 @@
 
 namespace Amore\PointsIntegration\Model\Connection;
 
-
+use Amore\PointsIntegration\Exception\PosPointsException;
 use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Serialize\Serializer\Json;
+use Psr\Log\LoggerInterface;
 
 class Request
 {
@@ -27,21 +28,28 @@ class Request
      * @var Config
      */
     private $config;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * Request constructor.
      * @param Curl $curl
      * @param Json $json
      * @param Config $config
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Curl $curl,
         Json $json,
-        Config $config
+        Config $config,
+        LoggerInterface $logger
     ) {
         $this->curl = $curl;
         $this->json = $json;
         $this->config = $config;
+        $this->logger = $logger;
     }
 
     /**
@@ -56,19 +64,23 @@ class Request
         $active = $this->config->getActive($websiteId);
 
         if (!empty($url) && $active) {
+            try {
+                $this->curl->addHeader('Content-Type', 'application/json');
 
-            $this->curl->addHeader('Content-Type', 'application/json');
+                if ($this->config->getSSLVerification()) {
+                    $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                    $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+                }
 
-            if ($this->config->getSSLVerification()) {
-                $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
-                $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+                $this->curl->post($url, $this->json->serialize($requestData));
+
+                $response = $this->curl->getBody();
+
+                return $this->json->unserialize($response);
+            } catch (PosPointsException $exception) {
+                $this->logger->error($exception->getMessage());
+                return [];
             }
-
-            $this->curl->post($url, $requestData);
-
-            $response = $this->curl->getBody();
-
-            return $this->json->unserialize($response);
         } else {
             return [];
         }
