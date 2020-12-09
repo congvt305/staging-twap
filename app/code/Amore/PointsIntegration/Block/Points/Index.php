@@ -11,6 +11,7 @@ namespace Amore\PointsIntegration\Block\Points;
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
 use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Customer\Model\Session;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
 use Amore\PointsIntegration\Logger\Logger;
 
@@ -27,6 +28,7 @@ class Index extends AbstractPointsBlock
      * @param Session $customerSession
      * @param Config $config
      * @param Logger $logger
+     * @param Json $json
      * @param CustomerPointsSearch $customerPointsSearch
      * @param array $data
      */
@@ -35,10 +37,11 @@ class Index extends AbstractPointsBlock
         Session $customerSession,
         Config $config,
         Logger $logger,
+        Json $json,
         CustomerPointsSearch $customerPointsSearch,
         array $data = []
     ) {
-        parent::__construct($context, $customerSession, $config, $logger, $data);
+        parent::__construct($context, $customerSession, $config, $logger, $json, $data);
         $this->customerPointsSearch = $customerPointsSearch;
     }
 
@@ -52,6 +55,10 @@ class Index extends AbstractPointsBlock
             $this->logger->debug($customerPointsInfo);
         }
 
-        return $customerPointsInfo;
+        if ($this->responseValidation($customerPointsInfo)) {
+            return $customerPointsInfo;
+        } else {
+            return [];
+        }
     }
 }

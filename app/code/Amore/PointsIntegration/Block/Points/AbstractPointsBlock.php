@@ -12,6 +12,7 @@ use Amore\PointsIntegration\Logger\Logger;
 use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Customer\Model\Session;
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
 
 abstract class AbstractPointsBlock extends Template
@@ -28,6 +29,10 @@ abstract class AbstractPointsBlock extends Template
      * @var Logger
      */
     protected $logger;
+    /**
+     * @var Json
+     */
+    private $json;
 
     /**
      * Index constructor.
@@ -35,6 +40,7 @@ abstract class AbstractPointsBlock extends Template
      * @param Session $customerSession
      * @param Config $config
      * @param Logger $logger
+     * @param Json $json
      * @param array $data
      */
     public function __construct(
@@ -42,16 +48,27 @@ abstract class AbstractPointsBlock extends Template
         Session $customerSession,
         Config $config,
         Logger $logger,
+        Json $json,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->customerSession = $customerSession;
         $this->config = $config;
         $this->logger = $logger;
+        $this->json = $json;
     }
 
     public function getCustomer()
     {
         return $this->customerSession->getCustomer();
+    }
+
+    public function responseValidation($response)
+    {
+        if (isset($response['statusCode']) && $response['statusCode'] == '200') {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -12,6 +12,7 @@ use Amore\PointsIntegration\Logger\Logger;
 use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Data\CollectionFactory;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
 use Magento\Theme\Block\Html\Pager;
 
@@ -28,6 +29,7 @@ class RedeemPointsSearch extends AbstractPointsBlock
      * @param Session $customerSession
      * @param Config $config
      * @param Logger $logger
+     * @param Json $json
      * @param \Amore\PointsIntegration\Model\RedeemPointsSearch $redeemPointsSearch
      * @param array $data
      */
@@ -36,10 +38,11 @@ class RedeemPointsSearch extends AbstractPointsBlock
         Session $customerSession,
         Config $config,
         Logger $logger,
+        Json $json,
         \Amore\PointsIntegration\Model\RedeemPointsSearch $redeemPointsSearch,
         array $data = []
     ) {
-        parent::__construct($context, $customerSession, $config, $logger, $data );
+        parent::__construct($context, $customerSession, $config, $logger, $json, $data);
         $this->redeemPointsSearch = $redeemPointsSearch;
     }
 
@@ -54,6 +57,10 @@ class RedeemPointsSearch extends AbstractPointsBlock
             $this->logger->debug($redeemPointsResult);
         }
 
-        return $redeemPointsResult;
+        if ($this->responseValidation($redeemPointsResult)) {
+            return $redeemPointsResult;
+        } else {
+            return [];
+        }
     }
 }
