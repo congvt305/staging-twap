@@ -18,8 +18,12 @@
                     <label>Enable Extension</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="ssl_verification" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" >
+                <field id="ssl_verification" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" >
                     <label>SSL Verification</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="logging" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" >
+                    <label>Enable Logging</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>

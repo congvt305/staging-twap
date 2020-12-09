@@ -33,6 +33,8 @@ class Config
 
     const POINTS_INTEGRATION_ACTIVE_CHECK = 'points_integration/general/active';
 
+    const LOGGER_ACTIVE_CHECK = 'points_integration/general/logging';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -56,6 +58,11 @@ class Config
     public function getActive($websiteId)
     {
         return $this->getValue(self::POINTS_INTEGRATION_ACTIVE_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+    }
+
+    public function getLoggerActiveCheck($websiteId)
+    {
+        return $this->getValue(self::LOGGER_ACTIVE_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
     }
 
     public function getPosUrl($websiteId)
