@@ -61,6 +61,10 @@ $storeCode = $block->getCurrentStoreCode();
                            aria-required="true">
                 </div>
             </div>
+            <?php if ($block->getSocialMediaType()): ?>
+                <?php $_lineMessagesAgreement = $block->getLayout()->createBlock(\Eguana\SocialLogin\Block\Widget\CheckBox::class, 'line_messages_agreement', ['data'=>['attribute_code'=>'line_messages_agreement', 'form_value'=> '']]) ?>
+                <?= $_lineMessagesAgreement->toHtml() ?>
+            <?php endif; ?>
             <div class="field choice member-legend">
                 <div class="control">
                     <label class="label" for="not-a-member">
@@ -90,8 +94,8 @@ $storeCode = $block->getCurrentStoreCode();
     "*": {
         "createCustomerForm": {
             "url":"<?= $block->escapeUrl($block->getFormAction()) ?>",
-            "customerurl":"<?= $block->escapeUrl($block->getUrl('customer/account/login', ['_current' => true, '_use_rewrite' => true])) ?>",
-            "registrationurl":"<?= $block->escapeUrl($block->getUrl('customer/account/create', ['_current' => true, '_use_rewrite' => true])) ?>"
+            "customerurl":"<?= $block->escapeUrl($block->getUrl('customer/account/login')) ?>",
+            "registrationurl":"<?= $block->escapeUrl($block->getUrl('customer/account/create')) ?>"
          }
     }
 }

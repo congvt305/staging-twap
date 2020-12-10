@@ -562,6 +562,7 @@ return [
         'Eguana_Login' => 1,
         'Eguana_Magazine' => 1,
         'Eguana_SocialLogin' => 1,
+        'Eguana_LineMessage' => 1,
         'Eguana_NameSorter' => 1,
         'Eguana_NewsBoard' => 1,
         'Eguana_OrderDeliveryMessage' => 1,

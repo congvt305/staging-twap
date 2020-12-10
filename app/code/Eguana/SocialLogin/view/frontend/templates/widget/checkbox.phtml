@@ -1,0 +1,14 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: umer
+ * Date: 18/11/20
+ * Time: 5:50 PM
+ */
+?>
+<div class="checkbox-wrapper field <?= $block->getAttributeCode() ?><?= $block->isRequired() ? ' required' : ''?>">
+    <input type="checkbox" name="<?= $block->getAttributeCode() ?>_checkbox" class="<?= $block->getAttributeCode() ?>_checkbox"/>
+    <label class="<?= $block->getAttributeCode().'-label' ?>" for="<?= $block->escapeHtmlAttr($block->getFieldId($block->getAttributeCode())) ?>"><span><?= $block->escapeHtml($block->getAgreementText()) ?></span></label>
+</div>

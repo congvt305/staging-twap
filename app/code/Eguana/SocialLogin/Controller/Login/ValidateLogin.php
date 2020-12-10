@@ -106,7 +106,12 @@ class ValidateLogin extends Action
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $this->socialLoginModel->getCoreSession()->start();
         if ($this->socialLoginModel->getCoreSession()->getData('social_user_data')) {
-            $url = $this->_url->getUrl('sociallogin/login/createcustomer');
+            $socialData = $this->socialLoginModel->getCoreSession()->getData('social_user_data');
+            $type = null;
+            if (isset($socialData['socialmedia_type'])) {
+                $type = $socialData['socialmedia_type'];
+            }
+            $url = $this->_url->getUrl('sociallogin/login/createcustomer', ['type'=> $type]);
             $response = [
                 'errors' => false,
                 'url'   => $url
