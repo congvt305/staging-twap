@@ -1,0 +1,151 @@
+Name,名称
+Add,加
+Back,背部
+"Delete Ticket","删除工单"
+Reset,重启
+Save,救
+"Save & Duplicate","保存并复制"
+"Save & Close","保存并关闭"
+Send,发送
+"New Ticket","新票"
+Home,家
+"Ticket Subject","票务主题"
+"Go to Home Page","去首页"
+"My Account","我的帐户"
+"Support Ticket","支持票"
+"Add new ticket","添加新票"
+"My Tickets","我的票"
+"Current Tickets","当前门票"
+"Run Now","现在跑步"
+"Something went wrong while saving the ticket.","保存票时出了点问题."
+"The ticket has been deleted.","票证已被删除."
+"The ticket no longer exists.","票不再存在."
+"There was a problem while deleting the data","删除数据时出现问题"
+"We can't find the ticket to delete.","我们找不到要删除的票证."
+"Ticket #%1","票证＃％1"
+"Edit Ticket","编辑票证"
+"Manage Tickets","管理门票"
+"You saved this data.","您保存了此数据."
+"Something went wrong while saving the data.","保存数据时出了点问题."
+"Please Login Yourself","请登录"
+"Something went wrong while saving the note.","保存便笺时出了点问题."
+"Email hase been successfully sent to Customer","电子邮件已成功发送给客户"
+"Email hase been successfully sent to Administation","电子邮件已成功发送到“管理”"
+"Could not save the data: %1","无法保存数据：％1"
+"Requested note doesn't exist","要求的记事不存在"
+Open,打开
+Hold,保持
+Clos,克洛斯
+Read,读
+Unread,未读
+Close,关
+"Requested ticket doesn't exist","请求的票证不存在"
+"Unable to remove data %1","无法删除数据％1"
+Detail,详情
+Delete,删除
+"Delete ""Ticket""","删除“票”"
+"Are you sure you want to delete the Ticket?","您确定要删除故障单吗？"
+"All Store Views","所有商店视图"
+"Sorry There is no Ticket with Id ","抱歉，没有带ID的票证"
+"Against Your Account","对您的帐户"
+"Ticket & Notes Information","票证信息"
+"Ticket # %1","机票＃％1"
+Category,类别
+Requester,请求者
+Created,已建立
+Status,状态
+"Ticket Information","票务信息"
+Message,信息
+Attchments,附件
+"The information in this tab has been changed.","此选项卡中的信息已更改."
+"This tab contains invalid data. Please resolve this before saving.","此选项卡包含无效数据。请先解决此问题，然后再保存."
+Loading...,正在加载...
+Notes,笔记
+"Add your Note","添加您的笔记"
+"Attach file","附加档案"
+"Notes Information","注意事项"
+"Subject","学科"
+File,文件
+Submit,提交
+"FAQ!","常问问题！"
+"Note Status","笔记状态"
+Action,行动
+view,视图
+"You have not Created a Ticket.","您尚未创建故障单."
+"Information","信息"
+"Add Note","加注"
+"Close this ticket","关闭这张票"
+create,创建
+Cancel,取消
+"Hi ","您好 "
+"Your ticket for %ticket_subject has been close on %time at %phy_store. If you have questions about your ticket, you can email us at %email.","您的 ％ticket_subject 门票已于 ％phy_store 在 ％time 上关闭。如果您对门票有疑问，可以通过 ％email 向我们发送电子邮件."
+"Have a lovely day!","祝你有个愉快的一天!"
+"Click ","请点击 "
+" to view Ticket"," 查看门票"
+here,here
+"Your Amore Team","您的爱茉莉团队"
+"You have new  reply on Ticket from admin","您对管理员的票证有新的回复"
+"Your Ticket for %ticket_subject has been open on %time at %phy_store. If you have questions about your ticket, you can email us at %email.","您的 ％ticket_subject 门票已于％phy_store在％time上关闭。如果您对门票有疑问，可以通过％email向我们发送电子邮件."
+"Thank you for the reply of %ticket_subject Ticket on %time at %phy_store . If you have questions about your ticket, you can email us at %email.","感谢您在％phy_store的％time上对％ticket_subject Ticket的答复。如果您对门票有疑问，可以通过％email向我们发送电子邮件."
+"Hi Admin,","Hi Admin,"
+"The ticket %ticket_id has been close with subject %ticket_subject on %time at %phy_store from %customer.","票证％ticket_id已与％customer的％phy_store上的％time主题％ticket_subject关闭."
+"Ticket Status : Closed","票务状态：已关闭"
+"You have new ticket about %ticket_subject on %time at %phy_store from %customer.Please reply the customer query","您有％customer于％phy_store在％time上有关于％ticket_subject的新票。请回复客户查询"
+"Ticket Status : Open","门票状态：开放"
+"You have new reply on %ticket_id ticket about %ticket_subject on %time at %phy_store from %customer.Please reply the customer query.","您对％customer在％phy_store的％ticket_subject在％time上的％ticket_subject有新的答复。请回复客户查询."
+"Ticket Status : Hold","票务状态：持有"
+Proceed,继续
+"Your file could not be uploaded. Please try again.","您的文件无法上传。请再试一次."
+"You cannot attach more than ten files per note.","每个便笺最多只能附加十个文件."
+"Cannot Upload File","无法上传文件"
+"The maximum allowed file size is %1 MB. Please select a different file.","允许的最大文件大小为 ％1 MB。请选择其他文件."
+"The maximum file name length is %1","文件名的最大长度为 %1"
+"characters. The only special symbols that are allowed in the file name are dash (-) and underscore (_).","个字符 文件名中唯一允许使用的特殊符号是破折号（-）和下划线（_）."
+%1,%1
+" is not an allowed file type. Please select a different file."," 不是允许的文件类型。请选择其他文件."
+"The maximum allowed file size is %1 .","允许的最大文件大小为 %1 ."
+"MB Please select a different file.","MB。请选择其他文件."
+"Allowed file formats:","允许的文件格式："
+"Ticket Support","票务支持"
+"Ticket Support Config","票证支持配置"
+"Ticket Configuration","票证配置"
+"Enable Feature","启用功能"
+"Email Sender","电邮寄件者"
+Categories,分类目录
+"File Types","文件类型"
+"File Size In Mbs","文件大小以Mbs为单位"
+"Clsoed Ticket Action Duration","清除票动作持续时间"
+"Staff and Customer Email Template Configuration","员工和客户电子邮件模板配置"
+"Send Email To Staff Automatically","自动向员工发送电子邮件"
+"Staff Emails","员工电子邮件"
+"Select email template for opening ticket","选择用于打开票证的电子邮件模板"
+Reply,回复
+"Select email template for hold Ticket","选择用于保留票证的电子邮件模板"
+"Select email template for close ticket","选择收据的电子邮件模板"
+"Send Email To Customer Automatically","自动发送电子邮件给客户"
+"Select email template for opning ticket","选择用于票证的电子邮件模板"
+"Select email template for hold ticket","选择机票的电子邮件模板"
+"Closing Ticket Configuration","闭票配置"
+"Close Ticket Cron Frequency","关票时间频率"
+"Cron Start Time","Cron开始时间"
+"A total of %1 record(s) have been deleted.","总共 ％1 个记录已被删除."
+"An error occurred while deleting record(s).","删除记录时发生错误."
+"A total of %1 ticket have been Open.","共有 ％1 张门票已公开."
+"An error occurred while opening selected ticket.","打开所选票证时发生错误."
+"A total of %1 ticket have been close.","共有 ％1 张门票已关闭."
+"An error occurred while closing ticket.","关闭票证时发生错误."
+"Are you sure you want to delete selected items?","您确定要删除所选项目吗？"
+"Delete items","删除项目"
+Re-Open,重新开放
+ID,ID
+"Customer Name","顾客姓名"
+"Store View","店铺检视"
+"Ticket Information","票务信息"
+"Created At","创建于"
+"Ticket List","门票清单"
+"Select Category","选择类别"
+"My Ticket View","我的車票詳細資料"
+"Checked our <a href=""%1"">FAQ</a> and still need help? Please send us a message using the form below.","查過我們的 <a href=""%1"">FAQ</a>還需要幫助嗎? 請用下面的表格向我們發信息。"
+"Your Ticket has been created!","您的票证已创建！"
+"--Select Category--","--选择类别--"
+"Click <a href=""%ticket_url"">here</a> to view the ticket","<a href=""%ticket_url"">按這裏看票</a>"

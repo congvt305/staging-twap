@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="points_integration" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1">
+            <class>separator-top</class>
+            <label>Points Integration</label>
+            <tab>amore_extensions_tab</tab>
+            <resource>Amore_PointsIntegration::pos</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
+                <label>General</label>
+                <field id="active" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" >
+                    <label>Enable Extension</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ssl_verification" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" >
+                    <label>SSL Verification</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="logging" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" >
+                    <label>Enable Logging</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="pos" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
+                <label>Pos Configuration</label>
+                <field id="url" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>URL</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="sales_organization_code" translate="label" type="text" sortOrder="60" showInWebsite="1">
+                    <label>Sales Organization Code</label>
+                </field>
+                <field id="sales_office_code" translate="label" type="text" sortOrder="70" showInWebsite="1">
+                    <label>Sales Office Code</label>
+                </field>
+                <field id="member_search" translate="label" type="text" sortOrder="51" showInDefault="1" showInWebsite="1">
+                    <label>Member Points Search Path</label>
+                </field>
+                <field id="redeem_search" translate="label" type="text" sortOrder="52" showInDefault="1" showInWebsite="1">
+                    <label>Points Redemption Search Path</label>
+                </field>
+                <field id="point_search" translate="label" type="text" sortOrder="53" showInDefault="1" showInWebsite="1">
+                    <label>Points History Search Path</label>
+                </field>
+                <field id="customer_order" translate="label" type="text" sortOrder="54" showInDefault="1" showInWebsite="1">
+                    <label>Member Order Path</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

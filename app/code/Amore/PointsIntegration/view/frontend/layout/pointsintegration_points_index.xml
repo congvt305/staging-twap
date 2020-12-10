@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">Customer Points</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">My Account</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">My Account</item>
+                    <item name="label" xsi:type="string" translate="true">My Account</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}customer/account/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Customer Points</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Customer Points</item>
+                    <item name="label" xsi:type="string" translate="true">Customer Points</item>
+                </argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Amore\PointsIntegration\Block\Points\Index" name="member.points" template="Amore_PointsIntegration::points/member_points.phtml" cacheable="false" />
+            <block class="Magento\Framework\View\Element\Template" name="member.points.tab" template="Amore_PointsIntegration::points/member_points_tab.phtml" cacheable="false">
+                <block class="Magento\Framework\View\Element\Template" name="membership.program.introduction.cms" template="Amore_PointsIntegration::points/membership_program_intro.phtml" />
+                <block class="Amore\PointsIntegration\Block\Points\RedeemPointsSearch" name="redeem.points" template="Amore_PointsIntegration::points/redeem_points.phtml" cacheable="false">
+                    <arguments>
+                        <argument name="redeem_view_model" xsi:type="object">Amore\PointsIntegration\ViewModel\Points\RedeemAjax</argument>
+                    </arguments>
+                </block>
+                <block class="Amore\PointsIntegration\Block\Points\PointsHistorySearch" name="points.history" template="Amore_PointsIntegration::points/history_points.phtml" cacheable="false">
+                    <arguments>
+                        <argument name="history_view_model" xsi:type="object">Amore\PointsIntegration\ViewModel\Points\HistoryAjax</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

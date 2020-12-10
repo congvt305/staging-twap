@@ -1,0 +1,85 @@
+{
+    "eguana_redemption": {
+        "column": {
+            "redemption_id": true,
+            "title": true,
+            "description": true,
+            "precautions": true,
+            "total_qty": true,
+            "cms_block": true,
+            "start_date": true,
+            "end_date": true,
+            "identifier": true,
+            "meta_title": true,
+            "meta_keywords": true,
+            "meta_description": true,
+            "image": true,
+            "is_active": true,
+            "creation_time": true,
+            "update_time": true
+        },
+        "index": {
+            "EGUANA_REDEMPTION_TITLE_IDENTIFIER_DESCRIPTION": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "eguana_redemption_store": {
+        "column": {
+            "redemption_id": true,
+            "store_id": true
+        },
+        "index": {
+            "EGUANA_REDEMPTION_STORE_STORE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_27DE799D04FD16219FD68CE1C1FEE64F": true,
+            "EGUANA_REDEMPTION_STORE_STORE_ID_STORE_STORE_ID": true
+        }
+    },
+    "eguana_redemption_counter": {
+        "column": {
+            "redemption_id": true,
+            "offline_store_id": true
+        },
+        "index": {
+            "EGUANA_REDEMPTION_COUNTER_OFFLINE_STORE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_DA95117B7DA8B552AB7D0B58B22F44C7": true,
+            "EGUANA_REDEMPTION_COUNTER_OFFLINE_STORE_ID_STOREINFO_ENTITY_ID": true
+        }
+    },
+    "eguana_redemption_user": {
+        "column": {
+            "entity_id": true,
+            "redemption_id": true,
+            "redeem_date": true,
+            "customer_name": true,
+            "email": true,
+            "telephone": true,
+            "counter_id": true,
+            "store_id": true,
+            "line_id": true,
+            "registration_date": true,
+            "status": true,
+            "token": true,
+            "utm_source": true,
+            "utm_medium": true,
+            "utm_content": true,
+            "creation_time": true,
+            "update_time": true
+        },
+        "index": {
+            "EGUANA_REDEMPTION_USER_CUSTOMER_NAME": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_E514AE1E79FB0B3796BE2EC5D2BC4A6F": true,
+            "EGUANA_REDEMPTION_USER_COUNTER_ID_STOREINFO_ENTITY_ID": true
+        }
+    }
+}

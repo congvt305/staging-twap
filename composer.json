@@ -23,8 +23,9 @@
         "dotmailer/dotmailer-magento2-extension-enterprise": "1.0.7 as 1.0.2",
         "magento/magento-cloud-metapackage": ">=2.3.5 <2.3.6",
         "magento/module-baler": "dev-master",
-        "magento/module-page-builder-product-recommendations": "^1.0",
-        "magento/product-recommendations": "^3.0"
+        "magento/module-page-builder-product-recommendations": "^1.1",
+        "magento/module-visual-product-recommendations": "^1.1",
+        "magento/product-recommendations": "^3.1"
     },
     "suggest": {
         "ext-pcntl": "Need for run processes in parallel mode"

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!--
+/**
+    * @author Eguana Team
+    * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+    * Created by PhpStorm
+    * User: bilalyounas
+    * Date: 17/9/20
+    * Time: 05:32 PM
+    */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>News</title>
+    </head>
+    <body>
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Brand</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Brand</item>
+                    <item name="label" xsi:type="string" translate="true">Brand</item>
+                    <item name="link" xsi:type="string">brand.html</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">News</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">News</item>
+                    <item name="label" xsi:type="string" translate="true">News</item>
+                </argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Eguana\NewsBoard\Block\Index\Index" name="ticket_list" template="Eguana_NewsBoard::list.phtml">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

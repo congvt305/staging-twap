@@ -46,9 +46,9 @@ define(
                     'additional_data': {
                         'ecpay_choosen_payment': this.paymentMethod(),
                         'ecpay_einvoice_type': $("input:radio[name=ecpay_einvoice_type]:checked").val(),
-                        'ecpay_einvoice_triplicate_title': $("input:text[name=triplicate_title]").val(),
-                        'ecpay_einvoice_tax_id_number': $("input:text[name=tax_id_number]").val(),
-                        'ecpay_einvoice_cellphone_barcode': $("input:text[name=cellphone_barcode]").val(),
+                        'ecpay_einvoice_triplicate_title': $("input:text[id=triplicate_title]").val(),
+                        'ecpay_einvoice_tax_id_number': $("input:text[id=tax_id_number]").val(),
+                        'ecpay_einvoice_cellphone_barcode': $("input:text[id=cellphone_barcode]").val(),
                     }
                 };
                 return data;

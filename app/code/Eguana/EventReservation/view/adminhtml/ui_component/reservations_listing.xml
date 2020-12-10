@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: raheel
+* Date: 26/10/20
+* Time: 7:45 PM
+*/
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">reservations_listing.reservations_listing_data_source</item>
+            <item name="deps" xsi:type="string">reservations_listing.reservations_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">reservations_columns</item>
+    </argument>
+    <dataSource name="reservations_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <updateUrl path="mui/index/render"/>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">user_reserve_id</param>
+            </storageConfig>
+        </settings>
+        <dataProvider class="Eguana\EventReservation\Ui\DataProvider\UserReservation\Listing\DataProvider" name="reservations_listing_data_source">
+            <settings>
+                <requestFieldName>user_reserve_id</requestFieldName>
+                <primaryFieldName>user_reserve_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters">
+            <settings>
+                <templates>
+                    <filters>
+                        <select>
+                            <param name="template" xsi:type="string">ui/grid/filters/elements/ui-select</param>
+                            <param name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</param>
+                        </select>
+                    </filters>
+                </templates>
+            </settings>
+            <filterSelect name="offline_store_id" provider="${ $.parentName }">
+                <settings>
+                    <captionValue>0</captionValue>
+                    <options class="Eguana\EventReservation\Model\UserReservation\Source\AvailableStores"/>
+                    <label translate="true">Store Counter</label>
+                    <dataScope>offline_store_id</dataScope>
+                    <imports>
+                        <link name="visible">componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction">
+            <action name="pending">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to change status to pending?</message>
+                        <title translate="true">Reservation Pending</title>
+                    </confirm>
+                    <url path="event/userReservation/massPending"/>
+                    <type>pending</type>
+                    <label translate="true">Pending</label>
+                </settings>
+            </action>
+            <action name="confirm">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to change status to confirmed?</message>
+                        <title translate="true">Reservation Confirmed</title>
+                    </confirm>
+                    <url path="event/userReservation/massConfirm"/>
+                    <type>confirmed</type>
+                    <label translate="true">Confirmed</label>
+                </settings>
+            </action>
+            <action name="cancel">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to change status to canceled?</message>
+                        <title translate="true">Reservation Cancel</title>
+                    </confirm>
+                    <url path="event/userReservation/massCancel"/>
+                    <type>cancel</type>
+                    <label translate="true">Cancel</label>
+                </settings>
+            </action>
+        </massaction>
+        <exportButton name="export_button" class="Eguana\EventReservation\Ui\Component\UserReservation\Listing\ExportButton" component="Magento_Ui/js/grid/export" displayArea="dataGridActions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">reservations_listing.reservations_listing.reservations_columns.ids</item>
+                    <item name="options" xsi:type="array">
+                        <item name="csv" xsi:type="array">
+                            <item name="value" xsi:type="string">csv</item>
+                            <item name="label" xsi:type="string" translate="true">CSV</item>
+                            <item name="url" xsi:type="string">event/reservation_export/gridToCsv</item>
+                        </item>
+                        <item name="xml" xsi:type="array">
+                            <item name="visibility" xsi:type="boolean">false</item>
+                            <item name="value" xsi:type="string">xml</item>
+                            <item name="label" xsi:type="string" translate="true">Excel XML</item>
+                        </item>
+                        <item name="xls" xsi:type="array">
+                            <item name="value" xsi:type="string">xls</item>
+                            <item name="label" xsi:type="string" translate="true">Excel XLS</item>
+                            <item name="url" xsi:type="string">event/reservation_export/gridToXls</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </exportButton>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="reservations_columns">
+        <selectionsColumn name="ids" sortOrder="10">
+            <settings>
+                <indexField>user_reserve_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="user_reserve_id" sortOrder="20">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="name" sortOrder="30">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Name</label>
+            </settings>
+        </column>
+        <column name="email" sortOrder="40">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Email</label>
+            </settings>
+        </column>
+        <column name="date" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Date</label>
+                <dateFormat>MMM d, yyyy</dateFormat>
+                <timezone>false</timezone>
+            </settings>
+        </column>
+        <column name="time_slot" sortOrder="50">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Time Slot</label>
+            </settings>
+        </column>
+        <column name="phone" sortOrder="60">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Phone</label>
+            </settings>
+        </column>
+        <column name="status" sortOrder="70" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Eguana\EventReservation\Model\UserReservation\Source\Status"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        <column name="offline_store_id" sortOrder="90" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Eguana\EventReservation\Model\UserReservation\Source\AvailableStores"/>
+                <dataType>select</dataType>
+                <label translate="true">Counter Name</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

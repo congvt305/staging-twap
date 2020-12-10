@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: umer
+* Date: 5/10/20
+* Time: 4:22 PM
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="LinepayFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Eguana\LinePay\Model\Ui\ConfigProvider::CODE</argument>
+            <argument name="valueHandlerPool" xsi:type="object">LinepayValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">LinepayValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">LinepayCommandPool</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form\Cc</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">LinepayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Eguana\LinePay\Model\Ui\ConfigProvider::CODE</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">LinepayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="CountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">LinepayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayGlobalValidator" type="Magento\Payment\Gateway\Validator\ValidatorComposite">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">CountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="global" xsi:type="string">LinepayGlobalValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">LinepayAuthorizeCommand</item>
+                <item name="capture" xsi:type="string">LinepayCaptureCommand</item>
+                <item name="void" xsi:type="string">LinepayVoidCommand</item>
+                <item name="refund" xsi:type="string">LinepayRefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayAuthorizeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">LinepayAuthorizeRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Eguana\LinePay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Eguana\LinePay\Gateway\Http\Client\TransactionSale</argument>
+            <argument name="handler" xsi:type="object">Eguana\LinePay\Gateway\Response\TransactionIdHandler</argument>
+            <argument name="validator" xsi:type="object">Eguana\LinePay\Gateway\Validator\ResponseValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">LinepayCaptureRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Eguana\LinePay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Eguana\LinePay\Gateway\Http\Client\TransactionCaptureSale</argument>
+            <argument name="handler" xsi:type="object">Eguana\LinePay\Gateway\Response\TransactionIdHandler</argument>
+            <argument name="validator" xsi:type="object">Eguana\LinePay\Gateway\Validator\ResponseValidator</argument>
+            <argument name="errorMessageMapper" xsi:type="object">Eguana\LinePay\Gateway\ErrorMapper\VirtualErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayVoidCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="client" xsi:type="object">Eguana\LinePay\Gateway\Http\Client\TransactionVoid</argument>
+            <argument name="requestBuilder" xsi:type="object">LinepayVoidRequestBuilder</argument>
+            <argument name="handler" xsi:type="object">Eguana\LinePay\Gateway\Response\VoidHandler</argument>
+            <argument name="validator" xsi:type="object">Eguana\LinePay\Gateway\Validator\ResponseValidator</argument>
+            <argument name="transferFactory" xsi:type="object">Eguana\LinePay\Gateway\Http\TransferFactory</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayRefundCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="client" xsi:type="object">Eguana\LinePay\Gateway\Http\Client\TransactionRefund</argument>
+            <argument name="requestBuilder" xsi:type="object">LinepayRefundBuilder</argument>
+            <argument name="validator" xsi:type="object">Eguana\LinePay\Gateway\Validator\ResponseValidator</argument>
+            <argument name="handler" xsi:type="object">Eguana\LinePay\Gateway\Response\RefundHandler</argument>
+            <argument name="transferFactory" xsi:type="object">Eguana\LinePay\Gateway\Http\TransferFactory</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayRefundBuilder" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="refund" xsi:type="string">Eguana\LinePay\Gateway\Request\RefundDataBuilder</item>
+                <item name="store" xsi:type="string">Eguana\LinePay\Gateway\Request\StoreConfigBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayVoidRequestBuilder" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="void" xsi:type="string">Eguana\LinePay\Gateway\Request\VoidDataBuilder</item>
+                <item name="store" xsi:type="string">Eguana\LinePay\Gateway\Request\StoreConfigBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayCaptureRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="authorize" xsi:type="string">Eguana\LinePay\Gateway\Request\AuthorizeDataBuilder</item>
+                <item name="store" xsi:type="string">Eguana\LinePay\Gateway\Request\StoreConfigBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="LinepayAuthorizeRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="authorize" xsi:type="string">Eguana\LinePay\Gateway\Request\AuthorizeDataBuilder</item>
+                <item name="store" xsi:type="string">Eguana\LinePay\Gateway\Request\StoreConfigBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Eguana\LinePay\Gateway\ErrorMapper\VirtualConfigReader" type="Magento\Payment\Gateway\ErrorMapper\VirtualConfigReader">
+        <arguments>
+            <argument name="fileName" xsi:type="string">linepay_error_mapping.xml</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Eguana\LinePay\Gateway\ErrorMapper\VirtualMappingData" type="Magento\Payment\Gateway\ErrorMapper\MappingData">
+        <arguments>
+            <argument name="reader" xsi:type="object">Eguana\LinePay\Gateway\ErrorMapper\VirtualConfigReader</argument>
+            <argument name="cacheId" xsi:type="string">linepay_error_mapper</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Eguana\LinePay\Gateway\ErrorMapper\VirtualErrorMessageMapper" type="Magento\Payment\Gateway\ErrorMapper\ErrorMessageMapper">
+        <arguments>
+            <argument name="messageMapping" xsi:type="object">Eguana\LinePay\Gateway\ErrorMapper\VirtualMappingData</argument>
+        </arguments>
+    </virtualType>
+</config>

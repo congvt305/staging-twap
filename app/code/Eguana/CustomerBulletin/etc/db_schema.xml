@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: bilalyounas
+* Date: 11/10/20
+* Time: 3:30 PM
+*/
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="eguana_ticket" resource="default" engine="innodb" comment="Create Eguana Ticket Manager Table">
+        <column xsi:type="smallint" name="ticket_id" padding="10" identity="true" unsigned="false"
+                nullable="false" comment="Ticket ID"/>
+        <column xsi:type="varchar" name="account" nullable="false" length="255" comment="Account"/>
+        <column xsi:type="int" name="customer_id" padding="10" unsigned="true" nullable="false" comment="Customer ID"/>
+        <column xsi:type="varchar" name="subject" nullable="false" length="255" comment="Subject"/>
+        <column xsi:type="varchar" name="category" nullable="true" comment="Ticket Category"/>
+        <column xsi:type="smallint" name="store_view" padding="10" identity="false" unsigned="true"
+                nullable="false" comment="Store View" disabled="true"/>
+        <column xsi:type="smallint" name="store_id" padding="10" identity="false" unsigned="true"
+                nullable="false" comment="Store id"/>
+        <column xsi:type="smallint" name="status"  nullable="false" identity="false" default="1"
+                comment="Ticket Status"/>
+        <column xsi:type="smallint" name="is_read_customer"  nullable="false" identity="false" default="1"
+                comment="IS READ CUSTOMER"/>
+        <column xsi:type="smallint" name="is_read_admin"  nullable="false" identity="false" default="1"
+                comment="IS READ ADMIN"/>
+        <column xsi:type="text" name="attachment"  nullable="false"  comment="Ticket Attachment"/>
+        <column xsi:type="mediumtext"  name="message"  nullable="false"  comment="Ticket Message"/>
+        <column xsi:type="timestamp" name="creation_time" on_update="false" nullable="false" comment="Creation Time"
+                default="CURRENT_TIMESTAMP"/>
+        <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" comment="Update Time"
+                default="CURRENT_TIMESTAMP"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="ticket_id"/>
+        </constraint>
+        <index referenceId="EGUANA_TICKET_SUBJECT_CATEGORY_ACCOUNT" indexType="fulltext">
+            <column name="subject"/>
+            <column name="category"/>
+            <column name="account"/>
+        </index>
+        <constraint xsi:type="foreign" referenceId="EGUANA_TICKET_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID"
+                    table="eguana_ticket" column="customer_id" referenceTable="customer_entity"
+                    referenceColumn="entity_id"/>
+    </table>
+
+    <table name="eguana_ticket_note" resource="default" engine="innodb" comment="Ticket Manager To Note Linkage Table">
+        <column xsi:type="smallint" name="note_id" padding="10" identity="true" unsigned="false" nullable="false"
+                comment="Note ID"/>
+        <column xsi:type="smallint" name="ticket_id" padding="10" identity="false" unsigned="false" nullable="false"
+                comment="Ticket ID"/>
+        <column xsi:type="smallint" name="user_id" padding="10" identity="false" unsigned="false" nullable="false"
+                comment="USER ID"/>
+        <column xsi:type="smallint" name="user_type" padding="10" identity="false" unsigned="true" nullable="false"
+                comment="USER TYPE"/>
+        <column xsi:type="mediumtext"  name="note_message"  nullable="false"  comment="Note Massage"/>
+        <column xsi:type="text" name="note_attachment"  nullable="false"  comment="Note Attachment"/>
+        <column xsi:type="timestamp" name="creation_time" on_update="false" nullable="false" comment="Creation Time"
+                default="CURRENT_TIMESTAMP"/>
+        <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" comment="Update Time"
+                default="CURRENT_TIMESTAMP"/>
+        <index referenceId="EGUANA_TICKET_NOTE_TICKET_ID_NOTE_MESSAGE" indexType="btree">
+            <column name="ticket_id"/>
+        </index>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="note_id"/>
+            <column name="user_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="EGUANA_TICKET_NOTE_TICKET_ID_EGUANA_TICKET_NOTE_TICKET_ID"
+                    table="eguana_ticket_note" column="ticket_id" referenceTable="eguana_ticket"
+                    referenceColumn="ticket_id" onDelete="CASCADE"/>
+
+    </table>
+</schema>

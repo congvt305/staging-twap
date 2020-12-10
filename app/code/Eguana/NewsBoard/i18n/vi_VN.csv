@@ -1,0 +1,78 @@
+Back,Trở lại
+"Delete News","Xóa tin tức"
+"Are you sure you want to do this?","Bạn có chắc chắn muốn làm điều này?"
+Save,Tiết kiệm
+"Save & Duplicate","Lưu & sao chép"
+"Save & Close","Lưu & Đóng"
+Name,Tên
+Add,Thêm vào
+News,Tin tức
+Board,Bảng
+"Manage News","Quản lý tin tức"
+"News was successfully deleted","Tin tức đã được xóa thành công"
+"News could not be deleted","Không thể xóa tin tức"
+"Edit News","Chỉnh sửa tin tức"
+"New News","Tin tức mới"
+"A total of %1 news(s) have been deleted.","Tổng số% 1 (các) tin tức đã bị xóa."
+"A total of %1 news(s) have been disabled.","Tổng số% 1 (các) tin tức đã bị vô hiệu hóa."
+"A total of %1 news(s) have been enabled.","Tổng số% 1 (các) tin tức đã được bật."
+"This news no longer exists.","Tin tức này không còn tồn tại."
+"The news URL key can't use capital letters or disallowed symbols. Remove the letters and symbols and try again.","Khóa URL tin tức không được sử dụng chữ in hoa hoặc các ký hiệu không được phép. Xóa các chữ cái và ký hiệu và thử lại."
+"The news URL key can't use only numbers. Add letters or words and try again.","Khóa URL tin tức không thể chỉ sử dụng số. Thêm chữ cái hoặc từ và thử lại."
+"You saved the news.","You saved the news."
+"Something went wrong while saving the news.","Đã xảy ra sự cố khi lưu tin tức."
+"You duplicated the news.","Bạn đã sao chép tin tức."
+Enabled,Đã bật
+Disabled,Tàn tật
+"Something went wrong while saving the file(s).","Đã xảy ra sự cố khi lưu (các) tệp."
+"File validation failed.","Xác nhận tập tin thất bại."
+"File can not be saved to the destination folder.","Không thể lưu tệp vào thư mục đích."
+Ascending,Tăng dần
+Descending,Giảm dần
+"Could not save the data: %1","Không thể lưu dữ liệu: %1"
+"Requested news doesn't exist","Tin tức được yêu cầu không tồn tại"
+"Unable to remove data %1","Không thể xóa dữ liệu %1"
+"The News URL key can't use capital letters or disallowed symbols. Remove the letters and symbols and try again.","Khóa URL Tin tức không được sử dụng chữ in hoa hoặc các ký hiệu không được phép. Xóa các chữ cái và ký hiệu và thử lại."
+Edit,Biên tập
+Delete,Xóa bỏ
+"Delete ""${ $.$data.title }""","Xóa bỏ ""${ $.$data.title }"""
+"Are you sure you wan't to delete a ""${ $.$data.title }"" record?","Bạn có chắc chắn bạn sẽ không xóa một ""${ $.$data.title }"" ghi lại?"
+"All Store Views","Tất cả lượt xem cửa hàng"
+"There is no news.","Ko có tin mới."
+"News Board","Bảng tin tức"
+General,Chung
+"Enable Feature","Bật tính năng"
+"No. of news per Page","Số lượng tin tức trên mỗi Trang"
+Categories,Thể loại
+"News sort type","Loại sắp xếp tin tức"
+"A total of %1 record(s) have been deleted.","Tổng số %1 (các) bản ghi đã bị xóa."
+"An error occurred while deleting record(s).","Đã xảy ra lỗi khi xóa (các) bản ghi."
+"A total of %1 record(s) have been Disable.","Tổng số %1 (các) bản ghi đã bị Tắt."
+"An error occurred while disable selected news.","Đã xảy ra lỗi khi tắt tin tức đã chọn."
+"A total of %1 record(s) have been Enable.","Tổng số %1 (các) bản ghi đã được Bật."
+"An error occurred while enable news.","Đã xảy ra lỗi khi bật tin tức."
+"Enable News","Bật tin tức"
+"Thumbnail Image","Hình ảnh thu nhỏ"
+Date,Ngày
+Category,thể loại
+"Select Category","Chọn loại"
+"News in Websites ","Tin tức trên trang web "
+"Store View","Chế độ xem cửa hàng"
+Content,Nội dung
+"Search Engine Optimization","Tối ưu hóa công cụ tìm kiếm"
+"URL key","Khóa URL"
+"Meta Title","Tiêu đề meta"
+"Meta Keywords","Từ khóa meta"
+"Meta Description","Mô tả meta"
+"Add New News","Thêm tin tức mới"
+"Are you sure you want to delete selected items?","Bạn có chắc chắn muốn xóa các mục đã chọn không?"
+"Delete items","Xóa mục"
+Disable,Vô hiệu hóa
+Enable,Kích hoạt
+ID,TÔI
+"News Title","Tiêu đề Tin tức"
+"News Category","Thể loại Tin tức"
+Thumbnail,Hình nhỏ
+Status,Trạng thái
+Created,Tạo
+Modified,Đã sửa đổi

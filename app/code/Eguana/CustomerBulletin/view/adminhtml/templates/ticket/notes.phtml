@@ -1,0 +1,136 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+/** @var \Eguana\CustomerBulletin\ViewModel\Detail $viewmodel */
+/** @var \Eguana\CustomerBulletin\Block\Adminhtml\Ticket\Detail $block */
+/** @var \Eguana\CustomerBulletin\Api\Data\TicketInterface $ticket */
+
+$viewmodel = $block->getData('ticket_detail');
+$ticket = $viewmodel->getTicketDetail();
+$notes = $viewmodel->getNoteCollection();
+$msgChanged = $block->escapeHtmlAttr(__('The information in this tab has been changed.'));
+$msgError = $block->escapeHtmlAttr(__('This tab contains invalid data. Please resolve this before saving.'));
+$msgLoader = $block->escapeHtmlAttr(__('Loading...'));
+
+?>
+<section class="admin__page-section quote-view-shipping">
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item admin-quote-comments-history">
+            <div class="product data items quote-details-items" data-mage-init='{"tabs":{}}'>
+                <ul class="tabs-horiz">
+                    <li>
+                        <a href="#comment" id="grid_tab_new_comments"
+                           title="<?= $block->escapeHtmlAttr(__('Notes')) ?>"
+                           class="ui-tabs-anchor" data-tab-type="">
+                        <span>
+                            <span class="changed" title="<?= /* @noEscape */ $msgChanged ?>"></span>
+                            <span class="error" title="<?= /* @noEscape */ $msgError ?>"></span>
+                            <span class="loader" title="<?= /* @noEscape */ $msgLoader ?>"></span>
+                            <?= $block->escapeHtml(__('Notes')) ?>
+                        </span>
+                        </a>
+                    </li>
+                </ul>
+                <div id="comment" class="admin-quote-comment no-display">
+                    <div class="quote-comments-block">
+                        <div class="comments-block-list">
+                            <?php foreach ($notes as $note) : ?>
+                                <div class="comments-block-item">
+                                    <span class="comments-block-item-date-time">
+                                        <?= /* @noEscape */
+                                        $block->escapeHtml(
+                                            $viewmodel->getCreationTime(
+                                                $note['creation_time'],
+                                                $ticket->getStoreId()
+                                            )
+                                        );
+                                        ?>
+                                        <?php if ($note['user_type'] == 1) : ?>
+                                            <?= $block->escapeHtml($viewmodel->getUserName($note['user_id'])) ?>
+                                        <?php elseif ($note['user_type'] == 0):?>
+                                            <?= $block->escapeHtml($viewmodel->getCustomerName($note['user_id'])) ?>
+                                        <?php endif;?>
+                                    </span>
+                                    <div class="comments-block-item-comment">
+                                        <?= /* @noEscape */ nl2br($block->escapeHtml($note['note_message'])) ?>
+                                    </div>
+                                    <?php $attachments = $viewmodel->getFiles($note['note_attachment']); ?>
+                                    <?php if (!empty($note['note_attachment'])) : ?>
+                                        <div class="attachments-list">
+                                            <?php foreach ($attachments as $file) : ?>
+                                                <span class="attachments-item">
+                                                    <a href="
+                                                    <?= $block->escapeUrl($viewmodel->mediaUrl($file)) ?>"
+                                                       title="<?=
+                                                        $block->escapeHtmlAttr($viewmodel->changeFileName($file))
+                                                        ?>">
+                                                        <?= $block->escapeHtml($viewmodel->changeFileName($file)) ?>
+                                                    </a>
+                                                </span>
+                                            <?php endforeach ?>
+                                        </div>
+                                    <?php endif ?>
+                                </div>
+                            <?php endforeach ?>
+                        </div>
+                        <div class="comments-field field-row" data-role="attach-wrapper">
+                            <form class="messages" >
+                                <label class="comments-field-label"
+                                       for="negotiation_comment">
+                                    <?= $block->escapeHtml(__('Add your Note')) ?>
+                                </label>
+                                <div class="comments-field-control">
+                                <textarea name="comment" rows="3"
+                                  cols="5" id="negotiation_comment"></textarea>
+                                    <div class="note-error" style="display: none;">
+                                        <?= $block->escapeHtml(__('Please fill the required field'));?>
+                                    </div>
+                                </div>
+                                <div data-mage-init='{"Eguana_CustomerBulletin/js/note/add-files": {
+                                        "maxSizeB" : "<?= $block->escapeJs($block->getMaxFileSize()) ?>",
+                                        "maxSizeMb" : "<?= $block->escapeJs($block->getMaxFileSizeMb()) ?>",
+                                        "extensions" : "<?= $block->escapeJs($block->getAllowedExtensions()) ?>",
+                                        "modal" : "true"
+                                    }}'
+                                     class="field-attachment"
+                                     data-role="send-files">
+                                    <img src="<?= $block->escapeUrl(
+                                        $block->getViewFileUrl($viewmodel->getFileIconUrl())
+                                    ) ?>" class="attachment-icon" alt="">
+                                    <label class="attachment-label"
+                                           data-role="wrap-file"
+                                           data-mage-init='{"Eguana_CustomerBulletin/js/note/add-file": {}}'
+                                           for="add-file-0">
+                                        <input name="files[0]"
+                                               data-role="add-file"
+                                               id="add-file-0"
+                                               type="file">
+                                        <?= $block->escapeHtml(__('Attach file')) ?>
+                                    </label>
+
+                                </div>
+                                <?= $block->getBlockHtml('formkey') ?>
+                                <input type="hidden" name="ticket_id"
+                                       value="<?= $block->escapeHtml($viewmodel->getTicketId());?>">
+                            </form>
+                            <div class="attachments-list" data-role="added-files"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "send-note-message":{
+                "ticket_id":"<?= $block->escapeHtml($viewmodel->getTicketId()) ?>",
+                "url":"<?= $block->escapeHtml($block->getNoteSaveUrl()) ?>"
+            }
+        }
+    }
+</script>

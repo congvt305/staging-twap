@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+    * @author Eguana Team
+    * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+    * Created by PhpStorm
+    * User: bilalyounas
+    * Date: 17/9/20
+    * Time: 05:32 PM
+    */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" label="Customer My Account (All Pages)" design_abstraction="custom">
+    <body>
+        <referenceBlock name="customer_account_navigation">
+            <block class="Magento\Framework\View\Element\Html\Link\Current"
+                   name="customer-account-navigation-ticket-link"
+                   after="-" ifconfig="ticket_managment/configuration/enabled">
+                <arguments>
+                    <argument name="path" xsi:type="string">ticket/index/index</argument>
+                    <argument name="label" xsi:type="string" translate="true">Support Ticket</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,142 @@
+Back,背部
+"Delete Redemption","刪除兌換"
+"Are you sure you want to do this?","你確定你要這麼做嗎？"
+Save,救
+"Save & Duplicate","保存並複制"
+"Save & Close","保存並關閉"
+Home,家
+"Go to Home Page","去首頁"
+Redemption,贖回
+Manage,管理
+"Manage Redemption","管理兌換"
+"A total of %1 record(s) have been expired.","總共 %1 記錄已過期。"
+"A total of %1 record(s) have been redeemed.","總共 %1 記錄已被兌換。"
+"A total of %1 record(s) have been registered.","總共 %1 記錄已被註冊。"
+"Redemption was successfully deleted","兌換已成功刪除"
+"Redemption could not be deleted","兌換內容無法刪除"
+"Edit Redemption","編輯兌換"
+"New Redemption","新贖回"
+Redemptions,換領
+"A total of %1 redemption(s) have been deleted.","總共 %1 兌現已被刪除。"
+"A total of %1 record(s) have been disabled.","總共 %1 記錄已被禁用。"
+"A total of %1 record(s) have been enabled.","總共 %1 記錄已啟用。"
+"The value specified in the URL Key is already exists. Please use a unique identifier key","URL密鑰中指定的值已存在。 請使用唯一的識別碼"
+"Start Date should be before End Date","開始日期應早於結束日期。"
+"This redemption no longer exists.","此兌換不再存在。"
+"The redemption URL key can't use capital letters or disallowed symbols. Remove the letters and symbols and try again.","兌換網址密鑰不能使用大寫字母或不允許的符號。 刪除字母和符號，然後重試。"
+"The redemption URL key can't use only numbers. Add letters or words and try again.","兌換網址密鑰不能僅使用數字。 添加字母或單詞，然後重試。"
+"You saved the redemption.","您已保存兌換。"
+"Something went wrong while saving the redemption.","保存兌換時出了點問題。"
+"You duplicated the redemption.","您已重複兌換。"
+"The redemption module is disable by admin.","兌換模塊已被管理員禁用。"
+"The redemption process has been completed.","兌換過程已完成。"
+"This redemption has been expired!","此兌換已過期！"
+"This redemption will be available at %1","可以在以下位置使用此兌換 %1"
+"Email or SMS sending failed.","電子郵件或短信發送失敗。"
+"You have successfully applied for redemption check your email or SMS.","您已成功申請兌換，請檢查您的電子郵件或短信。"
+"Something went wrong while saving the counter.","保存計數器時出了點問題。"
+"No redemption exsit with ' . . ' id","不存在與' . . ' id"
+"No counter exsit with ' . . ' id","無反制' . . ' id"
+"You are not authorized for this redemption.","您無權進行此兌換。"
+Registration,註冊
+Expired,已過期
+"Could not get counter fields: %1","無法獲得計數器字段： %1"
+"Could not save the counter: %1","無法保存計數器： %1"
+"Could not delete the counter: %1","無法刪除計數器： %1"
+Enabled,已啟用
+Disabled,殘障人士
+"Something went wrong while saving the file(s).","保存文件時出了點問題。"
+"File can not be saved to the destination folder.","文件無法保存到目標文件夾。"
+"Could not save the redemption: %1","無法保存兌換： %1"
+"Could not delete the redemption: %1","無法刪除兌換： %1"
+"A Redemption identifier with the same properties already exists in the selected store.","所選商店中已經存在具有相同屬性的兌換標識符。"
+"There is no information about associated entity type ""%1"".","沒有有關關聯實體類型的信息 ""%1""."
+Edit,編輯
+Delete,刪除
+"Delete %1","刪除 %1"
+"Are you sure you want to delete a %1 record?","您確定要刪除一個 %1 記錄？"
+View,視圖
+Description,描述
+Name,名稱
+Phone,電話
+Email,電子郵件
+Counter,計數器
+"Select Counter","選擇櫃檯"
+"Line ID ","線路ID "
+(Optional),（可選的）
+Precautions,預防措施
+"Send SMS/Email","發送短信/電子郵件"
+"Resend message","重新發送訊息"
+"Resend SMS/Email","重新發送短信/電子郵件"
+"The registraion for this redemption is full.","此兌換的註冊已完成。"
+"This redemption has been already completed.","兌換已經完成。"
+"Please click on confirm button to complete the registration process.","請點擊確認按鈕完成註冊過程。"
+"Hi %name,","Hi %name,"
+"Your redemption has been successfully registered. Please go to the %counter_name. and show this email to BA for completing your redemption. Below is the redemption confirmation link","您的兌換已成功註冊。 請去 %counter_name. 並向BA顯示此電子郵件以完成您的兌換。 以下是兌換確認鏈接"
+"Have a lovely day!","祝你有個愉快的一天！"
+"Thank You!","謝謝！"
+"Dear %customer,
+Your redemption has been successfully registered. Please go to the %counter and show this SMS to BA for completing your redemption.
+Here are the redemption confirmation links %link.
+Thank You!","親 %customer,
+您的兌換已成功註冊。 請去 %counter 並將此短信顯示給廣管局以完成兌換。
+這是兌換確認鏈接 %link.
+謝謝！"
+"Redemption Config","兌換配置"
+"Redemption Configurations","兌換配置"
+"Email Sender","電郵寄件者"
+"Send Email To Customer","發送電子郵件給客戶"
+"Automatically Registration","Automatically Registration"
+"Send SMS To Customer Automatically","自動發送短信給客戶"
+"Google Recaptcha","Google Recaptcha"
+"Store Counter","商店櫃檯"
+"Store View","店鋪檢視"
+"Are you sure you want to change status to registration?","您確定要將狀態更改為註冊嗎？"
+"Are you sure you want to change status to redemption?","您確定要將狀態更改為兌換嗎？"
+"Are you sure you want to change status to expired?","您確定要將狀態更改為過期嗎？"
+CSV,CSV
+"Excel XML","Excel XML"
+"Excel XLS","Excel XLS"
+ID,ID
+"Redeem date","兌換日期"
+Telephone,電話
+"Line Id","行號"
+"Registration Date","登記日期"
+Status,狀態
+utm_source,utm_source
+utm_medium,utm_medium
+utm_content,utm_content
+Enable,啟用
+Title,標題
+Image,圖片
+"Counter Name","櫃檯名稱"
+"Total Quantity","總 數量"
+"CMS Block","CMS 塊"
+From,從
+To,To
+"Content Description","內容說明"
+"Content Precautions","內容注意事項"
+"Search Engine Optimization","搜索引擎優化"
+"URL key","網址鍵"
+"Meta Title","元標題"
+"Meta Keywords","元關鍵字"
+"Meta Description","元描述"
+"Redemption Participants","兌換參與者"
+"Add New Redemption","添加新的兌換"
+"Are you sure you want to delete selected items?","您確定要刪除所選項目嗎？"
+"Delete items","刪除項目"
+"Are you sure you want to enable selected items?","您確定要啟用所選項目嗎？"
+"Enable items","啟用項目"
+"Are you sure you want to disable selected items?","您確定要禁用所選項目嗎？"
+"Disable items","禁用項目"
+Disable,禁用
+Thumbnail,縮圖
+"Start Date","開始日期"
+"End Date","End Date"
+Created,Created
+Modified,改性
+"If you did not recieved an email or SMS. Click on Resend after.","如果您沒有收到電子郵件或短信。 單擊“重新發送之後”。"
+"Counter information not found","找不到計數器信息"
+"This redemption is not available.","無法使用此兌換。"
+"click here to register new redemption","點擊此處註冊新的兌換"
+" * This is a required field.","* 這是一個必填字段。"

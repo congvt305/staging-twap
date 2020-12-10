@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 12/10/20
+* Time: 05:30 PM
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Eguana_Redemption::redemption" title="Redemption" translate="title" module="Eguana_Redemption" sortOrder="101" parent="Eguana_Base::base" resource="Eguana_Redemption::redemption" action="redemption/redemption"/>
+    </menu>
+</config>

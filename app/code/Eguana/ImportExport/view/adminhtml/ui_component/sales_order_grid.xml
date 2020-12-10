@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 30/11/20
+ * Time: 01:50 PM
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <listingToolbar name="listing_top">
+        <massaction name="listing_massaction">
+            <action name="order_report">
+                <settings>
+                    <url path="sales/order/massReport"/>
+                    <type>order_report</type>
+                    <label translate="true">Print Orders</label>
+                </settings>
+            </action>
+            <action name="order_items_export">
+                <settings>
+                    <url path="sales/order/massItemsExport"/>
+                    <type>export</type>
+                    <label translate="true">Print Order Items</label>
+                </settings>
+            </action>
+        </massaction>
+    </listingToolbar>
+</listing>

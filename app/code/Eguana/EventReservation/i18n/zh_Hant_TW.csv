@@ -1,0 +1,52 @@
+Back,背部
+"Delete Event","刪除活動"
+"Are you sure you want to do this?","你確定你要這麼做嗎？"
+Save,保存
+"Save & Duplicate","保存並複制"
+"Save & Close","保存並關閉"
+Home,家
+"Go to Home Page","去首頁"
+Events,最新活動
+"Current Events","時事"
+"Previous Events","以前的活動"
+Event,事件
+Manager,經理
+"Manage Events","管理活動"
+"Event was successfully deleted","活動已成功刪除"
+"Event could not be deleted","活動無法刪除"
+"Manage Event","管理活動"
+"This event no longer exists.","該事件不再存在."
+"Edit Event","編輯活動"
+"New Event","新事件"
+"A total of %1 event(s) have been deleted.","總計 %1 事件已被刪除."
+"Start Date should be before End Date","開始日期應早於結束日期"
+"You saved the event.","您保存了活動."
+"Something went wrong while saving the event.","保存活動時出了點問題."
+"You duplicated the event.","您複製了活動."
+Enabled,已啟用
+Disabled,殘障人士
+Edit,Edit
+Delete,刪除
+"Delete ""${ $.$data.title }""","刪除 ""${ $.$data.title }"""
+"Are you sure you wan't to delete a ""${ $.$data.title }"" record?","您確定要刪除一個 ""${ $.$data.title }"" 記錄?"
+"Back to list","返回目錄"
+"No Event found!","找不到活動!"
+"Enable Event","啟用事件"
+"Thumbnail Image","縮圖圖片"
+"Start Date","開始日期"
+"End Date","結束日期"
+"Store View","店鋪檢視"
+Description,描述
+"Add New Event","新增活動"
+ID,ID
+"Event Title","活動標題"
+Thumbnail,縮圖
+Status,狀態
+Created,已建立
+Modified,改性
+"More","更多"
+"Please select","請選擇"
+"Event Counter & Date","預約櫃點"
+"Event Date","預約日期"
+"Time Slot","預約時段"
+"My age is above 18 and I agree the private policy","我的年齡超過18歲,我同意私人的政策"

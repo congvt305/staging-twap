@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 22/10/20
+* Time: 4:00 PM
+*/
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Eguana\Redemption\Block\RedemptionDetails" name="redemption.details.cms.block" template="Eguana_Redemption::redemption-cms-block.phtml" before="-">
+                <arguments>
+                    <argument name="details_view_model" xsi:type="object">Eguana\Redemption\ViewModel\RedemptionDetail</argument>
+                </arguments>
+            </block>
+            <block class="Eguana\Redemption\Block\RedemptionDetails" name="redemption.details" template="Eguana_Redemption::redemptions-details.phtml">
+                <arguments>
+                    <argument name="details_view_model" xsi:type="object">Eguana\Redemption\ViewModel\RedemptionDetail</argument>
+                </arguments>
+                <container name="form.additional.info">
+                    <block class="MSP\ReCaptcha\Block\Frontend\ReCaptcha" name="msp-recaptcha" after="-"
+                           template="MSP_ReCaptcha::msp_recaptcha.phtml"
+                           cacheable="false"
+                           ifconfig="redemption/configuration/enabled_recaptcha">
+                        <arguments>
+                            <argument name="jsLayout" xsi:type="array">
+                                <item name="components" xsi:type="array">
+                                    <item name="msp-recaptcha" xsi:type="array">
+                                        <item name="component" xsi:type="string">MSP_ReCaptcha/js/reCaptcha</item>
+                                        <item name="zone" xsi:type="string">redemption</item>
+                                    </item>
+                                </item>
+                            </argument>
+                        </arguments>
+                    </block>
+                </container>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

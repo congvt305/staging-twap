@@ -1,0 +1,35 @@
+{
+    "eguana_news": {
+        "column": {
+            "news_id": true,
+            "title": true,
+            "description": true,
+            "thumbnail_image": true,
+            "category": true,
+            "is_active": true,
+            "date": true,
+            "creation_time": true,
+            "update_time": true
+        },
+        "index": {
+            "EGUANA_NEWS_TITLE_DESCRIPTION": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "eguana_news_store": {
+        "column": {
+            "news_id": true,
+            "store_id": true
+        },
+        "index": {
+            "EGUANA_NEWS_STORE_STORE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "EGUANA_NEWS_STORE_NEWS_ID_EGUANA_NEWS_NEWS_ID": true,
+            "EGUANA_NEWS_STORE_STORE_ID_STORE_STORE_ID": true
+        }
+    }
+}

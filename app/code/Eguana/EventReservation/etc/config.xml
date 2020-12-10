@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 12/10/20
+ * Time: 08:30 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <event_reservation>
+            <configuration>
+                <enabled>0</enabled>
+                <sender_email_identity>general</sender_email_identity>
+            </configuration>
+            <email>
+                <staff_email_auto>0</staff_email_auto>
+                <staff_email>info@amore.com</staff_email>
+                <staff_email_pending>event_reservation_email_staff_email_pending</staff_email_pending>
+                <staff_email_confirmed>event_reservation_email_staff_email_confirmed</staff_email_confirmed>
+                <staff_email_canceled>event_reservation_email_staff_email_canceled</staff_email_canceled>
+                <customer_email_auto>0</customer_email_auto>
+                <customer_email_pending>event_reservation_email_customer_email_pending</customer_email_pending>
+                <customer_email_confirmed>event_reservation_email_customer_email_confirmed</customer_email_confirmed>
+                <customer_email_canceled>event_reservation_email_customer_email_canceled</customer_email_canceled>
+            </email>
+        </event_reservation>
+    </default>
+</config>

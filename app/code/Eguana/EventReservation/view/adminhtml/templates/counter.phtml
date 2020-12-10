@@ -1,0 +1,32 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: umer
+ * Date: 4/11/20
+ * Time: 1:25 PM
+ */
+
+/** @var \Eguana\EventReservation\ViewModel\Counter\CounterModel $viewModel */
+$viewModel = $block->getData('counter_view_model');
+?>
+<script>
+    let counterJs;
+    require(["jquery", "counterjs"], function($, counterjs){
+        let counterurl = '<?= $block->escapeUrl(__($viewModel->getCounterUrl())) ?>';
+        let countersaveurl = '<?= $block->escapeUrl(__($viewModel->getCounterSaveUrl())) ?>';
+        counterJs = counterjs.init(counterurl);
+        $(document).on('click', 'a[id="openModal"]', function(ev){
+            let counterId = $(this).data('counter-id');
+            let eventId = $(this).data('event-id');
+            counterJs.showCounterList(eventId, counterId, counterurl, countersaveurl);
+        });
+    });
+</script>
+<div id="counterModal">
+    <p class="counter-error-message"></p>
+    <form method="post" id="form-counter" enctype="multipart/form-data" autocomplete="off"
+          data-mage-init='{"validation":{}}'>
+    </form>
+</div>

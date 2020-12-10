@@ -1,0 +1,13 @@
+<?php
+/** @var \Eguana\CustomerBulletin\Block\Adminhtml\Ticket\Detail $block */
+?>
+<section class="admin__page-section quote-view-shipping">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $block->escapeHtml(__('Notes Information')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item quote-comments-history">
+            <?= $block->getChildHtml('ticket_notes') ?>
+        </div>
+    </div>
+</section>

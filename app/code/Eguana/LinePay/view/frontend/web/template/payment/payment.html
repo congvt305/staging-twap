@@ -1,0 +1,84 @@
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="payment[method]"
+               class="radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label data-bind="attr: {'for': getCode()}" class="label">
+            <!-- LINEPay Logo -->
+            <img data-bind="attr: {src: getLinePayLogoSrc(), alt: $t('LINE Pay')}"
+                 class="payment-icon"/>
+        </label>
+    </div>
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <form id="linepay-custom-checkout-form" class="form" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+            <fieldset class="fieldset">
+                <!-- ko foreach: getRegion('custom-checkout-form-fields') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!--/ko-->
+            </fieldset>
+            <fieldset class="fieldset e-invoice">
+                <div class="field">
+                    <label class="label" data-bind="i18n: 'E-Invoice'"></label>
+                    <div class="control">
+                        <input type="radio" id="line-pay-greenworld-invoice" name="linepay_einvoice_type" value="greenworld-invoice" data-bind="checked: invoiceChecked">
+                        <label for="line-pay-greenworld-invoice" class="label" data-bind="i18n: 'GreenWorld Invoice'"/>
+                        <div class="fieldset" id="line-pay-greenworld-invoice-contents" data-bind="visible: invoiceChecked() === 'greenworld-invoice'">
+                            <p data-bind="i18n: 'Invoice opening notice will be sent to you by email, and you will be notified by mail on your own initiative when you win the prize.'"/>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <input type="radio" id="line-pay-triplicate-invoice" name="linepay_einvoice_type" value="triplicate-invoice" data-bind="checked: invoiceChecked">
+                        <label for="line-pay-triplicate-invoice" class="label" data-bind="i18n: 'Triplicate Invoice'"/>
+                        <div class="fieldset" id="line-pay-triplicate-invoice-contents" data-bind="visible: invoiceChecked() === 'triplicate-invoice'">
+                            <div class="field">
+                                <label for="line_pay_triplicate_title" class="label" data-bind="i18n: 'Triplicate Title'"/>
+                                <div class="control">
+                                    <input type="text" name="ecpay_triplicate_title" data-validate='{"maxlength":255}' value="" title="Triplicate Title" class="input-text triplicate_title" id="line_pay_triplicate_title">
+                                </div>
+                                <label for="line_pay_tax_id_number" class="label" data-bind="i18n: 'Tax ID Number'"/>
+                                <div class="control">
+                                    <input type="text" name="ecpay_tax_id_number" data-validate='{"maxlength":255}' value="" title="Tax ID Number" class="input-text tax_id_number" id="line_pay_tax_id_number">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <input type="radio" id="line-pay-donation-invoice" name="linepay_einvoice_type" value="donation-invoice" data-bind="checked: invoiceChecked">
+                        <label for="line-pay-donation-invoice" class="label" data-bind="i18n: 'Donation Invoice'"/>
+                        <div class="fieldset"  id="line-pay-donation-invoice-contents" data-bind="visible: invoiceChecked() === 'donation-invoice'">
+                            <p data-bind="html: $t('Invoice will be donated uniformly to <b>the Cancer Hope FoundationSome html</b>')"/>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <input type="radio" id="line-pay-cellphone-barcode-invoice" name="linepay_einvoice_type" value="cellphone-barcode-invoice" data-bind="checked: invoiceChecked">
+                        <label for="line-pay-cellphone-barcode-invoice" class="label" data-bind="i18n: 'Cellphone Barcode Invoice'"/>
+                        <div class="fieldset" id="line-pay-cellphone-barcode-invoice-contents" data-bind="visible: invoiceChecked() === 'cellphone-barcode-invoice'">
+                            <div class="field">
+                                <label for="line_pay_ecpay_cellphone_barcode" class="label" data-bind="i18n: 'Cellphone Barcode'"/>
+                                <div class="control">
+                                    <input type="text" data-bind="attr: {placeholder: $t('Cellphone Barcode')}" name="ecpay_cellphone_barcode" data-validate='{"maxlength":255}' value="" title="Cellphone Barcode" class="input-text cellphone-barcode" id="line_pay_ecpay_cellphone_barcode">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary checkout"
+                        type="submit"
+                        data-bind="
+                        click: checkoutToLinePay,
+                        attr: {title: $t('Place Order')},
+                        ">
+                    <span data-bind="i18n: 'Continue to LINE Pay'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

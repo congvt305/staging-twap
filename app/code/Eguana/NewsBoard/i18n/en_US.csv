@@ -1,0 +1,78 @@
+Back,Back
+"Delete News","Delete News"
+"Are you sure you want to do this?","Are you sure you want to do this?"
+Save,Save
+"Save & Duplicate","Save & Duplicate"
+"Save & Close","Save & Close"
+Name,Name
+Add,Add
+News,News
+Board,Board
+"Manage News","Manage News"
+"News was successfully deleted","News was successfully deleted"
+"News could not be deleted","News could not be deleted"
+"Edit News","Edit News"
+"New News","New News"
+"A total of %1 news(s) have been deleted.","A total of %1 news(s) have been deleted."
+"A total of %1 news(s) have been disabled.","A total of %1 news(s) have been disabled."
+"A total of %1 news(s) have been enabled.","A total of %1 news(s) have been enabled."
+"This news no longer exists.","This news no longer exists."
+"The news URL key can't use capital letters or disallowed symbols. Remove the letters and symbols and try again.","The news URL key can't use capital letters or disallowed symbols. Remove the letters and symbols and try again."
+"The news URL key can't use only numbers. Add letters or words and try again.","The news URL key can't use only numbers. Add letters or words and try again."
+"You saved the news.","You saved the news."
+"Something went wrong while saving the news.","Something went wrong while saving the news."
+"You duplicated the news.","You duplicated the news."
+Enabled,Enabled
+Disabled,Disabled
+"Something went wrong while saving the file(s).","Something went wrong while saving the file(s)."
+"File validation failed.","File validation failed."
+"File can not be saved to the destination folder.","File can not be saved to the destination folder."
+Ascending,Ascending
+Descending,Descending
+"Could not save the data: %1","Could not save the data: %1"
+"Requested news doesn't exist","Requested news doesn't exist"
+"Unable to remove data %1","Unable to remove data %1"
+"The News URL key can't use capital letters or disallowed symbols. Remove the letters and symbols and try again.","The News URL key can't use capital letters or disallowed symbols. Remove the letters and symbols and try again."
+Edit,Edit
+Delete,Delete
+"Delete ""${ $.$data.title }""","Delete ""${ $.$data.title }"""
+"Are you sure you wan't to delete a ""${ $.$data.title }"" record?","Are you sure you wan't to delete a ""${ $.$data.title }"" record?"
+"All Store Views","All Store Views"
+"There is no news.","There is no news."
+"News Board","News Board"
+General,General
+"Enable Feature","Enable Feature"
+"No. of news per Page","No. of news per Page"
+Categories,Categories
+"News sort type","News sort type"
+"A total of %1 record(s) have been deleted.","A total of %1 record(s) have been deleted."
+"An error occurred while deleting record(s).","An error occurred while deleting record(s)."
+"A total of %1 record(s) have been Disable.","A total of %1 record(s) have been Disable."
+"An error occurred while disable selected news.","An error occurred while disable selected news."
+"A total of %1 record(s) have been Enable.","A total of %1 record(s) have been Enable."
+"An error occurred while enable news.","An error occurred while enable news."
+"Enable News","Enable News"
+"Thumbnail Image","Thumbnail Image"
+Date,Date
+Category,Category
+"Select Category","Select Category"
+"News in Websites ","News in Websites "
+"Store View","Store View"
+Content,Content
+"Search Engine Optimization","Search Engine Optimization"
+"URL key","URL key"
+"Meta Title","Meta Title"
+"Meta Keywords","Meta Keywords"
+"Meta Description","Meta Description"
+"Add New News","Add New News"
+"Are you sure you want to delete selected items?","Are you sure you want to delete selected items?"
+"Delete items","Delete items"
+Disable,Disable
+Enable,Enable
+ID,ID
+"News Title","News Title"
+"News Category","News Category"
+Thumbnail,Thumbnail
+Status,Status
+Created,Created
+Modified,Modified

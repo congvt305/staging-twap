@@ -1,0 +1,24 @@
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 28/10/20
+ * Time: 7:30 PM
+ */
+-->
+<!--@subject {{trans "Hi %name," name=$customer_name}} @-->
+<!--@vars {
+"var customer_name":"Customer Name",
+"var counter_link":"Counter Register Link",
+"var counter_name":"Counter Name"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<p class="greeting">{{trans "Hi %name," name=$customer_name}}</p><br>
+<p>{{trans "Your redemption has been successfully registered. Please go to the %counter_name. and show this email to BA for completing your redemption. Below is the redemption confirmation link" counter_name=$counter_name}}</p>
+<a href="{{var counter_link}}" style="cursor: pointer;">{{trans "Click here"}}</a>
+
+{{template config_path="design/email/footer_template"}}

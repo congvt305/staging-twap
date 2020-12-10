@@ -37,6 +37,7 @@ class Data extends AbstractHelperAlias
     const XML_SOCIAL_GOOGLE_CLIENT_SECRET   = 'SocialLogin/google/client_secret';
     const XML_SOCIAL_GOOGLE_CALLBACK_URL    = 'SocialLogin/google/oauth_redirect_uri';
     const XML_LINE_ADD_FRIEND               = 'SocialLogin/line/line_add_friend';
+    const XML_LINE_AGREEMENT_TEXT           = 'SocialLogin/line/line_messages_agreement';
 
     /**
      * @var PageFactory
@@ -101,6 +102,15 @@ class Data extends AbstractHelperAlias
     public function getLineAddFriendLink()
     {
         return $this->scopeConfig->getValue(self::XML_LINE_ADD_FRIEND, ScopeInterface::SCOPE_STORE);
+    }
+
+    /**
+     * Get LINE Agreement Text
+     * @return mixed
+     */
+    public function getAgreementText()
+    {
+        return $this->scopeConfig->getValue(self::XML_LINE_AGREEMENT_TEXT, ScopeInterface::SCOPE_STORE);
     }
 
     /**

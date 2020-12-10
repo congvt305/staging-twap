@@ -1,0 +1,16 @@
+<!--
+/*
+  * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: bilalyounas
+ * Date: 30/9/20
+ * Time: 07:27 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Eguana_CustomerBulletin::ticket_admin" title="Eguana" module="Eguana_CustomerBulletin" sortOrder="100" resource="Eguana_CustomerBulletin::ticket_admin" parent="Magento_Customer::customer"/>
+        <add id="Eguana_CustomerBulletin::ticket_manage" title="Support Ticket" module="Eguana_CustomerBulletin" sortOrder="2" resource="Eguana_CustomerBulletin::ticket_manage" parent="Eguana_CustomerBulletin::ticket_admin" action="ticket/ticket/"/>
+    </menu>
+</config>

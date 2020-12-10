@@ -19,6 +19,7 @@ use Amore\CustomerRegistration\Helper\Data;
  */
 class Register implements ArgumentInterface
 {
+    const LINE = 'line';
 
     /**
      * Http
@@ -90,6 +91,39 @@ class Register implements ArgumentInterface
         $this->customerSession->start();
         $socialData = $this->customerSession->getData('social_user_data');
         return $socialData;
+    }
+
+    /**
+     * Get line social media app id
+     * @return mixed|null
+     */
+    public function getLineId()
+    {
+        $lineId = null;
+        $socialMediaData = $this->getSocialLoginData();
+        if (isset($socialMediaData['socialmedia_type'])) {
+            $socialMediaType = $socialMediaData['socialmedia_type'];
+            if ($socialMediaType == self::LINE) {
+                return $socialMediaData['appid'];
+            }
+        }
+        return $lineId;
+    }
+
+    /**
+     * Get social media type if LINE
+     * @return bool
+     */
+    public function getSocialMediaType()
+    {
+        $socialMediaData = $this->getSocialLoginData();
+        if (isset($socialMediaData['socialmedia_type'])) {
+            $socialMediaType = $socialMediaData['socialmedia_type'];
+            if ($socialMediaType == self::LINE) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function getSocialMediaEmail()

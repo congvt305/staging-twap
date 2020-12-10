@@ -47,6 +47,9 @@ class Refund
             if ($ecpayMethod === 'credit') {
                 return true;
             }
+            if ($ecpayMethod === 'linepay_payment') {
+                return true;
+            }
         }
         return false;
     }
@@ -63,13 +66,16 @@ class Refund
             return $paymentInfo['ecpay_choosen_payment'];
         }
 
-        if (isset($paymentInfo['raw_details_info'])) {
+        if (isset($paymentInfo['raw_details_info']['ecpay_choosen_payment'])) {
             $this->logger->info('customerRefund | payMethod from raw detail', [$paymentInfo['raw_details_info']['ecpay_choosen_payment']]);
             return $paymentInfo['raw_details_info']['ecpay_choosen_payment'];
         }
 
-        return false;
+        if (isset($paymentInfo['raw_details_info']['method_title'])) {
+            return $paymentInfo['raw_details_info']['method_title'];
+        }
 
+        return false;
     }
 
     /**

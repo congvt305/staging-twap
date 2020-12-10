@@ -51,6 +51,8 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
             'area',
             'address',
             'telephone',
+            'available_for_events',
+            'available_for_redemption',
             'location',
             'created_at',
             'email',
@@ -116,6 +118,24 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
     public function setTelephone($telephone)
     {
         return $this->setData(self::TELEPHONE, $telephone);
+    }
+
+    /**
+     * @param $availableForEvents
+     * @return StoreInfo
+     */
+    public function setAvailableForEvents($availableForEvents)
+    {
+        return $this->setData(self::AVAILABLE_FOR_EVENTS, $availableForEvents);
+    }
+
+    /**
+     * @param $availableForRedemption
+     * @return StoreInfo
+     */
+    public function setAvailableForRedemption($availableForRedemption)
+    {
+        return $this->setData(self::AVAILABLE_FOR_REDEMPTION, $availableForRedemption);
     }
 
     /**
@@ -203,6 +223,22 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
     /**
      * getter
      */
+    public function getAvailableForEvents()
+    {
+        return $this->getData(self::AVAILABLE_FOR_EVENTS);
+    }
+
+    /**
+     * getter
+     */
+    public function getAvailableForRedemption()
+    {
+        return $this->getData(self::AVAILABLE_FOR_REDEMPTION);
+    }
+
+    /**
+     * getter
+     */
     public function getLocation()
     {
         return $this->getData(self::LOCATION);
@@ -262,6 +298,8 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
         $this->setData('store_type', $storeInfoData['store_type']);
         $this->setData('address', $storeInfoData['address']);
         $this->setData('telephone', $storeInfoData['telephone']);
+        $this->setData('available_for_events', $storeInfoData['available_for_events']);
+        $this->setData('available_for_redemption', $storeInfoData['available_for_redemption']);
         $this->setData('location', $storeInfoData['location']);
         $this->setData('stores', $storeInfoData['store_id']);
         $this->setData('email', $storeInfoData['email']);

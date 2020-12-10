@@ -1,0 +1,21 @@
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 12/10/20
+ * Time: 10:40 AM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Eguana_Redemption">
+        <sequence>
+            <module name="Eguana_Base"/>
+            <module name="Eguana_StoreLocator"/>
+            <module name="Magento_Cms"/>
+            <module name="Magento_Store"/>
+            <module name="MSP_ReCaptcha"/>
+        </sequence>
+    </module>
+</config>

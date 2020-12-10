@@ -1,0 +1,78 @@
+Back,背部
+"Delete News","删除新闻"
+"Are you sure you want to do this?","你确定你要这么做吗？"
+Save,救
+"Save & Duplicate","保存并复制"
+"Save & Close","保存并关闭"
+Name,名称
+Add,加
+News,新闻
+Board,板
+"Manage News","管理新闻"
+"News was successfully deleted","新闻已成功删除"
+"News could not be deleted","新闻无法删除"
+"Edit News","编辑新闻"
+"New News","新的新闻"
+"A total of %1 news(s) have been deleted.","总共 ％1 个新闻已被删除"
+"A total of %1 news(s) have been disabled.","总共 ％1 个新闻已被禁用。"
+"A total of %1 news(s) have been enabled.","总共已启用％1个新闻。"
+"This news no longer exists.","此新闻不再存在。"
+"The news URL key can't use capital letters or disallowed symbols. Remove the letters and symbols and try again.","新闻URL密钥不能使用大写字母或不允许的符号。删除字母和符号，然后重试。"
+"The news URL key can't use only numbers. Add letters or words and try again.","新闻URL密钥不能仅使用数字。添加字母或单词，然后重试。"
+"You saved the news.","您保存了新闻。"
+"Something went wrong while saving the news.","保存新闻时出了点问题。"
+"You duplicated the news.","您复制了新闻。"
+Enabled,已启用
+Disabled,残障人士
+"Something went wrong while saving the file(s).","保存文件时出了点问题。"
+"File validation failed.","文件验证失败。"
+"File can not be saved to the destination folder.","文件无法保存到目标文件夹。"
+Ascending,上升
+Descending,降序
+"Could not save the data: %1","无法保存数据：％1"
+"Requested news doesn't exist","请求的新闻不存在"
+"Unable to remove data %1","无法删除数据 ％1"
+"The News URL key can't use capital letters or disallowed symbols. Remove the letters and symbols and try again.","新闻URL密钥不能使用大写字母或不允许的符号。删除字母和符号，然后重试。"
+Edit,编辑
+Delete,删除
+"Delete ""${ $.$data.title }""","Delete "删除“” $ {$。$ data.title}“”"
+"Are you sure you wan't to delete a ""${ $.$data.title }"" record?","您确定要删除““ $ {$。$ data.title}”“记录吗？"
+"All Store Views","所有商店视图"
+"There is no news.","没有消息。"
+"News Board","新闻板"
+General,一般
+"Enable Feature","启用功能"
+"No. of news per Page","每页新闻数"
+Categories,分类目录
+"News sort type","新闻分类类型"
+"A total of %1 record(s) have been deleted.","总共 ％1 个记录已被删除。"
+"An error occurred while deleting record(s).","删除记录时发生错误。"
+"A total of %1 record(s) have been Disable.","总共 ％1 个记录已被禁用"
+"An error occurred while disable selected news.","禁用所选新闻时发生错误。"
+"A total of %1 record(s) have been Enable.","总共 ％1 个记录已启用。"
+"An error occurred while enable news.","启用新闻时发生错误。"
+"Enable News","启用新闻"
+"Thumbnail Image","缩图图片"
+Date,日期
+Category,类别
+"Select Category","选择类别"
+"News in Websites ","网站新闻"
+"Store View","店铺检视"
+Content,内容
+"Search Engine Optimization","搜索引擎优化"
+"URL key","网址键"
+"Meta Title","元标题"
+"Meta Keywords","元关键字"
+"Meta Description","元描述"
+"Add New News","新增新闻"
+"Are you sure you want to delete selected items?","您确定要删除所选项目吗？"
+"Delete items","删除项目"
+Disable,禁用
+Enable,启用
+ID,ID
+"News Title","新闻标题"
+"News Category","新闻分类"
+Thumbnail,缩图
+Status,状态
+Created,已建立
+Modified,改性

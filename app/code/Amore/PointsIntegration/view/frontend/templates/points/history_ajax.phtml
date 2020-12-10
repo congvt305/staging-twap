@@ -1,0 +1,18 @@
+<?php
+/**
+ * Created by Eguana.
+ * User: Brian
+ * Date: 2020-12-07
+ * Time: 오전 10:08
+ */
+/** @var \Amore\PointsIntegration\ViewModel\Points\HistoryAjax  $viewModel */
+$viewModel = $block->getData('history_view_model');
+$pointsHistoryResults = $viewModel->getPageData();
+?>
+<?php foreach ($pointsHistoryResults as $pointsHistoryResult) :?>
+    <tr>
+        <td data-th="<?=$block->escapeHtmlAttr(__('Name of Point')) ?>" class="col point-type-name"><?=$pointsHistory['typeNM'] ?></td>
+        <td data-th="<?=$block->escapeHtmlAttr(__('Points')) ?>" class="col points"><?=$pointsHistory['point'] ?></td>
+        <td data-th="<?=$block->escapeHtmlAttr(__('Points Valid Period')) ?>" class="col redeem-date"><?=$pointsHistory['validPeriod'] ?></td>
+    </tr>
+<?php endforeach; ?>
