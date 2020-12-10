@@ -94,9 +94,6 @@ class Refund
             if ($ecpayMethod === 'webatm') {
                 return true;
             }
-            if ($ecpayMethod === 'linepay_payment') {
-                return true;
-            }
         }
         return false;
     }
