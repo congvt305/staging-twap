@@ -11,6 +11,8 @@ namespace Eguana\SocialLogin\Observer;
 
 use Eguana\SocialLogin\Model\SocialLoginHandler as SocialLoginModel;
 use Eguana\SocialLogin\Model\SocialLoginRepository;
+use Magento\Customer\Model\ResourceModel\CustomerRepository;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Event\Observer as ObserverAlias;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Session\SessionManagerInterface as SessionManagerInterfaceAlias;
@@ -40,22 +42,38 @@ class CustomerLogin implements ObserverInterface
     private $logger;
 
     /**
+     * @var RequestInterface
+     */
+    private $request;
+
+    /**
+     * @var CustomerRepository
+     */
+    private $customerRepository;
+
+    /**
      * CustomerLogin constructor.
      * @param SessionManagerInterfaceAlias $customerSession
      * @param SocialLoginModel $socialLoginModel
      * @param SocialLoginRepository $socialLoginRepository
      * @param LoggerInterface $logger
+     * @param RequestInterface $request
+     * @param CustomerRepository $customerRepository
      */
     public function __construct(
         SessionManagerInterfaceAlias $customerSession,
         SocialLoginModel $socialLoginModel,
         SocialLoginRepository $socialLoginRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        RequestInterface $request,
+        CustomerRepository $customerRepository
     ) {
         $this->session                           = $customerSession;
         $this->socialLoginModel                  = $socialLoginModel;
         $this->socialLoginRepository             = $socialLoginRepository;
         $this->logger                            = $logger;
+        $this->request                           = $request;
+        $this->customerRepository                = $customerRepository;
     }
 
     /**
@@ -64,7 +82,9 @@ class CustomerLogin implements ObserverInterface
      */
     public function execute(ObserverAlias $observer)
     {
+        $lineAgreement = $this->request->getParam('line_messages_agreement_checkbox');
         $customer = $observer->getEvent()->getCustomer();
+        $lineAgreement = $lineAgreement ? 1 : 0;
         if ($this->session->getData('social_user_data')) {
             $customerData = $this->session->getData('social_user_data');
             $username = $customerData['name'];
@@ -84,6 +104,13 @@ class CustomerLogin implements ObserverInterface
                             $this->socialLoginRepository->delete($socialLoginUser);
                         }
                     }
+                }
+                try {
+                    $customer = $this->customerRepository->getById($customerId);
+                    $customer->setCustomAttribute('line_message_agreement', $lineAgreement);
+                    $this->customerRepository->save($customer);
+                } catch (\Exception $e) {
+                    $this->logger->error($e->getMessage());
                 }
                 $this->socialLoginModel->setSocialMediaCustomer($appid, $customerId, $username, $socialMediaType);
             }

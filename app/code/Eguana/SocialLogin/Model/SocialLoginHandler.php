@@ -11,7 +11,7 @@ namespace Eguana\SocialLogin\Model;
 
 use Eguana\SocialLogin\Model\ResourceModel\SocialLogin\CollectionFactory as LineCollectionFactory;
 use Eguana\SocialLogin\Model\SocialLoginFactory as LineModelFactory;
-use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Model\ResourceModel\CustomerRepository;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session;
@@ -28,6 +28,9 @@ use Psr\Log\LoggerInterface;
  */
 class SocialLoginHandler
 {
+
+    const LINE = 'line';
+
     /**
      * @var CustomerFactory
      */
@@ -82,7 +85,7 @@ class SocialLoginHandler
      * @param Session $customerSession
      * @param Customer $customerModel
      * @param LoggerInterface $logger
-     * @param CustomerRepositoryInterface $customerRepositoryInterface
+     * @param CustomerRepository $customerRepository
      * @param LineCollectionFactory $lineCustomerCollectionFactory
      * @param SocialLoginFactory $lineCustomerModelFactory
      * @param SessionManagerInterfaceAlias $coreSession
@@ -96,7 +99,7 @@ class SocialLoginHandler
         Session $customerSession,
         Customer $customerModel,
         LoggerInterface $logger,
-        CustomerRepositoryInterface $customerRepositoryInterface,
+        CustomerRepository $customerRepository,
         LineCollectionFactory $lineCustomerCollectionFactory,
         LineModelFactory $lineCustomerModelFactory,
         SessionManagerInterfaceAlias $coreSession,
@@ -104,7 +107,7 @@ class SocialLoginHandler
         SocialLoginRepository $socialLoginRepository,
         StoreManagerInterface $storeManager
     ) {
-        $this->customerRepositoryInterface       = $customerRepositoryInterface;
+        $this->customerRepository                = $customerRepository;
         $this->customerFactory                   = $customerFactory;
         $this->messageManager                    = $messageManager;
         $this->session                           = $customerSession;
@@ -177,6 +180,15 @@ class SocialLoginHandler
         $websiteId = null;
         try {
             $websiteId = $this->storeManager->getStore()->getWebsiteId();
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+        try {
+            if ($socialMediaType == self::LINE) {
+                $customer = $this->customerRepository->getById($customerId);
+                $customer->setCustomAttribute('line_id', $socialId);
+                $this->customerRepository->save($customer);
+            }
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }

@@ -272,7 +272,14 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
             <?php if ($_dmSubscriptionStatus->isEnabled()) : ?>
                 <?= $_dmSubscriptionStatus->setDate($block->getFormData()->getDmSubscriptionStatus())->toHtml() ?>
             <?php endif ?>
-
+            <?php if ($viewModel->getSocialMediaType()): ?>
+                <?php $_lineMessagesAgreement = $block->getLayout()->createBlock(\Eguana\SocialLogin\Block\Widget\CheckBox::class, 'line_messages_agreement', ['data'=>['attribute_code'=>'line_messages_agreement', 'form_value'=> '']]) ?>
+                <?= $_lineMessagesAgreement->toHtml() ?>
+                <input type="hidden"
+                       name="line_id"
+                       id="line_id"
+                       value="<?= $block->escapeHtml($viewModel->getLineId()) ?>">
+            <?php endif ?>
             <div class="field required" style="display: none;">
                 <input type="hidden" name="integration_number" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('integration_number')) ?>" id="integration_number">
             </div>

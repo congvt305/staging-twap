@@ -27,12 +27,18 @@ define([
                     $('div[class*="password"]').slideDown();
                     $('div[class*="password"]').addClass("active");
                 }
+                if(!$('div[class*="line_messages_agreement"]').hasClass('active')){
+                    $('div[class*="line_messages_agreement"]').slideDown();
+                    $('div[class*="line_messages_agreement"]').addClass("active");
+                }
             });
             $("#not-a-member").click(function(){
                 $('div[class*="email"]').slideUp();
                 $('div[class*="password"]').slideUp();
+                $('div[class*="line_messages_agreement"]').slideUp();
                 $('div[class*="email"]').removeClass('active');
                 $('div[class*="password"]').removeClass('active');
+                $('div[class*="line_messages_agreement"]').removeClass('active');
             });
         });
         $(document).on('click', '#not-a-member', function(ev){
@@ -69,4 +75,3 @@ define([
     };
     return main;
 });
-

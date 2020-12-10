@@ -22,6 +22,7 @@ use Psr\Log\LoggerInterface;
  */
 class CreateCustomer extends Template
 {
+    const LINE = 'line';
 
     /**
      * @var RequestInterface
@@ -51,9 +52,9 @@ class CreateCustomer extends Template
         Context $context,
         LoggerInterface $logger
     ) {
-        $this->request                          = $request;
-        $this->storeManager                     = $storeManager;
-        $this->logger                           = $logger;
+        $this->request = $request;
+        $this->storeManager = $storeManager;
+        $this->logger = $logger;
         parent::__construct($context);
     }
 
@@ -73,6 +74,20 @@ class CreateCustomer extends Template
     public function getFormAction()
     {
         return $this->getUrl('customer/account/loginPost/', ['_secure' => true]);
+    }
+
+    /**
+     * Get social media type if LINE
+     * @return bool
+     */
+    public function getSocialMediaType()
+    {
+        $type = null;
+        $type = $this->request->getParam('type');
+        if ($type == self::LINE) {
+            return true;
+        }
+        return false;
     }
 
     /**

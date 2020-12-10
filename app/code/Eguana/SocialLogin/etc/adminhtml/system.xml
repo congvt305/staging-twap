@@ -42,6 +42,9 @@
                     <label>Line Add Friends Link</label>
                     <validate>validate-url</validate>
                 </field>
+                <field id="line_messages_agreement" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Line Messages Agreement Text</label>
+                </field>
             </group>
             <group id="facebook" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Facebook</label>
