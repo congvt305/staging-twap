@@ -65,10 +65,25 @@ abstract class AbstractPointsBlock extends Template
 
     public function responseValidation($response)
     {
-        if (isset($response['statusCode']) && $response['statusCode'] == '200') {
+        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * @param array $response
+     * @param int $blockPageNumber
+     * @return false|float
+     */
+    public function pageBlock(array $response, int $blockPageNumber)
+    {
+        if ($response[0]['totPage'] != 0) {
+            $totalPage = (int)$response[0]['totPage'];
+            return (int)ceil($totalPage/$blockPageNumber);
+        } else {
+            return 0;
         }
     }
 }

@@ -79,8 +79,7 @@ class OrderToPosSenderObserver implements ObserverInterface
 
     public function responseCheck($response)
     {
-        $arrResponse = $this->json->unserialize($response);
-        if ($arrResponse['data']['statusCode'] == '200') {
+        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
             return 1;
         } else {
             return 0;
