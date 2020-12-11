@@ -6,7 +6,7 @@
  * Time: 오후 2:36
  */
 
-namespace Amore\PointsIntegration\Controller\Adminhtml;
+namespace Amore\PointsIntegration\Controller\Adminhtml\Points;
 
 use Amore\PointsIntegration\Model\Connection\Request;
 use Amore\PointsIntegration\Model\PosOrderData;
@@ -77,13 +77,16 @@ class OrderToPos extends Action
             $order = $this->getOrder($orderId);
 
             $websiteId = $order->getStore()->getWebsiteId();
+
             $orderData = $this->posOrderData->getOrderData($order);
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
 
             $status = $this->responseCheck($response);
-
             if ($status) {
                 $this->posOrderData->updatePosSendCheck($order->getEntityId());
+                $this->messageManager->addSuccessMessage(__('Order Sent to Pos Successfully.'));
+            } else {
+                $this->messageManager->addErrorMessage(__('Pos Return Error. Please Check the Data.'));
             }
         } catch (NoSuchEntityException $exception) {
             $response = $exception->getMessage();
@@ -103,7 +106,7 @@ class OrderToPos extends Action
 
     public function getOrder($orderId)
     {
-        $this->orderRepository->get($orderId);
+        return $this->orderRepository->get($orderId);
     }
 
     public function responseCheck($response)

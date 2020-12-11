@@ -48,4 +48,17 @@ class Form extends \Magento\Sales\Block\Adminhtml\Order\Invoice\View\Form
         return isset($addtionalData['InvoiceNumber']);
     }
 
+    public function canShowOrderToPosButton()
+    {
+        $order = $this->getOrder();
+        $orderToPosCheck = $order->getData('pos_order_send_check');
+        return !$orderToPosCheck;
+    }
+
+    public function getSendOrderToPosURl()
+    {
+        $order = $this->getOrder();
+        $invoiceId = $this->getInvoice()->getEntityId();
+        return $this->getUrl('pointsintegration/points/ordertopos', ['order_id' => $order->getEntityId(), 'invoice_id' => $invoiceId]);
+    }
 }
