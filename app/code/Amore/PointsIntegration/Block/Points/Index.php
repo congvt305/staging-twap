@@ -56,7 +56,7 @@ class Index extends AbstractPointsBlock
         }
 
         if ($this->responseValidation($customerPointsInfo)) {
-            return $customerPointsInfo;
+            return $customerPointsInfo['data'];
         } else {
             return [];
         }

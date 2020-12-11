@@ -6,7 +6,8 @@ define(
     ], function ($, url) {
         'use strict';
 
-        function redeemPoints() {
+        function redeemPoints()
+        {
             $(document).on("click", ".redeem-pager", function () {
                 let requestedPage = $(this).data("page");
                 let ajaxUrl = url.build('pointsintegration/points/ajax/');

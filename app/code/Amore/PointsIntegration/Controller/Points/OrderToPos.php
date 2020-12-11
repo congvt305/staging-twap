@@ -88,8 +88,12 @@ class OrderToPos extends Action
             }
         } catch (NoSuchEntityException $exception) {
             $response = $exception->getMessage();
+            $this->messageManager->addErrorMessage($response);
+            $this->_redirect('sales/order_invoice/view', ['invoice_id' => $invoiceId]);
         } catch (\Exception $exception) {
             $response = $exception->getMessage();
+            $this->messageManager->addErrorMessage($response);
+            $this->_redirect('sales/order_invoice/view', ['invoice_id' => $invoiceId]);
         }
         $this->logging($orderData, $response, $status);
 
