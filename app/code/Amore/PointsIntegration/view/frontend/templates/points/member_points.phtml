@@ -16,7 +16,7 @@ $pointSearchResult = $block->getPointsSearchResult();
         <?php if (count($pointSearchResult) > 0) : ?>
             <div class="pos-customer-info">
                 <div class="pos-customer-name">
-                    <strong><?= $block->escapeHtml(__('Name')) . ' : '; ?><?= $pointSearchResult['lastName'] . $pointSearchResult['firstBame']; ?></strong>
+                    <strong><?= $block->escapeHtml(__('Name')) . ' : '; ?><?= $pointSearchResult['lastName'] . $pointSearchResult['firstName']; ?></strong>
                 </div>
                 <div class="pos-customer-integration-code">
                     <span><?= $block->escapeHtml(__('Customer Code')) . ' : '; ?><?= $pointSearchResult['cstmIntgSeq']; ?></span>
