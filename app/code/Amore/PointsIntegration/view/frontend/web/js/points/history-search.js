@@ -6,7 +6,8 @@ define(
     ], function ($, url) {
         'use strict';
 
-        function pointsHistory() {
+        function pointsHistory()
+        {
             $(document).on("click", ".history-pager", function () {
                 let requestedPage = $(this).data("page");
                 let ajaxUrl = url.build('pointsintegration/points/historyajax/');
