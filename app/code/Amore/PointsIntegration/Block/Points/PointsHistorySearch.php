@@ -56,7 +56,7 @@ class PointsHistorySearch extends AbstractPointsBlock
         }
 
         if ($this->responseValidation($pointsHistoryResult)) {
-            return $pointsHistoryResult['data'];
+            return $pointsHistoryResult['data']['point_data'];
         } else {
             return [];
         }

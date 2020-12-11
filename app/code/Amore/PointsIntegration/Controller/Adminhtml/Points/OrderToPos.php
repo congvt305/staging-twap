@@ -2,16 +2,15 @@
 /**
  * Created by Eguana.
  * User: Brian
- * Date: 2020-12-02
- * Time: 오후 6:16
+ * Date: 2020-12-11
+ * Time: 오후 2:36
  */
 
-namespace Amore\PointsIntegration\Controller\Points;
+namespace Amore\PointsIntegration\Controller\Adminhtml\Points;
 
 use Amore\PointsIntegration\Model\Connection\Request;
 use Amore\PointsIntegration\Model\PosOrderData;
 use Magento\Backend\App\Action;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -78,21 +77,26 @@ class OrderToPos extends Action
             $order = $this->getOrder($orderId);
 
             $websiteId = $order->getStore()->getWebsiteId();
+
             $orderData = $this->posOrderData->getOrderData($order);
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
 
             $status = $this->responseCheck($response);
-
             if ($status) {
                 $this->posOrderData->updatePosSendCheck($order->getEntityId());
+                $this->messageManager->addSuccessMessage(__('Order Sent to Pos Successfully.'));
+            } else {
+                $this->messageManager->addErrorMessage(__('Pos Return Error. Please Check the Data.'));
             }
         } catch (NoSuchEntityException $exception) {
             $response = $exception->getMessage();
             $this->messageManager->addErrorMessage($response);
+
             $this->_redirect('sales/order_invoice/view', ['invoice_id' => $invoiceId]);
         } catch (\Exception $exception) {
             $response = $exception->getMessage();
             $this->messageManager->addErrorMessage($response);
+
             $this->_redirect('sales/order_invoice/view', ['invoice_id' => $invoiceId]);
         }
         $this->logging($orderData, $response, $status);
@@ -102,13 +106,12 @@ class OrderToPos extends Action
 
     public function getOrder($orderId)
     {
-        $this->orderRepository->get($orderId);
+        return $this->orderRepository->get($orderId);
     }
 
     public function responseCheck($response)
     {
-        $arrResponse = $this->json->unserialize($response);
-        if ($arrResponse['statusCode'] == '200') {
+        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
             return 1;
         } else {
             return 0;

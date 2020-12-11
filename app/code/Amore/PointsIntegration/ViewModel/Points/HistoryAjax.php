@@ -53,59 +53,10 @@ class HistoryAjax implements ArgumentInterface
         $pointsHistoryResult = $this->pointsHistorySearch->getPointsHistoryResult($customer->getId(), $customer->getWebsiteId(), $page);
 
         if ($this->responseValidation($pointsHistoryResult)) {
-            return $pointsHistoryResult['data'];
+            return $pointsHistoryResult['data']['point_data'];
         } else {
             return [];
         }
-
-//        return [
-//            [
-//                'totCnt' => 10,
-//                'totPage' => 1,
-//                'date' => '2020-11-11',
-//                'typeCD' => '적립/사용 type',
-//                'typeNM' => '적립/사용 type name',
-//                'point' => '111111111111',
-//                'validPeriod' => '2022-11-13',
-//                'reason' => "그냥 사용1",
-//            ],[
-//                'totCnt' => 10,
-//                'totPage' => 1,
-//                'date' => '2020-11-11',
-//                'typeCD' => '적립/사용 type',
-//                'typeNM' => '적립/사용 type name',
-//                'point' => '111111111111',
-//                'validPeriod' => '2022-11-13',
-//                'reason' => "그냥 사용2",
-//            ],[
-//                'totCnt' => 10,
-//                'totPage' => 1,
-//                'date' => '2020-11-11',
-//                'typeCD' => '적립/사용 type',
-//                'typeNM' => '적립/사용 type name',
-//                'point' => '111111111111',
-//                'validPeriod' => '2022-11-13',
-//                'reason' => "그냥 사용3",
-//            ],[
-//                'totCnt' => 10,
-//                'totPage' => 1,
-//                'date' => '2020-11-11',
-//                'typeCD' => '적립/사용 type',
-//                'typeNM' => '적립/사용 type name',
-//                'point' => '111111111111',
-//                'validPeriod' => '2022-11-13',
-//                'reason' => "그냥 사용4",
-//            ],[
-//                'totCnt' => 10,
-//                'totPage' => 1,
-//                'date' => '2020-11-11',
-//                'typeCD' => '적립/사용 type',
-//                'typeNM' => '적립/사용 type name',
-//                'point' => '111111111111',
-//                'validPeriod' => '2022-11-13',
-//                'reason' => "그냥 사용5",
-//            ]
-//        ];
     }
 
     public function responseValidation($response)
