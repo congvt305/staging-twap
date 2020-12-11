@@ -2,16 +2,15 @@
 /**
  * Created by Eguana.
  * User: Brian
- * Date: 2020-12-02
- * Time: 오후 6:16
+ * Date: 2020-12-11
+ * Time: 오후 2:36
  */
 
-namespace Amore\PointsIntegration\Controller\Points;
+namespace Amore\PointsIntegration\Controller\Adminhtml;
 
 use Amore\PointsIntegration\Model\Connection\Request;
 use Amore\PointsIntegration\Model\PosOrderData;
 use Magento\Backend\App\Action;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -67,11 +66,18 @@ class OrderToPos extends Action
 
     public function execute()
     {
+        $writer = new \Zend\Log\Writer\Stream(BP . sprintf('/var/log/test_%s.log',date('Ymd')));
+        $logger = new \Zend\Log\Logger();
+        $logger->addWriter($writer);
+        $logger->info(__METHOD__);
+
         $orderData = '';
         $status = 0;
 
         $orderId = $this->_request->getParam('order_id');
         $invoiceId = $this->_request->getParam('invoice_id');
+
+        $logger->debug($this->_request->getParams());
 
         try {
             /** @var \Magento\Sales\Model\Order $order */
@@ -82,17 +88,28 @@ class OrderToPos extends Action
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
 
             $status = $this->responseCheck($response);
+            $logger->info('==========STATUS=========');
+            $logger->info($status);
 
             if ($status) {
+                $logger->info('===========SUCCESS==========');
                 $this->posOrderData->updatePosSendCheck($order->getEntityId());
             }
         } catch (NoSuchEntityException $exception) {
             $response = $exception->getMessage();
             $this->messageManager->addErrorMessage($response);
+
+            $logger->info('===========CATCH 1==========');
+            $logger->info($response);
+
             $this->_redirect('sales/order_invoice/view', ['invoice_id' => $invoiceId]);
         } catch (\Exception $exception) {
             $response = $exception->getMessage();
             $this->messageManager->addErrorMessage($response);
+
+            $logger->info('===========CATCH 2==========');
+            $logger->info($response);
+
             $this->_redirect('sales/order_invoice/view', ['invoice_id' => $invoiceId]);
         }
         $this->logging($orderData, $response, $status);
@@ -107,8 +124,7 @@ class OrderToPos extends Action
 
     public function responseCheck($response)
     {
-        $arrResponse = $this->json->unserialize($response);
-        if ($arrResponse['statusCode'] == '200') {
+        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
             return 1;
         } else {
             return 0;
