@@ -50,7 +50,13 @@ class HistoryAjax implements ArgumentInterface
 
         $page = $this->requestInterface->getParam('page');
 
-        return $this->pointsHistorySearch->getPointsHistoryResult($customer->getId(), $customer->getWebsiteId(), $page);
+        $pointsHistoryResult = $this->pointsHistorySearch->getPointsHistoryResult($customer->getId(), $customer->getWebsiteId(), $page);
+
+        if ($this->responseValidation($pointsHistoryResult)) {
+            return $pointsHistoryResult['data'];
+        } else {
+            return [];
+        }
 
 //        return [
 //            [
@@ -100,5 +106,14 @@ class HistoryAjax implements ArgumentInterface
 //                'reason' => "그냥 사용5",
 //            ]
 //        ];
+    }
+
+    public function responseValidation($response)
+    {
+        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
