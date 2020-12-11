@@ -53,7 +53,7 @@ class RedeemAjax implements ArgumentInterface
         $redeemPointsResult = $this->redeemPointsSearch->getRedeemSearchResult($customer->getId(), $customer->getWebsiteId(), $page);
 
         if ($this->responseValidation($redeemPointsResult)) {
-            return $redeemPointsResult['data'];
+            return $redeemPointsResult['data']['redemption_data'];
         } else {
             return [];
         }

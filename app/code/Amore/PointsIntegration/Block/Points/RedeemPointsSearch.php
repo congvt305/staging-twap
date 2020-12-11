@@ -58,7 +58,7 @@ class RedeemPointsSearch extends AbstractPointsBlock
         }
 
         if ($this->responseValidation($redeemPointsResult)) {
-            return $redeemPointsResult['data'];
+            return $redeemPointsResult['data']['redemption_data'];
         } else {
             return [];
         }
