@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: umer
+* Date: 26/11/20
+* Time: 3:54 PM
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Eguana_Base::config">
+                                <resource id="Eguana_LineMessage::linemessage_configuration" title="Eguana Line Message Config" />
+                            </resource>
+                        </resource>
+                    </resource>
+                </resource>
+                <resource id="Eguana_LineMessage::messages" title="Line Messages" translate="title" sortOrder="2000">
+                    <resource id="Eguana_LineMessage::api" title="Api" translate="title" sortOrder="10"/>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>
