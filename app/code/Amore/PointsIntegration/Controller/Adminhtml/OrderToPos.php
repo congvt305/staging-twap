@@ -66,18 +66,11 @@ class OrderToPos extends Action
 
     public function execute()
     {
-        $writer = new \Zend\Log\Writer\Stream(BP . sprintf('/var/log/test_%s.log',date('Ymd')));
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info(__METHOD__);
-
         $orderData = '';
         $status = 0;
 
         $orderId = $this->_request->getParam('order_id');
         $invoiceId = $this->_request->getParam('invoice_id');
-
-        $logger->debug($this->_request->getParams());
 
         try {
             /** @var \Magento\Sales\Model\Order $order */
@@ -88,27 +81,18 @@ class OrderToPos extends Action
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
 
             $status = $this->responseCheck($response);
-            $logger->info('==========STATUS=========');
-            $logger->info($status);
 
             if ($status) {
-                $logger->info('===========SUCCESS==========');
                 $this->posOrderData->updatePosSendCheck($order->getEntityId());
             }
         } catch (NoSuchEntityException $exception) {
             $response = $exception->getMessage();
             $this->messageManager->addErrorMessage($response);
 
-            $logger->info('===========CATCH 1==========');
-            $logger->info($response);
-
             $this->_redirect('sales/order_invoice/view', ['invoice_id' => $invoiceId]);
         } catch (\Exception $exception) {
             $response = $exception->getMessage();
             $this->messageManager->addErrorMessage($response);
-
-            $logger->info('===========CATCH 2==========');
-            $logger->info($response);
 
             $this->_redirect('sales/order_invoice/view', ['invoice_id' => $invoiceId]);
         }
