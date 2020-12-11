@@ -94,20 +94,26 @@ class PushMessageHandler
             $to = null;
             $lineMessageAgreement = null;
             try {
-                $to = $customer->getCustomAttribute('line_id')->getValue();
+                if ($customer->getCustomAttribute('line_id') != null &&
+                    $customer->getCustomAttribute('line_id')->getValue() != null) {
+                    $to = $customer->getCustomAttribute('line_id')->getValue();
+                }
             } catch (\Exception $e) {
                 throw new NoSuchEntityException(__('Requested customer has no LINE Account.'));
             }
             try {
-                $lineMessageAgreement = $customer->getCustomAttribute('line_message_agreement')->getValue();
+                if ($customer->getCustomAttribute('line_message_agreement') != null &&
+                    $customer->getCustomAttribute('line_message_agreement')->getValue() != null) {
+                    $lineMessageAgreement = $customer->getCustomAttribute('line_message_agreement')->getValue();
+                }
             } catch (\Exception $e) {
-                throw new NoSuchEntityException(__('Requested customer has no LINE Message Agreement.'));
-            }
-            if (!$lineMessageAgreement) {
                 throw new NoSuchEntityException(__('Requested customer has no LINE Message Agreement.'));
             }
             if (!$to) {
                 throw new NoSuchEntityException(__('Requested customer has no LINE Account.'));
+            }
+            if (!$lineMessageAgreement) {
+                throw new NoSuchEntityException(__('Requested customer has no LINE Message Agreement.'));
             }
             $data["to"] = $to;
             $messageData["type"] = "text";
