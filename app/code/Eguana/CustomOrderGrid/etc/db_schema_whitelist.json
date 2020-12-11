@@ -1,0 +1,15 @@
+{
+    "sales_order": {
+        "column": {
+            "customer_ba_code": true
+        },
+        "index": {
+            "SALES_ORDER_CUSTOMER_BA_CODE": true
+        }
+    },
+    "sales_order_grid": {
+        "column": {
+            "customer_ba_code": true
+        }
+    }
+}

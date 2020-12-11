@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: raheel
+* Date: 11/12/20
+* Time: 3:20 PM
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_place_before">
+        <observer name="before_palce_set_ba_code" instance="Eguana\CustomOrderGrid\Observer\AddSaleOrderBaCode" />
+    </event>
+</config>

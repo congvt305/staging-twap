@@ -19,4 +19,15 @@
             </settings>
         </paging>
     </listingToolbar>
+    <columns name="sales_order_columns">
+        <column name="customer_ba_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Customer BA Code</item>
+                </item>
+            </argument>
+        </column>
+    </columns>
 </listing>
