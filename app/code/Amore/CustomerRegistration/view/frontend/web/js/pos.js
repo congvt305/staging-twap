@@ -172,6 +172,12 @@ define([
                                 $('.form-create-account #mobile_number').val($(this.options.mobileNumberSelector).val());
                                 $('.form-create-account #email_address').val(response.pos.email);
                                 $('.form-create-account #integration_number').val(response.pos.cstmIntgSeq);
+                                if (response.pos.cstmGradeCD) {
+                                    $('.form-create-account #cstmGradeCD').val(response.pos.cstmGradeCD);
+                                }
+                                if (response.pos.cstmGradeNM) {
+                                    $('.form-create-account #cstmGradeNM').val(response.pos.cstmGradeNM);
+                                }
                                 //$('.form-create-account #gender').val(response.pos.sex == 'M'?1:4);
                                 if (response.pos.sex == 'F') {
                                     $(".form-create-account #gender_Female").prop("checked", true);
