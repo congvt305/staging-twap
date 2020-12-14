@@ -24,6 +24,12 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use Magento\Customer\Api\AddressRepositoryInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Customer\Api\GroupRepositoryInterface;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 
 /**
  * Call POS API on customer information change
@@ -32,6 +38,12 @@ use Magento\Customer\Api\AddressRepositoryInterface;
  */
 class SaveSuccess implements ObserverInterface
 {
+    /**#@+
+     * Constant for configuration path of groups
+     */
+    const CONFIG_CUSTOMERS_GROUPS_PATH = 'customerregistraion/customergroups/customer_group_mapping';
+    /**#@-*/
+
     /**
      * @var \Amore\CustomerRegistration\Model\Sequence
      */
@@ -51,6 +63,31 @@ class SaveSuccess implements ObserverInterface
      * @var CustomerRepositoryInterface
      */
     private $customerRepository;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
+    /**
+     * @var Json
+     */
+    private $json;
+
+    /**
+     * @var GroupRepositoryInterface
+     */
+    private $groupRepository;
+
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteria;
 
     /**
      * @var POSLogger
@@ -100,7 +137,12 @@ class SaveSuccess implements ObserverInterface
         POSLogger $logger,
         POSSystem $POSSystem,
         AddressRepositoryInterface $addressRepository,
-        AddressInterfaceFactory $addressDataFactory
+        AddressInterfaceFactory $addressDataFactory,
+        StoreManagerInterface $storeManager,
+        ScopeConfigInterface $scopeConfig,
+        Json $json,
+        GroupRepositoryInterface $groupRepository,
+        SearchCriteriaBuilder $searchCriteria
     ) {
         $this->sequence = $sequence;
         $this->POSSystem = $POSSystem;
@@ -114,6 +156,11 @@ class SaveSuccess implements ObserverInterface
         $this->regionResourceModel = $regionResourceModel;
         $this->addressRepository = $addressRepository;
         $this->addressDataFactory = $addressDataFactory;
+        $this->storeManager = $storeManager;
+        $this->scopeConfig = $scopeConfig;
+        $this->json = $json;
+        $this->groupRepository = $groupRepository;
+        $this->searchCriteria = $searchCriteria;
     }
 
     /**
@@ -129,7 +176,6 @@ class SaveSuccess implements ObserverInterface
              * @var Customer $newCustomerData
              */
             $newCustomerData = $observer->getEvent()->getData('customer_data_object');
-
             /**
              * @var Customer $oldCustomerData
              */
@@ -190,6 +236,11 @@ class SaveSuccess implements ObserverInterface
     private function assignIntegrationNumber($customer)
     {
         try {
+            $groupId = $this->getCustomerGroup($customer);
+            if ($groupId) {
+                $customer->setGroupId($groupId);
+            }
+
             $posOrOnline = 'online';
             /**
              * @Abbas on the request of client. Now if customer register using bar code even than he can be online or
@@ -423,6 +474,60 @@ class SaveSuccess implements ObserverInterface
             }
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
+        }
+    }
+
+    /**
+     * Fet group to the customer
+     *
+     * @param $customer Customer
+     * @return string
+     */
+    private function getCustomerGroup($customer)
+    {
+        try {
+            $groupId = '';
+            $apiGroupCode = '';
+            $cstmGradeCD = $this->request->getParam('cstmGradeCD');
+            $cstmGradeNM = $this->request->getParam('cstmGradeNM');
+            $websiteId = (int)$this->storeManager->getStore($customer->getStoreId())->getWebsiteId();
+            $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
+
+            if ($websiteCode == 'tw_lageige_website') {
+                $apiGroupCode = $cstmGradeNM;
+            } else {
+                $apiGroupCode = $cstmGradeCD;
+            }
+
+            $result = $this->scopeConfig->getValue(
+                self::CONFIG_CUSTOMERS_GROUPS_PATH,
+                ScopeInterface::SCOPE_STORE,
+                $customer->getStoreId()
+            );
+            $configGroups = $this->json->unserialize($result);
+
+            if ($apiGroupCode) {
+                $groupCode = '';
+                foreach ($configGroups as $group) {
+                    if ($group['label'] == $apiGroupCode) {
+                        $groupCode = $group['type'];
+                        break;
+                    }
+                }
+
+                if ($groupCode) {
+                    $search = $this->searchCriteria->addFilter('customer_group_code', $groupCode)->create();
+                    $groups = $this->groupRepository->getList($search)->getItems();
+                    foreach ($groups as $group) {
+                        $groupId = $group->getId();
+                        break;
+                    }
+                }
+            }
+            return $groupId;
+        } catch (\Exception $e) {
+            $this->logger->addExceptionMessage($e->getMessage());
+            return $groupId;
         }
     }
 }

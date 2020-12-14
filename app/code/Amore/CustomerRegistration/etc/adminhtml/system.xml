@@ -89,7 +89,14 @@
                 </field>
 
             </group>
-
+            <group id="customergroups" translate="label" type="text" sortOrder="11" showInDefault="1">
+                <label>Customer Groups</label>
+                <field id="customer_group_mapping" translate="label comment tooltip" sortOrder="80" showInDefault="1">
+                    <label>Customer Group Mapping</label>
+                    <frontend_model>Amore\CustomerRegistration\Block\Adminhtml\System\Config\Formfieldmap</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
             <group id="pos" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
                 <label>POS System</label>
                 <depends>

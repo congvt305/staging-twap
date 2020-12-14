@@ -1,9 +1,11 @@
 <?php
 /**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  * Created by PhpStorm
  * User: raheel
- * Date: 7/12/20
- * Time: 04:20 PM
+ * Date: 7/12/2020
+ * Time: 4:20 PM
  */
 namespace Amore\CustomerRegistration\Setup\Patch\Data;
 

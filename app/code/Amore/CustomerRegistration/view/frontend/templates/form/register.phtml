@@ -297,7 +297,14 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
             <div class="field required" style="display: none;">
                 <input type="hidden" name="integration_number" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('integration_number')) ?>" id="integration_number">
             </div>
-
+            <input type="hidden"
+                   name="cstmGradeCD"
+                   id="cstmGradeCD"
+                   value="">
+            <input type="hidden"
+                   name="cstmGradeNM"
+                   id="cstmGradeNM"
+                   value="">
         </fieldset>
         <div class="store-info" style="display: none">
             <input type="hidden"
