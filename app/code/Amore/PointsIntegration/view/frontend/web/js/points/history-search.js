@@ -8,7 +8,7 @@ define(
 
         function pointsHistory()
         {
-            $(document).on("click", ".points-integration-pager", function () {
+            $(document).on("click", ".points-integration-points-pager", function () {
                 let requestedPage = $(this).data("page");
                 let ajaxUrl = url.build('pointsintegration/points/historyajax/');
                 $(this).addClass('active');
