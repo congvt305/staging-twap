@@ -37,21 +37,21 @@ $pointsHistoryResult = $block->getPointsHistoryResult();
             <ul class="items pages-items pagination">
                 <?php if ($pointsHistoryResult[0]['totPage'] > 1): ?>
                     <?php if ($pointsHistoryResult[0]['prev']): ?>
-                        <li class="item redeem-pager active" data-page="<?=$pointsHistoryResult[0]['prevPage']; ?>"><?=$block->escapeHtml(__('<')); ?></li>
+                        <li class="item points-integration-pager active" data-page="<?=$pointsHistoryResult[0]['prevPage']; ?>"><?=$block->escapeHtml(__('<')); ?></li>
                     <?php endif; ?>
                     <?php for ($i = $pointsHistoryResult[0]['startPage']; $i <= $pointsHistoryResult[0]['endPage']; $i++) : ?>
                         <?php if ($i == $pointsHistoryResult[0]['page']): ?>
-                            <li class="item redeem-pager active" data-page="<?=$i; ?>"><strong><?=$i; ?></strong></li>
+                            <li class="item points-integration-pager active" data-page="<?=$i; ?>"><strong><?=$i; ?></strong></li>
                         <?php else: ?>
-                            <li class="item redeem-pager active" data-page="<?=$i; ?>"><?=$i; ?></li>
+                            <li class="item points-integration-pager active" data-page="<?=$i; ?>"><?=$i; ?></li>
                         <?php endif; ?>
                     <?php endfor; ?>
                     <?php if ($pointsHistoryResult[0]['next']): ?>
-                        <li class="item redeem-pager active" data-page="<?=$pointsHistoryResult[0]['nextPage']; ?>"><?=$block->escapeHtml(__('>')); ?></li>
+                        <li class="item points-integration-pager active" data-page="<?=$pointsHistoryResult[0]['nextPage']; ?>"><?=$block->escapeHtml(__('>')); ?></li>
                     <?php endif; ?>
                 <?php endif; ?>
                 <?php if ($pointsHistoryResult[0]['totPage'] == 1): ?>
-                    <li class="item redeem-pager" data-page="<?$pointsHistoryResult[0]['totPage']; ?>">
+                    <li class="item points-integration-pager" data-page="<?$pointsHistoryResult[0]['totPage']; ?>">
                         <?=$pointsHistoryResult[0]['totPage']?>
                     </li>
                 <?php endif; ?>
