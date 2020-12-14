@@ -39,7 +39,7 @@ $pointSearchResult = $block->getPointsSearchResult();
                 </div>
                 <div class="pos-customer-expireDate">
                     <?= $block->escapeHtml(__('Expiry Date')) . ' : '; ?>
-                    <?= $pointSearchResult['expireDate']; ?>
+                    <?= $block->dateFormat($pointSearchResult['expireDate']); ?>
                 </div>
             </div>
         <?php else : ?>

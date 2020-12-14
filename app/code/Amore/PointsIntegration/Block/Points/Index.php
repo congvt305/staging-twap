@@ -61,4 +61,9 @@ class Index extends AbstractPointsBlock
             return [];
         }
     }
+
+    public function dateFormat($date)
+    {
+        return date("Y-m-d", strtotime($date));
+    }
 }
