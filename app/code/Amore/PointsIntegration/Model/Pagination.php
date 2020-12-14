@@ -37,7 +37,7 @@ class Pagination
         //Prev page
         $prev = $range == 1 ? false : true;
         //Next page
-        $next = $endPage > $pageCnt ? false : true;
+        $next = $endPage >= $pageCnt ? false : true;
 
         $pageData[0]['pageCnt'] = $pageCnt;
         $pageData[0]['listSize'] = $listSize;
