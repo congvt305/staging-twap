@@ -9,18 +9,68 @@
 $viewModel = $block->getData('history_view_model');
 $pointsHistoryResults = $viewModel->getPageData();
 ?>
-<?php if(count($pointsHistoryResults)) :?>
-    <?php foreach ($pointsHistoryResults as $pointsHistoryResult) :?>
-        <tr>
-            <td data-th="<?=$block->escapeHtmlAttr(__('Name of Point')) ?>" class="col point-type-name"><?=$pointsHistory['typeNM'] ?></td>
-            <td data-th="<?=$block->escapeHtmlAttr(__('Points')) ?>" class="col points"><?=$pointsHistory['point'] ?></td>
-            <td data-th="<?=$block->escapeHtmlAttr(__('Points Valid Period')) ?>" class="col redeem-date"><?=$pointsHistory['validPeriod'] ?></td>
-        </tr>
-    <?php endforeach; ?>
-<?php else: ?>
-    <tr>
-        <td colspan="5">
-            <span><?= $block->escapeHtml(__('Points Redemption History Does not Exist.')) ?></span>
-        </td>
-    </tr>
-<?php endif; ?>
+<?php if (count($pointsHistoryResults) > 0) : ?>
+    <div class="table-wrapper point-history">
+        <table class="data, table, table-point history" id="point-history-table">
+            <thead>
+            <tr>
+                <th scope="col" class="col product-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
+                <th scope="col" class="col redeem-points"><?= $block->escapeHtml(__('Points')) ?></th>
+                <th scope="col" class="col redeem-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
+            </tr>
+            </thead>
+            <tbody class="points-history-list">
+            <?php foreach ($pointsHistoryResults as $pointsHistory) :?>
+                <tr>
+                    <td data-th="<?=$block->escapeHtmlAttr(__('Name of Point')) ?>" class="col point-type-name"><?=$pointsHistory['typeNM'] ?></td>
+                    <td data-th="<?=$block->escapeHtmlAttr(__('Points')) ?>" class="col points"><?=$pointsHistory['point'] ?></td>
+                    <td data-th="<?=$block->escapeHtmlAttr(__('Points Valid Period')) ?>" class="col redeem-date"><?=$pointsHistory['validPeriod'] ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <div class="pages" id="points-history-pager">
+        <ul class="items pages-items pagination">
+            <?php if ($pointsHistoryResults[0]['totPage'] > 1): ?>
+                <?php if ($pointsHistoryResults[0]['prev']): ?>
+                    <li class="item redeem-pager active" data-page="<?=$pointsHistoryResults[0]['prevPage']; ?>"><?=$block->escapeHtml(__('<')); ?></li>
+                <?php endif; ?>
+                <?php for ($i = $pointsHistoryResults[0]['startPage']; $i <= $pointsHistoryResults[0]['endPage']; $i++) : ?>
+                    <?php if ($i == $pointsHistoryResults[0]['page']): ?>
+                        <li class="item redeem-pager active" data-page="<?=$i; ?>"><strong><?=$i; ?></strong></li>
+                    <?php else: ?>
+                        <li class="item redeem-pager active" data-page="<?=$i; ?>"><?=$i; ?></li>
+                    <?php endif; ?>
+                <?php endfor; ?>
+                <?php if ($pointsHistoryResults[0]['next']): ?>
+                    <li class="item redeem-pager active" data-page="<?=$pointsHistoryResults[0]['nextPage']; ?>"><?=$block->escapeHtml(__('>')); ?></li>
+                <?php endif; ?>
+            <?php endif; ?>
+            <?php if ($pointsHistoryResults[0]['totPage'] == 1): ?>
+                <li class="item redeem-pager" data-page="<?$pointsHistoryResults[0]['totPage']; ?>">
+                    <?=$pointsHistoryResults[0]['totPage']?>
+                </li>
+            <?php endif; ?>
+        </ul>
+    </div>
+<?php else : ?>
+    <div class="table-wrapper point-history">
+        <table class="data, table, table-point history" id="point-history-table">
+            <thead>
+            <tr>
+                <th scope="col" class="col product-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
+                <th scope="col" class="col redeem-points"><?= $block->escapeHtml(__('Points')) ?></th>
+                <th scope="col" class="col redeem-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
+            </tr>
+            </thead>
+            <tbody class="points-history-list">
+            <tr>
+                <td colspan="3">
+                    <span><?= $block->escapeHtml(__('Points History Does not Exist.')) ?></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+<?php endif ?>

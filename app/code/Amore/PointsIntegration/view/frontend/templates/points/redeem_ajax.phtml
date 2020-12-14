@@ -11,19 +11,73 @@ $viewModel = $block->getData('redeem_view_model');
 $pointSearchResults = $viewModel->getPageData();
 ?>
 <?php if(count($pointSearchResults)) :?>
-    <?php foreach ($pointSearchResults as $pointSearchResult) :?>
-        <tr>
-            <td data-th="<?=$block->escapeHtmlAttr(__('Product Name')) ?>" class="col product-name"><?=$pointSearchResult['prdNM'] ?></td>
-            <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Points')) ?>" class="col redeem-points"><?=$pointSearchResult['usePoint'] ?></td>
-            <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Date')) ?>" class="col redeem-date"><?=$pointSearchResult['redeemDate'] ?></td>
-            <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Location')) ?>" class="col redeem-location"><?=$pointSearchResult['redeemStoreNM'] ?></td>
-            <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Quantity')) ?>" class="col redeem-qty"><?=$pointSearchResult['redeemQty'] ?></td>
-        </tr>
-    <?php endforeach; ?>
+    <div class="table-wrapper point-redeem">
+        <table class="data, table, table-point history" id="point-redeem-table">
+            <thead>
+            <tr>
+                <th scope="col" class="col product-name"><?= $block->escapeHtml(__('Product Name')) ?></th>
+                <th scope="col" class="col redeem-points"><?= $block->escapeHtml(__('Redeemed Points')) ?></th>
+                <th scope="col" class="col redeem-date"><?= $block->escapeHtml(__('Redeemed Date')) ?></th>
+                <th scope="col" class="col redeem-location"><?= $block->escapeHtml(__('Redeemed Location')) ?></th>
+                <th scope="col" class="col redeem-qty"><?= $block->escapeHtml(__('Redeemed Quantity')) ?></th>
+            </tr>
+            </thead>
+            <tbody class="redeem-points-list">
+            <?php foreach ($pointSearchResults as $redeemSearch) :?>
+                <tr>
+                    <td data-th="<?=$block->escapeHtmlAttr(__('Product Name')) ?>" class="col product-name"><?=$redeemSearch['prdNM'] ?></td>
+                    <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Points')) ?>" class="col redeem-points"><?=$redeemSearch['usePoint'] ?></td>
+                    <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Date')) ?>" class="col redeem-date"><?=$redeemSearch['redeemDate'] ?></td>
+                    <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Location')) ?>" class="col redeem-location"><?=$redeemSearch['redeemStoreNM'] ?></td>
+                    <td data-th="<?=$block->escapeHtmlAttr(__('Redeemed Quantity')) ?>" class="col redeem-qty"><?=$redeemSearch['redeemQty'] ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <div class="pages" id="redeem-points-pager">
+        <ul class="items pages-items pagination">
+            <?php if ($pointSearchResults[0]['totPage'] > 1): ?>
+                <?php if ($pointSearchResults[0]['prev']): ?>
+                    <li class="item redeem-pager active" data-page="<?=$pointSearchResults[0]['prevPage']; ?>"><?=$block->escapeHtml(__('<')); ?></li>
+                <?php endif; ?>
+                <?php for ($i = $pointSearchResults[0]['startPage']; $i <= $pointSearchResults[0]['endPage']; $i++) : ?>
+                    <?php if ($i == $pointSearchResults[0]['page']): ?>
+                        <li class="item redeem-pager active" data-page="<?=$i; ?>"><strong><?=$i; ?></strong></li>
+                    <?php else: ?>
+                        <li class="item redeem-pager active" data-page="<?=$i; ?>"><?=$i; ?></li>
+                    <?php endif; ?>
+                <?php endfor; ?>
+                <?php if ($pointSearchResults[0]['next']): ?>
+                    <li class="item redeem-pager active" data-page="<?=$pointSearchResults[0]['nextPage']; ?>"><?=$block->escapeHtml(__('>')); ?></li>
+                <?php endif; ?>
+            <?php endif; ?>
+            <?php if ($pointSearchResults[0]['totPage'] == 1): ?>
+                <li class="item redeem-pager" data-page="<?$pointSearchResults[0]['totPage']; ?>">
+                    <?=$pointSearchResults[0]['totPage']?>
+                </li>
+            <?php endif; ?>
+        </ul>
+    </div>
 <?php else: ?>
-    <tr>
-        <td colspan="5">
-            <span><?= $block->escapeHtml(__('Points Redemption History Does not Exist.')) ?></span>
-        </td>
-    </tr>
+    <div class="table-wrapper point-redeem">
+        <table class="data, table, table-point history" id="point-redeem-table">
+            <thead>
+            <tr>
+                <th scope="col" class="col product-name"><?= $block->escapeHtml(__('Product Name')) ?></th>
+                <th scope="col" class="col redeem-points"><?= $block->escapeHtml(__('Redeemed Points')) ?></th>
+                <th scope="col" class="col redeem-date"><?= $block->escapeHtml(__('Redeemed Date')) ?></th>
+                <th scope="col" class="col redeem-location"><?= $block->escapeHtml(__('Redeemed Location')) ?></th>
+                <th scope="col" class="col redeem-qty"><?= $block->escapeHtml(__('Redeemed Quantity')) ?></th>
+            </tr>
+            </thead>
+            <tbody class="redeem-points-list">
+            <tr>
+                <td colspan="5">
+                    <span><?= $block->escapeHtml(__('Points Redemption History Does not Exist.')) ?></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 <?php endif; ?>

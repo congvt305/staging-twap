@@ -27,21 +27,28 @@ class RedeemAjax implements ArgumentInterface
      * @var RedeemPointsSearch
      */
     private $redeemPointsSearch;
+    /**
+     * @var \Amore\PointsIntegration\Model\Pagination
+     */
+    private $pagination;
 
     /**
      * RedeemAjax constructor.
      * @param RequestInterface $requestInterface
      * @param Session $customerSession
      * @param RedeemPointsSearch $redeemPointsSearch
+     * @param \Amore\PointsIntegration\Model\Pagination $pagination
      */
     public function __construct(
         RequestInterface $requestInterface,
         Session $customerSession,
-        RedeemPointsSearch $redeemPointsSearch
+        RedeemPointsSearch $redeemPointsSearch,
+        \Amore\PointsIntegration\Model\Pagination $pagination
     ) {
         $this->requestInterface = $requestInterface;
         $this->customerSession = $customerSession;
         $this->redeemPointsSearch = $redeemPointsSearch;
+        $this->pagination = $pagination;
     }
 
     public function getPageData()
@@ -53,7 +60,7 @@ class RedeemAjax implements ArgumentInterface
         $redeemPointsResult = $this->redeemPointsSearch->getRedeemSearchResult($customer->getId(), $customer->getWebsiteId(), $page);
 
         if ($this->responseValidation($redeemPointsResult)) {
-            return $redeemPointsResult['data']['redemption_data'];
+            return $this->pagination->ajaxPagination($redeemPointsResult['data']['redemption_data']);
         } else {
             return [];
         }

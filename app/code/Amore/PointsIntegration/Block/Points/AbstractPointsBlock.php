@@ -32,7 +32,11 @@ abstract class AbstractPointsBlock extends Template
     /**
      * @var Json
      */
-    private $json;
+    protected $json;
+    /**
+     * @var \Amore\PointsIntegration\Model\Pagination
+     */
+    protected $pagination;
 
     /**
      * Index constructor.
@@ -41,6 +45,7 @@ abstract class AbstractPointsBlock extends Template
      * @param Config $config
      * @param Logger $logger
      * @param Json $json
+     * @param \Amore\PointsIntegration\Model\Pagination $pagination
      * @param array $data
      */
     public function __construct(
@@ -49,6 +54,7 @@ abstract class AbstractPointsBlock extends Template
         Config $config,
         Logger $logger,
         Json $json,
+        \Amore\PointsIntegration\Model\Pagination $pagination,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -56,6 +62,7 @@ abstract class AbstractPointsBlock extends Template
         $this->config = $config;
         $this->logger = $logger;
         $this->json = $json;
+        $this->pagination = $pagination;
     }
 
     public function getCustomer()

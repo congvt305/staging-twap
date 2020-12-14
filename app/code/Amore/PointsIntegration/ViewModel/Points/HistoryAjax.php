@@ -27,21 +27,28 @@ class HistoryAjax implements ArgumentInterface
      * @var PointsHistorySearch
      */
     private $pointsHistorySearch;
+    /**
+     * @var \Amore\PointsIntegration\Model\Pagination
+     */
+    private $pagination;
 
     /**
      * HistoryAjax constructor.
      * @param RequestInterface $requestInterface
      * @param Session $customerSession
      * @param PointsHistorySearch $pointsHistorySearch
+     * @param \Amore\PointsIntegration\Model\Pagination $pagination
      */
     public function __construct(
         RequestInterface $requestInterface,
         Session $customerSession,
-        PointsHistorySearch $pointsHistorySearch
+        PointsHistorySearch $pointsHistorySearch,
+        \Amore\PointsIntegration\Model\Pagination $pagination
     ) {
         $this->requestInterface = $requestInterface;
         $this->customerSession = $customerSession;
         $this->pointsHistorySearch = $pointsHistorySearch;
+        $this->pagination = $pagination;
     }
 
     public function getPageData()
@@ -53,7 +60,7 @@ class HistoryAjax implements ArgumentInterface
         $pointsHistoryResult = $this->pointsHistorySearch->getPointsHistoryResult($customer->getId(), $customer->getWebsiteId(), $page);
 
         if ($this->responseValidation($pointsHistoryResult)) {
-            return $pointsHistoryResult['data']['point_data'];
+            return $this->pagination->ajaxPagination($pointsHistoryResult['data']['point_data']);
         } else {
             return [];
         }

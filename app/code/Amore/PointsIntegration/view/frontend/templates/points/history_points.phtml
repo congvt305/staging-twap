@@ -9,9 +9,9 @@
 $pointsHistoryResult = $block->getPointsHistoryResult();
 ?>
 <div class="item title" data-role="collapsible">
-    <a class="switch" data-toggle="trigger" href="#tab-3"><?= $block->escapeHtml(__('History of Point Reward'))?></a>
+    <a class="switch" data-toggle="trigger" href="#history-of-point-reward-tab"><?= $block->escapeHtml(__('History of Point Reward'))?></a>
 </div>
-<div id="tab-3" class="item content" data-role="content">
+<div id="history-of-point-reward-tab" class="item content" data-role="content">
     <?php if (count($pointsHistoryResult) > 0) : ?>
         <div class="table-wrapper point-history">
             <table class="data, table, table-point history" id="point-history-table">
@@ -36,12 +36,22 @@ $pointsHistoryResult = $block->getPointsHistoryResult();
         <div class="pages" id="points-history-pager">
             <ul class="items pages-items pagination">
                 <?php if ($pointsHistoryResult[0]['totPage'] > 1): ?>
-                    <?php for ($i = 1; $i <= $pointsHistoryResult[0]['totPage']; $i++) : ?>
-                        <li class="item history-pager active" data-page="<?=$i; ?>"><?=$i; ?></li>
+                    <?php if ($pointsHistoryResult[0]['prev']): ?>
+                        <li class="item redeem-pager active" data-page="<?=$pointsHistoryResult[0]['prevPage']; ?>"><?=$block->escapeHtml(__('<')); ?></li>
+                    <?php endif; ?>
+                    <?php for ($i = $pointsHistoryResult[0]['startPage']; $i <= $pointsHistoryResult[0]['endPage']; $i++) : ?>
+                        <?php if ($i == $pointsHistoryResult[0]['page']): ?>
+                            <li class="item redeem-pager active" data-page="<?=$i; ?>"><strong><?=$i; ?></strong></li>
+                        <?php else: ?>
+                            <li class="item redeem-pager active" data-page="<?=$i; ?>"><?=$i; ?></li>
+                        <?php endif; ?>
                     <?php endfor; ?>
+                    <?php if ($pointsHistoryResult[0]['next']): ?>
+                        <li class="item redeem-pager active" data-page="<?=$pointsHistoryResult[0]['nextPage']; ?>"><?=$block->escapeHtml(__('>')); ?></li>
+                    <?php endif; ?>
                 <?php endif; ?>
                 <?php if ($pointsHistoryResult[0]['totPage'] == 1): ?>
-                    <li class="item history-pager" data-page="<?$pointsHistoryResult[0]['totPage']; ?>">
+                    <li class="item redeem-pager" data-page="<?$pointsHistoryResult[0]['totPage']; ?>">
                         <?=$pointsHistoryResult[0]['totPage']?>
                     </li>
                 <?php endif; ?>
