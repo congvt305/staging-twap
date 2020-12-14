@@ -8,7 +8,7 @@ define(
 
         function redeemPoints()
         {
-            $(document).on("click", ".points-integration-pager", function () {
+            $(document).on("click", ".points-integration-redeem-pager", function () {
                 let requestedPage = $(this).data("page");
                 let ajaxUrl = url.build('pointsintegration/points/ajax/');
                 $(this).addClass('active');
