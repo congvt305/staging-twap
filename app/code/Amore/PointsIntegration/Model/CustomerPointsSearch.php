@@ -19,17 +19,5 @@ class CustomerPointsSearch extends AbstractPointsModel
     {
         $requestData = $this->requestData($customerId);
         return $this->request->sendRequest($requestData, $websiteId, 'memberSearch');
-//        return [
-//            'cstmIntgSeq' => 'TW10111111',
-//            'firstname' => 'first_test',
-//            'lastname' => 'last_test',
-//            'cstmGradeCD' => '10',
-//            'cstmGradeNM' => 'silver',
-//            'availablePoint' => 200,
-//            'expirePoint' => 100,
-//            'expireDate' => 20211213,
-//            'statusCode' => '200',
-//            'statusMessage' => 'success'
-//        ];
     }
 }
