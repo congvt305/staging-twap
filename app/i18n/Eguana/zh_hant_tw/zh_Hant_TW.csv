@@ -12049,7 +12049,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Please correct the transaction ID and try again.","Please correct the transaction ID and try again.",module,Magento_Sales
 "The transaction details have been updated.","The transaction details have been updated.",module,Magento_Sales
 "We can't update the transaction details.","We can't update the transaction details.",module,Magento_Sales
-"Orders and Returns","訂單和退貨",module,Magento_Sales
+"Orders and Returns","訂單進度查詢",module,Magento_Sales
 "Home","首頁",module,Magento_Sales
 "Go to Home Page","回到首頁",module,Magento_Sales
 "You entered incorrect data. Please try again.","你輸入了不正確的數據。 請再試一次。",module,Magento_Sales
@@ -12392,7 +12392,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Gift Message for this Order","此訂單的禮品消息",module,Magento_Sales
 "Shipped By","配送方式",module,Magento_Sales
 "Tracking Number","貨態追蹤",module,Magento_Sales
-"Billing Last Name","帳單最後姓名",module,Magento_Sales
+"Billing Last Name","訂購人姓名",module,Magento_Sales
 "Find Order By","查找訂單依據",module,Magento_Sales
 "ZIP Code","郵政編碼",module,Magento_Sales
 "Billing ZIP Code","郵政編碼",module,Magento_Sales
@@ -16017,7 +16017,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Open Chooser","Open Chooser",module,Magento_Widget
 "Apply","套用",module,Magento_Widget
 "Page","Page",module,Magento_Widget
-"Orders and Returns","訂單和退貨",module,Magento_Widget
+"Orders and Returns","訂單進度查詢",module,Magento_Widget
 "Orders and Returns Search Form","訂單和退貨搜索表",module,Magento_Widget
 "Anchor Custom Title","Anchor Custom Title",module,Magento_Widget
 "CMS Page Link Block Template","CMS Page Link Block Template",module,Magento_Widget
