@@ -188,8 +188,8 @@ class MassReport extends Action
             //column name dispay in your CSV
             $columns = ['ID','Purchase Point','Purchase Date','Bill-to Name','Ship-to Name','Grand Total (Base)',
                 'Grand Total (Purchased)','Status','Billing Address','Shipping Address','Shipping Information',
-                'Customer Email', 'Customer Group', 'Subtotal', 'Shipping and Handling', 'Customer Name',
-                'Payment Method','Total Refunded','Sap Response','Promotion'];
+                'Customer Email','Customer Group','Subtotal','Shipping and Handling','Customer Name',
+                'Payment Method','Total Refunded','Sap Response','Promotion','Customer BA Code'];
             foreach ($columns as $column) {
                 $header[] = $column;
             }
@@ -216,6 +216,7 @@ class MassReport extends Action
                 $itemData[] = $order->getData('total_refunded');
                 $itemData[] = $this->getSapResponse($order->getData('entity_id'));
                 $itemData[] = $this->promotions($order->getData('entity_id'));
+                $itemData[] = $order->getData('customer_ba_code');
 
                 $stream->writeCsv($itemData);
             }

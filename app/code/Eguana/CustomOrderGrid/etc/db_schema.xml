@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: raheel
+* Date: 9/12/20
+* Time: 6:00 PM
+*/
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order" resource="default" engine="innodb">
+        <column xsi:type="varchar" name="customer_ba_code" nullable="true" length="100" comment="Customer BA Code"/>
+        <index referenceId="SALES_ORDER_CUSTOMER_BA_CODE" indexType="fulltext">
+            <column name="customer_ba_code"/>
+        </index>
+    </table>
+    <table name="sales_order_grid" resource="default" engine="innodb">
+        <column xsi:type="varchar" name="customer_ba_code" nullable="true" length="100" comment="Customer BA Code"/>
+    </table>
+</schema>
