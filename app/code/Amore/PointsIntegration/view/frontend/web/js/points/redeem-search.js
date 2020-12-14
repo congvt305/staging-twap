@@ -8,7 +8,7 @@ define(
 
         function redeemPoints()
         {
-            $(document).on("click", ".redeem-pager", function () {
+            $(document).on("click", ".points-integration-pager", function () {
                 let requestedPage = $(this).data("page");
                 let ajaxUrl = url.build('pointsintegration/points/ajax/');
                 $(this).addClass('active');
@@ -19,10 +19,10 @@ define(
                     data: {page:  requestedPage},
                 }).done(function (data) {
                     if ($.isEmptyObject(data)) {
-                        $(".redeem-points-list").html('');
+                        $("#history-of-redemption-tab").html('');
                     } else {
-                        $(".redeem-points-list").html('');
-                        $(".redeem-points-list").html(data);
+                        $("#history-of-redemption-tab").html('');
+                        $("#history-of-redemption-tab").html(data);
                     }
                 }).fail(function (jqXHR, testStatus, errorThrown) {
                     console.log(jqXHR);

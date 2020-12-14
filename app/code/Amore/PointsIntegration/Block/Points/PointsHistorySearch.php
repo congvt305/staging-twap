@@ -9,6 +9,7 @@
 namespace Amore\PointsIntegration\Block\Points;
 
 use Amore\PointsIntegration\Logger\Logger;
+use Amore\PointsIntegration\Model\Pagination;
 use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -28,6 +29,7 @@ class PointsHistorySearch extends AbstractPointsBlock
      * @param Config $config
      * @param Logger $logger
      * @param Json $json
+     * @param Pagination $pagination
      * @param \Amore\PointsIntegration\Model\PointsHistorySearch $pointsHistorySearch
      * @param array $data
      */
@@ -37,10 +39,11 @@ class PointsHistorySearch extends AbstractPointsBlock
         Config $config,
         Logger $logger,
         Json $json,
+        \Amore\PointsIntegration\Model\Pagination $pagination,
         \Amore\PointsIntegration\Model\PointsHistorySearch $pointsHistorySearch,
         array $data = []
     ) {
-        parent::__construct($context, $customerSession, $config, $logger, $json, $data);
+        parent::__construct($context, $customerSession, $config, $logger, $json, $pagination, $data);
         $this->pointsHistorySearch = $pointsHistorySearch;
     }
 
@@ -56,7 +59,7 @@ class PointsHistorySearch extends AbstractPointsBlock
         }
 
         if ($this->responseValidation($pointsHistoryResult)) {
-            return $pointsHistoryResult['data']['point_data'];
+            return $this->pagination->ajaxPagination($pointsHistoryResult['data']['point_data']);
         } else {
             return [];
         }
