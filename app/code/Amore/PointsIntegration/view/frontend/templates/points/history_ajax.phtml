@@ -34,21 +34,21 @@ $pointsHistoryResults = $viewModel->getPageData();
         <ul class="items pages-items pagination">
             <?php if ($pointsHistoryResults[0]['totPage'] > 1): ?>
                 <?php if ($pointsHistoryResults[0]['prev']): ?>
-                    <li class="item redeem-pager active" data-page="<?=$pointsHistoryResults[0]['prevPage']; ?>"><?=$block->escapeHtml(__('<')); ?></li>
+                    <li class="item points-integration-pager active" data-page="<?=$pointsHistoryResults[0]['prevPage']; ?>"><?=$block->escapeHtml(__('<')); ?></li>
                 <?php endif; ?>
                 <?php for ($i = $pointsHistoryResults[0]['startPage']; $i <= $pointsHistoryResults[0]['endPage']; $i++) : ?>
                     <?php if ($i == $pointsHistoryResults[0]['page']): ?>
-                        <li class="item redeem-pager active" data-page="<?=$i; ?>"><strong><?=$i; ?></strong></li>
+                        <li class="item points-integration-pager active" data-page="<?=$i; ?>"><strong><?=$i; ?></strong></li>
                     <?php else: ?>
-                        <li class="item redeem-pager active" data-page="<?=$i; ?>"><?=$i; ?></li>
+                        <li class="item points-integration-pager active" data-page="<?=$i; ?>"><?=$i; ?></li>
                     <?php endif; ?>
                 <?php endfor; ?>
                 <?php if ($pointsHistoryResults[0]['next']): ?>
-                    <li class="item redeem-pager active" data-page="<?=$pointsHistoryResults[0]['nextPage']; ?>"><?=$block->escapeHtml(__('>')); ?></li>
+                    <li class="item points-integration-pager active" data-page="<?=$pointsHistoryResults[0]['nextPage']; ?>"><?=$block->escapeHtml(__('>')); ?></li>
                 <?php endif; ?>
             <?php endif; ?>
             <?php if ($pointsHistoryResults[0]['totPage'] == 1): ?>
-                <li class="item redeem-pager" data-page="<?$pointsHistoryResults[0]['totPage']; ?>">
+                <li class="item points-integration-pager" data-page="<?$pointsHistoryResults[0]['totPage']; ?>">
                     <?=$pointsHistoryResults[0]['totPage']?>
                 </li>
             <?php endif; ?>
