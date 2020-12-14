@@ -59,71 +59,10 @@ class RedeemPointsSearch extends AbstractPointsBlock
             $this->logger->debug($redeemPointsResult);
         }
 
-//        if ($this->responseValidation($redeemPointsResult)) {
-//            return $this->pagination->ajaxPagination($redeemPointsResult['data']['redemption_data']);
-//        } else {
-//            return [];
-//        }
-
-        $test = [
-            [
-                'totCnt' => 101,
-                'totPage' => 11,
-                'page' => 1,
-                'prdCd' => 'product_code',
-                'prdNM' => 'test1',
-                'redeemDate' => 'buy_date',
-                'redeemStoreCD' => 'buy_store code',
-                'redeemStoreNM' => 'buy store name',
-                'redeemQty' => 2,
-                'usePoint' => 100
-            ],[
-                'totCnt' => 101,
-                'totPage' => 11,
-                'page' => 1,
-                'prdCd' => 'product_code2',
-                'prdNM' => 'test2',
-                'redeemDate' => 'buy_date2',
-                'redeemStoreCD' => 'buy_store code',
-                'redeemStoreNM' => 'buy store name',
-                'redeemQty' => 1,
-                'usePoint' => 200
-            ],[
-                'totCnt' => 101,
-                'totPage' => 11,
-                'page' => 1,
-                'prdCd' => 'product_code3',
-                'prdNM' => 'test3',
-                'redeemDate' => 'buy_date3',
-                'redeemStoreCD' => 'buy_store code',
-                'redeemStoreNM' => 'buy store name',
-                'redeemQty' => 3,
-                'usePoint' => 300
-            ],[
-                'totCnt' => 101,
-                'totPage' => 11,
-                'page' => 1,
-                'prdCd' => 'product_code4',
-                'prdNM' => 'test4',
-                'redeemDate' => 'buy_date4',
-                'redeemStoreCD' => 'buy_store code',
-                'redeemStoreNM' => 'buy store name',
-                'redeemQty' => 1,
-                'usePoint' => 400
-            ],[
-                'totCnt' => 101,
-                'totPage' => 11,
-                'page' => 1,
-                'prdCd' => 'product_code5',
-                'prdNM' => 'test5',
-                'redeemDate' => 'buy_date5',
-                'redeemStoreCD' => 'buy_store code',
-                'redeemStoreNM' => 'buy store name',
-                'redeemQty' => 1,
-                'usePoint' => 500
-            ]
-        ];
-
-        return $this->pagination->ajaxPagination($test);
+        if ($this->responseValidation($redeemPointsResult)) {
+            return $this->pagination->ajaxPagination($redeemPointsResult['data']['redemption_data']);
+        } else {
+            return [];
+        }
     }
 }
