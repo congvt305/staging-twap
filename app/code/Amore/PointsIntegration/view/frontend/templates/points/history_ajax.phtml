@@ -8,23 +8,34 @@
 /** @var \Amore\PointsIntegration\ViewModel\Points\HistoryAjax  $viewModel */
 $viewModel = $block->getData('history_view_model');
 $pointsHistoryResults = $viewModel->getPageData();
+$customerPointsResult = $viewModel->getCustomerPointsResulst();
 ?>
 <?php if (count($pointsHistoryResults) > 0) : ?>
     <div class="table-wrapper point-history">
+        <div class="customer-points">
+            <div class="customer-point-data available-points">
+                <?= $block->escapeHtml(__('Name of Point')) . " " . $block->escapeHtml(__($customerPointsResult['availablePoint'])); ?>
+            </div>
+            <div class="customer-point-data expire-points">
+                <?= $block->escapeHtml(__('Going to be Expired Point')) . " " . $block->escapeHtml(__($customerPointsResult['expirePoint'])); ?>
+            </div>
+        </div>
         <table class="data table table-point history" id="point-history-table">
             <thead>
             <tr>
-                <th scope="col" class="col product-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
-                <th scope="col" class="col redeem-points"><?= $block->escapeHtml(__('Points')) ?></th>
-                <th scope="col" class="col redeem-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
+                <th scope="col" class="col points-history-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
+                <th scope="col" class="col points-history-available-points"><?= $block->escapeHtml(__('Points')) ?></th>
+                <th scope="col" class="col points-history-valid-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
+                <th scope="col" class="col points-history-reason"><?= $block->escapeHtml(__('Points Reason')) ?></th>
             </tr>
             </thead>
             <tbody class="points-history-list">
             <?php foreach ($pointsHistoryResults as $pointsHistory) :?>
                 <tr>
-                    <td data-th="<?=$block->escapeHtmlAttr(__('Name of Point')) ?>" class="col point-type-name"><?=$pointsHistory['typeNM'] ?></td>
-                    <td data-th="<?=$block->escapeHtmlAttr(__('Points')) ?>" class="col points"><?=$pointsHistory['point'] ?></td>
-                    <td data-th="<?=$block->escapeHtmlAttr(__('Points Valid Period')) ?>" class="col redeem-date"><?=$pointsHistory['validPeriod'] ?></td>
+                    <td data-th="<?=$block->escapeHtmlAttr(__('Name of Point')) ?>" class="col points-history-name"><?=$pointsHistory['typeNM'] ?></td>
+                    <td data-th="<?=$block->escapeHtmlAttr(__('Points')) ?>" class="col points-history-available-points"><?=$pointsHistory['point'] ?></td>
+                    <td data-th="<?=$block->escapeHtmlAttr(__('Points Valid Period')) ?>" class="col points-history-valid-date"><?=$pointsHistory['validPeriod'] ?></td>
+                    <td data-th="<?=$block->escapeHtmlAttr(__('Points Reason')) ?>" class="col points-history-reason"><?=$pointsHistory['reason'] ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -35,7 +46,7 @@ $pointsHistoryResults = $viewModel->getPageData();
             <ul class="items pages-items pagination">
                 <?php if ($pointsHistoryResults[0]['totPage'] > 1): ?>
                     <?php if ($pointsHistoryResults[0]['prev']): ?>
-                        <li class="item pages-item-previous points-integration-points-pager active" data-page="<?=$pointsHistoryResults[0]['prevPage']; ?>"><a class="action previous"><span><?=$block->escapeHtml(__('previous')); ?></span></a></li>
+                        <li class="item points-integration-points-pager active" data-page="<?=$pointsHistoryResults[0]['prevPage']; ?>"><a class="action previous"><span><?=$block->escapeHtml(__('previous')); ?></span></a></li>
                     <?php endif; ?>
                     <?php for ($i = $pointsHistoryResults[0]['startPage']; $i <= $pointsHistoryResults[0]['endPage']; $i++) : ?>
                         <?php if ($i == $pointsHistoryResults[0]['page']): ?>
@@ -58,17 +69,26 @@ $pointsHistoryResults = $viewModel->getPageData();
     </div>
 <?php else : ?>
     <div class="table-wrapper point-history">
+        <div class="customer-points">
+            <div class="customer-point-data available-points">
+                <?= $block->escapeHtml(__('Name of Point')) . " " . $block->escapeHtml(__(0)); ?>
+            </div>
+            <div class="customer-point-data expire-points">
+                <?= $block->escapeHtml(__('Going to be Expired Point')) . " " . $block->escapeHtml(__(0)); ?>
+            </div>
+        </div>
         <table class="data table table-point history" id="point-history-table">
             <thead>
             <tr>
-                <th scope="col" class="col product-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
-                <th scope="col" class="col redeem-points"><?= $block->escapeHtml(__('Points')) ?></th>
-                <th scope="col" class="col redeem-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
+                <th scope="col" class="col points-history-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
+                <th scope="col" class="col points-history-available-points"><?= $block->escapeHtml(__('Points')) ?></th>
+                <th scope="col" class="col points-history-valid-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
+                <th scope="col" class="col points-history-reason"><?= $block->escapeHtml(__('Points Reason')) ?></th>
             </tr>
             </thead>
             <tbody class="points-history-list">
             <tr>
-                <td class="empty" colspan="3">
+                <td class="empty" colspan="4">
                     <span><?= $block->escapeHtml(__('Points History Does not Exist.')) ?></span>
                 </td>
             </tr>
