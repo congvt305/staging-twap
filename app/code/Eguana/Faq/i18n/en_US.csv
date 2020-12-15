@@ -49,3 +49,6 @@ Title,Title
 "Updated At","Updated At"
 Status,Status
 Home,Home
+"No of selected stores are greater than no of selected categories","No of selected stores are greater than no of selected categories"
+"No of selected categories are greater than no of selected stores","No of selected categories are greater than no of selected stores"
+"Category is not selected against ","Category is not selected against "

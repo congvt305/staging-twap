@@ -16,5 +16,8 @@
         <referenceContainer name="content">
             <uiComponent name="faq_form"/>
         </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block name="categories_js" template="Eguana_Faq::categoriesjs.phtml"/>
+        </referenceContainer>
     </body>
 </page>

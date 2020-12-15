@@ -79,8 +79,10 @@ abstract class AbstractCollection extends AbstractCollectionExtend
             $result = $connection->fetchAll($select);
             if ($result) {
                 $storesData = [];
+                $categories = [];
                 foreach ($result as $storeData) {
                     $storesData[$storeData[$linkField]][] = $storeData['store_id'];
+                    $categories[$storeData[$linkField]][] = $storeData['category'];
                 }
 
                 foreach ($this as $item) {
@@ -100,6 +102,7 @@ abstract class AbstractCollection extends AbstractCollectionExtend
                     $item->setData('_first_store_id', $storeId);
                     $item->setData('store_code', $storeCode);
                     $item->setData('store_id', $storesData[$linkedId]);
+                    $item->setData('category', $categories[$linkedId]);
                 }
             }
         }

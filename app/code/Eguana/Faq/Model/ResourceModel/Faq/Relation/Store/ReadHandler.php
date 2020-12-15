@@ -22,15 +22,15 @@ class ReadHandler implements ExtensionInterface
     /**
      * @var Faq
      */
-    private $resourceBlock;
+    private $resourceFaq;
 
     /**
-     * @param Faq $resourceBlock
+     * @param Faq $resourceFaq
      */
     public function __construct(
-        Faq $resourceBlock
+        Faq $resourceFaq
     ) {
-        $this->resourceBlock = $resourceBlock;
+        $this->resourceFaq = $resourceFaq;
     }
 
     /**
@@ -42,8 +42,10 @@ class ReadHandler implements ExtensionInterface
     public function execute($entity, $arguments = [])
     {
         if ($entity->getId()) {
-            $stores = $this->resourceBlock->lookupStoreIds((int)$entity->getId());
+            $stores = $this->resourceFaq->lookupStoreIds((int)$entity->getId());
+            $categories = $this->resourceFaq->lookCategoryIds((int)$entity->getId());
             $entity->setData('store_id', $stores);
+            $entity->setData('category', $categories);
             $entity->setData('stores', $stores);
         }
         return $entity;
