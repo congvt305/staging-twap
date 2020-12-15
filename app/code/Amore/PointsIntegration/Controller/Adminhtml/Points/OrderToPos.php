@@ -91,11 +91,13 @@ class OrderToPos extends Action
         } catch (NoSuchEntityException $exception) {
             $response = $exception->getMessage();
             $this->messageManager->addErrorMessage($response);
+            $this->logging($orderData, $response, $status);
 
             $this->_redirect('sales/order_invoice/view', ['invoice_id' => $invoiceId]);
         } catch (\Exception $exception) {
             $response = $exception->getMessage();
             $this->messageManager->addErrorMessage($response);
+            $this->logging($orderData, $response, $status);
 
             $this->_redirect('sales/order_invoice/view', ['invoice_id' => $invoiceId]);
         }
@@ -111,7 +113,7 @@ class OrderToPos extends Action
 
     public function responseCheck($response)
     {
-        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
+        if (isset($response['statusCode']) && $response['statusCode'] == '0000') {
             return 1;
         } else {
             return 0;

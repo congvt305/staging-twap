@@ -56,30 +56,35 @@ class OrderToPosSenderObserver implements ObserverInterface
         $invoice = $observer->getEvent()->getInvoice();
         /** @var \Magento\Sales\Model\Order $order */
         $order = $invoice->getOrder();
+        $posSendCheck = $order->getData('pos_order_send_check');
+
         $orderData = '';
         $status = 0;
-        try {
-            $websiteId = $order->getStore()->getWebsiteId();
-            $orderData = $this->posOrderData->getOrderData($order);
-            $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
 
-            $status = $this->responseCheck($response);
+        if (!$posSendCheck) {
+            try {
+                $websiteId = $order->getStore()->getWebsiteId();
+                $orderData = $this->posOrderData->getOrderData($order);
+                $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
 
-            if ($status) {
-                $this->posOrderData->updatePosSendCheck($order->getEntityId());
+                $status = $this->responseCheck($response);
+
+                if ($status) {
+                    $this->posOrderData->updatePosSendCheck($order->getEntityId());
+                }
+            } catch (NoSuchEntityException $exception) {
+                $response = $exception->getMessage();
+            } catch (\Exception $exception) {
+                $response = $exception->getMessage();
             }
-        } catch (NoSuchEntityException $exception) {
-            $response = $exception->getMessage();
-        } catch (\Exception $exception) {
-            $response = $exception->getMessage();
-        }
 
-        $this->logging($orderData, $response, $status);
+            $this->logging($orderData, $response, $status);
+        }
     }
 
     public function responseCheck($response)
     {
-        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
+        if (isset($response['statusCode']) && $response['statusCode'] == '0000') {
             return 1;
         } else {
             return 0;
