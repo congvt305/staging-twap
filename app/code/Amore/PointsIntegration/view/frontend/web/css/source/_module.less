@@ -12,12 +12,16 @@
 //  Common
 //  _____________________________________________
 & when (@media-common = true) {
-    .pos-customer-info {
-        > div {
-            margin-bottom: @indent__xs;
+    .block-points-integration {
+        margin-bottom: @indent__xl !important;
+
+        .pos-customer-info {
+            > div {
+                margin-bottom: @indent__xs;
+            }
         }
     }
-    
+
     .points-integration {
         .lib-data-tabs(
             @_tab-control-font-size: @font-size__base,
@@ -73,23 +77,10 @@
         }
     }
 
-    #redeem-points-pager {
-        text-align: center;
-
-        .pages-items {
-            text-align: center;
-            .points-integration-redeem-pager {
-                cursor: pointer;
-            }
-        }
-    }
-
+    #redeem-points-pager,
     #points-history-pager {
-        text-align: center;
-
         .pages-items {
-            text-align: center;
-            .points-integration-points-pager {
+            a {
                 cursor: pointer;
             }
         }
@@ -118,6 +109,14 @@
 }
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .pointsintegration-points-index {
+        &.page-layout-2columns-left {
+            .sidebar-main {
+                padding-top: 35px;
+            }
+        }
+    }
+
     .points-integration {
         .item.title {
             width: 30%;
