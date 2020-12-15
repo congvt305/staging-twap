@@ -31,6 +31,10 @@ class HistoryAjax implements ArgumentInterface
      * @var \Amore\PointsIntegration\Model\Pagination
      */
     private $pagination;
+    /**
+     * @var \Amore\PointsIntegration\Model\CustomerPointsSearch
+     */
+    private $customerPointsSearch;
 
     /**
      * HistoryAjax constructor.
@@ -38,17 +42,20 @@ class HistoryAjax implements ArgumentInterface
      * @param Session $customerSession
      * @param PointsHistorySearch $pointsHistorySearch
      * @param \Amore\PointsIntegration\Model\Pagination $pagination
+     * @param \Amore\PointsIntegration\Model\CustomerPointsSearch $customerPointsSearch
      */
     public function __construct(
         RequestInterface $requestInterface,
         Session $customerSession,
         PointsHistorySearch $pointsHistorySearch,
-        \Amore\PointsIntegration\Model\Pagination $pagination
+        \Amore\PointsIntegration\Model\Pagination $pagination,
+        \Amore\PointsIntegration\Model\CustomerPointsSearch $customerPointsSearch
     ) {
         $this->requestInterface = $requestInterface;
         $this->customerSession = $customerSession;
         $this->pointsHistorySearch = $pointsHistorySearch;
         $this->pagination = $pagination;
+        $this->customerPointsSearch = $customerPointsSearch;
     }
 
     public function getPageData()
@@ -60,7 +67,20 @@ class HistoryAjax implements ArgumentInterface
         $pointsHistoryResult = $this->pointsHistorySearch->getPointsHistoryResult($customer->getId(), $customer->getWebsiteId(), $page);
 
         if ($this->responseValidation($pointsHistoryResult)) {
-            return $this->pagination->ajaxPagination($pointsHistoryResult['data']['point_data']);
+            $pointsData = $pointsHistoryResult['data']['point_data'];
+            return $this->pagination->ajaxPagination($pointsData);
+        } else {
+            return [];
+        }
+    }
+
+    public function getCustomerPointsResulst()
+    {
+        $customer = $this->customerSession->getCustomer();
+        $customerPointsResult = $this->customerPointsSearch->getMemberSearchResult($customer->getId(), $customer->getWebsiteId());
+
+        if ($this->responseValidation($customerPointsResult)) {
+            return $customerPointsResult['data'];
         } else {
             return [];
         }

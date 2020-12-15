@@ -21,6 +21,10 @@ class PointsHistorySearch extends AbstractPointsBlock
      * @var \Amore\PointsIntegration\Model\PointsHistorySearch
      */
     private $pointsHistorySearch;
+    /**
+     * @var \Amore\PointsIntegration\Model\CustomerPointsSearch
+     */
+    private $customerPointsSearch;
 
     /**
      * PointsHistorySearch constructor.
@@ -31,6 +35,7 @@ class PointsHistorySearch extends AbstractPointsBlock
      * @param Json $json
      * @param Pagination $pagination
      * @param \Amore\PointsIntegration\Model\PointsHistorySearch $pointsHistorySearch
+     * @param \Amore\PointsIntegration\Model\CustomerPointsSearch $customerPointsSearch
      * @param array $data
      */
     public function __construct(
@@ -41,10 +46,12 @@ class PointsHistorySearch extends AbstractPointsBlock
         Json $json,
         \Amore\PointsIntegration\Model\Pagination $pagination,
         \Amore\PointsIntegration\Model\PointsHistorySearch $pointsHistorySearch,
+        \Amore\PointsIntegration\Model\CustomerPointsSearch $customerPointsSearch,
         array $data = []
     ) {
         parent::__construct($context, $customerSession, $config, $logger, $json, $pagination, $data);
         $this->pointsHistorySearch = $pointsHistorySearch;
+        $this->customerPointsSearch = $customerPointsSearch;
     }
 
     public function getPointsHistoryResult()
@@ -54,12 +61,25 @@ class PointsHistorySearch extends AbstractPointsBlock
         $pointsHistoryResult = $this->pointsHistorySearch->getPointsHistoryResult($customer->getId(), $customer->getWebsiteId(), 1);
 
         if ($this->config->getLoggerActiveCheck($customer->getWebsiteId())) {
-            $this->logger->info("REDEMPTION POINTS INFO");
+            $this->logger->info("POINTS HISTORY INFO");
             $this->logger->debug($pointsHistoryResult);
         }
 
         if ($this->responseValidation($pointsHistoryResult)) {
-            return $this->pagination->ajaxPagination($pointsHistoryResult['data']['point_data']);
+            $pointsData = $pointsHistoryResult['data']['point_data'];
+            return $this->pagination->ajaxPagination($pointsData);
+        } else {
+            return [];
+        }
+    }
+
+    public function getCustomerPointsResulst()
+    {
+        $customer = $this->getCustomer();
+        $customerPointsResult = $this->customerPointsSearch->getMemberSearchResult($customer->getId(), $customer->getWebsiteId());
+
+        if ($this->responseValidation($customerPointsResult)) {
+            return $customerPointsResult['data'];
         } else {
             return [];
         }
