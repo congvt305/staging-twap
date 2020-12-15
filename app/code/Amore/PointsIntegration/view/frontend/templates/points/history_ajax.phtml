@@ -11,7 +11,7 @@ $pointsHistoryResults = $viewModel->getPageData();
 ?>
 <?php if (count($pointsHistoryResults) > 0) : ?>
     <div class="table-wrapper point-history">
-        <table class="data, table, table-point history" id="point-history-table">
+        <table class="data table table-point history" id="point-history-table">
             <thead>
             <tr>
                 <th scope="col" class="col product-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
@@ -30,33 +30,35 @@ $pointsHistoryResults = $viewModel->getPageData();
             </tbody>
         </table>
     </div>
-    <div class="pages" id="points-history-pager">
-        <ul class="items pages-items pagination">
-            <?php if ($pointsHistoryResults[0]['totPage'] > 1): ?>
-                <?php if ($pointsHistoryResults[0]['prev']): ?>
-                    <li class="item points-integration-points-pager active" data-page="<?=$pointsHistoryResults[0]['prevPage']; ?>"><?=$block->escapeHtml(__('<')); ?></li>
-                <?php endif; ?>
-                <?php for ($i = $pointsHistoryResults[0]['startPage']; $i <= $pointsHistoryResults[0]['endPage']; $i++) : ?>
-                    <?php if ($i == $pointsHistoryResults[0]['page']): ?>
-                        <li class="item points-integration-points-pager active" data-page="<?=$i; ?>"><strong><?=$i; ?></strong></li>
-                    <?php else: ?>
-                        <li class="item points-integration-points-pager active" data-page="<?=$i; ?>"><?=$i; ?></li>
+    <div class="toolbar">
+        <div class="pages" id="points-history-pager">
+            <ul class="items pages-items pagination">
+                <?php if ($pointsHistoryResults[0]['totPage'] > 1): ?>
+                    <?php if ($pointsHistoryResults[0]['prev']): ?>
+                        <li class="item pages-item-previous points-integration-points-pager active" data-page="<?=$pointsHistoryResults[0]['prevPage']; ?>"><a class="action previous"><span><?=$block->escapeHtml(__('previous')); ?></span></a></li>
                     <?php endif; ?>
-                <?php endfor; ?>
-                <?php if ($pointsHistoryResults[0]['next']): ?>
-                    <li class="item points-integration-points-pager active" data-page="<?=$pointsHistoryResults[0]['nextPage']; ?>"><?=$block->escapeHtml(__('>')); ?></li>
+                    <?php for ($i = $pointsHistoryResults[0]['startPage']; $i <= $pointsHistoryResults[0]['endPage']; $i++) : ?>
+                        <?php if ($i == $pointsHistoryResults[0]['page']): ?>
+                            <li class="item points-integration-points-pager active" data-page="<?=$i; ?>"><strong class="page"><?=$i; ?></strong></li>
+                        <?php else: ?>
+                            <li class="item points-integration-points-pager active" data-page="<?=$i; ?>"><a class="page"><?=$i; ?></a></li>
+                        <?php endif; ?>
+                    <?php endfor; ?>
+                    <?php if ($pointsHistoryResults[0]['next']): ?>
+                        <li class="item points-integration-points-pager active" data-page="<?=$pointsHistoryResults[0]['nextPage']; ?>"><a class="action next"><span><?=$block->escapeHtml(__('next')); ?></span></a></li>
+                    <?php endif; ?>
                 <?php endif; ?>
-            <?php endif; ?>
-            <?php if ($pointsHistoryResults[0]['totPage'] == 1): ?>
-                <li class="item points-integration-points-pager" data-page="<?$pointsHistoryResults[0]['totPage']; ?>">
-                    <?=$pointsHistoryResults[0]['totPage']?>
-                </li>
-            <?php endif; ?>
-        </ul>
+                <?php if ($pointsHistoryResults[0]['totPage'] == 1): ?>
+                    <li class="item points-integration-points-pager" data-page="<?$pointsHistoryResults[0]['totPage']; ?>">
+                        <?=$pointsHistoryResults[0]['totPage']?>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </div>
     </div>
 <?php else : ?>
     <div class="table-wrapper point-history">
-        <table class="data, table, table-point history" id="point-history-table">
+        <table class="data table table-point history" id="point-history-table">
             <thead>
             <tr>
                 <th scope="col" class="col product-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
@@ -66,7 +68,7 @@ $pointsHistoryResults = $viewModel->getPageData();
             </thead>
             <tbody class="points-history-list">
             <tr>
-                <td colspan="3">
+                <td class="empty" colspan="3">
                     <span><?= $block->escapeHtml(__('Points History Does not Exist.')) ?></span>
                 </td>
             </tr>
