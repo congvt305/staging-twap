@@ -86,6 +86,11 @@ class Request
 
                 $response = $this->curl->getBody();
 
+                if ($this->config->getLoggerActiveCheck($websiteId)) {
+                    $this->logger->info("========== RESPONSE ==========");
+                    $this->logger->info($this->json->serialize($response));
+                }
+
                 return $this->json->unserialize($response);
             } catch (\Exception $exception) {
                 $this->logger->error($exception->getMessage());
