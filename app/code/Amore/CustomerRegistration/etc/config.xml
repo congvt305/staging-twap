@@ -20,9 +20,6 @@
                 <sales_organization_code>TW10</sales_organization_code>
                 <sales_office_code>TW10</sales_office_code>
             </pos>
-            <customergroups>
-                <customer_group_mapping>{"_1607608534275_275":{"label":"TWL0001","type":"Guest"},"_1607608541243_243":{"label":"TWL0002","type":"Snow Water"},"_1607610403967_967":{"label":"TWL0003","type":"Snow Crystal"},"_1607610412230_230":{"label":"TWL0004","type":"Snow Diamond"},"_1607610418497_497":{"label":"TWS0015","type":"Guest"},"_1607610424533_533":{"label":"TWS0011","type":"Pre-Member"},"_1607610429439_439":{"label":"TWS0012","type":"General"},"_1607671770095_95":{"label":"TWS0013","type":"VIP"},"_1607671777895_895":{"label":"TWS0014","type":"VVIP"}}</customer_group_mapping>
-            </customergroups>
         </customerregistraion>
     </default>
 </config>

@@ -83,8 +83,11 @@ Navigate to **Stores ⇾ Configuration** and the module **Curstomer Registration
 
 1. Navigate to **Stores ⇾ Configuration** and click on **Curstomer Registration** under Amore tab in the left panel.
 
- 
 ![Configuration](https://i.ibb.co/5X0zQ9C/Customer-Registration-Configuration.png)
+
+Configurations for customer groups.
+
+![groups-configuration](https://i.ibb.co/M6jgpGs/customergroups.png)
 
 **Frontend Registration Step 1**
 
@@ -99,7 +102,7 @@ Navigate to **Stores ⇾ Configuration** and the module **Curstomer Registration
 ![DM Subscription](https://i.ibb.co/vdrsprW/Customer-Registration-Step-2-DM-Subscription.png)
 
  
- All the configurations are website level not store level. 
+ All the configurations are website level not store level.
  
  **Stores -> Configuration -> Amore Extensions -> Customer Registration**
  
@@ -135,6 +138,10 @@ It will assign to all customer who register to that particulat site. You can see
  **Name Validation**
  
  1. Add not allowed characters: Those characthers which are not allowed in first name and last name during register or edit account.
+
+**Customer Groups**
+
+1. While registration if a customer exist in POS system then the site base codes return by POS API call. With the help of those codes customer group code is determine from configuration values and assign him/her that group code's group. If customer doesn't exist then default group will be automatically assigned to the customer.
  
 # Customer Integraion Number
  
