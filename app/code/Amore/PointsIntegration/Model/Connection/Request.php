@@ -76,43 +76,18 @@ class Request
         if (!empty($url) && $active) {
             try {
                 $this->curl->addHeader('Content-Type', 'application/json');
-//
-//                if ($this->config->getSSLVerification()) {
-//                    $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
-//                    $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
-//                }
-//
-//                $this->curl->post($url, $this->json->serialize($requestData));
 
-//                $response = $this->curl->getBody();
-
-
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-                curl_setopt($ch, CURLOPT_URL, $url);
-                // post_data
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $requestData);
-
-                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-                curl_setopt($ch, CURLOPT_TIMEOUT, 30); //timeout in seconds
-                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,false);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,false);
-                curl_setopt($ch, CURLOPT_HEADER, true);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json', 'Content-Type: application/json']);
-                curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-                curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-                $response = curl_exec($ch);
-                curl_close($ch);
-
-
-                if ($this->config->getLoggerActiveCheck($websiteId)) {
-                    $this->logger->info("========== RESPONSE ==========");
-                    $this->logger->info($response);
+                if ($this->config->getSSLVerification()) {
+                    $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                    $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
                 }
 
+                $this->curl->post($url, $this->json->serialize($requestData));
+
+                $response = $this->curl->getBody();
+
                 return $this->json->unserialize($response);
-            } catch (PosPointsException $exception) {
+            } catch (\Exception $exception) {
                 $this->logger->error($exception->getMessage());
                 return [];
             }

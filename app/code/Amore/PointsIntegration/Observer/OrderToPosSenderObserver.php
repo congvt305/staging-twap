@@ -8,6 +8,8 @@
 
 namespace Amore\PointsIntegration\Observer;
 
+use Amore\PointsIntegration\Logger\Logger;
+use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -31,6 +33,14 @@ class OrderToPosSenderObserver implements ObserverInterface
      * @var Json
      */
     private $json;
+    /**
+     * @var Config
+     */
+    private $config;
+    /**
+     * @var Logger
+     */
+    private $logger;
 
     /**
      * OrderToPosSenderObserver constructor.
@@ -38,17 +48,23 @@ class OrderToPosSenderObserver implements ObserverInterface
      * @param \Amore\PointsIntegration\Model\Connection\Request $request
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param Json $json
+     * @param Config $config
+     * @param Logger $logger
      */
     public function __construct(
         \Amore\PointsIntegration\Model\PosOrderData $posOrderData,
         \Amore\PointsIntegration\Model\Connection\Request $request,
         \Magento\Framework\Event\ManagerInterface $eventManager,
-        Json $json
+        Json $json,
+        Config $config,
+        Logger $logger
     ) {
         $this->posOrderData = $posOrderData;
         $this->request = $request;
         $this->eventManager = $eventManager;
         $this->json = $json;
+        $this->config = $config;
+        $this->logger = $logger;
     }
 
     public function execute(Observer $observer)
@@ -58,27 +74,34 @@ class OrderToPosSenderObserver implements ObserverInterface
         $order = $invoice->getOrder();
         $posSendCheck = $order->getData('pos_order_send_check');
 
+        $websiteId = $order->getStore()->getWebsiteId();
+        $active = $this->config->getActive($websiteId);
+
         $orderData = '';
         $status = 0;
 
-        if (!$posSendCheck) {
-            try {
-                $websiteId = $order->getStore()->getWebsiteId();
-                $orderData = $this->posOrderData->getOrderData($order);
-                $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
+        if ($active) {
+            if (!$posSendCheck) {
+                try {
+                    $websiteId = $order->getStore()->getWebsiteId();
+                    $orderData = $this->posOrderData->getOrderData($order);
+                    $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
 
-                $status = $this->responseCheck($response);
+                    $status = $this->responseCheck($response);
 
-                if ($status) {
-                    $this->posOrderData->updatePosSendCheck($order->getEntityId());
+                    if ($status) {
+                        $this->posOrderData->updatePosSendCheck($order->getEntityId());
+                    }
+                } catch (NoSuchEntityException $exception) {
+                    $response = $exception->getMessage();
+                } catch (\Exception $exception) {
+                    $response = $exception->getMessage();
                 }
-            } catch (NoSuchEntityException $exception) {
-                $response = $exception->getMessage();
-            } catch (\Exception $exception) {
-                $response = $exception->getMessage();
-            }
 
-            $this->logging($orderData, $response, $status);
+                $this->logging($orderData, $response, $status);
+            }
+        } else {
+            $this->logger->info('========== POS ORDER REQUEST IS NOT COMPLETED DUE TO POINTS INTEGRATION MODULE INACTIVE ==========');
         }
     }
 
