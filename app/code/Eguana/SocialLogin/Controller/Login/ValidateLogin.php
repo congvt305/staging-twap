@@ -23,6 +23,7 @@ use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Customer\Model\ResourceModel\CustomerRepository;
 
 /**
  * Class ValidateLogin
@@ -31,6 +32,8 @@ use Psr\Log\LoggerInterface;
  */
 class ValidateLogin extends Action
 {
+    const LINE = 'line';
+
     /** @var  Page */
     private $resultPageFactory;
 
@@ -65,6 +68,11 @@ class ValidateLogin extends Action
     private $helper;
 
     /**
+     * @var CustomerRepository
+     */
+    private $customerRepository;
+
+    /**
      * ValidateLogin constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
@@ -74,6 +82,7 @@ class ValidateLogin extends Action
      * @param JsonFactoryAlias $resultJsonFactory
      * @param LoggerInterface $logger
      * @param Helper $helper
+     * @param CustomerRepository $customerRepository
      */
     public function __construct(
         Context $context,
@@ -83,7 +92,8 @@ class ValidateLogin extends Action
         StoreManagerInterface $storemanager,
         JsonFactoryAlias $resultJsonFactory,
         LoggerInterface $logger,
-        Helper $helper
+        Helper $helper,
+        CustomerRepository $customerRepository
     ) {
         $this->resultPageFactory               = $resultPageFactory;
         $this->customerSession                 = $session;
@@ -92,6 +102,7 @@ class ValidateLogin extends Action
         $this->resultJsonFactory               = $resultJsonFactory;
         $this->logger                          = $logger;
         $this->helper                          = $helper;
+        $this->customerRepository              = $customerRepository;
         parent::__construct($context);
     }
 
@@ -124,11 +135,20 @@ class ValidateLogin extends Action
                 return $resultJson->setData($response);
             }
         } elseif ($this->socialLoginModel->getCoreSession()->getSocialCustomerId()) {
+            $data = $this->socialLoginModel->getCoreSession()->getSocialmediaId();
             try {
+                $customer = $this->customerSession->getCustomer();
                 $customerId = $this->socialLoginModel->getCoreSession()->getSocialCustomerId();
                 $this->customerSession->loginById($customerId);
-                $customer = $this->customerSession->getCustomer();
                 $this->customerSession->setUsername($customer->getEmail());
+                if ($this->socialLoginModel->getCoreSession()->getSocialmediaType() == self::LINE) {
+                    $customer = $this->customerRepository->getById($customerId);
+                    $customer->setCustomAttribute(
+                        'line_id',
+                        $this->socialLoginModel->getCoreSession()->getSocialmediaId()
+                    );
+                    $this->customerRepository->save($customer);
+                }
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
             }
