@@ -9,6 +9,7 @@
  */
 namespace Eguana\Faq\Ui\Component\Listing\Column;
 
+use Eguana\Faq\Model\FaqConfiguration\FaqConfiguration;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
@@ -16,6 +17,7 @@ use Magento\Ui\Component\Listing\Columns\Column;
 use Eguana\Faq\Model\Source\Category as CategoryOption;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Backend\Model\Auth\Session;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class CategoryRenderer
@@ -46,14 +48,25 @@ class CategoryRenderer extends Column
     private $session;
 
     /**
-     * CategoryRenderer constructor.
+     * @var FaqConfiguration
+     */
+    private $faqConfiguration;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @param StoreManagerInterface $storeManager
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
      * @param Escaper $escaper
      * @param CategoryOption $categoryOption
-     * @param array $components
      * @param Session $session
+     * @param FaqConfiguration $faqConfiguration
+     * @param LoggerInterface $logger
+     * @param array $components
      * @param array $data
      */
     public function __construct(
@@ -63,6 +76,8 @@ class CategoryRenderer extends Column
         Escaper $escaper,
         CategoryOption $categoryOption,
         Session $session,
+        FaqConfiguration $faqConfiguration,
+        LoggerInterface $logger,
         array $components = [],
         array $data = []
     ) {
@@ -70,6 +85,8 @@ class CategoryRenderer extends Column
         $this->escaper = $escaper;
         $this->categoryOption = $categoryOption;
         $this->session = $session;
+        $this->faqConfiguration = $faqConfiguration;
+        $this->logger = $logger;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
@@ -82,9 +99,9 @@ class CategoryRenderer extends Column
 
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
-                $name = $this->getData('name');
-                if (isset($item[$name])) {
-                    $item[$name] = $this->prepareItem($item);
+                $name = $item['category'];
+                if (isset($item['category'])) {
+                    $item['category'] = $this->prepareItem($name);
                 }
             }
         }
@@ -94,29 +111,29 @@ class CategoryRenderer extends Column
     /**
      * Get the faq related category value
      *
-     * @param array $dataSource
-     * @return array|string
+     * @param array $name
+     * @return string
      */
-    public function prepareItem(array $dataSource)
+    protected function prepareItem(array $name)
     {
-        $faqCategoryId = (int)$dataSource['category'];
-        $userStoreId = (int)$this->session->getUser()->getRole()['gws_stores'][0];
-        $categories = $this->categoryOption->toOptionArray();
-        $storeId = (int)$dataSource['category'][0];
-        $label = $this->storeManager->getStore($storeId)->getName();
-        $content = $label . "<br/>";
-
-        foreach ($categories as $category) {
-            if ($category['value']) {
-                foreach ($category['value'] as $option) {
-                    if ($option['value'] == $faqCategoryId) {
-                        $content .= $option['label'];
-                        break;
+        $content = '';
+        try {
+            foreach ($name as $value) {
+                $categoryStoreId = explode('.', $value);
+                $categories = $this->faqConfiguration->getCategory($categoryStoreId[0]);
+                if (isset($categories)) {
+                    $content .= "<b>" . $this->storeManager->getStore($categoryStoreId[0])->getName() . "</b><br/>";
+                    if (isset($categories[$categoryStoreId[1]])) {
+                        $content .= str_repeat('&nbsp;', 4) . $categories[$categoryStoreId[1]] . "<br/>";
+                    } else {
+                        $del= "Deleted";
+                        $content .= str_repeat('&nbsp;', 4) . $del . "<br/>";
                     }
                 }
             }
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
         }
-
         return $content;
     }
 }

@@ -126,8 +126,16 @@ class Faq extends Template implements IdentityInterface
         } else {
             $faqCollection->setOrder('title', 'ASC');
         }
+
         foreach ($faqCollection as $faq) {
-            $bindData[$faq->getCategory()][] = $faq;
+            $storeIds = $faq->getData('store_id');
+            $categories = $faq->getData('category');
+            $search = array_search($currentStoreId, $storeIds);
+            $categoryToSearch = ($search !== false) ? $categories[$search] : '';
+
+            if ($categoryToSearch) {
+                $bindData[$categoryToSearch][] = $faq;
+            }
         }
         $this->faqData = $bindData;
     }

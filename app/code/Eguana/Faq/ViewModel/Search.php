@@ -145,7 +145,13 @@ class Search implements ArgumentInterface
         foreach ($faqData as $key => $value) {
             $description = $this->getDescriptionInsideTag($value->getDescription());
 
-            $categoryName = $this->getFaqCategoryName($value->getCategory());
+            $currentStoreId = $this->getStoreId();
+            $storeIds = $value->getData('store_id');
+            $categories = $value->getData('category');
+            $search = array_search($currentStoreId, $storeIds);
+            $categoryToSearch = ($search !== false) ? $categories[$search] : '';
+
+            $categoryName = $this->getFaqCategoryName($categories[$search]);
 
             if (stripos($value->getTitle(), $searchValue)!==false) {
                 $search = $value->getData();

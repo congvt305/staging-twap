@@ -49,3 +49,6 @@ Title,Tiêu đề
 "Updated At","Cập nhật lúc"
 Status,Trạng thái
 Home,Trang chủ
+"No of selected stores are greater than no of selected categories","Không có cửa hàng đã chọn nào lớn hơn không có danh mục nào đã chọn"
+"No of selected categories are greater than no of selected stores","Không có danh mục đã chọn nào lớn hơn không có cửa hàng đã chọn"
+"Category is not selected against ","Danh mục không được chọn chống lại "

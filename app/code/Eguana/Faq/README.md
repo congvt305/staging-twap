@@ -41,7 +41,7 @@ Navigate to **EGUANA EXTENSION ⇾ FAQ** in the left panel.
 
 It will open configuration window for FAQ as shown in the image.
 
-![faq](https://i.ibb.co/ggmWDWn/image.png)
+![faq](https://nimbus-screenshots.s3.amazonaws.com/s/858d899a6f425d2b3d0b6d36f7867221.png)
 
 There are two groups.
 
@@ -52,11 +52,11 @@ There are two groups.
     **Faq Sort type**
     User can sort the faq listings based on ascending and descending order.
         
-(2) By clicking FAQ category six fields will show were categories name or title will be added.
+(2) By clicking FAQ category categories can be added as per requirments.
 
-(3) By default these fileds are disabled and unable to add or change any value. To be able to add or update values just uncheck the Use system value checkbox as shown the image.
+(3) By default these fileds are disabled and unable to add or change any value. To be able to add or update values just uncheck the Use system value checkbox.
 
-![system-value](https://nimbus-screenshots.s3.amazonaws.com/s/3d7dac41e69bb0c1fc7d9ef47ae7a7ec.png)
+![system-value](https://nimbus-screenshots.s3.amazonaws.com/s/381c10d682cb9a0de535b5dc5b53e8d9.png)
 
 (4) Now Click on Save Config button to save the configuration.
 
@@ -76,11 +76,11 @@ It will open a Manage FAQ Grid. In the grid all records will be shown which were
  
 It will open a form of Add New Faq to add a new record. As shown in the image below
 
-![add-new-form](https://nimbus-screenshots.s3.amazonaws.com/s/060861b9b40bb2599050e127fb0c217d.png)
+![add-new-form](https://nimbus-screenshots.s3.amazonaws.com/s/a8e01d2b611cb53774667f0e0fc36ae9.png)
 
  **Explore The Add New Form**
  
- ![first-part](https://nimbus-screenshots.s3.amazonaws.com/s/9bc62dbcd83139b9d27b3bd596853ed3.png)
+ ![first-part](https://i.ibb.co/0JrhMKQ/aFaq.png)
  
 #####(1) Enable Faq
 
@@ -88,23 +88,22 @@ This is FAQ main enable/disable button. This will decide either FAQ is enable to
 
 #####(2) Store View
 
-This is FAQ store view. This will decide where FAQ information will shown, on multiple stores or on one store.
+This is FAQ store view. This will decide where FAQ information will shown, on multiple stores or on one store. Store view field is shown in above image in point 2.
     
     - If you have only one store, choose Default Store View.
     - If you want show this FAQ on multi store,  
     press ctl button and click the stores you want select.
-    
-![second-part](https://nimbus-screenshots.s3.amazonaws.com/s/abdca8b3c8920ff537fe2bb5b77e0f2e.png)
 
 #####(3) Category
 
-In this section those categories will listed which were added in general store configuration section.
+In this section those categories will listed which were added in general store configuration section. Category field is shown in above image at point 3.
 
-Click on drop down and it will show all the categories which were added in configuration. see below image
+By defult all categories will be listed in this field. Whenever a store is chnaged its relative categories will be listed in category field.
 
-![config-category](https://nimbus-screenshots.s3.amazonaws.com/s/541d9843b287689c3f9950c1b91daee9.png)
-
-Every category will show on all store and if we want to show the category related information on both stores. We have add FAQ two times, One for first store and second time it will be for second store.
+##### Note
+    - Only one category can be selected against each store.
+    - Admin is allowed to selected the relevant category against its store. If he/she not select relevant category then error will be displayed.
+    - If admin select multiple store views than he/she should select there relevant categories else error will be generated.
 
 #####(4) Faq Title
 
@@ -121,6 +120,10 @@ This is FAQ description. In this section drag and drop multiple elements from le
 ![save-button](https://nimbus-screenshots.s3.amazonaws.com/s/471ccaa87c69f02e7b8f1aabf8df59e2.png)
 
 At the end click on save button to save the FAQ information. While the Back button is used to go back on Manage FAQ Grid and it will not save the FAQ information.
+
+### Note
+
+After adding/updating Faq flush the cache so that the it shall be shown on front page.
 
 ## 2) Search by keyword
 
