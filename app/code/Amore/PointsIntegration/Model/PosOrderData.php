@@ -201,7 +201,6 @@ class PosOrderData
                     $product = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId());
                     $bundleChildSubtotal = $this->bundleChildSubtotal($bundleChildPrice, $bundleChildFromOrder);
                     $bundleChildDiscountAmount = $this->bundleChildDiscountAmount($bundlePriceType, $orderItem, $bundleChild);
-                    $bundleChildGrandTotal = $bundleChildSubtotal - $bundleChildDiscountAmount;
 
                     $priceGap = $orderItem->getOriginalPrice() - $orderItem->getPrice();
                     $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $bundleChild->getQty();
@@ -212,6 +211,8 @@ class PosOrderData
                             (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) +
                             $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered())
                     );
+
+                    $bundleChildGrandTotal = $bundleChildSubtotal - $itemTotalDiscount;
 
                     $orderItemData[] = [
                         'prdCD' => $bundleChild->getSku(),
