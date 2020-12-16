@@ -110,11 +110,6 @@ class PosOrderData
      */
     public function getOrderData($order)
     {
-        $writer = new \Zend\Log\Writer\Stream(BP . sprintf('/var/log/pos_order_%s.log',date('Ymd')));
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info(__METHOD__);
-
         $customer = $order->getCustomerId() ? $this->getCustomer($order->getCustomerId()) : null;
         $websiteId = $order->getStore()->getWebsiteId();
         $posIntegrationNumber = $order->getCustomerId() ? $customer->getCustomAttribute('integration_number')->getValue() : null;
