@@ -20,7 +20,7 @@
         </paging>
     </listingToolbar>
     <columns name="sales_order_columns">
-        <column name="customer_ba_code">
+        <column name="customer_ba_code" class="Eguana\CustomOrderGrid\Ui\Component\Listing\Columns\BaCode">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="visible" xsi:type="boolean">true</item>

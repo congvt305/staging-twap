@@ -12,6 +12,7 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\Session\SessionManagerInterface as Session;
 use Amore\CustomerRegistration\Helper\Data;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * It will use for the register step during registration
@@ -37,18 +38,27 @@ class Register implements ArgumentInterface
     private $configHelper;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * Register constructor.
-     *
-     * @param Http $request request
+     * @param Data $configHelper
+     * @param Http $request
+     * @param Session $customerSession
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Data $configHelper,
         Http $request,
-        Session $customerSession
+        Session $customerSession,
+        StoreManagerInterface $storeManager
     ) {
         $this->request = $request;
         $this->customerSession = $customerSession;
         $this->configHelper = $configHelper;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -144,5 +154,17 @@ class Register implements ArgumentInterface
     public function getNewsLetterPolicyCMSBlockId()
     {
         return $this->configHelper->getNewsLetterPolicyCMSBlockId();
+    }
+
+    /**
+     * To check BA Code feature value in configuration
+     *
+     * @return bool
+     */
+    public function checkBaCodeEnabled()
+    {
+        $currentWebsiteId = $this->storeManager->getStore()->getWebsiteId();
+        $currentWebsiteId = $currentWebsiteId ? $currentWebsiteId : null;
+        return $this->configHelper->getBaCodeEnable($currentWebsiteId);
     }
 }
