@@ -16,6 +16,8 @@ class Data extends AbstractHelper
     const XML_PATH_SITE_NAME = 'amore_gatagging/tagmanager/site_name';
     const XML_PATH_IS_ENABLED = 'amore_gatagging/tagmanager/active';
     const XML_PATH_CONTAINER_ID = 'amore_gatagging/tagmanager/container_id';
+    const XML_PATH_ADDITIONAL_CONTAINER_ID = 'amore_gatagging/tagmanager/additional_container_id';
+    const XML_PATH_ADDITIONAL_CONTAINER_ENABLED = 'amore_gatagging/tagmanager/additional_container_enabled';
 
     public function getSiteName()
     {
@@ -30,7 +32,6 @@ class Data extends AbstractHelper
             self::XML_PATH_IS_ENABLED,
             ScopeInterface::SCOPE_STORE
         );
-
     }
 
     public function getContainerId()
@@ -41,5 +42,19 @@ class Data extends AbstractHelper
         );
     }
 
+    public function isAdditionalContainerEnabled()
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_ADDITIONAL_CONTAINER_ENABLED,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
 
+    public function getAdditionalContainerId()
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_ADDITIONAL_CONTAINER_ID,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
 }

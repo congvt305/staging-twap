@@ -1,0 +1,17 @@
+<?php
+/**
+ * Created by Eguana Team.
+ * User: sonia
+ * Date: 7/19/20
+ * Time: 1:19 PM
+ */
+?>
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+    $containerId = $this->helper(\Amore\GaTagging\Helper\Data::class)->getAdditionalContainerId();
+?>
+<?php if ($containerId): ?>
+<!-- Google Tag Manager -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<?=/* @noEscape */ $containerId?>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager -->
+<?php endif; ?>
