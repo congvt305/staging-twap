@@ -485,8 +485,8 @@ class SaveSuccess implements ObserverInterface
      */
     private function getCustomerGroup($customer)
     {
+        $groupId = '';
         try {
-            $groupId = '';
             $apiGroupCode = '';
             $cstmGradeCD = $this->request->getParam('cstmGradeCD');
             $cstmGradeNM = $this->request->getParam('cstmGradeNM');
@@ -494,9 +494,9 @@ class SaveSuccess implements ObserverInterface
             $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
 
             if ($websiteCode == 'tw_lageige_website') {
-                $apiGroupCode = $cstmGradeNM;
-            } else {
                 $apiGroupCode = $cstmGradeCD;
+            } else {
+                $apiGroupCode = $cstmGradeNM;
             }
 
             $result = $this->scopeConfig->getValue(
