@@ -23,6 +23,19 @@
                         <field id="*/*/active">1</field>
                     </depends>
                 </field>
+                <field id="additional_container_enabled" type="select" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="20">
+                    <label>Enable Additional Container</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                </field>
+                <field id="additional_container_id" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="20" type="text">
+                    <label>Additional Container Id</label>
+                    <depends>
+                        <field id="*/*/additional_container_enabled">1</field>
+                    </depends>
+                </field>
                 <field id="site_name" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="30" type="text">
                     <label>Site Name</label>
                     <comment>Should be English and capital letter</comment>
