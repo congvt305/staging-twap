@@ -7,18 +7,18 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <!-- 2.2 공통구현요소 (모든페이지) head 영역, GTM 코드 //commented for core module duplication-->
-<!--        <referenceContainer name="head.additional">-->
-<!--            <block name="amore_tagging_common_head_js"-->
-<!--                   ifconfig="amore_gatagging/tagmanager/active"-->
-<!--                   template="Amore_GaTagging::common/head-js.phtml" />-->
-<!--        </referenceContainer>-->
+<!--         2.2 공통구현요소 (모든페이지) head 영역, GTM 코드 //commented for core module duplication-->
+        <referenceContainer name="head.additional">
+            <block name="amore_tagging_common_additional_head_js"
+                   ifconfig="amore_gatagging/tagmanager/additional_container_enabled"
+                   template="Amore_GaTagging::common/additional-head-js.phtml" />
+        </referenceContainer>
         <referenceContainer name="after.body.start">
 <!--             2.2 공통구현요소 (모든페이지) body 영역, 1)GTM 코드 2) DATA Layer 변수-->
-<!--            <block name="amore_tagging_common_body_js"-->
-<!--                   ifconfig="amore_gatagging/tagmanager/active"-->
-<!--                   before='-'-->
-<!--                   template="Amore_GaTagging::common/body-js.phtml" />-->
+            <block name="amore_tagging_common_additional_body_js"
+                   ifconfig="amore_gatagging/tagmanager/additional_container_enabled"
+                   before='-'
+                   template="Amore_GaTagging::common/additional-body-js.phtml" />
             <!-- 2.2 공통구현요소 (모든페이지) body 영역, 4) 공 변수 -->
             <block class="Amore\GaTagging\Block\GaTagging"
                    ifconfig="amore_gatagging/tagmanager/active"
