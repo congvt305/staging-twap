@@ -203,17 +203,27 @@ class PosOrderData
                     $bundleChildDiscountAmount = $this->bundleChildDiscountAmount($bundlePriceType, $orderItem, $bundleChild);
                     $bundleChildGrandTotal = $bundleChildSubtotal - $bundleChildDiscountAmount;
 
+                    $priceGap = $orderItem->getOriginalPrice() - $orderItem->getPrice();
+                    $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $bundleChild->getQty();
+                    $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($priceGap)) / $bundleChild->getQty();
+
+                    $itemTotalDiscount = abs(round(
+                            $bundleChildDiscountAmount +
+                            (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) +
+                            $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered())
+                    );
+
                     $orderItemData[] = [
                         'prdCD' => $bundleChild->getSku(),
                         'qty' => (int)$bundleChildFromOrder->getQtyOrdered(),
                         'price' => (int)$bundleChildPrice,
                         'salAmt' => (int)$bundleChildSubtotal,
-                        'dcAmt' => (int)$bundleChildDiscountAmount,
+                        'dcAmt' => (int)$itemTotalDiscount,
                         'netSalAmt' => (int)$bundleChildGrandTotal
                     ];
 
                     $itemsSubtotal += $bundleChildSubtotal;
-                    $itemsDiscountAmount += $bundleChildDiscountAmount;
+                    $itemsDiscountAmount += $itemTotalDiscount;
                     $itemsGrandTotal += $bundleChildGrandTotal;
                 }
             }
