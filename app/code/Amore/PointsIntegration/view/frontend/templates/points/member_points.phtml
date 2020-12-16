@@ -32,6 +32,7 @@ $pointSearchResult = $block->getPointsSearchResult();
                 <div class="pos-customer-available-points">
                     <?= $block->escapeHtml(__('Available Points')) . ' : '; ?>
                     <?= $pointSearchResult['availablePoint']; ?>
+                    <?= $block->getChildHtml('member.points.modal.info'); ?>
                 </div>
                 <div class="pos-customer-expire-points">
                     <?= $block->escapeHtml(__('Expire Points')) . ' : '; ?>

@@ -113,7 +113,7 @@ class OrderToPos extends Action
 
     public function responseCheck($response)
     {
-        if (isset($response['statusCode']) && $response['statusCode'] == '0000') {
+        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
             return 1;
         } else {
             return 0;
