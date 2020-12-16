@@ -120,7 +120,7 @@ class PosOrderData
         $orderData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
-            'saledate' => $order->getCreatedAt(),
+            'saledate' => $this->dateFormat($order->getCreatedAt()),
             'orderID' => $order->getIncrementId(),
             'rcptNo' => 'I'.$invoice->getIncrementId(),
             'cstmIntgSeq' => $posIntegrationNumber,
@@ -130,6 +130,11 @@ class PosOrderData
         ];
 
         return $orderData;
+    }
+
+    public function dateFormat($date)
+    {
+        return date("Ymd", strtotime($date));
     }
 
     public function validateCoupon($couponCode)
