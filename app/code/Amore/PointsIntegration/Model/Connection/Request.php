@@ -89,7 +89,6 @@ class Request
 
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_URL, $url);
                 // post_data
                 curl_setopt($ch, CURLOPT_POST, true);
@@ -97,15 +96,14 @@ class Request
 
                 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
                 curl_setopt($ch, CURLOPT_TIMEOUT, 30); //timeout in seconds
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,false);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,false);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,false);
-                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                curl_setopt($ch, CURLOPT_HEADER, true);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json', 'Content-Type: application/json']);
                 curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
                 curl_setopt($ch, CURLINFO_HEADER_OUT, true);
                 $response = curl_exec($ch);
-
+                curl_close($ch);
 
 
                 if ($this->config->getLoggerActiveCheck($websiteId)) {
