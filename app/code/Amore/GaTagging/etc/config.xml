@@ -10,6 +10,7 @@
         <amore_gatagging>
             <tagmanager>
                 <active>0</active>
+                <additional_container_enabled>0</additional_container_enabled>
             </tagmanager>
         </amore_gatagging>
     </default>
