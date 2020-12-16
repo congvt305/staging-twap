@@ -32,6 +32,33 @@ $pointSearchResult = $block->getPointsSearchResult();
                 <div class="pos-customer-available-points">
                     <?= $block->escapeHtml(__('Available Points')) . ' : '; ?>
                     <?= $pointSearchResult['availablePoint']; ?>
+                    <a id="points-modal-info" type="button" class="action" data-trigger="trigger">
+                        <span data-bind="i18n: 'Point Guideline'"></span>
+                    </a>
+                    <div data-bind="mageInit: {
+                    'Magento_Ui/js/modal/modal':{
+                        'type': 'popup',
+                        'title': jQuery.mage.__('Points Policy'),
+                        'trigger': '[data-trigger=trigger]',
+                        'responsive': true,
+                        'buttons': [{
+                            text: jQuery.mage.__('Confirm'),
+                            class: 'agree button action primary'
+                        }]
+                    }}">
+                        <div id="points-modal" class="content">
+                            <?php
+                                $pointsModalCmsBlock = $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('point_policy_modal_block')->toHtml();
+                            ?>
+                            <?php if ($pointsModalCmsBlock): ?>
+                                <div class="modal-block">
+                                    <div class="modal-block-content">
+                                        <?= $pointsModalCmsBlock; ?>
+                                    </div>
+                                </div>
+                            <?php endif;?>
+                        </div>
+                    </div>
                 </div>
                 <div class="pos-customer-expire-points">
                     <?= $block->escapeHtml(__('Expire Points')) . ' : '; ?>
