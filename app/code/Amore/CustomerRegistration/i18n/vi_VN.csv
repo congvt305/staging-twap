@@ -74,3 +74,5 @@ Api,API
 "A customer with the same integration/sequence number already exists in an associated website.","Một khách hàng có cùng số hội nhập/đối tác đã có mặt trong một trang web liên quan."
 "A customer with the same mobile number already exists in an associated website.","Một khách hàng có cùng số điện thoại di động đã có mặt trong một trang web liên quan."
 "To receive mail you should have default billing address<a class=""add-address-link"" href=""%1""><span>Add Address.</span></a>","Để nhận được thư bạn cần có địa chỉ thanh toán ngầm định <a class=""add-address-link"" href=""%1""><span>Thêm địa chỉ</span></a>."
+"BA Code","Mã BA"
+"BA Code Enable","Mã BA Kích hoạt"

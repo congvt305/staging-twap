@@ -67,3 +67,5 @@ Debug,Debug
 "Call Marketing","Call Marketing"
 "A customer with the same integration/sequence number already exists in an associated website.","A customer with the same integration/sequence number already exists in an associated website."
 "A customer with the same mobile number already exists in an associated website.","A customer with the same mobile number already exists in an associated website."
+"BA Code","BA Code"
+"BA Code Enable","BA Code Enable"

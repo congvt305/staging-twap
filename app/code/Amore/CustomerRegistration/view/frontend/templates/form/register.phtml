@@ -241,6 +241,7 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
                     </div>
                 </div>
 
+                <?php if ($viewModel->checkBaCodeEnabled()): ?>
                 <div class="field">
                     <label for="ba_code" class="label"><span><?= $block->escapeHtml(__('BA Code')) ?></span></label>
                     <div class="control">
@@ -254,6 +255,7 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
                             value="<?= $block->escapeHtmlAttr($block->getFormData()->getBaCode()) ?>"/>
                     </div>
                 </div>
+                <?php endif; ?>
             </div>
         </fieldset>
         <fieldset class="fieldset extra-info">

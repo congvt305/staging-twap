@@ -9,6 +9,7 @@
  */
 namespace Eguana\ImportExport\Controller\Adminhtml\Order;
 
+use Amore\CustomerRegistration\Helper\Data;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Redirect;
@@ -110,6 +111,11 @@ class MassReport extends Action
     private $dateTimeFactory;
 
     /**
+     * @var Data
+     */
+    private $customerRegistrationHelper;
+
+    /**
      * MassReport constructor.
      *
      * @param Context $context
@@ -127,6 +133,7 @@ class MassReport extends Action
      * @param Currency $currency
      * @param LoggerInterface $logger
      * @param CollectionFactory $collectionFactory
+     * @param Data $customerRegistrationHelper
      * @throws \Magento\Framework\Exception\FileSystemException
      */
     public function __construct(
@@ -144,7 +151,8 @@ class MassReport extends Action
         Filter $filter,
         Currency $currency,
         LoggerInterface $logger,
-        CollectionFactory $collectionFactory
+        CollectionFactory $collectionFactory,
+        Data $customerRegistrationHelper
     ) {
         $this->logger = $logger;
         $this->dateTimeFactory = $dateTimeFactory;
@@ -160,6 +168,7 @@ class MassReport extends Action
         $this->fileFactory = $fileFactory;
         $this->directory = $filesystem->getDirectoryWrite(DirectoryList::VAR_DIR);
         $this->collectionFactory = $collectionFactory;
+        $this->customerRegistrationHelper = $customerRegistrationHelper;
         parent::__construct($context);
     }
 
@@ -189,7 +198,10 @@ class MassReport extends Action
             $columns = ['ID','Purchase Point','Purchase Date','Bill-to Name','Ship-to Name','Grand Total (Base)',
                 'Grand Total (Purchased)','Status','Billing Address','Shipping Address','Shipping Information',
                 'Customer Email','Customer Group','Subtotal','Shipping and Handling','Customer Name',
-                'Payment Method','Total Refunded','Sap Response','Promotion','Customer BA Code'];
+                'Payment Method','Total Refunded','Sap Response','Promotion'];
+            if ($this->customerRegistrationHelper->getBaCodeEnable()) {
+                $columns[] = 'Customer BA Code';
+            }
             foreach ($columns as $column) {
                 $header[] = $column;
             }
@@ -216,7 +228,9 @@ class MassReport extends Action
                 $itemData[] = $order->getData('total_refunded');
                 $itemData[] = $this->getSapResponse($order->getData('entity_id'));
                 $itemData[] = $this->promotions($order->getData('entity_id'));
-                $itemData[] = $order->getData('customer_ba_code');
+                if ($this->customerRegistrationHelper->getBaCodeEnable()) {
+                    $itemData[] = $order->getData('customer_ba_code');
+                }
 
                 $stream->writeCsv($itemData);
             }
