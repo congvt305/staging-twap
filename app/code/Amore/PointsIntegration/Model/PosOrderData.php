@@ -164,7 +164,6 @@ class PosOrderData
         /** @var Item $orderItem */
         foreach ($orderItems as $orderItem) {
             if ($orderItem->getProductType() != 'bundle') {
-                $product = $this->productRepository->get($orderItem->getProduct()->getSku(),false, $order->getStoreId());
 
                 $itemSubtotal = $this->simpleAndConfigurableSubtotal($orderItem);
                 $itemTotalDiscount = $this->simpleAndConfigurableTotalDiscount($orderItem);
@@ -173,7 +172,7 @@ class PosOrderData
                 $orderItemData[] = [
                     'prdCD' => $orderItem->getSku(),
                     'qty' => (int)$orderItem->getQtyOrdered(),
-                    'price' => (int)$product->getPrice(),
+                    'price' => (int)$orderItem->getOriginalPrice(),
                     'salAmt' => (int)$itemSubtotal,
                     'dcAmt' => (int)$itemTotalDiscount,
                     'netSalAmt' => (int)$itemGrandTotal
