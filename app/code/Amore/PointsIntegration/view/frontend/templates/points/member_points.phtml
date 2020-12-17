@@ -17,22 +17,17 @@ $pointSearchResult = $block->getPointsSearchResult();
             <div class="pos-customer-info">
                 <div class="pos-customer-name">
                     <strong><?= $block->escapeHtml(__('Name')) . ' : '; ?><?= $pointSearchResult['lastName'] . $pointSearchResult['firstName']; ?></strong>
-                </div>
-                <div class="pos-customer-integration-code">
-                    <span><?= $block->escapeHtml(__('Customer Code')) . ' : '; ?><?= $pointSearchResult['cstmIntgSeq']; ?></span>
-                </div>
-                <div class="pos-customer-grade-code">
-                    <?= $block->escapeHtml(__('Customer Grade Code')) . ' : '; ?>
-                    <?= $pointSearchResult['cstmGradeCD']; ?>
+                    <span>(<?= $block->escapeHtml(__('Customer Code')) . ' : '; ?><?= $pointSearchResult['cstmIntgSeq']; ?>)</span>
                 </div>
                 <div class="pos-customer-grade-name">
                     <?= $block->escapeHtml(__('Customer Grade')) . ' : '; ?>
                     <?= $pointSearchResult['cstmGradeNM']; ?>
+                    <span>(<?= $block->escapeHtml(__('Customer Grade Code')) . ' : '; ?><?= $pointSearchResult['cstmGradeCD']; ?>)</span>
+                    <?= $block->getChildHtml('member.points.modal.info'); ?>
                 </div>
                 <div class="pos-customer-available-points">
                     <?= $block->escapeHtml(__('Available Points')) . ' : '; ?>
-                    <?= $pointSearchResult['availablePoint']; ?>
-                    <?= $block->getChildHtml('member.points.modal.info'); ?>
+                    <span class="primary"><?= $pointSearchResult['availablePoint']; ?></span>
                 </div>
                 <div class="pos-customer-expire-points">
                     <?= $block->escapeHtml(__('Expire Points')) . ' : '; ?>
