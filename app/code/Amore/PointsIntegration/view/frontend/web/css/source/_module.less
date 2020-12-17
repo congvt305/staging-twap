@@ -113,6 +113,26 @@
             }
         }
     }
+
+    .point-history {
+        .customer-points {
+            text-align: center;
+            margin: @indent__s 0;
+
+            > div {
+                display: inline-block;
+
+                &:first-child {
+                    margin-right: 15px;
+                }
+
+                span {
+                    font-weight: @font-weight__bold;
+                    color: @theme__color__primary-alt;
+                }
+            }
+        }
+    }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
