@@ -26,6 +26,14 @@
                     <label>Enable Logging</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="pos_order_active" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" >
+                    <label>Send Order To Pos Active</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="pos_rma_active" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" >
+                    <label>Send Return To Pos Active</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
             <group id="pos" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
                 <label>Pos Configuration</label>
