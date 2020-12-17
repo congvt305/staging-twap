@@ -1,0 +1,51 @@
+"Run Now","Run Now"
+"Order Sent to Pos Successfully.","Order Sent to Pos Successfully."
+"Pos Return Error. Please Check the Data.","Pos Return Error. Please Check the Data."
+"We can't save the cron expression.","We can't save the cron expression."
+"Name of Point","Name of Point"
+availablePoint,availablePoint
+"Going to be Expired Point","Going to be Expired Point"
+expirePoint,expirePoint
+Points,Points
+"Points Valid Period","Points Valid Period"
+"Points Reason","Points Reason"
+previous,previous
+next,next
+"Points History Does not Exist.","Points History Does not Exist."
+"History of Point Reward","History of Point Reward"
+"Integration Points","Integration Points"
+Name,Name
+"Customer Code","Customer Code"
+"Customer Grade","Customer Grade"
+"Customer Grade Code","Customer Grade Code"
+"Available Points","Available Points"
+"Expire Points","Expire Points"
+"Expiry Date","Expiry Date"
+"Customer Points Info is not Exist.","Customer Points Info is not Exist."
+"Introduction of Membership Program","Introduction of Membership Program"
+"Product Name","Product Name"
+"Redeemed Points","Redeemed Points"
+"Redeemed Date","Redeemed Date"
+"Redeemed Location","Redeemed Location"
+"Redeemed Quantity","Redeemed Quantity"
+"Points Redemption History Does not Exist.","Points Redemption History Does not Exist."
+"History of Redemption","History of Redemption"
+"Points Policy","Points Policy"
+Confirm,Confirm
+"Points Integration","Points Integration"
+Api,Api
+General,General
+"Enable Extension","Enable Extension"
+"SSL Verification","SSL Verification"
+"Enable Logging","Enable Logging"
+"Pos Configuration","Pos Configuration"
+URL,URL
+"Sales Organization Code","Sales Organization Code"
+"Sales Office Code","Sales Office Code"
+"Member Points Search Path","Member Points Search Path"
+"Points Redemption Search Path","Points Redemption Search Path"
+"Points History Search Path","Points History Search Path"
+"Member Order Path","Member Order Path"
+"Customer Points","Customer Points"
+Home,Home
+"My Account","My Account"
