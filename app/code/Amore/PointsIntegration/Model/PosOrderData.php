@@ -164,7 +164,6 @@ class PosOrderData
         /** @var Item $orderItem */
         foreach ($orderItems as $orderItem) {
             if ($orderItem->getProductType() != 'bundle') {
-                $product = $this->productRepository->get($orderItem->getProduct()->getSku(),false, $order->getStoreId());
 
                 $itemSubtotal = $this->simpleAndConfigurableSubtotal($orderItem);
                 $itemTotalDiscount = $this->simpleAndConfigurableTotalDiscount($orderItem);
