@@ -1,12 +1,8 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
-<!--    <type name="Magento\Sales\Model\OrderRepository">-->
-<!--        <plugin sortOrder="1" name="amorePointsIntegrationOrderRepository"-->
-<!--                type="Amore\PointsIntegration\Plugin\Model\OrderRepositoryPlugin"/>-->
-<!--    </type>-->
-    <type name="Magento\Sales\Model\Order\InvoiceRepository">
-        <plugin sortOrder="1" name="amorePointsIntegrationInvoiceRepository"
-                type="Amore\PointsIntegration\Plugin\Model\Order\InvoiceRepositoryPlugin"/>
+    <type name="Magento\Sales\Model\OrderRepository">
+        <plugin sortOrder="1" name="amorePointsIntegrationOrderRepository"
+                type="Amore\PointsIntegration\Plugin\Model\OrderRepositoryPlugin"/>
     </type>
 </config>

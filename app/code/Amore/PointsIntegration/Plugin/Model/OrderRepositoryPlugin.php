@@ -3,16 +3,16 @@
  * Created by Eguana.
  * User: Brian
  * Date: 2020-12-17
- * Time: 오전 9:18
+ * Time: 오전 11:52
  */
-namespace Amore\PointsIntegration\Plugin\Model\Order;
+namespace Amore\PointsIntegration\Plugin\Model;
 
 use Amore\PointsIntegration\Logger\Logger;
 use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 
-class InvoiceRepositoryPlugin
+class OrderRepositoryPlugin
 {
     /**
      * @var \Amore\PointsIntegration\Model\PosOrderData
@@ -64,38 +64,39 @@ class InvoiceRepositoryPlugin
         $this->logger = $logger;
     }
 
-    public function afterSave(\Magento\Sales\Model\Order\InvoiceRepository $subject, $result)
+    public function afterSave(\Magento\Sales\Model\OrderRepository $subject, $result)
     {
-        /** @var \Magento\Sales\Model\Order\Invoice $invoice */
-        $invoice = $subject;
-        $order = $invoice->getOrder();
-
-        $posSendCheck = $order->getData('pos_order_send_check');
+        /** @var \Magento\Sales\Model\Order $order */
+        $order = $result;
 
         $websiteId = $order->getStore()->getWebsiteId();
         $active = $this->config->getActive($websiteId);
+        $posSendCheck = $order->getData('pos_order_send_check');
         $posOrderActive = $this->config->getPosOrderActive($websiteId);
 
         $orderData = '';
         $status = 0;
 
+        $this->logger->info("========= ORDER SAVE AFTER PLUGIN ============");
+
         if ($active && $posOrderActive) {
             if (!$posSendCheck) {
+                $this->logger->info("========= POS CHECK IS 0 ============");
                 try {
-                    $this->logger->info('===== INVOICE PLUGIN =====');
                     $websiteId = $order->getStore()->getWebsiteId();
-                    $orderData = $this->posOrderData->getOrderData($order);
+                    $orderData = $this->json->serialize($this->posOrderData->getOrderData($order));
                     $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
 
                     $status = $this->responseCheck($response);
 
                     if ($status) {
                         $this->posOrderData->updatePosSendCheck($order->getEntityId());
-                        $this->logger->info('===== INVOICE PLUGIN UPDATE AFTER =====');
                     }
                 } catch (NoSuchEntityException $exception) {
+                    $this->logger->info("========= POS ORDER NO EXCEPTION ============");
                     $response = $exception->getMessage();
                 } catch (\Exception $exception) {
+                    $this->logger->info("========= POS ORDER EXCEPTION ============");
                     $response = $exception->getMessage();
                 }
 
