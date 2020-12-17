@@ -14,10 +14,10 @@ $customerPointsResult = $viewModel->getCustomerPointsResulst();
     <div class="table-wrapper point-history">
         <div class="customer-points">
             <div class="customer-point-data available-points">
-                <?= $block->escapeHtml(__('Name of Point')) . " " . $block->escapeHtml(__($customerPointsResult['availablePoint'])); ?>
+                <?= /* @noEscape */__('Name of Point <span>%1</span> points',$customerPointsResult['availablePoint']) ?>
             </div>
             <div class="customer-point-data expire-points">
-                <?= $block->escapeHtml(__('Going to be Expired Point')) . " " . $block->escapeHtml(__($customerPointsResult['expirePoint'])); ?>
+                <?= /* @noEscape */__('Going to be Expired Point <span>%1</span> points',$customerPointsResult['expirePoint']) ?>
             </div>
         </div>
         <table class="data table table-point history" id="point-history-table">
@@ -71,10 +71,10 @@ $customerPointsResult = $viewModel->getCustomerPointsResulst();
     <div class="table-wrapper point-history">
         <div class="customer-points">
             <div class="customer-point-data available-points">
-                <?= $block->escapeHtml(__('Name of Point')) . " " . $block->escapeHtml(__(0)); ?>
+                <?= /* @noEscape */__('Name of Point <span>%1</span> points',0) ?>
             </div>
             <div class="customer-point-data expire-points">
-                <?= $block->escapeHtml(__('Going to be Expired Point')) . " " . $block->escapeHtml(__(0)); ?>
+                <?= /* @noEscape */__('Going to be Expired Point <span>%1</span> points',0) ?>
             </div>
         </div>
         <table class="data table table-point history" id="point-history-table">
