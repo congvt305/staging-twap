@@ -107,6 +107,10 @@ class CustomerLogin implements ObserverInterface
                 }
                 try {
                     $customer = $this->customerRepository->getById($customerId);
+                    $customer->setCustomAttribute(
+                        'line_id',
+                        $appid
+                    );
                     $customer->setCustomAttribute('line_message_agreement', $lineAgreement);
                     $this->customerRepository->save($customer);
                 } catch (\Exception $e) {
@@ -118,6 +122,13 @@ class CustomerLogin implements ObserverInterface
             $customerId = $customer->getId();
             $socialMediaType = $this->socialLoginModel->getCoreSession()->getSocialmediaType();
             $socialId = $this->socialLoginModel->getCoreSession()->getSocialmediaId();
+            $customer = $this->customerRepository->getById($customerId);
+            $customer->setCustomAttribute(
+                'line_id',
+                $socialId
+            );
+            $customer->setCustomAttribute('line_message_agreement', $lineAgreement);
+            $this->customerRepository->save($customer);
             $users = $this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType, $socialId);
             if ($users) {
                 foreach ($users as $user) {
