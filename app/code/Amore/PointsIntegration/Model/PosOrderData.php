@@ -173,7 +173,7 @@ class PosOrderData
                 $orderItemData[] = [
                     'prdCD' => $orderItem->getSku(),
                     'qty' => (int)$orderItem->getQtyOrdered(),
-                    'price' => (int)$product->getPrice(),
+                    'price' => (int)$orderItem->getOriginalPrice(),
                     'salAmt' => (int)$itemSubtotal,
                     'dcAmt' => (int)$itemTotalDiscount,
                     'netSalAmt' => (int)$itemGrandTotal
