@@ -122,7 +122,7 @@ class PosOrderData
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
             'saledate' => $this->dateFormat($order->getCreatedAt()),
             'orderID' => $order->getIncrementId(),
-            'rcptNo' => 'I'.$invoice->getIncrementId(),
+            'rcptNO' => 'I'.$invoice->getIncrementId(),
             'cstmIntgSeq' => $posIntegrationNumber,
             'orderType' => '000010',
             'promotionKey' => $this->validateCoupon($couponCode),
