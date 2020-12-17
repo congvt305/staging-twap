@@ -47,6 +47,24 @@
             margin-bottom: @indent__base;
         }
 
+        .form-shipping-address .fieldset {
+            > .field {
+                > .label {
+                    &:extend(.abs-visually-hidden-reset all);
+                    font-weight: @font-weight__semibold;
+                    height: auto !important;
+                    margin-bottom: @indent__s;
+                    overflow: visible !important;
+                    text-align: left !important;
+                    width: auto !important;
+
+                    & + .control {
+                        float: none !important;
+                    }
+                }
+            }
+        }
+
         .form-login {
             > .fieldset {
                 border-bottom: 1px solid @border-color__base;
