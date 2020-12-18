@@ -135,7 +135,7 @@ class RmaPlugin
      */
     public function returnOrderSend(\Magento\Rma\Model\Rma $subject, int $websiteId): void
     {
-        $rmaData = $this->json->serialize($this->posReturnData->getRmaData($subject));
+        $rmaData = $this->posReturnData->getRmaData($subject);
 
         $response = $this->request->sendRequest($rmaData, $websiteId, 'customerOrder');
 
