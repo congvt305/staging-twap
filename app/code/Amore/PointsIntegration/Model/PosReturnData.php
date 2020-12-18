@@ -20,6 +20,7 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Rma\Api\RmaRepositoryInterface;
 use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Model\Order\Item;
 use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
 use Magento\Store\Api\StoreRepositoryInterface;
@@ -361,6 +362,15 @@ class PosReturnData
         return $discountAmount;
     }
 
+    public function getDiscountAmountForBundleChild($bundlePriceType, $orderItem, $bundleChild)
+    {
+        $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
+            $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getDiscountAmount()) :
+            $this->getBundleChildFromOrder($orderItem->getItemId(), $bundleChild->getSku())->getDiscountAmount();
+
+        return $bundleChildDiscountAmount;
+    }
+
     public function getBundleChildFromOrder($itemId, $bundleChildSku)
     {
         $bundleChild = null;
@@ -414,6 +424,26 @@ class PosReturnData
             }
         }
         return $grandTotal;
+    }
+
+    /**
+     * @param \Magento\Sales\Api\Data\OrderItemInterface $orderItem
+     * @return float|null
+     * @throws NoSuchEntityException
+     * @throws \Exception
+     */
+    public function getSumOfChildrenOriginPrice(Item $orderItem)
+    {
+        $originalPriceSum = 0;
+
+        $childrenItems = $this->getBundleChildren($orderItem->getSku());
+
+        /** @var \Magento\Bundle\Api\Data\LinkInterface $childItem */
+        foreach ($childrenItems as $childItem) {
+            $originalProductPrice = $this->productRepository->get($childItem->getSku(), false, $orderItem->getStoreId())->getPrice();
+            $originalPriceSum += ($originalProductPrice * $childItem->getQty());
+        }
+        return $originalPriceSum;
     }
 
     /**
