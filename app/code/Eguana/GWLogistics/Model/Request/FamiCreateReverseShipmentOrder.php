@@ -18,7 +18,8 @@ class FamiCreateReverseShipmentOrder extends \Eguana\GWLogistics\Model\Request\A
     {
         $order = $this->_orderRepository->get($rma->getOrderId());
         $merchantId = $this->_helper->getMerchantId($order->getStoreId());
-        $allPayLogisticsId = $rma->getIncrementId();
+//        $allPayLogisticsId = $rma->getIncrementId();
+        $allPayLogisticsId = '';
         $serverReplyURL = $this->_helper->getReverseLogisticsOrderReplyUrl($order->getStoreId());
 
         $goodsName = $this->_helper->getGoodsNamePrefix($order->getStoreId()) . ' Item X ' . (string)$this->getItemCount($order) ;
