@@ -69,7 +69,6 @@ class OrderToPosSenderObserver implements ObserverInterface
 
     public function execute(Observer $observer)
     {
-//        $invoice = $observer->getEvent()->getInvoice();
         /** @var \Magento\Sales\Model\Order $order */
         $order = $observer->getEvent()->getOrder();
         $posSendCheck = $order->getData('pos_order_send_check');
@@ -85,7 +84,8 @@ class OrderToPosSenderObserver implements ObserverInterface
                 try {
                     $this->logger->info("===== OBSERVER =====");
                     $websiteId = $order->getStore()->getWebsiteId();
-                    $orderData = $this->json->serialize($this->posOrderData->getOrderData($order));
+                    $orderData = $this->posOrderData->getOrderData($order);
+
                     $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
 
                     $status = $this->responseCheck($response);
