@@ -104,8 +104,12 @@ class OrderToPosSenderObserver implements ObserverInterface
                         $this->posOrderData->updatePosSendCheck($order->getEntityId());
                     }
                 } catch (NoSuchEntityException $exception) {
+                    $this->logger->info("===== OBSERVER NO SUCH ENTITY EXCEPTION =====");
+                    $this->logger->info($exception->getMessage());
                     $response = $exception->getMessage();
                 } catch (\Exception $exception) {
+                    $this->logger->info("===== OBSERVER EXCEPTION =====");
+                    $this->logger->info($exception->getMessage());
                     $response = $exception->getMessage();
                 }
 

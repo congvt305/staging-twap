@@ -9,7 +9,7 @@
 <!--    <event name="sales_order_invoice_save_after">-->
 <!--        <observer name="order_send_to_pos_event" instance="Amore\PointsIntegration\Observer\OrderToPosSenderObserver"/>-->
 <!--    </event>-->
-    <event name="sales_order_place_after">
+    <event name="checkout_onepage_controller_success_action">
         <observer name="order_send_to_pos_event" instance="Amore\PointsIntegration\Observer\OrderToPosSenderObserver"/>
     </event>
 </config>
