@@ -69,9 +69,9 @@ class OrderToPosSenderObserver implements ObserverInterface
 
     public function execute(Observer $observer)
     {
-        $invoice = $observer->getEvent()->getInvoice();
+//        $invoice = $observer->getEvent()->getInvoice();
         /** @var \Magento\Sales\Model\Order $order */
-        $order = $invoice->getOrder();
+        $order = $observer->getOrder();
         $posSendCheck = $order->getData('pos_order_send_check');
 
         $websiteId = $order->getStore()->getWebsiteId();
@@ -83,11 +83,15 @@ class OrderToPosSenderObserver implements ObserverInterface
         if ($active) {
             if (!$posSendCheck) {
                 try {
+                    $this->logger->info("===== OBSERVER =====");
                     $websiteId = $order->getStore()->getWebsiteId();
-                    $orderData = $this->posOrderData->getOrderData($order);
+                    $orderData = $this->json->serialize($this->posOrderData->getOrderData($order));
                     $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
 
                     $status = $this->responseCheck($response);
+
+                    $this->logger->info("===== OBSERVER RESPONSE =====");
+                    $this->logger->info($response);
 
                     if ($status) {
                         $this->posOrderData->updatePosSendCheck($order->getEntityId());
