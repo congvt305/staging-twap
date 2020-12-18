@@ -10,4 +10,8 @@
     <table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
         <column xsi:type="smallint" name="pos_order_send_check" nullable="true" comment="Check for POS" default="0" />
     </table>
+
+    <table name="magento_rma" resource="default" engine="innodb" comment="RMA List">
+        <column xsi:type="smallint" name="pos_rma_send_check" nullable="true" comment="Check RMA for POS" default="0" />
+    </table>
 </schema>
