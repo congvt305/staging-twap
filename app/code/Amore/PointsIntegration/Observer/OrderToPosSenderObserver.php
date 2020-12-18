@@ -71,7 +71,7 @@ class OrderToPosSenderObserver implements ObserverInterface
     {
 //        $invoice = $observer->getEvent()->getInvoice();
         /** @var \Magento\Sales\Model\Order $order */
-        $order = $observer->getOrder();
+        $order = $observer->getEvent()->getOrder();
         $posSendCheck = $order->getData('pos_order_send_check');
 
         $websiteId = $order->getStore()->getWebsiteId();
