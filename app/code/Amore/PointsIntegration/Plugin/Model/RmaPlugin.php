@@ -9,6 +9,7 @@ namespace Amore\PointsIntegration\Plugin\Model;
 
 use Amore\PointsIntegration\Exception\PosPointsException;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Setup\Exception;
 use Magento\Store\Model\StoreManagerInterface;
 
 class RmaPlugin
@@ -79,37 +80,16 @@ class RmaPlugin
 
         $order = $subject->getOrder();
         $orderSendToPos = $order->getData('pos_order_send_check');
+        $availableStatus = 'authorized';
 
-        if (!$moduleEnableCheck || !$rmaSendingEnableCheck) {
-            throw new PosPointsException(__("Points Integration Module is Disabled."));
-        } else {
-            if (!$orderSendToPos) {
-                throw new PosPointsException(__("This order have not sent to POS."));
-            } else {
+        if ($moduleEnableCheck && $rmaSendingEnableCheck) {
+            if ($orderSendToPos && $subject->getStatus() == $availableStatus) {
                 try {
-                    $rmaData = $this->json->serialize($this->posReturnData->getRmaData($subject));
-
-                    $response = $this->request->sendRequest($rmaData, $websiteId, 'customerOrder');
-
-                    $status = $this->responseCheck($response);
-
-                    if ($status) {
-                        $this->posReturnData->updatePosSendCheck($subject->getId());
-                    }
-                    $this->logging($rmaData, $response, $status);
+                    $this->returnOrderSend($subject, $websiteId);
                 } catch (\Exception $e) {
-                    throw new \Exception(__('POS Return : ' . $e->getMessage()));
+                    throw new \Exception(__('POS Return Error : ' . $e->getMessage()));
                 }
             }
-        }
-    }
-
-    public function resultValidation($result)
-    {
-        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
-            return 1;
-        } else {
-            return 0;
         }
     }
 
@@ -146,6 +126,27 @@ class RmaPlugin
             return 1;
         } else {
             return 0;
+        }
+    }
+
+    /**
+     * @param \Magento\Rma\Model\Rma $subject
+     * @param int $websiteId
+     */
+    public function returnOrderSend(\Magento\Rma\Model\Rma $subject, int $websiteId): void
+    {
+        $rmaData = $this->json->serialize($this->posReturnData->getRmaData($subject));
+
+        $response = $this->request->sendRequest($rmaData, $websiteId, 'customerOrder');
+
+        $status = $this->responseCheck($response);
+
+        $this->logging($rmaData, $response, $status);
+
+        if ($status) {
+            $this->posReturnData->updatePosSendCheck($subject->getId());
+        } else {
+            throw new Exception(__("Pos Return Error. Please Check Log."));
         }
     }
 }
