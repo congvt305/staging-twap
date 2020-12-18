@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="sales_order_columns">
+        <column name="pos_order_send_check" class="Amore\PointsIntegration\Ui\Component\Listing\Column\PosOrderSendCheck">
+            <settings>
+                <filter>select</filter>
+                <options class="Amore\PointsIntegration\Ui\Component\Listing\Column\Options\PosOrderSendCheck"/>
+                <dataType>select</dataType>
+                <label translate="true">Pos Send Check</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+    </columns>
+</listing>

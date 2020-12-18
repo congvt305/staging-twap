@@ -76,29 +76,16 @@ class OrderToPosSenderObserver implements ObserverInterface
         $websiteId = $order->getStore()->getWebsiteId();
         $active = $this->config->getActive($websiteId);
 
-        $this->logger->info("===== OBSERVER ORDER ID =====");
-        $this->logger->info($order->getIncrementId());
-        $this->logger->info("===== OBSERVER ORDER WEBSITE ID =====");
-        $this->logger->info($websiteId);
-
         $orderData = '';
         $status = 0;
 
         if ($active) {
             if (!$posSendCheck) {
                 try {
-                    $this->logger->info("===== OBSERVER =====");
                     $orderData = $this->posOrderData->getOrderData($order);
 
-                    $this->logger->info("===== OBSERVER ORDER DATA =====");
-                    $this->logger->info($this->json->serialize($orderData));
-
                     $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
-
                     $status = $this->responseCheck($response);
-
-                    $this->logger->info("===== OBSERVER RESPONSE =====");
-                    $this->logger->info($response);
 
                     if ($status) {
                         $this->posOrderData->updatePosSendCheck($order->getEntityId());
