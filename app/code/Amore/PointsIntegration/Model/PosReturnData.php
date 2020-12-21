@@ -191,6 +191,7 @@ class PosReturnData
                 foreach ($bundleChildren as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
                     $bundleChildFromOrder = $this->getBundleChildFromOrder($itemId, $bundleChildrenItem->getSku());
+                    $product = $this->productRepository->get($bundleChildrenItem->getSku(), false, $rma->getStoreId());
 
                     if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
                         $bundleChildPrice = $this->productRepository->get($bundleChildrenItem->getSku(), false, $order->getStoreId())->getPrice();
