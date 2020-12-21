@@ -139,6 +139,10 @@ class ValidateLogin extends Action
             $logger = new \Zend\Log\Logger();
             $logger->addWriter($writer);
             $logger->info($this->socialLoginModel->getCoreSession()->getSocialmediaId());
+            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/testsociallogin123.log');
+            $logger = new \Zend\Log\Logger();
+            $logger->addWriter($writer);
+            $logger->info($this->socialLoginModel->getCoreSession()->getSocialmediaType());
             $data = $this->socialLoginModel->getCoreSession()->getSocialmediaId();
             try {
                 $customer = $this->customerSession->getCustomer();
