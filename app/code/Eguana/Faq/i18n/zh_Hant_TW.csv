@@ -51,3 +51,6 @@ Title,標題
 "Updated At","更新於"
 Status,狀態
 Home,家
+"No of selected stores are greater than no of selected categories","所選商店的數量大於所選類別的數量"
+"No of selected categories are greater than no of selected stores","所選類別的數量大於所選商店的數量"
+"Category is not selected against ","未選擇類別 "

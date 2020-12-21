@@ -16,7 +16,7 @@
                 comment="Entity id"/>
         <column xsi:type="varchar" name="title" nullable="false"
                 comment="Title"/>
-        <column xsi:type="smallint" name="category" nullable="true"
+        <column xsi:type="smallint" name="category" nullable="true" disabled="true"
                 comment="Category"/>
         <column xsi:type="text" name="description" nullable="true"
                 comment="Description"/>
@@ -41,7 +41,7 @@
                 comment="Entity id"/>
         <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false"
                 comment="Store id"/>
-
+        <column xsi:type="varchar" name="category" nullable="true" length="20" comment="Faq Category"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
             <column name="store_id"/>

@@ -19,7 +19,8 @@
     "eguana_faq_store": {
         "column": {
             "entity_id": true,
-            "store_id": true
+            "store_id": true,
+            "category": true
         },
         "index": {
             "EGUANA_FAQ_STORE_STORE_ID": true

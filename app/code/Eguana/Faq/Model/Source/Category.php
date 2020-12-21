@@ -10,8 +10,10 @@
 namespace Eguana\Faq\Model\Source;
 
 use Eguana\Faq\Helper\Data;
+use Eguana\Faq\Model\FaqConfiguration\FaqConfiguration;
 use Magento\Backend\Model\Auth\Session as SessionAlias;
 use Magento\Framework\Data\OptionSourceInterface;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Store\Model\StoreManagerInterface as StoreManagerInterfaceAlias;
 use Magento\Store\Model\StoresConfig as StoresConfigAlias;
 
@@ -38,22 +40,37 @@ class Category implements OptionSourceInterface
     private $storeManager;
 
     /**
-     * Category constructor.
+     * @var FaqConfiguration
+     */
+    private $faqConfiguration;
+
+    /**
+     * @var Json
+     */
+    private $json;
+
+    /**
      * @param Data $helper
      * @param SessionAlias $adminSession
      * @param StoresConfigAlias $storesConfig
      * @param StoreManagerInterfaceAlias $storeManager
+     * @param FaqConfiguration $faqConfiguration
+     * @param Json $json
      */
     public function __construct(
         Data $helper,
         SessionAlias $adminSession,
         StoresConfigAlias $storesConfig,
-        StoreManagerInterfaceAlias $storeManager
+        StoreManagerInterfaceAlias $storeManager,
+        FaqConfiguration $faqConfiguration,
+        Json $json
     ) {
         $this->helper = $helper;
         $this->adminSession = $adminSession;
         $this->storesConfig = $storesConfig;
         $this->storeManager = $storeManager;
+        $this->faqConfiguration = $faqConfiguration;
+        $this->json = $json;
     }
 
     /**
@@ -63,12 +80,12 @@ class Category implements OptionSourceInterface
     {
         $storeId = $this->storeManager->getStore()->getId();
 
-        $categories = $this->helper->getFaqTypes();
+        $categories = $this->faqConfiguration->getCategory($storeId);
         $categoriesWithValue = [];
 
-        $index = 1;
+        $index = 0;
         foreach ($categories as $category) {
-            $categoriesWithValue[$storeId . $index] = $category;
+            $categoriesWithValue[$storeId . '.' . $index] = $category;
             $index++;
         }
         if ($this->helper->getFaqSortOrder()) {
@@ -85,16 +102,16 @@ class Category implements OptionSourceInterface
      */
     public function getFaqCategoryList()
     {
-        $faqTypes = $this->helper->getFaqTypes();
+        $faqTypes = $this->faqConfiguration->getCategory($storeId);
         $typeArray = [];
 
         if ($faqTypes == null) {
             return $typeArray;
         } else {
-            $i = 1;
+            $i = 0;
             foreach ($faqTypes as $key => $label) {
                 if (!$label == null) {
-                    $array = ['value' => $i, 'label'=>$label];
+                    $array = ['value' => $i, 'label' => $label];
                     $typeArray[] = $array;
                 }
                 $i++;
@@ -110,18 +127,19 @@ class Category implements OptionSourceInterface
     {
         $storeCategoryList = [];
         $categoryList = [];
-        $configValueCategories = $this->storesConfig->getStoresConfigByPath('faq/category');
+        $configValueCategories = $this->storesConfig->getStoresConfigByPath('faq/category/categories');
         // $key is store id and value is list of categories set in configuration
         foreach ($configValueCategories as $key => $value) {
-            if ($key == 0 || $value == null) {
+            if ($key == 0 || $value == null || $value == []) {
                 continue;
             }
 
-            $index = 1;
+            $index = 0;
+            $value = $this->json->unserialize($value);
             foreach ($value as $category) {
                 $categoryList[$key][] = [
                     'label' => $category,
-                    'value' => $key . $index
+                    'value' => $key . '.' . $index
                 ];
                 $index++;
             }
