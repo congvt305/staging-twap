@@ -160,7 +160,7 @@ class ValidateLogin extends Action
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
             }
-            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/testsociallogin123.log');
+            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/testsociallogin12345.log');
             $logger = new \Zend\Log\Logger();
             $logger->addWriter($writer);
             $logger->info('called');
