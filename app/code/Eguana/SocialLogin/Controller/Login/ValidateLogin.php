@@ -135,6 +135,10 @@ class ValidateLogin extends Action
                 return $resultJson->setData($response);
             }
         } elseif ($this->socialLoginModel->getCoreSession()->getSocialCustomerId()) {
+            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/testsociallogin.log');
+            $logger = new \Zend\Log\Logger();
+            $logger->addWriter($writer);
+            $logger->info($this->socialLoginModel->getCoreSession()->getSocialmediaId());
             $data = $this->socialLoginModel->getCoreSession()->getSocialmediaId();
             try {
                 $customer = $this->customerSession->getCustomer();
@@ -152,6 +156,10 @@ class ValidateLogin extends Action
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
             }
+            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/testsociallogin123.log');
+            $logger = new \Zend\Log\Logger();
+            $logger->addWriter($writer);
+            $logger->info('called');
             $this->socialLoginModel->getCoreSession()->unsSocialCustomerId();
             $url = $this->_url->getUrl('customer/account/index');
             $response = [
