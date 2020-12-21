@@ -203,8 +203,6 @@ class PosReturnData
                     $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
                         $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getDiscountAmount()) :
                         $bundleChildFromOrder->getDiscountAmount();
-                    $itemGrandTotal = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getRowTotal())
-                        - $bundleChildDiscountAmount;
 
                     $product = $this->productRepository->get($bundleChildrenItem->getSku(), false, $rma->getStoreId());
                     $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $bundleChildrenItem->getQty();
@@ -217,7 +215,7 @@ class PosReturnData
                         'price' => (int)$bundleChildPrice,
                         'salAmt' => (int)$itemSubtotal,
                         'dcAmt' => (int)$itemTotalDiscount,
-                        'netSalAmt' => (int)$itemGrandTotal
+                        'netSalAmt' => (int)$itemSubtotal - $itemTotalDiscount
                     ];
 
                     $itemsSubtotal += $itemSubtotal;
