@@ -115,7 +115,7 @@ class CustomerLogin implements ObserverInterface
                     $this->customerRepository->save($customer);
                 } catch (\Exception $e) {
                     $this->messageManager->addErrorMessage(
-                        __('We can not save LINE Information. ') . $e->getMessage()
+                        __('We can not save LINE Information.') . $e->getMessage()
                     );
                 }
                 $this->socialLoginModel->setSocialMediaCustomer($appid, $customerId, $username, $socialMediaType);
