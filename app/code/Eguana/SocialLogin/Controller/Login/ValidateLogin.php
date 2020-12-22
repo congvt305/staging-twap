@@ -151,7 +151,7 @@ class ValidateLogin extends Action
                 }
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage(
-                    __('We can not save LINE Information. ') . $e->getMessage()
+                    __('We can not save LINE Information.') . $e->getMessage()
                 );
             }
             $this->socialLoginModel->getCoreSession()->unsSocialCustomerId();
