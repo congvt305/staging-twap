@@ -15,16 +15,31 @@ class Form extends \Magento\Sales\Block\Adminhtml\Order\Invoice\View\Form
      * @var \Magento\Framework\Serialize\Serializer\Json
      */
     private $json;
+    /**
+     * @var \Amore\PointsIntegration\Model\Source\Config
+     */
+    private $config;
 
+    /**
+     * Form constructor.
+     * @param \Magento\Framework\Serialize\Serializer\Json $json
+     * @param \Magento\Backend\Block\Template\Context $context
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Sales\Helper\Admin $adminHelper
+     * @param \Amore\PointsIntegration\Model\Source\Config $config
+     * @param array $data
+     */
     public function __construct(
         \Magento\Framework\Serialize\Serializer\Json $json,
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\Registry $registry,
         \Magento\Sales\Helper\Admin $adminHelper,
+        \Amore\PointsIntegration\Model\Source\Config $config,
         array $data = []
     ) {
         parent::__construct($context, $registry, $adminHelper, $data);
         $this->json = $json;
+        $this->config = $config;
     }
 
     public function canShowCreateEInvoiceButton()
@@ -51,8 +66,14 @@ class Form extends \Magento\Sales\Block\Adminhtml\Order\Invoice\View\Form
     public function canShowOrderToPosButton()
     {
         $order = $this->getOrder();
-        $orderToPosCheck = $order->getData('pos_order_send_check');
-        return !$orderToPosCheck;
+        $websiteId = $order->getStore()->getWebsiteId();
+        $moduleActive = $this->config->getActive($websiteId);
+        $orderActive = $this->config->getPosOrderActive($websiteId);
+        $posSendCheck = $order->getData('pos_order_send_check');
+
+        $showBtn = ($moduleActive && $orderActive && !$posSendCheck);
+
+        return $showBtn;
     }
 
     public function getSendOrderToPosURl()
