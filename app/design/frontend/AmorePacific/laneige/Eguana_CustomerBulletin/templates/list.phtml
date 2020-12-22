@@ -34,7 +34,7 @@
                                 <?= $block->escapeHtml($block->getStatus($ticket['status'])); ?>
                             </td>
                             <td data-th="<?= $block->escapeHtml(__('Note Status')); ?>" class="col">
-                                <?= $block->escapeHtml($block->getNoteStatus($ticket['is_read_customer'])); ?>
+                                <?= $block->escapeHtml(__($block->getNoteStatus($ticket['is_read_customer']))); ?>
                             </td>
                             <td data-th="<?= $block->escapeHtml(__('view')); ?>" class="col actions">
                                 <a href="<?= $block->escapeUrl($block->getTicketUrl($ticket['ticket_id'])); ?>
