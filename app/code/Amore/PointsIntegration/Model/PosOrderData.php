@@ -113,6 +113,7 @@ class PosOrderData
         $customer = $order->getCustomerId() ? $this->getCustomer($order->getCustomerId()) : null;
         $websiteId = $order->getStore()->getWebsiteId();
         $posIntegrationNumber = $order->getCustomerId() ? $customer->getCustomAttribute('integration_number')->getValue() : null;
+
         $orderItemData = $this->getItemData($order);
         $couponCode = $order->getCouponCode();
         $invoice = $this->getInvoice($order->getEntityId());
@@ -125,7 +126,7 @@ class PosOrderData
             'rcptNO' => 'I'.$invoice->getIncrementId(),
             'cstmIntgSeq' => $posIntegrationNumber,
             'orderType' => '000010',
-            'promotionKey' => $this->validateCoupon($couponCode),
+            'promotionKey' => $couponCode,
             'orderInfo' => $orderItemData
         ];
 
@@ -190,7 +191,6 @@ class PosOrderData
                 foreach ($bundleChildren as $bundleChild) {
                     $itemId = $orderItem->getItemId();
                     $bundleChildFromOrder = $this->getBundleChildFromOrder($itemId, $bundleChild->getSku());
-
                     if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
                         $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
                     } else {
@@ -394,6 +394,7 @@ class PosOrderData
         $bundleChild = null;
         /** @var Item $itemOrdered */
         $itemOrdered = $this->orderItemRepository->get($itemId);
+
         $childrenItems = $itemOrdered->getChildrenItems();
         /** @var Item $childItem */
         foreach ($childrenItems as $childItem) {

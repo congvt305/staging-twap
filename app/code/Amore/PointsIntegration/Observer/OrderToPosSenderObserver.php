@@ -75,12 +75,13 @@ class OrderToPosSenderObserver implements ObserverInterface
 
         $websiteId = $order->getStore()->getWebsiteId();
         $active = $this->config->getActive($websiteId);
+        $orderSendActive = $this->config->getPosOrderActive($websiteId);
 
         $orderData = '';
         $status = 0;
 
-        if ($active) {
-            if (!$posSendCheck) {
+        if ($active && $orderSendActive) {
+            if (!$posSendCheck && $order->getStatus() == 'shipment_processing') {
                 try {
                     $orderData = $this->posOrderData->getOrderData($order);
 
@@ -103,7 +104,7 @@ class OrderToPosSenderObserver implements ObserverInterface
                 $this->logging($orderData, $response, $status);
             }
         } else {
-            $this->logger->info('========== POS ORDER REQUEST IS NOT COMPLETED DUE TO POINTS INTEGRATION MODULE INACTIVE ==========');
+            $this->logger->info('POS ORDER REQUEST FOR ORDER : ' . $order->getIncrementId() . ' IS NOT COMPLETED DUE TO POINTS INTEGRATION MODULE INACTIVE');
         }
     }
 

@@ -6,7 +6,7 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-    <event name="checkout_onepage_controller_success_action">
+    <event name="sales_order_save_after">
         <observer name="order_send_to_pos_event" instance="Amore\PointsIntegration\Observer\OrderToPosSenderObserver"/>
     </event>
 </config>
