@@ -150,8 +150,9 @@ class ValidateLogin extends Action
                     $this->customerRepository->save($customer);
                 }
             } catch (\Exception $e) {
-                $this->messageManager->addErrorMessage($e->getMessage());
-                //$this->logger->error($e->getMessage());
+                $this->messageManager->addErrorMessage(
+                    __('We can not save LINE Information. ') . $e->getMessage()
+                );
             }
             $this->socialLoginModel->getCoreSession()->unsSocialCustomerId();
             $url = $this->_url->getUrl('customer/account/index');
