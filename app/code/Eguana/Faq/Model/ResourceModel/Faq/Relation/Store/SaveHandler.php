@@ -59,12 +59,12 @@ class SaveHandler implements ExtensionInterface
         $newStores = (array)$entity->getStores();
         $table = $this->resourceBlock->getTable('eguana_faq_store');
 
-        $delete = array_diff($oldStores, $newStores);
+        $delete = $oldStores;
         if ($delete) {
             $this->diffDelete($entity, $linkField, $delete, $connection, $table);
         }
 
-        $insert = array_diff($newStores, $oldStores);
+        $insert = $newStores;
         if ($insert) {
             $this->diffInsert($entity, $insert, $linkField, $connection, $table);
         }
@@ -98,11 +98,15 @@ class SaveHandler implements ExtensionInterface
     private function diffInsert($entity, array $insert, $linkField, AdapterInterface $connection, $table)
     {
         $data = [];
+        $index = 0;
+        $newCategories = (array) $entity->getData('category');
         foreach ($insert as $storeId) {
             $data[] = [
                 $linkField => (int)$entity->getData($linkField),
                 'store_id' => (int)$storeId,
+                'category' => $newCategories[$index],
             ];
+            $index++;
         }
         $connection->insertMultiple($table, $data);
     }

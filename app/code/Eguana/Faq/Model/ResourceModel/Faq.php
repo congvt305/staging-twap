@@ -243,6 +243,34 @@ class Faq extends AbstractDb
     }
 
     /**
+     * Get category ids to which specified item is assigned
+     *
+     * @param $faqId
+     * @return array
+     * @throws LocalizedException
+     */
+    public function lookCategoryIds($faqId) : array
+    {
+        try {
+            $connection = $this->getConnection();
+            $entityMetadata = $this->metadataPool->getMetadata(FaqInterface::class);
+            $linkField = $entityMetadata->getLinkField();
+
+            $select = $connection->select()
+                ->from(['efs' => $this->getTable('eguana_faq_store')], 'category')
+                ->join(
+                    ['ef' => $this->getMainTable()],
+                    'efs.' . $linkField . ' = ef.' . $linkField,
+                    []
+                )
+                ->where('ef.' . $entityMetadata->getIdentifierField() . ' = :entity_id');
+            return $connection->fetchCol($select, ['entity_id' => (int)$faqId]);
+        } catch (\Exception $e) {
+            throw new LocalizedException(__($e->getMessage()));
+        }
+    }
+
+    /**
      * @param AbstractModel $object
      * @return $this
      * @throws \Exception

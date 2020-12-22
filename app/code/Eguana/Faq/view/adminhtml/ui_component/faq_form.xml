@@ -100,24 +100,10 @@
                 <dataScope>title</dataScope>
             </settings>
         </field>
-        <field name="category" sortOrder="30" formElement="select">
-            <settings>
-                <dataType>int</dataType>
-                <label translate="true">Category</label>
-                <dataScope>category</dataScope>
-            </settings>
-            <formElements>
-                <select>
-                    <settings>
-                        <options class="Eguana\Faq\Model\Source\Category"/>
-                    </settings>
-                </select>
-            </formElements>
-        </field>
-        <field name="storeviews" sortOrder="40" formElement="multiselect">
+        <field name="store_id" sortOrder="30" formElement="multiselect">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">block</item>
+                    <item name="source" xsi:type="string">faq</item>
                 </item>
             </argument>
             <settings>
@@ -132,6 +118,28 @@
                 <multiselect>
                     <settings>
                         <options class="Eguana\Faq\Ui\Component\Listing\Column\StoreOptions"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+        <field name="category" sortOrder="40" formElement="multiselect">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">faq</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <label translate="true">Category</label>
+                <dataScope>category</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Eguana\Faq\Ui\Component\Listing\Column\FaqCategories"/>
                     </settings>
                 </multiselect>
             </formElements>

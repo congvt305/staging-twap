@@ -58,7 +58,7 @@ class Data extends AbstractHelper
     public function getStoreCategories($storeCode)
     {
         return $this->scopeConfig->getValue(
-            'faq/category',
+            'faq/category/categories',
             ScopeInterface::SCOPE_STORE,
             $storeCode
         );

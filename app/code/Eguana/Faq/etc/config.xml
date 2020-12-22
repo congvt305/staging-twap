@@ -16,9 +16,6 @@
                 <enabled>1</enabled>
                 <sort_order>0</sort_order>
             </general>
-            <category>
-                <category_1>Test Category</category_1>
-            </category>
         </faq>
     </default>
 </config>
