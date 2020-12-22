@@ -62,7 +62,7 @@ class PointsHistorySearch extends AbstractPointsBlock
 
         if ($this->config->getLoggerActiveCheck($customer->getWebsiteId())) {
             $this->logger->info("POINTS HISTORY INFO");
-            $this->logger->debug($pointsHistoryResult);
+            $this->logger->info($this->json->serialize($pointsHistoryResult));
         }
 
         if ($this->responseValidation($pointsHistoryResult)) {
@@ -73,7 +73,7 @@ class PointsHistorySearch extends AbstractPointsBlock
         }
     }
 
-    public function getCustomerPointsResulst()
+    public function getCustomerPointsResults()
     {
         $customer = $this->getCustomer();
         $customerPointsResult = $this->customerPointsSearch->getMemberSearchResult($customer->getId(), $customer->getWebsiteId());

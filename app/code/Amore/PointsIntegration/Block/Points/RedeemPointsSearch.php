@@ -56,7 +56,7 @@ class RedeemPointsSearch extends AbstractPointsBlock
 
         if ($this->config->getLoggerActiveCheck($customer->getWebsiteId())) {
             $this->logger->info("REDEMPTION POINTS INFO");
-            $this->logger->debug($redeemPointsResult);
+            $this->logger->info($this->json->serialize($redeemPointsResult));
         }
 
         if ($this->responseValidation($redeemPointsResult)) {

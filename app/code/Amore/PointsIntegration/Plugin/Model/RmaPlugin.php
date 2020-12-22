@@ -80,7 +80,7 @@ class RmaPlugin
 
         $order = $subject->getOrder();
         $orderSendToPos = $order->getData('pos_order_send_check');
-        $availableStatus = 'authorized';
+        $availableStatus = 'processed_closed';
 
         if ($moduleEnableCheck && $rmaSendingEnableCheck) {
             if ($orderSendToPos && $subject->getStatus() == $availableStatus) {
