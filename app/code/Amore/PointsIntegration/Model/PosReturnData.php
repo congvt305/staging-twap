@@ -130,6 +130,7 @@ class PosReturnData
         $posIntegrationNumber = $rma->getCustomerId() ? $customer->getCustomAttribute('integration_number')->getValue() : null;
 
         $rmaItem = $this->getRmaItemData($rma);
+        $couponCode = $order->getCouponCode();
 
         $rmaData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
@@ -139,7 +140,7 @@ class PosReturnData
             'rcptNO' => 'R'.$rma->getIncrementId(),
             'cstmIntgSeq' => $posIntegrationNumber,
             'orderType' => '000020',
-            'promotionKey' => '',
+            'promotionKey' => $couponCode,
             'orderInfo' => $rmaItem
         ];
 
