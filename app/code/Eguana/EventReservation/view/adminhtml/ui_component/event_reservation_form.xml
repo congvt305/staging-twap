@@ -142,9 +142,6 @@
                 </item>
             </argument>
             <settings>
-                <validation>
-                    <rule name="required-entry" xsi:type="boolean">true</rule>
-                </validation>
                 <dataType>int</dataType>
                 <label translate="true">CMS Block</label>
                 <dataScope>block_id</dataScope>
