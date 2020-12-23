@@ -3,150 +3,156 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-  .form-edit-account,
-  .form-create-account-pos {
-    .field {
-      &.mobile,
-      &.verification-code {
-        .control {
-          position: relative;
-        }
+    .form-create-account,
+    .form-edit-account,
+    .form-create-account-pos {
+        .field {
+            &.mobile,
+            &.verification-code,
+            &.ba-code {
+                .control {
+                    position: relative;
+                }
 
-        a  {
-          .lib-button(
-            @_button-color: @color-white,
-            @_button-padding: 0 15px,
-            @_button-border: 0,
-            @_button-line-height: @form-element-input__height,
-            @_button-background: @theme__color__secondary,
-            @_button-background-hover: @theme__color__primary-alt,
-            @_button-border-hover: 0,
-            @_button-background-active: @theme__color__primary-alt,
-            @_button-border-active: 0
-          );
-          .lib-link-as-button();
-          position: absolute;
-          right: 0;
-          top: 0;
-          text-align: center;
+                a  {
+                    .lib-button(
+                        @_button-color: @color-white,
+                        @_button-padding: 0 15px,
+                        @_button-border: 0,
+                        @_button-line-height: @form-element-input__height,
+                        @_button-background: @theme__color__secondary,
+                        @_button-background-hover: @theme__color__primary-alt,
+                        @_button-border-hover: 0,
+                        @_button-background-active: @theme__color__primary-alt,
+                        @_button-border-active: 0
+                    );
+                    .lib-link-as-button();
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    text-align: center;
 
-          &[disabled=disabled] {
-            & + .verification-message {
-              font-size: @form-field-note__font-size;
-              color: @form-field-note__color;
-              line-height: @form-field-note__line-height;
+                    &[disabled=disabled] {
+                        & + .verification-message,
+                        & + .ba-code-message {
+                            font-size: @form-field-note__font-size;
+                            color: @form-field-note__color;
+                            line-height: @form-field-note__line-height;
+                        }
+                    }
+                }
+
+                .code-send-message,
+                .verification-message,
+                .countdown,
+                .ba-code-message {
+                    display: block;
+                    text-align: right;
+                }
+
+                .code-send-message,
+                .ba-code-message {
+                    color: #5f5f5f;
+                }
+
+                .verification-message,
+                .countdown,
+                .ba-code-warning {
+                    color: #e82b24;
+                }
             }
-          }
+        }
+    }
+
+    .customer-account-edit {
+        .checkbox-wrapper .label {
+            width: auto !important;
+
+            & + span {
+                line-height: 24px;
+                margin-left: 15px;
+
+                a {
+                    color: @theme__color__secondary;
+
+                    &:hover,
+                    &:active,
+                    &:focus {
+                        color: @theme__color__primary-alt;
+                    }
+                }
+            }
+        }
+    }
+
+    .customer-registration-form-create-account{
+        display: none;
+    }
+
+    .form-create-account-pos .code-send-message{
+        display: none;
+    }
+
+    .customer-registration-form-create-account .fieldset > .field:not(.choice) > .label{
+        height: inherit;
+        width: inherit;
+    }
+
+    .form-create-account {
+        .field.choice.newsletter {
+            display: inline-block;
+            width: 100%;
         }
 
-        .code-send-message,
-        .verification-message,
-        .countdown {
-          display: block;
-          text-align: right;
+        .checkbox-wrapper {
+            display: inline-block;
+            margin-right: 24px;
+            vertical-align: top;
+            position: relative;
+
+            input.mage-error {
+                margin-bottom: @indent__s;
+            }
+
+            div.mage-error {
+                position: absolute;
+                bottom: -15px;
+            }
         }
 
-        .code-send-message {
-          color: #5f5f5f;
+        .marketing-title {
+            color: @theme__color__primary;
+            margin-bottom: 16px;
         }
 
-        .verification-message,
-        .countdown {
-          color: #e82b24;
+        .field.gender {
+            & + * {
+                border-top: 1px solid;
+                margin-top: 24px;
+                padding-top: @indent__m;
+            }
         }
-      }
-    }
-  }
 
-  .customer-account-edit {
-    .checkbox-wrapper .label {
-      width: auto !important;
+        .field.choice {
+            a {
+                color: @theme__color__secondary;
+                line-height: 24px;
+                margin-left: @indent__s;
 
-      & + span {
-        line-height: 24px;
-        margin-left: 15px;
-
-        a {
-          color: @theme__color__secondary;
-
-          &:hover,
-          &:active,
-          &:focus {
-            color: @theme__color__primary-alt;
-          }
+                &:hover,
+                &:active,
+                &:focus {
+                    color: @theme__color__primary-alt;
+                }
+            }
         }
-      }
-    }
-  }
 
-  .customer-registration-form-create-account{
-    display: none;
-  }
-
-  .form-create-account-pos .code-send-message{
-    display: none;
-  }
-
-  .customer-registration-form-create-account .fieldset > .field:not(.choice) > .label{
-    height: inherit;
-    width: inherit;
-  }
-
-  .form-create-account {
-    .field.choice.newsletter {
-      display: inline-block;
-      width: 100%;
-    }
-
-    .checkbox-wrapper {
-      display: inline-block;
-      margin-right: 24px;
-      vertical-align: top;
-      position: relative;
-
-      input.mage-error {
-        margin-bottom: @indent__s;
-      }
-
-      div.mage-error {
-        position: absolute;
-        bottom: -15px;
-      }
-    }
-
-    .marketing-title {
-      color: @theme__color__primary;
-      margin-bottom: 16px;
-    }
-
-    .field.gender {
-      & + * {
-        border-top: 1px solid;
-        margin-top: 24px;
-        padding-top: @indent__m;
-      }
-    }
-
-    .field.choice {
-      a {
-        color: @theme__color__secondary;
-        line-height: 24px;
-        margin-left: @indent__s;
-
-        &:hover,
-        &:active,
-        &:focus {
-          color: @theme__color__primary-alt;
+        .field.newsletter {
+            label {
+                width: auto;
+            }
         }
-      }
     }
-
-    .field.newsletter {
-      label {
-        width: auto;
-      }
-    }
-  }
 }
 
 //
@@ -154,33 +160,35 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-  .pos-verification-message {
-    margin-top: 0 !important;
-    margin-bottom: 16px !important;
-    margin-left: -@layout__width-xs-indent !important;
-    margin-right: -@layout__width-xs-indent !important;
-  }
-
-  .form-edit-account,
-  .form-create-account-pos {
-    .field {
-      &.mobile,
-      &.verification-code {
-        a  {
-          width: 40%;
-        }
-
-        input,
-        .control .mage-error{
-          width: 59%;
-        }
-      }
-
-      &.last_name {
-        padding-top: @indent__base;
-      }
+    .pos-verification-message {
+        margin-top: 0 !important;
+        margin-bottom: 16px !important;
+        margin-left: -@layout__width-xs-indent !important;
+        margin-right: -@layout__width-xs-indent !important;
     }
-  }
+
+    .form-create-account,
+    .form-edit-account,
+    .form-create-account-pos {
+        .field {
+            &.mobile,
+            &.verification-code,
+            &.ba-code {
+                a  {
+                    width: 40%;
+                }
+
+                input,
+                .control .mage-error{
+                    width: 59%;
+                }
+            }
+
+            &.last_name {
+                padding-top: @indent__base;
+            }
+        }
+    }
 }
 
 //
@@ -188,40 +196,43 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-  .customer-account-create {
-    .modal-popup.modal-slide {
-      .modal-inner-wrap {
-        width: 600px;
-      }
-    }
-  }
-
-  .pos-verification-message {
-    margin-top: -@indent__base !important;
-    margin-bottom: 16px !important;
-  }
-
-  .form-edit-account,
-  .form-create-account-pos {
-    .field {
-      &.mobile,
-      &.verification-code {
-        a  {
-          width: 20%;
+    .customer-account-create {
+        .modal-popup.modal-slide {
+            .modal-inner-wrap {
+                width: 600px;
+            }
         }
-
-        input,
-        .control .mage-error,
-        .code-send-message,
-        .verification-message,
-        .countdown {
-          width: 79%;
-        }
-      }
-
-      &.last_name {
-        padding-top: 16px;
-      }
     }
-  }
+
+    .pos-verification-message {
+        margin-top: -@indent__base !important;
+        margin-bottom: 16px !important;
+    }
+
+    .form-create-account,
+    .form-edit-account,
+    .form-create-account-pos {
+        .field {
+            &.mobile,
+            &.verification-code,
+            &.ba-code {
+                a  {
+                    width: 20%;
+                }
+
+                input,
+                .control .mage-error,
+                .code-send-message,
+                .verification-message,
+                .countdown,
+                .ba-code-message {
+                    width: 79%;
+                }
+            }
+
+            &.last_name {
+                padding-top: 16px;
+            }
+        }
+    }
 }

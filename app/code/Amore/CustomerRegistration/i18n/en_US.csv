@@ -70,3 +70,6 @@ Debug,Debug
 "BA Code","BA Code"
 "BA Code Enable","BA Code Enable"
 "Log in","Log in"
+"BA Code verified","BA Code verified"
+"No information exist in POS","No information exist in POS"
+"Unable to fetch ba code record at this time","Unable to fetch ba code record at this time"

@@ -13,6 +13,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\Session\SessionManagerInterface as Session;
 use Amore\CustomerRegistration\Helper\Data;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\UrlInterface;
 
 /**
  * It will use for the register step during registration
@@ -43,22 +44,30 @@ class Register implements ArgumentInterface
     private $storeManager;
 
     /**
+     * @var UrlInterface
+     */
+    private $urlBuilder;
+
+    /**
      * Register constructor.
      * @param Data $configHelper
      * @param Http $request
      * @param Session $customerSession
      * @param StoreManagerInterface $storeManager
+     * @param UrlInterface $urlBuilder
      */
     public function __construct(
         Data $configHelper,
         Http $request,
         Session $customerSession,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        UrlInterface $urlBuilder
     ) {
         $this->request = $request;
         $this->customerSession = $customerSession;
         $this->configHelper = $configHelper;
         $this->storeManager = $storeManager;
+        $this->urlBuilder = $urlBuilder;
     }
 
     /**
@@ -166,5 +175,19 @@ class Register implements ArgumentInterface
         $currentWebsiteId = $this->storeManager->getStore()->getWebsiteId();
         $currentWebsiteId = $currentWebsiteId ? $currentWebsiteId : null;
         return $this->configHelper->getBaCodeEnable($currentWebsiteId);
+    }
+
+    /**
+     * Retrieve BA code action url and set "secure" param to avoid confirm
+     * message when we submit form from secure page to unsecure
+     *
+     * @return mixed
+     */
+    public function getBaCodeVerifyUrl()
+    {
+        return $this->urlBuilder->getUrl(
+            'customerregistration/verification/verifybacode',
+            ['_secure' => true]
+        );
     }
 }

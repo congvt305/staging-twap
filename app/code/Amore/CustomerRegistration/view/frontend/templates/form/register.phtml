@@ -242,7 +242,7 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
                 </div>
 
                 <?php if ($viewModel->checkBaCodeEnabled()): ?>
-                <div class="field">
+                <div class="field ba-code">
                     <label for="ba_code" class="label"><span><?= $block->escapeHtml(__('BA Code')) ?></span></label>
                     <div class="control">
                         <input
@@ -253,6 +253,10 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
                             title="<?= $block->escapeHtml(__('BA Code')) ?>"
                             placeholder="<?= $block->escapeHtml(__('BA Code')) ?>"
                             value="<?= $block->escapeHtmlAttr($block->getFormData()->getBaCode()) ?>"/>
+                        <a disabled class="action primary bacode-link">
+                            <span><?= $block->escapeHtml(__('Verify')) ?></span>
+                        </a>
+                        <span class="note ba-code-message" style="display: none;"></span>
                     </div>
                 </div>
                 <?php endif; ?>
@@ -420,7 +424,11 @@ require([
             }
         },
         "*": {
-            "createaccount":{}
+            "createaccount":{},
+            "checkbacodevalue":{},
+            "verifybacode":{
+                "baCodeVerifyUrl": "<?= $block->escapeHtml($viewModel->getBaCodeVerifyUrl()); ?>"
+            }
         }
     }
 </script>
