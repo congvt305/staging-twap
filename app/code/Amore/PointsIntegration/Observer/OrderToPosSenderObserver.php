@@ -81,7 +81,7 @@ class OrderToPosSenderObserver implements ObserverInterface
         $status = 0;
 
         if ($active && $orderSendActive) {
-            if (!$posSendCheck && $order->getStatus() == 'shipment_processing') {
+            if (!$posSendCheck && $order->getStatus() == 'complete') {
                 try {
                     $orderData = $this->posOrderData->getOrderData($order);
 
