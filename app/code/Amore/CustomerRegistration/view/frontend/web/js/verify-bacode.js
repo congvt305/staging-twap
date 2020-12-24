@@ -16,7 +16,7 @@ define([
      * @param config.baCodeVerifyUrl
      */
     function main(config) {
-        $(document).on('click', '.bacode-link', function (event) {
+        $('.form-create-account').on('click', '.bacode-link', function (event) {
             var baCode = $('#ba_code').val();
             if (baCode) {
                 $.ajax({

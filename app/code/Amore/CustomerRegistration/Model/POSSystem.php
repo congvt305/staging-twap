@@ -393,7 +393,7 @@ class POSSystem
      * @param $baCode
      * @return array
      */
-    public function baCodeInfoApi($baCode)
+    public function callBACodeInfoApi($baCode)
     {
         $result['verify'] = false;
         $response = [];

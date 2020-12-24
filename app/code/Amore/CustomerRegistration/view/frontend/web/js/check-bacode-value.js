@@ -10,7 +10,7 @@ define([
     'jquery',
     'mage/mage'
 ], function($) {
-    $(document).on('keyup', '#ba_code', function (event) {
+    $('.form-create-account').on('keyup', '#ba_code', function (event) {
         if (this.value) {
             $('.bacode-link').attr('disabled', false);
             $('#customerSubmit').attr('disabled', true);

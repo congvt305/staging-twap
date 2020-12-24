@@ -56,23 +56,24 @@ class VerifyBaCode extends Action
      */
     public function execute()
     {
-        $result['verify'] = false;
+        $result = [
+            'verify' => false,
+            'message' => __('Unable to fetch ba code record at this time')
+        ];
         $baCode = $this->getRequest()->getParam('baCode');
 
-        try {
-            $verificationResult = true;
-            $verificationResult = $this->posSystem->baCodeInfoApi($baCode);
-
-            if (isset($verificationResult['verify']) && $verificationResult['verify']) {
-                $result['verify']   = true;
-                $result['message']  = $verificationResult['message'];
-            } elseif (isset($verificationResult['message']) && $verificationResult['message']) {
-                $result['message'] = $verificationResult['message'];
-            } else {
-                $result['message'] = __('Unable to fetch ba code record at this time');
+        if (isset($baCode) && $baCode) {
+            try {
+                $verificationResult = $this->posSystem->callBACodeInfoApi($baCode);
+                if (isset($verificationResult['verify'])) {
+                    $result['verify'] = $verificationResult['verify'] ? true : false;
+                    if (isset($verificationResult['message']) && $verificationResult['message']) {
+                        $result['message'] = $verificationResult['message'];
+                    }
+                }
+            } catch (\Exception $e) {
+                $result['message'] = $e->getMessage();
             }
-        } catch (\Exception $e) {
-            $result['message'] = $e->getMessage();
         }
 
         $jsonResult = $this->resultJsonFactory->create();
