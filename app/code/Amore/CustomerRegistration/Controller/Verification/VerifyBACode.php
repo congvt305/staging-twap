@@ -20,9 +20,9 @@ use Amore\CustomerRegistration\Model\POSSystem;
 /**
  * To verify ba code of the customer
  *
- * Class VerifyBaCode
+ * Class VerifyBACode
  */
-class VerifyBaCode extends Action
+class VerifyBACode extends Action
 {
     /**
      * @var JsonFactory
