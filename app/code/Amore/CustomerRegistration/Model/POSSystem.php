@@ -401,7 +401,7 @@ class POSSystem
         $callSuccess = 1;
         try {
             $parameters = [
-                'empId' => trim($baCode),
+                'empID' => trim($baCode),
                 'salOrgCd' => $this->config->getOrganizationSalesCode(),
                 'salOffCd' => $this->config->getOfficeSalesCode()
             ];
