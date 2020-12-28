@@ -37,8 +37,8 @@ class Refund
 
     public function canRefundOnline($order)
     {
-//        if (($order->getStatus() === 'processing' || $order->getStatus() === 'processing_with_shipment' || $order->getStatus() === 'sap_fail') && $this->isActive()) {
-        if (($order->getStatus() === 'processing' || $order->getStatus() === 'sap_fail') && $this->isActive()) {
+        if (($order->getStatus() === 'processing' || $order->getStatus() === 'processing_with_shipment' || $order->getStatus() === 'sap_fail') && $this->isActive()) {
+//        if (($order->getStatus() === 'processing' || $order->getStatus() === 'sap_fail') && $this->isActive()) {
             if ($order->getPayment()->getMethod() === 'checkmo') { //todo: for test purpose only, should remove later
                 return true;
             }
@@ -84,8 +84,8 @@ class Refund
      */
     public function canRefundOffline($order)
     {
-//        if (($order->getStatus() === 'processing' || $order->getStatus() === 'processing_with_shipment' || $order->getStatus() === 'sap_fail') && $this->isActive()) {
-        if (($order->getStatus() === 'processing' || $order->getStatus() === 'sap_fail') && $this->isActive()) {
+        if (($order->getStatus() === 'processing' || $order->getStatus() === 'processing_with_shipment' || $order->getStatus() === 'sap_fail') && $this->isActive()) {
+//        if (($order->getStatus() === 'processing' || $order->getStatus() === 'sap_fail') && $this->isActive()) {
             if ($order->getPayment()->getMethod() === 'checkmo') { //todo: for test purpose only, should remove later
                 return true;
             }
