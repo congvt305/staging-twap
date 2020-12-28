@@ -12,6 +12,21 @@ use Magento\Sales\Model\Order;
 
 class CustomState extends \Magento\Sales\Model\ResourceModel\Order\Handler\State
 {
+    /**
+     * @var \Amore\PointsIntegration\Model\Source\Config
+     */
+    private $config;
+
+    /**
+     * CustomState constructor.
+     * @param \Amore\PointsIntegration\Model\Source\Config $config
+     */
+    public function __construct(
+        \Amore\PointsIntegration\Model\Source\Config $config
+    ) {
+        $this->config = $config;
+    }
+
     public function check(Order $order)
     {
         $shippingMethod = $order->getShippingMethod();
@@ -35,12 +50,29 @@ class CustomState extends \Magento\Sales\Model\ResourceModel\Order\Handler\State
                     $order->setState(Order::STATE_CLOSED)
                         ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CLOSED));
                 } elseif ($currentState === Order::STATE_PROCESSING && !$order->canShip()) {
-                    $order->setState(Order::STATE_COMPLETE)
-                        ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_COMPLETE));
+                    if ($this->posOrderActiveCheck($order->getStore()->getWebsiteId())) {
+                        if ($order->getData('pos_order_send_check')) {
+                            $order->setState(Order::STATE_COMPLETE)
+                                ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_COMPLETE));
+                        } else {
+                            $order->setState(Order::STATE_COMPLETE)->setStatus($order->getStatus());
+                        }
+                    } else {
+                        $order->setState(Order::STATE_COMPLETE)
+                            ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_COMPLETE));
+                    }
                 }
             }
         }
 
         return $this;
+    }
+
+    public function posOrderActiveCheck($websiteId)
+    {
+        $pointsIntegrationActive = $this->config->getActive($websiteId);
+        $posOrderActive = $this->config->getPosOrderActive($websiteId);
+
+        return ($pointsIntegrationActive && $posOrderActive);
     }
 }

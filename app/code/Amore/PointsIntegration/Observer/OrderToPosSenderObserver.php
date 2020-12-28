@@ -71,7 +71,6 @@ class OrderToPosSenderObserver implements ObserverInterface
     {
         /** @var \Magento\Sales\Model\Order $order */
         $order = $observer->getEvent()->getOrder();
-        $posSendCheck = $order->getData('pos_order_send_check');
 
         $websiteId = $order->getStore()->getWebsiteId();
         $active = $this->config->getActive($websiteId);
@@ -80,8 +79,10 @@ class OrderToPosSenderObserver implements ObserverInterface
         $orderData = '';
         $status = 0;
 
+        $posSendOrderStatusCheck = $this->orderStatusValidator($order);
+
         if ($active && $orderSendActive) {
-            if (!$posSendCheck && $order->getStatus() == 'complete') {
+            if ($posSendOrderStatusCheck) {
                 try {
                     $orderData = $this->posOrderData->getOrderData($order);
 
@@ -106,6 +107,26 @@ class OrderToPosSenderObserver implements ObserverInterface
         } else {
             $this->logger->info('POS ORDER REQUEST FOR ORDER : ' . $order->getIncrementId() . ' IS NOT COMPLETED DUE TO POINTS INTEGRATION MODULE INACTIVE');
         }
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     */
+    public function orderStatusValidator(\Magento\Sales\Model\Order $order)
+    {
+        $posOrderRequestStatus = false;
+
+        $validStatus = 'complete';
+        $validState = 'complete';
+
+        $validStateAndStatus = ($validState && $validStatus);
+        $canShip = $order->canShip();
+        $posSendCheck = $order->getData('pos_order_send_check');
+
+        if ($validStateAndStatus && !$canShip && !$posSendCheck) {
+            $posOrderRequestStatus = true;
+        }
+        return $posOrderRequestStatus;
     }
 
     public function responseCheck($response)
