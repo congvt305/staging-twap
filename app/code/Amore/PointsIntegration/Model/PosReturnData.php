@@ -206,9 +206,13 @@ class PosReturnData
                         $bundleChildFromOrder->getDiscountAmount();
 
                     $product = $this->productRepository->get($bundleChildrenItem->getSku(), false, $rma->getStoreId());
-                    $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $bundleChildrenItem->getQty();
-                    $itemTotalDiscount = abs(round($this->getRateAmount($bundleChildDiscountAmount, $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())
-                        + (($product->getPrice() - $childPriceRatio) * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())));
+                    $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getOriginalPrice()) / $bundleChildrenItem->getQty();
+                    $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $bundleChildrenItem->getQty();
+                    $itemTotalDiscount = abs(round(
+                        $this->getRateAmount($bundleChildDiscountAmount, $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())
+                        + (($product->getPrice() - $childPriceRatio) * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())
+                        + $catalogRuledPriceRatio * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()
+                    ));
 
                     $rmaItemData[] = [
                         'prdCD' => $bundleChildrenItem->getSku(),
