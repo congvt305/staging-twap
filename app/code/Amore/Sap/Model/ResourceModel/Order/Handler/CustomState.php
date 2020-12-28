@@ -51,10 +51,7 @@ class CustomState extends \Magento\Sales\Model\ResourceModel\Order\Handler\State
                         ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CLOSED));
                 } elseif ($currentState === Order::STATE_PROCESSING && !$order->canShip()) {
                     if ($this->posOrderActiveCheck($order->getStore()->getWebsiteId())) {
-                        if ($order->getData('pos_order_send_check')) {
-                            $order->setState(Order::STATE_COMPLETE)
-                                ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_COMPLETE));
-                        } else {
+                        if (!$order->getData('pos_order_send_check')) {
                             $order->setState(Order::STATE_COMPLETE)->setStatus($order->getStatus());
                         }
                     } else {
