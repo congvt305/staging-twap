@@ -77,3 +77,6 @@ Api,API
 "BA Code","Mã BA"
 "BA Code Enable","Mã BA Kích hoạt"
 "Log in","Đăng nhập"
+"BA Code verified","Mã BA đã được xác minh"
+"No information exist in POS","Không có thông tin tồn tại trong POS"
+"Unable to fetch ba code record at this time","Không thể tìm nạp bản ghi mã ba vào lúc này"

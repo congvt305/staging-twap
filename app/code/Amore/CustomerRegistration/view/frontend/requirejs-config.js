@@ -11,6 +11,8 @@ var config = {
             createaccount: 'Amore_CustomerRegistration/js/account-create',
             verifymobile: 'Amore_CustomerRegistration/js/verifymobile',
             validateName: 'Amore_CustomerRegistration/js/validateNameRule',
+            checkbacodevalue: 'Amore_CustomerRegistration/js/check-bacode-value',
+            verifybacode: 'Amore_CustomerRegistration/js/verify-bacode',
         }
     },
     config: {

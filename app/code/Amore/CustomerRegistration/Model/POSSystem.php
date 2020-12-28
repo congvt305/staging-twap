@@ -386,4 +386,109 @@ class POSSystem
             return __('Log in');
         }
     }
+
+    /**
+     * To call POS Api for BA Code info
+     *
+     * @param $baCode
+     * @return array
+     */
+    public function callBACodeInfoApi($baCode)
+    {
+        $result['verify'] = false;
+        $response = [];
+        $url = $this->config->getBaCodeInfoURL();
+        $callSuccess = 1;
+        try {
+            $parameters = [
+                'empId' => trim($baCode),
+                'salOrgCd' => $this->config->getOrganizationSalesCode(),
+                'salOffCd' => $this->config->getOfficeSalesCode()
+            ];
+
+            $jsonEncodedData = json_encode($parameters);
+
+            $this->curlClient->setOptions([
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => $jsonEncodedData,
+                CURLOPT_HTTPHEADER => [
+                    'Content-type: application/json'
+                ],
+            ]);
+
+            if ($this->config->getSSLVerification()) {
+                $this->curlClient->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                $this->curlClient->setOption(CURLOPT_SSL_VERIFYPEER, false);
+            }
+
+            $this->logger->addAPICallLog(
+                'POS get BA Code info API Call',
+                $url,
+                $parameters
+            );
+
+            $this->curlClient->post($url, $parameters);
+            $apiRespone = $this->curlClient->getBody();
+            $response = $this->json->unserialize($apiRespone);
+            if (isset($response['message']) == 'SUCCESS' && isset($response['data']['exitYN'])
+                && $response['data']['exitYN'] == 'Y') {
+                $result['verify']   = true;
+                $result['message']  = __('BA Code verified');
+            } elseif (isset($response['message']) == 'SUCCESS' && isset($response['data']['exitYN'])
+                && $response['data']['exitYN'] == 'N') {
+                $result['message'] = __('No information exist in POS');
+            } else {
+                $result['message'] = __('Unable to fetch ba code record at this time');
+            }
+
+            $this->logger->addAPICallLog(
+                'POS get BA Code info API Response',
+                $url,
+                $response
+            );
+
+        } catch (\Exception $e) {
+            if ($e->getMessage() == '<url> malformed') {
+                $result['message'] = __('Please first configure POS APIs properly. Then try again.');
+            } else {
+                $result['message'] = $e->getMessage();
+            }
+            $this->logger->addExceptionMessage($e->getMessage());
+            $callSuccess = 0;
+        }
+
+        $log['request'] = $parameters;
+        $log['response'] = $response;
+
+        $websiteName = $this->storeManager->getWebsite()->getName();
+
+        $resultMessage = isset($result['message'])?$result['message']:'Fail';
+        if ($response['message'] == 'SUCCESS' && $response['data']['exitYN'] == 'N') {
+            $resultMessage = __('No information exist in POS');
+        } elseif ($response['message'] == 'SUCCESS' && $response['data']['exitYN'] == 'Y' &&
+            $resultMessage == 'Fail') {
+            $resultMessage = __('Information loaded successfully');
+        }
+
+        $this->eventManager->dispatch(
+            'eguana_bizconnect_operation_processed',
+            [
+                'topic_name' => 'eguana.pos.get.bacode.info',
+                'direction' => 'outgoing',
+                'to' => $websiteName,
+                'serialized_data' => $this->json->serialize($log),
+                'status' => $callSuccess,
+                'result_message' => $resultMessage
+            ]
+        );
+
+        return $result;
+    }
 }

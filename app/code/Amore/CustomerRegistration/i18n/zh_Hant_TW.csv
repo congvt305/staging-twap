@@ -77,3 +77,6 @@ Api,阿皮
 "BA Code","BA代碼"
 "BA Code Enable","BA代碼啟用"
 "Log in","登入"
+"BA Code verified","BA代碼已驗證"
+"No information exist in POS","POS中沒有信息"
+"Unable to fetch ba code record at this time","目前無法獲取條形碼記錄"

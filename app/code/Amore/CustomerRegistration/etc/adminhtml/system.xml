@@ -126,6 +126,11 @@
                     <comment>Member join URI. Complete URL = BASE URL + Memeber Join URI</comment>
                 </field>
 
+                <field id="bacode_info" translate="label" type="text" sortOrder="51" showInDefault="1" showInWebsite="1">
+                    <label>BA Code Information URI</label>
+                    <comment>BA Code info URI. Complete URL = BASE URL + BA Code Information URI</comment>
+                </field>
+
                 <field id="sales_organization_code" translate="label" type="text" sortOrder="60" showInWebsite="1">
                     <label>Sales Organization Code</label>
                 </field>
