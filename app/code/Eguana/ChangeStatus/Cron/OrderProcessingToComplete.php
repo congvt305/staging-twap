@@ -131,28 +131,31 @@ class OrderProcessingToComplete
 
         $orderData = '';
         $status = 0;
+        $posSendCheck = $order->getData('pos_order_send_check');
 
         if ($active && $orderSendActive) {
-            try {
-                $orderData = $this->posOrderData->getOrderData($order);
+            if (!$posSendCheck) {
+                try {
+                    $orderData = $this->posOrderData->getOrderData($order);
 
-                $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
-                $status = $this->responseCheck($response);
+                    $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
+                    $status = $this->responseCheck($response);
 
-                if ($status) {
-                    $this->posOrderData->updatePosSendCheck($order->getEntityId());
+                    if ($status) {
+                        $this->posOrderData->updatePosSendCheck($order->getEntityId());
+                    }
+                } catch (NoSuchEntityException $exception) {
+                    $this->logger->info("===== OBSERVER NO SUCH ENTITY EXCEPTION =====");
+                    $this->logger->info($exception->getMessage());
+                    $response = $exception->getMessage();
+                } catch (\Exception $exception) {
+                    $this->logger->info("===== OBSERVER EXCEPTION =====");
+                    $this->logger->info($exception->getMessage());
+                    $response = $exception->getMessage();
                 }
-            } catch (NoSuchEntityException $exception) {
-                $this->logger->info("===== OBSERVER NO SUCH ENTITY EXCEPTION =====");
-                $this->logger->info($exception->getMessage());
-                $response = $exception->getMessage();
-            } catch (\Exception $exception) {
-                $this->logger->info("===== OBSERVER EXCEPTION =====");
-                $this->logger->info($exception->getMessage());
-                $response = $exception->getMessage();
-            }
 
-            $this->logging($orderData, $response, $status);
+                $this->logging($orderData, $response, $status);
+            }
         } else {
             $this->logger->info('POS ORDER REQUEST FOR ORDER : ' . $order->getIncrementId() . ' IS NOT COMPLETED DUE TO POINTS INTEGRATION MODULE INACTIVE');
         }

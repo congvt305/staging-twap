@@ -10,8 +10,11 @@
 
 namespace Eguana\ChangeStatus\Model;
 
+use Amore\PointsIntegration\Logger\Logger;
 use Eguana\ChangeStatus\Model\Source\Config;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -49,6 +52,30 @@ class GetCompletedOrders
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var \Amore\PointsIntegration\Model\PosOrderData
+     */
+    private $posOrderData;
+    /**
+     * @var \Amore\PointsIntegration\Model\Connection\Request
+     */
+    private $request;
+    /**
+     * @var \Magento\Framework\Event\ManagerInterface
+     */
+    private $eventManager;
+    /**
+     * @var Json
+     */
+    private $json;
+    /**
+     * @var \Amore\PointsIntegration\Model\Source\Config
+     */
+    private $PointsIntegrationConfig;
+    /**
+     * @var Logger
+     */
+    private $pointsIntegrationLogger;
 
     /**
      * GetCompletedOrders constructor.
@@ -59,6 +86,12 @@ class GetCompletedOrders
      * @param StoreManagerInterface $storeManagerInterface
      * @param LoggerInterface $logger
      * @param TimezoneInterface $timezone
+     * @param \Amore\PointsIntegration\Model\PosOrderData $posOrderData
+     * @param \Amore\PointsIntegration\Model\Connection\Request $request
+     * @param \Magento\Framework\Event\ManagerInterface $eventManager
+     * @param Json $json
+     * @param \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig
+     * @param Logger $pointsIntegrationLogger
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -67,7 +100,13 @@ class GetCompletedOrders
         Config $config,
         StoreManagerInterface $storeManagerInterface,
         LoggerInterface $logger,
-        TimezoneInterface $timezone
+        TimezoneInterface $timezone,
+        \Amore\PointsIntegration\Model\PosOrderData $posOrderData,
+        \Amore\PointsIntegration\Model\Connection\Request $request,
+        \Magento\Framework\Event\ManagerInterface $eventManager,
+        Json $json,
+        \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig,
+        Logger $pointsIntegrationLogger
     ) {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
@@ -76,6 +115,12 @@ class GetCompletedOrders
         $this->storeManagerInterface = $storeManagerInterface;
         $this->logger = $logger;
         $this->timezone = $timezone;
+        $this->posOrderData = $posOrderData;
+        $this->request = $request;
+        $this->eventManager = $eventManager;
+        $this->json = $json;
+        $this->PointsIntegrationConfig = $PointsIntegrationConfig;
+        $this->pointsIntegrationLogger = $pointsIntegrationLogger;
     }
 
     public function getCompletedOrder($storeId)
@@ -123,6 +168,7 @@ class GetCompletedOrders
                         $order->setStatus('complete');
                         $order->setState('complete');
                         $this->orderRepository->save($order);
+                        $this->posOrderSend($order);
                     }
                 }
             }
@@ -130,5 +176,70 @@ class GetCompletedOrders
             $this->logger->debug("EXCEPTION OCCURRED DURING CHANGING ORDER STATUS TO COMPLETE.");
             $this->logger->debug($exception->getMessage());
         }
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     */
+    public function posOrderSend($order)
+    {
+        $websiteId = $order->getStore()->getWebsiteId();
+        $active = $this->PointsIntegrationConfig->getActive($websiteId);
+        $orderSendActive = $this->PointsIntegrationConfig->getPosOrderActive($websiteId);
+
+        $orderData = '';
+        $status = 0;
+        $posSendCheck = $order->getData('pos_order_send_check');
+
+        if ($active && $orderSendActive) {
+            if (!$posSendCheck) {
+                try {
+                    $orderData = $this->posOrderData->getOrderData($order);
+
+                    $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
+                    $status = $this->responseCheck($response);
+
+                    if ($status) {
+                        $this->posOrderData->updatePosSendCheck($order->getEntityId());
+                    }
+                } catch (NoSuchEntityException $exception) {
+                    $this->pointsIntegrationLogger->info("===== NO SUCH ENTITY EXCEPTION =====");
+                    $this->pointsIntegrationLogger->info($exception->getMessage());
+                    $response = $exception->getMessage();
+                } catch (\Exception $exception) {
+                    $this->pointsIntegrationLogger->info("===== EXCEPTION =====");
+                    $this->pointsIntegrationLogger->info($exception->getMessage());
+                    $response = $exception->getMessage();
+                }
+
+                $this->logging($orderData, $response, $status);
+            }
+        } else {
+            $this->logger->info('POS ORDER REQUEST FOR ORDER : ' . $order->getIncrementId() . ' IS NOT COMPLETED DUE TO POINTS INTEGRATION MODULE INACTIVE');
+        }
+    }
+
+    public function responseCheck($response)
+    {
+        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public function logging($sendData, $responseData, $status)
+    {
+        $this->eventManager->dispatch(
+            "eguana_bizconnect_operation_processed",
+            [
+                'topic_name' => 'amore.pos.points-integration.order.auto',
+                'direction' => 'outgoing',
+                'to' => "POS",
+                'serialized_data' => $this->json->serialize($sendData),
+                'status' => $status,
+                'result_message' => $this->json->serialize($responseData)
+            ]
+        );
     }
 }
