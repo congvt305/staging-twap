@@ -107,9 +107,14 @@ class OrderProcessingToComplete
                 $orderList = $this->completedOrders->getCompletedOrder($store->getId());
 
                 foreach ($orderList as $order) {
-                    $order->setStatus('complete');
-                    $order->setState('complete');
-                    $this->orderRepository->save($order);
+                    try {
+                        $order->setStatus('complete');
+                        $order->setState('complete');
+                        $this->orderRepository->save($order);
+                        $this->posOrderSend($order);
+                    } catch (\Exception $exception) {
+                        $this->logger->info($exception->getMessage());
+                    }
                 }
             }
         }
