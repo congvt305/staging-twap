@@ -62,7 +62,13 @@ class OrderProcessingToComplete
             $isActive = $this->config->getChangeOrderStatusActive($store->getId());
 
             if ($isActive) {
-                $this->completedOrders->OrderStatusChanger();
+                $orderList = $this->completedOrders->getCompletedOrder($store->getId());
+
+                foreach ($orderList as $order) {
+                    $order->setStatus('complete');
+                    $order->setState('complete');
+                    $this->orderRepository->save($order);
+                }
             }
         }
     }
