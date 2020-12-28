@@ -83,13 +83,7 @@ class RmaRepositoryPlugin
 
         if ($moduleEnableCheck && $rmaSendingEnableCheck) {
             if ($orderSendToPos && $result->getStatus() == $availableStatus) {
-                try {
-                    $this->returnOrderSend($result, $websiteId);
-                } catch (PosPointsException $e) {
-                    throw new PosPointsException(__('POS Return Error : ' . $e->getMessage()));
-                } catch (\Exception $e) {
-                    throw new PosPointsException(__('POS Return Error : ' . $e->getMessage()));
-                }
+                $this->returnOrderSend($result, $websiteId);
             }
         }
     }
@@ -146,8 +140,6 @@ class RmaRepositoryPlugin
 
         if ($status) {
             $this->posReturnData->updatePosSendCheck($subject->getId());
-        } else {
-            throw new PosPointsException(__("Pos Return Error. Please Check Log."));
         }
     }
 }
