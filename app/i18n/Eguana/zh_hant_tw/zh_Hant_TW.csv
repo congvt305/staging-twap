@@ -8688,7 +8688,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Loading...","載入中...",module,Magento_NegotiableQuote
 "History Log","History Log",module,Magento_NegotiableQuote
 "Add your comment","添加您的評論",module,Magento_NegotiableQuote
-"Attach file","Attach file",module,Magento_NegotiableQuote
+"Attach file","夾帶檔案",module,Magento_NegotiableQuote
 "Quote & Account Information","Quote & Account Information",module,Magento_NegotiableQuote
 "Quote # %1","Quote # %1",module,Magento_NegotiableQuote
 "Name","姓名",module,Magento_NegotiableQuote
@@ -12392,7 +12392,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Gift Message for this Order","此訂單的禮品消息",module,Magento_Sales
 "Shipped By","配送方式",module,Magento_Sales
 "Tracking Number","貨態追蹤",module,Magento_Sales
-"Billing Last Name","訂購人姓名",module,Magento_Sales
+"Billing Last Name","訂購人姓氏",module,Magento_Sales
 "Find Order By","查找訂單依據",module,Magento_Sales
 "ZIP Code","郵政編碼",module,Magento_Sales
 "Billing ZIP Code","郵政編碼",module,Magento_Sales

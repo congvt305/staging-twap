@@ -18,13 +18,6 @@ $ticket = $viewmodel->getTicketDetail();
                 <?= $block->escapeHtml($viewmodel->getStatus($ticket->getStatus()));?>
             </div>
         </div>
-        <?php if ($ticket->getStatus() != 0):?>
-            <div class="actions-toolbar">
-                <a href="<?= $block->escapeUrl($viewmodel->getTicketCloseAction($ticket->getId()));?>"
-                   class="action secondary action-close custom-tkt-btn"><span><?= $block->escapeHtml(__('Close this ticket'));?></span>
-                </a>
-            </div>
-        <?php endif;?>
     </div>
     <div class="block-title">
         <strong><?= $block->escapeHtml(__('Message')); ?></strong>
