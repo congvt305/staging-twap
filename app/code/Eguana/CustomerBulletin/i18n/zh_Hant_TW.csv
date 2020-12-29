@@ -7,12 +7,12 @@ Save,救
 "Save & Duplicate","保存并复制"
 "Save & Close","保存并关闭"
 Send,发送
-"New Ticket","新票"
+"New Ticket","我有問題要發問"
 Home,家
-"Ticket Subject","票务主题"
+"Ticket Subject","標題"
 "Go to Home Page","去首页"
 "My Account","我的帐户"
-"Support Ticket","支持票"
+"Support Ticket","聯繫我們"
 "Add new ticket","添加新票"
 "My Tickets","我的票"
 "Current Tickets","当前门票"
@@ -36,8 +36,8 @@ Home,家
 Open,打开
 Hold,保持
 Clos,克洛斯
-Read,读
-Unread,未读
+"Read","已發送"
+"Unread","您有新訊息"
 Close,关
 "Requested ticket doesn't exist","请求的票证不存在"
 "Unable to remove data %1","无法删除数据％1"
@@ -54,7 +54,7 @@ Category,类别
 Requester,请求者
 Created,已建立
 Status,状态
-"Ticket Information","票务信息"
+"Ticket Information","客服資訊"
 Message,信息
 Attchments,附件
 "The information in this tab has been changed.","此选项卡中的信息已更改."
@@ -62,18 +62,18 @@ Attchments,附件
 Loading...,正在加载...
 Notes,笔记
 "Add your Note","添加您的笔记"
-"Attach file","附加档案"
+"Attach file","夾帶檔案"
 "Notes Information","注意事项"
 "Subject","学科"
 File,文件
 Submit,提交
 "FAQ!","常问问题！"
-"Note Status","笔记状态"
+"Note Status","訊息通知"
 Action,行动
 view,视图
-"You have not Created a Ticket.","您尚未创建故障单."
+"You have not Created a Ticket.","目前尚未有客服紀錄"
 "Information","信息"
-"Add Note","加注"
+"Add Note","我的回覆"
 "Close this ticket","关闭这张票"
 create,创建
 Cancel,取消
@@ -140,12 +140,11 @@ Re-Open,重新开放
 ID,ID
 "Customer Name","顾客姓名"
 "Store View","店铺检视"
-"Ticket Information","票务信息"
 "Created At","创建于"
-"Ticket List","门票清单"
+"Ticket List","客服紀錄"
 "Select Category","选择类别"
 "My Ticket View","我的車票詳細資料"
-"Checked our <a href=""%1"">FAQ</a> and still need help? Please send us a message using the form below.","查過我們的 <a href=""%1"">FAQ</a>還需要幫助嗎? 請用下面的表格向我們發信息。"
+"Checked our <a href=""%1"">FAQ</a> and still need help? Please send us a message using the form below.","我們將於上班時間盡快回覆您!您也可至常見問題(<a href=""%1"">FAQ</a>)找尋適合的資訊"
 "Your Ticket has been created!","您的票证已创建！"
 "--Select Category--","--选择类别--"
 "Click <a href=""%ticket_url"">here</a> to view the ticket","<a href=""%ticket_url"">按這裏看票</a>"
