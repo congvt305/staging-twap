@@ -173,8 +173,10 @@ class POSSystem
                     if ($cmsPage) {
                         $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
                     } else {
-                        $result['message'] = __(
-                            'There is a problem with the requested subscription information. Please contact our CS Center for registration.'
+                        $link = $this->getLogInLink();
+                        $response['message'] = __(
+                            'There is a problem with the requested subscription information. Please contact our CS Center for registration. %1',
+                            $link
                         );
                     }
                 } elseif (isset($response['data']['customerInfo']['cstmIntgSeq']) == false ||
@@ -185,10 +187,11 @@ class POSSystem
                     if ($cmsPage) {
                         $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
                     } else {
-                        $result['message'] = __(
-                            'The requested membership information is already registered.'
+                        $link = $this->getLogInLink();
+                        $response['message'] = __(
+                            'This member account has been registered, please %1 to the member directly, thank you',
+                            $link
                         );
-
                     }
 
                 } else {
@@ -369,4 +372,18 @@ class POSSystem
         //$this->customerRepository->save($customer);
     }
 
+    /**
+     * To get current site base usrl
+     *
+     * @return string
+     */
+    private function getLogInLink()
+    {
+        try {
+            $link = $this->storeManager->getStore()->getBaseUrl() . 'customer/account/login/';
+            return '<a href="' . $link . '">' . __('Log in') . '</a>';
+        } catch (\Exception $e) {
+            return __('Log in');
+        }
+    }
 }
