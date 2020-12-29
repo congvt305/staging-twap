@@ -181,8 +181,10 @@ class Verification
             if ($cmsPage) {
                 $response['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
             } else {
+                $link = $this->getLogInLink();
                 $response['message'] = __(
-                    'There is a problem with the requested subscription information. Please contact our CS Center for registration.'
+                    'There is a problem with the requested subscription information. Please contact our CS Center for registration. %1',
+                    $link
                 );
             }
             return $response;
@@ -194,10 +196,11 @@ class Verification
             if ($cmsPage) {
                 $response['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
             } else {
+                $link = $this->getLogInLink();
                 $response['message'] = __(
-                    'The requested membership information is already registered.'
+                    'This member account has been registered, please %1 to the member directly, thank you',
+                    $link
                 );
-
             }
             return $response;
         }
@@ -376,6 +379,21 @@ class Verification
             return $this->sessionManager->getCurrentStep();
         } else {
             return 1;
+        }
+    }
+
+    /**
+     * To get current site base usrl
+     *
+     * @return string
+     */
+    private function getLogInLink()
+    {
+        try {
+            $link = $this->storeManager->getStore()->getBaseUrl() . 'customer/account/login/';
+            return '<a href="' . $link . '">' . __('Log in') . '</a>';
+        } catch (\Exception $e) {
+            return __('Log in');
         }
     }
 }
