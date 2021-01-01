@@ -11,6 +11,11 @@ namespace Eguana\CustomOrderGrid\Model\ResourceModel\Grid;
 
 use Magento\Sales\Model\ResourceModel\Order\Grid\Collection as ParentCollection;
 
+/**
+ * Class Collection
+ *
+ * Fixed allocated_source filter issue in order grid
+ */
 class Collection extends ParentCollection
 {
 
