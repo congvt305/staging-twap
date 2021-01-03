@@ -589,7 +589,7 @@ class Payment extends AbstractMethod
                     'ItemName' => $orderItem->getData('name'),
                     'ItemCount' => (int)$orderItem->getData('qty_ordered'),
                     'ItemWord' => '批',
-                    'ItemPrice' => $itemGrandTotalInclTax / (int)$orderItem->getData('qty_ordered'),
+                    'ItemPrice' => round($itemGrandTotalInclTax / (int)$orderItem->getData('qty_ordered'), 2),
                     'ItemTaxType' => 1,
                     'ItemAmount' => $itemGrandTotalInclTax,
                     'ItemRemark' => '商品備註'
