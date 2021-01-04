@@ -74,7 +74,7 @@
             @_tab-control-border-width: @tab-control__border-width,
             @_tab-control-border-color: @tab-control__border-color,
 
-            @_tab-content-background-color: @sidebar__background-color,
+            @_tab-content-background-color: @color-white,
             @_tab-content-border: 1px solid @border-color__base,
             @_tab-content-border-top-status: @tab-content__border-top-status,
             @_tab-content-margin-top: 39px,
@@ -89,12 +89,11 @@
             text-align: center;
 
             a {
-                border-bottom: 1px solid @border-color__base !important;
+                border-bottom: 1px solid @color-white !important;
             }
 
             &._active {
                 a {
-                    background-color: @sidebar__background-color;
                     font-weight: @font-weight__bold;
                 }
             }
@@ -121,10 +120,6 @@
 
             > div {
                 display: inline-block;
-
-                &:first-child {
-                    margin-right: 15px;
-                }
 
                 span {
                     font-weight: @font-weight__bold;
