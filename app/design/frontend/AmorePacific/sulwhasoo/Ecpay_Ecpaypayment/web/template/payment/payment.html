@@ -1,0 +1,115 @@
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="payment[method]"
+               class="radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label class="label" data-bind="attr: {'for': getCode()}">
+            <span class="ecpaypayment-title" data-bind="i18n: 'Create a card with a credit card'"></span>
+            <span data-bind="text: getTitle()"></span>
+        </label>
+    </div>
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div data-bind="if: isPaymentAvailable()">
+            <form id="ecpay_payment_form">
+                <fieldset class="fieldset payment method" id="payment_form_<?php echo $this->getMethodCode() ?>">
+                    <div class="field required">
+                        <label class="label" data-bind="i18n: 'Payment Methods'"></label>
+                        <select name="ecpay_choosen_payment"
+                                class="validate-select validation-passed"
+                                title="Ecpaypayment"
+                                data-bind="
+                                  options     : getPaymentMethods(),
+                                  optionsValue: 'value',
+                                  optionsText : 'payment_method',
+                                  value       : paymentMethod">
+                        </select>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+
+        <div data-bind="ifnot: isPaymentAvailable()">
+            <p data-bind="text: getPaymentMethodMsg()"></p>
+        </div>
+
+        <p></p>
+
+        <form id="custom-checkout-form" class="form" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+            <fieldset class="fieldset">
+                <!-- ko foreach: getRegion('custom-checkout-form-fields') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!--/ko-->
+            </fieldset>
+            <fieldset class="fieldset e-invoice">
+                <div class="field">
+                    <label class="label" data-bind="i18n: 'E-Invoice'"></label>
+                    <div class="control">
+                        <input type="radio" id="greenworld-invoice" name="ecpay_einvoice_type" value="greenworld-invoice" data-bind="checked: invoiceChecked">
+                        <label for="greenworld-invoice" class="label" data-bind="i18n: 'GreenWorld Invoice'"/>
+                        <div class="fieldset" id="greenworld-invoice-contents" data-bind="visible: invoiceChecked() === 'greenworld-invoice'">
+                            <p data-bind="i18n: 'Invoice opening notice will be sent to you by email, and you will be notified by mail on your own initiative when you win the prize.'"/>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <input type="radio" id="triplicate-invoice" name="ecpay_einvoice_type" value="triplicate-invoice" data-bind="checked: invoiceChecked">
+                        <label for="triplicate-invoice" class="label" data-bind="i18n: 'Triplicate Invoice'"/>
+                        <div class="fieldset" id="triplicate-invoice-contents" data-bind="visible: invoiceChecked() === 'triplicate-invoice'">
+                            <div class="field">
+                                <label for="triplicate_title" class="label" data-bind="i18n: 'Triplicate Title'"/>
+                                <div class="control">
+                                    <input type="text" name="triplicate_title" data-validate='{"maxlength":255}' value="" title="Triplicate Title" class="input-text triplicate_title" id="triplicate_title">
+                                </div>
+                                <label for="tax_id_number" class="label" data-bind="i18n: 'Tax ID Number'"/>
+                                <div class="control">
+                                    <input type="text" name="tax_id_number" data-validate='{"maxlength":255}' value="" title="Tax ID Number" class="input-text tax_id_number" id="tax_id_number">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <input type="radio" id="donation-invoice" name="ecpay_einvoice_type" value="donation-invoice" data-bind="checked: invoiceChecked">
+                        <label for="donation-invoice" class="label" data-bind="i18n: 'Donation Invoice'"/>
+                        <div class="fieldset"  id="donation-invoice-contents" data-bind="visible: invoiceChecked() === 'donation-invoice'">
+                            <p data-bind="html: $t('Invoice will be donated uniformly to <b>the Cancer Hope FoundationSome html</b>')"/>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <input type="radio" id="cellphone-barcode-invoice" name="ecpay_einvoice_type" value="cellphone-barcode-invoice" data-bind="checked: invoiceChecked">
+                        <label for="cellphone-barcode-invoice" class="label" data-bind="i18n: 'Cellphone Barcode Invoice'"/>
+                        <div class="fieldset" id="cellphone-barcode-invoice-contents" data-bind="visible: invoiceChecked() === 'cellphone-barcode-invoice'">
+                            <div class="field">
+                                <label for="cellphone_barcode" class="label" data-bind="i18n: 'Cellphone Barcode'"/>
+                                <div class="control">
+                                    <input type="text" data-bind="attr: {placeholder: $t('Cellphone Barcode')}" name="cellphone_barcode" data-validate='{"maxlength":255}' value="" title="Cellphone Barcode" class="input-text cellphone-barcode" id="cellphone_barcode">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <div class="actions-toolbar" data-bind="if: isPaymentAvailable()">
+            <div class="primary">
+                <button class="button action primary checkout"
+                        type="submit"
+                        data-role="review-save"
+                        data-bind="
+                        click: checkoutToEcpay,
+                        attr: {title: $t('Place Order')}
+                        ">
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
