@@ -125,3 +125,5 @@
 "We'll email you an order confirmation with details and tracking info.","再次感謝您對雪花秀的支持!系統將寄發一份購買成功通知郵件至您註冊的電子信箱中加入LINE 官方帳號，掌握更多關於我們的訊息"
 "You submitted Return #%1.","退貨訂單#%1 已成立"
 "Please specify a regionId in shipping address.","請勾選收件人資訊"
+"Dear %customer Your order #%order is completed By %store_name %store_phone","【%store_name】%customer您好，已收到您的訂單，目前等待出貨中，訂單編號為%order，若有問題可撥打%store_phone"
+"Create a card with a credit card","信用卡刷卡"
