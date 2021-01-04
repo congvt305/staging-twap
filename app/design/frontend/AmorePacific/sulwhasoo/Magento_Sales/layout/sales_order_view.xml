@@ -46,7 +46,7 @@
         <move element="order.comments" destination="content" after="sales.order.view"/>
         <referenceBlock name="page.main.title">
             <action method="setPageTitle">
-                <argument translate="true" name="label" xsi:type="string">My Orders View</argument>
+                <argument translate="true" name="label" xsi:type="string">My Orders</argument>
             </action>
         </referenceBlock>
         <referenceBlock name="order_totals">
