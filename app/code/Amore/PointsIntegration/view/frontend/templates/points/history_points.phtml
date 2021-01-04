@@ -19,26 +19,23 @@ $customerPointsResult = $block->getCustomerPointsResults();
                 <div class="customer-point-data available-points">
                     <?= /* @noEscape */__('Name of Point <span>%1</span> points',$customerPointsResult['availablePoint']) ?>
                 </div>
-                <div class="customer-point-data expire-points">
-                    <?= /* @noEscape */__('Going to be Expired Point <span>%1</span> points',$customerPointsResult['expirePoint']) ?>
-                </div>
             </div>
             <table class="data table table-point history" id="point-history-table">
                 <thead>
                 <tr>
-                    <th scope="col" class="col points-history-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
-                    <th scope="col" class="col points-history-available-points"><?= $block->escapeHtml(__('Points')) ?></th>
-                    <th scope="col" class="col points-history-valid-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
                     <th scope="col" class="col points-history-reason"><?= $block->escapeHtml(__('Points Reason')) ?></th>
+                    <th scope="col" class="col points-history-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
+                    <th scope="col" class="col points-history-available-points"><?= $block->escapeHtml(__('Customer Points')) ?></th>
+                    <th scope="col" class="col points-history-valid-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
                 </tr>
                 </thead>
                 <tbody class="points-history-list">
                 <?php foreach ($pointsHistoryResults as $pointsHistory) :?>
                     <tr>
+                        <td data-th="<?=$block->escapeHtmlAttr(__('Points Reason')) ?>" class="col points-history-reason"><?=$pointsHistory['reason'] ?></td>
                         <td data-th="<?=$block->escapeHtmlAttr(__('Name of Point')) ?>" class="col points-history-name"><?=$pointsHistory['typeNM'] ?></td>
                         <td data-th="<?=$block->escapeHtmlAttr(__('Points')) ?>" class="col points-history-available-points"><?=$pointsHistory['point'] ?></td>
                         <td data-th="<?=$block->escapeHtmlAttr(__('Points Valid Period')) ?>" class="col points-history-valid-date"><?=$pointsHistory['validPeriod'] ?></td>
-                        <td data-th="<?=$block->escapeHtmlAttr(__('Points Reason')) ?>" class="col points-history-reason"><?=$pointsHistory['reason'] ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
