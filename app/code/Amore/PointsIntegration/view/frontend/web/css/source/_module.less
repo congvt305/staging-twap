@@ -89,11 +89,12 @@
             text-align: center;
 
             a {
-                border-bottom: 1px solid @color-white !important;
+                border-bottom: 1px solid @border-color__base !important;
             }
 
             &._active {
                 a {
+                    background-color: @color-white;
                     font-weight: @font-weight__bold;
                 }
             }
@@ -134,7 +135,7 @@
     .points-integration {
         .lib-data-accordion(
             @_accordion-control-font-size: @font-size__base,
-            @_accordion-content-background-color: @sidebar__background-color,
+            @_accordion-content-background-color: @color-white,
             @_accordion-control-background-color-hover: @sidebar__background-color,
             @_accordion-control-background-color-active: @sidebar__background-color,
             @_accordion-content-border: 1px solid @border-color__base,
