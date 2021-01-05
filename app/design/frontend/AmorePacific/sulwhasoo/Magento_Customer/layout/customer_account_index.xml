@@ -9,7 +9,7 @@
     <body>
         <referenceBlock name="page.main.title">
             <action method="setPageTitle">
-                <argument translate="true" name="title" xsi:type="string">My Dashboard</argument>
+                <argument translate="true" name="title" xsi:type="string">Membership Center</argument>
             </action>
         </referenceBlock>
         <referenceBlock name="breadcrumbs">
