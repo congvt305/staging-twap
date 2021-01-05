@@ -1,0 +1,75 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: umer
+ * Date: 30/12/20
+ * Time: 1:23 PM
+ */
+?>
+<?php
+/**
+ * @var $block \Magento\Rma\Block\Adminhtml\Rma\NewRma\Tab\General\Details
+ */
+
+$customerLink = $block->getCustomerLink();
+?>
+<div class="admin__page-section-item">
+    <div class="admin__page-section-item-title">
+        <span class="title"><?= $block->escapeHtml(__('Request Details')) ?></span>
+    </div>
+    <div class="admin__page-section-item-content">
+        <table class="admin__table-secondary">
+            <tr>
+                <th><?= $block->escapeHtml(__('Order ID')) ?></th>
+                <td><a href="<?= $block->escapeUrl($block->getOrderLink()) ?>"><?= $block->escapeHtml(__('#') . $block->getOrderIncrementId()) ?></a></td>
+            </tr>
+            <tr>
+                <th><?= $block->escapeHtml(__('Customer Name')) ?></th>
+                <td>
+                    <?php if ($customerLink) : ?>
+                        <a href="<?= $block->escapeUrl($customerLink) ?>">
+                    <?php endif; ?>
+                    <?= $block->escapeHtml($block->getCustomerName()) ?>
+                    <?php if ($customerLink) : ?>
+                        </a>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <th><?= $block->escapeHtml(__('Email Address')) ?></th>
+                <td>
+                    <a href="mailto:<?= $block->escapeUrl($block->getCustomerEmail()) ?>">
+                        <?= $block->escapeHtml($block->getCustomerEmail()) ?>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <th><?= $block->escapeHtml(__('Contact Email Address')) ?></th>
+                <td>
+                    <input type="text"
+                           class="input-text admin__control-text validate-email"
+                           name="contact_email"
+                           id="contact_email"/>
+                </td>
+            </tr>
+            <tr>
+                <th><?= $block->escapeHtml(__('Shipping Preference')) ?></th>
+                <td>
+                    <select id="shipping_preference"
+                            name="shipping_preference"
+                            class="admin__control-select">
+                        <option value=""><?= $block->escapeHtml(__('Please Select')) ?></option>
+                        <option value="<?= $block->escapeHtmlAttr('UNIMART') ?>">
+                            <?= $block->escapeHtml("7-Eleven") ?>
+                        </option>
+                        <option value="<?= $block->escapeHtmlAttr('FAMI') ?>">
+                            <?= $block->escapeHtml("Family Mart") ?>
+                        </option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
