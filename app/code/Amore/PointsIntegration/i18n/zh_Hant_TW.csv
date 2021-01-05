@@ -1,7 +1,7 @@
 "Order Sent to Pos Successfully.","Order Sent to Pos Successfully."
 "Pos Return Error. Please Check the Data.","Pos Return Error. Please Check the Data."
 "We can't save the cron expression.","We can't save the cron expression."
-"Name of Point","點數內容"
+"Name of Point","點數累積與使用"
 availablePoint,availablePoint
 "Going to be Expired Point","Going to be Expired Point"
 expirePoint,expirePoint
@@ -9,7 +9,7 @@ Name of Point <span>%1</span> points,可使用點數 <span>%1</span>點
 Going to be Expired Point <span>%1</span> points,即將到期點數<span>%1</span>點
 %1 Points,%1點
 "Points Valid Period","點數到期日"
-"Points Reason","分數理由"
+"Points Reason","點數名稱"
 "Points History Does not Exist.","查無相關資訊"
 "History of Point Reward","點數歷程"
 "Integration Points","會籍資訊"
