@@ -256,7 +256,7 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
                             placeholder="<?= $block->escapeHtml(__('Counter service staff code')) ?>"
                             value="<?= $block->escapeHtmlAttr($block->getFormData()->getBaCode()) ?>"/>
                         <a disabled class="action primary bacode-link">
-                            <span><?= $block->escapeHtml(__('Verify')) ?></span>
+                            <span><?= $block->escapeHtml(__('bacode Verify')) ?></span>
                         </a>
                         <img
                             src="<?= $block->escapeUrl($block->getViewFileUrl($viewModel->getVerifiedIconUrl())) ?>"
