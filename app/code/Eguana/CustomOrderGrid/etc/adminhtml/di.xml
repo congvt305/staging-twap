@@ -14,4 +14,5 @@
         <plugin name="order_info_remove_store_name" type="Eguana\CustomOrderGrid\Plugin\Block\Adminhtml\Order\View\Info" />
     </type>
     <preference for="Magento\Sales\Model\ResourceModel\Order\Grid\Collection" type="Eguana\CustomOrderGrid\Model\ResourceModel\Grid\Collection" />
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Creditmemo\Create\Items" type="Eguana\CustomOrderGrid\Block\Adminhtml\Order\Creditmemo\Create\Items" />
 </config>
