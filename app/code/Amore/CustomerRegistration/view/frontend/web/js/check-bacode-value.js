@@ -12,12 +12,16 @@ define([
 ], function($) {
     $('.form-create-account').on('keyup', '#ba_code', function (event) {
         if (this.value) {
-            $('.bacode-link').attr('disabled', false);
-            $('#customerSubmit').attr('disabled', true);
+            if ($('#verified_ba_code').val() == this.value) {
+                $('.bacode-link').attr('disabled', true).hide();
+                $('.ba-code-verified').show();
+            } else {
+                $('.ba-code-verified').hide();
+                $('.bacode-link').attr('disabled', false).show();
+            }
         } else {
-            $('.ba-code-message').hide();
-            $('.bacode-link').attr('disabled', true);
-            $('#customerSubmit').attr('disabled', false);
+            $('.ba-code-message, .ba-code-verified').hide();
+            $('.bacode-link').attr('disabled', true).show();
         }
     });
 });

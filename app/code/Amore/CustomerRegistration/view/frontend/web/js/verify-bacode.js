@@ -32,23 +32,28 @@ define([
                     success: function (response) {
                         $('body').loader('hide');
                         if (response.verify) {
+                            $('#verified_ba_code').val(baCode);
+                            $('.bacode-link').attr('disabled', true).hide();
+                            $('.ba-code-verified').show();
                             $('.ba-code-message').text(response.message)
                                 .removeClass('ba-code-warning').show();
-                            $('#customerSubmit').attr('disabled', false);
                         } else if (response.message) {
+                            $('.ba-code-verified').hide();
+                            $('.bacode-link').attr('disabled', false).show();
                             $('.ba-code-message').text(response.message).addClass('ba-code-warning').show();
-                            $('#customerSubmit').attr('disabled', true);
                         } else {
-                            $('.ba-code-message').text($.mage.__('Unable to fetch ba code record at this time'))
+                            $('.ba-code-verified').hide();
+                            $('.bacode-link').attr('disabled', false).show();
+                            $('.ba-code-message').text($.mage.__('Unable to fetch information at this time'))
                                 .addClass('ba-code-warning').show();
-                            $('#customerSubmit').attr('disabled', true);
                         }
                     },
                     error: function (response) {
                         $('body').loader('hide');
-                        $('.ba-code-message').text($.mage.__('Unable to fetch ba code record at this time'))
+                        $('.ba-code-verified').hide();
+                        $('.bacode-link').attr('disabled', false).show();
+                        $('.ba-code-message').text($.mage.__('Unable to fetch information at this time'))
                             .addClass('ba-code-warning').show();
-                        $('#customerSubmit').attr('disabled', true);
                     }
                 });
             }
