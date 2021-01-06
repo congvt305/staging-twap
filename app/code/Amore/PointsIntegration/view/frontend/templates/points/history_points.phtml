@@ -34,7 +34,7 @@ $customerPointsResult = $block->getCustomerPointsResults();
                     <tr>
                         <td data-th="<?=$block->escapeHtmlAttr(__('Points Reason')) ?>" class="col points-history-reason"><?=$pointsHistory['reason'] ?></td>
                         <td data-th="<?=$block->escapeHtmlAttr(__('Name of Point')) ?>" class="col points-history-name"><?=$pointsHistory['typeNM'] ?></td>
-                        <td data-th="<?=$block->escapeHtmlAttr(__('Points')) ?>" class="col points-history-available-points"><?=$pointsHistory['point'] ?></td>
+                        <td data-th="<?=$block->escapeHtmlAttr(__('Customer Points')) ?>" class="col points-history-available-points"><?=$pointsHistory['point'] ?></td>
                         <td data-th="<?=$block->escapeHtmlAttr(__('Points Valid Period')) ?>" class="col points-history-valid-date"><?=$pointsHistory['validPeriod'] ?></td>
                     </tr>
                 <?php endforeach; ?>
