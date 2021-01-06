@@ -398,12 +398,14 @@ class POSSystem
         $result['verify'] = false;
         $response = [];
         $url = $this->config->getBaCodeInfoURL();
+        $salOrgCd = ($this->config->getOrganizationSalesCode()) ? $this->config->getOrganizationSalesCode() : '';
+        $salOffCd = ($this->config->getOfficeSalesCode()) ? $this->config->getOfficeSalesCode() : '';
         $callSuccess = 1;
         try {
             $parameters = [
                 'empID' => trim($baCode),
-                'salOrgCd' => $this->config->getOrganizationSalesCode(),
-                'salOffCd' => $this->config->getOfficeSalesCode()
+                'salOrgCd' => $salOrgCd,
+                'salOffCd' => $salOffCd
             ];
 
             $jsonEncodedData = json_encode($parameters);
@@ -440,12 +442,12 @@ class POSSystem
             if (isset($response['message']) == 'SUCCESS' && isset($response['data']['exitYN'])
                 && $response['data']['exitYN'] == 'Y') {
                 $result['verify']   = true;
-                $result['message']  = __('BA Code verified');
+                $result['message']  = __('The code is confirmed as valid information');
             } elseif (isset($response['message']) == 'SUCCESS' && isset($response['data']['exitYN'])
                 && $response['data']['exitYN'] == 'N') {
-                $result['message'] = __('No information exist in POS');
+                $result['message'] = __('No such information, please re-enter');
             } else {
-                $result['message'] = __('Unable to fetch ba code record at this time');
+                $result['message'] = __('Unable to fetch information at this time');
             }
 
             $this->logger->addAPICallLog(

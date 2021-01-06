@@ -58,7 +58,7 @@ class VerifyBACode extends Action
     {
         $result = [
             'verify' => false,
-            'message' => __('Unable to fetch ba code record at this time')
+            'message' => __('Unable to fetch information at this time')
         ];
         $baCode = $this->getRequest()->getParam('baCode');
 

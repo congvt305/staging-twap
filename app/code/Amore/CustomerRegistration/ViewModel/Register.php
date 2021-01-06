@@ -22,6 +22,7 @@ use Magento\Framework\UrlInterface;
 class Register implements ArgumentInterface
 {
     const LINE = 'line';
+    const VERIFIED_ICON = 'Amore_CustomerRegistration::images/check.svg';
 
     /**
      * Http
@@ -189,5 +190,15 @@ class Register implements ArgumentInterface
             'customerregistration/verification/verifybacode',
             ['_secure' => true]
         );
+    }
+
+    /**
+     * Get Url of verified icon
+     *
+     * @return string
+     */
+    public function getVerifiedIconUrl()
+    {
+        return self::VERIFIED_ICON;
     }
 }
