@@ -37,6 +37,10 @@ class Config
 
     const LOGGER_ACTIVE_CHECK = 'points_integration/general/logging';
 
+    const SEND_ORDER_TO_POS_CRON_ACTIVE = 'points_integration/configurable_cron/active';
+
+    const AVAILABLE_DAYS_AFTER_ORDER_COMPLETE = 'points_integration/configurable_cron/available_send_days';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -165,5 +169,15 @@ class Config
         );
 
         return $baseURL.$customerOrderURL;
+    }
+
+    public function getCronActive($websiteId)
+    {
+        return $this->getValue(self::SEND_ORDER_TO_POS_CRON_ACTIVE, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+    }
+
+    public function getDaysForCompletedOrder($websiteId)
+    {
+        return $this->getValue(self::AVAILABLE_DAYS_AFTER_ORDER_COMPLETE, ScopeInterface::SCOPE_WEBSITE, $websiteId);
     }
 }
