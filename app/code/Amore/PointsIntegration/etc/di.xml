@@ -20,13 +20,6 @@
             </argument>
         </arguments>
     </type>
-<!--    <type name="Magento\Rma\Model\Rma">-->
-<!--        <plugin sortOrder="1" name="amorePointsIntegrationRma" type="Amore\PointsIntegration\Plugin\Model\RmaPlugin"/>-->
-<!--    </type>-->
-<!--    <type name="Eguana\GWLogistics\Model\Service\OrderStatusNotificationHandler">-->
-<!--        <plugin sortOrder="1" name="amorePointsIntegrationOrderStatusNotificationHandler"-->
-<!--                type="Amore\PointsIntegration\Plugin\Model\Service\OrderStatusNotificationHandlerPlugin"/>-->
-<!--    </type>-->
     <type name="Magento\Rma\Model\RmaRepository">
         <plugin sortOrder="1" name="amorePointsIntegrationRmaRepository"
                 type="Amore\PointsIntegration\Plugin\Model\RmaRepositoryPlugin"/>

@@ -39,8 +39,8 @@ class PosOrderSendCheck implements OptionSourceInterface
     public function getOrderSendToPosStatusList()
     {
         return [
-          self::NOT_SENT_TO_POS => __("not sent"),
-          self::SENT_TO_POS => __("sent")
+          self::NOT_SENT_TO_POS => __("Not Yet Sent or Failed"),
+          self::SENT_TO_POS => __("Success")
         ];
     }
 }
