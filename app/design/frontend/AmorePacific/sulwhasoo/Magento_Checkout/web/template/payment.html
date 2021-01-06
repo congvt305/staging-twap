@@ -1,7 +1,7 @@
 <!--
 /**
- * @author Eguana Commerce USER
- * @copyright Copyright (c) 2020 Eguana Commerce
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
  */
 -->
 <li id="payment" role="presentation" class="checkout-payment-method" data-bind="fadeVisible: isVisible">
@@ -11,9 +11,9 @@
          role="tabpanel"
          aria-hidden="false">
         <!-- ko if: (quoteIsVirtual) -->
-        <!-- ko foreach: getRegion('customer-email') -->
-        <!-- ko template: getTemplate() --><!-- /ko -->
-        <!--/ko-->
+            <!-- ko foreach: getRegion('customer-email') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
         <!--/ko-->
         <form id="co-payment-form" class="form payments" novalidate="novalidate">
             <input data-bind='attr: {value: getFormKey()}' type="hidden" name="form_key"/>
@@ -22,21 +22,21 @@
                     <span data-bind="i18n: 'Payment Information'"></span>
                 </legend><br />
                 <!-- ko foreach: getRegion('beforeMethods') -->
-                <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
                 <!-- /ko -->
                 <div id="checkout-payment-method-load" class="opc-payment" data-bind="visible: isPaymentMethodsAvailable">
                     <!-- ko foreach: getRegion('payment-methods-list') -->
-                    <!-- ko template: getTemplate() --><!-- /ko -->
+                        <!-- ko template: getTemplate() --><!-- /ko -->
                     <!-- /ko -->
                 </div>
                 <div class="no-quotes-block" data-bind="visible: isPaymentMethodsAvailable() == false">
                     <!-- ko i18n: 'No Payment method available.'--><!-- /ko -->
                 </div>
                 <!-- ko foreach: getRegion('afterMethods') -->
-                <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
                 <!-- /ko -->
             </fieldset>
         </form>
-        <div class="checkout-message" data-bind="html: window.checkoutConfig.cms_block"></div>
+        <div data-bind="html: window.checkoutConfig.cms_block"></div>
     </div>
 </li>

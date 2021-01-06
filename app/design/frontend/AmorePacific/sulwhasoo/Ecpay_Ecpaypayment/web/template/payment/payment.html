@@ -19,7 +19,7 @@
             <!--/ko-->
         </div>
         <div data-bind="if: isPaymentAvailable()">
-            <form id="ecpay_payment_form">
+            <form id="ecpay_payment_form" class="ecpay-payment-form">
                 <fieldset class="fieldset payment method" id="payment_form_<?php echo $this->getMethodCode() ?>">
                     <div class="field required">
                         <label class="label" data-bind="i18n: 'Payment Methods'"></label>
