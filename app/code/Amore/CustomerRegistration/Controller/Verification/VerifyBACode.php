@@ -61,10 +61,18 @@ class VerifyBACode extends Action
             'message' => __('Unable to fetch information at this time')
         ];
         $baCode = $this->getRequest()->getParam('baCode');
+        $websiteId = $this->getRequest()->getParam('websiteId');
+        $saleOrgCode = $this->getRequest()->getParam('saleOrgCode');
+        $saleOffCode = $this->getRequest()->getParam('saleOffCode');
 
         if (isset($baCode) && $baCode) {
             try {
-                $verificationResult = $this->posSystem->callBACodeInfoApi($baCode);
+                $verificationResult = $this->posSystem->callBACodeInfoApi(
+                    $baCode,
+                    $websiteId,
+                    $saleOrgCode,
+                    $saleOffCode
+                );
                 if (isset($verificationResult['verify'])) {
                     $result['verify'] = $verificationResult['verify'] ? true : false;
                     if (isset($verificationResult['message']) && $verificationResult['message']) {
