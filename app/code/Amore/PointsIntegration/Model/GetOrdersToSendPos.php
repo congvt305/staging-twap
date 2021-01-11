@@ -45,12 +45,25 @@ class GetOrdersToSendPos
 
     public function getOrders($storeId)
     {
-        $searchCriteriaBuilder = $this->searchCriteriaBuilder
-            ->addFilter('status', 'complete', 'eq')
-            ->addFilter('state', 'complete', 'eq')
-            ->addFilter('pos_order_send_check', 0, 'eq')
-            ->addFilter('store_id', $storeId)
-            ->create();
+        $testActive = $this->config->getCronTestActive($storeId);
+        $testOrder = $this->config->getCronTestOrder($storeId);
+
+        if ($testActive && $testOrder) {
+            $searchCriteriaBuilder = $this->searchCriteriaBuilder
+                ->addFilter('increment_id', $testOrder, 'gteq')
+                ->addFilter('status', 'complete', 'eq')
+                ->addFilter('state', 'complete', 'eq')
+                ->addFilter('pos_order_send_check', 0, 'eq')
+                ->addFilter('store_id', $storeId)
+                ->create();
+        } else {
+            $searchCriteriaBuilder = $this->searchCriteriaBuilder
+                ->addFilter('status', 'complete', 'eq')
+                ->addFilter('state', 'complete', 'eq')
+                ->addFilter('pos_order_send_check', 0, 'eq')
+                ->addFilter('store_id', $storeId)
+                ->create();
+        }
 
         return $this->orderRepository->getList($searchCriteriaBuilder)->getItems();
     }
