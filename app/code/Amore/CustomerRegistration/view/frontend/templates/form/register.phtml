@@ -65,7 +65,7 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
                             <?php $_streetValidationClass = trim(str_replace('required-entry', '', $_streetValidationClass)); ?>
                             <?php //phpcs:disable ?>
                             <?php for ($_i = 2, $_n = $this->helper(\Magento\Customer\Helper\Address::class)->getStreetLines(); $_i <= $_n; $_i++) : ?>
-                                <?php //phpcs:enable ?>
+                            <?php //phpcs:enable ?>
                                 <div class="field additional">
                                     <label class="label" for="street_<?= /* @noEscape */ $_i ?>">
                                         <span><?= $block->escapeHtml(__('Address')) ?></span>
@@ -233,9 +233,9 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
                     <div class="control">
                         <?php //phpcs:disable ?>
                         <?php if ($autofilledFlag): ?>
-                            <input type="text" readonly placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
+                        <input type="text" readonly placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
                         <?php else: ?>
-                            <input type="text" placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
+                        <input type="text" placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
                         <?php endif; ?>
                         <?php //phpcs:enable ?>
                     </div>
@@ -312,45 +312,45 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
     </form>
 </div>
 <script>
-    require([
-        'jquery',
-        'mage/mage'
-    ], function($){
+require([
+    'jquery',
+    'mage/mage'
+], function($){
 
-        var dataForm = $('#form-validate');
-        var ignore = <?= /* @noEscape */ $_dob->isEnabled() ? '\'input[id$="full"]\'' : 'null' ?>;
+    var dataForm = $('#form-validate');
+    var ignore = <?= /* @noEscape */ $_dob->isEnabled() ? '\'input[id$="full"]\'' : 'null' ?>;
 
-        dataForm.mage('validation', {
-            <?php if ($_dob->isEnabled()) : ?>
-            errorPlacement: function(error, element) {
-                if (element.prop('id').search('full') !== -1) {
-                    var dobElement = $(element).parents('.customer-dob'),
-                        errorClass = error.prop('class');
-                    error.insertAfter(element.parent());
-                    dobElement.find('.validate-custom').addClass(errorClass)
-                        .after('<div class="' + errorClass + '"></div>');
-                }
-                else {
-                    error.insertAfter(element);
-                }
-            },
-            ignore: ':hidden:not(' + ignore + ')'
-            <?php else : ?>
-            ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
-            <?php endif ?>
-        }).find('input:text').attr('autocomplete', 'off');
-
-        dataForm.on("submit", function(){
-            console.log('start');
-            if (dataForm.validation() && dataForm.validation('isValid')) {
-                console.log('yyy!');
-                window.dataLayer.push({'event': 'join'})
+    dataForm.mage('validation', {
+        <?php if ($_dob->isEnabled()) : ?>
+        errorPlacement: function(error, element) {
+            if (element.prop('id').search('full') !== -1) {
+                var dobElement = $(element).parents('.customer-dob'),
+                    errorClass = error.prop('class');
+                error.insertAfter(element.parent());
+                dobElement.find('.validate-custom').addClass(errorClass)
+                    .after('<div class="' + errorClass + '"></div>');
             }
+            else {
+                error.insertAfter(element);
+            }
+        },
+        ignore: ':hidden:not(' + ignore + ')'
+        <?php else : ?>
+        ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
+        <?php endif ?>
+    }).find('input:text').attr('autocomplete', 'off');
 
-            return true;
-        })
+    dataForm.on("submit", function(){
+        console.log('start');
+        if (dataForm.validation() && dataForm.validation('isValid')) {
+            console.log('yyy!');
+            window.dataLayer.push({'event': 'join'})
+        }
 
-    });
+        return true;
+    })
+
+});
 </script>
 
 <script type="text/x-magento-init">
