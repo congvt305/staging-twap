@@ -68,6 +68,11 @@ class Request
             $this->logger->debug($requestData);
         }
 
+        if ($this->config->getLoggerActiveCheck($websiteId)) {
+            $this->logger->info("========== REQUEST ==========");
+            $this->logger->info($this->json->serialize($requestData));
+        }
+
         if (!empty($url) && $active) {
             try {
                 $this->curl->addHeader('Content-Type', 'application/json');
@@ -82,14 +87,12 @@ class Request
                 $response = $this->curl->getBody();
 
                 if ($this->config->getLoggerActiveCheck($websiteId)) {
-                    $this->logger->info("========== REQUEST ==========");
-                    $this->logger->info($this->json->serialize($requestData));
                     $this->logger->info("========== RESPONSE ==========");
-                    $this->logger->info($response);
+                    $this->logger->info($this->json->serialize($response));
                 }
 
                 return $this->json->unserialize($response);
-            } catch (PosPointsException $exception) {
+            } catch (\Exception $exception) {
                 $this->logger->error($exception->getMessage());
                 return [];
             }

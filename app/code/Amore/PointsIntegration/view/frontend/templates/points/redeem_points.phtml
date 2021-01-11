@@ -10,12 +10,12 @@ $pointSearchResult = $block->getPointsRedeemSearchResult();
 $membershipProgramCmsBlock = $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('point_policy_block')->toHtml();
 ?>
 <div class="item title" data-role="collapsible">
-    <a class="switch" data-toggle="trigger" href="#tab-2"><?= $block->escapeHtml(__('History of Redemption'))?></a>
+    <a class="switch" data-toggle="trigger" href="#history-of-redemption-tab"><?= $block->escapeHtml(__('History of Redemption'))?></a>
 </div>
-<div id="tab-2" class="item content" data-role="content">
+<div id="history-of-redemption-tab" class="item content" data-role="content">
     <?php if (count($pointSearchResult) > 0) : ?>
         <div class="table-wrapper point-redeem">
-            <table class="data, table, table-point history" id="point-redeem-table">
+            <table class="data table table-point history" id="point-redeem-table">
                 <thead>
                 <tr>
                     <th scope="col" class="col product-name"><?= $block->escapeHtml(__('Product Name')) ?></th>
@@ -38,23 +38,35 @@ $membershipProgramCmsBlock = $block->getLayout()->createBlock('Magento\Cms\Block
                 </tbody>
             </table>
         </div>
-        <div class="pages" id="redeem-points-pager">
-            <ul class="items pages-items pagination">
-                <?php if ($pointSearchResult[0]['totPage'] > 1): ?>
-                    <?php for ($i = 1; $i <= $pointSearchResult[0]['totPage']; $i++) : ?>
-                        <li class="item redeem-pager active" data-page="<?=$i; ?>"><?=$i; ?></li>
-                    <?php endfor; ?>
-                <?php endif; ?>
-                <?php if ($pointSearchResult[0]['totPage'] == 1): ?>
-                    <li class="item redeem-pager" data-page="<?$pointSearchResult[0]['totPage']; ?>">
-                        <?=$pointSearchResult[0]['totPage']?>
-                    </li>
-                <?php endif; ?>
-            </ul>
+        <div class="toolbar">
+            <div class="pages" id="redeem-points-pager">
+                <ul class="items pages-items pagination">
+                    <?php if ($pointSearchResult[0]['totPage'] > 1): ?>
+                        <?php if ($pointSearchResult[0]['prev']): ?>
+                            <li class="item pages-item-previous points-integration-redeem-pager active" data-page="<?=$pointSearchResult[0]['prevPage']; ?>"><a class="action previous"><span><?=$block->escapeHtml(__('previous')); ?></span></a></li>
+                        <?php endif; ?>
+                        <?php for ($i = $pointSearchResult[0]['startPage']; $i <= $pointSearchResult[0]['endPage']; $i++) : ?>
+                            <?php if ($i == $pointSearchResult[0]['page']): ?>
+                                <li class="item points-integration-redeem-pager active" data-page="<?=$i; ?>"><strong class="page"><?=$i; ?></strong></li>
+                            <?php else: ?>
+                                <li class="item points-integration-redeem-pager active" data-page="<?=$i; ?>"><a class="page"><?=$i; ?></a></li>
+                            <?php endif; ?>
+                        <?php endfor; ?>
+                        <?php if ($pointSearchResult[0]['next']): ?>
+                            <li class="item pages-item-next points-integration-redeem-pager active" data-page="<?=$pointSearchResult[0]['nextPage']; ?>"><a class="action next"><span><?=$block->escapeHtml(__('next')); ?></span></a></li>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    <?php if ($pointSearchResult[0]['totPage'] == 1): ?>
+                        <li class="item points-integration-redeem-pager" data-page="<?$pointSearchResult[0]['totPage']; ?>">
+                            <?=$pointSearchResult[0]['totPage']?>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </div>
         </div>
     <?php else : ?>
         <div class="table-wrapper point-redeem">
-            <table class="data, table, table-point history" id="point-redeem-table">
+            <table class="data table table-point history" id="point-redeem-table">
                 <thead>
                 <tr>
                     <th scope="col" class="col product-name"><?= $block->escapeHtml(__('Product Name')) ?></th>
@@ -66,7 +78,7 @@ $membershipProgramCmsBlock = $block->getLayout()->createBlock('Magento\Cms\Block
                 </thead>
                 <tbody class="redeem-points-list">
                     <tr>
-                        <td colspan="5">
+                        <td class="empty" colspan="5">
                             <span><?= $block->escapeHtml(__('Points Redemption History Does not Exist.')) ?></span>
                         </td>
                     </tr>

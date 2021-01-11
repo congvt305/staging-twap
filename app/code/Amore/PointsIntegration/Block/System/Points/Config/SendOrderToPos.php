@@ -9,10 +9,11 @@
 namespace Amore\PointsIntegration\Block\System\Points\Config;
 
 use Magento\Backend\Block\Widget\Button;
+use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Exception\LocalizedException;
 
-class SendOrderToPos
+class SendOrderToPos extends Field
 {
     protected $_template = 'Amore_PointsIntegration::system/points/config/order_to_pos.phtml';
     /**
@@ -79,7 +80,7 @@ class SendOrderToPos
      */
     public function getAjaxUrl()
     {
-        return $this->getUrl('Amore_PointsIntegration/backend_system_points_config/sendordertopos');
+        return $this->getUrl('pointsintegration/points/sendordertopos');
     }
 
     /**

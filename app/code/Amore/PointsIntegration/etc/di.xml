@@ -20,4 +20,8 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Rma\Model\RmaRepository">
+        <plugin sortOrder="1" name="amorePointsIntegrationRmaRepository"
+                type="Amore\PointsIntegration\Plugin\Model\RmaRepositoryPlugin"/>
+    </type>
 </config>

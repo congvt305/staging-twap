@@ -27,21 +27,35 @@ class HistoryAjax implements ArgumentInterface
      * @var PointsHistorySearch
      */
     private $pointsHistorySearch;
+    /**
+     * @var \Amore\PointsIntegration\Model\Pagination
+     */
+    private $pagination;
+    /**
+     * @var \Amore\PointsIntegration\Model\CustomerPointsSearch
+     */
+    private $customerPointsSearch;
 
     /**
      * HistoryAjax constructor.
      * @param RequestInterface $requestInterface
      * @param Session $customerSession
      * @param PointsHistorySearch $pointsHistorySearch
+     * @param \Amore\PointsIntegration\Model\Pagination $pagination
+     * @param \Amore\PointsIntegration\Model\CustomerPointsSearch $customerPointsSearch
      */
     public function __construct(
         RequestInterface $requestInterface,
         Session $customerSession,
-        PointsHistorySearch $pointsHistorySearch
+        PointsHistorySearch $pointsHistorySearch,
+        \Amore\PointsIntegration\Model\Pagination $pagination,
+        \Amore\PointsIntegration\Model\CustomerPointsSearch $customerPointsSearch
     ) {
         $this->requestInterface = $requestInterface;
         $this->customerSession = $customerSession;
         $this->pointsHistorySearch = $pointsHistorySearch;
+        $this->pagination = $pagination;
+        $this->customerPointsSearch = $customerPointsSearch;
     }
 
     public function getPageData()
@@ -50,55 +64,34 @@ class HistoryAjax implements ArgumentInterface
 
         $page = $this->requestInterface->getParam('page');
 
-        return $this->pointsHistorySearch->getPointsHistoryResult($customer->getId(), $customer->getWebsiteId(), $page);
+        $pointsHistoryResult = $this->pointsHistorySearch->getPointsHistoryResult($customer->getId(), $customer->getWebsiteId(), $page);
 
-//        return [
-//            [
-//                'totCnt' => 10,
-//                'totPage' => 1,
-//                'date' => '2020-11-11',
-//                'typeCD' => '적립/사용 type',
-//                'typeNM' => '적립/사용 type name',
-//                'point' => '111111111111',
-//                'validPeriod' => '2022-11-13',
-//                'reason' => "그냥 사용1",
-//            ],[
-//                'totCnt' => 10,
-//                'totPage' => 1,
-//                'date' => '2020-11-11',
-//                'typeCD' => '적립/사용 type',
-//                'typeNM' => '적립/사용 type name',
-//                'point' => '111111111111',
-//                'validPeriod' => '2022-11-13',
-//                'reason' => "그냥 사용2",
-//            ],[
-//                'totCnt' => 10,
-//                'totPage' => 1,
-//                'date' => '2020-11-11',
-//                'typeCD' => '적립/사용 type',
-//                'typeNM' => '적립/사용 type name',
-//                'point' => '111111111111',
-//                'validPeriod' => '2022-11-13',
-//                'reason' => "그냥 사용3",
-//            ],[
-//                'totCnt' => 10,
-//                'totPage' => 1,
-//                'date' => '2020-11-11',
-//                'typeCD' => '적립/사용 type',
-//                'typeNM' => '적립/사용 type name',
-//                'point' => '111111111111',
-//                'validPeriod' => '2022-11-13',
-//                'reason' => "그냥 사용4",
-//            ],[
-//                'totCnt' => 10,
-//                'totPage' => 1,
-//                'date' => '2020-11-11',
-//                'typeCD' => '적립/사용 type',
-//                'typeNM' => '적립/사용 type name',
-//                'point' => '111111111111',
-//                'validPeriod' => '2022-11-13',
-//                'reason' => "그냥 사용5",
-//            ]
-//        ];
+        if ($this->responseValidation($pointsHistoryResult)) {
+            $pointsData = $pointsHistoryResult['data']['point_data'];
+            return $this->pagination->ajaxPagination($pointsData);
+        } else {
+            return [];
+        }
+    }
+
+    public function getCustomerPointsResulst()
+    {
+        $customer = $this->customerSession->getCustomer();
+        $customerPointsResult = $this->customerPointsSearch->getMemberSearchResult($customer->getId(), $customer->getWebsiteId());
+
+        if ($this->responseValidation($customerPointsResult)) {
+            return $customerPointsResult['data'];
+        } else {
+            return [];
+        }
+    }
+
+    public function responseValidation($response)
+    {
+        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

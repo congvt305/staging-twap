@@ -27,13 +27,23 @@ class Config
 
     const POS_CUSTOMER_ORDER_URL = 'points_integration/pos/customer_order';
 
-    const POS_ORDER_ACTIVE_CHECK = 'points_integration/pos_order_cron/active';
+    const POS_ORDER_ACTIVE_CHECK = 'points_integration/general/pos_order_active';
+
+    const POS_RMA_ACTIVE_CHECK = 'points_integration/general/pos_rma_active';
 
     const SSL_VERIFICATION_CHECK = 'points_integration/general/ssl_verification';
 
     const POINTS_INTEGRATION_ACTIVE_CHECK = 'points_integration/general/active';
 
     const LOGGER_ACTIVE_CHECK = 'points_integration/general/logging';
+
+    const SEND_ORDER_TO_POS_CRON_ACTIVE = 'points_integration/configurable_cron/active';
+
+    const AVAILABLE_DAYS_AFTER_ORDER_COMPLETE = 'points_integration/configurable_cron/available_send_days';
+
+    const CRON_TEST_ACTIVE_CHECK = 'points_integration/configurable_cron/test_active';
+
+    const CRON_TEST_ORDER_INCREMENT_ID = 'points_integration/configurable_cron/test_order_no';
 
     /**
      * @var ScopeConfigInterface
@@ -58,6 +68,16 @@ class Config
     public function getActive($websiteId)
     {
         return $this->getValue(self::POINTS_INTEGRATION_ACTIVE_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+    }
+
+    public function getPosOrderActive($websiteId)
+    {
+        return $this->getValue(self::POS_ORDER_ACTIVE_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+    }
+
+    public function getPosRmaActive($websiteId)
+    {
+        return $this->getValue(self::POS_RMA_ACTIVE_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
     }
 
     public function getLoggerActiveCheck($websiteId)
@@ -153,5 +173,25 @@ class Config
         );
 
         return $baseURL.$customerOrderURL;
+    }
+
+    public function getCronActive($websiteId)
+    {
+        return $this->getValue(self::SEND_ORDER_TO_POS_CRON_ACTIVE, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+    }
+
+    public function getDaysForCompletedOrder($websiteId)
+    {
+        return $this->getValue(self::AVAILABLE_DAYS_AFTER_ORDER_COMPLETE, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+    }
+
+    public function getCronTestActive($websiteId)
+    {
+        return $this->getValue(self::CRON_TEST_ACTIVE_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+    }
+
+    public function getCronTestOrder($websiteId)
+    {
+        return $this->getValue(self::CRON_TEST_ORDER_INCREMENT_ID, ScopeInterface::SCOPE_WEBSITE, $websiteId);
     }
 }
