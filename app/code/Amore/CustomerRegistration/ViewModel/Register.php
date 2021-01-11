@@ -12,6 +12,8 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\Session\SessionManagerInterface as Session;
 use Amore\CustomerRegistration\Helper\Data;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\UrlInterface;
 
 /**
  * It will use for the register step during registration
@@ -20,6 +22,7 @@ use Amore\CustomerRegistration\Helper\Data;
 class Register implements ArgumentInterface
 {
     const LINE = 'line';
+    const VERIFIED_ICON = 'Amore_CustomerRegistration::images/check.svg';
 
     /**
      * Http
@@ -37,18 +40,35 @@ class Register implements ArgumentInterface
     private $configHelper;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
+     * @var UrlInterface
+     */
+    private $urlBuilder;
+
+    /**
      * Register constructor.
-     *
-     * @param Http $request request
+     * @param Data $configHelper
+     * @param Http $request
+     * @param Session $customerSession
+     * @param StoreManagerInterface $storeManager
+     * @param UrlInterface $urlBuilder
      */
     public function __construct(
         Data $configHelper,
         Http $request,
-        Session $customerSession
+        Session $customerSession,
+        StoreManagerInterface $storeManager,
+        UrlInterface $urlBuilder
     ) {
         $this->request = $request;
         $this->customerSession = $customerSession;
         $this->configHelper = $configHelper;
+        $this->storeManager = $storeManager;
+        $this->urlBuilder = $urlBuilder;
     }
 
     /**
@@ -144,5 +164,41 @@ class Register implements ArgumentInterface
     public function getNewsLetterPolicyCMSBlockId()
     {
         return $this->configHelper->getNewsLetterPolicyCMSBlockId();
+    }
+
+    /**
+     * To check BA Code feature value in configuration
+     *
+     * @return bool
+     */
+    public function checkBaCodeEnabled()
+    {
+        $currentWebsiteId = $this->storeManager->getStore()->getWebsiteId();
+        $currentWebsiteId = $currentWebsiteId ? $currentWebsiteId : null;
+        return $this->configHelper->getBaCodeEnable($currentWebsiteId);
+    }
+
+    /**
+     * Retrieve BA code action url and set "secure" param to avoid confirm
+     * message when we submit form from secure page to unsecure
+     *
+     * @return mixed
+     */
+    public function getBaCodeVerifyUrl()
+    {
+        return $this->urlBuilder->getUrl(
+            'customerregistration/verification/verifybacode',
+            ['_secure' => true]
+        );
+    }
+
+    /**
+     * Get Url of verified icon
+     *
+     * @return string
+     */
+    public function getVerifiedIconUrl()
+    {
+        return self::VERIFIED_ICON;
     }
 }

@@ -63,6 +63,9 @@ class Data extends AbstractHelper
         = 'customerregistraion/pos/debug';
     const XML_PATH_LIST_OF_CHARACTERS
         = 'customerregistraion/validation/list_of_character';
+    const EXTENSION_ENABLE = 'customerregistraion/general/active';
+    const BA_CODE_ENABLE = 'customerregistraion/general/ba_code_enable';
+    const POS_BA_CODE_INFO_URL = 'customerregistraion/pos/bacode_info';
 
     /**
      * Get cms block id set in setting
@@ -317,5 +320,70 @@ class Data extends AbstractHelper
             self::XML_PATH_LIST_OF_CHARACTERS,
             ScopeInterface::SCOPE_STORE
         );
+    }
+
+    /**
+     * Get customer registration Enable Extension value
+     *
+     * @param null $websiteId
+     * @return mixed
+     */
+    public function getRegistrationModuleEnable($websiteId = null)
+    {
+        if ($websiteId) {
+            return $this->scopeConfig->getValue(
+                self::EXTENSION_ENABLE,
+                ScopeInterface::SCOPE_WEBSITE,
+                $websiteId
+            );
+        }
+
+        return $this->scopeConfig->getValue(
+            self::EXTENSION_ENABLE,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
+     * Get BA Code Enable value
+     *
+     * @param null $websiteId
+     * @return mixed
+     */
+    public function getBaCodeEnable($websiteId = null)
+    {
+        $moduleEnable = $this->getRegistrationModuleEnable($websiteId);
+        if ($websiteId) {
+            if ($moduleEnable) {
+                return $this->scopeConfig->getValue(
+                    self::BA_CODE_ENABLE,
+                    ScopeInterface::SCOPE_WEBSITE,
+                    $websiteId
+                );
+            }
+        } else {
+            if ($moduleEnable) {
+                return $this->scopeConfig->getValue(
+                    self::BA_CODE_ENABLE,
+                    ScopeInterface::SCOPE_WEBSITE
+                );
+            }
+        }
+        return false;
+    }
+
+    /**
+     * It will return the full url of POS API to get the ba code information
+     *
+     * @return string
+     */
+    public function getBaCodeInfoURL()
+    {
+        $baseURL = $this->getPOSBaseURL();
+        $memberInfoURL = $this->scopeConfig->getValue(
+            self::POS_BA_CODE_INFO_URL,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+        return $baseURL.$memberInfoURL;
     }
 }

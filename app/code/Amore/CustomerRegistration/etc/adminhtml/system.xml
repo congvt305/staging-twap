@@ -88,6 +88,14 @@
                     <comment>If disabled then verification code will be 1234 at registration</comment>
                 </field>
 
+                <field id="ba_code_enable" translate="label comment" type="select" sortOrder="130" showInDefault="1" showInWebsite="1">
+                    <label>BA Code Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
             </group>
 
             <group id="pos" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
@@ -108,6 +116,11 @@
                 <field id="member_join" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1">
                     <label>Memeber Join URI</label>
                     <comment>Member join URI. Complete URL = BASE URL + Memeber Join URI</comment>
+                </field>
+
+                <field id="bacode_info" translate="label" type="text" sortOrder="51" showInDefault="1" showInWebsite="1">
+                    <label>BA Code Information URI</label>
+                    <comment>BA Code info URI. Complete URL = BASE URL + BA Code Information URI</comment>
                 </field>
 
                 <field id="sales_organization_code" translate="label" type="text" sortOrder="60" showInWebsite="1">
