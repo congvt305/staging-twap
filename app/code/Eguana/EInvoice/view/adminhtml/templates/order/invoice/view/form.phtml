@@ -80,6 +80,14 @@
             <span><?= $block->escapeHtml(__('E-Invoice Creation')) ?></span>
         </button>
     <?php endif;?>
+    <?php if ($block->canShowOrderToPosButton()) : ?>
+        <button class="action-send-order-to-pos"
+                type="button"
+                onClick="confirmSetLocation('Are you sure to send order to Pos?', '<?= $block->getSendOrderToPosURl(); ?>')"
+                id="send-order-to-pos">
+            <span><?= $block->escapeHtml(__('Send Order to Pos')) ?></span>
+        </button>
+    <?php endif;?>
 </section>
 
 <section class="admin__page-section">
