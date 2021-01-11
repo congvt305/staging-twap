@@ -74,7 +74,7 @@ Api,阿皮
 "A customer with the same integration/sequence number already exists in an associated website.","具有相同集成/序列號的客戶已存在於關聯的網站中。"
 "A customer with the same mobile number already exists in an associated website.","已經有其他會員使用相同的手機號碼"
 "To receive mail you should have default billing address<a class=""add-address-link"" href=""%1""><span>Add Address.</span></a>","要接受實體DM，請填寫<a class=""add-address-link"" href=""%1""><span>郵寄地址。</span></a>"
-"BA Code","BA代碼"
+"BA Code","櫃點服務人員代碼"
 "BA Code Enable","BA代碼啟用"
 "Log in","登入"
 "Verified","已驗證"
