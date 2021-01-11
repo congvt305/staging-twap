@@ -240,6 +240,36 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
                         <?php //phpcs:enable ?>
                     </div>
                 </div>
+
+                <?php if ($viewModel->checkBaCodeEnabled()): ?>
+                <div class="field ba-code">
+                    <label for="ba_code" class="label">
+                        <span><?= $block->escapeHtml(__('Counter service staff code')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input
+                            type="text"
+                            id="ba_code"
+                            name="ba_code"
+                            class="input-text"
+                            title="<?= $block->escapeHtml(__('Counter service staff code')) ?>"
+                            placeholder="<?= $block->escapeHtml(__('Counter service staff code')) ?>"
+                            value="<?= $block->escapeHtmlAttr($block->getFormData()->getBaCode()) ?>"/>
+                        <a disabled class="action primary bacode-link">
+                            <span><?= $block->escapeHtml(__('bacode Verify')) ?></span>
+                        </a>
+                        <img
+                            src="<?= $block->escapeUrl($block->getViewFileUrl($viewModel->getVerifiedIconUrl())) ?>"
+                            class="ba-code-verified"
+                            alt="verified"/>
+                        <span class="note ba-code-message"></span>
+                    </div>
+                </div>
+                <input type="hidden"
+                       name="verified_ba_code"
+                       id="verified_ba_code"
+                       value="">
+                <?php endif; ?>
             </div>
         </fieldset>
         <fieldset class="fieldset extra-info">
@@ -397,7 +427,11 @@ require([
             }
         },
         "*": {
-            "createaccount":{}
+            "createaccount":{},
+            "checkbacodevalue":{},
+            "verifybacode":{
+                "baCodeVerifyUrl": "<?= $block->escapeHtml($viewModel->getBaCodeVerifyUrl()); ?>"
+            }
         }
     }
 </script>
