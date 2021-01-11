@@ -204,15 +204,22 @@ class POSSystem
                         $result['region'] = $region->getData();
                     }
 
-                    if ($result['homeState'] && $result['region']['region_id']) {
-                        $cities = $this->cityHelper->getCityData();
-                        $regionCities = $cities[$result['region']['region_id']];
-                        foreach ($regionCities as $regionCity) {
-                            if ($regionCity['code'] == $result['homeState']) {
-                                $result['city'] = $regionCity;
-                                break;
+                    if (isset($result['region']['region_id']) && $result['homeState']) {
+                        if ($result['homeState'] && $result['region']['region_id']) {
+                            $cities = $this->cityHelper->getCityData();
+                            $regionCities = $cities[$result['region']['region_id']];
+                            foreach ($regionCities as $regionCity) {
+                                if ($regionCity['code'] == $result['homeState']) {
+                                    $result['city'] = $regionCity;
+                                    break;
+                                }
                             }
                         }
+                    } else {
+                        $temp = [];
+                        $temp['code'] = '';
+                        $temp['name'] = '';
+                        $result['city'] = $temp;
                     }
                 }
             } elseif ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'N') {
