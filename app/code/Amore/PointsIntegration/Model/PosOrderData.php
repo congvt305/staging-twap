@@ -110,14 +110,10 @@ class PosOrderData
      */
     public function getOrderData($order)
     {
-        $writer = new \Zend\Log\Writer\Stream(BP . sprintf('/var/log/pos_order_%s.log',date('Ymd')));
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info(__METHOD__);
-
         $customer = $order->getCustomerId() ? $this->getCustomer($order->getCustomerId()) : null;
         $websiteId = $order->getStore()->getWebsiteId();
         $posIntegrationNumber = $order->getCustomerId() ? $customer->getCustomAttribute('integration_number')->getValue() : null;
+
         $orderItemData = $this->getItemData($order);
         $couponCode = $order->getCouponCode();
         $invoice = $this->getInvoice($order->getEntityId());
@@ -125,16 +121,21 @@ class PosOrderData
         $orderData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
-            'saledate' => $order->getCreatedAt(),
+            'saledate' => $this->dateFormat($order->getCreatedAt()),
             'orderID' => $order->getIncrementId(),
-            'rcptNo' => 'I'.$invoice->getIncrementId(),
+            'rcptNO' => 'I'.$invoice->getIncrementId(),
             'cstmIntgSeq' => $posIntegrationNumber,
             'orderType' => '000010',
-            'promotionKey' => $this->validateCoupon($couponCode),
+            'promotionKey' => $couponCode,
             'orderInfo' => $orderItemData
         ];
 
         return $orderData;
+    }
+
+    public function dateFormat($date)
+    {
+        return date("Ymd", strtotime($date));
     }
 
     public function validateCoupon($couponCode)
@@ -164,7 +165,6 @@ class PosOrderData
         /** @var Item $orderItem */
         foreach ($orderItems as $orderItem) {
             if ($orderItem->getProductType() != 'bundle') {
-                $product = $this->productRepository->get($orderItem->getProduct()->getSku(),false, $order->getStoreId());
 
                 $itemSubtotal = $this->simpleAndConfigurableSubtotal($orderItem);
                 $itemTotalDiscount = $this->simpleAndConfigurableTotalDiscount($orderItem);
@@ -173,7 +173,7 @@ class PosOrderData
                 $orderItemData[] = [
                     'prdCD' => $orderItem->getSku(),
                     'qty' => (int)$orderItem->getQtyOrdered(),
-                    'price' => (int)$product->getPrice(),
+                    'price' => (int)$orderItem->getOriginalPrice(),
                     'salAmt' => (int)$itemSubtotal,
                     'dcAmt' => (int)$itemTotalDiscount,
                     'netSalAmt' => (int)$itemGrandTotal
@@ -191,7 +191,6 @@ class PosOrderData
                 foreach ($bundleChildren as $bundleChild) {
                     $itemId = $orderItem->getItemId();
                     $bundleChildFromOrder = $this->getBundleChildFromOrder($itemId, $bundleChild->getSku());
-
                     if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
                         $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
                     } else {
@@ -201,19 +200,30 @@ class PosOrderData
                     $product = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId());
                     $bundleChildSubtotal = $this->bundleChildSubtotal($bundleChildPrice, $bundleChildFromOrder);
                     $bundleChildDiscountAmount = $this->bundleChildDiscountAmount($bundlePriceType, $orderItem, $bundleChild);
-                    $bundleChildGrandTotal = $bundleChildSubtotal - $bundleChildDiscountAmount;
+
+                    $priceGap = $orderItem->getOriginalPrice() - $orderItem->getPrice();
+                    $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $bundleChild->getQty();
+                    $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($priceGap)) / $bundleChild->getQty();
+
+                    $itemTotalDiscount = abs(round(
+                            $bundleChildDiscountAmount +
+                            (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) +
+                            $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered())
+                    );
+
+                    $bundleChildGrandTotal = $bundleChildSubtotal - $itemTotalDiscount;
 
                     $orderItemData[] = [
                         'prdCD' => $bundleChild->getSku(),
                         'qty' => (int)$bundleChildFromOrder->getQtyOrdered(),
                         'price' => (int)$bundleChildPrice,
                         'salAmt' => (int)$bundleChildSubtotal,
-                        'dcAmt' => (int)$bundleChildDiscountAmount,
+                        'dcAmt' => (int)$itemTotalDiscount,
                         'netSalAmt' => (int)$bundleChildGrandTotal
                     ];
 
                     $itemsSubtotal += $bundleChildSubtotal;
-                    $itemsDiscountAmount += $bundleChildDiscountAmount;
+                    $itemsDiscountAmount += $itemTotalDiscount;
                     $itemsGrandTotal += $bundleChildGrandTotal;
                 }
             }
@@ -384,6 +394,7 @@ class PosOrderData
         $bundleChild = null;
         /** @var Item $itemOrdered */
         $itemOrdered = $this->orderItemRepository->get($itemId);
+
         $childrenItems = $itemOrdered->getChildrenItems();
         /** @var Item $childItem */
         foreach ($childrenItems as $childItem) {

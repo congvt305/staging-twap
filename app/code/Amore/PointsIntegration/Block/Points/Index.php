@@ -29,6 +29,7 @@ class Index extends AbstractPointsBlock
      * @param Config $config
      * @param Logger $logger
      * @param Json $json
+     * @param \Amore\PointsIntegration\Model\Pagination $pagination
      * @param CustomerPointsSearch $customerPointsSearch
      * @param array $data
      */
@@ -38,10 +39,11 @@ class Index extends AbstractPointsBlock
         Config $config,
         Logger $logger,
         Json $json,
+        \Amore\PointsIntegration\Model\Pagination $pagination,
         CustomerPointsSearch $customerPointsSearch,
         array $data = []
     ) {
-        parent::__construct($context, $customerSession, $config, $logger, $json, $data);
+        parent::__construct($context, $customerSession, $config, $logger, $json, $pagination, $data);
         $this->customerPointsSearch = $customerPointsSearch;
     }
 
@@ -56,9 +58,14 @@ class Index extends AbstractPointsBlock
         }
 
         if ($this->responseValidation($customerPointsInfo)) {
-            return $customerPointsInfo;
+            return $customerPointsInfo['data'];
         } else {
             return [];
         }
+    }
+
+    public function dateFormat($date)
+    {
+        return date("Y-m-d", strtotime($date));
     }
 }

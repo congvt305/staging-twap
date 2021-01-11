@@ -2,27 +2,24 @@
 /**
  * Created by Eguana.
  * User: Brian
- * Date: 2020-12-02
- * Time: 오후 4:55
+ * Date: 2020-12-29
+ * Time: 오전 9:44
  */
 
-namespace Amore\PointsIntegration\Observer;
+namespace Amore\PointsIntegration\Model;
 
 use Amore\PointsIntegration\Logger\Logger;
-use Amore\PointsIntegration\Model\Source\Config;
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 
-class OrderToPosSenderObserver implements ObserverInterface
+class PosOrderSender
 {
     /**
-     * @var \Amore\PointsIntegration\Model\PosOrderData
+     * @var PosOrderData
      */
     private $posOrderData;
     /**
-     * @var \Amore\PointsIntegration\Model\Connection\Request
+     * @var Connection\Request
      */
     private $request;
     /**
@@ -34,55 +31,54 @@ class OrderToPosSenderObserver implements ObserverInterface
      */
     private $json;
     /**
-     * @var Config
+     * @var Source\Config
      */
-    private $config;
+    private $PointsIntegrationConfig;
     /**
      * @var Logger
      */
-    private $logger;
+    private $pointsIntegrationLogger;
 
     /**
-     * OrderToPosSenderObserver constructor.
-     * @param \Amore\PointsIntegration\Model\PosOrderData $posOrderData
-     * @param \Amore\PointsIntegration\Model\Connection\Request $request
+     * PosOrderSender constructor.
+     * @param PosOrderData $posOrderData
+     * @param Connection\Request $request
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param Json $json
-     * @param Config $config
-     * @param Logger $logger
+     * @param Source\Config $PointsIntegrationConfig
+     * @param Logger $pointsIntegrationLogger
      */
     public function __construct(
         \Amore\PointsIntegration\Model\PosOrderData $posOrderData,
         \Amore\PointsIntegration\Model\Connection\Request $request,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         Json $json,
-        Config $config,
-        Logger $logger
+        \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig,
+        Logger $pointsIntegrationLogger
     ) {
         $this->posOrderData = $posOrderData;
         $this->request = $request;
         $this->eventManager = $eventManager;
         $this->json = $json;
-        $this->config = $config;
-        $this->logger = $logger;
+        $this->PointsIntegrationConfig = $PointsIntegrationConfig;
+        $this->pointsIntegrationLogger = $pointsIntegrationLogger;
     }
 
-    public function execute(Observer $observer)
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     */
+    public function posOrderSend($order)
     {
-        /** @var \Magento\Sales\Model\Order $order */
-        $order = $observer->getEvent()->getOrder();
-
         $websiteId = $order->getStore()->getWebsiteId();
-        $active = $this->config->getActive($websiteId);
-        $orderSendActive = $this->config->getPosOrderActive($websiteId);
+        $active = $this->PointsIntegrationConfig->getActive($websiteId);
+        $orderSendActive = $this->PointsIntegrationConfig->getPosOrderActive($websiteId);
 
         $orderData = '';
         $status = 0;
-
-        $posSendOrderStatusCheck = $this->orderStatusValidator($order);
+        $posSendCheck = $order->getData('pos_order_send_check');
 
         if ($active && $orderSendActive) {
-            if ($posSendOrderStatusCheck) {
+            if (!$posSendCheck) {
                 try {
                     $orderData = $this->posOrderData->getOrderData($order);
 
@@ -93,12 +89,12 @@ class OrderToPosSenderObserver implements ObserverInterface
                         $this->posOrderData->updatePosSendCheck($order->getEntityId());
                     }
                 } catch (NoSuchEntityException $exception) {
-                    $this->logger->info("===== OBSERVER NO SUCH ENTITY EXCEPTION =====");
-                    $this->logger->info($exception->getMessage());
+                    $this->pointsIntegrationLogger->info("===== NO SUCH ENTITY EXCEPTION =====");
+                    $this->pointsIntegrationLogger->info($exception->getMessage());
                     $response = $exception->getMessage();
                 } catch (\Exception $exception) {
-                    $this->logger->info("===== OBSERVER EXCEPTION =====");
-                    $this->logger->info($exception->getMessage());
+                    $this->pointsIntegrationLogger->info("===== EXCEPTION =====");
+                    $this->pointsIntegrationLogger->info($exception->getMessage());
                     $response = $exception->getMessage();
                 }
 
@@ -107,26 +103,6 @@ class OrderToPosSenderObserver implements ObserverInterface
         } else {
             $this->logger->info('POS ORDER REQUEST FOR ORDER : ' . $order->getIncrementId() . ' IS NOT COMPLETED DUE TO POINTS INTEGRATION MODULE INACTIVE');
         }
-    }
-
-    /**
-     * @param \Magento\Sales\Model\Order $order
-     */
-    public function orderStatusValidator(\Magento\Sales\Model\Order $order)
-    {
-        $posOrderRequestStatus = false;
-
-        $validStatus = 'complete';
-        $validState = 'complete';
-
-        $validStateAndStatus = ($validState && $validStatus);
-        $canShip = $order->canShip();
-        $posSendCheck = $order->getData('pos_order_send_check');
-
-        if ($validStateAndStatus && !$canShip && !$posSendCheck) {
-            $posOrderRequestStatus = true;
-        }
-        return $posOrderRequestStatus;
     }
 
     public function responseCheck($response)

@@ -30,6 +30,7 @@ class RedeemPointsSearch extends AbstractPointsBlock
      * @param Config $config
      * @param Logger $logger
      * @param Json $json
+     * @param \Amore\PointsIntegration\Model\Pagination $pagination
      * @param \Amore\PointsIntegration\Model\RedeemPointsSearch $redeemPointsSearch
      * @param array $data
      */
@@ -39,10 +40,11 @@ class RedeemPointsSearch extends AbstractPointsBlock
         Config $config,
         Logger $logger,
         Json $json,
+        \Amore\PointsIntegration\Model\Pagination $pagination,
         \Amore\PointsIntegration\Model\RedeemPointsSearch $redeemPointsSearch,
         array $data = []
     ) {
-        parent::__construct($context, $customerSession, $config, $logger, $json, $data);
+        parent::__construct($context, $customerSession, $config, $logger, $json, $pagination, $data);
         $this->redeemPointsSearch = $redeemPointsSearch;
     }
 
@@ -54,11 +56,11 @@ class RedeemPointsSearch extends AbstractPointsBlock
 
         if ($this->config->getLoggerActiveCheck($customer->getWebsiteId())) {
             $this->logger->info("REDEMPTION POINTS INFO");
-            $this->logger->debug($redeemPointsResult);
+            $this->logger->info($this->json->serialize($redeemPointsResult));
         }
 
         if ($this->responseValidation($redeemPointsResult)) {
-            return $redeemPointsResult['data'];
+            return $this->pagination->ajaxPagination($redeemPointsResult['data']['redemption_data']);
         } else {
             return [];
         }

@@ -6,8 +6,9 @@ define(
     ], function ($, url) {
         'use strict';
 
-        function pointsHistory() {
-            $(document).on("click", ".history-pager", function () {
+        function pointsHistory()
+        {
+            $(document).on("click", ".points-integration-points-pager", function () {
                 let requestedPage = $(this).data("page");
                 let ajaxUrl = url.build('pointsintegration/points/historyajax/');
                 $(this).addClass('active');
@@ -18,10 +19,10 @@ define(
                     data: {page:  requestedPage},
                 }).done(function (data) {
                     if ($.isEmptyObject(data)) {
-                        $(".points-history-list").html('');
+                        $("#history-of-point-reward-tab").html('');
                     } else {
-                        $(".points-history-list").html('');
-                        $(".points-history-list").html(data);
+                        $("#history-of-point-reward-tab").html('');
+                        $("#history-of-point-reward-tab").html(data);
                     }
                 }).fail(function (jqXHR, testStatus, errorThrown) {
                     console.log(jqXHR);

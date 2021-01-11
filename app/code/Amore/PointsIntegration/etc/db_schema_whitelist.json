@@ -3,5 +3,10 @@
         "column": {
             "pos_order_send_check": true
         }
+    },
+    "magento_rma": {
+        "column": {
+            "pos_rma_send_check": true
+        }
     }
 }
