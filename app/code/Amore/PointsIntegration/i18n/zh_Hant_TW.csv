@@ -1,0 +1,34 @@
+"Order Sent to Pos Successfully.","Order Sent to Pos Successfully."
+"Pos Return Error. Please Check the Data.","Pos Return Error. Please Check the Data."
+"We can't save the cron expression.","We can't save the cron expression."
+"Name of Point","點數累積與使用"
+availablePoint,availablePoint
+"Going to be Expired Point","Going to be Expired Point"
+expirePoint,expirePoint
+Name of Point <span>%1</span> points,可使用點數 <span>%1</span>點
+Going to be Expired Point <span>%1</span> points,即將到期點數<span>%1</span>點
+%1 Points,%1點
+"Points Valid Period","點數到期日"
+"Points Reason","點數名稱"
+"Points History Does not Exist.","查無相關資訊"
+"History of Point Reward","點數歷程"
+"Integration Points","會籍資訊"
+"Customer Code","會員編號"
+"Customer Grade","會員等級"
+"Customer Grade Code","Customer Grade Code"
+"Available Points","可使用點數"
+"Expire Points","今年到期點數"
+"Expiry Date","會員等級到期日"
+"Customer Points Info is not Exist.","客戶點信息不存在。"
+"Introduction of Membership Program","會員禮遇計畫"
+"Product Name","商品名稱"
+"Redeemed Points","兌禮點數"
+"Redeemed Date","兌換日期"
+"Redeemed Location","兌換櫃點"
+"Redeemed Quantity","兌換數量"
+"Points Redemption History Does not Exist.","查無相關資訊"
+"History of Redemption","兌禮歷程"
+"Points Policy","累積點數"
+Confirm,確認
+"Points Integration","Points Integration"
+"Customer Points","會員點數"

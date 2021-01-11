@@ -14,7 +14,7 @@ Home,家
 "My Account","我的帐户"
 "Support Ticket","聯繫我們"
 "Add new ticket","添加新票"
-"My Tickets","我的票"
+"My Tickets","線上客服中心"
 "Current Tickets","当前门票"
 "Run Now","现在跑步"
 "Something went wrong while saving the ticket.","保存票时出了点问题."
@@ -66,16 +66,15 @@ Notes,笔记
 "Notes Information","注意事项"
 "Subject","学科"
 File,文件
-Submit,提交
 "FAQ!","常问问题！"
 "Note Status","訊息通知"
 Action,行动
-view,视图
+view,查看
 "You have not Created a Ticket.","目前尚未有客服紀錄"
 "Information","信息"
 "Add Note","我的回覆"
 "Close this ticket","关闭这张票"
-create,创建
+create,送出
 Cancel,取消
 "Hi ","您好 "
 "Your ticket for %ticket_subject has been close on %time at %phy_store. If you have questions about your ticket, you can email us at %email.","您的 ％ticket_subject 门票已于 ％phy_store 在 ％time 上关闭。如果您对门票有疑问，可以通过 ％email 向我们发送电子邮件."
@@ -145,6 +144,6 @@ ID,ID
 "Select Category","选择类别"
 "My Ticket View","我的車票詳細資料"
 "Checked our <a href=""%1"">FAQ</a> and still need help? Please send us a message using the form below.","我們將於上班時間盡快回覆您!您也可至常見問題(<a href=""%1"">FAQ</a>)找尋適合的資訊"
-"Your Ticket has been created!","您的票证已创建！"
-"--Select Category--","--选择类别--"
+"Your Ticket has been created!","問題已送出，等候客服中心回覆，謝謝"
+"--Select Category--","--選擇類別--"
 "Click <a href=""%ticket_url"">here</a> to view the ticket","<a href=""%ticket_url"">按這裏看票</a>"

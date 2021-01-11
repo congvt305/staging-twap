@@ -11,9 +11,9 @@
       action="<?= $block->escapeUrl($block->getActionUrl()) ?>"
       method="post" name="guest_post">
     <fieldset class="fieldset">
-        <legend class="legend"><span><?= $block->escapeHtml(__('Order Information')) ?></span></legend>
-        <br>
-
+        <div class="field note">
+            <span><?= $block->escapeHtml(__('Non-member order can only be checked.If you are already a <a href="%1">member</a>, please check the progress of my order after signing up.', $block->getUrl('customer/account/login')), ['a']) ?></span>
+        </div>
         <div class="field id required">
             <label class="label" for="oar-order-id"><span><?= $block->escapeHtml(__('Order ID')) ?></span></label>
 
