@@ -16,14 +16,8 @@ $pointSearchResult = $block->getPointsSearchResult();
         <?php if (count($pointSearchResult) > 0) : ?>
             <div class="pos-customer-info">
                 <div class="pos-customer-name">
-                    <strong><?= $block->escapeHtml(__('Name')) . ' : '; ?><?= $pointSearchResult['lastname'] . $pointSearchResult['firstname']; ?></strong>
-                </div>
-                <div class="pos-customer-integration-code">
-                    <span><?= $block->escapeHtml(__('Customer Code')) . ' : '; ?><?= $pointSearchResult['cstmIntgSeq']; ?></span>
-                </div>
-                <div class="pos-customer-grade-code">
-                    <?= $block->escapeHtml(__('Customer Grade Code')) . ' : '; ?>
-                    <?= $pointSearchResult['cstmGradeCD']; ?>
+                    <strong><?= $block->escapeHtml(__('Name')) . ' : '; ?><?= $pointSearchResult['lastName'] . $pointSearchResult['firstName']; ?></strong>
+                    <span>(<?= $block->escapeHtml(__('Customer Code')) ?><?= $pointSearchResult['cstmIntgSeq']; ?>)</span>
                 </div>
                 <div class="pos-customer-grade-name">
                     <?= $block->escapeHtml(__('Customer Grade')) . ' : '; ?>
@@ -31,15 +25,12 @@ $pointSearchResult = $block->getPointsSearchResult();
                 </div>
                 <div class="pos-customer-available-points">
                     <?= $block->escapeHtml(__('Available Points')) . ' : '; ?>
-                    <?= $pointSearchResult['availablePoint']; ?>
-                </div>
-                <div class="pos-customer-expire-points">
-                    <?= $block->escapeHtml(__('Expire Points')) . ' : '; ?>
-                    <?= $pointSearchResult['expirePoint']; ?>
+                    <span class="primary"><?= $block->escapeHtml(__('%1 Points',$pointSearchResult['availablePoint'])) ?></span>
+                    <?= $block->getChildHtml('member.points.modal.info'); ?>
                 </div>
                 <div class="pos-customer-expireDate">
                     <?= $block->escapeHtml(__('Expiry Date')) . ' : '; ?>
-                    <?= $pointSearchResult['expireDate']; ?>
+                    <?= $block->dateFormat($pointSearchResult['expireDate']); ?>
                 </div>
             </div>
         <?php else : ?>
