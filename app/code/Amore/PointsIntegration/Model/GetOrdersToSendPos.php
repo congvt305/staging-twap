@@ -50,7 +50,7 @@ class GetOrdersToSendPos
 
         if ($testActive && $testOrder) {
             $searchCriteriaBuilder = $this->searchCriteriaBuilder
-                ->addFilter('increment_id', $testOrder, 'gteq')
+                ->addFilter('entity_id', (int)$testOrder, 'gteq')
                 ->addFilter('status', 'complete', 'eq')
                 ->addFilter('state', 'complete', 'eq')
                 ->addFilter('pos_order_send_check', 0, 'eq')
