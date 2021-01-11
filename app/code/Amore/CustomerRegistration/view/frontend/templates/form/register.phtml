@@ -279,7 +279,10 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
             <?php $callSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'call_subscription_status', ['data'=>['attribute_code'=>'call_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getCallSubscriptionStatus())]]) ?>
 
             <?php if ($callSubscriptionStatus->isEnabled() || $_dmSubscriptionStatus->isEnabled()) : ?>
-                <p class="marketing-title"><?= $block->escapeHtml(__('Marketing Consent')) ?></p>
+                <div class="checkbox-wrapper choice field" style="display: block;">
+                    <input type="checkbox" name="" class="select_deselect_all_terms" id="select_deselect_all_terms">
+                    <label class="label" for="select_deselect_all_terms"><span class="marketing-title"><?= $block->escapeHtml(__('Marketing Consent')) ?></span></label>
+                </div>
             <?php endif ?>
 
             <?php if ($_termsAndServicesPolicy->isEnabled()) : ?>
@@ -292,7 +295,7 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
 
             <?php if ($block->isNewsletterEnabled()) : ?>
                 <div class="field choice newsletter">
-                    <input type="checkbox" name="is_subscribed" title="<?= $block->escapeHtmlAttr(__('Sign Up for Newsletter')) ?>" value="1" id="is_subscribed"<?php if ($block->getFormData()->getIsSubscribed()) : ?> checked="checked"<?php endif; ?> class="checkbox">
+                    <input type="checkbox" name="is_subscribed" title="<?= $block->escapeHtmlAttr(__('Sign Up for Newsletter')) ?>" value="1" id="is_subscribed"<?php if ($block->getFormData()->getIsSubscribed()) : ?> checked="checked"<?php endif; ?> class="checkbox select_unselect_terms">
                     <label for="is_subscribed" class="label news-letter-policy-label"><span><?= $block->escapeHtml(__('Sign Up for Newsletter')) ?></span></label>
                 </div>
                 <?php /* Extensions placeholder */ ?>
@@ -438,7 +441,8 @@ require([
             "checkbacodevalue":{},
             "verifybacode":{
                 "baCodeVerifyUrl": "<?= $block->escapeHtml($viewModel->getBaCodeVerifyUrl()); ?>"
-            }
+            },
+            "checkboxallselect":{}
         }
     }
 </script>
