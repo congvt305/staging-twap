@@ -41,12 +41,15 @@ define([
         verifyBACode: function () {
             var baCode = $('input[name="customer[ba_code]"]').val();
             if (baCode) {
+                var websiteId = $('select[name="customer[website_id]"]').val();
+                var saleOrgCode = $('input[name="customer[sales_organization_code]"]').val();
+                var saleOffCode = $('input[name="customer[sales_office_code]"]').val();
                 $.ajax({
                     url: urlBuilder.build('/customerregistration/verification/verifybacode'),
                     type: 'post',
                     dataType: 'json',
                     cache: false,
-                    data: { 'baCode': baCode },
+                    data: { 'baCode': baCode, 'websiteId': websiteId, 'saleOrgCode': saleOrgCode, 'saleOffCode': saleOffCode },
                     beforeSend: function () {
                         $('body').loader('show');
                     },

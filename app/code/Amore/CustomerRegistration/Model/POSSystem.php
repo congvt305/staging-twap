@@ -391,15 +391,22 @@ class POSSystem
      * To call POS Api for BA Code info
      *
      * @param $baCode
+     * @param null $websiteId
+     * @param null $salOrgCd
+     * @param null $salOffCd
      * @return array
      */
-    public function callBACodeInfoApi($baCode)
+    public function callBACodeInfoApi($baCode, $websiteId = null, $salOrgCd = null, $salOffCd = null)
     {
         $result['verify'] = false;
         $response = [];
         $url = $this->config->getBaCodeInfoURL();
-        $salOrgCd = ($this->config->getOrganizationSalesCode()) ? $this->config->getOrganizationSalesCode() : '';
-        $salOffCd = ($this->config->getOfficeSalesCode()) ? $this->config->getOfficeSalesCode() : '';
+        if (!$salOrgCd) {
+            $salOrgCd = $this->config->getOrganizationSalesCode($websiteId);
+        }
+        if (!$salOffCd) {
+            $salOffCd = $this->config->getOfficeSalesCode($websiteId);
+        }
         $callSuccess = 1;
         try {
             $parameters = [
