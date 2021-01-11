@@ -59,11 +59,6 @@ class OrderSendToPos
 
     public function execute()
     {
-        $writer = new \Zend\Log\Writer\Stream(BP . sprintf('/var/log/test_%s.log',date('Ymd')));
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info(__METHOD__);
-
         $stores = $this->storeManagerInterface->getStores();
 
         foreach ($stores as $store) {
@@ -74,9 +69,7 @@ class OrderSendToPos
                 /** @var \Magento\Sales\Model\Order $order */
                 foreach ($orderList as $order) {
                     if ($this->dateCheck($order)) {
-                        $logger->info($order->getStoreId());
-                        $logger->info($order->getIncrementId());
-//                        $this->posOrderSender->posOrderSend($order);
+                        $this->posOrderSender->posOrderSend($order);
 
                     }
                 }

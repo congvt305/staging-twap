@@ -41,6 +41,10 @@ class Config
 
     const AVAILABLE_DAYS_AFTER_ORDER_COMPLETE = 'points_integration/configurable_cron/available_send_days';
 
+    const CRON_TEST_ACTIVE_CHECK = 'points_integration/configurable_cron/test_active';
+
+    const CRON_TEST_ORDER_INCREMENT_ID = 'points_integration/configurable_cron/test_order_no';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -179,5 +183,15 @@ class Config
     public function getDaysForCompletedOrder($websiteId)
     {
         return $this->getValue(self::AVAILABLE_DAYS_AFTER_ORDER_COMPLETE, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+    }
+
+    public function getCronTestActive($websiteId)
+    {
+        return $this->getValue(self::CRON_TEST_ACTIVE_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+    }
+
+    public function getCronTestOrder($websiteId)
+    {
+        return $this->getValue(self::CRON_TEST_ORDER_INCREMENT_ID, ScopeInterface::SCOPE_WEBSITE, $websiteId);
     }
 }
