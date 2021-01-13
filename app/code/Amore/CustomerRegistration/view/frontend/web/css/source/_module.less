@@ -109,6 +109,7 @@
         .field.choice.newsletter {
             display: inline-block;
             width: 100%;
+            text-indent: 40px;
         }
 
         .checkbox-wrapper {
@@ -116,6 +117,10 @@
             margin-right: 24px;
             vertical-align: top;
             position: relative;
+
+            &:not(:first-child) {
+                text-indent: 40px;
+            }
 
             input.mage-error {
                 margin-bottom: @indent__s;

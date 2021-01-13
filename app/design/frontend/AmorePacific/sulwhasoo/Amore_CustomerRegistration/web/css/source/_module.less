@@ -111,10 +111,18 @@
     }
 
     .form-create-account {
+        .field.choice.newsletter {
+            text-indent: 28px;
+        }
+
         .checkbox-wrapper {
             display: inline-block;
             margin-right: 24px !important;
             position: relative;
+
+            &:not(:first-child) {
+                text-indent: 28px;
+            }
 
             div.mage-error {
                 bottom: -@indent__base;
