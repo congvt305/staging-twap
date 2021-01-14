@@ -3,7 +3,7 @@
  * @author Eguana Team
  * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
  * Created by PhpStorm
- * User: arslan
+ * User: raheel
  * Date: 5/1/21
  * Time: 6:00 PM
  */
@@ -73,7 +73,7 @@ class FileUploader
      * Save file to temp media directory
      *
      * @param $fileId
-     * @return array|bool|string[]
+     * @return array|string[]
      */
     public function saveFileToMediaFolder($fileId)
     {
