@@ -85,9 +85,9 @@ class SendOrderToPos extends Action
             $website = $this->storeManagerInterface->getWebsite($websiteId);
             $stores = $website->getStores();
 
-            $posIntegrationActive = $this->config->getActive($websiteId);
+            $orderSendActive = $this->config->getPosOrderActive($websiteId);
 
-            if ($posIntegrationActive) {
+            if ($orderSendActive) {
                 foreach ($stores as $store) {
                     $this->sendOrder($store->getId());
                 }
