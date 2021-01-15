@@ -43,7 +43,9 @@ class Config
 
     const CRON_TEST_ACTIVE_CHECK = 'points_integration/configurable_cron/test_active';
 
-    const CRON_TEST_ORDER_INCREMENT_ID = 'points_integration/configurable_cron/test_order_no';
+    const CRON_TEST_ORDER_INCREMENT_ID_GTEQ = 'points_integration/configurable_cron/test_order_no_gteq';
+
+    const CRON_TEST_ORDER_INCREMENT_ID_LTEQ = 'points_integration/configurable_cron/test_order_no_lteq';
 
     /**
      * @var ScopeConfigInterface
@@ -190,8 +192,13 @@ class Config
         return $this->getValue(self::CRON_TEST_ACTIVE_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
     }
 
-    public function getCronTestOrder($websiteId)
+    public function getCronTestOrderGteq($websiteId)
     {
-        return $this->getValue(self::CRON_TEST_ORDER_INCREMENT_ID, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+        return $this->getValue(self::CRON_TEST_ORDER_INCREMENT_ID_GTEQ, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+    }
+
+    public function getCronTestOrderLteq($websiteId)
+    {
+        return $this->getValue(self::CRON_TEST_ORDER_INCREMENT_ID_LTEQ, ScopeInterface::SCOPE_WEBSITE, $websiteId);
     }
 }
