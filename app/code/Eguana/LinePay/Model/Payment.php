@@ -66,6 +66,11 @@ class Payment
     private $scopeConfig;
 
     /**
+     * @var LinePayLogger
+     */
+    private $linePayLogger;
+
+    /**
      * Payment constructor.
      * @param Curl $curl
      * @param Data $linePayHelper
@@ -75,6 +80,7 @@ class Payment
      * @param StoreRepositoryInterface $storeManager
      * @param ScopeConfigInterface $scopeConfig
      * @param LoggerInterface $logger
+     * @param LinePayLogger $linePayLogger
      */
     public function __construct(
         Curl $curl,
@@ -84,7 +90,8 @@ class Payment
         SerializerInterface $serializer,
         StoreRepositoryInterface $storeManager,
         ScopeConfigInterface $scopeConfig,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        LinePayLogger $linePayLogger
     ) {
         $this->curlClient                        = $curl;
         $this->linePayHelper                     = $linePayHelper;
@@ -94,6 +101,7 @@ class Payment
         $this->storeManager                      = $storeManager;
         $this->scopeConfig                       = $scopeConfig;
         $this->logger                            = $logger;
+        $this->linePayLogger                     = $linePayLogger;
     }
 
     /**
@@ -370,6 +378,16 @@ class Payment
         );
         $this->curlClient->post($apiUrl, []);
         $response = $this->serializer->unserialize($this->curlClient->getBody());
+        $logParameters = [
+            'request' => [
+                'transactionId' => $transactionId,
+                'apiUrl' => $apiUrl
+            ],
+            'response' => $response
+        ];
+        $message = 'Refund Payment API Call';
+        $this->linePayLogger->addAPICallLog($message, $logParameters);
+
         return $response;
     }
 

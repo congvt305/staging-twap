@@ -25,6 +25,7 @@ class Data extends AbstractHelper
     const XML_LINEPAY_SANDBOX_MODE           = 'payment/linepay_payment/mode';
     const XML_LINEPAY_CHANNEL_ID             = 'payment/linepay_payment/linepay/channel_id';
     const XML_LINEPAY_CHANNEL_SECRET         = 'payment/linepay_payment/linepay/channel_secret_key';
+    const XML_LINEPAY_DEBUG                  = 'payment/linepay_payment/debug';
 
     /**
      * @var Repository
@@ -126,5 +127,20 @@ class Data extends AbstractHelper
     public function getLinePayLogoSrc()
     {
         return $this->assetRepo->getUrl("Eguana_LinePay::images/linepay-logo.png");
+    }
+
+    /**
+     * Get debug value to enable/disable log maintaing
+     *
+     * @param null $websiteId
+     * @return mixed
+     */
+    public function getDebug($websiteId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_LINEPAY_DEBUG,
+            ScopeInterface::SCOPE_WEBSITE,
+            $websiteId
+        );
     }
 }
