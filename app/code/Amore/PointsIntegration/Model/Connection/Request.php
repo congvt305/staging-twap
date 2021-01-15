@@ -61,7 +61,7 @@ class Request
     public function sendRequest($requestData, $websiteId, $type)
     {
         $url = $this->getUrl($type, $websiteId);
-        $active = $this->config->getActive($websiteId);
+//        $active = $this->config->getActive($websiteId);
 
         if ($this->config->getLoggerActiveCheck($websiteId)) {
             $this->logger->info("BEFORE SEND REQUEST");
@@ -73,7 +73,8 @@ class Request
             $this->logger->info($this->json->serialize($requestData));
         }
 
-        if (!empty($url) && $active) {
+//        if (!empty($url) && $active) {
+        if (!empty($url)) {
             try {
                 $this->curl->addHeader('Content-Type', 'application/json');
 
@@ -97,7 +98,8 @@ class Request
                 return [];
             }
         } else {
-            $this->logger->info("URL IS EMPTY OR MODULE INACTIVE");
+//            $this->logger->info("URL IS EMPTY OR MODULE INACTIVE");
+            $this->logger->info("URL IS EMPTY");
             return [];
         }
     }
