@@ -46,11 +46,51 @@ class GetOrdersToSendPos
     public function getOrders($storeId)
     {
         $testActive = $this->config->getCronTestActive($storeId);
-        $testOrder = $this->config->getCronTestOrder($storeId);
+        $testOrderListGteq = $this->config->getCronTestOrderGteq($storeId);
+        $testOrderListLteq = $this->config->getCronTestOrderLteq($storeId);
 
-        if ($testActive && $testOrder) {
+        if ($testActive) {
+            $searchCriteriaBuilder = $this->testOrderFilter($testOrderListGteq, $testOrderListLteq, $storeId);
+        } else {
             $searchCriteriaBuilder = $this->searchCriteriaBuilder
-                ->addFilter('entity_id', (int)$testOrder, 'gteq')
+                ->addFilter('status', 'complete', 'eq')
+                ->addFilter('state', 'complete', 'eq')
+                ->addFilter('pos_order_send_check', 0, 'eq')
+                ->addFilter('store_id', $storeId)
+                ->create();
+        }
+
+        return $this->orderRepository->getList($searchCriteriaBuilder)->getItems();
+    }
+
+    /**
+     * @param $testOrderListGteq
+     * @param $testOrderListLteq
+     * @param $storeId
+     * @return \Magento\Framework\Api\SearchCriteria
+     */
+    public function testOrderFilter($testOrderListGteq, $testOrderListLteq, $storeId)
+    {
+        if ($testOrderListGteq && $testOrderListLteq) {
+            $searchCriteriaBuilder = $this->searchCriteriaBuilder
+                ->addFilter('entity_id', (int)$testOrderListGteq, 'gteq')
+                ->addFilter('entity_id', (int)$testOrderListLteq, 'lteq')
+                ->addFilter('status', 'complete', 'eq')
+                ->addFilter('state', 'complete', 'eq')
+                ->addFilter('pos_order_send_check', 0, 'eq')
+                ->addFilter('store_id', $storeId)
+                ->create();
+        } elseif ($testOrderListGteq && !$testOrderListLteq) {
+            $searchCriteriaBuilder = $this->searchCriteriaBuilder
+                ->addFilter('entity_id', (int)$testOrderListGteq, 'gteq')
+                ->addFilter('status', 'complete', 'eq')
+                ->addFilter('state', 'complete', 'eq')
+                ->addFilter('pos_order_send_check', 0, 'eq')
+                ->addFilter('store_id', $storeId)
+                ->create();
+        } elseif (!$testOrderListGteq && $testOrderListLteq) {
+            $searchCriteriaBuilder = $this->searchCriteriaBuilder
+                ->addFilter('entity_id', (int)$testOrderListLteq, 'lteq')
                 ->addFilter('status', 'complete', 'eq')
                 ->addFilter('state', 'complete', 'eq')
                 ->addFilter('pos_order_send_check', 0, 'eq')
@@ -64,7 +104,6 @@ class GetOrdersToSendPos
                 ->addFilter('store_id', $storeId)
                 ->create();
         }
-
-        return $this->orderRepository->getList($searchCriteriaBuilder)->getItems();
+        return $searchCriteriaBuilder;
     }
 }
