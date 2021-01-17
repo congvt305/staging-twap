@@ -191,10 +191,6 @@ define([
                                 $('.form-create-account #dm_detailed_address').val(response.pos.homeAddr1);
                                 $('.form-create-account #dm_zipcode').val(response.pos.homeZip);
                                 $('.form-create-account #imported_from_pos').val(1);
-                                if(response.pos.dmYN == 'Y')
-                                {
-                                    $('.dm-address').toggle();
-                                }
 
                             }else {
                                 $('.form-create-account #firstname').val($(this.options.firstNameSelector).val());
