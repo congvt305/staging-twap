@@ -70,14 +70,15 @@ class PosOrderSender
     public function posOrderSend($order)
     {
         $websiteId = $order->getStore()->getWebsiteId();
-        $active = $this->PointsIntegrationConfig->getActive($websiteId);
+//        $active = $this->PointsIntegrationConfig->getActive($websiteId);
         $orderSendActive = $this->PointsIntegrationConfig->getPosOrderActive($websiteId);
 
         $orderData = '';
         $status = 0;
         $posSendCheck = $order->getData('pos_order_send_check');
 
-        if ($active && $orderSendActive) {
+//        if ($active && $orderSendActive) {
+        if ($orderSendActive) {
             if (!$posSendCheck) {
                 try {
                     $orderData = $this->posOrderData->getOrderData($order);
