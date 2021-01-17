@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 7/1/21
+ * Time: 05:01 PM
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="rule_information">
+        <field name="hidden_rule_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">sales_rule</item>
+                    <item name="formElement" xsi:type="string">hidden</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="dataScope" xsi:type="string">rule_id</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+    <fieldset name="manage_coupon_codes">
+        <fieldset name="import_coupon_codes" sortOrder="0" class="Eguana\ImportCoupon\Ui\Component\Form\Fieldset\UploadCsvFile">
+            <settings>
+                <collapsible>true</collapsible>
+                <label translate="true">Import Coupon Codes</label>
+            </settings>
+            <field name="coupon_csv_file" formElement="fileUploader">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">sales_rule</item>
+                        <item name="disabled" xsi:type="boolean">false</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>string</dataType>
+                    <visible>true</visible>
+                    <label translate="true">Csv File</label>
+                    <componentType>fileUploader</componentType>
+                    <notice translate="true">
+                        <![CDATA[<b>Maximum file size:</b> 2 MB. </br><b>Allowed file type:</b> Csv.</br><b>CSV File Structure:</b> Coupon Code *.</br>Each coupon code on a new line.</br>* - mandatory]]>
+                    </notice>
+                </settings>
+                <formElements>
+                    <fileUploader>
+                        <settings>
+                            <required>false</required>
+                            <uploaderConfig>
+                                <param xsi:type="string" name="url">importcoupon/importcsv/uploadfile</param>
+                            </uploaderConfig>
+                            <previewTmpl>Eguana_ImportCoupon/file-preview</previewTmpl>
+                            <allowedExtensions>csv</allowedExtensions>
+                            <maxFileSize>2097152</maxFileSize>
+                        </settings>
+                    </fileUploader>
+                </formElements>
+            </field>
+        </fieldset>
+    </fieldset>
+</form>
