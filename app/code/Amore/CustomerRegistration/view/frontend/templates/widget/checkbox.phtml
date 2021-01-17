@@ -15,7 +15,7 @@ $isSelected = $block->getFormValue();
             <option value="<?= $block->escapeHtmlAttr($option->getValue()) ?>"<?= ($option->getValue() == $isSelected) ? ' selected="selected"' : '' ?>><?= $block->escapeHtml(__($option->getLabel())) ?></option>
         <?php endforeach;?>
     </select>
-    <input type="checkbox" name="<?= $block->getAttributeCode() ?>_checkbox" class="<?= $block->getAttributeCode() ?>_checkbox" <?= $isSelected == 1?'checked':''; ?> <?= $block->getAttributeCode() == 'terms_and_services_policy'?'data-validate="{required:true}"':''; ?> />
+    <input type="checkbox" name="<?= $block->getAttributeCode() ?>_checkbox" id="sel_<?= $block->escapeHtmlAttr($block->getFieldId($block->getAttributeCode())) ?>" class="<?= $block->getAttributeCode() ?>_checkbox select_unselect_terms" <?= $isSelected == 1?'checked':''; ?> <?= $block->getAttributeCode() == 'terms_and_services_policy'?'data-validate="{required:true}"':''; ?> />
     <?php if($block->getAttributeCode() != 'mobile_number') : ?>
         <label class="<?= $block->getAttributeCode().'-label' ?> label" for="<?= $block->escapeHtmlAttr($block->getFieldId($block->getAttributeCode())) ?>"><span><?= $block->escapeHtml($block->getStoreLabel($block->getAttributeCode())) ?></span></label>
     <?php else: ?>
