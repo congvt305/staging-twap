@@ -151,4 +151,12 @@
             <argument name="messageMapping" xsi:type="object">Eguana\LinePay\Gateway\ErrorMapper\VirtualMappingData</argument>
         </arguments>
     </virtualType>
+    <type name="Eguana\LinePay\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">linePayLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Eguana\LinePay\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
