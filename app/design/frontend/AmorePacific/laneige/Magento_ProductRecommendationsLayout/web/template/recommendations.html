@@ -1,5 +1,5 @@
 <div class="widget block block-static-block" if="recs().length">
-    <div class="block widget block-products-list grid">
+    <div class="block widget block-products-list grid block-product-recommendations">
         <div class="block-content">
             <div class="products wrapper grid products-grid">
                 <div each="data: recs(), afterRender: loadJsAfterKoRender">
@@ -114,7 +114,7 @@
                                                                 class="action tocart primary"
                                                                 data-bind="attr : {'data-sku' : sku, 'data-unit-id': $parent.unitId }"
                                                         >
-                                                            <span>Add to Cart</span>
+                                                            <span data-bind="i18n: 'Add to Cart'"></span>
                                                         </button>
                                                     </form>
                                                 </div>
