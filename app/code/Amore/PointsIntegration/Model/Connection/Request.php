@@ -78,7 +78,7 @@ class Request
             try {
                 $this->curl->addHeader('Content-Type', 'application/json');
 
-                if ($this->config->getSSLVerification()) {
+                if ($this->config->getSSLVerification($websiteId)) {
                     $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
                     $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
                 }
