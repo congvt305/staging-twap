@@ -16,6 +16,7 @@ use Magento\Backend\Model\View\Result\Redirect;
 use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as CatalogCollection;
 use Magento\CatalogRule\Model\ResourceModel\RuleFactory;
+use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\ResourceModel\Group\CollectionFactory as CustomerGroupCollectionFactory;
 use Magento\Directory\Model\Currency;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -27,6 +28,7 @@ use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Filesystem\Directory\WriteInterface;
 use Magento\Framework\Stdlib\DateTime\DateTimeFactory;
+use Magento\Sales\Api\OrderAddressRepositoryInterface;
 use Magento\Sales\Model\OrderFactory;
 use Magento\Sales\Model\ResourceModel\Order\Grid\CollectionFactory;
 use Magento\SalesRule\Api\RuleRepositoryInterface;
@@ -116,6 +118,16 @@ class MassReport extends Action
     private $customerRegistrationHelper;
 
     /**
+     * @var OrderAddressRepositoryInterface
+     */
+    private $orderAddressRepository;
+
+    /**
+     * @var CustomerRepositoryInterface
+     */
+    private $customerRepository;
+
+    /**
      * MassReport constructor.
      *
      * @param Context $context
@@ -134,6 +146,8 @@ class MassReport extends Action
      * @param LoggerInterface $logger
      * @param CollectionFactory $collectionFactory
      * @param Data $customerRegistrationHelper
+     * @param OrderAddressRepositoryInterface $orderAddressRepository
+     * @param CustomerRepositoryInterface $customerRepository
      * @throws \Magento\Framework\Exception\FileSystemException
      */
     public function __construct(
@@ -152,7 +166,9 @@ class MassReport extends Action
         Currency $currency,
         LoggerInterface $logger,
         CollectionFactory $collectionFactory,
-        Data $customerRegistrationHelper
+        Data $customerRegistrationHelper,
+        OrderAddressRepositoryInterface $orderAddressRepository,
+        CustomerRepositoryInterface $customerRepository
     ) {
         $this->logger = $logger;
         $this->dateTimeFactory = $dateTimeFactory;
@@ -169,6 +185,8 @@ class MassReport extends Action
         $this->directory = $filesystem->getDirectoryWrite(DirectoryList::VAR_DIR);
         $this->collectionFactory = $collectionFactory;
         $this->customerRegistrationHelper = $customerRegistrationHelper;
+        $this->orderAddressRepository = $orderAddressRepository;
+        $this->customerRepository = $customerRepository;
         parent::__construct($context);
     }
 
@@ -183,6 +201,11 @@ class MassReport extends Action
         try {
             $collection = $this->filter->getCollection($this->collectionFactory->create());
             $order = $this->orderFactory->create();
+            $collection->getSelect()->joinRight(
+                ['so' => $collection->getTable('sales_order')],
+                'so.entity_id = main_table.entity_id',
+                ['shipping_address_id']
+            );
             $customerGroup = $this->customerGroupCollectionFactory->create();
             $groups = [];
             foreach ($customerGroup as $group) {
@@ -195,12 +218,13 @@ class MassReport extends Action
             $stream = $this->directory->openFile($filepath, 'w+');
             $stream->lock();
             //column name dispay in your CSV
-            $columns = ['ID','Purchase Point','Purchase Date','Bill-to Name','Ship-to Name','Grand Total (Base)',
-                'Grand Total (Purchased)','Status','Billing Address','Shipping Address','Shipping Information',
-                'Customer Email','Customer Group','Subtotal','Shipping and Handling','Customer Name',
-                'Payment Method','Total Refunded','Sap Response','Promotion'];
+            $columns = ['ID','Purchase Point','Purchase Date','Mobile 1','Mobile 2','Bill-to Name',
+                'Ship-to Name','Grand Total (Base)','Grand Total (Purchased)','Status','Billing Address',
+                'Shipping Address','Shipping Information','Customer Email','Customer Group','Subtotal',
+                'Shipping and Handling','Customer Name','Payment Method','Total Refunded','Sap Response',
+                'Promotion'];
             if ($this->customerRegistrationHelper->getBaCodeEnable()) {
-                $columns[] = 'Customer BA Code';
+                $columns[] = 'BA Recruiter Code';
             }
             foreach ($columns as $column) {
                 $header[] = $column;
@@ -211,6 +235,8 @@ class MassReport extends Action
                 $itemData[] = $order->getData('increment_id');
                 $itemData[] = str_replace("\n", " ", $order->getData('store_name'));
                 $itemData[] = $this->getDateByFormat($order->getData('created_at'));
+                $itemData[] = $this->getCustomerMobile($order->getCustomerId());
+                $itemData[] = $this->getShippingAddressMobile($order->getShippingAddressId());
                 $itemData[] = $order->getData('billing_name');
                 $itemData[] = $order->getData('shipping_name');
                 $itemData[] = $order->getData('base_grand_total');
@@ -358,5 +384,43 @@ class MassReport extends Action
         $orderFactory = $this->orderFactory->create();
         $orderData = $orderFactory->load($id);
         return $orderData->getData('sap_response');
+    }
+
+    /**
+     * Get customer shipping address mobile no
+     *
+     * @param $shippingAddressId
+     * @return string
+     */
+    private function getShippingAddressMobile($shippingAddressId)
+    {
+        $mobileNo = '';
+        try {
+            $addressInfo = $this->orderAddressRepository->get($shippingAddressId);
+            $mobileNo = $addressInfo->getTelephone();
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+        return $mobileNo;
+    }
+
+    /**
+     * Get customer mobile no
+     *
+     * @param $customerId
+     * @return string
+     */
+    private function getCustomerMobile($customerId)
+    {
+        $mobileNo = '';
+        try {
+            $customerInfo = $this->customerRepository->getById($customerId);
+            if ($customerInfo->getCustomAttribute('mobile_number')) {
+                $mobileNo = $customerInfo->getCustomAttribute('mobile_number')->getValue();
+            }
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+        return $mobileNo;
     }
 }
