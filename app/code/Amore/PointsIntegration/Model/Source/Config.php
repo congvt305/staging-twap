@@ -92,9 +92,9 @@ class Config
         return $this->getValue(self::POS_URL_PATH, ScopeInterface::SCOPE_WEBSITE, $websiteId);
     }
 
-    public function getSSLVerification()
+    public function getSSLVerification($websiteId)
     {
-        return $this->scopeConfig->getValue(self::SSL_VERIFICATION_CHECK);
+        return $this->scopeConfig->getValue(self::SSL_VERIFICATION_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
     }
 
     public function getOrganizationSalesCode($websiteId = null)
