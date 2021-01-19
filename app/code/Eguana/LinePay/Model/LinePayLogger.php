@@ -55,10 +55,11 @@ class LinePayLogger
      *
      * @param $message
      * @param $parameters
+     * @param null $websiteId
      */
-    public function addAPICallLog($message, $parameters)
+    public function addAPICallLog($message, $parameters, $websiteId = null)
     {
-        if ($this->confg->getDebug()) {
+        if ($this->confg->getDebug($websiteId)) {
             $this->logger->info($message);
             $this->logger->info($this->json->serialize($parameters));
         }
