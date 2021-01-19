@@ -27,6 +27,19 @@ define([
         $("#counter-form-submit").click(function(e){
             e.preventDefault();
             if ($('form[id="counter-form"]').valid()) {
+                /**
+                 * To check phone no starts with 09 digits or not
+                 */
+                if ($('#phone').val().substr(0, 2) != '09') {
+                    $('#phone-error').show();
+                    $('html, body').animate({
+                        scrollTop: $('#name').offset().top},
+                    'slow');
+                    return false;
+                } else {
+                    $('#phone-error').hide();
+                }
+
                 let formkey = "<input name='form_key' value=" + window.FORM_KEY + " title='form_key' type='hidden'>";
                 $('form[id="counter-form"]').append(formkey);
                 let form_data = $('form[id="counter-form"]').serialize();

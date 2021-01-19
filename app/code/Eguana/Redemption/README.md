@@ -30,6 +30,8 @@ A new module for redemption users to register to redemptions in available stores
 
 2) When user register for the redemption by submiting the redemption form and when resend email/sms button and timer appears all the form fields are readonly with user data. The reason is that user can resend email/sms to that email address and phone number which user add during the form filling. However if these field are not readonly and user change email address or phone number the email/sms not send to the new email address/phone number, in this scenario user have to register with new email address and phone number by refresh the page.
 
+3) If a customer is register with an email and phone number to a specific counter against a store then he/she can't register again with same email and number to that counter.
+
 #Module Installation  
 ```
 1.  php bin/magento Module:enable Eguana_Redemption  
@@ -128,7 +130,7 @@ Below is the example image of the add new form.
 
 Form Part 1 shows form fields
 
-![add-nw-form](https://nimbus-screenshots.s3.amazonaws.com/s/2ac5611c182b76ba9c95aa1b5def3167.png)
+![add-nw-form](https://nimbus-screenshots.s3.amazonaws.com/s/f8306e36663fe8c9ed3a2649bc0ac732.png)
 
 Form Part 2 shows content area 
 
@@ -144,7 +146,7 @@ Form Part 4 shows the list of registered customer in current redemption
 
 Explore the every field of add new form in details.
 
-![three-fields](https://nimbus-screenshots.s3.amazonaws.com/s/78a216ba51f0a2e3145d30513901a05e.png)
+![three-fields](https://nimbus-screenshots.s3.amazonaws.com/s/a77bf86be42ddc817507fdfa27a34bf8.png)
 
 #####(1) Enable Redemption
 
@@ -158,23 +160,11 @@ This is Redemption main title. Add Redemption name or title here.
  
 This field is used to add the thumbnail image which will show on listing page. Click on Upload and select an image which will show in the frontend page.
 
-#####(4) Store View
-    
-This is Redemption store view. This will decide where Redemption information will shown.
-    
-#####(5) Counter Name
-
-This is store counter name in which allowed for redemption store list is showing select one or more stores where the redemption will held
-
-#####(6) Total Quantity
-
-This field is to defined how many total number of users can registered for the current redemption
-
-#####(7) CMS Block
+#####(4) CMS Block
 
 This drop down shows the list of the cms blocks select one cms block to show at the top of the frontend registration page
 
-#####(8) Start Date
+#####(5) Start Date
 
 Click on the calender and it will open a pop-up called date picker as shown in the image below.
 
@@ -182,13 +172,25 @@ Click on the calender and it will open a pop-up called date picker as shown in t
 
 and from that date picker select the redemption start date.
 
-#####(9) End Date
+#####(6) End Date
 
 Click on the calender and it will open a pop-up called date picker as shown in the image below.
 
 ![calender](https://nimbus-screenshots.s3.amazonaws.com/s/058ebced5c4d00e126f6c5cc0773c583.png)
-    
-    
+
+#####(7) Store View
+
+This is Redemption store view. This will decide where Redemption information will shown.
+
+#####(8) Counter Name
+
+This is store counter name in which allowed for redemption store list is showing select one or more stores where the redemption will held
+
+#####(9) Total Quantity
+
+This field is to defined how many total number of users can registered for the current redemption. These fields only show when selected counters are changed.
+
+
 Form Part 2 details
 
 This is the page builder section where admin can design the description and precautions area for frontend
@@ -296,9 +298,15 @@ After Description at frontend shows the field for registration field which custo
 
 ## 2) Add Customer Phone Number
 
+The phone number must start with digits "09" else it will show an error message. Phone number minimum & maximum digits limits can also be changed from configuration.
+
+![phone-no](https://nimbus-screenshots.s3.amazonaws.com/s/c00b6ba0860d373f71e551553f495510.png)
+
 ## 3) Add Customer Email
 
 ## 4) Select the counter where customer wants to register the redemption
+
+The counters across which the total quantity is null will be showed disabled in counter's dropdown.
 
 ## 5) Line Id it is optional
 

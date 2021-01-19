@@ -64,6 +64,8 @@
                 identity="true" comment="Redemption ID"/>
         <column xsi:type="smallint" name="offline_store_id" padding="10" unsigned="true" nullable="false" identity="false"
                 comment="Store Locator ID"/>
+        <column xsi:type="int" name="counter_seats" padding="10" unsigned="true" nullable="false" identity="false"
+                comment="Counter Seats"/>
         <index referenceId="EGUANA_REDEMPTION_COUNTER_OFFLINE_STORE_ID" indexType="btree">
             <column name="offline_store_id"/>
         </index>
