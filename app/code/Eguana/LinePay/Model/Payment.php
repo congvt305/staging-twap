@@ -25,6 +25,12 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
  */
 class Payment
 {
+    /**#@+
+     * Configuration Mode field value
+     */
+    const MODE = 'sandbox';
+    /**#@-*/
+
     /**
      * @var Curl
      */
@@ -226,6 +232,8 @@ class Payment
         $request["redirectUrls"] = $urls;
         //set true if capture amount
         $request["options"]["payment"]["capture"] = true;
+        $logParameters['request'] = $request;
+        $logParameters['request']['apiUrl'] = $apiUrl;
         $request = $this->serializer->serialize($request);
         $uuid = uniqid();
         $data = $secretKey . '/v3/payments/request' . $request . $uuid;
@@ -249,7 +257,11 @@ class Payment
             ]
         );
         $this->curlClient->post($apiUrl, []);
-        return $this->serializer->unserialize($this->curlClient->getBody());
+        $response = $this->serializer->unserialize($this->curlClient->getBody());
+        $message = 'Request Payment API Call';
+        $logParameters['response'] = $response;
+        $this->linePayLogger->addAPICallLog($message, $logParameters);
+        return $response;
     }
 
     /**
@@ -268,6 +280,9 @@ class Payment
         $request["amount"] = (int)round($amount, 0);
         $request["currency"] = "TWD";
         $uuid = uniqid();
+        $logParameters['request'] = $request;
+        $logParameters['request']['transactionId'] = $transactionId;
+        $logParameters['request']['apiUrl'] = $apiUrl;
         $request = $this->serializer->serialize($request);
         $data = $secretKey . "/v3/payments/".$transactionId."/confirm" . $request . $uuid;
         $signature = hash_hmac('sha256', $data, $secretKey, true);
@@ -291,6 +306,9 @@ class Payment
         );
         $this->curlClient->post($apiUrl, []);
         $response = $this->serializer->unserialize($this->curlClient->getBody());
+        $logParameters['response'] = $response;
+        $message = 'Confirm Payment API Call';
+        $this->linePayLogger->addAPICallLog($message, $logParameters);
         return $response;
     }
 
@@ -327,6 +345,15 @@ class Payment
         );
         $this->curlClient->post($apiUrl, []);
         $response = $this->serializer->unserialize($this->curlClient->getBody());
+        $logParameters = [
+            'request' => [
+                'transactionId' => $transactionId,
+                'apiUrl' => $apiUrl
+            ],
+            'response' => $response
+        ];
+        $message = 'Void Payment API Call';
+        $this->linePayLogger->addAPICallLog($message, $logParameters);
         return $response;
     }
 
@@ -345,7 +372,7 @@ class Payment
         } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
             $this->logger->error($e->getMessage());
         }
-        if ($this->linePayHelper->getSandboxModeEnabled($websiteId)) {
+        if ($this->linePayHelper->getSandboxModeEnabled($websiteId) == self::MODE) {
             $apiUrl =  'https://sandbox-api-pay.line.me';
         } else {
             $apiUrl =  'https://api-pay.line.me';
@@ -355,6 +382,9 @@ class Payment
         $apiUrl = $apiUrl."/v3/payments/".$transactionId."/refund";
         $request["refundAmount"] = (int)round($amount, 0);
         $uuid = uniqid();
+        $logParameters['request'] = $request;
+        $logParameters['request']['transactionId'] = $transactionId;
+        $logParameters['request']['apiUrl'] = $apiUrl;
         $request = $this->serializer->serialize($request);
         $data = $secretKey . "/v3/payments/".$transactionId."/refund" . $request . $uuid;
         $signature = hash_hmac('sha256', $data, $secretKey, true);
@@ -378,16 +408,9 @@ class Payment
         );
         $this->curlClient->post($apiUrl, []);
         $response = $this->serializer->unserialize($this->curlClient->getBody());
-        $logParameters = [
-            'request' => [
-                'transactionId' => $transactionId,
-                'apiUrl' => $apiUrl
-            ],
-            'response' => $response
-        ];
+        $logParameters['response'] = $response;
         $message = 'Refund Payment API Call';
-        $this->linePayLogger->addAPICallLog($message, $logParameters);
-
+        $this->linePayLogger->addAPICallLog($message, $logParameters, $websiteId);
         return $response;
     }
 
@@ -406,6 +429,9 @@ class Payment
         $request["amount"] = (int)round($amount, 0);
         $request["currency"] = "TWD";
         $uuid = uniqid();
+        $logParameters['request'] = $request;
+        $logParameters['request']['transactionId'] = $transactionId;
+        $logParameters['request']['apiUrl'] = $apiUrl;
         $request = $this->serializer->serialize($request);
         $data = $secretKey . "/v3/payments/authorizations/".$transactionId."/capture" . $request . $uuid;
         $signature = hash_hmac('sha256', $data, $secretKey, true);
@@ -429,6 +455,9 @@ class Payment
         );
         $this->curlClient->post($apiUrl, []);
         $response = $this->serializer->unserialize($this->curlClient->getBody());
+        $logParameters['response'] = $response;
+        $message = 'Capture Payment API Call';
+        $this->linePayLogger->addAPICallLog($message, $logParameters);
         return $response;
     }
 
