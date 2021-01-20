@@ -14,6 +14,7 @@ namespace Eguana\Redemption\Model\Source;
 use Eguana\StoreLocator\Api\StoreInfoRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Option\ArrayInterface;
+use Eguana\StoreLocator\Model\ResourceModel\StoreInfo\Collection;
 use Eguana\StoreLocator\Model\ResourceModel\StoreInfo\CollectionFactory;
 use Magento\Framework\App\RequestInterface;
 use Eguana\Redemption\Api\RedemptionRepositoryInterface;
@@ -120,13 +121,13 @@ class AvailableStores implements ArrayInterface
     }
 
     /**
-     * This method is used to get the store list from store locator
-     * with respect to the selected store
+     * Get store locators details
      *
      * @param $storeId
-     * @return string
+     * @param array $counterIds
+     * @return Collection
      */
-    public function getStoreListByStoreId($storeId)
+    public function getCountersByStoreId($storeId, $counterIds = []) : Collection
     {
         $storeId = [$storeId];
         $result = '';
@@ -135,12 +136,35 @@ class AvailableStores implements ArrayInterface
             "available_for_redemption",
             ["eq" => 1]
         );
+        if ($counterIds) {
+            if (!is_array($counterIds)) {
+                $counterIds = [$counterIds];
+            }
+            $storeCollection->addFieldToFilter(
+                "entity_id",
+                ["in" => $counterIds]
+            );
+        }
         if (count($storeId) == 1) {
             $storeId = $storeId[0];
         }
         if ($storeId != 0) {
             $storeCollection->addStoreFilter($storeId);
         }
+        return $storeCollection;
+    }
+
+    /**
+     * This method is used to get the store list from store locator
+     * with respect to the selected store
+     *
+     * @param $storeId
+     * @return string
+     */
+    public function getStoreListByStoreId($storeId) : string
+    {
+        $result = '';
+        $storeCollection = $this->getCountersByStoreId($storeId);
         foreach ($storeCollection as $storeName) {
             $result .= '<option data-title="' . $storeName->getTitle() . '" value="' . $storeName->getId() . '">'
                 . $storeName->getTitle() . '</option>';

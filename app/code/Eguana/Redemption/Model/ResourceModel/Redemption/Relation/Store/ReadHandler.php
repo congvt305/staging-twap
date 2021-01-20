@@ -55,9 +55,11 @@ class ReadHandler implements ExtensionInterface
             if ($entity->getId()) {
                 $stores = $this->resourceRedemption->lookupStoreIds((int)$entity->getId());
                 $counters = $this->resourceRedemption->lookupCounterIds((int)$entity->getId());
+                $counterSeats = $this->resourceRedemption->lookupCounterSeats((int)$entity->getId());
                 $entity->setData('store_id', $stores);
                 $entity->setData('stores', $stores);
                 $entity->setData('offline_store_id', $counters);
+                $entity->setData('counter_seats', $counterSeats);
             }
         } catch (\Exception $exception) {
             $this->logger->debug($exception->getMessage());

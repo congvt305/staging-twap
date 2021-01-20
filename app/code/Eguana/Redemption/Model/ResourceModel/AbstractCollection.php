@@ -147,11 +147,13 @@ abstract class AbstractCollection extends AbstractCollectionAlias
                 if ($result) {
                     $storesData = [];
                     foreach ($result as $storeData) {
-                        $storesData[$storeData[$linkField]][] = $storeData['offline_store_id'];
+                        $storesData['offline_store_id'][] = $storeData['offline_store_id'];
+                        $storesData['counter_seats'][] = $storeData['counter_seats'];
                     }
                     foreach ($this as $item) {
                         $linkedId = $item->getData($linkField);
-                        $item->setData('offline_store_id', $storesData[$linkedId]);
+                        $item->setData('offline_store_id', $storesData['offline_store_id']);
+                        $item->setData('counter_seats', $storesData['counter_seats']);
                     }
                 }
             }

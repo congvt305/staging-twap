@@ -13,6 +13,7 @@
 $viewModel = $block->getData('details_view_model');
 $redemptionDetails = $viewModel->getRedemption();
 $redemptionCounters = $redemptionDetails->getData('offline_store_id');
+$counterSeats = $redemptionDetails->getData('counter_seats');
 $minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
 $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
 $storeId = $viewModel->getStoreId();
@@ -70,6 +71,9 @@ $storeId = $viewModel->getStoreId();
                         </label>
                         <div class="control">
                             <input id="phone" name="phone" type="text" title="<?= $block->escapeHtml(__('Phone')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('Phone')) ?>" data-validate='{"required":true, "validate-number":true, "minlength":<?= $minimumMobileNumberDigits; ?>, "maxlength":<?= $maximumMobileNumberDigits; ?>}'>
+                            <div id="phone-error">
+                                <?= $block->escapeHtml(__("Phone number should starts with '09'")); ?>
+                            </div>
                         </div>
                     </div>
                     <div class="field email required">
@@ -87,10 +91,11 @@ $storeId = $viewModel->getStoreId();
                         <div class="control">
                             <select id="counter" name="counter" title="<?= $block->escapeHtml(__('Counter')) ?>" class="select" data-validate="{required:true}">
                                 <option value="">-- <?= $block->escapeHtml(__('Select Counter')) ?> --</option>
-                                <?php foreach ($redemptionCounters as $counter):
+                                <?php foreach ($redemptionCounters as $key => $counter):
                                     if ($viewModel->checkStoreLocatorInWebsite($counter)) : ?>
                                         <option
-                                            value="<?= $block->escapeHtml($counter) ?>">
+                                            value="<?= $block->escapeHtml($counter) ?>"
+                                            <?= ($counterSeats[$key] <=0) ? 'disabled="disabled"' : '' ?>>
                                             <?= $block->escapeHtml($viewModel->getCounterName($counter)); ?>
                                         </option>
                                     <?php
