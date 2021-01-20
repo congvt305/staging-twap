@@ -130,6 +130,7 @@ class ConvertToCsv
 
         $columns = [
             'Order',
+            'Order Status',
             'Customer (Receiver)',
             'Mobile',
             'Address',
@@ -166,6 +167,7 @@ class ConvertToCsv
 
             $orderIds[] = $item->getId();
             $orders[$item->getId()]['order_id'] = $item->getIncrementId();
+            $orders[$item->getId()]['order_status'] = $order->getStatusLabel();
             $orders[$item->getId()]['customer'] = $item->getCustomerName();
             $orders[$item->getId()]['address'] = $item->getShippingAddress();
             $orders[$item->getId()]['shipping_amount'] = $item->getShippingAmount();
@@ -182,6 +184,7 @@ class ConvertToCsv
         foreach ($items as $item) {
             $itemData = [];
             $itemData[] = $orders[$item->getOrderId()]['order_id'];
+            $itemData[] = $orders[$item->getOrderId()]['order_status'];
             $itemData[] = $orders[$item->getOrderId()]['customer'];
             $itemData[] = $orders[$item->getOrderId()]['mobile'];
             $itemData[] = $orders[$item->getOrderId()]['address'];
