@@ -48,7 +48,7 @@
                                 <span><?= $block->escapeHtml(__('View Order')) ?></span>
                             </a>
                             <?php if ($this->helper(\Magento\Sales\Helper\Reorder::class)->canReorder($_order->getEntityId())) : ?>
-                                <a href="#" data-post='<?php /* @noEscape */
+                                <a href="#" data-post='<?= /* @noEscape */
                                 $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
                                     ->getPostData($block->getReorderUrl($_order))
                                 ?>' class="action order">
