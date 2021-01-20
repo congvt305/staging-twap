@@ -557,6 +557,7 @@ return [
         'Eguana_StoreLocator' => 1,
         'Eguana_Faq' => 1,
         'Amore_Sap' => 1,
+        'Eguana_ImportCoupon' => 1,
         'Eguana_ImportExport' => 1,
         'Eguana_LinePay' => 1,
         'Eguana_Login' => 1,
