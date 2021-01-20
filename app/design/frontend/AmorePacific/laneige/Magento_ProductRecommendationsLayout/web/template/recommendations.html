@@ -35,7 +35,6 @@
                                                 <img class="product-image-photo" attr="src: image.url" />
                                             </span>
                                         </span>
-
                                     </a>
                                     <!-- /ko -->
 
@@ -44,7 +43,11 @@
                                        class="product photo product-item-photo"
                                        data-bind="attr : {'data-sku' : sku, 'data-unit-id' : $parent.unitId, href: url }"
                                     >
-                                        <img attr="src: $parents[1].placeholderUrl"/>
+                                        <span class="product-image-container">
+                                            <span class="product-image-wrapper">
+                                                <img class="product-image-photo" attr="src: $parents[1].placeholderUrl"/>
+                                            </span>
+                                        </span>
                                     </a>
                                     <!-- /ko -->
                                     <!-- /ko -->
