@@ -40,8 +40,8 @@ define([
                         phoneError.html($.mage.__("Phone number should starts with '09'")).show();
                     }
                     $('html, body').animate({
-                            scrollTop: $('#name').offset().top},
-                        'slow');
+                        scrollTop: $('#name').offset().top},
+                    'slow');
                     return false;
                 } else {
                     $('#phone').removeClass('mage-error');
