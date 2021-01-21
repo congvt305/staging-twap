@@ -5,7 +5,7 @@
                 <div each="data: recs(), afterRender: loadJsAfterKoRender">
                     <div data-bind="attr : {'data-unit-id' : unitId }">
                         <div class="block-title title" if="products.length">
-                            <h2 class="block-related-heading" role="heading" aria-level="2" text="storefrontLabel"></h2>
+                            <h3 class="block-related-heading" role="heading" aria-level="2" text="storefrontLabel"></h3>
                         </div>
 
                         <ol class="products list items product-items" each="products">
@@ -101,24 +101,24 @@
                                                                 name="product"
                                                                 attr="value: productId"
                                                         />
-                                                        <input
-                                                                type="hidden"
-                                                                name="uenc"
-                                                                attr="value: addToCart.postUenc"
-                                                        />
-                                                        <input
-                                                                type="hidden"
-                                                                name="form_key"
-                                                                attr="value: addToCart.form_key"
-                                                        />
-                                                        <button
-                                                                type="submit"
-                                                                title="Add to Cart"
-                                                                class="action tocart primary"
-                                                                data-bind="attr : {'data-sku' : sku, 'data-unit-id': $parent.unitId }"
-                                                        >
-                                                            <span data-bind="i18n: 'Add to Cart'"></span>
-                                                        </button>
+                                                    <input
+                                                            type="hidden"
+                                                            name="uenc"
+                                                            attr="value: addToCart.postUenc"
+                                                    />
+                                                    <input
+                                                            type="hidden"
+                                                            name="form_key"
+                                                            attr="value: addToCart.form_key"
+                                                    />
+                                                    <button
+                                                            type="submit"
+                                                            title="Add to Cart"
+                                                            class="action tocart primary"
+                                                            data-bind="attr : {'data-sku' : sku, 'data-unit-id': $parent.unitId }"
+                                                    >
+                                                        <span data-bind="i18n: 'Add to Cart'"></span>
+                                                    </button>
                                                     </form>
                                                 </div>
                                             </div>
