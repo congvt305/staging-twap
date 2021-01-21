@@ -8,8 +8,8 @@
  */
 define([
     'jquery',
-    'domReady!',
-    "mage/translate",
+    'mage/translate',
+    'domReady!'
 ], function ($) {
     /**
      * @param config.countersaveurl
@@ -32,11 +32,19 @@ define([
                  */
                 if ($('#phone').val().substr(0, 2) != '09') {
                     $('#phone-error').show();
+                    $('#phone').addClass('mage-error');
+                    var phoneError = $('#phone-error');
+                    if (!phoneError.length) {
+                        $('#phone').after('<div for="phone" generated="true" class="mage-error" id="phone-error">' + $.mage.__("Phone number should starts with '09'") + '</div>');
+                    } else {
+                        phoneError.html($.mage.__("Phone number should starts with '09'")).show();
+                    }
                     $('html, body').animate({
-                        scrollTop: $('#name').offset().top},
-                    'slow');
+                            scrollTop: $('#name').offset().top},
+                        'slow');
                     return false;
                 } else {
+                    $('#phone').removeClass('mage-error');
                     $('#phone-error').hide();
                 }
 
