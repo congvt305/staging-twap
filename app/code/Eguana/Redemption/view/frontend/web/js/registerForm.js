@@ -31,7 +31,6 @@ define([
                  * To check phone no starts with 09 digits or not
                  */
                 if ($('#phone').val().substr(0, 2) != '09') {
-                    $('#phone-error').show();
                     $('#phone').addClass('mage-error');
                     var phoneError = $('#phone-error');
                     if (!phoneError.length) {
