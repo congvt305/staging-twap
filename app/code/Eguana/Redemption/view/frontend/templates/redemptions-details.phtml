@@ -71,9 +71,6 @@ $storeId = $viewModel->getStoreId();
                         </label>
                         <div class="control">
                             <input id="phone" name="phone" type="text" title="<?= $block->escapeHtml(__('Phone')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('Phone')) ?>" data-validate='{"required":true, "validate-number":true, "minlength":<?= $minimumMobileNumberDigits; ?>, "maxlength":<?= $maximumMobileNumberDigits; ?>}'>
-                            <div id="phone-error">
-                                <?= $block->escapeHtml(__("Phone number should starts with '09'")); ?>
-                            </div>
                         </div>
                     </div>
                     <div class="field email required">
