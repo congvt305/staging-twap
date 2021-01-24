@@ -218,16 +218,17 @@ class MassReport extends Action
             $stream = $this->directory->openFile($filepath, 'w+');
             $stream->lock();
             //column name dispay in your CSV
-            $columns = ['ID','Purchase Point','Purchase Date','Mobile 1','Mobile 2','Bill-to Name',
-                'Ship-to Name','Grand Total (Base)','Grand Total (Purchased)','Status','Billing Address',
-                'Shipping Address','Shipping Information','Customer Email','Customer Group','Subtotal',
+            $columns = ['ID','Purchase Point','Purchase Date','Member Mobile',
+                'Shipping Order Mobile','Bill-to Name','Ship-to Name','Grand Total (Base)',
+                'Grand Total (Purchased)','Status','Billing Address','Shipping Address',
+                'Shipping Information','Customer Email','Customer Group','Subtotal',
                 'Shipping and Handling','Customer Name','Payment Method','Total Refunded','Sap Response',
                 'Promotion'];
             if ($this->customerRegistrationHelper->getBaCodeEnable()) {
                 $columns[] = 'BA Recruiter Code';
             }
             foreach ($columns as $column) {
-                $header[] = $column;
+                $header[] = __($column);
             }
             $stream->writeCsv($header);
             foreach ($collection as $order) {
