@@ -15,24 +15,69 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 class Config
 {
     const ACTIVE_CHECK_XML_PATH = 'eguana_einvoice/ecpay_einvoice_issue/active';
+    const SENDER_NAME_XML_PATH = "eguana_einvoice/ecpay_einvoice_issue/sender_name";
+    const SENDER_EMAIL_XML_PATH = "eguana_einvoice/ecpay_einvoice_issue/sender_email";
+    const RECEIVER_EMAIL_XML_PATH = "eguana_einvoice/ecpay_einvoice_issue/receiver_email";
+
     /**
      * @var ScopeConfigInterface
      */
     private $scopeConfig;
 
+    /**
+     * Config constructor.
+     * @param ScopeConfigInterface $scopeConfig
+     */
     public function __construct(
         ScopeConfigInterface $scopeConfig
     ) {
         $this->scopeConfig = $scopeConfig;
     }
 
+    /**
+     * @param $path
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getValue($path, $type, $storeId)
     {
         return $this->scopeConfig->getValue($path, $type, $storeId);
     }
 
+    /**
+     * @param $storeId
+     * @return mixed
+     */
     public function getEInvoiceIssueActive($storeId)
     {
         return $this->getValue(self::ACTIVE_CHECK_XML_PATH, 'store', $storeId);
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+    public function getSenderName($storeId)
+    {
+        return $this->getValue(self::SENDER_NAME_XML_PATH, "store", $storeId);
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+    public function getSenderEmail($storeId)
+    {
+        return $this->getValue(self::SENDER_EMAIL_XML_PATH, "store", $storeId);
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+    public function getReceiverEmail($storeId)
+    {
+        return $this->getValue(self::RECEIVER_EMAIL_XML_PATH, "store", $storeId);
     }
 }
