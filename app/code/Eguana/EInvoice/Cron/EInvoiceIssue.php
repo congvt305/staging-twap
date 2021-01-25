@@ -28,6 +28,10 @@ class EInvoiceIssue
      * @var \Magento\Store\Model\StoreManagerInterface
      */
     private $storeManagerInterface;
+    /**
+     * @var \Eguana\EInvoice\Model\Email
+     */
+    private $helperEmail;
 
     /**
      * EInvoiceIssue constructor.
@@ -35,17 +39,20 @@ class EInvoiceIssue
      * @param \Ecpay\Ecpaypayment\Model\Payment $ecpayPaymentModel
      * @param \Eguana\EInvoice\Model\Source\Config $config
      * @param \Magento\Store\Model\StoreManagerInterface $storeManagerInterface
+     * @param \Eguana\EInvoice\Model\Email $helperEmail
      */
     public function __construct(
         \Eguana\EInvoice\Model\Order $order,
         \Ecpay\Ecpaypayment\Model\Payment $ecpayPaymentModel,
         \Eguana\EInvoice\Model\Source\Config $config,
-        \Magento\Store\Model\StoreManagerInterface $storeManagerInterface
+        \Magento\Store\Model\StoreManagerInterface $storeManagerInterface,
+        \Eguana\EInvoice\Model\Email $helperEmail
     ) {
         $this->order = $order;
         $this->ecpayPaymentModel = $ecpayPaymentModel;
         $this->config = $config;
         $this->storeManagerInterface = $storeManagerInterface;
+        $this->helperEmail = $helperEmail;
     }
 
     public function execute()
@@ -58,8 +65,13 @@ class EInvoiceIssue
             if ($isActive) {
                 $notIssuedOrderList = $this->order->getNotIssuedOrders();
 
-                foreach ($notIssuedOrderList as $order) {
-                    $this->ecpayPaymentModel->createEInvoice($order->getEntityId(), $order->getStoreId());
+                foreach ($notIssuedOrderList as $index => $order) {
+                    $ecpayInvoiceResult = $this->ecpayPaymentModel->createEInvoice($order->getEntityId(), $order->getStoreId());
+
+                    if ($ecpayInvoiceResult["RtnCode"] == "1") {
+                        //send mail
+                        $this->helperEmail->sendEmail($order, $ecpayInvoiceResult["RtnMsg"]);
+                    }
                 }
             }
         }

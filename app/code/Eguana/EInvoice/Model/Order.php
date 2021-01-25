@@ -10,61 +10,38 @@
 
 namespace Eguana\EInvoice\Model;
 
-use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 
 class Order
 {
     /**
-     * @var OrderRepositoryInterface
+     * @var CollectionFactory
      */
-    private $orderRepository;
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-    /**
-     * @var \Magento\Framework\Api\FilterBuilder
-     */
-    private $filterBuilder;
-    /**
-     * @var \Magento\Framework\Api\Search\FilterGroupBuilder
-     */
-    private $filterGroupBuilder;
+    private $ordercollectionFactory;
 
     /**
      * Order constructor.
-     * @param OrderRepositoryInterface $orderRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
-     * @param \Magento\Framework\Api\Search\FilterGroupBuilder $filterGroupBuilder
+     * @param CollectionFactory $ordercollectionFactory
      */
     public function __construct(
-        OrderRepositoryInterface $orderRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Framework\Api\FilterBuilder $filterBuilder,
-        \Magento\Framework\Api\Search\FilterGroupBuilder $filterGroupBuilder
+        CollectionFactory $ordercollectionFactory
     ) {
-        $this->orderRepository = $orderRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->filterBuilder = $filterBuilder;
-        $this->filterGroupBuilder = $filterGroupBuilder;
+        $this->ordercollectionFactory = $ordercollectionFactory;
     }
 
+    /**
+     * @return \Magento\Sales\Model\ResourceModel\Order\Collection
+     */
     public function getCompletedOrders()
     {
-        $filter = $this->filterBuilder
-            ->setField('status')
-            ->setValue('shipment_processing')
-            ->setConditionType('eq')
-            ->create();
-
-        $filterGroup = $this->filterGroupBuilder->setFilters([$filter])->create();
-        $searchCriteria = $this->searchCriteriaBuilder->setFilterGroups([$filterGroup])->create();
-
-        return $this->orderRepository->getList($searchCriteria);
+        return $this->ordercollectionFactory->create()
+            ->addAttributeToSelect("*")
+            ->addAttributeToFilter("status", ["in" => ["shipment_processing", "processing"]]);
     }
 
+    /**
+     * @return array
+     */
     public function getNotIssuedOrders()
     {
         $orderList = $this->getCompletedOrders();
