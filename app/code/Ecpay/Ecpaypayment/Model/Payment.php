@@ -96,6 +96,10 @@ class Payment extends AbstractMethod
      * @var \Magento\Sales\Model\Order\Email\Sender\InvoiceSender
      */
     private $invoiceSender;
+    /**
+     * @var \Eguana\EInvoice\Model\Email
+     */
+    private $helperEmail;
 
     public function __construct(
         Context $context,
@@ -120,6 +124,7 @@ class Payment extends AbstractMethod
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository,
         \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
+        \Eguana\EInvoice\Model\Email $helperEmail,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
@@ -152,6 +157,7 @@ class Payment extends AbstractMethod
         $this->productRepository = $productRepository;
         $this->orderItemRepository = $orderItemRepository;
         $this->invoiceSender = $invoiceSender;
+        $this->helperEmail = $helperEmail;
     }
 
     public function getValidPayments()
@@ -539,7 +545,9 @@ class Payment extends AbstractMethod
         } catch (\Exception $e) {
             // 例外錯誤處理。
             $sMsg = $e->getMessage();
-            throw new LocalizedException(__($sMsg));
+            $incrementId = $order->getIncrementId();
+            $this->helperEmail->sendEmail($order, $sMsg);
+            throw new LocalizedException(__($sMsg . " #$incrementId"));
         }
     }
 
