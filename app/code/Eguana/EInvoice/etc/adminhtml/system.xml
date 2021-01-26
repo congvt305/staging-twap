@@ -35,26 +35,17 @@
                         <field id="active">1</field>
                     </depends>
                 </field>
-                <field id="frequency" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="frequency" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Frequency</label>
                     <source_model>Eguana\EInvoice\Model\Config\Source\Frequency</source_model>
                     <backend_model>Eguana\EInvoice\Model\Config\Backend\EInvoice\Cronjob</backend_model>
-                    <depends>
-                        <field id="active">1</field>
-                    </depends>
                 </field>
-                <field id="time" translate="label" type="time" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="time" translate="label" type="time" sortOrder="6" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Start Time</label>
-                    <depends>
-                        <field id="active">1</field>
-                    </depends>
                 </field>
                 <field id="run_cron" translate="Run Now" type="button" sortOrder="7" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Run Now</label>
                     <frontend_model>Eguana\EInvoice\Block\System\Config\EInvoiceRun</frontend_model>
-                    <depends>
-                        <field id="active">1</field>
-                    </depends>
                 </field>
             </group>
         </section>
