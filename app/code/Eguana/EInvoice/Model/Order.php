@@ -10,7 +10,10 @@
 
 namespace Eguana\EInvoice\Model;
 
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Sales\Api\Data\OrderSearchResultInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
 class Order
@@ -24,11 +27,11 @@ class Order
      */
     private $searchCriteriaBuilder;
     /**
-     * @var \Magento\Framework\Api\FilterBuilder
+     * @var FilterBuilder
      */
     private $filterBuilder;
     /**
-     * @var \Magento\Framework\Api\Search\FilterGroupBuilder
+     * @var FilterGroupBuilder
      */
     private $filterGroupBuilder;
 
@@ -36,14 +39,14 @@ class Order
      * Order constructor.
      * @param OrderRepositoryInterface $orderRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
-     * @param \Magento\Framework\Api\Search\FilterGroupBuilder $filterGroupBuilder
+     * @param FilterBuilder $filterBuilder
+     * @param FilterGroupBuilder $filterGroupBuilder
      */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Framework\Api\FilterBuilder $filterBuilder,
-        \Magento\Framework\Api\Search\FilterGroupBuilder $filterGroupBuilder
+        FilterBuilder $filterBuilder,
+        FilterGroupBuilder $filterGroupBuilder
     ) {
         $this->orderRepository = $orderRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -51,23 +54,46 @@ class Order
         $this->filterGroupBuilder = $filterGroupBuilder;
     }
 
-    public function getCompletedOrders()
+    /**
+     * @param $storeId
+     * @return OrderSearchResultInterface
+     */
+    public function getCompletedOrders($storeId)
     {
-        $filter = $this->filterBuilder
-            ->setField('status')
+        $storeFilter = $this->filterBuilder->setField('store_id')
+            ->setValue($storeId)
+            ->setConditionType('eq')
+            ->create();
+        $andFilter = $this->filterGroupBuilder
+            ->addFilter($storeFilter)
+            ->create();
+
+        $statusFilterShipmentProcessing = $this->filterBuilder->setField('status')
             ->setValue('shipment_processing')
             ->setConditionType('eq')
             ->create();
+        $statusFilterComplete = $this->filterBuilder->setField('status')
+            ->setValue('complete')
+            ->setConditionType('eq')
+            ->create();
+        $orFilter = $this->filterGroupBuilder
+            ->addFilter($statusFilterShipmentProcessing)
+            ->addFilter($statusFilterComplete)
+            ->create();
 
-        $filterGroup = $this->filterGroupBuilder->setFilters([$filter])->create();
-        $searchCriteria = $this->searchCriteriaBuilder->setFilterGroups([$filterGroup])->create();
+        $this->searchCriteriaBuilder->setFilterGroups([$andFilter, $orFilter]);
+        $searchCriteria = $this->searchCriteriaBuilder->create();
 
         return $this->orderRepository->getList($searchCriteria);
     }
 
-    public function getNotIssuedOrders()
+    /**
+     * @param $storeId
+     * @return array
+     */
+    public function getNotIssuedOrders($storeId)
     {
-        $orderList = $this->getCompletedOrders();
+        $orderList = $this->getCompletedOrders($storeId);
 
         $notIssuedOrderList = [];
         foreach ($orderList->getItems() as $order) {
