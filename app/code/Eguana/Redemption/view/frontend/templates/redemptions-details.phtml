@@ -17,14 +17,22 @@ $counterSeats = $redemptionDetails->getData('counter_seats');
 $minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
 $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
 $storeId = $viewModel->getStoreId();
+$thankYouImage = $viewModel->contentFiltering($redemptionDetails->getThankYouImage());
 ?>
 <div class="block block-redemption-detail">
     <div class="block block-image-banner">
         <img
+            id="redemption_banner_img"
             alt="<?= $block->escapeHtml($redemptionDetails->getTitle());?>"
             src="<?= $block->escapeHtml($viewModel->getThumbnailImageURL($redemptionDetails->getImage()));?>"
             title="<?= $block->escapeHtml($redemptionDetails->getTitle());?>"
         >
+        <img
+            id="redemption_thank_you_img"
+            style="display: none;"
+            alt="success-image"
+            src="<?= $block->escapeHtml($viewModel->getThumbnailImageURL($redemptionDetails->getThankYouImage())) ?>"
+            title="<?= $block->escapeHtml($redemptionDetails->getTitle()) ?>">
     </div>
     <div class="block block-description">
         <div class="block-title">

@@ -242,6 +242,19 @@ class Save extends AbstractController implements HttpPostActionInterface
                 $imageName = (explode("/media/", $generalData['image'][0]['url']));
                 $generalData['image'] = $imageName[1];
             }
+            if (isset($generalData['thank_you_image']) &&
+                strpos($generalData['thank_you_image'][0]['url'], 'redemption/tmp/feature/') !== false) {
+                if (isset($generalData['thank_you_image'][0]['file'])) {
+                    $generalData['thank_you_image'] = 'redemption/tmp/feature/' .
+                        $generalData['thank_you_image'][0]['file'];
+                } else {
+                    $imageName = (explode("/media/", $generalData['thank_you_image'][0]['url']));
+                    $generalData['thank_you_image'] = $imageName[1];
+                }
+            } else {
+                $imageName = (explode("/media/", $generalData['thank_you_image'][0]['url']));
+                $generalData['thank_you_image'] = $imageName[1];
+            }
             $model->setData($generalData);
             try {
                 $this->redemptionRepository->save($model);
