@@ -16,6 +16,8 @@ use Eguana\Redemption\Model\CounterFactory;
 use Eguana\Redemption\Model\Service\EmailSender;
 use Eguana\Redemption\Model\Service\SmsSender;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
@@ -72,17 +74,28 @@ class CounterSaveAjax extends Action
     protected $date;
 
     /**
-     * AjaxCall constructor.
-     *
+     * @var FilterBuilder
+     */
+    private $filterBuilder;
+
+    /**
+     * @var FilterGroupBuilder
+     */
+    private $filterGroupBuilder;
+
+    /**
+     * CounterSaveAjax constructor.
      * @param ResultFactory $resultFactory
      * @param Context $context
-     * @param CounterFactory|null $counterFactory
+     * @param CounterFactory $counterFactory
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param CounterRepositoryInterface|null $counterRepository
+     * @param CounterRepositoryInterface $counterRepository
      * @param RedemptionRepositoryInterface $redemptionRepository
      * @param SmsSender $smsSender
      * @param EmailSender $emailSender
      * @param DateTime $date
+     * @param FilterBuilder $filterBuilder
+     * @param FilterGroupBuilder $filterGroupBuilder
      */
     public function __construct(
         ResultFactory $resultFactory,
@@ -93,7 +106,9 @@ class CounterSaveAjax extends Action
         RedemptionRepositoryInterface $redemptionRepository,
         SmsSender $smsSender,
         EmailSender $emailSender,
-        DateTime $date
+        DateTime $date,
+        FilterBuilder $filterBuilder,
+        FilterGroupBuilder $filterGroupBuilder
     ) {
         $this->resultFactory = $resultFactory;
         $this->context = $context;
@@ -104,6 +119,8 @@ class CounterSaveAjax extends Action
         $this->smsSender = $smsSender;
         $this->emailSender = $emailSender;
         $this->date = $date;
+        $this->filterBuilder = $filterBuilder;
+        $this->filterGroupBuilder = $filterGroupBuilder;
         parent::__construct($context);
     }
 
@@ -136,11 +153,45 @@ class CounterSaveAjax extends Action
                 $model->setData('utm_medium', '');
                 $model->setData('utm_content', '');
 
+                $idCond = $this->filterBuilder->setField('secondTable.redemption_id')
+                    ->setValue($post['redemption_id'])
+                    ->setConditionType('eq')
+                    ->create();
+                $filterId = $this->filterGroupBuilder
+                    ->addFilter($idCond)
+                    ->create();
+
+                $storeCond = $this->filterBuilder->setField('main_table.store_id')
+                    ->setValue($post['store_id'])
+                    ->setConditionType('eq')
+                    ->create();
+                $filterStore = $this->filterGroupBuilder
+                    ->addFilter($storeCond)
+                    ->create();
+
+                $counterCond = $this->filterBuilder->setField('main_table.counter_id')
+                    ->setValue($post['counter'])
+                    ->setConditionType('eq')
+                    ->create();
+                $filterCounter = $this->filterGroupBuilder
+                    ->addFilter($counterCond)
+                    ->create();
+
+                $emailCond = $this->filterBuilder->setField('main_table.email')
+                    ->setValue($post['email'])
+                    ->setConditionType('eq')
+                    ->create();
+                $phoneCond = $this->filterBuilder->setField('main_table.telephone')
+                    ->setValue($post['phone'])
+                    ->setConditionType('eq')
+                    ->create();
+                $filterOr = $this->filterGroupBuilder
+                    ->addFilter($emailCond)
+                    ->addFilter($phoneCond)
+                    ->create();
+
                 $criteriaBuilder = $this->searchCriteriaBuilder;
-                $criteriaBuilder
-                    ->addFilter('secondTable.redemption_id', ['eq' => $post['redemption_id']])
-                    ->addFilter('email', ['eq' => $post['email']])
-                    ->addFilter('store_id', ['eq' => $post['store_id']]);
+                $criteriaBuilder->setFilterGroups([$filterId, $filterStore, $filterCounter, $filterOr]);
                 $item = $this->counterRepository->getList($criteriaBuilder->create())->getItems();
 
                 if (!empty($item)) {
@@ -156,7 +207,22 @@ class CounterSaveAjax extends Action
                 try {
                     $this->counterRepository->save($model);
                     $redemptionDetail = $this->redemptionRepository->getById($post['redemption_id']);
-                    $redemptionDetail->setTotalQty($redemptionDetail->getTotalQty() - 1);
+                    $counterKey = array_search($post['counter'], $redemptionDetail->getOfflineStoreId());
+                    $counterSeats = $redemptionDetail->getCounterSeats();
+                    if ($counterKey !== false) {
+                        $seats = $counterSeats[$counterKey];
+                        $seats--;
+                        $counterSeats[$counterKey] = ($seats < 0) ? 0 : $seats;
+                        $redemptionDetail->setData('counter_seats', $counterSeats);
+                    } else {
+                        $resultJson->setData(
+                            [
+                                "message" => __('This redemption has been already completed.'),
+                                "duplicate" => true
+                            ]
+                        );
+                        return $resultJson;
+                    }
                     $this->redemptionRepository->save($redemptionDetail);
                     if ($this->emailSender->getRegistrationEmailEnableValue($post['store_id']) == 1) {
                         try {
@@ -179,7 +245,7 @@ class CounterSaveAjax extends Action
             }
             $resultJson->setData(
                 [
-                    "message" => __('You have successfully applied for redemption check your email or SMS.'),
+                    "message" => __('You have successfully applied for redemption, please check your email and newsletter.'),
                     "success" => true,
                     'entity_id' => $model->getData('entity_id')
                 ]

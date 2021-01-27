@@ -33,7 +33,7 @@ Redemptions,Redemptions
 "This redemption has been expired!","Phần thưởng này đã hết hạn!"
 "This redemption will be available at %1","Đổi thưởng này sẽ có sẵn tại %1"
 "Email or SMS sending failed.","Gửi email hoặc SMS không thành công."
-"You have successfully applied for redemption check your email or SMS.","Bạn đã đăng ký đổi quà thành công, hãy kiểm tra email hoặc SMS của bạn."
+"You have successfully applied for redemption, please check your email and newsletter.","Bạn đã đăng ký đổi thưởng thành công, vui lòng kiểm tra email và bản tin của bạn."
 "Something went wrong while saving the counter.","Đã xảy ra sự cố khi lưu bộ đếm."
 "No redemption exsit with ' . . ' id","Không có quy đổi tồn tại với ' . . ' id"
 "No counter exsit with ' . . ' id","Không có bộ đếm nào thoát với ' . . ' id"
@@ -56,16 +56,16 @@ Delete,Xóa bỏ
 "Delete %1","Xóa bỏ %1"
 "Are you sure you want to delete a %1 record?","Bạn có chắc chắn muốn xóa một %1 ghi lại?"
 View,Lượt xem
-Description,Sự miêu tả
+"Complete the activity information","Hoàn thành thông tin hoạt động"
 Name,Tên
 Phone,Điện thoại
 Email,E-mail
 Counter,Quầy tính tiền
 "Select Counter","Chọn bộ đếm"
-"Line ID ","Số dòng "
+"Fill in your LINE ID name","Điền tên LINE ID của bạn"
 (Optional),(Không bắt buộc)
-Precautions,Các biện pháp phòng ngừa
-"Send SMS/Email","Send SMS/Email"
+"Privacy policy","Chính sách bảo mật"
+"Send out","Gửi đi"
 "Resend message","Resend message"
 "Resend SMS/Email","Gửi lại SMS / Email"
 "The registraion for this redemption is full.","Đăng ký cho việc đổi thưởng này đã đầy đủ."
@@ -135,8 +135,26 @@ Thumbnail,Hình nhỏ
 "End Date","Ngày cuối"
 Created,Tạo
 Modified,Đã sửa đổi
-"If you did not recieved an email or SMS. Click on Resend after.","Nếu bạn không nhận được email hoặc tin nhắn SMS. Nhấp vào Gửi lại sau."
+"If you have not received the email or text message, please click 'Send' again after 60 seconds","Nếu bạn chưa nhận được email hoặc tin nhắn văn bản, vui lòng nhấp lại vào 'Gửi' sau 60 giây"
 "Counter information not found","Không tìm thấy thông tin truy cập"
 "This redemption is not available.","Việc đổi thưởng này không khả dụng."
 "click here to register new redemption","bấm vào đây để đăng ký đổi mới"
 " * This is a required field.","* Đây là một lĩnh vực cần thiết."
+"Total Quantity","Tổng số lượng"
+"Phone number should starts with '09'","Số điện thoại phải bắt đầu bằng '09'"
+"I have agreed to the privacy policy","Tôi đã đồng ý với chính sách bảo mật"
+"Amorepacific Co., Ltd. (hereinafter referred to as 'Our company') takes your privacy very seriously, in order to let you can use Amorepacific activities with peace of mind","Amore Pacific Co., Ltd. (sau đây gọi tắt là 'Công ty của chúng tôi') rất coi trọng quyền riêng tư của bạn, để cho phép Bạn có thể yên tâm sử dụng các hoạt động ở Thái Bình Dương"
+"Dear %customer,
+Congratulations on your successful application for the trial package redemption qualification! Please use this message to redeem at the counter! Provided to the counter staff
+Please click to complete the redemption by the counter staff, thank you!
+Redemption confirmation link:
+%link","Kính gửi %customer,
+Chúc mừng bạn đã đăng ký thành công để đủ điều kiện đổi gói dùng thử! Vui lòng sử dụng tin nhắn này để đổi tại quầy! Cung cấp cho nhân viên quầy
+Nhân viên quầy vui lòng bấm vào để hoàn tất việc đổi quà, xin cảm ơn!
+Liên kết xác nhận đổi thưởng:
+%link"
+"Dear %name,","kính thưa %name,"
+"[Sulwhasoo] Trial package redemption application confirmation notice","[Sulwhasoo] Thông báo xác nhận đơn đăng ký đổi gói dùng thử"
+"Congratulations on your successful application for the trial package redemption qualification! Please use this message to redeem at the counter! Provided To the counter staff","Chúc mừng bạn đã đăng ký thành công để đủ điều kiện đổi gói dùng thử! Vui lòng sử dụng tin nhắn này để đổi tại quầy! Cung cấp cho nhân viên quầy"
+"Please click to complete the redemption by the counter staff, thank you!","Nhân viên quầy vui lòng bấm vào để hoàn tất việc đổi quà, xin cảm ơn!"
+"Redemption confirmation link:","Liên kết xác nhận đổi thưởng:"

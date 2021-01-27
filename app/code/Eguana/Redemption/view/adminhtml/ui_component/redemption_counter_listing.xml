@@ -169,9 +169,10 @@
                 <sorting>asc</sorting>
             </settings>
         </column>
-        <column name="redeem_date" sortOrder="30">
+        <column name="redeem_date" sortOrder="30" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
             <settings>
-                <filter>text</filter>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
                 <label translate="true">Redeem date</label>
             </settings>
         </column>
@@ -213,9 +214,10 @@
                 <label translate="true">Line Id</label>
             </settings>
         </column>
-        <column name="registration_date" sortOrder="90">
+        <column name="registration_date" sortOrder="90" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
             <settings>
-                <filter>text</filter>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
                 <label translate="true">Registration Date</label>
             </settings>
         </column>

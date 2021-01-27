@@ -42,7 +42,8 @@
     "eguana_redemption_counter": {
         "column": {
             "redemption_id": true,
-            "offline_store_id": true
+            "offline_store_id": true,
+            "counter_seats": true
         },
         "index": {
             "EGUANA_REDEMPTION_COUNTER_OFFLINE_STORE_ID": true

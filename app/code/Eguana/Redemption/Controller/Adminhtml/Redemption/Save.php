@@ -156,6 +156,10 @@ class Save extends AbstractController implements HttpPostActionInterface
         $resultRedirect = $this->resultRedirectFactory->create();
         $data = $this->getRequest()->getPostValue();
         if ($data) {
+            if (isset($data['counter_total_seats'])) {
+                $data['counter_seats'] = !is_array($data['counter_total_seats']) ?
+                    [(int)$data['counter_total_seats']] : $data['counter_total_seats'];
+            }
             $generalData = $data;
             if (isset($generalData['active']) && $generalData['active'] === '1') {
                 $generalData['is_active'] = 1;

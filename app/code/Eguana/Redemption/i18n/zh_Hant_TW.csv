@@ -33,7 +33,7 @@ Redemptions,換領
 "This redemption has been expired!","此兌換已過期！"
 "This redemption will be available at %1","可以在以下位置使用此兌換 %1"
 "Email or SMS sending failed.","電子郵件或短信發送失敗。"
-"You have successfully applied for redemption check your email or SMS.","您已成功申請兌換，請檢查您的電子郵件或短信。"
+"You have successfully applied for redemption, please check your email and newsletter.","您已成功申請兌換，請查看您的電子郵件與簡訊。"
 "Something went wrong while saving the counter.","保存計數器時出了點問題。"
 "No redemption exsit with ' . . ' id","不存在與' . . ' id"
 "No counter exsit with ' . . ' id","無反制' . . ' id"
@@ -56,16 +56,16 @@ Delete,刪除
 "Delete %1","刪除 %1"
 "Are you sure you want to delete a %1 record?","您確定要刪除一個 %1 記錄？"
 View,視圖
-Description,描述
+"Complete the activity information","填寫完成活動資料"
 Name,名稱
 Phone,電話
 Email,電子郵件
 Counter,計數器
 "Select Counter","選擇櫃檯"
-"Line ID ","線路ID "
+"Fill in your LINE ID name","填寫您的 LINE ID 名稱"
 (Optional),（可選的）
-Precautions,預防措施
-"Send SMS/Email","發送短信/電子郵件"
+"Privacy policy","隱私權條款"
+"Send out","送出"
 "Resend message","重新發送訊息"
 "Resend SMS/Email","重新發送短信/電子郵件"
 "The registraion for this redemption is full.","此兌換的註冊已完成。"
@@ -135,8 +135,26 @@ Thumbnail,縮圖
 "End Date","End Date"
 Created,Created
 Modified,改性
-"If you did not recieved an email or SMS. Click on Resend after.","如果您沒有收到電子郵件或短信。 單擊“重新發送之後”。"
+"If you have not received the email or text message, please click 'Send' again after 60 seconds","如果您尚未收到電子郵件或簡訊，請於60秒後重新點擊”送出”"
 "Counter information not found","找不到計數器信息"
 "This redemption is not available.","無法使用此兌換。"
 "click here to register new redemption","點擊此處註冊新的兌換"
 " * This is a required field.","* 這是一個必填字段。"
+"Total Quantity","總量"
+"Phone number should starts with '09'","電話號碼應以“09”開頭"
+"I have agreed to the privacy policy","我已同意隱私權條款"
+"Amorepacific Co., Ltd. (hereinafter referred to as 'Our company') takes your privacy very seriously, in order to let you can use Amorepacific activities with peace of mind","愛茉莉太平洋股份有限公司(以下簡稱「本公司」)非常重視您的隱私權，為了讓您能夠安心的使用愛茉莉太平洋活動"
+"Dear %customer,
+Congratulations on your successful application for the trial package redemption qualification! Please use this message to redeem at the counter! Provided to the counter staff
+Please click to complete the redemption by the counter staff, thank you!
+Redemption confirmation link:
+%link","親愛的 %customer,
+恭喜您成功申請試用包兌換資格!請憑此訊息至專櫃進行兌換!提供給櫃檯人員
+請由專櫃人員點擊完成兌換，謝謝！
+兌換確認連結:
+%link"
+"Dear","親愛的"
+"[Sulwhasoo] Trial package redemption application confirmation notice","【雪花秀】試用包兌換申請確認通知"
+"Congratulations on your successful application for the trial package redemption qualification! Please use this message to redeem at the counter! Provided To the counter staff","恭喜您成功申請試用包兌換資格!請憑此訊息至專櫃進行兌換!提供給櫃檯人員"
+"Please click to complete the redemption by the counter staff, thank you!","請由專櫃人員點擊完成兌換，謝謝！"
+"Redemption confirmation link:","兌換確認連結:"

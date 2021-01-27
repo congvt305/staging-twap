@@ -33,7 +33,7 @@ Redemptions,Redemptions
 "This redemption has been expired!","This redemption has been expired!"
 "This redemption will be available at %1","This redemption will be available at %1"
 "Email or SMS sending failed.","Email or SMS sending failed."
-"You have successfully applied for redemption check your email or SMS.","You have successfully applied for redemption check your email or SMS."
+"You have successfully applied for redemption, please check your email and newsletter.","You have successfully applied for redemption, please check your email and newsletter."
 "Something went wrong while saving the counter.","Something went wrong while saving the counter."
 "No redemption exsit with ' . . ' id","No redemption exsit with ' . . ' id"
 "No counter exsit with ' . . ' id","No counter exsit with ' . . ' id"
@@ -56,16 +56,16 @@ Delete,Delete
 "Delete %1","Delete %1"
 "Are you sure you want to delete a %1 record?","Are you sure you want to delete a %1 record?"
 View,View
-Description,Description
+"Complete the activity information","Complete the activity information"
 Name,Name
 Phone,Phone
 Email,Email
 Counter,Counter
 "Select Counter","Select Counter"
-"Line ID ","Line ID "
+"Fill in your LINE ID name ","Fill in your LINE ID name"
 (Optional),(Optional)
-Precautions,Precautions
-"Send SMS/Email","Send SMS/Email"
+"Privacy policy","Privacy policy"
+"Send out","Send out"
 "Resend message","Resend message"
 "Resend SMS/Email","Resend SMS/Email"
 "The registraion for this redemption is full.","The registraion for this redemption is full."
@@ -135,3 +135,22 @@ Thumbnail,Thumbnail
 "End Date","End Date"
 Created,Created
 Modified,Modified
+"Total Quantity","Total Quantity"
+"Phone number should starts with '09'","Phone number should starts with '09'"
+"I have agreed to the privacy policy","I have agreed to the privacy policy"
+"Amorepacific Co., Ltd. (hereinafter referred to as 'Our company') takes your privacy very seriously, in order to let you can use Amorepacific activities with peace of mind","Amorepacific Co., Ltd. (hereinafter referred to as 'Our company') takes your privacy very seriously, in order to let you can use Amorepacific activities with peace of mind"
+"If you have not received the email or text message, please click 'Send' again after 60 seconds","If you have not received the email or text message, please click 'Send' again after 60 seconds"
+"Dear %customer,
+Congratulations on your successful application for the trial package redemption qualification! Please use this message to redeem at the counter! Provided to the counter staff
+Please click to complete the redemption by the counter staff, thank you!
+Redemption confirmation link:
+%link","Dear %customer,
+Congratulations on your successful application for the trial package redemption qualification! Please use this message to redeem at the counter! Provided to the counter staff
+Please click to complete the redemption by the counter staff, thank you!
+Redemption confirmation link:
+%link"
+"Dear %name,","Dear %name,"
+"[Sulwhasoo] Trial package redemption application confirmation notice","[Sulwhasoo] Trial package redemption application confirmation notice"
+"Congratulations on your successful application for the trial package redemption qualification! Please use this message to redeem at the counter! Provided To the counter staff","Congratulations on your successful application for the trial package redemption qualification! Please use this message to redeem at the counter! Provided To the counter staff"
+"Please click to complete the redemption by the counter staff, thank you!","Please click to complete the redemption by the counter staff, thank you!"
+"Redemption confirmation link:","Redemption confirmation link:"

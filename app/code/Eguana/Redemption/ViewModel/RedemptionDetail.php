@@ -435,4 +435,14 @@ class RedemptionDetail implements ArgumentInterface
     {
         return $this->redemptionConfiguration->getMaximumMobileNumberDigits($this->getStoreId());
     }
+
+    /**
+     * Get privacy policy text
+     *
+     * @return string
+     */
+    public function getPrivacyPolicy()
+    {
+        return $this->redemptionConfiguration->getPrivacyPolicy($this->getStoreId());
+    }
 }
