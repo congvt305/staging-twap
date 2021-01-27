@@ -215,13 +215,6 @@ class Index extends Action
             return $resultRedirect;
         }
         $redemptionId = $this->getRequest()->getParam('redemption_id');
-        $successParam = $this->getRequest()->getParam('success');
-        $redemptionQuantity = $this->redemptionRepository->getById($redemptionId)->getTotalQty();
-        if (($redemptionQuantity == 0) && !(isset($successParam))) {
-            $this->messageManager->addSuccessMessage(__('The registraion for this redemption is full.'));
-            $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
-            return $resultRedirect->setUrl('/');
-        }
         $redemptionDetail = $this->redemptionRepository->getById($redemptionId);
         $redemptionStartDate = $redemptionDetail->getStartDate();
         $redemptionEndDate = $redemptionDetail->getEndDate();

@@ -58,6 +58,7 @@ class Redemption extends AbstractDb
             'associations_table' => 'eguana_redemption_counter',
             'redemption_id_field' => 'redemption_id',
             'offline_store_id_field' => 'offline_store_id',
+            'counter_seats_field' => 'counter_seats',
         ],
     ];
 
@@ -297,6 +298,33 @@ class Redemption extends AbstractDb
     }
 
     /**
+     * Get counter seats to which specified item is assigned
+     *
+     * @param int $id
+     * @return array
+     * @throws LocalizedException
+     */
+    public function lookupCounterSeats($id)
+    {
+        try {
+            $connection = $this->getConnection();
+            $entityMetadata = $this->metadataPool->getMetadata(RedemptionInterface::class);
+            $linkField = $entityMetadata->getLinkField();
+            $select = $connection->select()
+                ->from(['ems' => $this->getTable('eguana_redemption_counter')], 'counter_seats')
+                ->join(
+                    ['em' => $this->getMainTable()],
+                    'ems.' . $linkField . ' = em.' . $linkField,
+                    []
+                )
+                ->where('em.' . $entityMetadata->getIdentifierField() . ' = :redemption_id');
+            return $connection->fetchCol($select, ['redemption_id' => (int)$id]);
+        } catch (Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
+    }
+
+    /**
      * _aftersave method
      * This method is used to seve data and it is using the functionality to store multiple counter id in separate table
      *
@@ -309,10 +337,18 @@ class Redemption extends AbstractDb
         $this->entityManager->save($object);
         $counterIds = $object->getData('offline_store_id');
         if ($counterIds) {
+            $counterSeats = $object->getData('counter_seats');
+            $entities = [0 => [
+                'counter_ids' => $counterIds,
+                'counter_seats' => $counterSeats
+            ]];
             if (!is_array($counterIds)) {
-                $counterIds = explode(',', (string) $counterIds);
+                $entities[0]['counter_ids'] = explode(',', (string) $counterIds);
             }
-            $this->bindRuleToEntity($object->getId(), $counterIds, 'counter');
+            if (!is_array($counterSeats)) {
+                $entities[0]['counter_seats'] = explode(',', (string) $counterSeats);
+            }
+            $this->bindRuleToEntity($object->getId(), $entities, 'counter');
         }
 
         parent::_afterSave($object);
@@ -380,15 +416,18 @@ class Redemption extends AbstractDb
             $ruleIds = [(int)$ruleIds];
         }
         if (!is_array($entityIds)) {
-            $entityIds = [(int)$entityIds];
+            $entityIds[] = ['counter_ids' => [(int)$entityIds], 'counter_seats' => []];
         }
         $data = [];
         $count = 0;
         $entityInfo = $this->_getAssociatedEntityInfo($entityType);
+        $counterIds = isset($entityIds[0]['counter_ids']) ? $entityIds[0]['counter_ids'] : [];
+        $counterSeats = isset($entityIds[0]['counter_seats']) ? $entityIds[0]['counter_seats'] : [];
         foreach ($ruleIds as $ruleId) {
-            foreach ($entityIds as $entityId) {
+            foreach ($counterIds as $key => $entityId) {
                 $data[] = [
                     $entityInfo['offline_store_id_field'] => $entityId,
+                    $entityInfo['counter_seats_field'] => isset($counterSeats[$key]) ? $counterSeats[$key] : 0,
                     $entityInfo['redemption_id_field'] => $ruleId,
                 ];
                 $count++;
@@ -396,7 +435,11 @@ class Redemption extends AbstractDb
                     $this->getConnection()->insertOnDuplicate(
                         $this->getTable($entityInfo['associations_table']),
                         $data,
-                        [$entityInfo['redemption_id_field']]
+                        [
+                            $entityInfo['offline_store_id_field'],
+                            $entityInfo['counter_seats_field'],
+                            $entityInfo['redemption_id_field']
+                        ]
                     );
                     $data = [];
                 }
@@ -406,7 +449,9 @@ class Redemption extends AbstractDb
             $this->getConnection()->insertOnDuplicate(
                 $this->getTable($entityInfo['associations_table']),
                 $data,
-                [$entityInfo['redemption_id_field']]
+                [
+                    $entityInfo['counter_seats_field'],
+                ]
             );
         }
 
@@ -417,7 +462,7 @@ class Redemption extends AbstractDb
                 $ruleIds
             ) . $this->getConnection()->quoteInto(
                 $entityInfo['offline_store_id_field'] . ' NOT IN (?)',
-                $entityIds
+                $counterIds
             )
         );
         return $this;

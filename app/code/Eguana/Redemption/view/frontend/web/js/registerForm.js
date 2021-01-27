@@ -8,8 +8,8 @@
  */
 define([
     'jquery',
-    'domReady!',
-    "mage/translate",
+    'mage/translate',
+    'domReady!'
 ], function ($) {
     /**
      * @param config.countersaveurl
@@ -27,6 +27,26 @@ define([
         $("#counter-form-submit").click(function(e){
             e.preventDefault();
             if ($('form[id="counter-form"]').valid()) {
+                /**
+                 * To check phone no starts with 09 digits or not
+                 */
+                if ($('#phone').val().substr(0, 2) != '09') {
+                    $('#phone').addClass('mage-error');
+                    var phoneError = $('#phone-error');
+                    if (!phoneError.length) {
+                        $('#phone').after('<div for="phone" generated="true" class="mage-error" id="phone-error">' + $.mage.__("Phone number should starts with '09'") + '</div>');
+                    } else {
+                        phoneError.html($.mage.__("Phone number should starts with '09'")).show();
+                    }
+                    $('html, body').animate({
+                        scrollTop: $('#name').offset().top},
+                    'slow');
+                    return false;
+                } else {
+                    $('#phone').removeClass('mage-error');
+                    $('#phone-error').hide();
+                }
+
                 let formkey = "<input name='form_key' value=" + window.FORM_KEY + " title='form_key' type='hidden'>";
                 $('form[id="counter-form"]').append(formkey);
                 let form_data = $('form[id="counter-form"]').serialize();
@@ -46,6 +66,8 @@ define([
                             infoAndErrorMessageDiv.append("<span>" + data['message'] + "</span>");
                             $('#counter-form-submit').show();
                             $('#counter-form-submit').removeAttr('disabled');
+                            $('#redemption_thank_you_img').show();
+                            $('#redemption_banner_img').hide();
                         }
                         if (data['success']) {
                             $('#name, #phone, #email, #line').prop('readonly', true);
@@ -59,6 +81,8 @@ define([
                             $('#resend-button').prop('disabled', true);
                             $('#info-message').show();
                             startTimer();
+                            $('#redemption_thank_you_img').show();
+                            $('#redemption_banner_img').hide();
                         }
                         window.scrollTo(500, 0);
                     }

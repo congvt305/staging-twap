@@ -13,21 +13,30 @@
 $viewModel = $block->getData('details_view_model');
 $redemptionDetails = $viewModel->getRedemption();
 $redemptionCounters = $redemptionDetails->getData('offline_store_id');
+$counterSeats = $redemptionDetails->getData('counter_seats');
 $minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
 $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
 $storeId = $viewModel->getStoreId();
+$thankYouImage = $viewModel->contentFiltering($redemptionDetails->getThankYouImage());
 ?>
 <div class="block block-redemption-detail">
     <div class="block block-image-banner">
         <img
+            id="redemption_banner_img"
             alt="<?= $block->escapeHtml($redemptionDetails->getTitle());?>"
             src="<?= $block->escapeHtml($viewModel->getThumbnailImageURL($redemptionDetails->getImage()));?>"
             title="<?= $block->escapeHtml($redemptionDetails->getTitle());?>"
         >
+        <img
+            id="redemption_thank_you_img"
+            style="display: none;"
+            alt="success-image"
+            src="<?= $block->escapeHtml($viewModel->getThumbnailImageURL($redemptionDetails->getThankYouImage())) ?>"
+            title="<?= $block->escapeHtml($redemptionDetails->getTitle()) ?>">
     </div>
     <div class="block block-description">
         <div class="block-title">
-            <strong><?= $block->escapeHtml(__('Description')) ?></strong>
+            <strong><?= $block->escapeHtml(__('Complete the activity information')) ?></strong>
         </div>
         <div class="block-content">
             <div class="description-content">
@@ -87,10 +96,11 @@ $storeId = $viewModel->getStoreId();
                         <div class="control">
                             <select id="counter" name="counter" title="<?= $block->escapeHtml(__('Counter')) ?>" class="select" data-validate="{required:true}">
                                 <option value="">-- <?= $block->escapeHtml(__('Select Counter')) ?> --</option>
-                                <?php foreach ($redemptionCounters as $counter):
+                                <?php foreach ($redemptionCounters as $key => $counter):
                                     if ($viewModel->checkStoreLocatorInWebsite($counter)) : ?>
                                         <option
-                                            value="<?= $block->escapeHtml($counter) ?>">
+                                            value="<?= $block->escapeHtml($counter) ?>"
+                                            <?= ($counterSeats[$key] <=0) ? 'disabled="disabled"' : '' ?>>
                                             <?= $block->escapeHtml($viewModel->getCounterName($counter)); ?>
                                         </option>
                                     <?php
@@ -101,10 +111,10 @@ $storeId = $viewModel->getStoreId();
                     </div>
                     <div class="field line">
                         <label class="label" for="email">
-                            <span><?= /* @noEscape */ __('<b>Line ID</b> (Optional)') ?></span>
+                            <span><?= /* @noEscape */ __('Fill in your LINE ID name') ?></span>
                         </label>
                         <div class="control">
-                            <input id="line" name="line" type="text" title="<?= $block->escapeHtml(__('Line ID')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('Your line..')) ?>">
+                            <input id="line" name="line" type="text" title="<?= $block->escapeHtml(__('Fill in your LINE ID name')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('Fill in your LINE ID name')) ?>">
                         </div>
                     </div>
                     <?= $block->getChildHtml('form.additional.info') ?>
@@ -112,19 +122,33 @@ $storeId = $viewModel->getStoreId();
                 </fieldset>
                 <div class="block block-precautions">
                     <div class="block-title">
-                        <strong><?= $block->escapeHtml(__('Precautions')) ?></strong>
+                        <strong><?= $block->escapeHtml(__('Privacy policy')) ?></strong>
                     </div>
-                    <div class="block-content">
-                        <div class="precautions-content">
-                            <?= /* @noEscape */  $viewModel->contentFiltering($redemptionDetails->getPrecautions()); ?>
+                    <fieldset class="fieldset">
+                        <div class="field choice required">
+                            <input
+                                type="checkbox"
+                                name="privacy_policy"
+                                id="privacy_policy"
+                                class="agreement-checkbox checkbox"
+                                required="true"
+                                title="<?= $block->escapeHtmlAttr(__('I have agreed to the privacy policy')) ?>"/>
+                            <label
+                                class="label"
+                                for="agreement">
+                                <span><?= $block->escapeHtml(__('I have agreed to the privacy policy')); ?></span>
+                            </label>
                         </div>
-                    </div>
+                        <div class="privacy-policy-box">
+                            <?= $block->escapeHtml($viewModel->getPrivacyPolicy()); ?>
+                        </div>
+                    </fieldset>
                 </div>
                 <div class="actions-toolbar">
                     <div class="primary">
-                            <button id="counter-form-submit" class="button action primary send sbt-button" type="button">
-                                <span><?= $block->escapeHtml(__('Send SMS/Email')) ?></span>
-                            </button>
+                        <button id="counter-form-submit" class="button action primary send sbt-button" type="button">
+                            <span><?= $block->escapeHtml(__('Send out')) ?></span>
+                        </button>
                         <br>
                         <button class="action primary action-resend" style="display: none;" id="resend-button" type="button">
                             <span><?= $block->escapeHtml(__('Resend SMS/Email')) ?></span>
@@ -132,7 +156,7 @@ $storeId = $viewModel->getStoreId();
                         <br>
                         <br>
                         <p style="color: red;" id="info-message">
-                            <?= $block->escapeHtml(__('If you did not recieved an email or SMS. Click on Resend after.')) ?>
+                            <?= $block->escapeHtml(__("If you have not received the email or text message, please click 'Send' again after 60 seconds")) ?>
                             <span id="countTime"></span>
                         </p>
                     </div>

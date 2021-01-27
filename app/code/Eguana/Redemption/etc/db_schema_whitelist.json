@@ -16,7 +16,8 @@
             "image": true,
             "is_active": true,
             "creation_time": true,
-            "update_time": true
+            "update_time": true,
+            "thank_you_image": true
         },
         "index": {
             "EGUANA_REDEMPTION_TITLE_IDENTIFIER_DESCRIPTION": true
@@ -42,7 +43,8 @@
     "eguana_redemption_counter": {
         "column": {
             "redemption_id": true,
-            "offline_store_id": true
+            "offline_store_id": true,
+            "counter_seats": true
         },
         "index": {
             "EGUANA_REDEMPTION_COUNTER_OFFLINE_STORE_ID": true

@@ -60,6 +60,7 @@ class Collection extends AbstractCollection implements SearchResultInterface
         $this->_map['fields']['store'] = 'store_table.store_id';
         $this->_map['fields']['redemption_id'] = 'main_table.redemption_id';
         $this->_map['fields']['counter'] = 'counter_table.offline_store_id';
+        $this->_map['fields']['counter_seats'] = 'counter_table.offline_store_id';
     }
 
     /**

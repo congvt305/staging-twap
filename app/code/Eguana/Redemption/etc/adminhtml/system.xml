@@ -93,6 +93,13 @@
                         <field id="*/*/enabled">1</field>
                     </depends>
                 </field>
+                <field id="privacy_policy_text" translate="label" type="textarea" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Privacy policy</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>

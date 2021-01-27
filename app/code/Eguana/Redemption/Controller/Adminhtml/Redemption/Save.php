@@ -156,6 +156,10 @@ class Save extends AbstractController implements HttpPostActionInterface
         $resultRedirect = $this->resultRedirectFactory->create();
         $data = $this->getRequest()->getPostValue();
         if ($data) {
+            if (isset($data['counter_total_seats'])) {
+                $data['counter_seats'] = !is_array($data['counter_total_seats']) ?
+                    [(int)$data['counter_total_seats']] : $data['counter_total_seats'];
+            }
             $generalData = $data;
             if (isset($generalData['active']) && $generalData['active'] === '1') {
                 $generalData['is_active'] = 1;
@@ -237,6 +241,19 @@ class Save extends AbstractController implements HttpPostActionInterface
             } else {
                 $imageName = (explode("/media/", $generalData['image'][0]['url']));
                 $generalData['image'] = $imageName[1];
+            }
+            if (isset($generalData['thank_you_image']) &&
+                strpos($generalData['thank_you_image'][0]['url'], 'redemption/tmp/feature/') !== false) {
+                if (isset($generalData['thank_you_image'][0]['file'])) {
+                    $generalData['thank_you_image'] = 'redemption/tmp/feature/' .
+                        $generalData['thank_you_image'][0]['file'];
+                } else {
+                    $imageName = (explode("/media/", $generalData['thank_you_image'][0]['url']));
+                    $generalData['thank_you_image'] = $imageName[1];
+                }
+            } else {
+                $imageName = (explode("/media/", $generalData['thank_you_image'][0]['url']));
+                $generalData['thank_you_image'] = $imageName[1];
             }
             $model->setData($generalData);
             try {
