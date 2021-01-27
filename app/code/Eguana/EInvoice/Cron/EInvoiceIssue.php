@@ -66,11 +66,15 @@ class EInvoiceIssue
                 $notIssuedOrderList = $this->order->getNotIssuedOrders($store->getId());
 
                 foreach ($notIssuedOrderList as $index => $order) {
-                    $ecpayInvoiceResult = $this->ecpayPaymentModel->createEInvoice($order->getEntityId(), $order->getStoreId());
+                    try {
+                        $ecpayInvoiceResult = $this->ecpayPaymentModel->createEInvoice($order->getEntityId(), $order->getStoreId());
 
-                    if ($ecpayInvoiceResult["RtnCode"] != "1") {
-                        //send mail
-                        $this->helperEmail->sendEmail($order, $ecpayInvoiceResult["RtnMsg"]);
+                        if ($ecpayInvoiceResult["RtnCode"] != "1") {
+                            //send mail
+                            $this->helperEmail->sendEmail($order, $ecpayInvoiceResult["RtnMsg"]);
+                        }
+                    } catch (\Exception $e) {
+                        $this->helperEmail->sendEmail($order, $e->getMessage());
                     }
                 }
             }
