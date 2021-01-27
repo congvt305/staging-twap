@@ -30,6 +30,7 @@ class RedemptionConfiguration
     const XML_PATH_RESEND_BUTTON_TIME = 'redemption/configuration/resend_email_sms_time';
     const XML_PATH_MINIMUM_MOBILE_NUMBER_DIGITS = 'redemption/configuration/minimum_mobile_number_digits';
     const XML_PATH_MAXIMUM_MOBILE_NUMBER_DIGITS = 'redemption/configuration/maximum_mobile_number_digits';
+    const XML_PATH_PRIVACY_POLICY_TEXT = 'redemption/configuration/privacy_policy_text';
 
     /**
      * @var ScopeInterface
@@ -201,6 +202,21 @@ class RedemptionConfiguration
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_MAXIMUM_MOBILE_NUMBER_DIGITS,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * To get privacy policy
+     *
+     * @param null $storeId
+     * @return string
+     */
+    public function getPrivacyPolicy($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_PRIVACY_POLICY_TEXT,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
