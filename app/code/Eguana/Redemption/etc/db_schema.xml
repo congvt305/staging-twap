@@ -17,6 +17,7 @@
         <column xsi:type="varchar" name="title" nullable="false" length="255" comment="Redemption Title"/>
         <column xsi:type="mediumtext" name="description" nullable="true" comment="Redemption Description"/>
         <column xsi:type="mediumtext" name="precautions" nullable="true" comment="Redemption Precautions"/>
+        <column xsi:type="mediumtext" name="thank_you_image" nullable="true" comment="Redemption Thank You Image"/>
         <column xsi:type="smallint" name="total_qty" nullable="false" default="0" unsigned="true" identity="false" comment="Redemption Total Quantity"/>
         <column xsi:type="smallint" name="cms_block"  nullable="false" default="0" unsigned="false" identity="false" comment="CMS Block"/>
         <column xsi:type="date" name="start_date" nullable="false" comment="Start Date"/>

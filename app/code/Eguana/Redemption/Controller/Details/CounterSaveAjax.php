@@ -245,7 +245,7 @@ class CounterSaveAjax extends Action
             }
             $resultJson->setData(
                 [
-                    "message" => __('You have successfully applied for redemption check your email or SMS.'),
+                    "message" => __('You have successfully applied for redemption, please check your email and newsletter.'),
                     "success" => true,
                     'entity_id' => $model->getData('entity_id')
                 ]
