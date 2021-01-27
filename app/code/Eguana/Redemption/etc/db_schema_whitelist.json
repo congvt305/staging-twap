@@ -16,7 +16,8 @@
             "image": true,
             "is_active": true,
             "creation_time": true,
-            "update_time": true
+            "update_time": true,
+            "thank_you_image": true
         },
         "index": {
             "EGUANA_REDEMPTION_TITLE_IDENTIFIER_DESCRIPTION": true

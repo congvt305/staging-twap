@@ -269,23 +269,24 @@
                 </formElements>
             </field>
         </fieldset>
-        <fieldset name="precautions" sortOrder="110">
+        <fieldset name="thank_you_image" sortOrder="110">
             <settings>
                 <collapsible>true</collapsible>
-                <label translate="true">Content Precautions</label>
+                <label translate="true">Thank You Image</label>
             </settings>
-            <field name="precautions" sortOrder="10" formElement="wysiwyg">
+            <field name="thank_you_image" sortOrder="10" formElement="wysiwyg">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
                         <item name="source" xsi:type="string">eguana_redemption</item>
                     </item>
                 </argument>
                 <settings>
+                    <required>true</required>
                     <additionalClasses>
                         <class name="admin__field-wide">true</class>
                     </additionalClasses>
-                    <label translate="true">Precautions</label>
-                    <dataScope>precautions</dataScope>
+                    <label translate="true">Thank You Image</label>
+                    <dataScope>thank_you_image</dataScope>
                 </settings>
                 <formElements>
                     <wysiwyg>

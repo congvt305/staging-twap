@@ -66,6 +66,8 @@ define([
                             infoAndErrorMessageDiv.append("<span>" + data['message'] + "</span>");
                             $('#counter-form-submit').show();
                             $('#counter-form-submit').removeAttr('disabled');
+                            $('#redemption_thank_you_img').show();
+                            $('#redemption_banner_img').hide();
                         }
                         if (data['success']) {
                             $('#name, #phone, #email, #line').prop('readonly', true);
@@ -79,6 +81,8 @@ define([
                             $('#resend-button').prop('disabled', true);
                             $('#info-message').show();
                             startTimer();
+                            $('#redemption_thank_you_img').show();
+                            $('#redemption_banner_img').hide();
                         }
                         window.scrollTo(500, 0);
                     }
