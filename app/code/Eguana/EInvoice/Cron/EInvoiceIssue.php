@@ -63,7 +63,7 @@ class EInvoiceIssue
             $isActive = $this->config->getEInvoiceIssueActive($store->getId());
 
             if ($isActive) {
-                $notIssuedOrderList = $this->order->getNotIssuedOrders();
+                $notIssuedOrderList = $this->order->getNotIssuedOrders($store->getId());
 
                 foreach ($notIssuedOrderList as $index => $order) {
                     $ecpayInvoiceResult = $this->ecpayPaymentModel->createEInvoice($order->getEntityId(), $order->getStoreId());
