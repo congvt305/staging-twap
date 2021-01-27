@@ -135,6 +135,34 @@
                 </imageUploader>
             </formElements>
         </field>
+        <field name="thank_you_image" sortOrder="31" formElement="imageUploader">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">eguana_redemption</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <elementTmpl>ui/form/element/uploader/image</elementTmpl>
+                <dataType>string</dataType>
+                <required>false</required>
+                <label translate="true">Thank You Image</label>
+            </settings>
+            <formElements>
+                <imageUploader>
+                    <settings>
+                        <uploaderConfig>
+                            <param xsi:type="url" name="url" path="redemption/feature_image/upload"/>
+                        </uploaderConfig>
+                        <previewTmpl>Eguana_Redemption/thank-you-image-preview</previewTmpl>
+                        <allowedExtensions>jpg jpeg gif png</allowedExtensions>
+                        <maxFileSize>4194304</maxFileSize>
+                    </settings>
+                </imageUploader>
+            </formElements>
+        </field>
         <field name="cms_block" sortOrder="40" formElement="select">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -259,34 +287,6 @@
                     </additionalClasses>
                     <label translate="true">Description</label>
                     <dataScope>description</dataScope>
-                </settings>
-                <formElements>
-                    <wysiwyg>
-                        <settings>
-                            <wysiwyg>true</wysiwyg>
-                        </settings>
-                    </wysiwyg>
-                </formElements>
-            </field>
-        </fieldset>
-        <fieldset name="thank_you_image" sortOrder="110">
-            <settings>
-                <collapsible>true</collapsible>
-                <label translate="true">Thank You Image</label>
-            </settings>
-            <field name="thank_you_image" sortOrder="10" formElement="wysiwyg">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="source" xsi:type="string">eguana_redemption</item>
-                    </item>
-                </argument>
-                <settings>
-                    <required>true</required>
-                    <additionalClasses>
-                        <class name="admin__field-wide">true</class>
-                    </additionalClasses>
-                    <label translate="true">Thank You Image</label>
-                    <dataScope>thank_you_image</dataScope>
                 </settings>
                 <formElements>
                     <wysiwyg>

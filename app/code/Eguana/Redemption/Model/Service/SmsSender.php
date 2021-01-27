@@ -30,6 +30,12 @@ use Psr\Log\LoggerInterface;
  */
 class SmsSender
 {
+    /**#@+
+     * Configuration SMS template path
+     */
+    const CONFIG_SMS_TEMPLATE_PATH = 'redemption/configuration/registration_sms_templates';
+    /**#@-*/
+
     /**
      * @var SmsManagementInterface
      */
@@ -161,7 +167,7 @@ class SmsSender
         $templateModel = $this->templateFactory->create();
         $params = ['customer'=> $customerName, 'counter'=> $storeCounterName, 'link'=>$link];
         $templateModel->setDesignConfig(['area' => 'frontend', 'store' => $this->storeManager->getStore()->getId()]);
-        $templateModel->loadDefault($templateIdentifier);
+        $templateModel->loadByConfigPath(self::CONFIG_SMS_TEMPLATE_PATH);
 
         return $templateModel->getProcessedTemplate($params);
     }

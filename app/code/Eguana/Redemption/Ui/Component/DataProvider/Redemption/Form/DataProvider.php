@@ -109,6 +109,17 @@ class DataProvider extends AbstractDataProvider
                 $redemption->setData('image', [$thumbnailImage]);
                 $redemption->setData('store_id_name', $redemption->getStoreId());
             }
+            if ($redemption->getData('thank_you_image')) {
+                $url = $this->storeManager->getStore()
+                        ->getBaseUrl('media') . $redemption->getData('thank_you_image');
+                $stat = $this->fileInfo->getStat($url);
+                $thumbnailImage = [
+                    'url' => $url,
+                    'file' => $thumbnailImagePath[$thumbnailImageCount - 1],
+                    'size' => isset($stat) ? $stat['size'] : 0
+                ];
+                $redemption->setData('thank_you_image', [$thumbnailImage]);
+            }
             $this->loadedData[$redemption->getId()] = $redemption->getData();
         }
         $data = $this->dataPersistor->get('eguana_redemption');

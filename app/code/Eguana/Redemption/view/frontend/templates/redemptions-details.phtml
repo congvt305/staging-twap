@@ -27,9 +27,13 @@ $thankYouImage = $viewModel->contentFiltering($redemptionDetails->getThankYouIma
             src="<?= $block->escapeHtml($viewModel->getThumbnailImageURL($redemptionDetails->getImage()));?>"
             title="<?= $block->escapeHtml($redemptionDetails->getTitle());?>"
         >
-        <div id="redemption_thank_you_img" style="display: none;">
-            <?= /* @noEscape */ $thankYouImage; ?>
-        </div>
+        <img
+            id="redemption_thank_you_img"
+            style="display: none;"
+            alt="success-image"
+            src="<?= $block->escapeHtml($viewModel->getThumbnailImageURL($redemptionDetails->getThankYouImage()));?>"
+            title="<?= $block->escapeHtml($redemptionDetails->getTitle());?>"
+        >
     </div>
     <div class="block block-description">
         <div class="block-title">
@@ -136,8 +140,8 @@ $thankYouImage = $viewModel->contentFiltering($redemptionDetails->getThankYouIma
                                 <span><?= $block->escapeHtml(__('I have agreed to the privacy policy')); ?></span>
                             </label>
                         </div>
-                        <div>
-                            <?= $block->escapeHtml(__("Amorepacific Co., Ltd. (hereinafter referred to as 'Our company') takes your privacy very seriously, in order to let you can use Amorepacific activities with peace of mind")); ?>
+                        <div class="privacy-policy-box">
+                            <?= $block->escapeHtml($viewModel->getPrivacyPolicy()); ?>
                         </div>
                     </fieldset>
                 </div>
