@@ -1,0 +1,22 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: david
+ * Date: 2021/01/22
+ * Time: 11:19 AM
+ */
+?>
+<?= /* @noEscape */ $block->getButtonHtml(); ?>
+
+<span class="collect-indicator" id="collect_span">
+    <span id="collect_message_span"></span>
+</span>
+<script type="text/x-magento-init">
+   {
+       "*": {
+           "einvoice_cron": {"statusAjaxUrl":"<?= $block->escapeUrl($block->getAjaxUrl()) ?>"}
+       }
+   }
+</script>

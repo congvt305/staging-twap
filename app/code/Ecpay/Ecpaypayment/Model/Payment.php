@@ -539,7 +539,8 @@ class Payment extends AbstractMethod
         } catch (\Exception $e) {
             // 例外錯誤處理。
             $sMsg = $e->getMessage();
-            throw new LocalizedException(__($sMsg));
+            $incrementId = $order->getIncrementId();
+            throw new LocalizedException(__($sMsg . " #$incrementId"));
         }
     }
 

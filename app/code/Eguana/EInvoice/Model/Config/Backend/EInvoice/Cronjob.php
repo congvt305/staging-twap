@@ -25,7 +25,7 @@ class Cronjob extends Value
 {
     const CRON_STRING_PATH = 'crontab/default/jobs/ecpay_einvoice_issue/schedule/cron_expr';
 
-    const CRON_MODEL_PATH = '';
+    const CRON_MODEL_PATH = 'crontab/default/jobs/ecpay_einvoice_issue/run/model';
 
     /**
      * @var ValueFactory
@@ -78,8 +78,8 @@ class Cronjob extends Value
         $frequency = $this->getData('groups/ecpay_einvoice_issue/fields/frequency/value');
 
         $cronExprArray = [
-            (int)$time[1],
-            (int)$time[0],
+            $this->getCrontabSettings($frequency, intval($time[1])), //Minute
+            $this->getCrontabSettings($frequency, intval($time[0])), //Hour
             $frequency == Frequency::CRON_MONTHLY ? '1' : '*',
             '*',
             $frequency == Frequency::CRON_WEEKLY ? '1' : '*',
@@ -95,10 +95,41 @@ class Cronjob extends Value
             )->setPath(
                 self::CRON_STRING_PATH
             )->save();
+            $this->configValueFactory->create()->load(
+                self::CRON_MODEL_PATH,
+                'path'
+            )->setValue(
+                $this->runModelPath
+            )->setPath(
+                self::CRON_MODEL_PATH
+            )->save();
         } catch (\Exception $e) {
             $this->logger->error(__('We can\'t save the cron expression.'));
         }
 
         return parent::afterSave();
+    }
+
+    /**
+     * Get crontab settings
+     *
+     * @param $frequency
+     * @param $time
+     *
+     * @return int|string
+     */
+    protected function getCrontabSettings($frequency, $time)
+    {
+        if ($frequency == \Eguana\EInvoice\Model\Config\Source\Frequency::CUSTOM_CRON) {
+            if ($time == 0) {
+                $crontabSettings = '*';
+            } else {
+                $crontabSettings = '*/' . intval($time);
+            }
+        } else {
+            $crontabSettings = intval($time);
+        }
+
+        return $crontabSettings;
     }
 }
