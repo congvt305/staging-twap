@@ -73,7 +73,7 @@ class Order
             ->setConditionType('eq')
             ->create();
         $statusFilterComplete = $this->filterBuilder->setField('status')
-            ->setValue('processing')
+            ->setValue('complete')
             ->setConditionType('eq')
             ->create();
         $orFilter = $this->filterGroupBuilder

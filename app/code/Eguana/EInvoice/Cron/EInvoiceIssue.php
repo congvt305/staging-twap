@@ -68,7 +68,7 @@ class EInvoiceIssue
                 foreach ($notIssuedOrderList as $index => $order) {
                     $ecpayInvoiceResult = $this->ecpayPaymentModel->createEInvoice($order->getEntityId(), $order->getStoreId());
 
-                    if ($ecpayInvoiceResult["RtnCode"] == "1") {
+                    if ($ecpayInvoiceResult["RtnCode"] != "1") {
                         //send mail
                         $this->helperEmail->sendEmail($order, $ecpayInvoiceResult["RtnMsg"]);
                     }
