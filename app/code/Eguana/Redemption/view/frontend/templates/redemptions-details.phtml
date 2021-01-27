@@ -31,9 +31,8 @@ $thankYouImage = $viewModel->contentFiltering($redemptionDetails->getThankYouIma
             id="redemption_thank_you_img"
             style="display: none;"
             alt="success-image"
-            src="<?= $block->escapeHtml($viewModel->getThumbnailImageURL($redemptionDetails->getThankYouImage()));?>"
-            title="<?= $block->escapeHtml($redemptionDetails->getTitle());?>"
-        >
+            src="<?= $block->escapeHtml($viewModel->getThumbnailImageURL($redemptionDetails->getThankYouImage())) ?>"
+            title="<?= $block->escapeHtml($redemptionDetails->getTitle()) ?>">
     </div>
     <div class="block block-description">
         <div class="block-title">

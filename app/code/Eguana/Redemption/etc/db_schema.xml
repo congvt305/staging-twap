@@ -17,7 +17,6 @@
         <column xsi:type="varchar" name="title" nullable="false" length="255" comment="Redemption Title"/>
         <column xsi:type="mediumtext" name="description" nullable="true" comment="Redemption Description"/>
         <column xsi:type="mediumtext" name="precautions" nullable="true" comment="Redemption Precautions"/>
-        <column xsi:type="mediumtext" name="thank_you_image" nullable="true" comment="Redemption Thank You Image"/>
         <column xsi:type="smallint" name="total_qty" nullable="false" default="0" unsigned="true" identity="false" comment="Redemption Total Quantity"/>
         <column xsi:type="smallint" name="cms_block"  nullable="false" default="0" unsigned="false" identity="false" comment="CMS Block"/>
         <column xsi:type="date" name="start_date" nullable="false" comment="Start Date"/>
@@ -27,6 +26,7 @@
         <column xsi:type="text" name="meta_keywords" nullable="true" comment="Meta Keywords"/>
         <column xsi:type="text" name="meta_description" nullable="true" comment="Meta Description"/>
         <column xsi:type="varchar" length="255" name="image"  nullable="false"  comment="Redemption Image"/>
+        <column xsi:type="varchar" length="255" name="thank_you_image" nullable="false" comment="Redemption Registration Success Image"/>
         <column xsi:type="smallint" name="is_active" nullable="false" default="1" unsigned="false" identity="false" comment="Status"/>
         <column xsi:type="timestamp" name="creation_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Creation Time"/>
