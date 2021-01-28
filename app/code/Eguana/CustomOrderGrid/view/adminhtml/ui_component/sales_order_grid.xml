@@ -25,7 +25,7 @@
                 <item name="config" xsi:type="array">
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Customer BA Code</item>
+                    <item name="label" xsi:type="string" translate="true">BA Recruiter Code</item>
                 </item>
             </argument>
         </column>
