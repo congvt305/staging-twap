@@ -175,20 +175,24 @@ class Verification
             return $response;
         }
 
-        if ($this->isCustomerExist($firstName, $lastName, $mobileNumber) === true) {
-            $response['code'] = 4;
-            $cmsPage = $this->configHelper->getDuplicateMembershipCmsPage();
-            if ($cmsPage) {
-                $response['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
-            } else {
-                $link = $this->getLogInLink();
-                $response['message'] = __(
-                    'There is a problem with the requested subscription information. Please contact our CS Center for registration. %1',
-                    $link
-                );
-            }
-            return $response;
-        }
+        /**
+         * As per new requirment in APTM-103 this code is commented
+         * Now validation only base on mobile number
+         */
+        //if ($this->isCustomerExist($firstName, $lastName, $mobileNumber) === true) {
+        //    $response['code'] = 4;
+        //    $cmsPage = $this->configHelper->getDuplicateMembershipCmsPage();
+        //    if ($cmsPage) {
+        //        $response['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
+        //    } else {
+        //        $link = $this->getLogInLink();
+        //        $response['message'] = __(
+        //            'There is a problem with the requested subscription information. Please contact our CS Center for registration. %1',
+        //            $link
+        //        );
+        //    }
+        //    return $response;
+        //}
 
         if ($this->isMobileExist($mobileNumber) === true) {
             $response['code'] = 5;

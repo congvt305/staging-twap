@@ -167,14 +167,14 @@ class POSSystem
             $apiRespone = $this->curlClient->getBody();
             $response = $this->json->unserialize($apiRespone);
             if ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'Y') {
-                if ($response['data']['checkCnt'] > 1) {
+                if ($response['data']['mobilecheckCnt'] > 1) {
                     $result['code'] = 4;
                     $cmsPage = $this->config->getDuplicateMembershipCmsPage();
                     if ($cmsPage) {
                         $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
                     } else {
                         $link = $this->getLogInLink();
-                        $response['message'] = __(
+                        $result['message'] = __(
                             'There is a problem with the requested subscription information. Please contact our CS Center for registration. %1',
                             $link
                         );
@@ -188,7 +188,7 @@ class POSSystem
                         $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
                     } else {
                         $link = $this->getLogInLink();
-                        $response['message'] = __(
+                        $result['message'] = __(
                             'This member account has been registered, please %1 to the member directly, thank you',
                             $link
                         );
