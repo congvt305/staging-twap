@@ -32,6 +32,11 @@ use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
  */
 class POSSystem
 {
+    /**#@+
+     * BA Code PREFIX
+     */
+    const BA_CODE_PREFIX = 'TW';
+    /**#@-*/
 
     /**
      * @var DateTime
@@ -415,9 +420,14 @@ class POSSystem
             $salOffCd = $this->config->getOfficeSalesCode($websiteId);
         }
         $callSuccess = 1;
+        $baCode = trim($baCode);
+        $checkTW = substr($baCode, 0, 2);
+        if ($checkTW != self::BA_CODE_PREFIX) {
+            $baCode = self::BA_CODE_PREFIX . $baCode;
+        }
         try {
             $parameters = [
-                'empID' => trim($baCode),
+                'empID' => $baCode,
                 'salOrgCd' => $salOrgCd,
                 'salOffCd' => $salOffCd
             ];
