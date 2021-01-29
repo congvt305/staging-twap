@@ -17,7 +17,7 @@ $orderData = $block->getPurchaseData();
     var AP_PURCHASE_PRICE = <?= $block->escapeHtml($orderData['AP_PURCHASE_PRICE'])?>;
     var AP_PURCHASE_PRDPRICE = <?= $block->escapeHtml($orderData['AP_PURCHASE_PRDPRICE'])?>;
     var AP_PURCHASE_DCTOTAL = <?= $block->escapeHtml($orderData['AP_PURCHASE_DCTOTAL'])?>;
-    var AP_PURCHASE_DCBASIC = <?= $block->escapeHtml($orderData['AP_PURCHASE_DCBASIC'])?>;
+    var AP_PURCHASE_DCBASIC = "<?= $block->escapeHtml($orderData['AP_PURCHASE_DCBASIC'])?>";
     var AP_PURCHASE_COUPON = <?= $block->escapeHtml($orderData['AP_PURCHASE_COUPON'])?>;
     var AP_PURCHASE_MEMBERSHIP = <?= $block->escapeHtml($orderData['AP_PURCHASE_MEMBERSHIP'])?>;
     var AP_PURCHASE_GIFTCARD = <?= $block->escapeHtml($orderData['AP_PURCHASE_GIFTCARD'])?>;
