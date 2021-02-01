@@ -36,6 +36,7 @@ class POSSystem
      * BA Code PREFIX
      */
     const BA_CODE_PREFIX = 'TW';
+    const BA_CODE_PREFIX_LOWERCASE = 'tw';
     /**#@-*/
 
     /**
@@ -178,7 +179,7 @@ class POSSystem
                     if ($cmsPage) {
                         $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
                     } else {
-                        $link = $this->getLogInLink();
+                        $link = $this->getCustomerServiceLink();
                         $result['message'] = __(
                             'There is a problem with the requested subscription information. Please contact our CS Center for registration. %1',
                             $link
@@ -400,6 +401,21 @@ class POSSystem
     }
 
     /**
+     * To get Customer Service Link
+     *
+     * @return string
+     */
+    private function getCustomerServiceLink()
+    {
+        try {
+            $link = $this->storeManager->getStore()->getBaseUrl() . 'contact';
+            return '<a href="' . $link . '">' . __('Customer Care Service') . '</a>';
+        } catch (\Exception $e) {
+            return __('Customer Care Service');
+        }
+    }
+
+    /**
      * To call POS Api for BA Code info
      *
      * @param $baCode
@@ -420,11 +436,7 @@ class POSSystem
             $salOffCd = $this->config->getOfficeSalesCode($websiteId);
         }
         $callSuccess = 1;
-        $baCode = trim($baCode);
-        $checkTW = substr($baCode, 0, 2);
-        if ($checkTW != self::BA_CODE_PREFIX) {
-            $baCode = self::BA_CODE_PREFIX . $baCode;
-        }
+        $baCode = $this->checkBACodePrefix($baCode);
         try {
             $parameters = [
                 'empID' => $baCode,
@@ -517,4 +529,25 @@ class POSSystem
 
         return $result;
     }
+
+    /**
+     * To check BA Code Prefix exist or not then ammend it
+     *
+     * @param $baCode
+     * @return string
+     */
+    public function checkBACodePrefix($baCode)
+    {
+        $baCode = $baCode ? trim($baCode) : '';
+        if ($baCode) {
+            $checkTW = substr($baCode, 0, 2);
+            if ($checkTW == self::BA_CODE_PREFIX_LOWERCASE) {
+                $baCode = strtoupper($checkTW) . substr($baCode, 2);
+            } elseif ($checkTW != self::BA_CODE_PREFIX) {
+                $baCode = self::BA_CODE_PREFIX . $baCode;
+            }
+        }
+        return $baCode;
+    }
+
 }

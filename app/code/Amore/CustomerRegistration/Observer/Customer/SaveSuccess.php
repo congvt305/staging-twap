@@ -241,6 +241,13 @@ class SaveSuccess implements ObserverInterface
                 $customer->setGroupId($groupId);
             }
 
+            if ($customer->getCustomAttribute('ba_code')) {
+                $baCode = $this->POSSystem->checkBACodePrefix(
+                    $customer->getCustomAttribute('ba_code')->getValue()
+                );
+                $customer->setCustomAttribute('ba_code', $baCode);
+            }
+
             $posOrOnline = 'online';
             /**
              * @Abbas on the request of client. Now if customer register using bar code even than he can be online or
@@ -294,7 +301,11 @@ class SaveSuccess implements ObserverInterface
         $parameters['sex'] = $customer->getGender() == '1' ? 'M' : 'F';
         $parameters['emailYN'] = $this->isCustomerSubscribToNewsLetters($customer->getId()) ? 'Y' : 'N';
         if ($customer->getCustomAttribute('ba_code')) {
-            $parameters['baCode'] = $customer->getCustomAttribute('ba_code')->getValue();
+            $baCode = $this->POSSystem->checkBACodePrefix(
+                $customer->getCustomAttribute('ba_code')->getValue()
+            );
+
+            $parameters['baCode'] = $baCode;
         } else {
             $parameters['baCode'] = '';
         }
