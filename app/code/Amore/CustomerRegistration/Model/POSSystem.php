@@ -32,6 +32,12 @@ use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
  */
 class POSSystem
 {
+    /**
+     * BA Code PREFIX Constants
+     */
+    const BA_CODE_PREFIX = 'TW';
+    const BA_CODE_PREFIX_LOWERCASE = 'tw';
+    /**#@-*/
 
     /**
      * @var DateTime
@@ -167,14 +173,14 @@ class POSSystem
             $apiRespone = $this->curlClient->getBody();
             $response = $this->json->unserialize($apiRespone);
             if ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'Y') {
-                if ($response['data']['checkCnt'] > 1) {
+                if ($response['data']['mobilecheckCnt'] > 1) {
                     $result['code'] = 4;
                     $cmsPage = $this->config->getDuplicateMembershipCmsPage();
                     if ($cmsPage) {
                         $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
                     } else {
-                        $link = $this->getLogInLink();
-                        $response['message'] = __(
+                        $link = $this->getCustomerServiceLink();
+                        $result['message'] = __(
                             'There is a problem with the requested subscription information. Please contact our CS Center for registration. %1',
                             $link
                         );
@@ -188,7 +194,7 @@ class POSSystem
                         $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
                     } else {
                         $link = $this->getLogInLink();
-                        $response['message'] = __(
+                        $result['message'] = __(
                             'This member account has been registered, please %1 to the member directly, thank you',
                             $link
                         );
@@ -395,6 +401,21 @@ class POSSystem
     }
 
     /**
+     * To get Customer Service Link
+     *
+     * @return string
+     */
+    private function getCustomerServiceLink()
+    {
+        try {
+            $link = $this->storeManager->getStore()->getBaseUrl() . 'contact';
+            return '<a href="' . $link . '">' . __('customer service mail box') . '</a>';
+        } catch (\Exception $e) {
+            return __('customer service mail box');
+        }
+    }
+
+    /**
      * To call POS Api for BA Code info
      *
      * @param $baCode
@@ -415,9 +436,10 @@ class POSSystem
             $salOffCd = $this->config->getOfficeSalesCode($websiteId);
         }
         $callSuccess = 1;
+        $baCode = $this->checkBACodePrefix($baCode);
         try {
             $parameters = [
-                'empID' => trim($baCode),
+                'empID' => $baCode,
                 'salOrgCd' => $salOrgCd,
                 'salOffCd' => $salOffCd
             ];
@@ -506,5 +528,25 @@ class POSSystem
         );
 
         return $result;
+    }
+
+    /**
+     * To check BA Code Prefix exist or not then ammend it
+     *
+     * @param $baCode
+     * @return string
+     */
+    public function checkBACodePrefix($baCode)
+    {
+        $baCode = $baCode ? trim($baCode) : '';
+        if ($baCode) {
+            $checkTW = substr($baCode, 0, 2);
+            if ($checkTW == self::BA_CODE_PREFIX_LOWERCASE) {
+                $baCode = strtoupper($checkTW) . substr($baCode, 2);
+            } elseif ($checkTW != self::BA_CODE_PREFIX) {
+                $baCode = self::BA_CODE_PREFIX . $baCode;
+            }
+        }
+        return $baCode;
     }
 }
