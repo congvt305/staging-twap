@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2021 (c) Eguana Commerce
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="inventory_compensation" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>Inventory Compensation Manager</label>
+            <tab>eguana_extensions_tab</tab>
+            <resource>Eguana_InventoryCompensation::inventoryCompensation</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Inventory Compensation Active</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="logger_active" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Logger Active</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="inventory_compensation_cron" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Pending Canceler Cron</label>
+                <field id="frequency" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Frequency</label>
+                    <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
+                    <backend_model>Eguana\InventoryCompensation\Model\Config\Backend\InventoryCompensationScheduler</backend_model>
+                </field>
+                <field id="time" translate="label" type="time" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Start Time</label>
+                </field>
+                <field id="run_cron" translate="Run Now" type="button" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Run Now</label>
+                    <frontend_model>Eguana\InventoryCompensation\Block\System\Config\InventoryCompensationRun</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
