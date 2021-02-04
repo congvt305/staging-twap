@@ -123,7 +123,7 @@ class InventoryCompensationManager extends Action
                 foreach ($reservationOrders as $reservationOrder) {
                     $metadata = $this->json->unserialize($reservationOrder['metadata']);
 
-                    if ($metadata['object_type'] == 'order' && $metadata['event_type'] != 'order_placed') {
+                    if ($metadata['object_type'] == 'order' && $metadata['event_type'] == 'order_placed') {
                         $orderEntityId = $metadata['object_id'];
                         /** @var Order $order */
                         $order = $this->getReservationOrder->getOrder($orderEntityId);

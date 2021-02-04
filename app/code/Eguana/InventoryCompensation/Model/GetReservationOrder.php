@@ -59,16 +59,20 @@ class GetReservationOrder
     public function getReservationOrders()
     {
         $connection = $this->resource->getConnection();
-        $reservationTable = $this->resource->getTableName('inventory_reservation');
+        //$reservationTable = $this->resource->getTableName('inventory_reservation');
 
-        $select = $connection->select()
-            ->from(
-                $reservationTable,
-                [ReservationInterface::QUANTITY => 'SUM(' . ReservationInterface::QUANTITY . ')', 'metadata']
-            )
-            ->group('metadata');
+        //$select = $connection->select()
+        //    ->from(
+        //        $reservationTable,
+        //        [ReservationInterface::QUANTITY => 'SUM(' . ReservationInterface::QUANTITY . ')', 'metadata']
+        //    )
+        //    ->group('metadata');
+        //$query = "SELECT SUM(quantity) AS quantity, metadata FROM inventory_reservation
+        //        WHERE metadata LIKE '%" . "\"$orderId\"%' AND metadata NOT LIKE \"%order_placed%\" GROUP BY metadata";
+        $query = "SELECT SUM(quantity), metadata FROM inventory_reservation
+        WHERE metadata LIKE '%order_placed%' GROUP BY metadata";
 
-        return $connection->fetchAll($select);
+        return $connection->fetchAll($query);
     }
 
     /**
