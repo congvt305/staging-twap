@@ -18,10 +18,16 @@ use Magento\InventorySalesApi\Api\Data\SalesEventInterface;
 use Magento\InventorySalesApi\Api\Data\SalesEventInterfaceFactory;
 use Magento\InventorySalesApi\Api\PlaceReservationsForSalesEventInterface;
 use Magento\InventorySalesApi\Model\GetSkuFromOrderItemInterface;
+use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Item as OrderItem;
 use Magento\Store\Api\WebsiteRepositoryInterface;
 use Magento\InventorySalesApi\Api\Data\ItemToSellInterfaceFactory;
 
+/**
+ * Source Cancel Deduction if order is canceld
+ *
+ * Class SourceCancelDeduction
+ */
 class SourceCancelDeduction
 {
     /**
@@ -53,14 +59,17 @@ class SourceCancelDeduction
      * @var GetItemsToCancelFromOrderItem
      */
     private $getItemsToCancelFromOrderItem;
+
     /**
      * @var GetSkuFromOrderItemInterface
      */
     private $getSkuFromOrderItem;
+
     /**
      * @var ItemToSellInterfaceFactory
      */
     private $itemsToSellFactory;
+
     /**
      * @var Json
      */
@@ -100,7 +109,9 @@ class SourceCancelDeduction
     }
 
     /**
-     * @param $order \Magento\Sales\Model\Order
+     * Source deduction on basis of canceled order
+     *
+     * @param Order $order
      */
     public function cancelDeduction($order)
     {
@@ -130,6 +141,12 @@ class SourceCancelDeduction
         }
     }
 
+    /**
+     * Get order items
+     *
+     * @param OrderItem $orderItem
+     * @return ItemToSellInterface[]
+     */
     public function getOrderItems(OrderItem $orderItem)
     {
         $itemsData = [];
@@ -150,6 +167,8 @@ class SourceCancelDeduction
     }
 
     /**
+     * Get group items by SKU
+     *
      * @param ItemToSellInterface[] $canceledItems
      * @return ItemToSellInterface[]
      */
@@ -177,6 +196,8 @@ class SourceCancelDeduction
     }
 
     /**
+     * Process complex items
+     *
      * @param OrderItem $orderItem
      * @return ItemToSellInterface[]
      */

@@ -16,9 +16,16 @@ use Magento\InventoryShipping\Model\GetItemsToDeductFromShipment;
 use Magento\InventoryShipping\Model\SourceDeductionRequestFromShipmentFactory;
 use Magento\InventorySourceDeductionApi\Model\SourceDeductionRequestInterface;
 use Magento\InventorySourceDeductionApi\Model\SourceDeductionServiceInterface;
+use Magento\Sales\Api\Data\ShipmentInterface;
 use Magento\Sales\Api\ShipmentRepositoryInterface;
 use Magento\InventorySalesApi\Api\Data\ItemToSellInterfaceFactory;
+use Magento\Sales\Model\Order;
 
+/**
+ * Source Shipment Deduction when order shiped
+ *
+ * Class SourceShipmentDeduction
+ */
 class SourceShipmentDeduction
 {
     /**
@@ -55,10 +62,12 @@ class SourceShipmentDeduction
      * @var PlaceReservationsForSalesEventInterface
      */
     private $placeReservationsForSalesEvent;
+
     /**
      * @var ShipmentRepositoryInterface
      */
     private $shipmentRepository;
+
     /**
      * @var SearchCriteriaBuilder
      */
@@ -98,7 +107,9 @@ class SourceShipmentDeduction
     }
 
     /**
-     * @param $order \Magento\Sales\Model\Order
+     * Shipment deduction method
+     *
+     * @param Order $order
      */
     public function shipmentDeduction($order)
     {
@@ -147,8 +158,10 @@ class SourceShipmentDeduction
     }
 
     /**
+     * Get Shipment List by Order
+     *
      * @param int $orderId
-     * @return \Magento\Sales\Api\Data\ShipmentInterface|null
+     * @return ShipmentInterface
      */
     public function getShipmentListByOrder($orderId)
     {
