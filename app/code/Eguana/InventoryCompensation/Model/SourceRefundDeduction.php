@@ -14,10 +14,17 @@ use Magento\InventoryConfigurationApi\Model\IsSourceItemManagementAllowedForProd
 use Magento\InventorySales\Model\ReturnProcessor\DeductSourceItemQuantityOnRefund;
 use Magento\InventorySalesApi\Model\GetSkuFromOrderItemInterface;
 use Magento\InventorySalesApi\Model\ReturnProcessor\Request\ItemsToRefundInterfaceFactory;
+use Magento\Sales\Api\Data\CreditmemoInterface;
 use Magento\Sales\Api\Data\CreditmemoItemInterface as CreditmemoItem;
 use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Model\Order;
 
+/**
+ * Source Refund Deduction if order is refunded
+ *
+ * Class SourceRefundDeduction
+ */
 class SourceRefundDeduction
 {
     /**
@@ -49,10 +56,12 @@ class SourceRefundDeduction
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
+
     /**
      * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
+
     /**
      * @var \Magento\Sales\Api\CreditmemoRepositoryInterface
      */
@@ -89,7 +98,9 @@ class SourceRefundDeduction
     }
 
     /**
-     * @param $order \Magento\Sales\Model\Order
+     * Refund deduction method
+     *
+     * @param Order $order
      */
     public function refundDeduction($order)
     {
@@ -132,6 +143,8 @@ class SourceRefundDeduction
     }
 
     /**
+     * Check item is valid
+     *
      * @param string $sku
      * @param CreditmemoItem $item
      * @return bool
@@ -154,6 +167,12 @@ class SourceRefundDeduction
             && !$item->getBackToStock();
     }
 
+    /**
+     * Get Credit Memo List by Order
+     *
+     * @param $orderId
+     * @return CreditmemoInterface
+     */
     public function getCreditMemoListByOrder($orderId)
     {
         $searchCriteria = $this->searchCriteriaBuilder

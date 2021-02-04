@@ -17,38 +17,52 @@ use Eguana\InventoryCompensation\Model\SourceShipmentDeduction;
 use Magento\Backend\App\Action;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Sales\Model\Order;
 
+/**
+ * Config class to perform cron action
+ *
+ * Class InventoryCompensationManager
+ */
 class InventoryCompensationManager extends Action
 {
     /**
      * @var GetReservationOrder
      */
     private $getReservationOrder;
+
     /**
      * @var JsonFactory
      */
     private $jsonFactory;
+
     /**
      * @var Json
      */
     private $json;
+
     /**
      * @var SourceShipmentDeduction
      */
     private $sourceShipmentDeduction;
+
     /**
      * @var SourceRefundDeduction
      */
     private $sourceRefundDeduction;
+
     /**
      * @var SourceCancelDeduction
      */
     private $sourceCancelDeduction;
+
     /**
      * @var Logger
      */
     private $logger;
+
     /**
      * @var Config
      */
@@ -88,6 +102,11 @@ class InventoryCompensationManager extends Action
         $this->config = $config;
     }
 
+    /**
+     * To add missing entries inventory_reservation table
+     *
+     * @return ResponseInterface|\Magento\Framework\Controller\Result\Json|ResultInterface
+     */
     public function execute()
     {
         $inventoryCompensationActive = $this->config->getActive();
@@ -106,21 +125,23 @@ class InventoryCompensationManager extends Action
 
                     if ($metadata['object_type'] == 'order' && $metadata['event_type'] == 'order_placed') {
                         $orderEntityId = $metadata['object_id'];
-                        /** @var \Magento\Sales\Model\Order $order */
+                        /** @var Order $order */
                         $order = $this->getReservationOrder->getOrder($orderEntityId);
-                        $orderStatus = $order->getStatus();
-                        $compensationOrder = $this->getReservationOrder->getCompensationOrder($orderEntityId);
+                        if ($order) {
+                            $orderStatus = $order->getStatus();
+                            $compensationOrder = $this->getReservationOrder->getCompensationOrder($orderEntityId);
 
-                        if ($loggerActive) {
-                            $this->logger->info("COMPENSATION ORDER");
-                            $this->logger->info($this->json->serialize($compensationOrder));
+                            if ($loggerActive) {
+                                $this->logger->info("COMPENSATION ORDER");
+                                $this->logger->info($this->json->serialize($compensationOrder));
+                            }
+
+                            $this->deductSourceItem($compensationOrder, $orderStatus, $order);
                         }
-
-                        $this->deductSourceItem($compensationOrder, $orderStatus, $order);
                     }
-
-                    return $this->jsonFactory->create()->setData(['success' => true]);
                 }
+
+                return $this->jsonFactory->create()->setData(['success' => true]);
             } catch (\Exception $exception) {
                 $this->logger->info($exception->getMessage());
             }
@@ -128,9 +149,11 @@ class InventoryCompensationManager extends Action
     }
 
     /**
+     * Deduct source item and add entry in inventory_reservation table
+     *
      * @param array $compensationOrder
      * @param float|null $orderStatus
-     * @param \Magento\Sales\Model\Order $order
+     * @param Order $order
      */
     public function deductSourceItem($compensationOrder, $orderStatus, $order)
     {

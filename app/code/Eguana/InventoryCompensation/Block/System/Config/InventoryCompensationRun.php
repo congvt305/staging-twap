@@ -13,6 +13,11 @@ use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Exception\LocalizedException;
 
+/**
+ * Run cron button block
+ *
+ * Class InventoryCompensationRun
+ */
 class InventoryCompensationRun extends Field
 {
     protected $_template = 'Eguana_InventoryCompensation::system/config/inventory_compensation_run.phtml';
@@ -34,8 +39,6 @@ class InventoryCompensationRun extends Field
      *
      * @param  AbstractElement $element
      * @return string
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function _getElementHtml(AbstractElement $element)
     {
