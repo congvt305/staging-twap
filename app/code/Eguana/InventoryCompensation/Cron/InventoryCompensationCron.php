@@ -144,7 +144,11 @@ class InventoryCompensationCron
             if ($orderStatus == 'shipment_processing' || $orderStatus == 'complete') {
                 $this->sourceShipmentDeduction->shipmentDeduction($order);
             } elseif ($orderStatus == 'closed') {
-                $this->sourceRefundDeduction->refundDeduction($order);
+                if ($order->hasShipments()) {
+                    $this->sourceShipmentDeduction->shipmentDeduction($order);
+                } else {
+                    $this->sourceRefundDeduction->refundDeduction($order);
+                }
             } elseif ($orderStatus == 'canceled') {
                 $this->sourceCancelDeduction->cancelDeduction($order);
             }
