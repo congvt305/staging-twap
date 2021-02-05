@@ -141,12 +141,12 @@ class InventoryCompensationCron
     public function deductSourceItem($compensationOrder, $orderStatus, $order)
     {
         if ($compensationOrder === false) {
-            if ($orderStatus == 'shipment_processing' || $orderStatus == 'complete') {
+            if (($orderStatus == 'shipment_processing' || $orderStatus == 'complete') && $order->hasShipments()) {
                 $this->sourceShipmentDeduction->shipmentDeduction($order);
             } elseif ($orderStatus == 'closed') {
                 if ($order->hasShipments()) {
                     $this->sourceShipmentDeduction->shipmentDeduction($order);
-                } else {
+                } elseif ($order->hasCreditmemos()) {
                     $this->sourceRefundDeduction->refundDeduction($order);
                 }
             } elseif ($orderStatus == 'canceled') {
