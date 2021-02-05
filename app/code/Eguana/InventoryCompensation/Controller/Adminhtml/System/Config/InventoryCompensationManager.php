@@ -163,7 +163,7 @@ class InventoryCompensationManager extends Action
             } elseif ($orderStatus == 'closed') {
                 if ($order->hasShipments()) {
                     $this->sourceShipmentDeduction->shipmentDeduction($order);
-                } elseif ($order->hasCreditmemos()) {
+                } elseif ($order->hasCreditmemos() && !$order->hasShipments()) {
                     $this->sourceRefundDeduction->refundDeduction($order);
                 }
             } elseif ($orderStatus == 'canceled') {
