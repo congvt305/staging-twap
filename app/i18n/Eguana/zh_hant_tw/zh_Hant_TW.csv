@@ -3414,10 +3414,10 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "The shipping method can't be set for an empty cart. Add an item to cart and try again.","無法為空購物車設置送貨方式。 將項目添加到購物車，然後重試。",module,Magento_Checkout
 "Billing Address","帳單地址",module,Magento_Checkout
 "Something went wrong with your request. Please try again later.","Something went wrong with your request. Please try again later.",module,Magento_Checkout
-"The shipping method is missing. Select the shipping method and try again.","缺少送貨方式。 選擇運送方式，然後重試。",module,Magento_Checkout
+"The shipping method is missing. Select the shipping method and try again.","請選擇出貨方式，謝謝。",module,Magento_Checkout
 "Show Cross-sell Items in the Shopping Cart","Show Cross-sell Items in the Shopping Cart",module,Magento_Checkout
 "Unable to place order. Please try again later.","無法下訂單。 請稍後再試。",module,Magento_Checkout
-"Please specify a regionId in shipping address.","請在送貨地址中指定regionId。",module,Magento_Checkout
+"Please specify a regionId in shipping address.","請勾選收件人資訊",module,Magento_Checkout
 "Terms and Conditions","Terms and Conditions",module,Magento_CheckoutAgreements
 "Add New Condition","Add New Condition",module,Magento_CheckoutAgreements
 "Save Condition","Save Condition",module,Magento_CheckoutAgreements
@@ -10227,7 +10227,7 @@ offered and the currency offered by the merchant is USD.",module,Magento_Paypal
 "Something went wrong. Please try to place the order again.","出問題了。 請嘗試再次下訂單。",module,Magento_Quote
 "Some addresses can't be used due to the configurations for specific countries.","Some addresses can't be used due to the configurations for specific countries.",module,Magento_Quote
 "Please check the shipping address information.","請檢查送貨地址信息。",module,Magento_Quote
-"The shipping method is missing. Select the shipping method and try again.","缺少送貨方式。 選擇運送方式，然後重試。",module,Magento_Quote
+"The shipping method is missing. Select the shipping method and try again.","請選擇出貨方式，謝謝。",module,Magento_Quote
 "Please check the billing address information.","請檢查帳單地址信息。",module,Magento_Quote
 "Enter a valid payment method and try again.","Enter a valid payment method and try again.",module,Magento_Quote
 "Unable to place order. Please try again later.","無法下訂單。 請稍後再試。",module,Magento_Quote
@@ -12614,7 +12614,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "The quote item needs to be loaded. Load the item and try again.","The quote item needs to be loaded. Load the item and try again.",module,Magento_Sales
 "The invoice can't be created without products. Add products and try again.","The invoice can't be created without products. Add products and try again.",module,Magento_Sales
 "The invoice can't be saved at this time. Please try again later.","The invoice can't be saved at this time. Please try again later.",module,Magento_Sales
-"The shipping method is missing. Select the shipping method and try again.","缺少送貨方式。 選擇運送方式，然後重試。",module,Magento_Sales
+"The shipping method is missing. Select the shipping method and try again.","請選擇出貨方式，謝謝。",module,Magento_Sales
 "The payment method isn't selected. Enter the payment method and try again.","The payment method isn't selected. Enter the payment method and try again.",module,Magento_Sales
 "An ID is needed. Set the ID and try again.","An ID is needed. Set the ID and try again.",module,Magento_Sales
 "The entity that was requested doesn't exist. Verify the entity and try again.","The entity that was requested doesn't exist. Verify the entity and try again.",module,Magento_Sales
