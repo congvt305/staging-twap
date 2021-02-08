@@ -6,7 +6,7 @@ Save,救
 "Save & Close","保存並關閉"
 Home,家
 "Go to Home Page","去首頁"
-Redemption,贖回
+Redemption,品牌活動
 Manage,管理
 "Manage Redemption","管理兌換"
 "A total of %1 record(s) have been expired.","總共 %1 記錄已過期。"
@@ -29,7 +29,7 @@ Redemptions,換領
 "Something went wrong while saving the redemption.","保存兌換時出了點問題。"
 "You duplicated the redemption.","您已重複兌換。"
 "The redemption module is disable by admin.","兌換模塊已被管理員禁用。"
-"The redemption process has been completed.","兌換過程已完成。"
+"The redemption process has been completed.","已完成兌換，謝謝！"
 "This redemption has been expired!","此兌換已過期！"
 "This redemption will be available at %1","可以在以下位置使用此兌換 %1"
 "Email or SMS sending failed.","電子郵件或短信發送失敗。"
@@ -69,8 +69,8 @@ Counter,計數器
 "Resend message","重新發送訊息"
 "Resend SMS/Email","重新發送短信/電子郵件"
 "The registraion for this redemption is full.","此兌換的註冊已完成。"
-"This redemption has been already completed.","兌換已經完成。"
-"Please click on confirm button to complete the registration process.","請點擊確認按鈕完成註冊過程。"
+"This redemption has been already completed.","您已成功兌換試用，謝謝！"
+"Please click on confirm button to complete the registration process.","請由專櫃人員點擊完成兌換，謝謝！"
 "Hi %name,","Hi %name,"
 "Your redemption has been successfully registered. Please go to the %counter_name. and show this email to BA for completing your redemption. Below is the redemption confirmation link","您的兌換已成功註冊。 請去 %counter_name. 並向BA顯示此電子郵件以完成您的兌換。 以下是兌換確認鏈接"
 "Have a lovely day!","祝你有個愉快的一天！"
@@ -144,10 +144,10 @@ Modified,改性
 "Phone number should starts with '09'","電話號碼應以“09”開頭"
 "I have agreed to the privacy policy","我已同意隱私權條款"
 "Amorepacific Co., Ltd. (hereinafter referred to as 'Our company') takes your privacy very seriously, in order to let you can use Amorepacific activities with peace of mind","愛茉莉太平洋股份有限公司(以下簡稱「本公司」)非常重視您的隱私權，為了讓您能夠安心的使用愛茉莉太平洋活動"
-"Congratulations on your successful application for the trial package redemption qualification! Please use this message to redeem at the counter! Provided to the counter staff","恭喜您成功申請試用包兌換資格!請憑此訊息至專櫃進行兌換!提供給櫃檯人員"
-"Please click to complete the redemption by the counter staff, thank you!", "請由專櫃人員點擊完成兌換，謝謝！"
+"Congratulations on your successful application for the trial package redemption qualification! Please use this message to redeem at the counter! Provided to the counter staff","恭喜您成功申請試用包兌換資格。"
+"Please click to complete the redemption by the counter staff, thank you!", "請憑此訊息至專櫃由專櫃人員點擊完成兌換，謝謝！"
 "Dear","親愛的"
 "[Sulwhasoo] Trial package redemption application confirmation notice","【雪花秀】試用包兌換申請確認通知"
-"Congratulations on your successful application for the trial package redemption qualification! Please use this message to redeem at the counter! Provided To the counter staff","恭喜您成功申請試用包兌換資格!請憑此訊息至專櫃進行兌換!提供給櫃檯人員"
-"Please click to complete the redemption by the counter staff, thank you!","請由專櫃人員點擊完成兌換，謝謝！"
+"Congratulations on your successful application for the trial package redemption qualification! Please use this message to redeem at the counter! Provided To the counter staff","恭喜您成功申請試用包兌換資格。"
+"Please click to complete the redemption by the counter staff, thank you!","請憑此訊息至專櫃由專櫃人員點擊完成兌換，謝謝！"
 "Redemption confirmation link:","兌換確認連結:"
