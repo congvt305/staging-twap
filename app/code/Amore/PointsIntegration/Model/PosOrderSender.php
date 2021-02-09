@@ -102,7 +102,7 @@ class PosOrderSender
                 $this->logging($orderData, $response, $status);
             }
         } else {
-            $this->logger->info('POS ORDER REQUEST FOR ORDER : ' . $order->getIncrementId() . ' IS NOT COMPLETED DUE TO POINTS INTEGRATION MODULE INACTIVE');
+            $this->pointsIntegrationLogger->info('POS ORDER REQUEST FOR ORDER : ' . $order->getIncrementId() . ' IS NOT COMPLETED DUE TO POINTS INTEGRATION MODULE INACTIVE');
         }
     }
 
