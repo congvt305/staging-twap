@@ -13,16 +13,14 @@ Facebook Pixel extension allows you to track your visitors actions by sending ev
     - All and every page load 
     
 
-- Product page:
-    - Add to cart event
+- Product View Track event
 
-    
-- Checkout page:
-    - Initiate checkout event 
 
+- Add to Cart Track event
     
-- Success page
-    - Purchase event
+
+- Purchase Track event
+    
     
 ### Module Installation
 
@@ -48,7 +46,7 @@ Navigate to **EGUANA EXTENSION TAB ⇾ Facebook Pixel** in the left panel.
 
 Add configuration values in the following fields and click the Save Config button.
 #### General Configuration
-![store-config](https://nimbus-screenshots.s3.amazonaws.com/s/b15c635cbf4374dce1d9208d71cd8d54.png)
+![store-config](https://nimbus-screenshots.s3.amazonaws.com/s/d54b582840a24f4c160711728fa3f607.png)
 
 #####(1) Enable or Disable module
 Admin can enable or disable module from Enable feature.
@@ -56,22 +54,19 @@ Admin can enable or disable module from Enable feature.
 #####(2) Pixel ID
 Admin fill the Facebook Pixel Track Code ID
 
-#####(3) Tax Include Settings
-Admin can select option if want to Include Product Taxes.
-
-#####(4) Track Options
+#####(3) Track Options
 Admin can select which events want to track.
 
-- Product page Track event 
+- Product view Track event 
 
 
-- Checkout page Track event
+- Add to Cart Track event
 
 
-- Success page track event
+- Purchase track event
 
-#####(5) Note
-This is website base module
+#####(4) Note
+These all configurations are store base
 
 ### Facebook Pixel Chrome Extension:
 
