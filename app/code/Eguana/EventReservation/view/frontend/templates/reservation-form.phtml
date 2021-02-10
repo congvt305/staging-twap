@@ -97,29 +97,32 @@ $eventExpired = $viewModel->isEventExpired($counters);
                         </select>
                     </div>
                 </div>
-
-                <div class="field choice agreement-checkbox required">
-                    <input
-                        type="checkbox"
-                        name="agreement"
-                        id="agreement"
-                        class="agreement-checkbox checkbox"
-                        required="true"
-                        title="<?= $block->escapeHtmlAttr(__('My age is above 18 and I agree the private policy')) ?>"/>
-                    <label
-                        class="label"
-                        for="agreement">
-                        <span><?= $block->escapeHtml(__('My age is above 18 and I agree the private policy')); ?></span>
-                    </label>
-                </div>
-
+                <fieldset class="fieldset">
+                    <div class="field choice agreement-checkbox required">
+                        <input
+                            type="checkbox"
+                            name="agreement"
+                            id="agreement"
+                            class="agreement-checkbox checkbox"
+                            required="true"
+                            title="<?= $block->escapeHtmlAttr(__('I have agreed to the privacy policy')) ?>"/>
+                        <label
+                            class="label"
+                            for="agreement">
+                            <span><?= $block->escapeHtml(__('I have agreed to the privacy policy')); ?></span>
+                        </label>
+                    </div>
+                    <div class="privacy-policy-box">
+                        <?= $block->escapeHtml($viewModel->getPrivacyPolicy()); ?>
+                    </div>
+                </fieldset>
                 <div class="actions-toolbar">
                     <div class="primary">
                         <button
                             type="submit"
                             class="action primary sbt-button"
                             <?= ($eventExpired && $counters) ? ' disabled' : '' ?>>
-                            <span><?= $block->escapeHtml(__('Submit')) ?></span>
+                            <span><?= $block->escapeHtml(__('Send out')) ?></span>
                         </button>
                     </div>
                 </div>

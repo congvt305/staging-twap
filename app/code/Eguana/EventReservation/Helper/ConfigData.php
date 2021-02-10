@@ -24,6 +24,7 @@ class ConfigData extends AbstractHelper
      */
     const GENERAL_CONFIG    = 'event_reservation/configuration/';
     const EMAIL_CONFIG      = 'event_reservation/email/';
+    const PRIVACY_POLICY_TEXT = 'event_reservation/configuration/privacy_policy_text';
     /**#@-*/
 
     /**
@@ -156,6 +157,21 @@ class ConfigData extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::EMAIL_CONFIG . $id,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * To get privacy policy
+     *
+     * @param null $storeId
+     * @return string
+     */
+    public function getPrivacyPolicy($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::PRIVACY_POLICY_TEXT,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
