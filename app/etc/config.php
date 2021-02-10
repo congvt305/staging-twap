@@ -554,6 +554,7 @@ return [
         'Eguana_EcommerceStatus' => 1,
         'Eguana_Elasticsearch' => 1,
         'Eguana_EventManager' => 1,
+        'Eguana_FacebookPixel' => 1,
         'Eguana_StoreLocator' => 1,
         'Eguana_Faq' => 1,
         'Amore_Sap' => 1,
