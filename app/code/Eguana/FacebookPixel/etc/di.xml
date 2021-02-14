@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: ali
+ * Date: 03/01/21
+ * Time: 03:16 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Eguana\FacebookPixel\Model\Session\Storage" type="Magento\Framework\Session\Storage">
+        <arguments>
+            <argument name="namespace" xsi:type="string">Eguana_FacebookPixel</argument>
+        </arguments>
+    </virtualType>
+    <type name="Eguana\FacebookPixel\Model\Session">
+        <arguments>
+            <argument name="storage" xsi:type="object">Eguana\FacebookPixel\Model\Session\Storage</argument>
+        </arguments>
+    </type>
+</config>
