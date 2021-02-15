@@ -242,18 +242,14 @@ class Save extends AbstractController implements HttpPostActionInterface
                 $imageName = (explode("/media/", $generalData['image'][0]['url']));
                 $generalData['image'] = $imageName[1];
             }
-            if (isset($generalData['thank_you_image']) &&
-                strpos($generalData['thank_you_image'][0]['url'], 'redemption/tmp/feature/') !== false) {
-                if (isset($generalData['thank_you_image'][0]['file'])) {
-                    $generalData['thank_you_image'] = 'redemption/tmp/feature/' .
-                        $generalData['thank_you_image'][0]['file'];
-                } else {
-                    $imageName = (explode("/media/", $generalData['thank_you_image'][0]['url']));
-                    $generalData['thank_you_image'] = $imageName[1];
-                }
-            } else {
+            if (isset($generalData['thank_you_image'][0]['url'])) {
                 $imageName = (explode("/media/", $generalData['thank_you_image'][0]['url']));
                 $generalData['thank_you_image'] = $imageName[1];
+            } elseif (isset($generalData['thank_you_image'][0]['file'])) {
+                $generalData['thank_you_image'] = 'redemption/tmp/feature/' .
+                    $generalData['thank_you_image'][0]['file'];
+            } else {
+                $generalData['thank_you_image'] = '';
             }
             $model->setData($generalData);
             try {
@@ -337,6 +333,7 @@ class Save extends AbstractController implements HttpPostActionInterface
             }
             $newRedemption->setId(null);
             $newRedemption->setIsActive(false);
+            $newRedemption->setThankYouImage($model->getThankYouImage());
             $newRedemption->setImage($model->getImage());
             $identifier = $model->getIdentifier() . '-' . uniqid();
             $newRedemption->setIdentifier($identifier);
