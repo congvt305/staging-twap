@@ -169,14 +169,6 @@ class CounterSaveAjax extends Action
                     ->addFilter($storeCond)
                     ->create();
 
-                $counterCond = $this->filterBuilder->setField('main_table.counter_id')
-                    ->setValue($post['counter'])
-                    ->setConditionType('eq')
-                    ->create();
-                $filterCounter = $this->filterGroupBuilder
-                    ->addFilter($counterCond)
-                    ->create();
-
                 $emailCond = $this->filterBuilder->setField('main_table.email')
                     ->setValue($post['email'])
                     ->setConditionType('eq')
@@ -191,7 +183,7 @@ class CounterSaveAjax extends Action
                     ->create();
 
                 $criteriaBuilder = $this->searchCriteriaBuilder;
-                $criteriaBuilder->setFilterGroups([$filterId, $filterStore, $filterCounter, $filterOr]);
+                $criteriaBuilder->setFilterGroups([$filterId, $filterStore, $filterOr]);
                 $item = $this->counterRepository->getList($criteriaBuilder->create())->getItems();
 
                 if (!empty($item)) {

@@ -14,6 +14,7 @@ namespace Eguana\Redemption\Block\Adminhtml\Redemption\CounterSeats;
 use Eguana\Redemption\Api\RedemptionRepositoryInterface;
 use Eguana\Redemption\Model\Source\AvailableStores;
 use Magento\Backend\Block\Widget\Form\Generic;
+use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Registry;
@@ -43,6 +44,11 @@ class Form extends Generic
     private $availableStores;
 
     /**
+     * @var DataPersistorInterface
+     */
+    private $dataPersistor;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -54,6 +60,7 @@ class Form extends Generic
      * @param LoggerInterface $logger
      * @param AvailableStores $availableStores
      * @param RequestInterface $request
+     * @param DataPersistorInterface $dataPersistor
      * @param RedemptionRepositoryInterface $redemptionRepository
      * @param array $data
      */
@@ -64,11 +71,13 @@ class Form extends Generic
         LoggerInterface $logger,
         AvailableStores $availableStores,
         RequestInterface $request,
+        DataPersistorInterface $dataPersistor,
         RedemptionRepositoryInterface $redemptionRepository,
         array $data = []
     ) {
         $this->logger = $logger;
         $this->request = $request;
+        $this->dataPersistor = $dataPersistor;
         $this->availableStores = $availableStores;
         $this->redemptionRepository = $redemptionRepository;
         parent::__construct($context, $registry, $formFactory, $data);
@@ -85,7 +94,12 @@ class Form extends Generic
             $id = $this->request->getParam('redemption_id');
             $selectedStoreId = $this->request->getParam('storeId');
             $counterIds = $this->request->getParam('counterIds');
-            if ($id) {
+            $formData = $this->dataPersistor->get('eguana_redemption');
+            if ($formData) {
+                $offlineStoreIds = $formData['offline_store_id'];
+                $counterSeats = $formData['counter_seats'];
+                $storeId = isset($formData['store_id']) ? $formData['store_id'] : $formData['store_id_name'];
+            } elseif ($id) {
                 $redemption = $this->redemptionRepository->getById($id);
                 $offlineStoreIds = $redemption->getData('offline_store_id');
                 $counterSeats = $redemption->getData('counter_seats');
@@ -113,7 +127,8 @@ class Form extends Generic
                 foreach ($storeLocators as $store) {
                     $elementId = 'qty_' . $i;
                     $fieldLabel = $store->getTitle() . ' (' . __('Total Quantity') . ')';
-                    $fieldValue = isset($counterSeats[$i]) ? $counterSeats[$i] : 0;
+                    $counterKey = array_search($store->getEntityId(), $offlineStoreIds);
+                    $fieldValue = isset($counterSeats[$counterKey]) ? $counterSeats[$counterKey] : 0;
 
                     $fieldset->addField(
                         $elementId,
