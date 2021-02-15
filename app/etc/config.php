@@ -559,6 +559,7 @@ return [
         'Amore_Sap' => 1,
         'Eguana_ImportCoupon' => 1,
         'Eguana_ImportExport' => 1,
+        'Eguana_InventoryCompensation' => 1,
         'Eguana_LinePay' => 1,
         'Eguana_Login' => 1,
         'Eguana_Magazine' => 1,
