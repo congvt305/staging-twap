@@ -151,8 +151,12 @@ class Index extends Action implements HttpGetActionInterface, HttpPostActionInte
         $resultRedirect = $this->resultRedirectFactory->create();
         $post = (array) $this->getRequest()->getPostValue();
         if (!empty($post) && $this->formKeyValidator->validate($this->getRequest())) {
-            $this->saveReservation($post, $resultRedirect);
-            return $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            $result = $this->saveReservation($post, $resultRedirect);
+            if ($result) {
+                return $resultRedirect->setPath('*/*/success');
+            } else {
+                return $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            }
         }
 
         $eventId = $this->getRequest()->getParam('id');
@@ -163,16 +167,16 @@ class Index extends Action implements HttpGetActionInterface, HttpPostActionInte
             $storeId = $storeId ? $storeId : 0;
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage(
-                __('No event exsit against this request.')
+                __('No event exsit against this request')
             );
             return $resultRedirect->setPath('/');
         }
 
         if ($this->configHelper->getEventEnabled($storeId) == 0 || $event->isActive() == 0) {
             if ($event->isActive() == 0) {
-                $message = __('This Event is currently disabled.');
+                $message = __('This Event is currently disabled');
             } else {
-                $message = __('No event exsit against this request.');
+                $message = __('No event exsit against this request');
             }
             $this->messageManager->addErrorMessage($message);
             return $resultRedirect->setPath('/');
@@ -182,7 +186,7 @@ class Index extends Action implements HttpGetActionInterface, HttpPostActionInte
             return $this->pageFactory->create();
         } else {
             $this->messageManager->addErrorMessage(
-                __('No event exsit against this request.')
+                __('No event exsit against this request')
             );
             return $resultRedirect->setUrl('/');
         }
@@ -197,11 +201,12 @@ class Index extends Action implements HttpGetActionInterface, HttpPostActionInte
      */
     private function saveReservation($post, $resultRedirect)
     {
+        $success = false;
         try {
             $counter = $this->counterRepository->getById($post['counter_id']);
         } catch (\Exception $exception) {
             $this->messageManager->addErrorMessage(__('This Counter doesn\'t exist.'));
-            return $resultRedirect->setPath('/');
+            return false;
         }
 
         $data = $post;
@@ -217,13 +222,13 @@ class Index extends Action implements HttpGetActionInterface, HttpPostActionInte
 
         if (!$canReserve || !$seatsAvailable) {
             if (!$canReserve) {
-                $message = 'Your have already reserved this event.';
+                $message = 'Your have already reserved this event';
             } else {
-                $message = 'Sorry all seats against this counter are reserved.';
+                $message = 'Sorry all seats against this counter are reserved';
             }
 
             $this->messageManager->addErrorMessage(__($message));
-            return $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            return false;
         }
 
         $model = $this->userReservationFactory->create();
@@ -244,8 +249,9 @@ class Index extends Action implements HttpGetActionInterface, HttpPostActionInte
                 );
             }
             $this->messageManager->addSuccessMessage(
-                __('Your request for reservation submitted successfully.')
+                __('Successfully booked an event')
             );
+            $success = true;
         } catch (LocalizedException $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         } catch (\Exception $e) {
@@ -254,6 +260,6 @@ class Index extends Action implements HttpGetActionInterface, HttpPostActionInte
                 __('Something went wrong while reserving the event')
             );
         }
-        return true;
+        return $success;
     }
 }

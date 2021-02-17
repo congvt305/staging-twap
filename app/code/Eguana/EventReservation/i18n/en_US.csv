@@ -45,3 +45,9 @@ Status,Status
 Created,Created
 Modified,Modified
 "More","More"
+"Successfully booked an event","Successfully booked an event"
+"No event exsit against this request","No event exsit against this request"
+"This Event is currently disabled","This Event is currently disabled"
+"Your have already reserved this event","Your have already reserved this event"
+"Sorry all seats against this counter are reserved","Sorry all seats against this counter are reserved"
+"Something went wrong while reserving the event","Something went wrong while reserving the event"

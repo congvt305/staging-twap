@@ -1,0 +1,24 @@
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: ali
+ * Date: 02/09/21
+ * Time: 12:28 PM
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block
+                class="Eguana\EventReservation\Block\Event\Reservation"
+                name="event.reservation.success"
+                template="Eguana_EventReservation::reservation-success.phtml">
+                <arguments>
+                    <argument name="reservation_view_model" xsi:type="object">Eguana\EventReservation\ViewModel\Event\Reservation</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
