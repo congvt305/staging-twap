@@ -1,0 +1,40 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 9/2/21
+ * Time: 5:12 PM
+ */
+
+/** @var $block \Eguana\FacebookPixel\Block\Code */
+
+$data   = $block->getFacebookPixelData();
+$id     = $data['id'];
+$action = $data['full_action_name'];
+$productData = $block->getProduct();
+$orderData = $block->getOrder();
+$pageView = ($block->isModuleEnabled()) ? 'enabled' : 'disabled';
+?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Eguana_FacebookPixel/js/code": {
+                "id" : <?= $block->escapeHtml($id); ?>,
+                "action" : "<?= $block->escapeHtml($action); ?>",
+                "productData" : <?= /* @noEscape */ $productData; ?>,
+                "orderData" : <?= /* @noEscape */ $orderData; ?>,
+                "pageView" : "<?= /* @noEscape */ $pageView; ?>"
+            }
+        }
+    }
+</script>
+<!-- Facebook Pixel Code -->
+<noscript>
+    <img height="1"
+         width="1"
+         style="display: none;"
+         src="https://www.facebook.com/tr?id=<?= /* @noEscape */ $block->escapeHtml($id); ?>&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Facebook Pixel Code -->
