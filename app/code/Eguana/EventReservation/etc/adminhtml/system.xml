@@ -29,6 +29,13 @@
                         <field id="*/*/enabled">1</field>
                     </depends>
                 </field>
+                <field id="privacy_policy_text" translate="label" type="textarea" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Privacy policy</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
             </group>
             <group id="email" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Email Template Configuration</label>

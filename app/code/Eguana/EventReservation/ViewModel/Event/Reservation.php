@@ -17,6 +17,7 @@ use Eguana\EventReservation\Model\Event;
 use Eguana\EventReservation\Model\Counter\TimeSlotSeats;
 use Eguana\StoreLocator\Api\StoreInfoRepositoryInterface;
 use Eguana\StoreLocator\Model\ResourceModel\StoreInfo\CollectionFactory;
+use Eguana\EventReservation\Helper\ConfigData;
 use Magento\Cms\Api\BlockRepositoryInterface;
 use Magento\Cms\Model\Template\FilterProvider;
 use Magento\Framework\Api\ExtensibleDataInterface;
@@ -39,10 +40,11 @@ use Psr\Log\LoggerInterface;
 class Reservation implements ArgumentInterface
 {
     /**#@+
-     * Constants for date format.
+     * Constants.
      */
     const DB_DATE_FORMAT        = 'Y-m-d';
     const COUNTER_DATE_FORMAT   = 'm/d';
+    const LANEIGE_SUCCESS_IMAGE = 'Eguana_EventReservation::images/laneige-success-img.jpg';
     /**#@-*/
 
     /**
@@ -116,8 +118,14 @@ class Reservation implements ArgumentInterface
     private $storeInfoCollectionFactory;
 
     /**
+     * @var ConfigData
+     */
+    private $eventConfig;
+
+    /**
      * @param Http $request
      * @param DateTime $dateTime
+     * @param ConfigData $eventConfig
      * @param FilterProvider $filterProvider
      * @param TimeSlotSeats $timeSlotSeats
      * @param LoggerInterface $logger
@@ -134,6 +142,7 @@ class Reservation implements ArgumentInterface
     public function __construct(
         Http $request,
         DateTime $dateTime,
+        ConfigData $eventConfig,
         FilterProvider $filterProvider,
         TimeSlotSeats $timeSlotSeats,
         LoggerInterface $logger,
@@ -151,6 +160,7 @@ class Reservation implements ArgumentInterface
         $this->request                      = $request;
         $this->dateTime                     = $dateTime;
         $this->timezone                     = $timezone;
+        $this->eventConfig                  = $eventConfig;
         $this->storeManager                 = $storeManager;
         $this->timeSlotSeats                = $timeSlotSeats;
         $this->filterProvider               = $filterProvider;
@@ -247,11 +257,11 @@ class Reservation implements ArgumentInterface
      *
      * @return int
      */
-    public function getStoreId() : int
+    public function getStoreId()
     {
         $storeId = 0;
         try {
-            $storeId = $this->_storeManager->getStore()->getId();
+            $storeId = $this->storeManager->getStore()->getId();
         } catch (NoSuchEntityException $exception) {
             $this->logger->debug($exception->getMessage());
         }
@@ -397,5 +407,31 @@ class Reservation implements ArgumentInterface
             $this->logger->debug($exception->getMessage());
         }
         return false;
+    }
+
+    /**
+     * Get privacy policy text
+     *
+     * @return string
+     */
+    public function getPrivacyPolicy()
+    {
+        return $this->eventConfig->getPrivacyPolicy($this->getStoreId());
+    }
+
+    /**
+     * Get Url of success image
+     *
+     * @return string
+     */
+    public function getSuccessImageUrl()
+    {
+        $websiteId = $this->storeManager->getStore()->getWebsiteId();
+        $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
+        if ($websiteCode == 'tw_lageige_website') {
+            return self::LANEIGE_SUCCESS_IMAGE;
+        } else {
+            return '';
+        }
     }
 }

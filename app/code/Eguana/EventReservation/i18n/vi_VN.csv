@@ -45,3 +45,9 @@ Status,Status
 Created,Created
 Modified,Modified
 "More","More"
+"Successfully booked an event","Đã đặt thành công một sự kiện"
+"No event exsit against this request","Không có sự kiện nào thoát khỏi yêu cầu này"
+"This Event is currently disabled","Sự kiện này hiện đã bị vô hiệu hóa"
+"Your have already reserved this event","Bạn đã đặt trước sự kiện này"
+"Sorry all seats against this counter are reserved","Xin lỗi, tất cả các ghế so với quầy này đã được đặt trước"
+"Something went wrong while reserving the event","Đã xảy ra sự cố khi đặt trước sự kiện"

@@ -1,0 +1,25 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: ali
+ * Date: 02/09/21
+ * Time: 11:10 PM
+ */
+
+/** @var \Eguana\EventReservation\Block\Event\Reservation $block */
+/** @var \Eguana\EventReservation\ViewModel\Event\Reservation $viewModel */
+$viewModel = $block->getData('reservation_view_model');
+$successImage = $viewModel->getSuccessImageUrl();
+?>
+<?php if ($successImage): ?>
+    <div class="event-image-description">
+        <div class="event-image-box">
+            <img
+                class="event-image image-responsive"
+                src="<?= $block->escapeHtmlAttr($block->getViewFileUrl($successImage)); ?>"
+                alt="success-image"/>
+        </div>
+    </div>
+<?php endif; ?>
