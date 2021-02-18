@@ -128,8 +128,8 @@ class RedemptionDetails extends Template implements IdentityInterface
                 $breadcrumbsBlock->addCrumb(
                     'redemption',
                     [
-                        'label' => __('Redemption'),
-                        'title' => __('Redemption'),
+                        'label' => __('Brand activity'),
+                        'title' => __('Brand activity'),
                     ]
                 );
                 if (!empty($this->getRedemption()->getData())) {

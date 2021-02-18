@@ -13,6 +13,7 @@ namespace Eguana\Redemption\Model\Source;
 
 use Eguana\StoreLocator\Api\StoreInfoRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Option\ArrayInterface;
 use Eguana\StoreLocator\Model\ResourceModel\StoreInfo\Collection;
 use Eguana\StoreLocator\Model\ResourceModel\StoreInfo\CollectionFactory;
@@ -52,6 +53,11 @@ class AvailableStores implements ArrayInterface
     private $redemptionRepository;
 
     /**
+     * @var DataPersistorInterface
+     */
+    private $dataPersistor;
+
+    /**
      * AvailableStores constructor.
      *
      * @param StoreInfoRepositoryInterface $storeInfoRepositoryInterface
@@ -59,19 +65,22 @@ class AvailableStores implements ArrayInterface
      * @param CollectionFactory $storeInfoCollectionFactory
      * @param RequestInterface $request
      * @param RedemptionRepositoryInterface $redemptionRepository
+     * @param DataPersistorInterface $dataPersistor
      */
     public function __construct(
         StoreInfoRepositoryInterface $storeInfoRepositoryInterface,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         CollectionFactory $storeInfoCollectionFactory,
         RequestInterface $request,
-        RedemptionRepositoryInterface $redemptionRepository
+        RedemptionRepositoryInterface $redemptionRepository,
+        DataPersistorInterface $dataPersistor
     ) {
         $this->storeInfoRepositoryInterface = $storeInfoRepositoryInterface;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->storeInfoCollectionFactory = $storeInfoCollectionFactory;
         $this->request = $request;
         $this->redemptionRepository = $redemptionRepository;
+        $this->dataPersistor = $dataPersistor;
     }
 
     /**
@@ -81,7 +90,12 @@ class AvailableStores implements ArrayInterface
      */
     public function toOptionArray() : array
     {
+        $storeId = 0;
         $redemptionId = $this->request->getParam('redemption_id');
+        $formData = $this->dataPersistor->get('eguana_redemption');
+        if (isset($formData['store_id_name'])) {
+            $storeId = $formData['store_id_name'];
+        }
         if ($redemptionId) {
             $redemptionData = $this->redemptionRepository->getById($redemptionId);
             $storeId = $redemptionData->getData('store_id');
@@ -104,13 +118,14 @@ class AvailableStores implements ArrayInterface
             }
             return $result;
         }
-        $redemptionData = $this->redemptionRepository->getById($redemptionId);
-        $storeId = $redemptionData->getData('store_id');
         $storeCollection = $this->storeInfoCollectionFactory->create();
         $storeCollection->addFieldToFilter(
             "available_for_redemption",
             ["eq" => 1]
         );
+        if ($storeId) {
+            $storeCollection->addStoreFilter($storeId);
+        }
         $result = [
             ['value' => '', 'label' => 'Select Store']
         ];

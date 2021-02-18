@@ -117,6 +117,17 @@
                     <label translate="true">Expired</label>
                 </settings>
             </action>
+            <action name="delete">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to delete selected participants?</message>
+                        <title translate="true">Delete</title>
+                    </confirm>
+                    <url path="redemption/counter/massDelete"/>
+                    <type>delete</type>
+                    <label translate="true">Delete</label>
+                </settings>
+            </action>
         </massaction>
         <exportButton name="export_button" class="Eguana\Redemption\Ui\Component\Listing\Counter\ExportButton" component="Magento_Ui/js/grid/export" displayArea="dataGridActions">
             <argument name="data" xsi:type="array">

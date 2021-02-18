@@ -352,6 +352,27 @@ class Redemption extends AbstractModel implements RedemptionInterface, IdentityI
     }
 
     /**
+     * Get Thank You Image
+     *
+     * @return string|null
+     */
+    public function getThankYouImage() : string
+    {
+        return $this->getData(self::THANK_YOU_IMAGE);
+    }
+
+    /**
+     * Set Thank You Image
+     *
+     * @param string $image
+     * @return Redemption
+     */
+    public function setThankYouImage($image)
+    {
+        return $this->setData(self::THANK_YOU_IMAGE, $image);
+    }
+
+    /**
      * Retrieve Store Ids
      *
      * @return mixed|null

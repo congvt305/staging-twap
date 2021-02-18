@@ -280,7 +280,9 @@ View Action is used to see the frontend registration page where customer can reg
 
 The link to view fontend page is when click on View Action from action tab it shows the following page
 
-![register-form](https://nimbus-screenshots.s3.amazonaws.com/s/b49d0f7c7cc8c6c40575c845b1e32090.png)
+![register-form](https://nimbus-screenshots.s3.amazonaws.com/s/ddbbd2a64da59142d87e1e96bbb8af3c.png)
+
+![register-form-2](https://nimbus-screenshots.s3.amazonaws.com/s/d17f3d519ca3e32e33964f28afda50dd.png)
 
 ## 1) CMS Block
 
@@ -310,15 +312,15 @@ The counters across which the total quantity is null will be showed disabled in 
 
 ## 5) Line Id it is optional
 
-## Precautions Area
+## 6) Privacy Policy
 
-This is showing the Precautions which admin adds when add a new redemption
+If user will not aggree with privacy policy then he/she not able to proceed the registration process
 
-## 6) Google Recaptcha
+## 7) Google Recaptcha
 
 For Validation
 
-## 7) Submit Button
+## 8) Submit Button
 
 After filling the form click on submit button it saves the redemption in the admin redmption form at the bottom which shows the grid of registered customer as shown in the image
 

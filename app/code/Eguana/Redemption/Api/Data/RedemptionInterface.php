@@ -34,6 +34,7 @@ interface RedemptionInterface
     const META_DESCRIPTION = 'meta_description';
     const IMAGE = 'image';
     const IS_ACTIVE = 'is_active';
+    const THANK_YOU_IMAGE = 'thank_you_image';
     /**#@-*/
 
     /**
@@ -245,4 +246,19 @@ interface RedemptionInterface
      * @return RedemptionInterface
      */
     public function setIsActive($isActive);
+
+    /**
+     * Get Thank You Image
+     *
+     * @return string|null
+     */
+    public function getThankYouImage() : string;
+
+    /**
+     * Set Thank You Image
+     *
+     * @param string $image
+     * @return RedemptionInterface
+     */
+    public function setThankYouImage($image);
 }

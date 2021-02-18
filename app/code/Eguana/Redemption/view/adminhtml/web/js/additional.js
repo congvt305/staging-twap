@@ -28,6 +28,7 @@ define([
                 }).done(function (result) {
                     $(offlineStoreByName).html('');
                     $(offlineStoreByName).html(result.storelist);
+                    $('#redemption-counter-seats-fields').hide();
                 });
             }
         });
