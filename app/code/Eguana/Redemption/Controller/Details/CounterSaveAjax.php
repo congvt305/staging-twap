@@ -9,6 +9,7 @@
  */
 namespace Eguana\Redemption\Controller\Details;
 
+use Eguana\FacebookPixel\Helper\Data;
 use Eguana\Redemption\Api\CounterRepositoryInterface;
 use Eguana\Redemption\Api\RedemptionRepositoryInterface;
 use Eguana\Redemption\Model\Counter;
@@ -84,6 +85,11 @@ class CounterSaveAjax extends Action
     private $filterGroupBuilder;
 
     /**
+     * @var Data
+     */
+    private $facebookPixelHelper;
+
+    /**
      * CounterSaveAjax constructor.
      * @param ResultFactory $resultFactory
      * @param Context $context
@@ -96,6 +102,7 @@ class CounterSaveAjax extends Action
      * @param DateTime $date
      * @param FilterBuilder $filterBuilder
      * @param FilterGroupBuilder $filterGroupBuilder
+     * @param Data $facebookPixelHelper
      */
     public function __construct(
         ResultFactory $resultFactory,
@@ -108,7 +115,8 @@ class CounterSaveAjax extends Action
         EmailSender $emailSender,
         DateTime $date,
         FilterBuilder $filterBuilder,
-        FilterGroupBuilder $filterGroupBuilder
+        FilterGroupBuilder $filterGroupBuilder,
+        Data $facebookPixelHelper
     ) {
         $this->resultFactory = $resultFactory;
         $this->context = $context;
@@ -121,6 +129,7 @@ class CounterSaveAjax extends Action
         $this->date = $date;
         $this->filterBuilder = $filterBuilder;
         $this->filterGroupBuilder = $filterGroupBuilder;
+        $this->facebookPixelHelper = $facebookPixelHelper;
         parent::__construct($context);
     }
 
@@ -235,10 +244,14 @@ class CounterSaveAjax extends Action
                     );
                 }
             }
+            $isFbEnabled = $this->facebookPixelHelper->isModuleEnabled();
+            $isRedemptionApplied = $this->facebookPixelHelper->isRedemptionApplied();
+            $fbFunEnable = ($isFbEnabled && $isRedemptionApplied) ? true : false;
             $resultJson->setData(
                 [
                     "message" => __('You have successfully applied for redemption, please check your email and newsletter.'),
                     "success" => true,
+                    'fbFunEnable' => $fbFunEnable,
                     'entity_id' => $model->getData('entity_id')
                 ]
             );

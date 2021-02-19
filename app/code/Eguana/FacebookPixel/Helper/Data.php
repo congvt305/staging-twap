@@ -35,6 +35,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const XML_PATH_CATEGORY_VIEW        = 'eguana_facebook_pixel/event_tracking/category_view';
     const XML_PATH_PURCHASE             = 'eguana_facebook_pixel/event_tracking/purchase';
     const XML_PATH_ADD_TO_CART          = 'eguana_facebook_pixel/event_tracking/add_to_cart';
+    const XML_PATH_REDEMPTION_APPLIED   = 'eguana_facebook_pixel/event_tracking/redemption_applied';
+    const XML_PATH_REDEMPTION_CONFIRM   = 'eguana_facebook_pixel/event_tracking/redemption_confirm';
     const XML_PATH_INCLUDE_TAX          = 'tax/calculation/price_includes_tax';
     /**#@-*/
 
@@ -573,5 +575,35 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         return $this->currentCurrencyCode;
+    }
+
+    /**
+     * Is Redemption Applied
+     *
+     * @param null $scope
+     * @return mixed
+     */
+    public function isRedemptionApplied($scope = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_REDEMPTION_APPLIED,
+            ScopeInterface::SCOPE_STORE,
+            $scope
+        );
+    }
+
+    /**
+     * Is Confirm
+     *
+     * @param null $scope
+     * @return mixed
+     */
+    public function isRedemptionConfirm($scope = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_REDEMPTION_CONFIRM,
+            ScopeInterface::SCOPE_STORE,
+            $scope
+        );
     }
 }

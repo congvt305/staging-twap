@@ -9,6 +9,8 @@
  */
 
 /** @var $block \Eguana\FacebookPixel\Block\Code */
+/** @var $viewModel \Eguana\FacebookPixel\ViewModel\FacebookPixel */
+$viewModel = $block->getData('fb_view_model');
 
 $data   = $block->getFacebookPixelData();
 $id     = $data['id'];
@@ -16,6 +18,7 @@ $action = $data['full_action_name'];
 $productData = $block->getProduct();
 $orderData = $block->getOrder();
 $pageView = ($block->isModuleEnabled()) ? 'enabled' : 'disabled';
+$isRedemptionConfirm = ($viewModel->isRedemptionConfirm()) ? 'enabled' : 'disabled';
 ?>
 <script type="text/x-magento-init">
     {
@@ -25,7 +28,9 @@ $pageView = ($block->isModuleEnabled()) ? 'enabled' : 'disabled';
                 "action" : "<?= $block->escapeHtml($action); ?>",
                 "productData" : <?= /* @noEscape */ $productData; ?>,
                 "orderData" : <?= /* @noEscape */ $orderData; ?>,
-                "pageView" : "<?= /* @noEscape */ $pageView; ?>"
+                "pageView" : "<?= /* @noEscape */ $pageView; ?>",
+                "redemptionConfirm" : "<?= /* @noEscape */$isRedemptionConfirm; ?>"
+
             }
         }
     }
