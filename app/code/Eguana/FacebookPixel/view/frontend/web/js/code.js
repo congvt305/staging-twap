@@ -17,6 +17,8 @@ define([
         var productData = config.productData;
         var orderData = config.orderData;
         var pageView = config.pageView;
+        var redemptionApplied = config.redemptionApplied;
+        var redemptionConfirm = config.redemptionConfirm;
 
         !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
             n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -68,6 +70,12 @@ define([
                     num_items : orderData.num_items,
                     currency: orderData.currency
                 });
+            }
+
+            if (action == 'redemption_details_register' && redemptionConfirm == 'enabled') {
+                $('.action-confirm').on('click', function () {
+                    fbq('track', 'Foundation_check_finalcheck');
+                })
             }
         };
         return window.fb();

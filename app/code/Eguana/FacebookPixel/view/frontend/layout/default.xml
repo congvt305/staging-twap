@@ -16,7 +16,11 @@
                    name="eguana.facebook.pixel."
                    template="Eguana_FacebookPixel::code.phtml"
                    before="-"
-                   ifconfig="eguana_facebook_pixel/general/enable" />
+                   ifconfig="eguana_facebook_pixel/general/enable">
+                <arguments>
+                    <argument name="fb_view_model" xsi:type="object">Eguana\FacebookPixel\ViewModel\FacebookPixel</argument>
+                </arguments>
+            </block>
             <block class="Magento\Framework\View\Element\Template" name="eguana.fbpixel.atc" after="eguana.facebook.pixel."
                    ifconfig="eguana_facebook_pixel/general/enable"
                    template="Eguana_FacebookPixel::atc.phtml">
