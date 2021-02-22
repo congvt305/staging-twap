@@ -22,6 +22,7 @@ define([
                     for (var eventCounter = 0; eventCounter < loadedData.events.length; eventCounter++) {
                         var eventData = loadedData.events[eventCounter];
                         if ("undefined" !== typeof eventData.eventAdditional && eventData.eventAdditional) {
+                            eventData.eventAdditional.unique = Date.now();
                             fbq('track', eventData.eventName, eventData.eventAdditional || {});
                         }
                     }
