@@ -7,8 +7,8 @@ Save,保存
 Home,家
 "Go to Home Page","去首頁"
 Events,最新活動
-"Current Events","時事"
-"Previous Events","以前的活動"
+"Current Events","活動進行中"
+"Previous Events","活動已結束"
 Event,事件
 Manager,經理
 "Manage Events","管理活動"
@@ -29,8 +29,8 @@ Edit,Edit
 Delete,刪除
 "Delete ""${ $.$data.event_title }""","刪除 ""${ $.$data.event_title }"""
 "Are you sure you wan't to delete a ""${ $.$data.event_title }"" record?","您確定要刪除一個 ""${ $.$data.event_title }"" 記錄?"
-"Back to list","返回目錄"
-"No Event found!","找不到活動!"
+"Back to list","回上一頁"
+"No Event found!","尚未有活動資訊"
 "Enable Event","啟用事件"
 "Thumbnail Image","縮圖圖片"
 "Start Date","開始日期"
