@@ -83,6 +83,9 @@ define([
                             startTimer();
                             $('#redemption_thank_you_img').show();
                             $('#redemption_banner_img').hide();
+                            if (data['fbFunEnable']) {
+                                fbq('track', 'Foundation_check_finalcheck');
+                            }
                         }
                         window.scrollTo(500, 0);
                     }
