@@ -173,7 +173,7 @@ class Data extends AbstractHelper
                 'clientBackUrl' => $this->_ecpayPaymentModel->getMagentoUrl('checkout/onepage/success'),
                 'orderId' => $orderId,
                 'total' => $order->getGrandTotal(),
-                'itemName' => __('Laneige Online Shopping Center'),
+                'itemName' => $this->getMerchandizeName($order->getstoreId()),
                 'cartName' => 'magento_' . $this->getModuleVersion(),
                 'currency' => $orderCurrencyCode,
                 'needExtraPaidInfo' => 'Y',
@@ -378,5 +378,26 @@ class Data extends AbstractHelper
         } else {
             return null;
         }
+    }
+
+    /**
+     * @param $storeId
+     * @return \Magento\Framework\Phrase
+     */
+    private function getMerchandizeName($storeId): \Magento\Framework\Phrase
+    {
+        $merchandizeName = "";
+
+        switch ($storeId) {
+            case 4:
+                $merchandizeName = __('Laneige Online Shopping Center');
+                break;
+            case 1:
+                $merchandizeName = __('Sulwhasoo Online Shopping Center');
+                break;
+            default :
+                break;
+        }
+        return $merchandizeName;
     }
 }
