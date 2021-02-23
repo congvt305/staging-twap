@@ -203,10 +203,10 @@ class SapProductManagement implements SapProductManagementInterface
         ];
 
         //temporary skipping
-        if (true) {
-            $result[$stockData['matnr']] = ['code' => "0002", 'message' => 'Skipped'];
-            return $result;
-        }
+//        if (true) {
+//            $result[$stockData['matnr']] = ['code' => "0002", 'message' => 'Skipped'];
+//            return $result;
+//        }
 
 
         if ($this->config->getLoggingCheck()) {
