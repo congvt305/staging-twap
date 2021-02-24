@@ -4910,7 +4910,7 @@ new products will be created. Use this step to customize images and price for yo
 "Reset password token mismatch.","Reset password token mismatch.",module,Magento_Customer
 "Reset password token expired.","Reset password token expired.",module,Magento_Customer
 "Please correct the transactional account email type.","Please correct the transactional account email type.",module,Magento_Customer
-"""%1"" is a required value.","""%1"" is a required value.",module,Magento_Customer
+"""%1"" is a required value.","您尚未同意""%1""，請與客服中心聯繫!謝謝",module,Magento_Customer
 "Global","全球",module,Magento_Customer
 "Per Website","Per Website",module,Magento_Customer
 "We can't share customer accounts globally when the accounts share identical email addresses on more than one website.","當帳戶在多個網站上共享相同的電子郵件地址時，我們無法在全球範圍內共享客戶帳戶。",module,Magento_Customer
