@@ -5092,13 +5092,13 @@ new products will be created. Use this step to customize images and price for yo
 "To sign in to our site, use these credentials during checkout or on the <a href=""%customer_url"">My Account</a> page:","請在結帳時或是在<a href=""%customer_url"">我的帳戶</a>頁面上使用以下資訊，來登入我們的網站:",module,Magento_Customer
 "Email:","電子郵件:",module,Magento_Customer
 "Password:","密碼:",module,Magento_Customer
-"Password you set when creating account","您加入會員時設定的密碼",module,Magento_Customer
-"Forgot your account password? Click <a href=""%reset_url"">here</a> to reset it.","忘記帳號密碼了嗎？ 點擊<a href=""%reset_url"">這裡</a>重置密碼。",module,Magento_Customer
-"When you sign in to your account, you will be able to:","登錄帳戶後，您將能夠:",module,Magento_Customer
-"Proceed through checkout faster","更快速地結帳",module,Magento_Customer
-"Check the status of orders","檢查訂單狀態",module,Magento_Customer
+"Password you set when creating account","加入會員時設定的密碼",module,Magento_Customer
+"Forgot your account password? Click <a href=""%reset_url"">here</a> to reset it.","忘記帳號密碼了嗎？點擊並<a href=""%reset_url"">重置密碼</a>",module,Magento_Customer
+"When you sign in to your account, you will be able to:","登入會員中心你可以:",module,Magento_Customer
+"Proceed through checkout faster","查詢會員點數",module,Magento_Customer
+"Check the status of orders","查詢歷史消費資訊",module,Magento_Customer
 "View past orders","查看歷史訂單",module,Magento_Customer
-"Store alternative addresses (for shipping to multiple family members and friends)","儲存備用收件地址（寄送給家庭成員和朋友）",module,Magento_Customer
+"Store alternative addresses (for shipping to multiple family members and friends)","修改個人資訊",module,Magento_Customer
 "Please confirm your %store_name account","Please confirm your %store_name account",module,Magento_Customer
 "You must confirm your %customer_email email before you can sign in (link is only valid once):","You must confirm your %customer_email email before you can sign in (link is only valid once):",module,Magento_Customer
 "Confirm Your Account","確認您的帳號",module,Magento_Customer
@@ -14690,13 +14690,13 @@ than a customer might expect. ",module,Magento_Tax
 "To sign in to our site, use these credentials during checkout or on the <a href=""%customer_url"">My Account</a> page:","請在結帳時或是在<a href=""%customer_url"">我的帳戶</a>頁面上使用以下資訊，來登入我們的網站:",module,Magento_Theme
 "Email:","電子郵件：",module,Magento_Theme
 "Password:","密碼:",module,Magento_Theme
-"Password you set when creating account","您加入會員時設定的密碼",module,Magento_Theme
-"Forgot your account password? Click <a href=""%reset_url"">here</a> to reset it.","忘記帳號密碼了嗎？ 點擊<a href=""%reset_url"">這裡</a>重置密碼。",module,Magento_Theme
-"When you sign in to your account, you will be able to:","登錄帳戶後，您將能夠:",module,Magento_Theme
-"Proceed through checkout faster","更快速地結帳",module,Magento_Theme
-"Check the status of orders","檢查訂單狀態",module,Magento_Theme
-"View past orders","查看過去的訂單",module,Magento_Theme
-"Store alternative addresses (for shipping to multiple family members and friends)","儲存備用收件地址（寄送給家庭成員和朋友）",module,Magento_Theme
+"Password you set when creating account","加入會員時設定的密碼",module,Magento_Theme
+"Forgot your account password? Click <a href=""%reset_url"">here</a> to reset it.","忘記帳號密碼了嗎？點擊並<a href=""%reset_url"">重置密碼</a>",module,Magento_Theme
+"When you sign in to your account, you will be able to:","登入會員中心你可以:",module,Magento_Theme
+"Proceed through checkout faster","查詢會員點數",module,Magento_Theme
+"Check the status of orders","查詢歷史消費資訊",module,Magento_Theme
+"View past orders","客服中心服務",module,Magento_Theme
+"Store alternative addresses (for shipping to multiple family members and friends)","修改個人資訊",module,Magento_Theme
 "We could not detect a size.","我們無法檢測到大小。",module,Magento_Theme
 "We don't recognize this file extension.","We don't recognize this file extension.",module,Magento_Theme
 "Home","首頁",module,Magento_Theme
@@ -16271,18 +16271,18 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "To sign in to our site, use these credentials during checkout or on the <a href=""%customer_url"">My Account</a> page:","請在結帳時或是在<a href=""%customer_url"">我的帳戶</a>頁面上使用以下資訊，來登入我們的網站:",theme,frontend\Magento\luma
 "Email:","電子郵件：",theme,frontend\Magento\luma
 "Password:","密碼:",theme,frontend\Magento\luma
-"Password you set when creating account","您加入會員時設定的密碼",theme,frontend\Magento\luma
-"Forgot your account password? Click <a href=""%reset_url"">here</a> to reset it.","忘記帳號密碼了嗎？ 點擊<a href=""%reset_url"">這裡</a>重置密碼。",theme,frontend\Magento\luma
-"When you sign in to your account, you will be able to:","登錄帳戶後，您將能夠:",theme,frontend\Magento\luma
+"Password you set when creating account","加入會員時設定的密碼",theme,frontend\Magento\luma
+"Forgot your account password? Click <a href=""%reset_url"">here</a> to reset it.","忘記帳號密碼了嗎？點擊並<a href=""%reset_url"">重置密碼</a>",theme,frontend\Magento\luma
+"When you sign in to your account, you will be able to:","登入會員中心你可以:",theme,frontend\Magento\luma
 "Quick Checkout","Quick Checkout",theme,frontend\Magento\luma
-"Proceed through checkout faster","更快速地結帳",theme,frontend\Magento\luma
+"Proceed through checkout faster","查詢會員點數",theme,frontend\Magento\luma
 "Order Status","訂單狀態",theme,frontend\Magento\luma
-"Check the status of orders","檢查訂單狀態",theme,frontend\Magento\luma
+"Check the status of orders","查詢歷史消費資訊",theme,frontend\Magento\luma
 "Manage Addresses","管理地址",theme,frontend\Magento\luma
 "Store alternative addresses","Store alternative addresses",theme,frontend\Magento\luma
 "For shipping to multiple family members and friends","For shipping to multiple family members and friends",theme,frontend\Magento\luma
 "Order History","訂單紀錄",theme,frontend\Magento\luma
-"View past orders","查看過去的訂單",theme,frontend\Magento\luma
+"View past orders","客服中心服務",theme,frontend\Magento\luma
 "Footer","Footer",theme,frontend\Magento\luma
 "<a href=%url_about_us>About Us</a>","<a href=%url_about_us>About Us</a>",theme,frontend\Magento\luma
 "<a href=url_customer_service>Customer Service</a>","<a href=url_customer_service>Customer Service</a>",theme,frontend\Magento\luma
@@ -16454,3 +16454,4 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "First character must be letter.","First character must be letter.",lib,web
 "The password can't be the same as the email address. Create a new password and try again.","密碼不能與電子郵件地址相同。 創建一個新密碼，然後重試。",lib,web
 "Enter your destination to get a shipping estimate.","輸入目的地以獲取運輸估算。"
+"Welcome to %store_name. To sign in to our site, use these credentials during checkout or on the <a href=""%customer_url"">My Account</a> page:","歡迎成為%store_name會員！以下為您的會員帳戶／中心<a href=""%customer_url"">我的帳戶</a> :",module,Magento_Customer
