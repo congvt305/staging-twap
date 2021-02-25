@@ -1,14 +1,16 @@
-## Event Reservation
+# Event Reservation
 
-`Website` : Main Website URL 
-`Author` : Raheel Shaukat  
+`Website` : Main Website URL
+
+`Author` : Raheel Shaukat
+
 `DB Table Name` : eguana_event_reservation, eguana_event_reservation_store, eguana_event_reservation_counter, eguana_user_event_reserve
 
-####Description:
+##Description:
 
-Eguna Event Reservation allows you to create & manage the events for available stores on differnet dates, time slots and allow user to reserve the events from sites. 
+Eguna Event Reservation allows you to create & manage the events for available stores on differnet dates, time slots and allow user to reserve the events from sites.
 
-####Key features:
+##Key features:
 
 - Admin can Enable or Disable Events, To either show an event on front end or not to show.
 - Admin can add Event Title, Event Image, CMS Block Event Start and End Date, Store available, Description, URL Key, Meta Title, Meta Description, Meta Keywords and select store at which admin wants to show the Event.
@@ -21,7 +23,7 @@ Eguna Event Reservation allows you to create & manage the events for available s
 - Staff Admin can also confirm as well as cancel his/her reservervation of customer by clicking links mentioned in the email.
 - Confirmation/Cancelation emails will be send to both customer & staff admin whenever these actions are performed.
 
-## Module Installation  
+## Module Installation
 ```
 1.  php bin/magento Module:enable Eguana_EventReservation  
 2.  php bin/magento setup:upgrade  
@@ -29,8 +31,8 @@ Eguna Event Reservation allows you to create & manage the events for available s
 
 Refresh the Cache under System­ ⇾ Cache Management
 ```
- **General Configurations**
-  
+## Configurations
+
 Navigate to **Stores­ ⇾ Configuration**
 
 ![store-config](https://nimbus-screenshots.s3.amazonaws.com/s/b7d0f7098eb8912cea0507737a970139.png)
@@ -43,56 +45,81 @@ Navigate to EGUANA EXTENSION TAB ⇾ Events Reservation in the left panel.
 
 Add configuration values in the following fields and click the Save Config button.
 
-#### General Configuration
+## General Configuration
 
-![config-fields](https://nimbus-screenshots.s3.amazonaws.com/s/133f433e230ed00da0641a30d5f38eb2.png)
+![general-config](https://nimbus-screenshots.s3.amazonaws.com/s/50a8e93419dbc0a2436a6363331f121e.png)
 
-#####(1) Enable or Disable module
+###(1) Enable or Disable module
 
 Admin can enable or disable module from Enable feature.
 
-#####(2) Select Email Sender
+###(2) Select Email Sender
 
-#### Email Template Configuration
+Admin can select email sender from this field.
 
-Admin can select email sender from Email Sender field.
+###(3) Privacy Policy
 
-#####(1) Send Email to Staff Auto
+Admin can change and set the privacy policy content by this text area field.
+
+###(4) Resend Emai And Sms Interval
+
+Admin can set the time interval to enable the resend button so customer can click resend email/sms again if he/she not recieve sms or email.
+
+## Email Template Configuration
+
+![email-temp-config](https://nimbus-screenshots.s3.amazonaws.com/s/641b9b8b521811b7a4be656c06b60f25.png)
+
+###(1) Send Email to Staff Auto
 
 Admin can enable or disable automatically email sending to staff.
 
-#####(2) Staff Email
+###(2) Staff Email
 
 Admin can add default email of staff.
 
-#####(3) Staff Email Template Pending
+###(3) Staff Email Template Pending
 
 Admin can set staff pending email template.
 
-#####(4) Staff Email Template Confirmed
+###(4) Staff Email Template Confirmed
 
 Admin can set staff confirmed email template.
 
-#####(5) Staff Email Template Canceled
+###(5) Staff Email Template Canceled
 
 Admin can set staff canceled email template.
 
-#####(6) Send Email to Staff Auto
+###(6) Send Email to Staff Auto
 
 Admin can enable or disable automatically email sending to customer.
 
-#####(7) Customer Email Template Pending
+###(7) Customer Email Template Pending
 
 Admin can set customer pending email template.
 
-#####(9) Customer Email Template Confirmed
+###(8) Customer Email Template Confirmed
 
 Admin can set customer confirmed email template.
 
-#####(9) Customer Email Template Canceled
+###(9) Customer Email Template Canceled
 
 Admin can set customer canceled email template.
 
+## SMS Template Configuration
+
+![sms-temp-config](https://nimbus-screenshots.s3.amazonaws.com/s/52d7d192d5cadeb96ec1a9f180770e8f.png)
+
+###(1) Send SMS to Customer Automatically
+
+Admin can enable or disable automatically sms sending to customer feature.
+
+###(2) Reservation SMS
+
+Admin can set customer reservation sms template.
+
+### Note
+
+These all configurations are store base.
 
 ## Manage Events (Admin Side)
 
@@ -106,36 +133,68 @@ Example image of an admin grid is shown below.
 
 ![grid](https://nimbus-screenshots.s3.amazonaws.com/s/46701f9c6a2dd90985dc07e735ddda10.png)
 
-#### Explore The Grid
+## Explore The Grid
 
-##### 1) Search by keyword
+### 1) Search by keyword
 
 ![search](https://nimbus-screenshots.s3.amazonaws.com/s/aafa82dc16e97b105e7032ff23766678.png)
 
-Search by keyword is used to search specific keyword word available list of record. Just write the keyword in input field and press the enter button. 
+Search by keyword is used to search specific keyword word available list of record. Just write the keyword in input field and press the enter button.
 
-##### 2) Filters
+### 2) Filters
 
 ![filters](https://nimbus-screenshots.s3.amazonaws.com/s/809049bc047b82c57aad4f2e918a5e14.png)
 
 Filter option is used to search data but in this you can select range of options. as you can add ID from 5 to 10, it will show data between 5 and 10 IDs. Also you can filter data according to the Event title, Event status, Stores, Created & Modified dates.
 Add or select the parameters and click Apply Filters Button.
 
-##### 3) Action Column
+### 3) Action Column
 
 ![action](https://nimbus-screenshots.s3.amazonaws.com/s/1d4f74f4d3cb24bd797dc612755130c3.png)
 
 For updation, deletion or view event details on site, go in the last column of grid **Action** click the **select** link. It will show three options Edit, Delete and View. By these you can add event add, delete and view Event respectively.
 
-#### Add / Update Event and Counters
+## Add / Update Event and Counters
 
-##### 1) Add / Update Event
+### 1) Add / Update Event
 
-![add-event](https://nimbus-screenshots.s3.amazonaws.com/s/732eb77ac04bd97d9a8243013330345b.png)
+![add-event-1](https://nimbus-screenshots.s3.amazonaws.com/s/768b1c23b88c09049004dc9ee384cdfe.png)
 
-By clicking on Add New Event from grid a form will be displayed on which you can set enable or disable event by Enable button, add title, upload an event image or select from gallery. Select CMS Block (which will be shown on Reservation form page on site), add description & select stores and save button.
+By clicking on Add New Event from grid a form will be displayed on which you can:
 
-##### 2) Add / Update Counter for Event
+#### (1) Enable
+
+Set enable or disable event by Enable button.
+
+#### (2) Title
+
+Add title of event.
+
+#### (3) Image
+
+Upload event image or select from gallery.
+
+#### (4) Success Image
+
+Upload event success image which will be shown in place of event image if customer successfully reserved the event.
+
+#### (5) CMS Block
+
+Select CMS Block (which will be shown on Reservation form page on site)
+
+#### (6) Description
+
+![add-event-2](https://nimbus-screenshots.s3.amazonaws.com/s/3ff57aa474dfc3cbd8b741bfd0bacd47.png)
+
+Add description (using page builder)
+
+#### (7) Event in Websites
+
+![add-event-3](https://nimbus-screenshots.s3.amazonaws.com/s/c0e1ab62a373c6612311518cab736244.png)
+
+Select webiste's store on which event form will be shwon. When store is selected from field its related counters will be list down in "Event Reservation Counters" tab which can only be edited after saving the event detail.
+
+### 2) Add / Update Counter for Event
 
 ![counter-grid](https://nimbus-screenshots.s3.amazonaws.com/s/7274694b6f289e1ac3f1805110411489.png)
 
@@ -147,7 +206,7 @@ By selecting status enable or disable that counter will be shown/hide on reserva
 
 ![counter-grid](https://nimbus-screenshots.s3.amazonaws.com/s/4adb7744a4292c8f80897aebfae51054.png)
 
-###### Some Important Points While Adding Counter Details
+### Some Important Points While Adding Counter Details
 
 While adding counter details user is required to fill the required fields with correct values else counter details will not add. Some of the examples are mentiod below:
 
@@ -171,22 +230,22 @@ While adding counter details user is required to fill the required fields with c
 
 ![staff-email](https://nimbus-screenshots.s3.amazonaws.com/s/3b4bc818842d649d4768e1e7d031eef2.png)
 
-#### Explore Customer's Reservation Grid
+## Explore Customer's Reservation Grid
 
-##### 1) Search by keyword
+### 1) Search by keyword
 
-![user-reserve-grid](https://nimbus-screenshots.s3.amazonaws.com/s/9934f5f02127b36c84f74e7d2bd24e28.png)
+![user-reserve-grid](https://nimbus-screenshots.s3.amazonaws.com/s/be254bc453908c8afbb8245a3de3a6a9.png)
 
-Search by keyword is used to search specific keyword word available list of record. Just write the keyword in input field and press the enter button. 
+Search by keyword is used to search specific keyword word available list of record. Just write the keyword in input field and press the enter button.
 
-##### 2) Filters
+### 2) Filters
 
-![filters](https://nimbus-screenshots.s3.amazonaws.com/s/2348c28ce0803d301e448eb3b7f10466.png)
+![filters](https://nimbus-screenshots.s3.amazonaws.com/s/c1d5b4e87790931a18e2e0a6fc8accd1.png)
 
 Filter option is used to search data but in this you can select range of options. as you can add ID from 5 to 10, it will show data between 5 and 10 IDs. Also you can filter data according to the Store Counter Name, Customer Name, Customer Email, Time Slot, Customer Phone No, Reservation Status, Stores and Agreement check.
 Add or select the parameters and click Apply Filters Button.
 
-##### 3) Export
+### 3) Export
 
 ![export](https://nimbus-screenshots.s3.amazonaws.com/s/51f5f6f8d8b847b5de532daeb8ea8dad.png)
 
@@ -194,13 +253,33 @@ You can export the list of customers which have submitted the request of reserva
 
 ## Reserve Events (From Sites)
 
-Customer can reserve the event by visiting the site link provided to them. A form will be shown on which name, email, phone no, counter name, counter date, time slots and agreement fields are mentioned. When customer select the counter from counter field then available dates will be mention in date field and by selecting the date all time slots against that date will be shown. Time slots which are disabled in time slots field indicate that those seats are all reserved.
+![reservation-form](https://nimbus-screenshots.s3.amazonaws.com/s/7df4aa8b89e1ef3a3b01339065bbbd94.png)
 
-![reservation-form](https://nimbus-screenshots.s3.amazonaws.com/s/65708287e396c4df0f2738409e96aa96.png)
+- Customer can reserve the event by visiting the site link provided to them.
 
-When customer submit the form a confirmation email will be send to the customer as well as to the staff admin email if those are set enable from the configration. By confirming/canceling the event from email, an email will again send to both customer and staff admin about confirmation or cancelation.
+- A form will be shown on which name, email, phone no, line id, counter name, counter date, time slots and privacy policy fields are mentioned.
 
-#### Some Important Points
+- When customer select the counter from counter field then available dates will be mention in date field and by selecting the date all time slots against that date will be shown.
+
+- Time slots which are disabled in time slots field indicate that those seats are all reserved.
+
+- When customer submit the form a confirmation email will be send to the customer as well as to the staff admin email also sms will be send but to customer only if those are set enable from the configration.
+
+- Success Image will be shown in place of event image if event is reserved successfully with success message.
+
+![success-msg](https://nimbus-screenshots.s3.amazonaws.com/s/d61fd6d154ab1532dbeb049d95b85b3e.png)
+
+- If customer try to reserve same counter with same date and time slot then error message will be shown to him/her.
+
+![duplicate-msg](https://nimbus-screenshots.s3.amazonaws.com/s/d61fd6d154ab1532dbeb049d95b85b3e.png)
+
+- By confirming/canceling the event from email, an email will again send to both customer and staff admin about confirmation or cancelation of the event.
+
+- If email or sms didn't recieve to customer then he/she able to resend these by clicking the resend button again after the counter time is over. (Resend button enable counter time can be changed from configuration which is mention in above configuration section).
+
+![resend-btn](https://nimbus-screenshots.s3.amazonaws.com/s/dab8660269378707fa8fbcfb6eaf3c3c.png)
+
+## Some Important Points
 
 **1)** When admin create an event against specific store. Add counter details in it then if a single user reserve this event then admin can't change its store. Example is in below picture.
 
@@ -246,3 +325,4 @@ When customer submit the form a confirmation email will be send to the customer 
 - The time slots which seats are reserved completly will be shown disabled in the time slot field.
 - When customers submit the reservation form an email will be send to them and as well as staff admin if there configration are enabled on basis of current site.
 - When confirm reservation from email then confirmation email will be send to the customer as well as staff admin and also same process for the cancelation of email.
+- If customer didn't recieve sms or email after succefully reserving the event then click the resend button on reservation form for re-sending the email & sms.

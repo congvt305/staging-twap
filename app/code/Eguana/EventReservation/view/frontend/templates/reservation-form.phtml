@@ -51,10 +51,24 @@ $eventExpired = $viewModel->isEventExpired($counters);
                         <span><?= $block->escapeHtml(__('Phone Number')) ?></span>
                     </label>
                     <div class="control">
-                        <input type="number"
+                        <input type="text"
                                id="phone"
                                name="phone"
-                               placeholder="<?= $block->escapeHtml(__('Phone Number')) ?>">
+                               placeholder="<?= $block->escapeHtml(__('Phone Number')) ?>"
+                               data-validate='{"required":true, "validate-number":true}'>
+                    </div>
+                </div>
+                <div class="field line_id">
+                    <label class="label" for="line_id">
+                        <span><?= /* @noEscape */ __('Fill in your LINE ID name'); ?></span>
+                    </label>
+                    <div class="control">
+                        <input id="line_id"
+                               name="line_id"
+                               type="text"
+                               title="<?= $block->escapeHtmlAttr(__('Fill in your LINE ID name')); ?>"
+                               class="input-text"
+                               placeholder="<?= $block->escapeHtmlAttr(__('Fill in your LINE ID name')); ?>">
                     </div>
                 </div>
                 <div class="field counter_id required">
@@ -120,10 +134,25 @@ $eventExpired = $viewModel->isEventExpired($counters);
                     <div class="primary">
                         <button
                             type="submit"
+                            id="reservation-btn"
                             class="action primary sbt-button"
-                            <?= ($eventExpired && $counters) ? ' disabled' : '' ?>>
+                            <?= ($eventExpired && $counters) ? ' disabled' : ''; ?>>
                             <span><?= $block->escapeHtml(__('Send out')) ?></span>
                         </button>
+                        <br>
+                        <button
+                            type="button"
+                            id="reservation-resend-btn"
+                            class="action primary"
+                            style="display: none;">
+                            <span><?= $block->escapeHtml(__('Resend SMS/Email')); ?></span>
+                        </button>
+                        <br>
+                        <br>
+                        <p id="info-message">
+                            <?= $block->escapeHtml($viewModel->getResendText()); ?>
+                            <span id="countTime"></span>
+                        </p>
                     </div>
                 </div>
             </fieldset>
@@ -144,7 +173,12 @@ $eventExpired = $viewModel->isEventExpired($counters);
     {
         "*": {
             "date-dropdown": {},
-            "time-dropdown": {}
+            "time-dropdown": {},
+            "reservation-form": {
+                "reservationUrl": "<?= $block->escapeHtml($viewModel->getReservationUrl()); ?>",
+                "counterTime": "<?= $block->escapeHtml($viewModel->getTimeForResendEmailButton()); ?>",
+                "resendUrl": "<?= $block->escapeUrl($viewModel->getResendActionUrl()); ?>"
+            }
         }
     }
 </script>

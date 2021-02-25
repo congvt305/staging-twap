@@ -187,6 +187,16 @@ class Save extends AbstractController implements HttpPostActionInterface
                 $generalData['thumbnail'] = $imageName[1];
             }
 
+            if (isset($generalData['success_image'][0]['url'])) {
+                $imageName = (explode("/media/", $generalData['success_image'][0]['url']));
+                $generalData['success_image'] = $imageName[1];
+            } elseif (isset($generalData['success_image'][0]['file'])) {
+                $generalData['success_image'] = 'eventreservation/tmp/thumbnail' .
+                    $generalData['success_image'][0]['file'];
+            } else {
+                $generalData['success_image'] = '';
+            }
+
             $model->setData($generalData);
 
             try {
@@ -266,6 +276,7 @@ class Save extends AbstractController implements HttpPostActionInterface
             $newEvent->setIdentifier($identifier);
             $newEvent->setIsActive(Event::STATUS_DISABLED);
             $newEvent->setThumbnail($model->getThumbnail());
+            $newEvent->setSuccessImage($model->getSuccessImage());
 
             $this->eventRepository->save($newEvent);
             $newData = [

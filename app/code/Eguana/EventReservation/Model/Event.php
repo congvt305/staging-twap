@@ -222,6 +222,16 @@ class Event extends AbstractModel implements EventInterface, IdentityInterface
     }
 
     /**
+     * Get Success Image
+     *
+     * @return array|mixed|string|null
+     */
+    public function getSuccessImage()
+    {
+        return $this->getData(self::SUCCESS_IMAGE);
+    }
+
+    /**
      * Set ID
      *
      * @param int $id
@@ -362,6 +372,17 @@ class Event extends AbstractModel implements EventInterface, IdentityInterface
     public function setUpdateTime($updateTime)
     {
         return $this->setData(self::UPDATE_TIME, $updateTime);
+    }
+
+    /**
+     * Set Success Image
+     *
+     * @param string $image
+     * @return Event
+     */
+    public function setSuccessImage($image)
+    {
+        return $this->setData(self::SUCCESS_IMAGE, $image);
     }
 
     /**
