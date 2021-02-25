@@ -22,9 +22,10 @@ class ConfigData extends AbstractHelper
     /**#@+
      * Constants for config field paths
      */
-    const GENERAL_CONFIG    = 'event_reservation/configuration/';
-    const EMAIL_CONFIG      = 'event_reservation/email/';
-    const PRIVACY_POLICY_TEXT = 'event_reservation/configuration/privacy_policy_text';
+    const SMS_TEMPLATE_PATH     = 'event_reservation/sms/reservation_template';
+    const GENERAL_CONFIG        = 'event_reservation/configuration/';
+    const EMAIL_CONFIG          = 'event_reservation/email/';
+    const SMS_CONFIG            = 'event_reservation/sms/';
     /**#@-*/
 
     /**
@@ -171,7 +172,37 @@ class ConfigData extends AbstractHelper
     public function getPrivacyPolicy($storeId = null)
     {
         return $this->scopeConfig->getValue(
-            self::PRIVACY_POLICY_TEXT,
+            self::GENERAL_CONFIG . 'privacy_policy_text',
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * To get the time after which the resend email and sms button enable
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getTimeForResendEmailButton($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::GENERAL_CONFIG . 'resend_email_sms_time',
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * To get sms feature is enable or not
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getSendSmsEnable($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::SMS_CONFIG . 'customer_sms_auto',
             ScopeInterface::SCOPE_STORE,
             $storeId
         );

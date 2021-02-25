@@ -136,6 +136,20 @@ class DataProvider extends AbstractDataProvider
                 $event->setData('thumbnail', [$thumbnailImage]);
             }
 
+            if ($event->getSuccessImage()) {
+                $imagePath = explode('/', $event->getSuccessImage());
+                $imageCount = count($imagePath);
+                $url = $this->storeManager->getStore()
+                        ->getBaseUrl('media') . $event->getSuccessImage();
+                $stat = $this->fileInfo->getStat($url);
+                $successImage = [
+                    'url' => $url,
+                    'file' => $imagePath[$imageCount - 1],
+                    'size' => isset($stat) ? $stat['size'] : 0
+                ];
+                $event->setData('success_image', [$successImage]);
+            }
+
             if ($event->getId()) {
                 $reserved = $this->checkReservedSeats($event->getId());
 

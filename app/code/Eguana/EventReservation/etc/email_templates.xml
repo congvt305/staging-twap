@@ -16,4 +16,5 @@
     <template id="event_reservation_email_customer_email_pending" label="Email Pending for Customer" file="customer_email_pending.html" type="html" module="Eguana_EventReservation" area="frontend"/>
     <template id="event_reservation_email_customer_email_confirmed" label="Email Confirmed for Customer" file="customer_email_confirmed.html" type="html" module="Eguana_EventReservation" area="frontend"/>
     <template id="event_reservation_email_customer_email_canceled" label="Email Canceled for Customer" file="customer_email_canceled.html" type="html" module="Eguana_EventReservation" area="frontend"/>
+    <template id="event_reservation_sms_reservation_template" label="Event Reservation SMS" file="customer_reservation_sms.html" type="html" module="Eguana_EventReservation" area="frontend"/>
 </config>

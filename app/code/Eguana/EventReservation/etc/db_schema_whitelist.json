@@ -13,7 +13,8 @@
             "meta_description": true,
             "available_slots": true,
             "creation_time": true,
-            "update_time": true
+            "update_time": true,
+            "success_image": true
         },
         "index": {
             "EGUANA_EVENT_RESERVATION_IDENTIFIER": true,
@@ -85,12 +86,14 @@
             "offline_store_id": true,
             "auth_token": true,
             "store_id": true,
-            "email_action": true
+            "email_action": true,
+            "line_id": true
         },
         "index": {
             "EGUANA_USER_EVENT_RESERVE_COUNTER_ID": true,
             "EGUANA_USER_EVENT_RESERVE_EVENT_ID_COUNTER_ID": true,
-            "EGUANA_USER_EVENT_RESERVE_NAME_EMAIL": true
+            "EGUANA_USER_EVENT_RESERVE_NAME_EMAIL": true,
+            "EGUANA_USER_EVENT_RESERVE_NAME_EMAIL_PHONE_LINE_ID": true
         },
         "constraint": {
             "PRIMARY": true,

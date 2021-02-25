@@ -16,6 +16,12 @@
         .event-image-box {
             text-align: center;
         }
+
+        .event-success-image-box {
+            #reservation-success-img {
+                display: none;
+            }
+        }
     }
 
     .event-reservation-form {
@@ -34,6 +40,13 @@
             .action.primary {
                 &:extend(.abs-button-l all);
             }
+
+            .primary {
+                #info-message {
+                    display: none;
+                    color: red;
+                }
+            }
         }
 
         .event-error-message {
@@ -42,9 +55,9 @@
         }
 
         .privacy-policy-box {
-                max-height: 78px;
-                overflow-y: scroll;
-            }
+            max-height: 78px;
+            overflow-y: scroll;
+        }
     }
 }
 
