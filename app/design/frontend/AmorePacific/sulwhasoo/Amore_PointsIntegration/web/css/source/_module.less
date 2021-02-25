@@ -1,0 +1,177 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+
+//
+//  Common
+//  _____________________________________________
+& when (@media-common = true) {
+    .block-points-integration {
+        margin-bottom: @indent__xl !important;
+
+        .pos-customer-info {
+            > div {
+                margin-bottom: @indent__xs;
+
+                span {
+                    color: @primary__color__lighter;
+
+                    &.primary {
+                        color: @theme__color__primary-alt;
+                        font-weight: @font-weight__bold;
+                    }
+                }
+            }
+
+            #points-modal-info {
+                cursor: pointer;
+
+                &:before {
+                    content: '';
+                    background: transparent url('../Amore_PointsIntegration/images/info.svg') no-repeat;
+                    background-size: 24px;
+                    display: inline-block;
+                    width: 24px;
+                    height: 24px;
+                    position: relative;
+                    top: 7px;
+                }
+
+                span {
+                    &:extend(.abs-visually-hidden all);
+                }
+            }
+        }
+    }
+
+    .points-integration {
+        .lib-data-tabs(
+            @_tab-control-font-size: @font-size__base,
+            @_tab-control-line-height: 24px,
+
+            @_tab-control-color: @tab-control__color,
+
+            @_tab-control-background-color-hover: @sidebar__background-color,
+            @_tab-control-color-hover: @theme__color__primary,
+
+            @_tab-control-background-color-active: @sidebar__background-color,
+            @_tab-control-color-active: @theme__color__primary,
+
+            @_tab-control-height: 100%,
+            @_tab-control-margin-right: -1px,
+
+            @_tab-control-padding-top: 7px,
+            @_tab-control-padding-right: @indent__s,
+            @_tab-control-padding-bottom: 7px,
+            @_tab-control-padding-left: @indent__s,
+
+            @_tab-control-border-width: @tab-control__border-width,
+            @_tab-control-border-color: @tab-control__border-color,
+
+            @_tab-content-background-color: @color-white,
+            @_tab-content-border: 1px solid @border-color__base,
+            @_tab-content-border-top-status: @tab-content__border-top-status,
+            @_tab-content-margin-top: 38px,
+
+            @_tab-content-padding-top: @indent__xs,
+            @_tab-content-padding-right: @indent__l,
+            @_tab-content-padding-bottom: 50px,
+            @_tab-content-padding-left: @indent__l
+        );
+
+        .item.title {
+            text-align: center;
+
+            a {
+                border-bottom: 1px solid @border-color__base !important;
+            }
+
+            &._active {
+                a {
+                    background-color: @color-white;
+                    font-weight: @font-weight__bold;
+                }
+            }
+        }
+
+        .item.content {
+            border: 1px solid @border-color__base;
+            float: right;
+            margin-left: -100%;
+        }
+    }
+
+    #redeem-points-pager,
+    #points-history-pager {
+        .pages-items {
+            a {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .point-history {
+        .customer-points {
+            text-align: center;
+            margin: @indent__s 0;
+
+            > div {
+                display: inline-block;
+
+                span {
+                    font-weight: @font-weight__bold;
+                    color: @theme__color__primary-alt;
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .points-integration {
+        .lib-data-accordion(
+            @_accordion-control-font-size: @font-size__base,
+            @_accordion-content-background-color: @color-white,
+            @_accordion-control-background-color-hover: @sidebar__background-color,
+            @_accordion-control-background-color-active: @sidebar__background-color,
+            @_accordion-content-border: 1px solid @border-color__base,
+            @_accordion-control-margin-bottom: -1px,
+            @_accordion-content-margin: 0 0 -1px
+        );
+
+        .table-wrapper {
+            td.empty {
+                padding-left: 0 !important;
+                text-align: center !important;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .pointsintegration-points-index {
+        &.page-layout-2columns-left {
+            .sidebar-main {
+                padding-top: 35px;
+            }
+        }
+    }
+
+    .points-integration {
+        .item.title {
+            width: 30%;
+
+            &._active {
+                a {
+                    border-bottom-color: @sidebar__background-color !important;
+                }
+            }
+        }
+    }
+}
