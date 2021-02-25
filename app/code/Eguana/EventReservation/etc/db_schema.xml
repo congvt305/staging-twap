@@ -19,7 +19,7 @@
         <column xsi:type="smallint" name="is_active" padding="6" unsigned="false" nullable="false" identity="false"
                 default="1" comment="Is Event Active"/>
         <column xsi:type="mediumtext" name="description" nullable="true" comment="Description"/>
-        <column xsi:type="smallint" name="block_id" padding="6" unsigned="false" nullable="false" identity="false"
+        <column xsi:type="smallint" name="block_id" padding="6" unsigned="false" nullable="true" identity="false"
                 comment="CMS Block ID"/>
         <column xsi:type="varchar" name="identifier" nullable="true" length="100"
                 comment="Event Reservation String Identifier"/>
@@ -32,6 +32,7 @@
                 comment="Event Reservation Creation Time"/>
         <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Event Reservation Modification Time"/>
+        <column xsi:type="mediumtext" name="success_image" nullable="true" comment="Reservation Success Image"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="event_id"/>
         </constraint>
@@ -134,6 +135,7 @@
                 comment="Event Reservation Creation Time"/>
         <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Event Reservation Modification Time"/>
+        <column xsi:type="varchar" name="line_id" length="100" nullable="true" comment="Line Id"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="user_reserve_id"/>
         </constraint>
@@ -153,9 +155,11 @@
             <column name="event_id"/>
             <column name="counter_id"/>
         </index>
-        <index referenceId="EGUANA_USER_EVENT_RESERVE_NAME_EMAIL" indexType="fulltext">
+        <index referenceId="EGUANA_USER_EVENT_RESERVE_NAME_EMAIL_PHONE_LINE_ID" indexType="fulltext">
             <column name="name"/>
             <column name="email"/>
+            <column name="phone"/>
+            <column name="line_id"/>
         </index>
     </table>
 </schema>

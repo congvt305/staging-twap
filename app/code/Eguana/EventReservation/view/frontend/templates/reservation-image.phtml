@@ -19,11 +19,19 @@ $eventDescription = $viewModel->contentFiltering($event->getDescription());
         <?php if ($eventImage): ?>
             <div class="event-image-box">
                 <img
+                    id="event-thumbnail-img"
                     class="event-image image-responsive"
                     src="<?= $block->escapeHtml($eventImage); ?>"
                     alt="<?= $block->escapeHtml($event->getTitle()); ?>"/>
             </div>
         <?php endif; ?>
+        <div class="event-success-image-box">
+            <img
+                id="reservation-success-img"
+                alt="success-image"
+                src="<?= $block->escapeHtmlAttr($viewModel->getImageUrl($event->getSuccessImage())); ?>"
+                title="<?= $block->escapeHtmlAttr($event->getTitle());?>"
+        </div>
 
         <?php if ($eventDescription): ?>
             <div class="event-description">

@@ -149,16 +149,6 @@ class Index extends Action implements HttpGetActionInterface, HttpPostActionInte
     public function execute()
     {
         $resultRedirect = $this->resultRedirectFactory->create();
-        $post = (array) $this->getRequest()->getPostValue();
-        if (!empty($post) && $this->formKeyValidator->validate($this->getRequest())) {
-            $result = $this->saveReservation($post, $resultRedirect);
-            if ($result) {
-                return $resultRedirect->setPath('*/*/success');
-            } else {
-                return $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-            }
-        }
-
         $eventId = $this->getRequest()->getParam('id');
         try {
             $event = $this->eventRepository->getById($eventId);
@@ -190,76 +180,5 @@ class Index extends Action implements HttpGetActionInterface, HttpPostActionInte
             );
             return $resultRedirect->setUrl('/');
         }
-    }
-
-    /**
-     * Save reservation
-     *
-     * @param $post
-     * @param $resultRedirect
-     * @return mixed
-     */
-    private function saveReservation($post, $resultRedirect)
-    {
-        $success = false;
-        try {
-            $counter = $this->counterRepository->getById($post['counter_id']);
-        } catch (\Exception $exception) {
-            $this->messageManager->addErrorMessage(__('This Counter doesn\'t exist.'));
-            return false;
-        }
-
-        $data = $post;
-        $data['offline_store_id'] = $counter->getOfflineStoreId();
-        $data['agreement'] = ($post['agreement'] == 'on') ? 1 : 0;
-        $token = substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 15);
-        $data['auth_token'] = $token;
-        $data['date'] = $this->dateTime->gmtDate(self::DATE_FORMAT, $post['date']);
-        $data['store_id'] = $this->storeManager->getStore()->getId();
-
-        $canReserve = $this->reservationValidation->canReserveEvent($data);
-        $seatsAvailable = $this->reservationValidation->seatsAvailable($data);
-
-        if (!$canReserve || !$seatsAvailable) {
-            if (!$canReserve) {
-                $message = 'Your have already reserved this event';
-            } else {
-                $message = 'Sorry all seats against this counter are reserved';
-            }
-
-            $this->messageManager->addErrorMessage(__($message));
-            return false;
-        }
-
-        $model = $this->userReservationFactory->create();
-        $model->setData($data);
-
-        try {
-            $this->userReservationRepository->save($model);
-            if ($this->configHelper->getCustomerEmailEnabled($data['store_id']) == 1) {
-                $this->emailSender->sendEmailToCustomer(
-                    $model->getData('user_reserve_id'),
-                    'pending'
-                );
-            }
-            if ($this->configHelper->getStaffEmailEnabled($data['store_id']) == 1) {
-                $this->emailSender->sendEmailToStaff(
-                    $model->getData('user_reserve_id'),
-                    'pending'
-                );
-            }
-            $this->messageManager->addSuccessMessage(
-                __('Successfully booked an event')
-            );
-            $success = true;
-        } catch (LocalizedException $e) {
-            $this->messageManager->addErrorMessage($e->getMessage());
-        } catch (\Exception $e) {
-            $this->messageManager->addExceptionMessage(
-                $e,
-                __('Something went wrong while reserving the event')
-            );
-        }
-        return $success;
     }
 }
