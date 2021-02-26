@@ -7,7 +7,6 @@
  * Date: 9/2/21
  * Time: 1:12 PM
  */
-
 namespace Eguana\EventReservation\Controller\Reservation;
 
 use Magento\Framework\App\Action\Action;
@@ -17,11 +16,14 @@ use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\View\Result\Page;
 
+/**
+ * Class to show success page after reservation
+ *
+ * Class Success
+ */
 class Success extends Action
 {
     /**
-     * Success constructor.
-     *
      * @param Context $context
      * @param PageFactory $resultPageFactory
      */
