@@ -13,6 +13,7 @@ use Eguana\EventReservation\Api\Data\EventInterface;
 use Eguana\EventReservation\Api\EventRepositoryInterface;
 use Eguana\EventReservation\Api\UserReservationRepositoryInterface;
 use Eguana\EventReservation\Helper\ConfigData;
+use Eguana\EventReservation\Model\Email\EmailSender;
 use Eguana\StoreSms\Api\SmsManagementInterface;
 use Magento\Email\Model\Template;
 use Magento\Email\Model\TemplateFactory;
@@ -59,12 +60,18 @@ class SmsSender
     private $eventRepository;
 
     /**
+     * @var EmailSender
+     */
+    private $emailSender;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
 
     /**
      * @param ConfigData $configHelper
+     * @param EmailSender $emailSender
      * @param LoggerInterface $logger
      * @param TemplateFactory $templateFactory
      * @param StoreManagerInterface $storeManager
@@ -74,6 +81,7 @@ class SmsSender
      */
     public function __construct(
         ConfigData $configHelper,
+        EmailSender $emailSender,
         LoggerInterface $logger,
         TemplateFactory $templateFactory,
         StoreManagerInterface $storeManager,
@@ -82,6 +90,7 @@ class SmsSender
         UserReservationRepositoryInterface $userReservationRepository
     ) {
         $this->logger = $logger;
+        $this->emailSender = $emailSender;
         $this->configHelper = $configHelper;
         $this->storeManager = $storeManager;
         $this->smsManagement = $smsManagement;
@@ -127,18 +136,22 @@ class SmsSender
     {
         try {
             $reservation = $this->userReservationRepository->getById($userReserveId);
-            $customerName = $reservation->getName();
+            $params['customer'] = $reservation->getName();
             $websiteId = $this->storeManager->getStore()->getWebsiteId();
             $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
-            $eventName = $this->getEvent($reservation->getEventId());
+            $event = $this->getEvent($reservation->getEventId());
             if ($websiteCode == 'tw_lageige_website') {
                 $storeName = __('Laneige');
             } else {
                 $storeName = __('Sulwhasoo');
             }
+            $params['storeEvent'] = $storeName . ' ＜' . $event->getTitle() . '＞';
+            $token = $reservation->getAuthToken() . '_C';
+            $params['confirmLink'] = $this->emailSender->getConfirmLink($userReserveId, $token);
+            $params['cancelLink'] = $this->emailSender->getCancelLink($userReserveId, $token);
+
             /** @var Template $templateModel */
             $templateModel = $this->templateFactory->create();
-            $params = ['customer' => $customerName, 'storeName' => $storeName, 'eventName' => $eventName];
             $templateModel->setDesignConfig(
                 ['area' => 'frontend', 'store' => $storeId]
             );
