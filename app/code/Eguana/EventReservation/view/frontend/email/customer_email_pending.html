@@ -16,21 +16,19 @@
 "var physical_store":"Store Locator Name",
 "var store_name":"Store Name",
 "var confirm_link":"Confirm Reservation Link",
-"var cancel_link":"Cancel Reservation Link"
+"var cancel_link":"Cancel Reservation Link",
+"var store_event_name":"Store and Event Name"
 } @-->
 
 {{template config_path="design/email/header_template"}}
 
 <p class="greeting">{{trans "Hi %name," name=$customer_name}}</p>
-<p>{{trans "Thank you for the reservation of %event_title on %time at %phy_store from %store. Please confirm your reservation by clicking following link. If you have questions about your reservation, you can email us at info@amore.com."
-    event_title=$event_title
-    time=$event_time
-    phy_store=$physical_store
-    store=$store_name}}</p>
+<p>{{trans "Thank you for making an appointment to attend %store Healthy Fun Play Proposal!" store=$store_event_name}}</p>
+<p>{{trans "We have received your purchase appointment. The counter staff of your chosen counter will contact you by phone within 3 days, so please pay attention to the mobile phone information!"}}</p>
 
 <p>
-    <a href="{{var cancel_link}}" style="margin-right: 15px;">Cancel</a>
-    <a href="{{var confirm_link}}">Confirm Reservation</a>
+    <a href="{{var cancel_link}}" style="margin-right: 15px;">{{trans "Cancel"}}</a>
+    <a href="{{var confirm_link}}">{{trans "Confirm Reservation"}}</a>
 </p>
 
 <p>{{trans "Have a lovely day!"}}</p>
