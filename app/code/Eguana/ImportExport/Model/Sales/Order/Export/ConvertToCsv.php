@@ -141,7 +141,7 @@ class ConvertToCsv
             'Order',
             'Order Status',
             'Customer (Receiver)',
-            'Mobile',
+            'Order Mobile',
             'Address',
             'SKU',
             'Parent SKU',
@@ -161,7 +161,11 @@ class ConvertToCsv
 
         $header = [];
         foreach ($columns as $column) {
-            $header[] = $column;
+            if ($column == 'Order Mobile') {
+                $header[] = __($column);
+            } else {
+                $header[] = $column;
+            }
         }
 
         $stream->writeCsv($header);
