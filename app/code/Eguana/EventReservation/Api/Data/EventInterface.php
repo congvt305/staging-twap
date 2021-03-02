@@ -32,6 +32,7 @@ interface EventInterface
     const AVAILABLE_SLOTS           = 'available_slots';
     const CREATION_TIME             = 'creation_time';
     const UPDATE_TIME               = 'update_time';
+    const SUCCESS_IMAGE             = 'success_image';
     /**#@-*/
 
     /**
@@ -124,6 +125,13 @@ interface EventInterface
      * @return string|null
      */
     public function getUpdateTime();
+
+    /**
+     * Get Success Image
+     *
+     * @return string|null
+     */
+    public function getSuccessImage();
 
     /**
      * Set event ID
@@ -228,4 +236,12 @@ interface EventInterface
      * @return EventInterface
      */
     public function setUpdateTime($updateTime);
+
+    /**
+     * Set Success Image
+     *
+     * @param string $image
+     * @return EventInterface
+     */
+    public function setSuccessImage($image);
 }

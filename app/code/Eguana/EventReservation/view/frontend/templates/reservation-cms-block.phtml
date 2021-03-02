@@ -14,6 +14,7 @@ $viewModel = $block->getData('reservation_view_model');
 $event = $viewModel->getEvent();
 $cmsBlockIdentifier = $viewModel->getCmsBlockIdentifier($event->getBlockId());
 ?>
+<div id="error-and-success-message"></div>
 <div class="event-block-image">
     <?php if ($cmsBlockIdentifier): ?>
         <div class="event-cms-block">

@@ -36,6 +36,14 @@
                         <field id="*/*/enabled">1</field>
                     </depends>
                 </field>
+                <field id="resend_email_sms_time" translate="label comment" sortOrder="20" type="text" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Resend Email And Sms Interval</label>
+                    <validate>required-entry validate-digits validate-not-negative-number validate-digits-range digits-range-1-100</validate>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                    <comment>Add time in minutes after that time resend button will be enable.</comment>
+                </field>
             </group>
             <group id="email" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Email Template Configuration</label>
@@ -109,6 +117,23 @@
                         <field id="*/*/customer_email_auto">1</field>
                     </depends>
                 </field>
+            </group>
+            <group id="sms" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>SMS Template Configuration</label>
+                <field id="customer_sms_auto" translate="label" sortOrder="10" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Send SMS To Customer Automatically</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="reservation_template" translate="label" sortOrder="20" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Reservation SMS</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="*/*/customer_sms_auto">1</field>
+                    </depends>
+                </field>
+                <depends>
+                    <field id="*/configuration/enabled">1</field>
+                </depends>
             </group>
         </section>
     </system>

@@ -157,13 +157,23 @@ class EmailSender
             ];
             $storeName = $this->storeManager->getStore($storeId)->getName();
 
+            $websiteId = $this->storeManager->getStore($storeId)->getWebsiteId();
+            $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
+            if ($websiteCode == 'tw_lageige_website') {
+                $siteName = __('Laneige');
+            } else {
+                $siteName = __('Sulwhasoo');
+            }
+            $storeEventName = $siteName . ' ＜' . $event->getTitle() . '＞';
+
             $eventTime = $reservationDetail->getDate() . ' ' . $reservationDetail->getTimeSlot();
             $templateVars = [
                 'customer_name' => $reservationDetail->getName(),
                 'event_title' => $event->getTitle(),
                 'event_time' => $eventTime,
                 'physical_store' => $this->getStoreInfoTitle($reservationDetail->getOfflineStoreId()),
-                'store_name' => $storeName
+                'store_name' => $storeName,
+                'store_event_name' => $storeEventName
             ];
             if ($callFor == 'pending') {
                 $token = $reservationDetail->getAuthToken() . '_C';
@@ -370,7 +380,7 @@ class EmailSender
      * @param $token
      * @return string
      */
-    private function getConfirmLink($userReserveId, $token)
+    public function getConfirmLink($userReserveId, $token)
     {
         $link = '';
         $eventId = $this->dataPersistor->get('current_event_id');
@@ -406,7 +416,7 @@ class EmailSender
      * @param $token
      * @return string
      */
-    private function getCancelLink($userReserveId, $token)
+    public function getCancelLink($userReserveId, $token)
     {
         $link = '';
         $eventId = $this->dataPersistor->get('current_event_id');

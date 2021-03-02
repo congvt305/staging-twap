@@ -150,7 +150,8 @@ class DataProvider extends AbstractDataProvider
                     ['attribute' => 'email'],
                     ['attribute' => 'time_slot'],
                     ['attribute' => 'date'],
-                    ['attribute' => 'phone']
+                    ['attribute' => 'phone'],
+                    ['attribute' => 'line_id']
                 ],
                 [
                     ['like' => "%{$value}%"],

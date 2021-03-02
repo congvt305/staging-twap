@@ -25,6 +25,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Phrase;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\UrlInterface;
@@ -433,5 +434,69 @@ class Reservation implements ArgumentInterface
         } else {
             return '';
         }
+    }
+
+    /**
+     * Get form action URL for resend email and sms
+     *
+     * @return string
+     */
+    public function getResendActionUrl(): string
+    {
+        $resendFormActionUrl = '';
+        try {
+            $resendFormActionUrl = $this->storeManager
+                ->getStore()
+                ->getUrl(
+                    'event/reservation/ajaxresend/',
+                    ['counter_id' => $this->request->getParam('counter_id')]
+                );
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
+        return $resendFormActionUrl;
+    }
+
+    /**
+     * Get the time after which the resend email and sms button enable
+     *
+     * @return mixed
+     */
+    public function getTimeForResendEmailButton()
+    {
+        $minutes = $this->eventConfig->getTimeForResendEmailButton($this->getStoreId());
+        return $minutes ? $minutes : 1;
+    }
+
+    /**
+     * Get event reservation save url
+     *
+     * @return string
+     */
+    public function getReservationUrl(): string
+    {
+        $url = '';
+        try {
+            $url = $this->storeManager
+                ->getStore()
+                ->getUrl('event/reservation/ajaxreservation/');
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
+        return $url;
+    }
+
+    /**
+     * Get resend email/sms text
+     *
+     * @return Phrase
+     */
+    public function getResendText()
+    {
+        $seconds = $this->getTimeForResendEmailButton() * 60;
+        return __(
+            "If you have not received the email or text message, please click 'Send' again after %1 seconds",
+            $seconds
+        );
     }
 }

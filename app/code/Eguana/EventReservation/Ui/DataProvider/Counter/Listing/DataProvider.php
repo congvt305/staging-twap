@@ -14,8 +14,6 @@ namespace Eguana\EventReservation\Ui\DataProvider\Counter\Listing;
 use Eguana\EventReservation\Api\EventRepositoryInterface;
 use Eguana\EventReservation\Model\ResourceModel\Counter\Grid\Collection;
 use Eguana\EventReservation\Model\ResourceModel\Counter\Grid\CollectionFactory;
-use Eguana\StoreLocator\Api\StoreInfoRepositoryInterface;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\AuthorizationInterface;
@@ -40,16 +38,6 @@ class DataProvider extends AbstractDataProvider
     private $request;
 
     /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-
-    /**
-     * @var StoreInfoRepositoryInterface
-     */
-    private $storeLocatorRepository;
-
-    /**
      * @var DataPersistorInterface
      */
     private $dataPersistor;
@@ -72,7 +60,6 @@ class DataProvider extends AbstractDataProvider
      * @param CollectionFactory $collectionFactory
      * @param RequestInterface $request
      * @param AuthorizationInterface $authorization
-     * @param StoreInfoRepositoryInterface $storeLocatorRepository
      * @param DataPersistorInterface $dataPersistor
      * @param EventRepositoryInterface $eventRepository
      * @param StoreManagerInterface $storeManager
@@ -86,8 +73,6 @@ class DataProvider extends AbstractDataProvider
         CollectionFactory $collectionFactory,
         RequestInterface $request,
         AuthorizationInterface $authorization,
-        StoreInfoRepositoryInterface $storeLocatorRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
         DataPersistorInterface $dataPersistor,
         EventRepositoryInterface $eventRepository,
         StoreManagerInterface $storeManager,
@@ -104,8 +89,6 @@ class DataProvider extends AbstractDataProvider
         $this->request = $request;
         $this->collection = $collectionFactory->create();
         $this->authorization = $authorization;
-        $this->storeLocatorRepository = $storeLocatorRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->dataPersistor = $dataPersistor;
         $this->eventRepository = $eventRepository;
         $this->storeManager = $storeManager;
@@ -180,6 +163,7 @@ class DataProvider extends AbstractDataProvider
         $this->collection->addFieldToSelect('reservation_counter_id');
         $this->collection->getSelect()->where('si.available_for_events = 1')
             ->group('si.entity_id');
+        $this->collection->setOrder('main_table.reservation_counter_id', 'DESC');
 
         /** @var Collection $collection */
         $collection = $this->getCollection();

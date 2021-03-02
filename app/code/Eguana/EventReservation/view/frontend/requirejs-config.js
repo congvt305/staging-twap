@@ -11,7 +11,8 @@ let config = {
     "map": {
         "*": {
             "date-dropdown": "Eguana_EventReservation/js/date-dropdown",
-            "time-dropdown": "Eguana_EventReservation/js/time-dropdown"
+            "time-dropdown": "Eguana_EventReservation/js/time-dropdown",
+            "reservation-form": "Eguana_EventReservation/js/reservation-form"
         }
     }
 };
