@@ -32,6 +32,7 @@
                 comment="Creation Time"/>
         <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Update Time"/>
+        <column xsi:type="mediumtext" name="sms_content" nullable="true" comment="Redemption Sms Content"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="redemption_id"/>
         </constraint>
