@@ -14,7 +14,8 @@
             "available_slots": true,
             "creation_time": true,
             "update_time": true,
-            "success_image": true
+            "success_image": true,
+            "sms_content": true
         },
         "index": {
             "EGUANA_EVENT_RESERVATION_IDENTIFIER": true,

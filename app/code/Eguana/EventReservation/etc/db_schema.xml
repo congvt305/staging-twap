@@ -33,6 +33,7 @@
         <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Event Reservation Modification Time"/>
         <column xsi:type="mediumtext" name="success_image" nullable="true" comment="Reservation Success Image"/>
+        <column xsi:type="mediumtext" name="sms_content" nullable="true" comment="Reservation Pending Sms Content"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="event_id"/>
         </constraint>
