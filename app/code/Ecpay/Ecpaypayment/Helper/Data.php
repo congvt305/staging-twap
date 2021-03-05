@@ -170,7 +170,7 @@ class Data extends AbstractHelper
                 'hashKey' => $this->_ecpayPaymentModel->getEcpayConfigFromStore('hash_key', $order->getStoreId()),
                 'hashIv' => $this->_ecpayPaymentModel->getEcpayConfigFromStore('hash_iv', $order->getStoreId()),
                 'returnUrl' => $this->_ecpayPaymentModel->getModuleUrl('response'),
-                'clientBackUrl' => $this->_ecpayPaymentModel->getMagentoUrl('checkout/onepage/success'),
+                'orderResultUrl' => $this->_ecpayPaymentModel->getMagentoUrl('checkout/onepage/success'),
                 'orderId' => $orderId,
                 'total' => $order->getGrandTotal(),
                 'itemName' => $this->getMerchandizeName($order->getstoreId()),
@@ -382,9 +382,9 @@ class Data extends AbstractHelper
 
     /**
      * @param $storeId
-     * @return \Magento\Framework\Phrase
+     * @return \Magento\Framework\Phrase|string
      */
-    private function getMerchandizeName($storeId): \Magento\Framework\Phrase
+    private function getMerchandizeName($storeId)
     {
         $merchandizeName = "";
 
