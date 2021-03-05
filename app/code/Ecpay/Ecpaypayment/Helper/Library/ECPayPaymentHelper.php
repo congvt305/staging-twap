@@ -151,7 +151,7 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
             'hashIv',
             'returnUrl',
             'periodReturnURL',
-            'orderResultUrl',
+            'clientBackUrl',
             'orderId',
             'total',
             'itemName',
@@ -170,7 +170,7 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
         $this->sdk->ServiceURL = $this->getUrl('checkOut'); // Get Checkout URL
         $this->sdk->EncryptType = $this->encryptType;
         $this->sdk->Send['ReturnURL'] = $inputs['returnUrl'];
-        $this->sdk->Send['OrderResultURL'] = $this->filterUrl($inputs['orderResultUrl']);
+        $this->sdk->Send['ClientBackURL'] = $this->filterUrl($inputs['clientBackUrl']);
         $this->sdk->Send['MerchantTradeNo'] = $this->setMerchantTradeNo($inputs['orderId']);
         $this->sdk->Send['MerchantTradeDate'] = $this->getDateTime('Y/m/d H:i:s', '');
         $this->sdk->Send['TradeDesc'] = $this->getModuleDescription($inputs['cartName']);
