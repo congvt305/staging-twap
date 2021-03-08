@@ -251,9 +251,13 @@ class SapOrderReturnData extends AbstractSapOrder
                 $product = $this->productRepository->get($rmaItem->getProductSku());
                 $meins = $product->getData('meins');
 
-                $itemSubtotal = abs(round($orderItem->getOriginalPrice() * $rmaItem->getQtyRequested()));
-                $itemTotalDiscount = abs(round($this->getRateAmount($orderItem->getDiscountAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested())
-                    + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested())));
+                $itemSubtotal = abs(round($orderItem->getPrice() * $rmaItem->getQtyRequested()));
+                if (round($orderItem->getPrice())) {
+                    $itemTotalDiscount = abs(round($this->getRateAmount($orderItem->getDiscountAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested())
+                        + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested())));
+                } else {
+                    $itemTotalDiscount = 0;
+                }
                 $itemMileageUsed = abs(round($this->getRateAmount($mileagePerItem, $this->getNetQty($orderItem), $rmaItem->getQtyRequested())));
                 $itemGrandTotalValue = abs(round($this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested())));
                 $itemTaxAmount = abs(round($this->getRateAmount($orderItem->getTaxAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested())));
@@ -818,7 +822,10 @@ class SapOrderReturnData extends AbstractSapOrder
         foreach ($rmaItems as $rmaItem) {
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() != 'bundle') {
-                $catalogRuleDiscount += ($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested();
+                if (round($orderItem->getPrice())) {
+                    $catalogRuleDiscount += ($orderItem->getOriginalPrice() - $orderItem->getPrice()) *
+                        $rmaItem->getQtyRequested();
+                }
             } else {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
@@ -853,7 +860,7 @@ class SapOrderReturnData extends AbstractSapOrder
                     $subtotalInclTax += ($product->getPrice() * $rmaItem->getQtyRequested() * $bundleChild->getQty());
                 }
             } else {
-                $subtotalInclTax += ($orderItem->getOriginalPrice() * $rmaItem->getQtyRequested());
+                $subtotalInclTax += ($orderItem->getPrice() * $rmaItem->getQtyRequested());
             }
         }
         return $subtotalInclTax;
