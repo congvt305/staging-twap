@@ -9,6 +9,7 @@
  */
 namespace Eguana\LinePay\Controller\Payment;
 
+use Eguana\LinePay\Model\LinePayLogger;
 use Eguana\LinePay\Model\Payment as LinepayPayment;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -49,25 +50,33 @@ class Redirect extends Action implements HttpGetActionInterface
     private $serializer;
 
     /**
+     * @var LinePayLogger
+     */
+    private $linePayLogger;
+
+    /**
      * Redirect constructor.
      * @param Context $context
      * @param LinepayPayment $linepayPayment
      * @param PageFactory $resultPageFactory
      * @param CheckoutSession $checkoutSession
      * @param SerializerInterface $serializer
+     * @param LinePayLogger $linePayLogger
      */
     public function __construct(
         Context $context,
         LinepayPayment $linepayPayment,
         PageFactory $resultPageFactory,
         CheckoutSession $checkoutSession,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        LinePayLogger $linePayLogger
     ) {
         parent::__construct($context);
         $this->linepayPayment                     = $linepayPayment;
         $this->resultPageFactory                  = $resultPageFactory;
         $this->checkoutSession                    = $checkoutSession;
         $this->serializer                         = $serializer;
+        $this->linePayLogger                      = $linePayLogger;
     }
 
     /**
@@ -89,6 +98,7 @@ class Redirect extends Action implements HttpGetActionInterface
                     $additionalData
                 );
                 $quote->getPayment()->save();
+                $this->linePayLogger->addAPICallLog('LinePay additional data (Via mobile)', $additionalData);
             }
             if (!($result['status'] === 'Failure')) {
                 $this->_redirect($result['url']);

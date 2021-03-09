@@ -9,6 +9,7 @@
  */
 namespace Eguana\LinePay\Observer;
 
+use Eguana\LinePay\Model\LinePayLogger;
 use Magento\Framework\Event\Observer as ObserverAlias;
 use Magento\Framework\Event\ObserverInterface;
 
@@ -19,6 +20,20 @@ use Magento\Framework\Event\ObserverInterface;
  */
 class AddAdditionalDataObserver implements ObserverInterface
 {
+    /**
+     * @var LinePayLogger
+     */
+    private $linePayLogger;
+
+    /**
+     * @param LinePayLogger $linePayLogger
+     */
+    public function __construct(
+        LinePayLogger $linePayLogger
+    ) {
+        $this->linePayLogger = $linePayLogger;
+    }
+
     /**
      * Add additional data in current quote
      * @param ObserverAlias $observer
@@ -37,6 +52,7 @@ class AddAdditionalDataObserver implements ObserverInterface
                 $additionalData
             );
             $quote->getPayment()->save();
+            $this->linePayLogger->addAPICallLog('LinePay additional data (Observer)', $additionalData);
         }
     }
 }
