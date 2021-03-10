@@ -9,6 +9,7 @@
  */
 namespace Eguana\LinePay\Gateway\Response;
 
+use Eguana\LinePay\Model\LinePayLogger;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Response\HandlerInterface;
 use Magento\Sales\Model\Order\Payment;
@@ -32,16 +33,24 @@ class TransactionIdHandler implements HandlerInterface
     private $quoteModel;
 
     /**
+     * @var LinePayLogger
+     */
+    private $linePayLogger;
+
+    /**
      * TransactionIdHandler constructor.
      * @param SubjectReader $subjectReader
      * @param LinePayModel $quoteModel
+     * @param LinePayLogger $linePayLogger
      */
     public function __construct(
         SubjectReader $subjectReader,
-        LinePayModel $quoteModel
+        LinePayModel $quoteModel,
+        LinePayLogger $linePayLogger
     ) {
         $this->subjectReader = $subjectReader;
-        $this->quoteModel                        = $quoteModel;
+        $this->quoteModel = $quoteModel;
+        $this->linePayLogger = $linePayLogger;
     }
 
     /**
@@ -77,6 +86,10 @@ class TransactionIdHandler implements HandlerInterface
                         $orderPayment->setIsTransactionClosed($this->shouldCloseTransaction());
                         $closed = $this->shouldCloseParentTransaction($orderPayment);
                         $orderPayment->setShouldCloseParentTransaction($closed);
+                        $this->linePayLogger->addAPICallLog(
+                            'LinePay additional data (TransactionIdHandler)',
+                            $orderPayment->getTransactionAdditionalInfo('raw_details_info')
+                        );
                     }
                 }
             }

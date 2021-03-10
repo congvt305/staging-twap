@@ -16,6 +16,7 @@
                 <model>LinepayFacade</model>
                 <title>LINE Pay</title>
                 <active>0</active>
+                <debug>0</debug>
                 <payment_action>authorize_capture</payment_action>
                 <is_gateway>1</is_gateway>
                 <can_use_checkout>1</can_use_checkout>

@@ -25,6 +25,10 @@
                     <label>Mode</label>
                     <source_model>Eguana\LinePay\Model\Adminhtml\Source\Environment</source_model>
                 </field>
+                <field id="debug" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <group id="linepay" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Credentials</label>
                     <field id="channel_id" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
