@@ -145,19 +145,29 @@ class SmsSender
             } else {
                 $storeName = __('Sulwhasoo');
             }
-            $params['storeEvent'] = $storeName . ' ＜' . $event->getTitle() . '＞';
             $token = $reservation->getAuthToken() . '_C';
             $params['confirmLink'] = $this->emailSender->getConfirmLink($userReserveId, $token);
             $params['cancelLink'] = $this->emailSender->getCancelLink($userReserveId, $token);
 
-            /** @var Template $templateModel */
-            $templateModel = $this->templateFactory->create();
-            $templateModel->setDesignConfig(
-                ['area' => 'frontend', 'store' => $storeId]
-            );
-            $templateModel->loadByConfigPath(ConfigData::SMS_TEMPLATE_PATH);
+            $smsContent = $event->getSmsContent();
+            if ($smsContent) {
+                $smsContent = str_replace('%store', $storeName, $smsContent);
+                $smsContent = str_replace('%eventName', $event->getTitle(), $smsContent);
+                $smsContent = str_replace('%confirm', $params['confirmLink'], $smsContent);
+                $smsContent = str_replace('%cancel', $params['cancelLink'], $smsContent);
 
-            return $templateModel->getProcessedTemplate($params);
+                return $smsContent;
+            } else {
+                $params['storeEvent'] = $storeName . ' ＜' . $event->getTitle() . '＞';
+                /** @var Template $templateModel */
+                $templateModel = $this->templateFactory->create();
+                $templateModel->setDesignConfig(
+                    ['area' => 'frontend', 'store' => $storeId]
+                );
+                $templateModel->loadByConfigPath(ConfigData::SMS_TEMPLATE_PATH);
+
+                return $templateModel->getProcessedTemplate($params);
+            }
         } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());
             return '';
