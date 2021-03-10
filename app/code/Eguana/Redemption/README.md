@@ -130,7 +130,7 @@ Below is the example image of the add new form.
 
 Form Part 1 shows form fields
 
-![add-nw-form](https://nimbus-screenshots.s3.amazonaws.com/s/f8306e36663fe8c9ed3a2649bc0ac732.png)
+![add-new-form](https://nimbus-screenshots.s3.amazonaws.com/s/af8ba6bdda884e8e912c232d48d17fc8.png)
 
 Form Part 2 shows content area 
 
@@ -178,15 +178,22 @@ Click on the calender and it will open a pop-up called date picker as shown in t
 
 ![calender](https://nimbus-screenshots.s3.amazonaws.com/s/058ebced5c4d00e126f6c5cc0773c583.png)
 
-#####(7) Store View
+#####(7) SMS Content
+
+This is for adding the content of sms which is to be send to customer after redemption registration. By default a content is set in this field for explanation.
+Here "%counter" will be the counter name which customer has selected from frontend form during registration and "%link" means the dynamic confirmation URL.
+
+**Note** These 2 (%counter, %link) remain same and don't remove them from content.
+
+#####(8) Store View
 
 This is Redemption store view. This will decide where Redemption information will shown.
 
-#####(8) Counter Name
+#####(9) Counter Name
 
 This is store counter name in which allowed for redemption store list is showing select one or more stores where the redemption will held
 
-#####(9) Total Quantity
+#####(10) Total Quantity
 
 This field is to defined how many total number of users can registered for the current redemption. These fields only show when selected counters are changed.
 

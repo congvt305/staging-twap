@@ -11,6 +11,7 @@
 namespace Eguana\Redemption\Model\Service;
 
 use Eguana\Redemption\Api\CounterRepositoryInterface;
+use Eguana\Redemption\Api\RedemptionRepositoryInterface;
 use Eguana\Redemption\Model\RedemptionConfiguration\RedemptionConfiguration;
 use Eguana\StoreSms\Api\SmsManagementInterface;
 use Magento\Email\Model\TemplateFactory;
@@ -82,6 +83,11 @@ class SmsSender
     private $storeInfoRepository;
 
     /**
+     * @var RedemptionRepositoryInterface
+     */
+    private $redemptionRepository;
+
+    /**
      * SmsSender constructor.
      *
      * @param SmsManagementInterface $smsManagement
@@ -93,6 +99,7 @@ class SmsSender
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param StoreInfoRepositoryInterface $storeInfoRepository
      * @param LoggerInterface $logger
+     * @param RedemptionRepositoryInterface $redemptionRepository
      */
     public function __construct(
         SmsManagementInterface $smsManagement,
@@ -103,7 +110,8 @@ class SmsSender
         OrderAddressRepositoryInterface $orderAddressRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         StoreInfoRepositoryInterface $storeInfoRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        RedemptionRepositoryInterface $redemptionRepositor
     ) {
         $this->smsManagement = $smsManagement;
         $this->redemptionConfig = $redemptionConfig;
@@ -114,6 +122,7 @@ class SmsSender
         $this->orderAddressRepository = $orderAddressRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->storeInfoRepository = $storeInfoRepository;
+        $this->redemptionRepository = $redemptionRepository;
     }
 
     /**
@@ -147,29 +156,43 @@ class SmsSender
     }
 
     /**
+     * Get message content
      *
      * @param $counterId
      * @param $storeId
      * @return string
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
-     * @throws \Magento\Framework\Exception\MailException
      */
     private function getMessage($counterId, $storeId)
     {
-        $customer = $this->counterRepository->getById($counterId);
-        $storeCounterId = $customer->getCounterId();
-        $storeCounterName = $this->storeInfoRepository->getById($storeCounterId)->getTitle();
-        $link = $this->getCounterLink($counterId);
-        $customerName = $customer->getCustomerName();
-        $templateIdentifier = $this->redemptionConfig->getMessageTemplate($storeId);
-        /** @var Template $templateModel */
-        $templateModel = $this->templateFactory->create();
-        $params = ['customer'=> $customerName, 'counter'=> $storeCounterName, 'link'=>$link];
-        $templateModel->setDesignConfig(['area' => 'frontend', 'store' => $this->storeManager->getStore()->getId()]);
-        $templateModel->loadByConfigPath(self::CONFIG_SMS_TEMPLATE_PATH);
+        try {
+            $customer = $this->counterRepository->getById($counterId);
+            $storeCounterId = $customer->getCounterId();
+            $link = $this->getCounterLink($counterId);
+            $storeCounterName = $this->storeInfoRepository->getById($storeCounterId)->getTitle();
+            $defaultSms = $this->getDefaultSmsContent(
+                $customer->getRedemptionId(),
+                $storeCounterName,
+                $link
+            );
+            if (!$defaultSms) {
+                $customerName = $customer->getCustomerName();
+                $templateIdentifier = $this->redemptionConfig->getMessageTemplate($storeId);
+                /** @var Template $templateModel */
+                $templateModel = $this->templateFactory->create();
+                $params = ['customer' => $customerName, 'counter' => $storeCounterName, 'link' => $link];
+                $templateModel->setDesignConfig(
+                    ['area' => 'frontend', 'store' => $this->storeManager->getStore()->getId()]
+                );
+                $templateModel->loadByConfigPath(self::CONFIG_SMS_TEMPLATE_PATH);
 
-        return $templateModel->getProcessedTemplate($params);
+                return $templateModel->getProcessedTemplate($params);
+            } else {
+                return $defaultSms;
+            }
+        } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
+            return '';
+        }
     }
 
     /**
@@ -189,5 +212,29 @@ class SmsSender
             $this->logger->info($e->getMessage());
         }
         return $resultUrl;
+    }
+
+    /**
+     * Get default sms content
+     *
+     * @param $redemptionId
+     * @param $counterName
+     * @param $link
+     * @return string
+     */
+    private function getDefaultSmsContent($redemptionId, $counterName, $link)
+    {
+        try {
+            $redemption = $this->redemptionRepository->getById($redemptionId);
+            $smsContent = $redemption->getSmsContent();
+            if ($smsContent) {
+                $smsContent = str_replace('%counter', $counterName, $smsContent);
+                $smsContent = str_replace('%link', $link, $smsContent);
+            }
+            return $smsContent;
+        } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
+            return '';
+        }
     }
 }
