@@ -396,7 +396,13 @@ class SapOrderManagement implements SapOrderManagementInterface
 
                                 } catch (\Exception $exception) {
                                     $message = "Something went wrong while saving item shipped to order : " . $incrementId;
-                                    $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                                    $exceptionMsg = $exception->getMessage();
+                                    $result[$orderStatusData['odrno']] = $this->orderResultMsg(
+                                        $orderStatusData,
+                                        $message,
+                                        "0001",
+                                        $exceptionMsg
+                                    );
                                 }
 
                                 if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
@@ -431,7 +437,13 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
                             } catch (\Exception $exception) {
                                 $message = "Something went wrong while saving order : " . $incrementId;
-                                $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+                                $exceptionMsg = $exception->getMessage();
+                                $result[$orderStatusData['odrno']] = $this->orderResultMsg(
+                                    $orderStatusData,
+                                    $message,
+                                    "0001",
+                                    $exceptionMsg
+                                );
                             }
 
                             if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
@@ -496,11 +508,12 @@ class SapOrderManagement implements SapOrderManagementInterface
         return $result;
     }
 
-    public function orderResultMsg($request, $message, $code)
+    public function orderResultMsg($request, $message, $code, $exceptionMsg = '')
     {
         return [
             'code' => $code,
             'message' => $message,
+            'exceptionMsg' => $exceptionMsg,
             'data' => [
                 'order_status_code' => $request['odrstat'],
                 'order_status_txt' => $this->orderStatusList($request['odrstat']),
@@ -602,6 +615,8 @@ class SapOrderManagement implements SapOrderManagementInterface
             $creditmemos = $this->creditmemoRepository->getList($searchCriteria)->getItems();
             return reset($creditmemos);
         } catch (\Exception $exception) {
+            $this->logger->info('Get Credit Memo By Order Id Error');
+            $this->logger->info($exception->getMessage());
             return null;
         }
     }
