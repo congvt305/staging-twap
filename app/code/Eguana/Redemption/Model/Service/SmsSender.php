@@ -99,7 +99,7 @@ class SmsSender
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param StoreInfoRepositoryInterface $storeInfoRepository
      * @param LoggerInterface $logger
-     * @param RedemptionRepositoryInterface $redemptionRepository
+     * @para RedemptionRepositoryInterface $redemptionRepository
      */
     public function __construct(
         SmsManagementInterface $smsManagement,
@@ -111,7 +111,7 @@ class SmsSender
         SearchCriteriaBuilder $searchCriteriaBuilder,
         StoreInfoRepositoryInterface $storeInfoRepository,
         LoggerInterface $logger,
-        RedemptionRepositoryInterface $redemptionRepositor
+        RedemptionRepositoryInterface $redemptionRepository
     ) {
         $this->smsManagement = $smsManagement;
         $this->redemptionConfig = $redemptionConfig;
