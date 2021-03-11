@@ -111,7 +111,7 @@ class SmsSender
         SearchCriteriaBuilder $searchCriteriaBuilder,
         StoreInfoRepositoryInterface $storeInfoRepository,
         LoggerInterface $logger,
-        RedemptionRepositoryInterface $redemptionRepositor
+        RedemptionRepositoryInterface $redemptionRepository
     ) {
         $this->smsManagement = $smsManagement;
         $this->redemptionConfig = $redemptionConfig;
