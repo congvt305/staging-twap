@@ -99,7 +99,7 @@ class SmsSender
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param StoreInfoRepositoryInterface $storeInfoRepository
      * @param LoggerInterface $logger
-     * @para RedemptionRepositoryInterface $redemptionRepository
+     * @param RedemptionRepositoryInterface $redemptionRepository
      */
     public function __construct(
         SmsManagementInterface $smsManagement,
