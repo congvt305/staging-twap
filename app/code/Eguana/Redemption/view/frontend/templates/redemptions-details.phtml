@@ -17,7 +17,6 @@ $counterSeats = $redemptionDetails->getData('counter_seats');
 $minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
 $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
 $storeId = $viewModel->getStoreId();
-$thankYouImage = $viewModel->contentFiltering($redemptionDetails->getThankYouImage());
 ?>
 <div class="block block-redemption-detail">
     <div class="block block-image-banner">
@@ -171,7 +170,8 @@ $thankYouImage = $viewModel->contentFiltering($redemptionDetails->getThankYouIma
             "registerForm": {
                 "countersaveurl":"<?=$block->escapeHtml($viewModel->getCounterSaveUrl())?>",
                 "counterTime":"<?=$block->escapeHtml($viewModel->getTimeForResendEmailButton())?>",
-                "resendUrl":"<?= $block->escapeUrl(__($viewModel->getResendAction())); ?>"
+                "resendUrl":"<?= $block->escapeUrl(__($viewModel->getResendAction())); ?>",
+                "successUrl":"<?= $block->escapeUrl(__($viewModel->getSuccessPageUrl())); ?>"
             }
         }
     }

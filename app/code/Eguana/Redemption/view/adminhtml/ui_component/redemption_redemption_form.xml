@@ -223,8 +223,8 @@
                     <item name="cols" xsi:type="number">15</item>
                     <item name="rows" xsi:type="number">5</item>
                     <item name="source" xsi:type="string">eguana_redemption</item>
-                    <item name="default" xsi:type="string">蘭芝通知您：即日起至5/11至至*%counter*體驗「蘭芝明星產品」，即可兌換「明星商品體驗組」乙份！每人限領乙次。(數量有限兌完為止)。兌換網頁： %link</item>
-                    <item name="notice" xsi:type="string" translate="true">%counter: Counter Name, %link: Confirmation link</item>
+                    <item name="default" xsi:type="string">親愛的 %name 您好！ 蘭芝通知您：即日起至5/11至至*%counter*體驗「蘭芝明星產品」，即可兌換「明星商品體驗組」乙份！每人限領乙次。(數量有限兌完為止)。兌換網頁： %link</item>
+                    <item name="notice" xsi:type="string" translate="true">%name: Customer Name, %counter: Counter Name, %confirm: Confirmation link</item>
                 </item>
             </argument>
             <settings>

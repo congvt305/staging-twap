@@ -11,6 +11,7 @@
 namespace Eguana\Redemption\Model\Service;
 
 use Eguana\Redemption\Api\CounterRepositoryInterface;
+use Eguana\Redemption\Api\Data\CounterInterface;
 use Eguana\Redemption\Api\RedemptionRepositoryInterface;
 use Eguana\Redemption\Model\RedemptionConfiguration\RedemptionConfiguration;
 use Eguana\StoreSms\Api\SmsManagementInterface;
@@ -170,7 +171,7 @@ class SmsSender
             $link = $this->getCounterLink($counterId);
             $storeCounterName = $this->storeInfoRepository->getById($storeCounterId)->getTitle();
             $defaultSms = $this->getDefaultSmsContent(
-                $customer->getRedemptionId(),
+                $customer,
                 $storeCounterName,
                 $link
             );
@@ -217,19 +218,22 @@ class SmsSender
     /**
      * Get default sms content
      *
-     * @param $redemptionId
+     * @param CounterInterface $counter
      * @param $counterName
      * @param $link
      * @return string
      */
-    private function getDefaultSmsContent($redemptionId, $counterName, $link)
+    private function getDefaultSmsContent($counter, $counterName, $link)
     {
         try {
+            $redemptionId = $counter->getRedemptionId();
+            $customerName = $counter->getCustomerName();
             $redemption = $this->redemptionRepository->getById($redemptionId);
             $smsContent = $redemption->getSmsContent();
             if ($smsContent) {
                 $smsContent = str_replace('%counter', $counterName, $smsContent);
-                $smsContent = str_replace('%link', $link, $smsContent);
+                $smsContent = str_replace('%confirm', $link, $smsContent);
+                $smsContent = str_replace('%name', $customerName, $smsContent);
             }
             return $smsContent;
         } catch (\Exception $exception) {

@@ -445,4 +445,25 @@ class RedemptionDetail implements ArgumentInterface
     {
         return $this->redemptionConfiguration->getPrivacyPolicy($this->getStoreId());
     }
+
+    /**
+     * Get success page action URL
+     *
+     * @return string
+     */
+    public function getSuccessPageUrl() : string
+    {
+        $url = '';
+        try {
+            $url =  $this->storeManager
+                ->getStore()
+                ->getUrl(
+                    'redemption/details/success/',
+                    ['redemption_id' => $this->getRedemptionId()]
+                );
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
+        return $url;
+    }
 }
