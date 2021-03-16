@@ -8,7 +8,7 @@
  * Time: 7:30 PM
  */
 -->
-<!--@subject {{trans "Hi %name," name=$customer_name}} @-->
+<!--@subject {{trans "【Laneige】Confirmation notice of trial package redemption application"}} @-->
 <!--@vars {
 "var customer_name":"Customer Name",
 "var counter_link":"Counter Register Link",
@@ -17,8 +17,9 @@
 
 {{template config_path="design/email/header_template"}}
 
-<p class="greeting">{{trans "Hi %name," name=$customer_name}}</p><br>
-<p>{{trans "Your redemption has been successfully registered. Please go to the %counter_name. and show this email to BA for completing your redemption. Below is the redemption confirmation link" counter_name=$counter_name}}</p>
-<a href="{{var counter_link}}" style="cursor: pointer;">{{trans "Click here"}}</a>
+<p class="greeting">{{trans "Dear %name Hello!" name=$customer_name}}</p><br>
+<p>{{trans "Congratulations on your successful application for the trial package redemption qualification."}}</p>
+<p>{{trans "Please use this message to the %counter counter and the counter staff will click to complete the redemption, thank you!" counter=$counter_name}}</p>
+<a href="{{var counter_link}}" style="cursor: pointer;">{{trans "Redemption confirmation link:"}}</a>
 
 {{template config_path="design/email/footer_template"}}

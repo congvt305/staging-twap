@@ -15,11 +15,13 @@ define([
      * @param config.countersaveurl
      * @param config.counterTime
      * @param config.resendUrl
+     * @param config.successUrl
      */
     function main(config) {
         let countersaveurl = config.countersaveurl;
         let minutes = config.counterTime;
         let resendUrl = config.resendUrl;
+        let successUrl = config.successUrl;
         let entityId = "";
         let infoAndErrorMessageDiv = $("#error-and-success-message");
         $(document).find('span[id="recaptcha-response"]').hide();
@@ -58,7 +60,6 @@ define([
                         jQuery('body').loader('show');
                     },
                     success: function (data) {
-                        jQuery('body').loader('hide');
                         if (data['duplicate']) {
                             infoAndErrorMessageDiv.removeClass("message success");
                             infoAndErrorMessageDiv.addClass("message info");
@@ -68,26 +69,15 @@ define([
                             $('#counter-form-submit').removeAttr('disabled');
                             $('#redemption_thank_you_img').show();
                             $('#redemption_banner_img').hide();
+                            window.scrollTo(500, 0);
+                            jQuery('body').loader('hide');
                         }
                         if (data['success']) {
-                            $('#name, #phone, #email, #line').prop('readonly', true);
-                            $('#counter').prop('disabled', true);
-                            entityId = data['entity_id'];
-                            infoAndErrorMessageDiv.removeClass("message info");
-                            infoAndErrorMessageDiv.addClass("message success");
-                            infoAndErrorMessageDiv.find('span').remove()
-                            infoAndErrorMessageDiv.append("<span>" + data['message'] + "</span>");
-                            $('#counter-form-submit').prop('disabled', true);
-                            $('#resend-button').prop('disabled', true);
-                            $('#info-message').show();
-                            startTimer();
-                            $('#redemption_thank_you_img').show();
-                            $('#redemption_banner_img').hide();
                             if (data['fbFunEnable']) {
                                 fbq('track', 'Foundation_check_finalcheck');
                             }
+                            window.location.href = successUrl;
                         }
-                        window.scrollTo(500, 0);
                     }
                 });
             };
