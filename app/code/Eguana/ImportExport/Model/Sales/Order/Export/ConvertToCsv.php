@@ -180,7 +180,7 @@ class ConvertToCsv
                 ->getList($this->searchCriteriaBuilder->create())
                 ->getItems();
             $order = current($orderList);
-            $mobile = $order->getShippingAddress()->getTelephone();
+            $mobile = $order->getShippingAddress() ? $order->getShippingAddress()->getTelephone() : '';
 
             $orderIds[] = $item->getId();
             $orders[$item->getId()]['order_id'] = $item->getIncrementId();
@@ -273,11 +273,11 @@ class ConvertToCsv
     private function getProduct($id)
     {
         try {
-            $product = $this->productRepository->getById($id);
+            return $this->productRepository->getById($id);
         } catch (\Exception $e) {
-            $product = $this->logger->error($e->getMessage());
+            $this->logger->error($e->getMessage());
+            return [];
         }
-        return $product ? $product : [];
     }
 
     /**
@@ -293,7 +293,7 @@ class ConvertToCsv
         } else {
             $this->loadedProductId = $id;
             $product = $this->getProduct($id);
-            $this->loadedSku = $product->getSku() ? $product->getSku() : '';
+            $this->loadedSku = $product ? $product->getSku() : '';
             return $this->loadedSku;
         }
     }
