@@ -29,6 +29,9 @@ $storeCode = $block->getCurrentStoreCode();
                         <?php if ($storeCode == 'tw_laneige'): ?>
                             <span><?= $block->escapeHtml(__("I am a member of Laneige Taiwan! Login now to complete the binding")) ?></span>
                         <?php endif; ?>
+                        <?php if ($storeCode == 'vn_laneige'): ?>
+                            <span><?= $block->escapeHtml(__("I am a member of Laneige Vietnam! Login now to complete the binding")) ?></span>
+                        <?php endif; ?>
                     </label>
                     <input type="radio" id="member" name="member" data-validate="{required:true}" value="ismember" checked="checked">
                 </div>
@@ -73,6 +76,9 @@ $storeCode = $block->getCurrentStoreCode();
                         <?php endif; ?>
                         <?php if ($storeCode == 'tw_laneige'): ?>
                             <span><?= $block->escapeHtml(__("Join Taiwan Laneige member! Complete binding")) ?></span>
+                        <?php endif; ?>
+                        <?php if ($storeCode == 'vn_laneige'): ?>
+                            <span><?= $block->escapeHtml(__("Join Vietnam Laneige member! Complete binding")) ?></span>
                         <?php endif; ?>
                     </label>
                     <input type="radio" id="not-a-member" name="member" value="notamember">
