@@ -9,17 +9,18 @@
  */
 namespace Eguana\ImportExport\Model\Sales\Order\Export;
 
+use Amore\CustomerRegistration\Helper\Data;
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\ProductRepository;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Filesystem;
+use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\ResourceModel\Order\Grid\CollectionFactory as OrderCollectionFactory;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory as ItemsCollectionFactory;
-use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Catalog\Api\Data\ProductInterface;
-use Magento\Catalog\Model\ProductRepository;
-use Magento\Framework\App\Filesystem\DirectoryList;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Filesystem;
-use Magento\Framework\Exception\FileSystemException;
 use Magento\Ui\Component\MassAction\Filter;
 use Psr\Log\LoggerInterface;
 
@@ -76,6 +77,12 @@ class ConvertToCsv
     private $logger;
 
     /**
+     * @var Data
+     */
+    private $customerRegistrationHelper;
+
+    /**
+     * @param Data $customerRegistrationHelper
      * @param Filter $filter
      * @param Filesystem $filesystem
      * @param LoggerInterface $logger
@@ -86,6 +93,7 @@ class ConvertToCsv
      * @param OrderRepositoryInterface $orderRepository
      */
     public function __construct(
+        Data $customerRegistrationHelper,
         Filter $filter,
         Filesystem $filesystem,
         LoggerInterface $logger,
@@ -103,6 +111,7 @@ class ConvertToCsv
         $this->directory = $filesystem->getDirectoryWrite(DirectoryList::VAR_DIR);
         $this->orderCollectionFactory = $orderCollectionFactory;
         $this->itemsCollectionFactory = $itemsCollectionFactory;
+        $this->customerRegistrationHelper = $customerRegistrationHelper;
     }
 
     /**
@@ -118,7 +127,7 @@ class ConvertToCsv
         $collection->getSelect()->joinRight(
             ['so' => $collection->getTable('sales_order')],
             'so.entity_id = main_table.entity_id',
-            ['shipping_amount', 'delivery_message', 'grand_total']
+            ['shipping_amount', 'delivery_message', 'grand_total', 'customer_ba_code']
         );
 
         $name = microtime();
@@ -132,7 +141,7 @@ class ConvertToCsv
             'Order',
             'Order Status',
             'Customer (Receiver)',
-            'Mobile',
+            'Order Mobile',
             'Address',
             'SKU',
             'Parent SKU',
@@ -146,9 +155,17 @@ class ConvertToCsv
             'Delivery Message'
         ];
 
+        if ($this->customerRegistrationHelper->getBaCodeEnable()) {
+            $columns[] = 'BA Recruiter Code';
+        }
+
         $header = [];
         foreach ($columns as $column) {
-            $header[] = $column;
+            if ($column == 'Order Mobile') {
+                $header[] = __($column);
+            } else {
+                $header[] = $column;
+            }
         }
 
         $stream->writeCsv($header);
@@ -163,7 +180,7 @@ class ConvertToCsv
                 ->getList($this->searchCriteriaBuilder->create())
                 ->getItems();
             $order = current($orderList);
-            $mobile = $order->getShippingAddress()->getTelephone();
+            $mobile = $order->getShippingAddress() ? $order->getShippingAddress()->getTelephone() : '';
 
             $orderIds[] = $item->getId();
             $orders[$item->getId()]['order_id'] = $item->getIncrementId();
@@ -174,6 +191,7 @@ class ConvertToCsv
             $orders[$item->getId()]['delivery_message'] = $item->getDeliveryMessage();
             $orders[$item->getId()]['grand_total'] = $item->getGrandTotal();
             $orders[$item->getId()]['mobile'] = $mobile;
+            $orders[$item->getId()]['ba_code'] = $item->getCustomerBaCode();
         }
 
         $itemsCollection = $this->itemsCollectionFactory->create();
@@ -206,6 +224,9 @@ class ConvertToCsv
             $itemData[] = $orders[$item->getOrderId()]['shipping_amount'];
             $itemData[] = $orders[$item->getOrderId()]['grand_total'];
             $itemData[] = $orders[$item->getOrderId()]['delivery_message'];
+            if ($this->customerRegistrationHelper->getBaCodeEnable()) {
+                $itemData[] = $orders[$item->getOrderId()]['ba_code'];
+            }
 
             $stream->writeCsv($itemData);
         }
@@ -252,11 +273,11 @@ class ConvertToCsv
     private function getProduct($id)
     {
         try {
-            $product = $this->productRepository->getById($id);
+            return $this->productRepository->getById($id);
         } catch (\Exception $e) {
-            $product = $this->logger->error($e->getMessage());
+            $this->logger->error($e->getMessage());
+            return [];
         }
-        return $product ? $product : [];
     }
 
     /**
@@ -272,7 +293,7 @@ class ConvertToCsv
         } else {
             $this->loadedProductId = $id;
             $product = $this->getProduct($id);
-            $this->loadedSku = $product->getSku() ? $product->getSku() : '';
+            $this->loadedSku = $product ? $product->getSku() : '';
             return $this->loadedSku;
         }
     }
