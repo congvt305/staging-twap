@@ -40,7 +40,7 @@ class Collection extends ParentCollection
             [$this->getTable('inventory_shipment_source')],
             'inventory_shipment_source.shipment_id = '.$this->getTable('sales_shipment').'.entity_id',
             [$this->getTable('inventory_shipment_source').'.source_code']
-        );
+        )->group('main_table.entity_id');
         $this->addFilterToMap('allocated_sources', $this->getTable('inventory_shipment_source').'.source_code');
         return $this;
     }
