@@ -99,3 +99,12 @@ method_title, linepay_order_id, method,	amount, maskedCreditCardNumber
 Admin can make a refund request by viewing any order invoice and make a credit memo.
 
  ![LinePay](https://i.ibb.co/C80C09q/4.png)
+
+## Test Cases
+
+### Test case to test Mobile phone barcode containing + sign
+1. From mobile place an order and on payment page select line pay as payment method and check Personal cloud invoice.
+2. Mobile phone barcode carrier field will appear. Add the valid barcode containing "+" sign on any position.
+3. Submit the order.
+4. From admin side go to the Sales > Order > Order details and within transaction details check for "ecpay_einvoice_cellphone_barcode" value.  
+5. **Expected Result:** Barcode must be same as entered while placing order containing "+" sign.
