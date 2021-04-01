@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 19/3/21
+ * Time: 3:10 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="custom_order" translate="label" sortOrder="1030" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Custom Order</label>
+            <tab>eguana_extensions_tab</tab>
+            <resource>Eguana_CustomOrderGrid::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="0" showInWebsite="1" showInStore="0">
+                <label>Order Id Prefix</label>
+                <field id="order_prefix" translate="label comment" type="text" sortOrder="10" showInDefault="0" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Prefix</label>
+                    <backend_model>Eguana\CustomOrderGrid\Model\Config\Backend\OrderIdPrefix</backend_model>
+                    <validate>no-whitespace</validate>
+                    <comment>Entered prefix will displayed with Order id</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
