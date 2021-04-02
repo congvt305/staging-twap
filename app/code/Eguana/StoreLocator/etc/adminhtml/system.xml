@@ -37,8 +37,40 @@
                 <field id="map_height" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Map_Height</label>
                 </field>
-                <field id="map_zoom" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="map_zoom" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Map Zoom</label>
+                    <validate>required-entry validate-digits</validate>
+                    <depends>
+                        <field id="*/general_stores/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="map_north" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Map North</label>
+                    <validate>required-entry validate-number no-whitespace</validate>
+                    <depends>
+                        <field id="*/general_stores/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="map_south" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Map South</label>
+                    <validate>required-entry validate-number no-whitespace</validate>
+                    <depends>
+                        <field id="*/general_stores/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="map_west" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Map West</label>
+                    <validate>required-entry validate-number no-whitespace</validate>
+                    <depends>
+                        <field id="*/general_stores/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="map_east" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Map East</label>
+                    <validate>required-entry validate-number no-whitespace</validate>
+                    <depends>
+                        <field id="*/general_stores/enabled">1</field>
+                    </depends>
                 </field>
             </group>
         </section>

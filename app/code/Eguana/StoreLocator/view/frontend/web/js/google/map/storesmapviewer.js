@@ -18,13 +18,23 @@ var prevMarkerIcon;
  * @param map_zoom
  * @param isStore
  * @param markerImages
- * @param markerOnIcon
+ * @param mapNorth
+ * @param mapSouth
+ * @param mapWest
+ * @param mapEast
  */
-function multi_map_initialize(multi_location, map_zoom, isStore, markerImages) {
+function multi_map_initialize(multi_location, map_zoom, isStore, markerImages, mapNorth, mapSouth, mapWest, mapEast) {
 
     let locations = multi_location.split('||');
     let markerImagesObj = JSON.parse(markerImages);
     var map, myLatLng, count, info, markerIcon, address, storeTitle, storeViewUrl, storeType, telephone;
+    const COUNTRY_BOUNDS = {
+        north: mapNorth,
+        south: mapSouth,
+        west: mapWest,
+        east: mapEast
+    };
+
     for (count = 0; count < locations.length; count++) {
         info = locations[count].split('=>');
         myLatLng = new google.maps.LatLng(info[1], info[2]);
@@ -43,7 +53,11 @@ function multi_map_initialize(multi_location, map_zoom, isStore, markerImages) {
         if (count === 0) {
             map = new google.maps.Map(document.getElementById('store_map_viewer'), {
                 zoom: Number(map_zoom),
-                center: myLatLng
+                center: myLatLng,
+                restriction: {
+                    latLngBounds: COUNTRY_BOUNDS,
+                    strictBounds: false,
+                }
             });
         }
         var marker = new google.maps.Marker({

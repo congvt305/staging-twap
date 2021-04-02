@@ -191,4 +191,20 @@ class ConfigData extends AbstractHelper
     {
         return $this->_urlBuilder->getUrl('stores/info/list');
     }
+
+    /**
+     * Get config value
+     *
+     * @param $path
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getConfigValue($path, $storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::FRONTEND_STORES . $path,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
 }

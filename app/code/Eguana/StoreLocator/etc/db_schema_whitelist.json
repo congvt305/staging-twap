@@ -13,7 +13,9 @@
             "email": true,
             "timing": true,
             "store_type": true,
-            "area": true
+            "area": true,
+            "is_event_allowed": true,
+            "is_redemption_allowed": true
         },
         "index": {
             "STOREINFO_ENTITY_ID": true,
