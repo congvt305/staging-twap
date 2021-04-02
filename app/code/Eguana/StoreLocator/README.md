@@ -54,7 +54,7 @@ How to enable store Locator:
 
  ![](https://i.ibb.co/3hJVymr/store2.png)
  
- ![](https://i.ibb.co/gFs3477/store1.png)
+ ![](https://nimbus-screenshots.s3.amazonaws.com/s/0340bff665470b8c5e0b96b8f95891d8.png)
  
  ###General Configurations :
  
@@ -70,26 +70,49 @@ How to enable store Locator:
  
 Here enter the cms block id to show custom content at the bottom of store locator page
 
-###Front Stores Map :
+![front-store-map](https://nimbus-screenshots.s3.amazonaws.com/s/9eade3ef834de0bc501806ac1f093832.png)
 
-- Map height
+### Front Stores Map :
 
-This will how much height will be set on frontend for map viewer. By default its value is 420px.
-
-- Map Zoom
-
-This will set the zoom parameter while initializing the map. By default its value is 19.
-
-###Front Stores Map :
-
-- Map height
+#### Map height
 
 This will how much height will be set on frontend for map viewer. By default its value is 420px.
 
-- Map Zoom
+#### Map Zoom
 
 This will set the zoom parameter while initializing the map. By default its value is 19.
 
+#### Map North
+
+Map north degree value
+
+#### Map South
+
+Map south degree value
+
+#### Map West
+
+Map west degree value
+
+#### Map East
+
+Map east degree value
+
+## Latitude Longitude
+
+The latitude and longitude of a country can be found from: https://gist.github.com/graydon/11198540
+
+### 1) Taiwan
+- north: 25.2954588893
+- south: 21.9705713974
+- west: 120.106188593
+- east: 121.951243931
+
+### 1) Vietnam
+- north: 23.3520633001
+- south: 8.59975962975
+- west: 102.170435826
+- east: 109.33526981
 
 # 1. Functionalities for admin :
 
@@ -135,3 +158,4 @@ In Manage Store Admin can add new store.
   ![](https://i.ibb.co/gmrmjh5/storefront.png)
 
   ![](https://i.ibb.co/GTgfK9Q/storefornt2.png)
+
