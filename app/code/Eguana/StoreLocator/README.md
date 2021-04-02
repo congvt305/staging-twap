@@ -135,3 +135,19 @@ In Manage Store Admin can add new store.
   ![](https://i.ibb.co/gmrmjh5/storefront.png)
 
   ![](https://i.ibb.co/GTgfK9Q/storefornt2.png)
+
+## Latitude Longitude
+
+The latitude and longitude of a country can be found from: https://gist.github.com/graydon/11198540
+
+### 1) Taiwan
+- north: 25.2954588893
+- south: 21.9705713974
+- west: 120.106188593
+- east: 121.951243931
+
+### 1) Vietnam
+- north: 23.3520633001
+- south: 8.59975962975
+- west: 102.170435826
+- east: 109.33526981

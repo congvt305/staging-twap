@@ -7,7 +7,11 @@
     <body>
         <attribute name="class" value="store-locator"/>
         <referenceContainer name="content">
-            <block class="Eguana\StoreLocator\Block\InfoList" name="stores_info_list" template="Eguana_StoreLocator::info/list.phtml"/>
+            <block class="Eguana\StoreLocator\Block\InfoList" name="stores_info_list" template="Eguana_StoreLocator::info/list.phtml">
+                <arguments>
+                    <argument name="storelocator_view_model" xsi:type="object">Eguana\StoreLocator\ViewModel\StoreLocator</argument>
+                </arguments>
+            </block>
         </referenceContainer>
         <move element="page.main.title" destination="stores_info_list"/>
     </body>
