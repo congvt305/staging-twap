@@ -53,7 +53,7 @@ define([
             }
         }
         if (config.locations) {
-            multi_map_initialize(config.locations, 8, config.viewStore, config.markerImages);
+            multi_map_initialize(config.locations, config.zoom, config.viewStore, config.markerImages, config.north, config.south, config.west, config.east);
         }
         pushmarker(0);
         $( document ).ready(function() {
