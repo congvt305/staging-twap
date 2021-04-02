@@ -1,5 +1,7 @@
 <?php
 /** @var  \Eguana\StoreLocator\Block\InfoList $block */
+/** @var \Eguana\StoreLocator\ViewModel\StoreLocator $viewModel */
+$viewModel = $block->getData('storelocator_view_model');
 $country = $block->getDefaultCountryName();
 $locations = [];
 $selectedSearch = $block->getSelectedSearchTerm();
@@ -198,7 +200,12 @@ if ($defaultCountry != null) {
                 "country" : "<?= $block->escapeJs($defaultCountry) ?>",
                 "markerImages" : "<?= $block->escapeJs(json_encode($markerImages, true)) ?>",
                 "search" : "<?= $block->escapeJs($selectedSearch) ?>",
-                "googledestination" : "<?= $block->escapeJs($googledestination) ?>"
+                "googledestination" : "<?= $block->escapeJs($googledestination) ?>",
+                "zoom" : <?= $block->escapeJs($viewModel->getZoomLevel()); ?>,
+                "north" : <?= $block->escapeJs($viewModel->getMapNorth()); ?>,
+                "south" : <?= $block->escapeJs($viewModel->getMapSouth()); ?>,
+                "west" : <?= $block->escapeJs($viewModel->getMapWest()); ?>,
+                "east" : <?= $block->escapeJs($viewModel->getMapEast()); ?>
             }
         }
     }
