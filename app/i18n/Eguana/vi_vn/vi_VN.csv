@@ -16415,3 +16415,11 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "The widget %1 is no longer available. Select a different widget.","Widget %1 không còn dùng được nữa. Chọn một widget khác.",lib,web
 "First character must be letter.","Ký tự đầu tiên phải là chữ cái.",lib,web
 "The password can't be the same as the email address. Create a new password and try again.","Mật khẩu không thể bằng địa chỉ email. Tạo một mật khẩu mới và thử lại.",lib,web
+"You have successfully subscribed to the latest news from %store_name.","Bạn đã đăng ký nhận tin tức mới nhất thành công từ【%store_name"
+"You have successfully cancelled the latest news from %store_name.","Bạn đã hủy thành công tin tức mới nhất từ【%store_name】"
+"Thank you for your support, Your order has been established, shopping clearly.The details are as follows.","Cảm ơn bạn đã hỗ trợ của bạn, đơn hàng của bạn đã được thiết lập, mua sắm rõ ràng. Chi tiết như sau."
+"The goods you ordered have been shipped.","Hàng hóa bạn đặt đã được chuyển đi."
+"Check / Money order","Kiểm tra / tiền đặt hàng"
+"Dear Customer, we have received your request for return of goods. We will carry out our internal examination work later. Upon completion of the review, you will receive a short notice of the Superman Return Code.","Kính gửi Quý khách hàng, chúng tôi đã nhận được yêu cầu đổi trả hàng hóa của Quý khách. Chúng tôi sẽ thực hiện công việc kiểm tra nội bộ của mình sau đó. Sau khi hoàn thành việc xem xét, bạn sẽ nhận được một thông báo ngắn về Mã Siêu nhân trở lại."
+"Please pay attention to the newsletter and return it to the supermarket within three days after receiving the newsletter. If you do not receive the news in more than three days, you can email us at <a href=""mailto:%store_email"">%store_email</a>","Vui lòng chú ý đến bản tin và gửi lại cho siêu thị trong vòng ba ngày sau khi nhận được bản tin. Nếu bạn không nhận được tin tức trong hơn ba ngày, bạn có thể gửi email cho chúng tôi theo địa chỉ <a href=""mailto:%store_email"">%store_email</a>"
+"Waiting for a refund","Đang chờ hoàn lại tiền"
