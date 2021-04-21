@@ -55,7 +55,7 @@
 "DM State","DM州"
 "DM Detailed Address","DM詳細地址"
 "DM Zipcode","DM郵遞區號"
-"Invalid Form Key. Please refresh the page.","網頁閒置逾時  請重新整理網頁"
+"Invalid Form Key. Please refresh the page.","伺服器發生錯誤 請重新整理網頁"
 "Mouse over to zoom","鼠標懸停以縮放"
 "About Sulwhasoo","品牌故事"
 "New","最新商品"
@@ -139,3 +139,7 @@
 "Cart Item","購物明細"
 "Summary","購物車明細"
 "Change Billing Address","編輯地址"
+Events,最新活動
+"Join LINE's official account for the latest membership news.","加入LINE 官方帳號掌握最新會員消息"
+"The system will automatically grant bonus points!","系統將會自動贈與紅利點數!"
+"Within 7 working days of the completion of the shipment of the order and the receipt of the order by the consumer","訂單完成出貨且消費者收貨後7個工作天內"
