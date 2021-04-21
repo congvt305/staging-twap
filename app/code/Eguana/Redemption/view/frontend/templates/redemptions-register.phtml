@@ -35,10 +35,11 @@ $redemptionDetail = $viewModel->getRedemptionById($counterDetail->getRedemptionI
         </div>
     </div>
     <?php if ($counterDetail->getStatus() == 1): ?>
+        <p>-<?= $block->escapeHtml(__('Need to be confirmed by the counter staff')) ?>-</p>
         <div class="actions-toolbar">
             <div class="primary">
                 <a class="action primary action-confirm" href="<?=$block->escapeUrl($block->getBaseUrl() . 'redemption/details/index/counter_id/' . $counterDetail->getId()) . '/confirm/' . true?>">
-                    <span><?= $block->escapeHtml(__('Confirm')) ?></span>
+                    <span><?= $block->escapeHtml(__('complete conversion')) ?></span>
                 </a>
             </div>
         </div>
