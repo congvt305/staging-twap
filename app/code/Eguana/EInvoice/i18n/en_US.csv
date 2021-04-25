@@ -39,3 +39,5 @@ Active,Active
 Frequency,Frequency
 "Start Time","Start Time"
 "E-Invoice Triplicate Title","E-Invoice Triplicate Title"
+"Note: Please reconfirm the content and quantity of the goods you purchased, and please complete the payment within ten minutes, otherwise the order will be automatically invalid!","Note: Please reconfirm the content and quantity of the goods you purchased, and please complete the payment within ten minutes, otherwise the order will be automatically invalid!"
+"After sending the order, please do not click on the previous page or rearrange it to avoid data transmission failure or repeated authorization by swiping card","After sending the order, please do not click on the previous page or rearrange it to avoid data transmission failure or repeated authorization by swiping card"
