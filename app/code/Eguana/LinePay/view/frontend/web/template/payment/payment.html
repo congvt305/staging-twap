@@ -34,14 +34,18 @@
                         <input type="radio" id="line-pay-triplicate-invoice" name="linepay_einvoice_type" value="triplicate-invoice" data-bind="checked: invoiceChecked">
                         <label for="line-pay-triplicate-invoice" class="label" data-bind="i18n: 'Triplicate Invoice'"/>
                         <div class="fieldset" id="line-pay-triplicate-invoice-contents" data-bind="visible: invoiceChecked() === 'triplicate-invoice'">
-                            <div class="field">
-                                <label for="line_pay_triplicate_title" class="label" data-bind="i18n: 'Triplicate Title'"/>
+                            <div class="field required">
+                                <label for="line_pay_triplicate_title" class="label" data-bind="i18n: 'Triplicate Title'" id="label_line_pay_triplicate_title"/>
                                 <div class="control">
-                                    <input type="text" name="ecpay_triplicate_title" data-validate='{"maxlength":255}' value="" title="Triplicate Title" class="input-text triplicate_title" id="line_pay_triplicate_title">
+                                    <input type="text" name="line_pay_triplicate_title" maxlength="255" value="" title="Triplicate Title" class="input-text triplicate_title" id="line_pay_triplicate_title">
+                                    <div class="line-pay-triplicate-title-error-msg field-error" style="display:none;" data-bind="i18n: 'This is a required field.'" />
                                 </div>
-                                <label for="line_pay_tax_id_number" class="label" data-bind="i18n: 'Tax ID Number'"/>
+                            </div>
+                            <div class="field required">
+                                <label for="line_pay_tax_id_number" class="label" data-bind="i18n: 'Tax ID Number'" id="label_line_pay_tax_id_number"/>
                                 <div class="control">
-                                    <input type="text" name="ecpay_tax_id_number" data-validate='{"maxlength":255}' value="" title="Tax ID Number" class="input-text tax_id_number" id="line_pay_tax_id_number">
+                                    <input type="text" name="line_pay_tax_id_number" maxlength="255" value="" title="Tax ID Number" class="input-text tax_id_number" id="line_pay_tax_id_number">
+                                    <div class="line-pay-tax-id-number-error-msg field-error" style="display:none;" data-bind="i18n: 'This is a required field.'" />
                                 </div>
                             </div>
                         </div>

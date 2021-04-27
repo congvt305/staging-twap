@@ -23,6 +23,25 @@ define(
                 let barCodeValid = true;
                 const eInvoiceForm = $('#linepay-custom-checkout-form');
                 const choosenEInvoice = eInvoiceForm.find('input:radio[name="linepay_einvoice_type"]:checked').val();
+                $('.line-pay-triplicate-title-error-msg').hide();
+                $('.line-pay-tax-id-number-error-msg').hide();
+                if (choosenEInvoice == 'triplicate-invoice')
+                {
+                    let requiredFieldEntered = true;
+                    let linePayTriplicateTitle = $("input:text[id=line_pay_triplicate_title]").val();
+                    if (linePayTriplicateTitle == '') {
+                        $('.line-pay-triplicate-title-error-msg').show();
+                        requiredFieldEntered = false;
+                    }
+                    let linePayTaxIdNumber = $("input:text[id=line_pay_tax_id_number]").val();
+                    if (linePayTaxIdNumber == '') {
+                        $('.line-pay-tax-id-number-error-msg').show();
+                        requiredFieldEntered = false;
+                    }
+                    if (requiredFieldEntered == false) {
+                        return requiredFieldEntered;
+                    }
+                }
                 const barCodeValue = $("input:text[id=line_pay_ecpay_cellphone_barcode]").val();
                 if (choosenEInvoice === 'cellphone-barcode-invoice') {
                     $.ajax({
