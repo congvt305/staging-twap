@@ -24,6 +24,20 @@
     display: none;
 }
 
+#label_triplicate_title:after {
+    font-size:12px;
+}
+#label_tax_id_number:after {
+    font-size:12px;
+}
+
+#label_line_pay_triplicate_title:after {
+    font-size:12px;
+}
+
+#label_line_pay_tax_id_number:after {
+    font-size:12px;
+}
 
 .checkout-payment-method .ccard .changable-card-expiry {
     display: none;
