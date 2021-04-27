@@ -25,6 +25,7 @@
 }
 
 
+
 .checkout-payment-method .ccard .changable-card-expiry {
     display: none;
 }
@@ -218,6 +219,25 @@
 
 .payment-method-content .field input, .payment-method-content .field select {
     max-width: 250px;
+}
+.tax-id-number-error-msg {
+    text-align: left;
+}
+.triplicate-title-error-msg {
+    text-align: left;
+}
+.line-pay-tax-id-number-error-msg{
+    text-align: left;
+}
+.line-pay-triplicate-title-error-msg {
+    text-align: left;
+}
+#label_triplicate_title {
+    font-size:12px;
+}
+
+#label_tax_id_number {
+    font-size:12px;
 }
 
 .adyen-checkout__link adyen-checkout__link--more-information {
