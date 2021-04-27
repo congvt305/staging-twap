@@ -34,9 +34,18 @@ On the Admin sidebar, go to Stores > Settings > Configuration.
 Under General in the left panel, choose General.
 
 Expand Expansion selector the City Options section and do the following: 
-
+- Zip/Postal Code is Autofilled, select each country where City/District and zipcode is autofilled.
 - In the City is required for list, select each country where City/District is a required entry.
 - Set the Allow to Choose City if It is Optional for Country field. (Dropdow will display for selecting city.)
+- In Website Scope of VN and TW, default country, allowed country and top destination should be only each country.
 
+#Important Notice
+
+- This module was built on the policy that one website allow only one country. If multiple countries enabled as allowed on website scope, it will not work properly.
+- To test address, remove all previous address data. All address data should be specific country based upon website scope. (In VN website, no TW customer address should exists.)
+
+
+#Change Log
+- April 27 2021 Vietnam Address Data added.
 
 
