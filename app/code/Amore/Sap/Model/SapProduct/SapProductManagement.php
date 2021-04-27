@@ -125,11 +125,6 @@ class SapProductManagement implements SapProductManagementInterface
     private $eventManager;
 
     /**
-     * @var \Amore\Sap\Api\Data\SyncStockResponseInterface
-     */
-    private $syncStockResponse;
-
-    /**
      * SapProductManagement constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param ProductRepositoryInterface $productRepository
@@ -151,7 +146,6 @@ class SapProductManagement implements SapProductManagementInterface
      * @param Config $config
      * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
      * @param ManagerInterface $eventManager
-     * @param \Amore\Sap\Api\Data\SyncStockResponseInterface $syncStockResponse
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
@@ -173,8 +167,7 @@ class SapProductManagement implements SapProductManagementInterface
         Logger $logger,
         Config $config,
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
-        ManagerInterface $eventManager,
-        \Amore\Sap\Api\Data\SyncStockResponseInterface $syncStockResponse
+        ManagerInterface $eventManager
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->productRepository = $productRepository;
@@ -196,7 +189,6 @@ class SapProductManagement implements SapProductManagementInterface
         $this->config = $config;
         $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
         $this->eventManager = $eventManager;
-        $this->syncStockResponse = $syncStockResponse;
     }
 
     public function inventoryStockUpdate(\Amore\Sap\Api\Data\SapInventoryStockInterface $stockData)
@@ -728,225 +720,5 @@ class SapProductManagement implements SapProductManagementInterface
         }
 
         return $assignedSources[0];
-    }
-
-    /**
-     * To update inventory stocks synchronously (multiple stocks)
-     *
-     * @param string $source
-     * @param string $mallId
-     * @param \Amore\Sap\Api\Data\SyncStockResponseStockDataInterface[] $stockData
-     * @return \Amore\Sap\Api\Data\SyncStockResponseInterface
-     */
-    public function inventorySyncStockUpdate($source, $mallId, $stockData)
-    {
-        $response = '';
-        $loggingCheck = $this->config->getLoggingCheck();
-
-        $result = [
-            'code'      => '0000',
-            'message'   => 'SUCCESS',
-            'data'      => []
-        ];
-        $parameters = [
-            'source'    => $source,
-            'mallId'    => $mallId,
-            'stockData' => $stockData
-        ];
-
-        if ($loggingCheck) {
-            $this->logger->info('***** SYNC STOCK API PARAMETERS *****');
-            $this->logger->info($this->json->serialize($parameters));
-        }
-
-        if (!$source || !$mallId || !$stockData || !is_array($stockData)) {
-            $result['code']     = '0001';
-            $result['message']  = 'Stock data missing';
-            $response = $this->getSyncStockResponse(
-                $result['code'],
-                $result['message'],
-                $result['data'],
-                $loggingCheck
-            );
-            $this->logSyncStockUpdate($parameters, $result['code'], $result);
-            return $response;
-        }
-
-        $store = $this->getStore($mallId);
-
-        if (empty($store)) {
-            $result['code']     = '0002';
-            $result['message']  = 'Mall Id ' . $mallId . ' is not specified or incorrect';
-            $response = $this->getSyncStockResponse(
-                $result['code'],
-                $result['message'],
-                $result['data'],
-                $loggingCheck
-            );
-            $this->logSyncStockUpdate($parameters, $result['code'], $result);
-            return $response;
-        }
-
-        $storeId = $store->getId();
-        $sapActiveCheck = $this->config->getActiveCheck('store', $storeId);
-        $sapStockSaveActiveCheck = $this->config->getProductStockActiveCheck('store', $storeId);
-
-        if (!$sapActiveCheck || !$sapStockSaveActiveCheck) {
-            $result['code']     = '0003';
-            $result['message']  = 'Configuration is not enabled';
-            $response = $this->getSyncStockResponse(
-                $result['code'],
-                $result['message'],
-                $result['data'],
-                $loggingCheck
-            );
-            $this->logSyncStockUpdate($parameters, $result['code'], $result);
-            return $response;
-        }
-
-        foreach ($stockData as $key => $value) {
-            $sourceItems    = [];
-            $productCheck   = true;
-
-            /** @var $product \Magento\Catalog\Model\Product */
-            $product = $this->getProductBySku($value->getMatnr(), $storeId);
-            if (!is_object($product)) {
-                $result['data'][] = [
-                    'matnr'     => $value->getMatnr(),
-                    'message'   => $product
-                ];
-                $productCheck = false;
-            }
-
-            if (!$productCheck) {
-                continue;
-            }
-
-            if (!$this->sapIntegrationCheck($product)) {
-                $itemExistInSource = $itemExistInDefault = '';
-                try {
-                    $websiteId = $this->getStore($mallId)->getWebsiteId();
-                    $websiteCode = $this->storeManagerInterface->getWebsite($websiteId)->getCode();
-                    $sourceCode = $this->getSourceCodeByWebsiteCode($websiteCode);
-                    $itemExistInSource = $this->sourceItemExistingCheck($value->getMatnr(), $sourceCode);
-                    $itemExistInDefault = $this->sourceItemExistingCheck($value->getMatnr(), 'default');
-                } catch (\Exception $exception) {
-                    $result['data'][] = [
-                        'matnr'     => $value->getMatnr(),
-                        'message'   => $exception->getMessage()
-                    ];
-                }
-
-                $data = [
-                    'source'    => $source,
-                    'mallId'    => $mallId,
-                    'matnr'     => $value->getMatnr(),
-                    'labst'     => $value->getLabst()
-                ];
-
-                if (!empty($itemExistInSource)) {
-                    try {
-                        $sourceItems[] = $this->saveProductQtyIntoSource($sourceCode, $data);
-                        $this->sourceItemsSaveInterface->execute($sourceItems);
-                        $result['data'][] = [
-                            'matnr'     => $value->getMatnr(),
-                            'message'   => 'SUCCESS'
-                        ];
-                    } catch (\Exception $exception) {
-                        $result['data'][] = [
-                            'matnr'     => $value->getMatnr(),
-                            'message'   => $exception->getMessage()
-                        ];
-                    }
-                } elseif (!empty($itemExistInDefault)) {
-                    try {
-                        $sourceItems[] = $this->saveProductQtyIntoSource('default', $data);
-                        $this->sourceItemsSaveInterface->execute($sourceItems);
-                        $result['data'][] = [
-                            'matnr'     => $value->getMatnr(),
-                            'message'   => 'SUCCESS'
-                        ];
-                    } catch (\Exception $exception) {
-                        $result['data'][] = [
-                            'matnr'     => $value->getMatnr(),
-                            'message'   => $exception->getMessage()
-                        ];
-                    }
-                } else {
-                    $result['data'][] = [
-                        'matnr'     => $value->getMatnr(),
-                        'message'   => $value->getMatnr() . ' does not exist in the source.'
-                    ];
-                }
-            } else {
-                $result['data'][] = [
-                    'matnr'     => $value->getMatnr(),
-                    'message'   => 'SAP Integration option is disabled. Check product option and try again.'
-                ];
-            }
-        }
-
-        $response = $this->getSyncStockResponse(
-            $result['code'],
-            $result['message'],
-            $result['data'],
-            $loggingCheck
-        );
-        $this->logSyncStockUpdate($parameters, $result['code'], $result);
-        return $response;
-    }
-
-    /**
-     * Get Sync Stock API Response
-     *
-     * @param $code
-     * @param $message
-     * @param array $data
-     * @param false $loggingCheck
-     * @return \Amore\Sap\Api\Data\SyncStockResponseInterface
-     */
-    private function getSyncStockResponse($code, $message, $data = [], $loggingCheck = false)
-    {
-        $response = [
-            'code'      => $code,
-            'message'   => $message,
-            'data'      => $data
-        ];
-
-        if ($loggingCheck) {
-            $this->logger->info('***** SYNC STOCK API RESPONSE *****');
-            $this->logger->info($this->json->serialize($response));
-        }
-
-        $this->syncStockResponse->setCode($code);
-        $this->syncStockResponse->setMessage($message);
-        /** @var $data \Amore\Sap\Model\SapProduct\SyncStockResponseStockData[] */
-        $this->syncStockResponse->setData($data);
-
-        return $this->syncStockResponse;
-    }
-
-    /**
-     * Log bulk stock update result in Operation Log
-     *
-     * @param $parameters
-     * @param $status
-     * @param $result
-     */
-    private function logSyncStockUpdate($parameters, $status, $result)
-    {
-        if ($parameters && $status && $result) {
-            $this->eventManager->dispatch(
-                "eguana_bizconnect_operation_processed",
-                [
-                    'to'                => 'Magento',
-                    'status'            => $this->setOperationLogStatus($status),
-                    'direction'         => 'incoming',
-                    'topic_name'        => 'amore.sap.product.inventory.sync.stock',
-                    'result_message'    => $this->json->serialize($result),
-                    'serialized_data'   => $this->json->serialize($parameters)
-                ]
-            );
-        }
     }
 }

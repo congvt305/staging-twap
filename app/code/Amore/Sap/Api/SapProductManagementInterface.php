@@ -43,14 +43,4 @@ interface SapProductManagementInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function productPriceUpdate($priceData);
-
-    /**
-     * To update inventory stocks synchronously (multiple stocks)
-     *
-     * @param string $source
-     * @param string $mallId
-     * @param \Amore\Sap\Api\Data\SyncStockResponseStockDataInterface[] $stockData
-     * @return \Amore\Sap\Api\Data\SyncStockResponseInterface
-     */
-    public function inventorySyncStockUpdate($source, $mallId, $stockData);
 }

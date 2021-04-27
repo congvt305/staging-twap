@@ -14,6 +14,7 @@
     <preference for="Amore\Sap\Api\Data\SapInventoryStockInterface" type="Amore\Sap\Model\SapProduct\SapInventoryStock"/>
     <preference for="Amore\Sap\Api\Data\SapProductsDetailInterface" type="Amore\Sap\Model\SapProduct\SapProductsDetail"/>
     <preference for="Amore\Sap\Api\Data\SapProductsPriceInterface" type="Amore\Sap\Model\SapProduct\SapProductsPrice"/>
+    <preference for="Amore\Sap\Api\SapSyncStockManagementInterface" type="Amore\Sap\Model\SapProduct\SapSyncStockManagement"/>
     <preference for="Amore\Sap\Api\Data\SyncStockResponseInterface" type="Amore\Sap\Model\SapProduct\SyncStockResponse"/>
     <preference for="Amore\Sap\Api\Data\SyncStockResponseStockDataInterface" type="Amore\Sap\Model\SapProduct\SyncStockResponseStockData"/>
 
@@ -43,4 +44,7 @@
                 type="Amore\Sap\Model\ResourceModel\Order\Handler\CustomState" />
     <preference for="Magento\InventoryShipping\Observer\SourceDeductionProcessor"
                 type="Amore\Sap\Observer\SourceDeductionProcessor" />
+    <type name="Amore\Sap\Model\SapOrder\SapOrderManagement">
+        <plugin name="amoreSapOrderManagement" type="Amore\Sap\Plugin\Model\SapOrder\SapOrderManagementPlugin" sortOrder="1" disabled="false"/>
+    </type>
 </config>

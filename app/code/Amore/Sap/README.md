@@ -42,22 +42,11 @@ Two type of success response will be occurs:
 {
     "code" : "0000",
     "message" : "SUCCESS",
-    "data" : [
-        {
-            "matnr" : "string",
-            "message" : "SUCCESS"
-        },
-        {
-            "matnr" : "string",
-            "message" : "SUCCESS"
-        },
-        ...
-    ]
+    "data" : []
 }
 
 1. **code :** Success code
 2. **message :** SUCCESS
-3. **data :** matnr will be SKU and messgae will be "SUCCESS".
 
 #### 2) 2nd with some stock quantity updation failure message and others with success message.
 
@@ -69,14 +58,8 @@ If any of matnr value is incorrect or labst value is either negative or not numb
     "message" : "SUCCESS",
     "data" : [
         {
-            "matnr": "string",
-            "message": "string",
-        },
-        {
-            "matnr": "string",
-            "message": "SUCCESS",
-        },
-        ...
+            "message": "Input data is empty",
+        }
     ]
 }
 
