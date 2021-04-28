@@ -12,15 +12,17 @@ namespace Eguana\ChangeStatus\Model;
 
 use Amore\PointsIntegration\Logger\Logger;
 use Eguana\ChangeStatus\Model\Source\Config;
+use Eguana\GWLogistics\Model\ResourceModel\StatusNotification\CollectionFactory as NotificationCollectionFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Model\Order;
+use Magento\Sales\Model\ResourceModel\Order\CollectionFactory as OrderCollectionFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
-
 
 class GetCompletedOrders
 {
@@ -78,6 +80,16 @@ class GetCompletedOrders
     private $pointsIntegrationLogger;
 
     /**
+     * @var OrderCollectionFactory
+     */
+    private $orderCollectionFactory;
+
+    /**
+     * @var NotificationCollectionFactory
+     */
+    private $statusNotificationCollection;
+
+    /**
      * GetCompletedOrders constructor.
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -92,6 +104,8 @@ class GetCompletedOrders
      * @param Json $json
      * @param \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig
      * @param Logger $pointsIntegrationLogger
+     * @param OrderCollectionFactory $orderCollectionFactory
+     * @param NotificationCollectionFactory $statusNotificationCollection
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -106,7 +120,9 @@ class GetCompletedOrders
         \Magento\Framework\Event\ManagerInterface $eventManager,
         Json $json,
         \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig,
-        Logger $pointsIntegrationLogger
+        Logger $pointsIntegrationLogger,
+        OrderCollectionFactory $orderCollectionFactory,
+        NotificationCollectionFactory $statusNotificationCollection
     ) {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
@@ -121,6 +137,8 @@ class GetCompletedOrders
         $this->json = $json;
         $this->PointsIntegrationConfig = $PointsIntegrationConfig;
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
+        $this->orderCollectionFactory = $orderCollectionFactory;
+        $this->statusNotificationCollection = $statusNotificationCollection;
     }
 
     public function getCompletedOrder($storeId)
@@ -241,5 +259,79 @@ class GetCompletedOrders
                 'result_message' => $this->json->serialize($responseData)
             ]
         );
+    }
+
+    /**
+     * Get orders list having status "Shipment Processing" 24 hours ago
+     *
+     * @param $storeId
+     * @return array
+     */
+    public function getShipmentProcessingOrders($storeId)
+    {
+        $completeOrderList = [];
+        try {
+            $orderCollection = $this->orderCollectionFactory->create();
+            $orderCollection->addFieldToFilter('status', ['eq' => 'shipment_processing']);
+            $orderCollection->addFieldToFilter('store_id', ['eq' => $storeId]);
+            $orderCollection->getSelect()
+                ->where('shipping_method IN (?)', ['blackcat_homedelivery', 'gwlogistics_CVS']);
+            $query = $orderCollection->getSelect()->__toString();
+            $orderList = $orderCollection->getItems();
+            foreach ($orderList as $order) {
+                if ($order->getShippingMethod() == 'gwlogistics_CVS') {
+                    $notificationCollection = $this->statusNotificationCollection->create();
+                    $notificationCollection->addFieldToFilter('order_id', ['eq' => $order->getEntityId()]);
+                    $statusNotification = $notificationCollection->getFirstItem();
+                    if (!empty($statusNotification) && ($statusNotification->getLogisticsSubType() === 'FAMI'
+                            && $statusNotification->getRtnCode() === '3022')
+                        || ($statusNotification->getLogisticsSubType() === 'UNIMART'
+                            && $statusNotification->getRtnCode() === '2067')) {
+                        $completeOrderList[] = $order;
+                    }
+                } elseif ($order->getShippingMethod() == 'blackcat_homedelivery') {
+                    $updatedAt = $this->dateTime->date('Y-m-d H:i:s', strtotime($order->getUpdatedAt()));
+                    $dateFrom = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -7 days'));
+                    if ($updatedAt <= $dateFrom) {
+                        $completeOrderList[] = $order;
+                    }
+                }
+            }
+        } catch (\Exception $exception) {
+            $this->logger->info('ERROR WHILE FETCHING ORDERS');
+            $this->logger->error($exception->getMessage());
+        }
+
+        return $completeOrderList;
+    }
+
+    /**
+     * Change order status to "Delivery Complete" from "Shipment Processing"
+     *
+     * @return void
+     */
+    public function changeStatusToDeliveryComplete()
+    {
+        $result = false;
+        $stores = $this->storeManagerInterface->getStores();
+        foreach ($stores as $store) {
+            $isChangeOrderActive = $this->config->getChangeOrderToDeliveryCompleteActive($store->getId());
+            if ($isChangeOrderActive) {
+                $orderList = $this->getShipmentProcessingOrders($store->getId());
+                /** @var Order $order */
+                foreach ($orderList as $order) {
+                    try {
+                        $order->setStatus('delivery_complete');
+                        $order->setState('delivery_complete');
+                        $this->orderRepository->save($order);
+                        $result = true;
+                    } catch (\Exception $exception) {
+                        $this->logger->debug('EXCEPTION OCCURRED DURING CHANGING ORDER STATUS TO "DELIVERY COMPLETE"');
+                        $this->logger->debug($exception->getMessage());
+                    }
+                }
+            }
+        }
+        return $result;
     }
 }

@@ -22,6 +22,8 @@ class Config
 
     const CHANGE_ORDER_STATUS_ACTIVE = 'change_status/change_order_status_cron/active';
 
+    const CHANGE_DELIVERY_COMPLETE_STATUS_ACTIVE = 'change_status/order_status_delivery_complete_cron/active';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -60,5 +62,20 @@ class Config
     public function getChangeOrderStatusActive($storeId)
     {
         return $this->scopeConfig->getValue(self::CHANGE_ORDER_STATUS_ACTIVE, 'store', $storeId);
+    }
+
+    /**
+     * Get Change Order To Delivery Complete Active Value
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getChangeOrderToDeliveryCompleteActive($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::CHANGE_DELIVERY_COMPLETE_STATUS_ACTIVE,
+            'store',
+            $storeId
+        );
     }
 }
