@@ -113,7 +113,7 @@ class SapOrderManagementPlugin
                 $orderItems = $order->getItems();
                 $skus = [];
                 foreach ($orderItems as $item) {
-                    $skus['MATNR'] = $item->getSku();
+                    $skus[]['MATNR'] = $item->getSku();
                 }
 
                 try {
@@ -133,7 +133,12 @@ class SapOrderManagementPlugin
                             $data['mallId'],
                             $stockData
                         );
-                        $result = $this->json->serialize($response);
+                        $result = [
+                            'code'      => $response->getCode(),
+                            'message'   => $response->getMessage(),
+                            'data'      => $response->getData(),
+                        ];
+                        $result = $this->json->serialize($result);
                     } elseif (isset($stockInfo['message'])) {
                         $result = $stockInfo['message'];
                     }
