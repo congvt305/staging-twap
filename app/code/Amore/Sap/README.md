@@ -111,3 +111,19 @@ If in SAP configuration "Enabled Request URL" is diabled or "Stock Data Get From
 
 1. **code :** Error code 0003
 2. **message :** Configuration is not enabled
+
+## Update GI Logic Plugin
+
+`Website` : Main Website URL  
+`Author` : Raheel Shaukat
+
+### Description
+
+This plugin is define to get stock info from SAP and update stock in magento when GI call occurs. This plugin uses SYNC Stock API (update bulk stock). The API to get stock info BizConnect Operation Log Topic Name is "amore.sap.get.stock.data" for verifying API response.
+
+### Configuration
+
+These configurations are store base.
+
+![plugin-config](https://nimbus-screenshots.s3.amazonaws.com/s/aa933536b70d8efeef2038ba477a7a22.png)
+

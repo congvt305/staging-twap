@@ -138,7 +138,7 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
                 $key = array_search($product->getSku(), $skus);
                 $data = [
                     'matnr' => $product->getSku(),
-                    'labst' => $stockData[$key]->getLabst(),
+                    'labst' => is_object($stockData[$key]) ? $stockData[$key]->getLabst() : $stockData[$key]['labst'],
                     'sourceCode' => $product->getData('source_code')
                 ];
                 $filteredProducts[] = $data;
