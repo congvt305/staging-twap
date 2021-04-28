@@ -23,6 +23,14 @@ define(
                 const choosenEInvoice = eInvoiceForm.find('input:radio[name="ecpay_einvoice_type"]:checked').val();
                 $('.triplicate-title-error-msg').hide();
                 $('.tax-id-number-error-msg').hide();
+
+                if (choosenEInvoice == 'cellphone-barcode-invoice') {
+                    if ($("input:text[id=cellphone_barcode]").val() != ' ') {
+                        var barCode = $("input:text[id=cellphone_barcode]").val();
+                        barCode = barCode.replace(/\s+/g, "+");
+                        $("input:text[id=cellphone_barcode]").val(barCode);
+                    }
+                }
                 if (choosenEInvoice == 'triplicate-invoice') {
 
                     let requiredFieldEntered = true;
