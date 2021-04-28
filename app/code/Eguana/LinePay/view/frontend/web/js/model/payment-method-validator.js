@@ -25,6 +25,13 @@ define(
                 const choosenEInvoice = eInvoiceForm.find('input:radio[name="linepay_einvoice_type"]:checked').val();
                 $('.line-pay-triplicate-title-error-msg').hide();
                 $('.line-pay-tax-id-number-error-msg').hide();
+                if (choosenEInvoice == 'cellphone-barcode-invoice') {
+                    if ($("input:text[id=line_pay_ecpay_cellphone_barcode]").val() != '') {
+                        var barCode = $("input:text[id=line_pay_ecpay_cellphone_barcode]").val();
+                        barCode = barCode.replace(/\s+/g, "+");
+                        $("input:text[id=line_pay_ecpay_cellphone_barcode]").val(barCode);
+                    }
+                }
                 if (choosenEInvoice == 'triplicate-invoice')
                 {
                     let requiredFieldEntered = true;
