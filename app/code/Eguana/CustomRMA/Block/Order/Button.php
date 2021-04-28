@@ -40,6 +40,8 @@ class Button extends \Magento\Rma\Block\Order\Button
             }
         } elseif ($order->getStatus() == 'shipment_processing') {
             $result = true;
+        } elseif ($order->getStatus() == 'delivery_complete') {
+            $result = true;
         }
 
         return $result;

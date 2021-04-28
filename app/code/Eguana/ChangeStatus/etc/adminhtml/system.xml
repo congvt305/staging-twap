@@ -61,6 +61,34 @@
                     <frontend_model>Eguana\ChangeStatus\Block\System\Config\OrderCompleteRun</frontend_model>
                 </field>
             </group>
+            <group id="order_status_delivery_complete_cron" translate="label" type="text" sortOrder="280" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Order Status to "Delivery Complete" Cron</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Change Order Status Active</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="frequency" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Frequency</label>
+                    <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
+                    <backend_model>Eguana\ChangeStatus\Model\Config\Backend\ChangeStatus\SetFrequencyDeliveryComplete</backend_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                </field>
+                <field id="time" translate="label" type="time" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Start Time</label>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                </field>
+                <field id="run_now" translate="label" type="button" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Run Now</label>
+                    <frontend_model>Eguana\ChangeStatus\Block\System\Config\DeliveryCompleteCronRun</frontend_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                </field>
+            </group>
         </section>
     </system>
 </config>

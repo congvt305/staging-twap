@@ -13,5 +13,8 @@
         <job name="eguana_order_status_cron" instance="Eguana\ChangeStatus\Cron\OrderProcessingToComplete" method="execute">
             <config_path>crontab/default/jobs/eguana_order_status_cron/schedule/cron_expr</config_path>
         </job>
+        <job name="eguana_delivery_complete_cron" instance="Eguana\ChangeStatus\Cron\ChangeStatusToDeliveryComplete" method="execute">
+            <config_path>crontab/default/jobs/eguana_delivery_complete_status_cron/schedule/cron_expr</config_path>
+        </job>
     </group>
 </config>
