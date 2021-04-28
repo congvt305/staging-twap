@@ -232,13 +232,6 @@
 .line-pay-triplicate-title-error-msg {
     text-align: left;
 }
-#label_triplicate_title {
-    font-size:12px;
-}
-
-#label_tax_id_number {
-    font-size:12px;
-}
 
 .adyen-checkout__link adyen-checkout__link--more-information {
     margin-bottom: 10px;
