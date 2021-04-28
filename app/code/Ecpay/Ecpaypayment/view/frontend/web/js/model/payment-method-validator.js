@@ -21,6 +21,25 @@ define(
                 let barCodeValid = true;
                 const eInvoiceForm = $('#custom-checkout-form');
                 const choosenEInvoice = eInvoiceForm.find('input:radio[name="ecpay_einvoice_type"]:checked').val();
+                $('.triplicate-title-error-msg').hide();
+                $('.tax-id-number-error-msg').hide();
+                if (choosenEInvoice == 'triplicate-invoice') {
+
+                    let requiredFieldEntered = true;
+                    let ecPayTriplicateTitle = $("input:text[id=triplicate_title]").val();
+                    if (ecPayTriplicateTitle == '') {
+                        $('.triplicate-title-error-msg').show();
+                        requiredFieldEntered = false;
+                    }
+                    let ecPayTaxIdNumber = $("input:text[id=tax_id_number]").val();
+                    if (ecPayTaxIdNumber == '') {
+                        $('.tax-id-number-error-msg').show();
+                        requiredFieldEntered = false;
+                    }
+                    if (requiredFieldEntered == false) {
+                        return requiredFieldEntered;
+                    }
+                }
                 const barCodeValue = $("input:text[id=cellphone_barcode]").val();
 
                 if (paymentMethod === 'ecpay_ecpaypayment') {
