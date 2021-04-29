@@ -4818,7 +4818,7 @@ new products will be created. Use this step to customize images and price for yo
 "There was an error detecting Customer Group.","There was an error detecting Customer Group.",module,Magento_Customer
 "Validate VAT Number","Validate VAT Number",module,Magento_Customer
 "Customer Login","會員登入",module,Magento_Customer
-"Create New Customer Account","創建新客戶帳戶",module,Magento_Customer
+"Create New Customer Account","加入會員",module,Magento_Customer
 "Date of Birth","出生日期",module,Magento_Customer
 "Bad request.","Bad request.",module,Magento_Customer
 "This confirmation key is invalid or has expired.","This confirmation key is invalid or has expired.",module,Magento_Customer
