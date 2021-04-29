@@ -38,8 +38,6 @@ class Button extends \Magento\Rma\Block\Order\Button
             if ($currentDate < $orderFreeReturnDate) {
                 $result = true;
             }
-        } elseif ($order->getStatus() == 'shipment_processing') {
-            $result = true;
         } elseif ($order->getStatus() == 'delivery_complete') {
             $result = true;
         }
