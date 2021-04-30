@@ -14,4 +14,5 @@
     <type name="Amasty\Promo\Model\Rule\Action\Discount\AbstractDiscount">
         <plugin name="final_price_not_fond" type="Eguana\CustomAmastyPromo\Model\Rule\Action\Discount\AbstractDiscount" sortOrder="1"/>
     </type>
+    <preference for="Amasty\Promo\Helper\Cart" type="Eguana\CustomAmastyPromo\Override\Helper\Cart" />
 </config>
