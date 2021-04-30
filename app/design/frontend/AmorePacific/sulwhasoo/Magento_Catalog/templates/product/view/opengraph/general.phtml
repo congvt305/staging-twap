@@ -17,15 +17,12 @@
 <meta property="og:url" content="<?= $block->escapeUrl($block->getProduct()->getProductUrl()) ?>" />
 <meta property="product:brand" content="<?= $block->escapeHtml(__('Sulwhasoo')); ?>" />
 <?php if ($block->getProduct()->isAvailable()) :?>
-    <meta property="product:availability" content="<?= $block->escapeHtml(__('In stock')) ?>" />
-<?php else :?>
-    <meta property="product:availability" content="<?= $block->escapeHtml(__('Out of stock')) ?>" />
+    <meta property="product:availability" content="in stock" />
 <?php endif; ?>
-<?php if ($block->getProduct()->getData('new')) :?>
-    <meta property="product:condition" content="<?= $block->escapeHtml(__('new')); ?>" />
-<?php endif; ?>
+<meta property="product:condition" content="new" />
 <?php if ($priceAmount = $block->getProduct()->getPriceInfo()->getPrice(\Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE)->getAmount()) :?>
     <meta property="product:price:amount" content="<?= $block->escapeHtmlAttr($priceAmount) ?>"/>
+    <meta property="og:price:amount" content="<?= $block->escapeHtmlAttr($priceAmount) ?>"/>
     <?= $block->getChildHtml('meta.currency') ?>
 <?php endif;?>
 <meta property="product:retailer_item_id" content="<?= $block->getProduct()->getSku(); ?>" />
