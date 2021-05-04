@@ -68,6 +68,8 @@ define([
                             $('#counter-form-submit').removeAttr('disabled');
                             $('#redemption_thank_you_img').show();
                             $('#redemption_banner_img').hide();
+                            window.scrollTo(500, 0);
+                            jQuery('body').loader('hide');
                         }
                         if (data['success']) {
                             $('#name, #phone, #email, #line').prop('readonly', true);
@@ -87,7 +89,6 @@ define([
                                 fbq('track', 'Foundation_check_finalcheck');
                             }
                         }
-                        window.scrollTo(500, 0);
                     }
                 });
             };
