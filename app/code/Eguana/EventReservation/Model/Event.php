@@ -232,6 +232,16 @@ class Event extends AbstractModel implements EventInterface, IdentityInterface
     }
 
     /**
+     * Get sms content
+     *
+     * @return string|null
+     */
+    public function getSmsContent()
+    {
+        return $this->getData(self::SMS_CONTENT);
+    }
+
+    /**
      * Set ID
      *
      * @param int $id
@@ -383,6 +393,17 @@ class Event extends AbstractModel implements EventInterface, IdentityInterface
     public function setSuccessImage($image)
     {
         return $this->setData(self::SUCCESS_IMAGE, $image);
+    }
+
+    /**
+     * Set sms content
+     *
+     * @param string $content
+     * @return Event
+     */
+    public function setSmsContent($content)
+    {
+        return $this->setData(self::SMS_CONTENT, $content);
     }
 
     /**

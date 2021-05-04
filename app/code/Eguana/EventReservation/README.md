@@ -158,7 +158,7 @@ For updation, deletion or view event details on site, go in the last column of g
 
 ### 1) Add / Update Event
 
-![add-event-1](https://nimbus-screenshots.s3.amazonaws.com/s/768b1c23b88c09049004dc9ee384cdfe.png)
+![add-event-1](https://nimbus-screenshots.s3.amazonaws.com/s/45ca28c26dedbba97a407f5a9e80393e.png)
 
 By clicking on Add New Event from grid a form will be displayed on which you can:
 
@@ -180,15 +180,20 @@ Upload event success image which will be shown in place of event image if custom
 
 #### (5) CMS Block
 
-Select CMS Block (which will be shown on Reservation form page on site)
+Select CMS Block (which will be shown on Reservation form page on site).
 
-#### (6) Description
+#####(6) SMS Content
+
+This is for adding the content of sms which is to be send to customer after event is reserved. By default a content is set in this field for explanation.
+Here "%store" will be the current store name from which reservation is made, "%eventName" will be the current event name, "%confirm" be the confirmation URL for reserving the event and "%cancel" means the cancelation URL.
+
+#### (7) Description
 
 ![add-event-2](https://nimbus-screenshots.s3.amazonaws.com/s/3ff57aa474dfc3cbd8b741bfd0bacd47.png)
 
 Add description (using page builder)
 
-#### (7) Event in Websites
+#### (8) Event in Websites
 
 ![add-event-3](https://nimbus-screenshots.s3.amazonaws.com/s/c0e1ab62a373c6612311518cab736244.png)
 

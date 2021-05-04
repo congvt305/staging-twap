@@ -182,6 +182,22 @@
                 </select>
             </formElements>
         </field>
+        <field name="sms_content" sortOrder="65" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="cols" xsi:type="number">15</item>
+                    <item name="rows" xsi:type="number">5</item>
+                    <item name="source" xsi:type="string">event_reservation</item>
+                    <item name="default" xsi:type="string">親愛的 %customer, 感謝您預約參加 %store ＜%eventName＞ 健康Fun玩提案 ！ 我們已收到您的購買預約，您選擇櫃點的專櫃人員將於 3 天內以電話與您聯繫，再麻煩留意手機資訊喔！ 確認： %confirm 取消： %cancel</item>
+                    <item name="notice" xsi:type="string" translate="true">%store: Store Name, %eventName: Event Name, %confirm: Confirmation link, %cancel: Cancelation link</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">SMS Content</label>
+                <visible>true</visible>
+            </settings>
+        </field>
     </fieldset>
     <fieldset name="description" sortOrder="50">
         <settings>

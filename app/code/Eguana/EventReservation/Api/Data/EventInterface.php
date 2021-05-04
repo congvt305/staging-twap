@@ -33,6 +33,7 @@ interface EventInterface
     const CREATION_TIME             = 'creation_time';
     const UPDATE_TIME               = 'update_time';
     const SUCCESS_IMAGE             = 'success_image';
+    const SMS_CONTENT               = 'sms_content';
     /**#@-*/
 
     /**
@@ -132,6 +133,13 @@ interface EventInterface
      * @return string|null
      */
     public function getSuccessImage();
+
+    /**
+     * Get sms content
+     *
+     * @return string|null
+     */
+    public function getSmsContent();
 
     /**
      * Set event ID
@@ -244,4 +252,12 @@ interface EventInterface
      * @return EventInterface
      */
     public function setSuccessImage($image);
+
+    /**
+     * Set sms content
+     *
+     * @param string $content
+     * @return EventInterface
+     */
+    public function setSmsContent($content);
 }
