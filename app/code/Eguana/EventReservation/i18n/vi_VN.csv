@@ -2,49 +2,49 @@ Back,Trở lại
 "Delete Event","Xóa bỏ "
 "Are you sure you want to do this?","Bạn có chắc rằng bạn muốn làm điều này?"
 Save,Lưu lại
-"Save & Duplicate","Save & Duplicate"
-"Save & Close","Save & Close"
-Home,Home
-"Go to Home Page","Go to Home Page"
-Events,Events
-"Current Events","Current Events"
-"Previous Events","Previous Events"
-Event,Event
-Manager,Manager
-"Manage Events","Manage Events"
-"Event was successfully deleted","Event was successfully deleted"
-"Event could not be deleted","Event could not be deleted"
-"Manage Event","Manage Event"
-"This event no longer exists.","This event no longer exists."
-"Edit Event","Edit Event"
-"New Event","New Event"
-"A total of %1 event(s) have been deleted.","A total of %1 event(s) have been deleted."
-"Start Date should be before End Date","Start Date should be before End Date"
-"You saved the event.","You saved the event."
-"Something went wrong while saving the event.","Something went wrong while saving the event."
-"You duplicated the event.","You duplicated the event."
-Enabled,Enabled
-Disabled,Disabled
-Edit,Edit
-Delete,Delete
-"Delete ""${ $.$data.title }""","Delete ""${ $.$data.title }"""
-"Are you sure you wan't to delete a ""${ $.$data.event_title }"" record?","Are you sure you wan't to delete a ""${ $.$data.event_title }"" record?"
-"Back to list","Back to list"
-"No Event found!.","No Event found!."
-"Enable Event","Enable Event"
-"Thumbnail Image","Thumbnail Image"
-"Start Date","Start Date"
-"End Date","End Date"
-"Store View","Store View"
-Description,Description
-"Add New Event","Add New Event"
+"Save & Duplicate","Lưu & trùng lặp"
+"Save & Close","Lưu & đóng"
+Home,Trang chủ
+"Go to Home Page","Đi đến trang chủ"
+Events,Sự kiện
+"Current Events","Các sự kiện hiện tại"
+"Previous Events","Các sự kiện trước đây"
+Event,Sự kiện
+Manager,Người quản lý
+"Manage Events","Quản lý các sự kiện"
+"Event was successfully deleted","Sự kiện đã được xóa thành công"
+"Event could not be deleted","Sự kiện không thể xóa được"
+"Manage Event","Quản lý các sự kiện"
+"This event no longer exists.","Sự kiện này không còn tồn tại nữa."
+"Edit Event","Biên tập sự kiện"
+"New Event","Sự kiện mới"
+"A total of %1 event(s) have been deleted.","Tổng cộng có %1 sự kiện đã bị xóa."
+"Start Date should be before End Date","Ngày bắt đầu phải trước ngày kết thúc"
+"You saved the event.","Cậu đã cứu được sự kiện."
+"Something went wrong while saving the event.","Có chuyện gì đó không ổn trong khi lưu lại sự kiện."
+"You duplicated the event.","Cậu đã sao chép sự kiện."
+Enabled,Cho phép
+Disabled,Vô hiệu hóa
+Edit,Chỉnh sửa
+Delete,Xóa bỏ
+"Delete ""${ $.$data.event_title }""","Xóa ""${ $.$data.event_title }"""
+"Are you sure you wan't to delete a ""${ $.$data.event_title }"" record?","Bạn chắc chắn muốn xóa bản ghi ""${ $.$data.event_title }""?"
+"Back to list","Trở lại danh sách"
+"No Event found!.","Không tìm thấy sự kiện!"
+"Enable Event","Sử dụng sự kiện"
+"Thumbnail Image","Hình ảnh ngón tay cái"
+"Start Date","Ngày bắt đầu"
+"End Date","Ngày kết thúc"
+"Store View","Xem cửa hàng"
+Description,Mô tả
+"Add New Event","Thêm sự kiện mới"
 ID,ID
-"Event Title","Event Title"
-Thumbnail,Thumbnail
-Status,Status
-Created,Created
-Modified,Modified
-"More","More"
+"Event Title","Tiêu đề sự kiện"
+Thumbnail,Hình ảnh thu nhỏ
+Status,Trạng thái
+Created,Đã tạo
+Modified,Đã sửa
+"More","Nhiều hơn"
 "Successfully booked an event","Đã đặt thành công một sự kiện"
 "No event exsit against this request","Không có sự kiện nào thoát khỏi yêu cầu này"
 "This Event is currently disabled","Sự kiện này hiện đã bị vô hiệu hóa"
