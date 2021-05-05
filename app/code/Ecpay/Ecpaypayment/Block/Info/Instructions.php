@@ -23,12 +23,19 @@ class Instructions extends \Magento\Payment\Block\Info\Instructions
     {
         $additionalInfo = $this->getInfo()->getAdditionalInformation();
         $ecpayPaymentMethod = '';
+        $ecpayChoosenPayment = '';
 
-        if (isset($additionalInfo["raw_details_info"]) && !empty($additionalInfo["raw_details_info"])) {
-            $rawDetailsInfo = $additionalInfo["raw_details_info"];
+        if (isset($additionalInfo["raw_details_info"]['ecpay_choosen_payment'])
+            && !empty($additionalInfo["raw_details_info"]['ecpay_choosen_payment'])) {
             $ecpayChoosenPayment = $rawDetailsInfo["ecpay_choosen_payment"];
-        } else {
+        }
+
+        if (isset($additionalInfo["ecpay_choosen_payment"])) {
             $ecpayChoosenPayment = $additionalInfo["ecpay_choosen_payment"];
+        }
+
+        if (! $ecpayChoosenPayment) {
+            return $ecpayPaymentMethod;
         }
 
         if (strpos($ecpayChoosenPayment, 'credit') !== false) {
