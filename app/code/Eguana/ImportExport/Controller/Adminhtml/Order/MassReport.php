@@ -204,7 +204,7 @@ class MassReport extends Action
             $collection->getSelect()->joinRight(
                 ['so' => $collection->getTable('sales_order')],
                 'so.entity_id = main_table.entity_id',
-                ['shipping_address_id']
+                ['shipping_address_id','coupon_code']
             );
             $customerGroup = $this->customerGroupCollectionFactory->create();
             $groups = [];
@@ -227,6 +227,7 @@ class MassReport extends Action
             if ($this->customerRegistrationHelper->getBaCodeEnable()) {
                 $columns[] = 'BA Recruiter Code';
             }
+            $columns[] = 'Profit Sharing Code';
             foreach ($columns as $column) {
                 $header[] = __($column);
             }
@@ -258,6 +259,7 @@ class MassReport extends Action
                 if ($this->customerRegistrationHelper->getBaCodeEnable()) {
                     $itemData[] = $order->getData('customer_ba_code');
                 }
+                $itemData[] = $order->getCouponCode();
 
                 $stream->writeCsv($itemData);
             }
