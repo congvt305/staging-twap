@@ -8,7 +8,6 @@ define([
     'underscore',
     'uiComponent',
     'Eguana_GWLogistics/js/action/open-cvs-map',
-    // 'Eguana_GWLogistics/js/model/cvs-location',
     'Magento_Checkout/js/model/quote',
     'Magento_Customer/js/model/customer',
     'Magento_Checkout/js/model/step-navigator',
@@ -57,17 +56,7 @@ define([
          */
         initialize: function () {
             this._super();
-            // if (window.location.pathname === '/checkout/index/index/') {
-
-            // cvsLocation.selectCvsLocation();
-            // this.selectedLocation = cvsLocation.getCvsLocation();
-            // this.selectCvsAddressForShipping();
-
             return this;
-
-            // }
-
-            // cvsLocation.clear();
         },
 
         /**
@@ -89,7 +78,6 @@ define([
         },
         selectCvsAddressForShipping: function () {
             var address = this.selectedLocation();
-            // console.log('selectCvsAddressForShipping1 : ', address);
 
             if (!address) {
                 return;
@@ -121,9 +109,6 @@ define([
 
 
         openMapWindow: function () {
-            // this.selectCvsAddressForShipping();
-            // this.selectCvsAddressForShippingMobile();
-
             var deferred = $.Deferred();
             openCvsMapAction(deferred, this.selectedCvs);
             $.when(
@@ -139,7 +124,6 @@ define([
         done: function () {
             pickupLocationService.getLocation()
                 .then(function (location) {
-                    // console.log('preselectLocation api: ', location);
                     pickupLocationService.selectForShipping(location);
                 });
         },
