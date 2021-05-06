@@ -24,6 +24,10 @@ define(
             // other payment method renderers if required
         );
         /** Add view logic here if needed */
-        return Component.extend({});
+        return Component.extend({
+            checkWebsiteId: function () {
+                return window.checkout.websiteId;
+            },
+        });
     }
 );

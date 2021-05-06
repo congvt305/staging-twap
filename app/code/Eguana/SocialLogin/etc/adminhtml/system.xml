@@ -61,6 +61,10 @@
                 <field id="oauth_redirect_uri" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>OAuth Redirect URI</label>
                 </field>
+                <field id="facebook_add_friend" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Facebook Add Friends Link</label>
+                    <validate>validate-url</validate>
+                </field>
             </group>
             <group id="google" translate="label" type="text" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Google</label>
