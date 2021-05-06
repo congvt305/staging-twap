@@ -7,16 +7,12 @@
  * Date: 10/8/20
  * Time: 5:25 PM
  */
-/** @var \Eguana\SocialLogin\ViewModel\LineAddFriends $viewModel */
+/** @var \Eguana\SocialLogin\ViewModel\AddFriends $viewModel */
 $viewModel = $block->getData('add_friend_view_model');
 ?>
 <?php if ($viewModel->getEnabledInFrontend()):?>
     <?php if ($viewModel->getEnabledLine()):?>
         <div class="line-add-friend">
-            <p class="note">
-                <?= $block->escapeHtml(__('Join the Laneige LINE official account')) ?><br />
-                <?= $block->escapeHtml(__('You can enquire about your point information!')) ?>
-            </p>
             <a href="<?= $block->escapeUrl($viewModel->lineAddFriendLink()) ?>" target="_blank">
                 <img src="<?= $block->escapeUrl("https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png") ?>" alt="<?= $block->escapeHtml(__('Add as friend')) ?>" height="36" border="0">
             </a>

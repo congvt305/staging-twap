@@ -11,7 +11,7 @@
             click="selectShipping"
             translate="'Home Delivery'"
     ></button>
-    <button
+    <button data-bind="visible: isVnWebsite()"
             class="action action-select-cvs-pickup"
             css="'selected': isCvsPickupSelected()"
             click="selectCvsPickup"
