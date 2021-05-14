@@ -14,6 +14,11 @@ namespace Amore\Sap\Api;
  */
 interface SapOrderManagementInterface
 {
+    const SAP_ORDER_STATUS_CREATION = 1;
+    const SAP_ORDER_STATUS_CREATION_ERROR = 2;
+    const SAP_ORDER_STATUS_DELIVERY_CREATION = 3;
+    const SAP_ORDER_STATUS_DELIVERY_START_OR_PRODUCT_RETURNED = 4;
+    const SAP_ORDER_STATUS_ORDER_CANCEL = 9;
     /**
      * @param \Amore\Sap\Api\Data\SapOrderStatusInterface $orderStatusData
      * @return \Amore\Sap\Api\Data\SapOrderStatusInterface
