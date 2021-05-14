@@ -33,13 +33,9 @@ use Magento\Sales\Model\Order\Shipment\TrackFactory;
 class SapOrderManagement implements SapOrderManagementInterface
 {
     const SAP_ORDER_CREATION = 'Order Created';
-
     const SAP_ORDER_CREATION_ERROR = 'Order Created Error(SAP)';
-
     const SAP_ORDER_DELIVERY_CREATION = 'Delivery Created';
-
     const SAP_ORDER_DELIVERY_START_OR_PRODUCT_RETURNED = 'Goods Issue/Return GR';
-
     const SAP_ORDER_CANCEL = 'Order Canceled';
 
     /**
@@ -220,24 +216,7 @@ class SapOrderManagement implements SapOrderManagementInterface
 
         $incrementId = $orderStatusData['odrno'];
 
-//        /** @var \Magento\Sales\Model\Order $order */
-//        $orders = $this->getOrderByIncrementId($incrementId);
-
-        // case that matching order does not exist
-//        if ($orders->getTotalCount() == 0) {
-//            $message = "Such Order Increment Id does not Exist.";
-//            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-//            return $result;
-//        }
-
-        // case that there are orders with same increment Id
-//        if ($orders->getTotalCount() > 1) {
-//            $message = "There are more than two orders with same Increment Id.";
-//            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
-//            return $result;
-//        }
-
-        if ($orderStatusData['odrstat'] == 1) {
+        if ($orderStatusData['odrstat'] == self::SAP_ORDER_STATUS_CREATION) {
             if (strpos($incrementId, "R") !== false) {
                 $message = "Order Return Status Success.";
                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
@@ -266,7 +245,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         }
 
         // case that order created error in SAP
-        if ($orderStatusData['odrstat'] == 2) {
+        if ($orderStatusData['odrstat'] == self::SAP_ORDER_STATUS_CREATION_ERROR) {
             if (strpos($incrementId, "R") !== false) {
                 $message = "Order Return Does not created in SAP.";
                 $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
@@ -297,7 +276,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         }
 
         // case that DN is created
-        if ($orderStatusData['odrstat'] == 3) {
+        if ($orderStatusData['odrstat'] == self::SAP_ORDER_STATUS_DELIVERY_CREATION) {
             if (strpos($incrementId, "R") !== false) {
                 $rmaIncrementId = str_replace("R", "", $incrementId);
                 /** @var \Magento\Rma\Model\Rma $rma */
@@ -329,7 +308,7 @@ class SapOrderManagement implements SapOrderManagementInterface
             return $result;
         }
 
-        if ($orderStatusData['odrstat'] == 4) {
+        if ($orderStatusData['odrstat'] == self::SAP_ORDER_STATUS_DELIVERY_START_OR_PRODUCT_RETURNED) {
             // ecpay invoice creation
             $trackingNo = $orderStatusData['ztrackId'];
 
@@ -474,7 +453,7 @@ class SapOrderManagement implements SapOrderManagementInterface
             return $result;
         }
 
-        if ($orderStatusData['odrstat'] == 9) {
+        if ($orderStatusData['odrstat'] == self::SAP_ORDER_STATUS_ORDER_CANCEL) {
             $order = $this->getOrderFromList($incrementId);
 
             $creditmemo = $this->getCreditmemoByOrder($order->getEntityId());
