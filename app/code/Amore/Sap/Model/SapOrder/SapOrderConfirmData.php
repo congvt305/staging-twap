@@ -254,6 +254,14 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'paymtd' => $this->getPaymentCode($orderData->getPayment()->getMethod()),
                 'payde' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
                 'paytm' => $this->dateFormatting($invoice->getCreatedAt(), 'His'),
+                // added for VN start
+                'PAY_MODE' => $this->getPaymentCode($orderData->getPayment()->getMethod()) === 'cashondelivery' ? 'COD' : '', //todo need to create payment method cod
+                'DHL_ID' => $orderData->getShippingMethod() === 'DHL - COD' ? 'TBD' : '', //todo need to make configuration for this
+                'SHP_SVCCD' => $orderData->getShippingMethod() === 'DHL - COD' ? 'PDE' : '',
+                'ORD_WGT' => $orderData->getShippingMethod() === 'DHL - COD' ? '1000' : '',
+                'INSURANCE' => $orderData->getShippingMethod() === 'DHL - COD' ? 'Y' : '',
+                'INSURNACE_VALUE' => $orderData->getShippingMethod() === 'DHL - COD' ? $orderGrandTotal : null, //todo null is okay?
+                // added for VN start end
                 'auart' => self::NORMAL_ORDER,
                 'augru' => '',
                 'augruText' => 'ORDER REASON TEXT',
