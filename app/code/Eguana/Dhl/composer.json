@@ -1,0 +1,33 @@
+{
+    "name": "eguana/dhl",
+    "description": "",
+    "require": {
+        "php": "~7.1.3||~7.2.0",
+        
+        "magento/magento-composer-installer": "*"
+    },
+    "suggest": {
+
+    },
+    "type": "magento2-module",
+    "version": "0.1.0",
+    "license": [
+
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Eguana\\Dhl\\": ""
+        }
+    },
+    "extra": {
+        "map": [
+            [
+                "*",
+                "Eguana/Dhl"
+            ]
+        ]
+    }
+}
