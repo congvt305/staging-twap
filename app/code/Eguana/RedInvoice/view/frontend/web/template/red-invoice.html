@@ -1,0 +1,75 @@
+<div class="red-invoice-form control">
+	<div style="text-align: center;" class="step-title" for="red_invoice">
+        <button data-bind="i18n: 'Request for redinvoice', click: showRedInvoiceForm"></button>
+    </div>
+	<div style="display: none;" id="red-invoice-form" class="control">
+        <table style="width: 40%;" class="">
+            <tbody>
+            <tr class="row">
+                <td class="col">
+                    <input type="radio" class="radio" id="apply_button" name="is_apply" value="1">
+                </td>
+                <td class="col">
+                    <span data-bind="i18n: 'Apply'"></span>
+                </td>
+                <td class="col">
+                    <input type="radio" class="radio" id="do_not_apply_button" name="is_apply" value="0" checked="checked">
+                </td>
+                <td class="col">
+                    <span data-bind="i18n: 'Do not apply'"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <fieldset>
+            <div class="fieldset">
+                <div style="margin: 0;" class="field required">
+                    <label for="company_name" class="label">
+                        <span data-bind="i18n: 'Company name'"></span>
+                    </label>
+                </div>
+                <div class="control">
+                    <input type="text" name="company_name" id="company_name" class="input-text required" data-validate="{required:true}">
+                </div>
+
+                <div style="margin: 0;" class="field required">
+                    <label for="tax_code" class="label">
+                        <span data-bind="i18n: 'Tax code'"></span>
+                    </label>
+                </div>
+                <div class="control">
+                    <input type="text" name="tax_code" id="tax_code" class="input-text required" data-validate="{required:true}">
+                </div>
+
+                <div style="margin: 0;" class="field required">
+                    <label class="label">
+                        <span data-bind="i18n: 'Company address'"></span>
+                    </label>
+                </div>
+                <div class="control">
+                    <input type="text" name="state" id="state" placeholder="State/Province" class="input-text required" data-validate="{required:true}">
+                </div>
+                <div style="margin: 0;" class="field">
+                    <label class="label">
+                        <span></span>
+                    </label>
+                </div>
+
+                <div class="control">
+                    <input type="text" name="country" id="country" placeholder="Country/District" class="input-text required" data-validate="{required:true}">
+                </div>
+
+                <div style="margin: 0;" class="field required">
+                    <label for="tax_code" class="label">
+                        <span data-bind="i18n: 'Road name/building'"></span>
+                    </label>
+                </div>
+                <div class="control">
+                    <input type="text" name="road_name" id="road_name" class="input-text required" data-validate="{required:true}">
+                </div>
+            </div>
+
+        </fieldset>
+	</div>
+</div>

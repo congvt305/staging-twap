@@ -1,0 +1,20 @@
+{
+    "eguana_red_invoice_data": {
+        "column": {
+            "id": true,
+            "order_id": true,
+            "is_apply": true,
+            "company_name": true,
+            "tax_code": true,
+            "state": true,
+            "country": true,
+            "road_name": true,
+            "creation_time": true,
+            "update_time": true
+        },
+        "constraint": {
+            "EGUANA_RED_INVOICE_DATA_ORDER_ID_SALES_ORDER_ENTITY_ID": true,
+            "PRIMARY": true
+        }
+    }
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 5/11/21
+ * Time: 10:10 AM
+ */-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="order_additional_info">
+            <block class="Magento\Framework\View\Element\Template" name="red_invoice_view" template="Eguana_RedInvoice::order/view/redInvoice.phtml">
+                <arguments>
+                    <argument name="red_invoice_view_model" xsi:type="object">Eguana\RedInvoice\ViewModel\RedInvoiceDetails</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>
