@@ -1,0 +1,37 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 25/6/20
+ * Time: 05:15 PM
+ */
+
+/** @var $viewModel \Eguana\RedInvoice\ViewModel\RedInvoiceDetails */
+/** @var $block \Magento\Shipping\Block\Adminhtml\View */
+
+$viewModel = $block->getData('red_invoice_view_model');
+$redInvoiceDetails = $viewModel->getRedInvoice();
+
+?>
+<?php if ($redInvoiceDetails != ''): ?>
+    <?php $redInvoiceDetails->getData(); ?>
+<div>
+    <div class="admin__page-section-title">
+        <span class="title"><?= $block->escapeHtml(__('Red Invoice Information')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <strong class="title"><?= $block->escapeHtml(__('Red Invoice Id:'));?></strong>
+            <span><?= $block->escapeHtml(__($redInvoiceDetails['id'])); ?></span><br>
+        <strong class="title"><?= $block->escapeHtml(__('Company Name:')); ?></strong>
+            <span><?= $block->escapeHtml(__($redInvoiceDetails['company_name'])); ?></span><br>
+        <strong class="title"><?= $block->escapeHtml(__('Tax Code:')); ?></strong>
+            <span><?= $block->escapeHtml(__($redInvoiceDetails['tax_code'])); ?></span><br>
+        <strong class="title"><?= $block->escapeHtml(__('State:')); ?></strong>
+            <span><?= $block->escapeHtml(__($redInvoiceDetails['state'])); ?></span><br>
+        <strong class="title"><?= $block->escapeHtml(__('Road Name:')); ?></strong>
+            <span><?= $block->escapeHtml(__($redInvoiceDetails['road_name'])); ?></span><br>
+    </div>
+</div>
+<?php endif ;?>

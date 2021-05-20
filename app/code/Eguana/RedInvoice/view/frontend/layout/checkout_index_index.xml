@@ -1,4 +1,12 @@
 <?xml version="1.0"?>
+<!--/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 5/11/21
+ * Time: 10:10 AM
+ */-->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="checkout.root">
@@ -17,9 +25,8 @@
                                                             <item name="component" xsi:type="string">uiComponent</item>
                                                             <item name="displayArea" xsi:type="string">shippingAdditional</item>
                                                             <item name="children" xsi:type="array">
-                                                                <item name="additional_block" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Eguana_OrderDeliveryMessage/js/view/checkout/shipping/delivery-message</item>
-                                                                    <item name="sortOrder" xsi:type="string">2</item>
+                                                                <item name="redInvoiceform" xsi:type="array">
+                                                                    <item name="sortOrder" xsi:type="string">1</item>
                                                                 </item>
                                                             </item>
                                                         </item>
