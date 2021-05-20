@@ -256,11 +256,11 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'paytm' => $this->dateFormatting($invoice->getCreatedAt(), 'His'),
                 // added for VN start
                 'PAY_MODE' => $this->getPaymentCode($orderData->getPayment()->getMethod()) === 'cashondelivery' ? 'COD' : '', //todo need to create payment method cod
-                'DHL_ID' => $orderData->getShippingMethod() === 'DHL - COD' ? 'TBD' : '', //todo need to make configuration for this
-                'SHP_SVCCD' => $orderData->getShippingMethod() === 'DHL - COD' ? 'PDE' : '',
-                'ORD_WGT' => $orderData->getShippingMethod() === 'DHL - COD' ? '1000' : '',
-                'INSURANCE' => $orderData->getShippingMethod() === 'DHL - COD' ? 'Y' : '',
-                'INSURNACE_VALUE' => $orderData->getShippingMethod() === 'DHL - COD' ? $orderGrandTotal : null, //todo null is okay?
+                'DHL_ID' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'TBD' : '', //todo need to make configuration for this
+                'SHP_SVCCD' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'PDE' : '',
+                'ORD_WGT' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? '1000' : '',
+                'INSURANCE' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'Y' : '',
+                'INSURNACE_VALUE' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? $orderGrandTotal : null, //todo null is okay?
                 // added for VN start end
                 'auart' => self::NORMAL_ORDER,
                 'augru' => '',
