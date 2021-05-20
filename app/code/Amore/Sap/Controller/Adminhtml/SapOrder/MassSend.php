@@ -106,14 +106,28 @@ class MassSend extends AbstractAction
             try {
                 $storeId = $order->getStoreId();
                 $storeIdList[] = $storeId;
-                if ($order->getStatus() == 'processing' || $order->getStatus() == 'sap_fail' || $order->getStatus() == 'processing_with_shipment') {
-                    $orderData = $this->sapOrderConfirmData->getOrderData($order->getIncrementId());
-                    $orderItemData = $this->sapOrderConfirmData->getOrderItem($order->getIncrementId());
-                    $orderDataList = array_merge($orderDataList, $orderData);
-                    $orderItemDataList = array_merge($orderItemDataList, $orderItemData);
+                //added for VN start
+                $isPayModeCod = $order->getPayment()->getMethod() === 'cashondelivery'; //todo handle cod
+                if ($isPayModeCod) {
+                    if ($order->getStatus() == 'pending' || $order->getStatus() == 'sap_fail') {
+                        $orderData = $this->sapOrderConfirmData->getOrderData($order->getIncrementId());
+                        $orderItemData = $this->sapOrderConfirmData->getOrderItem($order->getIncrementId());
+                        $orderDataList = array_merge($orderDataList, $orderData);
+                        $orderItemDataList = array_merge($orderItemDataList, $orderItemData);
+                    } else {
+                        $orderStatusError[] = $order->getIncrementId();
+                    }
                 } else {
-                    $orderStatusError[] = $order->getIncrementId();
+                    if ($order->getStatus() == 'processing' || $order->getStatus() == 'sap_fail' || $order->getStatus() == 'processing_with_shipment') {
+                        $orderData = $this->sapOrderConfirmData->getOrderData($order->getIncrementId());
+                        $orderItemData = $this->sapOrderConfirmData->getOrderItem($order->getIncrementId());
+                        $orderDataList = array_merge($orderDataList, $orderData);
+                        $orderItemDataList = array_merge($orderItemDataList, $orderItemData);
+                    } else {
+                        $orderStatusError[] = $order->getIncrementId();
+                    }
                 }
+                //added for VN end
             } catch (ShipmentNotExistException $e) {
                 $orderStatusError[] = $order->getIncrementId() . ' : ' . $e->getMessage();
                 if ($this->config->getLoggingCheck()) {
