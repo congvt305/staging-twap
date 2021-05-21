@@ -84,12 +84,12 @@ class DisableAddToCart implements ArgumentInterface
             $id = $productId;
             try {
                 $productStock = $this->stock->get($id);
+                if (!$productStock->getIsInStock()) {
+                    $outofstock = true;
+                    break;
+                }
             } catch (\Exception $exception) {
                 $this->logger->error($exception->getMessage());
-            }
-            if (!$productStock->getIsInStock()) {
-                $outofstock = true;
-                break;
             }
         }
         return $outofstock;
