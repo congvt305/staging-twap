@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: raheel
+* Date: 20/5/21
+* Time: 5:40 PM
+*/
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block name="cart.ajax.update.totals" template="Eguana_CustomCheckout::cart/updateCartTotals.phtml" after="-"/>
+        </referenceContainer>
+    </body>
+</page>
