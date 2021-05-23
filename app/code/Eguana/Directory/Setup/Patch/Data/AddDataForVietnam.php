@@ -47,7 +47,7 @@ class AddDataForVietnam implements DataPatchInterface
         $this->moduleDataSetup->startSetup();
         /** @var RegionCityDataInstaller $regionCityDataInstaller */
         $regionCityDataInstaller = $this->regionCityDataInstallerFactory->create();
-        $regionCityDataInstaller->addCountryRegionsCities($this->moduleDataSetup->getConnection(), $this->getDataForTaiwan());
+        $regionCityDataInstaller->addCountryRegionsCities($this->moduleDataSetup->getConnection(), $this->getDataForVietnam());
         $this->moduleDataSetup->endSetup();
 
     }
@@ -71,7 +71,7 @@ class AddDataForVietnam implements DataPatchInterface
     /**
      * @return array[]
      */
-    public function getDataForTaiwan()
+    public function getDataForVietnam()
     {
         return [
             ['VN','1177','Đồng Nai',[

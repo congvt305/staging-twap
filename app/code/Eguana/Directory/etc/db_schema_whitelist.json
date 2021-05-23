@@ -4,6 +4,7 @@
             "city_id": true,
             "region_id": true,
             "code": true,
+            "pos_code": true,
             "default_name": true
         },
         "index": {

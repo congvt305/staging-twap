@@ -12,7 +12,8 @@
                 comment="City ID"/>
         <column xsi:type="int" name="region_id" padding="10" unsigned="true" nullable="false" identity="false"
                 default="0" comment="Region ID"/>
-        <column xsi:type="varchar" name="code" nullable="true" length="32" comment="City code"/>
+        <column xsi:type="varchar" name="code" nullable="true" length="32" comment="City Post code"/>
+        <column xsi:type="varchar" name="pos_code" nullable="true" length="32" comment="POS integration code"/>
         <column xsi:type="varchar" name="default_name" nullable="true" length="255" comment="Default City Name"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="city_id"/>
