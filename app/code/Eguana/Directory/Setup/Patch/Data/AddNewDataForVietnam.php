@@ -87,7 +87,7 @@ class AddNewDataForVietnam implements DataPatchInterface
                 ["90000","Huyện Thoại Sơn","VN-007"],
                 ["90000","Huyện Tịnh Biên","VN-008"],
                 ["90000","Huyện Tri Tôn","VN-009"],
-                ["90000","Thành Phố Châu Đốc","VN-10"],
+                ["90000","Thành Phố Châu Đốc","VN-010"],
                 ["90000","Thị Xã Tân Châu","VN-011"]
             ]],
             ["VN","VN-02","Bà Rịa - Vũng Tàu", [
