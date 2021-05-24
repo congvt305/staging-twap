@@ -108,3 +108,33 @@ Admin can make a refund request by viewing any order invoice and make a credit m
 3. Submit the order.
 4. From admin side go to the Sales > Order > Order details and within transaction details check for "ecpay_einvoice_cellphone_barcode" value.  
 5. **Expected Result:** Barcode must be same as entered while placing order containing "+" sign.
+
+## LinePay Test Accounts Credentials
+
+### Sulwahsoo (Staging)
+
+**Account ID** test_202105242495  
+**Password** test_202105242495  
+**Channel ID** 1656023194  
+**Channel Secret Key** 4a4aee11f6360f6243f71f93494d25af  
+
+### Laneige (Staging)
+
+**Account ID** test_202012085524  
+**Password** R@heel100  
+**Channel ID** 1655333238  
+**Channel Secret Key** 1f11be3ae83ce4cc093a3e84cc422606
+
+### Sulwahsoo (Dev)
+
+**Account ID** test_202105244940  
+**Password** test_202105244940  
+**Channel ID** 1656023311  
+**Channel Secret Key** 40d2a8f7fd7c8551df963576a531a4d6  
+
+### Laneige (Dev)
+
+**Account ID** test_202009240447  
+**Password** test_202009240447  
+**Channel ID** 1654971364  
+**Channel Secret Key** 5b2919892de3a0eb14cdf25a5e25f89f
