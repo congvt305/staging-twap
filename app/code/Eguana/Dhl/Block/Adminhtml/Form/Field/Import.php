@@ -1,13 +1,6 @@
-<?php declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: sonia
- * Date: 19. 7. 26
- * Time: 오전 8:44
- */
+<?php
 
 namespace Eguana\Dhl\Block\Adminhtml\Form\Field;
-
 
 class Import extends \Magento\Framework\Data\Form\Element\AbstractElement
 {

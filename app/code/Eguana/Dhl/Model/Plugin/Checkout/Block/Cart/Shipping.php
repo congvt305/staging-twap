@@ -1,14 +1,5 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 
-/**
- * Checkout cart shipping block plugin
- *
- * @author     Magento Core Team <core@magentocommerce.com>
- */
 namespace Eguana\Dhl\Model\Plugin\Checkout\Block\Cart;
 
 class Shipping

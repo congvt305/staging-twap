@@ -1,13 +1,6 @@
-<?php declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: sonia
- * Date: 19. 7. 25
- * Time: 오후 7:29
- */
+<?php
 
 namespace Eguana\Dhl\Model\ResourceModel\Carrier;
-
 
 use \Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate\Import;
 use Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate\RateQueryFactory;
@@ -186,6 +179,10 @@ class Tablerate extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
             $result['dest_zip'] = '';
         }
 
+        if ($result && $result['dest_city_id'] == '*') {
+            $result['dest_zip'] = '';
+        }
+
         return $result;
     }
 
@@ -295,7 +292,6 @@ class Tablerate extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     public function getConditionName(\Magento\Framework\DataObject $object)
     {
-//        if ($object->getData('groups/eguana_dhl_tablerate/fields/condition_name/inherit') == '1') {
         if ($object->getData('groups/eguanadhl/fields/condition_name/inherit') == '1') {
             $conditionName = (string)$this->coreConfig->getValue('carriers/eguanadhl/condition_name', 'default');
         } else {
@@ -348,6 +344,7 @@ class Tablerate extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                 'website_id',
                 'dest_country_id',
                 'dest_region_id',
+                'dest_city_id',
                 'dest_zip',
                 'condition_name',
                 'condition_value',

@@ -1,13 +1,6 @@
-<?php declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: sonia
- * Date: 19. 7. 26
- * Time: 오전 9:22
- */
+<?php
 
 namespace Eguana\Dhl\Block\Adminhtml\Carrier\Tablerate;
-
 
 class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 {
@@ -116,7 +109,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
     /**
      * Prepare shipping table rate collection
      *
-     * @return \Magento\OfflineShipping\Block\Adminhtml\Carrier\Tablerate\Grid
+     * @return \Eguana\Dhl\Block\Adminhtml\Carrier\Tablerate\Grid
      */
     protected function _prepareCollection()
     {
@@ -147,9 +140,14 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         );
 
         $this->addColumn(
-            'dest_zip',
-            ['header' => __('Zip/Postal Code'), 'index' => 'dest_zip', 'default' => '*']
+            'dest_city',
+            ['header' => __('City/District'), 'index' => 'dest_city', 'default' => '*']
         );
+//
+//        $this->addColumn(
+//            'dest_zip',
+//            ['header' => __('Zip/Postal Code'), 'index' => 'dest_zip', 'default' => '*']
+//        );
 
         $label = $this->_tablerate->getCode('condition_name_short', $this->getConditionName());
         $this->addColumn('condition_value', ['header' => $label, 'index' => 'condition_value']);

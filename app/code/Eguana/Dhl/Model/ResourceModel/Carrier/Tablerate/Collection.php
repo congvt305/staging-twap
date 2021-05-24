@@ -1,13 +1,6 @@
-<?php declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: sonia
- * Date: 19. 7. 26
- * Time: 오전 9:29
- */
+<?php
 
 namespace Eguana\Dhl\Model\ResourceModel\Carrier\Tablerate;
-
 
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
@@ -25,6 +18,8 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
      */
     protected $_regionTable;
 
+    private $cityTable;
+
     /**
      * Define resource model and item
      *
@@ -38,6 +33,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
         );
         $this->_countryTable = $this->getTable('directory_country');
         $this->_regionTable = $this->getTable('directory_country_region');
+//        $this->cityTable = $this->getTable('eguana_directory_region_city');
     }
 
     /**
@@ -61,7 +57,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
 
         $this->addOrder('dest_country', self::SORT_ORDER_ASC);
         $this->addOrder('dest_region', self::SORT_ORDER_ASC);
-        $this->addOrder('dest_zip', self::SORT_ORDER_ASC);
+        $this->addOrder('dest_city', self::SORT_ORDER_ASC);
         $this->addOrder('condition_value', self::SORT_ORDER_ASC);
     }
 

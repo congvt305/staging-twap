@@ -11,7 +11,7 @@
             <eguanadhl>
                 <active>0</active>
                 <sallowspecific>0</sallowspecific>
-                <condition_name>package_weight</condition_name>
+                <condition_name>package_qty</condition_name>
                 <include_virtual_price>1</include_virtual_price>
                 <model>Eguana\Dhl\Model\Carrier\Tablerate</model>
                 <name>Eguana DHL</name>
