@@ -186,7 +186,7 @@ class AddNewDataForVietnam implements DataPatchInterface
                 ["67000","Huyện Lộc Ninh","VN-088"],
                 ["67000","Huyện Phú Riềng","VN-089"],
                 ["67000","Thị Xã Bình Long","VN-090"],
-                ["67000","Thành phố Đồng Xoài ","VN-091"],
+                ["67000","Thành phố Đồng Xoài","VN-091"],
                 ["67000","Thị Xã Phước Long","VN-092"],
                 ["67000","Huyện Bù Đăng","VN-093"]
             ]],
@@ -298,7 +298,7 @@ class AddNewDataForVietnam implements DataPatchInterface
                 ["76000","Huyện Trảng Bom","VN-182"],
                 ["76000","Huyện Vĩnh Cửu","VN-183"],
                 ["76000","Huyện Xuân Lộc","VN-184"],
-                ["76000","Thành Phố Long Khánh ","VN-185"]
+                ["76000","Thành Phố Long Khánh","VN-185"]
             ]],
             ["VN","VN-20","Đồng Tháp", [
                 ["81000","Thành Phố Sa Đéc","VN-186"],
