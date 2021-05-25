@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link rel="alternate" hreflang="ko-kr" src="https://www.laneige.com/kr/ko/misc/sitemap/" src_type="url"/>
+        <link rel="alternate" hreflang="en" src="https://www.laneige.com/int/en/misc/sitemap/" src_type="url"/>
+        <link rel="alternate" hreflang="en-hk" src="https://www.laneige.com/hk/en/util/sitemap/sitemap.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-sg" src="https://www.laneige.com/sg/en/util/sitemap/sitemap.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-my" src="https://www.laneige.com/my/en/util/sitemap/sitemap.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-ca" src="https://www.laneige.com/ca/en/util/sitemap/sitemap.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-hant-hk" src="https://www.laneige.com/hk/zh/util/sitemap/sitemap.html" src_type="url"/>
+        <link rel="alternate" hreflang="vi-vn" src="https://www.laneige.com/vn/vi/utility/sitemap.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/sitemap/" src_type="url"/>
+        <link rel="alternate" hreflang="id-id" src="https://www.laneige.com/id/id/util/sitemap/sitemap.html" src_type="url"/>
+        <link rel="alternate" hreflang="th-th" src="https://www.laneige.com/th/th/util/sitemap/sitemap.html" src_type="url"/>
+        <link rel="canonical" src="https://vn.laneige.com/sitemap" src_type="url"/>
+    </head>
+</page>

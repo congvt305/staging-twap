@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: yasir
+* Date: 6/18/20
+* Time: 3:08 AM
+*/
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link  rel="alternate" hreflang="ko-kr" src="http://www.laneige.com/kr/ko/magazine-new.html" src_type="url"/>
+        <link  rel="alternate" hreflang="vi-vn" src="http://www.laneige.com/vn/vi/magazine.html" src_type="url"/>
+        <link  rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/magazine/" src_type="url"/>
+        <link rel="canonical" src="https://vn.laneige.com/magazine" src_type="url"/>
+    </head>
+</page>
