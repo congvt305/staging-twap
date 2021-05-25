@@ -21,10 +21,7 @@ define([], function () {
                 'region_id_input': {
                     'required': true
                 },
-                'city_id': {
-                    'required': true
-                },
-                'city_id_input': {
+                'city': {
                     'required': true
                 }
             };
