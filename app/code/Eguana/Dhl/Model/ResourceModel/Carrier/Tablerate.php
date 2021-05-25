@@ -340,7 +340,7 @@ class Tablerate extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                 'website_id',
                 'dest_country_id',
                 'dest_region_id',
-                'dest_city_id',
+                'dest_city',
                 'condition_name',
                 'condition_value',
                 'price',
