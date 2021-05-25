@@ -5,7 +5,7 @@
             "website_id": true,
             "dest_country_id": true,
             "dest_region_id": true,
-            "dest_zip": true,
+            "dest_city": true,
             "condition_name": true,
             "condition_value": true,
             "price": true,
@@ -13,7 +13,7 @@
         },
         "constraint": {
             "PRIMARY": true,
-            "UNQ_883CE3378761F2A3A483483EA84072EF": true
+            "UNQ_7D1655470EA56135204B845D814E7231": true
         }
     }
 }

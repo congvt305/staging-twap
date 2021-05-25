@@ -1,10 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="eguana_dhl_tablerate" resource="default" engine="innodb" comment="Shipping Tablerate">
@@ -16,8 +10,8 @@
                 comment="Destination coutry ISO/2 or ISO/3 code"/>
         <column xsi:type="int" name="dest_region_id" padding="11" unsigned="false" nullable="false" identity="false"
                 default="0" comment="Destination Region Id"/>
-        <column xsi:type="varchar" name="dest_zip" nullable="false" length="10" default="*"
-                comment="Destination Post Code (Zip)"/>
+        <column xsi:type="varchar" name="dest_city" nullable="false" length="50" default="*"
+                comment="Destination City"/>
         <column xsi:type="varchar" name="condition_name" nullable="false" length="30" comment="Rate Condition name"/>
         <column xsi:type="decimal" name="condition_value" scale="4" precision="12" unsigned="false" nullable="false"
                 default="0" comment="Rate condition value"/>
@@ -28,11 +22,11 @@
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="pk"/>
         </constraint>
-        <constraint xsi:type="unique" referenceId="UNQ_883CE3378761F2A3A483483EA84072EF">
+        <constraint xsi:type="unique" referenceId="Eguana_TableRAte">
             <column name="website_id"/>
             <column name="dest_country_id"/>
             <column name="dest_region_id"/>
-            <column name="dest_zip"/>
+            <column name="dest_city"/>
             <column name="condition_name"/>
             <column name="condition_value"/>
         </constraint>

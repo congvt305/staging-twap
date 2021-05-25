@@ -1,13 +1,6 @@
 <?php declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: sonia
- * Date: 19. 7. 25
- * Time: 오후 7:04
- */
 
 namespace Eguana\Dhl\Model\Carrier;
-
 
 use Magento\Quote\Model\Quote\Address\RateRequest;
 
@@ -27,7 +20,7 @@ class Tablerate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implemen
     /**
      * @var string
      */
-    protected $_defaultConditionName = 'package_weight';
+    protected $_defaultConditionName = 'package_qty';
 
     /**
      * @var array
@@ -126,17 +119,15 @@ class Tablerate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implemen
                 }
             }
             $oldValue = $request->getPackageValue();
-            $request->setPackageValue($oldValue - $freePackageValue);
+            $newPackageValue = $oldValue - $freePackageValue;
+            $request->setPackageValue($newPackageValue);
+            $request->setPackageValueWithDiscount($newPackageValue);
         }
 
         if (!$request->getConditionName()) {
             $conditionName = $this->getConfigData('condition_name');
             $request->setConditionName($conditionName ? $conditionName : $this->_defaultConditionName);
         }
-        $conditionName = $this->getConfigData('condition_name');
-        $request->setConditionName($conditionName);
-
-
 
         // Package weight and qty free shipping
         $oldWeight = $request->getPackageWeight();
@@ -252,7 +243,6 @@ class Tablerate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implemen
      */
     public function getAllowedMethods()
     {
-//        return ['bestway' => $this->getConfigData('name')];
         return ['tablerate' => $this->getConfigData('name')];
     }
 
@@ -278,5 +268,4 @@ class Tablerate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implemen
         $method->setCost($cost);
         return $method;
     }
-
 }

@@ -1,16 +1,9 @@
-<?php declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: sonia
- * Date: 19. 7. 25
- * Time: 오후 7:29
- */
+<?php
 
 namespace Eguana\Dhl\Model\ResourceModel\Carrier;
 
-
-use \Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate\Import;
-use Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate\RateQueryFactory;
+use Eguana\Dhl\Model\ResourceModel\Carrier\Tablerate\Import;
+use Eguana\Dhl\Model\ResourceModel\Carrier\Tablerate\RateQueryFactory;
 
 class Tablerate extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
@@ -174,16 +167,16 @@ class Tablerate extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $connection = $this->getConnection();
 
         $select = $connection->select()->from($this->getMainTable());
-        /** @var RateQuery $rateQuery */
+        /** @var \Eguana\Dhl\Model\ResourceModel\Carrier\Tablerate\RateQuery $rateQuery */
         $rateQuery = $this->rateQueryFactory->create(['request' => $request]);
 
         $rateQuery->prepareSelect($select);
         $bindings = $rateQuery->getBindings();
 
         $result = $connection->fetchRow($select, $bindings);
-        // Normalize destination zip code
-        if ($result && $result['dest_zip'] == '*') {
-            $result['dest_zip'] = '';
+
+        if ($result && $result['dest_city'] == '*') {
+            $result['dest_city'] = '';
         }
 
         return $result;
@@ -295,7 +288,6 @@ class Tablerate extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     public function getConditionName(\Magento\Framework\DataObject $object)
     {
-//        if ($object->getData('groups/eguana_dhl_tablerate/fields/condition_name/inherit') == '1') {
         if ($object->getData('groups/eguanadhl/fields/condition_name/inherit') == '1') {
             $conditionName = (string)$this->coreConfig->getValue('carriers/eguanadhl/condition_name', 'default');
         } else {
@@ -348,7 +340,7 @@ class Tablerate extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                 'website_id',
                 'dest_country_id',
                 'dest_region_id',
-                'dest_zip',
+                'dest_city_id',
                 'condition_name',
                 'condition_value',
                 'price',

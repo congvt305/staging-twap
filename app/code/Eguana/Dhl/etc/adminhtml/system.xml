@@ -19,7 +19,7 @@
                 </field>
                 <field id="condition_name" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Condition</label>
-                    <source_model>Magento\OfflineShipping\Model\Config\Source\Tablerate</source_model>
+                    <source_model>\Eguana\Dhl\Model\Config\Source\Condition</source_model>
                 </field>
                 <field id="include_virtual_price" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Include Virtual Products in Price Calculation</label>

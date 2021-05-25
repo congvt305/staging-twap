@@ -1,16 +1,10 @@
-<?php declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: sonia
- * Date: 19. 7. 26
- * Time: 오전 9:20
- */
+<?php
 
 namespace Eguana\Dhl\Controller\Adminhtml\System\Config;
 
-
 use Magento\Config\Controller\Adminhtml\System\ConfigSectionChecker;
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\App\ResponseInterface;
 
 class ExportDhlTablerates extends \Magento\Config\Controller\Adminhtml\System\AbstractConfig
 {
@@ -65,5 +59,5 @@ class ExportDhlTablerates extends \Magento\Config\Controller\Adminhtml\System\Ab
         $content = $gridBlock->getCsvFile();
         return $this->_fileFactory->create($fileName, $content, DirectoryList::VAR_DIR);
     }
-
 }
+

@@ -12,9 +12,6 @@ define([], function () {
          */
         getRules: function () {
             return {
-                'postcode': {
-                    'required': true
-                },
                 'country_id': {
                     'required': true
                 },
@@ -22,6 +19,9 @@ define([], function () {
                     'required': true
                 },
                 'region_id_input': {
+                    'required': true
+                },
+                'city': {
                     'required': true
                 }
             };
