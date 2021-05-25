@@ -47,7 +47,7 @@ class RowParser
     )
     {
         // validate row
-        if (count($rowData) < 6) {
+        if (count($rowData) < 5) {
             throw new RowException(
                 __(
                     'The Table Rates File Format is incorrect in row number "%1". Verify the format and try again.',
@@ -58,7 +58,7 @@ class RowParser
 
         $countryId = $this->getCountryId($rowData, $rowNumber, $columnResolver);
         $regionIds = $this->getRegionIds($rowData, $rowNumber, $columnResolver, $countryId);
-        $cityId = $this->getCity($rowData, $columnResolver);
+        $cityName = $this->getCity($rowData, $rowNumber, $columnResolver, $regionIds);
         $conditionValue = $this->getConditionValue($rowData, $rowNumber, $conditionFullName, $columnResolver);
         $price = $this->getPrice($rowData, $rowNumber, $columnResolver);
 
@@ -68,7 +68,7 @@ class RowParser
                 'website_id' => $websiteId,
                 'dest_country_id' => $countryId,
                 'dest_region_id' => $regionId,
-                'dest_city' => $cityId,
+                'dest_city' => $cityName,
                 'condition_name' => $conditionShortName,
                 'condition_value' => $conditionValue,
                 'price' => $price,
@@ -148,13 +148,25 @@ class RowParser
      * @return float|int|null|string
      * @throws ColumnNotFoundException
      */
-    private function getCity(array $rowData, ColumnResolver $columnResolver)
+    private function getCity(array $rowData, $rowNumber, ColumnResolver $columnResolver, $regionIds)
     {
-        $cityCode = $columnResolver->getColumnValue(ColumnResolver::COLUMN_CITY, $rowData);
-        if ($cityCode === '') {
-            $cityCode = '*';
+        $cityName = $columnResolver->getColumnValue(ColumnResolver::COLUMN_CITY, $rowData);
+        if ($cityName === '*' || $cityName === '') {
+            $cityName = '*';
+            return $cityName;
         }
-        return $cityCode;
+        if ($regionIds !== [0] && $this->locationDirectory->hasCityName($regionIds, $cityName)) {
+            return $cityName;
+        } else {
+            throw new RowException(
+                __(
+                    'The "%1" city or district name in row number "%2" is incorrect. '
+                    . 'Verify the city or district and try again.',
+                    $cityName,
+                    $rowNumber
+                )
+            );
+        }
     }
 
     /**

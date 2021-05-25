@@ -35,7 +35,7 @@ class RateQuery
         $orWhere = '(' . implode(
                 ') OR (',
                 [
-                    "dest_country_id = :country_id AND dest_region_id = :region_id AND dest_city = :city_id",
+                    "dest_country_id = :country_id AND dest_region_id = :region_id AND dest_city = :city",
                     "dest_country_id = :country_id AND dest_region_id = :region_id AND dest_city = ''",
 
                     // Handle asterisk in dest_zip field
@@ -44,7 +44,7 @@ class RateQuery
                     "dest_country_id = '0' AND dest_region_id = :region_id AND dest_city = '*'",
                     "dest_country_id = '0' AND dest_region_id = 0 AND dest_city = '*'",
                     "dest_country_id = :country_id AND dest_region_id = 0 AND dest_city = ''",
-                    "dest_country_id = :country_id AND dest_region_id = 0 AND dest_city = :city_id",
+                    "dest_country_id = :country_id AND dest_region_id = 0 AND dest_city = :city",
                 ]
             ) . ')';
         $select->where($orWhere);
@@ -67,6 +67,48 @@ class RateQuery
         }
         return $select;
 
+    }
+
+    /**
+     * Returns query bindings
+     *
+     * @return array
+     */
+    public function getBindings()
+    {
+        $bind = [
+            ':website_id' => (int)$this->request->getWebsiteId(),
+            ':country_id' => $this->request->getDestCountryId(),
+            ':region_id' => (int)$this->request->getDestRegionId(),
+            ':city' => $this->request->getDestCity(),
+        ];
+
+        // Render condition by condition name
+        if (is_array($this->request->getConditionName())) {
+            $i = 0;
+            foreach ($this->request->getConditionName() as $conditionName) {
+                $bindNameKey = sprintf(':condition_name_%d', $i);
+                $bindValueKey = sprintf(':condition_value_%d', $i);
+                $bind[$bindNameKey] = $conditionName;
+                $bind[$bindValueKey] = $this->request->getData($conditionName);
+                $i++;
+            }
+        } else {
+            $bind[':condition_name'] = $this->request->getConditionName();
+            $bind[':condition_value'] = round($this->request->getData($this->request->getConditionName()), 4);
+        }
+
+        return $bind;
+    }
+
+    /**
+     * Returns rate request
+     *
+     * @return \Magento\Quote\Model\Quote\Address\RateRequest
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 
 }

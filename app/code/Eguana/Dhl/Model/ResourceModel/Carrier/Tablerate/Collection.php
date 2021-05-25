@@ -57,7 +57,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
 
         $this->addOrder('dest_country', self::SORT_ORDER_ASC);
         $this->addOrder('dest_region', self::SORT_ORDER_ASC);
-        $this->addOrder('dest_city', self::SORT_ORDER_ASC);
+        $this->addOrder('dest_city_id', self::SORT_ORDER_ASC);
         $this->addOrder('condition_value', self::SORT_ORDER_ASC);
     }
 

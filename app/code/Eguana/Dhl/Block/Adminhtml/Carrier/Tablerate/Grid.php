@@ -143,11 +143,6 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
             'dest_city',
             ['header' => __('City/District'), 'index' => 'dest_city', 'default' => '*']
         );
-//
-//        $this->addColumn(
-//            'dest_zip',
-//            ['header' => __('Zip/Postal Code'), 'index' => 'dest_zip', 'default' => '*']
-//        );
 
         $label = $this->_tablerate->getCode('condition_name_short', $this->getConditionName());
         $this->addColumn('condition_value', ['header' => $label, 'index' => 'condition_value']);

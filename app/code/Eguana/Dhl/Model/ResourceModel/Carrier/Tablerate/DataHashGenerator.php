@@ -18,7 +18,7 @@ class DataHashGenerator
     {
         $countryId = $data['dest_country_id'];
         $regionId = $data['dest_region_id'];
-        $cityId = $data['dest_city_id'];
+        $cityId = $data['dest_city'];
         $conditionValue = $data['condition_value'];
 
         return sprintf("%s-%d-%s-%F", $countryId, $regionId, $cityId, $conditionValue);

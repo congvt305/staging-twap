@@ -1,76 +1,58 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * @author Eguana Team
+ * Created by PhpStorm
+ * User: Sonia Park
+ * Date: 05/25/2021
  */
 
-namespace Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate;
+namespace Eguana\Dhl\Model\ResourceModel\Carrier\Tablerate;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Filesystem\File\ReadInterface;
-use Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate\CSV\ColumnResolver;
-use Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate\CSV\ColumnResolverFactory;
-use Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate\CSV\RowException;
-use Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate\CSV\RowParser;
+use Eguana\Dhl\Model\ResourceModel\Carrier\Tablerate\CSV\ColumnResolver;
+use Eguana\Dhl\Model\ResourceModel\Carrier\Tablerate\CSV\RowParser;
+use Eguana\Dhl\Model\ResourceModel\Carrier\Tablerate\CSV\ColumnResolverFactory;
+use Eguana\Dhl\Model\ResourceModel\Carrier\Tablerate\CSV\RowException;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Exception\LocalizedException;
 
-/**
- * Import offline shipping.
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
- */
 class Import
 {
     /**
      * @var StoreManagerInterface
      */
     private $storeManager;
-
     /**
      * @var Filesystem
      */
     private $filesystem;
-
     /**
      * @var ScopeConfigInterface
      */
     private $coreConfig;
-
     /**
      * @var array
      */
     private $errors = [];
-
     /**
-     * @var CSV\RowParser
+     * @var RowParser
      */
     private $rowParser;
-
     /**
-     * @var CSV\ColumnResolverFactory
+     * @var ColumnResolverFactory
      */
     private $columnResolverFactory;
-
     /**
      * @var DataHashGenerator
      */
     private $dataHashGenerator;
-
     /**
      * @var array
      */
     private $uniqueHash = [];
 
-    /**
-     * Import constructor.
-     * @param StoreManagerInterface $storeManager
-     * @param Filesystem $filesystem
-     * @param ScopeConfigInterface $coreConfig
-     * @param CSV\RowParser $rowParser
-     * @param CSV\ColumnResolverFactory $columnResolverFactory
-     * @param DataHashGenerator $dataHashGenerator
-     */
     public function __construct(
         StoreManagerInterface $storeManager,
         Filesystem $filesystem,
@@ -203,4 +185,5 @@ class Import
         }
         return $headers;
     }
+
 }

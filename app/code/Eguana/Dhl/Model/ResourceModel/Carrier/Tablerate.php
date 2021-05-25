@@ -2,8 +2,8 @@
 
 namespace Eguana\Dhl\Model\ResourceModel\Carrier;
 
-use \Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate\Import;
-use Magento\OfflineShipping\Model\ResourceModel\Carrier\Tablerate\RateQueryFactory;
+use Eguana\Dhl\Model\ResourceModel\Carrier\Tablerate\Import;
+use Eguana\Dhl\Model\ResourceModel\Carrier\Tablerate\RateQueryFactory;
 
 class Tablerate extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
@@ -167,20 +167,16 @@ class Tablerate extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $connection = $this->getConnection();
 
         $select = $connection->select()->from($this->getMainTable());
-        /** @var RateQuery $rateQuery */
+        /** @var \Eguana\Dhl\Model\ResourceModel\Carrier\Tablerate\RateQuery $rateQuery */
         $rateQuery = $this->rateQueryFactory->create(['request' => $request]);
 
         $rateQuery->prepareSelect($select);
         $bindings = $rateQuery->getBindings();
 
         $result = $connection->fetchRow($select, $bindings);
-        // Normalize destination zip code
-        if ($result && $result['dest_zip'] == '*') {
-            $result['dest_zip'] = '';
-        }
 
-        if ($result && $result['dest_city_id'] == '*') {
-            $result['dest_zip'] = '';
+        if ($result && $result['dest_city'] == '*') {
+            $result['dest_city'] = '';
         }
 
         return $result;
@@ -345,7 +341,6 @@ class Tablerate extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                 'dest_country_id',
                 'dest_region_id',
                 'dest_city_id',
-                'dest_zip',
                 'condition_name',
                 'condition_value',
                 'price',
