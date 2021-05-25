@@ -1,0 +1,19 @@
+"Could not save the red invoice info: %1","Could not save the red invoice info: %1"
+"Could not delete the red invoice info: %1","Could not delete the red invoice info: %1"
+"Red Invoice Information","Red Invoice Information"
+"Red Invoice Id:","Red Invoice Id:"
+id,id
+"Company Name:","Company Name:"
+"Tax Code:","Tax Code:"
+State:,State:
+"Road Name:","Road Name:"
+"Request for redinvoice","Request for redinvoice"
+Apply,Apply
+"Do not apply","Do not apply"
+"Company name","Company name"
+"Tax code","Tax code"
+"Company address","Company address"
+"Road name/building","Road name/building"
+"Country/District","Country/District"
+"State/Province","State/Province"
+"Road Name/Building","Road Name/Building"
