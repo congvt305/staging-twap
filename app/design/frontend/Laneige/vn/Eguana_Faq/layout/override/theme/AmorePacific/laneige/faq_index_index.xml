@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 17/6/20
+ * Time: 08:00 PM
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link rel="alternate" hreflang="en-hk" src="https://www.laneige.com/hk/en/customer-center/faq/faq.html" src_type="url"/>
+        <link rel="alternate" hreflang="en-ca" src="https://www.laneige.com/ca/en/customer-center/faq/faq.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-hant-hk" src="https://www.laneige.com/hk/zh/customer-center/faq/faq.html" src_type="url"/>
+        <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/faq/" src_type="url"/>
+        <link rel="canonical" src="https://vn.laneige.com/faq/" src_type="url"/>
+    </head>
+</page>
