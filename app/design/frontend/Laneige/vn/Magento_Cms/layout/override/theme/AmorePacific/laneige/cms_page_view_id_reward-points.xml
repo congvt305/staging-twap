@@ -8,6 +8,6 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/reward-points/" src_type="url"/>
-        <link rel="canonical" src="https://vn.laneige.com/reward-points" src_type="url"/>
+        <link rel="canonical" src="https://www.laneige.com.vn/reward-points" src_type="url"/>
     </head>
 </page>
