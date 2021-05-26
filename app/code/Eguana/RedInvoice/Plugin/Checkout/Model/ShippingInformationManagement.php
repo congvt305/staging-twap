@@ -13,6 +13,7 @@ use Magento\Checkout\Api\Data\ShippingInformationInterface;
 use Magento\Checkout\Model\Session;
 use Magento\Checkout\Model\ShippingInformationManagement as MagentoShippingInformationManagement;
 use Psr\Log\LoggerInterface;
+use Eguana\RedInvoice\Model\RedInvoiceLogger;
 
 /**
  * Get Red Invoice Data in checkout process
@@ -31,16 +32,24 @@ class ShippingInformationManagement
     private $logger;
 
     /**
+     * @var RedInvoiceLogger
+     */
+    private $redInvoicelogger;
+
+    /**
      * ShippingInformationManagement constructor.
      * @param Session $checkoutSession
      * @param LoggerInterface $logger
+     * @param RedInvoiceLogger $redInvoicelogger
      */
     public function __construct(
         Session $checkoutSession,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        RedInvoiceLogger $redInvoicelogger
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->logger = $logger;
+        $this->redInvoicelogger = $redInvoicelogger;
     }
 
     /**
@@ -54,6 +63,7 @@ class ShippingInformationManagement
         $cartId,
         ShippingInformationInterface $addressInformation
     ) {
+        $redInvoiceInfo = [];
         $extAttributes = $addressInformation->getExtensionAttributes();
         if (!isset($extAttributes)) {
             return;
@@ -72,6 +82,17 @@ class ShippingInformationManagement
             $this->checkoutSession->setState($state);
             $this->checkoutSession->setCountry($country);
             $this->checkoutSession->setRoadName($roadName);
+
+            $message = 'Red invoice info after setting into checkout session';
+            $redInvoiceInfo = [
+              'is_apply' => $isApply ? 'Yes' : 'No',
+                'company_name' => $companyName,
+                'tax_code' => $taxCode,
+                'state' => $state,
+                'country' => $country,
+                'road_name' => $roadName
+            ];
+            $this->redInvoicelogger->logRedInvoiceInfo($message, $redInvoiceInfo);
         } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());
         }

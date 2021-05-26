@@ -1,24 +1,32 @@
+<!--/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 5/11/21
+ * Time: 10:10 AM
+ */-->
 <div class="red-invoice-form control">
-    <div style="text-align: center;" class="step-title" for="red_invoice">
+	<div id="show-red-invoice-button" class="step-title" for="red_invoice">
         <button data-bind="i18n: 'Request for redinvoice', click: showRedInvoiceForm"></button>
     </div>
-    <div style="display: none;" id="red-invoice-form" class="control">
-        <table style="width: 40%;" class="">
+	<div id="red-invoice-form" class="control">
+        <table class="red-invoice-form-table">
             <tbody>
-            <tr class="row">
-                <td class="col">
-                    <input type="radio" class="radio" id="apply_button" name="is_apply" value="1">
-                </td>
-                <td class="col">
-                    <span data-bind="i18n: 'Apply'"></span>
-                </td>
-                <td class="col">
-                    <input type="radio" class="radio" id="do_not_apply_button" name="is_apply" value="0" checked="checked">
-                </td>
-                <td class="col">
-                    <span data-bind="i18n: 'Do not apply'"></span>
-                </td>
-            </tr>
+                <tr class="row">
+                    <td class="col">
+                        <input type="radio" class="radio" id="apply_button" name="is_apply" value="1">
+                    </td>
+                    <td class="col">
+                        <span data-bind="i18n: 'Apply'"></span>
+                    </td>
+                    <td class="col">
+                        <input type="radio" class="radio" id="do_not_apply_button" name="is_apply" value="0" checked="checked">
+                    </td>
+                    <td class="col">
+                        <span data-bind="i18n: 'Do not apply'"></span>
+                    </td>
+                </tr>
             </tbody>
         </table>
 
@@ -32,6 +40,11 @@
                     <div class="control">
                         <input type="text" name="company_name" id="company_name" class="input-text required" data-validate="{required:true}">
                     </div>
+                    <div class="company-name-error">
+                        <div role="error" class="message error">
+                            <span data-bind="i18n: 'This is required field'"></span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="field _required">
@@ -40,7 +53,12 @@
                     </label>
 
                     <div class="control">
-                        <input type="text" name="tax_code" id="tax_code" class="input-text required" data-validate="{required:true}">
+                        <input type="number" min="0" name="tax_code" id="tax_code" class="input-text required" data-validate="{required:true}">
+                    </div>
+                    <div class="tax-code-error">
+                        <div role="error" class="message error">
+                            <span data-bind="i18n: 'This is required field'"></span>
+                        </div>
                     </div>
                 </div>
 
@@ -49,19 +67,28 @@
                         <span data-bind="i18n: 'Company address'"></span>
                     </label>
 
-                    <div class="control" style="margin-bottom: 20px;">
-                        <input type="text" name="state" id="state" data-bind="attr:{placeholder: $t('State/Province')}" class="input-text required" data-validate="{required:true}">
+                    <div class="control" id="state-select-field">
+                        <select name="state" data-bind="options: availableCountries, optionsText: 'label', optionsValue: 'value'"></select>
+                        <div class="state-error">
+                            <div role="error" class="message error">
+                                <span data-bind="i18n: 'This is required field'"></span>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="control" style="margin-bottom: 20px;">
+                    <div class="control" id="country-field">
                         <input type="text" name="country" id="country" data-bind="attr:{placeholder: $t('Country/District')}" class="input-text required" data-validate="{required:true}">
                     </div>
 
                     <div class="control">
                         <input type="text" name="road_name" id="road_name" data-bind="attr:{placeholder: $t('Road Name/Building')}" class="input-text required" data-validate="{required:true}">
                     </div>
+                    <div class="road-name-error">
+                        <div role="error" class="message error">
+                            <span data-bind="i18n: 'This is required field'"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </fieldset>
-    </div>
+	</div>
 </div>

@@ -30,6 +30,8 @@ $redInvoiceDetails = $viewModel->getRedInvoice();
             <span><?= $block->escapeHtml(__($redInvoiceDetails['tax_code'])); ?></span><br>
         <strong class="title"><?= $block->escapeHtml(__('State:')); ?></strong>
             <span><?= $block->escapeHtml(__($redInvoiceDetails['state'])); ?></span><br>
+        <strong class="title"><?= $block->escapeHtml(__('Country:')); ?></strong>
+        <span><?= $block->escapeHtml(__($redInvoiceDetails['country'])); ?></span><br>
         <strong class="title"><?= $block->escapeHtml(__('Road Name:')); ?></strong>
             <span><?= $block->escapeHtml(__($redInvoiceDetails['road_name'])); ?></span><br>
     </div>

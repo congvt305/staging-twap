@@ -11,6 +11,7 @@
     <module name="Eguana_RedInvoice">
         <sequence>
             <module name="Eguana_OrderDeliveryMessage"/>
+            <module name="Eguana_Base"/>
         </sequence>
     </module>
 </config>

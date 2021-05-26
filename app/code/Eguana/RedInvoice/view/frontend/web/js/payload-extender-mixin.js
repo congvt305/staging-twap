@@ -1,9 +1,17 @@
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 5/11/21
+ * Time: 10:10 AM
+ */
+
 define([
     'jquery',
     'mage/utils/wrapper'
 ], function ($, wrapper) {
     'use strict';
-
     return function (payloadExtender) {
         return wrapper.wrap(payloadExtender, function (proceed, payload) {
             payload = proceed(payload);
@@ -11,7 +19,7 @@ define([
             var company_name_identifier = "input[name='company_name']";
             var tax_code_identifier = "input[name='tax_code']";
             var state_identifier = "select[name='state']";
-            var country_identifier = "select[name='country']";
+            var country_identifier = "input[name='country']";
             var road_name_identifier = "input[name='road_name']";
 
             var is_apply_value = $(is_apply_identifier).val();
