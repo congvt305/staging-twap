@@ -11,6 +11,7 @@ namespace Eguana\RedInvoice\Plugin\Checkout;
 
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Checkout\Block\Checkout\LayoutProcessor;
+use Eguana\RedInvoice\Model\RedInvoiceConfig\RedInvoiceConfig;
 
 /**
  * LayoutProcessor Plugin to modify layout
@@ -18,21 +19,27 @@ use Magento\Checkout\Block\Checkout\LayoutProcessor;
  */
 class LayoutProcessorPlugin
 {
-    const VN_WEBSITE = "vn_laneige_website";
-
     /**
      * @var StoreManagerInterface
      */
-    private $_storeManage;
+    private $storeManage;
+
+    /**
+     * @var RedInvoiceConfig
+     */
+    private $redInvoiceConfig;
 
     /**
      * LayoutProcessorPlugin constructor.
-     * @param StoreManagerInterface $StoreManage
+     * @param StoreManagerInterface $storeManage
+     * @param RedInvoiceConfig $redInvoiceConfig
      */
     public function __construct(
-        StoreManagerInterface $StoreManage
+        StoreManagerInterface $storeManage,
+        RedInvoiceConfig $redInvoiceConfig
     ) {
-        $this->_storeManage = $StoreManage;
+        $this->storeManage = $storeManage;
+        $this->redInvoiceConfig = $redInvoiceConfig;
     }
 
     /**
@@ -44,9 +51,9 @@ class LayoutProcessorPlugin
         LayoutProcessor $subject,
         array  $jsLayout
     ) {
-        $current_website = $this->_storeManage->getWebsite()->getCode();
-        if ($current_website == self::VN_WEBSITE) {
-
+        $websiteId = $this->storeManage->getWebsite()->getId();
+        $isModuleEnabled = $this->redInvoiceConfig->getEnableValue($websiteId);
+        if ($isModuleEnabled) {
             $jsLayout['components']['checkout']['children']['steps']['children']
             ['shipping-step']['children']['shippingAddress']['children']
             ['shippingAdditional']['children']['redInvoiceform']['component'] =

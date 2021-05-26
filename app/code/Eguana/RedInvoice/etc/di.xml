@@ -46,4 +46,17 @@
     <type name="Magento\Sales\Api\OrderManagementInterface">
         <plugin name="after_place_order_add_redinvoice_data" type="Eguana\RedInvoice\Plugin\Sales\Api\OrderManagement"/>
     </type>
+    <type name="Eguana\RedInvoice\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Eguana\RedInvoice\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">redInvoiceLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Eguana\RedInvoice\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
