@@ -68,7 +68,11 @@ abstract class AbstractPointsModel
     public function requestData($customerId, $page = null)
     {
         $customer = $this->getCustomer($customerId);
-        $customerIntegrationNumber = $customer->getCustomAttribute('integration_number')->getValue();
+        if ($customer->getCustomAttribute('integration_number')) {
+            $customerIntegrationNumber = $customer->getCustomAttribute('integration_number')->getValue();
+        } else {
+            $customerIntegrationNumber = '';
+        }
 
         $websiteId = $customer->getWebsiteId();
         $salOrgCd = $this->config->getOrganizationSalesCode($websiteId);
