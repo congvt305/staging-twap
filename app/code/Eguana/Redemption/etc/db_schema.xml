@@ -33,6 +33,8 @@
         <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Update Time"/>
         <column xsi:type="mediumtext" name="sms_content" nullable="true" comment="Redemption Sms Content"/>
+        <column xsi:type="smallint" name="redemption_completion_block" padding="6" unsigned="false" nullable="true" identity="false" comment="Redemption Completion Page Block ID"/>
+        <column xsi:type="mediumtext" name="redemption_completion_message" nullable="true" comment="Redemption Completion Page Message"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="redemption_id"/>
         </constraint>

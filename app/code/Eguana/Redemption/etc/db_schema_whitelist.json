@@ -18,7 +18,9 @@
             "creation_time": true,
             "update_time": true,
             "thank_you_image": true,
-            "sms_content": true
+            "sms_content": true,
+            "redemption_completion_block": true,
+            "redemption_completion_message": true
         },
         "index": {
             "EGUANA_REDEMPTION_TITLE_IDENTIFIER_DESCRIPTION": true

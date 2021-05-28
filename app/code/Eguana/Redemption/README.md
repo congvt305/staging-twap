@@ -130,7 +130,7 @@ Below is the example image of the add new form.
 
 Form Part 1 shows form fields
 
-![add-new-form](https://nimbus-screenshots.s3.amazonaws.com/s/af8ba6bdda884e8e912c232d48d17fc8.png)
+![add-new-form](https://nimbus-screenshots.s3.amazonaws.com/s/ccdefa6e19e566c95d549ba8f4c16e83.png)
 
 Form Part 2 shows content area 
 
@@ -185,15 +185,23 @@ Here "%counter" will be the counter name which customer has selected from fronte
 
 **Note** These 2 (%counter, %link) remain same and don't remove them from content.
 
-#####(8) Store View
+#####(9) Redemption Complete Block
+
+This drop down shows the list of the cms blocks to select. This block will be shown at redemption completion page.
+
+#####(10) Redemption Completion Message
+
+This textarea is for shwoing success message on redemption completion page.
+
+#####(11) Store View
 
 This is Redemption store view. This will decide where Redemption information will shown.
 
-#####(9) Counter Name
+#####(12) Counter Name
 
 This is store counter name in which allowed for redemption store list is showing select one or more stores where the redemption will held
 
-#####(10) Total Quantity
+#####(13) Total Quantity
 
 This field is to defined how many total number of users can registered for the current redemption. These fields only show when selected counters are changed.
 

@@ -209,9 +209,10 @@ class Index extends Action
             $counter->setStatus(Counter::STATUS_REDEMPTION);
             $counter->setRedeemDate($date);
             $counter->save();
-            $this->messageManager->addSuccessMessage(__('The redemption process has been completed.'));
             $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
-            $resultRedirect->setUrl('/');
+            $resultRedirect->setPath(
+                'redemption/details/complete/redemption_id/' . $counter->getRedemptionId()
+            );
             return $resultRedirect;
         }
         $redemptionId = $this->getRequest()->getParam('redemption_id');

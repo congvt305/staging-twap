@@ -373,6 +373,48 @@ class Redemption extends AbstractModel implements RedemptionInterface, IdentityI
     }
 
     /**
+     * Get Redemption Completion Page Block
+     *
+     * @return string
+     */
+    public function getRedemptionCompletionBlock()
+    {
+        return $this->getData(self::REDEMPTION_COMPLETION_BLOCK);
+    }
+
+    /**
+     * Set Redemption Completion Page Block
+     *
+     * @param int $blockId
+     * @return Redemption
+     */
+    public function setRedemptionCompletionBlock($blockId)
+    {
+        return $this->setData(self::REDEMPTION_COMPLETION_BLOCK, $blockId);
+    }
+
+    /**
+     * Get Redemption Completion Page Message
+     *
+     * @return string
+     */
+    public function getRedemptionCompletionMessage()
+    {
+        return $this->getData(self::REDEMPTION_COMPLETION_MESSAGE);
+    }
+
+    /**
+     * Set Redemption Completion Page Message
+     *
+     * @param string $message
+     * @return Redemption
+     */
+    public function setRedemptionCompletionMessage($message)
+    {
+        return $this->setData(self::REDEMPTION_COMPLETION_MESSAGE, $message);
+    }
+
+    /**
      * Retrieve Store Ids
      *
      * @return mixed|null
