@@ -13,4 +13,7 @@
         <plugin name="eguana_directory_custom_region_order"
                 type="Eguana\Directory\Plugin\RegionCollectionPlugin" sortOrder="10"/>
     </type>
+    <type name="Magento\Directory\Model\Currency">
+        <plugin name="eguana_remove_precise_digits_from_price" type="Eguana\Directory\Plugin\Model\Currency"/>
+    </type>
 </config>
