@@ -437,20 +437,23 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function exportProductToPixlee($product, $categoriesMap, $websiteId)
     {
+        $this->_logger->addInfo(__FILE__.' = '.__LINE__);
         // NOTE: 2016-03-21 - JUST noticed, that we were originally checking for getVisibility()
         // later on in the code, but since now I need $product to be reasonable in order to
         if ($product->getVisibility() <= 1) {
+            $this->_logger->addInfo(__FILE__.' = '.__LINE__);
             $this->_logger->addInfo("*** Product ID {$product->getId()} not visible in catalog, NOT EXPORTING");
             return;
         }
-
+        $this->_logger->addInfo(__FILE__.' = '.__LINE__);
         $this->_logger->addInfo("Product ID {$product->getID()} class: " . get_class($product));
 
         $productName = $product->getName();
         if ($this->isInactive() || !isset($productName)) {
+            $this->_logger->addInfo(__FILE__.' = '.__LINE__);
             return false;
         }
-
+        $this->_logger->addInfo(__FILE__.' = '.__LINE__);
         $productUrl = $this->getProductUrl($product, $websiteId);
 
         $pixlee = $this->_pixleeAPI;
@@ -468,7 +471,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $this->getVariantsDict($product),
             $this->getExtraFields($product, $categoriesMap)
         );
-
+        $this->_logger->addInfo(__FILE__.' = '.__LINE__);
         $this->_logger->addInfo("Product Exported to Pixlee");
         return $response;
     }
@@ -753,31 +756,40 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function exportProducts($websiteId)
     {
+        $this->_logger->addInfo(__FILE__.' = '.__LINE__);
         $this->initializePixleeAPI($websiteId);
-
+        $this->_logger->addInfo(__FILE__.' = '.__LINE__);
         if ($this->isActive()) {
+            $this->_logger->addInfo(__FILE__.' = '.__LINE__);
             // Pagination variables
             $num_products = $this->getTotalProductsCount($websiteId);
             $counter = 0;
             $limit = 100;
             $offset = 0;
             $job_id = uniqid();
+            $this->_logger->addInfo(__FILE__.' = '.__LINE__.' num_products = '.$num_products);
             $this->notifyExportStatus('started', $job_id, $num_products);
+            $this->_logger->addInfo(__FILE__.' = '.__LINE__);
             $categoriesMap = $this->getCategoriesMap();
-
+            $this->_logger->addInfo(__FILE__.' = '.__LINE__);
             while ($offset < $num_products) {
+                $this->_logger->addInfo(__FILE__.' = '.__LINE__);
+                $this->_logger->addInfo(__FILE__.' = '.__LINE__.' offset = '.$offset);
+                $this->_logger->addInfo(__FILE__.' = '.__LINE__.' limit = '.$limit);
                 $products = $this->getPaginatedProducts($limit, $offset, $websiteId);
                 $offset = $offset + $limit;
 
                 foreach ($products as $product) {
+                    $this->_logger->addInfo(__FILE__.' = '.__LINE__);
                     $counter++;
                     $response = $this->exportProductToPixlee($product, $categoriesMap, $websiteId);
                 }
             }
 
             $this->notifyExportStatus('finished', $job_id, $counter);
-
+            $this->_logger->addInfo(__FILE__.' = '.__LINE__);
             $resultJson = $this->resultJsonFactory->create();
+            $this->_logger->addInfo(__FILE__.' = '.__LINE__);
             return $resultJson->setData([
                 'message' => 'Success!',
             ]);
