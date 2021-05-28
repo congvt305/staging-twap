@@ -158,9 +158,9 @@ class CounterSaveAjax extends Action
                 $model->setData('line_id', $post['line']);
                 $model->setData('token', $token);
                 $model->setData('registration_date', $date);
-                $model->setData('utm_source', '');
-                $model->setData('utm_medium', '');
-                $model->setData('utm_content', '');
+                $model->setData('utm_source', $post['utm_source']);
+                $model->setData('utm_medium', $post['utm_medium']);
+                $model->setData('utm_content', $post['utm_content']);
 
                 $idCond = $this->filterBuilder->setField('secondTable.redemption_id')
                     ->setValue($post['redemption_id'])
