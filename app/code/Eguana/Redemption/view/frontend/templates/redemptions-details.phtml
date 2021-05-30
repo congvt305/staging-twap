@@ -17,6 +17,9 @@ $counterSeats = $redemptionDetails->getData('counter_seats');
 $minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
 $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
 $storeId = $viewModel->getStoreId();
+$utmSource = $viewModel->getUtmSource();
+$utmMedium = $viewModel->getUtmMedium();
+$utmContent = $viewModel->getUtmContent();
 ?>
 <div class="block block-redemption-detail">
     <div class="block block-image-banner">
@@ -62,6 +65,24 @@ $storeId = $viewModel->getStoreId();
                         id="store_id"
                         name="store_id"
                         value="<?= $block->escapeHtml((int)$storeId) ?>"
+                >
+                <input
+                    type="hidden"
+                    id="utm_source"
+                    name="utm_source"
+                    value="<?= $block->escapeHtmlAttr($utmSource) ?>"
+                >
+                <input
+                    type="hidden"
+                    id="utm_medium"
+                    name="utm_medium"
+                    value="<?= $block->escapeHtmlAttr($utmMedium) ?>"
+                >
+                <input
+                    type="hidden"
+                    id="utm_content"
+                    name="utm_content"
+                    value="<?= $block->escapeHtmlAttr($utmContent) ?>"
                 >
                 <fieldset class="fieldset redemption">
                     <div class="field name required">

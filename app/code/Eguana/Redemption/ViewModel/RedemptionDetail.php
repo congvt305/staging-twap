@@ -155,6 +155,36 @@ class RedemptionDetail implements ArgumentInterface
     }
 
     /**
+     * Get Utm Source
+     *
+     * @return mixed
+     */
+    public function getUtmSource()
+    {
+        return $this->request->getParam('utm_source');
+    }
+
+    /**
+     * Get Utm Medium
+     *
+     * @return mixed
+     */
+    public function getUtmMedium()
+    {
+        return $this->request->getParam('utm_medium');
+    }
+
+    /**
+     * Get Utm Content
+     *
+     * @return mixed
+     */
+    public function getUtmContent()
+    {
+        return $this->request->getParam('utm_content');
+    }
+
+    /**
      * get Redemption method
      *
      * @return Redemption
