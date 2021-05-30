@@ -49,3 +49,7 @@ Expand Expansion selector the City Options section and do the following:
 - April 27 2021 Vietnam Address Data added.
 
 
+#Edit by Arslan
+Add a before plugin (path = Eguana\Directory\Plugin\Model\Currency) in order to set the price's precision value equal to zero
+for orders list and order's detail page at customer My Account(Dashboard).
+And also from order list grid at the admin panel for vietnam site.
