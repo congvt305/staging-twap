@@ -32,7 +32,10 @@ class Export extends \Magento\Backend\App\Action
 
     public function execute()
     {
+        $this->_logger->addInfo(__FILE__.' = '.__LINE__);
         $websiteId = $this->_pixleeData->getWebsiteId();
+        $this->_logger->addInfo(__FILE__.' = '.__LINE__.' webisteId = '. $websiteId);
         $this->_pixleeData->exportProducts($websiteId);
+        $this->_logger->addInfo(__FILE__.' = '.__LINE__);
     }
 }
