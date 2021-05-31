@@ -8,9 +8,10 @@
  */
 define([
     'jquery',
+    'underscore',
     'mage/translate',
     'domReady!'
-], function ($) {
+], function ($, _) {
     /**
      * @param config.countersaveurl
      * @param config.counterTime
@@ -24,6 +25,20 @@ define([
         let successUrl = config.successUrl;
         let entityId = "";
         let infoAndErrorMessageDiv = $("#error-and-success-message");
+        let url_string = window.location.href
+        let url = new URL(url_string);
+        let utmSource = url.searchParams.get("utm_source");
+        let utmMedium = url.searchParams.get("utm_medium");
+        let utmContent = url.searchParams.get("utm_content");
+        if (utmSource) {
+          $('#utm_source').val(_.escape(utmSource));
+        }
+        if (utmMedium) {
+            $('#utm_medium').val(_.escape(utmMedium));
+        }
+        if (utmContent) {
+            $('#utm_content').val(_.escape(utmContent));
+        }
         $(document).find('span[id="recaptcha-response"]').hide();
         $('#info-message').hide();
         $("#counter-form-submit").click(function(e){
