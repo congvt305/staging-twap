@@ -155,54 +155,6 @@ class RedemptionDetail implements ArgumentInterface
     }
 
     /**
-     * Get Utm Source
-     *
-     * @return mixed
-     */
-    public function getUtmSource()
-    {
-        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/utm.log');
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info('utm source');
-        $logger->info(json_encode($this->request->getParams()));
-        $logger->info($_SERVER['REQUEST_URI']);
-        return $this->request->getParam('utm_source');
-    }
-
-    /**
-     * Get Utm Medium
-     *
-     * @return mixed
-     */
-    public function getUtmMedium()
-    {
-        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/utm.log');
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info('utm medium');
-        $logger->info(json_encode($this->request->getParams()));
-        $logger->info($_SERVER['REQUEST_URI']);
-        return $this->request->getParam('utm_medium');
-    }
-
-    /**
-     * Get Utm Content
-     *
-     * @return mixed
-     */
-    public function getUtmContent()
-    {
-        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/utm.log');
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info('utm content');
-        $logger->info(json_encode($this->request->getParams()));
-        $logger->info($_SERVER['REQUEST_URI']);
-        return $this->request->getParam('utm_content');
-    }
-
-    /**
      * get Redemption method
      *
      * @return Redemption
