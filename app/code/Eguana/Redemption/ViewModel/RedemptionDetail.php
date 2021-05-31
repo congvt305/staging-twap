@@ -166,6 +166,8 @@ class RedemptionDetail implements ArgumentInterface
         $logger->addWriter($writer);
         $logger->info('utm source');
         $logger->info(json_encode($this->request->getParams()));
+        $logger->info($_GET['utm_source']);
+        $logger->info($_SERVER['REQUEST_URI']);
         return $this->request->getParam('utm_source');
     }
 
@@ -181,6 +183,8 @@ class RedemptionDetail implements ArgumentInterface
         $logger->addWriter($writer);
         $logger->info('utm medium');
         $logger->info(json_encode($this->request->getParams()));
+        $logger->info($_GET['utm_medium']);
+        $logger->info($_SERVER['REQUEST_URI']);
         return $this->request->getParam('utm_medium');
     }
 
@@ -196,6 +200,8 @@ class RedemptionDetail implements ArgumentInterface
         $logger->addWriter($writer);
         $logger->info('utm content');
         $logger->info(json_encode($this->request->getParams()));
+        $logger->info($_GET['utm_content']);
+        $logger->info($_SERVER['REQUEST_URI']);
         return $this->request->getParam('utm_content');
     }
 
