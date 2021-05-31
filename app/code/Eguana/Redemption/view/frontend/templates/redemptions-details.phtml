@@ -17,9 +17,14 @@ $counterSeats = $redemptionDetails->getData('counter_seats');
 $minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
 $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
 $storeId = $viewModel->getStoreId();
+$writer = new \Zend\Log\Writer\Stream(BP . '/var/log/utm.log');
+$logger = new \Zend\Log\Logger();
+$logger->addWriter($writer);
+$logger->info('start');
 $utmSource = $viewModel->getUtmSource();
 $utmMedium = $viewModel->getUtmMedium();
 $utmContent = $viewModel->getUtmContent();
+$logger->info('start');q
 ?>
 <div class="block block-redemption-detail">
     <div class="block block-image-banner">

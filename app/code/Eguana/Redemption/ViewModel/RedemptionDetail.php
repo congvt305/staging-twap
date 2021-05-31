@@ -161,8 +161,11 @@ class RedemptionDetail implements ArgumentInterface
      */
     public function getUtmSource()
     {
-        $this->logger->debug('utm source');
-        $this->logger->debug(json_encode($this->request->getParams()));
+        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/utm.log');
+        $logger = new \Zend\Log\Logger();
+        $logger->addWriter($writer);
+        $logger->info('utm source');
+        $logger->info(json_encode($this->request->getParams()));
         return $this->request->getParam('utm_source');
     }
 
@@ -173,8 +176,11 @@ class RedemptionDetail implements ArgumentInterface
      */
     public function getUtmMedium()
     {
-        $this->logger->debug('utm source');
-        $this->logger->debug(json_encode($this->request->getParams(), true));
+        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/utm.log');
+        $logger = new \Zend\Log\Logger();
+        $logger->addWriter($writer);
+        $logger->info('utm medium');
+        $logger->info(json_encode($this->request->getParams()));
         return $this->request->getParam('utm_medium');
     }
 
@@ -185,8 +191,11 @@ class RedemptionDetail implements ArgumentInterface
      */
     public function getUtmContent()
     {
-        $this->logger->debug('utm source');
-        $this->logger->debug(json_encode($this->request->getParams(), true));
+        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/utm.log');
+        $logger = new \Zend\Log\Logger();
+        $logger->addWriter($writer);
+        $logger->info('utm content');
+        $logger->info(json_encode($this->request->getParams()));
         return $this->request->getParam('utm_content');
     }
 
