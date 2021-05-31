@@ -5244,7 +5244,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Account Dashboard","Trang tổng quan tài khoản",module,Magento_Customer
 "Edit Account Information","Chỉnh sửa thông tin tài khoản",module,Magento_Customer
 "Password forgotten","Quên mật khẩu",module,Magento_Customer
-"My Dashboard","Bảng điều khiển của tôi",module,Magento_Customer
+"My Dashboard","Tài khoản của tôi",module,Magento_Customer
 "You are signed out","Bạn đã đăng xuất",module,Magento_Customer
 "You subscribe to our newsletter.","Bạn đăng ký để nhận bản tin của chúng tôi.",module,Magento_Customer
 "You don't subscribe to our newsletter.","Bạn không đăng ký nhận bản tin của chúng tôi.",module,Magento_Customer
@@ -11501,7 +11501,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't delete the label right now.","Chúng tôi không thể xoá nhãn ngay bây giờ.",module,Magento_Rma
 "Return #%1","Trả lại #%1",module,Magento_Rma
 "Cannot add message.","Không thể thêm tin nhắn.",module,Magento_Rma
-"My Returns","Hoàn trả của tôi",module,Magento_Rma
+"My Returns","Hoàn trả",module,Magento_Rma
 "Tracking Information","Thông tin Theo dõi",module,Magento_Rma
 "Page not found","Không tìm thấy trang",module,Magento_Rma
 "Please check this order for errors.","Hãy kiểm tra lỗi cho các đơn đặt hàng.",module,Magento_Rma
@@ -15365,7 +15365,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "New admin user '%user_name' created","New admin user '%user_name' created",module,Magento_User
 "A new admin account was created for %first_name, %last_name using %email.","A new admin account was created for %first_name, %last_name using %email.",module,Magento_User
 "The password entered for the current user is invalid. Verify the password and try again.","The password entered for the current user is invalid. Verify the password and try again.",module,Magento_User
-"The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.","Đăng nhập tài khoản không chính xác hoặc tài khoản của bạn tạm thời bị vô hiệu hóa. Xin vui lòng đợi và thử lại lần nữa muộn.",module,Magento_User
+"The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.","Tài khoản đăng nhập không đúng hoặc không tồn tại. Vui lòng thử lại sau.",module,Magento_User
 "More permissions are needed to access this.","More permissions are needed to access this.",module,Magento_User
 "The password reset token is incorrect. Verify the token and try again.","The password reset token is incorrect. Verify the token and try again.",module,Magento_User
 "Your account is temporarily disabled. Please try again later.","Your account is temporarily disabled. Please try again later.",module,Magento_User
@@ -16090,7 +16090,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Add to Wish List","Đã thích",module,Magento_Wishlist
 "View Product","Xem sản phẩm",module,Magento_Wishlist
 "Qty","Số lượng",module,Magento_Wishlist
-"Add to Cart","Chọn mua",module,Magento_Wishlist
+"Add to Cart","THÊM VÀO GIỎ",module,Magento_Wishlist
 "Availability","Sẵn có",module,Magento_Wishlist
 "In stock","Còn trong kho",module,Magento_Wishlist
 "Out of stock","Tạm hết hàng",module,Magento_Wishlist
@@ -16275,7 +16275,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Your Shipment #%shipment_id for Order #%order_id","Vận chuyển #%shipment_id cho đơn hàng #%order_id",theme,frontend/Magento/luma
 "Update to your %store_name shipment","Cập Nhật cho %store_name sự gửi hàng của bạn",theme,frontend/Magento/luma
 "Account Dashboard","Trang tổng quan tài khoản",theme,frontend/Magento/luma
-"Address Book","Sổ địa chỉ",theme,frontend/Magento/luma
+"Address Book","Thông tin giao hàng",theme,frontend/Magento/luma
 "Account Information","Thông tin tài khoản",theme,frontend/Magento/luma
 "About Us","Giới Thiệu Về Chúng Tôi",theme,frontend/Magento/luma
 "Customer Service","Dịch vụ khách hàng",theme,frontend/Magento/luma
@@ -16423,6 +16423,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Dear Customer, we have received your request for return of goods. We will carry out our internal examination work later. Upon completion of the review, you will receive a short notice of the Superman Return Code.","Kính gửi Quý khách hàng, chúng tôi đã nhận được yêu cầu đổi trả hàng hóa của Quý khách. Chúng tôi sẽ thực hiện công việc kiểm tra nội bộ của mình sau đó. Sau khi hoàn thành việc xem xét, bạn sẽ nhận được một thông báo ngắn về Mã Siêu nhân trở lại."
 "Please pay attention to the newsletter and return it to the supermarket within three days after receiving the newsletter. If you do not receive the news in more than three days, you can email us at <a href=""mailto:%store_email"">%store_email</a>","Vui lòng chú ý đến bản tin và gửi lại cho siêu thị trong vòng ba ngày sau khi nhận được bản tin. Nếu bạn không nhận được tin tức trong hơn ba ngày, bạn có thể gửi email cho chúng tôi theo địa chỉ <a href=""mailto:%store_email"">%store_email</a>"
 "Waiting for a refund","Đang chờ hoàn lại tiền"
-"Go to shopping cart","direct Purchase"
+"Go to shopping cart","MUA NGAY"
 "Fixed","cố định"
 "Flat Rate","Tỷ lệ không đổi"
+"Code","Mật khẩu",module,Amore_CustomerRegistration
