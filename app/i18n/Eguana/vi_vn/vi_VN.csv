@@ -16427,3 +16427,9 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Fixed","cố định"
 "Flat Rate","Tỷ lệ không đổi"
 "Code","Mật khẩu",module,Amore_CustomerRegistration
+"Red-Invoice Id:","Id Hóa đơn Đỏ:"
+"Company Name:","Tên công ty:"
+"Tax Code:","Mã số thuế:"
+"State:","Tiểu bang:"
+"City:","Quận"
+"Road Name:","Tên đường:"
