@@ -69,7 +69,7 @@ Counter,計數器
 "Resend message","重新發送訊息"
 "Resend SMS/Email","重新發送短信/電子郵件"
 "The registraion for this redemption is full.","此兌換的註冊已完成。"
-"This redemption has been already completed.","您已成功兌換試用，謝謝！"
+"This redemption has been already completed.","您好，本券已完成兌換，無法重覆使用，謝謝"
 "Please click on confirm button to complete the registration process.","請由專櫃人員點擊完成兌換，謝謝！"
 "Hi %name,","Hi %name,"
 "Your redemption has been successfully registered. Please go to the %counter_name. and show this email to BA for completing your redemption. Below is the redemption confirmation link","您的兌換已成功註冊。 請去 %counter_name. 並向BA顯示此電子郵件以完成您的兌換。 以下是兌換確認鏈接"
