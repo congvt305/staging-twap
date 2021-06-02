@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Pixlee\Pixlee\Controller\Adminhtml\Product\Export" type="Eguana\Pixlee\Controller\Adminhtml\Product\Export"/>
     <type name="Pixlee\Pixlee\Helper\Data">
         <plugin name="eguana_pixlee_region_info_corrector"
                 type="Eguana\Pixlee\Plugin\DataPlugin" sortOrder="10"/>
