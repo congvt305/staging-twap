@@ -12,6 +12,7 @@
         <sequence>
             <module name="Eguana_OrderDeliveryMessage"/>
             <module name="Eguana_Base"/>
+            <module name="Magento_Sales"/>
         </sequence>
     </module>
 </config>

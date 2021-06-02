@@ -176,24 +176,24 @@ class RedInvoice extends AbstractModel implements RedInvoiceInterface, IdentityI
     }
 
     /**
-     * Get Country
+     * Get City
      *
      * @return string|null
      */
-    public function getCountry()
+    public function getCity()
     {
-        return $this->getData(self::COUNTRY);
+        return $this->getData(self::CITY);
     }
 
     /**
-     * Set Country
+     * Set City
      *
-     * @param string $country
+     * @param string $city
      * @return RedInvoice
      */
-    public function setCountry($country)
+    public function setCity($city)
     {
-        return $this->setData(self::COUNTRY, $country);
+        return $this->setData(self::CITY, $city);
     }
 
     /**

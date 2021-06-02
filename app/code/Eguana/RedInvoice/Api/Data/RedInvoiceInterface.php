@@ -26,7 +26,7 @@ interface RedInvoiceInterface
     const COMPANY_NAME = 'company_name';
     const TAX_CODE = 'tax_code';
     const STATE = 'state';
-    const COUNTRY = 'country';
+    const CITY = 'city';
     const ROAD_NAME = 'road_name';
     const CREATION_TIME = 'creation_time';
     const UPDATE_TIME = 'update_time';
@@ -124,19 +124,19 @@ interface RedInvoiceInterface
     public function setState($state);
 
     /**
-     * Get Country
+     * Get City
      *
      * @return string|null
      */
-    public function getCountry();
+    public function getCity();
 
     /**
-     * Set country
+     * Set City
      *
-     * @param string $country
+     * @param string $city
      * @return RedInvoiceInterface
      */
-    public function setCountry($country);
+    public function setCity($city);
 
     /**
      * Get Road Name

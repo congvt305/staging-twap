@@ -68,15 +68,15 @@
                     </label>
 
                     <div class="control" id="state-select-field">
-                        <select name="state" data-bind="options: availableCountries, optionsText: 'label', optionsValue: 'value'"></select>
+                        <select name="state" data-bind="options: availableCountries, optionsText: 'label', optionsValue: 'value', event: { change: updateCities}"></select>
                         <div class="state-error">
                             <div role="error" class="message error">
                                 <span data-bind="i18n: 'This is required field'"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="control" id="country-field">
-                        <input type="text" name="country" id="country" data-bind="attr:{placeholder: $t('Country/District')}" class="input-text required" data-validate="{required:true}">
+                    <div class="control" id="city-select-field">
+                        <select name="city" data-bind="options: availableCities, optionsText: 'default_name', optionsValue: 'city_id'"></select>
                     </div>
 
                     <div class="control">
