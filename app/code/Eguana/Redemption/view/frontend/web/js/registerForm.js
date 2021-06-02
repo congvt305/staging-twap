@@ -10,8 +10,9 @@ define([
     'jquery',
     'underscore',
     'mage/translate',
-    'domReady!'
-], function ($, _) {
+    'domReady!',
+    'Magento_Ui/js/modal/modal'
+], function ($, _, modal) {
     /**
      * @param config.countersaveurl
      * @param config.counterTime
@@ -76,10 +77,12 @@ define([
                     },
                     success: function (data) {
                         if (data['duplicate']) {
-                            infoAndErrorMessageDiv.removeClass("message success");
-                            infoAndErrorMessageDiv.addClass("message info");
-                            infoAndErrorMessageDiv.find('span').remove()
-                            infoAndErrorMessageDiv.append("<span>" + data['message'] + "</span>");
+                            var options = {
+                                type: 'popup',
+                                responsive: false,
+                            };
+                            var popup = modal(options, $('#popup-modal'));
+                            $('#popup-modal').modal(options).modal('openModal');
                             $('#counter-form-submit').show();
                             $('#counter-form-submit').removeAttr('disabled');
                             $('#redemption_thank_you_img').show();

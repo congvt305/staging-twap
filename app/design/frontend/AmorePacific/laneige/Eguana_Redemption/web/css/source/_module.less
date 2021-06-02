@@ -12,6 +12,37 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+    .redemption-details-index{
+        .modal-popup {
+            .modal-content {
+                max-height: 85px;
+                padding: 2rem 5rem;
+            }
+
+            .modal-inner-wrap {
+                max-width: 400px;
+            }
+
+            .action-close {
+                padding: 0px;
+            }
+
+            .modal-footer {
+                padding-bottom: 0px;
+                padding-top: 0px;
+                display: none;
+
+                button {
+                    display: none;
+                }
+            }
+
+            .modal-body-content {
+                text-align: center;
+                margin-bottom: 100px;
+            }
+        }
+    }
     .block-redemption-detail {
         .block {
             &:extend(.abs-account-blocks all);
@@ -86,6 +117,13 @@
             left: 0;
             right: 0;
             z-index: 4;
+        }
+    }
+
+    .redemption-details-index {
+        .modal-inner-wrap {
+            margin: 5rem auto;
+            max-width: 350px;
         }
     }
 }
