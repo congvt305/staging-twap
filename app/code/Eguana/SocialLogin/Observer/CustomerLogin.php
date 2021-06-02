@@ -17,6 +17,7 @@ use Magento\Framework\Event\Observer as ObserverAlias;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Session\SessionManagerInterface as SessionManagerInterfaceAlias;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\Message\ManagerInterface;
 
 /**
  * Class CustomerLogin
@@ -52,6 +53,11 @@ class CustomerLogin implements ObserverInterface
     private $customerRepository;
 
     /**
+     * @var \Magento\Framework\Message\ManagerInterface
+     */
+    protected $messageManager;
+
+    /**
      * CustomerLogin constructor.
      * @param SessionManagerInterfaceAlias $customerSession
      * @param SocialLoginModel $socialLoginModel
@@ -59,6 +65,7 @@ class CustomerLogin implements ObserverInterface
      * @param LoggerInterface $logger
      * @param RequestInterface $request
      * @param CustomerRepository $customerRepository
+     * @param ManagerInterface $messageManager
      */
     public function __construct(
         SessionManagerInterfaceAlias $customerSession,
@@ -66,7 +73,8 @@ class CustomerLogin implements ObserverInterface
         SocialLoginRepository $socialLoginRepository,
         LoggerInterface $logger,
         RequestInterface $request,
-        CustomerRepository $customerRepository
+        CustomerRepository $customerRepository,
+        ManagerInterface $messageManager
     ) {
         $this->session                           = $customerSession;
         $this->socialLoginModel                  = $socialLoginModel;
@@ -74,6 +82,7 @@ class CustomerLogin implements ObserverInterface
         $this->logger                            = $logger;
         $this->request                           = $request;
         $this->customerRepository                = $customerRepository;
+        $this->messageManager = $messageManager;
     }
 
     /**
