@@ -72,7 +72,7 @@ class ShippingInformationManagement
         $companyName = $extAttributes->getCompanyName();
         $taxCode = $extAttributes->getTaxCode();
         $state = $extAttributes->getState();
-        $country = $extAttributes->getCountry();
+        $city = $extAttributes->getCity();
         $roadName = $extAttributes->getRoadName();
 
         try {
@@ -80,7 +80,7 @@ class ShippingInformationManagement
             $this->checkoutSession->setCompanyName($companyName);
             $this->checkoutSession->setTaxCode($taxCode);
             $this->checkoutSession->setState($state);
-            $this->checkoutSession->setCountry($country);
+            $this->checkoutSession->setCity($city);
             $this->checkoutSession->setRoadName($roadName);
 
             $message = 'Red invoice info after setting into checkout session';
@@ -89,7 +89,7 @@ class ShippingInformationManagement
                 'company_name' => $companyName,
                 'tax_code' => $taxCode,
                 'state' => $state,
-                'country' => $country,
+                'city' => $city,
                 'road_name' => $roadName
             ];
             $this->redInvoicelogger->logRedInvoiceInfo($message, $redInvoiceInfo);

@@ -1,0 +1,47 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2019 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 5/11/21
+ * Time: 10:10 AM
+ */
+?>
+<?php
+/** @var $viewModel \Eguana\RedInvoice\ViewModel\RedInvoiceDetails */
+$viewModel = $block->getData('red_invoice_view_model');
+$redInvoiceDetails = $viewModel->getRedInvoice();
+?>
+<?php if ($redInvoiceDetails != ''): ?>
+    <?php $redInvoiceDetails->getData(); ?>
+    <div class="block order additional details e-invoices">
+        <div class="block-title"><strong><?= $block->escapeHtml(__("Red-Invoice Information")) ?></strong></div>
+        <div class="block-content order e-invoice">
+            <div class="box">
+                <strong class="box-title"><span><?= $block->escapeHtml(__("Red-Invoice Id:")) ?></span></strong>
+                <div class="box-content"><?= $block->escapeHtml(__($redInvoiceDetails['id'])) ?></div>
+            </div>
+            <div class="box">
+                <strong class="box-title"><span><?= $block->escapeHtml(__("Company Name:")) ?></span></strong>
+                <div class="box-content"><?= $block->escapeHtml(__($redInvoiceDetails['company_name'])) ?></div>
+            </div>
+            <div class="box">
+                <strong class="box-title"><span><?= $block->escapeHtml(__("Tax Code:")) ?></span></strong>
+                <div class="box-content"><?= $block->escapeHtml(__($redInvoiceDetails['tax_code'])) ?></div>
+            </div>
+            <div class="box">
+                <strong class="box-title"><span><?= $block->escapeHtml(__("State:")) ?></span></strong>
+                <div class="box-content"><?= $block->escapeHtml(__($redInvoiceDetails['state'])) ?></div>
+            </div>
+            <div class="box">
+                <strong class="box-title"><span><?= $block->escapeHtml(__("City:")) ?></span></strong>
+                <div class="box-content"><?= $block->escapeHtml(__($redInvoiceDetails['city'])) ?></div>
+            </div>
+            <div class="box">
+                <strong class="box-title"><span><?= $block->escapeHtml(__("Road Name:")) ?></span></strong>
+                <div class="box-content"><?= $block->escapeHtml(__($redInvoiceDetails['road_name'])) ?></div>
+            </div>
+        </div>
+    </div>
+<?php endif;?>

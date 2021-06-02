@@ -12,22 +12,78 @@ define([
 	'uiComponent',
     'Magento_Checkout/js/model/step-navigator',
     'Magento_Checkout/js/model/quote',
-    'ko'
-], function ($, Component, stepNavigator, quote, ko) {
+    'ko',
+    'mage/url',
+    'mage/translate'
+], function ($, Component, stepNavigator, quote, ko, url) {
 	'use strict';
 
     var states = window.checkoutConfig.stateList;
+    var cities = "";
+    $(document).on('change', 'input[type="radio"]', function(){
+        var isApply = $(this).val();
+        var company_name = '[name="company_name"]';
+        var tax_code = '[name="tax_code"]';
+        var state = '[name="state"]';
+        var city = '[name="city"]';
+        var road_name = '[name="road_name"]';
+        if (isApply == 0) {
+            $(company_name).prop('disabled', true);
+            $(tax_code).prop('disabled', true);
+            $(state).prop('disabled', true);
+            $(city).prop('disabled', true);
+            $(road_name).prop('disabled', true);
+        } else {
+            $(company_name).prop('disabled', false);
+            $(tax_code).prop('disabled', false);
+            $(state).prop('disabled', false);
+            $(city).prop('disabled', false);
+            $(road_name).prop('disabled', false);
+        }
+    });
 	return Component.extend({
 		defaults: {
 			template: 'Eguana_RedInvoice/red-invoice'
 		},
         showRedInvoiceForm: function () {
-		    $('#red-invoice-form').slideToggle();
+            $("#apply_button").prop("checked", true);
+		    $('#red-invoice-form').slideToggle(function() {
+                if($('#red-invoice-form').is(":hidden")){
+                    $("#do_not_apply_button").prop("checked", true);
+                }
+            });
         },
         availableCountries : ko.observableArray(states),
+        availableCities : ko.observableArray([
+                { default_name: $.mage.__('Please select a city or district.'), city_id: '0000'}
+        ]),
         initialize: function () {
             this._super();
             return this;
+        },
+        updateCities: function () {
+		    var step = this;
+		    var i = 0;
+            var selectedValue = $('[name="state"]').find(":selected").val();
+            let apiUrl = url.build('redinvoice/index/ajaxcall/');
+            $.ajax({
+                url: apiUrl,
+                type: "POST",
+                showLoader: true,
+                data: {selectedValue:  selectedValue},
+            }).done(function (data) {
+                cities = data.cities;
+                step.availableCities.removeAll();
+                if (cities == "") {
+                    step.availableCities.push(
+                        { default_name: $.mage.__('Please select a city or district.'), city_id: '0000'}
+                    );
+                } else {
+                    for (i = 0; i < cities.length; i++) {
+                        step.availableCities.push(cities[i]);
+                    }
+                }
+            });
         }
 	});
 });

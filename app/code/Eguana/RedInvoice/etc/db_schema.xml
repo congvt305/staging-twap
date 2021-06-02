@@ -17,7 +17,8 @@
         <column xsi:type="varchar" name="company_name" nullable="true" comment="Company Name"/>
         <column xsi:type="varchar" name="tax_code" nullable="true" comment="Tax Code"/>
         <column xsi:type="varchar" name="state" nullable="true" comment="State"/>
-        <column xsi:type="varchar" name="country" nullable="true" comment="Country"/>
+        <column xsi:type="varchar" name="country" disabled="true" nullable="true" comment="Country"/>
+        <column xsi:type="varchar" name="city" nullable="true" comment="City"/>
         <column xsi:type="varchar" name="road_name" nullable="true" comment="Road Name"/>
         <column xsi:type="timestamp" name="creation_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Creation Time"/>
