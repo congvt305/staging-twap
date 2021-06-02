@@ -24,15 +24,12 @@ class Export extends \Pixlee\Pixlee\Controller\Adminhtml\Product\Export
         \Pixlee\Pixlee\Helper\Logger\PixleeLogger $logger
     ) {
         parent::__construct($context, $resultJsonFactory, $request, $pixleeData, $logger);
-        //parent::__construct($context);
         $this->resultJsonFactory  = $resultJsonFactory;
         $this->request            = $request;
         $this->_pixleeData        = $pixleeData;
         $this->_logger            = $logger;
         $this->_curl              = new Curl;
     }
-
-
 
     public function execute()
     {
