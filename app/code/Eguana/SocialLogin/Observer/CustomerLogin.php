@@ -18,6 +18,7 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Session\SessionManagerInterface as SessionManagerInterfaceAlias;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\Message\ManagerInterface;
+use Eguana\SocialLogin\Helper\Data;
 
 /**
  * Class CustomerLogin
@@ -26,6 +27,10 @@ use Magento\Framework\Message\ManagerInterface;
  */
 class CustomerLogin implements ObserverInterface
 {
+    /**
+     * @var Data
+     */
+    private $dataHelper;
 
     /**
      * @var SocialLoginModel
@@ -66,6 +71,7 @@ class CustomerLogin implements ObserverInterface
      * @param RequestInterface $request
      * @param CustomerRepository $customerRepository
      * @param ManagerInterface $messageManager
+     * @param Data $dataHelper
      */
     public function __construct(
         SessionManagerInterfaceAlias $customerSession,
@@ -74,7 +80,8 @@ class CustomerLogin implements ObserverInterface
         LoggerInterface $logger,
         RequestInterface $request,
         CustomerRepository $customerRepository,
-        ManagerInterface $messageManager
+        ManagerInterface $messageManager,
+        Data $dataHelper
     ) {
         $this->session                           = $customerSession;
         $this->socialLoginModel                  = $socialLoginModel;
@@ -82,7 +89,8 @@ class CustomerLogin implements ObserverInterface
         $this->logger                            = $logger;
         $this->request                           = $request;
         $this->customerRepository                = $customerRepository;
-        $this->messageManager = $messageManager;
+        $this->messageManager                    = $messageManager;
+        $this->dataHelper                        = $dataHelper;
     }
 
     /**
@@ -91,34 +99,54 @@ class CustomerLogin implements ObserverInterface
      */
     public function execute(ObserverAlias $observer)
     {
-        $lineAgreement = $this->request->getParam('line_messages_agreement_checkbox');
-        $customer = $observer->getEvent()->getCustomer();
-        $lineAgreement = $lineAgreement ? 1 : 0;
-        if ($this->session->getData('social_user_data')) {
-            $customerData = $this->session->getData('social_user_data');
-            $username = $customerData['name'];
-            $appid = $customerData['appid'];
-            $socialMediaType = $customerData['socialmedia_type'];
-            if ($customer->getId()) {
-                $customerId = $customer->getId();
-                if ($this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType, $appid)) {
-                    $users = $this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType, $appid);
-                    if ($users) {
-                        foreach ($users as $user) {
-                            try {
-                                $socialLoginUser = $this->socialLoginRepository->getById($user->getData('sociallogin_id'));
-                            } catch (\Exception $e) {
-                                $this->logger->error($e->getMessage());
+        if ($this->dataHelper->isEnabledLine()) {
+            $lineAgreement = $this->request->getParam('line_messages_agreement_checkbox');
+            $customer = $observer->getEvent()->getCustomer();
+            $lineAgreement = $lineAgreement ? 1 : 0;
+            if ($this->session->getData('social_user_data')) {
+                $customerData = $this->session->getData('social_user_data');
+                $username = $customerData['name'];
+                $appid = $customerData['appid'];
+                $socialMediaType = $customerData['socialmedia_type'];
+                if ($customer->getId()) {
+                    $customerId = $customer->getId();
+                    if ($this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType, $appid)) {
+                        $users = $this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType, $appid);
+                        if ($users) {
+                            foreach ($users as $user) {
+                                try {
+                                    $socialLoginUser = $this->socialLoginRepository->getById($user->getData('sociallogin_id'));
+                                } catch (\Exception $e) {
+                                    $this->logger->error($e->getMessage());
+                                }
+                                $this->socialLoginRepository->delete($socialLoginUser);
                             }
-                            $this->socialLoginRepository->delete($socialLoginUser);
                         }
                     }
+                    try {
+                        $customer = $this->customerRepository->getById($customerId);
+                        $customer->setCustomAttribute(
+                            'line_id',
+                            $appid
+                        );
+                        $customer->setCustomAttribute('line_message_agreement', $lineAgreement);
+                        $this->customerRepository->save($customer);
+                    } catch (\Exception $e) {
+                        $this->messageManager->addErrorMessage(
+                            __('We can not save LINE Information.') . $e->getMessage()
+                        );
+                    }
+                    $this->socialLoginModel->setSocialMediaCustomer($appid, $customerId, $username, $socialMediaType);
                 }
+            } else {
+                $customerId = $customer->getId();
+                $socialMediaType = $this->socialLoginModel->getCoreSession()->getSocialmediaType();
+                $socialId = $this->socialLoginModel->getCoreSession()->getSocialmediaId();
                 try {
                     $customer = $this->customerRepository->getById($customerId);
                     $customer->setCustomAttribute(
                         'line_id',
-                        $appid
+                        $socialId
                     );
                     $customer->setCustomAttribute('line_message_agreement', $lineAgreement);
                     $this->customerRepository->save($customer);
@@ -127,34 +155,16 @@ class CustomerLogin implements ObserverInterface
                         __('We can not save LINE Information.') . $e->getMessage()
                     );
                 }
-                $this->socialLoginModel->setSocialMediaCustomer($appid, $customerId, $username, $socialMediaType);
-            }
-        } else {
-            $customerId = $customer->getId();
-            $socialMediaType = $this->socialLoginModel->getCoreSession()->getSocialmediaType();
-            $socialId = $this->socialLoginModel->getCoreSession()->getSocialmediaId();
-            try {
-                $customer = $this->customerRepository->getById($customerId);
-                $customer->setCustomAttribute(
-                    'line_id',
-                    $socialId
-                );
-                $customer->setCustomAttribute('line_message_agreement', $lineAgreement);
-                $this->customerRepository->save($customer);
-            } catch (\Exception $e) {
-                $this->messageManager->addErrorMessage(
-                    __('We can not save LINE Information.') . $e->getMessage()
-                );
-            }
-            $users = $this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType, $socialId);
-            if ($users) {
-                foreach ($users as $user) {
-                    try {
-                        $socialLoginUser = $this->socialLoginRepository->getById($user->getData('sociallogin_id'));
-                    } catch (\Exception $e) {
-                        $this->logger->error($e->getMessage());
+                $users = $this->socialLoginRepository->getAlreadyLinkedCustomer($customerId, $socialMediaType, $socialId);
+                if ($users) {
+                    foreach ($users as $user) {
+                        try {
+                            $socialLoginUser = $this->socialLoginRepository->getById($user->getData('sociallogin_id'));
+                        } catch (\Exception $e) {
+                            $this->logger->error($e->getMessage());
+                        }
+                        $this->socialLoginRepository->delete($socialLoginUser);
                     }
-                    $this->socialLoginRepository->delete($socialLoginUser);
                 }
             }
         }
