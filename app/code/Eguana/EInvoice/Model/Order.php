@@ -13,6 +13,7 @@ namespace Eguana\EInvoice\Model;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Sales\Api\Data\OrderSearchResultInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
@@ -36,22 +37,30 @@ class Order
     private $filterGroupBuilder;
 
     /**
+     * @var DateTime
+     */
+    private $dateTime;
+
+    /**
      * Order constructor.
      * @param OrderRepositoryInterface $orderRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
      * @param FilterGroupBuilder $filterGroupBuilder
+     * @param DateTime $dateTime
      */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         FilterBuilder $filterBuilder,
-        FilterGroupBuilder $filterGroupBuilder
+        FilterGroupBuilder $filterGroupBuilder,
+        DateTime $dateTime
     ) {
         $this->orderRepository = $orderRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
         $this->filterGroupBuilder = $filterGroupBuilder;
+        $this->dateTime = $dateTime;
     }
 
     /**
@@ -68,6 +77,15 @@ class Order
             ->addFilter($storeFilter)
             ->create();
 
+        $dateFrom = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -60 days'));
+        $dateLimitFilter = $this->filterBuilder->setField('created_at')
+            ->setValue($dateFrom)
+            ->setConditionType('gteq')
+            ->create();
+        $andFilter2 = $this->filterGroupBuilder
+            ->addFilter($dateLimitFilter)
+            ->create();
+
         $statusFilterShipmentProcessing = $this->filterBuilder->setField('status')
             ->setValue('shipment_processing')
             ->setConditionType('eq')
@@ -81,7 +99,7 @@ class Order
             ->addFilter($statusFilterComplete)
             ->create();
 
-        $this->searchCriteriaBuilder->setFilterGroups([$andFilter, $orFilter]);
+        $this->searchCriteriaBuilder->setFilterGroups([$andFilter, $andFilter2, $orFilter]);
         $searchCriteria = $this->searchCriteriaBuilder->create();
 
         return $this->orderRepository->getList($searchCriteria);
