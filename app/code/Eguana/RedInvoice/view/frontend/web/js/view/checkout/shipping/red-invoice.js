@@ -22,23 +22,11 @@ define([
     var cities = "";
     $(document).on('change', 'input[type="radio"]', function(){
         var isApply = $(this).val();
-        var company_name = '[name="company_name"]';
-        var tax_code = '[name="tax_code"]';
-        var state = '[name="state"]';
-        var city = '[name="city"]';
-        var road_name = '[name="road_name"]';
+        $(".company-name-error, .tax-code-error, .state-error, .road-name-error").css("display", "none");
         if (isApply == 0) {
-            $(company_name).prop('disabled', true);
-            $(tax_code).prop('disabled', true);
-            $(state).prop('disabled', true);
-            $(city).prop('disabled', true);
-            $(road_name).prop('disabled', true);
+            $("#red-invoice-fields :input").prop("disabled", true);
         } else {
-            $(company_name).prop('disabled', false);
-            $(tax_code).prop('disabled', false);
-            $(state).prop('disabled', false);
-            $(city).prop('disabled', false);
-            $(road_name).prop('disabled', false);
+            $("#red-invoice-fields :input").prop("disabled", false);
         }
     });
 	return Component.extend({
@@ -47,6 +35,8 @@ define([
 		},
         showRedInvoiceForm: function () {
             $("#apply_button").prop("checked", true);
+            $("#red-invoice-fields :input").prop("disabled", false);
+            $(".company-name-error, .tax-code-error, .state-error, .road-name-error").css("display", "none");
 		    $('#red-invoice-form').slideToggle(function() {
                 if($('#red-invoice-form').is(":hidden")){
                     $("#do_not_apply_button").prop("checked", true);
