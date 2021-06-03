@@ -108,7 +108,7 @@ This field is to set the maximum mobile number digits which validate the user to
  
 Go to CONTENT > Manage Store Contents and click on Redemption
 
-![manage-evebr](https://nimbus-screenshots.s3.amazonaws.com/s/b5d924fe5ddaada350619a9154ef49f9.png)
+![manage-evebr](https://nimbus-screenshots.s3.amazonaws.com/s/44c3ffdafb7f9351371dd543b06d89c1.png)
 
 It will open a Manage Redemption Grid. In the grid all records will be shown which admin add by admin panel.
 
@@ -116,13 +116,13 @@ Example image of an admin grid is below.
 
 ![grid](https://nimbus-screenshots.s3.amazonaws.com/s/fbe6cccf2ee75e64e648e8a1aae405e5.png)
 
- **Explore The Grid**
- 
- ## 1) Add New Redemption
- 
- Click on Add New Redemption Button.
- 
- ![add-new](https://nimbus-screenshots.s3.amazonaws.com/s/dbc7ad716cab7f108568608a3a10e67f.png)
+**Explore The Grid**
+
+## 1) Add New Redemption
+
+Click on Add New Redemption Button.
+
+![add-new](https://nimbus-screenshots.s3.amazonaws.com/s/dbc7ad716cab7f108568608a3a10e67f.png)
  
 It will open a form to Add New Redemption.
 
@@ -130,7 +130,7 @@ Below is the example image of the add new form.
 
 Form Part 1 shows form fields
 
-![add-new-form](https://nimbus-screenshots.s3.amazonaws.com/s/af8ba6bdda884e8e912c232d48d17fc8.png)
+![add-new-form](https://nimbus-screenshots.s3.amazonaws.com/s/ccdefa6e19e566c95d549ba8f4c16e83.png)
 
 Form Part 2 shows content area 
 
@@ -146,7 +146,10 @@ Form Part 4 shows the list of registered customer in current redemption
 
 Explore the every field of add new form in details.
 
-![three-fields](https://nimbus-screenshots.s3.amazonaws.com/s/a77bf86be42ddc817507fdfa27a34bf8.png)
+![all-fields](https://nimbus-screenshots.s3.amazonaws.com/s/374b690e83cc21e45e434edea3c931b0.png)
+
+![all-fields](https://nimbus-screenshots.s3.amazonaws.com/s/01ece9fefee0d26a5db487282d37e383.png)
+
 
 #####(1) Enable Redemption
 
@@ -160,11 +163,16 @@ This is Redemption main title. Add Redemption name or title here.
  
 This field is used to add the thumbnail image which will show on listing page. Click on Upload and select an image which will show in the frontend page.
 
-#####(4) CMS Block
+#####(4) Thankyou Image
+
+This field is used to add the thankyou image which will show after sending redemption. Click on Upload and select an image which will show in the frontend page.
+
+
+#####(5) CMS Block
 
 This drop down shows the list of the cms blocks select one cms block to show at the top of the frontend registration page
 
-#####(5) Start Date
+#####(6) Start Date
 
 Click on the calender and it will open a pop-up called date picker as shown in the image below.
 
@@ -172,28 +180,36 @@ Click on the calender and it will open a pop-up called date picker as shown in t
 
 and from that date picker select the redemption start date.
 
-#####(6) End Date
+#####(7) End Date
 
 Click on the calender and it will open a pop-up called date picker as shown in the image below.
 
 ![calender](https://nimbus-screenshots.s3.amazonaws.com/s/058ebced5c4d00e126f6c5cc0773c583.png)
 
-#####(7) SMS Content
+#####(8) SMS Content
 
 This is for adding the content of sms which is to be send to customer after redemption registration. By default a content is set in this field for explanation.
 Here "%counter" will be the counter name which customer has selected from frontend form during registration and "%link" means the dynamic confirmation URL.
 
 **Note** These 2 (%counter, %link) remain same and don't remove them from content.
 
-#####(8) Store View
+#####(9) Redemption Complete Block
+
+This drop down shows the list of the cms blocks to select. This block will be shown at redemption completion page.
+
+#####(10) Redemption Completion Message
+
+This textarea is for shwoing success message on redemption completion page.
+
+#####(11) Store View
 
 This is Redemption store view. This will decide where Redemption information will shown.
 
-#####(9) Counter Name
+#####(12) Counter Name
 
 This is store counter name in which allowed for redemption store list is showing select one or more stores where the redemption will held
 
-#####(10) Total Quantity
+#####(13) Total Quantity
 
 This field is to defined how many total number of users can registered for the current redemption. These fields only show when selected counters are changed.
 
@@ -295,7 +311,7 @@ The link to view fontend page is when click on View Action from action tab it sh
 
 This is showing the CMS block which admin select form the list of CMS block when add a new redemption
 
-## 2) Descriptiopn Area
+## 2) Description Area
 
 This is showing the Descriptiopn which admin adds when add a new redemption
 
@@ -329,6 +345,10 @@ For Validation
 
 ## 8) Submit Button
 
+After clicking submit button thankyou image will be shown
+
+![thank-you](https://nimbus-screenshots.s3.amazonaws.com/s/65c981f5304dbb2994d0cfba090c73a8.png)
+
 After filling the form click on submit button it saves the redemption in the admin redmption form at the bottom which shows the grid of registered customer as shown in the image
 
 ![registered-customer](https://nimbus-screenshots.s3.amazonaws.com/s/401b210df84d870646b753d4e5cfc3a1.png)
@@ -339,15 +359,21 @@ the email template example is as shown in the image
 
 ![email-template](https://nimbus-screenshots.s3.amazonaws.com/s/a8e8326a118ef30f9e7de4679aa327a9.png)
 
-if a user did not receive an email or sms he can click on resend email/sms button after counter time complete. It will resend the email and sms to the registered customer.
-And to resend the email/sms recaptcha is required.
-
-![disable-button-counter](https://nimbus-screenshots.s3.amazonaws.com/s/a37a2e90b07b2a5dfdbb6dc56fc0e5f8.png)
-
-and when the timer complete the resend email/sms button will be enable.
-
-![enable-button-after-counter](https://nimbus-screenshots.s3.amazonaws.com/s/11970c5f76b94cc0223e8807da9a9be9.png)
-
-And when user receive an email then click on confirmation link that will open a form and show a confirm button after click on confirm button the redemption process will complete and a customer registered for the redemption 
+And when user receive an email then click on confirmation link that will open a form and show a confirm button after click on confirm button the redemption process will complete and a customer registered for the redemption
 
 ![confirm-button](https://nimbus-screenshots.s3.amazonaws.com/s/408c930d94531ca7f2685757307245ea.png)
+
+##9) Confirmation message
+
+This is confirmation message when user will click on confirm button
+
+![confirmation-message](https://nimbus-screenshots.s3.amazonaws.com/s/5be41fbbec81d20ebd836963b965a2d1.png)
+
+##10) Duplicate
+
+If user has already redeemed the redemption for a scpecific store against specific redemption with same email and phone number then this popup will be shown
+
+It says that you have already redeemed this redemption
+
+![already-claimed](https://nimbus-screenshots.s3.amazonaws.com/s/0c24a8d21c032a186bf1fec91cfc896c.png)
+

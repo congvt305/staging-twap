@@ -17,7 +17,6 @@ $counterSeats = $redemptionDetails->getData('counter_seats');
 $minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
 $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
 $storeId = $viewModel->getStoreId();
-$thankYouImage = $viewModel->contentFiltering($redemptionDetails->getThankYouImage());
 ?>
 <div class="block block-redemption-detail">
     <div class="block block-image-banner">
@@ -63,6 +62,21 @@ $thankYouImage = $viewModel->contentFiltering($redemptionDetails->getThankYouIma
                         id="store_id"
                         name="store_id"
                         value="<?= $block->escapeHtml((int)$storeId) ?>"
+                >
+                <input
+                    type="hidden"
+                    id="utm_source"
+                    name="utm_source"
+                >
+                <input
+                    type="hidden"
+                    id="utm_medium"
+                    name="utm_medium"
+                >
+                <input
+                    type="hidden"
+                    id="utm_content"
+                    name="utm_content"
                 >
                 <fieldset class="fieldset redemption">
                     <div class="field name required">
@@ -165,13 +179,21 @@ $thankYouImage = $viewModel->contentFiltering($redemptionDetails->getThankYouIma
         </div>
     </div>
 </div>
+<div class="popup-container">
+    <div id="popup-modal">
+        <div class="modal-body-content">
+            <p><?= $block->escapeHtml(__('This redemption has been already completed.')); ?></p>
+        </div>
+    </div>
+</div>
 <script type="text/x-magento-init">
     {
          "*": {
             "registerForm": {
                 "countersaveurl":"<?=$block->escapeHtml($viewModel->getCounterSaveUrl())?>",
                 "counterTime":"<?=$block->escapeHtml($viewModel->getTimeForResendEmailButton())?>",
-                "resendUrl":"<?= $block->escapeUrl(__($viewModel->getResendAction())); ?>"
+                "resendUrl":"<?= $block->escapeUrl(__($viewModel->getResendAction())); ?>",
+                "successUrl":"<?= $block->escapeUrl(__($viewModel->getSuccessPageUrl())); ?>"
             }
         }
     }

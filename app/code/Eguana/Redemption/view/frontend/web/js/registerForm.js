@@ -8,20 +8,38 @@
  */
 define([
     'jquery',
+    'underscore',
     'mage/translate',
-    'domReady!'
-], function ($) {
+    'domReady!',
+    'Magento_Ui/js/modal/modal'
+], function ($, _, modal) {
     /**
      * @param config.countersaveurl
      * @param config.counterTime
      * @param config.resendUrl
+     * @param config.successUrl
      */
     function main(config) {
         let countersaveurl = config.countersaveurl;
         let minutes = config.counterTime;
         let resendUrl = config.resendUrl;
+        let successUrl = config.successUrl;
         let entityId = "";
         let infoAndErrorMessageDiv = $("#error-and-success-message");
+        let url_string = window.location.href
+        let url = new URL(url_string);
+        let utmSource = url.searchParams.get("utm_source");
+        let utmMedium = url.searchParams.get("utm_medium");
+        let utmContent = url.searchParams.get("utm_content");
+        if (utmSource) {
+          $('#utm_source').val(_.escape(utmSource));
+        }
+        if (utmMedium) {
+            $('#utm_medium').val(_.escape(utmMedium));
+        }
+        if (utmContent) {
+            $('#utm_content').val(_.escape(utmContent));
+        }
         $(document).find('span[id="recaptcha-response"]').hide();
         $('#info-message').hide();
         $("#counter-form-submit").click(function(e){
@@ -58,12 +76,13 @@ define([
                         jQuery('body').loader('show');
                     },
                     success: function (data) {
-                        jQuery('body').loader('hide');
                         if (data['duplicate']) {
-                            infoAndErrorMessageDiv.removeClass("message success");
-                            infoAndErrorMessageDiv.addClass("message info");
-                            infoAndErrorMessageDiv.find('span').remove()
-                            infoAndErrorMessageDiv.append("<span>" + data['message'] + "</span>");
+                            var options = {
+                                type: 'popup',
+                                responsive: false,
+                            };
+                            var popup = modal(options, $('#popup-modal'));
+                            $('#popup-modal').modal(options).modal('openModal');
                             $('#counter-form-submit').show();
                             $('#counter-form-submit').removeAttr('disabled');
                             $('#redemption_thank_you_img').show();
@@ -72,22 +91,10 @@ define([
                             jQuery('body').loader('hide');
                         }
                         if (data['success']) {
-                            $('#name, #phone, #email, #line').prop('readonly', true);
-                            $('#counter').prop('disabled', true);
-                            entityId = data['entity_id'];
-                            infoAndErrorMessageDiv.removeClass("message info");
-                            infoAndErrorMessageDiv.addClass("message success");
-                            infoAndErrorMessageDiv.find('span').remove()
-                            infoAndErrorMessageDiv.append("<span>" + data['message'] + "</span>");
-                            $('#counter-form-submit').prop('disabled', true);
-                            $('#resend-button').prop('disabled', true);
-                            $('#info-message').show();
-                            startTimer();
-                            $('#redemption_thank_you_img').show();
-                            $('#redemption_banner_img').hide();
                             if (data['fbFunEnable']) {
                                 fbq('track', 'Foundation_check_finalcheck');
                             }
+                            window.location.href = successUrl;
                         }
                     }
                 });

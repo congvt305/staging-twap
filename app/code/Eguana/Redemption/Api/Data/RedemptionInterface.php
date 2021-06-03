@@ -35,6 +35,8 @@ interface RedemptionInterface
     const IMAGE = 'image';
     const IS_ACTIVE = 'is_active';
     const THANK_YOU_IMAGE = 'thank_you_image';
+    const REDEMPTION_COMPLETION_BLOCK = 'redemption_completion_block';
+    const REDEMPTION_COMPLETION_MESSAGE = 'redemption_completion_message';
     /**#@-*/
 
     /**
@@ -261,4 +263,34 @@ interface RedemptionInterface
      * @return RedemptionInterface
      */
     public function setThankYouImage($image);
+
+    /**
+     * Get Redemption Completion Page Block
+     *
+     * @return string
+     */
+    public function getRedemptionCompletionBlock();
+
+    /**
+     * Set Redemption Completion Block
+     *
+     * @param int $blockId
+     * @return RedemptionInterface
+     */
+    public function setRedemptionCompletionBlock($blockId);
+
+    /**
+     * Get Redemption Completion Page Message
+     *
+     * @return string
+     */
+    public function getRedemptionCompletionMessage();
+
+    /**
+     * Set Redemption Completion Message
+     *
+     * @param string $message
+     * @return RedemptionInterface
+     */
+    public function setRedemptionCompletionMessage($message);
 }

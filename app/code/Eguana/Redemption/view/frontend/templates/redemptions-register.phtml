@@ -12,36 +12,37 @@
 /** @var \Eguana\Redemption\ViewModel\RedemptionDetail $viewModel */
 $viewModel = $block->getData('details_view_model');
 $counterDetail = $viewModel->getCounterDetail();
-$redemptionDetail = $viewModel->getRedemptionById($counterDetail->getRedemptionId());
-?>
-<div class="redemption-confirm-page">
-    <?php if ($counterDetail->getStatus() == 1): ?>
-        <div class="message info">
-            <span>
-                <?= $block->escapeHtml(__('Please click on confirm button to complete the registration process.')) ?>
-            </span>
-        </div>
-    <?php elseif ($counterDetail->getStatus() == 2): ?>
-        <div class="message info">
-            <span>
-                <?= $block->escapeHtml(__('This redemption has been already completed.')) ?>
-            </span>
-        </div>
-    <?php endif; ?>
-    <div class="redemption-image">
-        <div class="image-container">
-            <img src="<?= $block->escapeHtml($viewModel->
-            getThumbnailImageURL($redemptionDetail->getImage()));?>">
-        </div>
-    </div>
-    <?php if ($counterDetail->getStatus() == 1): ?>
-        <div class="actions-toolbar">
-            <p>-<?= $block->escapeHtml(__('Need to be confirmed by the counter staff')) ?>-</p>
-            <div class="primary">
-                <a class="action primary action-confirm" href="<?=$block->escapeUrl($block->getBaseUrl() . 'redemption/details/index/counter_id/' . $counterDetail->getId()) . '/confirm/' . true?>">
-                    <span><?= $block->escapeHtml(__('complete conversion')) ?></span>
-                </a>
+if (!empty($counterDetail)):
+    $redemptionDetail = $viewModel->getRedemptionById($counterDetail->getRedemptionId()); ?>
+    <div class="redemption-confirm-page">
+        <?php if ($counterDetail->getStatus() == 1): ?>
+            <div class="message info">
+<span>
+<?= $block->escapeHtml(__('Please click on confirm button to complete the registration process.'))?>
+</span>
+            </div>
+        <?php elseif ($counterDetail->getStatus() == 2): ?>
+            <div class="message info">
+<span>
+<?= $block->escapeHtml(__('This redemption has been already completed.')) ?>
+</span>
+            </div>
+        <?php endif; ?>
+        <div class="redemption-image">
+            <div class="image-container">
+                <img src="<?= $block->escapeHtml($viewModel->
+                getThumbnailImageURL($redemptionDetail->getImage()));?>">
             </div>
         </div>
-    <?php endif; ?>
-</div>
+        <?php if ($counterDetail->getStatus() == 1): ?>
+            <div class="actions-toolbar">
+                <p>-<?= $block->escapeHtml(__('Need to be confirmed by the counter staff')) ?>-</p>
+                <div class="primary">
+                    <a class="action primary action-confirm" href="<?=$block->escapeUrl($block->getBaseUrl() . 'redemption/details/index/counter_id/' . $counterDetail->getId()) . '/confirm/' . true?>">
+                        <span><?= $block->escapeHtml(__('complete conversion')) ?></span>
+                    </a>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

@@ -217,7 +217,7 @@
                 <dataScope>end_date</dataScope>
             </settings>
         </field>
-        <field name="sms_content" sortOrder="65" formElement="textarea">
+        <field name="sms_content" sortOrder="61" formElement="textarea">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="cols" xsi:type="number">15</item>
@@ -230,6 +230,42 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">SMS Content</label>
+                <visible>true</visible>
+            </settings>
+        </field>
+        <field name="redemption_completion_block" sortOrder="62" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataScope" xsi:type="string">redemption_completion_block</item>
+                    <item name="source" xsi:type="string">eguana_redemption</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <label translate="true">Redemption Completion Block</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Eguana\Redemption\Ui\Component\Form\Block\Options"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="redemption_completion_message" sortOrder="63" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="cols" xsi:type="number">15</item>
+                    <item name="rows" xsi:type="number">5</item>
+                    <item name="source" xsi:type="string">eguana_redemption</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Redemption Completion Message</label>
                 <visible>true</visible>
             </settings>
         </field>
