@@ -1,0 +1,30 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 11/5/21
+ * Time: 2:40 PM
+ */
+
+/** @var \Eguana\Redemption\ViewModel\RedemptionDetail $viewModel */
+$viewModel = $block->getData('details_view_model');
+$redemptionDetails = $viewModel->getRedemption();
+$cmsBlockIdentifier = $viewModel->getCmsBlockIdentifier($redemptionDetails->getRedemptionCompletionBlock());
+$completionMessage = $redemptionDetails->getRedemptionCompletionMessage();
+?>
+<?php if ($completionMessage): ?>
+    <div class="message success">
+        <span><?= $block->escapeHtml(__($completionMessage)); ?></span>
+    </div>
+<?php endif; ?>
+<div class="redemption-cms-block">
+    <?php if ($cmsBlockIdentifier): ?>
+        <?= $block->getLayout()
+            ->createBlock(Magento\Cms\Block\Block::class)
+            ->setBlockId($cmsBlockIdentifier)
+            ->toHtml();
+        ?>
+    <?php endif;?>
+</div>
