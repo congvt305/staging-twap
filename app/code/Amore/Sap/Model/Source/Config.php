@@ -9,6 +9,7 @@
 namespace Amore\Sap\Model\Source;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class Config
 {
@@ -45,6 +46,10 @@ class Config
     const SAP_PRODUCT_INFO_ENABLE_XML_PATH = 'sap/general/product_info';
 
     const SAP_PRODUCT_PRICE_ENABLE_XML_PATH = 'sap/general/product_price';
+
+    const SAP_API_BASE_URL_XML_PATH = 'sap/general/url';
+
+    const SAP_INVENTORY_STOCK_URL_XML_PATH = 'sap/url_path/inventory_stock_path';
 
     /**
      * @var ScopeConfigInterface
@@ -154,5 +159,52 @@ class Config
     public function getProductPriceActiveCheck($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::SAP_PRODUCT_PRICE_ENABLE_XML_PATH, $type, $storeId);
+    }
+
+    /**
+     * Get Sap Api's Base URL
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getSapApiBaseUrl($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::SAP_API_BASE_URL_XML_PATH,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * Get Sap Inventory Stcok API URL
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getSapInventoryStcokUrl($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::SAP_INVENTORY_STOCK_URL_XML_PATH,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * Get complete sap stock info api url
+     *
+     * @param null $storeId
+     * @return string
+     */
+    public function getSapInventoryStcokInfoUrl($storeId = null)
+    {
+        $url = '';
+        $baseUrl = $this->getSapApiBaseUrl($storeId);
+        if ($baseUrl) {
+            $stockInfoUrl = $this->getSapInventoryStcokUrl($storeId);
+            $url = $stockInfoUrl ? $baseUrl . $stockInfoUrl : '';
+        }
+        return $url;
     }
 }
