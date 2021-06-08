@@ -77,7 +77,10 @@ class Connect extends Action
         $this->socialLoginModel->getCoreSession()->setFacebookLoginState($state);
         $fbAppId = $this->helper->getAppId();
         $fbRedirectUrl = $this->helper->getFbCallbackUrl();
-        $this->logger->info("Log 3: ".$fbRedirectUrl);
+        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
+        $logger = new \Zend\Log\Logger();
+        $logger->addWriter($writer);
+        $logger->info("Log 3: ".$fbRedirectUrl);
         $url = self::OAUTH2_AUTH_URI . '?' . http_build_query(
                 [
                     'client_id' => $fbAppId,
