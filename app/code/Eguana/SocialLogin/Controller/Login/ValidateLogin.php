@@ -155,7 +155,7 @@ class ValidateLogin extends Action
                 );
             }
             $this->socialLoginModel->getCoreSession()->unsSocialCustomerId();
-            $url = $this->_url->getUrl('customer/account/index');
+            $url = $this->_url->getUrl('stores/info/list/');
             $response = [
                 'errors' => false,
                 'messages' => __('Login successful.'),
@@ -169,7 +169,7 @@ class ValidateLogin extends Action
                 return $resultJson->setData($response);
             }
         } else {
-            $url = $this->_url->getUrl('customer/account/login');
+            $url = $this->_url->getUrl('stores/info/list/');
             $response = [
                 'errors' => false,
                 'url'   => $url
