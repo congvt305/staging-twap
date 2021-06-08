@@ -116,9 +116,8 @@ class Callback extends Action
         try {
             $access_token = $response['access_token'];
             $response = $this->verifyAccessToken($access_token);
-            $this->logger->info("Log 2: For Access Token");
+            $this->logger->info("Log 2: ".$access_token);
             if ($response['success'] != 1) {
-                $this->logger->info("Log 3: For Unspecified OAuth Error");
                 $this->getResponse()->setBody(__('Unspecified OAuth error occurred.'));
                 return null;
             }
@@ -148,7 +147,6 @@ class Callback extends Action
         if ($this->helper->isMobile()) {
             $url = $this->_url->getUrl('sociallogin/login/validatelogin');
             $this->_redirect($url);
-            $this->logger->info("Log 4: For Mobile");
         } else {
             $this->helper->closePopUpWindow($this);
         }
