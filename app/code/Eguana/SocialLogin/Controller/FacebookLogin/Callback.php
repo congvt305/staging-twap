@@ -61,6 +61,11 @@ class Callback extends Action
     private $socialLoginRepository;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * Callback constructor.
      * @param Context $context
      * @param LoggerInterface $logger
@@ -81,6 +86,7 @@ class Callback extends Action
         $this->socialLoginModel                 = $socialLoginModel;
         $this->curlClient                       = $curl;
         $this->socialLoginRepository            = $socialLoginRepository;
+        $this->logger                           = $logger;
         parent::__construct(
             $context,
         );
@@ -110,6 +116,10 @@ class Callback extends Action
         try {
             $access_token = $response['access_token'];
             $response = $this->verifyAccessToken($access_token);
+            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
+            $logger = new \Zend\Log\Logger();
+            $logger->addWriter($writer);
+            $logger->info("Log 2: ".$access_token);
             if ($response['success'] != 1) {
                 $this->getResponse()->setBody(__('Unspecified OAuth error occurred.'));
                 return null;
@@ -140,6 +150,10 @@ class Callback extends Action
         if ($this->helper->isMobile()) {
             $url = $this->_url->getUrl('sociallogin/login/validatelogin');
             $this->_redirect($url);
+            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
+            $logger = new \Zend\Log\Logger();
+            $logger->addWriter($writer);
+            $logger->info("Log 8: ".$this->_redirect($url));
         } else {
             $this->helper->closePopUpWindow($this);
         }
