@@ -143,7 +143,7 @@ class ReverseOrderStatusNotificationHandler
             ->getItems();
         $track = reset($tracks);
 
-        $this->logger->info('gwlogistics | rma '. $track->getRmaEntityId());
+        $this->logger->info('gwlogistics | rma '. ($track ? $track->getRmaEntityId() : 'Rma entity id not found'));
         return $track ? $track->getRmaEntityId() : false;
 
     }
