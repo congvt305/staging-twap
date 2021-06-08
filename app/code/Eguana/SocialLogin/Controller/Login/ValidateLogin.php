@@ -129,7 +129,6 @@ class ValidateLogin extends Action
             ];
             if ($this->helper->isMobile()) {
                 $resultRedirect->setUrl($url);
-                $resultRedirect->setUrl($url);
                 $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
                 $logger = new \Zend\Log\Logger();
                 $logger->addWriter($writer);
@@ -188,7 +187,6 @@ class ValidateLogin extends Action
                 'url'   => $url
             ];
             if ($this->helper->isMobile()) {
-                $resultRedirect->setUrl($url);
                 $resultRedirect->setUrl($url);
                 $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
                 $logger = new \Zend\Log\Logger();

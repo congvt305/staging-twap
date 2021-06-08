@@ -150,7 +150,6 @@ class Callback extends Action
         if ($this->helper->isMobile()) {
             $url = $this->_url->getUrl('sociallogin/login/validatelogin');
             $this->_redirect($url);
-            $resultRedirect->setUrl($url);
             $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
             $logger = new \Zend\Log\Logger();
             $logger->addWriter($writer);
