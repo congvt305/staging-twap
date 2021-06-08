@@ -104,6 +104,7 @@ class CustomerLogin implements ObserverInterface
             $customer = $observer->getEvent()->getCustomer();
             $lineAgreement = $lineAgreement ? 1 : 0;
             if ($this->session->getData('social_user_data')) {
+                $this->logger->info("Log 1: For User session");
                 $customerData = $this->session->getData('social_user_data');
                 $username = $customerData['name'];
                 $appid = $customerData['appid'];
