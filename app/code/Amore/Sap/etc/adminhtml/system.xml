@@ -95,6 +95,9 @@
                 <field id="order_cancel_path" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Order Cancel Path</label>
                 </field>
+                <field id="inventory_stock_path" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>SAP Inventory Stock Info Path</label>
+                </field>
             </group>
             <group id="mall_info" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Mall Information</label>
