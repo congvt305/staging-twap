@@ -18,7 +18,6 @@
     <preference for="Amore\Sap\Api\Data\SyncStockResponseInterface" type="Amore\Sap\Model\SapProduct\SyncStockResponse"/>
     <preference for="Amore\Sap\Api\Data\SyncStockResponseStockDataInterface" type="Amore\Sap\Model\SapProduct\SyncStockResponseStockData"/>
 
-
     <preference for="Magento\Sales\Block\Adminhtml\Order\Creditmemo\View" type="Amore\Sap\Block\Adminhtml\Order\Creditmemo\CreditmemoSapResend"/>
 
     <type name="Amore\Sap\Logger\Handler">
