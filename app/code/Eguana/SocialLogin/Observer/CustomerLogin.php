@@ -104,10 +104,6 @@ class CustomerLogin implements ObserverInterface
             $customer = $observer->getEvent()->getCustomer();
             $lineAgreement = $lineAgreement ? 1 : 0;
             if ($this->session->getData('social_user_data')) {
-                $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
-                $logger = new \Zend\Log\Logger();
-                $logger->addWriter($writer);
-                $logger->info("Log 1: ".$this->session->getData('social_user_data'));
                 $customerData = $this->session->getData('social_user_data');
                 $username = $customerData['name'];
                 $appid = $customerData['appid'];
@@ -164,10 +160,6 @@ class CustomerLogin implements ObserverInterface
                     foreach ($users as $user) {
                         try {
                             $socialLoginUser = $this->socialLoginRepository->getById($user->getData('sociallogin_id'));
-                            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
-                            $logger = new \Zend\Log\Logger();
-                            $logger->addWriter($writer);
-                            $logger->info("Log 9: ".$socialLoginUser);
                         } catch (\Exception $e) {
                             $this->logger->error($e->getMessage());
                         }

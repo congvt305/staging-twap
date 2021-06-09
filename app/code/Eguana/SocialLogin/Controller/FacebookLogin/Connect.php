@@ -17,7 +17,6 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Session\Generic;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class Connect
@@ -27,11 +26,6 @@ use Psr\Log\LoggerInterface;
 class Connect extends Action
 {
     const OAUTH2_AUTH_URI = 'https://www.facebook.com/v7.0/dialog/oauth';
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
 
     /**
      * @var Helper
@@ -53,7 +47,6 @@ class Connect extends Action
     public function __construct(
         Context $context,
         Helper $helper,
-        LoggerInterface $logger,
         Generic $session,
         SocialLoginModel $socialLoginModel
     )
@@ -61,7 +54,6 @@ class Connect extends Action
         $this->helper = $helper;
         $this->session = $session;
         $this->socialLoginModel = $socialLoginModel;
-        $this->logger = $logger;
         parent::__construct(
             $context
         );
@@ -77,10 +69,6 @@ class Connect extends Action
         $this->socialLoginModel->getCoreSession()->setFacebookLoginState($state);
         $fbAppId = $this->helper->getAppId();
         $fbRedirectUrl = $this->helper->getFbCallbackUrl();
-        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info("Log 3: ".$fbRedirectUrl);
         $url = self::OAUTH2_AUTH_URI . '?' . http_build_query(
                 [
                     'client_id' => $fbAppId,
