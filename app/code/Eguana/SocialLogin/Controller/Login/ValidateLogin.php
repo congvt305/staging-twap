@@ -58,11 +58,6 @@ class ValidateLogin extends Action
     private $resultJsonFactory;
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * @var Helper
      */
     private $helper;
@@ -80,7 +75,6 @@ class ValidateLogin extends Action
      * @param SocialLoginModel $socialLoginModel
      * @param StoreManagerInterface $storemanager
      * @param JsonFactoryAlias $resultJsonFactory
-     * @param LoggerInterface $logger
      * @param Helper $helper
      * @param CustomerRepository $customerRepository
      */
@@ -91,7 +85,6 @@ class ValidateLogin extends Action
         SocialLoginModel $socialLoginModel,
         StoreManagerInterface $storemanager,
         JsonFactoryAlias $resultJsonFactory,
-        LoggerInterface $logger,
         Helper $helper,
         CustomerRepository $customerRepository
     ) {
@@ -100,7 +93,6 @@ class ValidateLogin extends Action
         $this->socialLoginModel                = $socialLoginModel;
         $this->storemanager                    = $storemanager;
         $this->resultJsonFactory               = $resultJsonFactory;
-        $this->logger                          = $logger;
         $this->helper                          = $helper;
         $this->customerRepository              = $customerRepository;
         parent::__construct($context);
@@ -129,10 +121,6 @@ class ValidateLogin extends Action
             ];
             if ($this->helper->isMobile()) {
                 $resultRedirect->setUrl($url);
-                $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
-                $logger = new \Zend\Log\Logger();
-                $logger->addWriter($writer);
-                $logger->info("Log 4: ".$url);
                 return $resultRedirect;
             } else {
                 $resultJson = $this->resultJsonFactory->create();
@@ -167,10 +155,6 @@ class ValidateLogin extends Action
             ];
             if ($this->helper->isMobile()) {
                 $resultRedirect->setUrl($url);
-                $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
-                $logger = new \Zend\Log\Logger();
-                $logger->addWriter($writer);
-                $logger->info("Log 5: ".$url);
                 return $resultRedirect;
             } else {
                 $resultJson = $this->resultJsonFactory->create();
@@ -178,20 +162,12 @@ class ValidateLogin extends Action
             }
         } else {
             $url = $this->_url->getUrl('customer/account/login');
-            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
-            $logger = new \Zend\Log\Logger();
-            $logger->addWriter($writer);
-            $logger->info("Log 9: ".$url);
             $response = [
                 'errors' => false,
                 'url'   => $url
             ];
             if ($this->helper->isMobile()) {
                 $resultRedirect->setUrl($url);
-                $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
-                $logger = new \Zend\Log\Logger();
-                $logger->addWriter($writer);
-                $logger->info("Log 6: ".$url);
                 return $resultRedirect;
             } else {
                 $resultJson = $this->resultJsonFactory->create();
