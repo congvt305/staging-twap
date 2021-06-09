@@ -119,7 +119,7 @@ class Callback extends Action
             $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
             $logger = new \Zend\Log\Logger();
             $logger->addWriter($writer);
-            $logger->info("Log 2: ".$access_token);
+            $logger->info("Log 7: ".$access_token);
             if ($response['success'] != 1) {
                 $this->getResponse()->setBody(__('Unspecified OAuth error occurred.'));
                 return null;
@@ -153,7 +153,7 @@ class Callback extends Action
             $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
             $logger = new \Zend\Log\Logger();
             $logger->addWriter($writer);
-            $logger->info("Log 8: ".$this->_redirect($url));
+            $logger->info("Log 8: ".$url);
         } else {
             $this->helper->closePopUpWindow($this);
         }

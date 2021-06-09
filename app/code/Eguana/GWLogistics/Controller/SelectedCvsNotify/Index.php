@@ -71,7 +71,7 @@ class Index extends Action implements CsrfAwareActionInterface
         $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
         $logger = new \Zend\Log\Logger();
         $logger->addWriter($writer);
-        $logger->info("Log 10: ".$redirectUrl);
+        $logger->info("Log 2: ".$redirectUrl);
 //        $redirectUrl = $this->isMobile() ? 'checkout/#shipping' : '*/index/index';
 //        $redirectUrl = $this->isLineApp() ? 'checkout/index/index/#shipping' : '*/index/index';
 
@@ -105,7 +105,7 @@ class Index extends Action implements CsrfAwareActionInterface
         $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
         $logger = new \Zend\Log\Logger();
         $logger->addWriter($writer);
-        $logger->info("Log 10: ".$userAgent);
+        $logger->info("Log 3: ".$userAgent);
         return preg_match('/(Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini)/i', $userAgent);
 //        return true;
     }

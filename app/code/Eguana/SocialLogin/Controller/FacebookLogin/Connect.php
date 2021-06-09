@@ -80,7 +80,7 @@ class Connect extends Action
         $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
         $logger = new \Zend\Log\Logger();
         $logger->addWriter($writer);
-        $logger->info("Log 3: ".$fbRedirectUrl);
+        $logger->info("Log 1: ".$fbRedirectUrl);
         $url = self::OAUTH2_AUTH_URI . '?' . http_build_query(
                 [
                     'client_id' => $fbAppId,
