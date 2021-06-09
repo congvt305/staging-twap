@@ -132,7 +132,7 @@ class ValidateLogin extends Action
                 $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
                 $logger = new \Zend\Log\Logger();
                 $logger->addWriter($writer);
-                $logger->info("Log 4: ".$resultRedirect);
+                $logger->info("Log 4: ".$url);
                 return $resultRedirect;
             } else {
                 $resultJson = $this->resultJsonFactory->create();
@@ -170,7 +170,7 @@ class ValidateLogin extends Action
                 $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
                 $logger = new \Zend\Log\Logger();
                 $logger->addWriter($writer);
-                $logger->info("Log 5: ".$resultRedirect);
+                $logger->info("Log 5: ".$url);
                 return $resultRedirect;
             } else {
                 $resultJson = $this->resultJsonFactory->create();
@@ -178,6 +178,10 @@ class ValidateLogin extends Action
             }
         } else {
             $url = $this->_url->getUrl('customer/account/login');
+            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/sociallogin.log');
+            $logger = new \Zend\Log\Logger();
+            $logger->addWriter($writer);
+            $logger->info("Log 9: ".$url);
             $response = [
                 'errors' => false,
                 'url'   => $url
