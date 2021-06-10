@@ -105,6 +105,10 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
         if($order->getPayment()->getMethod() === 'checkmo') { //todo remove after test
             return $this->refundOffline($order);
         }
+
+        if ($order->getPayment()->getMethod() === 'cashondelivery') {
+            return $this->refundOffline($order);
+        }
         /** @var InvoiceInterface $invoice */
         $invoice = $this->getInvoice($order->getEntityId());
         $invoiceId = $invoice->getEntityId();
