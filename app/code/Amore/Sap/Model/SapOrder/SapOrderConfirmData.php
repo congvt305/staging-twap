@@ -684,7 +684,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
     public function priceCorrector($orderAmount, $itemsAmount, $orderItemData, $field)
     {
-        if ($orderAmount > $itemsAmount) {
+        if ($orderAmount != $itemsAmount) {
             $correctAmount = $orderAmount - $itemsAmount;
 
             foreach ($orderItemData as $key => $value) {
