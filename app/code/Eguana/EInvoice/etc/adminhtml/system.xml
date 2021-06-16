@@ -48,6 +48,13 @@
                     <frontend_model>Eguana\EInvoice\Block\System\Config\EInvoiceRun</frontend_model>
                 </field>
             </group>
+            <group id="days_limit_when_get_orders" translate="label" type="text" sortOrder="280" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Set Days Limit For Get Orders</label>
+                <field id="set_days" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Set Days Limit</label>
+                    <validate>required-entry validate-digits validate-not-negative-number validate-digits-range digits-range-1-1000</validate>
+                </field>
+            </group>
         </section>
     </system>
 </config>
