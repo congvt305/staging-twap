@@ -215,6 +215,10 @@ class SapProductManagement implements SapProductManagementInterface
 
         $storeId = $store->getId();
 
+        $skuPrefix = $this->config->getSapSkuPrefix($storeId);
+        $skuPrefix = $skuPrefix ?: '';
+        $stockData['matnr'] = $skuPrefix . $stockData['matnr'];
+
         $sapStockSaveActiveCheck = $this->config->getProductStockActiveCheck('store', $storeId);
 
         if ($sapStockSaveActiveCheck) {

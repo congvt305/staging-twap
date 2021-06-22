@@ -115,8 +115,10 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
     public function getSapIntegrationEnabledProducts($stockData, $sourceCode, $storeId = null)
     {
         $filteredProducts = [];
-        $skus = array_map(function ($e) {
-            return is_object($e) ? $e->getMatnr() : $e['matnr'];
+        $skuPrefix = $this->config->getSapSkuPrefix($storeId);
+        $skuPrefix = $skuPrefix ?: '';
+        $skus = array_map(function ($e) use ($skuPrefix) {
+            return is_object($e) ? $skuPrefix. $e->getMatnr() : $skuPrefix . $e['matnr'];
         }, $stockData);
         $collection = $this->productCollection->create();
         $collection->getSelect()->joinInner(
