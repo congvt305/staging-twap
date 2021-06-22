@@ -462,6 +462,9 @@ class SapOrderConfirmData extends AbstractSapOrder
 
             $orderItems = $order->getAllVisibleItems();
 
+            $skuPrefix = $this->config->getSapSkuPrefix($storeId);
+            $skuPrefix = $skuPrefix ?: '';
+
             $cnt = 1;
             /** @var Item $orderItem */
             foreach ($orderItems as $orderItem) {
@@ -484,12 +487,14 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $product = $this->productRepository->getById($orderItem->getProductId());
                     $meins = $product->getData('meins');
 
+                    $sku = str_replace($skuPrefix, '', $orderItem->getSku());
+
                     $orderItemData[] = [
                         'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnr' => $this->config->getClient('store', $storeId),
                         'itemOdrno' => $order->getIncrementId(),
                         'itemPosnr' => $cnt,
-                        'itemMatnr' => $orderItem->getSku(),
+                        'itemMatnr' => $sku,
                         'itemMenge' => intval($orderItem->getQtyOrdered()),
                         // 아이템 단위, Default : EA
                         'itemMeins' => $this->getMeins($meins),
@@ -560,12 +565,14 @@ class SapOrderConfirmData extends AbstractSapOrder
                         );
                         $itemTaxAmount = abs(round($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getTaxAmount())));
 
+                        $sku = str_replace($skuPrefix, '', $bundleChild->getSku());
+
                         $orderItemData[] = [
                             'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                             'itemKunnr' => $this->config->getClient('store', $storeId),
                             'itemOdrno' => $order->getIncrementId(),
                             'itemPosnr' => $cnt,
-                            'itemMatnr' => $bundleChild->getSku(),
+                            'itemMatnr' => $sku,
                             'itemMenge' => intval($bundleChildFromOrder->getQtyOrdered()),
                             // 아이템 단위, Default : EA
                             'itemMeins' => $this->getMeins($meins),
