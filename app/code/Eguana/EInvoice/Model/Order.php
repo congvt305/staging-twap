@@ -16,6 +16,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Sales\Api\Data\OrderSearchResultInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Eguana\EInvoice\Model\Source\Config;
 
 class Order
 {
@@ -42,25 +43,33 @@ class Order
     private $dateTime;
 
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * Order constructor.
      * @param OrderRepositoryInterface $orderRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
      * @param FilterGroupBuilder $filterGroupBuilder
      * @param DateTime $dateTime
+     * @param Config $config
      */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         FilterBuilder $filterBuilder,
         FilterGroupBuilder $filterGroupBuilder,
-        DateTime $dateTime
+        DateTime $dateTime,
+        Config $config
     ) {
         $this->orderRepository = $orderRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
         $this->filterGroupBuilder = $filterGroupBuilder;
         $this->dateTime = $dateTime;
+        $this->config = $config;
     }
 
     /**
@@ -76,8 +85,8 @@ class Order
         $andFilter = $this->filterGroupBuilder
             ->addFilter($storeFilter)
             ->create();
-
-        $dateFrom = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -60 days'));
+        $daysLimit = $this->config->getDaysLimit($storeId);
+        $dateFrom = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -'.$daysLimit.'days'));
         $dateLimitFilter = $this->filterBuilder->setField('created_at')
             ->setValue($dateFrom)
             ->setConditionType('gteq')
