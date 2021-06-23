@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 16/6/21
+ * Time: 12:52 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <eguana_einvoice>
+            <days_limit_when_get_orders>
+                <set_days>30</set_days>
+            </days_limit_when_get_orders>
+        </eguana_einvoice>
+    </default>
+</config>

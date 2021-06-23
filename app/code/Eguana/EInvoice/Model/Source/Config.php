@@ -18,6 +18,7 @@ class Config
     const SENDER_NAME_XML_PATH = "eguana_einvoice/ecpay_einvoice_issue/sender_name";
     const SENDER_EMAIL_XML_PATH = "eguana_einvoice/ecpay_einvoice_issue/sender_email";
     const RECEIVER_EMAIL_XML_PATH = "eguana_einvoice/ecpay_einvoice_issue/receiver_email";
+    const DAYS_LIMIT_XML_PATH = "eguana_einvoice/days_limit_when_get_orders/set_days";
 
     /**
      * @var ScopeConfigInterface
@@ -79,5 +80,15 @@ class Config
     public function getReceiverEmail($storeId)
     {
         return $this->getValue(self::RECEIVER_EMAIL_XML_PATH, "store", $storeId);
+    }
+
+    /**
+     * This method is used to get the completed order days limit
+     * @param $storeId
+     * @return mixed
+     */
+    public function getDaysLimit($storeId)
+    {
+        return $this->getValue(self::DAYS_LIMIT_XML_PATH, "store", $storeId);
     }
 }
