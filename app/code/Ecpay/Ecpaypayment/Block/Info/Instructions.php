@@ -27,7 +27,7 @@ class Instructions extends \Magento\Payment\Block\Info\Instructions
 
         if (isset($additionalInfo["raw_details_info"]['ecpay_choosen_payment'])
             && !empty($additionalInfo["raw_details_info"]['ecpay_choosen_payment'])) {
-            $ecpayChoosenPayment = $rawDetailsInfo["ecpay_choosen_payment"];
+            $ecpayChoosenPayment = $additionalInfo["raw_details_info"]['ecpay_choosen_payment'];
         }
 
         if (isset($additionalInfo["ecpay_choosen_payment"])) {
