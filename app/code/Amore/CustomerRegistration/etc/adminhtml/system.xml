@@ -96,6 +96,11 @@
                     </depends>
                 </field>
 
+                <field id="datalayer_singup_success" translate="label comment" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" >
+                    <label>Enable Event Signup Success</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
             </group>
             <group id="customergroups" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
                 <label>Customer Groups</label>
