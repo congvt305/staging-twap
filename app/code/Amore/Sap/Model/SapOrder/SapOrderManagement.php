@@ -477,7 +477,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         if ($orderStatusData['odrstat'] == 9) {
             $order = $this->getOrderFromList($incrementId);
 
-            $creditmemo = $this->getCreditmemoByOrder($order->getEntityId());
+            $creditmemo = $this->getCreditmemoByOrder($order? $order->getEntityId() : '');
 
             if (empty($creditmemo)) {
                 $message = "Creditmemo for this order does not exist.";
