@@ -16,7 +16,7 @@
                 <minimum_mobile_number_digits>10</minimum_mobile_number_digits>
                 <maximum_mobile_number_digits>11</maximum_mobile_number_digits>
                 <ba_code_enable>0</ba_code_enable>
-                <datalayer_singup_success>1</datalayer_singup_success>
+                <datalayer_singup_success>0</datalayer_singup_success>
             </general>
             <pos>
                 <sales_organization_code>TW10</sales_organization_code>
