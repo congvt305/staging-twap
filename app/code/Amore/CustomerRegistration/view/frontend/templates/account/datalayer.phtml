@@ -3,8 +3,9 @@
  * @var \Amore\CustomerRegistration\Block\Datalayer $block
  */
 
-$refererUrl = $block->getRefererUrl();
-if (strpos($refererUrl, 'customer/account/create') !== false):
+$eventRegisterSuccess = $block->getEventRegisterSuccess();
+if ($eventRegisterSuccess):
+    $block->setEventRegisterSuccess(null);
 ?>
 <script>
     window.dataLayer.push({'event': 'sign_up'})
