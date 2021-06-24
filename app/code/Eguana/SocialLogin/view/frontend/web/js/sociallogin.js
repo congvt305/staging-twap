@@ -23,6 +23,7 @@ require(
         let loginurl = $(this).data("href");
         if (isMobileDevice()) {
             $.mage.redirect(loginurl);
+            customerData.invalidate(['customer']);
         } else {
             let win = window.open(
                 loginurl,

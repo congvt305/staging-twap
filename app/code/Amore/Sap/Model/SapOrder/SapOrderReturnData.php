@@ -230,6 +230,9 @@ class SapOrderReturnData extends AbstractSapOrder
         $itemsGrandTotalInclTax = 0;
         $itemsMileage = 0;
 
+        $skuPrefix = $this->config->getSapSkuPrefix($storeId);
+        $skuPrefix = $skuPrefix ?: '';
+
         $cnt = 1;
         /** @var \Magento\Rma\Model\Item $rmaItem */
         foreach ($rmaItems as $rmaItem) {
@@ -262,12 +265,14 @@ class SapOrderReturnData extends AbstractSapOrder
                 $itemGrandTotalValue = abs(round($this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested())));
                 $itemTaxAmount = abs(round($this->getRateAmount($orderItem->getTaxAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested())));
 
+                $sku = str_replace($skuPrefix, '', $this->productTypeCheck($orderItem)->getSku());
+
                 $rmaItemData[] = [
                     'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                     'itemKunnr' => $this->config->getClient('store', $storeId),
                     'itemOdrno' => "R" . $rma->getIncrementId(),
                     'itemPosnr' => $cnt,
-                    'itemMatnr' => $this->productTypeCheck($orderItem)->getSku(),
+                    'itemMatnr' => $sku,
                     'itemMenge' => intval($rmaItem->getQtyRequested()),
                     // 아이템 단위, Default : EA
                     'itemMeins' => $this->getMeins($meins),
@@ -338,12 +343,14 @@ class SapOrderReturnData extends AbstractSapOrder
                     $itemGrandTotalValue = abs(round($this->getRateAmount($itemGrandTotal, $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())));
                     $itemTaxAmount = abs(round($this->getRateAmount($bundleChildrenItem->getTaxAmount(), $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())));
 
+                    $sku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
+
                     $rmaItemData[] = [
                         'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnr' => $this->config->getClient('store', $storeId),
                         'itemOdrno' => "R" . $rma->getIncrementId(),
                         'itemPosnr' => $cnt,
-                        'itemMatnr' => $bundleChildrenItem->getSku(),
+                        'itemMatnr' => $sku,
                         'itemMenge' => intval($rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()),
                         // 아이템 단위, Default : EA
                         'itemMeins' => $this->getMeins($meins),

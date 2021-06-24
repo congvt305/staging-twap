@@ -51,6 +51,8 @@ class Config
 
     const SAP_INVENTORY_STOCK_URL_XML_PATH = 'sap/url_path/inventory_stock_path';
 
+    const SAP_SKU_PREFIX_XML_PATH = 'sap/mall_info/sku_prefix';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -206,5 +208,20 @@ class Config
             $url = $stockInfoUrl ? $baseUrl . $stockInfoUrl : '';
         }
         return $url;
+    }
+
+    /**
+     * Get SAP SKU Prefix
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getSapSkuPrefix($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::SAP_SKU_PREFIX_XML_PATH,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
     }
 }

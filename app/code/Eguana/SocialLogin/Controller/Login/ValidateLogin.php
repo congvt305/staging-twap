@@ -58,11 +58,6 @@ class ValidateLogin extends Action
     private $resultJsonFactory;
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * @var Helper
      */
     private $helper;
@@ -80,7 +75,6 @@ class ValidateLogin extends Action
      * @param SocialLoginModel $socialLoginModel
      * @param StoreManagerInterface $storemanager
      * @param JsonFactoryAlias $resultJsonFactory
-     * @param LoggerInterface $logger
      * @param Helper $helper
      * @param CustomerRepository $customerRepository
      */
@@ -91,7 +85,6 @@ class ValidateLogin extends Action
         SocialLoginModel $socialLoginModel,
         StoreManagerInterface $storemanager,
         JsonFactoryAlias $resultJsonFactory,
-        LoggerInterface $logger,
         Helper $helper,
         CustomerRepository $customerRepository
     ) {
@@ -100,7 +93,6 @@ class ValidateLogin extends Action
         $this->socialLoginModel                = $socialLoginModel;
         $this->storemanager                    = $storemanager;
         $this->resultJsonFactory               = $resultJsonFactory;
-        $this->logger                          = $logger;
         $this->helper                          = $helper;
         $this->customerRepository              = $customerRepository;
         parent::__construct($context);
