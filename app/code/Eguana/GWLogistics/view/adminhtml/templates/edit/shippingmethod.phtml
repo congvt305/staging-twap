@@ -25,7 +25,7 @@ $reverseOrderUrl = $block->getReverseOrderUrl($block->getRma());
             </p>
         <?php endif; ?>
         <p>
-            <?php if ($block->canShowReverseLogisticsOrderGenerationButton($block->getRma())) : ?>
+            <?php if ($block->canShowReverseLogisticsOrderGenerationButton($block->getRma()) && $block->getIsEnabled($block->getRma())) : ?>
                 <button class="action- create-reverse-logistics-order"
                         type="button"
                         onClick="confirmSetLocation('Are you sure to generate a reverse order?', '<?= $reverseOrderUrl ?>')"

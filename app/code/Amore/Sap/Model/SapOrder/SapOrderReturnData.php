@@ -631,7 +631,11 @@ class SapOrderReturnData extends AbstractSapOrder
         if ($trackCount == 1) {
             return $trackData[0];
         } elseif ($trackCount == 0) {
-            throw new RmaTrackNoException(__("Tracking No Does Not Exist."));
+            if ($rma->getStoreId() == '8') {
+                return $trackData[0];
+            } else {
+                throw new RmaTrackNoException(__("Tracking No Does Not Exist."));
+            }
         } else {
             throw new RmaTrackNoException(__("Tracking No Exist more than 1."));
         }
