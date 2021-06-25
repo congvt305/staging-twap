@@ -391,7 +391,10 @@ class SapOrderManagement implements SapOrderManagementInterface
                             //added start for VN
                         } elseif ($order->getShippingMethod() == "eguanadhl_tablerate") {
                             try {
-                                $shipmentId = $this->createShipment($order, $trackingNo, $this->getCarrierTitle('eguanadhl', $order->getStoreId()) ?: "DHL - COD"); //todo
+                                if ($trackingNo == "") {
+                                    $trackingNo = " ";
+                                }
+                                $shipmentId = $this->createShipment($order, $trackingNo, $this->getCarrierTitle('eguanadhl', $order->getStoreId()) ?: "DHL - COD", 'dhl'); //todo
                             } catch (\Exception $exception) {
                                 $order->setData('sap_response', $exception->getMessage());
                                 $this->orderRepository->save($order);
