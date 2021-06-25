@@ -5,7 +5,10 @@
             "sap_return_send_check": true,
             "sap_order_send_check": true,
             "sap_order_increment_id": true,
-            "sap_response": true
+            "sap_response": true,
+            "sap_nsamt": true,
+            "sap_dcamt": true,
+            "sap_slamt": true
         },
         "index": {
             "SALES_ORDER_SAP_ORDER_INCREMENT_ID": true
@@ -24,6 +27,13 @@
     "sales_creditmemo": {
         "column": {
             "sap_creditmemo_send_check": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "sap_item_nsamt": true,
+            "sap_item_dcamt": true,
+            "sap_item_slamt": true
         }
     }
 }
