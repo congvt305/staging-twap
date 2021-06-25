@@ -88,6 +88,19 @@ class OrderSend extends AbstractAction
         try {
             $orderSendData = $this->sapOrderConfirmData->singleOrderData($order->getIncrementId());
 
+            if (isset($orderSendData['request']['input']['itHead'][0])) {
+                $this->sapOrderConfirmData->setReturnOrderData(
+                    $orderSendData['request']['input']['itHead'][0],
+                    $order
+                );
+            }
+            if (isset($orderSendData['request']['input']['itHead'][0])) {
+                $orderSendData['request']['input']['itItem'] = $this->sapOrderConfirmData->setReturnItemOrderData(
+                    $orderSendData['request']['input']['itItem'],
+                    $order
+                );
+            }
+
             if ($this->config->getLoggingCheck()) {
                 $this->logger->info("Single Order Send Data");
                 $this->logger->info($this->json->serialize($orderSendData));

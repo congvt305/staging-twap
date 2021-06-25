@@ -26,6 +26,7 @@ use Magento\Sales\Model\Order\Item;
 use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
 use Magento\Store\Api\StoreRepositoryInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 class SapOrderReturnData extends AbstractSapOrder
 {
@@ -71,6 +72,11 @@ class SapOrderReturnData extends AbstractSapOrder
     private $productLinkManagement;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * SapOrderReturnData constructor.
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -85,6 +91,7 @@ class SapOrderReturnData extends AbstractSapOrder
      * @param ProductRepositoryInterface $productRepository
      * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
      * @param \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -99,7 +106,8 @@ class SapOrderReturnData extends AbstractSapOrder
         CollectionFactory $itemCollectionFactory,
         ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
-        \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement
+        \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement,
+        StoreManagerInterface $storeManager
     ) {
         $this->rmaRepository = $rmaRepository;
         $this->customerRepository = $customerRepository;
@@ -155,6 +163,20 @@ class SapOrderReturnData extends AbstractSapOrder
         $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
         $trackData = $this->getTracks($rma);
 
+        $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
+        $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
+        if ($websiteCode == 'vn_laneige_website') {
+            $nsamt = $order->getData('sap_nsamt');
+            $dcamt = $order->getData('sap_dcamt');
+            $slamt = $order->getData('sap_slamt');
+        } else {
+            $nsamt = abs(round($this->getRmaSubtotalInclTax($rma)));
+            $dcamt = abs(round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) +
+                $this->getCatalogRuleDiscountAmount($rma)));
+            $slamt = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
+                abs(round($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed)));
+        }
+
         $bindData[] = [
             'vkorg' => $this->config->getSalesOrg('store', $storeId),
             'kunnr' => $this->config->getClient('store', $storeId),
@@ -182,9 +204,9 @@ class SapOrderReturnData extends AbstractSapOrder
             'telno' => $this->getTelephone($shippingAddress->getTelephone()),
             'hpno' => $this->getTelephone($shippingAddress->getTelephone()),
             'waerk' => $order->getOrderCurrencyCode(),
-            'nsamt' => abs(round($this->getRmaSubtotalInclTax($rma))),
-            'dcamt' => abs(round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma))),
-            'slamt' => $order->getGrandTotal() == 0 ? $order->getGrandTotal() : abs(round($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed))),
+            'nsamt' => $nsamt,
+            'dcamt' => $dcamt,
+            'slamt' => $slamt,
             'miamt' => abs(round($this->getRmaPointsUsed($rma, $pointUsed, $orderTotal))),
             'shpwr' => '',
             'mwsbp' => round($order->getTaxAmount()),
@@ -232,6 +254,9 @@ class SapOrderReturnData extends AbstractSapOrder
 
         $skuPrefix = $this->config->getSapSkuPrefix($storeId);
         $skuPrefix = $skuPrefix ?: '';
+        $orderAllItems = $order->getAllItems();
+        $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
+        $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
 
         $cnt = 1;
         /** @var \Magento\Rma\Model\Item $rmaItem */
@@ -266,6 +291,15 @@ class SapOrderReturnData extends AbstractSapOrder
                 $itemTaxAmount = abs(round($this->getRateAmount($orderItem->getTaxAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested())));
 
                 $sku = str_replace($skuPrefix, '', $this->productTypeCheck($orderItem)->getSku());
+                $itemNsamt = $itemSubtotal;
+                $itemDcamt = $itemTotalDiscount;
+                $itemSlamt = $itemSubtotal - $itemTotalDiscount - $itemMileageUsed;
+
+                if ($websiteCode == 'vn_laneige_website') {
+                    $itemNsamt = $orderItem->getData('sap_item_nsamt');
+                    $itemDcamt = $orderItem->getData('sap_item_dcamt');
+                    $itemSlamt = $orderItem->getData('sap_item_slamt');
+                }
 
                 $rmaItemData[] = [
                     'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
@@ -276,9 +310,9 @@ class SapOrderReturnData extends AbstractSapOrder
                     'itemMenge' => intval($rmaItem->getQtyRequested()),
                     // 아이템 단위, Default : EA
                     'itemMeins' => $this->getMeins($meins),
-                    'itemNsamt' => $itemSubtotal,
-                    'itemDcamt' => $itemTotalDiscount,
-                    'itemSlamt' => $itemSubtotal - $itemTotalDiscount - $itemMileageUsed,
+                    'itemNsamt' => $itemNsamt,
+                    'itemDcamt' => $itemDcamt,
+                    'itemSlamt' => $itemSlamt,
                     'itemMiamt' => $itemMileageUsed,
                     // 상품이 무상제공인 경우 Y 아니면 N
                     'itemFgflg' => $orderItem->getOriginalPrice() == 0 ? 'Y' : 'N',
@@ -344,6 +378,16 @@ class SapOrderReturnData extends AbstractSapOrder
                     $itemTaxAmount = abs(round($this->getRateAmount($bundleChildrenItem->getTaxAmount(), $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())));
 
                     $sku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
+                    $itemNsamt = $itemSubtotal;
+                    $itemDcamt = $itemTotalDiscount;
+                    $itemSlamt = $itemSubtotal - $itemTotalDiscount - round($mileagePerItem);
+
+                    if ($websiteCode == 'vn_laneige_website') {
+                        $item = $this->searchOrderItem($orderAllItems, $bundleChildrenItem->getSku(), $itemId);
+                        $itemNsamt = $item->getData('sap_item_nsamt');
+                        $itemDcamt = $item->getData('sap_item_dcamt');
+                        $itemSlamt = $item->getData('sap_item_slamt');
+                    }
 
                     $rmaItemData[] = [
                         'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
@@ -354,9 +398,9 @@ class SapOrderReturnData extends AbstractSapOrder
                         'itemMenge' => intval($rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()),
                         // 아이템 단위, Default : EA
                         'itemMeins' => $this->getMeins($meins),
-                        'itemNsamt' => $itemSubtotal,
-                        'itemDcamt' => $itemTotalDiscount,
-                        'itemSlamt' => $itemSubtotal - $itemTotalDiscount - round($mileagePerItem),
+                        'itemNsamt' => $itemNsamt,
+                        'itemDcamt' => $itemDcamt,
+                        'itemSlamt' => $itemSlamt,
                         'itemMiamt' => $mileagePerItem,
                         // 상품이 무상제공인 경우 Y 아니면 N
                         'itemFgflg' => $product->getPrice() == 0 ? 'Y' : 'N',
@@ -386,10 +430,14 @@ class SapOrderReturnData extends AbstractSapOrder
         $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed));
         $orderDiscountAmount = round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma));
 
-        $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'itemNsamt');
-        $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotalInclTax, $rmaItemData, 'itemSlamt');
+        if ($websiteCode != 'vn_laneige_website') {
+            $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'itemNsamt');
+            $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotalInclTax, $rmaItemData, 'itemSlamt');
+        }
         $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'itemNetwr');
-        $rmaItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'itemDcamt');
+        if ($websiteCode != 'vn_laneige_website') {
+            $rmaItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'itemDcamt');
+        }
         $rmaItemData = $this->priceCorrector($mileageUsedAmount, $itemsMileage, $rmaItemData, 'itemMiamt');
 
         return $rmaItemData;
@@ -925,5 +973,24 @@ class SapOrderReturnData extends AbstractSapOrder
     public function getNetQty($orderItem)
     {
         return $orderItem->getQtyOrdered() - $orderItem->getQtyRefunded() - $orderItem->getQtyReturned();
+    }
+
+    /**
+     * Return bundle child item from all items by sku and parent item id
+     *
+     * @param $orderItems
+     * @param $childSku
+     * @param $parentItemId
+     * @return array|Item
+     */
+    private function searchOrderItem($orderItems, $childSku, $parentItemId)
+    {
+        /** @var Item $item */
+        foreach ($orderItems as $item) {
+            if ($item->getSku() == $childSku && $item->getParentItemId() == $parentItemId) {
+                return $item;
+            }
+        }
+        return [];
     }
 }
