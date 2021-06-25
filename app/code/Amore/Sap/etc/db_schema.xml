@@ -13,6 +13,9 @@
         <column xsi:type="smallint" name="sap_order_send_check" nullable="true" comment="Check for order send"/>
         <column xsi:type="varchar" name="sap_order_increment_id" nullable="true" length="32" comment="New Increment Id sent to SAP by failure of origin increment id order sent" disabled="true"/>
         <column xsi:type="text" name="sap_response" nullable="true" comment="Message Returned from SAP"/>
+        <column xsi:type="text" name="sap_nsamt" nullable="true" comment="SAP Order Data Net Sale Amount"/>
+        <column xsi:type="text" name="sap_dcamt" nullable="true" comment="SAP Order Data Discount Amount"/>
+        <column xsi:type="text" name="sap_slamt" nullable="true" comment="SAP Order Data Sale Amount"/>
         <index referenceId="SALES_ORDER_SAP_ORDER_INCREMENT_ID" indexType="btree" disabled="true">
             <column name="sap_order_increment_id"/>
         </index>
@@ -27,5 +30,10 @@
     </table>
     <table name="sales_creditmemo" resource="sales" engine="innodb" comment="Sales Flat Creditmemo">
         <column xsi:type="smallint" name="sap_creditmemo_send_check" nullable="true" comment="Check for credit memo send"/>
+    </table>
+    <table name="sales_order_item" resource="sales" engine="innodb" comment="Sales Flat Order Item">
+        <column xsi:type="text" name="sap_item_nsamt" nullable="true" comment="SAP Order Item Net Sale Amount"/>
+        <column xsi:type="text" name="sap_item_dcamt" nullable="true" comment="SAP Order Item Discount Amount"/>
+        <column xsi:type="text" name="sap_item_slamt" nullable="true" comment="SAP Order Item Sale Amount"/>
     </table>
 </schema>
