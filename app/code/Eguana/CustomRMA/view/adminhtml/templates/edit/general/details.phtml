@@ -56,6 +56,9 @@ $customerLink = $block->getCustomerLink();
                     <?php if ($block->getRmaData('shipping_preference') == 'UNIMART') : ?>
                         <?= $block->escapeHtml(__('7-Eleven')) ?>
                     <?php endif; ?>
+                    <?php if ($block->getRmaData('shipping_preference') == 'DHL') : ?>
+                        <?= $block->escapeHtml(__('DHL')) ?>
+                    <?php endif; ?>
                 </td>
             </tr>
         </table>
