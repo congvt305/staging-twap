@@ -200,6 +200,9 @@ define([
                                 $('.form-create-account #ba_code, .form-create-account #verified_ba_code').val(response.pos.empID);
                                 $('.bacode-link').attr('disabled', true).hide();
                                 $('.ba-code-verified').show();
+                                if ($('#ba_code').val() != '') {
+                                    $('#ba_code').attr('readonly', true);
+                                }
 
                             }else {
                                 $('.form-create-account #firstname').val($(this.options.firstNameSelector).val());
