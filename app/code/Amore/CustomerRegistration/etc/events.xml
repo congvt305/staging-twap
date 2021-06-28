@@ -19,4 +19,7 @@
     <event name="customer_address_save_after">
         <observer name="customer_address_after_save_pos_observer" instance="Amore\CustomerRegistration\Observer\Customer\AfterAddressSaveObserver" />
     </event>
+    <event name="customer_register_success">
+        <observer name="set_session_customer_register_success" instance="Amore\CustomerRegistration\Observer\Customer\RegisterSuccessObserver" />
+    </event>
 </config>

@@ -119,6 +119,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->productRepository = $productRepository;
         $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
         $this->productLinkManagement = $productLinkManagement;
+        $this->storeManager = $storeManager;
     }
 
     /**
