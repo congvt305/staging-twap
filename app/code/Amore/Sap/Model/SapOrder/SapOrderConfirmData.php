@@ -917,6 +917,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $item->setData('sap_item_nsamt', $itemsData[$key]['itemNsamt']);
                     $item->setData('sap_item_dcamt', $itemsData[$key]['itemDcamt']);
                     $item->setData('sap_item_slamt', $itemsData[$key]['itemSlamt']);
+                    $item->setData('sap_item_netwr', $itemsData[$key]['itemNetwr']);
                 }
             }
             $size = count($itemsData);
