@@ -263,6 +263,14 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'paymtd' => $this->getPaymentCode($orderData->getPayment()->getMethod()),
                 'payde' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
                 'paytm' => $this->dateFormatting($invoice->getCreatedAt(), 'His'),
+                // added for VN start
+                'PAY_MODE' => $this->getPaymentCode($orderData->getPayment()->getMethod()) === 'cashondelivery' ? 'COD' : '', //todo need to create payment method cod
+                'DHL_ID' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'TBD' : '', //todo need to make configuration for this
+                'SHP_SVCCD' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'PDE' : '',
+                'ORD_WGT' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? '1000' : '',
+                'INSURANCE' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'Y' : '',
+                'INSURNACE_VALUE' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? $orderGrandTotal : null, //todo null is okay?
+                // added for VN start end
                 'auart' => self::NORMAL_ORDER,
                 'augru' => '',
                 'augruText' => 'ORDER REASON TEXT',
@@ -909,7 +917,6 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $item->setData('sap_item_nsamt', $itemsData[$key]['itemNsamt']);
                     $item->setData('sap_item_dcamt', $itemsData[$key]['itemDcamt']);
                     $item->setData('sap_item_slamt', $itemsData[$key]['itemSlamt']);
-                    $item->setData('sap_item_netwr', $itemsData[$key]['itemNetwr']);
                 }
             }
             $size = count($itemsData);

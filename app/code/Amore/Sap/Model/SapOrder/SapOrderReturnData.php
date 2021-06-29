@@ -295,13 +295,11 @@ class SapOrderReturnData extends AbstractSapOrder
                 $itemNsamt = $itemSubtotal;
                 $itemDcamt = $itemTotalDiscount;
                 $itemSlamt = $itemSubtotal - $itemTotalDiscount - $itemMileageUsed;
-                $itemNetwr = $itemSubtotal - $itemTotalDiscount - $itemMileageUsed - $itemTaxAmount;
 
                 if ($websiteCode == 'vn_laneige_website') {
                     $itemNsamt = $orderItem->getData('sap_item_nsamt');
                     $itemDcamt = $orderItem->getData('sap_item_dcamt');
                     $itemSlamt = $orderItem->getData('sap_item_slamt');
-                    $itemNetwr = $orderItem->getData('sap_item_netwr');
                 }
 
                 $rmaItemData[] = [
@@ -323,7 +321,7 @@ class SapOrderReturnData extends AbstractSapOrder
                     'itemAuart' => self::RETURN_ORDER,
                     'itemAugru' => self::AUGRU_RETURN_CODE,
                     'itemAbrvw' => self::ABRVW_RETURN_CODE,
-                    'itemNetwr' => $itemNetwr,
+                    'itemNetwr' => $itemSubtotal - $itemTotalDiscount - $itemMileageUsed - $itemTaxAmount,
                     'itemMwsbp' => $itemTaxAmount,
                     'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                     'itemKunnrOri' => $this->config->getClient('store', $storeId),
@@ -384,14 +382,12 @@ class SapOrderReturnData extends AbstractSapOrder
                     $itemNsamt = $itemSubtotal;
                     $itemDcamt = $itemTotalDiscount;
                     $itemSlamt = $itemSubtotal - $itemTotalDiscount - round($mileagePerItem);
-                    $itemNetwr = $itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount;
 
                     if ($websiteCode == 'vn_laneige_website') {
                         $item = $this->searchOrderItem($orderAllItems, $bundleChildrenItem->getSku(), $itemId);
                         $itemNsamt = $item->getData('sap_item_nsamt');
                         $itemDcamt = $item->getData('sap_item_dcamt');
                         $itemSlamt = $item->getData('sap_item_slamt');
-                        $itemNetwr = $item->getData('sap_item_netwr');
                     }
 
                     $rmaItemData[] = [
@@ -413,7 +409,7 @@ class SapOrderReturnData extends AbstractSapOrder
                         'itemAuart' => self::RETURN_ORDER,
                         'itemAugru' => self::AUGRU_RETURN_CODE,
                         'itemAbrvw' => self::ABRVW_RETURN_CODE,
-                        'itemNetwr' => $itemNetwr,
+                        'itemNetwr' => $itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount,
                         'itemMwsbp' => $itemTaxAmount,
                         'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnrOri' => $this->config->getClient('store', $storeId),
@@ -438,7 +434,9 @@ class SapOrderReturnData extends AbstractSapOrder
         if ($websiteCode != 'vn_laneige_website') {
             $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'itemNsamt');
             $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotalInclTax, $rmaItemData, 'itemSlamt');
-            $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'itemNetwr');
+        }
+        $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'itemNetwr');
+        if ($websiteCode != 'vn_laneige_website') {
             $rmaItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'itemDcamt');
         }
         $rmaItemData = $this->priceCorrector($mileageUsedAmount, $itemsMileage, $rmaItemData, 'itemMiamt');
@@ -689,7 +687,13 @@ class SapOrderReturnData extends AbstractSapOrder
         if ($trackCount == 1) {
             return $trackData[0];
         } elseif ($trackCount == 0) {
-            throw new RmaTrackNoException(__("Tracking No Does Not Exist."));
+            $storeData = $this->storeRepository->getById($rma->getStoreId());
+            $storeCode = (string)$storeData->getCode();
+            if ($storeCode == "vn_laneige") {
+                return $trackData[0];
+            } else {
+                throw new RmaTrackNoException(__("Tracking No Does Not Exist."));
+            }
         } else {
             throw new RmaTrackNoException(__("Tracking No Exist more than 1."));
         }
