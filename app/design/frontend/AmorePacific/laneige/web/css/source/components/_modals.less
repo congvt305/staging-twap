@@ -166,6 +166,26 @@
             }
         }
 
+        &._inner-scroll {
+            overflow-y: visible;
+
+            .ie11 & {
+                overflow-y: auto;
+            }
+
+            .modal-inner-wrap {
+                max-height: 90%;
+
+                .ie11 & {
+                    max-height: none;
+                }
+            }
+
+            .modal-content {
+                overflow-y: auto;
+            }
+        }
+
         .modal-header,
         .modal-footer {
             .lib-vendor-prefix-flex-grow(0);
