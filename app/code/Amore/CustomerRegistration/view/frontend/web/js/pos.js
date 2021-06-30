@@ -191,6 +191,12 @@ define([
                                 $('.form-create-account #dm_detailed_address').val(response.pos.homeAddr1);
                                 $('.form-create-account #dm_zipcode').val(response.pos.homeZip);
                                 $('.form-create-account #imported_from_pos').val(1);
+                                $('.form-create-account #ba_code, .form-create-account #verified_ba_code').val(response.pos.empID);
+                                $('.bacode-link').attr('disabled', true).hide();
+                                $('.ba-code-verified').show();
+                                if ($('#ba_code').val() != '') {
+                                    $('#ba_code').attr('readonly', true);
+                                }
 
                             }else {
                                 $('.form-create-account #firstname').val($(this.options.firstNameSelector).val());
