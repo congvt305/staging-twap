@@ -254,9 +254,9 @@ class SaveSuccess implements ObserverInterface
                 $customer->getCustomAttribute('ba_code')->getValue()
             );
 
-            $parameters['baCode'] = $baCode;
+            $parameters['empID'] = $baCode;
         } else {
-            $parameters['baCode'] = '';
+            $parameters['empID'] = '';
         }
         if ($customer->getCustomAttribute('call_subscription_status')) {
             $parameters['callYN'] = $customer->getCustomAttribute('call_subscription_status')->getValue() == 1 ? 'Y' : 'N';
