@@ -167,14 +167,16 @@ class SapOrderReturnData extends AbstractSapOrder
         $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
         $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
         if ($websiteCode == 'vn_laneige_website') {
-            $nsamt = $order->getData('sap_nsamt');
-            $dcamt = $order->getData('sap_dcamt');
-            $slamt = $order->getData('sap_slamt');
+            $paymtd = 10;
+            $nsamt  = $order->getData('sap_nsamt');
+            $dcamt  = $order->getData('sap_dcamt');
+            $slamt  = $order->getData('sap_slamt');
         } else {
-            $nsamt = abs(round($this->getRmaSubtotalInclTax($rma)));
-            $dcamt = abs(round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) +
+            $paymtd = $order->getPayment()->getMethod() == 'ecpay_ecpaypayment' ? 'P' : 'S';
+            $nsamt  = abs(round($this->getRmaSubtotalInclTax($rma)));
+            $dcamt  = abs(round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) +
                 $this->getCatalogRuleDiscountAmount($rma)));
-            $slamt = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
+            $slamt  = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
                 abs(round($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed)));
         }
 
@@ -184,9 +186,10 @@ class SapOrderReturnData extends AbstractSapOrder
             'odrno' => "R" . $rma->getIncrementId(),
             'odrdt' => $this->dateFormatting($rma->getDateRequested(), 'Ymd'),
             'odrtm' => $this->dateFormatting($rma->getDateRequested(), 'His'),
-            'paymtd' => '',
+            'paymtd' => $paymtd,
             'payde' => '',
             'paytm' => '',
+            'PAY_MODE' => $order->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '',
             'auart' => self::RETURN_ORDER,
             'augru' => self::AUGRU_RETURN_CODE,
             'augruText' => '',
