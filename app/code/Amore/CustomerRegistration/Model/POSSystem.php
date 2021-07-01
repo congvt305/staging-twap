@@ -11,7 +11,7 @@
 namespace Amore\CustomerRegistration\Model;
 
 use Magento\Framework\HTTP\Client\Curl;
-use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Amore\CustomerRegistration\Helper\Data;
 use Magento\Customer\Model\Data\Customer;
 use GuzzleHttp\Client;
@@ -35,14 +35,16 @@ class POSSystem
     /**#@+
      * BA Code PREFIX
      */
+    const DATE_FORMAT = 'd/m/Y';
     const BA_CODE_PREFIX = 'TW';
     const BA_CODE_PREFIX_LOWERCASE = 'tw';
     /**#@-*/
 
     /**
-     * @var DateTime
+     * @var TimezoneInterface
      */
-    private $date;
+    private $timezone;
+
     /**
      * @var Data
      */
@@ -96,7 +98,7 @@ class POSSystem
         \Eguana\Directory\Helper\Data $cityHelper,
         Curl $curl,
         Data $config,
-        DateTime $date,
+        TimezoneInterface $timezone,
         \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory,
         \Zend\Http\Client $zendClient,
         POSLogger $logger,
@@ -104,7 +106,7 @@ class POSSystem
         \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
-        $this->date = $date;
+        $this->timezone = $timezone;
         $this->config = $config;
         $this->curlClient = $curl;
         $this->httpClientFactory = $httpClientFactory;
@@ -124,6 +126,9 @@ class POSSystem
         if (isset($posData['birthDay'])) {
             $posData['birthDay'] = substr_replace($posData['birthDay'], '/', 4, 0);
             $posData['birthDay'] = substr_replace($posData['birthDay'], '/', 7, 0);
+            if ($this->storeManager->getStore()->getCode() == "vn_laneige") {
+                $posData['birthDay'] = $this->changeDateFormat(strtotime($posData['birthDay']));
+            }
         }
         return $posData;
     }
@@ -550,4 +555,17 @@ class POSSystem
         return $baCode;
     }
 
+    /**
+     * This method is used to change the date format
+     * @param $date
+     * @return string
+     */
+    public function changeDateFormat($date)
+    {
+        try {
+            return $this->timezone->date($date)->format(self::DATE_FORMAT);
+        } catch (\Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+        }
+    }
 }
