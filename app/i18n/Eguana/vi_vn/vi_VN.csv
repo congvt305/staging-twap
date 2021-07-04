@@ -16433,3 +16433,4 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "State:","Tiểu bang:"
 "City:","Quận"
 "Road Name:","Tên đường:"
+"Payment and Delivery Policy","Chính sách Thanh toán và Giao hàng"
