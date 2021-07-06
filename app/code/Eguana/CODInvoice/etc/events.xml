@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 1/6/21
+ * Time: 10:02 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_submit_all_after">
+        <observer name="create_invoice_on_cod" instance="Eguana\CODInvoice\Observer\CreateInvoiceOnCOD" />
+    </event>
+</config>
