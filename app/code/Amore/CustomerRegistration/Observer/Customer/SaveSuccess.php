@@ -401,7 +401,7 @@ class SaveSuccess implements ObserverInterface
                 $dmDetailedAddress = $customerData['dm_detailed_address'];
                 $dmState = $customerData['dm_state'];
                 $dmCountryId = $customerData['country_id'];
-                $regionId = $customerData['region_id'];
+                $regionId = isset($customerData['region_id']) ? $customerData['region_id'] : "";
                 $firstName = $customerData['firstname'];
                 $lastName = $customerData['lastname'];
                 $mobileNumber = $customerData['mobile_number'];
