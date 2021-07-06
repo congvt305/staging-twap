@@ -278,12 +278,12 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'payde' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
                 'paytm' => $this->dateFormatting($invoice->getCreatedAt(), 'His'),
                 // added for VN start
-                'PAY_MODE' => $orderData->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '', //todo need to create payment method cod
-                'DHL_ID' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'TBD' : '', //todo need to make configuration for this
-                'SHP_SVCCD' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'PDE' : '',
-                'ORD_WGT' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? '1000' : '',
-                'INSURANCE' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'Y' : '',
-                'INSURNACE_VALUE' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? $orderGrandTotal : null, //todo null is okay?
+                'payMode' => $orderData->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '', //todo need to create payment method cod
+                'dhlID' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'TBD' : '', //todo need to make configuration for this
+                'shpSvccd' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'PDE' : '',
+                'ordWgt' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? '1000' : '',
+                'insurance' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'Y' : '',
+                'insuranceValue' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? $orderGrandTotal : null, //todo null is okay?
                 // added for VN start end
                 'auart' => self::NORMAL_ORDER,
                 'augru' => '',

@@ -189,7 +189,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'paymtd' => $paymtd,
             'payde' => '',
             'paytm' => '',
-            'PAY_MODE' => $order->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '',
+            'payMode' => $order->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '',
             'auart' => self::RETURN_ORDER,
             'augru' => self::AUGRU_RETURN_CODE,
             'augruText' => '',
