@@ -231,6 +231,15 @@ define([
          */
         isCvsPickupAddress: function (address) {
             return address.getType() === 'cvs-pickup-address';
-        }
+        },
+
+        isVnWebsite: function () {
+            let websiteId = window.checkout.websiteId;
+            if (websiteId == 8) {
+                return 0;
+            } else {
+                return 1;
+            }
+        },
     });
 });

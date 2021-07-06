@@ -14,11 +14,10 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
- * Class LineAddFriends
- *
+ * Class AddFriends
  * Get line add friends link
  */
-class LineAddFriends implements ArgumentInterface
+class AddFriends implements ArgumentInterface
 {
 
     /**
@@ -27,7 +26,7 @@ class LineAddFriends implements ArgumentInterface
     private $helperData;
 
     /**
-     * LineAddFriends constructor.
+     * AddFriends constructor.
      * @param Data $helperData
      */
     public function __construct(
@@ -61,5 +60,32 @@ class LineAddFriends implements ArgumentInterface
     public function getEnabledLine()
     {
         return $this->helperData->isEnabledLine();
+    }
+
+    /**
+     * Check if facebook login is enbled or not
+     * @return bool
+     */
+    public function getEnabledFacebook()
+    {
+        return $this->helperData->isEnabledFacebook();
+    }
+
+    /**
+     * Get facebook add friends link
+     * @return mixed
+     */
+    public function facebookAddFriendLink()
+    {
+        return $this->helperData->getFacebookAddFriendLink();
+    }
+
+    /**
+     * Get store identifier
+     * @return  int
+     */
+    public function getStoreId()
+    {
+        return $this->helperData->getStoreId();
     }
 }

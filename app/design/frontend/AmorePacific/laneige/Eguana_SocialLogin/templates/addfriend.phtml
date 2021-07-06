@@ -7,10 +7,11 @@
  * Date: 10/8/20
  * Time: 5:25 PM
  */
-/** @var \Eguana\SocialLogin\ViewModel\LineAddFriends $viewModel */
+/** @var \Eguana\SocialLogin\ViewModel\AddFriends $viewModel */
+
 $viewModel = $block->getData('add_friend_view_model');
 ?>
-<?php if ($viewModel->getEnabledInFrontend()):?>
+<?php if (($viewModel->getEnabledInFrontend()) && ($viewModel->getStoreId() != '8')):?>
     <?php if ($viewModel->getEnabledLine()):?>
         <div class="line-add-friend">
             <p class="note">
@@ -19,6 +20,18 @@ $viewModel = $block->getData('add_friend_view_model');
             </p>
             <a href="<?= $block->escapeUrl($viewModel->lineAddFriendLink()) ?>" target="_blank">
                 <img src="<?= $block->escapeUrl("https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png") ?>" alt="<?= $block->escapeHtml(__('Add as friend')) ?>" height="36" border="0">
+            </a>
+        </div>
+    <?php endif; ?>
+<?php elseif (($viewModel->getEnabledInFrontend()) && ($viewModel->getStoreId() == '8')): ?>
+<?php if ($viewModel->getEnabledFacebook()):?>
+        <div class="facebook-add-friend">
+            <p class="note">
+                <?= $block->escapeHtml(__('Join the VN Laneige FACEBOOK official account')) ?><br />
+                <?= $block->escapeHtml(__('You can enquire about your point information!')) ?>
+            </p>
+            <a href="<?= $block->escapeUrl($viewModel->facebookAddFriendLink()) ?>" target="_blank">
+                <img src="<?= $this->getViewFileUrl('Eguana_SocialLogin::images/fb-add-friends.jpg'); ?>" alt="<?= $block->escapeHtml(__('Add as friend')) ?>" height="36" border="0">
             </a>
         </div>
     <?php endif; ?>

@@ -15,6 +15,7 @@ use Magento\Framework\View\Element\Template as TemplateAlias;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\HTTP\Header;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Data
@@ -32,6 +33,7 @@ class Data extends AbstractHelperAlias
     const XML_SOCIAL_FACEBOOK_APP_ID        = 'SocialLogin/facebook/app_id';
     const XML_SOCIAL_FACEBOOK_APP_SECRET    = 'SocialLogin/facebook/app_secret';
     const XML_SOCIAL_FACEBOOK_CALLBACK_URL  = 'SocialLogin/facebook/oauth_redirect_uri';
+    const XML_FACEBOOK_ADD_FRIEND           = 'SocialLogin/facebook/facebook_add_friend';
     const XML_SOCIAL_GOOGLE_ENABLE          = 'SocialLogin/google/google_enable';
     const XML_SOCIAL_GOOGLE_CLIENT_ID       = 'SocialLogin/google/client_id';
     const XML_SOCIAL_GOOGLE_CLIENT_SECRET   = 'SocialLogin/google/client_secret';
@@ -50,19 +52,27 @@ class Data extends AbstractHelperAlias
     private $httpHeader;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * Data constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param \Magento\Framework\HTTP\Header $httpHeader
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
-        Header $httpHeader
+        Header $httpHeader,
+        StoreManagerInterface $storeManager
     ) {
         parent::__construct($context);
         $this->resultPageFactory                = $resultPageFactory;
         $this->httpHeader                       = $httpHeader;
+        $this->storeManager                     = $storeManager;
     }
 
     /**
@@ -257,5 +267,23 @@ class Data extends AbstractHelperAlias
     public function getGoogleCallbackUrl()
     {
         return $this->scopeConfig->getValue(self::XML_SOCIAL_GOOGLE_CALLBACK_URL, ScopeInterface::SCOPE_STORE);
+    }
+
+    /**
+     * Get store identifier
+     * @return  int
+     */
+    public function getStoreId()
+    {
+        return $this->storeManager->getStore()->getId();
+    }
+
+    /**
+     * Get facebook add friend link
+     * @return mixed
+     */
+    public function getFacebookAddFriendLink()
+    {
+        return $this->scopeConfig->getValue(self::XML_FACEBOOK_ADD_FRIEND, ScopeInterface::SCOPE_STORE);
     }
 }
