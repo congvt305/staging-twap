@@ -163,6 +163,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $pointUsed = $order->getRewardPointsBalance();
         $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
         $trackData = $this->getTracks($rma);
+        $shippingMethod = $order->getShippingMethod();
 
         $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
         $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
@@ -190,6 +191,11 @@ class SapOrderReturnData extends AbstractSapOrder
             'payde' => '',
             'paytm' => '',
             'payMode' => $order->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '',
+            'dhlID' => $shippingMethod === 'eguanadhl_tablerate' ? 'TBD' : '',
+            'shpSvccd' => $shippingMethod === 'eguanadhl_tablerate' ? 'PDE' : '',
+            'ordWgt' => $shippingMethod === 'eguanadhl_tablerate' ? '1000' : '',
+            'insurance' => $shippingMethod === 'eguanadhl_tablerate' ? 'Y' : '',
+            'insuranceValue' => $shippingMethod === 'eguanadhl_tablerate' ? $orderTotal : null,
             'auart' => self::RETURN_ORDER,
             'augru' => self::AUGRU_RETURN_CODE,
             'augruText' => '',
