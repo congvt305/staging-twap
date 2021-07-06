@@ -6,98 +6,117 @@
  * Time: 오전 10:42
  */
 /** @var $block \Amore\PointsIntegration\Block\Points\PointsHistorySearch */
-$pointsHistoryResults = $block->getPointsHistoryResult();
-$customerPointsResult = $block->getCustomerPointsResults();
+/** @var \Amore\PointsIntegration\ViewModel\PointsIntegration $pointsViewModel */
+$pointsViewModel = $block->getData('points_view_model');
+
+$blockId = $pointsViewModel->getPointsBlock() ?: '';
+$pointsBlock = '';
+if ($blockId) {
+    $pointsBlock = $block->getLayout()
+        ->createBlock(Magento\Cms\Block\Block::class)
+        ->setBlockId($blockId)
+        ->toHtml();
+} else {
+    $pointsHistoryResults = $block->getPointsHistoryResult();
+    $customerPointsResult = $block->getCustomerPointsResults();
+}
 ?>
 <div class="item title" data-role="collapsible">
     <a class="switch" data-toggle="trigger" href="#history-of-point-reward-tab"><?= $block->escapeHtml(__('History of Point Reward'))?></a>
 </div>
-<div id="history-of-point-reward-tab" class="item content" data-role="content">
-    <?php if (count($pointsHistoryResults) > 0) : ?>
-        <div class="table-wrapper point-history">
-            <div class="customer-points">
-                <div class="customer-point-data available-points">
-                    <?= /* @noEscape */__('Name of Point <span>%1</span> points',$customerPointsResult['availablePoint']) ?>
+<?php if ($blockId && $pointsBlock): ?>
+    <div id="history-of-point-reward-tab" class="item content" data-role="content">
+        <?= /* @noEscape */ $pointsBlock; ?>
+    </div>
+<?php else: ?>
+    <div id="history-of-point-reward-tab" class="item content" data-role="content">
+        <?php if (count($pointsHistoryResults) > 0) : ?>
+            <div class="table-wrapper point-history">
+                <div class="customer-points">
+                    <div class="customer-point-data available-points">
+                        <?= /* @noEscape */__('Name of Point <span>%1</span> points',$customerPointsResult['availablePoint']) ?>
+                    </div>
                 </div>
-            </div>
-            <table class="data table table-point history" id="point-history-table">
-                <thead>
-                <tr>
-                    <th scope="col" class="col points-history-reason"><?= $block->escapeHtml(__('Points Reason')) ?></th>
-                    <th scope="col" class="col points-history-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
-                    <th scope="col" class="col points-history-available-points"><?= $block->escapeHtml(__('Customer Points')) ?></th>
-                    <th scope="col" class="col points-history-valid-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
-                </tr>
-                </thead>
-                <tbody class="points-history-list">
-                <?php foreach ($pointsHistoryResults as $pointsHistory) :?>
+                <table class="data table table-point history" id="point-history-table">
+                    <thead>
                     <tr>
-                        <td data-th="<?=$block->escapeHtmlAttr(__('Points Reason')) ?>" class="col points-history-reason"><?=$pointsHistory['reason'] ?></td>
-                        <td data-th="<?=$block->escapeHtmlAttr(__('Name of Point')) ?>" class="col points-history-name"><?=$pointsHistory['typeNM'] ?></td>
-                        <td data-th="<?=$block->escapeHtmlAttr(__('Customer Points')) ?>" class="col points-history-available-points"><?=$pointsHistory['point'] ?></td>
-                        <td data-th="<?=$block->escapeHtmlAttr(__('Points Valid Period')) ?>" class="col points-history-valid-date"><?=$pointsHistory['validPeriod'] ?></td>
+                        <th scope="col" class="col points-history-reason"><?= $block->escapeHtml(__('Points Reason')) ?></th>
+                        <th scope="col" class="col points-history-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
+                        <th scope="col" class="col points-history-available-points"><?= $block->escapeHtml(__('Customer Points')) ?></th>
+                        <th scope="col" class="col points-history-valid-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
                     </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-        <div class="toolbar">
-            <div class="pages" id="points-history-pager">
-                <ul class="items pages-items pagination">
-                    <?php if ($pointsHistoryResults[0]['totPage'] > 1): ?>
-                        <?php if ($pointsHistoryResults[0]['prev']): ?>
-                            <li class="item points-integration-points-pager active" data-page="<?=$pointsHistoryResults[0]['prevPage']; ?>"><a class="action previous"><span><?=$block->escapeHtml(__('previous')); ?></span></a></li>
-                        <?php endif; ?>
-                        <?php for ($i = $pointsHistoryResults[0]['startPage']; $i <= $pointsHistoryResults[0]['endPage']; $i++) : ?>
-                            <?php if ($i == $pointsHistoryResults[0]['page']): ?>
-                                <li class="item points-integration-points-pager active" data-page="<?=$i; ?>"><strong class="page"><?=$i; ?></strong></li>
-                            <?php else: ?>
-                                <li class="item points-integration-points-pager active" data-page="<?=$i; ?>"><a class="page"><?=$i; ?></a></li>
+                    </thead>
+                    <tbody class="points-history-list">
+                    <?php foreach ($pointsHistoryResults as $pointsHistory) :?>
+                        <tr>
+                            <td data-th="<?=$block->escapeHtmlAttr(__('Points Reason')) ?>" class="col points-history-reason"><?=$pointsHistory['reason'] ?></td>
+                            <td data-th="<?=$block->escapeHtmlAttr(__('Name of Point')) ?>" class="col points-history-name"><?=$pointsHistory['typeNM'] ?></td>
+                            <td data-th="<?=$block->escapeHtmlAttr(__('Customer Points')) ?>" class="col points-history-available-points"><?=$pointsHistory['point'] ?></td>
+                            <td data-th="<?=$block->escapeHtmlAttr(__('Points Valid Period')) ?>" class="col points-history-valid-date"><?=$pointsHistory['validPeriod'] ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="toolbar">
+                <div class="pages" id="points-history-pager">
+                    <ul class="items pages-items pagination">
+                        <?php if ($pointsHistoryResults[0]['totPage'] > 1): ?>
+                            <?php if ($pointsHistoryResults[0]['prev']): ?>
+                                <li class="item points-integration-points-pager active" data-page="<?=$pointsHistoryResults[0]['prevPage']; ?>"><a class="action previous"><span><?=$block->escapeHtml(__('previous')); ?></span></a></li>
                             <?php endif; ?>
-                        <?php endfor; ?>
-                        <?php if ($pointsHistoryResults[0]['next']): ?>
-                            <li class="item points-integration-points-pager active" data-page="<?=$pointsHistoryResults[0]['nextPage']; ?>"><a class="action next"><span><?=$block->escapeHtml(__('next')); ?></span></a></li>
+                            <?php for ($i = $pointsHistoryResults[0]['startPage']; $i <= $pointsHistoryResults[0]['endPage']; $i++) : ?>
+                                <?php if ($i == $pointsHistoryResults[0]['page']): ?>
+                                    <li class="item points-integration-points-pager active" data-page="<?=$i; ?>"><strong class="page"><?=$i; ?></strong></li>
+                                <?php else: ?>
+                                    <li class="item points-integration-points-pager active" data-page="<?=$i; ?>"><a class="page"><?=$i; ?></a></li>
+                                <?php endif; ?>
+                            <?php endfor; ?>
+                            <?php if ($pointsHistoryResults[0]['next']): ?>
+                                <li class="item points-integration-points-pager active" data-page="<?=$pointsHistoryResults[0]['nextPage']; ?>"><a class="action next"><span><?=$block->escapeHtml(__('next')); ?></span></a></li>
+                            <?php endif; ?>
                         <?php endif; ?>
-                    <?php endif; ?>
-                    <?php if ($pointsHistoryResults[0]['totPage'] == 1): ?>
-                        <li class="item points-integration-points-pager" data-page="<?$pointsHistoryResults[0]['totPage']; ?>">
-                            <?=$pointsHistoryResults[0]['totPage']?>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </div>
-    <?php else : ?>
-        <div class="table-wrapper point-history">
-            <div class="customer-points">
-                <div class="customer-point-data available-points">
-                    <?= /* @noEscape */__('Name of Point <span>%1</span> points',0) ?>
+                        <?php if ($pointsHistoryResults[0]['totPage'] == 1): ?>
+                            <li class="item points-integration-points-pager" data-page="<?$pointsHistoryResults[0]['totPage']; ?>">
+                                <?=$pointsHistoryResults[0]['totPage']?>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
                 </div>
             </div>
-            <table class="data table table-point history" id="point-history-table">
-                <thead>
-                <tr>
-                    <th scope="col" class="col points-history-reason"><?= $block->escapeHtml(__('Points Reason')) ?></th>
-                    <th scope="col" class="col points-history-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
-                    <th scope="col" class="col points-history-available-points"><?= $block->escapeHtml(__('Customer Points')) ?></th>
-                    <th scope="col" class="col points-history-valid-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
-                </tr>
-                </thead>
-                <tbody class="points-history-list">
+        <?php else : ?>
+            <div class="table-wrapper point-history">
+                <div class="customer-points">
+                    <div class="customer-point-data available-points">
+                        <?= /* @noEscape */__('Name of Point <span>%1</span> points',0) ?>
+                    </div>
+                </div>
+                <table class="data table table-point history" id="point-history-table">
+                    <thead>
                     <tr>
-                        <td class="empty" colspan="4">
-                            <span><?= $block->escapeHtml(__('Points History Does not Exist.')) ?></span>
-                        </td>
+                        <th scope="col" class="col points-history-reason"><?= $block->escapeHtml(__('Points Reason')) ?></th>
+                        <th scope="col" class="col points-history-name"><?= $block->escapeHtml(__('Name of Point')) ?></th>
+                        <th scope="col" class="col points-history-available-points"><?= $block->escapeHtml(__('Customer Points')) ?></th>
+                        <th scope="col" class="col points-history-valid-date"><?= $block->escapeHtml(__('Points Valid Period')) ?></th>
                     </tr>
-                </tbody>
-            </table>
-        </div>
-    <?php endif ?>
-</div>
-<script type="text/x-magento-init">
-    {
-        "*": {
-            "historySearch": {}
+                    </thead>
+                    <tbody class="points-history-list">
+                        <tr>
+                            <td class="empty" colspan="4">
+                                <span><?= $block->escapeHtml(__('Points History Does not Exist.')) ?></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif ?>
+    </div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "historySearch": {}
+            }
         }
-    }
-</script>
+    </script>
+<?php endif; ?>
+
