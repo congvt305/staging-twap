@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 5/11/21
+ * Time: 10:10 AM
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    <extension_attributes for="Magento\Checkout\Api\Data\ShippingInformationInterface">
+        <attribute code="is_apply" type="string"/>
+        <attribute code="company_name" type="string"/>
+        <attribute code="tax_code" type="string"/>
+        <attribute code="state" type="string"/>
+        <attribute code="city" type="string"/>
+        <attribute code="road_name" type="string"/>
+    </extension_attributes>
+</config>

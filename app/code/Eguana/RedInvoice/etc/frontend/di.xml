@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 5/11/21
+* Time: 10:10 AM
+*/-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\Model\DefaultConfigProvider">
+        <plugin name="eguana_add_state_and_city_dropdown" type="Eguana\RedInvoice\Plugin\Checkout\Model\DefaultConfigProvider" />
+    </type>
+</config>

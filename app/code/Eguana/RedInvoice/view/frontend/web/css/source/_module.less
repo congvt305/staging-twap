@@ -1,0 +1,61 @@
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 5/11/21
+ * Time: 10:10 AM
+ */
+
+//
+//  Common Desktop
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .red-invoice-form {
+
+        #show-red-invoice-button {
+            text-align: center;
+        }
+
+        #red-invoice-form {
+            display: none;
+
+            .red-invoice-form-table {
+                width: 55%;
+            }
+
+            .fieldset {
+                .field {
+                    .company-name-error {
+                        display: none;
+                    }
+
+                    .tax-code-error {
+                        display: none;
+                    }
+
+                    #state-select-field {
+                        margin-bottom: 20px;
+
+                        .state-error {
+                            display: none;
+                        }
+                    }
+
+                    #city-select-field {
+                        margin-bottom: 20px;
+
+                        .city-error {
+                            display: none;
+                        }
+                    }
+
+                    .road-name-error {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 5/11/21
+ * Time: 10:10 AM
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin">
+        <route id="eguana_redinvoice" frontName="eguana_redinvoice">
+            <module name="Eguana_RedInvoice"/>
+        </route>
+    </router>
+</config>
