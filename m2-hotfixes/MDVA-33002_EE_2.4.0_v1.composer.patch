@@ -1,0 +1,18 @@
+diff --git a/vendor/magento/module-catalog/Model/ResourceModel/Product/Collection.php b/vendor/magento/module-catalog/Model/ResourceModel/Product/Collection.php
+index 0cc3090100e..40b04be290a 100644
+--- a/vendor/magento/module-catalog/Model/ResourceModel/Product/Collection.php
++++ b/vendor/magento/module-catalog/Model/ResourceModel/Product/Collection.php
+@@ -914,7 +914,12 @@ class Collection extends \Magento\Catalog\Model\ResourceModel\Collection\Abstrac
+         }
+ 
+         $this->_productLimitationFilters['website_ids'] = $websites;
+-        $this->_applyProductLimitations();
++
++        if ($this->getStoreId() == Store::DEFAULT_STORE_ID) {
++            $this->_productLimitationJoinWebsite();
++        } else {
++            $this->_applyProductLimitations();
++        }
+ 
+         return $this;
+     }
