@@ -18,7 +18,7 @@ Telephone,Điện thoại
 "Input 4 digit verification code","Mã xác minh 4 chữ số nhập liệu"
 Verify,Xác nhận
 "Verify Registration","Xác nhận đăng ký"
-"Code","Mật"
+"Code","Mã xác minh"
 "Address Information","Thông tin địa chỉ"
 Address,Địa chỉ
 "Street Address %1","Địa chỉ đường phố %1"
@@ -31,7 +31,7 @@ Password,Mật khẩu
 "Confirm Password","Xác nhận mật khẩu"
 "Sign Up for Newsletter","Đăng ký nhận bản tin"
 "Read more","Đọc thêm"
-"Marketing Consent","Thoả thuận tiếp thị"
+"Marketing Consent","Tôi đồng ý:"
 "Create an Account","Tạo tài khoản"
 Back,Trở lại
 Agree,Đồng ý
@@ -83,3 +83,5 @@ Api,API
 "Counter service staff code","Mã nhân viên phục vụ quầy"
 "Please click 'Confirm' button for data verification","Vui lòng nhấp vào nút "Xác nhận" để xác minh dữ liệu"
 "The code is confirmed as valid information","Mã được xác nhận là thông tin hợp lệ"
+"Call & SMS Marketing","Nhận cuộc gọi và tin nhắn quảng cáo"
+"DM Marketing","Nhận thông báo về ưu đãi và khuyến mãi"
