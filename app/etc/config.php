@@ -539,6 +539,7 @@ return [
         'Eguana_StoreSms' => 1,
         'Eguana_BizConnect' => 1,
         'Eguana_BlackCat' => 1,
+        'Eguana_CODInvoice' => 1,
         'Eguana_ChangeStatus' => 1,
         'Eguana_CustomAmastyPromo' => 1,
         'Eguana_CustomBundle' => 1,
