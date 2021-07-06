@@ -1,0 +1,13 @@
+<?php
+/**
+ * @var \Amore\CustomerRegistration\Block\Datalayer $block
+ */
+
+$eventRegisterSuccess = $block->getEventRegisterSuccess();
+if ($eventRegisterSuccess):
+    $block->setEventRegisterSuccess(null);
+?>
+<script>
+    window.dataLayer.push({'event': 'sign_up'})
+</script>
+<?php endif;?>

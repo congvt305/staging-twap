@@ -19,6 +19,8 @@
         }
     },
     "require": {
+        "adyen/module-payment": "^7.1",
+        "adyen/php-api-library": "^10.1",
         "dotmailer/dotmailer-magento2-extension": "4.7.1 as 4.4.0",
         "dotmailer/dotmailer-magento2-extension-enterprise": "1.0.7 as 1.0.2",
         "magento/magento-cloud-metapackage": ">=2.3.5 <2.3.6",
