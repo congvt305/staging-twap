@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 5/11/21
+ * Time: 10:10 AM
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="email_order_set_template_vars_before">
+        <observer name="order-add-red-invoice-fields" instance="Eguana\RedInvoice\Observer\AddRedInvoiceInEmail"/>
+    </event>
+</config>

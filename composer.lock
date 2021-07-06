@@ -4,8 +4,98 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d86cbff3425c1c3789d756ac9b73692f",
+    "content-hash": "33d379d1629c8fa910c4003f1f211633",
     "packages": [
+        {
+            "name": "adyen/module-payment",
+            "version": "7.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Adyen/adyen-magento2.git",
+                "reference": "e22d84d1b874927bcbd9909911e473a7f8bae278"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Adyen/adyen-magento2/zipball/e22d84d1b874927bcbd9909911e473a7f8bae278",
+                "reference": "e22d84d1b874927bcbd9909911e473a7f8bae278",
+                "shasum": ""
+            },
+            "require": {
+                "adyen/php-api-library": "^10",
+                "ext-json": "*",
+                "magento/framework": ">=101.0.8 <102 || >=102.0.1",
+                "magento/module-paypal": ">=100.2.6",
+                "magento/module-vault": "101.*"
+            },
+            "require-dev": {
+                "magento/magento-coding-standard": "*",
+                "phpunit/phpunit": "~6.5.0",
+                "squizlabs/php_codesniffer": "~3.5.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Adyen\\Payment\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "Official Magento2 Plugin to connect to Payment Service Provider Adyen.",
+            "time": "2021-06-22T08:16:00+00:00"
+        },
+        {
+            "name": "adyen/php-api-library",
+            "version": "10.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Adyen/adyen-php-api-library.git",
+                "reference": "91917518e17595a91a3cc5887dd95e7d76767276"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Adyen/adyen-php-api-library/zipball/91917518e17595a91a3cc5887dd95e7d76767276",
+                "reference": "91917518e17595a91a3cc5887dd95e7d76767276",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-openssl": "*",
+                "monolog/monolog": ">=1.16",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "dms/phpunit-arraysubset-asserts": "0.2.1",
+                "friendsofphp/php-cs-fixer": "*",
+                "php-coveralls/php-coveralls": "2.4.3",
+                "phpunit/phpunit": "9.5.4",
+                "squizlabs/php_codesniffer": "3.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Adyen\\": "src/Adyen/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "A PHP client library for accessing Adyen APIs",
+            "homepage": "https://github.com/Adyen/adyen-php-api-library",
+            "keywords": [
+                "adyen"
+            ],
+            "time": "2021-04-30T14:03:59+00:00"
+        },
         {
             "name": "amzn/amazon-pay-and-login-magento-2-module",
             "version": "3.4.1-p2",
@@ -2373,38 +2463,6 @@
             },
             "license": [
                 "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Joe Constant",
-                    "email": "joe.constant@klarna.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Dario Kassler",
-                    "email": "dario.kassler@klarna.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Kenny Gilles",
-                    "email": "kenny.gilles@klarna.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Markus Simon",
-                    "email": "markus.simon2@klarna.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Fei Chen",
-                    "email": "fei.chen@klarna.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Jason Grim",
-                    "email": "jason.grim@klarna.com",
-                    "role": "Developer"
-                }
             ],
             "description": "Klarna Payments Magento 2 Extension"
         },

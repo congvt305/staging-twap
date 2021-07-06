@@ -15,6 +15,9 @@ var config = {
             "Magento_Swatches/js/swatch-renderer" : {
                 "Eguana_CustomCatalog/js/swatch-renderer-mixin": true
 
+            },
+            'Magento_Catalog/js/price-box': {
+                'Eguana_CustomCatalog/js/price-box': true
             }
         }
     }

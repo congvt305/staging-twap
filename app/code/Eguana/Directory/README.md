@@ -39,4 +39,7 @@ Expand Expansion selector the City Options section and do the following:
 - Set the Allow to Choose City if It is Optional for Country field. (Dropdow will display for selecting city.)
 
 
-
+#Edit by Arslan
+Add a before plugin (path = Eguana\Directory\Plugin\Model\Currency) in order to set the price's precision value equal to zero
+for orders list and order's detail page at customer My Account(Dashboard).
+And also from order list grid at the admin panel for vietnam site.

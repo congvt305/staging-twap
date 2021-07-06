@@ -43,6 +43,11 @@ class Refund
                 return true;
             }
 
+            if (($order->getPayment()->getMethod() === 'adyen_cc') ||
+                ($order->getPayment()->getMethod() === 'cashondelivery')) {
+                return true;
+            }
+
             $ecpayMethod = $this->getEcpayMethod($order);
             if ($ecpayMethod === 'credit') {
                 return true;
