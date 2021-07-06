@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!--/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 5/11/21
+ * Time: 10:10 AM
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Eguana\RedInvoice\Api\Data\RedInvoiceSearchResultsInterface"
+                type="Eguana\RedInvoice\Model\RedInvoiceSearchResults" />
+    <preference for="Eguana\RedInvoice\Api\Data\RedInvoiceInterface" type="Eguana\RedInvoice\Model\RedInvoice" />
+    <preference for="Eguana\RedInvoice\Api\RedInvoiceRepositoryInterface" type="Eguana\RedInvoice\Model\RedInvoiceRepository" />
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="redInvoice_redInvoice_listing_data_source" xsi:type="string">Eguana\RedInvoice\Model\ResourceModel\RedInvoice\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Eguana\RedInvoice\Model\ResourceModel\RedInvoice\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">eguana_red_invoice_data</argument>
+            <argument name="redInvoicePrefix" xsi:type="string">redInvoice_prefix_grid_collection</argument>
+            <argument name="redInvoiceObject" xsi:type="string">redInvoice_object_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Eguana\RedInvoice\Model\ResourceModel\RedInvoice</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Eguana\RedInvoice\Api\Data\RedInvoiceInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">eguana_red_invoice_data</item>
+                    <item name="identifierField" xsi:type="string">id</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="red_invoice_form_plugin" type="Eguana\RedInvoice\Plugin\Checkout\Model\ShippingInformationManagement" sortOrder="20"/>
+    </type>
+    <type name="Magento\Checkout\Block\Checkout\LayoutProcessor">
+        <plugin name="red_invoice_layout" type="Eguana\RedInvoice\Plugin\Checkout\LayoutProcessorPlugin"/>
+    </type>
+    <type name="Magento\Sales\Api\OrderManagementInterface">
+        <plugin name="after_place_order_add_redinvoice_data" type="Eguana\RedInvoice\Plugin\Sales\Api\OrderManagement"/>
+    </type>
+    <type name="Eguana\RedInvoice\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Eguana\RedInvoice\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">redInvoiceLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Eguana\RedInvoice\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -572,6 +572,7 @@ return [
         'Eguana_PendingCanceler' => 1,
         'Eguana_Pip' => 1,
         'Pixlee_Pixlee' => 1,
+        'Eguana_RedInvoice' => 1,
         'Eguana_Redemption' => 1,
         'Eguana_Share' => 1,
         'Eguana_MobileLogin' => 1,

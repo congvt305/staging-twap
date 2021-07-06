@@ -1,0 +1,94 @@
+<!--/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 5/11/21
+ * Time: 10:10 AM
+ */-->
+<div class="red-invoice-form control">
+	<div id="show-red-invoice-button" class="step-title" for="red_invoice">
+        <button data-bind="i18n: 'Request for redinvoice', click: showRedInvoiceForm"></button>
+    </div>
+	<div id="red-invoice-form" class="control">
+        <table class="red-invoice-form-table">
+            <tbody>
+                <tr class="row">
+                    <td class="col">
+                        <input type="radio" class="radio" id="apply_button" name="is_apply" value="1">
+                    </td>
+                    <td class="col">
+                        <span data-bind="i18n: 'Apply'"></span>
+                    </td>
+                    <td class="col">
+                        <input type="radio" class="radio" id="do_not_apply_button" name="is_apply" value="0" checked="checked">
+                    </td>
+                    <td class="col">
+                        <span data-bind="i18n: 'Do not apply'"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <fieldset>
+            <div class="fieldset" id="red-invoice-fields">
+                <div class="field _required">
+                    <label for="company_name" class="label">
+                        <span data-bind="i18n: 'Company name'"></span>
+                    </label>
+
+                    <div class="control">
+                        <input type="text" name="company_name" id="company_name" class="input-text required" data-validate="{required:true}">
+                    </div>
+                    <div class="company-name-error">
+                        <div role="error" class="message error">
+                            <span data-bind="i18n: 'This is required field'"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field _required">
+                    <label for="tax_code" class="label">
+                        <span data-bind="i18n: 'Tax code'"></span>
+                    </label>
+
+                    <div class="control">
+                        <input type="number" min="0" name="tax_code" id="tax_code" class="input-text required" data-validate="{required:true}">
+                    </div>
+                    <div class="tax-code-error">
+                        <div role="error" class="message error">
+                            <span data-bind="i18n: 'This is required field'"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field _required">
+                    <label class="label">
+                        <span data-bind="i18n: 'Company address'"></span>
+                    </label>
+
+                    <div class="control" id="state-select-field">
+                        <select name="state" data-bind="options: availableCountries, optionsText: 'label', optionsValue: 'value', event: { change: updateCities}"></select>
+                        <div class="state-error">
+                            <div role="error" class="message error">
+                                <span data-bind="i18n: 'This is required field'"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control" id="city-select-field">
+                        <select name="city" data-bind="options: availableCities, optionsText: 'default_name', optionsValue: 'city_id'"></select>
+                    </div>
+
+                    <div class="control">
+                        <input type="text" name="road_name" id="road_name" data-bind="attr:{placeholder: $t('Road Name/Building')}" class="input-text required" data-validate="{required:true}">
+                    </div>
+                    <div class="road-name-error">
+                        <div role="error" class="message error">
+                            <span data-bind="i18n: 'This is required field'"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+	</div>
+</div>
