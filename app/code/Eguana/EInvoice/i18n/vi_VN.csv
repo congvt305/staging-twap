@@ -39,3 +39,5 @@ Active,Kích hoạt
 Frequency,Tần Suất
 "Start Time","Thời Gian Bắt Đầu"
 "E-Invoice Triplicate Title","Tựa đề ba bản quyền điện tử"
+"Note: Please reconfirm the content and quantity of the goods you purchased, and please complete the payment within ten minutes, otherwise the order will be automatically invalid!","Lưu ý: Vui lòng kiểm tra kỹ nội dung và số lượng của mặt hàng đã mua và hoàn tất việc thanh toán trong vòng 10 phút. Nếu không, đơn đặt hàng của bạn sẽ tự động bị hủy bỏ!"
+"After sending the order, please do not click on the previous page or rearrange it to avoid data transmission failure or repeated authorization by swiping card","Sau khi gửi đơn hàng, vui lòng không bấm vào trang trước để đặt hàng nữa. Có thể xảy ra lỗi truyền dữ liệu hoặc xác nhận lặp lại"
