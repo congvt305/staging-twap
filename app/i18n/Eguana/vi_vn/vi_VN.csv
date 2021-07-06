@@ -16415,3 +16415,4 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "The widget %1 is no longer available. Select a different widget.","Widget %1 không còn dùng được nữa. Chọn một widget khác.",lib,web
 "First character must be letter.","Ký tự đầu tiên phải là chữ cái.",lib,web
 "The password can't be the same as the email address. Create a new password and try again.","Mật khẩu không thể bằng địa chỉ email. Tạo một mật khẩu mới và thử lại.",lib,web
+"Go to shopping cart","direct Purchase"

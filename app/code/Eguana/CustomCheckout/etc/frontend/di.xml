@@ -6,4 +6,7 @@
     <type name="Magento\Checkout\Model\DefaultConfigProvider">
         <plugin name="checkout-summary-product-attribute" type="Eguana\CustomCheckout\Plugin\Checkout\Model\DefaultConfigProviderPlugin" />
     </type>
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="eguana_go_to_checkout" type="Eguana\CustomCheckout\Plugin\Model\Cart" disabled="false"/>
+    </type>
 </config>
