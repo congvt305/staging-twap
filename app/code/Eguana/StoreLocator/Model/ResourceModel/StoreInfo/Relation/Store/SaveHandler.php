@@ -52,31 +52,32 @@ class SaveHandler implements ExtensionInterface
         $connection = $entityMetadata->getEntityConnection();
 
         $oldStores = $this->resourceEvent->lookupStoreIds((int)$entity->getId());
-        $newStores = (array)$entity->getStores();
+        $newStores = $entity->getStores();
+        if (!($newStores === null)) {
+            $newStores = (array)$entity->getStores();
+            $table = $this->resourceEvent->getTable('eguana_storelocator_store');
 
-        $table = $this->resourceEvent->getTable('eguana_storelocator_store');
-
-        $delete = array_diff($oldStores, $newStores);
-        if ($delete) {
-            $where = [
-                $linkField . ' = ?' => (int)$entity->getData($linkField),
-                'store_id IN (?)' => $delete,
-            ];
-            $connection->delete($table, $where);
-        }
-
-        $insert = array_diff($newStores, $oldStores);
-        if ($insert) {
-            $data = [];
-            foreach ($insert as $storeId) {
-                $data[] = [
-                    $linkField => (int)$entity->getData($linkField),
-                    'store_id' => (int)$storeId,
+            $delete = array_diff($oldStores, $newStores);
+            if ($delete) {
+                $where = [
+                    $linkField . ' = ?' => (int)$entity->getData($linkField),
+                    'store_id IN (?)' => $delete,
                 ];
+                $connection->delete($table, $where);
             }
-            $connection->insertMultiple($table, $data);
-        }
 
+            $insert = array_diff($newStores, $oldStores);
+            if ($insert) {
+                $data = [];
+                foreach ($insert as $storeId) {
+                    $data[] = [
+                        $linkField => (int)$entity->getData($linkField),
+                        'store_id' => (int)$storeId,
+                    ];
+                }
+                $connection->insertMultiple($table, $data);
+            }
+        }
         return $entity;
     }
 }

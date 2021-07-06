@@ -22,7 +22,7 @@
     <column xsi:type="varchar" name="location" nullable="true" length="100" comment="Store Map Location"/>
     <column xsi:type="timestamp" name="created_at" on_update="true" nullable="true" default="CURRENT_TIMESTAMP" comment="Created At"/>
     <column xsi:type="varchar" name="store_id" nullable="false" disabled="true" length="100" default="0" comment="WebSite Store ID"/>
-    <column xsi:type="varchar" name="email" nullable="true" length="20" comment="store Email address"/>
+    <column xsi:type="varchar" name="email" nullable="true" length="255" comment="store Email address"/>
     <column xsi:type="varchar" name="timing" nullable="true" length="500" comment="Store timing"/>
     <column xsi:type="varchar" name="store_type" nullable="true" length="20" comment="Store type"/>
     <column xsi:type="varchar" name="area" nullable="false" length="3" comment="Store Area"/>
