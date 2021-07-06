@@ -163,6 +163,8 @@ class SapOrderReturnData extends AbstractSapOrder
         $pointUsed = $order->getRewardPointsBalance();
         $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
         $trackData = $this->getTracks($rma);
+        $ztrackId = $trackData['track_number'] ?? '';
+        $shippingMethod = $order->getShippingMethod();
 
         $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
         $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
@@ -189,7 +191,12 @@ class SapOrderReturnData extends AbstractSapOrder
             'paymtd' => $paymtd,
             'payde' => '',
             'paytm' => '',
-            'PAY_MODE' => $order->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '',
+            'payMode' => $order->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '',
+            'dhlID' => $shippingMethod === 'eguanadhl_tablerate' ? 'TBD' : '',
+            'shpSvccd' => $shippingMethod === 'eguanadhl_tablerate' ? 'PDE' : '',
+            'ordWgt' => $shippingMethod === 'eguanadhl_tablerate' ? '1000' : '',
+            'insurance' => $shippingMethod === 'eguanadhl_tablerate' ? 'Y' : '',
+            'insuranceValue' => $shippingMethod === 'eguanadhl_tablerate' ? $orderTotal : null,
             'auart' => self::RETURN_ORDER,
             'augru' => self::AUGRU_RETURN_CODE,
             'augruText' => '',
@@ -228,7 +235,7 @@ class SapOrderReturnData extends AbstractSapOrder
             // 납품처
             'kunwe' => $this->kunweCheck($order),
             // trackNo 가져와야 함
-            'ztrackId' => $trackData['track_number']
+            'ztrackId' => $ztrackId
         ];
 
         return $bindData;
@@ -677,30 +684,37 @@ class SapOrderReturnData extends AbstractSapOrder
      */
     public function getTracks($rma)
     {
-        $tracks = $rma->getTracks();
-        $trackData = [];
-        foreach ($tracks as $track) {
-            $trackData[] = [
-                'carrier_title' => $track->getCarrierTitle(),
-                'carrier_code' => $track->getCarrierCode(),
-                'rma_id' => $track->getRmaEntityId(),
-                'track_number' => $track->getTrackNumber()
-            ];
-        }
+        $storeData = $this->storeRepository->getById($rma->getStoreId());
+        $storeCode = (string)$storeData->getCode();
 
-        $trackCount = count($trackData);
-        if ($trackCount == 1) {
-            return $trackData[0];
-        } elseif ($trackCount == 0) {
-            $storeData = $this->storeRepository->getById($rma->getStoreId());
-            $storeCode = (string)$storeData->getCode();
-            if ($storeCode == "vn_laneige") {
+        $trackData = [];
+        if ($storeCode != "vn_laneige") {
+            $tracks = $rma->getTracks();
+            foreach ($tracks as $track) {
+                $trackData[] = [
+                    'carrier_title' => $track->getCarrierTitle(),
+                    'carrier_code' => $track->getCarrierCode(),
+                    'rma_id' => $track->getRmaEntityId(),
+                    'track_number' => $track->getTrackNumber()
+                ];
+            }
+
+            $trackCount = count($trackData);
+            if ($trackCount == 1) {
                 return $trackData[0];
+            } elseif ($trackCount == 0) {
+                $storeData = $this->storeRepository->getById($rma->getStoreId());
+                $storeCode = (string)$storeData->getCode();
+                if ($storeCode == "vn_laneige") {
+                    return $trackData[0];
+                } else {
+                    throw new RmaTrackNoException(__("Tracking No Does Not Exist."));
+                }
             } else {
-                throw new RmaTrackNoException(__("Tracking No Does Not Exist."));
+                throw new RmaTrackNoException(__("Tracking No Exist more than 1."));
             }
         } else {
-            throw new RmaTrackNoException(__("Tracking No Exist more than 1."));
+            return $trackData;
         }
     }
 
