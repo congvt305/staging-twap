@@ -1,14 +1,11 @@
 define([
     'jquery',
     'Magento_Ui/js/modal/alert',
-    'Magento_Checkout/js/model/quote',
-    'Magento_Checkout/js/model/shipping-rate-processor/new-address',
-    'Magento_Checkout/js/model/shipping-rate-processor/customer-address',
-    'Magento_Checkout/js/model/shipping-rate-registry',
+    'Magento_Checkout/js/action/get-totals',
     'underscore',
     'mage/validation',
     'mage/translate'
-], function ($, alert, quote, defaultProcessor, customerAddressProcessor, rateRegistry, _) {
+], function ($, alert, getTotalsAction, _) {
     'use strict';
 
     return function (config) {
@@ -39,21 +36,10 @@ define([
 
                     $("div.rewards").replaceWith(rewards_result);
 
-                    /*Shipping method reloading */
-                    var processors = [];
+                    /* Totals summary reloading */
+                    var deferred = $.Deferred();
+                    getTotalsAction([], deferred);
 
-                    rateRegistry.set(quote.shippingAddress().getCacheKey(), null);
-
-                    processors.default =  defaultProcessor;
-                    processors['customer-address'] = customerAddressProcessor;
-
-                    var type = quote.shippingAddress().getType();
-
-                    if (processors[type]) {
-                        processors[type].getRates(quote.shippingAddress());
-                    } else {
-                        processors.default.getRates(quote.shippingAddress());
-                    }
                     $('body').trigger('processStop');
                 },
 

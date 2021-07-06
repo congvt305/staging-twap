@@ -7,6 +7,15 @@
     .form-edit-account,
     .form-create-account-pos {
         .field {
+            .label.state{
+                &:after{
+                    content: '*';
+                    color: #f00;
+                    font-size: 1.2rem;
+                    margin: 0 0 0 5px;
+                }
+            }
+
             &.mobile,
             &.verification-code,
             &.ba-code {
