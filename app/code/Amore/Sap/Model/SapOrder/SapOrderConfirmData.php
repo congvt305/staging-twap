@@ -275,15 +275,15 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'odrdt' => $this->dateFormatting($orderData->getCreatedAt(), 'Ymd'),
                 'odrtm' => $this->dateFormatting($orderData->getCreatedAt(), 'His'),
                 'paymtd' => $paymtd,
-                'payde' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
+                'paydt' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
                 'paytm' => $this->dateFormatting($invoice->getCreatedAt(), 'His'),
                 // added for VN start
                 'payMode' => $orderData->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '', //todo need to create payment method cod
-                'dhlID' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'TBD' : '', //todo need to make configuration for this
+                'dhlId' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'TBD' : '', //todo need to make configuration for this
                 'shpSvccd' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'PDE' : '',
                 'ordWgt' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? '1000' : '',
                 'insurance' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'Y' : '',
-                'insuranceValue' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? $orderGrandTotal : null, //todo null is okay?
+                'insurnaceValue' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? $orderGrandTotal : null, //todo null is okay?
                 // added for VN start end
                 'auart' => self::NORMAL_ORDER,
                 'augru' => '',
