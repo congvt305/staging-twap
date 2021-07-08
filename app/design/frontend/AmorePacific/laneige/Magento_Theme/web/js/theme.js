@@ -98,13 +98,15 @@ define([
             mediaCheck({
                 media: '(max-width: 768px)',
                 entry: function () {
-                    $('.box-tocart .actions').removeClass('sticky');
+                    if($('.box-tocart .actions').length > 0) {
+                        var scrollTop = $(window).scrollTop();
+                        var stickyNavTop = $('.box-tocart .actions').offset().top;
 
-                    var scrollTop = $(window).scrollTop();
-                    var stickyNavTop = $('.box-tocart .actions').offset().top;
+                        $('.box-tocart .actions').removeClass('sticky');
 
-                    if (scrollTop > stickyNavTop) {
-                        $('.box-tocart .actions').addClass('sticky');
+                        if (scrollTop > stickyNavTop) {
+                            $('.box-tocart .actions').addClass('sticky');
+                        }
                     }
                 }
             });
