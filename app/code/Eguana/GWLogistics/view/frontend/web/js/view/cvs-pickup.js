@@ -70,10 +70,6 @@ define([
             }, this);
             this.preselectLocation();
 
-            // if (window.location.pathname === '/checkout/index/index/') {
-            //     this.preselectLocation();
-            // }
-            // cvsLocation.clear();
             this.syncWithShipping();
         },
 
@@ -100,14 +96,11 @@ define([
         },
 
         preselectLocation: function () {
-            //처음 왔거나 안에서 왔다갔다 한경
             var selectedLocation = pickupLocationsService.selectedLocation();
-            // console.log('preselectLocation ...: ', selectedLocation);
 
             if (selectedLocation) {
                 pickupLocationsService.selectForShipping(selectedLocation);
             }
-            // 처음 들어왔는데 저장해 놓은 cvs가 있는경우
             pickupLocationsService.getLocation()
                 .then(function (location) {
                     if (!location.CVSAddress) {
@@ -138,9 +131,6 @@ define([
          * @returns void
          */
         selectShipping: function () {
-            // console.log('selectShipping');
-            // console.log(quote.shippingMethod());
-            // console.log(quote.shippingAddress());
             var nonPickupShippingMethod = _.find(
                 this.rates(),
                 function (rate) {
@@ -154,21 +144,12 @@ define([
 
             this.selectShippingMethod(nonPickupShippingMethod);
 
-            // registry.async('checkoutProvider')(function (checkoutProvider) {
-            //     checkoutProvider.set(
-            //         'shippingAddress',
-            //         quote.shippingAddress()
-            //     );
-            //     checkoutProvider.trigger('data.reset');
-            // });
         },
 
         /**
          * @returns void
          */
         selectCvsPickup: function () {
-            // console.log('selectCvsPickup');
-            // console.log(this.rate['carrier_code']);
             var pickupShippingMethod = _.findWhere(
                 this.rates(),
                 {
@@ -178,7 +159,6 @@ define([
                 this
             );
 
-            // this.preselectLocation();
             this.selectShippingMethod(pickupShippingMethod);
         },
 
