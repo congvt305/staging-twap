@@ -117,6 +117,7 @@ class Data extends \Magento\Directory\Helper\Data
             }
             $cities[$city->getRegionId()][$city->getCityId()] = [
                 'code' => $city->getCode(),
+                'pos_code' => $city->getPosCode(),
                 'name' => (string)__($city->getName()),
             ];
         }
