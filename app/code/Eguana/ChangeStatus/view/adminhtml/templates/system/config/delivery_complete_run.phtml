@@ -1,0 +1,26 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2019 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: raheel
+ * Date: 19/4/21
+ * Time: 4:50 PM
+ */
+
+/** @var \Eguana\ChangeStatus\Block\System\Config\DeliveryCompleteCronRun $block */
+?>
+<?= /* @noEscape */ $block->getButtonHtml(); ?>
+
+<div class="collect-indicator" id="collect_span_delivery_complete">
+    <span id="collect_message_span_delivery_complete"></span>
+</div>
+<script type="text/x-magento-init">
+   {
+       "*": {
+           "delivery_complete_cron": {
+                "deliveryCompleteAjaxUrl": "<?= $block->escapeUrl($block->getAjaxUrl()); ?>"
+           }
+       }
+   }
+</script>
