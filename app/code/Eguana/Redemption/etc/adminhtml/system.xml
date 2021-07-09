@@ -100,6 +100,10 @@
                         <field id="*/*/enabled">1</field>
                     </depends>
                 </field>
+                <field id="home_delivery_enabled" translate="label" sortOrder="110" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Home Delivery Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
         </section>
     </system>
