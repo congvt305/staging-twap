@@ -3328,7 +3328,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Cart Subtotal","Tổng phụ giỏ hàng",module,Magento_Checkout
 "Payment Information","Thông tin thanh toán",module,Magento_Checkout
 "No Payment method available.","Không có phương thức thanh toán có sẵn.",module,Magento_Checkout
-"You can track your order status by creating an account.","Bạn có thể theo dõi tình trạng đơn hàng của bạn bằng cách tạo một tài khoản.",module,Magento_Checkout
+"You can track your order status by creating an account.","Bạn có thể tạo một tài khoản để theo dõi tình trạng đơn hàng của mình !",module,Magento_Checkout
 "Place Order","Đặt hàng",module,Magento_Checkout
 "Forgot an Item?","Quên một sản phẩm?",module,Magento_Checkout
 "Edit Your Cart","Sửa giỏ hàng của bạn",module,Magento_Checkout
@@ -4818,7 +4818,7 @@ new products will be created. Use this step to customize images and price for yo
 "The customer would belong to Customer Group %s.","Khách hàng sẽ thuộc về nhóm khách hàng %s.",module,Magento_Customer
 "There was an error detecting Customer Group.","Đã có lỗi khi phát hiện các nhóm khách hàng.",module,Magento_Customer
 "Validate VAT Number","Xác nhận số thuế GTGT",module,Magento_Customer
-"Customer Login","Khách hàng đăng nhập",module,Magento_Customer
+"Customer Login","CHÀO MỪNG ĐẾN VỚI LANEIGE MALL. ĐĂNG NHẬP NGAY",module,Magento_Customer
 "Create New Customer Account","Tạo mới tài khoản khách hàng",module,Magento_Customer
 "Date of Birth","Ngày sinh",module,Magento_Customer
 "Bad request.","Yêu cầu bị lỗi.",module,Magento_Customer
@@ -7148,7 +7148,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Street Address","Địa chỉ đường",module,Magento_GiftRegistry
 "Street Address %1","Địa chỉ đường phố %1",module,Magento_GiftRegistry
 "City","Quận/ Huyện",module,Magento_GiftRegistry
-"Please select a region, state or province.","Vui lòng chọn Khu vực, Tỉnh/ Thành",module,Magento_GiftRegistry
+"Please select a region, state or province.","Vui lòng chọn khu vực tỉnh/thành phố",module,Magento_GiftRegistry
 "Zip/Postal Code","Mã bưu chính",module,Magento_GiftRegistry
 "Country","Quốc gia",module,Magento_GiftRegistry
 "Phone Number","Số Điện thoại",module,Magento_GiftRegistry
@@ -11164,7 +11164,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Created","Đã tạo",module,Magento_ReviewStaging
 "Status","Trạng thái",module,Magento_ReviewStaging
 "Title","Tiêu đề",module,Magento_ReviewStaging
-"Nickname","Biệt danh",module,Magento_ReviewStaging
+"Nickname","Tên của bạn",module,Magento_ReviewStaging
 "Review","Đánh giá",module,Magento_ReviewStaging
 "Visibility","Hiển thị",module,Magento_ReviewStaging
 "Type","Loại",module,Magento_ReviewStaging
@@ -11628,10 +11628,10 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Return #","Trả lại #",module,Magento_Rma
 "Date","Ngày",module,Magento_Rma
 "Ship From","Vận chuyển từ",module,Magento_Rma
-"Return Status","Trạng thái Trả lại",module,Magento_Rma
+"Return Status","Trạng thái",module,Magento_Rma
 "Actions","Thao tác",module,Magento_Rma
 "View Return","Xem hoàn trả",module,Magento_Rma
-"You have placed no returns.","Bạn không đặt trả lại nào.",module,Magento_Rma
+"You have placed no returns.","Bạn không có đơn hoàn trả.",module,Magento_Rma
 "Packages","Gói",module,Magento_Rma
 "Close Window","Đóng cửa sổ",module,Magento_Rma
 "Package","Gói",module,Magento_Rma
@@ -12376,7 +12376,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Transaction Data","Dữ liệu giao dịch",module,Magento_Sales
 "Transaction ID","ID giao dịch",module,Magento_Sales
 "Parent Transaction ID","ID giao dịch mẹ",module,Magento_Sales
-"Order ID","ID đặt hàng",module,Magento_Sales
+"Order ID","Mã đơn hàng",module,Magento_Sales
 "Transaction Type","Loại giao dịch",module,Magento_Sales
 "Is Closed","Đóng cửa",module,Magento_Sales
 "Created At","Đã tạo vào",module,Magento_Sales
@@ -13621,7 +13621,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Region/State","Vùng/Khu vực",module,Magento_Shipping
 "ZIP/Postal Code","Mã Bưu điện/Bưu chính",module,Magento_Shipping
 "City","Quận/ Huyện",module,Magento_Shipping
-"Street Address","Địa chỉ đường",module,Magento_Shipping
+"Street Address","Địa chỉ",module,Magento_Shipping
 "Street Address Line 2","Địa Chỉ Phố Dòng 2",module,Magento_Shipping
 "Shipping Policy Parameters","Các thông số chính sách vận chuyển",module,Magento_Shipping
 "Apply custom Shipping Policy","Áp dụng tuỳ chỉnh chính sách vận chuyển",module,Magento_Shipping
@@ -14432,7 +14432,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "Shipping (Incl. Tax)","Vận chuyển (đã bao gồm thuế)",module,Magento_Tax
 "Subtotal (Excl. Tax)","Tổng phụ (chưa bao gồm thuế)",module,Magento_Tax
 "Subtotal (Incl. Tax)","Tổng phụ (đã bao gồm thuế)",module,Magento_Tax
-"Subtotal","Tổng phụ",module,Magento_Tax
+"Subtotal","Tạm tính",module,Magento_Tax
 "Unit Price","Đơn giá",module,Magento_Tax
 "Row Total","Tổng số dòng",module,Magento_Tax
 "Total","Tổng",module,Magento_Tax
@@ -16213,7 +16213,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Transaction has been canceled","Transaction has been canceled",module,Magento_Worldpay
 "Transaction has been declined","Giao dịch đã bị từ chối",module,Magento_Worldpay
 "The response type is incorrect. Verify the type and try again.","The response type is incorrect. Verify the type and try again.",module,Magento_Worldpay
-"Summary","Tóm tắt",theme,frontend/Magento/blank
+"Summary","Điểm đánh giá (từ 1 đến 5)",theme,frontend/Magento/blank
 "Account Dashboard","Trang tổng quan tài khoản",theme,frontend/Magento/blank
 "Account Information","Thông tin tài khoản",theme,frontend/Magento/blank
 "Address Book","Sổ địa chỉ",theme,frontend/Magento/blank
