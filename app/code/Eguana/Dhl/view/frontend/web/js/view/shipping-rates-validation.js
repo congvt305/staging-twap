@@ -18,8 +18,8 @@ define([
 ) {
     'use strict';
 
-    defaultShippingRatesValidator.registerValidator('eguanaDhl', eguanaDhlShippingRatesValidator);
-    defaultShippingRatesValidationRules.registerRules('eguanaDhl', eguanaDhlShippingRatesValidationRules);
+    defaultShippingRatesValidator.registerValidator('eguanadhl', eguanaDhlShippingRatesValidator);
+    defaultShippingRatesValidationRules.registerRules('eguanadhl', eguanaDhlShippingRatesValidationRules);
 
     return Component;
 });
