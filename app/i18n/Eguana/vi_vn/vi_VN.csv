@@ -13406,7 +13406,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "ID","ID",module,Magento_SharedCatalog
 "Company","Công ty",module,Magento_SharedCatalog
 "Country","Quốc gia",module,Magento_SharedCatalog
-"State/Province","Tỉnh/ Thành Phố",module,Magento_SharedCatalog
+"State/Province","Tỉnh/Thành Phố",module,Magento_SharedCatalog
 "Assigned","Chỉ định",module,Magento_SharedCatalog
 "Catalog","Danh mục",module,Magento_SharedCatalog
 "Action","Thao tác",module,Magento_SharedCatalog
