@@ -103,6 +103,7 @@ $storeId = $viewModel->getStoreId();
                             <input id="email" name="email" type="email" title="<?= $block->escapeHtml(__('Email')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('Email')) ?>" data-validate="{required:true}">
                         </div>
                     </div>
+                    <?php if (!$viewModel->isHomeDeliveryEnabled()): ?>
                     <div class="field counter required">
                         <label class="label" for="email">
                             <span><?= $block->escapeHtml(__('Please choose a counter')); ?></span></label>
@@ -121,8 +122,20 @@ $storeId = $viewModel->getStoreId();
                                     endif;
                                 endforeach; ?>
                             </select>
+
                         </div>
                     </div>
+                    <?php else: ?>
+                        <input type="hidden" name="counter_auto_assign" value="<?= $redemptionCounters[0] ?>">
+                    <div class="field line required">
+                        <label class="label" for="address">
+                            <span><?= /* @noEscape */ __('Detailed Address') ?></span>
+                        </label>
+                        <div class="control">
+                            <input id="address" name="address" type="text" title="<?= $block->escapeHtml(__('Detailed Address')) ?>" data-validate="{required:true}">
+                        </div>
+                    </div>
+                    <?php endif; ?>
                     <div class="field line">
                         <label class="label" for="email">
                             <span><?= /* @noEscape */ __('Fill in your LINE ID name') ?></span>
@@ -183,6 +196,11 @@ $storeId = $viewModel->getStoreId();
     <div id="popup-modal">
         <div class="modal-body-content">
             <p><?= $block->escapeHtml(__('This redemption has been already completed.')); ?></p>
+        </div>
+    </div>
+    <div id="popup-modal-vvip-denied" style="display: none">
+        <div class="modal-body-content">
+            <p><?= $block->escapeHtml(__('Sorry, you are on the VVIP list and are not allowed to participate in this program.')); ?></p>
         </div>
     </div>
 </div>

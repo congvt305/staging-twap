@@ -269,6 +269,22 @@
                 <visible>true</visible>
             </settings>
         </field>
+        <field name="vvip_list" sortOrder="63" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="cols" xsi:type="number">15</item>
+                    <item name="rows" xsi:type="number">5</item>
+                    <item name="source" xsi:type="string">vvip_list</item>
+                    <item name="notice" xsi:type="string" translate="true">Please enter separated by commas. For example: 0958781234,0932051234,0933151234,0912021234,0930931234.</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Restricted phone numbers (VVIPs' phone numbers)</label>
+                <visible>true</visible>
+
+            </settings>
+        </field>
         <field name="store_id_name" sortOrder="70" formElement="select">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
