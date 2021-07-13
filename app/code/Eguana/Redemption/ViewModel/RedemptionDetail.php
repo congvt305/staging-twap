@@ -25,7 +25,6 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Message\ManagerInterface;
 use Eguana\Redemption\Model\RedemptionConfiguration\RedemptionConfiguration;
 use Psr\Log\LoggerInterface;
-
 /**
  * This ViewModel is used to show single Redemption detail
  *
@@ -97,6 +96,7 @@ class RedemptionDetail implements ArgumentInterface
      * @var RedemptionConfiguration
      */
     private $redemptionConfiguration;
+
 
     /**
      * Redemption constructor.
@@ -465,5 +465,13 @@ class RedemptionDetail implements ArgumentInterface
             $this->logger->debug($exception->getMessage());
         }
         return $url;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHomeDeliveryEnabled()
+    {
+        return $this->redemptionConfiguration->getHomeDeliveryEnabled($this->getStoreId());
     }
 }

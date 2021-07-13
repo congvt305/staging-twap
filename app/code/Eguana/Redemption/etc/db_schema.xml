@@ -35,6 +35,7 @@
         <column xsi:type="mediumtext" name="sms_content" nullable="true" comment="Redemption Sms Content"/>
         <column xsi:type="smallint" name="redemption_completion_block" padding="6" unsigned="false" nullable="true" identity="false" comment="Redemption Completion Page Block ID"/>
         <column xsi:type="mediumtext" name="redemption_completion_message" nullable="true" comment="Redemption Completion Page Message"/>
+        <column xsi:type="mediumtext" name="vvip_list" nullable="true" comment="Redemption VVIP List"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="redemption_id"/>
         </constraint>
@@ -92,6 +93,7 @@
         <column xsi:type="date" name="redeem_date" comment="Redeem Date"/>
         <column xsi:type="varchar" name="customer_name" nullable="false" length="255" comment="Customer Name"/>
         <column xsi:type="varchar" name="email" nullable="true" length="255" comment="Email"/>
+        <column xsi:type="varchar" name="address" nullable="true" length="255" comment="Customer Address"/>
         <column xsi:type="varchar" name="telephone" nullable="false" length="255" comment="Phone Number"/>
         <column xsi:type="smallint" name="counter_id" padding="10" unsigned="true" nullable="false" identity="false"
                 comment="Store Locator ID"/>
