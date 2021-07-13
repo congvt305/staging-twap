@@ -168,9 +168,6 @@ class CounterSaveAjax extends Action
                         $redemption = $this->redemptionRepository->getById($post['redemption_id']);
                         $vvipList = $redemption->getVvipList();
                         $phoneNumbers = explode(',', $vvipList);
-                        $phoneNumbers = array_map(function($item) {
-                            return trim($item);
-                        }, $phoneNumbers);
 
                         if (in_array($post['phone'], $phoneNumbers)) {
                             $resultJson->setData(
