@@ -12,6 +12,7 @@ namespace Eguana\CustomRMA\ViewModel;
 use Magento\Framework\App\Config\ScopeConfigInterface as ScopeConfigInterfaceAlias;
 use Magento\Framework\View\Element\Block\ArgumentInterface as ArgumentInterfaceAlias;
 use Magento\Store\Model\ScopeInterface as ScopeInterfaceAlias;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * This viewModel class is used to get the store phone number
@@ -26,12 +27,21 @@ class GetStoreInfo implements ArgumentInterfaceAlias
     private $scopeConfig;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * GetStoreInfo constructor.
      * @param ScopeConfigInterfaceAlias $scopeConfig
+     * @param StoreManagerInterface $storeManager
      */
-    public function __construct(ScopeConfigInterfaceAlias $scopeConfig)
-    {
+    public function __construct(
+        ScopeConfigInterfaceAlias $scopeConfig,
+        StoreManagerInterface $storeManager
+    ) {
         $this->scopeConfig = $scopeConfig;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -44,5 +54,14 @@ class GetStoreInfo implements ArgumentInterfaceAlias
             'general/store_information/phone',
             ScopeInterfaceAlias::SCOPE_STORE
         );
+    }
+
+    /**
+     * This method is used to get the store code
+     * @return mixed
+     */
+    public function getStoreCode()
+    {
+        return $this->storeManager->getStore()->getCode();
     }
 }

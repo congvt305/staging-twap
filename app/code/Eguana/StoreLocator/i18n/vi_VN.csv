@@ -14,9 +14,9 @@ Edit,Chỉnh sửa
 "Delete ""${ $.$data.title }""","Xóa ""${ $.$data.title }"""
 "Are you sure you wan't to delete a ""${ $.$data.title }"" record?","Bạn chắc chắn muốn xóa bản ghi ""${ $.$data.title }""?"
 "All Store Views","Tất cả lượt xem cửa hàng"
-"Please enter the address or counter name","Xin hãy nhập địa chỉ hoặc tên phản ứng"
+"Please enter the address or counter name","Xin hãy nhập địa chỉ hoặc tên chi nhánh"
 "Please enter your current location","Hãy nhập vị trí hiện tại của bạn"
-"Total <strong> %1 </strong> Articals Found","Tổng cộng tìm thấy <strong> %1 </strong>tác phẩm nghệ thuật"
+"Total <strong> %1 </strong> Articals Found","Có <strong> %1 </strong>chi nhánh được tìm thấy"
 "We found <strong>%1 stores</strong> near your location","Chúng tôi tìm thấy<strong>%1 cửa hàng</strong> gần vị trí của bạn"
 address,địa chỉ
 Tel,Điện thoại

@@ -163,18 +163,22 @@ class SapOrderReturnData extends AbstractSapOrder
         $pointUsed = $order->getRewardPointsBalance();
         $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
         $trackData = $this->getTracks($rma);
+        $ztrackId = $trackData['track_number'] ?? '';
+        $shippingMethod = $order->getShippingMethod();
 
         $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
         $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
         if ($websiteCode == 'vn_laneige_website') {
-            $nsamt = $order->getData('sap_nsamt');
-            $dcamt = $order->getData('sap_dcamt');
-            $slamt = $order->getData('sap_slamt');
+            $paymtd = 10;
+            $nsamt  = $order->getData('sap_nsamt');
+            $dcamt  = $order->getData('sap_dcamt');
+            $slamt  = $order->getData('sap_slamt');
         } else {
-            $nsamt = abs(round($this->getRmaSubtotalInclTax($rma)));
-            $dcamt = abs(round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) +
+            $paymtd = $order->getPayment()->getMethod() == 'ecpay_ecpaypayment' ? 'P' : 'S';
+            $nsamt  = abs(round($this->getRmaSubtotalInclTax($rma)));
+            $dcamt  = abs(round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) +
                 $this->getCatalogRuleDiscountAmount($rma)));
-            $slamt = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
+            $slamt  = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
                 abs(round($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed)));
         }
 
@@ -184,9 +188,15 @@ class SapOrderReturnData extends AbstractSapOrder
             'odrno' => "R" . $rma->getIncrementId(),
             'odrdt' => $this->dateFormatting($rma->getDateRequested(), 'Ymd'),
             'odrtm' => $this->dateFormatting($rma->getDateRequested(), 'His'),
-            'paymtd' => '',
-            'payde' => '',
+            'paymtd' => $paymtd,
+            'paydt' => '',
             'paytm' => '',
+            'payMode' => $order->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '',
+            'dhlId' => $shippingMethod === 'eguanadhl_tablerate' ? 'TBD' : '',
+            'shpSvccd' => $shippingMethod === 'eguanadhl_tablerate' ? 'PDE' : '',
+            'ordWgt' => $shippingMethod === 'eguanadhl_tablerate' ? '1000' : '',
+            'insurance' => $shippingMethod === 'eguanadhl_tablerate' ? 'Y' : '',
+            'insurnaceValue' => $shippingMethod === 'eguanadhl_tablerate' ? $orderTotal : null,
             'auart' => self::RETURN_ORDER,
             'augru' => self::AUGRU_RETURN_CODE,
             'augruText' => '',
@@ -225,7 +235,7 @@ class SapOrderReturnData extends AbstractSapOrder
             // 납품처
             'kunwe' => $this->kunweCheck($order),
             // trackNo 가져와야 함
-            'ztrackId' => $trackData['track_number']
+            'ztrackId' => $ztrackId
         ];
 
         return $bindData;
@@ -295,11 +305,13 @@ class SapOrderReturnData extends AbstractSapOrder
                 $itemNsamt = $itemSubtotal;
                 $itemDcamt = $itemTotalDiscount;
                 $itemSlamt = $itemSubtotal - $itemTotalDiscount - $itemMileageUsed;
+                $itemNetwr = $itemSubtotal - $itemTotalDiscount - $itemMileageUsed - $itemTaxAmount;
 
                 if ($websiteCode == 'vn_laneige_website') {
                     $itemNsamt = $orderItem->getData('sap_item_nsamt');
                     $itemDcamt = $orderItem->getData('sap_item_dcamt');
                     $itemSlamt = $orderItem->getData('sap_item_slamt');
+                    $itemNetwr = $orderItem->getData('sap_item_netwr');
                 }
 
                 $rmaItemData[] = [
@@ -321,7 +333,7 @@ class SapOrderReturnData extends AbstractSapOrder
                     'itemAuart' => self::RETURN_ORDER,
                     'itemAugru' => self::AUGRU_RETURN_CODE,
                     'itemAbrvw' => self::ABRVW_RETURN_CODE,
-                    'itemNetwr' => $itemSubtotal - $itemTotalDiscount - $itemMileageUsed - $itemTaxAmount,
+                    'itemNetwr' => $itemNetwr,
                     'itemMwsbp' => $itemTaxAmount,
                     'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                     'itemKunnrOri' => $this->config->getClient('store', $storeId),
@@ -343,13 +355,6 @@ class SapOrderReturnData extends AbstractSapOrder
                 foreach ($bundleChildren as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
                     $bundleChildFromOrder = $this->getBundleChildFromOrder($itemId, $bundleChildrenItem->getSku());
-
-                    if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
-                        $bundleChildPrice = $this->productRepository->get($bundleChildrenItem->getSku(), false, $order->getStoreId())->getPrice();
-                    } else {
-                        $bundleChildPrice = $bundleChildFromOrder->getOriginalPrice();
-                    }
-
                     $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
                         $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getDiscountAmount()) :
                         $bundleChildFromOrder->getDiscountAmount();
@@ -358,36 +363,25 @@ class SapOrderReturnData extends AbstractSapOrder
                         $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getRowTotalInclTax()),
                         $bundleChildDiscountAmount,
                         $mileageUsedAmount);
-                    $itemGrandTotal = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getRowTotal())
-                        - $bundleChildDiscountAmount
-                        - $mileagePerItem;
-                    $itemGrandTotalInclTax = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getRowTotalInclTax())
-                        - $bundleChildDiscountAmount
-                        - $mileagePerItem;
-
                     $product = $this->productRepository->get($bundleChildrenItem->getSku(), false, $rma->getStoreId());
                     $meins = $product->getData('meins');
-
-                    $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $bundleChildrenItem->getQty();
-
+                    $itemDiscountAmountPerQty = $bundleChildDiscountAmount / $bundleChildrenItem->getQty();
+                    $itemDiscountAmount = abs(round($itemDiscountAmountPerQty * $rmaItem->getQtyRequested()));
                     $itemSubtotal = abs(round($product->getPrice() * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()));
-                    $itemTotalDiscount = abs(round($this->getRateAmount($bundleChildDiscountAmount, $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())
-                        + (($product->getPrice() - $childPriceRatio) * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())));
-                    $itemMileageUsed = abs(round($this->getRateAmount($mileagePerItem, $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested()  * $bundleChildrenItem->getQty())));
-                    $itemGrandTotalInclTaxValue = abs(round($this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())));
-                    $itemGrandTotalValue = abs(round($this->getRateAmount($itemGrandTotal, $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())));
                     $itemTaxAmount = abs(round($this->getRateAmount($bundleChildrenItem->getTaxAmount(), $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())));
 
                     $sku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
                     $itemNsamt = $itemSubtotal;
-                    $itemDcamt = $itemTotalDiscount;
-                    $itemSlamt = $itemSubtotal - $itemTotalDiscount - round($mileagePerItem);
+                    $itemDcamt = $itemDiscountAmount;
+                    $itemSlamt = $itemSubtotal - $itemDiscountAmount - round($mileagePerItem);
+                    $itemNetwr = $itemSubtotal - $itemDiscountAmount - round($mileagePerItem) - $itemTaxAmount;
 
                     if ($websiteCode == 'vn_laneige_website') {
                         $item = $this->searchOrderItem($orderAllItems, $bundleChildrenItem->getSku(), $itemId);
                         $itemNsamt = $item->getData('sap_item_nsamt');
                         $itemDcamt = $item->getData('sap_item_dcamt');
                         $itemSlamt = $item->getData('sap_item_slamt');
+                        $itemNetwr = $item->getData('sap_item_netwr');
                     }
 
                     $rmaItemData[] = [
@@ -409,7 +403,7 @@ class SapOrderReturnData extends AbstractSapOrder
                         'itemAuart' => self::RETURN_ORDER,
                         'itemAugru' => self::AUGRU_RETURN_CODE,
                         'itemAbrvw' => self::ABRVW_RETURN_CODE,
-                        'itemNetwr' => $itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount,
+                        'itemNetwr' => $itemNetwr,
                         'itemMwsbp' => $itemTaxAmount,
                         'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnrOri' => $this->config->getClient('store', $storeId),
@@ -419,9 +413,9 @@ class SapOrderReturnData extends AbstractSapOrder
 
                     $cnt++;
                     $itemsSubtotal += $itemSubtotal;
-                    $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount - round($mileagePerItem));
-                    $itemsGrandTotalInclTax += ($itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount);
-                    $itemsDiscountAmount += $itemTotalDiscount;
+                    $itemsGrandTotal += ($itemSubtotal - $itemDiscountAmount - round($mileagePerItem));
+                    $itemsGrandTotalInclTax += ($itemSubtotal - $itemDiscountAmount - round($mileagePerItem) - $itemTaxAmount);
+                    $itemsDiscountAmount += $itemDiscountAmount;
 
                     $itemsMileage += round($this->getRateAmount($mileagePerItem, $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()));
                 }
@@ -434,9 +428,7 @@ class SapOrderReturnData extends AbstractSapOrder
         if ($websiteCode != 'vn_laneige_website') {
             $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'itemNsamt');
             $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotalInclTax, $rmaItemData, 'itemSlamt');
-        }
-        $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'itemNetwr');
-        if ($websiteCode != 'vn_laneige_website') {
+            $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'itemNetwr');
             $rmaItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'itemDcamt');
         }
         $rmaItemData = $this->priceCorrector($mileageUsedAmount, $itemsMileage, $rmaItemData, 'itemMiamt');
@@ -512,7 +504,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $originalPriceSum = $this->getSumOfChildrenOriginPrice($orderItem);
 
         $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $orderItem->getStoreId())->getPrice();
-        $rate = ($bundleChildPrice / $originalPriceSum) * $bundleChild->getQty();
+        $rate = ($bundleChildPrice * $bundleChild->getQty()) / $originalPriceSum;
 
         return $valueToCalculate * $rate;
     }
@@ -672,30 +664,37 @@ class SapOrderReturnData extends AbstractSapOrder
      */
     public function getTracks($rma)
     {
-        $tracks = $rma->getTracks();
-        $trackData = [];
-        foreach ($tracks as $track) {
-            $trackData[] = [
-                'carrier_title' => $track->getCarrierTitle(),
-                'carrier_code' => $track->getCarrierCode(),
-                'rma_id' => $track->getRmaEntityId(),
-                'track_number' => $track->getTrackNumber()
-            ];
-        }
+        $storeData = $this->storeRepository->getById($rma->getStoreId());
+        $storeCode = (string)$storeData->getCode();
 
-        $trackCount = count($trackData);
-        if ($trackCount == 1) {
-            return $trackData[0];
-        } elseif ($trackCount == 0) {
-            $storeData = $this->storeRepository->getById($rma->getStoreId());
-            $storeCode = (string)$storeData->getCode();
-            if ($storeCode == "vn_laneige") {
+        $trackData = [];
+        if ($storeCode != "vn_laneige") {
+            $tracks = $rma->getTracks();
+            foreach ($tracks as $track) {
+                $trackData[] = [
+                    'carrier_title' => $track->getCarrierTitle(),
+                    'carrier_code' => $track->getCarrierCode(),
+                    'rma_id' => $track->getRmaEntityId(),
+                    'track_number' => $track->getTrackNumber()
+                ];
+            }
+
+            $trackCount = count($trackData);
+            if ($trackCount == 1) {
                 return $trackData[0];
+            } elseif ($trackCount == 0) {
+                $storeData = $this->storeRepository->getById($rma->getStoreId());
+                $storeCode = (string)$storeData->getCode();
+                if ($storeCode == "vn_laneige") {
+                    return $trackData[0];
+                } else {
+                    throw new RmaTrackNoException(__("Tracking No Does Not Exist."));
+                }
             } else {
-                throw new RmaTrackNoException(__("Tracking No Does Not Exist."));
+                throw new RmaTrackNoException(__("Tracking No Exist more than 1."));
             }
         } else {
-            throw new RmaTrackNoException(__("Tracking No Exist more than 1."));
+            return $trackData;
         }
     }
 

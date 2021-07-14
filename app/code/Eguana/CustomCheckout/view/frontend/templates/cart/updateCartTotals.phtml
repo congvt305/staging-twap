@@ -7,7 +7,15 @@
  * Date: 20/5/21
  * Time: 6:00 PM
  */
+
+/**
+ * Shopping cart totals update
+ * @var $block \Magento\Checkout\Block\Cart\Totals
+ * @var $viewModel \Eguana\CustomCheckout\ViewModel\CheckCart
+ */
+$viewModel = $block->getData('check_cart_view_model');
 ?>
+<?php if (!$viewModel->isCartEmpty()): ?>
 <script type="text/x-magento-init">
     {
          "*": {
@@ -15,3 +23,4 @@
         }
     }
 </script>
+<?php endif; ?>

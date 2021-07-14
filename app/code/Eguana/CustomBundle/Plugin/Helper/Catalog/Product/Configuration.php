@@ -30,9 +30,9 @@ class Configuration
     {
         foreach ($result as $key => $value) {
             $str = $result[$key]['value'][0];
-            $explodedString = explode("x", $str);
+            $explodedString = explode(" x ", $str);
             $explodedSecondString = explode("<span", $explodedString[1]);
-            $result[$key]['value'][0] = $explodedSecondString[0] . 'x' . $explodedString[0] . '<span' . $explodedSecondString[1];
+            $result[$key]['value'][0] = $explodedSecondString[0] . ' x ' . $explodedString[0] . '<span' . ($explodedSecondString[1] ?? '');
         }
         return $result;
     }

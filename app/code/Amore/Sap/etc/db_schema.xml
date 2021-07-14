@@ -35,5 +35,6 @@
         <column xsi:type="text" name="sap_item_nsamt" nullable="true" comment="SAP Order Item Net Sale Amount"/>
         <column xsi:type="text" name="sap_item_dcamt" nullable="true" comment="SAP Order Item Discount Amount"/>
         <column xsi:type="text" name="sap_item_slamt" nullable="true" comment="SAP Order Item Sale Amount"/>
+        <column xsi:type="text" name="sap_item_netwr" nullable="true" comment="SAP Order Item Netwr Amount"/>
     </table>
 </schema>

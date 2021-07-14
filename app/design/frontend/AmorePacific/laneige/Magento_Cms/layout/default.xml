@@ -33,6 +33,12 @@
                     <argument name="path" xsi:type="string">sitemap</argument>
                 </arguments>
             </block>
+            <block class="Magento\Framework\View\Element\Html\Link\Current" name="payment-and-delivery-policy" after="-">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Payment and Delivery Policy</argument>
+                    <argument name="path" xsi:type="string">payment-and-delivery-policy</argument>
+                </arguments>
+            </block>
         </referenceBlock>
     </body>
 </page>
