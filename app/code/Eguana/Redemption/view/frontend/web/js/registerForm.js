@@ -76,13 +76,20 @@ define([
                         jQuery('body').loader('show');
                     },
                     success: function (data) {
-                        if (data['duplicate']) {
+                        if (data['duplicate'] || data['vvip_case']) {
                             var options = {
                                 type: 'popup',
                                 responsive: false,
-                            };
-                            var popup = modal(options, $('#popup-modal'));
-                            $('#popup-modal').modal(options).modal('openModal');
+                            }, popup;
+
+                            if (data['duplicate']) {
+                                popup = modal(options, $('#popup-modal'));
+                                $('#popup-modal').modal(options).modal('openModal');
+                            }
+                            if (data['vvip_case']) {
+                                popup = modal(options, $('#popup-modal-vvip-denied'))
+                                $('#popup-modal-vvip-denied').modal(options).modal('openModal');
+                            }
                             $('#counter-form-submit').show();
                             $('#counter-form-submit').removeAttr('disabled');
                             $('#redemption_thank_you_img').show();

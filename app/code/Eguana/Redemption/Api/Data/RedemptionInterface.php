@@ -37,6 +37,7 @@ interface RedemptionInterface
     const THANK_YOU_IMAGE = 'thank_you_image';
     const REDEMPTION_COMPLETION_BLOCK = 'redemption_completion_block';
     const REDEMPTION_COMPLETION_MESSAGE = 'redemption_completion_message';
+    const VVIP_LIST = 'vvip_list';
     /**#@-*/
 
     /**
@@ -293,4 +294,15 @@ interface RedemptionInterface
      * @return RedemptionInterface
      */
     public function setRedemptionCompletionMessage($message);
+
+    /**
+     * @return string
+     */
+    public function getVvipList();
+
+    /**
+     * @param string $list
+     * @return $this
+     */
+    public function setVvipList($list);
 }

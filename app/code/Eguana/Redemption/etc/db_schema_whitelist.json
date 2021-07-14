@@ -20,7 +20,8 @@
             "thank_you_image": true,
             "sms_content": true,
             "redemption_completion_block": true,
-            "redemption_completion_message": true
+            "redemption_completion_message": true,
+            "vvip_list": true
         },
         "index": {
             "EGUANA_REDEMPTION_TITLE_IDENTIFIER_DESCRIPTION": true
@@ -76,7 +77,8 @@
             "utm_medium": true,
             "utm_content": true,
             "creation_time": true,
-            "update_time": true
+            "update_time": true,
+            "address": true
         },
         "index": {
             "EGUANA_REDEMPTION_USER_CUSTOMER_NAME": true

@@ -25,6 +25,7 @@ use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Eguana\Redemption\Model\RedemptionConfiguration\RedemptionConfiguration;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 
 /**
@@ -90,9 +91,15 @@ class CounterSaveAjax extends Action
     private $facebookPixelHelper;
 
     /**
+     * @var RedemptionConfiguration
+     */
+    private $redemptionConfig;
+
+    /**
      * CounterSaveAjax constructor.
      * @param ResultFactory $resultFactory
      * @param Context $context
+     * @param RedemptionConfiguration $redemptionConfig
      * @param CounterFactory $counterFactory
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param CounterRepositoryInterface $counterRepository
@@ -107,6 +114,7 @@ class CounterSaveAjax extends Action
     public function __construct(
         ResultFactory $resultFactory,
         Context $context,
+        RedemptionConfiguration $redemptionConfig,
         CounterFactory $counterFactory,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         CounterRepositoryInterface $counterRepository,
@@ -120,6 +128,7 @@ class CounterSaveAjax extends Action
     ) {
         $this->resultFactory = $resultFactory;
         $this->context = $context;
+        $this->redemptionConfig = $redemptionConfig;
         $this->counterFactory = $counterFactory;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->counterRepository = $counterRepository;
@@ -153,6 +162,27 @@ class CounterSaveAjax extends Action
                 $model->setData('customer_name', $post['name']);
                 $model->setData('email', $post['email']);
                 $model->setData('telephone', $post['phone']);
+                if ($this->redemptionConfig->getHomeDeliveryEnabled($post['store_id'])) {
+                    $post['counter'] = $post['counter_auto_assign'];
+                    try {
+                        $redemption = $this->redemptionRepository->getById($post['redemption_id']);
+                        $vvipList = $redemption->getVvipList();
+                        $phoneNumbers = explode(',', $vvipList);
+
+                        if (in_array($post['phone'], $phoneNumbers)) {
+                            $resultJson->setData(
+                                [
+                                    "message" => __('Sorry, you are on the VVIP list and are not allowed to participate in this program.'),
+                                    "vvip_case" => true
+                                ]
+                            );
+                            return $resultJson;
+                        }
+
+                        $model->setData('address', $post['address']);
+                    } catch (\Exception $exception) {
+                    }
+                }
                 $model->setData('counter_id', $post['counter']);
                 $model->setData('store_id', $post['store_id']);
                 $model->setData('line_id', $post['line']);
