@@ -1,0 +1,18 @@
+diff --git a/view/frontend/layout/catalog_product_view.xml b/view/frontend/layout/catalog_product_view.xml
+index 8cb669c..fa5357e 100755
+--- a/view/frontend/layout/catalog_product_view.xml
++++ b/view/frontend/layout/catalog_product_view.xml
+@@ -5,11 +5,11 @@
+     along with the "after" inside the block tags.
+     The names are a little opaque, but if you're reading this you probably know what you're doing.
+     -->
+-    <referenceContainer name="product.info.media">
++    <referenceContainer name="product.info.details">
+         <block class="Pixlee\Pixlee\Block\ProductWidget"
+             name="product.view.community_gallery"
+             template="Pixlee_Pixlee::pixlee/product_gallery.phtml"
+-            after="-">
++            before="-">
+         </block>
+     </referenceContainer>
+ </body>
