@@ -125,6 +125,14 @@ $storeId = $viewModel->getStoreId();
 
                         </div>
                     </div>
+                    <div class="field line">
+                        <label class="label" for="email">
+                            <span><?= /* @noEscape */ __('Fill in your LINE ID name') ?></span>
+                        </label>
+                        <div class="control">
+                            <input id="line" name="line" type="text" title="<?= $block->escapeHtml(__('Fill in your LINE ID name')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('Fill in your LINE ID name')) ?>">
+                        </div>
+                    </div>
                     <?php else: ?>
                         <input type="hidden" name="counter_auto_assign" value="<?= $redemptionCounters[0] ?>">
                     <div class="field line required">
@@ -136,14 +144,7 @@ $storeId = $viewModel->getStoreId();
                         </div>
                     </div>
                     <?php endif; ?>
-                    <div class="field line">
-                        <label class="label" for="email">
-                            <span><?= /* @noEscape */ __('Fill in your LINE ID name') ?></span>
-                        </label>
-                        <div class="control">
-                            <input id="line" name="line" type="text" title="<?= $block->escapeHtml(__('Fill in your LINE ID name')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('Fill in your LINE ID name')) ?>">
-                        </div>
-                    </div>
+                    
                     <?= $block->getChildHtml('form.additional.info') ?>
                     <span id="recaptcha-response"><?= $block->escapeHtml(__(' * This is a required field.')) ?></span>
                 </fieldset>

@@ -162,7 +162,8 @@ class CounterSaveAjax extends Action
                 $model->setData('customer_name', $post['name']);
                 $model->setData('email', $post['email']);
                 $model->setData('telephone', $post['phone']);
-                if ($this->redemptionConfig->getHomeDeliveryEnabled($post['store_id'])) {
+                $homeDeliveryEnabled = $this->redemptionConfig->getHomeDeliveryEnabled($post['store_id']);
+                if ($homeDeliveryEnabled) {
                     $post['counter'] = $post['counter_auto_assign'];
                     try {
                         $redemption = $this->redemptionRepository->getById($post['redemption_id']);
@@ -185,7 +186,9 @@ class CounterSaveAjax extends Action
                 }
                 $model->setData('counter_id', $post['counter']);
                 $model->setData('store_id', $post['store_id']);
-                $model->setData('line_id', $post['line']);
+                if (!$homeDeliveryEnabled) {
+                    $model->setData('line_id', $post['line']);
+                }
                 $model->setData('token', $token);
                 $model->setData('registration_date', $date);
                 $model->setData('utm_source', $post['utm_source']);
