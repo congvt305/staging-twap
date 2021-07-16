@@ -13,4 +13,8 @@
     <type name="Magento\Wishlist\Controller\Index\Add">
         <plugin name="add_to_wish_list_redirect" type="Eguana\CustomCatalog\Plugin\Controller\Index\Add"/>
     </type>
+
+    <type name="Magento\Catalog\Model\Product">
+        <plugin name="check_for_staging_preview" type="Eguana\CustomCatalog\Plugin\Catalog\Model\Product"/>
+    </type>
 </config>
