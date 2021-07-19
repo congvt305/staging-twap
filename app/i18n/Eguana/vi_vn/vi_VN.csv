@@ -736,7 +736,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "user name","Tên người dùng",module,Magento_Backend
 "Password","Mật khẩu",module,Magento_Backend
 "password","mật khẩu",module,Magento_Backend
-"Sign in","Đăng nhập",module,Magento_Backend
+"Sign in","Đăng hập",module,Magento_Backend
 "Select Range:","Chọn khoảng:",module,Magento_Backend
 "No Data Found","Không tìm thấy tài liệu nào",module,Magento_Backend
 "Chart is disabled. To enable the chart, click <a href=""%1"">here</a>.","Chart is disabled. To enable the chart, click <a href=""%1"">here</a>.",module,Magento_Backend
@@ -5558,7 +5558,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Sign-in Information","Thông tin đăng nhập",module,Magento_CustomerCustomAttributes
 "Password","Mật khẩu",module,Magento_CustomerCustomAttributes
 "Confirm Password","Xác nhận mật khẩu",module,Magento_CustomerCustomAttributes
-"Create an Account","Tạo tài khoản",module,Magento_CustomerCustomAttributes
+"Create an Account","Tạo Tài Khoản",module,Magento_CustomerCustomAttributes
 "Back","Trở lại",module,Magento_CustomerCustomAttributes
 "Customer Address","Địa chỉ khách hàng",module,Magento_CustomerCustomAttributes
 "Default Values","Giá trị mặc định",module,Magento_CustomerCustomAttributes
@@ -9789,7 +9789,7 @@ or more. <a href=""https:/financing.paypal.com/ppfinportal/content/forrester"" t
 "Allow in Billing Agreement Wizard","Cho phép trong thuật sĩ thỏa thuận thanh toán",module,Magento_Paypal
 "Settlement Report Settings","Cài đặt báo cáo quyết toán",module,Magento_Paypal
 "SFTP Credentials","SFTP thông tin đăng nhập",module,Magento_Paypal
-"Login","Đăng nhập",module,Magento_Paypal
+"Login","Đăng Nhập",module,Magento_Paypal
 "Password","Mật khẩu",module,Magento_Paypal
 "Custom Endpoint Hostname or IP-Address","Tùy chỉnh điểm kết thúc máy chủ hoặc địa chỉ IP",module,Magento_Paypal
 "By default it is ""reports.paypal.com"".","Theo mặc định nó là ""reports.paypal.com"".",module,Magento_Paypal
@@ -15614,7 +15614,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Page ID","ID Trang",module,Magento_VersionsCms
 "Manage Hierarchies","Quản lý phân cấp",module,Magento_VersionsCms
 "Hierarchy","Cấp bậc",module,Magento_VersionsCms
-"Home","Trang chủ",module,Magento_VersionsCms
+"Home","Trang Chủ",module,Magento_VersionsCms
 "Go to Home Page","Đi đến trang chủ",module,Magento_VersionsCms
 "You copied the pages hierarchy to the selected scopes.","Bạn đã sao chép hệ thống phân cấp trang để dò đã chọn.",module,Magento_VersionsCms
 "Something went wrong while copying the hierarchy.","Một cái gì đó đã đi sai trong khi sao chép hệ thống phân cấp.",module,Magento_VersionsCms
