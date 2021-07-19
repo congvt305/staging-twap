@@ -5033,7 +5033,7 @@ new products will be created. Use this step to customize images and price for yo
 "You have no default billing address in your address book.","Bạn có không có địa chỉ thanh toán mặc định trong sổ địa chỉ của bạn.",module,Magento_Customer
 "Change Shipping Address","Thay đổi địa chỉ vận chuyển",module,Magento_Customer
 "You have no default shipping address in your address book.","Bạn có không có địa chỉ nhận hàng mặc định trong sổ địa chỉ của bạn.",module,Magento_Customer
-"Additional Address Entries","Thêm lối vào địa chỉ",module,Magento_Customer
+"Additional Address Entries","Thêm địa chỉ",module,Magento_Customer
 "Delete Address","Xóa địa chỉ",module,Magento_Customer
 "You have no other address entries in your address book.","Bạn có không địa chỉ khác trong sổ địa chỉ của bạn.",module,Magento_Customer
 "* Required Fields","* Bắt buộc",module,Magento_Customer
@@ -5242,10 +5242,10 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Are you sure you want to delete this item?","Bạn có chắc rằng bạn muốn xóa sản phẩm này?",module,Magento_Customer
 "Addresses","Địa chỉ",module,Magento_Customer
 "Account Dashboard","Trang tổng quan tài khoản",module,Magento_Customer
-"Edit Account Information","Chỉnh sửa thông tin tài khoản",module,Magento_Customer
+"Edit Account Information","THÔNG TIN TÀI KHOẢN",module,Magento_Customer
 "Password forgotten","Quên mật khẩu",module,Magento_Customer
 "My Dashboard","Tài khoản của tôi",module,Magento_Customer
-"You are signed out","Bạn đã đăng xuất",module,Magento_Customer
+"You are signed out","BẠN ĐÃ ĐĂNG XUẤT",module,Magento_Customer
 "You subscribe to our newsletter.","Bạn đăng ký để nhận bản tin của chúng tôi.",module,Magento_Customer
 "You don't subscribe to our newsletter.","Bạn không đăng ký nhận bản tin của chúng tôi.",module,Magento_Customer
 "Maximum length must be less then %1 symbols","Chiều dài tối đa phải ít hơn %1 ký tự",module,Magento_Customer
@@ -11501,7 +11501,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't delete the label right now.","Chúng tôi không thể xoá nhãn ngay bây giờ.",module,Magento_Rma
 "Return #%1","Trả lại #%1",module,Magento_Rma
 "Cannot add message.","Không thể thêm tin nhắn.",module,Magento_Rma
-"My Returns","Hoàn trả",module,Magento_Rma
+"My Returns","HOÀN TRẢ",module,Magento_Rma
 "Tracking Information","Thông tin Theo dõi",module,Magento_Rma
 "Page not found","Không tìm thấy trang",module,Magento_Rma
 "Please check this order for errors.","Hãy kiểm tra lỗi cho các đơn đặt hàng.",module,Magento_Rma
@@ -11631,7 +11631,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Return Status","Trạng thái",module,Magento_Rma
 "Actions","Thao tác",module,Magento_Rma
 "View Return","Xem hoàn trả",module,Magento_Rma
-"You have placed no returns.","Bạn không có đơn hoàn trả.",module,Magento_Rma
+"You have placed no returns.","Bạn không có đơn hoàn trả",module,Magento_Rma
 "Packages","Gói",module,Magento_Rma
 "Close Window","Đóng cửa sổ",module,Magento_Rma
 "Package","Gói",module,Magento_Rma
@@ -16275,8 +16275,8 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Your Shipment #%shipment_id for Order #%order_id","Vận chuyển #%shipment_id cho đơn hàng #%order_id",theme,frontend/Magento/luma
 "Update to your %store_name shipment","Cập Nhật cho %store_name sự gửi hàng của bạn",theme,frontend/Magento/luma
 "Account Dashboard","Trang tổng quan tài khoản",theme,frontend/Magento/luma
-"Address Book","Thông tin giao hàng",theme,frontend/Magento/luma
-"Account Information","Thông tin tài khoản",theme,frontend/Magento/luma
+"Address Book","THÔNG TIN GIAO HÀNG",theme,frontend/Magento/luma
+"Account Information","Thông tin cá nhân",theme,frontend/Magento/luma
 "About Us","Giới Thiệu Về Chúng Tôi",theme,frontend/Magento/luma
 "Customer Service","Dịch vụ khách hàng",theme,frontend/Magento/luma
 "My Account","Tài khoản của tôi",theme,frontend/Magento/luma
