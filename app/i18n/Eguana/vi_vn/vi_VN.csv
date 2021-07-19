@@ -736,7 +736,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "user name","Tên người dùng",module,Magento_Backend
 "Password","Mật khẩu",module,Magento_Backend
 "password","mật khẩu",module,Magento_Backend
-"Sign in","Đăng nhập",module,Magento_Backend
+"Sign in","Đăng hập",module,Magento_Backend
 "Select Range:","Chọn khoảng:",module,Magento_Backend
 "No Data Found","Không tìm thấy tài liệu nào",module,Magento_Backend
 "Chart is disabled. To enable the chart, click <a href=""%1"">here</a>.","Chart is disabled. To enable the chart, click <a href=""%1"">here</a>.",module,Magento_Backend
@@ -4818,7 +4818,7 @@ new products will be created. Use this step to customize images and price for yo
 "The customer would belong to Customer Group %s.","Khách hàng sẽ thuộc về nhóm khách hàng %s.",module,Magento_Customer
 "There was an error detecting Customer Group.","Đã có lỗi khi phát hiện các nhóm khách hàng.",module,Magento_Customer
 "Validate VAT Number","Xác nhận số thuế GTGT",module,Magento_Customer
-"Customer Login","CHÀO MỪNG ĐẾN VỚI LANEIGE MALL. ĐĂNG NHẬP NGAY",module,Magento_Customer
+"Customer Login","ĐĂNG NHẬP",module,Magento_Customer
 "Create New Customer Account","Tạo mới tài khoản khách hàng",module,Magento_Customer
 "Date of Birth","Ngày sinh",module,Magento_Customer
 "Bad request.","Yêu cầu bị lỗi.",module,Magento_Customer
@@ -5033,7 +5033,7 @@ new products will be created. Use this step to customize images and price for yo
 "You have no default billing address in your address book.","Bạn có không có địa chỉ thanh toán mặc định trong sổ địa chỉ của bạn.",module,Magento_Customer
 "Change Shipping Address","Thay đổi địa chỉ vận chuyển",module,Magento_Customer
 "You have no default shipping address in your address book.","Bạn có không có địa chỉ nhận hàng mặc định trong sổ địa chỉ của bạn.",module,Magento_Customer
-"Additional Address Entries","Thêm lối vào địa chỉ",module,Magento_Customer
+"Additional Address Entries","Thêm địa chỉ",module,Magento_Customer
 "Delete Address","Xóa địa chỉ",module,Magento_Customer
 "You have no other address entries in your address book.","Bạn có không địa chỉ khác trong sổ địa chỉ của bạn.",module,Magento_Customer
 "* Required Fields","* Bắt buộc",module,Magento_Customer
@@ -5069,14 +5069,14 @@ new products will be created. Use this step to customize images and price for yo
 "Registered Customers","Khách hàng đã đăng ký",module,Magento_Customer
 "If you have an account, sign in with your email address.","Nếu bạn có một tài khoản, hãy đăng nhập bằng địa chỉ email của bạn.",module,Magento_Customer
 "Password","Mật khẩu",module,Magento_Customer
-"Forgot Your Password?","Bạn quên mật khẩu?",module,Magento_Customer
+"Forgot Your Password?","Quên mật khẩu",module,Magento_Customer
 "Subscription option","Tùy chọn đăng ký",module,Magento_Customer
 "General Subscription","Đăng ký chung",module,Magento_Customer
 "Sign Up for Newsletter","Đăng ký nhận bản tin",module,Magento_Customer
 "Address Information","Thông tin địa chỉ",module,Magento_Customer
 "Sign-in Information","Thông tin đăng nhập",module,Magento_Customer
 "Confirm Password","Xác nhận mật khẩu",module,Magento_Customer
-"Create an Account","Tạo tài khoản",module,Magento_Customer
+"Create an Account","Tạo Tài Khoản",module,Magento_Customer
 "Set a New Password","Thiết lập một mật khẩu mới",module,Magento_Customer
 "You have signed out and will go to our homepage in 5 seconds.","Bạn đã đăng xuất và sẽ đi đến trang chủ của chúng tôi trong 5 giây.",module,Magento_Customer
 "New Customers","Khách hàng mới",module,Magento_Customer
@@ -5242,10 +5242,10 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Are you sure you want to delete this item?","Bạn có chắc rằng bạn muốn xóa sản phẩm này?",module,Magento_Customer
 "Addresses","Địa chỉ",module,Magento_Customer
 "Account Dashboard","Trang tổng quan tài khoản",module,Magento_Customer
-"Edit Account Information","Chỉnh sửa thông tin tài khoản",module,Magento_Customer
+"Edit Account Information","THÔNG TIN TÀI KHOẢN",module,Magento_Customer
 "Password forgotten","Quên mật khẩu",module,Magento_Customer
 "My Dashboard","Tài khoản của tôi",module,Magento_Customer
-"You are signed out","Bạn đã đăng xuất",module,Magento_Customer
+"You are signed out","BẠN ĐÃ ĐĂNG XUẤT",module,Magento_Customer
 "You subscribe to our newsletter.","Bạn đăng ký để nhận bản tin của chúng tôi.",module,Magento_Customer
 "You don't subscribe to our newsletter.","Bạn không đăng ký nhận bản tin của chúng tôi.",module,Magento_Customer
 "Maximum length must be less then %1 symbols","Chiều dài tối đa phải ít hơn %1 ký tự",module,Magento_Customer
@@ -5558,7 +5558,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Sign-in Information","Thông tin đăng nhập",module,Magento_CustomerCustomAttributes
 "Password","Mật khẩu",module,Magento_CustomerCustomAttributes
 "Confirm Password","Xác nhận mật khẩu",module,Magento_CustomerCustomAttributes
-"Create an Account","Tạo tài khoản",module,Magento_CustomerCustomAttributes
+"Create an Account","Tạo Tài Khoản",module,Magento_CustomerCustomAttributes
 "Back","Trở lại",module,Magento_CustomerCustomAttributes
 "Customer Address","Địa chỉ khách hàng",module,Magento_CustomerCustomAttributes
 "Default Values","Giá trị mặc định",module,Magento_CustomerCustomAttributes
@@ -9789,7 +9789,7 @@ or more. <a href=""https:/financing.paypal.com/ppfinportal/content/forrester"" t
 "Allow in Billing Agreement Wizard","Cho phép trong thuật sĩ thỏa thuận thanh toán",module,Magento_Paypal
 "Settlement Report Settings","Cài đặt báo cáo quyết toán",module,Magento_Paypal
 "SFTP Credentials","SFTP thông tin đăng nhập",module,Magento_Paypal
-"Login","Đăng nhập",module,Magento_Paypal
+"Login","Đăng Nhập",module,Magento_Paypal
 "Password","Mật khẩu",module,Magento_Paypal
 "Custom Endpoint Hostname or IP-Address","Tùy chỉnh điểm kết thúc máy chủ hoặc địa chỉ IP",module,Magento_Paypal
 "By default it is ""reports.paypal.com"".","Theo mặc định nó là ""reports.paypal.com"".",module,Magento_Paypal
@@ -11501,7 +11501,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't delete the label right now.","Chúng tôi không thể xoá nhãn ngay bây giờ.",module,Magento_Rma
 "Return #%1","Trả lại #%1",module,Magento_Rma
 "Cannot add message.","Không thể thêm tin nhắn.",module,Magento_Rma
-"My Returns","Hoàn trả",module,Magento_Rma
+"My Returns","HOÀN TRẢ",module,Magento_Rma
 "Tracking Information","Thông tin Theo dõi",module,Magento_Rma
 "Page not found","Không tìm thấy trang",module,Magento_Rma
 "Please check this order for errors.","Hãy kiểm tra lỗi cho các đơn đặt hàng.",module,Magento_Rma
@@ -11631,7 +11631,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Return Status","Trạng thái",module,Magento_Rma
 "Actions","Thao tác",module,Magento_Rma
 "View Return","Xem hoàn trả",module,Magento_Rma
-"You have placed no returns.","Bạn không có đơn hoàn trả.",module,Magento_Rma
+"You have placed no returns.","Bạn không có đơn hoàn trả",module,Magento_Rma
 "Packages","Gói",module,Magento_Rma
 "Close Window","Đóng cửa sổ",module,Magento_Rma
 "Package","Gói",module,Magento_Rma
@@ -13155,7 +13155,7 @@ Cách sử dụng giới hạn áp dụng chỉ cho khách hàng đã đăng nh�
 "Delete","Xóa bỏ",module,Magento_Search
 "Are you sure you want to delete synonym group with id: %1?","Bạn có chắc bạn muốn xóa bỏ nhóm từ đồng nghĩa với id: %1?",module,Magento_Search
 "View/Edit","Xem/chỉnh sửa",module,Magento_Search
-"Search entire store here...","Tìm toàn bộ cửa hàng ở đây...",module,Magento_Search
+"Search entire store here...","Gõ từ khóa",module,Magento_Search
 "There are no search terms available.","Không có cụm từ tìm kiếm có sẵn nào.",module,Magento_Search
 "Search Engine","Công cụ tìm kiếm",module,Magento_Search
 "CSV","CSV",module,Magento_Search
@@ -15614,7 +15614,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Page ID","ID Trang",module,Magento_VersionsCms
 "Manage Hierarchies","Quản lý phân cấp",module,Magento_VersionsCms
 "Hierarchy","Cấp bậc",module,Magento_VersionsCms
-"Home","Trang chủ",module,Magento_VersionsCms
+"Home","Trang Chủ",module,Magento_VersionsCms
 "Go to Home Page","Đi đến trang chủ",module,Magento_VersionsCms
 "You copied the pages hierarchy to the selected scopes.","Bạn đã sao chép hệ thống phân cấp trang để dò đã chọn.",module,Magento_VersionsCms
 "Something went wrong while copying the hierarchy.","Một cái gì đó đã đi sai trong khi sao chép hệ thống phân cấp.",module,Magento_VersionsCms
@@ -16275,8 +16275,8 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Your Shipment #%shipment_id for Order #%order_id","Vận chuyển #%shipment_id cho đơn hàng #%order_id",theme,frontend/Magento/luma
 "Update to your %store_name shipment","Cập Nhật cho %store_name sự gửi hàng của bạn",theme,frontend/Magento/luma
 "Account Dashboard","Trang tổng quan tài khoản",theme,frontend/Magento/luma
-"Address Book","Thông tin giao hàng",theme,frontend/Magento/luma
-"Account Information","Thông tin tài khoản",theme,frontend/Magento/luma
+"Address Book","THÔNG TIN GIAO HÀNG",theme,frontend/Magento/luma
+"Account Information","Thông tin cá nhân",theme,frontend/Magento/luma
 "About Us","Giới Thiệu Về Chúng Tôi",theme,frontend/Magento/luma
 "Customer Service","Dịch vụ khách hàng",theme,frontend/Magento/luma
 "My Account","Tài khoản của tôi",theme,frontend/Magento/luma
