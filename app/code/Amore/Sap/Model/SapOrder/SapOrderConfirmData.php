@@ -25,6 +25,7 @@ use Magento\Sales\Model\Order\Item;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 class SapOrderConfirmData extends AbstractSapOrder
 {
@@ -79,6 +80,11 @@ class SapOrderConfirmData extends AbstractSapOrder
     private $logger;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * SapOrderConfirmData constructor.
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -94,6 +100,7 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement
      * @param \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository
      * @param Logger $logger
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -109,7 +116,8 @@ class SapOrderConfirmData extends AbstractSapOrder
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
         \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement,
         \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository,
-        Logger $logger
+        Logger $logger,
+        StoreManagerInterface $storeManager
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
@@ -122,6 +130,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->productLinkManagement = $productLinkManagement;
         $this->orderItemRepository = $orderItemRepository;
         $this->logger = $logger;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -251,6 +260,11 @@ class SapOrderConfirmData extends AbstractSapOrder
             $shippingAddress = $orderData->getShippingAddress();
             $customer = $this->getCustomerByOrder($orderData);
 
+            $paymtd = $this->getPaymentCode($orderData->getPayment()->getMethod());
+            $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
+            $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
+            $paymtd = ($websiteCode != 'vn_laneige_website') ? $paymtd : 10;
+
             $orderSubTotal = abs(round($orderData->getSubtotalInclTax() + $this->getBundleExtraAmount($orderData) + $this->getCatalogRuleDiscountAmount($orderData)));
             $orderGrandTotal = $orderData->getGrandTotal() == 0 ? $orderData->getGrandTotal() : abs(round($orderData->getGrandTotal() - $orderData->getShippingAmount()));
 
@@ -260,9 +274,17 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'odrno' => $orderData->getIncrementId(),
                 'odrdt' => $this->dateFormatting($orderData->getCreatedAt(), 'Ymd'),
                 'odrtm' => $this->dateFormatting($orderData->getCreatedAt(), 'His'),
-                'paymtd' => $this->getPaymentCode($orderData->getPayment()->getMethod()),
-                'payde' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
+                'paymtd' => $paymtd,
+                'paydt' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
                 'paytm' => $this->dateFormatting($invoice->getCreatedAt(), 'His'),
+                // added for VN start
+                'payMode' => $orderData->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '', //todo need to create payment method cod
+                'dhlId' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'TBD' : '', //todo need to make configuration for this
+                'shpSvccd' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'PDE' : '',
+                'ordWgt' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? '1000' : '',
+                'insurance' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'Y' : '',
+                'insurnaceValue' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? $orderGrandTotal : null, //todo null is okay?
+                // added for VN start end
                 'auart' => self::NORMAL_ORDER,
                 'augru' => '',
                 'augruText' => 'ORDER REASON TEXT',

@@ -119,6 +119,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->productRepository = $productRepository;
         $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
         $this->productLinkManagement = $productLinkManagement;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -162,16 +163,20 @@ class SapOrderReturnData extends AbstractSapOrder
         $pointUsed = $order->getRewardPointsBalance();
         $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
         $trackData = $this->getTracks($rma);
+        $ztrackId = $trackData['track_number'] ?? '';
+        $shippingMethod = $order->getShippingMethod();
 
         $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
         $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
         if ($websiteCode == 'vn_laneige_website') {
-            $nsamt = $order->getData('sap_nsamt');
-            $dcamt = $order->getData('sap_dcamt');
-            $slamt = $order->getData('sap_slamt');
+            $paymtd = 10;
+            $nsamt  = $order->getData('sap_nsamt');
+            $dcamt  = $order->getData('sap_dcamt');
+            $slamt  = $order->getData('sap_slamt');
         } else {
-            $nsamt = abs(round($this->getRmaSubtotalInclTax($rma)));
-            $dcamt = abs(round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) +
+            $paymtd = $order->getPayment()->getMethod() == 'ecpay_ecpaypayment' ? 'P' : 'S';
+            $nsamt  = abs(round($this->getRmaSubtotalInclTax($rma)));
+            $dcamt  = abs(round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) +
                 $this->getCatalogRuleDiscountAmount($rma)));
             $slamt = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
                 abs(round($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed)));
@@ -183,9 +188,15 @@ class SapOrderReturnData extends AbstractSapOrder
             'odrno' => "R" . $rma->getIncrementId(),
             'odrdt' => $this->dateFormatting($rma->getDateRequested(), 'Ymd'),
             'odrtm' => $this->dateFormatting($rma->getDateRequested(), 'His'),
-            'paymtd' => '',
-            'payde' => '',
+            'paymtd' => $paymtd,
+            'paydt' => '',
             'paytm' => '',
+            'payMode' => $order->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '',
+            'dhlId' => $shippingMethod === 'eguanadhl_tablerate' ? 'TBD' : '',
+            'shpSvccd' => $shippingMethod === 'eguanadhl_tablerate' ? 'PDE' : '',
+            'ordWgt' => $shippingMethod === 'eguanadhl_tablerate' ? '1000' : '',
+            'insurance' => $shippingMethod === 'eguanadhl_tablerate' ? 'Y' : '',
+            'insurnaceValue' => $shippingMethod === 'eguanadhl_tablerate' ? $orderTotal : null,
             'auart' => self::RETURN_ORDER,
             'augru' => self::AUGRU_RETURN_CODE,
             'augruText' => '',
@@ -224,7 +235,7 @@ class SapOrderReturnData extends AbstractSapOrder
             // 납품처
             'kunwe' => $this->kunweCheck($order),
             // trackNo 가져와야 함
-            'ztrackId' => $trackData['track_number']
+            'ztrackId' => $ztrackId
         ];
 
         return $bindData;
@@ -673,24 +684,37 @@ class SapOrderReturnData extends AbstractSapOrder
      */
     public function getTracks($rma)
     {
-        $tracks = $rma->getTracks();
-        $trackData = [];
-        foreach ($tracks as $track) {
-            $trackData[] = [
-                'carrier_title' => $track->getCarrierTitle(),
-                'carrier_code' => $track->getCarrierCode(),
-                'rma_id' => $track->getRmaEntityId(),
-                'track_number' => $track->getTrackNumber()
-            ];
-        }
+        $storeData = $this->storeRepository->getById($rma->getStoreId());
+        $storeCode = (string)$storeData->getCode();
 
-        $trackCount = count($trackData);
-        if ($trackCount == 1) {
-            return $trackData[0];
-        } elseif ($trackCount == 0) {
-            throw new RmaTrackNoException(__("Tracking No Does Not Exist."));
+        $trackData = [];
+        if ($storeCode != "vn_laneige") {
+            $tracks = $rma->getTracks();
+            foreach ($tracks as $track) {
+                $trackData[] = [
+                    'carrier_title' => $track->getCarrierTitle(),
+                    'carrier_code' => $track->getCarrierCode(),
+                    'rma_id' => $track->getRmaEntityId(),
+                    'track_number' => $track->getTrackNumber()
+                ];
+            }
+
+            $trackCount = count($trackData);
+            if ($trackCount == 1) {
+                return $trackData[0];
+            } elseif ($trackCount == 0) {
+                $storeData = $this->storeRepository->getById($rma->getStoreId());
+                $storeCode = (string)$storeData->getCode();
+                if ($storeCode == "vn_laneige") {
+                    return $trackData[0];
+                } else {
+                    throw new RmaTrackNoException(__("Tracking No Does Not Exist."));
+                }
+            } else {
+                throw new RmaTrackNoException(__("Tracking No Exist more than 1."));
+            }
         } else {
-            throw new RmaTrackNoException(__("Tracking No Exist more than 1."));
+            return $trackData;
         }
     }
 
