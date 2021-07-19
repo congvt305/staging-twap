@@ -9,6 +9,7 @@
 namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Exception\ShipmentNotExistException;
+use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Source\Config;
 use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
 use Magento\Customer\Api\Data\CustomerInterface;
@@ -24,6 +25,7 @@ use Magento\Sales\Model\Order\Item;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 class SapOrderConfirmData extends AbstractSapOrder
 {
@@ -73,6 +75,16 @@ class SapOrderConfirmData extends AbstractSapOrder
     private $orderItemRepository;
 
     /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * SapOrderConfirmData constructor.
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -87,6 +99,8 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
      * @param \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement
      * @param \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository
+     * @param Logger $logger
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -101,7 +115,9 @@ class SapOrderConfirmData extends AbstractSapOrder
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
         \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement,
-        \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository
+        \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository,
+        Logger $logger,
+        StoreManagerInterface $storeManager
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
@@ -113,6 +129,8 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
         $this->productLinkManagement = $productLinkManagement;
         $this->orderItemRepository = $orderItemRepository;
+        $this->logger = $logger;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -242,6 +260,11 @@ class SapOrderConfirmData extends AbstractSapOrder
             $shippingAddress = $orderData->getShippingAddress();
             $customer = $this->getCustomerByOrder($orderData);
 
+            $paymtd = $this->getPaymentCode($orderData->getPayment()->getMethod());
+            $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
+            $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
+            $paymtd = ($websiteCode != 'vn_laneige_website') ? $paymtd : 10;
+
             $orderSubTotal = abs(round($orderData->getSubtotalInclTax() + $this->getBundleExtraAmount($orderData) + $this->getCatalogRuleDiscountAmount($orderData)));
             $orderGrandTotal = $orderData->getGrandTotal() == 0 ? $orderData->getGrandTotal() : abs(round($orderData->getGrandTotal() - $orderData->getShippingAmount()));
 
@@ -251,9 +274,17 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'odrno' => $orderData->getIncrementId(),
                 'odrdt' => $this->dateFormatting($orderData->getCreatedAt(), 'Ymd'),
                 'odrtm' => $this->dateFormatting($orderData->getCreatedAt(), 'His'),
-                'paymtd' => $this->getPaymentCode($orderData->getPayment()->getMethod()),
-                'payde' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
+                'paymtd' => $paymtd,
+                'paydt' => $this->dateFormatting($invoice->getCreatedAt(), 'Ymd'),
                 'paytm' => $this->dateFormatting($invoice->getCreatedAt(), 'His'),
+                // added for VN start
+                'payMode' => $orderData->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '', //todo need to create payment method cod
+                'dhlId' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'TBD' : '', //todo need to make configuration for this
+                'shpSvccd' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'PDE' : '',
+                'ordWgt' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? '1000' : '',
+                'insurance' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'Y' : '',
+                'insurnaceValue' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? $orderGrandTotal : null, //todo null is okay?
+                // added for VN start end
                 'auart' => self::NORMAL_ORDER,
                 'augru' => '',
                 'augruText' => 'ORDER REASON TEXT',
@@ -453,6 +484,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         if ($invoice != null) {
 
             $orderItems = $order->getAllVisibleItems();
+            $orderAllItems = $order->getAllItems();
 
             $skuPrefix = $this->config->getSapSkuPrefix($storeId);
             $skuPrefix = $skuPrefix ?: '';
@@ -504,7 +536,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                         'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnrOri' => $this->config->getClient('store', $storeId),
                         'itemOdrnoOri' => $order->getIncrementId(),
-                        'itemPosnrOri' => $cnt
+                        'itemPosnrOri' => $cnt,
+                        'itemId' => $orderItem->getItemId()
                     ];
 
                     $cnt++;
@@ -558,6 +591,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $itemTaxAmount = abs(round($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getTaxAmount())));
 
                         $sku = str_replace($skuPrefix, '', $bundleChild->getSku());
+                        $item = $this->searchOrderItem($orderAllItems, $bundleChild->getSku(), $itemId);
 
                         $orderItemData[] = [
                             'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
@@ -582,7 +616,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                             'itemKunnrOri' => $this->config->getClient('store', $storeId),
                             'itemOdrnoOri' => $order->getIncrementId(),
-                            'itemPosnrOri' => $cnt
+                            'itemPosnrOri' => $cnt,
+                            'itemId' => $item->getItemId()
                         ];
                         $cnt++;
                         $itemsSubtotal += $itemSubtotal;
@@ -842,5 +877,72 @@ class SapOrderConfirmData extends AbstractSapOrder
             $originalPriceSum += ($originalProductPrice * $childItem->getQty());
         }
         return $originalPriceSum;
+    }
+
+    /**
+     * Return bundle child item from all items by sku and parent item id
+     *
+     * @param $orderItems
+     * @param $childSku
+     * @param $parentItemId
+     * @return array|Item
+     */
+    private function searchOrderItem($orderItems, $childSku, $parentItemId)
+    {
+        /** @var Item $item */
+        foreach ($orderItems as $item) {
+            if ($item->getSku() == $childSku && $item->getParentItemId() == $parentItemId) {
+                return $item;
+            }
+        }
+        return [];
+    }
+
+    /**
+     * Set order data for return order
+     *
+     * @param $orderData
+     * @param Order $order
+     */
+    public function setReturnOrderData($orderData, $order)
+    {
+        try {
+            $order->setData('sap_nsamt', $orderData['nsamt']);
+            $order->setData('sap_dcamt', $orderData['dcamt']);
+            $order->setData('sap_slamt', $orderData['slamt']);
+        } catch (\Exception $exception) {
+            $this->logger->info('===== Error While Setting Order Data for Return =====');
+            $this->logger->info($exception->getMessage());
+        }
+    }
+
+    /**
+     * Set order item data for return order
+     *
+     * @param $itemsData
+     * @param Order $order
+     */
+    public function setReturnItemOrderData($itemsData, $order)
+    {
+        try {
+            $orderAllItems = $order->getAllItems();
+            foreach ($orderAllItems as $item) {
+                $key = array_search($item->getItemId(), array_column($itemsData, 'itemId'));
+                if ($key !== false) {
+                    $item->setData('sap_item_nsamt', $itemsData[$key]['itemNsamt']);
+                    $item->setData('sap_item_dcamt', $itemsData[$key]['itemDcamt']);
+                    $item->setData('sap_item_slamt', $itemsData[$key]['itemSlamt']);
+                    $item->setData('sap_item_netwr', $itemsData[$key]['itemNetwr']);
+                }
+            }
+            $size = count($itemsData);
+            for ($i = 0; $i < $size; $i++) {
+                unset($itemsData[$i]['itemId']);
+            }
+        } catch (\Exception $exception) {
+            $this->logger->info('===== Error While Setting Order Item Data for Return =====');
+            $this->logger->info($exception->getMessage());
+        }
+        return $itemsData;
     }
 }
