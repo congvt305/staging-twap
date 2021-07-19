@@ -55,6 +55,7 @@ if (isHttpHost("tw.sulwhasoo.com")
     $_SERVER["MAGE_RUN_CODE"] = "tw_laneige";
     $_SERVER["MAGE_RUN_TYPE"] = "store";
 } elseif (isHttpHost("laneige.com.vn")
+        || isHttpHost("vn.laneige.com")
         || isHttpHost("www.laneige.com.vn")
         || isHttpHost("mcprod.vn.laneige.com")
         || isHttpHost("vl.integration-5ojmyuq-kqevkj6gpg7si.ap-3.magentosite.cloud")
