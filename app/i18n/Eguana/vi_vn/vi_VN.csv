@@ -4818,7 +4818,7 @@ new products will be created. Use this step to customize images and price for yo
 "The customer would belong to Customer Group %s.","Khách hàng sẽ thuộc về nhóm khách hàng %s.",module,Magento_Customer
 "There was an error detecting Customer Group.","Đã có lỗi khi phát hiện các nhóm khách hàng.",module,Magento_Customer
 "Validate VAT Number","Xác nhận số thuế GTGT",module,Magento_Customer
-"Customer Login","CHÀO MỪNG ĐẾN VỚI LANEIGE MALL. ĐĂNG NHẬP NGAY",module,Magento_Customer
+"Customer Login","ĐĂNG NHẬP",module,Magento_Customer
 "Create New Customer Account","Tạo mới tài khoản khách hàng",module,Magento_Customer
 "Date of Birth","Ngày sinh",module,Magento_Customer
 "Bad request.","Yêu cầu bị lỗi.",module,Magento_Customer
@@ -5069,14 +5069,14 @@ new products will be created. Use this step to customize images and price for yo
 "Registered Customers","Khách hàng đã đăng ký",module,Magento_Customer
 "If you have an account, sign in with your email address.","Nếu bạn có một tài khoản, hãy đăng nhập bằng địa chỉ email của bạn.",module,Magento_Customer
 "Password","Mật khẩu",module,Magento_Customer
-"Forgot Your Password?","Bạn quên mật khẩu?",module,Magento_Customer
+"Forgot Your Password?","Quên mật khẩu",module,Magento_Customer
 "Subscription option","Tùy chọn đăng ký",module,Magento_Customer
 "General Subscription","Đăng ký chung",module,Magento_Customer
 "Sign Up for Newsletter","Đăng ký nhận bản tin",module,Magento_Customer
 "Address Information","Thông tin địa chỉ",module,Magento_Customer
 "Sign-in Information","Thông tin đăng nhập",module,Magento_Customer
 "Confirm Password","Xác nhận mật khẩu",module,Magento_Customer
-"Create an Account","Tạo tài khoản",module,Magento_Customer
+"Create an Account","Tạo Tài Khoản",module,Magento_Customer
 "Set a New Password","Thiết lập một mật khẩu mới",module,Magento_Customer
 "You have signed out and will go to our homepage in 5 seconds.","Bạn đã đăng xuất và sẽ đi đến trang chủ của chúng tôi trong 5 giây.",module,Magento_Customer
 "New Customers","Khách hàng mới",module,Magento_Customer
@@ -13155,7 +13155,7 @@ Cách sử dụng giới hạn áp dụng chỉ cho khách hàng đã đăng nh�
 "Delete","Xóa bỏ",module,Magento_Search
 "Are you sure you want to delete synonym group with id: %1?","Bạn có chắc bạn muốn xóa bỏ nhóm từ đồng nghĩa với id: %1?",module,Magento_Search
 "View/Edit","Xem/chỉnh sửa",module,Magento_Search
-"Search entire store here...","Tìm toàn bộ cửa hàng ở đây...",module,Magento_Search
+"Search entire store here...","Gõ từ khóa",module,Magento_Search
 "There are no search terms available.","Không có cụm từ tìm kiếm có sẵn nào.",module,Magento_Search
 "Search Engine","Công cụ tìm kiếm",module,Magento_Search
 "CSV","CSV",module,Magento_Search
