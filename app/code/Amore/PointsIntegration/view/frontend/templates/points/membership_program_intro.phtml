@@ -6,8 +6,14 @@
  * Time: 오후 4:49
  */
 /** @var $block \Magento\Framework\View\Element\Template */
+/** @var \Amore\PointsIntegration\ViewModel\PointsIntegration $pointsViewModel */
+$pointsViewModel = $block->getData('points_view_model');
 
-$membershipProgramCmsBlock = $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('point_policy_block')->toHtml();
+$blockId = $pointsViewModel->getRewardsBlock() ?: 'point_policy_block';
+$membershipProgramCmsBlock = $block->getLayout()
+    ->createBlock(Magento\Cms\Block\Block::class)
+    ->setBlockId($blockId)
+    ->toHtml();
 ?>
 <div class="item title" data-role="collapsible">
     <a class="switch" data-toggle="trigger" href="#tab-1"><?= $block->escapeHtml(__('Introduction of Membership Program'))?></a>
@@ -16,7 +22,7 @@ $membershipProgramCmsBlock = $block->getLayout()->createBlock('Magento\Cms\Block
     <?php if ($membershipProgramCmsBlock): ?>
         <div class="block point-membership-program">
             <div class="block-content">
-                <?= $membershipProgramCmsBlock; ?>
+                <?= /* @noEscape */ $membershipProgramCmsBlock; ?>
             </div>
         </div>
     <?php endif;?>

@@ -47,6 +47,12 @@ class Config
 
     const CRON_TEST_ORDER_INCREMENT_ID_LTEQ = 'points_integration/configurable_cron/test_order_no_lteq';
 
+    const REWARD_BLOCK_ID_PATH = 'points_integration/general/rewards_block_id';
+
+    const REDEMPTION_BLOCK_ID_PATH = 'points_integration/general/redemption_block_id';
+
+    const POINTS_BLOCK_ID_PATH = 'points_integration/general/points_block_id';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -200,5 +206,50 @@ class Config
     public function getCronTestOrderLteq($websiteId)
     {
         return $this->getValue(self::CRON_TEST_ORDER_INCREMENT_ID_LTEQ, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+    }
+
+    /**
+     * Get config rewards block id
+     *
+     * @param $websiteId
+     * @return mixed
+     */
+    public function getRewardsBlock($websiteId)
+    {
+        return $this->getValue(
+            self::REWARD_BLOCK_ID_PATH,
+            ScopeInterface::SCOPE_WEBSITE,
+            $websiteId
+        );
+    }
+
+    /**
+     * Get config redemption block id
+     *
+     * @param $websiteId
+     * @return mixed
+     */
+    public function getRedemptionBlock($websiteId)
+    {
+        return $this->getValue(
+            self::REDEMPTION_BLOCK_ID_PATH,
+            ScopeInterface::SCOPE_WEBSITE,
+            $websiteId
+        );
+    }
+
+    /**
+     * Get config points block id
+     *
+     * @param $websiteId
+     * @return mixed
+     */
+    public function getPointsBlock($websiteId)
+    {
+        return $this->getValue(
+            self::POINTS_BLOCK_ID_PATH,
+            ScopeInterface::SCOPE_WEBSITE,
+            $websiteId
+        );
     }
 }
