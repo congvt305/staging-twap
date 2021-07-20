@@ -43,15 +43,21 @@
                 <block class="Magento\Framework\View\Element\Template" name="member.points.modal.info" template="Amore_PointsIntegration::points/member_points_modal_info.phtml" />
             </block>
             <block class="Magento\Framework\View\Element\Template" name="member.points.tab" template="Amore_PointsIntegration::points/member_points_tab.phtml" cacheable="false">
-                <block class="Magento\Framework\View\Element\Template" name="membership.program.introduction.cms" template="Amore_PointsIntegration::points/membership_program_intro.phtml" />
+                <block class="Magento\Framework\View\Element\Template" name="membership.program.introduction.cms" template="Amore_PointsIntegration::points/membership_program_intro.phtml">
+                    <arguments>
+                        <argument name="points_view_model" xsi:type="object">Amore\PointsIntegration\ViewModel\PointsIntegration</argument>
+                    </arguments>
+                </block>
                 <block class="Amore\PointsIntegration\Block\Points\RedeemPointsSearch" name="redeem.points" template="Amore_PointsIntegration::points/redeem_points.phtml" cacheable="false">
                     <arguments>
                         <argument name="redeem_view_model" xsi:type="object">Amore\PointsIntegration\ViewModel\Points\RedeemAjax</argument>
+                        <argument name="points_view_model" xsi:type="object">Amore\PointsIntegration\ViewModel\PointsIntegration</argument>
                     </arguments>
                 </block>
                 <block class="Amore\PointsIntegration\Block\Points\PointsHistorySearch" name="points.history" template="Amore_PointsIntegration::points/history_points.phtml" cacheable="false">
                     <arguments>
                         <argument name="history_view_model" xsi:type="object">Amore\PointsIntegration\ViewModel\Points\HistoryAjax</argument>
+                        <argument name="points_view_model" xsi:type="object">Amore\PointsIntegration\ViewModel\PointsIntegration</argument>
                     </arguments>
                 </block>
             </block>
