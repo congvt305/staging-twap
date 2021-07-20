@@ -31,6 +31,7 @@ class RedemptionConfiguration
     const XML_PATH_MINIMUM_MOBILE_NUMBER_DIGITS = 'redemption/configuration/minimum_mobile_number_digits';
     const XML_PATH_MAXIMUM_MOBILE_NUMBER_DIGITS = 'redemption/configuration/maximum_mobile_number_digits';
     const XML_PATH_PRIVACY_POLICY_TEXT = 'redemption/configuration/privacy_policy_text';
+    const XML_PATH_HOME_DELIVERY_ENABLED = 'redemption/configuration/home_delivery_enabled';
 
     /**
      * @var ScopeInterface
@@ -217,6 +218,19 @@ class RedemptionConfiguration
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_PRIVACY_POLICY_TEXT,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param null|int $storeId
+     * @return string
+     */
+    public function getHomeDeliveryEnabled($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_HOME_DELIVERY_ENABLED,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );

@@ -36,6 +36,7 @@ interface CounterInterface
     const UTM_CONTENT = 'utm_content';
     const CREATION_TIME = 'creation_time';
     const UPDATE_TIME = 'update_time';
+    const ADDRESS = 'address';
     /**#@-*/
 
     /**
@@ -276,4 +277,15 @@ interface CounterInterface
      * @return RedemptionInterface
      */
     public function setUpdateTime($updateTime);
+
+    /**
+     * @return string
+     */
+    public function getAddress();
+
+    /**
+     * @param string $address
+     * @return RedemptionInterface
+     */
+    public function setAddress($address);
 }
