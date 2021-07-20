@@ -13,7 +13,7 @@ Home,Trang Chủ
 "My Account","Tài khoản của tôi"
 "Support Ticket","Vé ủng hộ"
 "Add new ticket","Thêm vé mới"
-"My Tickets","vé của tôi"
+"My Tickets","HỖ TRỢ"
 "Current Tickets","Vé hiện tại"
 "Run Cron","Chạy Cron"
 "Something went wrong while saving the ticket.","Đã xảy ra sự cố khi lưu vé."
@@ -68,10 +68,10 @@ Subject,Môn học
 File,Tập tin
 Submit,Gửi đi
 "FAQ!","Câu hỏi thường gặp!"
-"Note Status","Ghi chú Trạng thái"
+"Note Status","Ghi chú"
 Action,Hoạt động
 view,lượt xem
-"You have not Created a Ticket.","Bạn chưa tạo vé."
+"You have not Created a Ticket.","Bạn chưa tạo yêu cầu nào"
 Information,Thông tin
 "Add Note","Thêm ghi chú"
 "Close this ticket","Đóng vé này"
@@ -152,11 +152,10 @@ here,đây
 "Allowed file formats:","Các định dạng tệp được phép:"
 "Ticket Information","thông tin vé"
 "Created At","Được tạo lúc"
-"Ticket List","DANH SÁCH VÉ"
+"Ticket List","Yêu Cầu Hỗ Trợ"
 "Select Category","Chọn loại"
 "My Ticket View","Khung vé của tôi"
 "Checked our <a href=""%1"">FAQ</a> and still need help? Please send us a message using the form below.","Đã kiểm tra <a href=""%1"">FAQ</a> của chúng tôi và vẫn cần giúp đỡ? Vui lòng gửi cho chúng tôi một thông điệp sử dụng mẫu dưới đây."
 "Your Ticket has been created!","Vé của bạn đã được tạo!"
 "--Select Category--","--Chọn thể loại--"
 "Click <a href=""%ticket_url"">here</a> to view the ticket","<a href=""%ticket_url"">Nhấp vào đây để xem vé</a>"
-
