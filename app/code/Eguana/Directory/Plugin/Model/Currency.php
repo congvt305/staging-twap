@@ -62,8 +62,8 @@ class Currency
         $addBrackets = false
     ) {
         $fullActionName = $this->request->getFullActionName();
-        $websiteId = $this->storeManager->getStore()->getWebsiteId();
-        if ($websiteId == "8" || $fullActionName == "mui_index_render") {
+        $storeCode = $this->storeManager->getStore()->getCode();
+        if ($storeCode == "vn_laneige" || $fullActionName == "mui_index_render") {
             $precision = 0;
             return [$price, $precision, $options, $includeContainer, $addBrackets];
         }
