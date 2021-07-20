@@ -408,4 +408,21 @@ class Counter extends AbstractModel implements CounterInterface, IdentityInterfa
             self::STATUS_EXPIRED   => __('Expired')
         ];
     }
+
+    /**
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->getData(self::ADDRESS);
+    }
+
+    /**
+     * @param string $address
+     * @return $this
+     */
+    public function setAddress($address)
+    {
+        return $this->setData(self::ADDRESS, $address);
+    }
 }

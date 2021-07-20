@@ -259,5 +259,11 @@
                 <label translate="true">utm_content</label>
             </settings>
         </column>
+        <column name="address" sortOrder="140">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Address</label>
+            </settings>
+        </column>
     </columns>
 </listing>

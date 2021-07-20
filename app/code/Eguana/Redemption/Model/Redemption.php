@@ -451,4 +451,21 @@ class Redemption extends AbstractModel implements RedemptionInterface, IdentityI
         }
         return $result;
     }
+
+    /**
+     * @return string
+     */
+    public function getVvipList()
+    {
+        return $this->getData(self::VVIP_LIST);
+    }
+
+    /**
+     * @param string $list
+     * @return $this
+     */
+    public function setVvipList($list)
+    {
+        return $this->setData(self::VVIP_LIST, $list);
+    }
 }
