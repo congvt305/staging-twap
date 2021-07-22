@@ -556,19 +556,23 @@ class SapOrderReturnData extends AbstractSapOrder
     {
         $kunwe = $this->config->getHomeDeliveryContractor('store', $order->getStoreId());
         if ($this->cvsShippingCheck($order)) {
-            $shippingAddress = $order->getShippingAddress();
-            $cvsLocationId = $shippingAddress->getData('cvs_location_id');
-            $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
-            $cvsType = $cvsStoreData->getLogisticsSubType();
+            try {
+                $shippingAddress = $order->getShippingAddress();
+                $cvsLocationId = $shippingAddress->getData('cvs_location_id');
+                $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
+                $cvsType = $cvsStoreData->getLogisticsSubType();
+            } catch (NoSuchEntityException $e) {
+                // when cvs address data is missing, use default value.
+                // It does not matter anyway because it is not real customer address and we don't know the real cvs address fo return.
+                $cvsType = 'FAMI';
+            }
             if ($cvsType == 'FAMI') {
                 $kunwe = $this->config->getFamilyMartCode('store', $order->getStoreId());
             } else {
                 $kunwe = $this->config->getSevenElevenCode('store', $order->getStoreId());
             }
-            return $kunwe;
-        } else {
-            return $kunwe;
         }
+        return $kunwe;
     }
 
     /**
@@ -651,8 +655,13 @@ class SapOrderReturnData extends AbstractSapOrder
     public function getCsvAddress($shippingAddress)
     {
         $cvsLocationId = $shippingAddress->getData('cvs_location_id');
-        $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
-        $cvsAddress = $cvsStoreData->getCvsAddress() . ' ' . $cvsStoreData->getCvsStoreName() . ' ' . $cvsStoreData->getLogisticsSubType();
+        $cvsAddress = $shippingAddress->getRegion();
+        try {
+            $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
+            $cvsAddress = $cvsStoreData->getCvsAddress() . ' ' . $cvsStoreData->getCvsStoreName() . ' ' . $cvsStoreData->getLogisticsSubType();
+        } catch (NoSuchEntityException $e) {
+            //if order is older than 30days, cvs address might not exists.
+        }
 
         return $cvsAddress;
     }
