@@ -18,6 +18,7 @@ use Amore\Sap\Model\SapProduct\SapInventoryData;
 use Amore\Sap\Model\SapProduct\SapInventoryStockFactory;
 use Amore\Sap\Model\SapProduct\SapProductManagement;
 use Amore\Sap\Model\Source\Config;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Psr\Log\LoggerInterface;
 
@@ -98,6 +99,19 @@ class SapOrderManagementPlugin
     }
 
     /**
+     * @param \Exception $exception
+     * @return void
+     */
+    private function _logException(\Exception $exception) {
+        if ($this->sapConfig->getLoggingCheck()) {
+            $this->sapLogger->info('ERROR WHILE STOCK UPDATE AFTER GI CALL');
+            $this->sapLogger->info($exception->getMessage());
+        } else {
+            $this->logger->error($exception->getMessage());
+        }
+    }
+
+    /**
      * Before plugin method to sync SAP stock with magento stock
      *
      * @param SapOrderManagement $subject
@@ -107,7 +121,12 @@ class SapOrderManagementPlugin
     {
         $incrementId = $data['odrno'];
         if ($data['odrstat'] == 4) {
-            $order = $subject->getOrderFromList($incrementId);
+            try {
+                $order = $subject->getOrderFromList($incrementId);
+            } catch (LocalizedException $exception) {
+                $this->_logException($exception);
+                return [$data];
+            }
             if (strpos($incrementId, "R") === false &&
                 in_array($order->getStatus(), $this->sapInventoryData->getAllowedStatuses())) {
                 $orderItems = $order->getItems();
@@ -150,12 +169,7 @@ class SapOrderManagementPlugin
                         $this->logger->info($result);
                     }
                 } catch (\Exception $exception) {
-                    if ($this->sapConfig->getLoggingCheck()) {
-                        $this->sapLogger->info('ERROR WHILE STOCK UPDATE AFTER GI CALL');
-                        $this->sapLogger->info($exception->getMessage());
-                    } else {
-                        $this->logger->error($exception->getMessage());
-                    }
+                    $this->_logException($exception);
                 }
             }
         }

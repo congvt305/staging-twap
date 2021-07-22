@@ -635,9 +635,17 @@ class SapOrderManagement implements SapOrderManagementInterface
         return reset($shipmentRecords);
     }
 
+    /**
+     * @param $incrementId
+     * @return \Magento\Sales\Api\Data\OrderInterface|mixed
+     * @throws LocalizedException
+     */
     public function getOrderFromList($incrementId)
     {
         $orders = $this->getOrderByIncrementId($incrementId)->getItems();
+        if (count($orders) == 0) {
+            throw new LocalizedException(__('order %1 not found.', $incrementId));
+        }
         return reset($orders);
     }
 

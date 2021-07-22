@@ -146,6 +146,11 @@ class EmailSender
     {
         try {
             $reservationDetail = $this->getReservationDetail($userReserveId);
+
+            if (!$reservationDetail instanceof UserReservationInterface) {
+                return;
+            }
+
             $eventId = $reservationDetail->getEventId();
             $event = $this->getEvent($eventId);
             $storeId = $event->getStoreId();
