@@ -148,9 +148,10 @@ class SmsSender
             $token = $reservation->getAuthToken() . '_C';
             $params['confirmLink'] = $this->emailSender->getConfirmLink($userReserveId, $token);
             $params['cancelLink'] = $this->emailSender->getCancelLink($userReserveId, $token);
-
+            $customerName = $reservation->getName();
             $smsContent = $event->getSmsContent();
             if ($smsContent) {
+                $smsContent = str_replace('%customer', $customerName, $smsContent);
                 $smsContent = str_replace('%store', $storeName, $smsContent);
                 $smsContent = str_replace('%eventName', $event->getTitle(), $smsContent);
                 $smsContent = str_replace('%confirm', $params['confirmLink'], $smsContent);
