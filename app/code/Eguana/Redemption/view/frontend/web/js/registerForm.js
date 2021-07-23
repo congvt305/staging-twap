@@ -87,8 +87,10 @@ define([
                                 $('#popup-modal').modal(options).modal('openModal');
                             }
                             if (data['vvip_case']) {
-                                popup = modal(options, $('#popup-modal-vvip-denied'))
-                                $('#popup-modal-vvip-denied').modal(options).modal('openModal');
+                                var $vipMessage = $('#popup-modal-vvip-denied');
+                                $vipMessage.find('.modal-body-content').html(data['message']);
+                                popup = modal(options, $vipMessage);
+                                $vipMessage.modal(options).modal('openModal');
                             }
                             $('#counter-form-submit').show();
                             $('#counter-form-submit').removeAttr('disabled');
