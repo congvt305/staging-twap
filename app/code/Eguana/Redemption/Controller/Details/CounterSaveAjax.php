@@ -171,9 +171,12 @@ class CounterSaveAjax extends Action
                         $phoneNumbers = explode(',', $vvipList);
 
                         if (in_array($post['phone'], $phoneNumbers)) {
+                            $errorMessage = __('Thank you for your support to Xiaolanguan! You already enjoy the priority experience service of Laneige Super Member!') . '<br>'
+                                . __('The number of this event is limited, please leave the opportunity to friends who have not yet challenged, thank you for your understanding!');
+
                             $resultJson->setData(
                                 [
-                                    "message" => __('Sorry, you are on the VVIP list and are not allowed to participate in this program.'),
+                                    "message" => $errorMessage,
                                     "vvip_case" => true
                                 ]
                             );
