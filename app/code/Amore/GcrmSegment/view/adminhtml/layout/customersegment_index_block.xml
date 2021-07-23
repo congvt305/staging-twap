@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer.segment.grid.columnSet">
+            <block class="Magento\Backend\Block\Widget\Grid\Column" as="grid_segment_is_remote" name="customer.segment.grid.columnSet.grid_segment_is_remote" ifconfig="amore_gcrm/general/active">
+                <arguments>
+                    <argument name="header" xsi:type="string" translate="true">Is Remote</argument>
+                    <argument name="align" xsi:type="string">left</argument>
+                    <argument name="width" xsi:type="string">55</argument>
+                    <argument name="index" xsi:type="string">is_remote</argument>
+                    <argument name="type" xsi:type="string">options</argument>
+                    <argument name="options" xsi:type="array">
+                        <item name="active" xsi:type="array">
+                            <item name="value" xsi:type="string">1</item>
+                            <item name="label" xsi:type="string" translate="true">Yes</item>
+                        </item>
+                        <item name="inactive" xsi:type="array">
+                            <item name="value" xsi:type="string">0</item>
+                            <item name="label" xsi:type="string" translate="true">No</item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+            <block class="Magento\Backend\Block\Widget\Grid\Column" as="grid_segment_remote_code" name="customer.segment.grid.columnSet.grid_segment_remote_code" ifconfig="amore_gcrm/general/active">
+                <arguments>
+                    <argument name="header" xsi:type="string" translate="true">Remote Segment Code</argument>
+                    <argument name="align" xsi:type="string">left</argument>
+                    <argument name="index" xsi:type="string">remote_code</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>
