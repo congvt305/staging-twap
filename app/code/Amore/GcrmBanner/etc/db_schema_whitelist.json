@@ -1,0 +1,16 @@
+{
+    "magento_banner": {
+        "column": {
+            "is_remote": true,
+            "remote_code": true
+        }
+    },
+    "salesrule_coupon": {
+        "column": {
+            "customer_id": true
+        },
+        "index": {
+            "SALESRULE_COUPON_CUSTOMER_ID": true
+        }
+    }
+}

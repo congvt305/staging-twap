@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Banner\Model\Banner\Data" type="Amore\GcrmBanner\Model\Banner\Data"/>
+    <preference for="Amore\GcrmBanner\Api\CouponManagerInterface" type="Amore\GcrmBanner\Model\Coupon\CouponManager"/>
+</config>
