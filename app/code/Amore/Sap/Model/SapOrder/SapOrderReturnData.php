@@ -175,10 +175,9 @@ class SapOrderReturnData extends AbstractSapOrder
             $slamt  = $order->getData('sap_slamt');
         } else {
             $paymtd = $order->getPayment()->getMethod() == 'ecpay_ecpaypayment' ? 'P' : 'S';
-            $nsamt  = abs(round($this->getRmaSubtotalInclTax($rma)));
-            $dcamt  = abs(round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) +
-                $this->getCatalogRuleDiscountAmount($rma)));
-            $slamt  = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
+            $nsamt = abs(round($this->getRmaSubtotalInclTax($rma)));
+            $dcamt = abs(round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma)));
+            $slamt = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
                 abs(round($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed)));
         }
 
@@ -292,8 +291,7 @@ class SapOrderReturnData extends AbstractSapOrder
 
                 $itemSubtotal = abs(round($orderItem->getPrice() * $rmaItem->getQtyRequested()));
                 if (round($orderItem->getPrice())) {
-                    $itemTotalDiscount = abs(round($this->getRateAmount($orderItem->getDiscountAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested())
-                        + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested())));
+                    $itemTotalDiscount = abs(round($this->getRateAmount($orderItem->getDiscountAmount(), $orderItem->getQtyOrdered(), $rmaItem->getQtyRequested())));
                 } else {
                     $itemTotalDiscount = 0;
                 }
@@ -423,7 +421,7 @@ class SapOrderReturnData extends AbstractSapOrder
         }
         $orderSubtotal = round($this->getRmaSubtotalInclTax($rma));
         $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed));
-        $orderDiscountAmount = round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma));
+        $orderDiscountAmount = round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma));
 
         if ($websiteCode != 'vn_laneige_website') {
             $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'itemNsamt');
