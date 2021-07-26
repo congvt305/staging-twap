@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: adeel
+ * Date: 29/6/21
+ * Time: 12:55 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Export -->
+    <preference for="Magento\ScheduledImportExport\Model\Scheduled\Operation" type="Amore\GcrmDataExport\Model\Scheduled\Operation" />
+    <preference for="Magento\ScheduledImportExport\Model\Export" type="Amore\GcrmDataExport\Model\Export" />
+    <preference for="Magento\ScheduledImportExport\Model\Scheduled\Operation\Data" type="Amore\GcrmDataExport\Model\Scheduled\Operation\Data" />
+
+    <!-- Logger -->
+    <type name="Amore\GcrmDataExport\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Amore\GcrmDataExport\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">SalesOrderLogger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Amore\GcrmDataExport\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Plugin -->
+    <type name="Magento\ScheduledImportExport\Controller\Adminhtml\Scheduled\Operation\Cron">
+        <plugin name="amore_custom_scheduled_export_plugin" type="Amore\GcrmDataExport\Plugin\Controller\CronPlugin"/>
+    </type>
+</config>

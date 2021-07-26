@@ -1,0 +1,13 @@
+{
+    "amore_custom_schedule_date": {
+        "column": {
+            "id": true,
+            "entity_code": true,
+            "last_status": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}
