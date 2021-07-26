@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\ScheduledImportExport\Model\Scheduled\Operation\Data">
+        <plugin name="eguana_sheduledimportexport_add_server_type"
+                type="Eguana\ScheduledImportExport\Plugin\ServerTypeOptionPlugin"/>
+    </type>
+    <preference for="Magento\ScheduledImportExport\Block\Adminhtml\Scheduled\Operation\Edit\Form"
+                type="Eguana\ScheduledImportExport\Block\Adminhtml\Scheduled\Operation\Edit\Form"/>
+    <preference for="Magento\ScheduledImportExport\Model\Scheduled\Operation"
+                type="Eguana\ScheduledImportExport\Model\Scheduled\Operation"/>
+</config>
