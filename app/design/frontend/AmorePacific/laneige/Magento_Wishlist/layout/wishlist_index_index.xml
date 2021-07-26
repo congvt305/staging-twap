@@ -39,7 +39,7 @@
         </referenceBlock>
         <referenceBlock name="customer.wishlist.button.update" remove="true"/>
         <referenceBlock name="customer.wishlist.item.edit" remove="true"/>
-        <move element="customer.wishlist.item.cart" destination="customer.wishlist.item.inner" after="-"/>
+        <move element="customer.wishlist.item.cart" destination="customer.wishlist.item.actions" after="-"/>
         <referenceBlock name="customer.wishlist.item.image">
             <arguments>
                 <argument name="title" xsi:type="string">image</argument>
