@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: adeel
+ * Date: 29/6/21
+ * Time: 12:55 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_ImportExport:etc/export.xsd">
+    <entity name="order" label="Sales Orders" model="Amore\GcrmDataExport\Model\Export\Order\SalesOrder" entityAttributeFilterType="order"/>
+    <entity name="sales_order_item" label="Sales Order Items" model="Amore\GcrmDataExport\Model\Export\OrderItems\OrderItems" entityAttributeFilterType="sales_order_item"/>
+    <entity name="quote" label="Quotes" model="Amore\GcrmDataExport\Model\Export\Quote\Quote" entityAttributeFilterType="quote"/>
+    <entity name="quote_item" label="Quote Items" model="Amore\GcrmDataExport\Model\Export\QuoteItems\QuoteItems" entityAttributeFilterType="quote_item"/>
+</config>

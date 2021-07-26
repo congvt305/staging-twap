@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: adeel
+ * Date: 1/7/21
+ * Time: 5:57 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="customscheduledexport" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Custom Scheduled Import Export</label>
+            <tab>amore_extensions_tab</tab>
+            <resource>Amore_CustomScheduledImportExport::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="ftp_host" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>FTP Host</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
