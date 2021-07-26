@@ -5,8 +5,10 @@
         <plugin name="eguana_sheduledimportexport_add_server_type"
                 type="Eguana\ScheduledImportExport\Plugin\ServerTypeOptionPlugin"/>
     </type>
-    <preference for="Magento\ScheduledImportExport\Block\Adminhtml\Scheduled\Operation\Edit\Form"
-                type="Eguana\ScheduledImportExport\Block\Adminhtml\Scheduled\Operation\Edit\Form"/>
     <preference for="Magento\ScheduledImportExport\Model\Scheduled\Operation"
                 type="Eguana\ScheduledImportExport\Model\Scheduled\Operation"/>
+    <preference for="Magento\ScheduledImportExport\Block\Adminhtml\Scheduled\Operation\Edit\Form\Export"
+                type="Eguana\ScheduledImportExport\Block\Adminhtml\Scheduled\Operation\Edit\Form\Export"/>
+    <preference for="Magento\ScheduledImportExport\Block\Adminhtml\Scheduled\Operation\Edit\Form\Import"
+                type="Eguana\ScheduledImportExport\Block\Adminhtml\Scheduled\Operation\Edit\Form\Import"/>
 </config>
