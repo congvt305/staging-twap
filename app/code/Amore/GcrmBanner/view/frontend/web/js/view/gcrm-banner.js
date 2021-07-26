@@ -106,7 +106,7 @@ define([
 
         isPromoDrawerVisible: function () {
             console.log('isPromoDrawerVisible');
-            return true;
+            return false;
         }
     });
 });
