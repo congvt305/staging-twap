@@ -1,0 +1,23 @@
+{
+  "name": "amore/gcrm-banner",
+  "version": "1.0.0",
+  "description": "N/A",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*",
+    "magento/module-banner": "101.1.*",
+    "magento/module-banner-customer-segment": "100.3.*",
+    "magento/module-banner-page-builder": "1.3.*"
+  },
+  "license": [
+    "Proprietary"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Amore\\GcrmBanner\\": ""
+    }
+  }
+}

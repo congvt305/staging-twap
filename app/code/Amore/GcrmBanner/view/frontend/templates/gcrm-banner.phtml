@@ -1,0 +1,41 @@
+<?php
+declare(strict_types=1);
+/**
+ * @author Eguana Team
+ * Created by PhpStorm
+ * User: Sonia Park
+ * Date: 07/10/2021
+ */
+?>
+<div class="gcrm-banner-container" data-bind="scope: 'gcrm-banner'">
+    <div class="gcrm-popup-button" data-bind="visible: isPromoDrawerVisible()" style="width: 100%; padding: 6px 10px; background-color: rgb(51, 51, 51); align-content: center;">
+        <div class="promos-title">My Offers</div>
+    </div>
+    <div class="gcrm-popup-wrapper">
+            <ul class="banner-items" data-bind="afterRender: registerBanner">
+                <!-- ko foreach: getItems() -->
+                <li class="banner-item" data-bind="attr: {'data-banner-id': $data.bannerId}">
+                    <div class="banner-item-wrapper" style="display: block; text-align: center">
+                        <div class="banner-item-content"  data-bind="bindHtml: $data.html"></div>
+                        <button class="coupon-generate-button" name="coupon-button" type="button" data-bind="click: $parent.generateCoupon, attr: {id: 'coupon_button_' + $data.salesRuleId, 'data-sales-ruleId': $data.salesRuleId}">Generate Coupon</button>
+                        <div data-bind="attr: {id: 'coupon_code_' + $data.salesRuleId}"></div>
+                    </div>
+                </li>
+                <!-- /ko -->
+            </ul>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "gcrm-banner": {
+                        "component": "Amore_GcrmBanner/js/view/gcrm-banner"
+                    }
+                }
+            }
+        }
+    }
+</script>
