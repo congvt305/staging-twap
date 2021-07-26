@@ -16,6 +16,7 @@ $allowedQty = $viewModel->setItem($item)->getMinMaxQty();
 <?php foreach ($block->getChildNames() as $childName) : ?>
     <?= /* @noEscape */ $block->getLayout()->renderElement($childName, false) ?>
 <?php endforeach;?>
+<div class="actions-secondary">
 <div class="box-tocart">
     <fieldset class="fieldset">
     <?php if ($item->canHaveQty() && $product->isVisibleInSiteVisibility()) : ?>
@@ -28,13 +29,10 @@ $allowedQty = $viewModel->setItem($item)->getMinMaxQty();
         </div>
     <?php endif; ?>
     <?php if ($product->isSaleable()) : ?>
-        <div class="product-item-actions">
-            <div class="actions-primary">
                 <button type="button" data-role="tocart" data-post='<?= /* @noEscape */ $block->getItemAddToCartParams($item) ?>' title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>" data-item-id="<?= $block->escapeHtmlAttr($item->getId()) ?>" class="action tocart primary">
                     <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
                 </button>
-            </div>
-        </div>
     <?php endif; ?>
     </fieldset>
+</div>
 </div>
