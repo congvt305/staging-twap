@@ -224,7 +224,6 @@ class SaveSuccess implements ObserverInterface
                 $isNew = 1;
                 $firstName = $customerData->getFirstname();
                 $lastName = $customerData->getLastname();
-//                $birthDay = $customerData->getDob();
                 $birthDay = '20212021';
                 $mobileNo = $customerData->getCustomAttribute('mobile_number')->getValue();
                 $email = $customerData->getEmail();
@@ -283,9 +282,6 @@ class SaveSuccess implements ObserverInterface
                     if ($res && pg_numrows($res) > 0) {
                         echo "Data in table : customer_test : Found.<br>";
                         echo "The query executed successfully.<br>";
-//                        for ($row = 0; $row < pg_numrows($res); $row++) {
-//                            echo pg_result($res, $row,'cstmIntgSeq');
-//                        }
                     } else {
                         echo "No Data in table : customer_test : Found.<br>";
                     }
@@ -342,9 +338,6 @@ class SaveSuccess implements ObserverInterface
              * @Abbas on the request of client. Now if customer register using bar code even than he can be online or
              * offline. So if POS have customer information then he will be considered as offline else online
              */
-            /*if ($customer->getCustomAttribute('referrer_code')) {
-                $posOrOnline = 'pos';
-            }*/
             if ($posOrOnline == 'online') {
                 $posOrOnline = $customer->getCustomAttribute('imported_from_pos')->getValue() == 1 ? 'pos' : 'online';
             }
@@ -363,7 +356,6 @@ class SaveSuccess implements ObserverInterface
                 'sales_office_code',
                 $this->config->getOfficeSalesCode($customer->getWebsiteId())
             );
-            //$customer->setCustomAttribute('partner_id', $this->config->getPartnerId($customer->getWebsiteId()));
             return $this->customerRepository->save($customer);
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
