@@ -1,0 +1,82 @@
+<?php
+declare(strict_types=1);
+/**
+ * @author Eguana Team
+ * Created by PhpStorm
+ * User: Sonia Park
+ * Date: 07/19/2021
+ */
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+<!--<div class="promosDrawer">-->
+<!--    <div class="promos-container">-->
+<!--        <div class="promos-header">-->
+<!--            <div class="promos-title">My Offers</div>-->
+<!--        </div>-->
+<!--        <div class="promos-wrap">-->
+<!--            <div class="promos-slider">-->
+<!--                <div>test1</div>-->
+<!--                <div>test2</div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<script type="text/x-magento-init">-->
+<!--    {-->
+<!--        "*": {-->
+<!--            "Amore_GcrmBanner/js/drawer": {}-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+<script>
+    require(['jquery', 'Amore_GcrmBanner/js/drawer'], function ($) {
+            var promo = [{
+                link: '#',
+                alt: 'Deal 1',
+                img: 'https://dummyimage.com/300x200/000/fff.jpg&text=Deal+1'
+            },
+                {
+                    link: 'https://www.amazon.ca/',
+                    alt: 'Deal 1',
+                    img: 'https://dummyimage.com/300x200/c52929/fff.jpg&text=Deal+2'
+                },
+                {
+                    link: 'https://www.amazon.ca/',
+                    alt: 'Deal 1',
+                    img: 'https://dummyimage.com/300x200/b7b935/fff.jpg&text=Deal+3'
+                },
+                {
+                    link: 'https://www.amazon.ca/',
+                    alt: 'Deal 1',
+                    img: 'https://dummyimage.com/300x200/059832/fff.jpg&text=Deal+4'
+                },
+                {
+                    link: 'https://www.amazon.ca/',
+                    alt: 'Deal 1',
+                    img: 'https://dummyimage.com/300x200/721fe0/fff.jpg&text=Deal+5'
+                },
+                {
+                    link: 'https://www.amazon.ca/',
+                    alt: 'Deal 1',
+                    img: 'https://dummyimage.com/300x200/ff920c/fff.jpg&text=Deal+6'
+                }
+            ];
+            $('body').promoDeal({
+                titleBkgColor: '#cc3024', // header background-color
+                titleColor: 'white', // title color
+                title: "Click to see promo slider", // title
+                promos: promo, // array of promos
+                singleLink: false,
+                noTrack: true,
+                arrows: true,
+                variableWidth: true,
+                height: '40vh',
+                mobHeight: '50vh',
+                //css: 'promoCSS.css'
+            });
+    });
+
+</script>
+
