@@ -655,7 +655,7 @@ class SapOrderReturnData extends AbstractSapOrder
     public function getCsvAddress($shippingAddress)
     {
         $cvsLocationId = $shippingAddress->getData('cvs_location_id');
-        $cvsAddress = $shippingAddress->getRegion();
+        $cvsAddress = '.';
         try {
             $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
             $cvsAddress = $cvsStoreData->getCvsAddress() . ' ' . $cvsStoreData->getCvsStoreName() . ' ' . $cvsStoreData->getLogisticsSubType();
