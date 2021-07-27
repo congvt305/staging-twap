@@ -88,15 +88,23 @@ class Operation extends \Magento\ScheduledImportExport\Model\Scheduled\Operation
                 $sftpArgs['username'] = $sftpArgs['user'];
             }
             $this->sftpAdapter->open($sftpArgs);
-            $filePath = '/' . trim($filePath, '\\/');
-            $result = $this->sftpAdapter->write($filePath, $fileContent);
+            $this->sftpAdapter->setAllowCreateFolders(true);
+            $filePath = trim($filePath, '\\/');
+            $sftpFileInfo = explode('/', $filePath);
+            $sftpFileName = $sftpFileInfo[count($sftpFileInfo) -1];
+            if (count($sftpFileInfo) > 1) {
+                $sftpFilePath = str_replace($sftpFileName, '', $filePath);
+                $this->sftpAdapter->cd($sftpFilePath);
+            }
+            $result = $this->sftpAdapter->write($sftpFileName, $fileContent);
         } else {
-        $rootDirectory = $this->filesystem->getDirectoryWrite(DirectoryList::ROOT);
-        $result = $rootDirectory->writeFile($filePath, $fileContent);
-    }
+            $rootDirectory = $this->filesystem->getDirectoryWrite(DirectoryList::ROOT);
+            $result = $rootDirectory->writeFile($filePath, $fileContent);
+        }
 
         return $result;
     }
+
 
     /**
      * Read data from specific storage (FTP, local filesystem)
