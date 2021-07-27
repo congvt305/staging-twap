@@ -1,0 +1,121 @@
+//
+//  Common
+//  _____________________________________________
+
+
+& when (@media-common = true) {
+    .gcrm-banner-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 20;
+
+        .gcrm-popup-button {
+            background: #333;
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+            color: @color-white;
+            cursor: pointer;
+            padding: 15px @indent__base;
+
+            .lib-icon-font(
+                @icon-down,
+                @_icon-font-size: 20px,
+                @_icon-font-line-height: 20px,
+                @_icon-font-color: @color-white,
+                @_icon-font-vertical-align: top,
+                @_icon-font-margin: 2px 0 0,
+                @_icon-font-display: block,
+                @_icon-font-position: after
+            );
+
+            &:not(._show) {
+                display: none;
+            }
+
+            &:after {
+                float: right;
+            }
+
+            & + .gcrm-popup-wrapper {
+                display: none;
+                background: @color-white;
+                padding: @indent__base @layout__width-xs-indent;
+            }
+        }
+
+        [data-role="gcrm-banner-container"].active {
+            .gcrm-popup-button {
+                .lib-icon-font-symbol(
+                    @_icon-font-content: @icon-up,
+                    @_icon-font-position: after
+                );
+            }
+
+            .gcrm-popup-wrapper {
+                .overlay {
+                    background: rgba(0, 0, 0, @overlay__opacity);
+                    position: fixed;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    left: 0;
+                    z-index: -1;
+                }
+            }
+        }
+
+        .gcrm-popup-wrapper {
+            ul {
+                .lib-list-reset-styles();
+                .lib-list-inline();
+                text-align: center;
+
+                li {
+                    border: 1px solid @border-color__base;
+                    margin-bottom: 0;
+                    padding: @indent__s @indent__s @indent__base;
+                    width: calc(50% - 4px);
+
+                    .action.primary {
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .gcrm-banner-container {
+        .gcrm-popup-button {
+            max-width: 300px;
+            margin: auto;
+
+            & + .gcrm-popup-wrapper {
+                padding: @indent__base @layout-indent__width;
+            }
+        }
+
+        .gcrm-popup-wrapper {
+            ul {
+                li {
+                    width: calc(25% - 4px);
+                }
+            }
+        }
+    }
+}
+
