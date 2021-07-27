@@ -420,8 +420,13 @@ class SapOrderConfirmData extends AbstractSapOrder
     public function getCsvAddress($shippingAddress)
     {
         $cvsLocationId = $shippingAddress->getData('cvs_location_id');
-        $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
-        $cvsAddress = $cvsStoreData->getCvsAddress() . ' ' . $cvsStoreData->getCvsStoreName() . ' ' . $cvsStoreData->getLogisticsSubType();
+        $cvsAddress = '.';
+        try {
+            $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
+            $cvsAddress = $cvsStoreData->getCvsAddress() . ' ' . $cvsStoreData->getCvsStoreName() . ' ' . $cvsStoreData->getLogisticsSubType();
+        } catch (NoSuchEntityException $e) {
+            //if order is older than 30days, cvs address might not exists.
+        }
 
         return $cvsAddress;
     }
