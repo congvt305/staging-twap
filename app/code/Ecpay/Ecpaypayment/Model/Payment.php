@@ -508,8 +508,15 @@ class Payment extends AbstractMethod
             $order = $this->orderRepository->get($orderId);
             $payment = $order->getPayment();
             $additionalInfo = $payment->getAdditionalInformation();
-            $rawDetailsInfo = $additionalInfo["raw_details_info"];
+            $rawDetailsInfo = $additionalInfo["raw_details_info"] ?? [];
             $addtionalData = json_decode($payment->getAdditionalData(), true);
+
+            if (empty($rawDetailsInfo)) {
+                return [
+                    "RtnCode"   => '',
+                    "RtnMsg"    => ''
+                ];
+            }
 
             if (isset($addtionalData["RtnCode"]) && $addtionalData["RtnCode"] == 1) {
                 return [
