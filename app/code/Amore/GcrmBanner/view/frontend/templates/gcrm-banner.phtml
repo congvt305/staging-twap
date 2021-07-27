@@ -8,23 +8,29 @@ declare(strict_types=1);
  */
 ?>
 <div class="gcrm-banner-container" data-bind="scope: 'gcrm-banner'">
-    <div class="gcrm-popup-button" data-bind="visible: isPromoDrawerVisible()" style="width: 100%; padding: 6px 10px; background-color: rgb(51, 51, 51); align-content: center;">
-        <div class="promos-title">My Offers</div>
-    </div>
-    <div class="gcrm-popup-wrapper">
-            <ul class="banner-items" data-bind="afterRender: registerBanner">
-                <!-- ko foreach: getItems() -->
-                <li class="banner-item" data-bind="attr: {'data-banner-id': $data.bannerId}">
-                    <div class="banner-item-wrapper" style="display: block; text-align: center">
-                        <div class="banner-item-content"  data-bind="bindHtml: $data.html"></div>
-                        <button class="coupon-generate-button" name="coupon-button" type="button" data-bind="click: $parent.generateCoupon, attr: {id: 'coupon_button_' + $data.salesRuleId, 'data-sales-ruleId': $data.salesRuleId}">Generate Coupon</button>
-                        <div data-bind="attr: {id: 'coupon_code_' + $data.salesRuleId}"></div>
-                    </div>
-                </li>
-                <!-- /ko -->
-            </ul>
+    <div data-role="gcrm-banner-container" data-bind="afterRender: registerBanner">
+        <!-- ko if: getItems() -->
+            <div class="gcrm-popup-button" data-bind="{click: isPromoDrawerVisible, css: {'_show': buttonVisible()}}">
+                <strong class="promos-title"><?= $block->escapeHtml(__('My Offers')) ?></strong>
+            </div>
+            <div class="gcrm-popup-wrapper">
+                <div class="overlay" data-bind="click: isPromoDrawerVisible"></div>
+                <ul class="banner-items" >
+                    <!-- ko foreach: getItems() -->
+                        <li class="banner-item" data-bind="attr: {'data-banner-id': $data.bannerId}">
+                            <div class="banner-item-wrapper">
+                                <div class="banner-item-content"  data-bind="bindHtml: $data.html"></div>
+                                <button class="action primary coupon-generate-button" name="coupon-button" type="button" data-bind="click: $parent.generateCoupon, attr: {id: 'coupon_button_' + $data.salesRuleId, 'data-sales-ruleId': $data.salesRuleId}"><?= $block->escapeHtml(__('Generate Coupon')) ?></button>
+                                <div data-bind="attr: {id: 'coupon_code_' + $data.salesRuleId}"></div>
+                            </div>
+                        </li>
+                    <!-- /ko -->
+                </ul>
+            </div>
+        <!-- /ko -->
     </div>
 </div>
+
 
 <script type="text/x-magento-init">
     {
