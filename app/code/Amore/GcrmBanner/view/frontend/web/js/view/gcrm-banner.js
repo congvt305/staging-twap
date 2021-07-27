@@ -23,11 +23,12 @@ define([
      * @type {Array}
      */
     var initializedItems = [];
+    var initializedItemsSize = 0;
 
     /**
      * @param {Object} bannerConfig
      */
-    function getItems() {
+    function getItems () {
         var applicableBanners = [],
             displayMode = 'salesrule', // catalogrule, salesrule, fixed
             rotationType = null,
@@ -45,14 +46,17 @@ define([
                         salesRuleId: banner.sales_ruleId
                     });
                 });
+
+                initializedItemsSize = initializedItems[blockId].length;
             }
         }
+
         return initializedItems[blockId];
     }
 
     return Component.extend({
         defaults: {
-            visible: true,
+            visible: false,
         },
 
         /** @inheritdoc */
@@ -90,23 +94,19 @@ define([
             generateCouponAction(deferred, e.salesRuleId);
 
             $.when(deferred).done(function (couponcode) {
-                console.log('here: ', couponcode);
                 $('#coupon_code_' + e.salesRuleId).text(couponcode);
                 $('#coupon_button_' + e.salesRuleId).hide();
             });
         },
 
-        buttonVisible: function (button) {
-            // button.visible(false);
+        buttonVisible: function () {
+            return initializedItemsSize > 0;
         },
 
-        // isPromoDrawerVisible: ko.computed(function () {
-        //     return this.getItems().length > 0;
-        // }),
-
         isPromoDrawerVisible: function () {
-            console.log('isPromoDrawerVisible');
-            return false;
+            this.container = $('[data-role="gcrm-banner-container"]');
+            this.container.toggleClass('active');
+            this.container.children('.gcrm-popup-wrapper').slideToggle();
         }
     });
 });
