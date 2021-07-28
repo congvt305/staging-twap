@@ -353,6 +353,8 @@ class SapOrderReturnData extends AbstractSapOrder
                 foreach ($bundleChildren as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
                     $bundleChildFromOrder = $this->getBundleChildFromOrder($itemId, $bundleChildrenItem->getSku());
+                    $bundleChildItemPrice = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getPrice());
+
                     $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
                         $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getDiscountAmount()) :
                         $bundleChildFromOrder->getDiscountAmount();
@@ -365,7 +367,7 @@ class SapOrderReturnData extends AbstractSapOrder
                     $meins = $product->getData('meins');
                     $itemDiscountAmountPerQty = $bundleChildDiscountAmount / $bundleChildrenItem->getQty();
                     $itemDiscountAmount = abs(round($itemDiscountAmountPerQty * $rmaItem->getQtyRequested()));
-                    $itemSubtotal = abs(round($product->getPrice() * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()));
+                    $itemSubtotal = abs(round($bundleChildItemPrice * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()));
                     $itemTaxAmount = abs(round($this->getRateAmount($bundleChildrenItem->getTaxAmount(), $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())));
 
                     $sku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
@@ -921,15 +923,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $rmaItems = $rma->getItems();
         foreach ($rmaItems as $rmaItem) {
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
-            if ($orderItem->getProductType() == 'bundle') {
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku());
-                foreach ($bundleChildren as $bundleChild) {
-                    $product = $this->productRepository->get($bundleChild->getSku(), false, $rma->getStoreId());
-                    $subtotalInclTax += ($product->getPrice() * $rmaItem->getQtyRequested() * $bundleChild->getQty());
-                }
-            } else {
-                $subtotalInclTax += ($orderItem->getPrice() * $rmaItem->getQtyRequested());
-            }
+            $subtotalInclTax += ($orderItem->getPrice() * $rmaItem->getQtyRequested());
         }
         return $subtotalInclTax;
     }
