@@ -175,8 +175,8 @@ class SapOrderReturnData extends AbstractSapOrder
             $slamt  = $order->getData('sap_slamt');
         } else {
             $paymtd = $order->getPayment()->getMethod() == 'ecpay_ecpaypayment' ? 'P' : 'S';
-            $nsamt = abs(round($this->getRmaSubtotalInclTax($rma)));
-            $dcamt = abs(round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma)));
+            $nsamt  = abs(round($this->getRmaSubtotalInclTax($rma)));
+            $dcamt  = abs(round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma)));
             $slamt = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
                 abs(round($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed)));
         }
@@ -207,7 +207,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'recvid' => '',
             'recvnm' => $shippingAddress->getLastname() . ' ' . $shippingAddress->getFirstname(),
             'postCode' => $this->cvsShippingCheck($order) ? '00000' : $shippingAddress->getPostcode(),
-            'addr1' => $this->cvsShippingCheck($order) ? $this->getCsvAddress($shippingAddress) : $shippingAddress->getRegion(),
+            'addr1' => $this->cvsShippingCheck($order) ? '.' : $shippingAddress->getRegion(),
             'addr2' => $this->cvsShippingCheck($order) ? '.' : $shippingAddress->getCity(),
             'addr3' => $this->cvsShippingCheck($order) ? '.' : preg_replace('/\r\n|\r|\n/', ' ', implode(PHP_EOL, $shippingAddress->getStreet())),
             'land1' => $shippingAddress->getCountryId(),
@@ -353,6 +353,8 @@ class SapOrderReturnData extends AbstractSapOrder
                 foreach ($bundleChildren as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
                     $bundleChildFromOrder = $this->getBundleChildFromOrder($itemId, $bundleChildrenItem->getSku());
+                    $bundleChildItemPrice = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getPrice());
+
                     $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
                         $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getDiscountAmount()) :
                         $bundleChildFromOrder->getDiscountAmount();
@@ -365,7 +367,7 @@ class SapOrderReturnData extends AbstractSapOrder
                     $meins = $product->getData('meins');
                     $itemDiscountAmountPerQty = $bundleChildDiscountAmount / $bundleChildrenItem->getQty();
                     $itemDiscountAmount = abs(round($itemDiscountAmountPerQty * $rmaItem->getQtyRequested()));
-                    $itemSubtotal = abs(round($product->getPrice() * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()));
+                    $itemSubtotal = abs(round($bundleChildItemPrice * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()));
                     $itemTaxAmount = abs(round($this->getRateAmount($bundleChildrenItem->getTaxAmount(), $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())));
 
                     $sku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
@@ -534,9 +536,9 @@ class SapOrderReturnData extends AbstractSapOrder
     {
         $kunwe = $this->config->getHomeDeliveryContractor('store', $order->getStoreId());
         if ($this->cvsShippingCheck($order)) {
-            $shippingAddress = $order->getShippingAddress();
-            $cvsLocationId = $shippingAddress->getData('cvs_location_id');
             try {
+                $shippingAddress = $order->getShippingAddress();
+                $cvsLocationId = $shippingAddress->getData('cvs_location_id');
                 $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
                 $cvsType = $cvsStoreData->getLogisticsSubType();
             } catch (NoSuchEntityException $e) {
@@ -921,15 +923,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $rmaItems = $rma->getItems();
         foreach ($rmaItems as $rmaItem) {
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
-            if ($orderItem->getProductType() == 'bundle') {
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku());
-                foreach ($bundleChildren as $bundleChild) {
-                    $product = $this->productRepository->get($bundleChild->getSku(), false, $rma->getStoreId());
-                    $subtotalInclTax += ($product->getPrice() * $rmaItem->getQtyRequested() * $bundleChild->getQty());
-                }
-            } else {
-                $subtotalInclTax += ($orderItem->getPrice() * $rmaItem->getQtyRequested());
-            }
+            $subtotalInclTax += ($orderItem->getPrice() * $rmaItem->getQtyRequested());
         }
         return $subtotalInclTax;
     }
