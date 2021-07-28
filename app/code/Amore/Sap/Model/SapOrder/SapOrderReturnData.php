@@ -207,8 +207,8 @@ class SapOrderReturnData extends AbstractSapOrder
             //배송지 id - 직영몰 자체코드, 없으면 공백
             'recvid' => '',
             'recvnm' => $shippingAddress->getLastname() . ' ' . $shippingAddress->getFirstname(),
-            'postCode' => $this->cvsShippingCheck($order) ? '00001' : $shippingAddress->getPostcode(),
-            'addr1' => $this->cvsShippingCheck($order) ? $this->getCsvAddress($shippingAddress) : $shippingAddress->getRegion(),
+            'postCode' => $this->cvsShippingCheck($order) ? '00000' : $shippingAddress->getPostcode(),
+            'addr1' => $this->cvsShippingCheck($order) ? '.' : $shippingAddress->getRegion(),
             'addr2' => $this->cvsShippingCheck($order) ? '.' : $shippingAddress->getCity(),
             'addr3' => $this->cvsShippingCheck($order) ? '.' : preg_replace('/\r\n|\r|\n/', ' ', implode(PHP_EOL, $shippingAddress->getStreet())),
             'land1' => $shippingAddress->getCountryId(),
