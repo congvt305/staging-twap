@@ -3,6 +3,7 @@
 namespace Eguana\Dhl\Model\Carrier;
 
 use Magento\Quote\Model\Quote\Address\RateRequest;
+use Magento\Shipping\Model\Rate\Result;
 
 class Tablerate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements
     \Magento\Shipping\Model\Carrier\CarrierInterface
@@ -11,6 +12,13 @@ class Tablerate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implemen
      * @var string
      */
     protected $_code = 'eguanadhl';
+
+    /**
+     * Rate result data
+     *
+     * @var Result
+     */
+    private $result;
 
     /**
      * @var bool
@@ -41,8 +49,37 @@ class Tablerate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implemen
      * @var \Eguana\Dhl\Model\ResourceModel\Carrier\TablerateFactory
      */
     protected $_tablerateFactory;
+    /**
+     * @var \Magento\Shipping\Model\Tracking\ResultFactory
+     */
+    private $trackFactory;
+    /**
+     * @var \Magento\Shipping\Model\Tracking\Result\ErrorFactory
+     */
+    private $trackErrorFactory;
+    /**
+     * @var \Magento\Shipping\Model\Tracking\Result\StatusFactory
+     */
+    private $trackStatusFactory;
 
+    /**
+     * Tablerate constructor.
+     * @param \Magento\Shipping\Model\Tracking\ResultFactory $trackFactory
+     * @param \Magento\Shipping\Model\Tracking\Result\ErrorFactory $trackErrorFactory
+     * @param \Magento\Shipping\Model\Tracking\Result\StatusFactory $trackStatusFactory
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory
+     * @param \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $resultMethodFactory
+     * @param \Eguana\Dhl\Model\ResourceModel\Carrier\TablerateFactory $tablerateFactory
+     * @param array $data
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function __construct(
+        \Magento\Shipping\Model\Tracking\ResultFactory $trackFactory,
+        \Magento\Shipping\Model\Tracking\Result\ErrorFactory $trackErrorFactory,
+        \Magento\Shipping\Model\Tracking\Result\StatusFactory $trackStatusFactory,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory,
         \Psr\Log\LoggerInterface $logger,
@@ -58,13 +95,16 @@ class Tablerate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implemen
         foreach ($this->getCode('condition_name') as $k => $v) {
             $this->_conditionNames[] = $k;
         }
+        $this->trackFactory = $trackFactory;
+        $this->trackErrorFactory = $trackErrorFactory;
+        $this->trackStatusFactory = $trackStatusFactory;
     }
 
     /**
      * Collect rates.
      *
      * @param RateRequest $request
-     * @return \Magento\Shipping\Model\Rate\Result
+     * @return \Magento\Shipping\Model\Rate\Result|bool
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
@@ -181,6 +221,72 @@ class Tablerate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implemen
         }
 
         return $result;
+    }
+
+    /**
+     * Check if carrier has shipping tracking option available
+     *
+     * @return bool
+     */
+    public function isTrackingAvailable()
+    {
+        return true;
+    }
+
+    /**
+     * Get tracking information
+     *
+     * @param string $tracking
+     * @return string|false
+     * @api
+     */
+    public function getTrackingInfo($tracking) //$tracking is the tracking number, no need to implement, remove later
+    {
+        $result = $this->getTracking($tracking);
+
+        if ($result instanceof \Magento\Shipping\Model\Tracking\Result) {
+            $trackings = $result->getAllTrackings();
+            if ($trackings) {
+                return $trackings[0];
+            }
+        } elseif (is_string($result) && !empty($result)) {
+            return $result;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get tracking
+     *
+     * @param string|string[] $trackings
+     * @return Result
+     */
+    public function getTracking($trackings)
+    {
+        if (!is_array($trackings)) {
+            $trackings = [$trackings];
+        }
+        foreach ($trackings as $tracking) {
+            $this->getDhlTracking($tracking);
+        }
+        return $this->result;
+    }
+
+    private function getDhlTracking($trackingValue)
+    {
+        if (!$this->result) {
+            $this->result = $this->trackFactory->create();
+        }
+        $tracking = $this->trackStatusFactory->create();
+        $tracking->setCarrier($this->_code);
+        $tracking->setCarrierTitle($this->getConfigData('title'));
+        $tracking->setTracking($trackingValue);
+        $tracking->setPopup(1);
+        $tracking->setUrl(
+            "https://www.dhl.com/us-en/home/tracking/tracking-ecommerce.html?submit=1&tracking-id={$trackingValue}"
+        );
+        $this->result->append($tracking);
     }
 
     /**
