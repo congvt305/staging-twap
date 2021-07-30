@@ -394,7 +394,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 if ($trackingNo == "") {
                                     $trackingNo = " ";
                                 }
-                                $shipmentId = $this->createShipment($order, $trackingNo, $this->getCarrierTitle('eguanadhl', $order->getStoreId()) ?: "DHL - COD", 'dhl'); //todo
+                                $shipmentId = $this->createShipment($order, $trackingNo, $this->getCarrierTitle('eguanadhl', $order->getStoreId()) ?: "DHL - COD", 'eguanadhl'); //todo
                             } catch (\Exception $exception) {
                                 $order->setData('sap_response', $exception->getMessage());
                                 $this->orderRepository->save($order);
