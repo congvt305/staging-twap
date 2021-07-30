@@ -9,6 +9,7 @@
  */
 namespace Eguana\Redemption\Controller\Details;
 
+use Eguana\Redemption\Api\RedemptionRepositoryInterface;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
@@ -30,15 +31,23 @@ class Success extends Action
     private $pageFactory;
 
     /**
+     * @var RedemptionRepositoryInterface
+     */
+    private $redemptionRepository;
+
+    /**
      * @param Context $context
+     * @param RedemptionRepositoryInterface $redemptionRepository
      * @param PageFactory $pageFactory
      */
     public function __construct(
         Context $context,
-        PageFactory $pageFactory
+        PageFactory $pageFactory,
+        RedemptionRepositoryInterface $redemptionRepository
     ) {
         parent::__construct($context);
         $this->pageFactory = $pageFactory;
+        $this->redemptionRepository = $redemptionRepository;
     }
 
     /**
@@ -48,11 +57,16 @@ class Success extends Action
      */
     public function execute()
     {
+        $redirect = $this->resultRedirectFactory->create();
         $redemptionId = $this->_request->getParam('redemption_id');
         if ($redemptionId) {
+            $redemption = $this->redemptionRepository->getById($redemptionId);
+            if(!$redemption->getId()) {
+                $this->messageManager->addErrorMessage(__('This redemption no longer exists.'));
+                return $redirect->setUrl('/');
+            }
             return $this->pageFactory->create();
         } else {
-            $redirect = $this->resultRedirectFactory->create();
             return $redirect->setUrl('/');
         }
     }
