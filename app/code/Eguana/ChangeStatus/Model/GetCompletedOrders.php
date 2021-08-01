@@ -156,7 +156,7 @@ class GetCompletedOrders
             ->addFilter('status', 'shipment_processing', 'eq')
             ->addFilter('updated_at', $coveredDate, 'lteq')
             ->addFilter('store_id', $storeId, 'eq')
-            ->addFilter('shipping_method', 'blackcat_homedelivery', 'eq')
+            ->addFilter('shipping_method', ['blackcat_homedelivery', 'eguanadhl_tablerate'], 'in')
             ->create();
 
         $orderList = $this->orderRepository->getList($searchCriteria);
