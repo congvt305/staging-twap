@@ -275,7 +275,7 @@ class GetCompletedOrders
             $orderCollection->addFieldToFilter('status', ['eq' => 'shipment_processing']);
             $orderCollection->addFieldToFilter('store_id', ['eq' => $storeId]);
             $orderCollection->getSelect()
-                ->where('shipping_method IN (?)', ['blackcat_homedelivery', 'gwlogistics_CVS']);
+                ->where('shipping_method IN (?)', ['blackcat_homedelivery', 'gwlogistics_CVS', 'eguanadhl_tablerate']);
             $query = $orderCollection->getSelect()->__toString();
             $orderList = $orderCollection->getItems();
             foreach ($orderList as $order) {
@@ -289,7 +289,7 @@ class GetCompletedOrders
                             && $statusNotification->getRtnCode() === '2067')) {
                         $completeOrderList[] = $order;
                     }
-                } elseif ($order->getShippingMethod() == 'blackcat_homedelivery') {
+                } elseif ($order->getShippingMethod() == 'blackcat_homedelivery' || $order->getShippingMethod() == 'eguanadhl_tablerate') {
                     $updatedAt = $this->dateTime->date('Y-m-d H:i:s', strtotime($order->getUpdatedAt()));
                     $dateFrom = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -7 days'));
                     if ($updatedAt <= $dateFrom) {
