@@ -11,7 +11,10 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-    <event name="customer_save_after_data_object">
+    <event name="gcrm_customer_data_export">
         <observer instance="Amore\GcrmDataExport\Observer\Customer\SaveSuccess" name="customer_save_succes_after"/>
+    </event>
+    <event name="gcrm_customer_bulletin_data_export">
+        <observer instance="Amore\GcrmDataExport\Observer\Customer\SaveBulletin" name="bulletin_ticket_save"/>
     </event>
 </config>

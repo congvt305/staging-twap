@@ -11,6 +11,7 @@
 namespace Amore\CustomerRegistration\Observer\Customer;
 
 use Magento\Customer\Api\Data\AddressInterfaceFactory;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Event\ObserverInterface;
 use Amore\CustomerRegistration\Model\POSSystem;
 use \Magento\Customer\Model\Data\Customer;
@@ -108,22 +109,31 @@ class SaveSuccess implements ObserverInterface
      * @var RequestInterface
      */
     private $request;
+
     /**
      * @var RegionFactory
      */
     private $regionFactory;
+
     /**
      * @var RegionResourceModel
      */
     private $regionResourceModel;
+
     /**
      * @var AddressRepositoryInterface
      */
     private $addressRepository;
+
     /**
      * @var AddressInterfaceFactory
      */
     private $addressDataFactory;
+
+    /**
+     * @var ManagerInterface
+     */
+    private $eventManager;
 
     public function __construct(
         RequestInterface $request,
@@ -142,7 +152,8 @@ class SaveSuccess implements ObserverInterface
         ScopeConfigInterface $scopeConfig,
         Json $json,
         GroupRepositoryInterface $groupRepository,
-        SearchCriteriaBuilder $searchCriteria
+        SearchCriteriaBuilder $searchCriteria,
+        ManagerInterface $eventManager
     ) {
         $this->sequence = $sequence;
         $this->POSSystem = $POSSystem;
@@ -161,6 +172,7 @@ class SaveSuccess implements ObserverInterface
         $this->json = $json;
         $this->groupRepository = $groupRepository;
         $this->searchCriteria = $searchCriteria;
+        $this->eventManager = $eventManager;
     }
 
     /**
@@ -216,11 +228,26 @@ class SaveSuccess implements ObserverInterface
             if (!$oldDataHaveSequenceNumber && $newDataHaveSequenceNumber) {
                 $APIParameters = $this->getAPIParameters($newCustomerData, 'register');
                 $this->POSSystem->syncMember($APIParameters);
+                $this->eventManager->dispatch(
+                    "gcrm_customer_data_export",
+                    [
+                        'customer' => $newCustomerData,
+                        'isNew' => '1'
+                    ]
+                );
             } elseif ($oldDataHaveSequenceNumber && $newDataHaveSequenceNumber) {
                 $oldDataAPIParameters = $this->getAPIParameters($oldCustomerData, 'update');
                 $newDataAPIParameters = $this->getAPIParameters($newCustomerData, 'update');
                 if ($this->APIValuesChanged($oldDataAPIParameters, $newDataAPIParameters)) {
                     $this->POSSystem->syncMember($newDataAPIParameters);
+                    $this->eventManager->dispatch(
+                        "gcrm_customer_data_export",
+                        [
+                            'customer' => $newCustomerData,
+                            'isNew' => '0'
+                        ]
+                    );
+
                 }
             }
         } catch (\Exception $e) {
