@@ -11,10 +11,13 @@
 namespace Amore\GcrmDataExport\Model\Scheduled;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
 use Magento\ScheduledImportExport\Model\Scheduled\Operation\Data;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class Operation extends \Magento\ScheduledImportExport\Model\Scheduled\Operation
 {
@@ -22,6 +25,11 @@ class Operation extends \Magento\ScheduledImportExport\Model\Scheduled\Operation
      * @var Filesystem\Io\Sftp
      */
     private $sftpAdapter;
+
+    /**
+     * @var DateTime
+     */
+    private $date;
 
     /**
      * Operation constructor.
@@ -44,6 +52,7 @@ class Operation extends \Magento\ScheduledImportExport\Model\Scheduled\Operation
      * @param Json|null $serializer
      */
     public function __construct(
+        DateTime $date,
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\Filesystem $filesystem,
@@ -64,6 +73,7 @@ class Operation extends \Magento\ScheduledImportExport\Model\Scheduled\Operation
     ) {
         parent::__construct($context, $registry, $filesystem, $storeManager, $schedOperFactory, $operationFactory, $configValueFactory, $dateModel, $scopeConfig, $string, $transportBuilder, $ftpAdapter, $resource, $resourceCollection, $data, $serializer);
         $this->sftpAdapter = $sftpAdapter;
+        $this->date = $date;
     }
 
     /**
@@ -72,8 +82,8 @@ class Operation extends \Magento\ScheduledImportExport\Model\Scheduled\Operation
      * @param string $filePath
      * @param string $fileContent
      * @return bool|int
-     * @throws \Magento\Framework\Exception\FileSystemException
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws FileSystemException
+     * @throws LocalizedException
      */
     protected function writeData($filePath, $fileContent)
     {
@@ -88,11 +98,16 @@ class Operation extends \Magento\ScheduledImportExport\Model\Scheduled\Operation
             if (isset($sftpArgs['user'])) {
                 $sftpArgs['username'] = $sftpArgs['user'];
             }
+            if(isset($sftpArgs['filename_prefix'])) {
+                $fileNamePrefix = $sftpArgs['filename_prefix'];
+                $sftpFileName = $this->assignFilenamePrefix($fileNamePrefix, $filePath);
+            } else {
+                $filePath = trim($filePath, '\\/');
+                $sftpFileInfo = explode('/', $filePath);
+                $sftpFileName = $sftpFileInfo[count($sftpFileInfo) -1];
+            }
             $this->sftpAdapter->open($sftpArgs);
             $this->sftpAdapter->setAllowCreateFolders(true);
-            $filePath = trim($filePath, '\\/');
-            $sftpFileInfo = explode('/', $filePath);
-            $sftpFileName = $sftpFileInfo[count($sftpFileInfo) -1];
             if (count($sftpFileInfo) > 1) {
                 $sftpFilePath = str_replace($sftpFileName, '', $filePath);
                 $this->sftpAdapter->cd($sftpFilePath);
@@ -112,8 +127,8 @@ class Operation extends \Magento\ScheduledImportExport\Model\Scheduled\Operation
      * @param string $source
      * @param string $destination
      * @return string
-     * @throws \Magento\Framework\Exception\FileSystemException
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws FileSystemException
+     * @throws LocalizedException
      */
     protected function readData($source, $destination)
     {
@@ -136,17 +151,39 @@ class Operation extends \Magento\ScheduledImportExport\Model\Scheduled\Operation
         } else {
             $rootDirectory = $this->filesystem->getDirectoryRead(DirectoryList::ROOT);
             if (!$rootDirectory->isExist($source)) {
-                throw new \Magento\Framework\Exception\LocalizedException(__('Import path %1 not exists', $source));
+                throw new LocalizedException(__('Import path %1 not exists', $source));
             }
             $contents = $rootDirectory->readFile($rootDirectory->getRelativePath($source));
             $result = $tmpDirectory->writeFile($destination, $contents);
         }
         if (!$result) {
-            throw new \Magento\Framework\Exception\LocalizedException(__('We can\'t read the file.'));
+            throw new LocalizedException(__('We can\'t read the file.'));
         }
 
         return $tmpDirectory->getAbsolutePath($destination);
     }
 
+    /**
+     * this function manually assigns the user defiend prefix to file path
+     *
+     * @param $fileNamePrefix
+     * @param $filePath
+     * @return string
+     */
+    private function assignFilenamePrefix($fileNamePrefix, $filePath)
+    {
+        $path = substr($filePath, 0, strrpos( $filePath, '/'));
+        $fileName = explode('/', $filePath);
+        $fileName = array_pop($fileName);
+        $fileName = str_replace('-','',$fileName);
+        $fileName = explode('_', $fileName);
+        if($fileName[0] && $fileName[1]) {
+            $updatedFilePath = $path . "/" . $fileNamePrefix . "_" . $fileName[0] . "_" . $fileName[1] . ".csv";
+        } else {
+            $date = $this->date->date('Ymd_His');
+            $updatedFilePath = $path . "/" . $fileNamePrefix . "_" . $date . ".csv";
+        }
+        return $updatedFilePath;
+    }
 }
 
