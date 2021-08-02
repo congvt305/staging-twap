@@ -153,6 +153,7 @@ class Export extends ExportAlias
             throw $e;
         }
         $this->dataPersistor->set('operation_status',true);
+        $test = $this;
         $result = $operation->saveFileSource($this, $data);
         $this->updateExportTable();
         return (bool)$result;
