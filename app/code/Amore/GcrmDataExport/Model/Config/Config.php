@@ -22,12 +22,12 @@ class Config
     /**#@+
      * Constants for XML Paths.
      */
-    const XML_PATH_ENABLE = 'gcrmdataexport/general/enable';
-    const XML_PATH_HOST = 'gcrmdataexport/herokudbconfig/heroku_host';
-    const XML_PATH_DB = 'gcrmdataexport/herokudbconfig/heroku_database';
-    const XML_PATH_USER = 'gcrmdataexport/herokudbconfig/heroku_user';
-    const XML_PATH_PORT = 'gcrmdataexport/herokudbconfig/heroku_port';
-    const XML_PATH_PASS = 'gcrmdataexport/herokudbconfig/heroku_password';
+    const XML_PATH_ENABLE = 'amore_gcrm/general/enable';
+    const XML_PATH_HOST = 'amore_gcrm/herokudbconfig/heroku_host';
+    const XML_PATH_DB = 'amore_gcrm/herokudbconfig/heroku_database';
+    const XML_PATH_USER = 'amore_gcrm/herokudbconfig/heroku_user';
+    const XML_PATH_PORT = 'amore_gcrm/herokudbconfig/heroku_port';
+    const XML_PATH_PASS = 'amore_gcrm/herokudbconfig/heroku_password';
     /**#@-*/
 
     /**

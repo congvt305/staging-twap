@@ -12,7 +12,7 @@
     <table name="eguana_gcrm_data_export_setting" resource="default" engine="innodb" comment="Amore Custom Scheduled Export Updated At">
         <column xsi:type="int" name="id" padding="11" unsigned="true" nullable="false" identity="true" comment="Export ID"/>
         <column xsi:type="varchar" name="entity_code" nullable="false" length="255" comment="Export Entity Code"/>
-        <column xsi:type="int" name="last_status" nullable="false"  comment="Last Updated Status"/>
+        <column xsi:type="smallint" padding="2" name="last_status" nullable="false"  comment="Last Updated Status"/>
         <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Updated At"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
