@@ -200,6 +200,22 @@ class Export extends FormAlias
         );
 
         $fieldset->addField(
+            'filename_prefix',
+            'text',
+            [
+                'name' => 'file_info[filename_prefix]',
+                'title' => __('Remote File Prefix'),
+                'label' => __('Remote File Prefix'),
+                'required' => false,
+                'class' => 'ftp-server sftp-server server-dependent',
+                'note' => __(
+                    'If you specify the Remote file prefix then file name would be like '
+                    . ' e.g. CUSTOTMER_20210802_152000'
+                )
+            ]
+        );
+
+        $fieldset->addField(
             'file_path',
             'text',
             [
