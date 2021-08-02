@@ -580,7 +580,7 @@ return [
         'Pixlee_Pixlee' => 1,
         'Eguana_RedInvoice' => 1,
         'Eguana_Redemption' => 1,
-        'Eguana_ScheduledImportExport' => 1,
+        'Eguana_ScheduledImportExport' => 0,
         'Eguana_Share' => 1,
         'Eguana_MobileLogin' => 1,
         'Eguana_EventReservation' => 1,
