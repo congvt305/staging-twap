@@ -108,18 +108,22 @@ class SaveSuccess implements ObserverInterface
      * @var RequestInterface
      */
     private $request;
+
     /**
      * @var RegionFactory
      */
     private $regionFactory;
+
     /**
      * @var RegionResourceModel
      */
     private $regionResourceModel;
+
     /**
      * @var AddressRepositoryInterface
      */
     private $addressRepository;
+
     /**
      * @var AddressInterfaceFactory
      */

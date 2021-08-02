@@ -11,6 +11,11 @@ namespace Amore\GcrmDataExport\Plugin;
 
 use Magento\ScheduledImportExport\Model\Scheduled\Operation\Data;
 
+/**
+ * Class to add new server type in configurations
+ *
+ * Class ServerTypeOptionPlugin
+ */
 class ServerTypeOptionPlugin
 {
     /**

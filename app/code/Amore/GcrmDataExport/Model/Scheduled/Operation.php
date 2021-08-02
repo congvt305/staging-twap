@@ -18,8 +18,27 @@ use Magento\ScheduledImportExport\Model\Scheduled\Operation\Data;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Model\Context;
+use Magento\ScheduledImportExport\Model\Scheduled\Operation as OperationAlias;
+use Magento\Framework\Registry;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\ScheduledImportExport\Model\Scheduled\Operation\GenericFactory;
+use Magento\ScheduledImportExport\Model\Scheduled\Operation\DataFactory;
+use Magento\Framework\App\Config\ValueFactory;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Stdlib\StringUtils;
+use Magento\Framework\Mail\Template\TransportBuilder;
+use Magento\Framework\Filesystem\Io\Ftp;
+use Magento\Framework\Filesystem\Io\Sftp;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Data\Collection\AbstractDb;
 
-class Operation extends \Magento\ScheduledImportExport\Model\Scheduled\Operation
+/**
+ * This class controls the data export to local or remote server
+ *
+ * Class Operation
+ */
+class Operation extends OperationAlias
 {
     /**
      * @var Filesystem\Io\Sftp
@@ -32,46 +51,63 @@ class Operation extends \Magento\ScheduledImportExport\Model\Scheduled\Operation
     private $date;
 
     /**
-     * Operation constructor.
-     * @param \Magento\Framework\Model\Context $context
-     * @param \Magento\Framework\Registry $registry
+     * @param DateTime $date
+     * @param Context $context
+     * @param Registry $registry
      * @param Filesystem $filesystem
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\ScheduledImportExport\Model\Scheduled\Operation\GenericFactory $schedOperFactory
-     * @param \Magento\ScheduledImportExport\Model\Scheduled\Operation\DataFactory $operationFactory
-     * @param \Magento\Framework\App\Config\ValueFactory $configValueFactory
-     * @param \Magento\Framework\Stdlib\DateTime\DateTime $dateModel
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Framework\Stdlib\StringUtils $string
-     * @param \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder
-     * @param Filesystem\Io\Ftp $ftpAdapter
-     * @param Filesystem\Io\Sftp $sftpAdapter
-     * @param \Magento\Framework\Model\ResourceModel\AbstractResource|null $resource
-     * @param \Magento\Framework\Data\Collection\AbstractDb|null $resourceCollection
-     * @param array $data
+     * @param StoreManagerInterface $storeManager
+     * @param GenericFactory $schedOperFactory
+     * @param DataFactory $operationFactory
+     * @param ValueFactory $configValueFactory
+     * @param DateTime $dateModel
+     * @param ScopeConfigInterface $scopeConfig
+     * @param StringUtils $string
+     * @param TransportBuilder $transportBuilder
+     * @param Ftp $ftpAdapter
+     * @param Sftp $sftpAdapter
+     * @param AbstractResource|null $resource
+     * @param AbstractDb|null $resourceCollection
      * @param Json|null $serializer
+     * @param array $data
      */
     public function __construct(
         DateTime $date,
-        \Magento\Framework\Model\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\Filesystem $filesystem,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\ScheduledImportExport\Model\Scheduled\Operation\GenericFactory $schedOperFactory,
-        \Magento\ScheduledImportExport\Model\Scheduled\Operation\DataFactory $operationFactory,
-        \Magento\Framework\App\Config\ValueFactory $configValueFactory,
-        \Magento\Framework\Stdlib\DateTime\DateTime $dateModel,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Framework\Stdlib\StringUtils $string,
-        \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
-        \Magento\Framework\Filesystem\Io\Ftp $ftpAdapter,
-        \Magento\Framework\Filesystem\Io\Sftp $sftpAdapter,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
-        array $data = [],
-        Json $serializer = null
+        Context $context,
+        Registry $registry,
+        Filesystem $filesystem,
+        StoreManagerInterface $storeManager,
+        GenericFactory $schedOperFactory,
+        DataFactory $operationFactory,
+        ValueFactory $configValueFactory,
+        DateTime $dateModel,
+        ScopeConfigInterface $scopeConfig,
+        StringUtils $string,
+        TransportBuilder $transportBuilder,
+        Ftp $ftpAdapter,
+        Sftp $sftpAdapter,
+        AbstractResource $resource = null,
+        AbstractDb $resourceCollection = null,
+        Json $serializer = null,
+        array $data = []
     ) {
-        parent::__construct($context, $registry, $filesystem, $storeManager, $schedOperFactory, $operationFactory, $configValueFactory, $dateModel, $scopeConfig, $string, $transportBuilder, $ftpAdapter, $resource, $resourceCollection, $data, $serializer);
+        parent::__construct(
+            $context,
+            $registry,
+            $filesystem,
+            $storeManager,
+            $schedOperFactory,
+            $operationFactory,
+            $configValueFactory,
+            $dateModel,
+            $scopeConfig,
+            $string,
+            $transportBuilder,
+            $ftpAdapter,
+            $resource,
+            $resourceCollection,
+            $data,
+            $serializer
+        );
         $this->sftpAdapter = $sftpAdapter;
         $this->date = $date;
     }
@@ -164,7 +200,7 @@ class Operation extends \Magento\ScheduledImportExport\Model\Scheduled\Operation
     }
 
     /**
-     * this function manually assigns the user defiend prefix to file path
+     * This function manually assigns the user defiend prefix to file path
      *
      * @param $fileNamePrefix
      * @param $filePath
