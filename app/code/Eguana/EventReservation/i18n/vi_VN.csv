@@ -68,3 +68,4 @@ Modified,Đã sửa
 "You have new request reservation for %event_title on %time at %phy_store from %customer. Please verify and confirm the reservation.","Bạn có yêu cầu đặt chỗ mới cho %event_title vào %time tại %phy_store từ %customer. Vui lòng xác minh và xác nhận đặt phòng."
 "Reservation Status : Confirmed","Trạng thái đặt chỗ: Đã xác nhận"
 "Reservation Status : Pending","Trạng thái đặt chỗ: Đang chờ xử lý"
+"Event reservation could not be saved. Please try again","Không thể lưu đặt trước sự kiện. Vui lòng thử lại"

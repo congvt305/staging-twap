@@ -185,22 +185,27 @@ class AjaxReservation extends Action
 
                 try {
                     $this->userReservationRepository->save($model);
-                    if ($this->configHelper->getCustomerEmailEnabled($data['store_id']) == 1) {
-                        $this->emailSender->sendEmailToCustomer(
-                            $model->getData('user_reserve_id'),
-                            'pending'
-                        );
+                    // Verify if the Event Reservation Model is saved to database: (when .user_reserve_id!=null)
+                    if ($model->getData('user_reserve_id') != null) {
+                        if ($this->configHelper->getCustomerEmailEnabled($data['store_id']) == 1) {
+                            $this->emailSender->sendEmailToCustomer(
+                                $model->getData('user_reserve_id'),
+                                'pending'
+                            );
+                        }
+                        if ($this->configHelper->getStaffEmailEnabled($data['store_id']) == 1) {
+                            $this->emailSender->sendEmailToStaff(
+                                $model->getData('user_reserve_id'),
+                                'pending'
+                            );
+                        }
+                        $this->smsSender->sendSms($model->getData('user_reserve_id'));
+                        $response['success'] = true;
+                        $response['message'] = __('Successfully booked an event');
+                        $response['reserve_id'] = $model->getData('user_reserve_id');
+                    } else {
+                        $response['message'] = __('Event reservation could not be saved. Please try again');
                     }
-                    if ($this->configHelper->getStaffEmailEnabled($data['store_id']) == 1) {
-                        $this->emailSender->sendEmailToStaff(
-                            $model->getData('user_reserve_id'),
-                            'pending'
-                        );
-                    }
-                    $this->smsSender->sendSms($model->getData('user_reserve_id'));
-                    $response['success'] = true;
-                    $response['message'] = __('Successfully booked an event');
-                    $response['reserve_id'] = $model->getData('user_reserve_id');
                 } catch (LocalizedException $e) {
                     $response['message'] = $e->getMessage();
                 } catch (\Exception $e) {
