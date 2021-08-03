@@ -554,7 +554,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 } else {
                     /** @var \Magento\Catalog\Model\Product $bundleProduct */
                     $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
-                    $bundleChildren = $this->getBundleChildren($orderItem->getSku());
+                    $bundleChildren = $this->getBundleChildren($orderItem->getSku(), $orderItem->getStoreId());
                     $bundlePriceType = $bundleProduct->getPriceType();
 
                     foreach ($bundleChildren as $bundleChild) {
@@ -680,7 +680,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             if ($orderItem->getProductType() == 'bundle') {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku());
+                $bundleChildren = $this->getBundleChildren($orderItem->getSku(), $orderItem->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
                 if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
@@ -713,7 +713,7 @@ class SapOrderConfirmData extends AbstractSapOrder
            } else {
                /** @var \Magento\Catalog\Model\Product $bundleProduct */
                $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
-               $bundleChildren = $this->getBundleChildren($orderItem->getSku());
+               $bundleChildren = $this->getBundleChildren($orderItem->getSku(), $orderItem->getStoreId());
                $bundlePriceType = $bundleProduct->getPriceType();
 
                if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
@@ -764,11 +764,19 @@ class SapOrderConfirmData extends AbstractSapOrder
         }
     }
 
-    public function getBundleChildren($bundleDynamicSku)
+    public function getBundleChildren($bundleDynamicSku, $storeId = 0)
     {
+        $skuPrefix = $this->config->getSapSkuPrefix($storeId);
+        $skuPrefix = $skuPrefix ?: '';
         $bundleSku = explode("-", $bundleDynamicSku);
+        if ($skuPrefix && strpos($skuPrefix, '-') !== false) {
+            $bundleSku = $skuPrefix . $bundleSku[1];
+        } else {
+            $bundleSku = $bundleSku[0];
+        }
+
         try {
-            return $this->productLinkManagement->getChildren($bundleSku[0]);
+            return $this->productLinkManagement->getChildren($bundleSku);
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         }
@@ -874,7 +882,7 @@ class SapOrderConfirmData extends AbstractSapOrder
     {
         $originalPriceSum = 0;
 
-        $childrenItems = $this->getBundleChildren($orderItem->getSku());
+        $childrenItems = $this->getBundleChildren($orderItem->getSku(), $orderItem->getStoreId());
 
         /** @var \Magento\Bundle\Api\Data\LinkInterface $childItem */
         foreach ($childrenItems as $childItem) {
