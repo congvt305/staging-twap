@@ -134,18 +134,16 @@ class Operation extends OperationAlias
             if (isset($sftpArgs['user'])) {
                 $sftpArgs['username'] = $sftpArgs['user'];
             }
-            if(isset($sftpArgs['filename_prefix'])) {
-                $fileNamePrefix = $sftpArgs['filename_prefix'];
-                $sftpFileName = $this->assignFilenamePrefix($fileNamePrefix, $filePath);
-            } else {
-                $filePath = trim($filePath, '\\/');
-                $sftpFileInfo = explode('/', $filePath);
-                $sftpFileName = $sftpFileInfo[count($sftpFileInfo) -1];
-            }
+            $filePath = trim($filePath, '\\/');
+            $filePathArr = explode('/', $filePath);
+            $sftpFileName = isset($sftpArgs['filename_prefix']) ?
+                $this->assignFilenamePrefix($sftpArgs['filename_prefix']) :
+                $filePathArr[count($filePathArr) -1];
+
             $this->sftpAdapter->open($sftpArgs);
             $this->sftpAdapter->setAllowCreateFolders(true);
-            if (count($sftpFileInfo) > 1) {
-                $sftpFilePath = str_replace($sftpFileName, '', $filePath);
+            if (isset($sftpArgs['path']) && $sftpArgs['path']) {
+                $sftpFilePath = trim($sftpArgs['path'], '\\/');
                 $this->sftpAdapter->cd($sftpFilePath);
             }
             $result = $this->sftpAdapter->write($sftpFileName, $fileContent);
@@ -203,22 +201,13 @@ class Operation extends OperationAlias
      * This function manually assigns the user defiend prefix to file path
      *
      * @param $fileNamePrefix
-     * @param $filePath
      * @return string
      */
-    private function assignFilenamePrefix($fileNamePrefix, $filePath)
+    private function assignFilenamePrefix($fileNamePrefix)
     {
-        $path = substr($filePath, 0, strrpos( $filePath, '/'));
-        $fileName = explode('/', $filePath);
-        $fileName = array_pop($fileName);
-        $fileName = str_replace('-','',$fileName);
-        $fileName = explode('_', $fileName);
-        if($fileName[0] && $fileName[1]) {
-            $updatedFilePath = $path . "/" . $fileNamePrefix . "_" . $fileName[0] . "_" . $fileName[1] . ".csv";
-        } else {
-            $date = $this->date->date('Ymd_His');
-            $updatedFilePath = $path . "/" . $fileNamePrefix . "_" . $date . ".csv";
-        }
+        $date = $this->date->date('Ymd_His');
+        $updatedFilePath = $fileNamePrefix . "_" . $date . ".csv";
+
         return $updatedFilePath;
     }
 }
