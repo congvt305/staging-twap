@@ -68,3 +68,4 @@ Modified,Modified
 "You have new request reservation for %event_title on %time at %phy_store from %customer. Please verify and confirm the reservation.","You have new request reservation for %event_title on %time at %phy_store from %customer. Please verify and confirm the reservation."
 "Reservation Status : Confirmed","Reservation Status : Confirmed"
 "Reservation Status : Pending","Reservation Status : Pending"
+"Event reservation could not be saved. Please try again","Event reservation could not be saved. Please try again"

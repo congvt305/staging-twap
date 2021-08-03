@@ -73,3 +73,4 @@ Modified,改性
 "You have new request reservation for %event_title on %time at %phy_store from %customer. Please verify and confirm the reservation.","您有 %customer在 %phy_store的 %time上對 %event_title的新請求保留。 請確認並確認預訂。"
 "Reservation Status : Confirmed","預訂狀態：已確認"
 "Reservation Status : Pending","預訂狀態：待定"
+"Event reservation could not be saved. Please try again","无法保存活动预订。 请再试一次"
