@@ -199,11 +199,7 @@ class Payment
         $channelId = $this->linePayHelper->getChannelId();
         $secretKey = $this->linePayHelper->getSecretKey();
         $apiUrl = $apiUrl."/v3/payments/request";
-        try {
-            $quoteId = $this->quoteModel->getReservedOrder();
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-        }
+        $quoteId = $this->quoteModel->getReservedOrder();
         try {
             $quote = $this->quoteModel->getQuote();
         } catch (\Exception $e) {
