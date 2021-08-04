@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
  * @package Amasty_Base
  */
 
@@ -79,11 +79,10 @@ class Extensions
      */
     public function execute(): array
     {
-        if ($cache = $this->cache->load(self::EXTENSIONS_CACHE_ID)) {
-            return $this->serializer->unserialize($cache);
-        }
+        $cache = $this->cache->load(self::EXTENSIONS_CACHE_ID);
+        $unserializedCache = $cache ? $this->serializer->unserialize($cache) : null;
 
-        return $this->getFeed();
+        return $unserializedCache ?: $this->getFeed();
     }
 
     /**
@@ -100,6 +99,7 @@ class Extensions
         if (isset($feedXml->channel->item)) {
             $result = $this->prepareFeedData($feedXml);
         }
+
         $this->cache->save(
             $this->serializer->serialize($result),
             self::EXTENSIONS_CACHE_ID,
@@ -119,28 +119,51 @@ class Extensions
         $result = [];
 
         foreach ($feedXml->channel->item as $item) {
-            $code = $this->escaper->escapeHtml($item->code ?? '');
+            $code = $this->escaper->escapeHtml((string)$item->code);
 
             if (!isset($result[$code])) {
                 $result[$code] = [];
             }
-            $title = $this->escaper->escapeHtml($item->title ?? '');
+
+            $title = $this->escaper->escapeHtml((string)$item->title);
             $productPageLink = $marketplaceOrigin ? $item->market_link : $item->link;
 
             if (!$this->linkValidator->validate((string)$productPageLink)
-                || !$this->linkValidator->validate((string)($item->guide ?? ''))
+                || !$this->linkValidator->validate((string)$item->guide)
+                || (string)$item->landing !== '0'
             ) {
                 continue;
             }
+
+            $dateString = !empty((string)$item->date) ? $this->convertDate((string)$item->date) : '';
+
             $result[$code][$title] = [
                 'name' => $title,
-                'url' => $this->escaper->escapeUrl((string)($productPageLink ?? '')),
-                'version' => $this->escaper->escapeHtml((string)($item->version ?? '')),
-                'conflictExtensions' => $this->escaper->escapeHtml((string)($item->conflictExtensions ?? '')),
-                'guide' => $this->escaper->escapeUrl((string)($item->guide ?? ''))
+                'url' => $this->escaper->escapeUrl((string)$productPageLink),
+                'version' => $this->escaper->escapeHtml((string)$item->version),
+                'conflictExtensions' => $this->escaper->escapeHtml((string)$item->conflictExtensions),
+                'guide' => $this->escaper->escapeUrl((string)$item->guide),
+                'date' => $this->escaper->escapeHtml($dateString)
             ];
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $date
+     *
+     * @return string
+     * @throws \Exception
+     */
+    private function convertDate($date)
+    {
+        try {
+            $dateTimeObject = new \DateTime($date);
+        } catch (\Exception $e) {
+            return '';
+        }
+
+        return $dateTimeObject->format('F j, Y');
     }
 }
