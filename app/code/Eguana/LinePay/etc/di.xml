@@ -159,4 +159,8 @@
             </argument>
         </arguments>
     </type>
+    <preference for="Adyen\Payment\Plugin\GuestPaymentInformationResetOrderId"
+                type="Eguana\LinePay\Plugin\GuestPaymentInformationResetOrderId" />
+    <preference for="Adyen\Payment\Plugin\PaymentInformationResetOrderId"
+                type="Eguana\LinePay\Plugin\PaymentInformationResetOrderId" />
 </config>
