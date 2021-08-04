@@ -82,11 +82,13 @@ class Quote
 
     /**
      * Get quote reserve order id
+     *
      * @return mixed|string|null
+     * @return string
+     * @throws \Exception
      */
     public function getReservedOrder()
     {
-        $reserveId = null;
         try {
             $this->checkoutSession->getQuote()->reserveOrderId();
             $timestamp = $this->dateTime->timestamp();
@@ -97,9 +99,9 @@ class Quote
             $this->quoteRepository->save($currentQuote);
             return $reserveId;
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
+            $this->logger->error('Linepay-Error: ' . $e->getMessage());
+            throw new \Exception('Something went wrong during the checkout process. Please try again');
         }
-        return $reserveId;
     }
 
     /**
