@@ -16,7 +16,7 @@
         float: left;
 
         > .switch {
-            height: 100% !important;
+            .lib-css(height, @_tab-control-height__base);
             display: block;
             position: relative;
             z-index: 2;
@@ -27,8 +27,6 @@
         .lib-clearfix();
         .lib-css(margin-top, @_tab-control-height__base);
         box-sizing: border-box;
-        float: right;
-        margin-left: -100%;
         width: 100%;
 
         &.active {
