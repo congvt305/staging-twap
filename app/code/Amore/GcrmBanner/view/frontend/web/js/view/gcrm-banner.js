@@ -31,7 +31,6 @@ define([
     function getItems () {
         var applicableBanners = [],
             displayMode = 'salesrule', // catalogrule, salesrule, fixed
-            rotationType = null,
             blockId = 'gcrm-remote-banner';
 
         if (!initializedItems[blockId] && !_.isEmpty(Banner.get('data')().items)) {
@@ -63,10 +62,6 @@ define([
         initialize: function () {
             this._super();
             this.banner = Banner.get('data');
-
-            // var target = $('.banner-item');
-            // var button = target.find('.coupon-generate-button');
-
         },
 
         /**
@@ -77,11 +72,6 @@ define([
         registerBanner: function (el) {
             var banner = $(el.parentElement);
 
-            // this['getItems' + banner.data('banner-id')] = getItems.bind(
-            // this['getItems'] = getItems.bind(
-            //     null,
-            //     banner
-            // );
             this.getItems = getItems.bind(
                 null,
                 banner
