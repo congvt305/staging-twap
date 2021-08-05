@@ -206,12 +206,12 @@ class Segment extends \Magento\CustomerSegment\Model\ResourceModel\Segment
                          user=$user
                          password=$password"
             );
-            $query = "select customer_id__c from apgcrm.GECPBannerD__c where segment_id__c = '". $remoteCode . "'";
+            $query = "select customer_id__c from apgcrm.GECPBannerD__c where isdeleted = 'f' AND segment_id__c = '". $remoteCode . "'";
             if ($websiteId) {
                 $query .= " AND website_id__c = '" . $websiteId . "'";
             }
             $result = pg_query($db_connection, $query);
-            $resultArr = pg_fetch_row($result);
+            $resultArr = pg_fetch_all_columns($result);
             pg_close($db_connection);
             if ($resultArr != false) {
                 $customerIds = $resultArr;
