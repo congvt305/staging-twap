@@ -39,7 +39,7 @@ abstract class AbstractClient implements \Eguana\GWLogistics\Model\Gateway\Clien
         } catch (\Exception $e) {
             $message = $e->getMessage() ? $e->getMessage() : "Something went wrong during Gateway request.";
             $log['error'] = $message;
-            $this->_logger->debug($log);
+            $this->_logger->debug('Some error occurred.', $log);
         }
 
         return $response;

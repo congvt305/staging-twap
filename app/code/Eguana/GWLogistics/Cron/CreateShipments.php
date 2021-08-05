@@ -105,7 +105,11 @@ class CreateShipments
     {
         /** @var \Eguana\GWLogistics\Model\Gateway\Command\CreateShipmentCommand $command */
         $command = $this->createShipmentCommandFactory->create();
-        $command->execute($order);
+        try {
+            $command->execute($order);
+        } catch (\Exception $e) {
+            $this->logger->info('Some error occurred.', ['error' => $e->getMessage()]);
+        }
     }
     private function getEnabledStores()
     {
