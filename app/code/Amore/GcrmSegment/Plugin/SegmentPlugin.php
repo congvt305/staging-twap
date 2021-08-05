@@ -18,17 +18,30 @@ class SegmentPlugin
      * @var \Magento\Framework\DB\Adapter\AdapterInterface
      */
     private $db;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
+    /**
+     * @var \Amore\GcrmDataExport\Model\Config\Config
+     */
+    private $dataExportConfig;
 
-    public function __construct(\Magento\Framework\App\ResourceConnection $connection)
-    {
+    public function __construct(
+        \Psr\Log\LoggerInterface $logger,
+        \Amore\GcrmDataExport\Model\Config\Config $dataExportConfig,
+        \Magento\Framework\App\ResourceConnection $connection
+    ) {
         $this->db = $connection->getConnection();
+        $this->logger = $logger;
+        $this->dataExportConfig = $dataExportConfig;
     }
 
     /**
      * @param \Magento\CustomerSegment\Model\Segment $subject
      * @param callable $proceed
      * @param DataObject $customer
-     * @param Website|string|null $website
+     * @param int|string|null $website
      */
     public function aroundValidateCustomer(\Magento\CustomerSegment\Model\Segment $subject, callable $proceed, $customer, $website)
     {
@@ -66,10 +79,8 @@ class SegmentPlugin
     private function validateRemoteSegmentCustomer($remoteCode, $customer)
     {
         try {
-            if($remoteCode) {
-                if ($this->getCustomerIntegrationNumber($customer)) {
-                    return $this->isValid($remoteCode, $this->getCustomerIntegrationNumber($customer));
-                }
+            if($remoteCode && $customer->getId()) {
+                return $this->isValid($remoteCode, $customer->getId());
             }
         } catch (\Exception $e) {
             return false;
@@ -81,34 +92,34 @@ class SegmentPlugin
 
     /**
      * @param string $remoteCode
-     * @param string $customerIntegrationNumber
+     * @param string $customerId
      * @return bool
      */
-    private function isValid($remoteCode, $customerIntegrationNumber)
+    private function isValid($remoteCode, $customerId)
     {
-        $select = $this->db->select()
-            ->from('amore_gcrm_bannerd')
-            ->where('cstmintgseq = ?', $customerIntegrationNumber)
-            ->where('segcd = ?', $remoteCode);
+        try {
+            $host = $this->dataExportConfig->getHerokuHost();
+            $dbname = $this->dataExportConfig->getHerokuDBName();
+            $user = $this->dataExportConfig->getHerokuUser();
+            $password = $this->dataExportConfig->getHerokuPassword();
+            $db_connection = pg_connect(
+                "host=$host
+                         dbname=$dbname
+                         user=$user
+                         password=$password"
+            );
+            $query = "select customer_id__c from apgcrm.GECPBannerD__c where isdeleted = 'f' AND segment_id__c = '". $remoteCode . "'";
+            $query .= " AND customer_id__c = '" . $customerId . "'";
+            $result = pg_query($db_connection, $query);
+            $resultRows = pg_fetch_row($result);
+            pg_close($db_connection);
+            if ($resultRows != false) {
+                return true;
+            }
 
-        $raws = $this->db->fetchAll($select);
-
-        return count($raws) > 0;
-    }
-
-    /**
-     * @param DataObject $customer
-     * @return string
-     */
-    private function getCustomerIntegrationNumber($customer)
-    {
-        if ($customer->getCustomAttribute('integration_number')) {
-            $customerIntegrationNumber = $customer->getCustomAttribute('integration_number')->getValue();
-        } elseif ($customer->getDataByKey('integration_number')) {
-            $customerIntegrationNumber = $customer->getDataByKey('integration_number');
-        } else {
-            $customerIntegrationNumber = '';
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
         }
-        return $customerIntegrationNumber;
+        return false;
     }
 }
