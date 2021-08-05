@@ -4,6 +4,7 @@
     <module name="Amore_GcrmSegment">
         <sequence>
             <module name="Magento_CustomerSegment"/>
+            <module name="Amore_GcrmDataExport"/>
         </sequence>
     </module>
 </config>
