@@ -211,8 +211,11 @@ class Segment extends \Magento\CustomerSegment\Model\ResourceModel\Segment
                 $query .= " AND website_id__c = '" . $websiteId . "'";
             }
             $result = pg_query($db_connection, $query);
-            $customerIds = pg_fetch_row($result);
+            $resultArr = pg_fetch_row($result);
             pg_close($db_connection);
+            if ($resultArr != false) {
+                $customerIds = $resultArr;
+            }
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
