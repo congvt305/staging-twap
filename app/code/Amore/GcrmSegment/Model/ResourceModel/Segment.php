@@ -145,49 +145,6 @@ class Segment extends \Magento\CustomerSegment\Model\ResourceModel\Segment
     }
 
     /**
-     * Internal Test Only
-     * @param string $remoteCode
-     * @param null|int $websiteId
-     * @return array
-     */
-    private function getRemoteSatisfiedIds($remoteCode, $websiteId=null)
-    {
-        $connection = $this->getConnection();
-        $subSelect = $connection->select()
-            ->from('eav_attribute', ['attribute_id'])
-            ->where("attribute_code = 'integration_number' AND entity_type_id = 1");
-
-        $sql = $connection->select()
-            ->from(['main' => 'customer_entity'], ['entity_id' => 'main.entity_id'])
-            ->join(
-                ['cev' => 'customer_entity_varchar'],
-                "main.entity_id = cev.entity_id AND cev.attribute_id = (" . $subSelect . ")" ,
-                ['value' => 'cev.value']
-            )
-            ->where('cev.value IN (?)', $this->getRemoteCustomers($remoteCode, $websiteId));
-        if ($websiteId) {
-            $sql->where("website_id = ?", $websiteId);
-        }
-        $ids = $connection->fetchCol($sql);
-        return $ids;
-    }
-
-    /**
-     * Internal Test Only
-     * @param string $remoteCode
-     * @return array
-     */
-    private function getRemoteCustomerIntgrationNumbers($remoteCode)
-    {
-        $connection = $this->getConnection();
-        $sql = $connection->select()
-            ->from('amore_gcrm_bannerd', ['cstmintgseq'])
-            ->where("segcd = ?", $remoteCode);
-        $integrationNumbers = $connection->fetchCol($sql);
-        return $integrationNumbers;
-    }
-
-    /**
      * @param string $remoteCode
      * @param int|null $websiteId
      * @return array

@@ -74,13 +74,13 @@ class General extends \Magento\Backend\Block\Widget\Form\Generic
         $fieldset->addField(
             'remote_code',
             'text',
-            ['name' => 'remote_code', 'label' => __('Remote Code'), 'required' => $model->getIsRemote() ? true : false]
+            ['name' => 'remote_code', 'label' => __('GCRM Segment ID'), 'required' => $model->getIsRemote() ? true : false]
         );
 
         $fieldset->addField(
             'description',
             'textarea',
-            ['name' => 'description', 'label' => __('Description ss'), 'style' => 'height: 100px;']
+            ['name' => 'description', 'label' => __('Description'), 'style' => 'height: 100px;']
         );
 
         if ($this->_storeManager->isSingleStoreMode()) {
