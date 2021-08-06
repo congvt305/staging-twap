@@ -5,6 +5,7 @@
  * Date: 2020-12-28
  * Time: 오후 5:02
  */
+
 namespace Amore\PointsIntegration\Plugin\Model;
 
 use Amore\PointsIntegration\Exception\PosPointsException;
@@ -60,7 +61,8 @@ class RmaRepositoryPlugin
         Json $json,
         \Amore\PointsIntegration\Model\PosReturnData $posReturnData,
         \Amore\PointsIntegration\Model\Connection\Request $request
-    ) {
+    )
+    {
         $this->config = $config;
         $this->storeManager = $storeManager;
         $this->logger = $logger;
@@ -70,76 +72,20 @@ class RmaRepositoryPlugin
         $this->request = $request;
     }
 
-    public function afterSave(\Magento\Rma\Model\RmaRepository $subject, $result)
+    public function afterSave(\Magento\Rma\Model\RmaRepository $subject, $rma)
     {
-        $storeId = $result->getStoreId();
-        $websiteId = $this->getWebsiteByStore($storeId);
+        $websiteId = $rma->getOrder()->getStore()->getWebsiteId();
         $moduleEnableCheck = $this->config->getActive($websiteId);
         $rmaSendingEnableCheck = $this->config->getPosRmaActive($websiteId);
-
-        $order = $result->getOrder();
-        $orderSendToPos = $order->getData('pos_order_send_check');
-        $availableStatus = 'processed_closed';
+        $completedStatus = 'processed_closed';
+        $posRmaCompletedSent = $rma->getData('pos_rma_completed_sent');
 
         if ($moduleEnableCheck && $rmaSendingEnableCheck) {
-            if ($orderSendToPos && $result->getStatus() == $availableStatus) {
-                $this->returnOrderSend($result, $websiteId);
+            if (!$posRmaCompletedSent && $rma->getStatus() == $completedStatus) {
+                $rma->setData('pos_rma_completed_send', true);
             }
         }
-    }
 
-    public function getWebsiteByStore($storeId)
-    {
-        $websiteId = 0;
-        try {
-            $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
-        } catch (\Exception $exception) {
-            $this->logger->info("============ Get Website ID Error ============");
-            $this->logger->info($exception);
-        }
-        return $websiteId;
-    }
-
-    public function logging($sendData, $responseData, $status)
-    {
-        $this->eventManager->dispatch(
-            "eguana_bizconnect_operation_processed",
-            [
-                'topic_name' => 'amore.pos.points-integration.rma.auto',
-                'direction' => 'outgoing',
-                'to' => "POS",
-                'serialized_data' => $this->json->serialize($sendData),
-                'status' => $status,
-                'result_message' => $this->json->serialize($responseData)
-            ]
-        );
-    }
-
-    public function responseCheck($response)
-    {
-        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * @param \Magento\Rma\Model\Rma $subject
-     * @param int $websiteId
-     */
-    public function returnOrderSend(\Magento\Rma\Model\Rma $subject, int $websiteId): void
-    {
-        $rmaData = $this->posReturnData->getRmaData($subject);
-
-        $response = $this->request->sendRequest($rmaData, $websiteId, 'customerOrder');
-
-        $status = $this->responseCheck($response);
-
-        $this->logging($rmaData, $response, $status);
-
-        if ($status) {
-            $this->posReturnData->updatePosSendCheck($subject->getId());
-        }
+        return $rma;
     }
 }

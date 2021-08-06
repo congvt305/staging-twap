@@ -29,6 +29,8 @@ class Config
 
     const POS_ORDER_ACTIVE_CHECK = 'points_integration/general/pos_order_active';
 
+    const POS_CANCELLED_ORDER_ACTIVE_CHECK = 'points_integration/general/pos_cancelled_active';
+
     const POS_RMA_ACTIVE_CHECK = 'points_integration/general/pos_rma_active';
 
     const SSL_VERIFICATION_CHECK = 'points_integration/general/ssl_verification';
@@ -81,6 +83,11 @@ class Config
     public function getPosOrderActive($websiteId)
     {
         return $this->getValue(self::POS_ORDER_ACTIVE_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+    }
+
+    public function getPosCancelledOrderActive($websiteId)
+    {
+        return $this->getValue(self::POS_CANCELLED_ORDER_ACTIVE_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
     }
 
     public function getPosRmaActive($websiteId)

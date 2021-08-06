@@ -15,6 +15,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Sales\Api\InvoiceRepositoryInterface;
@@ -25,6 +26,9 @@ use Magento\Sales\Model\Order\Item;
 
 class PosOrderData
 {
+    const POS_ORDER_TYPE_ORDER = '000010';
+    const POS_ORDER_TYPE_CANCEL = '000030';
+
     /**
      * @var Config
      */
@@ -66,6 +70,8 @@ class PosOrderData
      */
     private $resourceConnection;
 
+    private $orderCollectionFactory;
+
     /**
      * PosOrderData constructor.
      * @param Config $config
@@ -78,6 +84,7 @@ class PosOrderData
      * @param OrderItemRepositoryInterface $orderItemRepository
      * @param DateTime $dateTime
      * @param ResourceConnection $resourceConnection
+     * @param \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
      */
     public function __construct(
         Config $config,
@@ -89,8 +96,10 @@ class PosOrderData
         ProductLinkManagementInterface $productLinkManagement,
         OrderItemRepositoryInterface $orderItemRepository,
         DateTime $dateTime,
-        ResourceConnection $resourceConnection
-    ) {
+        ResourceConnection $resourceConnection,
+        \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
+    )
+    {
         $this->config = $config;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
@@ -101,6 +110,7 @@ class PosOrderData
         $this->orderItemRepository = $orderItemRepository;
         $this->dateTime = $dateTime;
         $this->resourceConnection = $resourceConnection;
+        $this->orderCollectionFactory = $orderCollectionFactory;
     }
 
     /**
@@ -112,26 +122,53 @@ class PosOrderData
     {
         $customer = $order->getCustomerId() ? $this->getCustomer($order->getCustomerId()) : null;
         $websiteId = $order->getStore()->getWebsiteId();
-        $posIntegrationNumber = $order->getCustomerId() ? $customer->getCustomAttribute('integration_number')->getValue() : null;
+        $posIntegrationNumber = $customer ? $customer->getCustomAttribute('integration_number')->getValue() : null;
 
         $orderItemData = $this->getItemData($order);
         $couponCode = $order->getCouponCode();
         $invoice = $this->getInvoice($order->getEntityId());
 
-        $orderData = [
+        return [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
             'saledate' => $this->dateFormat($order->getCreatedAt()),
             'orderID' => $order->getIncrementId(),
-            'rcptNO' => 'I'.$invoice->getIncrementId(),
+            'rcptNO' => 'I' . $invoice->getIncrementId(),
             'cstmIntgSeq' => $posIntegrationNumber,
-            'orderType' => '000010',
+            'orderType' => self::POS_ORDER_TYPE_ORDER,
             'promotionKey' => $couponCode,
             'orderInfo' => $orderItemData
         ];
-
-        return $orderData;
     }
+
+    /**
+     * @param $order
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getCancelledOrderData($order)
+    {
+        $customer = $order->getCustomerId() ? $this->getCustomer($order->getCustomerId()) : null;
+        $websiteId = $order->getStore()->getWebsiteId();
+        $posIntegrationNumber = $customer ? $customer->getCustomAttribute('integration_number')->getValue() : null;
+
+        $orderItemData = $this->getItemData($order);
+        $couponCode = $order->getCouponCode();
+        $invoice = $this->getInvoice($order->getEntityId());
+
+        return [
+            'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
+            'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
+            'saledate' => $this->dateFormat('now'),
+            'orderID' => 'C' . $order->getIncrementId(),
+            'rcptNO' => 'I' . $invoice->getIncrementId(),
+            'cstmIntgSeq' => $posIntegrationNumber,
+            'orderType' => self::POS_ORDER_TYPE_CANCEL,
+            'promotionKey' => $couponCode,
+            'orderInfo' => $orderItemData
+        ];
+    }
+
 
     public function dateFormat($date)
     {
@@ -208,8 +245,7 @@ class PosOrderData
                     $itemTotalDiscount = abs(round(
                             $bundleChildDiscountAmount +
                             (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) +
-                            $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered())
-                    );
+                            $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered()));
 
                     $bundleChildGrandTotal = $bundleChildSubtotal - $itemTotalDiscount;
 
@@ -469,15 +505,58 @@ class PosOrderData
         }
     }
 
+    /**
+     * @param $orderId
+     */
     public function updatePosSendCheck($orderId)
     {
         $tableName = $this->resourceConnection->getTableName('sales_order');
         $connection = $this->resourceConnection->getConnection();
-        $connection->update($tableName, ['pos_order_send_check' => 1], ['entity_id = ?' => $orderId]);
+        $bind = ['pos_order_paid_sent' => true, 'pos_order_paid_send' => false];
+        $connection->update($tableName, $bind, ['entity_id = ?' => $orderId]);
+    }
+
+    /**
+     * @param $orderId
+     */
+    public function updatePosCancelledOrderSendFlag($orderId)
+    {
+        $tableName = $this->resourceConnection->getTableName('sales_order');
+        $connection = $this->resourceConnection->getConnection();
+        $bind = ['pos_order_cancel_sent' => true, 'pos_order_cancel_send' => false];
+        $connection->update($tableName, $bind, ['entity_id = ?' => $orderId]);
     }
 
     public function getCustomer($customerId)
     {
         return $this->customerRepository->getById($customerId);
+    }
+
+    /**
+     * @param $storeId
+     * @return DataObject[]
+     */
+    public function getPaidOrdersToPOS($storeId): array
+    {
+        $orderCollection = $this->orderCollectionFactory->create();
+        $orderCollection
+            ->addFieldToFilter('store_id', $storeId)
+            ->addFieldToFilter('pos_order_paid_send', true);
+
+        return $orderCollection->getItems();
+    }
+
+    /**
+     * @param $storeId
+     * @return DataObject[]
+     */
+    public function getCancelledOrdersToPOS($storeId): array
+    {
+        $orderCollection = $this->orderCollectionFactory->create();
+        $orderCollection
+            ->addFieldToFilter('store_id', $storeId)
+            ->addFieldToFilter('pos_order_cancel_send', true);
+
+        return $orderCollection->getItems();
     }
 }

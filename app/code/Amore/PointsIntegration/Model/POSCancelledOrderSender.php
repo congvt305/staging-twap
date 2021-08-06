@@ -1,19 +1,15 @@
 <?php
-/**
- * Created by Eguana.
- * User: Brian
- * Date: 2020-12-29
- * Time: 오전 9:44
- */
 
 namespace Amore\PointsIntegration\Model;
 
 use Amore\PointsIntegration\Logger\Logger;
+use Amore\PointsIntegration\Model\Connection\Request;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Model\Order;
 
-class PosOrderSender
+class POSCancelledOrderSender
 {
     /**
      * @var PosOrderData
@@ -24,7 +20,7 @@ class PosOrderSender
      */
     private $request;
     /**
-     * @var \Magento\Framework\Event\ManagerInterface
+     * @var ManagerInterface
      */
     private $eventManager;
     /**
@@ -40,25 +36,22 @@ class PosOrderSender
      * PosOrderSender constructor.
      * @param PosOrderData $posOrderData
      * @param Connection\Request $request
-     * @param \Magento\Framework\Event\ManagerInterface $eventManager
+     * @param ManagerInterface $eventManager
      * @param Json $json
-     * @param Source\Config $PointsIntegrationConfig
      * @param Logger $pointsIntegrationLogger
      */
     public function __construct(
-        \Amore\PointsIntegration\Model\PosOrderData $posOrderData,
-        \Amore\PointsIntegration\Model\Connection\Request $request,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        Json $json,
-        \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig,
-        Logger $pointsIntegrationLogger
+        PosOrderData     $posOrderData,
+        Request          $request,
+        ManagerInterface $eventManager,
+        Json             $json,
+        Logger           $pointsIntegrationLogger
     )
     {
         $this->posOrderData = $posOrderData;
         $this->request = $request;
         $this->eventManager = $eventManager;
         $this->json = $json;
-        $this->PointsIntegrationConfig = $PointsIntegrationConfig;
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
     }
 
@@ -70,12 +63,13 @@ class PosOrderSender
         $websiteId = $order->getStore()->getWebsiteId();
         $orderData = [];
         $status = false;
+
         try {
-            $orderData = $this->posOrderData->getOrderData($order);
+            $orderData = $this->posOrderData->getCancelledOrderData($order);
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
             $status = $this->responseCheck($response);
             if ($status) {
-                $this->posOrderData->updatePosSendCheck($order->getEntityId());
+                $this->posOrderData->updatePosCancelledOrderSendFlag($order->getEntityId());
             }
         } catch (\Exception $exception) {
             $this->pointsIntegrationLogger->info($exception->getMessage());
@@ -85,7 +79,11 @@ class PosOrderSender
         $this->logging($orderData, $response, $status);
     }
 
-    public function responseCheck($response)
+    /**
+     * @param $response
+     * @return int
+     */
+    public function responseCheck($response): int
     {
         if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
             return 1;
@@ -94,6 +92,11 @@ class PosOrderSender
         }
     }
 
+    /**
+     * @param $sendData
+     * @param $responseData
+     * @param $status
+     */
     public function logging($sendData, $responseData, $status)
     {
         $this->eventManager->dispatch(

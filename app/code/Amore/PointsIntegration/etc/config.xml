@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * Created by PhpStorm
+ * User: Abbas
+ * Date: 05/18/20
+ * Time: 11:32 AM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <points_integration>
+            <configurable_cron>
+                <cron_expr>0 * * * *</cron_expr>
+            </configurable_cron>
+        </points_integration>
+    </default>
+</config>
