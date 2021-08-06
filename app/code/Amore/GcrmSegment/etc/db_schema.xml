@@ -6,29 +6,4 @@
                 default="0" comment="Is Remote"/>
         <column xsi:type="varchar" name="remote_code" nullable="true" length="255" comment="Remote Code"/>
     </table>
-    <table name="amore_gcrm_bannerm" resource="default" engine="innodb" comment="GCRM Banner">
-        <column xsi:type="varchar" name="segcd" nullable="false" length="255" comment="Segment Code"/>
-        <column xsi:type="varchar" name="bannerimgurl" nullable="false" length="255" comment="Banner Image Url"/>
-        <constraint xsi:type="primary" referenceId="PRIMARY">
-            <column name="segcd"/>
-        </constraint>
-        <index referenceId="AMORE_GCRM_BANNERM_SEGCD" indexType="fulltext">
-            <column name="segcd"/>
-        </index>
-    </table>
-    <table name="amore_gcrm_bannerd" resource="default" engine="innodb" comment="GCRM Segment Customer">
-        <column xsi:type="varchar" name="segcd" nullable="false" length="255" comment="Segment Code"/>
-        <column xsi:type="varchar" name="cstmintgseq" nullable="false" length="255" comment="Customer Integration Sequence Code"/>
-        <constraint xsi:type="primary" referenceId="PRIMARY">
-            <column name="segcd"/>
-            <column name="cstmintgseq"/>
-        </constraint>
-        <constraint xsi:type="unique" referenceId="AMORE_GCRM_BANNERD_CSTMINTGSEQ">
-            <column name="segcd"/>
-            <column name="cstmintgseq"/>
-        </constraint>
-        <index referenceId="AMORE_GCRM_BANNERD_SEGCD_CSTMINTGSEQ" indexType="fulltext">
-            <column name="cstmintgseq"/>
-        </index>
-    </table>
 </schema>

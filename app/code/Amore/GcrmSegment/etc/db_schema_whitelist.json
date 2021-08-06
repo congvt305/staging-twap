@@ -4,30 +4,5 @@
             "is_remote": true,
             "remote_code": true
         }
-    },
-    "amore_gcrm_bannerm": {
-        "column": {
-            "segcd": true,
-            "bannerimgurl": true
-        },
-        "index": {
-            "AMORE_GCRM_BANNERM_SEGCD": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "amore_gcrm_bannerd": {
-        "column": {
-            "segcd": true,
-            "cstmintgseq": true
-        },
-        "index": {
-            "AMORE_GCRM_BANNERD_CSTMINTGSEQ": true
-        },
-        "constraint": {
-            "PRIMARY": true,
-            "AMORE_GCRM_BANNERD_SEGCD_CSTMINTGSEQ": true
-        }
     }
 }
