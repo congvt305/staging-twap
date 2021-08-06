@@ -15,6 +15,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Rma\Api\RmaRepositoryInterface;
@@ -77,6 +78,11 @@ class PosReturnData
     private $itemCollectionFactory;
 
     /**
+     * @var \Magento\Rma\Model\ResourceModel\Rma\CollectionFactory
+     */
+    private $rmaCollectionFactory;
+
+    /**
      * PosReturnData constructor.
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -103,8 +109,10 @@ class PosReturnData
         CustomerRepositoryInterface $customerRepository,
         DateTime $dateTime,
         CollectionFactory $itemCollectionFactory,
-        ResourceConnection $resourceConnection
-    ) {
+        ResourceConnection $resourceConnection,
+        \Magento\Rma\Model\ResourceModel\Rma\CollectionFactory $rmaCollectionFactory
+    )
+    {
         $this->config = $config;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
@@ -117,6 +125,7 @@ class PosReturnData
         $this->dateTime = $dateTime;
         $this->resourceConnection = $resourceConnection;
         $this->itemCollectionFactory = $itemCollectionFactory;
+        $this->rmaCollectionFactory = $rmaCollectionFactory;
     }
 
     /**
@@ -136,8 +145,8 @@ class PosReturnData
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
             'saledate' => $this->dateFormat($rma->getDateRequested()),
-            'orderID' => 'R'.$rma->getIncrementId(),
-            'rcptNO' => 'R'.$rma->getIncrementId(),
+            'orderID' => 'R' . $rma->getIncrementId(),
+            'rcptNO' => 'R' . $rma->getIncrementId(),
             'cstmIntgSeq' => $posIntegrationNumber,
             'orderType' => '000020',
             'promotionKey' => $couponCode,
@@ -233,9 +242,9 @@ class PosReturnData
         $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($this->getRmaGrandTotal($rma));
         $orderDiscountAmount = round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma));
 
-        $rmaItemData =  $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'salAmt');
-        $rmaItemData =  $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'dcAmt');
-        $rmaItemData =  $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'netSalAmt');
+        $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'salAmt');
+        $rmaItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'dcAmt');
+        $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'netSalAmt');
 
         return $rmaItemData;
     }
@@ -528,10 +537,16 @@ class PosReturnData
         return $this->customerRepository->getById($customerId);
     }
 
-    public function updatePosSendCheck($rmaId)
+    /**
+     * @param $storeId
+     * @return DataObject[]
+     */
+    public function getCompletedReturnToPOS($storeId): array
     {
-        $tableName = $this->resourceConnection->getTableName('magento_rma');
-        $connection = $this->resourceConnection->getConnection();
-        $connection->update($tableName, ['pos_rma_send_check' => 1], ['entity_id = ?' => $rmaId]);
+        $rmaCollection = $this->rmaCollectionFactory->create();
+        $rmaCollection->addFieldToFilter('pos_rma_completed_send', true)
+            ->addFieldToFilter('store_id', $storeId);
+
+        return $rmaCollection->getItems();
     }
 }

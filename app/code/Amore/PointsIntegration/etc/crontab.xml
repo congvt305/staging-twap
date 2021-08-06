@@ -7,7 +7,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default"> <!-- Doesn't need to be unique -->
-        <job name="amore_points_cron" instance="Amore\PointsIntegration\Cron\OrderSendToPos" method="execute">
+        <job name="amore_points_cron" instance="Amore\PointsIntegration\Cron\PosOrderSynchronizer" method="execute">
             <config_path>crontab/default/jobs/amore_points_cron/schedule/cron_expr</config_path>
         </job>
     </group>
