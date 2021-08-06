@@ -63,6 +63,8 @@ Select "Yes" on "Enable GCRM Banner" for enabling/disabling the module
 
 ![Configuration](https://nimbus-screenshots.s3.amazonaws.com/s/d51b0917daccb2dcc51074b6d5ba7291.png)
 
+
+
 **Remote GCRM Banner Configurations**
 
 1. Prerequisite : See Requirements section above.
@@ -75,7 +77,7 @@ Select "Yes" on "Enable GCRM Banner" for enabling/disabling the module
 
 5. Enter GCRM Customer Segment ID in the "GCRM Segment ID" field. (Precondition : User knows the GCRM Segment ID to configure.)
 
-![Configuration](https://nimbus-screenshots.s3.amazonaws.com/s/e3179d5a22c089c6b79ea7daebd72577.png)
+![Configuration](https://nimbus-screenshots.s3.amazonaws.com/s/b952444a91c69b22042b6c8767f34137.png)
 
 6. Edit content with the Page Builder, create a simple image banner.
 
@@ -86,6 +88,8 @@ Select "Yes" on "Enable GCRM Banner" for enabling/disabling the module
 ![Configuration](https://nimbus-screenshots.s3.amazonaws.com/s/3c6899da0fec5fe9b43395f697bfca12.png)
 
 ![Configuration](https://nimbus-screenshots.s3.amazonaws.com/s/3ad7f9c1d0462e8aea3773be0831040e.png)
+
+8. To change frontend banner design and action, edit "app/code/Amore/GcrmBanner/view/frontend/templates/gcrm-banner.phtml" and "app/code/Amore/GcrmBanner/view/frontend/web/js/view/gcrm-banner.js"
 
 
 
