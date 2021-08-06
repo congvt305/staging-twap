@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Eguana\GWLogistics\Model\Gateway\Command;
 
+use Magento\Framework\Exception\LocalizedException;
+
 class CreateShipmentCommand
 {
 
@@ -61,12 +63,20 @@ class CreateShipmentCommand
         $this->queryLogisticsInfoValidator = $queryLogisticsInfoValidator;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function execute($order)
     {
         try {
             /** @var \Magento\Sales\Model\Order $order */
             $createShipmentRequest = $this->createShipmentRequestBuilder->build(['order' => $order]);
             $createShipmentResponse = $this->createShipmentClient->placeRequest($createShipmentRequest);
+            // If any exception is throw in function placeRequest, it will return an empty array
+            // so we cannot call function validate($createShipmentResponse)
+            if (empty($createShipmentResponse)) {
+                throw new LocalizedException(__('Something went wrong during Gateway request.'));
+            }
 
             if ($this->createShipmentValidator !== null) {
                 $createShipmentResult = $this->createShipmentValidator->validate($createShipmentResponse);
