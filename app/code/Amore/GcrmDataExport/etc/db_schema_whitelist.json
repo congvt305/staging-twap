@@ -1,0 +1,13 @@
+{
+    "eguana_gcrm_data_export_setting": {
+        "column": {
+            "id": true,
+            "entity_code": true,
+            "last_status": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

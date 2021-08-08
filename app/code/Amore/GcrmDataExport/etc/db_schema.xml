@@ -1,0 +1,22 @@
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: adeel
+ * Date: 1/7/21
+ * Time: 5:57 PM
+ */
+ -->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="eguana_gcrm_data_export_setting" resource="default" engine="innodb" comment="Amore Custom Scheduled Export Updated At">
+        <column xsi:type="int" name="id" padding="11" unsigned="true" nullable="false" identity="true" comment="Export ID"/>
+        <column xsi:type="varchar" name="entity_code" nullable="false" length="255" comment="Export Entity Code"/>
+        <column xsi:type="smallint" padding="2" name="last_status" nullable="false"  comment="Last Updated Status"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+</schema>

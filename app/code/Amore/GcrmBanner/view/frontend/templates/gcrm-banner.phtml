@@ -1,0 +1,49 @@
+<?php
+declare(strict_types=1);
+/**
+ * @author Eguana Team
+ * Created by PhpStorm
+ * User: Sonia Park
+ * Date: 07/10/2021
+ */
+
+/** @var \Magento\Banner\Block\Widget\Banner $block */
+?>
+<div class="gcrm-banner-container" data-bind="scope: 'gcrm-banner'">
+    <div data-role="gcrm-banner-container" data-bind="afterRender: registerBanner">
+        <!-- ko if: getItems() -->
+            <div class="gcrm-popup-button" data-bind="{click: isPromoDrawerVisible, css: {'_show': buttonVisible()}}">
+                <strong class="promos-title"><?= $block->escapeHtml(__('My Offers')) ?></strong>
+            </div>
+            <div class="gcrm-popup-wrapper">
+                <div class="overlay" data-bind="click: isPromoDrawerVisible"></div>
+                <ul class="banner-items" >
+                    <!-- ko foreach: getItems() -->
+                        <li class="banner-item" data-bind="attr: {'data-banner-id': $data.bannerId}">
+                            <div class="banner-item-wrapper">
+                                <div class="banner-item-content"  data-bind="bindHtml: $data.html"></div>
+                                <button class="action primary coupon-generate-button" name="coupon-button" type="button" data-bind="click: $parent.generateCoupon, attr: {id: 'coupon_button_' + $data.salesRuleId, 'data-sales-ruleId': $data.salesRuleId}"><?= $block->escapeHtml(__('Generate Coupon')) ?></button>
+                                <div data-bind="attr: {id: 'coupon_code_' + $data.salesRuleId}"></div>
+                            </div>
+                        </li>
+                    <!-- /ko -->
+                </ul>
+            </div>
+        <!-- /ko -->
+    </div>
+</div>
+
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "gcrm-banner": {
+                        "component": "Amore_GcrmBanner/js/view/gcrm-banner"
+                    }
+                }
+            }
+        }
+    }
+</script>

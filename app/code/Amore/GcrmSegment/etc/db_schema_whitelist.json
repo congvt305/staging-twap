@@ -1,0 +1,8 @@
+{
+    "magento_customersegment_segment": {
+        "column": {
+            "is_remote": true,
+            "remote_code": true
+        }
+    }
+}
