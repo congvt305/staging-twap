@@ -26,8 +26,16 @@ class GetAdditional implements ArgumentInterface
      */
     protected $categoryRepository;
 
+    /**
+     * @var $_category = null
+     */
     private $_category = null;
 
+
+    /**
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param CategoryRepositoryInterface $categoryRepository
+     */
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         CategoryRepositoryInterface $categoryRepository
@@ -37,7 +45,11 @@ class GetAdditional implements ArgumentInterface
         $this->categoryRepository = $categoryRepository;
     }
 
-
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getCurrencyCode() {
         return $this->_storeManager->getStore()->getCurrentCurrency()->getCode();
     }
