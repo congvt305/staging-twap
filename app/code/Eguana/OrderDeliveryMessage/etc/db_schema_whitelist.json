@@ -1,0 +1,12 @@
+{
+    "sales_order": {
+        "column": {
+            "delivery_message": true
+        }
+    },
+    "quote": {
+        "column": {
+            "delivery_message": true
+        }
+    }
+}

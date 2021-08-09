@@ -11,9 +11,9 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="sales_order" resource="default" engine="innodb">
-        <column xsi:type="varchar" name="delivery_message" nullable="true" length="255" comment="Delivery Note"/>
+        <column xsi:type="mediumtext" name="delivery_message" nullable="true" comment="Delivery Note"/>
     </table>
     <table name="quote" resource="default" engine="innodb">
-        <column xsi:type="varchar" name="delivery_message" nullable="true" length="255" comment="Delivery Note"/>
+        <column xsi:type="mediumtext" name="delivery_message" nullable="true" comment="Delivery Note"/>
     </table>
 </schema>
