@@ -24,8 +24,7 @@ class POSSetOrderCancelSend implements ObserverInterface
     public function __construct(
         PointConfig $pointConfig,
         OrderRepository $orderRepository
-    )
-    {
+    ) {
         $this->pointConfig = $pointConfig;
         $this->orderRepository = $orderRepository;
     }
@@ -44,7 +43,7 @@ class POSSetOrderCancelSend implements ObserverInterface
         $moduleActive = $this->pointConfig->getActive($order->getStore()->getWebsiteId());
         $cancelledOrderToPos = $this->pointConfig->getPosCancelledOrderActive($order->getStore()->getWebsiteId());
         if ($moduleActive & $cancelledOrderToPos) {
-            if (($order->getState() == 'canceled' && $order->getStatus() == 'canceled') &&
+            if ($this->isCanceledOrder($order) &&
                 !$order->getData('pos_order_cancel_sent') &&
                 ($order->getData('pos_order_paid_sent') || $order->getData('pos_order_paid_send'))) {
                 try {
@@ -55,5 +54,14 @@ class POSSetOrderCancelSend implements ObserverInterface
                 }
             }
         }
+    }
+
+    /**
+     * @param $order
+     * @return bool
+     */
+    private function isCanceledOrder($order): bool
+    {
+        return $order->isCanceled() || $order->getState() === Order::STATE_CLOSED;
     }
 }
