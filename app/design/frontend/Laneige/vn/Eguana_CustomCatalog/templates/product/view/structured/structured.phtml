@@ -17,6 +17,12 @@ if ($categoryIds && count($categoryIds) > 0) {
         $categoryName = $category->getName();
     }
 }
+$isSalable = $block->getProduct()->getIsSalable();
+if ($isSalable) {
+    $availability = 'in stock';
+} else {
+    $availability = 'out of stock';
+}
 ?>
 <script type="application/ld+json">
     {
@@ -34,7 +40,7 @@ if ($categoryIds && count($categoryIds) > 0) {
           "price": "<?= /* @noEscape */ (int) $block->escapeHtml($block->getProduct()->getFinalPrice()) ?>",
           "priceCurrency": "<?= $additionalData->getCurrencyCode() ?>",
           "itemCondition": "https://schema.org/NewCondition",
-          "availability": "https://schema.org/InStock1"
+          "availability": "<?= $availability ?>"
         }],
         "additionalProperty": [{
             "@type": "PropertyValue",
