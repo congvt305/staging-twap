@@ -27,11 +27,15 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="pos_order_active" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" >
-                    <label>Send Order To Pos Active</label>
+                    <label>Send Order To Pos</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="pos_cancelled_active" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" >
+                    <label>Send Cancelled Order To Pos</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="pos_rma_active" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" >
-                    <label>Send Return To Pos Active</label>
+                    <label>Send Return To Pos</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="rewards_block_id" translate="label" sortOrder="60" type="select" showInDefault="1" showInWebsite="1">
@@ -84,9 +88,9 @@
                 </field>
             </group>
             <group id="configurable_cron" translate="label" type="text" sortOrder="270" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Completed Order To Pos Cron</label>
+                <label>Order/Return to POS Cron</label>
                 <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Order To Pos Cron Active</label>
+                    <label>Cron Active</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="test_active" translate="label" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -107,16 +111,9 @@
                         <field id="test_active">1</field>
                     </depends>
                 </field>
-                <field id="available_send_days" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Days to send Pos after Order Completed</label>
-                </field>
-                <field id="frequency" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Frequency</label>
-                    <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
+                <field id="cron_expr" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cron Expr</label>
                     <backend_model>Amore\PointsIntegration\Model\Config\CronConfig</backend_model>
-                </field>
-                <field id="time" translate="label" type="time" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Start Time</label>
                 </field>
                 <field id="run_now" translate="Run Now" type="button" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Run Now</label>

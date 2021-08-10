@@ -6,7 +6,10 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-<!--    <event name="sales_order_save_after">-->
-<!--        <observer name="order_send_to_pos_event" instance="Amore\PointsIntegration\Observer\OrderToPosSenderObserver"/>-->
-<!--    </event>-->
+    <event name="sales_order_invoice_pay">
+        <observer name="pos_integration_set_pos_order_paid_send" instance="Amore\PointsIntegration\Observer\POSSetOrderPaidSend"/>
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="pos_integration_set_pos_order_cancel_send" instance="Amore\PointsIntegration\Observer\POSSetOrderCancelSend"/>
+    </event>
 </config>

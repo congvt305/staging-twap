@@ -1,12 +1,18 @@
 {
     "sales_order": {
         "column": {
-            "pos_order_send_check": true
+            "pos_order_send_check": true,
+            "pos_order_paid_sent": true,
+            "pos_order_paid_send": true,
+            "pos_order_cancel_sent": true,
+            "pos_order_cancel_send": true
         }
     },
     "magento_rma": {
         "column": {
-            "pos_rma_send_check": true
+            "pos_rma_send_check": true,
+            "pos_rma_completed_sent": true,
+            "pos_rma_completed_send": true
         }
     }
 }
