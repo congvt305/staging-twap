@@ -28,6 +28,8 @@ use Magento\Store\Api\StoreRepositoryInterface;
 
 class PosReturnData
 {
+    const POS_ORDER_TYPE_RETURN = '000020';
+
     /**
      * @var Config
      */
@@ -139,16 +141,17 @@ class PosReturnData
         $posIntegrationNumber = $rma->getCustomerId() ? $customer->getCustomAttribute('integration_number')->getValue() : null;
 
         $rmaItem = $this->getRmaItemData($rma);
+        $invoice = $order->getInvoiceCollection()->getFirstItem();
         $couponCode = $order->getCouponCode();
 
         $rmaData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
             'saledate' => $this->dateFormat($rma->getDateRequested()),
-            'orderID' => 'R' . $rma->getIncrementId(),
-            'rcptNO' => 'R' . $rma->getIncrementId(),
+            'orderID' => 'R' . $order->getIncrementId(),
+            'rcptNO' => 'I' . $invoice->getIncrementId(),
             'cstmIntgSeq' => $posIntegrationNumber,
-            'orderType' => '000020',
+            'orderType' => self::POS_ORDER_TYPE_RETURN,
             'promotionKey' => $couponCode,
             'orderInfo' => $rmaItem
         ];
