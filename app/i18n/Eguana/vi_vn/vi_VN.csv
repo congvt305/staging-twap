@@ -170,13 +170,13 @@
 "The coupon code ""%1"" is not valid.","Mã giảm giá ""%1"" không hợp lệ.",module,Magento_AdvancedCheckout
 "Shopping Cart Items","Giỏ hàng sản phẩm",module,Magento_AdvancedCheckout
 "Qty","Số lượng",module,Magento_AdvancedCheckout
-"Subtotal","Tổng phụ",module,Magento_AdvancedCheckout
+"Subtotal","Tạm tính",module,Magento_AdvancedCheckout
 "Discount","Chiết khấu",module,Magento_AdvancedCheckout
 "Row Subtotal","Tổng theo hàng",module,Magento_AdvancedCheckout
 "Action","Thao tác",module,Magento_AdvancedCheckout
 "No ordered items","Không có sản phẩm nào được đặt",module,Magento_AdvancedCheckout
 "Total %1 product(s)","Tổng số sản phẩm %1",module,Magento_AdvancedCheckout
-"Subtotal:","Tổng phụ:",module,Magento_AdvancedCheckout
+"Subtotal:","Tạm tính:",module,Magento_AdvancedCheckout
 "Please select","Vui lòng chọn",module,Magento_AdvancedCheckout
 "Move to Wish List","Chuyển đến Danh sách mong muốn",module,Magento_AdvancedCheckout
 "No item specified.","Không xác nhận sản phẩm.",module,Magento_AdvancedCheckout
@@ -1637,7 +1637,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "To:","Đến:",module,Magento_Bundle
 "Message:","Tin nhắn:",module,Magento_Bundle
 "Product Name","Tên sản phẩm",module,Magento_Bundle
-"Subtotal","Tổng phụ",module,Magento_Bundle
+"Subtotal","Tạm tính",module,Magento_Bundle
 "Discount Amount","Lượng chiết khấu",module,Magento_Bundle
 "Row Total","Tổng số dòng",module,Magento_Bundle
 "Qty Invoiced","Số lượng hóa đơn",module,Magento_Bundle
@@ -3250,7 +3250,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "An error occurred on the server. Please try to place the order again.","Lỗi xuất hiện trên máy chủ. Hãy thử đặt hàng lại một lần nữa.",module,Magento_Checkout
 "Shipping address is not set","Địa chỉ giao hàng không được thiết lập",module,Magento_Checkout
 "Unable to save shipping information. Please check input data.","Không thể lưu thông tin vận chuyển. Vui lòng kiểm tra lại thông tin.",module,Magento_Checkout
-"Carrier with such method not found: %1, %2","Phương pháp vận chuyển: %1, %2 không tìm thấy",module,Magento_Checkout
+"Carrier with such method not found: %1, %2","Vui lòng chọn địa chỉ giao hàng!",module,Magento_Checkout
 "Shipping method is not applicable for empty cart","Phương pháp Vận chuyển không áp dụng cho giỏ hàng rỗng",module,Magento_Checkout
 " item"," sản phẩm",module,Magento_Checkout
 " items"," sản phẩm",module,Magento_Checkout
@@ -3275,7 +3275,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Item","Sản phẩm",module,Magento_Checkout
 "Price","Giá",module,Magento_Checkout
 "Qty","Số lượng",module,Magento_Checkout
-"Subtotal","Tổng phụ",module,Magento_Checkout
+"Subtotal","Tạm tính",module,Magento_Checkout
 "Continue Shopping","Tiếp tục mua sắm",module,Magento_Checkout
 "Clear Shopping Cart","Xóa giỏ hàng",module,Magento_Checkout
 "Update Shopping Cart","Cập nhật giỏ hàng",module,Magento_Checkout
@@ -3325,7 +3325,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "See Details","Xem chi tiết",module,Magento_Checkout
 "Options Details","Tùy chọn chi tiết",module,Magento_Checkout
 "Remove","Loại bỏ",module,Magento_Checkout
-"Cart Subtotal","Tổng phụ giỏ hàng",module,Magento_Checkout
+"Cart Subtotal","Tạm tính",module,Magento_Checkout
 "Payment Information","Thông tin thanh toán",module,Magento_Checkout
 "No Payment method available.","Không có phương thức thanh toán có sẵn.",module,Magento_Checkout
 "You can track your order status by creating an account.","Bạn có thể tạo một tài khoản để theo dõi tình trạng đơn hàng của mình !",module,Magento_Checkout
@@ -3399,7 +3399,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Method Title","Tiêu đề Phương pháp",module,Magento_Checkout
 "Carrier Title","Tiêu đề vận chuyển",module,Magento_Checkout
 "Next","Tiếp theo",module,Magento_Checkout
-"Sorry, no quotes are available for this order at this time","Xin lỗi, không có trích dẫn nào có sẵn cho đơn hàng lúc này",module,Magento_Checkout
+"Sorry, no quotes are available for this order at this time","Vui lòng điền các thông tin ở mục trên!",module,Magento_Checkout
 "Item in Cart","Sản phẩm trong giỏ",module,Magento_Checkout
 "Items in Cart","Sản phẩm trong giỏ",module,Magento_Checkout
 "Require Customer To Be Logged In To Checkout","Yêu cầu khách hàng đăng nhập trước khi thanh toán",module,Magento_Checkout
@@ -5735,8 +5735,8 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "is one of","là một trong",module,Magento_CustomerSegment
 "is not one of","không phải là một trong",module,Magento_CustomerSegment
 "Shopping Cart Total","Giỏ hàng tổng cộng",module,Magento_CustomerSegment
-"Subtotal","Tổng phụ",module,Magento_CustomerSegment
-"Grand Total","Tổng số",module,Magento_CustomerSegment
+"Subtotal","Tạm tính",module,Magento_CustomerSegment
+"Grand Total","Tổng đơn đặt hàng",module,Magento_CustomerSegment
 "Tax","Thuế",module,Magento_CustomerSegment
 "Gift Card","Thẻ quà tặng",module,Magento_CustomerSegment
 "Shopping Cart %1 Amount %2 %3:","Giỏ hàng mua sắm %1 tổng số %2 %3:",module,Magento_CustomerSegment
@@ -6135,7 +6135,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Message:","Tin nhắn:",module,Magento_Downloadable
 "Product Name","Tên sản phẩm",module,Magento_Downloadable
 "Qty","Số lượng",module,Magento_Downloadable
-"Subtotal","Tổng phụ",module,Magento_Downloadable
+"Subtotal","Tạm tính",module,Magento_Downloadable
 "Discount Amount","Lượng chiết khấu",module,Magento_Downloadable
 "Row Total","Tổng số dòng",module,Magento_Downloadable
 "Qty Invoiced","Số lượng hóa đơn",module,Magento_Downloadable
@@ -7603,7 +7603,7 @@ e.g. var/export, var/import, var/export/some/dir","Đối với loại ""Local S
 "Update on Save","Cập Nhật ngày lưu",module,Magento_Indexer
 "Reindex required","Lập chỉ mục lại yêu cầu",module,Magento_Indexer
 "Ready","Sẵn sàng",module,Magento_Indexer
-"Processing","Đang tiến hành",module,Magento_Indexer
+"Processing","Đang xử lý",module,Magento_Indexer
 "Never","Không bao giờ",module,Magento_Indexer
 "%1 index is locked by another reindex process. Skipping.","%1 chỉ số đã bị khoá bởi một tiến trình khác. Bỏ qua.",module,Magento_Indexer
 "Index Management","Quản lý chỉ mục",module,Magento_Indexer
@@ -8398,9 +8398,9 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Item","Sản phẩm",module,Magento_Multishipping
 "Edit","Chỉnh sửa",module,Magento_Multishipping
 "Price","Giá",module,Magento_Multishipping
-"Subtotal","Tổng phụ",module,Magento_Multishipping
+"Subtotal","Tạm tính",module,Magento_Multishipping
 "Items","Sản phẩm",module,Magento_Multishipping
-"Grand Total:","Tổng số:",module,Magento_Multishipping
+"Grand Total:","Tổng đơn đặt hàng:",module,Magento_Multishipping
 "Submitting order information...","Gửi thông tin đặt hàng...",module,Magento_Multishipping
 "Not all items were included.","Not all items were included.",module,Magento_Multishipping
 "For details, see","For details, see",module,Magento_Multishipping
@@ -8468,14 +8468,14 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Cannot Perform the Requested Action","Cannot Perform the Requested Action",module,Magento_NegotiableQuote
 "%creator (for %customer)","%creator (for %customer)",module,Magento_NegotiableQuote
 "Items Quoted","Items Quoted",module,Magento_NegotiableQuote
-"Subtotal (Incl. Tax)","Tổng phụ (đã bao gồm thuế)",module,Magento_NegotiableQuote
-"Subtotal (Excl. Tax)","Tổng phụ (chưa bao gồm thuế)",module,Magento_NegotiableQuote
+"Subtotal (Incl. Tax)","Tạm tính (đã bao gồm thuế)",module,Magento_NegotiableQuote
+"Subtotal (Excl. Tax)","Tạm tính (chưa bao gồm thuế)",module,Magento_NegotiableQuote
 "Add to Quote by SKU","Add to Quote by SKU",module,Magento_NegotiableQuote
 "Add to Quote","Add to Quote",module,Magento_NegotiableQuote
 "Cancel","Hủy bỏ",module,Magento_NegotiableQuote
 "Total Cost","Total Cost",module,Magento_NegotiableQuote
 "Negotiated Price","Negotiated Price",module,Magento_NegotiableQuote
-"Shipping & Handling","Vận chuyển & xử lý",module,Magento_NegotiableQuote
+"Shipping & Handling","Chi phí vận chuyển",module,Magento_NegotiableQuote
 "Quote Subtotal (Incl. Tax)","Quote Subtotal (Incl. Tax)",module,Magento_NegotiableQuote
 "Percentage Discount","Percentage Discount",module,Magento_NegotiableQuote
 "Amount Discount","Amount Discount",module,Magento_NegotiableQuote
@@ -8700,7 +8700,7 @@ it will make no affect on Price filter.",module,Magento_LayeredNavigation
 "Cost","Chi phí",module,Magento_NegotiableQuote
 "Cart Price","Cart Price",module,Magento_NegotiableQuote
 "Qty","Số lượng",module,Magento_NegotiableQuote
-"Subtotal","Tổng phụ",module,Magento_NegotiableQuote
+"Subtotal","Tạm tính",module,Magento_NegotiableQuote
 "Recalculate Quote","Recalculate Quote",module,Magento_NegotiableQuote
 "Update Prices","Update Prices",module,Magento_NegotiableQuote
 "SKU","MÃ SẢN PHẨM",module,Magento_NegotiableQuote
@@ -9659,7 +9659,7 @@ If field is empty default value localhost will be saved.","IP truy cập danh s�
 "Item","Sản phẩm",module,Magento_Paypal
 "Price","Giá",module,Magento_Paypal
 "Qty","Số lượng",module,Magento_Paypal
-"Subtotal","Tổng phụ",module,Magento_Paypal
+"Subtotal","Tạm tính",module,Magento_Paypal
 "Please update order data to get shipping methods and rates","Xin vui lòng Cập Nhật dữ liệu đơn hàng để có được phương pháp vận chuyển và giá",module,Magento_Paypal
 "or","hoặc",module,Magento_Paypal
 "Checkout with PayPal","Thanh toán với PayPal",module,Magento_Paypal
@@ -10166,11 +10166,11 @@ offered and the currency offered by the merchant is USD.",module,Magento_Paypal
 "The address model is not defined.","Các mô hình địa chỉ không xác định.",module,Magento_Quote
 "The address total model should be extended from,module,Magento_Quote
 \Magento\Quote\Model\Quote\Address\Total\AbstractTotal.","Địa chỉ tất cả các mô hình nên được mở rộng từ \Magento\Quote\Model\Quote\Address\Total\AbstractTotal.",module,Magento_Quote
-"Grand Total","Tổng số",module,Magento_Quote
-"Shipping & Handling (%1)","Vận chuyển & xử lý (%1)",module,Magento_Quote
-"Shipping & Handling","Vận chuyển & xử lý",module,Magento_Quote
+"Grand Total","Tổng đơn đặt hàng",module,Magento_Quote
+"Shipping & Handling (%1)","Chi phí vận chuyển (%1)",module,Magento_Quote
+"Shipping & Handling","Chi phí vận chuyển",module,Magento_Quote
 "Shipping","Vận chuyển",module,Magento_Quote
-"Subtotal","Tổng phụ",module,Magento_Quote
+"Subtotal","Tạm tính",module,Magento_Quote
 "We found an invalid item option format.","Chúng tôi tìm thấy một tùy chọn định dạng sản phẩm không hợp lệ.",module,Magento_Quote
 "An item option with code %1 already exists.","Một tùy chọn sản phẩm với mã %1 đã tồn tại.",module,Magento_Quote
 "Item qty declaration error","Khai báo số lượng sản phẩm lỗi",module,Magento_Quote
@@ -10602,7 +10602,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Shopping cart is not empty and abandoned %1 %2 days and %3 of these conditions match:","Giỏ mua hàng không phải là trống rỗng, và bị bỏ rơi %1 %2 ngày và %3 trong những điều kiện phù hợp với:",module,Magento_Reminder
 "The root shopping cart condition should have a days value of 0 or greater.","Điều kiện giỏ hàng mua sắm gốc nên có giá trị ngày 0 hoặc lớn hơn.",module,Magento_Reminder
 "Total Amount","Tổng số tiền",module,Magento_Reminder
-"subtotal","tổng phụ",module,Magento_Reminder
+"subtotal","tạm tính",module,Magento_Reminder
 "grand total","tổng",module,Magento_Reminder
 "Shopping cart %1 amount %2 %3:","Giỏ hàng mua sắm %1 tổng số %2 %3:",module,Magento_Reminder
 "Unknown quote total specified","Tổng báo giá đc quy định chưa biết",module,Magento_Reminder
@@ -10731,7 +10731,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Products Bestsellers Report","Báo cáo Sản phẩm bán chạy nhất",module,Magento_Reports
 "Order Quantity","Số lượng đơn đặt hàng",module,Magento_Reports
 "Coupons Usage Report","Báo cáo Phiếu giảm giá sử dụng",module,Magento_Reports
-"Subtotal","Tổng phụ",module,Magento_Reports
+"Subtotal","Tạm tính",module,Magento_Reports
 "Coupon Code","Mã Phiếu giảm giá",module,Magento_Reports
 "Price Rule","Quy luật giá",module,Magento_Reports
 "Uses","Số Lần Sử Dụng",module,Magento_Reports
@@ -10982,7 +10982,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Item","Sản phẩm",module,Magento_RequisitionList
 "Price","Giá",module,Magento_RequisitionList
 "Qty","Số lượng",module,Magento_RequisitionList
-"Subtotal","Tổng phụ",module,Magento_RequisitionList
+"Subtotal","Tạm tính",module,Magento_RequisitionList
 "Product","Sản phẩm",module,Magento_RequisitionList
 "SKU","MÃ SẢN PHẨM",module,Magento_RequisitionList
 "Excl. Tax","Chưa bao gồm thuế",module,Magento_RequisitionList
@@ -11931,8 +11931,8 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "No","Không",module,Magento_Sales
 "Show Actual Values","Hiển thị giá trị thực tế",module,Magento_Sales
 "New Order RSS","Trật tự RSS mới",module,Magento_Sales
-"Subtotal","Tổng phụ",module,Magento_Sales
-"Shipping & Handling","Vận chuyển & xử lý",module,Magento_Sales
+"Subtotal","Tạm tính",module,Magento_Sales
+"Shipping & Handling","Chi phí vận chuyển",module,Magento_Sales
 "Discount (%1)","Giảm giá (%1)",module,Magento_Sales
 "Discount","Chiết khấu",module,Magento_Sales
 "Grand Total","Tổng số",module,Magento_Sales
@@ -12244,10 +12244,11 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "VAT Request Identifier","Yêu cầu xác nhận VAT",module,Magento_Sales
 "VAT Request Date","Ngày yêu cầu VAT",module,Magento_Sales
 "Pending Payment","Đang chờ xử lý thanh toán",module,Magento_Sales
-"Processing","Đang tiến hành",module,Magento_Sales
+"Processing","Chờ xác nhận",module,Magento_Sales
 "On Hold","Giữ lại",module,Magento_Sales
-"Complete","Hoàn tất",module,Magento_Sales
-"Closed","Đóng cửa",module,Magento_Sales
+"Complete","Đã giao",module,Magento_Sales
+"Closed","Đã hủy",module,Magento_Sales
+"Shipment processing","Đang giao hàng"
 "Suspected Fraud","Nghi ngờ gian lận",module,Magento_Sales
 "Payment Review","Xem xét thanh toán",module,Magento_Sales
 "New","Mới",module,Magento_Sales
@@ -12287,7 +12288,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "No ordered items","Không có sản phẩm nào được đặt",module,Magento_Sales
 "Update Items and Quantities","Cập nhật sản phẩm và số lượng",module,Magento_Sales
 "Total %1 product(s)","Tổng số sản phẩm %1",module,Magento_Sales
-"Subtotal:","Tổng phụ:",module,Magento_Sales
+"Subtotal:","Tạm tính:",module,Magento_Sales
 "Tier Pricing","Giá theo bậc",module,Magento_Sales
 "Custom Price","Tuỳ chỉnh giá",module,Magento_Sales
 "Please select","Vui lòng chọn",module,Magento_Sales
@@ -12308,8 +12309,8 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Email Order Confirmation","Email xác nhận đặt hàng",module,Magento_Sales
 "Grand Total Excl. Tax","Tổng chưa bao gồm thuế",module,Magento_Sales
 "Grand Total Incl. Tax","Tổng đã bao gồm thuế",module,Magento_Sales
-"Subtotal (Excl. Tax)","Tổng phụ (chưa bao gồm thuế)",module,Magento_Sales
-"Subtotal (Incl. Tax)","Tổng phụ (đã bao gồm thuế)",module,Magento_Sales
+"Subtotal (Excl. Tax)","Tạm tính (chưa bao gồm thuế)",module,Magento_Sales
+"Subtotal (Incl. Tax)","Tạm tính (đã bao gồm thuế)",module,Magento_Sales
 "Payment &amp; Shipping Method","Thanh toán &amp; phương pháp vận chuyển",module,Magento_Sales
 "Payment Information","Thông tin thanh toán",module,Magento_Sales
 "The order was placed using %1.","Đơn hàng được đặt bằng cách sử dụng %1.",module,Magento_Sales
@@ -12665,11 +12666,11 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Customer Group","Nhóm khách hàng",module,Magento_SalesArchive
 "Payment Method","Phương thức thanh toán",module,Magento_SalesArchive
 "Shipping Information","Thông tin vận chuyển",module,Magento_SalesArchive
-"Subtotal","Tổng phụ",module,Magento_SalesArchive
-"Shipping & Handling","Vận chuyển & xử lý",module,Magento_SalesArchive
+"Subtotal","Tạm tính",module,Magento_SalesArchive
+"Shipping & Handling","Chi phí vận chuyển",module,Magento_SalesArchive
 "Adjustment Refund","Điều chỉnh hoàn trả",module,Magento_SalesArchive
 "Adjustment Fee","Chi phí Điều chỉnh",module,Magento_SalesArchive
-"Grand Total","Tổng số",module,Magento_SalesArchive
+"Grand Total","Tổng đơn đặt hàng",module,Magento_SalesArchive
 "Return to Order Management","Trở về quản lý đơn hàng",module,Magento_SalesArchive
 "Purchase Point","Mua điểm",module,Magento_SalesArchive
 "Cancel","Hủy bỏ",module,Magento_SalesArchive
@@ -12780,7 +12781,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "By Fixed value","Bởi giá trị cố định",module,Magento_SalesRule
 "By Percentage","Bởi Tỷ lệ phần trăm",module,Magento_SalesRule
 "Update product's %1 %2: %3","Cập nhật sản phẩm của %1 %2: %3",module,Magento_SalesRule
-"Subtotal","Tổng phụ",module,Magento_SalesRule
+"Subtotal","Tạm tính",module,Magento_SalesRule
 "Total Items Quantity","Số lượng tất cả các mục",module,Magento_SalesRule
 "Total Weight","Tổng trọng lượng",module,Magento_SalesRule
 "Shipping Method","Phương thức vận chuyển",module,Magento_SalesRule
