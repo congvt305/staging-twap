@@ -28,7 +28,7 @@ Password,Mật khẩu
 "Send SMS after status changed to ""Pending Payment""","Gửi SMS sau khi tình trạng thay đổi thành ""Đang chờ xử lý thanh toán"""
 Template,Mẫu
 "Send SMS after status changed to ""On Hold""","Gửi SMS sau khi tình trạng thay đổi thành ""Giữ lại"""
-"Send SMS after status changed to ""Processing""","Gửi SMS sau khi tình trạng thay đổi thành ""Đang tiến hành"""
+"Send SMS after status changed to ""Processing""","Gửi SMS sau khi tình trạng thay đổi thành ""Đang xử lý"""
 "Send SMS after status changed to ""Cancel""","Gửi SMS sau khi tình trạng thay đổi thành ""Hủy bỏ"""
 "Send SMS after status changed to ""Complete""","Gửi SMS sau khi tình trạng thay đổi thành ""Hoàn thành"""
 "Send SMS after status changed to ""Closed""","Gửi SMS sau khi tình trạng thay đổi thành ""đóng cửa"""
