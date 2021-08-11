@@ -1,0 +1,52 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+/* @var $additionalData \Eguana\CustomCatalog\ViewModel\GetAdditional */
+
+$additionalData = $block->getData('model_additional_data');
+$categoryName = '';
+$categoryIds = $block->getProduct()->getCategoryIds();
+if ($categoryIds && count($categoryIds) > 0) {
+    $categoryId = $categoryIds[0];
+    $category = $additionalData->getCategory($categoryId);
+    if ($category && $category->getId()) {
+        $categoryName = $category->getName();
+    }
+}
+$isSalable = $block->getProduct()->getIsSalable();
+if ($isSalable) {
+    $availability = 'in stock';
+} else {
+    $availability = 'out of stock';
+}
+?>
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "productID": "<?= /* @noEscape */ $block->escapeHtml($block->getProduct()->getId()) ?>",
+        "name": "<?= /* @noEscape */ $block->escapeHtml($block->getProduct()->getName()) ?>",
+        "description": "<?= /* @noEscape */ $block->escapeHtml($block->getProduct()->getShortDescription()) ?>",
+        "url": "<?= /* @noEscape */ $block->escapeHtml($block->getProduct()->getProductUrl()) ?>",
+        "image": "<?= $block->escapeUrl($block->getImage($block->getProduct(), 'product_base_image')->getImageUrl()) ?>",
+        "brand": "LANGEIGE",
+        "offers": [
+        {
+          "@type": "Offer",
+          "price": "<?= /* @noEscape */ (int) $block->escapeHtml($block->getProduct()->getFinalPrice()) ?>",
+          "priceCurrency": "<?= $additionalData->getCurrencyCode() ?>",
+          "itemCondition": "https://schema.org/NewCondition",
+          "availability": "<?= $availability ?>"
+        }],
+        "additionalProperty": [{
+            "@type": "PropertyValue",
+            "propertyID": "item_group_id",
+            "value": "<?= /* @noEscape */  $categoryName ?>"
+            }
+        ]
+    }
+</script>
