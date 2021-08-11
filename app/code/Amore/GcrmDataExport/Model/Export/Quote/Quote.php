@@ -238,7 +238,7 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
         if ($quoteData == null) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $this->messageManager->addErrorMessage(__('There is no data for the export.'));
-            return $resultRedirect->setPath('*/*/index');
+            return false;
         }
 
         foreach ($quoteData as $quotes) {

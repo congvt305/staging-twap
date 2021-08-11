@@ -209,7 +209,7 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
         if ($quoteItemsData == null) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $this->messageManager->addErrorMessage(__('There is no data for the export.'));
-            return $resultRedirect->setPath('*/*/index');
+            return false;
         }
         foreach ($quoteItemsData as $quoteItems) {
             foreach ($quoteItems as $item) {
