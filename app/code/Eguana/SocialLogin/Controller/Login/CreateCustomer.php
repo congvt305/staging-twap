@@ -69,7 +69,10 @@ class CreateCustomer extends Action
             return $resultRedirect;
         }
         if ($this->socialLoginModel->getCoreSession()->getData('social_user_data')) {
-            return $this->resultPageFactory->create();
+            $loginType = $this->getRequest()->getParam('type');
+            $resultPage = $this->resultPageFactory->create();
+            $resultPage->getConfig()->getTitle()->set(__('Social login by %1', $loginType));
+            return $resultPage;
         }
         $this->messageManager->addError(
             __('You are not authorized to view this page.')
