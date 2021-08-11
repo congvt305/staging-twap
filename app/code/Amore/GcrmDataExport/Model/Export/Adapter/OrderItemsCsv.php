@@ -212,6 +212,14 @@ class OrderItemsCsv extends AbstractAdapter
      */
     public function writeSourceRowWithCustomColumns(array $rowData, array $originColumnData)
     {
+        $index = 0;
+        foreach ($originColumnData as $key) {
+            if (!array_key_exists($key, $rowData)) {
+                $rowData = array_slice($rowData,0, $index, true) + array($key => '') +
+                    array_slice($rowData, $index, count($rowData), true) ;
+            }
+            $index++;
+        }
         $this->_fileHandler->writeCsv(
             array_merge(array_intersect_key($rowData, $this->getArrayValue($originColumnData))),
             $this->_delimiter,

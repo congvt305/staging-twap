@@ -247,7 +247,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         if ($orderItemData == null) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $this->messageManager->addErrorMessage(__('There is no data for the export.'));
-            return $resultRedirect->setPath('*/*/index');
+            return false;
         }
         foreach ($orderItemData as $orderData) {
             foreach ($orderData as $itemData) {
