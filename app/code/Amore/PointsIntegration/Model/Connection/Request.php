@@ -61,45 +61,33 @@ class Request
     public function sendRequest($requestData, $websiteId, $type)
     {
         $url = $this->getUrl($type, $websiteId);
-//        $active = $this->config->getActive($websiteId);
-
-        if ($this->config->getLoggerActiveCheck($websiteId)) {
-            $this->logger->info("BEFORE SEND REQUEST");
-            $this->logger->debug($requestData);
-        }
-
-        if ($this->config->getLoggerActiveCheck($websiteId)) {
-            $this->logger->info("========== REQUEST ==========");
-            $this->logger->info($this->json->serialize($requestData));
-        }
-
-//        if (!empty($url) && $active) {
-        if (!empty($url)) {
-            try {
-                $this->curl->addHeader('Content-Type', 'application/json');
-
-                if ($this->config->getSSLVerification($websiteId)) {
-                    $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
-                    $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
-                }
-
-                $this->curl->post($url, $this->json->serialize($requestData));
-
-                $response = $this->curl->getBody();
-
-                if ($this->config->getLoggerActiveCheck($websiteId)) {
-                    $this->logger->info("========== RESPONSE ==========");
-                    $this->logger->info($this->json->serialize($response));
-                }
-
-                return $this->json->unserialize($response);
-            } catch (\Exception $exception) {
-                $this->logger->error($exception->getMessage());
-                return [];
-            }
-        } else {
-//            $this->logger->info("URL IS EMPTY OR MODULE INACTIVE");
+        if (!$url) {
             $this->logger->info("URL IS EMPTY");
+            return [];
+        }
+
+        $logEnabled = $this->config->getLoggerActiveCheck($websiteId);
+        if ($logEnabled) {
+            $this->logger->info('POS Request: ' . $this->json->serialize($requestData));
+        }
+        try {
+            $this->curl->addHeader('Content-Type', 'application/json');
+            if ($this->config->getSSLVerification($websiteId)) {
+                $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+            }
+
+            $this->curl->post($url, $this->json->serialize($requestData));
+
+            $response = $this->curl->getBody();
+
+            if ($logEnabled) {
+                $this->logger->info('POS Response: ' . $this->json->serialize($response));
+            }
+
+            return $this->json->unserialize($response);
+        } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
             return [];
         }
     }
