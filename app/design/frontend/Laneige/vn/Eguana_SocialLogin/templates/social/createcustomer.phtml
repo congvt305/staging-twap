@@ -1,0 +1,108 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: umer
+ * Date: 12/6/20
+ * Time: 10:59 PM
+ */
+/**
+ * @var $block \Eguana\SocialLogin\Block\SocialLogin\CreateCustomer
+ */
+?>
+<?php
+$storeCode = $block->getCurrentStoreCode();
+?>
+<div id="myModel">
+    <form method="post" id="eguana-form-validate" enctype="multipart/form-data" autocomplete="off"
+          data-mage-init='{"validation":{}}' data-hasrequired="<?= $block->escapeHtml(__('* Required Fields')) ?>">
+        <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
+        <fieldset class="fieldset">
+            <div class="field note"><?= $block->escapeHtml(__('Welcome to use FB, Google, and LINE accounts to quickly log in. After setting, you can directly log in with FB and Google accounts!')) ?></div>
+            <div class="field choice member-legend">
+                <div class="control">
+                    <label class="label" for="member">
+                        <?php if ($storeCode == 'default'): ?>
+                            <span><?= $block->escapeHtml(__("I am a member of Sulwhasoo Taiwan! Login now to complete the binding")) ?></span>
+                        <?php endif; ?>
+                        <?php if ($storeCode == 'tw_laneige'): ?>
+                            <span><?= $block->escapeHtml(__("I am a member of Laneige Taiwan! Login now to complete the binding")) ?></span>
+                        <?php endif; ?>
+                        <?php if ($storeCode == 'vn_laneige'): ?>
+                            <span><?= $block->escapeHtml(__("I am a member of Laneige Vietnam! Login now to complete the binding")) ?></span>
+                        <?php endif; ?>
+                    </label>
+                    <input type="radio" id="member" name="member" data-validate="{required:true}" value="ismember" checked="checked">
+                </div>
+            </div>
+            <div class="field email required">
+                <label class="label" for="email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
+                <div class="control">
+                    <input name="login[username]"
+                           id="email"
+                           title="<?= $block->escapeHtml(__('Email')) ?>"
+                           class="input-text"
+                           type="email"
+                           value=""
+                           data-validate="{required:true, 'validate-email':true}"
+                           placeholder="<?= $block->escapeHtml(__('Email')) ?>"
+                           aria-required="true">
+                </div>
+            </div>
+            <div class="field password required">
+                <label class="label" for="password"><span><?= $block->escapeHtml(__('Password')) ?></span></label>
+                <div class="control">
+                    <input name="login[password]"
+                           id="password"
+                           title="<?= $block->escapeHtml(__('Password')) ?>"
+                           class="input-text"
+                           type="password"
+                           value=""
+                           data-validate="{required:true}"
+                           placeholder="<?= $block->escapeHtml(__('Password')) ?>"
+                           aria-required="true">
+                </div>
+            </div>
+            <?php if ($block->getSocialMediaType()): ?>
+                <?php $_lineMessagesAgreement = $block->getLayout()->createBlock(\Eguana\SocialLogin\Block\Widget\CheckBox::class, 'line_messages_agreement', ['data'=>['attribute_code'=>'line_messages_agreement', 'form_value'=> '']]) ?>
+                <?= $_lineMessagesAgreement->toHtml() ?>
+            <?php endif; ?>
+            <div class="field choice member-legend">
+                <div class="control">
+                    <label class="label" for="not-a-member">
+                        <?php if ($storeCode == 'default'): ?>
+                            <span><?= $block->escapeHtml(__("Join Taiwan Sulwhasoo member! Complete binding")) ?></span>
+                        <?php endif; ?>
+                        <?php if ($storeCode == 'tw_laneige'): ?>
+                            <span><?= $block->escapeHtml(__("Join Taiwan Laneige member! Complete binding")) ?></span>
+                        <?php endif; ?>
+                        <?php if ($storeCode == 'vn_laneige'): ?>
+                            <span><?= $block->escapeHtml(__("Join Vietnam Laneige member! Complete binding")) ?></span>
+                        <?php endif; ?>
+                    </label>
+                    <input type="radio" id="not-a-member" name="member" value="notamember">
+                </div>
+            </div>
+            <div class="sociallogin-form-actions">
+                <button class="cancel" type="button" id="cancel" data-role="action" data-action-name="Cancel">
+                    <span><?= $block->escapeHtml(__('Go back')) ?></span>
+                </button>
+                <button class="action login" type="submit" id="login" data-role="action" data-action-name="Login">
+                    <span><?= $block->escapeHtml(__('OK')) ?></span>
+                </button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "createCustomerForm": {
+            "url":"<?= $block->escapeUrl($block->getFormAction()) ?>",
+            "customerurl":"<?= $block->escapeUrl($block->getUrl('customer/account/login')) ?>",
+            "registrationurl":"<?= $block->escapeUrl($block->getUrl('customer/account/create')) ?>"
+         }
+    }
+}
+</script>
