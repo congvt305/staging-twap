@@ -11501,7 +11501,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't delete the label right now.","Chúng tôi không thể xoá nhãn ngay bây giờ.",module,Magento_Rma
 "Return #%1","Trả lại #%1",module,Magento_Rma
 "Cannot add message.","Không thể thêm tin nhắn.",module,Magento_Rma
-"My Returns","HOÀN TRẢ",module,Magento_Rma
+"My Returns","Hoàn trả",module,Magento_Rma
 "Tracking Information","Thông tin Theo dõi",module,Magento_Rma
 "Page not found","Không tìm thấy trang",module,Magento_Rma
 "Please check this order for errors.","Hãy kiểm tra lỗi cho các đơn đặt hàng.",module,Magento_Rma
@@ -16276,7 +16276,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Your Shipment #%shipment_id for Order #%order_id","Vận chuyển #%shipment_id cho đơn hàng #%order_id",theme,frontend/Magento/luma
 "Update to your %store_name shipment","Cập Nhật cho %store_name sự gửi hàng của bạn",theme,frontend/Magento/luma
 "Account Dashboard","Trang tổng quan tài khoản",theme,frontend/Magento/luma
-"Address Book","THÔNG TIN GIAO HÀNG",theme,frontend/Magento/luma
+"Address Book","Thông tin giao hàng",theme,frontend/Magento/luma
 "Account Information","Thông tin cá nhân",theme,frontend/Magento/luma
 "About Us","Giới Thiệu Về Chúng Tôi",theme,frontend/Magento/luma
 "Customer Service","Dịch vụ khách hàng",theme,frontend/Magento/luma
@@ -16435,3 +16435,5 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "City:","Quận"
 "Road Name:","Tên đường:"
 "Payment and Delivery Policy","Chính sách Thanh toán và Giao hàng"
+"Card number","Số thẻ"
+"Expiry dater","Ngày hết hạn"
