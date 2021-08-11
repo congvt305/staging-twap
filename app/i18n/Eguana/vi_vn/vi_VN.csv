@@ -3328,7 +3328,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Cart Subtotal","Tạm tính",module,Magento_Checkout
 "Payment Information","Thông tin thanh toán",module,Magento_Checkout
 "No Payment method available.","Không có phương thức thanh toán có sẵn.",module,Magento_Checkout
-"You can track your order status by creating an account.","Bạn có thể theo dõi tình trạng đơn hàng của bạn bằng cách tạo một tài khoản.",module,Magento_Checkout
+"You can track your order status by creating an account.","Bạn có thể tạo một tài khoản để theo dõi tình trạng đơn hàng của mình !",module,Magento_Checkout
 "Place Order","Đặt hàng",module,Magento_Checkout
 "Forgot an Item?","Quên một sản phẩm?",module,Magento_Checkout
 "Edit Your Cart","Sửa giỏ hàng của bạn",module,Magento_Checkout
@@ -7148,7 +7148,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Street Address","Địa chỉ đường",module,Magento_GiftRegistry
 "Street Address %1","Địa chỉ đường phố %1",module,Magento_GiftRegistry
 "City","Quận/ Huyện",module,Magento_GiftRegistry
-"Please select a region, state or province.","Vui lòng chọn Khu vực, Tỉnh/ Thành",module,Magento_GiftRegistry
+"Please select a region, state or province.","Vui lòng chọn khu vực tỉnh/thành phố",module,Magento_GiftRegistry
 "Zip/Postal Code","Mã bưu chính",module,Magento_GiftRegistry
 "Country","Quốc gia",module,Magento_GiftRegistry
 "Phone Number","Số Điện thoại",module,Magento_GiftRegistry
@@ -11164,7 +11164,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Created","Đã tạo",module,Magento_ReviewStaging
 "Status","Trạng thái",module,Magento_ReviewStaging
 "Title","Tiêu đề",module,Magento_ReviewStaging
-"Nickname","Biệt danh",module,Magento_ReviewStaging
+"Nickname","Tên của bạn",module,Magento_ReviewStaging
 "Review","Đánh giá",module,Magento_ReviewStaging
 "Visibility","Hiển thị",module,Magento_ReviewStaging
 "Type","Loại",module,Magento_ReviewStaging
@@ -11501,7 +11501,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "We can't delete the label right now.","Chúng tôi không thể xoá nhãn ngay bây giờ.",module,Magento_Rma
 "Return #%1","Trả lại #%1",module,Magento_Rma
 "Cannot add message.","Không thể thêm tin nhắn.",module,Magento_Rma
-"My Returns","HOÀN TRẢ",module,Magento_Rma
+"My Returns","Hoàn trả",module,Magento_Rma
 "Tracking Information","Thông tin Theo dõi",module,Magento_Rma
 "Page not found","Không tìm thấy trang",module,Magento_Rma
 "Please check this order for errors.","Hãy kiểm tra lỗi cho các đơn đặt hàng.",module,Magento_Rma
@@ -12377,7 +12377,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Transaction Data","Dữ liệu giao dịch",module,Magento_Sales
 "Transaction ID","ID giao dịch",module,Magento_Sales
 "Parent Transaction ID","ID giao dịch mẹ",module,Magento_Sales
-"Order ID","ID đặt hàng",module,Magento_Sales
+"Order ID","Mã đơn hàng",module,Magento_Sales
 "Transaction Type","Loại giao dịch",module,Magento_Sales
 "Is Closed","Đóng cửa",module,Magento_Sales
 "Created At","Đã tạo vào",module,Magento_Sales
@@ -13407,7 +13407,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "ID","ID",module,Magento_SharedCatalog
 "Company","Công ty",module,Magento_SharedCatalog
 "Country","Quốc gia",module,Magento_SharedCatalog
-"State/Province","Tỉnh/ Thành Phố",module,Magento_SharedCatalog
+"State/Province","Tỉnh/Thành Phố",module,Magento_SharedCatalog
 "Assigned","Chỉ định",module,Magento_SharedCatalog
 "Catalog","Danh mục",module,Magento_SharedCatalog
 "Action","Thao tác",module,Magento_SharedCatalog
@@ -13622,7 +13622,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Region/State","Vùng/Khu vực",module,Magento_Shipping
 "ZIP/Postal Code","Mã Bưu điện/Bưu chính",module,Magento_Shipping
 "City","Quận/ Huyện",module,Magento_Shipping
-"Street Address","Địa chỉ đường",module,Magento_Shipping
+"Street Address","Địa chỉ",module,Magento_Shipping
 "Street Address Line 2","Địa Chỉ Phố Dòng 2",module,Magento_Shipping
 "Shipping Policy Parameters","Các thông số chính sách vận chuyển",module,Magento_Shipping
 "Apply custom Shipping Policy","Áp dụng tuỳ chỉnh chính sách vận chuyển",module,Magento_Shipping
@@ -16214,7 +16214,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Transaction has been canceled","Transaction has been canceled",module,Magento_Worldpay
 "Transaction has been declined","Giao dịch đã bị từ chối",module,Magento_Worldpay
 "The response type is incorrect. Verify the type and try again.","The response type is incorrect. Verify the type and try again.",module,Magento_Worldpay
-"Summary","Tóm tắt",theme,frontend/Magento/blank
+"Summary","Điểm đánh giá (từ 1 đến 5)",theme,frontend/Magento/blank
 "Account Dashboard","Trang tổng quan tài khoản",theme,frontend/Magento/blank
 "Account Information","Thông tin tài khoản",theme,frontend/Magento/blank
 "Address Book","Sổ địa chỉ",theme,frontend/Magento/blank
@@ -16276,7 +16276,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Your Shipment #%shipment_id for Order #%order_id","Vận chuyển #%shipment_id cho đơn hàng #%order_id",theme,frontend/Magento/luma
 "Update to your %store_name shipment","Cập Nhật cho %store_name sự gửi hàng của bạn",theme,frontend/Magento/luma
 "Account Dashboard","Trang tổng quan tài khoản",theme,frontend/Magento/luma
-"Address Book","THÔNG TIN GIAO HÀNG",theme,frontend/Magento/luma
+"Address Book","Thông tin giao hàng",theme,frontend/Magento/luma
 "Account Information","Thông tin cá nhân",theme,frontend/Magento/luma
 "About Us","Giới Thiệu Về Chúng Tôi",theme,frontend/Magento/luma
 "Customer Service","Dịch vụ khách hàng",theme,frontend/Magento/luma
@@ -16416,6 +16416,14 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "The widget %1 is no longer available. Select a different widget.","Widget %1 không còn dùng được nữa. Chọn một widget khác.",lib,web
 "First character must be letter.","Ký tự đầu tiên phải là chữ cái.",lib,web
 "The password can't be the same as the email address. Create a new password and try again.","Mật khẩu không thể bằng địa chỉ email. Tạo một mật khẩu mới và thử lại.",lib,web
+"You have successfully subscribed to the latest news from %store_name.","Bạn đã đăng ký nhận tin tức mới nhất thành công từ【%store_name"
+"You have successfully cancelled the latest news from %store_name.","Bạn đã hủy thành công tin tức mới nhất từ【%store_name】"
+"Thank you for your support, Your order has been established, shopping clearly.The details are as follows.","Cảm ơn bạn đã hỗ trợ của bạn, đơn hàng của bạn đã được thiết lập, mua sắm rõ ràng. Chi tiết như sau."
+"The goods you ordered have been shipped.","Hàng hóa bạn đặt đã được chuyển đi."
+"Check / Money order","Kiểm tra / tiền đặt hàng"
+"Dear Customer, we have received your request for return of goods. We will carry out our internal examination work later. Upon completion of the review, you will receive a short notice of the Superman Return Code.","Kính gửi Quý khách hàng, chúng tôi đã nhận được yêu cầu đổi trả hàng hóa của Quý khách. Chúng tôi sẽ thực hiện công việc kiểm tra nội bộ của mình sau đó. Sau khi hoàn thành việc xem xét, bạn sẽ nhận được một thông báo ngắn về Mã Siêu nhân trở lại."
+"Please pay attention to the newsletter and return it to the supermarket within three days after receiving the newsletter. If you do not receive the news in more than three days, you can email us at <a href=""mailto:%store_email"">%store_email</a>","Vui lòng chú ý đến bản tin và gửi lại cho siêu thị trong vòng ba ngày sau khi nhận được bản tin. Nếu bạn không nhận được tin tức trong hơn ba ngày, bạn có thể gửi email cho chúng tôi theo địa chỉ <a href=""mailto:%store_email"">%store_email</a>"
+"Waiting for a refund","Đang chờ hoàn lại tiền"
 "Go to shopping cart","MUA NGAY"
 "Fixed","cố định"
 "Flat Rate","Tỷ lệ không đổi"
@@ -16427,11 +16435,5 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "City:","Quận"
 "Road Name:","Tên đường:"
 "Payment and Delivery Policy","Chính sách Thanh toán và Giao hàng"
-"You have successfully subscribed to the latest news from %store_name.","Bạn đã đăng ký nhận tin tức mới nhất thành công từ【%store_name"
-"You have successfully cancelled the latest news from %store_name.","Bạn đã hủy thành công tin tức mới nhất từ【%store_name】"
-"Thank you for your support, Your order has been established, shopping clearly.The details are as follows.","Cảm ơn bạn đã hỗ trợ của bạn, đơn hàng của bạn đã được thiết lập, mua sắm rõ ràng. Chi tiết như sau."
-"The goods you ordered have been shipped.","Hàng hóa bạn đặt đã được chuyển đi."
-"Check / Money order","Kiểm tra / tiền đặt hàng"
-"Dear Customer, we have received your request for return of goods. We will carry out our internal examination work later. Upon completion of the review, you will receive a short notice of the Superman Return Code.","Kính gửi Quý khách hàng, chúng tôi đã nhận được yêu cầu đổi trả hàng hóa của Quý khách. Chúng tôi sẽ thực hiện công việc kiểm tra nội bộ của mình sau đó. Sau khi hoàn thành việc xem xét, bạn sẽ nhận được một thông báo ngắn về Mã Siêu nhân trở lại."
-"Please pay attention to the newsletter and return it to the supermarket within three days after receiving the newsletter. If you do not receive the news in more than three days, you can email us at <a href=""mailto:%store_email"">%store_email</a>","Vui lòng chú ý đến bản tin và gửi lại cho siêu thị trong vòng ba ngày sau khi nhận được bản tin. Nếu bạn không nhận được tin tức trong hơn ba ngày, bạn có thể gửi email cho chúng tôi theo địa chỉ <a href=""mailto:%store_email"">%store_email</a>"
-"Waiting for a refund","Đang chờ hoàn lại tiền"
+"Card number","Số thẻ"
+"Expiry dater","Ngày hết hạn"
