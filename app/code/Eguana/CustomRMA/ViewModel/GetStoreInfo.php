@@ -38,9 +38,10 @@ class GetStoreInfo implements ArgumentInterfaceAlias
      */
     public function __construct(
         ScopeConfigInterfaceAlias $scopeConfig,
-        StoreManagerInterface $storeManage
+        StoreManagerInterface $storeManager
     ) {
         $this->scopeConfig = $scopeConfig;
+        $this->storeManager = $storeManager;
     }
 
     /**
