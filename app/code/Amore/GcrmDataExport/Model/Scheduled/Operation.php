@@ -32,6 +32,7 @@ use Magento\Framework\Filesystem\Io\Ftp;
 use Magento\Framework\Filesystem\Io\Sftp;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Data\Collection\AbstractDb;
+use Psr\Log\LoggerInterface;
 
 /**
  * This class controls the data export to local or remote server
@@ -49,6 +50,11 @@ class Operation extends OperationAlias
      * @var DateTime
      */
     private $date;
+
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * @param DateTime $date
@@ -81,6 +87,7 @@ class Operation extends OperationAlias
         ValueFactory $configValueFactory,
         DateTime $dateModel,
         ScopeConfigInterface $scopeConfig,
+        LoggerInterface $logger,
         StringUtils $string,
         TransportBuilder $transportBuilder,
         Ftp $ftpAdapter,
@@ -109,6 +116,7 @@ class Operation extends OperationAlias
             $serializer
         );
         $this->sftpAdapter = $sftpAdapter;
+        $this->logger = $logger;
         $this->date = $date;
     }
 
