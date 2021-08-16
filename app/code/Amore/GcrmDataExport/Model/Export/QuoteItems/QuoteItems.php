@@ -229,8 +229,8 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
         $itemRow = [];
         $collection = $this->joinedItemCollection();
         $cnt = 0;
-        foreach ($collection as $item) {
-            $itemRow[$item->getIncrementId()][$cnt] = $item->getData();
+        foreach ($collection->getData() as $item) {
+            $itemRow[$item['item_id']][$cnt] = $item;
             $cnt++;
         }
         return $itemRow;

@@ -12,7 +12,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
-    <preference for="Magento\Quote\Model\Quote\Item" type="Amore\GcrmDataExport\Override\Quote\Model\Quote\Item" />
+    <preference for="Magento\Quote\Model\Quote\Item" type="Amore\GcrmDataExport\Crontab\Quote\Model\Quote\ItemCron" />
     <preference for="Magento\ScheduledImportExport\Model\Scheduled\Operation"
                 type="Amore\GcrmDataExport\Model\Scheduled\Operation"/>
 </config>
