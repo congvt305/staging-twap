@@ -40,5 +40,14 @@
                 </container>
             </block>
         </referenceContainer>
+        <referenceContainer name="page.bottom.container">
+            <referenceContainer name="page.bottom">
+                <block class="Eguana\Redemption\Block\TextBanner" name="fixed_text_banner">
+                    <arguments>
+                        <argument name="layout_handler" xsi:type="string">redemption_details_index</argument>
+                    </arguments>
+                </block>
+            </referenceContainer>
+        </referenceContainer>
     </body>
 </page>

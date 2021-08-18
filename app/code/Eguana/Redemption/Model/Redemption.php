@@ -468,4 +468,52 @@ class Redemption extends AbstractModel implements RedemptionInterface, IdentityI
     {
         return $this->setData(self::VVIP_LIST, $list);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTextBannerIndex()
+    {
+        return $this->getData(self::FIXED_TEXT_BANNER_INDEX);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTextBannerIndex($text)
+    {
+        return $this->setData(self::FIXED_TEXT_BANNER_INDEX, $text);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTextBannerSuccess()
+    {
+        return $this->getData(self::FIXED_TEXT_BANNER_SUCCESS);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTextBannerSuccess($text)
+    {
+        return $this->setData(self::FIXED_TEXT_BANNER_SUCCESS, $text);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBgColorTextBanner()
+    {
+        return $this->getData(self::BG_COLOR_TEXT_BANNER);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBgColorTextBanner($color)
+    {
+        return $this->setData(self::BG_COLOR_TEXT_BANNER, $color);
+    }
 }
