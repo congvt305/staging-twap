@@ -52,6 +52,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         self::ORDER_ITEM_UPDATED_AT => 'updated_at',
         self::ORDER_ITEM_PRODUCT_ID => 'product_id',
         self::ORDER_ITEM_PRODUCT_TYPE => 'product_type',
+        self::ORDER_ITEM_PRODUCT_OPTIONS => 'product_options',
         self::ORDER_ITEM_WEIGHT => 'weight',
         self::ORDER_ITEM_IS_VIRTUAL => 'is_virtual',
         self::ORDER_ITEM_PRODUCT_SKU => 'sku',
@@ -130,10 +131,11 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         self::ORDER_ITEM_WEEE_TAX_APPLIED_AMOUNT => 'weee_tax_applied_amount',
         self::ORDER_ITEM_WEEE_TAX_APPLIED_ROW_AMOUNT => 'weee_tax_applied_row_amount',
         self::ORDER_ITEM_WEEE_TAX_DISPOSITION => 'weee_tax_disposition',
+        self::ORDER_ITEM_WEEE_TAX_ROW_DISPOSITION => 'weee_tax_row_disposition',
         self::ORDER_ITEM_BASE_WEEE_TAX_APPLIED_AMOUNT => 'base_weee_tax_applied_amount',
         self::ORDER_ITEM_BASE_WEEE_TAX_APPLIED_ROW_AMOUNT => 'base_weee_tax_applied_row_amnt',
         self::ORDER_ITEM_BASE_WEEE_TAX_DISPOSITION => 'base_weee_tax_disposition',
-        self::ORDER_ITEM_WEEE_TAX_ROW_DISPOSITION => 'weee_tax_row_disposition',
+        self::ORDER_ITEM_BASE_WEEE_TAX_ROW_DISPOSITION => 'base_weee_tax_row_disposition',
         self::ORDER_ITEM_FREE_SHIPPING => 'free_shipping',
         self::ORDER_ITEM_GIFTREGISTRY_ITEM_ID => 'giftregistry_item_id',
         self::ORDER_ITEM_QTY_RETURNED => 'qty_returned',
@@ -239,19 +241,25 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
     {
         $writer = $this->getOrderItemsWriter();
 
-        $engHeader = $this->_getHeaderColumns();
-
-        $writer->setHeaderCols($engHeader);
-
         $orderItemData = $this->getItemData();
         if ($orderItemData == null) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $this->messageManager->addErrorMessage(__('There is no data for the export.'));
             return false;
         }
+
+        $index = 0;
+        $headersData = [];
         foreach ($orderItemData as $orderData) {
             foreach ($orderData as $itemData) {
-                $writer->writeSourceRowWithCustomColumns($itemData, $engHeader);
+                if ($index == 0) {
+                    foreach (array_keys($itemData) as $key) {
+                        $headersData[] = $key;
+                        $index += 1;
+                    }
+                    $writer->setHeaderCols($headersData);
+                }
+                $writer->writeSourceRowWithCustomColumns($itemData);
             }
         }
         return $writer->getContents();
