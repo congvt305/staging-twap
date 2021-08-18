@@ -285,6 +285,38 @@
 
             </settings>
         </field>
+        <field name="text_banner_index" sortOrder="80" formElement="input">
+            <settings>
+                <required>true</required>
+                <dataType>string</dataType>
+                <label translate="true">Welcome Banner Text</label>
+                <dataScope>text_banner_index</dataScope>
+                <componentType>field</componentType>
+            </settings>
+        </field>
+        <field name="text_banner_success" sortOrder="81" formElement="input">
+            <settings>
+                <required>true</required>
+                <dataType>string</dataType>
+                <label translate="true">Success Banner Text</label>
+                <dataScope>text_banner_success</dataScope>
+                <componentType>field</componentType>
+            </settings>
+        </field>
+        <field name="bg_color_text_banner" sortOrder="82" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="notice" xsi:type="string" translate="true">Please enter the color code. If not filled, will use blue #08bf5b as background</item>
+                </item>
+            </argument>
+            <settings>
+                <required>true</required>
+                <dataType>string</dataType>
+                <label translate="true">Background Color of Banner Text</label>
+                <dataScope>bg_color_text_banner</dataScope>
+                <componentType>field</componentType>
+            </settings>
+        </field>
         <field name="store_id_name" sortOrder="70" formElement="select">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">

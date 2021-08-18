@@ -1,0 +1,8 @@
+<?php
+/** @var \Eguana\Redemption\Block\TextBanner $block */
+?>
+
+<?php if ($message = $block->getMessage()): ?>
+<?php $backgroundColor = $block->getBgColor() ?>
+<p id="fixed-text-banner" <?php if($backgroundColor !== '') echo 'style="background-color:'.$backgroundColor.'"';?>><?= $message ?></p>
+<?php endif; ?>
