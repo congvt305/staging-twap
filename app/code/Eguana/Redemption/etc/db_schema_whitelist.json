@@ -23,7 +23,9 @@
             "redemption_completion_message": true,
             "vvip_list": true,
             "text_banner_index": true,
+            "text_banner_index_hyperlink": true,
             "text_banner_success": true,
+            "text_banner_success_hyperlink": true,
             "bg_color_text_banner": true
         },
         "index": {

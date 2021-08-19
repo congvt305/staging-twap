@@ -37,7 +37,9 @@
         <column xsi:type="mediumtext" name="redemption_completion_message" nullable="true" comment="Redemption Completion Page Message"/>
         <column xsi:type="mediumtext" name="vvip_list" nullable="true" comment="Redemption VVIP List"/>
         <column xsi:type="varchar" name="text_banner_index" nullable="true" length="255" comment="Banner Text On Page Index"/>
+        <column xsi:type="varchar" name="text_banner_index_hyperlink" nullable="true" length="255" comment="Banner Text On Page Index Hyperlink"/>
         <column xsi:type="varchar" name="text_banner_success" nullable="true" length="255" comment="Banner Text On Page Success"/>
+        <column xsi:type="varchar" name="text_banner_success_hyperlink" nullable="true" length="255" comment="Banner Text On Page Success Hyperlink"/>
         <column xsi:type="varchar" name="bg_color_text_banner" nullable="true" length="255" comment="Background Color of Banner Text"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="redemption_id"/>
