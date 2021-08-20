@@ -103,7 +103,7 @@ define([
                             if (data['fbFunEnable']) {
                                 fbq('track', 'Foundation_check_finalcheck');
                             }
-                            window.location.href = successUrl;
+                            //window.location.href = successUrl;
                         }
                     }
                 });

@@ -77,7 +77,7 @@ class Resend extends Action
         $counter = $this->getCounter($counterId);
         if (!$counter) {
             $this->messageManager->addErrorMessage(
-                __('Counter %1 is not availabel', $counterId)
+                __('Counter %1 is not available', $counterId)
             );
             $this->_redirect(
                 $this->_redirect->getRefererUrl()
