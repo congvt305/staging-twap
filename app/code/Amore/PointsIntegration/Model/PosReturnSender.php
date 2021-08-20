@@ -70,9 +70,7 @@ class PosReturnSender
             $response = $this->request->sendRequest($rmaData, $websiteId, 'customerOrder');
             $success = $this->isSuccessResponse($response);
             if ($success) {
-                $rma->setData('pos_rma_completed_sent', true);
-                $rma->setData('pos_rma_completed_send', false);
-                $this->rmaRepository->save($rma);
+                $this->posReturnData->updatePosReturnOrderSendFlag($rma);
             }
         } catch (\Exception $exception) {
             $this->pointsIntegrationLogger->err($exception->getMessage());

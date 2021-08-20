@@ -75,7 +75,7 @@ class PosOrderSender
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
             $status = $this->responseCheck($response);
             if ($status) {
-                $this->posOrderData->updatePosSendCheck($order->getEntityId());
+                $this->posOrderData->updatePosPaidOrderSendFlag($order);
             }
         } catch (\Exception $exception) {
             $this->pointsIntegrationLogger->info($exception->getMessage());
