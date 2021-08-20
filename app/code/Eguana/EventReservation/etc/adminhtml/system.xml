@@ -44,6 +44,10 @@
                     </depends>
                     <comment>Add time in minutes after that time resend button will be enable.</comment>
                 </field>
+                <field id="fixed_text_banner_enabled" translate="label" sortOrder="30" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Fixed Text Banner</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
             <group id="email" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Email Template Configuration</label>
