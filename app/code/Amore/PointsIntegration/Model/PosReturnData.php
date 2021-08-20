@@ -8,7 +8,6 @@
 
 namespace Amore\PointsIntegration\Model;
 
-
 use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -16,8 +15,11 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Rma\Api\Data\CommentInterfaceFactory;
+use Magento\Rma\Api\Data\RmaInterface;
 use Magento\Rma\Api\RmaRepositoryInterface;
 use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -25,6 +27,7 @@ use Magento\Sales\Model\Order\Item;
 use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
 use Magento\Store\Api\StoreRepositoryInterface;
+use Amore\PointsIntegration\Logger\Logger;
 
 class PosReturnData
 {
@@ -85,7 +88,16 @@ class PosReturnData
     private $rmaCollectionFactory;
 
     /**
-     * PosReturnData constructor.
+     * @var Logger
+     */
+    private $pointsIntegrationLogger;
+
+    /**
+     * @var CommentInterfaceFactory
+     */
+    private $commentInterfaceFactory;
+
+    /**
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -98,21 +110,26 @@ class PosReturnData
      * @param DateTime $dateTime
      * @param CollectionFactory $itemCollectionFactory
      * @param ResourceConnection $resourceConnection
+     * @param \Magento\Rma\Model\ResourceModel\Rma\CollectionFactory $rmaCollectionFactory
+     * @param Logger $pointsIntegrationLogger
+     * @param CommentInterfaceFactory $commentInterfaceFactory
      */
     public function __construct(
-        Config $config,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        OrderRepositoryInterface $orderRepository,
-        StoreRepositoryInterface $storeRepository,
-        RmaRepositoryInterface $rmaRepository,
-        OrderItemRepositoryInterface $orderItemRepository,
-        ProductRepositoryInterface $productRepository,
-        ProductLinkManagementInterface $productLinkManagement,
-        CustomerRepositoryInterface $customerRepository,
-        DateTime $dateTime,
-        CollectionFactory $itemCollectionFactory,
-        ResourceConnection $resourceConnection,
-        \Magento\Rma\Model\ResourceModel\Rma\CollectionFactory $rmaCollectionFactory
+        Config                                                 $config,
+        SearchCriteriaBuilder                                  $searchCriteriaBuilder,
+        OrderRepositoryInterface                               $orderRepository,
+        StoreRepositoryInterface                               $storeRepository,
+        RmaRepositoryInterface                                 $rmaRepository,
+        OrderItemRepositoryInterface                           $orderItemRepository,
+        ProductRepositoryInterface                             $productRepository,
+        ProductLinkManagementInterface                         $productLinkManagement,
+        CustomerRepositoryInterface                            $customerRepository,
+        DateTime                                               $dateTime,
+        CollectionFactory                                      $itemCollectionFactory,
+        ResourceConnection                                     $resourceConnection,
+        \Magento\Rma\Model\ResourceModel\Rma\CollectionFactory $rmaCollectionFactory,
+        Logger                                                 $pointsIntegrationLogger,
+        CommentInterfaceFactory                                $commentInterfaceFactory
     )
     {
         $this->config = $config;
@@ -128,6 +145,8 @@ class PosReturnData
         $this->resourceConnection = $resourceConnection;
         $this->itemCollectionFactory = $itemCollectionFactory;
         $this->rmaCollectionFactory = $rmaCollectionFactory;
+        $this->pointsIntegrationLogger = $pointsIntegrationLogger;
+        $this->commentInterfaceFactory = $commentInterfaceFactory;
     }
 
     /**
@@ -178,7 +197,7 @@ class PosReturnData
             if ($orderItem->getProductType() != 'bundle') {
                 $itemGrandTotal = $orderItem->getRowTotal() - $orderItem->getDiscountAmount();
                 $itemSubtotal = abs(round($orderItem->getOriginalPrice() * $rmaItem->getQtyRequested()));
-                $itemTotalDiscount = abs(round($this->getRateAmount($orderItem->getDiscountAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested())
+                $itemTotalDiscount = abs(round($this->getRateAmount($orderItem->getDiscountAmount(), $orderItem->getQtyOrdered(), $rmaItem->getQtyRequested())
                     + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested())));
 
                 $product = $this->productRepository->get($rmaItem->getProductSku(), false, $storeId);
@@ -221,7 +240,7 @@ class PosReturnData
                     $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getOriginalPrice()) / $bundleChildrenItem->getQty();
                     $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $bundleChildrenItem->getQty();
                     $itemTotalDiscount = abs(round(
-                        $this->getRateAmount($bundleChildDiscountAmount, $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())
+                        $this->getRateAmount($bundleChildDiscountAmount, $bundleChildFromOrder->getQtyOrdered(), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())
                         + (($product->getPrice() - $childPriceRatio) * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())
                         + $catalogRuledPriceRatio * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()
                     ));
@@ -369,10 +388,10 @@ class PosReturnData
                 foreach ($bundleChildren as $bundleChild) {
                     $bundleChildFromOrder = $this->getBundleChildFromOrder($rmaItem->getOrderItemId(), $bundleChild->getSku());
                     $bundleChildDiscountAmount = $this->getDiscountAmountForBundleChild($bundlePriceType, $orderItem, $bundleChild);
-                    $discountAmount += ($bundleChildDiscountAmount * $rmaItem->getQtyRequested() * $bundleChild->getQty() / $this->getNetQty($bundleChildFromOrder));
+                    $discountAmount += ($bundleChildDiscountAmount * $rmaItem->getQtyRequested() * $bundleChild->getQty() / $bundleChildFromOrder->getQtyOrdered());
                 }
             } else {
-                $discountAmount += ($orderItem->getDiscountAmount() * $rmaItem->getQtyRequested() / $this->getNetQty($orderItem));
+                $discountAmount += ($orderItem->getDiscountAmount() * $rmaItem->getQtyRequested() / $orderItem->getQtyOrdered());
             }
         }
         return $discountAmount;
@@ -429,14 +448,14 @@ class PosReturnData
                     $itemGrandTotalInclTax = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getRowTotalInclTax())
                         - $bundleChildDiscountAmount;
 
-                    $grandTotal += $this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChild->getQty());
+                    $grandTotal += $this->getRateAmount($itemGrandTotalInclTax, $bundleChildFromOrder->getQtyOrdered(), $rmaItem->getQtyRequested() * $bundleChild->getQty());
                 }
             } else {
                 $itemGrandTotal = $orderItem->getRowTotal()
                     - $orderItem->getDiscountAmount();
 
-                $itemGrandTotal = $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested());
-                $grandTotal += $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested());
+                $itemGrandTotal = $this->getRateAmount($itemGrandTotal, $orderItem->getQtyOrdered(), $rmaItem->getQtyRequested());
+                $grandTotal += $this->getRateAmount($itemGrandTotal, $orderItem->getQtyOrdered(), $rmaItem->getQtyRequested());
             }
         }
         return $grandTotal;
@@ -551,5 +570,24 @@ class PosReturnData
             ->addFieldToFilter('store_id', $storeId);
 
         return $rmaCollection->getItems();
+    }
+
+    /**
+     * @param RmaInterface $rma
+     */
+    public function updatePosReturnOrderSendFlag(RmaInterface $rma)
+    {
+        try {
+            $rma->setData('pos_rma_completed_sent', true);
+            $rma->setData('pos_rma_completed_send', false);
+            $comment = $this->commentInterfaceFactory->create();
+            $comment->setRmaEntityId($rma->getEntityId());
+            $comment->setComment(__('Send return info to POS successfully'));
+            $comment->setIsAdmin(true);
+            $rma->setComments([$comment]);
+            $this->rmaRepository->save($rma);
+        } catch (\Exception $exception) {
+            $this->pointsIntegrationLogger->err($exception->getMessage());
+        }
     }
 }
