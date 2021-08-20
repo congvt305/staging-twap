@@ -14,14 +14,19 @@
             "meta_keywords": true,
             "meta_description": true,
             "image": true,
+            "thank_you_image": true,
             "is_active": true,
             "creation_time": true,
             "update_time": true,
-            "thank_you_image": true,
             "sms_content": true,
             "redemption_completion_block": true,
             "redemption_completion_message": true,
-            "vvip_list": true
+            "vvip_list": true,
+            "text_banner_index": true,
+            "text_banner_index_hyperlink": true,
+            "text_banner_success": true,
+            "text_banner_success_hyperlink": true,
+            "bg_color_text_banner": true
         },
         "index": {
             "EGUANA_REDEMPTION_TITLE_IDENTIFIER_DESCRIPTION": true
@@ -66,6 +71,7 @@
             "redeem_date": true,
             "customer_name": true,
             "email": true,
+            "address": true,
             "telephone": true,
             "counter_id": true,
             "store_id": true,
@@ -77,8 +83,7 @@
             "utm_medium": true,
             "utm_content": true,
             "creation_time": true,
-            "update_time": true,
-            "address": true
+            "update_time": true
         },
         "index": {
             "EGUANA_REDEMPTION_USER_CUSTOMER_NAME": true
