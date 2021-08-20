@@ -19,6 +19,7 @@ use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\ScopeInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * This class is used to send the email to customers
@@ -80,7 +81,7 @@ class EmailSender
     /**
      * @var CounterInterface
      */
-    private $counter;
+    private $_counter;
 
     /**
      * Index constructor.
@@ -163,31 +164,33 @@ class EmailSender
     /**
      * Retrieve Counter by id
      * @param $counterId
-     * @return CounterInterface
+     * @return CounterInterface|bool
      */
     public function getCounterById($counterId)
     {
-        if ($this->counter === null) {
-            $this->counter = $this->counterRepository->getById($counterId);
+        if ($this->_counter === null) {
+            try {
+                $this->_counter = $this->counterRepository->getById($counterId);
+                return $this->_counter;
+            } catch (NoSuchEntityException $e) {
+                $this->logger->info($e->getMessage());
+                return false;
+            }
         }
-        return $this->counter;
     }
 
     /**
      * get customer name from its id
-     *
      * @param $counterId
-     * @return string
+     * @return string|null
      */
     public function getCustomerName($counterId)
     {
         $counter = $this->getCounterById($counterId);
-        try {
-            $customerName = $counter->getCustomerName();
-        } catch (\Exception $e) {
-            $this->logger->info($e->getMessage());
+        if (!$counter) {
+            return null;
         }
-        return $customerName;
+        return $counter->getCustomerName();
     }
 
     /**
@@ -199,6 +202,9 @@ class EmailSender
     public function getCounterLink($counterId)
     {
         $counter = $this->getCounterById($counterId);
+        if (!$counter) {
+            return null;
+        }
         $token = $counter->getToken();
         try {
             $resultUrl = $this->storeManager->getStore()
@@ -257,12 +263,10 @@ class EmailSender
     public function getCustomerEmail($counterId)
     {
         $counter = $this->getCounterById($counterId);
-        try {
-            $email = $counter->getEmail();
-        } catch (\Exception $e) {
-            $this->logger->info($e->getMessage());
+        if (!$counter) {
+            return null;
         }
-        return $email;
+        return $counter->getEmail();
     }
 
     /**
@@ -285,6 +289,9 @@ class EmailSender
     public function getStoreCounterName($counterId)
     {
         $counter = $this->getCounterById($counterId);
+        if (!$counter) {
+            return null;
+        }
         $counterStoreId = $counter->getCounterId();
         $storeCounterName = $this->storeInfoRepositoryInterface->getById($counterStoreId)->getTitle();
         return $storeCounterName;
