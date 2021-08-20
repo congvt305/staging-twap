@@ -23,6 +23,8 @@ use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Item;
+use Amore\PointsIntegration\Logger\Logger;
+use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 
 class PosOrderData
 {
@@ -70,10 +72,18 @@ class PosOrderData
      */
     private $resourceConnection;
 
+
+    /**
+     * @var CollectionFactory
+     */
     private $orderCollectionFactory;
 
     /**
-     * PosOrderData constructor.
+     * @var Logger
+     */
+    private $pointsIntegrationLogger;
+
+    /**
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -84,22 +94,23 @@ class PosOrderData
      * @param OrderItemRepositoryInterface $orderItemRepository
      * @param DateTime $dateTime
      * @param ResourceConnection $resourceConnection
-     * @param \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
+     * @param CollectionFactory $orderCollectionFactory
+     * @param Logger $pointsIntegrationLogger
      */
     public function __construct(
-        Config $config,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        OrderRepositoryInterface $orderRepository,
-        InvoiceRepositoryInterface $invoiceRepository,
-        CustomerRepositoryInterface $customerRepository,
-        ProductRepositoryInterface $productRepository,
-        ProductLinkManagementInterface $productLinkManagement,
-        OrderItemRepositoryInterface $orderItemRepository,
-        DateTime $dateTime,
-        ResourceConnection $resourceConnection,
-        \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
-    )
-    {
+        Config                                                     $config,
+        SearchCriteriaBuilder                                      $searchCriteriaBuilder,
+        OrderRepositoryInterface                                   $orderRepository,
+        InvoiceRepositoryInterface                                 $invoiceRepository,
+        CustomerRepositoryInterface                                $customerRepository,
+        ProductRepositoryInterface                                 $productRepository,
+        ProductLinkManagementInterface                             $productLinkManagement,
+        OrderItemRepositoryInterface                               $orderItemRepository,
+        DateTime                                                   $dateTime,
+        ResourceConnection                                         $resourceConnection,
+        CollectionFactory $orderCollectionFactory,
+        Logger $pointsIntegrationLogger
+    ) {
         $this->config = $config;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
@@ -111,10 +122,11 @@ class PosOrderData
         $this->dateTime = $dateTime;
         $this->resourceConnection = $resourceConnection;
         $this->orderCollectionFactory = $orderCollectionFactory;
+        $this->pointsIntegrationLogger = $pointsIntegrationLogger;
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $order
+     * @param Order $order
      * @return array
      * @throws NoSuchEntityException
      */
@@ -243,9 +255,10 @@ class PosOrderData
                     $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($priceGap)) / $bundleChild->getQty();
 
                     $itemTotalDiscount = abs(round(
-                            $bundleChildDiscountAmount +
-                            (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) +
-                            $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered()));
+                        $bundleChildDiscountAmount +
+                        (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) +
+                        $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered()
+                    ));
 
                     $bundleChildGrandTotal = $bundleChildSubtotal - $itemTotalDiscount;
 
@@ -313,7 +326,7 @@ class PosOrderData
     }
 
     /**
-     * @param $order \Magento\Sales\Model\Order
+     * @param $order Order
      * @throws NoSuchEntityException
      * @throws \Exception
      */
@@ -345,7 +358,7 @@ class PosOrderData
     }
 
     /**
-     * @param $order \Magento\Sales\Model\Order
+     * @param $order Order
      * @throws NoSuchEntityException
      * @throws \Exception
      */
@@ -506,25 +519,35 @@ class PosOrderData
     }
 
     /**
-     * @param $orderId
+     * @param Order $order
      */
-    public function updatePosSendCheck($orderId)
+    public function updatePosPaidOrderSendFlag(Order $order)
     {
-        $tableName = $this->resourceConnection->getTableName('sales_order');
-        $connection = $this->resourceConnection->getConnection();
-        $bind = ['pos_order_paid_sent' => true, 'pos_order_paid_send' => false];
-        $connection->update($tableName, $bind, ['entity_id = ?' => $orderId]);
+        try {
+            $order->setData('pos_order_paid_sent', true);
+            $order->setData('pos_order_paid_send', false);
+            $comment = __('Send paid info to POS successfully');
+            $order->addCommentToStatusHistory($comment);
+            $this->orderRepository->save($order);
+        } catch (\Exception $exception) {
+            $this->pointsIntegrationLogger->err($exception->getMessage());
+        }
     }
 
     /**
-     * @param $orderId
+     * @param Order $order
      */
-    public function updatePosCancelledOrderSendFlag($orderId)
+    public function updatePosCancelledOrderSendFlag(Order $order)
     {
-        $tableName = $this->resourceConnection->getTableName('sales_order');
-        $connection = $this->resourceConnection->getConnection();
-        $bind = ['pos_order_cancel_sent' => true, 'pos_order_cancel_send' => false];
-        $connection->update($tableName, $bind, ['entity_id = ?' => $orderId]);
+        try {
+            $order->setData('pos_order_cancel_sent', true);
+            $order->setData('pos_order_cancel_send', false);
+            $comment = __('Send canceled info to POS successfully');
+            $order->addCommentToStatusHistory($comment);
+            $this->orderRepository->save($order);
+        } catch (\Exception $exception) {
+            $this->pointsIntegrationLogger->err($exception->getMessage());
+        }
     }
 
     public function getCustomer($customerId)
