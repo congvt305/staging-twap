@@ -34,6 +34,9 @@
                 comment="Event Reservation Modification Time"/>
         <column xsi:type="mediumtext" name="success_image" nullable="true" comment="Reservation Success Image"/>
         <column xsi:type="mediumtext" name="sms_content" nullable="true" comment="Reservation Pending Sms Content"/>
+        <column xsi:type="varchar" name="fixed_banner_message" nullable="true" length="255" comment="Fixed Text Banner Message"/>
+        <column xsi:type="varchar" name="fixed_banner_hyperlink" nullable="true" length="255" comment="Fixed Text Banner Hyperlink"/>
+        <column xsi:type="varchar" name="fixed_banner_bg_color" nullable="true" length="255" comment="Fixed Text Banner Background Color"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="event_id"/>
         </constraint>

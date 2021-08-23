@@ -36,5 +36,10 @@
                 </arguments>
             </block>
         </referenceContainer>
+        <referenceContainer name="page.bottom.container">
+            <referenceContainer name="page.bottom">
+                <block class="Eguana\EventReservation\Block\Event\TextBanner" name="fixed_text_banner"/>
+            </referenceContainer>
+        </referenceContainer>
     </body>
 </page>
