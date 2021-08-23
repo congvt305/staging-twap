@@ -144,7 +144,7 @@ $storeId = $viewModel->getStoreId();
                         </div>
                     </div>
                     <?php endif; ?>
-                    
+
                     <?= $block->getChildHtml('form.additional.info') ?>
                     <span id="recaptcha-response"><?= $block->escapeHtml(__(' * This is a required field.')) ?></span>
                 </fieldset>
@@ -176,10 +176,6 @@ $storeId = $viewModel->getStoreId();
                     <div class="primary">
                         <button id="counter-form-submit" class="button action primary send sbt-button" type="button">
                             <span><?= $block->escapeHtml(__('Send out')) ?></span>
-                        </button>
-                        <br>
-                        <button class="action primary action-resend" style="display: none;" id="resend-button" type="button">
-                            <span><?= $block->escapeHtml(__('Resend SMS/Email')) ?></span>
                         </button>
                         <br>
                         <br>
