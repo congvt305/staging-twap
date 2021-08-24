@@ -53,6 +53,7 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
             'telephone',
             'available_for_events',
             'available_for_redemption',
+            'available_for_store_list',
             'location',
             'created_at',
             'email',
@@ -304,6 +305,7 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
         $this->setData('stores', $storeInfoData['store_id']);
         $this->setData('email', $storeInfoData['email']);
         $this->setData('timing', $storeInfoData['timing']);
+        $this->setData('available_for_store_list', $storeInfoData['available_for_store_list']);
     }
 
     /**
@@ -314,5 +316,21 @@ class StoreInfo extends AbstractExtensibleModel implements StoreInfoInterface, I
     public function getStores()
     {
         return $this->hasData('stores') ? $this->getData('stores') : $this->getData('store_id');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableForStoreList()
+    {
+        return $this->getData(self::AVAILABLE_FOR_STORE_LIST);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAvailableForStoreList($availableForStoreList)
+    {
+        return $this->setData(self::AVAILABLE_FOR_STORE_LIST, $availableForStoreList);
     }
 }
