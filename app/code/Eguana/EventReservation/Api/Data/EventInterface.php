@@ -34,6 +34,10 @@ interface EventInterface
     const UPDATE_TIME               = 'update_time';
     const SUCCESS_IMAGE             = 'success_image';
     const SMS_CONTENT               = 'sms_content';
+    const FIXED_BANNER_MESSAGE      = 'fixed_banner_message';
+    const FIXED_BANNER_HYPERLINK    = 'fixed_banner_hyperlink';
+    const FIXED_BANNER_BG_COLOR     = 'fixed_banner_bg_color';
+
     /**#@-*/
 
     /**
@@ -260,4 +264,35 @@ interface EventInterface
      * @return EventInterface
      */
     public function setSmsContent($content);
+
+    /**
+     * @return string
+     */
+    public function getFixedBannerMessage();
+    /**
+     * @return string
+     */
+    public function getFixedBannerHyperlink();
+    /**
+     * @return string
+     */
+    public function getFixedBannerBgColor();
+
+    /**
+     * @param string $message
+     * @return $this
+     */
+    public function setFixedBannerMessage($message);
+
+    /**
+     * @param string $link
+     * @return $this
+     */
+    public function setFixedBannerHyperlink($link);
+
+    /**
+     * @param string $color
+     * @return $this
+     */
+    public function setFixedBannerBgColor($color);
 }

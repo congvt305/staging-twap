@@ -419,4 +419,52 @@ class Event extends AbstractModel implements EventInterface, IdentityInterface
 
         return parent::beforeSave();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFixedBannerMessage()
+    {
+        return $this->getData(self::FIXED_BANNER_MESSAGE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFixedBannerHyperlink()
+    {
+        return $this->getData(self::FIXED_BANNER_HYPERLINK);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFixedBannerBgColor()
+    {
+        return $this->getData(self::FIXED_BANNER_BG_COLOR);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFixedBannerMessage($message)
+    {
+        return $this->setData(self::FIXED_BANNER_MESSAGE, $message);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFixedBannerHyperlink($link)
+    {
+        return $this->setData(self::FIXED_BANNER_HYPERLINK, $link);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFixedBannerBgColor($color)
+    {
+        return $this->setData(self::FIXED_BANNER_BG_COLOR, $color);
+    }
 }
