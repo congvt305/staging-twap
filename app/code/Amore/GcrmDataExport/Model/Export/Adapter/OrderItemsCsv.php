@@ -212,6 +212,7 @@ class OrderItemsCsv extends AbstractAdapter
      */
     public function writeSourceRowWithCustomColumns(array $rowData)
     {
+        unset($rowData['product_options']);
         $headersData = [];
         foreach (array_keys($rowData) as $key) {
             $headersData[] = $key;
