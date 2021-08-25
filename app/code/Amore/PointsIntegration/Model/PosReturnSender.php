@@ -82,15 +82,11 @@ class PosReturnSender
 
     /**
      * @param $response
-     * @return int
+     * @return bool
      */
-    public function isSuccessResponse($response): int
+    public function isSuccessResponse($response): bool
     {
-        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
-            return 1;
-        } else {
-            return 0;
-        }
+        return isset($response['message']) && strtolower($response['message']) == 'success';
     }
 
     public function logging($sendData, $responseData, $status)
