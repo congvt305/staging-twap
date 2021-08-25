@@ -9,6 +9,7 @@
  */
 namespace Eguana\Redemption\Controller\Details;
 
+use Eguana\Redemption\Api\CounterRepositoryInterface;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Eguana\Redemption\Model\Service\EmailSender;
@@ -38,6 +39,11 @@ class Resend extends Action
     private $storeManager;
 
     /**
+     * @var CounterRepositoryInterface
+     */
+    private $counterRepository;
+
+    /**
      * Index constructor.
      *
      * @param Context $context
@@ -49,11 +55,13 @@ class Resend extends Action
         Context $context,
         EmailSender $emailSender,
         SmsSender $smsSender,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        CounterRepositoryInterface $counterRepository
     ) {
         $this->emailSender = $emailSender;
         $this->smsSender = $smsSender;
         $this->storeManager = $storeManager;
+        $this->counterRepository = $counterRepository;
         parent::__construct($context);
     }
 
@@ -65,7 +73,35 @@ class Resend extends Action
     {
         $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
         $counterId = $this->getRequest()->getParam('counter_id');
+
+        if (!$counterId) {
+            $this->messageManager->addErrorMessage(
+                __('Counter %1 is not available', $counterId)
+            );
+            $resultJson->setData(
+                [
+                    "resendmessage" => '',
+                    "success" => false,
+                    'redirectUrl' => '/'
+                ]
+            );
+            return $resultJson;
+        }
         $defaultStoreId = $this->storeManager->getStore()->getId();
+        $counter = $this->getCounter($counterId);
+        if (!$counter) {
+            $this->messageManager->addErrorMessage(
+                __('Counter %1 is not available', $counterId)
+            );
+            $resultJson->setData(
+                [
+                    "resendmessage" => '',
+                    "success" => false,
+                    'redirectUrl' => '/'
+                ]
+            );
+            return $resultJson;
+        }
         if ($this->emailSender->getRegistrationEmailEnableValue($defaultStoreId) == 1) {
             try {
                 $this->emailSender->sendEmail($counterId);
@@ -74,10 +110,14 @@ class Resend extends Action
                 $this->messageManager->addErrorMessage(
                     __('Email or SMS sending failed.')
                 );
-                $resultRedirect->setUrl(
-                    $this->_redirect->getRefererUrl()
+                $resultJson->setData(
+                    [
+                        "resendmessage" => '',
+                        "success" => false,
+                        'redirectUrl' => $this->_redirect->getRefererUrl()
+                    ]
                 );
-                return $resultRedirect;
+                return $resultJson;
             }
         }
         $resultJson->setData(
@@ -87,5 +127,14 @@ class Resend extends Action
             ]
         );
         return $resultJson;
+    }
+
+    /**
+     * @param $counterId
+     * @return \Eguana\Redemption\Api\Data\CounterInterface
+     */
+    public function getCounter($counterId)
+    {
+        return $this->counterRepository->getById($counterId);
     }
 }

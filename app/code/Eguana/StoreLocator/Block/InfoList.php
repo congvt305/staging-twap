@@ -241,6 +241,7 @@ class InfoList extends Template implements IdentityInterface
                 $storeCollection->addFieldToFilter('title', ['like' => '%' . $search . '%']);
             }
         }
+        $storeCollection->getSelect()->where('main_table.available_for_store_list', ['eq' => 1]);
         return $storeCollection;
     }
 

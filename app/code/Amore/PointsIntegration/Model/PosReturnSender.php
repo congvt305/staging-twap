@@ -70,9 +70,7 @@ class PosReturnSender
             $response = $this->request->sendRequest($rmaData, $websiteId, 'customerOrder');
             $success = $this->isSuccessResponse($response);
             if ($success) {
-                $rma->setData('pos_rma_completed_sent', true);
-                $rma->setData('pos_rma_completed_send', false);
-                $this->rmaRepository->save($rma);
+                $this->posReturnData->updatePosReturnOrderSendFlag($rma);
             }
         } catch (\Exception $exception) {
             $this->pointsIntegrationLogger->err($exception->getMessage());
@@ -84,15 +82,11 @@ class PosReturnSender
 
     /**
      * @param $response
-     * @return int
+     * @return bool
      */
-    public function isSuccessResponse($response): int
+    public function isSuccessResponse($response): bool
     {
-        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
-            return 1;
-        } else {
-            return 0;
-        }
+        return isset($response['message']) && strtolower($response['message']) == 'success';
     }
 
     public function logging($sendData, $responseData, $status)

@@ -23,6 +23,7 @@ use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * This class used for the repository methods which interacts with the database
@@ -108,15 +109,18 @@ class CounterRepository implements CounterRepositoryInterface
     }
 
     /**
-     * Load data by given id
-     *
-     * @param string $counterId
-     * @return Counter
+     * * Load data by given id
+     * @param int $counterId
+     * @return \Eguana\Redemption\Api\Data\CounterInterface|Counter
+     * @throws NoSuchEntityException
      */
     public function getById($counterId)
     {
         $counter = $this->counterFactory->create();
         $this->resourceCounter->load($counter, $counterId);
+        if (!$counter->getEntityId()) {
+            throw new NoSuchEntityException(__('Counter ID "%1" not found.', $counterId));
+        }
         return $counter;
     }
 

@@ -44,6 +44,10 @@
                     </depends>
                     <comment>Add time in minutes after that time resend button will be enable.</comment>
                 </field>
+                <field id="fixed_text_banner_enabled" translate="label" sortOrder="30" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Fixed Text Banner</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
             <group id="email" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Email Template Configuration</label>
@@ -134,6 +138,15 @@
                 <depends>
                     <field id="*/configuration/enabled">1</field>
                 </depends>
+            </group>
+            <group id="shortener" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Url Shortener Credentials</label>
+                <field id="api_endpoint" translate="label comment" sortOrder="10" type="text" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>API Endpoint</label>
+                </field>
+                <field id="access_token" translate="label comment" sortOrder="10" type="text" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Access Token</label>
+                </field>
             </group>
         </section>
     </system>

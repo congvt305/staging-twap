@@ -199,6 +199,49 @@
             </settings>
         </field>
     </fieldset>
+    <fieldset name="fixed_text_banner" sortOrder="48">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Fixed Text Banner</label>
+        </settings>
+        <field name="fixed_banner_message" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">fixed_banner_message</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Fixed Text Banner Message</label>
+                <dataScope>fixed_banner_message</dataScope>
+            </settings>
+        </field>
+        <field name="fixed_banner_hyperlink" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">fixed_banner_hyperlink</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Fixed Text Banner Hyperlink</label>
+                <dataScope>fixed_banner_hyperlink</dataScope>
+            </settings>
+        </field>
+        <field name="fixed_banner_bg_color" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">fixed_banner_bg_color</item>
+                    <item name="notice" xsi:type="string" translate="true">Please enter the color code. If not filled, will use green #08bf5b as background color</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Fixed Text Banner Background Color</label>
+                <dataScope>fixed_banner_bg_color</dataScope>
+            </settings>
+        </field>
+    </fieldset>
     <fieldset name="description" sortOrder="50">
         <settings>
             <collapsible>true</collapsible>

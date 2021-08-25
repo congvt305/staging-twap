@@ -1,0 +1,172 @@
+diff --git a/vendor/magento/module-catalog/Model/ResourceModel/Product/Website/Link.php b/vendor/magento/module-catalog/Model/ResourceModel/Product/Website/Link.php
+index de4ffc5d862..d9016d8a852 100644
+--- a/vendor/magento/module-catalog/Model/ResourceModel/Product/Website/Link.php
++++ b/vendor/magento/module-catalog/Model/ResourceModel/Product/Website/Link.php
+@@ -7,8 +7,10 @@ namespace Magento\Catalog\Model\ResourceModel\Product\Website;
+ 
+ use Magento\Catalog\Api\Data\ProductInterface;
+ use Magento\Framework\App\ResourceConnection;
+-use Magento\Framework\EntityManager\MetadataPool;
+ 
++/**
++ * Class Link used for assign website to the product
++ */
+ class Link
+ {
+     /**
+@@ -28,6 +30,7 @@ class Link
+ 
+     /**
+      * Retrieve associated with product websites ids
++     *
+      * @param int $productId
+      * @return array
+      */
+@@ -48,29 +51,53 @@ class Link
+ 
+     /**
+      * Return true - if websites was changed, and false - if not
++     *
+      * @param ProductInterface $product
+      * @param array $websiteIds
+      * @return bool
+      */
+     public function saveWebsiteIds(ProductInterface $product, array $websiteIds)
+     {
++        $productId = (int) $product->getId();
++        return $this->updateProductWebsite($productId, $websiteIds);
++    }
++
++    /**
++     * Get Product website table
++     *
++     * @return string
++     */
++    private function getProductWebsiteTable()
++    {
++        return $this->resourceConnection->getTableName('catalog_product_website');
++    }
++
++    /**
++     * Update product website table
++     *
++     * @param int $productId
++     * @param array $websiteIds
++     * @return bool
++     */
++    public function updateProductWebsite(int $productId, array $websiteIds): bool
++    {
+         $connection = $this->resourceConnection->getConnection();
+ 
+-        $oldWebsiteIds = $this->getWebsiteIdsByProductId($product->getId());
++        $oldWebsiteIds = $this->getWebsiteIdsByProductId($productId);
+         $insert = array_diff($websiteIds, $oldWebsiteIds);
+         $delete = array_diff($oldWebsiteIds, $websiteIds);
+ 
+         if (!empty($insert)) {
+             $data = [];
+             foreach ($insert as $websiteId) {
+-                $data[] = ['product_id' => (int) $product->getId(), 'website_id' => (int) $websiteId];
++                $data[] = ['product_id' => $productId, 'website_id' => (int)$websiteId];
+             }
+             $connection->insertMultiple($this->getProductWebsiteTable(), $data);
+         }
+ 
+         if (!empty($delete)) {
+             foreach ($delete as $websiteId) {
+-                $condition = ['product_id = ?' => (int) $product->getId(), 'website_id = ?' => (int) $websiteId];
++                $condition = ['product_id = ?' => $productId, 'website_id = ?' => (int)$websiteId];
+                 $connection->delete($this->getProductWebsiteTable(), $condition);
+             }
+         }
+@@ -81,12 +108,4 @@ class Link
+ 
+         return false;
+     }
+-
+-    /**
+-     * @return string
+-     */
+-    private function getProductWebsiteTable()
+-    {
+-        return $this->resourceConnection->getTableName('catalog_product_website');
+-    }
+ }
+diff --git a/vendor/magento/module-catalog/Model/ResourceModel/ProductWebsiteAssignmentHandler.php b/vendor/magento/module-catalog/Model/ResourceModel/ProductWebsiteAssignmentHandler.php
+new file mode 100644
+index 00000000000..10e0a095932
+--- /dev/null
++++ b/vendor/magento/module-catalog/Model/ResourceModel/ProductWebsiteAssignmentHandler.php
+@@ -0,0 +1,56 @@
++<?php
++/**
++ * Copyright © Magento, Inc. All rights reserved.
++ * See COPYING.txt for license details.
++ */
++declare(strict_types=1);
++namespace Magento\Catalog\Model\ResourceModel;
++
++use Magento\Catalog\Model\ResourceModel\Product\Website\Link;
++use Magento\Framework\EntityManager\Operation\AttributeInterface;
++
++/**
++ * Class purpose is to handle product websites assignment
++ */
++class ProductWebsiteAssignmentHandler implements AttributeInterface
++{
++    /**
++     * @var Link
++     */
++    private $productLink;
++
++    /**
++     * ProductWebsiteAssignmentHandler constructor
++     *
++     * @param Link $productLink
++     */
++    public function __construct(
++        Link $productLink
++    ) {
++        $this->productLink = $productLink;
++    }
++
++    /**
++     * Assign product website entity to the product repository
++     *
++     * @param string $entityType
++     * @param array $entityData
++     * @param array $arguments
++     * @return array
++     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
++     * @throws \Exception
++     */
++    public function execute($entityType, $entityData, $arguments = []): array
++    {
++        $websiteIds = array_key_exists('website_ids', $entityData) ?
++            array_filter($entityData['website_ids'], function ($websiteId) {
++                return $websiteId !== null;
++            }) : [];
++        $productId = array_key_exists('entity_id', $entityData) ? (int) $entityData['entity_id'] : null;
++
++        if (!empty($productId) && !empty($websiteIds)) {
++            $this->productLink->updateProductWebsite($productId, $websiteIds);
++        }
++        return $entityData;
++    }
++}
+diff --git a/vendor/magento/module-catalog/etc/di.xml b/vendor/magento/module-catalog/etc/di.xml
+index 1c0b2daf4d6..d01ddbd0fd4 100644
+--- a/vendor/magento/module-catalog/etc/di.xml
++++ b/vendor/magento/module-catalog/etc/di.xml
+@@ -856,6 +856,11 @@
+                         <item name="update" xsi:type="string">Magento\Catalog\Model\ResourceModel\UpdateHandler</item>
+                     </item>
+                 </item>
++                <item name="websites" xsi:type="array">
++                    <item name="Magento\Catalog\Api\Data\ProductInterface" xsi:type="array">
++                        <item name="create" xsi:type="string">Magento\Catalog\Model\ResourceModel\ProductWebsiteAssignmentHandler</item>
++                    </item>
++                </item>
+             </argument>
+         </arguments>
+     </type>
