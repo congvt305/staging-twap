@@ -253,6 +253,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         foreach ($orderItemData as $orderData) {
             foreach ($orderData as $itemData) {
                 if ($index == 0) {
+                    unset($itemData['product_options']);
                     foreach (array_keys($itemData) as $key) {
                         $headersData[] = $key;
                         $index += 1;
