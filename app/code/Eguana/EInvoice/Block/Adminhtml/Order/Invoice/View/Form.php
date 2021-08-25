@@ -60,7 +60,7 @@ class Form extends \Magento\Sales\Block\Adminhtml\Order\Invoice\View\Form
             return false;
         }
         $addtionalData = $this->json->unserialize($addtionalData);
-        return isset($addtionalData['InvoiceNumber']);
+        return isset($addtionalData['InvoiceNumber']) || (isset($addtionalData['RtnCode']) && $addtionalData['RtnCode'] == '1');
     }
 
     public function canShowOrderToPosButton()
