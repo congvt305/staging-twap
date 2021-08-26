@@ -32,7 +32,6 @@
         </referenceBlock>
     </body>
     <head>
-        <meta name="robots" content="NOINDEX,NOFOLLOW"/>
         <link rel="canonical" src="{{baseUrl}}customer/account/login" src_type="url"/>
     </head>
 </page>
