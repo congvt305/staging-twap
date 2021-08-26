@@ -16,6 +16,7 @@ use Eguana\EventReservation\Api\CounterRepositoryInterface;
 use Eguana\EventReservation\Api\Data\UserReservationInterface;
 use Eguana\EventReservation\Api\EventRepositoryInterface;
 use Eguana\EventReservation\Api\UserReservationRepositoryInterface;
+use Eguana\EventReservation\Exception\UserReservationNotExist;
 use Eguana\EventReservation\Helper\ConfigData;
 use Eguana\StoreLocator\Api\StoreInfoRepositoryInterface;
 use Magento\Framework\App\Action\Context;
@@ -141,11 +142,15 @@ class EmailSender
      *
      * @param $userReserveId
      * @param $callFor
+     * @throws UserReservationNotExist
      */
     public function sendEmailToCustomer($userReserveId, $callFor)
     {
         try {
             $reservationDetail = $this->getReservationDetail($userReserveId);
+            if (!$reservationDetail instanceof UserReservationInterface) {
+                throw new UserReservationNotExist(sprintf('User Reservation is no longer exist. ID: %d', $userReserveId));
+            }
             $eventId = $reservationDetail->getEventId();
             $event = $this->getEvent($eventId);
             $storeId = $event->getStoreId();
