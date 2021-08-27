@@ -91,7 +91,7 @@
                     referenceColumn="entity_id" onDelete="CASCADE"/>
     </table>
     <table name="eguana_redemption_user" resource="default" engine="innodb" comment="Eguana Redemption Registed Users">
-        <column xsi:type="int" name="entity_id" padding="6" unsigned="true" nullable="false" identity="true"
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
                 comment="Entity ID"/>
         <column xsi:type="smallint" name="redemption_id" padding="6" unsigned="true" nullable="false"
                 identity="false" comment="Redemption ID"/>
