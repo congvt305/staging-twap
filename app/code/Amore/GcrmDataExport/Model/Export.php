@@ -145,15 +145,14 @@ class Export extends ExportAlias
     {
         try {
             $data = $this->export();
-            if(!$data) {
-                $this->dataPersistor->set('operation_status',false);
+            if (!$data) {
+                $this->dataPersistor->set('operation_status', false);
                 return true;
             }
         } catch (\Exception $e) {
             throw $e;
         }
-        $this->dataPersistor->set('operation_status',true);
-        $test = $this;
+        $this->dataPersistor->set('operation_status', true);
         $result = $operation->saveFileSource($this, $data);
         $this->updateExportTable();
         return (bool)$result;
