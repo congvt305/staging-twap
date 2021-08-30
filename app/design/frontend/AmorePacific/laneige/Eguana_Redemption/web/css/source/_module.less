@@ -12,6 +12,60 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+    .redemption-details-index{
+        .modal-popup {
+            .modal-content {
+                max-height: 85px;
+                padding: 2rem 5rem;
+            }
+
+            .modal-inner-wrap {
+                max-width: 400px;
+            }
+
+            .action-close {
+                padding: 0px;
+            }
+
+            .modal-footer {
+                padding-bottom: 0px;
+                padding-top: 0px;
+                display: none;
+
+                button {
+                    display: none;
+                }
+            }
+
+            .modal-body-content {
+                text-align: center;
+                margin-bottom: 100px;
+            }
+        }
+    }
+    [class*="categorypath-homme"].catalog-category-view.page-layout-1column .category-view ~ .page-main,
+    [class*="categorypath-make-up"].catalog-category-view.page-layout-1column .category-view ~ .page-main,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main {
+        position: relative;
+    }
+    [class*="categorypath-homme"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-make-up"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper {
+        display: block;
+        position: absolute;
+        top: 100px;
+    }
+    [class*="categorypath-homme"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-make-up"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter {
+        padding-bottom: 0;
+    }
+    [class*="categorypath-homme"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products,
+    [class*="categorypath-make-up"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products {
+        padding-bottom: 60px;
+    }
+
     .block-redemption-detail {
         .block {
             &:extend(.abs-account-blocks all);
@@ -97,6 +151,13 @@
             left: 0;
             right: 0;
             z-index: 4;
+        }
+    }
+
+    .redemption-details-index {
+        .modal-inner-wrap {
+            margin: 5rem auto;
+            max-width: 350px;
         }
     }
 }
