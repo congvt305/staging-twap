@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
  * @package Amasty_Base
  */
 
@@ -113,6 +113,7 @@ class ModuleListProcessor
             $module['hasUpdate'] = version_compare($currentVer, $lastVer, '<');
             $module['description'] = $this->replaceAmastyText($ext['name']);
             $module['url'] = !empty($ext['url']) ? $ext['url'] : '';
+            $module['date'] = !empty($ext['date']) ? $ext['date'] : '';
 
             return $module;
         }

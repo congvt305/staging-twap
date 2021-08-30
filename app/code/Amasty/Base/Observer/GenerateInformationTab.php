@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
  * @package Amasty_Base
  */
 
@@ -19,6 +19,10 @@ use Magento\Framework\View\Asset\Repository;
 class GenerateInformationTab implements ObserverInterface
 {
     const SEO_PARAMS = '?utm_source=extension&utm_medium=backend&utm_campaign=';
+
+    const FEATURE_LINK = 'https://products.amasty.com/request-a-feature';
+
+    const FEATURE_UTM = '?utm_source=extension&utm_medium=backend&utm_campaign=request_a_feature';
 
     const MAGENTO_VERSION = '_m2';
 
@@ -93,9 +97,9 @@ class GenerateInformationTab implements ObserverInterface
     {
         $html = '<div class="amasty-info-block">'
             . $this->showVersionInfo()
-            . $this->showUserGuideLink()
             . $this->additionalContent()
-            . $this->showModuleExistingConflicts();
+            . $this->showModuleExistingConflicts()
+            . $this->getButtonsContainer();
         $html .= '</div>';
 
         return $html;
@@ -224,7 +228,7 @@ class GenerateInformationTab implements ObserverInterface
     /**
      * @return string
      */
-    private function showUserGuideLink()
+    private function getUserGuideContainer()
     {
         $html = '<div class="amasty-user-guide"><span class="message success">'
             . __(
@@ -236,6 +240,33 @@ class GenerateInformationTab implements ObserverInterface
             . '</span></div>';
 
         return $html;
+    }
+
+    /**
+     * @return string
+     */
+    private function getFeatureLink()
+    {
+        if ($this->moduleInfoProvider->isOriginMarketplace()) {
+            return '';
+        }
+
+        return '<a href="' . self::FEATURE_LINK . self::FEATURE_UTM . '"
+                   class="ambase-button"
+                   target="_blank"
+                   title="' . __("Feature Request") . '">'
+                . __("Feature Request") . ' </a>';
+    }
+
+    /**
+     * @return string
+     */
+    private function getButtonsContainer()
+    {
+        return '<div class="ambase-buttons-container">'
+            . $this->getFeatureLink()
+            . $this->getUserGuideContainer()
+            . '</div>';
     }
 
     /**
