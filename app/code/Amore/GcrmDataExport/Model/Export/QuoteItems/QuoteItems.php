@@ -201,19 +201,25 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
     {
         $writer = $this->getQuoteItemsWriter();
 
-        $engHeader = $this->_getHeaderColumns();
-
-        $writer->setHeaderCols($engHeader);
-
         $quoteItemsData = $this->getItemData();
         if ($quoteItemsData == null) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $this->messageManager->addErrorMessage(__('There is no data for the export.'));
-            return $resultRedirect->setPath('*/*/index');
+            return false;
         }
+
+        $index = 0;
+        $headersData = [];
         foreach ($quoteItemsData as $quoteItems) {
             foreach ($quoteItems as $item) {
-                $writer->writeSourceRowWithCustomColumns($item, $engHeader);
+                if ($index == 0) {
+                    foreach (array_keys($item) as $key) {
+                        $headersData[] = $key;
+                        $index += 1;
+                    }
+                    $writer->setHeaderCols($headersData);
+                }
+                $writer->writeSourceRowWithCustomColumns($item);
             }
         }
         return $writer->getContents();
@@ -229,8 +235,8 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
         $itemRow = [];
         $collection = $this->joinedItemCollection();
         $cnt = 0;
-        foreach ($collection as $item) {
-            $itemRow[$item->getIncrementId()][$cnt] = $item->getData();
+        foreach ($collection->getData() as $item) {
+            $itemRow[$item['item_id']][$cnt] = $item;
             $cnt++;
         }
         return $itemRow;

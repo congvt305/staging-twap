@@ -230,20 +230,25 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
     {
         $writer = $this->getQuoteWriter();
 
-        $engHeader = $this->_getHeaderColumns();
-
-        $writer->setHeaderCols($engHeader);
-
         $quoteData = $this->getItemData();
         if ($quoteData == null) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $this->messageManager->addErrorMessage(__('There is no data for the export.'));
-            return $resultRedirect->setPath('*/*/index');
+            return false;
         }
 
+        $index = 0;
+        $headersData = [];
         foreach ($quoteData as $quotes) {
             foreach ($quotes as $quote) {
-                $writer->writeSourceRowWithCustomColumns($quote, $engHeader);
+                if ($index == 0) {
+                    foreach (array_keys($quote) as $key) {
+                        $headersData[] = $key;
+                        $index += 1;
+                    }
+                    $writer->setHeaderCols($headersData);
+                }
+                $writer->writeSourceRowWithCustomColumns($quote);
             }
         }
         return $writer->getContents();

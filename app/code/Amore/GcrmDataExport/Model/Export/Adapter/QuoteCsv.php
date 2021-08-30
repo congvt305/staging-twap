@@ -210,14 +210,18 @@ class QuoteCsv extends AbstractAdapter
      * @return $this
      * @throws FileSystemException
      */
-    public function writeSourceRowWithCustomColumns(array $rowData, array $originColumnData)
+    public function writeSourceRowWithCustomColumns(array $rowData)
     {
+        $index = 0;
+        $headersData = [];
+        foreach (array_keys($rowData) as $key) {
+            $headersData[] = $key;
+        }
         $this->_fileHandler->writeCsv(
-            array_merge(array_intersect_key($rowData, $this->getArrayValue($originColumnData))),
+            array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
             $this->_delimiter,
             $this->_enclosure
         );
-
         return $this;
     }
 
