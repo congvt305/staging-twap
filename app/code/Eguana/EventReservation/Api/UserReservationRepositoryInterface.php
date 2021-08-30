@@ -12,6 +12,7 @@ namespace Eguana\EventReservation\Api;
 use Eguana\EventReservation\Api\Data\UserReservationInterface;
 use Eguana\EventReservation\Api\Data\UserReservationSearchResultsInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Declared CRUD
@@ -33,6 +34,7 @@ interface UserReservationRepositoryInterface
      *
      * @param int $userReservationId
      * @return UserReservationInterface
+     * @throws NoSuchEntityException
      */
     public function getById($userReservationId);
 
