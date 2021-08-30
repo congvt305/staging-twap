@@ -56,11 +56,11 @@ class ProductsList extends \Magento\CatalogWidget\Block\Product\ProductsList
             $sqlBuilder,
             $rule,
             $conditionsHelper,
-            $categoryRepository,
             $data,
             $json,
             $layoutFactory,
-            $urlEncoder
+            $urlEncoder,
+            $categoryRepository
         );
         $this->productRepository = $productRepository;
     }
