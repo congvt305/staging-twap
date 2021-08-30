@@ -9,6 +9,7 @@
  */
 namespace Eguana\Redemption\Model\Service;
 
+use Eguana\Redemption\Api\Data\CounterInterface;
 use Eguana\StoreLocator\Api\StoreInfoRepositoryInterface;
 use Eguana\Redemption\Api\CounterRepositoryInterface;
 use Eguana\Redemption\Model\RedemptionConfiguration\RedemptionConfiguration;
@@ -18,6 +19,7 @@ use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\ScopeInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * This class is used to send the email to customers
@@ -75,6 +77,11 @@ class EmailSender
      * @var LoggerInterface
      */
     private $logger;
+
+    /**
+     * @var CounterInterface
+     */
+    private $_counter;
 
     /**
      * Index constructor.
@@ -153,21 +160,37 @@ class EmailSender
             $this->logger->info($e->getMessage());
         }
     }
+
+    /**
+     * Retrieve Counter by id
+     * @param $counterId
+     * @return CounterInterface|bool
+     */
+    public function getCounterById($counterId)
+    {
+        if ($this->_counter === null) {
+            try {
+                $this->_counter = $this->counterRepository->getById($counterId);
+                return $this->_counter;
+            } catch (NoSuchEntityException $e) {
+                $this->logger->info($e->getMessage());
+                return false;
+            }
+        }
+    }
+
     /**
      * get customer name from its id
-     *
      * @param $counterId
-     * @return string
+     * @return string|null
      */
     public function getCustomerName($counterId)
     {
-        $counter = $this->counterRepository->getById($counterId);
-        try {
-            $customerName = $counter->getCustomerName();
-        } catch (\Exception $e) {
-            $this->logger->info($e->getMessage());
+        $counter = $this->getCounterById($counterId);
+        if (!$counter) {
+            return null;
         }
-        return $customerName;
+        return $counter->getCustomerName();
     }
 
     /**
@@ -178,7 +201,11 @@ class EmailSender
      */
     public function getCounterLink($counterId)
     {
-        $token = $this->counterRepository->getById($counterId)->getToken();
+        $counter = $this->getCounterById($counterId);
+        if (!$counter) {
+            return null;
+        }
+        $token = $counter->getToken();
         try {
             $resultUrl = $this->storeManager->getStore()
                 ->getUrl('redemption/details/register', ['counter_id'=>$counterId, 'token' => $token]);
@@ -235,13 +262,11 @@ class EmailSender
      */
     public function getCustomerEmail($counterId)
     {
-        $counter = $this->counterRepository->getById($counterId);
-        try {
-            $email = $counter->getEmail();
-        } catch (\Exception $e) {
-            $this->logger->info($e->getMessage());
+        $counter = $this->getCounterById($counterId);
+        if (!$counter) {
+            return null;
         }
-        return $email;
+        return $counter->getEmail();
     }
 
     /**
@@ -263,7 +288,11 @@ class EmailSender
      */
     public function getStoreCounterName($counterId)
     {
-        $counterStoreId = $this->counterRepository->getById($counterId)->getCounterId();
+        $counter = $this->getCounterById($counterId);
+        if (!$counter) {
+            return null;
+        }
+        $counterStoreId = $counter->getCounterId();
         $storeCounterName = $this->storeInfoRepositoryInterface->getById($counterStoreId)->getTitle();
         return $storeCounterName;
     }
