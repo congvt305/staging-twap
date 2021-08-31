@@ -177,6 +177,7 @@ class EmailSender
                 return false;
             }
         }
+        return $this->_counter;
     }
 
     /**
