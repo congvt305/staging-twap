@@ -76,6 +76,9 @@ define([
                         jQuery('body').loader('show');
                     },
                     success: function (data) {
+                        if (data['success'] == false) {
+                            window.location.href = data['redirectUrl'];
+                        }
                         if (data['duplicate'] || data['vvip_case']) {
                             var options = {
                                 type: 'popup',
@@ -128,6 +131,9 @@ define([
                         jQuery('body').loader('show');
                     },
                     success: function (data) {
+                        if (data['success'] == false) {
+                            window.location.href = data['redirectUrl'];
+                        }
                         startTimer();
                         jQuery('body').loader('hide');
                         infoAndErrorMessageDiv.find('span').remove()

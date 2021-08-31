@@ -281,17 +281,12 @@ class EmailSender
      * Get reservation by id
      *
      * @param $userReserveId
-     * @return array|UserReservationInterface
+     * @return UserReservationInterface
+     * @throws NoSuchEntityException
      */
     private function getReservationDetail($userReserveId)
     {
-        $detail = [];
-        try {
-            $detail = $this->userReservationRepository->getById($userReserveId);
-        } catch (\Exception $e) {
-            $this->logger->info($e->getMessage());
-        }
-        return $detail;
+        return $this->userReservationRepository->getById($userReserveId);
     }
 
     /**

@@ -31,4 +31,7 @@
             </action>
         </referenceBlock>
     </body>
+    <head>
+        <link rel="canonical" src="{{baseUrl}}customer/account/login" src_type="url"/>
+    </head>
 </page>
