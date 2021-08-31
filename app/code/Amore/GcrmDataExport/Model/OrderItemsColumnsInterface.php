@@ -104,10 +104,11 @@ interface OrderItemsColumnsInterface
     const ORDER_ITEM_WEEE_TAX_APPLIED_AMOUNT = 'weee_tax_applied_amount';
     const ORDER_ITEM_WEEE_TAX_APPLIED_ROW_AMOUNT = 'weee_tax_applied_row_amount';
     const ORDER_ITEM_WEEE_TAX_DISPOSITION = 'weee_tax_disposition';
+    const ORDER_ITEM_WEEE_TAX_ROW_DISPOSITION = 'weee_tax_row_disposition';
     const ORDER_ITEM_BASE_WEEE_TAX_APPLIED_AMOUNT = 'base_weee_tax_applied_amount';
     const ORDER_ITEM_BASE_WEEE_TAX_APPLIED_ROW_AMOUNT = 'base_weee_tax_applied_row_amnt';
     const ORDER_ITEM_BASE_WEEE_TAX_DISPOSITION = 'base_weee_tax_disposition';
-    const ORDER_ITEM_WEEE_TAX_ROW_DISPOSITION = 'weee_tax_row_disposition';
+    const ORDER_ITEM_BASE_WEEE_TAX_ROW_DISPOSITION = 'base_weee_tax_row_disposition';
     const ORDER_ITEM_FREE_SHIPPING = 'free_shipping';
     const ORDER_ITEM_GIFTREGISTRY_ITEM_ID = 'giftregistry_item_id';
     const ORDER_ITEM_QTY_RETURNED = 'qty_returned';
