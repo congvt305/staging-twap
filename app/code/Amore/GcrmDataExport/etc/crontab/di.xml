@@ -18,4 +18,5 @@
     <type name="Magento\ScheduledImportExport\Model\Scheduled\Operation\Data">
     <plugin name="amore_gcrmdataexport_add_server_type"
             type="Amore\GcrmDataExport\Plugin\ServerTypeOptionPlugin"/>
+    </type>
 </config>
