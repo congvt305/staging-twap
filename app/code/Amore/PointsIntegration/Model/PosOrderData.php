@@ -134,7 +134,8 @@ class PosOrderData
     {
         $customer = $order->getCustomerId() ? $this->getCustomer($order->getCustomerId()) : null;
         $websiteId = $order->getStore()->getWebsiteId();
-        $posIntegrationNumber = $customer ? $customer->getCustomAttribute('integration_number')->getValue() : null;
+        $posIntegrationNumber = $customer && $customer->getCustomAttribute('integration_number') ?
+            $customer->getCustomAttribute('integration_number')->getValue() : null;
 
         $orderItemData = $this->getItemData($order);
         $couponCode = $order->getCouponCode();
@@ -162,7 +163,8 @@ class PosOrderData
     {
         $customer = $order->getCustomerId() ? $this->getCustomer($order->getCustomerId()) : null;
         $websiteId = $order->getStore()->getWebsiteId();
-        $posIntegrationNumber = $customer ? $customer->getCustomAttribute('integration_number')->getValue() : null;
+        $posIntegrationNumber = $customer && $customer->getCustomAttribute('integration_number') ?
+            $customer->getCustomAttribute('integration_number')->getValue() : null;
 
         $orderItemData = $this->getItemData($order);
         $couponCode = $order->getCouponCode();
