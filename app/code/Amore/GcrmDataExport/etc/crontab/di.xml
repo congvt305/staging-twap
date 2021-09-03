@@ -15,4 +15,8 @@
     <preference for="Magento\Quote\Model\Quote\Item" type="Amore\GcrmDataExport\Crontab\Quote\Model\Quote\ItemCron" />
     <preference for="Magento\ScheduledImportExport\Model\Scheduled\Operation"
                 type="Amore\GcrmDataExport\Model\Scheduled\Operation"/>
+    <type name="Magento\ScheduledImportExport\Model\Scheduled\Operation\Data">
+        <plugin name="amore_gcrmdataexport_add_server_type"
+                type="Amore\GcrmDataExport\Plugin\ServerTypeOptionPlugin"/>
+    </type>
 </config>
