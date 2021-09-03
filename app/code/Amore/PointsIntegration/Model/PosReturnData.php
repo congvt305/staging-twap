@@ -157,7 +157,8 @@ class PosReturnData
         $order = $rma->getOrder();
         $websiteId = $order->getStore()->getWebsiteId();
         $customer = $order->getCustomerId() ? $this->getCustomer($rma->getCustomerId()) : null;
-        $posIntegrationNumber = $rma->getCustomerId() ? $customer->getCustomAttribute('integration_number')->getValue() : null;
+        $posIntegrationNumber = $customer && $customer->getCustomAttribute('integration_number') ?
+            $customer->getCustomAttribute('integration_number')->getValue() : null;
 
         $rmaItem = $this->getRmaItemData($rma);
         $invoice = $order->getInvoiceCollection()->getFirstItem();
