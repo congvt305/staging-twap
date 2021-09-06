@@ -121,8 +121,8 @@ class RedemptionRepository implements RedemptionRepositoryInterface
         $redemption = $this->redemptionFactory->create();
         $this->resourceRedemption->load($redemption, $redemptionId);
         if (!$redemption->getId()) {
-            throw new NoSuchEntityException(__('Redemption ID "%1" not found.', $redemptionId));
             $this->logger->debug(__('Redemption ID "%1" not found.', $redemptionId));
+            throw new NoSuchEntityException(__('Redemption ID "%1" not found.', $redemptionId));
         }
         return $redemption;
     }
