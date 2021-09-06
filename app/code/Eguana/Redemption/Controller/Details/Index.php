@@ -207,15 +207,15 @@ class Index extends Action
         if ($this->getRequest()->getParam('confirm') == 1) {
             $counter = $this->counter->load($this->getRequest()->getParam('counter_id'));
             $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
-            if ($counter && $counter->getRedemptionId()) :
-            $counter->setStatus(Counter::STATUS_REDEMPTION);
-            $counter->setRedeemDate($date);
-            $counter->save();
-            $resultRedirect->setPath(
-                'redemption/details/complete/redemption_id/' . $counter->getRedemptionId()
-            );
-            return $resultRedirect;
-            endif;
+            if ($counter && $counter->getRedemptionId()) {
+                $counter->setStatus(Counter::STATUS_REDEMPTION);
+                $counter->setRedeemDate($date);
+                $counter->save();
+                $resultRedirect->setPath(
+                    'redemption/details/complete/redemption_id/' . $counter->getRedemptionId()
+                );
+                return $resultRedirect;
+            }
             $this->messageManager->addErrorMessage(__('This counter is not found!'));
             return $resultRedirect->setUrl('/');
         }
