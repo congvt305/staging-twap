@@ -11,7 +11,6 @@
 @pagebuilder-button__font-size: 15px;
 @pagebuilder-button__line-height: 38px;
 @pagebuilder-button__padding: 0 24px;
-@color-pagebuilder-switcher-light-gray: #4a4542;
 
 .pagebuilder-button-primary {
     .lib-link-as-button();
@@ -84,36 +83,4 @@
     .lib-css(font-weight, @font-weight__bold);
     .lib-css(border-radius, 0);
     display: inline-block;
-}
-
-.placeholder-text {
-    opacity: .5;
-}
-
-.page-builder-viewport {
-    background: @color-pagebuilder-dark-grayish;
-    border: none;
-    opacity: .5;
-    padding: 12px;
-
-    &[disabled] {
-        background: @color-black;
-        opacity: 1;
-    }
-
-    &:not([disabled]) {
-        &:hover {
-            background-color: @color-pagebuilder-switcher-light-gray;
-            opacity: 1;
-        }
-    }
-
-    img {
-        height: 20px;
-        width: 30px;
-    }
-
-    &.desktop-switcher {
-        margin-right: -3px;
-    }
 }
