@@ -672,7 +672,7 @@ return [
         'Eguana_Directory' => 1,
         'Eguana_EInvoice' => 1,
         'Eguana_EcommerceStatus' => 1,
-        'Eguana_Elasticsearch' => 1,
+        'Eguana_Elasticsearch' => 0,
         'Eguana_EventManager' => 1,
         'Eguana_StoreLocator' => 1,
         'Eguana_FacebookPixel' => 1,
