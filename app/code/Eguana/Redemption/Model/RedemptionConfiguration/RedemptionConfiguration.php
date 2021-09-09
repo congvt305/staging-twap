@@ -11,7 +11,6 @@ namespace Eguana\Redemption\Model\RedemptionConfiguration;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
-use MSP\ReCaptcha\Model\Config as ReCaptchaConfig;
 
 /**
  * This class is used to get configuration values from Admin Configuration
@@ -39,22 +38,15 @@ class RedemptionConfiguration
      */
     private $scopeConfig;
 
-    /**
-     * @var ReCaptchaConfig
-     */
-    private $recaptchaConfig;
 
     /**
      * Constructor
      * @param ScopeConfigInterface $scopeConfig
-     * @param ReCaptchaConfig $recaptchaConfig
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
-        ReCaptchaConfig $recaptchaConfig
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->scopeConfig = $scopeConfig;
-        $this->recaptchaConfig = $recaptchaConfig;
     }
 
     /**
@@ -154,9 +146,8 @@ class RedemptionConfiguration
      */
     public function isEnabledFrontendRecaptcha()
     {
-        if (!$this->recaptchaConfig->isEnabledFrontend()) {
-            return false;
-        }
+        //To-do check module recaptcha
+        return false;
 
         return (bool) $this->scopeConfig->getValue(
             self::XML_PATH_ENABLED_FRONTEND_RECAPTCHA,
