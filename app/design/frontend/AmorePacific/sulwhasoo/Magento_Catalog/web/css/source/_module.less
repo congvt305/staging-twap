@@ -50,7 +50,12 @@
 
     .catalog-category-view {
         .page-title-wrapper {
-            display: block;
+            display: none;
+        }
+        .page-main .filter {
+            &+ .page-title-wrapper {
+                display: block;
+            }
         }
     }
 
