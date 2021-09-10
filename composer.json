@@ -22,7 +22,6 @@
         "adyen/module-payment": "^7.0",
         "adyen/php-api-library": "^10.0",
         "magento/magento-cloud-metapackage": ">=2.4.3 <2.4.4",
-        "magento/module-baler": "dev-master",
         "magento/module-page-builder-product-recommendations": "^1.1",
         "magento/module-visual-product-recommendations": "^1.1",
         "magento/product-recommendations": "^3.1"
