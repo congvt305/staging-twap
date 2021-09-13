@@ -17,12 +17,10 @@
     AP_SEARCH_TERM = "<?= $block->escapeHtml($block->getQueryText())?>";
 
     var AP_SEARCH_PRDRESULT = AP_SEARCH_PRDRESULT || '';
-    AP_SEARCH_PRDRESULT = "";
-    //AP_SEARCH_PRDRESULT = "<?//= $block->escapeHtml($block->getResultProductData())?>//"; //error
+    AP_SEARCH_PRDRESULT = "<?= $block->escapeHtml($block->getResultProductData())?>";
 
     var AP_SEARCH_NUM = AP_SEARCH_NUM || '';
-    AP_SEARCH_NUM = "";
-    //AP_SEARCH_NUM = "<?//= $block->escapeHtml($block->getSearchNumber())?>//"; //error
+    AP_SEARCH_NUM = "<?= $block->escapeHtml($block->getSearchNumber())?>";
 
     var AP_SEARCH_TYPE = AP_SEARCH_TYPE || '';
     AP_SEARCH_TYPE = "<?= $block->escapeHtml($block->getSearchType())?>";
