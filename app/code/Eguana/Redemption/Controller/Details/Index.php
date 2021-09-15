@@ -191,60 +191,60 @@ class Index extends Action
     }
 
     /**
-     * Dispatch request
-     * @return ResponseInterface|ResultInterface|void
-     * @throws \Exception
+     *
+     * @return ResponseInterface|\Magento\Framework\Controller\Result\Redirect|ResultInterface|\Magento\Framework\View\Result\Page
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute()
     {
         $defaultStoreId = $this->storeManager->getStore()->getId();
+        $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
         if ($this->redemptionConfig->getEnableValue('enabled', $defaultStoreId) == 0) {
             $this->messageManager->addSuccessMessage(__('The redemption module is disable by admin.'));
-            $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
             return $resultRedirect->setUrl('/');
         }
         $date = $this->date->gmtDate();
         if ($this->getRequest()->getParam('confirm') == 1) {
             $counter = $this->counter->load($this->getRequest()->getParam('counter_id'));
-            $counter->setStatus(Counter::STATUS_REDEMPTION);
-            $counter->setRedeemDate($date);
-            $counter->save();
-            $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
-            $resultRedirect->setPath(
-                'redemption/details/complete/redemption_id/' . $counter->getRedemptionId()
-            );
-            return $resultRedirect;
-        }
-        $redemptionId = $this->getRequest()->getParam('redemption_id');
-        $redemptionDetail = $this->redemptionRepository->getById($redemptionId);
-        $redemptionStartDate = $redemptionDetail->getStartDate();
-        $redemptionEndDate = $redemptionDetail->getEndDate();
-        $currentDate = $this->changeDateFormat($date);
-
-        if ($redemptionEndDate < $currentDate) {
-            $this->messageManager->addErrorMessage(
-                __('This redemption has been expired!')
-            );
-            $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
-            return $resultRedirect->setUrl('/');
-        } elseif ($redemptionStartDate > $currentDate && $redemptionEndDate > $currentDate) {
-            $this->messageManager->addErrorMessage(
-                __('This redemption will be available at %1', $redemptionStartDate)
-            );
-            $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
-            return $resultRedirect->setUrl('/');
-        }
-        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-        if (isset($redemptionId)) {
-            $redemption = $this->redemptionRepository->getById($redemptionId);
-            if (empty($redemption->getData()) || $redemption->isActive() == 0) {
-                $this->managerInterface->addErrorMessage(__('This redemption is not available.'));
-                $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
-                $resultRedirect->setUrl('/');
+            if ($counter && $counter->getRedemptionId()) {
+                $counter->setStatus(Counter::STATUS_REDEMPTION);
+                $counter->setRedeemDate($date);
+                $counter->save();
+                $resultRedirect->setPath(
+                    'redemption/details/complete/redemption_id/' . $counter->getRedemptionId()
+                );
                 return $resultRedirect;
             }
-        } elseif (!isset($redemptionId)) {
-            $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
+            $this->messageManager->addErrorMessage(__('This counter is not found!'));
+            return $resultRedirect->setUrl('/');
+        }
+        try {
+            $redemptionId = $this->getRequest()->getParam('redemption_id');
+            $redemptionDetail = $this->redemptionRepository->getById($redemptionId);
+            $redemptionStartDate = $redemptionDetail->getStartDate();
+            $redemptionEndDate = $redemptionDetail->getEndDate();
+            $currentDate = $this->changeDateFormat($date);
+
+            if ($redemptionEndDate < $currentDate) {
+                $this->messageManager->addErrorMessage(
+                    __('This redemption has been expired!')
+                );
+                return $resultRedirect->setUrl('/');
+            } elseif ($redemptionStartDate > $currentDate && $redemptionEndDate > $currentDate) {
+                $this->messageManager->addErrorMessage(
+                    __('This redemption will be available at %1', $redemptionStartDate)
+                );
+                return $resultRedirect->setUrl('/');
+            }
+            if ($redemptionId) {
+                if (empty($redemptionDetail->getData()) || $redemptionDetail->isActive() == 0) {
+                    $this->managerInterface->addErrorMessage(__('This redemption is not available.'));
+                    $resultRedirect->setUrl('/');
+                    return $resultRedirect;
+                }
+            }
+        } catch (\Exception $exception) {
+            $this->managerInterface->addErrorMessage(__('This redemption is not available.'));
             $resultRedirect->setUrl('/');
             return $resultRedirect;
         }
