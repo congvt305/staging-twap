@@ -28,10 +28,12 @@ use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Amore\PointsIntegration\Logger\Logger;
+use Magento\Store\Model\ScopeInterface;
 
 class PosReturnData
 {
     const POS_ORDER_TYPE_RETURN = '000020';
+    const SKU_PREFIX_XML_PATH = 'sap/mall_info/sku_prefix';
 
     /**
      * @var Config
@@ -188,6 +190,7 @@ class PosReturnData
         $storeId = $rma->getStoreId();
         $rmaItems = $rma->getItems();
         $order = $rma->getOrder();
+        $skuPrefix = $this->getSKUPrefix($order->getStoreId()) ?: '';
 
         $itemsSubtotal = 0;
         $itemsDiscountAmount = 0;
@@ -203,8 +206,10 @@ class PosReturnData
 
                 $product = $this->productRepository->get($rmaItem->getProductSku(), false, $storeId);
 
+                $stripSku = str_replace($skuPrefix, '', $orderItem->getSku());
+
                 $rmaItemData[] = [
-                    'prdCD' => $this->productTypeCheck($orderItem)->getSku(),
+                    'prdCD' => $stripSku,
                     'qty' => (int)$rmaItem->getQtyRequested(),
                     'price' => (int)$orderItem->getOriginalPrice(),
                     'salAmt' => (int)$itemSubtotal,
@@ -245,9 +250,10 @@ class PosReturnData
                         + (($product->getPrice() - $childPriceRatio) * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())
                         + $catalogRuledPriceRatio * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()
                     ));
+                    $stripSku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
 
                     $rmaItemData[] = [
-                        'prdCD' => $bundleChildrenItem->getSku(),
+                        'prdCD' => $stripSku,
                         'qty' => (int)$rmaItem->getQtyRequested(),
                         'price' => (int)$bundleChildPrice,
                         'salAmt' => (int)$itemSubtotal,
@@ -590,5 +596,18 @@ class PosReturnData
         } catch (\Exception $exception) {
             $this->pointsIntegrationLogger->err($exception->getMessage());
         }
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+    public function getSKUPrefix($storeId)
+    {
+        return $this->config->getValue(
+            self::SKU_PREFIX_XML_PATH,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
     }
 }
