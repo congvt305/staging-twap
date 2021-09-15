@@ -1,9 +1,9 @@
 <?php
 /**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Base
- */
+* @author Amasty Team
+* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @package Amasty_Base
+*/
 
 
 namespace Amasty\Base\Plugin\Backend\Model\Menu;
@@ -207,14 +207,15 @@ class Builder
 
             if ($itemsToAdd) {
                 $itemId = $installedModule . '::container';
+                $moduleConfigResource = $configItems[$installedModule]['resource'] ?? $installedModule . '::config';
                 /** @var \Magento\Backend\Model\Menu\Item $module */
                 $module = $this->itemFactory->create(
                     [
                         'data' => [
                             'id'       => $itemId,
-                            'title'    => $title,
+                            'title'    => $this->normalizeTitle($title),
                             'module'   => $installedModule,
-                            'resource' => $this->getValidResource($installedModule, $parentNodeResource)
+                            'resource' => $parentNodeResource ?: $moduleConfigResource
                         ]
                     ]
                 );
@@ -231,17 +232,17 @@ class Builder
     }
 
     /**
-     * @param $installedModule
-     * @param $parentNode
-     *
+     * According to default validation rules, title can't be longer than 50 characters
+     * @param string $title
      * @return string
      */
-    private function getValidResource($installedModule, $parentNodeResource)
+    private function normalizeTitle(string $title): string
     {
-        if (!empty($parentNodeResource)) {
-            return $parentNodeResource;
+        if (mb_strlen($title) > 50) {
+            $title = mb_substr($title, 0, 47) . '...';
         }
-        return $installedModule . "::config";
+
+        return $title;
     }
 
     /**
@@ -454,10 +455,7 @@ class Builder
             $result = str_replace(' for Magento 2', '', $result);
         } else {
             $result = str_replace('Amasty_', '', $result);
-            preg_match_all('/((?:^|[A-Z])[a-z]+)/', $result, $matches);
-            if (isset($matches[1]) && $matches[1]) {
-                $result = implode(' ', $matches[1]);
-            }
+            $result = preg_replace('/([a-z0-9])([A-Z])/', '$1 $2', $result);
         }
 
         return $result;
