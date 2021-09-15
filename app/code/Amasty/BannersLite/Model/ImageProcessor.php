@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_BannersLite
- */
-
 
 namespace Amasty\BannersLite\Model;
 
@@ -71,7 +65,7 @@ class ImageProcessor
      */
     public function getBannerImageUrl($imageName)
     {
-        return $this->getBannerMedia() . DIRECTORY_SEPARATOR . $imageName;
+        return $this->getBannerMedia($imageName) . DIRECTORY_SEPARATOR . $imageName;
     }
 
     /**
@@ -82,7 +76,7 @@ class ImageProcessor
     public function moveFileFromTmp($imageName)
     {
         try {
-            return $this->imageUploader->moveFileFromTmp($imageName);
+            return $this->imageUploader->moveFileFromTmp($imageName, true);
         } catch (\Magento\Framework\Exception\LocalizedException $exception) {
             // file already was moved from tmp
             return $imageName;
@@ -143,12 +137,18 @@ class ImageProcessor
     /**
      * Url type http://url/pub/media/amasty/banners_lite
      *
+     * @param string $imageName
      * @return string
      */
-    private function getBannerMedia()
+    private function getBannerMedia($imageName = '')
     {
-        return $this->storeManager
-                ->getStore()
-                ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . self::BANNERS_MEDIA_PATH;
+        $bannerMedia = $this->storeManager
+            ->getStore()
+            ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+        if (strpos($imageName, self::BANNERS_MEDIA_PATH) === false) {
+            $bannerMedia .= self::BANNERS_MEDIA_PATH;
+        }
+
+        return $bannerMedia;
     }
 }

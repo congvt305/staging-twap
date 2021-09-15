@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Test\Unit\Plugin\Quote\Model\Quote;
 
@@ -63,7 +57,7 @@ class TotalsCollectorPlugin extends \PHPUnit\Framework\TestCase
      */
     private $promoItemHelper;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->collectTotalsObserver = $this->createPartialMock(\Amasty\Promo\Plugin\Quote\Model\Quote\TotalsCollectorPlugin::class, []);
 

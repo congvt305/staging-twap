@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Conditions
- */
-
 declare(strict_types=1);
 
 namespace Amasty\Conditions\Setup\Operation;

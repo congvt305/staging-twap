@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Model;
 
@@ -51,6 +45,7 @@ class Storage
 
     /**
      * Set flag for avoid quote saving while Free Gift adding
+     * Extra quote saves can cause Magento errors.
      */
     public function restrictQuoteSaving()
     {

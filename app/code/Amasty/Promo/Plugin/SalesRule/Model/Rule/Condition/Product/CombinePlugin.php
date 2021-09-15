@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Plugin\SalesRule\Model\Rule\Condition\Product;
 
@@ -70,8 +64,8 @@ class CombinePlugin
             $ampromoRule = $this->ruleResolver->getFreeGiftRule($rule);
             $isPromoItem = $this->amHelper->isPromoItem($item);
 
-            $promoSku  = $ampromoRule->getSku();
-            $itemSku   = $item->getSku();
+            $promoSku = $ampromoRule->getSku();
+            $itemSku = $item->getProduct()->getData('sku');
 
             if ($isPromoItem && strpos($promoSku, $itemSku) !== false) {
                 return true;
