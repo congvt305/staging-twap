@@ -630,7 +630,7 @@ return [
         'Adyen_Payment' => 1,
         'Amasty_BannersLite' => 1,
         'Amasty_Base' => 1,
-        'Amasty_Conditions' => 0,
+        'Amasty_Conditions' => 1,
         'Amasty_CronScheduleList' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Amasty_Promo' => 1,
