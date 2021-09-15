@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Conditions
- */
-
 
 namespace Amasty\Conditions\Test\Integration\Plugin\Checkout\Model;
 
@@ -74,7 +68,7 @@ class TotalInformationManagementPluginTest extends TestCase
      */
     private $quoteFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->cartRepository = $this->objectManager->create(CartRepositoryInterface::class);

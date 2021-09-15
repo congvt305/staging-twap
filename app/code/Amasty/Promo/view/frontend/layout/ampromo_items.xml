@@ -1,11 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
--->
 
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
@@ -27,6 +20,40 @@
             </block>
 
             <block class="Magento\ConfigurableProduct\Block\Product\View\Type\Configurable" name="ampromo.configurable.prototype" as="configurable_prototype" template="Amasty_Promo::product/view/type/options/configurable.phtml"/>
+            <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle" name="ampromo.bundle.prototype" as="bundle_prototype" template="Amasty_Promo::product/view/type/options/bundle.phtml" >
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Amasty\Promo\ViewModel\Product\View\Type\Bundle</argument>
+                </arguments>
+                <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Select" name="product.info.bundle.options.select" as="select">
+                    <arguments>
+                        <argument name="tier_price_renderer" xsi:type="object">Magento\Bundle\Block\DataProviders\OptionPriceRenderer</argument>
+                    </arguments>
+                    <action method="setTemplate">
+                        <argument name="template" xsi:type="string">Amasty_Promo::product/view/type/bundle/option/select.phtml</argument>
+                    </action>
+                </block>
+                <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Multi" name="product.info.bundle.options.multi" as="multi">
+                    <action method="setTemplate">
+                        <argument name="template" xsi:type="string">Amasty_Promo::product/view/type/bundle/option/multi.phtml</argument>
+                    </action>
+                </block>
+                <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Radio" name="product.info.bundle.options.radio" as="radio">
+                    <arguments>
+                        <argument name="tier_price_renderer" xsi:type="object">Magento\Bundle\Block\DataProviders\OptionPriceRenderer</argument>
+                    </arguments>
+                    <action method="setTemplate">
+                        <argument name="template" xsi:type="string">Amasty_Promo::product/view/type/bundle/option/radio.phtml</argument>
+                    </action>
+                </block>
+                <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Checkbox" name="product.info.bundle.options.checkbox" as="checkbox">
+                    <arguments>
+                        <argument name="tier_price_renderer" xsi:type="object">Magento\Bundle\Block\DataProviders\OptionPriceRenderer</argument>
+                    </arguments>
+                    <action method="setTemplate">
+                        <argument name="template" xsi:type="string">Amasty_Promo::product/view/type/bundle/option/checkbox.phtml</argument>
+                    </action>
+                </block>
+            </block>
             <block class="Magento\Downloadable\Block\Catalog\Product\Links" name="ampromo.downloadable.prototype" as="downloadable_prototype" template="Amasty_Promo::catalog/product/links.phtml" />
             <block class="Magento\Framework\Pricing\Render\RendererPool" name="render.product.prices">
                 <arguments>

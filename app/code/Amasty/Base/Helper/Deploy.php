@@ -1,9 +1,10 @@
 <?php
 /**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Base
- */
+* @author Amasty Team
+* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @package Amasty_Base
+*/
+
 
 namespace Amasty\Base\Helper;
 
@@ -12,7 +13,6 @@ use Magento\Framework\App\Helper\AbstractHelper;
 
 class Deploy extends AbstractHelper
 {
-
     /**
      * @var \Magento\Framework\Filesystem\Directory\Write
      */
@@ -33,13 +33,12 @@ class Deploy extends AbstractHelper
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\Filesystem $filesystem
+        \Amasty\Base\Model\FilesystemProvider $filesystemProvider
     ) {
         parent::__construct($context);
-
-        $this->filesystem = $filesystem;
-        $this->rootWrite = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
-        $this->rootRead = $filesystem->getDirectoryRead(DirectoryList::ROOT);
+        $this->filesystem = $filesystemProvider->get();
+        $this->rootWrite = $this->filesystem->getDirectoryWrite(DirectoryList::ROOT);
+        $this->rootRead = $this->filesystem->getDirectoryRead(DirectoryList::ROOT);
     }
 
     public function deployFolder($folder)

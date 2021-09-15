@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Conditions
- */
-
 
 namespace Amasty\Conditions\Model\Rule\Condition;
 
@@ -25,6 +19,11 @@ class Address extends AbstractCondition
         AddressInterface::SHIPPING_ADDRESS_LINE,
         AddressInterface::CITY,
         AddressInterface::CURRENCY
+    ];
+
+    const VALUE_PARTS_FOR_CONTAINS = [
+        'klarna',
+        'vault'
     ];
 
     /**
@@ -378,6 +377,7 @@ class Address extends AbstractCondition
             $addressModel = $this->addressFactory->create();
 
             $advancedConditionData = [
+                'payment_method' => $quote->getPaymentMethod(),
                 'city' => $quote->getBillingAddress()->getCity(),
                 'shipping_address_line' => $quote->getBillingAddress()->getStreet(),
                 'custom_attributes' => $quote->getBillingAddress()->getCustomAttributes(),
@@ -388,5 +388,49 @@ class Address extends AbstractCondition
 
             $extensionAttributes->setAdvancedConditions($addressModel);
         }
+    }
+
+    /**
+     * Fix for klarna
+     * @return string
+     */
+    public function getValueParsed()
+    {
+        $valueParsed = parent::getValueParsed();
+        if ($this->getAttribute() == AddressInterface::PAYMENT_METHOD && $valueParsed == 'klarna_kp') {
+            $valueParsed = 'klarna_';
+        }
+        return $valueParsed;
+    }
+
+    /**
+     * Fix for vault methods: for example - braintree called braintree_cc_vault_1 instead of braintree_cc_vault
+     * @return string
+     */
+    public function getOperatorForValidate()
+    {
+        $operator = parent::getOperatorForValidate();
+
+        $operatorsForReplace = [
+            '==' => '{}',
+            '!=' => '!{}'
+        ];
+
+        $replaceOperator = false;
+        $valueParsed = $this->getValueParsed();
+        foreach (self::VALUE_PARTS_FOR_CONTAINS as $valuePart) {
+            if (strpos($valueParsed, $valuePart) !== false) {
+                $replaceOperator = true;
+                break;
+            }
+        }
+
+        if ($this->getAttribute() == AddressInterface::PAYMENT_METHOD
+            && isset($operatorsForReplace[$operator])
+            && $replaceOperator
+        ) {
+            $operator = $operatorsForReplace[$operator];
+        }
+        return $operator;
     }
 }

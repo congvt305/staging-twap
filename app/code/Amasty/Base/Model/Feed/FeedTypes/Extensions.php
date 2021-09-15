@@ -1,9 +1,9 @@
 <?php
 /**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Base
- */
+* @author Amasty Team
+* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @package Amasty_Base
+*/
 
 declare(strict_types=1);
 
@@ -130,7 +130,7 @@ class Extensions
 
             if (!$this->linkValidator->validate((string)$productPageLink)
                 || !$this->linkValidator->validate((string)$item->guide)
-                || (string)$item->landing !== '0'
+                || filter_var((string)$item->landing, FILTER_VALIDATE_BOOLEAN)
             ) {
                 continue;
             }

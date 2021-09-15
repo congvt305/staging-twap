@@ -1,14 +1,9 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Conditions
- */
-
 
 namespace Amasty\Conditions\Setup;
 
 use Amasty\Conditions\Setup\Operation\AddConditionsQuoteTable;
+use Amasty\Conditions\Setup\Operation\AddQuoteIdIndex;
 use Amasty\Conditions\Setup\Operation\ChangeColumnDefinition;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
@@ -29,12 +24,19 @@ class UpgradeSchema implements UpgradeSchemaInterface
      */
     private $changeColumnDefinition;
 
+    /**
+     * @var Operation\AddQuoteIdIndex
+     */
+    private $addQuoteIdIndex;
+
     public function __construct(
         AddConditionsQuoteTable $addConditionsQuoteTable,
-        ChangeColumnDefinition $changeColumnDefinition
+        ChangeColumnDefinition $changeColumnDefinition,
+        AddQuoteIdIndex $addQuoteIdIndex
     ) {
         $this->addConditionsQuoteTable = $addConditionsQuoteTable;
         $this->changeColumnDefinition = $changeColumnDefinition;
+        $this->addQuoteIdIndex = $addQuoteIdIndex;
     }
 
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
@@ -45,6 +47,10 @@ class UpgradeSchema implements UpgradeSchemaInterface
 
         if (version_compare($context->getVersion(), '1.4.2', '<')) {
             $this->changeColumnDefinition->execute($setup);
+        }
+
+        if (version_compare($context->getVersion(), '1.5.1', '<')) {
+            $this->addQuoteIdIndex->execute($setup);
         }
     }
 }
