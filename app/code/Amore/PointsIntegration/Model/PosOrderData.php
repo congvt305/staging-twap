@@ -56,7 +56,7 @@ class PosOrderData
     /**
      * @var ProductRepositoryInterface
      */
-    private $productRepository;
+    protected $productRepository;
     /**
      * @var ProductLinkManagementInterface
      */
@@ -64,7 +64,7 @@ class PosOrderData
     /**
      * @var OrderItemRepositoryInterface
      */
-    private $orderItemRepository;
+    protected $orderItemRepository;
     /**
      * @var DateTime
      */
