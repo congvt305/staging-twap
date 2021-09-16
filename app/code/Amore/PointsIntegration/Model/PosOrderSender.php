@@ -46,12 +46,12 @@ class PosOrderSender
      * @param Logger $pointsIntegrationLogger
      */
     public function __construct(
-        \Amore\PointsIntegration\Model\PosOrderData $posOrderData,
+        \Amore\PointsIntegration\Model\PosOrderData       $posOrderData,
         \Amore\PointsIntegration\Model\Connection\Request $request,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        Json $json,
-        \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig,
-        Logger $pointsIntegrationLogger
+        \Magento\Framework\Event\ManagerInterface         $eventManager,
+        Json                                              $json,
+        \Amore\PointsIntegration\Model\Source\Config      $PointsIntegrationConfig,
+        Logger                                            $pointsIntegrationLogger
     )
     {
         $this->posOrderData = $posOrderData;
@@ -78,7 +78,10 @@ class PosOrderSender
                 $this->posOrderData->updatePosPaidOrderSendFlag($order);
             }
         } catch (\Exception $exception) {
-            $this->pointsIntegrationLogger->info($exception->getMessage());
+            $this->pointsIntegrationLogger->err($exception->getMessage());
+            $response = $exception->getMessage();
+        } catch (\Throwable $exception) {
+            $this->pointsIntegrationLogger->err($exception->getMessage());
             $response = $exception->getMessage();
         }
 

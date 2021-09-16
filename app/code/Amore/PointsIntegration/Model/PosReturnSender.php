@@ -75,6 +75,9 @@ class PosReturnSender
         } catch (\Exception $exception) {
             $this->pointsIntegrationLogger->err($exception->getMessage());
             $response = $exception->getMessage();
+        } catch (\Throwable $exception) {
+            $this->pointsIntegrationLogger->err($exception->getMessage());
+            $response = $exception->getMessage();
         }
 
         $this->logging($rmaData, $response, $success);
