@@ -72,7 +72,12 @@ class POSCancelledOrderSender
                 $this->posOrderData->updatePosCancelledOrderSendFlag($order);
             }
         } catch (\Exception $exception) {
-            $this->pointsIntegrationLogger->info($exception->getMessage());
+            $message = 'POS Integration Fail: ' . $order->getIncrementId();
+            $this->pointsIntegrationLogger->info($message . $exception->getMessage());
+            $response = $exception->getMessage();
+        } catch (\Throwable $exception) {
+            $message = 'POS Integration Fail: ' . $order->getIncrementId();
+            $this->pointsIntegrationLogger->info($message . $exception->getMessage());
             $response = $exception->getMessage();
         }
 
