@@ -78,10 +78,12 @@ class PosOrderSender
                 $this->posOrderData->updatePosPaidOrderSendFlag($order);
             }
         } catch (\Exception $exception) {
-            $this->pointsIntegrationLogger->err($exception->getMessage());
+            $message = 'POS Integration Fail: ' . $order->getIncrementId();
+            $this->pointsIntegrationLogger->info($message . $exception->getMessage());
             $response = $exception->getMessage();
         } catch (\Throwable $exception) {
-            $this->pointsIntegrationLogger->err($exception->getMessage());
+            $message = 'POS Integration Fail: ' . $order->getIncrementId();
+            $this->pointsIntegrationLogger->info($message . $exception->getMessage());
             $response = $exception->getMessage();
         }
 
