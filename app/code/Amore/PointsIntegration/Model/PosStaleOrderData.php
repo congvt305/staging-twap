@@ -20,6 +20,7 @@ class PosStaleOrderData extends PosOrderData
         $itemsSubtotal = 0;
         $itemsDiscountAmount = 0;
         $itemsGrandTotal = 0;
+        $skuPrefix = $this->getSKUPrefix($order->getStoreId()) ?: '';
 
         $orderItems = $order->getAllVisibleItems();
 
@@ -30,9 +31,10 @@ class PosStaleOrderData extends PosOrderData
                 $itemSubtotal = $this->simpleAndConfigurableSubtotal($orderItem);
                 $itemTotalDiscount = $this->simpleAndConfigurableTotalDiscount($orderItem);
                 $itemGrandTotal = $itemSubtotal - $itemTotalDiscount;
+                $stripSku = str_replace($skuPrefix, '', $orderItem->getSku());
 
                 $orderItemData[] = [
-                    'prdCD' => $orderItem->getSku(),
+                    'prdCD' => $stripSku,
                     'qty' => (int)$orderItem->getQtyOrdered(),
                     'price' => (int)$orderItem->getOriginalPrice(),
                     'salAmt' => (int)$itemSubtotal,
@@ -67,9 +69,10 @@ class PosStaleOrderData extends PosOrderData
                     ));
 
                     $bundleChildGrandTotal = $bundleChildSubtotal - $itemTotalDiscount;
+                    $stripSku = str_replace($skuPrefix, '', $bundleChild->getSku());
 
                     $orderItemData[] = [
-                        'prdCD' => $bundleChild->getSku(),
+                        'prdCD' => $stripSku,
                         'qty' => (int)$bundleChildFromOrder->getQtyOrdered(),
                         'price' => (int)$bundleChildPrice,
                         'salAmt' => (int)$bundleChildSubtotal,
