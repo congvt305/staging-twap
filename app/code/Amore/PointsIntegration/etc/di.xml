@@ -24,4 +24,16 @@
         <plugin sortOrder="1" name="amorePointsIntegrationRmaRepository"
                 type="Amore\PointsIntegration\Plugin\Model\RmaRepositoryPlugin"/>
     </type>
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="pos_stale_order_as_paid_command" xsi:type="object">Amore\PointsIntegration\Console\Command\StaleOrdersToPosAsPaidCommand</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Amore\PointsIntegration\Model\PosStaleOrderSender">
+        <arguments>
+            <argument name="posOrderData" xsi:type="object">Amore\PointsIntegration\Model\PosStaleOrderData</argument>
+        </arguments>
+    </type>
 </config>
