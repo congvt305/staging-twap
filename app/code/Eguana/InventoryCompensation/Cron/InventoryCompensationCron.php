@@ -97,7 +97,7 @@ class InventoryCompensationCron
         $inventoryCompensationActive = $this->config->getActive();
         $loggerActive = $this->config->getLoggerActive();
         if ($inventoryCompensationActive) {
-            try {
+
                 $reservationOrders = $this->getReservationOrder->getReservationOrders();
 
                 if ($loggerActive) {
@@ -109,6 +109,7 @@ class InventoryCompensationCron
                     $metadata = $this->json->unserialize($reservationOrder['metadata']);
 
                     if ($metadata['object_type'] == 'order' && $metadata['event_type'] == 'order_placed') {
+                        try {
                         $orderEntityId = $metadata['object_id'];
                         /** @var Order $order */
                         $order = $this->getReservationOrder->getOrder($orderEntityId);
@@ -123,11 +124,11 @@ class InventoryCompensationCron
 
                             $this->deductSourceItem($compensationOrder, $orderStatus, $order);
                         }
+                        } catch (\Exception $exception) {
+                            $this->logger->info($exception->getMessage());
+                        }
                     }
                 }
-            } catch (\Exception $exception) {
-                $this->logger->info($exception->getMessage());
-            }
         }
     }
 
