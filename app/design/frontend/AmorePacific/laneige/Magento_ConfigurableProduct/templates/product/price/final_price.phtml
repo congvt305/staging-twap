@@ -4,13 +4,16 @@
  * See COPYING.txt for license details.
  */
 
-/** @var \Magento\ConfigurableProduct\Pricing\Render\FinalPriceBox$block */
+/** @var \Magento\ConfigurableProduct\Pricing\Render\FinalPriceBox $block */
 /** @var \Magento\Framework\Pricing\Price\PriceInterface $priceModel */
 $priceModel = $block->getPriceType('regular_price');
 /** @var \Magento\Framework\Pricing\Price\PriceInterface $finalPriceModel */
 $finalPriceModel = $block->getPriceType('final_price');
 $idSuffix = $block->getIdSuffix() ? $block->getIdSuffix() : '';
 $schema = ($block->getZone() == 'item_view') ? true : false;
+$oldPrice = $priceModel->getAmount()->getValue();
+$discountedPrice = $finalPriceModel->getAmount()->getValue();
+$discountPercent = $oldPrice ? ($oldPrice - $discountedPrice) * 100 / $oldPrice : false;
 ?>
 <span class="normal-price">
     <?= /* @noEscape */ $block->renderAmount($finalPriceModel->getAmount(), [
@@ -22,9 +25,23 @@ $schema = ($block->getZone() == 'item_view') ? true : false;
     ]);
     ?>
 </span>
+<?php if ($block->isProductList()): ?>
+    <span class="old-price">
+        <?php if ($discountPercent): ?>
+            <span class="discount-label"><?= $discountPercent ?>%</span>
+        <?php endif; ?>
+        <?= /* @noEscape */ $block->renderAmount($priceModel->getAmount(), [
+            'display_label'     => __('Regular Price'),
+            'price_id'          => $block->getPriceId('old-price-' . $idSuffix),
+            'price_type'        => 'oldPrice',
+            'include_container' => true,
+            'skip_adjustments'  => true
+        ]); ?>
+    </span>
+<?php endif; ?>
 
 <?php if (!$block->isProductList() && $block->hasSpecialPrice()) : ?>
-    <span class="old-price sly-old-price no-display">
+    <span class="old-price sly-old-price">
         <span class="discount-label">
             <?= /* @noEscape */ round(($priceModel->getValue() - $finalPriceModel->getValue())/$priceModel->getValue() * 100).'%'?>
         </span>
