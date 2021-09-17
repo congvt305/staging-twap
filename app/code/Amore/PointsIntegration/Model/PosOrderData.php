@@ -25,11 +25,13 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Item;
 use Amore\PointsIntegration\Logger\Logger;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
+use Magento\Store\Model\ScopeInterface;
 
 class PosOrderData
 {
     const POS_ORDER_TYPE_ORDER = '000010';
     const POS_ORDER_TYPE_CANCEL = '000030';
+    const SKU_PREFIX_XML_PATH = 'sap/mall_info/sku_prefix';
 
     /**
      * @var Config
@@ -54,7 +56,7 @@ class PosOrderData
     /**
      * @var ProductRepositoryInterface
      */
-    private $productRepository;
+    protected $productRepository;
     /**
      * @var ProductLinkManagementInterface
      */
@@ -62,7 +64,7 @@ class PosOrderData
     /**
      * @var OrderItemRepositoryInterface
      */
-    private $orderItemRepository;
+    protected $orderItemRepository;
     /**
      * @var DateTime
      */
@@ -98,19 +100,20 @@ class PosOrderData
      * @param Logger $pointsIntegrationLogger
      */
     public function __construct(
-        Config                                                     $config,
-        SearchCriteriaBuilder                                      $searchCriteriaBuilder,
-        OrderRepositoryInterface                                   $orderRepository,
-        InvoiceRepositoryInterface                                 $invoiceRepository,
-        CustomerRepositoryInterface                                $customerRepository,
-        ProductRepositoryInterface                                 $productRepository,
-        ProductLinkManagementInterface                             $productLinkManagement,
-        OrderItemRepositoryInterface                               $orderItemRepository,
-        DateTime                                                   $dateTime,
-        ResourceConnection                                         $resourceConnection,
-        CollectionFactory $orderCollectionFactory,
-        Logger $pointsIntegrationLogger
-    ) {
+        Config                         $config,
+        SearchCriteriaBuilder          $searchCriteriaBuilder,
+        OrderRepositoryInterface       $orderRepository,
+        InvoiceRepositoryInterface     $invoiceRepository,
+        CustomerRepositoryInterface    $customerRepository,
+        ProductRepositoryInterface     $productRepository,
+        ProductLinkManagementInterface $productLinkManagement,
+        OrderItemRepositoryInterface   $orderItemRepository,
+        DateTime                       $dateTime,
+        ResourceConnection             $resourceConnection,
+        CollectionFactory              $orderCollectionFactory,
+        Logger                         $pointsIntegrationLogger
+    )
+    {
         $this->config = $config;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
@@ -210,7 +213,7 @@ class PosOrderData
         $itemsSubtotal = 0;
         $itemsDiscountAmount = 0;
         $itemsGrandTotal = 0;
-
+        $skuPrefix = $this->getSKUPrefix($order->getStoreId()) ?: '';
         $orderItems = $order->getAllVisibleItems();
 
         /** @var Item $orderItem */
@@ -220,9 +223,10 @@ class PosOrderData
                 $itemSubtotal = $this->simpleAndConfigurableSubtotal($orderItem);
                 $itemTotalDiscount = $this->simpleAndConfigurableTotalDiscount($orderItem);
                 $itemGrandTotal = $itemSubtotal - $itemTotalDiscount;
+                $stripSku = str_replace($skuPrefix, '', $orderItem->getSku());
 
                 $orderItemData[] = [
-                    'prdCD' => $orderItem->getSku(),
+                    'prdCD' => $stripSku,
                     'qty' => (int)$orderItem->getQtyOrdered(),
                     'price' => (int)$orderItem->getOriginalPrice(),
                     'salAmt' => (int)$itemSubtotal,
@@ -241,6 +245,7 @@ class PosOrderData
 
                 foreach ($bundleChildren as $bundleChild) {
                     $itemId = $orderItem->getItemId();
+                    $stripSku = str_replace($skuPrefix, '', $bundleChild->getSku());
                     $bundleChildFromOrder = $this->getBundleChildFromOrder($itemId, $bundleChild->getSku());
                     if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
                         $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
@@ -265,7 +270,7 @@ class PosOrderData
                     $bundleChildGrandTotal = $bundleChildSubtotal - $itemTotalDiscount;
 
                     $orderItemData[] = [
-                        'prdCD' => $bundleChild->getSku(),
+                        'prdCD' => $stripSku,
                         'qty' => (int)$bundleChildFromOrder->getQtyOrdered(),
                         'price' => (int)$bundleChildPrice,
                         'salAmt' => (int)$bundleChildSubtotal,
@@ -583,5 +588,18 @@ class PosOrderData
             ->addFieldToFilter('pos_order_cancel_send', true);
 
         return $orderCollection->getItems();
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+    public function getSKUPrefix($storeId)
+    {
+        return $this->config->getValue(
+            self::SKU_PREFIX_XML_PATH,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
     }
 }

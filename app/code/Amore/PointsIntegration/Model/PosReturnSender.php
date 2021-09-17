@@ -73,7 +73,12 @@ class PosReturnSender
                 $this->posReturnData->updatePosReturnOrderSendFlag($rma);
             }
         } catch (\Exception $exception) {
-            $this->pointsIntegrationLogger->err($exception->getMessage());
+            $message = 'POS Integration Fail: ' . $rma->getOrderIncrementId();
+            $this->pointsIntegrationLogger->info($message . $exception->getMessage());
+            $response = $exception->getMessage();
+        } catch (\Throwable $exception) {
+            $message = 'POS Integration Fail: ' . $rma->getOrderIncrementId();
+            $this->pointsIntegrationLogger->info($message . $exception->getMessage());
             $response = $exception->getMessage();
         }
 
