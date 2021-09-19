@@ -53,7 +53,7 @@ class InventoryCompensationRun extends Field
      */
     public function getAjaxUrl()
     {
-        return $this->getUrl('inventory_compensation/system_config/inventorycompensationmanager');
+        return $this->getUrl('inventory_compensation/system_config/cleanreservation');
     }
 
     /**

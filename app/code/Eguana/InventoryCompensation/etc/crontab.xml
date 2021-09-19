@@ -7,7 +7,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default"> <!-- Doesn't need to be unique -->
-        <job name="inventory_compensation_cron" instance="Eguana\InventoryCompensation\Cron\InventoryCompensationCron" method="execute">
+        <job name="inventory_compensation_cron" instance="Eguana\InventoryCompensation\Cron\CleanReservationCron" method="execute">
             <config_path>crontab/default/jobs/inventory_compensation_cron/schedule/cron_expr</config_path>
         </job>
     </group>
