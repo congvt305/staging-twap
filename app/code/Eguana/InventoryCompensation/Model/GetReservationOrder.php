@@ -8,6 +8,7 @@
 
 namespace Eguana\InventoryCompensation\Model;
 
+use Eguana\InventoryCompensation\Model\Source\Config;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\ResourceConnection;
 use Magento\InventoryReservationsApi\Model\ReservationInterface;
@@ -36,19 +37,24 @@ class GetReservationOrder
      */
     private $orderRepository;
 
+    protected $cleanStatuses = ['pending', 'payment_review', 'shipment_processing', 'complete', 'closed', 'canceled', 'delivery_complete'];
+
     /**
      * @param ResourceConnection $resource
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
+     * @param Config $config
      */
     public function __construct(
         ResourceConnection $resource,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        Config $config
     ) {
         $this->resource = $resource;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
+        $this->config = $config;
     }
 
     /**
@@ -89,6 +95,41 @@ class GetReservationOrder
                 WHERE metadata LIKE '%" . "\"$orderId\"%' AND metadata NOT LIKE \"%order_placed%\" GROUP BY metadata";
 
         return $connection->fetchRow($query);
+    }
+
+    /**
+     * Delete All Compensation Orders
+     *
+     * @return int
+     */
+    public function deleteAllCompensationOrders()
+    {
+        $connection = $this->resource->getConnection();
+        $reservationTable = $this->resource->getTableName('inventory_reservation');
+
+        $condition = [ReservationInterface::METADATA . ' NOT LIKE (?)' => "%order_placed%"];
+        return $connection->delete($reservationTable, $condition);
+
+    }
+
+    public function deleteReservationByOrder($orderId, $orderStatus)
+    {
+        $result = 0;
+
+        $cleanStatuses = $this->config->getStatusesNeedClean();
+        if ($cleanStatuses) {
+            $cleanStatuses = array_map('trim', explode(',', $cleanStatuses));
+        } else {
+            $cleanStatuses = $this->cleanStatuses;
+        }
+
+        if (in_array($orderStatus, $cleanStatuses)) {
+            $connection = $this->resource->getConnection();
+            $reservationTable = $this->resource->getTableName('inventory_reservation');
+            $condition = [ReservationInterface::METADATA . ' LIKE (?)' => "%" . $orderId. "%"];
+            $result = $connection->delete($reservationTable, $condition);
+        }
+        return $result;
     }
 
     /**
