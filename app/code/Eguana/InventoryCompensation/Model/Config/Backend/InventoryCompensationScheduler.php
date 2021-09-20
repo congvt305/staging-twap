@@ -76,8 +76,8 @@ class InventoryCompensationScheduler extends Value
         $frequency = $this->getData('groups/inventory_compensation_cron/fields/frequency/value');
 
         $cronExprArray = [
-            (int)$time[1],
-            (int)$time[0],
+            $this->getCrontabSettings($frequency, intval($time[1])), //Minute
+            $this->getCrontabSettings($frequency, intval($time[0])), //Hour
             $frequency == Frequency::CRON_MONTHLY ? '1' : '*',
             '*',
             $frequency == Frequency::CRON_WEEKLY ? '1' : '*',
@@ -98,5 +98,28 @@ class InventoryCompensationScheduler extends Value
         }
 
         return parent::afterSave();
+    }
+
+    /**
+     * Get crontab settings
+     *
+     * @param $frequency
+     * @param $time
+     *
+     * @return int|string
+     */
+    protected function getCrontabSettings($frequency, $time)
+    {
+        if ($frequency == \Eguana\EInvoice\Model\Config\Source\Frequency::CUSTOM_CRON) {
+            if ($time == 0) {
+                $crontabSettings = '*';
+            } else {
+                $crontabSettings = '*/' . intval($time);
+            }
+        } else {
+            $crontabSettings = intval($time);
+        }
+
+        return $crontabSettings;
     }
 }
