@@ -49,6 +49,9 @@
                 <field id="run_cron" translate="Run Now" type="button" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Run Now</label>
                     <frontend_model>Eguana\InventoryCompensation\Block\System\Config\InventoryCompensationRun</frontend_model>
+                    <depends>
+                        <field id="*/general/active">1</field>
+                    </depends>
                 </field>
             </group>
         </section>
