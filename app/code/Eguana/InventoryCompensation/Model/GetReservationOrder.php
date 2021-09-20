@@ -126,7 +126,7 @@ class GetReservationOrder
         if (in_array($orderStatus, $cleanStatuses)) {
             $connection = $this->resource->getConnection();
             $reservationTable = $this->resource->getTableName('inventory_reservation');
-            $condition = [ReservationInterface::METADATA . ' LIKE (?)' => "%" . $orderId. "%"];
+            $condition = [ReservationInterface::METADATA . ' LIKE (?)' => '%"object_id":"' . $orderId. '"%'];
             $result = $connection->delete($reservationTable, $condition);
         }
         return $result;
