@@ -113,7 +113,9 @@ class CleanReservation extends Action
                         $order = $this->getReservationOrder->getOrder($orderEntityId);
                         if ($order) {
                             $orderStatus = $order->getStatus();
-                            $this->logger->info('order status: '.$orderStatus);
+                            if ($loggerActive) {
+                                $this->logger->info('order status: ' . $orderStatus);
+                            }
 
                             $resultDelete = $this->getReservationOrder->deleteReservationByOrder($orderEntityId, $orderStatus);
 
@@ -126,12 +128,16 @@ class CleanReservation extends Action
                             }
                             $index++;
                         } else {
-                            $this->logger->info("NOT FOUND ORDER ID: " . $orderEntityId);
+                            if ($loggerActive) {
+                                $this->logger->info("NOT FOUND ORDER ID: " . $orderEntityId);
+                            }
                             $this->getReservationOrder->deleteReservationByOrder($orderEntityId, 'complete');
                         }
                     } catch (\Exception $exception) {
                         $errorFlag = true;
-                        $this->logger->info('Order Id ' . $orderEntityId. ' has error' .$exception->getMessage());
+                        if ($loggerActive) {
+                            $this->logger->info('Order Id ' . $orderEntityId . ' has error' . $exception->getMessage());
+                        }
                     }
                 }
 
