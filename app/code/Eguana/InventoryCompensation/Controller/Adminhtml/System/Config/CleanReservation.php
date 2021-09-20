@@ -127,6 +127,7 @@ class CleanReservation extends Action
                             $index++;
                         } else {
                             $this->logger->info("NOT FOUND ORDER ID: " . $orderEntityId);
+                            $this->getReservationOrder->deleteReservationByOrder($orderEntityId, 'complete');
                         }
                     } catch (\Exception $exception) {
                         $errorFlag = true;
@@ -144,5 +145,6 @@ class CleanReservation extends Action
                 return $this->jsonFactory->create()->setData(['success' => false, 'message' => __('Has error. Please check log file.')]);
             }
         }
+        return $this->jsonFactory->create()->setData(['success' => false, 'message' => __('Please enable setting.')]);
     }
 }

@@ -110,6 +110,9 @@ class CleanReservationCron
                                 }
                             }
                             $index++;
+                        }  else {
+                            $this->logger->info("NOT FOUND ORDER ID: " . $orderEntityId);
+                            $this->getReservationOrder->deleteReservationByOrder($orderEntityId, 'complete');
                         }
                     } catch (\Exception $exception) {
                         $this->logger->info('Order Id ' . $orderEntityId . ' has error' . $exception->getMessage());
