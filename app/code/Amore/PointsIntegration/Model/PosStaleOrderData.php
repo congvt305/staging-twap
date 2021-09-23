@@ -48,7 +48,7 @@ class PosStaleOrderData extends PosOrderData
             } else {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
-                $bundleChildren = $this->getBundleChildren($orderItem);
+                $bundleChildren = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
                 foreach ($bundleChildren as $bundleChild) {
@@ -101,7 +101,7 @@ class PosStaleOrderData extends PosOrderData
     public function getBundleChildrenTotalAmount(Item $orderItem)
     {
         $originalPriceTotal = 0;
-        $childrenItems = $this->getBundleChildren($orderItem);
+        $childrenItems = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
 
         /** @var LinkInterface $childItem */
         foreach ($childrenItems as $childItem) {
@@ -121,7 +121,7 @@ class PosStaleOrderData extends PosOrderData
             if ($orderItem->getProductType() == 'bundle') {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
-                $bundleChildren = $this->getBundleChildren($orderItem);
+                $bundleChildren = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
                 if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
@@ -149,7 +149,7 @@ class PosStaleOrderData extends PosOrderData
             } else {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
-                $bundleChildren = $this->getBundleChildren($orderItem);
+                $bundleChildren = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
                 if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
@@ -179,7 +179,7 @@ class PosStaleOrderData extends PosOrderData
      * @return array|LinkInterface[]|void
      * @throws NoSuchEntityException
      */
-    public function getBundleChildren($orderItem)
+    public function getBundleChildren($orderItem, $storeId)
     {
         $children = [];
         $productId = $orderItem->getProductId();
