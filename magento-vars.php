@@ -71,11 +71,10 @@ if (isHttpHost("tw.sulwhasoo.com")
     || isHttpHost("mcstaging.gapm-bo1.amorepacific.com")) {
     $_SERVER["MAGE_RUN_CODE"] = "admin";
     $_SERVER["MAGE_RUN_TYPE"] = "website";
-} elseif (isHttpHost("vn.sulwhasoo.com")
-    || isHttpHost("mcprod.vn.sulwhasoo.com")
+} elseif (isHttpHost("sulwhasoo.com.vn")
+    || isHttpHost("mcprod.sulwhasoo.com.vn")
     || isHttpHost("vs.integration-5ojmyuq-kqevkj6gpg7si.ap-3.magentosite.cloud")
-    || isHttpHost("vs.dev-54ta5gq-kqevkj6gpg7si.ap-3.magentosite.cloud")
-    || isHttpHost("mcstaging.vn.sulwhasoo.com")) {
+    || isHttpHost("vs.dev-54ta5gq-kqevkj6gpg7si.ap-3.magentosite.cloud")) {
     $_SERVER["MAGE_RUN_CODE"] = "vn_sulwhasoo";
     $_SERVER["MAGE_RUN_TYPE"] = "store";
 }
