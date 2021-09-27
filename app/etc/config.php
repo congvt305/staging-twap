@@ -37,7 +37,7 @@ return [
             'vn_sulwhasoo_website' => [
                 'website_id' => '9',
                 'code' => 'vn_sulwhasoo_website',
-                'name' => 'VN Laneige vn_sulwhasoo_website',
+                'name' => 'VN Sulwhasoo Website',
                 'sort_order' => '0',
                 'default_group_id' => '9',
                 'is_default' => '0'
