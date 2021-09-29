@@ -395,7 +395,6 @@ class Product extends MainProduct
      */
     private function appendMultirowData(&$dataRow, $multiRawData)
     {
-        $entityId = $dataRow[self::ENTITY_ID];
         $productId = $dataRow['product_id'];
         $productLinkId = $dataRow['product_link_id'];
         $storeId = $dataRow['store_id'];
@@ -403,7 +402,11 @@ class Product extends MainProduct
         $type = $dataRow[self::COL_TYPE];
         $attributeSet = $dataRow[self::COL_ATTR_SET];
 
-        unset($dataRow[self::ENTITY_ID]);
+        if ($this->dataPersistor->get('gcrm_export_check')) {
+            $entityId = $dataRow[self::ENTITY_ID];
+            unset($dataRow[self::ENTITY_ID]);
+        }
+
         unset($dataRow['product_id']);
         unset($dataRow['product_link_id']);
         unset($dataRow['store_id']);
@@ -521,7 +524,11 @@ class Product extends MainProduct
         } elseif ($storeId != Store::DEFAULT_STORE_ID) {
             $dataRow[self::COL_STORE] = $this->_storeIdToCode[$storeId];
         }
-        $dataRow[self::ENTITY_ID] = $entityId;
+
+        if ($this->dataPersistor->get('gcrm_export_check')) {
+            $dataRow[self::ENTITY_ID] = $entityId;
+        }
+
         $dataRow[self::COL_SKU] = $sku;
         $dataRow[self::COL_ATTR_SET] = $attributeSet;
         $dataRow[self::COL_TYPE] = $type;
