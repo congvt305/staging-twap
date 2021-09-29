@@ -193,6 +193,10 @@ class Export extends ExportAlias
                 $this->tableEntity = 'quote_item';
                 $result = $this->_getEntityAdapter()->setQuoteItemsWriter($this->getQuoteItemsWriter())->export();
             } else {
+                if ($this->getEntity() == 'customer' || $this->getEntity() == 'customer_address' ||
+                    $this->getEntity() == 'catalog_product') {
+                    $this->dataPersistor->set('gcrm_export_check', true);
+                }
                 $result = $this->_getEntityAdapter()->setWriter($this->_getWriter())->export();
             }
             if (!$result) {
@@ -204,6 +208,11 @@ class Export extends ExportAlias
             }
             if ($result) {
                 $this->addLogComment([__('Exported %1 rows.', $countRows), __('The export is finished.')]);
+            }
+
+            if ($this->getEntity() == 'customer' || $this->getEntity() == 'customer_address' ||
+                $this->getEntity() == 'catalog_product') {
+                $this->dataPersistor->clear('gcrm_export_check');
             }
             return $result;
         } else {
