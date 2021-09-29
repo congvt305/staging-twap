@@ -73,6 +73,7 @@ if (isHttpHost("tw.sulwhasoo.com")
     $_SERVER["MAGE_RUN_TYPE"] = "website";
 } elseif (isHttpHost("sulwhasoo.com.vn")
     || isHttpHost("mcprod.sulwhasoo.com.vn")
+    || isHttpHost("mcstaging.sulwhasoo.com.vn")
     || isHttpHost("vs.integration-5ojmyuq-kqevkj6gpg7si.ap-3.magentosite.cloud")
     || isHttpHost("vs.dev-54ta5gq-kqevkj6gpg7si.ap-3.magentosite.cloud")) {
     $_SERVER["MAGE_RUN_CODE"] = "vn_sulwhasoo";
