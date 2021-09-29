@@ -233,9 +233,14 @@ class SapOrderConfirmData extends AbstractSapOrder
         $orderData = $this->getOrderInfo($incrementId);
 
         if ($orderData == null) {
-            throw new NoSuchEntityException(
+            $exception = new NoSuchEntityException(
                 __("Such order %1 does not exist. Check the data and try again", $incrementId)
             );
+            $this->logger->log('INFO', $exception->getMessage(), [
+                'order_id' => $incrementId,
+                'error_trace' => $exception->getTraceAsString()
+            ]);
+            throw $exception;
         }
 
         $invoice = $this->getInvoice($orderData->getEntityId());
