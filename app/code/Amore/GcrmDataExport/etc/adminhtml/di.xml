@@ -23,4 +23,9 @@
                 type="Amore\GcrmDataExport\Block\Adminhtml\Scheduled\Operation\Edit\Form\Export"/>
     <preference for="Magento\ScheduledImportExport\Block\Adminhtml\Scheduled\Operation\Edit\Form\Import"
                 type="Amore\GcrmDataExport\Block\Adminhtml\Scheduled\Operation\Edit\Form\Import"/>
+
+    <!-- Prefrences for including entity_id while exporting customer, address and product entity -->
+    <preference for="Magento\CustomerImportExport\Model\Export\Customer" type="Amore\GcrmDataExport\Override\Model\Export\Customer" />
+    <preference for="Magento\CustomerImportExport\Model\Export\Address" type="Amore\GcrmDataExport\Override\Model\Export\Address" />
+    <preference for="Magento\CatalogImportExport\Model\Export\Product" type="Amore\GcrmDataExport\Override\Model\Export\Product" />
 </config>
