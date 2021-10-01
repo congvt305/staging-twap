@@ -1,0 +1,26 @@
+<?php
+/** @var \Eguana\EventReservation\Block\Event\TextBanner $block */
+?>
+<?php if ($message = $block->getMessage()): ?>
+    <?php $backgroundColor = $block->getBgColor() ?>
+    <?php $hyperlink = $block->getHyperlink() ?>
+
+    <div class="fixed-text-banner"
+
+        <?php if ($backgroundColor !== '') echo 'style="background-color:' . $backgroundColor . '"'; ?>>
+
+        <?php if ($hyperlink !== ''): // print the open '<a>' tag ?>
+
+        <a href="<?= $hyperlink ?>" target="_blank" rel="noopener">
+
+            <?php endif; ?>
+
+            <span class="message"><?= $message ?></span>
+
+            <?php if ($hyperlink != ''): // print the close '</a>' tag ?>
+
+        </a>
+
+    <?php endif; ?>
+    </div>
+<?php endif; ?>

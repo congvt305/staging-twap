@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Model\Rule\Action\Discount;
 
@@ -25,7 +19,7 @@ class Spent extends AbstractDiscount
         $amount = max(1, $rule->getDiscountAmount());
         $step   = $rule->getDiscountStep();
 
-        if (!$step && $this->isSkipCalculation($rule->getRuleId())) {
+        if (!$step || $this->isSkipCalculation($rule->getRuleId())) {
             return 0;
         }
 
@@ -92,7 +86,7 @@ class Spent extends AbstractDiscount
         $validItems = [];
 
         foreach ($this->_getAllItems($item) as $item) {
-            if ($rule->getActions()->validate($item)) {
+            if ($rule->getActions()->validate($item) && $rule->getRuleId() != $item->getAmpromoRuleId()) {
                 $validItems[] = $item;
             }
         }

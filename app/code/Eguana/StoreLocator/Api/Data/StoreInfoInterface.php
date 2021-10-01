@@ -24,6 +24,7 @@ interface StoreInfoInterface
     const TELEPHONE = 'telephone';
     const AVAILABLE_FOR_EVENTS = 'available_for_events';
     const AVAILABLE_FOR_REDEMPTION = 'available_for_redemption';
+    const AVAILABLE_FOR_STORE_LIST = 'available_for_store_list';
     const LOCATION = 'location';
     const CREATED_AT = 'created_at';
     const EMAIL = 'email';
@@ -46,6 +47,7 @@ interface StoreInfoInterface
     public function getTiming();
     public function getStoreType();
     public function getArea();
+    public function getAvailableForStoreList();
 
     /*
     *  Setters
@@ -62,4 +64,5 @@ interface StoreInfoInterface
     public function setTiming($timing);
     public function setStoreType($storeType);
     public function setArea($area);
+    public function setAvailableForStoreList($availableForStoreList);
 }

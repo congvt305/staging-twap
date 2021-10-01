@@ -69,10 +69,15 @@ class POSCancelledOrderSender
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
             $status = $this->responseCheck($response);
             if ($status) {
-                $this->posOrderData->updatePosCancelledOrderSendFlag($order->getEntityId());
+                $this->posOrderData->updatePosCancelledOrderSendFlag($order);
             }
         } catch (\Exception $exception) {
-            $this->pointsIntegrationLogger->info($exception->getMessage());
+            $message = 'POS Integration Fail: ' . $order->getIncrementId();
+            $this->pointsIntegrationLogger->info($message . $exception->getMessage());
+            $response = $exception->getMessage();
+        } catch (\Throwable $exception) {
+            $message = 'POS Integration Fail: ' . $order->getIncrementId();
+            $this->pointsIntegrationLogger->info($message . $exception->getMessage());
             $response = $exception->getMessage();
         }
 
@@ -81,15 +86,11 @@ class POSCancelledOrderSender
 
     /**
      * @param $response
-     * @return int
+     * @return bool
      */
-    public function responseCheck($response): int
+    public function responseCheck($response): bool
     {
-        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
-            return 1;
-        } else {
-            return 0;
-        }
+        return isset($response['message']) && strtolower($response['message']) == 'success';
     }
 
     /**

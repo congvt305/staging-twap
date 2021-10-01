@@ -43,6 +43,29 @@
             }
         }
     }
+    [class*="categorypath-homme"].catalog-category-view.page-layout-1column .category-view ~ .page-main,
+    [class*="categorypath-make-up"].catalog-category-view.page-layout-1column .category-view ~ .page-main,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main {
+        position: relative;
+    }
+    [class*="categorypath-homme"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-make-up"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper {
+        display: block;
+        position: absolute;
+        top: 100px;
+    }
+    [class*="categorypath-homme"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-make-up"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter {
+        padding-bottom: 0;
+    }
+    [class*="categorypath-homme"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products,
+    [class*="categorypath-make-up"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products {
+        padding-bottom: 60px;
+    }
+
     .block-redemption-detail {
         .block {
             &:extend(.abs-account-blocks all);

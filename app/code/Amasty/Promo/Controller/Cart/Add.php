@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Controller\Cart;
 
@@ -68,7 +62,9 @@ class Add extends \Magento\Framework\App\Action\Action
         'giftcard_recipient_email',
         'giftcard_message',
         'giftcard_amount',
-        'custom_giftcard_amount'
+        'custom_giftcard_amount',
+        'bundle_option',
+        'bundle_option_qty',
     ];
 
     public function __construct(

@@ -14,6 +14,7 @@ use Eguana\EventReservation\Api\EventRepositoryInterface;
 use Eguana\EventReservation\Api\UserReservationRepositoryInterface;
 use Eguana\EventReservation\Helper\ConfigData;
 use Eguana\EventReservation\Model\Email\EmailSender;
+use Eguana\EventReservation\Model\UrlShortener;
 use Eguana\StoreSms\Api\SmsManagementInterface;
 use Magento\Email\Model\Template;
 use Magento\Email\Model\TemplateFactory;
@@ -69,6 +70,8 @@ class SmsSender
      */
     private $logger;
 
+    private $urlShortener;
+
     /**
      * @param ConfigData $configHelper
      * @param EmailSender $emailSender
@@ -87,7 +90,8 @@ class SmsSender
         StoreManagerInterface $storeManager,
         SmsManagementInterface $smsManagement,
         EventRepositoryInterface $eventRepository,
-        UserReservationRepositoryInterface $userReservationRepository
+        UserReservationRepositoryInterface $userReservationRepository,
+        UrlShortener $urlShortener
     ) {
         $this->logger = $logger;
         $this->emailSender = $emailSender;
@@ -97,6 +101,7 @@ class SmsSender
         $this->templateFactory = $templateFactory;
         $this->eventRepository = $eventRepository;
         $this->userReservationRepository = $userReservationRepository;
+        $this->urlShortener = $urlShortener;
     }
 
     /**
@@ -147,7 +152,9 @@ class SmsSender
             }
             $token = $reservation->getAuthToken() . '_C';
             $params['confirmLink'] = $this->emailSender->getConfirmLink($userReserveId, $token);
+            $params['confirmLink'] = $this->urlShortener->shortenUrl($params['confirmLink'], $websiteId);
             $params['cancelLink'] = $this->emailSender->getCancelLink($userReserveId, $token);
+            $params['cancelLink'] = $this->urlShortener->shortenUrl($params['cancelLink'], $websiteId);
             $customerName = $reservation->getName();
             $smsContent = $event->getSmsContent();
             if ($smsContent) {

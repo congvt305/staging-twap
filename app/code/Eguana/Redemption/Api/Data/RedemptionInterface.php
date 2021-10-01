@@ -38,6 +38,11 @@ interface RedemptionInterface
     const REDEMPTION_COMPLETION_BLOCK = 'redemption_completion_block';
     const REDEMPTION_COMPLETION_MESSAGE = 'redemption_completion_message';
     const VVIP_LIST = 'vvip_list';
+    const FIXED_TEXT_BANNER_INDEX = 'text_banner_index';
+    const FIXED_TEXT_BANNER_INDEX_HYPERLINK = 'text_banner_index_hyperlink';
+    const FIXED_TEXT_BANNER_SUCCESS = 'text_banner_success';
+    const FIXED_TEXT_BANNER_SUCCESS_HYPERLINK = 'text_banner_success_hyperlink';
+    const BG_COLOR_TEXT_BANNER = 'bg_color_text_banner';
     /**#@-*/
 
     /**
@@ -305,4 +310,59 @@ interface RedemptionInterface
      * @return $this
      */
     public function setVvipList($list);
+
+    /**
+     * @return string
+     */
+    public function getTextBannerIndex();
+
+    /**
+     * @param string $text
+     * @return $this
+     */
+    public function setTextBannerIndex($text);
+
+    /**
+     * @return string
+     */
+    public function getTextBannerSuccess();
+
+    /**
+     * @param string $text
+     * @return $this
+     */
+    public function setTextBannerSuccess($text);
+
+    /**
+     * @return string
+     */
+    public function getBgColorTextBanner();
+
+    /**
+     * @param string $color
+     * @return $this
+     */
+    public function setBgColorTextBanner($color);
+
+    /**
+     * @return string
+     */
+    public function getTextBannerIndexHyperlink();
+
+    /**
+     * @param string $link
+     * @return $this
+     */
+    public function setTextBannerIndexHyperlink($link);
+
+    /**
+     * @return string
+     */
+    public function getTextBannerSuccessHyperlink();
+
+    /**
+     * @param string $link
+     * @return $this
+     */
+    public function setTextBannerSuccessHyperlink($link);
 }

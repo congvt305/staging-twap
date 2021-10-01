@@ -1,11 +1,7 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 namespace Amasty\Promo\Model\Rule\Action\Discount;
+
+use Magento\Catalog\Model\Product\Type;
 
 /**
  * Action name: Auto add the same product
@@ -24,6 +20,10 @@ class SameProduct extends AbstractDiscount
             return;
         }
 
+        if ($item->getParentItem() && $item->getParentItem()->getProductType() == Type::TYPE_BUNDLE) {
+            $item = $item->getParentItem();
+        }
+
         $qty = $this->_getFreeItemsQty($rule, $item);
 
         if ($qty < 1 || $this->_skip($rule, $item)) {
@@ -38,6 +38,8 @@ class SameProduct extends AbstractDiscount
         ];
         if ($item->getProductType() === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
             $sku = $item->getSku();
+        } elseif ($item->getParentItem() && $item->getParentItem()->getProductType() == Type::TYPE_BUNDLE) {
+            $sku = $item->getParentItem()->getProduct()->getData('sku');
         } else {
             $sku = $item->getProduct()->getData('sku');
         }
@@ -59,7 +61,7 @@ class SameProduct extends AbstractDiscount
      */
     protected function isItemValid($item)
     {
-        return !$item->getParentItem()
+        return (!$item->getParentItem() || $item->getParentItem()->getProductType() == Type::TYPE_BUNDLE)
             && $item->getRealProductType() !== \Magento\Downloadable\Model\Product\Type::TYPE_DOWNLOADABLE
             && !$this->promoItemHelper->isPromoItem($item);
     }

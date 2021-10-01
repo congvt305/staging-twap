@@ -1,4 +1,5 @@
 "Please update Amasty Base module. Re-upload it and replace all the files.","Please update Amasty Base module. Re-upload it and replace all the files."
+"There is no defined renderer for ""%1"" option type.","There is no defined renderer for ""%1"" option type."
 "Add to cart","Add to cart"
 "Free Items","Free Items"
 "Free gift <strong>%1</strong> was added to your shopping cart","Free gift <strong>%1</strong> was added to your shopping cart"
@@ -33,6 +34,10 @@ Amount,Amount
 "Amount in %1","Amount in %1"
 "Minimum: %1","Minimum: %1"
 "Maximum: %1","Maximum: %1"
+None,None
+"Choose a selection...","Choose a selection..."
+"Customize %1","Customize %1"
+"No options of this product are available.","No options of this product are available."
 "Choose an Option...","Choose an Option..."
 "Each N-th","Each N-th"
 "Number Of Gift Items","Number Of Gift Items"
@@ -41,7 +46,7 @@ Amount,Amount
 "Free Gift","Free Gift"
 Information,Information
 General,General
-"Add Simple/Virtual/Downloadable Products Automatically, Without Confirmation","Add Simple/Virtual/Downloadable Products Automatically, Without Confirmation"
+"Add Simple/Virtual/Downloadable/Bundle Products Automatically, Without Confirmation","Add Simple/Virtual/Downloadable/Bundle Products Automatically, Without Confirmation"
 "Products will be added automatically only if there are no options to specify","Products will be added automatically only if there are no options to specify"
 "Auto Add Free Items Based on Cart Amount","Auto Add Free Items Based on Cart Amount"
 "Applicable only for Every X Spent Free Gift Rules","Applicable only for Every X Spent Free Gift Rules"
