@@ -35,11 +35,11 @@ return [
                 'is_default' => '0'
             ],
             'vn_sulwhasoo_website' => [
-                'website_id' => '9',
+                'website_id' => '10',
                 'code' => 'vn_sulwhasoo_website',
                 'name' => 'VN Sulwhasoo Website',
                 'sort_order' => '0',
-                'default_group_id' => '9',
+                'default_group_id' => '10',
                 'is_default' => '0'
             ]
         ],
@@ -76,12 +76,12 @@ return [
                 'default_store_id' => '8',
                 'code' => 'vn_laneige_website_store'
             ],
-            9 => [
-                'group_id' => '9',
-                'website_id' => '9',
+            10 => [
+                'group_id' => '10',
+                'website_id' => '10',
                 'name' => 'VN Sulwhasoo Website Store',
                 'root_category_id' => '533',
-                'default_store_id' => '9',
+                'default_store_id' => '10',
                 'code' => 'vn_sulwhasoo_website_store'
             ]
         ],
@@ -123,10 +123,10 @@ return [
                 'is_active' => '1'
             ],
             'vn_sulwhasoo' => [
-                'store_id' => '9',
+                'store_id' => '10',
                 'code' => 'vn_sulwhasoo',
-                'website_id' => '9',
-                'group_id' => '9',
+                'website_id' => '10',
+                'group_id' => '10',
                 'name' => 'VN Sulwhasoo Store View',
                 'sort_order' => '0',
                 'is_active' => '1'
