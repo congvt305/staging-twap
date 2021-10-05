@@ -293,6 +293,10 @@ class PosOrderData
         $orderItemData = $this->priceCorrector($orderDiscount, $itemsDiscountAmount, $orderItemData, 'dcAmt');
         $orderItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $orderItemData, 'netSalAmt');
 
+        if (count($orderItems) > count($orderItemData)) {
+            throw new \Exception('Missing items');
+        }
+
         return $orderItemData;
     }
 
