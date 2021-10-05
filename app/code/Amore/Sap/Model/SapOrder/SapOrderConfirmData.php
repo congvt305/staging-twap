@@ -231,18 +231,23 @@ class SapOrderConfirmData extends AbstractSapOrder
     {
         /** @var Order $orderData */
         $orderData = $this->getOrderInfo($incrementId);
+
+        if ($orderData == null) {
+            $exception = new NoSuchEntityException(
+                __("Such order %1 does not exist. Check the data and try again", $incrementId)
+            );
+            $this->logger->log('INFO', $exception->getMessage(), [
+                'order_id' => $incrementId,
+                'error_trace' => $exception->getTraceAsString()
+            ]);
+            throw $exception;
+        }
+
         $invoice = $this->getInvoice($orderData->getEntityId());
         $storeId = $orderData->getStoreId();
         $shippingMethod = $orderData->getShippingMethod();
         $trackingNumbers = implode(",", $this->getTrackNumber($orderData));
-
         $bindData = [];
-
-        if ($orderData == null) {
-            throw new NoSuchEntityException(
-                __("Such order %1 does not exist. Check the data and try again", $incrementId)
-            );
-        }
 
         if ($shippingMethod == 'gwlogistics_CVS' && !$orderData->hasShipments()) {
             throw new ShipmentNotExistException(
