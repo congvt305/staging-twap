@@ -731,6 +731,7 @@ return [
         'Eguana_MobileLogin' => 1,
         'Eguana_EventReservation' => 1,
         'Amore_GcrmBanner' => 1,
+        'Amore_PersistentInCart' => 1,
         'Eguana_CustomCheckout' => 1,
         'Eguana_VideoBoard' => 1,
         'Fastly_Cdn' => 1,

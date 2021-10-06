@@ -12,7 +12,4 @@
         <plugin name="Eguana_CustomCheckout::Checkout_Summary" type="Eguana\CustomCheckout\Plugin\Model\DefaultConfigProvider" />
     </type>
     <preference for="\Magento\Checkout\CustomerData\DefaultItem" type="Eguana\CustomCheckout\Rewrite\Checkout\CustomerData\DefaultItem" />
-    <type name="Magento\Sales\Model\ResourceModel\Collection\ExpiredQuotesCollection">
-        <plugin name="cleanExpiredQuotesPlugin" disabled="true" />
-    </type>
 </config>
