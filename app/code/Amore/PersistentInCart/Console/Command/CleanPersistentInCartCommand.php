@@ -21,6 +21,11 @@ class CleanPersistentInCartCommand extends Command
     /** @var \Magento\Framework\App\State **/
     private $state;
 
+    /**
+     * @param QuoteCollectionFactory|null $quoteCollectionFactory
+     * @param \Magento\Framework\App\State $state
+     * @param string|null $name
+     */
     public function __construct(
         QuoteCollectionFactory $quoteCollectionFactory = null,
         \Magento\Framework\App\State $state,
@@ -32,7 +37,9 @@ class CleanPersistentInCartCommand extends Command
         parent::__construct($name);
     }
 
-
+    /**
+     * Define command
+     */
     protected function configure()
     {
         $this->setName('persistent:quote:clean');
@@ -42,6 +49,12 @@ class CleanPersistentInCartCommand extends Command
     }
 
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|void
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->state->setAreaCode(\Magento\Framework\App\Area::AREA_CRONTAB);
