@@ -566,6 +566,7 @@ return [
         'Eguana_StoreSms' => 1,
         'Amore_CustomerRegistration' => 1,
         'Amore_GcrmDataExport' => 1,
+        'Amore_PersistentInCart' => 1,
         'Amore_PointsIntegration' => 1,
         'Ecpay_Ecpaypayment' => 1,
         'Dotdigitalgroup_Email' => 1,
