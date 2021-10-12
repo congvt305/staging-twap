@@ -76,32 +76,7 @@ hooks:
     build: |
         set -e
 
-        echo "\n================================== Install and configure Baler - Start =================================="
-        echo "================= Install and configure Baler - Upgrade node version 14.4.0 - Start ================="
-        unset NPM_CONFIG_PREFIX
-        curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | dash
-        export NVM_DIR="$HOME/.nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        nvm current
-        nvm install 14.4.0
-        echo "================= Install and configure Baler - Upgrade node version 14.4.0 - End ================="
-        echo "================= Install and configure Baler - Install AMD module baler - Start  ================="
-        echo "================= See https://github.com/magento/baler for more information ================="
-        git clone https://github.com/eguanacommerce/baler.git
-        cd baler
-        npm install
-        npm test
-        npm run build
-        npm link
-        cd ..
-        echo "================= Install and configure Baler - Install AMD module baler - End =================\n"
-
         php ./vendor/bin/ece-tools run scenario/build/generate.xml
-
-        echo "\n================================== Install and configure Baler - Run baler - Start =================================="
-        baler
-        echo "================================== Install and configure Baler - Run baler - End ==================================\n"
-
         php ./vendor/bin/ece-tools run scenario/build/transfer.xml
     # We run deploy hook after your application has been deployed and started.
     deploy: |
