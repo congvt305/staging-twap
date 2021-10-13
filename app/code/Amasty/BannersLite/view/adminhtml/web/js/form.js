@@ -31,6 +31,8 @@ define([
                 'aftern_fixdisc',
                 'setof_percent',
                 'setof_fixed',
+                'tiered_wholecheaper',
+                'tiered_buyxgetcheapern',
                 //Free Gift Rules
                 'ampromo_product',
                 'ampromo_items',

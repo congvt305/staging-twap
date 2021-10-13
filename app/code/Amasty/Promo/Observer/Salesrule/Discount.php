@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Observer\Salesrule;
 
@@ -12,6 +6,7 @@ use Amasty\Promo\Model\DiscountCalculator;
 use Amasty\Promo\Model\Rule;
 use Amasty\Promo\Model\RuleResolver;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Event\Observer;
@@ -128,6 +123,7 @@ class Discount implements ObserverInterface
         if (!in_array($rule->getSimpleAction(), self::PROMO_RULES)
             || !$this->promoItemHelper->isPromoItem($item)
             || (int)$rule->getId() !== (int)$item->getAmpromoRuleId()
+            || ($item->getParentItem() && $item->getParentItem()->getProductType() == Type::TYPE_BUNDLE)
         ) {
             return false;
         }
@@ -138,7 +134,12 @@ class Discount implements ObserverInterface
         ) {
             return false;
         }
-        $itemSku = $item->getProduct()->getData('sku');
+
+        if ($item->getParentItem() && $item->getParentItem()->getProductType() == 'bundle') {
+            $itemSku = $item->getParentItem()->getProduct()->getData('sku');
+        } else {
+            $itemSku = $item->getProduct()->getData('sku');
+        }
 
         if ($rule->getSimpleAction() === Rule::SAME_PRODUCT) {
             return true;

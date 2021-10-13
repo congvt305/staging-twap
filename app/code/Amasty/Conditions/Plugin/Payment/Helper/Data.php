@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Conditions
- */
-
 
 namespace Amasty\Conditions\Plugin\Payment\Helper;
 
@@ -78,7 +72,12 @@ class Data
             if (isset($data['title'])) {
                 $methods[$code] = $data['title'];
             } else {
-                $methods[$code] = $subject->getMethodInstance($code)->getConfigData('title', $store);
+                try {
+                    $method = $subject->getMethodInstance($code);
+                    $methods[$code] = $method->getConfigData('title', $store);
+                } catch (\Exception $exception) {
+                    continue;
+                }
             }
             if ($asLabelValue && $withGroups && isset($data['group'])) {
                 $groupRelations[$code] = $data['group'];
@@ -94,24 +93,37 @@ class Data
             asort($methods);
         }
         if ($asLabelValue) {
-            $labelValues = [];
-            foreach ($methods as $code => $title) {
-                $labelValues[$code] = [];
-            }
-            foreach ($methods as $code => $title) {
-                if (isset($groups[$code])) {
-                    $labelValues[$code]['label'] = $title;
-                } elseif (isset($groupRelations[$code])) {
-                    unset($labelValues[$code]);
-                    $labelValues[$groupRelations[$code]]['value'][$code] = ['value' => $code, 'label' => $title];
-                } else {
-                    $labelValues[$code] = ['value' => $code, 'label' => $title];
-                }
-            }
-
-            return $labelValues;
+            return $this->getLabelValues($methods, $groupRelations, $groups);
         }
 
         return $methods;
+    }
+
+    /**
+     * @param array $methods
+     * @param array $groupRelations
+     * @param array $groups
+     * @return array
+     */
+    private function getLabelValues(array $methods, array $groupRelations, array $groups): array
+    {
+        $labelValues = [];
+
+        foreach ($methods as $code => $title) {
+            $labelValues[$code] = [];
+        }
+
+        foreach ($methods as $code => $title) {
+            if (isset($groups[$code])) {
+                $labelValues[$code]['label'] = $title;
+            } elseif (isset($groupRelations[$code])) {
+                unset($labelValues[$code]);
+                $labelValues[$groupRelations[$code]]['value'][$code] = ['value' => $code, 'label' => $title];
+            } else {
+                $labelValues[$code] = ['value' => $code, 'label' => $title];
+            }
+        }
+
+        return $labelValues;
     }
 }

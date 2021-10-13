@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Model;
 
@@ -45,7 +39,12 @@ class DiscountCalculator
         /** @var Rule $promoRule */
         $promoRule = $rule->getAmpromoRule();
         $promoDiscount = trim($promoRule->getItemsDiscount());
-        $itemPrice = $item->getBasePrice();
+
+        if ($item->getTaxAmount()) {
+            $itemPrice = $item->getBasePriceInclTax();
+        } else {
+            $itemPrice = $item->getBasePrice();
+        }
 
         switch (true) {
             case $promoDiscount === "100%":
