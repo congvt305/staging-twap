@@ -52,10 +52,43 @@ class Product extends MainProduct
     /**#@-*/
 
     /**
+     * @var array
+     */
+    private $excludeHeadColumns = [
+        'description',
+        'short_description',
+        'base_image_label',
+        'small_image_label',
+        'thumbnail_image_label'
+    ];
+
+    /**
      * @var DataPersistorInterface
      */
     private $dataPersistor;
 
+    /**
+     * @param TimezoneInterface $localeDate
+     * @param Config $config
+     * @param ResourceConnection $resource
+     * @param StoreManagerInterface $storeManager
+     * @param LoggerInterface $logger
+     * @param CollectionFactory $collectionFactory
+     * @param ConfigInterface $exportConfig
+     * @param ProductFactory $productFactory
+     * @param EavAttributeCollectionFactory $attrSetColFactory
+     * @param CategoryCollectionFactory $categoryColFactory
+     * @param ItemFactory $itemFactory
+     * @param OptionCollectionFactory $optionColFactory
+     * @param AttributeCollectionFactory $attributeColFactory
+     * @param MainProduct\Type\Factory $_typeFactory
+     * @param ProductEntity\LinkTypeProvider $linkTypeProvider
+     * @param RowCustomizerInterface $rowCustomizer
+     * @param DataPersistorInterface $dataPersistor
+     * @param array $dateAttrCodes
+     * @param ProductFilterInterface|null $filter
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function __construct(
         TimezoneInterface $localeDate,
         Config $config,
@@ -167,6 +200,10 @@ class Product extends MainProduct
             );
 
             if ($this->dataPersistor->get('gcrm_export_check')) {
+                $this->_headerColumns = array_diff(
+                    $this->_headerColumns,
+                    $this->excludeHeadColumns
+                );
                 array_splice(
                     $this->_headerColumns,
                     0,
