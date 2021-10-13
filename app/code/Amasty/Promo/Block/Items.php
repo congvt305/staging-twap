@@ -1,13 +1,8 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Block;
 
+use Magento\Bundle\Model\Product\Type as BundleType;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
@@ -264,6 +259,14 @@ class Items extends \Magento\Framework\View\Element\Template
                 }
             }
 
+            $jsonConfig = $this->jsonEncoder->encode($priceConfig);
+        }
+        if ($product->getTypeId() === BundleType::TYPE_CODE) {
+            $priceConfig = $this->jsonDecoder->decode($jsonConfig);
+            if (isset($priceConfig['prices']['basePrice']['amount'])) {
+                $baseAmount = &$priceConfig['prices']['basePrice']['amount'];
+                $baseAmount = $product->getPrice() * $this->store->getCurrentCurrencyRate();
+            }
             $jsonConfig = $this->jsonEncoder->encode($priceConfig);
         }
 

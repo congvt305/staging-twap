@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_BannersLite
- */
-
 
 namespace Amasty\BannersLite\Model\SalesRule;
 
@@ -215,13 +209,13 @@ class SaveHandler implements ExtensionInterface
             if ($data instanceof BannerInterface) {
                 $data = $data->getData();
             }
-            if (!$promoBanner->getBannerImage()) {
-                $this->isBannerModified = true;
-            }
 
-            if (!$this->isEqualImage($promoBanner, $data) && $promoBanner->getBannerImage()) {
-                $this->imageProcessor->deleteImage($promoBanner->getBannerImage());
-                $promoBanner->setBannerImage(null);
+            if (!$this->isEqualImage($promoBanner, $data)) {
+                if ($promoBanner->getBannerImage()) {
+                    //delete old banner
+                    $this->imageProcessor->deleteImage($promoBanner->getBannerImage());
+                    $promoBanner->setBannerImage(null);
+                }
                 $this->isBannerModified = true;
             }
 
@@ -244,14 +238,14 @@ class SaveHandler implements ExtensionInterface
     }
 
     /**
-     * Compare images and delete old image
+     * Compare images
      *
      * @param \Amasty\BannersLite\Model\Banner $promoBanner
      * @param array $newData
      *
      * @return bool
      */
-    private function isEqualImage(\Amasty\BannersLite\Model\Banner $promoBanner, $newData)
+    private function isEqualImage(\Amasty\BannersLite\Model\Banner $promoBanner, array $newData): bool
     {
         if (!$promoBanner->getBannerImage() xor !isset($newData[BannerInterface::BANNER_IMAGE])) {
             return false;

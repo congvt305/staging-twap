@@ -1,11 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
--->
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Amasty\Promo\Api\Data\GiftRuleInterface" type="Amasty\Promo\Model\Rule"/>
@@ -118,5 +111,23 @@
     <!-- Add new rule in conditions -->
     <type name="Magento\SalesRule\Model\Rule\Condition\Product">
         <plugin name="AmastyPromo::add_conditin_for_promo_item" type="Amasty\Promo\Plugin\SalesRule\Conditions\Product"/>
+    </type>
+    <type name="Magento\Weee\Model\Tax">
+        <plugin name="AmastyPromo::fixed_product_tax" type="Amasty\Promo\Plugin\Weee\Model\TaxPlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\AbstractItem">
+        <plugin name="AmastyPromo::skip_child_check"
+                type="Amasty\Promo\Plugin\Quote\Model\Quote\Item\AbstractItem\SkipChildCheck" sortOrder="10"/>
+    </type>
+    <type name="Magento\Sales\Model\Order\Item">
+        <plugin name="AmastyPromo::skip_child_check" type="Amasty\Promo\Plugin\Sales\Model\Order\Item\SkipChildCheck"/>
+    </type>
+    <type name="Magento\Sales\Model\Order\Creditmemo\Item">
+        <plugin name="AmastyPromo::adjust_bundle_qty" type="Amasty\Promo\Plugin\Sales\Model\Order\Creditmemo\Item\AdjustBundleQty"/>
+        <plugin name="AmastyPromo::reset_bundle_parent_price" type="Amasty\Promo\Plugin\Sales\Model\Order\Creditmemo\Item\ResetBundlePrice"/>
+    </type>
+    <!-- Added compatibility with changing the number of products on the OSC -->
+    <type name="Amasty\Checkout\Api\ItemManagementInterface">
+        <plugin name="AmastyPromo::update_qty_item" type="Amasty\Promo\Plugin\Checkout\Model\ItemManagementPlugin"/>
     </type>
 </config>

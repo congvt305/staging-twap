@@ -23,11 +23,15 @@ use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Item;
+use Amore\PointsIntegration\Logger\Logger;
+use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
+use Magento\Store\Model\ScopeInterface;
 
 class PosOrderData
 {
     const POS_ORDER_TYPE_ORDER = '000010';
     const POS_ORDER_TYPE_CANCEL = '000030';
+    const SKU_PREFIX_XML_PATH = 'sap/mall_info/sku_prefix';
 
     /**
      * @var Config
@@ -52,7 +56,7 @@ class PosOrderData
     /**
      * @var ProductRepositoryInterface
      */
-    private $productRepository;
+    protected $productRepository;
     /**
      * @var ProductLinkManagementInterface
      */
@@ -60,7 +64,7 @@ class PosOrderData
     /**
      * @var OrderItemRepositoryInterface
      */
-    private $orderItemRepository;
+    protected $orderItemRepository;
     /**
      * @var DateTime
      */
@@ -70,10 +74,18 @@ class PosOrderData
      */
     private $resourceConnection;
 
+
+    /**
+     * @var CollectionFactory
+     */
     private $orderCollectionFactory;
 
     /**
-     * PosOrderData constructor.
+     * @var Logger
+     */
+    private $pointsIntegrationLogger;
+
+    /**
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -84,20 +96,22 @@ class PosOrderData
      * @param OrderItemRepositoryInterface $orderItemRepository
      * @param DateTime $dateTime
      * @param ResourceConnection $resourceConnection
-     * @param \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
+     * @param CollectionFactory $orderCollectionFactory
+     * @param Logger $pointsIntegrationLogger
      */
     public function __construct(
-        Config $config,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        OrderRepositoryInterface $orderRepository,
-        InvoiceRepositoryInterface $invoiceRepository,
-        CustomerRepositoryInterface $customerRepository,
-        ProductRepositoryInterface $productRepository,
+        Config                         $config,
+        SearchCriteriaBuilder          $searchCriteriaBuilder,
+        OrderRepositoryInterface       $orderRepository,
+        InvoiceRepositoryInterface     $invoiceRepository,
+        CustomerRepositoryInterface    $customerRepository,
+        ProductRepositoryInterface     $productRepository,
         ProductLinkManagementInterface $productLinkManagement,
-        OrderItemRepositoryInterface $orderItemRepository,
-        DateTime $dateTime,
-        ResourceConnection $resourceConnection,
-        \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
+        OrderItemRepositoryInterface   $orderItemRepository,
+        DateTime                       $dateTime,
+        ResourceConnection             $resourceConnection,
+        CollectionFactory              $orderCollectionFactory,
+        Logger                         $pointsIntegrationLogger
     )
     {
         $this->config = $config;
@@ -111,10 +125,11 @@ class PosOrderData
         $this->dateTime = $dateTime;
         $this->resourceConnection = $resourceConnection;
         $this->orderCollectionFactory = $orderCollectionFactory;
+        $this->pointsIntegrationLogger = $pointsIntegrationLogger;
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $order
+     * @param Order $order
      * @return array
      * @throws NoSuchEntityException
      */
@@ -122,7 +137,8 @@ class PosOrderData
     {
         $customer = $order->getCustomerId() ? $this->getCustomer($order->getCustomerId()) : null;
         $websiteId = $order->getStore()->getWebsiteId();
-        $posIntegrationNumber = $customer ? $customer->getCustomAttribute('integration_number')->getValue() : null;
+        $posIntegrationNumber = $customer && $customer->getCustomAttribute('integration_number') ?
+            $customer->getCustomAttribute('integration_number')->getValue() : null;
 
         $orderItemData = $this->getItemData($order);
         $couponCode = $order->getCouponCode();
@@ -150,7 +166,8 @@ class PosOrderData
     {
         $customer = $order->getCustomerId() ? $this->getCustomer($order->getCustomerId()) : null;
         $websiteId = $order->getStore()->getWebsiteId();
-        $posIntegrationNumber = $customer ? $customer->getCustomAttribute('integration_number')->getValue() : null;
+        $posIntegrationNumber = $customer && $customer->getCustomAttribute('integration_number') ?
+            $customer->getCustomAttribute('integration_number')->getValue() : null;
 
         $orderItemData = $this->getItemData($order);
         $couponCode = $order->getCouponCode();
@@ -196,7 +213,7 @@ class PosOrderData
         $itemsSubtotal = 0;
         $itemsDiscountAmount = 0;
         $itemsGrandTotal = 0;
-
+        $skuPrefix = $this->getSKUPrefix($order->getStoreId()) ?: '';
         $orderItems = $order->getAllVisibleItems();
 
         /** @var Item $orderItem */
@@ -206,9 +223,10 @@ class PosOrderData
                 $itemSubtotal = $this->simpleAndConfigurableSubtotal($orderItem);
                 $itemTotalDiscount = $this->simpleAndConfigurableTotalDiscount($orderItem);
                 $itemGrandTotal = $itemSubtotal - $itemTotalDiscount;
+                $stripSku = str_replace($skuPrefix, '', $orderItem->getSku());
 
                 $orderItemData[] = [
-                    'prdCD' => $orderItem->getSku(),
+                    'prdCD' => $stripSku,
                     'qty' => (int)$orderItem->getQtyOrdered(),
                     'price' => (int)$orderItem->getOriginalPrice(),
                     'salAmt' => (int)$itemSubtotal,
@@ -227,6 +245,7 @@ class PosOrderData
 
                 foreach ($bundleChildren as $bundleChild) {
                     $itemId = $orderItem->getItemId();
+                    $stripSku = str_replace($skuPrefix, '', $bundleChild->getSku());
                     $bundleChildFromOrder = $this->getBundleChildFromOrder($itemId, $bundleChild->getSku());
                     if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
                         $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
@@ -243,14 +262,15 @@ class PosOrderData
                     $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($priceGap)) / $bundleChild->getQty();
 
                     $itemTotalDiscount = abs(round(
-                            $bundleChildDiscountAmount +
-                            (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) +
-                            $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered()));
+                        $bundleChildDiscountAmount +
+                        (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) +
+                        $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered()
+                    ));
 
                     $bundleChildGrandTotal = $bundleChildSubtotal - $itemTotalDiscount;
 
                     $orderItemData[] = [
-                        'prdCD' => $bundleChild->getSku(),
+                        'prdCD' => $stripSku,
                         'qty' => (int)$bundleChildFromOrder->getQtyOrdered(),
                         'price' => (int)$bundleChildPrice,
                         'salAmt' => (int)$bundleChildSubtotal,
@@ -272,6 +292,10 @@ class PosOrderData
         $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'salAmt');
         $orderItemData = $this->priceCorrector($orderDiscount, $itemsDiscountAmount, $orderItemData, 'dcAmt');
         $orderItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $orderItemData, 'netSalAmt');
+
+        if (count($orderItems) > count($orderItemData)) {
+            throw new \Exception('Missing items');
+        }
 
         return $orderItemData;
     }
@@ -313,7 +337,7 @@ class PosOrderData
     }
 
     /**
-     * @param $order \Magento\Sales\Model\Order
+     * @param $order Order
      * @throws NoSuchEntityException
      * @throws \Exception
      */
@@ -345,7 +369,7 @@ class PosOrderData
     }
 
     /**
-     * @param $order \Magento\Sales\Model\Order
+     * @param $order Order
      * @throws NoSuchEntityException
      * @throws \Exception
      */
@@ -506,25 +530,35 @@ class PosOrderData
     }
 
     /**
-     * @param $orderId
+     * @param Order $order
      */
-    public function updatePosSendCheck($orderId)
+    public function updatePosPaidOrderSendFlag(Order $order)
     {
-        $tableName = $this->resourceConnection->getTableName('sales_order');
-        $connection = $this->resourceConnection->getConnection();
-        $bind = ['pos_order_paid_sent' => true, 'pos_order_paid_send' => false];
-        $connection->update($tableName, $bind, ['entity_id = ?' => $orderId]);
+        try {
+            $order->setData('pos_order_paid_sent', true);
+            $order->setData('pos_order_paid_send', false);
+            $comment = __('Send paid info to POS successfully');
+            $order->addCommentToStatusHistory($comment);
+            $this->orderRepository->save($order);
+        } catch (\Exception $exception) {
+            $this->pointsIntegrationLogger->err($exception->getMessage());
+        }
     }
 
     /**
-     * @param $orderId
+     * @param Order $order
      */
-    public function updatePosCancelledOrderSendFlag($orderId)
+    public function updatePosCancelledOrderSendFlag(Order $order)
     {
-        $tableName = $this->resourceConnection->getTableName('sales_order');
-        $connection = $this->resourceConnection->getConnection();
-        $bind = ['pos_order_cancel_sent' => true, 'pos_order_cancel_send' => false];
-        $connection->update($tableName, $bind, ['entity_id = ?' => $orderId]);
+        try {
+            $order->setData('pos_order_cancel_sent', true);
+            $order->setData('pos_order_cancel_send', false);
+            $comment = __('Send canceled info to POS successfully');
+            $order->addCommentToStatusHistory($comment);
+            $this->orderRepository->save($order);
+        } catch (\Exception $exception) {
+            $this->pointsIntegrationLogger->err($exception->getMessage());
+        }
     }
 
     public function getCustomer($customerId)
@@ -558,5 +592,18 @@ class PosOrderData
             ->addFieldToFilter('pos_order_cancel_send', true);
 
         return $orderCollection->getItems();
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+    public function getSKUPrefix($storeId)
+    {
+        return $this->config->getValue(
+            self::SKU_PREFIX_XML_PATH,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
     }
 }

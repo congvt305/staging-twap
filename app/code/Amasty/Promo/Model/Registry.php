@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Model;
 
@@ -16,7 +10,7 @@ class Registry
     /**
      * Product types available for auto add to cart
      */
-    const AUTO_ADD_PRODUCT_TYPES = ['simple', 'virtual', 'downloadable'];
+    const AUTO_ADD_PRODUCT_TYPES = ['simple', 'virtual', 'downloadable', 'bundle'];
 
     /**
      * @var \Magento\Checkout\Model\Session
@@ -204,8 +198,9 @@ class Registry
         /** @var \Magento\Catalog\Model\Product $product */
         $product = $this->productRepository->get($sku);
 
-        if (in_array($product->getTypeId(), static::AUTO_ADD_PRODUCT_TYPES)
-            && !$product->getTypeInstance(true)->hasRequiredOptions($product)
+        if ((in_array($product->getTypeId(), static::AUTO_ADD_PRODUCT_TYPES)
+            && !$product->getTypeInstance(true)->hasRequiredOptions($product))
+            || $product->getTypeId() == \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE
         ) {
             return true;
         }
@@ -262,7 +257,8 @@ class Registry
     public function deleteProduct($item)
     {
         $fullDiscountItems = $this->checkoutSession->getAmpromoFullDiscountItems();
-        $sku = $item->getProduct()->getSku();
+        $sku = $item->getProduct()->getTypeId() == \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE
+            ? $item->getProduct()->getData('sku') : $item->getProduct()->getSku();
 
         $item = $this->promoItemRegistry->getItemBySkuAndRuleId($sku, $this->promoItemHelper->getRuleId($item));
         if ($item) {

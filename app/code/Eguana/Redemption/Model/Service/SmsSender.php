@@ -89,6 +89,11 @@ class SmsSender
     private $redemptionRepository;
 
     /**
+     * @var CounterInterface
+     */
+    private $_counter;
+
+    /**
      * SmsSender constructor.
      *
      * @param SmsManagementInterface $smsManagement
@@ -157,6 +162,24 @@ class SmsSender
     }
 
     /**
+     * Retrieve Counter by id
+     * @param $counterId
+     * @return CounterInterface|bool
+     */
+    public function getCounterById($counterId)
+    {
+        if ($this->_counter === null) {
+            try {
+                $this->_counter = $this->counterRepository->getById($counterId);
+                return $this->_counter;
+            } catch (NoSuchEntityException $e) {
+                $this->logger->info($e->getMessage());
+                return false;
+            }
+        }
+    }
+
+    /**
      * Get message content
      *
      * @param $counterId
@@ -205,7 +228,11 @@ class SmsSender
     public function getCounterLink($counterId)
     {
         $resultUrl = "";
-        $token = $this->counterRepository->getById($counterId)->getToken();
+        $counter = $this->getCounterById($counterId);
+        if (!$counter) {
+            return null;
+        }
+        $token = $counter->getToken();
         try {
             $resultUrl = $this->storeManager->getStore()
                 ->getUrl('redemption/details/register', ['counter_id'=>$counterId, 'token' => $token]);

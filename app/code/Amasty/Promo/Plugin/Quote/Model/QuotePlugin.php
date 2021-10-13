@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Plugin\Quote\Model;
 
@@ -36,7 +30,8 @@ class QuotePlugin
     }
 
     /**
-     * Save quote if items was updated and current process is not going to save quote
+     * Save quote if items was updated and current process is not going to save quote.
+     * Extra quote saves can cause Magento errors.
      *
      * @param Quote $subject
      * @param Quote $result

@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Model;
 
@@ -59,6 +53,23 @@ class Prefix
 
             if (isset($buyRequest['options'][Rule::OPTION_ID])) {
                 $item->setName($prefix . ' ' . $item->getName());
+            }
+        }
+    }
+
+    /**
+     * @param array $itemForPool
+     * @param AbstractItem $item
+     */
+    public function addPrefixToPoolItemName(&$itemForPool, $item)
+    {
+        if ($prefix = $this->configProvider->getProductPrefix()) {
+            $buyRequest = $item->getBuyRequest();
+
+            if (isset($buyRequest['options'][Rule::OPTION_ID])) {
+                if (isset($itemForPool['product_name'])) {
+                    $itemForPool['product_name'] = $prefix . ' ' . $itemForPool['product_name'];
+                }
             }
         }
     }

@@ -19,6 +19,8 @@
             comment="Event Status 1 for Available and 0 for Not Available"/>
     <column xsi:type="smallint" name="available_for_redemption" padding="5" nullable="false" unsigned="true" identity="false"
             comment="Redemption Status 1 for Available and 0 for Not Available"/>
+    <column xsi:type="smallint" name="available_for_store_list" padding="5" nullable="false" unsigned="true" identity="false"
+              comment="1 for Available and 0 for Not Available" default="1"/>
     <column xsi:type="varchar" name="location" nullable="true" length="100" comment="Store Map Location"/>
     <column xsi:type="timestamp" name="created_at" on_update="true" nullable="true" default="CURRENT_TIMESTAMP" comment="Created At"/>
     <column xsi:type="varchar" name="store_id" nullable="false" disabled="true" length="100" default="0" comment="WebSite Store ID"/>
