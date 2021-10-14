@@ -108,6 +108,14 @@
                     <label>Fixed Text Banner Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="pos_numbers" translate="label" type="textarea" sortOrder="130" showInWebsite="1">
+                    <label>Pos Numbers</label>
+                </field>
+                <field id="pos_numbers_file_upload" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="140" showInWebsite="1" >
+                    <label>Pos Numbers File Upload</label>
+                    <backend_model>Eguana\Redemption\Model\Config\Backend\CsvFileType</backend_model>
+                    <upload_dir config="system" scope_info="1">pos_number</upload_dir>
+                </field>
             </group>
         </section>
     </system>
