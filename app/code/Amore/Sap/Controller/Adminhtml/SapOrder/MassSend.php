@@ -209,7 +209,6 @@ class MassSend extends AbstractAction
                                 $ordersSucceeded[] = $this->getOriginOrderIncrementId($data);
                                 $succeededOrderObject = $this->sapOrderConfirmData->getOrderInfo($data['odrno']);
                                 $orderSendCheck = $succeededOrderObject->getData('sap_order_send_check');
-                                $succeededOrderObject->setState('processing');
                                 $succeededOrderObject->setStatus('sap_processing');
 
                                 if ($orderSendCheck == 0 || $orderSendCheck == 2) {
