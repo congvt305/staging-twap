@@ -536,6 +536,7 @@ return [
         'Amore_GcrmDataExport' => 1,
         'Amore_PointsIntegration' => 1,
         'Ecpay_Ecpaypayment' => 1,
+        'CJ_Invoice' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_Enterprise' => 1,
