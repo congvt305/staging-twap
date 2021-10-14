@@ -47,8 +47,6 @@ class InvoiceGenerationCommand extends Command
                     $invoice->setRequestedCaptureCase($captureCase);
                     $invoice->register();
                     $order->addRelatedObject($invoice);
-                    $order->setHasForcedCanCreditmemo(true);
-                    $order->setForcedCanCreditmemo(true);
                     $this->orderRepository->save($order);
                     $output->writeln("<info>Done!</info>");
                 } else {
