@@ -137,7 +137,6 @@ class OrderSend extends AbstractAction
                     $outdata = $result['data']['response']['output']['outdata'];
                     foreach ($outdata as $data) {
                         if ($data['retcod'] == 'S') {
-                            $order->setState('processing');
                             $order->setStatus('sap_processing');
                             if ($orderSendCheck == 0 || $orderSendCheck == 2) {
                                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_RESENT_TO_SAP_SUCCESS);
