@@ -1,19 +1,20 @@
 {
-    "name": "amasty/promo",
+    "name": "amasty\/promo",
     "description": "Free Gift by Amasty",
     "require": {
-        "php": "7.0.2|7.0.4|~7.0.6|^7.1.0",
-        "amasty/base": ">=1.10.2",
-        "amasty/module-advanced-conditions": ">=1.5.0",
-        "amasty/module-banners-lite": ">=1.0.14",
-        "amasty/module-salesrulewizard": ">=1.0.1",
-        "amasty/rgrid": ">=1.0.7"
+        "php": "^7.3.0",
+        "amasty\/base": ">=1.12.14",
+        "amasty\/module-advanced-conditions": ">=1.5.3",
+        "amasty\/module-banners-lite": ">=1.0.19",
+        "amasty\/module-salesrulewizard": ">=1.0.3",
+        "amasty\/rgrid": ">=1.0.7"
     },
     "suggest": {
-        "amasty/module-common-tests": "Install module-common-tests module to be able to run Free Gift MFTF tests."
+        "amasty\/module-promo-mftf-2": "Install module-promo-mftf-2 module to be able to run Free Gift MFTF tests for Magento 2.3.5+ version.",
+        "amasty\/module-promo-mftf-3": "Install module-promo-mftf-3 module to be able to run Free Gift MFTF tests for Magento 2.4.0+ version."
     },
     "type": "magento2-module",
-    "version": "2.9.4",
+    "version": "2.10.6",
     "license": [
         "Commercial"
     ],

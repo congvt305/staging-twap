@@ -63,6 +63,7 @@ if (isHttpHost("tw.sulwhasoo.com")
         || isHttpHost("mcstaging.vn.laneige.com")) {
     $_SERVER["MAGE_RUN_CODE"] = "vn_laneige";
     $_SERVER["MAGE_RUN_TYPE"] = "store";
+
 } elseif (isHttpHost("gapm-bo1.amorepacific.com")
     || isHttpHost("mcprod.gapm-bo1.amorepacific.com")
     || isHttpHost("integration-5ojmyuq-kqevkj6gpg7si.ap-3.magentosite.cloud")
@@ -70,6 +71,13 @@ if (isHttpHost("tw.sulwhasoo.com")
     || isHttpHost("mcstaging.gapm-bo1.amorepacific.com")) {
     $_SERVER["MAGE_RUN_CODE"] = "admin";
     $_SERVER["MAGE_RUN_TYPE"] = "website";
+} elseif (isHttpHost("sulwhasoo.com.vn")
+    || isHttpHost("mcprod.sulwhasoo.com.vn")
+    || isHttpHost("mcstaging.sulwhasoo.com.vn")
+    || isHttpHost("vs.integration-5ojmyuq-kqevkj6gpg7si.ap-3.magentosite.cloud")
+    || isHttpHost("vs.dev-54ta5gq-kqevkj6gpg7si.ap-3.magentosite.cloud")) {
+    $_SERVER["MAGE_RUN_CODE"] = "vn_sulwhasoo";
+    $_SERVER["MAGE_RUN_TYPE"] = "store";
 }
 //if (isAdminBackendUri($_SERVER['REQUEST_URI'])) {
 //    $_SERVER["MAGE_RUN_CODE"] = "default";

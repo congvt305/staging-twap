@@ -46,6 +46,7 @@ div[data-content-type='tabs'],
                 font-weight: 600;
                 padding: 1.4rem 2rem;
                 position: relative;
+                transition: all .3s;
                 vertical-align: middle;
                 white-space: normal;
                 text-transform: uppercase;
@@ -115,6 +116,10 @@ div[data-content-type='tabs'],
                     cursor: -moz-grabbing;
                     cursor: -webkit-grabbing;
                 }
+            }
+
+            &:last-child {
+                border-right: 1px solid @color-gray80;
             }
 
             &.ui-state-active {

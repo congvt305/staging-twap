@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Helper;
 
@@ -48,8 +42,9 @@ class Messages extends \Magento\Framework\App\Helper\AbstractHelper
      * @param string|\Magento\Framework\Phrase $message
      * @param bool $isError
      * @param bool $showEachTime
+     * @param bool $isSuccess
      */
-    public function showMessage($message, $isError = true, $showEachTime = false)
+    public function showMessage($message, $isError = true, $showEachTime = false, $isSuccess = false)
     {
         $displayErrors = $this->scopeConfig->isSetFlag(
             'ampromo/messages/display_error_messages',
@@ -81,8 +76,12 @@ class Messages extends \Magento\Framework\App\Helper\AbstractHelper
             // method addErrorMessage is not applicable because of html escape
             $this->messageManager->addError($message);
         } elseif ($showEachTime || !$this->isMessageWasShown($message)) {
-            // method addNoticeMessage is not applicable because of html escape
-            $this->messageManager->addNotice($message);
+            if ($isSuccess) {
+                $this->messageManager->addSuccess($message);
+            } else {
+                // method addNoticeMessage is not applicable because of html escape
+                $this->messageManager->addNotice($message);
+            }
         }
     }
 

@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Block;
 
@@ -28,15 +22,30 @@ class Popup extends \Magento\Framework\View\Element\Template
      */
     private $promoHelper;
 
+    /**
+     * @var Add
+     */
+    private $promoAddBlock;
+
     public function __construct(
         Template\Context $context,
         \Amasty\Promo\Model\Config $modelConfig,
         \Amasty\Promo\Helper\Data $promoHelper,
+        \Amasty\Promo\Block\Add $promoAddBlock,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->modelConfig = $modelConfig;
         $this->promoHelper = $promoHelper;
+        $this->promoAddBlock = $promoAddBlock;
+    }
+
+    /**
+     * @return Add
+     */
+    public function getPromoAddBlock()
+    {
+        return $this->promoAddBlock;
     }
 
     /**

@@ -40,6 +40,9 @@ define(
                 if (_.isUndefined(staticMessages.messages)) {
                     return messagesArr;
                 }
+                if (_.isUndefined(window.checkout)){
+                    return messagesArr;
+                }
 
                 if (this.isSectionInvalid(staticMessages)) {
                     customerData.reload([this.notificationSectionName], true);
@@ -66,8 +69,12 @@ define(
              * @return {boolean}
              */
             isSectionInvalid: function (staticMessages) {
-                if (_.isUndefined(window.checkout)) {
+                var isSetItemsInCart = !!customerData.get('cart')().items.length;
+                if (_.isUndefined(window.checkout) === false && isSetItemsInCart === false) {
                     return false;
+                }
+                if (!isSetItemsInCart) {
+                    return true;
                 }
 
                 return !_.isUndefined(window.checkout.websiteId)

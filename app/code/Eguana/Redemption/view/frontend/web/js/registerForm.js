@@ -106,7 +106,11 @@ define([
                             if (data['fbFunEnable']) {
                                 fbq('track', 'Foundation_check_finalcheck');
                             }
-                            window.location.href = successUrl;
+                            if (typeof data['entity_id'] !== 'undefined' && data['entity_id']) {
+                                window.location.href = successUrl + 'participant_id/' + data['entity_id'];
+                            } else {
+                                window.location.href = successUrl;
+                            }
                         }
                     }
                 });
