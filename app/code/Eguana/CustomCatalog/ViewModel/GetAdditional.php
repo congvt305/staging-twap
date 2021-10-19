@@ -68,4 +68,19 @@ class GetAdditional implements ArgumentInterface
         return $this->_category;
     }
 
+    /**
+     * Remove params of image link
+     *
+     * @param string $imageUrl
+     * @return string
+     */
+    public function getImageUrl($imageUrl)
+    {
+        $parts = explode('?', $imageUrl);
+        if (count($parts) > 1) {
+            return reset($parts);
+        }
+
+        return $imageUrl;
+    }
 }
