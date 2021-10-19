@@ -32,7 +32,7 @@ if ($isSalable) {
         "name": "<?= /* @noEscape */ $block->escapeHtml($block->getProduct()->getName()) ?>",
         "description": "<?= /* @noEscape */ $block->escapeHtml($block->getProduct()->getShortDescription()) ?>",
         "url": "<?= /* @noEscape */ $block->escapeHtml($block->getProduct()->getProductUrl()) ?>",
-        "image": "<?= $block->escapeUrl($block->getImage($block->getProduct(), 'product_base_image')->getImageUrl()) ?>",
+        "image": "<?= $block->escapeUrl($additionalData->getImageUrl($block->getImage($block->getProduct(), 'product_base_image')->getImageUrl())) ?>",
         "brand": "LANGEIGE",
         "offers": [
         {
