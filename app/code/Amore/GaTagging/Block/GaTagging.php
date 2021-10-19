@@ -336,7 +336,8 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                         $hasChidlenPrice = false;
                         $children = $parentItem->getChildrenItems();
                         foreach ($children as $child) {
-                                $bundleSelectionTotal += $child->getPrice() * $child->getQtyOrdered() / $parentItem->getQtyOrdered();
+                                $childProduct = $this->productRepository->getById($child->getProductId());
+                                $bundleSelectionTotal += $childProduct->getPrice() * $child->getQtyOrdered() / $parentItem->getQtyOrdered();
                         }
                         $proportionRate = $item->getPrice() / $bundleSelectionTotal;
                     }
