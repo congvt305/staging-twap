@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_SalesRuleWizard
- */
-
 namespace Amasty\SalesRuleWizard\Controller\Adminhtml\Wizard;
 
 class NewActionHtml extends \Magento\Backend\App\Action

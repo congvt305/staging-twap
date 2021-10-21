@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Test\Unit\Model\ItemRegistry;
 
@@ -40,7 +34,7 @@ class PromoItemRegistryTest extends \PHPUnit\Framework\TestCase
      */
     private $factory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->promoItemRegistry = $this->createPartialMock(
             PromoItemRegistry::class, ['qtyAction']
