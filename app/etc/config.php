@@ -742,6 +742,8 @@ return [
         'Klarna_Kp' => 0,
         'Klarna_Onsitemessaging' => 1,
         'Klarna_KpGraphQl' => 1,
+        'MagePal_Core' => 1,
+        'MagePal_Reindex' => 1,
         'PayPal_Braintree' => 0,
         'PayPal_BraintreeGraphQl' => 0,
         'Eguana_Pixlee' => 1,

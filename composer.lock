@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bc1e733bded7a667aa307b4e904d4d81",
+    "content-hash": "ca34a0364cfb39173786f10100728c98",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -22920,6 +22920,110 @@
                 "framework"
             ],
             "time": "2020-12-02T21:12:59+00:00"
+        },
+        {
+            "name": "magepal/magento2-core",
+            "version": "1.1.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/magepal/magento2-core.git",
+                "reference": "83fbffc0d540f82f55e0623719e08ecacc9c7e18"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/magepal/magento2-core/zipball/83fbffc0d540f82f55e0623719e08ecacc9c7e18",
+                "reference": "83fbffc0d540f82f55e0623719e08ecacc9c7e18",
+                "shasum": ""
+            },
+            "require": {
+                "magento/framework": "*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "MagePal\\Core\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Renon Stewart",
+                    "email": "renon@magepal.com",
+                    "homepage": "https://www.magepal.com/",
+                    "role": "Leader"
+                }
+            ],
+            "description": "MagePal core extension",
+            "homepage": "https://www.magepal.com/",
+            "keywords": [
+                "magento 2",
+                "magepal core extension"
+            ],
+            "time": "2021-05-29T19:47:51+00:00"
+        },
+        {
+            "name": "magepal/magento2-reindex",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/magepal/magento2-reindex.git",
+                "reference": "a9b85bb4bab41767a9d99b8f1bbd64e368b35403"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/magepal/magento2-reindex/zipball/a9b85bb4bab41767a9d99b8f1bbd64e368b35403",
+                "reference": "a9b85bb4bab41767a9d99b8f1bbd64e368b35403",
+                "shasum": ""
+            },
+            "require": {
+                "magento/framework": "100.0.*|100.1.*|101.0.*|102.0.*|103.0.*",
+                "magento/module-backend": "100.0.*|100.1.*|100.2.*|101.0.*|102.0.*",
+                "magepal/magento2-core": ">1.1.8",
+                "php": "~7.1.0|~7.1.3|~7.2.0|~7.3.0|~7.4.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "MagePal\\Reindex\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Renon Stewart",
+                    "email": "renon@magepal.com",
+                    "homepage": "http://www.magepal.com/",
+                    "role": "Leader"
+                }
+            ],
+            "description": "Reindex your Magento2 store quickly and easily from backend/admin, instead of command line.",
+            "homepage": "http://www.magepal.com/",
+            "keywords": [
+                "admin reindex",
+                "backend reindex",
+                "magento 2",
+                "magento2",
+                "reindex"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.magepal.com/reindex.html?utm_source=reindex&utm_medium=github%20sponsor",
+                    "type": "custom"
+                }
+            ],
+            "time": "2021-01-06T01:08:37+00:00"
         },
         {
             "name": "monolog/monolog",
