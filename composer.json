@@ -24,7 +24,8 @@
         "magento/magento-cloud-metapackage": ">=2.4.3 <2.4.4",
         "magento/module-page-builder-product-recommendations": "^1.1",
         "magento/module-visual-product-recommendations": "^1.1",
-        "magento/product-recommendations": "^3.1"
+        "magento/product-recommendations": "^3.1",
+        "magepal/magento2-reindex": "^1.1"
     },
     "suggest": {
         "ext-pcntl": "Need for run processes in parallel mode"
