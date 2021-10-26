@@ -34,6 +34,7 @@ class Address extends MainAddress
      * Constants for export column.
      */
     const ENTITY_ID = 'entity_id';
+    const PARENT_ID = 'parent_id';
     /**#@-*/
 
     /**
@@ -88,7 +89,7 @@ class Address extends MainAddress
     protected function _getHeaderColumns()
     {
         if ($this->dataPersistor->get('gcrm_export_check')) {
-            $this->_permanentAttributes = [self::ENTITY_ID, self::COLUMN_WEBSITE, self::COLUMN_EMAIL];
+            $this->_permanentAttributes = [self::ENTITY_ID, self::PARENT_ID, self::COLUMN_WEBSITE, self::COLUMN_EMAIL];
         }
         return array_merge(
             $this->_permanentAttributes,
@@ -121,9 +122,16 @@ class Address extends MainAddress
         $entityColumn = $this->dataPersistor->get('gcrm_export_check') ? self::ENTITY_ID : self::COLUMN_ADDRESS_ID;
         $row[$entityColumn] = $item['entity_id'];
 
+        $row[self::PARENT_ID] = $item->getParentId();
         $row[self::COLUMN_EMAIL] = $customer['email'];
         $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$customer['website_id']];
         $row[self::COLUMN_REGION_ID] = $item->getRegionId();
+
+        foreach ($row as $columnName => $value) {
+            if (!$value) {
+                $row[$columnName] = ' ';
+            }
+        }
 
         $this->getWriter()->writeRow($row);
     }
