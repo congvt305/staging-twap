@@ -212,6 +212,11 @@ class QuoteItemsCsv extends AbstractAdapter
      */
     public function writeSourceRowWithCustomColumns(array $rowData)
     {
+        foreach ($rowData as $columnName => $value) {
+            if (!$value) {
+                $rowData[$columnName] = ' ';
+            }
+        }
         $headersData = [];
         foreach (array_keys($rowData) as $key) {
             $headersData[] = $key;
