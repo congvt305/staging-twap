@@ -219,6 +219,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $productInfo = [];
         $productInfo['name'] = $product->getName();
         $productInfo['code'] = $product->getSku();
+        $productInfo['v2code'] = $product->getId();
         $productInfo['sapcode'] = $product->getSku();
         $productInfo['brand'] = $this->helper->getSiteName() ?? '';
         $productInfo['prdprice'] = intval($product->getPrice());
@@ -292,6 +293,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             }
             $product['name'] = $item->getName();
             $product['code'] = $item->getSku();
+            $product['v2code'] = $item->getProductId();
             $product['sapcode'] = $item->getSku();
             $product['brand'] = $this->helper->getSiteName() ?? '';
             $product['prdprice'] = intval($item->getProduct()->getPrice());
