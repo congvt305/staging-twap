@@ -231,18 +231,23 @@ class SapOrderConfirmData extends AbstractSapOrder
     {
         /** @var Order $orderData */
         $orderData = $this->getOrderInfo($incrementId);
+
+        if ($orderData == null) {
+            $exception = new NoSuchEntityException(
+                __("Such order %1 does not exist. Check the data and try again", $incrementId)
+            );
+            $this->logger->log('INFO', $exception->getMessage(), [
+                'order_id' => $incrementId,
+                'error_trace' => $exception->getTraceAsString()
+            ]);
+            throw $exception;
+        }
+
         $invoice = $this->getInvoice($orderData->getEntityId());
         $storeId = $orderData->getStoreId();
         $shippingMethod = $orderData->getShippingMethod();
         $trackingNumbers = implode(",", $this->getTrackNumber($orderData));
-
         $bindData = [];
-
-        if ($orderData == null) {
-            throw new NoSuchEntityException(
-                __("Such order %1 does not exist. Check the data and try again", $incrementId)
-            );
-        }
 
         if ($shippingMethod == 'gwlogistics_CVS' && !$orderData->hasShipments()) {
             throw new ShipmentNotExistException(
@@ -505,6 +510,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                         - $mileagePerItem;
                     $itemSubtotal = abs(round($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered()));
                     $itemTotalDiscount = abs(round($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered())));
+                    $itemSaleAmount = $itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem));
                     $itemTaxAmount = abs(round($orderItem->getTaxAmount()));
 
                     $product = $this->productRepository->getById($orderItem->getProductId());
@@ -523,10 +529,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                         'itemMeins' => $this->getMeins($meins),
                         'itemNsamt' => $itemSubtotal,
                         'itemDcamt' => $itemTotalDiscount,
-                        'itemSlamt' => $itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem)),
+                        'itemSlamt' => $itemSaleAmount,
                         'itemMiamt' => abs(round($mileagePerItem)),
                         // 상품이 무상제공인 경우 Y 아니면 N
-                        'itemFgflg' => $orderItem->getOriginalPrice() == 0 ? 'Y' : 'N',
+                        'itemFgflg' => $itemSaleAmount == 0 ? 'Y' : 'N',
                         'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                         'itemAuart' => self::NORMAL_ORDER,
                         'itemAugru' => '',

@@ -1,16 +1,9 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\CustomerData;
 
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\CustomerData\SectionSourceInterface;
-use Magento\Framework\Session\SessionManagerInterface as CheckoutSession;
-use Magento\Quote\Model\Quote;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
@@ -38,6 +31,11 @@ class Messages implements SectionSourceInterface
     private $storeManager;
 
     /**
+     * @var CheckoutSession
+     */
+    private $checkoutSession;
+
+    /**
      * Url Builder
      *
      * @var \Magento\Framework\UrlInterface
@@ -48,12 +46,14 @@ class Messages implements SectionSourceInterface
         \Amasty\Promo\Model\Config $config,
         \Amasty\Promo\Helper\Data $promoHelper,
         \Magento\Framework\UrlInterface $urlBuilder,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        CheckoutSession $checkoutSession
     ) {
         $this->config = $config;
         $this->promoHelper = $promoHelper;
         $this->urlBuilder = $urlBuilder;
         $this->storeManager = $storeManager;
+        $this->checkoutSession = $checkoutSession;
     }
 
     /**
@@ -102,7 +102,8 @@ class Messages implements SectionSourceInterface
      */
     public function getSectionData()
     {
-        if ($this->isEnabled() && $this->getNewItemsCount()) {
+        $quote = $this->checkoutSession->getQuote();
+        if ($quote->getItems() && $this->isEnabled() && $this->getNewItemsCount()) {
             return [
                 'messages' => [
                     'notice' => [

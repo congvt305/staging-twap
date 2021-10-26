@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Controller\Popup;
 
@@ -22,14 +16,21 @@ class Reload extends Action
      */
     private $helper;
 
+    /**
+     * @var \Amasty\Promo\Model\Config
+     */
+    private $config;
+
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\View\Layout $layout,
-        \Amasty\Promo\Helper\Data $helper
+        \Amasty\Promo\Helper\Data $helper,
+        \Amasty\Promo\Model\Config $config
     ) {
         parent::__construct($context);
         $this->layout = $layout;
         $this->helper = $helper;
+        $this->config = $config;
     }
 
     public function execute()
@@ -55,7 +56,15 @@ class Reload extends Action
             $rawContent = $popupBlock->toHtml();
         }
 
-        $jsonResult->setData(['popup' => $rawContent, 'products' => $products], true);
+        $autoOpenPopup = false;
+        if ((bool)$this->helper->getNewItems() && $this->config->isAutoOpenPopup()) {
+            $autoOpenPopup = true;
+        }
+
+        $jsonResult->setData(
+            ['popup' => $rawContent, 'products' => $products, 'autoOpenPopup' => $autoOpenPopup],
+            true
+        );
 
         return $jsonResult;
     }

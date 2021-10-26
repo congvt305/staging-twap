@@ -1,14 +1,9 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Plugin\Model\CustomerData;
 
 use Amasty\Promo\Helper\Item;
+use Amasty\Promo\Model\Prefix;
 use Magento\Catalog\Model\ResourceModel\Url;
 use Magento\Checkout\CustomerData\ItemPoolInterface;
 use Magento\Checkout\Model\Session;
@@ -41,16 +36,23 @@ class Cart
      */
     private $checkoutSession;
 
+    /**
+     * @var Prefix
+     */
+    private $prefix;
+
     public function __construct(
         Item $promoItemHelper,
         ItemPoolInterface $itemPoolInterface,
         Url $catalogUrl,
-        Session $checkoutSession
+        Session $checkoutSession,
+        Prefix $prefix
     ) {
         $this->promoItemHelper = $promoItemHelper;
         $this->itemPoolInterface = $itemPoolInterface;
         $this->catalogUrl = $catalogUrl;
         $this->checkoutSession = $checkoutSession;
+        $this->prefix = $prefix;
     }
 
     /**
@@ -92,15 +94,16 @@ class Cart
                 if (!$this->promoItemHelper->isPromoItem($item)) {
                     $products = $this->catalogUrl->getRewriteByProductStore([$product->getId() => $item->getStoreId()]);
 
-                    if (!isset($products[$product->getId()])) {
-                        continue;
+                    if (isset($products[$product->getId()])) {
+                        $urlDataObject = new \Magento\Framework\DataObject($products[$product->getId()]);
+                        $item->getProduct()->setUrlDataObject($urlDataObject);
                     }
-
-                    $urlDataObject = new \Magento\Framework\DataObject($products[$product->getId()]);
-                    $item->getProduct()->setUrlDataObject($urlDataObject);
                 }
             }
-            $items[] = $this->itemPoolInterface->getItemData($item);
+            $itemForPool = $this->itemPoolInterface->getItemData($item);
+            $this->prefix->addPrefixToPoolItemName($itemForPool, $item);
+
+            $items[] = $itemForPool;
         }
 
         return $items;

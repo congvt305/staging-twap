@@ -9,6 +9,9 @@ var config = {
             },
             'Magento_Theme/js/view/messages' : {
                 'Amasty_Promo/js/view/messages' : true
+            },
+            'Amasty_Coupons/js/model/cart/apply-response-processor': {
+                'Amasty_Promo/js/model/coupon-apply-response-processor-mixin' : true
             }
         }
     }

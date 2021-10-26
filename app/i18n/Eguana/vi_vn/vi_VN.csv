@@ -736,7 +736,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "user name","Tên người dùng",module,Magento_Backend
 "Password","Mật khẩu",module,Magento_Backend
 "password","mật khẩu",module,Magento_Backend
-"Sign in","Đăng hập",module,Magento_Backend
+"Sign in","Đăng nhập",module,Magento_Backend
 "Select Range:","Chọn khoảng:",module,Magento_Backend
 "No Data Found","Không tìm thấy tài liệu nào",module,Magento_Backend
 "Chart is disabled. To enable the chart, click <a href=""%1"">here</a>.","Chart is disabled. To enable the chart, click <a href=""%1"">here</a>.",module,Magento_Backend
@@ -3406,7 +3406,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Maximum Display Recently Added Item(s)","Màn hình hiển thị tối đa sản phẩm mới thêm gần đây",module,Magento_Checkout
 "of","của",module,Magento_Checkout
 "Something went wrong while saving the page. Please refresh the page and try again.","Có chuyện gì đó không ổn trong khi lưu lại trang đó. Vui lòng làm mới trang đó và thử lại.",module,Magento_Checkout
-"You added %1 to your <a href=""%2"">shopping cart</a>.","Bạn đã thêm %1 vào <a href=""%2"">máy bán hàng</a>.",module,Magento_Checkout
+"You added %1 to your <a href=""%2"">shopping cart</a>.","Bạn đã thêm %1 vào <a href=""%2"">giỏ hàng</a>.",module,Magento_Checkout
 "Please select at least one product to add to cart","Vui lòng chọn ít nhất một sản phẩm để bổ sung vào xe đẩy",module,Magento_Checkout
 "The quote item isn't found. Verify the item and try again.","Không tìm thấy mục trích dẫn. Kiểm tra mục rồi thử lại.",module,Magento_Checkout
 "The order wasn't placed. First, agree to the terms and conditions, then try placing your order again.","Chưa đặt hàng. Trước tiên, hãy đồng ý với các điều khoản và điều kiện, sau đó thử đặt hàng lại.",module,Magento_Checkout
@@ -12043,7 +12043,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Please correct the transaction ID and try again.","Xin vui lòng sửa ID giao dịch và thử lại.",module,Magento_Sales
 "The transaction details have been updated.","Các chi tiết giao dịch đã được Cập Nhật.",module,Magento_Sales
 "We can't update the transaction details.","Chúng tôi không thể cập nhật chi tiết giao dịch.",module,Magento_Sales
-"Orders and Returns","Đơn đặt hàng và trả lại",module,Magento_Sales
+"Orders and Returns","Kiểm tra đơn hàng",module,Magento_Sales
 "Home","Trang chủ",module,Magento_Sales
 "Go to Home Page","Đi đến trang chủ",module,Magento_Sales
 "You entered incorrect data. Please try again.","Bạn đã nhập dữ liệu không chính xác. Xin vui lòng thử lại.",module,Magento_Sales
@@ -16007,7 +16007,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Open Chooser","Chọn mở",module,Magento_Widget
 "Apply","Áp dụng",module,Magento_Widget
 "Page","Trang",module,Magento_Widget
-"Orders and Returns","Đơn đặt hàng và trả lại",module,Magento_Widget
+"Orders and Returns","Kiểm tra đơn hàng",module,Magento_Widget
 "Orders and Returns Search Form","Mẫu tìm kiếm Đơn đặt hàng và trả hàng",module,Magento_Widget
 "Anchor Custom Title","Tiêu đề tùy chỉnh Anchor",module,Magento_Widget
 "CMS Page Link Block Template","Mẫu liên kết khối trang CMS",module,Magento_Widget
@@ -16434,6 +16434,8 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "State:","Tiểu bang:"
 "City:","Quận"
 "Road Name:","Tên đường:"
-"Payment and Delivery Policy","Chính sách Thanh toán và Giao hàng"
+"Payment and Delivery Policy","Thanh toán và giao hàng"
 "Card number","Số thẻ"
 "Expiry dater","Ngày hết hạn"
+"We apologize, but your free gift <strong>%1</strong> is not available at the moment","Xin lỗi, sản phẩm <strong>%1</strong> đã hết hàng!"
+"The payment is REFUSED.","Vui lòng thử lại sau !"

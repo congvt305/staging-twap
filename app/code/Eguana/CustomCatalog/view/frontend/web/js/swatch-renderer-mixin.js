@@ -93,21 +93,22 @@ define([
                         ' aria-checked="false"' +
                         ' aria-describedby="' + controlId + '"' +
                         ' tabindex="0"' +
-                        ' option-type="' + type + '"' +
-                        ' option-id="' + id + '"' +
-                        ' option-label="' + label + '"' +
+                        ' data-option-type="' + type + '"' +
+                        ' data-option-id="' + id + '"' +
+                        ' data-option-label="' + label + '"' +
                         ' aria-label="' + label + '"' +
-                        ' option-tooltip-thumb="' + thumb + '"' +
-                        ' option-tooltip-value="' + value + '"' +
                         ' role="option"' +
-                        ' thumb-width="' + width + '"' +
-                        ' thumb-height="' + height + '"';
+                        ' data-thumb-width="' + width + '"' +
+                        ' data-thumb-height="' + height + '"';
+
+                    attr += thumb !== '' ? ' data-option-tooltip-thumb="' + thumb + '"' : '';
+                    attr += value !== '' ? ' data-option-tooltip-value="' + value + '"' : '';
 
                     swatchImageWidth = _.has(sizeConfig, 'swatchImage') ? sizeConfig.swatchImage.width : 30;
                     swatchImageHeight = _.has(sizeConfig, 'swatchImage') ? sizeConfig.swatchImage.height : 20;
 
                     if (!this.hasOwnProperty('products') || this.products.length <= 0) {
-                        attr += ' option-empty="true"';
+                        attr += ' data-option-empty="true"';
                     }
                     if (this.stockStatus == 0) {
                         attr += ' option-stock="false"';
@@ -146,8 +147,8 @@ define([
              * @private
              */
             _Rewind: function (controls) {
-                controls.find('div[option-id], option[option-id]').removeClass('disabled').removeAttr('disabled');
-                controls.find('div[option-empty], option[option-empty]')
+                controls.find('div[data-option-id], option[data-option-id]').removeClass('disabled').removeAttr('disabled');
+                controls.find('div[data-option-empty], option[data-option-empty]')
                     .attr('disabled', true)
                     .addClass('disabled')
                     .attr('tabindex', '-1');

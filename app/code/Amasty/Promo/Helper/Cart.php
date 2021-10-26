@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Helper;
 
@@ -66,6 +60,12 @@ class Cart
         $requestParams['options']['ampromo_rule_id'] = $ruleId;
         $requestParams['options']['discount'] = $promoItemData->getDiscountArray();
 
+        if ($product->getTypeId() == \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE) {
+            if (!isset($requestParams['bundle_option'])) {
+                $requestParams = array_merge($requestParams, $this->getBundleOptions($product));
+            }
+        }
+
         try {
             $item = $quote->addProduct($product, new \Magento\Framework\DataObject($requestParams));
 
@@ -84,6 +84,7 @@ class Cart
                         $product->getName()
                     ),
                     false,
+                    true,
                     true
                 );
             }
@@ -98,6 +99,31 @@ class Cart
         }
 
         return false;
+    }
+
+    /**
+     * Get all the default selection products used in bundle product
+     * @param Product $product
+     * @return array
+     */
+    private function getBundleOptions(Product $product)
+    {
+        $selectionCollection = $product->getTypeInstance()
+            ->getSelectionsCollection(
+                $product->getTypeInstance()->getOptionsIds($product),
+                $product
+            );
+        $bundleOptions = [];
+        foreach ($selectionCollection as $selection) {
+            if (!$selection->getIsDefault()) {
+                continue;
+            }
+
+            $bundleOptions['bundle_option'][$selection->getOptionId()][] = $selection->getSelectionId();
+            $bundleOptions['bundle_option_qty'][$selection->getOptionId()] = $selection->getSelectionQty();
+        }
+
+        return $bundleOptions;
     }
 
     /**

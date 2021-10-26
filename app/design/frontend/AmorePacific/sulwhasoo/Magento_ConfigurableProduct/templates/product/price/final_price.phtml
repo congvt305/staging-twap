@@ -18,10 +18,16 @@ $priceModel = $block->getPriceType('regular_price');
 $finalPriceModel = $block->getPriceType('final_price');
 $idSuffix = $block->getIdSuffix() ? $block->getIdSuffix() : '';
 $schema = ($block->getZone() == 'item_view') ? true : false;
+$oldPrice = $priceModel->getAmount()->getValue();
+$discountedPrice = $finalPriceModel->getAmount()->getValue();
+$discountPercent = $oldPrice ? ($oldPrice - $discountedPrice) * 100 / $oldPrice : false;
 ?>
 <p class="price-title configurable-price-title"><?= $block->escapeHtml(__('Price')) ?></p>
 <div>
     <?php if (!$block->isProductList() && $block->hasSpecialPrice()): ?>
+        <?php if ($discountPercent): ?>
+            <span class="discount-label"><?= $discountPercent ?>%</span>
+        <?php endif; ?>
         <span class="old-price sly-old-price no-display">
             <?php /* @escapeNotVerified */ echo $block->renderAmount($priceModel->getAmount(), [
                 'display_label'     => __('Price'),
@@ -45,6 +51,9 @@ $schema = ($block->getZone() == 'item_view') ? true : false;
             ?>
         </span>
     <?php elseif ($block->isProductList() && $block->hasSpecialPrice()): ?>
+        <?php if ($discountPercent): ?>
+            <span class="discount-label"><?= $discountPercent ?>%</span>
+        <?php endif; ?>
         <span class="old-price">
             <?php /* @escapeNotVerified */ echo $block->renderAmount($priceModel->getAmount(), [
                 'display_label'     => __('Regular Price'),

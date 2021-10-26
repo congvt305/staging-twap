@@ -112,7 +112,6 @@ class InventoryCompensationManager extends Action
         $inventoryCompensationActive = $this->config->getActive();
         $loggerActive = $this->config->getLoggerActive();
         if ($inventoryCompensationActive) {
-            try {
                 $reservationOrders = $this->getReservationOrder->getReservationOrders();
 
                 if ($loggerActive) {
@@ -124,7 +123,8 @@ class InventoryCompensationManager extends Action
                     $metadata = $this->json->unserialize($reservationOrder['metadata']);
 
                     if ($metadata['object_type'] == 'order' && $metadata['event_type'] == 'order_placed') {
-                        $orderEntityId = $metadata['object_id'];
+                        try {
+                            $orderEntityId = $metadata['object_id'];
                         /** @var Order $order */
                         $order = $this->getReservationOrder->getOrder($orderEntityId);
                         if ($order) {
@@ -138,13 +138,14 @@ class InventoryCompensationManager extends Action
 
                             $this->deductSourceItem($compensationOrder, $orderStatus, $order);
                         }
+                        } catch (\Exception $exception) {
+                            $this->logger->info('Order Id ' . $orderEntityId. ' ' .$exception->getMessage());
+                        }
                     }
                 }
 
                 return $this->jsonFactory->create()->setData(['success' => true]);
-            } catch (\Exception $exception) {
-                $this->logger->info($exception->getMessage());
-            }
+
         }
     }
 

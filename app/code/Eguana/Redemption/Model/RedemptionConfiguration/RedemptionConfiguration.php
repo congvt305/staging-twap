@@ -11,7 +11,6 @@ namespace Eguana\Redemption\Model\RedemptionConfiguration;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
-use MSP\ReCaptcha\Model\Config as ReCaptchaConfig;
 
 /**
  * This class is used to get configuration values from Admin Configuration
@@ -32,28 +31,22 @@ class RedemptionConfiguration
     const XML_PATH_MAXIMUM_MOBILE_NUMBER_DIGITS = 'redemption/configuration/maximum_mobile_number_digits';
     const XML_PATH_PRIVACY_POLICY_TEXT = 'redemption/configuration/privacy_policy_text';
     const XML_PATH_HOME_DELIVERY_ENABLED = 'redemption/configuration/home_delivery_enabled';
+    const XML_PATH_FIXED_TEXT_BANNER_ENABLED = 'redemption/configuration/fixed_text_banner_enabled';
 
     /**
      * @var ScopeInterface
      */
     private $scopeConfig;
 
-    /**
-     * @var ReCaptchaConfig
-     */
-    private $recaptchaConfig;
 
     /**
      * Constructor
      * @param ScopeConfigInterface $scopeConfig
-     * @param ReCaptchaConfig $recaptchaConfig
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
-        ReCaptchaConfig $recaptchaConfig
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->scopeConfig = $scopeConfig;
-        $this->recaptchaConfig = $recaptchaConfig;
     }
 
     /**
@@ -153,9 +146,8 @@ class RedemptionConfiguration
      */
     public function isEnabledFrontendRecaptcha()
     {
-        if (!$this->recaptchaConfig->isEnabledFrontend()) {
-            return false;
-        }
+        //To-do check module recaptcha
+        return false;
 
         return (bool) $this->scopeConfig->getValue(
             self::XML_PATH_ENABLED_FRONTEND_RECAPTCHA,
@@ -231,6 +223,19 @@ class RedemptionConfiguration
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_HOME_DELIVERY_ENABLED,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param null|int $storeId
+     * @return string
+     */
+    public function getFixedTextBannerEnabled($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_FIXED_TEXT_BANNER_ENABLED,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );

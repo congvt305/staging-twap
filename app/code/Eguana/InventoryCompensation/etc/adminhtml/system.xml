@@ -23,10 +23,24 @@
                 </field>
             </group>
             <group id="inventory_compensation_cron" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="0" showInStore="0">
-                <label>Pending Canceler Cron</label>
+                <label>Clean Reservation Cron</label>
+                <field id="numbers_orders_clean" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Numbers Orders Clean</label>
+                    <depends>
+                        <field id="*/general/active">1</field>
+                    </depends>
+                    <comment>Number Orders was clean each time run cron/ manual. Default Cron: 2000, Manual: 500</comment>
+                </field>
+                <field id="statuses_clean" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Statuses Order Need Clean</label>
+                    <depends>
+                        <field id="*/general/active">1</field>
+                    </depends>
+                    <comment>Each statuses separate by comma (,). Default is: pending, payment_review, shipment_processing, complete, closed, canceled, delivery_complete</comment>
+                </field>
                 <field id="frequency" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Frequency</label>
-                    <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
+                    <source_model>Eguana\InventoryCompensation\Model\Config\Source\Frequency</source_model>
                     <backend_model>Eguana\InventoryCompensation\Model\Config\Backend\InventoryCompensationScheduler</backend_model>
                 </field>
                 <field id="time" translate="label" type="time" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
@@ -35,6 +49,9 @@
                 <field id="run_cron" translate="Run Now" type="button" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Run Now</label>
                     <frontend_model>Eguana\InventoryCompensation\Block\System\Config\InventoryCompensationRun</frontend_model>
+                    <depends>
+                        <field id="*/general/active">1</field>
+                    </depends>
                 </field>
             </group>
         </section>
