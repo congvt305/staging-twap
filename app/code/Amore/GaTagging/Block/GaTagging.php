@@ -264,7 +264,9 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         }
         foreach ($selectionProducts as $productId => $productInfo) {
             $product = $productInfo['product'];
-            $productInfos[] = $this->getSimpleProductInfo($product, $productInfo['qty'], $product->getPrice() / $selectionsTotal * $productInfo['qty']);
+            if ($selectionsTotal != 0) {
+                $productInfos[] = $this->getSimpleProductInfo($product, $productInfo['qty'], $product->getPrice() / $selectionsTotal * $productInfo['qty']);
+            }
         }
         return $productInfos;
     }
@@ -336,7 +338,11 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                         $hasChidlenPrice = false;
                         $children = $parentItem->getChildrenItems();
                         foreach ($children as $child) {
-                                $bundleSelectionTotal += $child->getPrice() * $child->getQtyOrdered() / $parentItem->getQtyOrdered();
+                                $childProduct = $this->productRepository->getById($child->getProductId());
+                                $bundleSelectionTotal += $childProduct->getPrice() * $child->getQtyOrdered() / $parentItem->getQtyOrdered();
+                        }
+                        if ($bundleSelectionTotal == 0) {
+                            $bundleSelectionTotal = $item->getPrice();
                         }
                         $proportionRate = $item->getPrice() / $bundleSelectionTotal;
                     }
