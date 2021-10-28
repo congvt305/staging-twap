@@ -105,12 +105,6 @@ class Customer extends MainCustomer
         $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$item->getWebsiteId()];
         $row[self::COLUMN_STORE] = $this->_storeIdToCode[$item->getStoreId()];
 
-        foreach ($row as $columnName => $value) {
-            if (!$value) {
-                $row[$columnName] = ' ';
-            }
-        }
-
         $this->getWriter()->writeRow($row);
     }
 }
