@@ -71,6 +71,7 @@ define([
             var productInfo = {
                 'name': product.product_name,
                 'code': product.product_sku,
+                'v2code': product.product_id,
                 'sapcode': product.product_sku,
                 'brand': product.product_brand,
                 'price': product.product_price_value,
