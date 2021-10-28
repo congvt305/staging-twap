@@ -1,0 +1,130 @@
+diff --git a/vendor/magento/module-admin-gws/Model/Plugin/IsCategoryAuthorizedForDifferentStoreUserRole.php b/vendor/magento/module-admin-gws/Model/Plugin/IsCategoryAuthorizedForDifferentStoreUserRole.php
+index 8bda7f526968..89dd3308a871 100644
+--- a/vendor/magento/module-admin-gws/Model/Plugin/IsCategoryAuthorizedForDifferentStoreUserRole.php
++++ b/vendor/magento/module-admin-gws/Model/Plugin/IsCategoryAuthorizedForDifferentStoreUserRole.php
+@@ -11,7 +11,7 @@
+ use Magento\Catalog\Api\Data\CategoryInterface;
+ use Magento\Catalog\Model\Category\Authorization;
+ use Magento\Framework\Exception\AuthorizationException;
+-use Magento\User\Model\UserFactory;
++use Magento\AdminGws\Model\Role as AdminRole;
+ 
+ /**
+  * Plugin for authorization of category changes for different store user role
+@@ -24,24 +24,22 @@ class IsCategoryAuthorizedForDifferentStoreUserRole
+     private $userContext;
+ 
+     /**
+-     * Factory class for user model
+-     *
+-     * @var UserFactory
++     * @var AdminRole $adminRole
+      */
+-    private $userFactory;
++    private $adminRole;
+ 
+     /**
+      * Initialize dependencies
+      *
+      * @param UserContextInterface $userContext
+-     * @param UserFactory $userFactory
++     * @param AdminRole $adminRole
+      */
+     public function __construct(
+         UserContextInterface $userContext,
+-        UserFactory $userFactory
++        AdminRole $adminRole
+     ) {
+         $this->userContext = $userContext;
+-        $this->userFactory = $userFactory;
++        $this->adminRole = $adminRole;
+     }
+ 
+     /**
+@@ -59,15 +57,15 @@ public function beforeAuthorizeSavingOf(
+         if ($this->userContext->getUserId()
+             && $this->userContext->getUserType() === UserContextInterface::USER_TYPE_ADMIN
+         ) {
+-            $currentAdminId = $this->userContext->getUserId();
+-            $adminUser = $this->userFactory->create()->load($currentAdminId);
+-            $adminUserRole = $adminUser->getRole();
+-            $isGwsRoleForAll = $adminUserRole->getGwsIsAll();
+-            $adminUserAssignedStores= $adminUserRole->getGwsStores();
+-            $currentCategoryStoreId = $category->getStoreId();
+-            if (!$isGwsRoleForAll && !empty($adminUserAssignedStores) &&
+-                !in_array($currentCategoryStoreId, $adminUserAssignedStores)) {
+-                throw new AuthorizationException(__('Not allowed to edit the category\'s design attributes'));
++            if (!$this->adminRole->getIsAll()) {
++                $parentIds = $category->getParentIds();
++                if (empty($parentIds)) {
++                    $parentIds = [$category->getParentId()];
++                }
++                $allowedCategoriesIds = array_keys($this->adminRole->getAllowedRootCategories());
++                if (empty(array_intersect($parentIds, $allowedCategoriesIds))) {
++                    throw new AuthorizationException(__('Not allowed to edit the category\'s design attributes'));
++                }
+             }
+         }
+     }
+diff --git a/vendor/magento/module-admin-gws/Plugin/VisualMerchandiser/Block/Adminhtml/Category/Merchandiser.php b/vendor/magento/module-admin-gws/Plugin/VisualMerchandiser/Block/Adminhtml/Category/Merchandiser.php
+index cf34a0b8248b..fb1ecd24672b 100644
+--- a/vendor/magento/module-admin-gws/Plugin/VisualMerchandiser/Block/Adminhtml/Category/Merchandiser.php
++++ b/vendor/magento/module-admin-gws/Plugin/VisualMerchandiser/Block/Adminhtml/Category/Merchandiser.php
+@@ -7,9 +7,10 @@
+ 
+ namespace Magento\AdminGws\Plugin\VisualMerchandiser\Block\Adminhtml\Category;
+ 
++use Magento\AdminGws\Model\Role as AdminRole;
+ use Magento\Backend\Block\Widget\Button as WidgetButton;
++use Magento\Catalog\Api\CategoryRepositoryInterface;
+ use Magento\VisualMerchandiser\Block\Adminhtml\Category\Merchandiser as CategoryProductsBlock;
+-use Magento\AdminGws\Model\Role as AdminRole;
+ 
+ /**
+  * Category products block plugin.
+@@ -21,11 +22,20 @@ class Merchandiser
+      */
+     private $adminRole;
+ 
++    /**
++     * @var CategoryRepositoryInterface $categoryRepository
++     */
++    private $categoryRepository;
++
+     /**
+      * @param AdminRole $adminRole
++     * @param CategoryRepositoryInterface $categoryRepository
+      */
+-    public function __construct(AdminRole $adminRole)
+-    {
++    public function __construct(
++        AdminRole $adminRole,
++        CategoryRepositoryInterface $categoryRepository
++    ) {
++        $this->categoryRepository = $categoryRepository;
+         $this->adminRole = $adminRole;
+     }
+ 
+@@ -34,11 +44,20 @@ public function __construct(AdminRole $adminRole)
+      *
+      * @param CategoryProductsBlock $subject
+      * @return void
++     * @throws \Magento\Framework\Exception\NoSuchEntityException
+      */
+     public function beforeToHtml(CategoryProductsBlock $subject): void
+     {
+-        if (! $this->adminRole->getIsAll()) {
+-            $this->restrictCategoryProductsAdd($subject);
++        if (!$this->adminRole->getIsAll()) {
++            $categoryId = (int) $subject->getCategoryId();
++            $allowedCategoriesIds = array_keys($this->adminRole->getAllowedRootCategories());
++            if ($categoryId > 0 && !in_array($categoryId, $allowedCategoriesIds)) {
++                $category = $this->categoryRepository->get($categoryId);
++                $parentIds = $category->getParentIds();
++                if (empty(array_intersect($parentIds, $allowedCategoriesIds))) {
++                    $this->restrictCategoryProductsAdd($subject);
++                }
++            }
+         }
+     }
+ 
