@@ -570,6 +570,12 @@ class Product extends MainProduct
         $dataRow[self::COL_ATTR_SET] = $attributeSet;
         $dataRow[self::COL_TYPE] = $type;
 
+        foreach ($dataRow as $columnName => $value) {
+            if (!$value) {
+                $dataRow[$columnName] = ' ';
+            }
+        }
+
         return $dataRow;
     }
 }
