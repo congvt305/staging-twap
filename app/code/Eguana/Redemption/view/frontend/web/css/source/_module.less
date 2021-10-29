@@ -121,6 +121,28 @@
             display: none;
         }
     }
+
+    .fixed-text-banner {
+        font-size: 16px;
+        background-color: #08bf5b;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 130;
+        letter-spacing: 0.1rem;
+        display: flex;
+        flex-direction: column;
+        padding: 6px 0 4px 0;
+        font-weight: 700;
+        align-items: center;
+        &:hover, &:active {
+            text-decoration: underline;
+        }
+        .message {
+            color: #ffffff;
+        }
+    }
 }
 
 

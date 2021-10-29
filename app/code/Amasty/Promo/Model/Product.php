@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Model;
 
@@ -84,6 +78,7 @@ class Product
             if ($productType === \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE
                 || $productType === \Magento\Downloadable\Model\Product\Type::TYPE_DOWNLOADABLE
                 || $productType === \Magento\Catalog\Model\Product\Type::TYPE_VIRTUAL
+                || $productType === \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE
             ) {
                 $this->productQty[$sku] = false;
             } else {

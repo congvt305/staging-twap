@@ -89,6 +89,11 @@ class SmsSender
     private $redemptionRepository;
 
     /**
+     * @var CounterInterface
+     */
+    private $_counter;
+
+    /**
      * SmsSender constructor.
      *
      * @param SmsManagementInterface $smsManagement
@@ -103,17 +108,18 @@ class SmsSender
      * @para RedemptionRepositoryInterface $redemptionRepository
      */
     public function __construct(
-        SmsManagementInterface $smsManagement,
-        RedemptionConfiguration $redemptionConfig,
-        TemplateFactory $templateFactory,
-        CounterRepositoryInterface $counterRepository,
-        StoreManagerInterface $storeManager,
+        SmsManagementInterface          $smsManagement,
+        RedemptionConfiguration         $redemptionConfig,
+        TemplateFactory                 $templateFactory,
+        CounterRepositoryInterface      $counterRepository,
+        StoreManagerInterface           $storeManager,
         OrderAddressRepositoryInterface $orderAddressRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        StoreInfoRepositoryInterface $storeInfoRepository,
-        LoggerInterface $logger,
-        RedemptionRepositoryInterface $redemptionRepository
-    ) {
+        SearchCriteriaBuilder           $searchCriteriaBuilder,
+        StoreInfoRepositoryInterface    $storeInfoRepository,
+        LoggerInterface                 $logger,
+        RedemptionRepositoryInterface   $redemptionRepository
+    )
+    {
         $this->smsManagement = $smsManagement;
         $this->redemptionConfig = $redemptionConfig;
         $this->templateFactory = $templateFactory;
@@ -157,6 +163,24 @@ class SmsSender
     }
 
     /**
+     * Retrieve Counter by id
+     * @param $counterId
+     * @return CounterInterface|bool
+     */
+    public function getCounterById($counterId)
+    {
+        if ($this->_counter === null) {
+            try {
+                $this->_counter = $this->counterRepository->getById($counterId);
+                return $this->_counter;
+            } catch (NoSuchEntityException $e) {
+                $this->logger->info($e->getMessage());
+                return false;
+            }
+        }
+    }
+
+    /**
      * Get message content
      *
      * @param $counterId
@@ -169,11 +193,13 @@ class SmsSender
             $customer = $this->counterRepository->getById($counterId);
             $storeCounterId = $customer->getCounterId();
             $link = $this->getCounterLink($counterId);
+            $posNumbers = $this->getPosNumbers($this->storeManager->getStore($storeId)->getWebsiteId());
             $storeCounterName = $this->storeInfoRepository->getById($storeCounterId)->getTitle();
             $defaultSms = $this->getDefaultSmsContent(
                 $customer,
                 $storeCounterName,
-                $link
+                $link,
+                $posNumbers
             );
             if (!$defaultSms) {
                 $customerName = $customer->getCustomerName();
@@ -205,10 +231,14 @@ class SmsSender
     public function getCounterLink($counterId)
     {
         $resultUrl = "";
-        $token = $this->counterRepository->getById($counterId)->getToken();
+        $counter = $this->getCounterById($counterId);
+        if (!$counter) {
+            return null;
+        }
+        $token = $counter->getToken();
         try {
             $resultUrl = $this->storeManager->getStore()
-                ->getUrl('redemption/details/register', ['counter_id'=>$counterId, 'token' => $token]);
+                ->getUrl('redemption/details/register', ['counter_id' => $counterId, 'token' => $token]);
         } catch (\Exception $e) {
             $this->logger->info($e->getMessage());
         }
@@ -223,7 +253,7 @@ class SmsSender
      * @param $link
      * @return string
      */
-    private function getDefaultSmsContent($counter, $counterName, $link)
+    private function getDefaultSmsContent($counter, $counterName, $link, $posNumbers)
     {
         try {
             $redemptionId = $counter->getRedemptionId();
@@ -234,11 +264,21 @@ class SmsSender
                 $smsContent = str_replace('%counter', $counterName, $smsContent);
                 $smsContent = str_replace('%confirm', $link, $smsContent);
                 $smsContent = str_replace('%name', $customerName, $smsContent);
+                $smsContent = str_replace('%pos_numbers', $posNumbers, $smsContent);
             }
             return $smsContent;
         } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());
             return '';
         }
+    }
+
+    /**
+     * @param $websiteId
+     * @return mixed|string
+     */
+    public function getPosNumbers($websiteId)
+    {
+        return $this->redemptionConfig->getPosNumber($websiteId) ?: '';
     }
 }

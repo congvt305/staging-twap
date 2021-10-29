@@ -12,4 +12,8 @@
         <plugin name="Eguana_CustomCheckout::Checkout_Summary" type="Eguana\CustomCheckout\Plugin\Model\DefaultConfigProvider" />
     </type>
     <preference for="\Magento\Checkout\CustomerData\DefaultItem" type="Eguana\CustomCheckout\Rewrite\Checkout\CustomerData\DefaultItem" />
+
+    <type name="Magento\Checkout\Api\PaymentInformationManagementInterface">
+        <plugin name="disable-place-order" type="Eguana\CustomCheckout\Plugin\PaymentInformationManagementPlugin" sortOrder="1"/>
+    </type>
 </config>

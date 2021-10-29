@@ -13,7 +13,12 @@
 $viewModel = $block->getData('redemption_view_model');
 $redemption = $viewModel->getRedemption();
 $thankYouImage = $viewModel->getThumbnailImageURL($redemption->getThankYouImage());
-?>
+$participantId = $block->getRequest()->getParam('participant_id');
+if ($participantId): ?>
+<script type="text/javascript">
+    window.AP_REDEMPTION_ID = '<?= $participantId ?>'
+</script>
+<?php endif;?>
 <?php if ($thankYouImage): ?>
     <div class="message success">
         <span><?= $block->escapeHtml(__('You have successfully applied for redemption, please check your email and newsletter.')); ?></span>

@@ -46,12 +46,12 @@ class PosOrderSender
      * @param Logger $pointsIntegrationLogger
      */
     public function __construct(
-        \Amore\PointsIntegration\Model\PosOrderData $posOrderData,
+        \Amore\PointsIntegration\Model\PosOrderData       $posOrderData,
         \Amore\PointsIntegration\Model\Connection\Request $request,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        Json $json,
-        \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig,
-        Logger $pointsIntegrationLogger
+        \Magento\Framework\Event\ManagerInterface         $eventManager,
+        Json                                              $json,
+        \Amore\PointsIntegration\Model\Source\Config      $PointsIntegrationConfig,
+        Logger                                            $pointsIntegrationLogger
     )
     {
         $this->posOrderData = $posOrderData;
@@ -75,23 +75,28 @@ class PosOrderSender
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
             $status = $this->responseCheck($response);
             if ($status) {
-                $this->posOrderData->updatePosSendCheck($order->getEntityId());
+                $this->posOrderData->updatePosPaidOrderSendFlag($order);
             }
         } catch (\Exception $exception) {
-            $this->pointsIntegrationLogger->info($exception->getMessage());
+            $message = 'POS Integration Fail: ' . $order->getIncrementId();
+            $this->pointsIntegrationLogger->info($message . $exception->getMessage());
+            $response = $exception->getMessage();
+        } catch (\Throwable $exception) {
+            $message = 'POS Integration Fail: ' . $order->getIncrementId();
+            $this->pointsIntegrationLogger->info($message . $exception->getMessage());
             $response = $exception->getMessage();
         }
 
         $this->logging($orderData, $response, $status);
     }
 
-    public function responseCheck($response)
+    /**
+     * @param $response
+     * @return bool
+     */
+    public function responseCheck($response): bool
     {
-        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
-            return 1;
-        } else {
-            return 0;
-        }
+        return isset($response['message']) && strtolower($response['message']) == 'success';
     }
 
     public function logging($sendData, $responseData, $status)

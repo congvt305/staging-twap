@@ -111,18 +111,18 @@ class RedemptionRepository implements RedemptionRepositoryInterface
     /**
      * Load data by given id
      *
-     * @param string $redemptionId
-     * @return Redemption
+     * @param int $redemptionId
+     * @return \Eguana\Redemption\Api\Data\RedemptionInterface
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function getById($redemptionId)
     {
         $redemption = $this->redemptionFactory->create();
         $this->resourceRedemption->load($redemption, $redemptionId);
-        try {
-            $redemption->getId();
-        } catch (\Exception $exception) {
-            $this->logger->debug($exception->getMessage());
+        if (!$redemption->getId()) {
+            $this->logger->debug(__('Redemption ID "%1" not found.', $redemptionId));
+            throw new NoSuchEntityException(__('Redemption ID "%1" not found.', $redemptionId));
         }
         return $redemption;
     }

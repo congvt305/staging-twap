@@ -76,6 +76,9 @@ define([
                         jQuery('body').loader('show');
                     },
                     success: function (data) {
+                        if (data['success'] == false) {
+                            window.location.href = data['redirectUrl'];
+                        }
                         if (data['duplicate'] || data['vvip_case']) {
                             var options = {
                                 type: 'popup',
@@ -103,7 +106,11 @@ define([
                             if (data['fbFunEnable']) {
                                 fbq('track', 'Foundation_check_finalcheck');
                             }
-                            window.location.href = successUrl;
+                            if (typeof data['entity_id'] !== 'undefined' && data['entity_id']) {
+                                window.location.href = successUrl + 'participant_id/' + data['entity_id'];
+                            } else {
+                                window.location.href = successUrl;
+                            }
                         }
                     }
                 });
@@ -128,6 +135,9 @@ define([
                         jQuery('body').loader('show');
                     },
                     success: function (data) {
+                        if (data['success'] == false) {
+                            window.location.href = data['redirectUrl'];
+                        }
                         startTimer();
                         jQuery('body').loader('hide');
                         infoAndErrorMessageDiv.find('span').remove()

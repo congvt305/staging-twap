@@ -221,6 +221,11 @@ define([
 
             this._toggleMessage();
 
+            if (this.response.autoOpenPopup) {
+                this.autoOpen = true;
+                this.isClose = false;
+            }
+
             if (this.autoOpen) {
                 if (!this.initPopup &&
                     this.hasContent &&
@@ -432,6 +437,7 @@ define([
             var self = event.data.context,
                 promoItem = $(this),
                 excludedTags = ['INPUT', 'SELECT', 'LABEL', 'TEXTAREA'],
+                currentAllowedQty = self.options.commonQty,
                 isCheckbox,
                 isInputQty,
                 isAllowedTags,
@@ -451,8 +457,12 @@ define([
             isAllowedTags = excludedTags.indexOf(event.target.tagName) === -1 &&
                 excludedTags.indexOf(event.target.parentElement.tagName) === -1;
 
+            if (self.options.giftsCounter !== self.isEnableGiftsCounter) {
+                currentAllowedQty = currentAllowedQty - self.getSumQtys();
+            }
+
             if (isCheckbox || isInputQty || isAllowedTags) {
-                if (self.options.commonQty || promoItem.hasClass('-selected')) {
+                if (currentAllowedQty > 0 || promoItem.hasClass('-selected')) {
                     promoItem.toggleClass('-selected');
                     checkbox.prop('checked', !checkbox.prop('checked'));
                     self.checkboxState(checkbox);
@@ -494,7 +504,11 @@ define([
 
             form.each(function (index, element) {
                 var $element = $(element),
-                    propertyTemp = {};
+                    propertyTemp = {},
+                    tmpBundleOpt = {},
+                    tmpBundleQtyOpt = {},
+                    tmpBundleMultiSelect = [];
+
 
                 if (!$element.find('input[type="checkbox"]').prop('checked')) {
                     return true;
@@ -503,6 +517,8 @@ define([
                 formData[index] = $element.serializeArray().reduce(function (obj, item) {
                     var key,
                         keyName,
+                        selectKey,
+                        tmpBundleCheckbox = {},
                         links = [];
 
                     if (item.name.indexOf('super_attribute') >= 0 || item.name.indexOf('options') >= 0) {
@@ -511,6 +527,36 @@ define([
 
                         propertyTemp[key] = item.value;
                         obj[keyName] = propertyTemp;
+                    } else if (item.name.indexOf('bundle_option_qty') >= 0) {
+                        key = item.name.match(re)[1];
+                        keyName = 'bundle_option_qty';
+                        tmpBundleQtyOpt[key] = item.value;
+                        obj[keyName] = tmpBundleQtyOpt;
+                    } else if (item.name.indexOf('bundle_option') >= 0) {
+                        key = item.name.match(re)[1];
+                        keyName = 'bundle_option';
+                        if (/\[]$/.test(item.name)) {
+                            if (tmpBundleMultiSelect[key] === undefined) {
+                                tmpBundleMultiSelect[key] = [];
+                            }
+
+                            tmpBundleMultiSelect[key].push(item.value);
+                            tmpBundleOpt[key] = tmpBundleMultiSelect[key];
+                        } else if (/\[(.*?)\]\[(.*?)\]$/.test(item.name)) {
+                            selectKey = item.name.match(/\]\[(.*?)\]/)[1];
+                            tmpBundleCheckbox[selectKey] = item.value;
+                            if (tmpBundleOpt[key] === undefined) {
+                                tmpBundleOpt[key] = {};
+                            } else if (tmpBundleOpt[key][selectKey] === undefined) {
+                                tmpBundleOpt[key][selectKey] = {};
+                            }
+
+                            tmpBundleOpt[key][selectKey] = item.value;
+                        } else {
+                            tmpBundleOpt[key] = item.value;
+                        }
+
+                        obj[keyName] = tmpBundleOpt;
                     } else if (item.name.indexOf('links[]') >= 0) {
                         links.push(item.value);
                         obj.links = links;

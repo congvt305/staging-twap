@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 namespace Amasty\Promo\Model\Rule\Action\Discount;
 
 /**
@@ -154,7 +148,7 @@ abstract class AbstractDiscount extends \Magento\SalesRule\Model\Rule\Action\Dis
         \Magento\SalesRule\Model\Rule $rule,
         \Magento\Quote\Model\Quote\Item\AbstractItem $item
     ) {
-        if ($item->getProductType() == 'bundle' || !$this->config->getScopeValue('limitations/skip_special_price')) {
+        if (!$this->config->getScopeValue('limitations/skip_special_price')) {
             return false;
         }
 
@@ -206,17 +200,7 @@ abstract class AbstractDiscount extends \Magento\SalesRule\Model\Rule\Action\Dis
      */
     protected function _getAllItems(\Magento\Quote\Model\Quote\Item\AbstractItem $item)
     {
-        $items = [];
-        foreach ($item->getAddress()->getAllItems() as $item) {
-            if ($item->getParentItem()
-                && $item->getParentItem()->getProductType() === \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE
-            ) {
-                continue;
-            }
-            $items[] = $item;
-        }
-
-        return $items;
+        return $item->getAddress()->getAllItems();
     }
 
     /**

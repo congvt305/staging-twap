@@ -224,7 +224,7 @@
                     <item name="rows" xsi:type="number">5</item>
                     <item name="source" xsi:type="string">eguana_redemption</item>
                     <item name="default" xsi:type="string">親愛的 %name 您好！ 蘭芝通知您：即日起至5/11至至*%counter*體驗「蘭芝明星產品」，即可兌換「明星商品體驗組」乙份！每人限領乙次。(數量有限兌完為止)。兌換網頁： %link</item>
-                    <item name="notice" xsi:type="string" translate="true">%name: Customer Name, %counter: Counter Name, %confirm: Confirmation link</item>
+                    <item name="notice" xsi:type="string" translate="true">%name: Customer Name, %counter: Counter Name, %confirm: Confirmation link, %pos_numbers: Individual numbers</item>
                 </item>
             </argument>
             <settings>
@@ -285,6 +285,7 @@
 
             </settings>
         </field>
+
         <field name="store_id_name" sortOrder="70" formElement="select">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -338,6 +339,57 @@
                 <block class="Eguana\Redemption\Block\Adminhtml\Redemption\CounterSeats\Form" name="redemption_counter_seats_form"/>
             </block>
         </htmlContent>
+        <fieldset name="fixed_text_banner" sortOrder="95">
+            <settings>
+                <collapsible>true</collapsible>
+                <label translate="true">Fixed Text Banner</label>
+            </settings>
+            <field name="text_banner_index" formElement="input">
+                <settings>
+                    <dataType>string</dataType>
+                    <label translate="true">Welcome Banner Text</label>
+                    <dataScope>text_banner_index</dataScope>
+                    <componentType>field</componentType>
+                </settings>
+            </field>
+            <field name="text_banner_index_hyperlink" formElement="input">
+                <settings>
+                    <dataType>string</dataType>
+                    <label translate="true">Welcome Banner Text Hyperlink</label>
+                    <dataScope>text_banner_index_hyperlink</dataScope>
+                    <componentType>field</componentType>
+                </settings>
+            </field>
+            <field name="text_banner_success" formElement="input">
+                <settings>
+                    <dataType>string</dataType>
+                    <label translate="true">Success Banner Text</label>
+                    <dataScope>text_banner_success</dataScope>
+                    <componentType>field</componentType>
+                </settings>
+            </field>
+            <field name="text_banner_success_hyperlink" formElement="input">
+                <settings>
+                    <dataType>string</dataType>
+                    <label translate="true">Success Banner Text Hyperlink</label>
+                    <dataScope>text_banner_success_hyperlink</dataScope>
+                    <componentType>field</componentType>
+                </settings>
+            </field>
+            <field name="bg_color_text_banner" formElement="input">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="notice" xsi:type="string" translate="true">Please enter the color code. If not filled, will use green #08bf5b as background color</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>string</dataType>
+                    <label translate="true">Background Color of Banner Text</label>
+                    <dataScope>bg_color_text_banner</dataScope>
+                    <componentType>field</componentType>
+                </settings>
+            </field>
+        </fieldset>
         <fieldset name="description" sortOrder="100">
             <settings>
                 <collapsible>true</collapsible>
