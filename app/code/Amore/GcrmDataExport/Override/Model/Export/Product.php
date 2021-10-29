@@ -360,6 +360,11 @@ class Product extends MainProduct
                             if (!in_array($fieldName, $this->_getExportMainAttrCodes())) {
                                 $additionalAttributes[$fieldName] = $fieldName .
                                     ImportProduct::PAIR_NAME_VALUE_SEPARATOR . $this->wrapValue($attrValue);
+                                $additionalAttributes[$fieldName] = str_replace(
+                                    ["\r", "\n"],
+                                    ' ',
+                                    $additionalAttributes[$fieldName]
+                                );
                             }
                             $data[$itemId][$storeId][$fieldName] = htmlspecialchars_decode($attrValue);
                         }
@@ -371,6 +376,11 @@ class Product extends MainProduct
                                     ImportProduct::PSEUDO_MULTI_LINE_SEPARATOR,
                                     $this->wrapValue($this->collectedMultiselectsData[$storeId][$productLinkId][$code])
                                 );
+                            $additionalAttributes[$code] = str_replace(
+                                ["\r", "\n"],
+                                ' ',
+                                $additionalAttributes[$code]
+                            );
                         }
                     }
                 }
