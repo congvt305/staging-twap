@@ -52,14 +52,27 @@ class Product extends MainProduct
     /**#@-*/
 
     /**
+     * Columns to exclude from exported file
+     *
      * @var array
      */
-    private $excludeHeadColumns = [
+    protected $excludeHeadColumns = [
         'description',
         'short_description',
         'base_image_label',
         'small_image_label',
         'thumbnail_image_label'
+    ];
+
+    /**
+     * Columns keys which values can have break line characters
+     *
+     * @var array
+     */
+    protected $_columnsWithSpecialCharacters = [
+        'meta_title',
+        'meta_keywords',
+        'meta_description'
     ];
 
     /**
@@ -360,11 +373,12 @@ class Product extends MainProduct
                             if (!in_array($fieldName, $this->_getExportMainAttrCodes())) {
                                 $additionalAttributes[$fieldName] = $fieldName .
                                     ImportProduct::PAIR_NAME_VALUE_SEPARATOR . $this->wrapValue($attrValue);
-                                $additionalAttributes[$fieldName] = str_replace(
-                                    ["\r", "\n"],
-                                    ' ',
+                                $additionalAttributes[$fieldName] = $this->fixLineBreak(
                                     $additionalAttributes[$fieldName]
                                 );
+                            }
+                            if (in_array($fieldName, $this->_columnsWithSpecialCharacters)) {
+                                $attrValue = $this->fixLineBreak($attrValue);
                             }
                             $data[$itemId][$storeId][$fieldName] = htmlspecialchars_decode($attrValue);
                         }
@@ -376,11 +390,7 @@ class Product extends MainProduct
                                     ImportProduct::PSEUDO_MULTI_LINE_SEPARATOR,
                                     $this->wrapValue($this->collectedMultiselectsData[$storeId][$productLinkId][$code])
                                 );
-                            $additionalAttributes[$code] = str_replace(
-                                ["\r", "\n"],
-                                ' ',
-                                $additionalAttributes[$code]
-                            );
+                            $additionalAttributes[$code] = $this->fixLineBreak($additionalAttributes[$code]);
                         }
                     }
                 }
@@ -581,5 +591,16 @@ class Product extends MainProduct
         $dataRow[self::COL_TYPE] = $type;
 
         return $dataRow;
+    }
+
+    /**
+     * Remove break line and replace iit with space
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function fixLineBreak($value = ''): string
+    {
+        return str_replace(["\r", "\n", "<br>", "<br/>"], ' ', $value);
     }
 }
