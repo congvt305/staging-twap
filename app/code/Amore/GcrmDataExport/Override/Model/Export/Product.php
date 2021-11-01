@@ -65,17 +65,6 @@ class Product extends MainProduct
     ];
 
     /**
-     * Columns keys which values can have break line characters
-     *
-     * @var array
-     */
-    protected $_columnsWithSpecialCharacters = [
-        'meta_title',
-        'meta_keywords',
-        'meta_description'
-    ];
-
-    /**
      * @var DataPersistorInterface
      */
     private $dataPersistor;
