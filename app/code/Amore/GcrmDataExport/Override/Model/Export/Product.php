@@ -373,13 +373,8 @@ class Product extends MainProduct
                             if (!in_array($fieldName, $this->_getExportMainAttrCodes())) {
                                 $additionalAttributes[$fieldName] = $fieldName .
                                     ImportProduct::PAIR_NAME_VALUE_SEPARATOR . $this->wrapValue($attrValue);
-                                $additionalAttributes[$fieldName] = $this->fixLineBreak(
-                                    $additionalAttributes[$fieldName]
-                                );
                             }
-                            if (in_array($fieldName, $this->_columnsWithSpecialCharacters)) {
-                                $attrValue = $this->fixLineBreak($attrValue);
-                            }
+                            $attrValue = $this->fixLineBreak($attrValue);
                             $data[$itemId][$storeId][$fieldName] = htmlspecialchars_decode($attrValue);
                         }
                     } else {
@@ -399,6 +394,9 @@ class Product extends MainProduct
                     $additionalAttributes = array_map('htmlspecialchars_decode', $additionalAttributes);
                     $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES] =
                         implode(Import::DEFAULT_GLOBAL_MULTI_VALUE_SEPARATOR, $additionalAttributes);
+                    $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES] = $this->fixLineBreak(
+                        $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES]
+                    );
                 } else {
                     unset($data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES]);
                 }
@@ -601,6 +599,6 @@ class Product extends MainProduct
      */
     protected function fixLineBreak($value = ''): string
     {
-        return str_replace(["\r", "\n", "<br>", "<br/>"], ' ', $value);
+        return str_replace(["\r", "\n", "<br>", "<br/>"], '', $value);
     }
 }
