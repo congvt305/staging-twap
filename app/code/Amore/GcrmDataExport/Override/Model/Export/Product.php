@@ -56,7 +56,7 @@ class Product extends MainProduct
      *
      * @var array
      */
-    protected $excludeHeadColumns = [
+    protected $_excludeHeadColumns = [
         'description',
         'short_description',
         'base_image_label',
@@ -215,7 +215,7 @@ class Product extends MainProduct
             if ($this->dataPersistor->get('gcrm_export_check')) {
                 $this->_headerColumns = array_diff(
                     $this->_headerColumns,
-                    $this->excludeHeadColumns
+                    $this->_excludeHeadColumns
                 );
                 array_splice(
                     $this->_headerColumns,
