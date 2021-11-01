@@ -118,8 +118,7 @@ class SmsSender
         StoreInfoRepositoryInterface    $storeInfoRepository,
         LoggerInterface                 $logger,
         RedemptionRepositoryInterface   $redemptionRepository
-    )
-    {
+    ) {
         $this->smsManagement = $smsManagement;
         $this->redemptionConfig = $redemptionConfig;
         $this->templateFactory = $templateFactory;
@@ -193,13 +192,13 @@ class SmsSender
             $customer = $this->counterRepository->getById($counterId);
             $storeCounterId = $customer->getCounterId();
             $link = $this->getCounterLink($counterId);
-            $posNumbers = $this->getPosNumbers($this->storeManager->getStore($storeId)->getWebsiteId());
+            $individualNumber = $customer->getIndividualNumber();
             $storeCounterName = $this->storeInfoRepository->getById($storeCounterId)->getTitle();
             $defaultSms = $this->getDefaultSmsContent(
                 $customer,
                 $storeCounterName,
                 $link,
-                $posNumbers
+                $individualNumber
             );
             if (!$defaultSms) {
                 $customerName = $customer->getCustomerName();
@@ -253,7 +252,7 @@ class SmsSender
      * @param $link
      * @return string
      */
-    private function getDefaultSmsContent($counter, $counterName, $link, $posNumbers)
+    private function getDefaultSmsContent($counter, $counterName, $link, $individualNumber)
     {
         try {
             $redemptionId = $counter->getRedemptionId();
@@ -264,21 +263,12 @@ class SmsSender
                 $smsContent = str_replace('%counter', $counterName, $smsContent);
                 $smsContent = str_replace('%confirm', $link, $smsContent);
                 $smsContent = str_replace('%name', $customerName, $smsContent);
-                $smsContent = str_replace('%pos_numbers', $posNumbers, $smsContent);
+                $smsContent = str_replace('%individual_number', $individualNumber, $smsContent);
             }
             return $smsContent;
         } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());
             return '';
         }
-    }
-
-    /**
-     * @param $websiteId
-     * @return mixed|string
-     */
-    public function getPosNumbers($websiteId)
-    {
-        return $this->redemptionConfig->getPosNumber($websiteId) ?: '';
     }
 }

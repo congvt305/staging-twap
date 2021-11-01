@@ -7,10 +7,13 @@
  * Date: 28/10/20
  * Time: 8:19 PM
  */
+
 namespace Eguana\Redemption\Model\RedemptionConfiguration;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * This class is used to get configuration values from Admin Configuration
@@ -32,7 +35,7 @@ class RedemptionConfiguration
     const XML_PATH_PRIVACY_POLICY_TEXT = 'redemption/configuration/privacy_policy_text';
     const XML_PATH_HOME_DELIVERY_ENABLED = 'redemption/configuration/home_delivery_enabled';
     const XML_PATH_FIXED_TEXT_BANNER_ENABLED = 'redemption/configuration/fixed_text_banner_enabled';
-    const XML_PATH_POS_NUMBERS = 'redemption/configuration/pos_numbers';
+    const XML_PATH_INDIVIDUAL_NUMBERS = 'redemption/configuration/individual_numbers';
 
     /**
      * @var ScopeInterface
@@ -41,13 +44,27 @@ class RedemptionConfiguration
 
 
     /**
+     * @var ResourceConnection
+     */
+    protected $resourceConnection;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * Constructor
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface  $scopeConfig,
+        ResourceConnection    $resourceConnection,
+        StoreManagerInterface $storeManager
     ) {
         $this->scopeConfig = $scopeConfig;
+        $this->resourceConnection = $resourceConnection;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -150,7 +167,7 @@ class RedemptionConfiguration
         //To-do check module recaptcha
         return false;
 
-        return (bool) $this->scopeConfig->getValue(
+        return (bool)$this->scopeConfig->getValue(
             self::XML_PATH_ENABLED_FRONTEND_RECAPTCHA,
             ScopeInterface::SCOPE_WEBSITE
         );
@@ -246,12 +263,31 @@ class RedemptionConfiguration
      * @param $websiteId
      * @return mixed
      */
-    public function getPosNumber($websiteId)
+    public function getIndividualNumbers($websiteId)
     {
         return $this->scopeConfig->getValue(
-            self::XML_PATH_POS_NUMBERS,
+            self::XML_PATH_INDIVIDUAL_NUMBERS,
             ScopeInterface::SCOPE_WEBSITE,
             $websiteId
         );
+    }
+
+    /**
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getIndividualNumber($storeId)
+    {
+        $connection = $this->resourceConnection->getConnection();
+        $select = $connection->select()->distinct()->from(['eguana_redemption_user'], 'individual_number')
+            ->where('individual_number IS NOT NULL')
+            ->where('store_id = ? ', $storeId);
+        $usedNumbers = $connection->fetchCol($select);
+
+        $websiteId = $this->storeManager->getStore($storeId)->getWebsiteId();
+        $individualNumbers = $this->getIndividualNumbers($websiteId);
+        $individualNumbers = explode(',', $individualNumbers);
+        $usableNumbers = array_diff($individualNumbers, $usedNumbers);
+
+        return reset($usableNumbers) ?: '';
     }
 }
