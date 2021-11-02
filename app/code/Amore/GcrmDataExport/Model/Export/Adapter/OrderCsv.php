@@ -213,11 +213,6 @@ class OrderCsv extends AbstractAdapter
     public function writeSourceRowWithCustomColumns(array $rowData)
     {
         unset($rowData['store_name']);
-        foreach ($rowData as $columnName => $value) {
-            if (!$value) {
-                $rowData[$columnName] = ' ';
-            }
-        }
         $headersData = [];
         foreach (array_keys($rowData) as $key) {
             $headersData[] = $key;

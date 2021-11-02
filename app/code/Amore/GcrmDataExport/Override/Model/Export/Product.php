@@ -52,9 +52,11 @@ class Product extends MainProduct
     /**#@-*/
 
     /**
+     * Columns to exclude from exported file
+     *
      * @var array
      */
-    private $excludeHeadColumns = [
+    protected $_excludeHeadColumns = [
         'description',
         'short_description',
         'base_image_label',
@@ -202,7 +204,7 @@ class Product extends MainProduct
             if ($this->dataPersistor->get('gcrm_export_check')) {
                 $this->_headerColumns = array_diff(
                     $this->_headerColumns,
-                    $this->excludeHeadColumns
+                    $this->_excludeHeadColumns
                 );
                 array_splice(
                     $this->_headerColumns,
@@ -361,6 +363,7 @@ class Product extends MainProduct
                                 $additionalAttributes[$fieldName] = $fieldName .
                                     ImportProduct::PAIR_NAME_VALUE_SEPARATOR . $this->wrapValue($attrValue);
                             }
+                            $attrValue = $this->fixLineBreak($attrValue);
                             $data[$itemId][$storeId][$fieldName] = htmlspecialchars_decode($attrValue);
                         }
                     } else {
@@ -371,6 +374,7 @@ class Product extends MainProduct
                                     ImportProduct::PSEUDO_MULTI_LINE_SEPARATOR,
                                     $this->wrapValue($this->collectedMultiselectsData[$storeId][$productLinkId][$code])
                                 );
+                            $additionalAttributes[$code] = $this->fixLineBreak($additionalAttributes[$code]);
                         }
                     }
                 }
@@ -379,6 +383,9 @@ class Product extends MainProduct
                     $additionalAttributes = array_map('htmlspecialchars_decode', $additionalAttributes);
                     $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES] =
                         implode(Import::DEFAULT_GLOBAL_MULTI_VALUE_SEPARATOR, $additionalAttributes);
+                    $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES] = $this->fixLineBreak(
+                        $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES]
+                    );
                 } else {
                     unset($data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES]);
                 }
@@ -570,12 +577,17 @@ class Product extends MainProduct
         $dataRow[self::COL_ATTR_SET] = $attributeSet;
         $dataRow[self::COL_TYPE] = $type;
 
-        foreach ($dataRow as $columnName => $value) {
-            if (!$value) {
-                $dataRow[$columnName] = ' ';
-            }
-        }
-
         return $dataRow;
+    }
+
+    /**
+     * Remove break line and replace iit with space
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function fixLineBreak($value = ''): string
+    {
+        return str_replace(["\r", "\n", "<br>", "<br/>"], '', $value);
     }
 }
