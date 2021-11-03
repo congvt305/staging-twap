@@ -7,9 +7,11 @@
  * Date: 27/10/20
  * Time: 1:05 AM
  */
+
 namespace Eguana\Redemption\Model;
 
 use Eguana\Redemption\Api\Data\CounterInterface;
+use Eguana\Redemption\Api\Data\RedemptionInterface;
 use Eguana\Redemption\Model\ResourceModel\Counter as CounterResourceModel;
 use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractModel;
@@ -29,11 +31,11 @@ class Counter extends AbstractModel implements CounterInterface, IdentityInterfa
     /**#@+
      * Counter's Statuses
      */
-    const STATUS_REGISTRATION   = 1;
-    const STATUS_REDEMPTION     = 2;
-    const STATUS_EXPIRED        = 3;
-    const STATUS_ENABLED        = 1;
-    const STATUS_DISABLED       = 0;
+    const STATUS_REGISTRATION = 1;
+    const STATUS_REDEMPTION = 2;
+    const STATUS_EXPIRED = 3;
+    const STATUS_ENABLED = 1;
+    const STATUS_DISABLED = 0;
     /**#@-*/
 
     /**
@@ -106,7 +108,7 @@ class Counter extends AbstractModel implements CounterInterface, IdentityInterfa
      *
      * @return string|null
      */
-    public function getRedeemDate() : string
+    public function getRedeemDate(): string
     {
         return $this->getData(self::REDEEM_DATE);
     }
@@ -127,7 +129,7 @@ class Counter extends AbstractModel implements CounterInterface, IdentityInterfa
      *
      * @return string|null
      */
-    public function getCustomerName() : string
+    public function getCustomerName(): string
     {
         return $this->getData(self::CUSTOMER_NAME);
     }
@@ -148,7 +150,7 @@ class Counter extends AbstractModel implements CounterInterface, IdentityInterfa
      *
      * @return string|null
      */
-    public function getEmail() : string
+    public function getEmail(): string
     {
         return $this->getData(self::EMAIL);
     }
@@ -190,7 +192,7 @@ class Counter extends AbstractModel implements CounterInterface, IdentityInterfa
      *
      * @return string|null
      */
-    public function getCounterId() : string
+    public function getCounterId(): string
     {
         return $this->getData(self::COUNTER_ID);
     }
@@ -232,7 +234,7 @@ class Counter extends AbstractModel implements CounterInterface, IdentityInterfa
      *
      * @return string
      */
-    public function getRegistrationDate() : string
+    public function getRegistrationDate(): string
     {
         return $this->getData(self::REGISTRATION_DATE);
     }
@@ -253,7 +255,7 @@ class Counter extends AbstractModel implements CounterInterface, IdentityInterfa
      *
      * @return string
      */
-    public function getStatus() : string
+    public function getStatus(): string
     {
         return $this->getData(self::STATUS);
     }
@@ -358,7 +360,7 @@ class Counter extends AbstractModel implements CounterInterface, IdentityInterfa
      *
      * @return string|null
      */
-    public function getCreationTime() : string
+    public function getCreationTime(): string
     {
         return $this->getData(self::CREATION_TIME);
     }
@@ -379,7 +381,7 @@ class Counter extends AbstractModel implements CounterInterface, IdentityInterfa
      *
      * @return string|null
      */
-    public function getUpdateTime() : string
+    public function getUpdateTime(): string
     {
         return $this->getData(self::UPDATE_TIME);
     }
@@ -403,9 +405,9 @@ class Counter extends AbstractModel implements CounterInterface, IdentityInterfa
     public function getAvailableStatuses()
     {
         return [
-            self::STATUS_REGISTRATION    => __('Registration'),
-            self::STATUS_REDEMPTION   => __('Redemption'),
-            self::STATUS_EXPIRED   => __('Expired')
+            self::STATUS_REGISTRATION => __('Registration'),
+            self::STATUS_REDEMPTION => __('Redemption'),
+            self::STATUS_EXPIRED => __('Expired')
         ];
     }
 
@@ -424,5 +426,22 @@ class Counter extends AbstractModel implements CounterInterface, IdentityInterfa
     public function setAddress($address)
     {
         return $this->setData(self::ADDRESS, $address);
+    }
+
+    /**
+     * @return string
+     */
+    public function getIndividualNumber()
+    {
+        return $this->getData(self::INDIVIDUAL_NUMBER);
+    }
+
+    /**
+     * @param string $number
+     * @return RedemptionInterface
+     */
+    public function setIndividualNumber($number)
+    {
+        return $this->setData(self::INDIVIDUAL_NUMBER, $number);
     }
 }

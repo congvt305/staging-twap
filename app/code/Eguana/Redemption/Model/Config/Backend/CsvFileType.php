@@ -11,8 +11,8 @@ use \Magento\Store\Model\ScopeInterface;
 
 class CsvFileType extends File
 {
-    const FOLDER_NAME = 'pos_number';
-    const CONFIGURATION_PATH_POS_NUMBER = 'redemption/configuration/pos_numbers';
+    const FOLDER_NAME = 'individual_numbers';
+    const CONFIGURATION_PATH_INDIVIDUAL_NUMBERS = 'redemption/configuration/individual_numbers';
 
     /**
      * @var \Magento\Framework\File\Csv
@@ -71,14 +71,14 @@ class CsvFileType extends File
             $filePath = $mediaPath . self::FOLDER_NAME . '/' . $fileName;
             $this->xlsxReader->setReadDataOnly(true);
             $sheetData = $this->xlsxReader->load($filePath);
-            $posNumbers = $sheetData->getActiveSheet()->toArray('', true, true, false);
-            $posNumbers = implode(',', array_map(function ($item) {
+            $individualNumbers = $sheetData->getActiveSheet()->toArray('', true, true, false);
+            $individualNumbers = implode(',', array_map(function ($item) {
                 return $item[0];
-            }, array_values($posNumbers)));
-            if ($posNumbers) {
+            }, array_values($individualNumbers)));
+            if ($individualNumbers) {
                 $this->configWriter->save(
-                    self::CONFIGURATION_PATH_POS_NUMBER,
-                    $posNumbers,
+                    self::CONFIGURATION_PATH_INDIVIDUAL_NUMBERS,
+                    $individualNumbers,
                     ScopeInterface::SCOPE_WEBSITES,
                     $this->getScopeId()
                 );

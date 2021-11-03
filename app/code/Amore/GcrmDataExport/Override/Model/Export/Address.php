@@ -127,12 +127,6 @@ class Address extends MainAddress
         $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$customer['website_id']];
         $row[self::COLUMN_REGION_ID] = $item->getRegionId();
 
-        foreach ($row as $columnName => $value) {
-            if (!$value) {
-                $row[$columnName] = ' ';
-            }
-        }
-
         $this->getWriter()->writeRow($row);
     }
 }
