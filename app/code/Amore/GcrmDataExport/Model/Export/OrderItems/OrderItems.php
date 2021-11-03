@@ -288,7 +288,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         $cnt = 0;
         foreach ($collection->getData() as $item) {
             $itemData = $this->dataHelper->fixSingleRowData($item);
-            $itemRow[$item['item_id']][$cnt] = $item;
+            $itemRow[$item['item_id']][$cnt] = $itemData;
             $cnt++;
         }
         return $itemRow;

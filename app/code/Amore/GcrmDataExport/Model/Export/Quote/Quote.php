@@ -276,7 +276,7 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
         $cnt = 0;
         foreach ($collection as $item) {
             $itemData = $this->dataHelper->fixSingleRowData($item->getData());
-            $itemRow[$item->getIncrementId()][$cnt] = $item->getData();
+            $itemRow[$item->getIncrementId()][$cnt] = $itemData;
             $cnt++;
         }
         return $itemRow;
