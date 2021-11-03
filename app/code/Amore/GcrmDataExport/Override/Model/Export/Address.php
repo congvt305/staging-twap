@@ -9,6 +9,7 @@
  */
 namespace Amore\GcrmDataExport\Override\Model\Export;
 
+use Amore\GcrmDataExport\Helper\Data;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\Address as AddressModel;
 use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory as CustomerCollectionFactory;
@@ -43,6 +44,11 @@ class Address extends MainAddress
     private $dataPersistor;
 
     /**
+     * @var Data
+     */
+    protected $dataHelper;
+
+    /**
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
      * @param Factory $collectionFactory
@@ -53,6 +59,7 @@ class Address extends MainAddress
      * @param CustomerFactory $eavCustomerFactory
      * @param AddressCollectionFactory $addressColFactory
      * @param DataPersistorInterface $dataPersistor
+     * @param Data $dataHelper
      * @param array $data
      */
     public function __construct(
@@ -66,6 +73,7 @@ class Address extends MainAddress
         CustomerFactory $eavCustomerFactory,
         AddressCollectionFactory $addressColFactory,
         DataPersistorInterface $dataPersistor,
+        Data $dataHelper,
         array $data = []
     ) {
         parent::__construct(
@@ -80,7 +88,8 @@ class Address extends MainAddress
             $addressColFactory,
             $data
         );
-        $this->dataPersistor = $dataPersistor;
+        $this->dataHelper       = $dataHelper;
+        $this->dataPersistor    = $dataPersistor;
     }
 
     /**
@@ -126,6 +135,10 @@ class Address extends MainAddress
         $row[self::COLUMN_EMAIL] = $customer['email'];
         $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$customer['website_id']];
         $row[self::COLUMN_REGION_ID] = $item->getRegionId();
+
+        foreach ($row as $columnName => $value) {
+            $row[$columnName] = $this->dataHelper->fixLineBreak($row[$columnName]);
+        }
 
         $this->getWriter()->writeRow($row);
     }

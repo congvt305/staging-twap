@@ -9,6 +9,7 @@
  */
 namespace Amore\GcrmDataExport\Override\Model\Export;
 
+use Amore\GcrmDataExport\Helper\Data;
 use Magento\CatalogImportExport\Model\Export\RowCustomizerInterface;
 use Magento\CatalogInventory\Model\ResourceModel\Stock\ItemFactory;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\Set\CollectionFactory as EavAttributeCollectionFactory;
@@ -70,6 +71,11 @@ class Product extends MainProduct
     private $dataPersistor;
 
     /**
+     * @var Data
+     */
+    protected $dataHelper;
+
+    /**
      * @param TimezoneInterface $localeDate
      * @param Config $config
      * @param ResourceConnection $resource
@@ -87,6 +93,7 @@ class Product extends MainProduct
      * @param ProductEntity\LinkTypeProvider $linkTypeProvider
      * @param RowCustomizerInterface $rowCustomizer
      * @param DataPersistorInterface $dataPersistor
+     * @param Data $dataHelper
      * @param array $dateAttrCodes
      * @param ProductFilterInterface|null $filter
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -109,6 +116,7 @@ class Product extends MainProduct
         ProductEntity\LinkTypeProvider $linkTypeProvider,
         RowCustomizerInterface $rowCustomizer,
         DataPersistorInterface $dataPersistor,
+        Data $dataHelper,
         array $dateAttrCodes = [],
         ?ProductFilterInterface $filter = null
     ) {
@@ -132,7 +140,8 @@ class Product extends MainProduct
             $dateAttrCodes,
             $filter
         );
-        $this->dataPersistor = $dataPersistor;
+        $this->dataHelper       = $dataHelper;
+        $this->dataPersistor    = $dataPersistor;
     }
 
     /**
@@ -363,7 +372,7 @@ class Product extends MainProduct
                                 $additionalAttributes[$fieldName] = $fieldName .
                                     ImportProduct::PAIR_NAME_VALUE_SEPARATOR . $this->wrapValue($attrValue);
                             }
-                            $attrValue = $this->fixLineBreak($attrValue);
+                            $attrValue = $this->dataHelper->fixLineBreak($attrValue);
                             $data[$itemId][$storeId][$fieldName] = htmlspecialchars_decode($attrValue);
                         }
                     } else {
@@ -374,7 +383,9 @@ class Product extends MainProduct
                                     ImportProduct::PSEUDO_MULTI_LINE_SEPARATOR,
                                     $this->wrapValue($this->collectedMultiselectsData[$storeId][$productLinkId][$code])
                                 );
-                            $additionalAttributes[$code] = $this->fixLineBreak($additionalAttributes[$code]);
+                            $additionalAttributes[$code] = $this->dataHelper->fixLineBreak(
+                                $additionalAttributes[$code]
+                            );
                         }
                     }
                 }
@@ -383,7 +394,7 @@ class Product extends MainProduct
                     $additionalAttributes = array_map('htmlspecialchars_decode', $additionalAttributes);
                     $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES] =
                         implode(Import::DEFAULT_GLOBAL_MULTI_VALUE_SEPARATOR, $additionalAttributes);
-                    $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES] = $this->fixLineBreak(
+                    $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES] = $this->dataHelper->fixLineBreak(
                         $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES]
                     );
                 } else {
@@ -578,16 +589,5 @@ class Product extends MainProduct
         $dataRow[self::COL_TYPE] = $type;
 
         return $dataRow;
-    }
-
-    /**
-     * Remove break line and replace iit with space
-     *
-     * @param string $value
-     * @return string
-     */
-    protected function fixLineBreak($value = ''): string
-    {
-        return str_replace(["\r", "\n", "<br>", "<br/>"], '', $value);
     }
 }
