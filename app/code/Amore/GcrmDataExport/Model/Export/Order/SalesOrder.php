@@ -9,6 +9,7 @@
  */
 namespace Amore\GcrmDataExport\Model\Export\Order;
 
+use Amore\GcrmDataExport\Helper\Data;
 use Amore\GcrmDataExport\Model\ResourceModel\CustomImportExport\CollectionFactory as ExportCollection;
 use Amore\GcrmDataExport\Model\Export\Adapter\OrderCsv;
 use Amore\GcrmDataExport\Model\Export\Order\AttributeCollectionProvider;
@@ -307,12 +308,20 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
      */
     private $ExportCollectionFactory;
 
+    /**
+     * @var TimezoneInterface
+     */
     private $timezone;
 
     /** Attribute collection name.
      * Used to resolve entity attribute collection.
      */
     const ATTRIBUTE_COLLECTION_NAME = Collection::class;
+
+    /**
+     * @var Data
+     */
+    protected $dataHelper;
 
     /**
      * SalesOrder constructor.
@@ -328,6 +337,7 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
      * @param RedirectFactory $resultRedirectFactory
      * @param ManagerInterface $messageManager
      * @param TimezoneInterface $timezone
+     * @param Data $dataHelper
      * @param array $data
      */
     public function __construct(
@@ -343,6 +353,7 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
         RedirectFactory $resultRedirectFactory,
         ManagerInterface $messageManager,
         TimezoneInterface $timezone,
+        Data $dataHelper,
         array $data = []
     ) {
         parent::__construct(
@@ -360,6 +371,7 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->messageManager = $messageManager;
         $this->timezone = $timezone;
+        $this->dataHelper = $dataHelper;
     }
 
     /**
@@ -410,7 +422,8 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
 
         $cnt = 0;
         foreach ($collection as $item) {
-            $itemRow[$item->getIncrementId()][$cnt] = $item->getData();
+            $itemData = $this->dataHelper->fixSingleRowData($item->getData());
+            $itemRow[$item->getIncrementId()][$cnt] = $itemData;
             $cnt++;
         }
         return $itemRow;
