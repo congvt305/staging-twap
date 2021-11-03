@@ -205,7 +205,7 @@ class Quote
 
     /**
      * Get bundle product data with dynamic price set to NO
-     * @param $item
+     * @param \Magento\Quote\Model\Quote\Item $item
      * @return array
      */
     private function getBundleProductWithDynamicPrice($item)
