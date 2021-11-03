@@ -9,6 +9,7 @@
  */
 namespace Amore\GcrmDataExport\Model\Export\OrderItems;
 
+use Amore\GcrmDataExport\Helper\Data;
 use Amore\GcrmDataExport\Model\ResourceModel\CustomImportExport\CollectionFactory as ExportCollection;
 use Amore\GcrmDataExport\Model\Export\Adapter\OrderItemsCsv;
 use Amore\GcrmDataExport\Model\Export\Order\AttributeCollectionProvider;
@@ -189,6 +190,11 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
     const ATTRIBUTE_COLLECTION_NAME = Collection::class;
 
     /**
+     * @var Data
+     */
+    protected $dataHelper;
+
+    /**
      * OrderItems constructor.
      * @param ExportCollection $ExportCollectionFactory
      * @param AttributeCollectionProvider $attributeCollectionProvider
@@ -200,6 +206,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
      * @param CollectionByPagesIteratorFactory $resourceColFactory
      * @param RedirectFactory $resultRedirectFactory
      * @param ManagerInterface $messageManager
+     * @param Data $dataHelper
      * @param array $data
      */
     public function __construct(
@@ -213,6 +220,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         CollectionByPagesIteratorFactory $resourceColFactory,
         RedirectFactory $resultRedirectFactory,
         ManagerInterface $messageManager,
+        Data $dataHelper,
         array $data = []
     ) {
         parent::__construct(
@@ -228,6 +236,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         $this->orderItemsWriter = $orderItemsWriter;
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->messageManager = $messageManager;
+        $this->dataHelper = $dataHelper;
     }
 
     /**
@@ -278,6 +287,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
 
         $cnt = 0;
         foreach ($collection->getData() as $item) {
+            $itemData = $this->dataHelper->fixSingleRowData($item);
             $itemRow[$item['item_id']][$cnt] = $item;
             $cnt++;
         }

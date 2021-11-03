@@ -9,6 +9,7 @@
  */
 namespace Amore\GcrmDataExport\Override\Model\Export;
 
+use Amore\GcrmDataExport\Helper\Data;
 use Magento\Customer\Model\Customer as CustomerModel;
 use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory;
 use Magento\CustomerImportExport\Model\Export\Customer as MainCustomer;
@@ -39,6 +40,11 @@ class Customer extends MainCustomer
     private $dataPersistor;
 
     /**
+     * @var Data
+     */
+    protected $dataHelper;
+
+    /**
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
      * @param Factory $collectionFactory
@@ -47,6 +53,7 @@ class Customer extends MainCustomer
      * @param Config $eavConfig
      * @param CollectionFactory $customerColFactory
      * @param DataPersistorInterface $dataPersistor
+     * @param Data $dataHelper
      * @param array $data
      */
     public function __construct(
@@ -58,6 +65,7 @@ class Customer extends MainCustomer
         Config $eavConfig,
         CollectionFactory $customerColFactory,
         DataPersistorInterface $dataPersistor,
+        Data $dataHelper,
         array $data = []
     ) {
         parent::__construct(
@@ -70,7 +78,8 @@ class Customer extends MainCustomer
             $customerColFactory,
             $data
         );
-        $this->dataPersistor = $dataPersistor;
+        $this->dataHelper       = $dataHelper;
+        $this->dataPersistor    = $dataPersistor;
     }
 
     /**
