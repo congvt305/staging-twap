@@ -5,6 +5,7 @@
  */
 ?>
 <div data-bind="scope: 'messages'">
+    <div data-bind="visible: isVisible()" class="message-visible"><!-- 2021.11.02 div 추가 -->
     <!-- ko if: cookieMessages && cookieMessages.length > 0 -->
     <div role="alert" data-bind="foreach: { data: cookieMessages, as: 'message' }" class="messages">
         <div data-bind="attr: {
@@ -12,6 +13,7 @@
             'data-ui-id': 'message-' + message.type
         }">
             <div data-bind="html: $parent.prepareMessageForHtml(message.text)"></div>
+            <div class="remove"></div>
         </div>
     </div>
     <!-- /ko -->
@@ -24,10 +26,12 @@
             'data-ui-id': 'message-' + message.type
         }">
             <div data-bind="html: $parent.prepareMessageForHtml(message.text)"></div>
+            <div class="remove"></div>
         </div>
         <!-- /ko -->
     </div>
     <!-- /ko -->
+    </div>
 </div>
 <script type="text/x-magento-init">
     {
