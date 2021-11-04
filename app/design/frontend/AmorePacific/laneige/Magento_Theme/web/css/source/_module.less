@@ -690,3 +690,64 @@
         }
     }
 }
+/* 2021.11.02 추가 S */
+.page.messages {
+    .message {
+        > *:first-child:before {
+            left: 11px;
+        }
+        &.success {
+            padding: 12px 40px;/* 2021.11.02 수정 */
+        }
+        &.notice {
+            padding: 12px 40px;/* 2021.11.02 수정 */
+        }
+        &.warning {
+            padding: 12px 40px;/* 2021.11.02 수정 */
+        }
+        &.error {
+            padding: 12px 40px;/* 2021.11.02 수정 */
+        }
+        &.info {
+            padding: 12px 40px;/* 2021.11.02 수정 */
+        }
+    }
+    .remove {
+        display: none;
+        width:24px;
+        height:24px;
+        position:absolute;
+        top:50%;
+        right:0;
+        transform:translate(-50%, -50%) rotate(-45deg);
+        background:transparent;
+        border:0;
+        padding:0;
+        cursor:pointer;
+        &::before {
+            content: "";
+            width:2px;
+            height:18px;
+            background-color: #fff;
+            display: inline-block;
+            overflow: hidden;
+            position:absolute;
+            left:11px;
+            top:0;
+            margin:3px 0;
+        }
+        &::after {
+            content: "";
+            width:18px;
+            height:2px;
+            background-color: #fff;
+            display: inline-block;
+            overflow: hidden;
+            position:absolute;
+            left:0;
+            top:11px;
+            margin:0 3px;
+        }
+    }
+}
+/* 2021.11.02 추가 E */
