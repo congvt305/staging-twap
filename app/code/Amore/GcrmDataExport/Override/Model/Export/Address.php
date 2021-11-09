@@ -39,6 +39,20 @@ class Address extends MainAddress
     /**#@-*/
 
     /**
+     * Columns to include in exported file
+     *
+     * @var array
+     */
+    private $includeColumns = [
+        'entity_id',
+        'parent_id',
+        'is_active',
+        'increment_id',
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
      * @var DataPersistorInterface
      */
     private $dataPersistor;
@@ -98,7 +112,10 @@ class Address extends MainAddress
     protected function _getHeaderColumns()
     {
         if ($this->dataPersistor->get('gcrm_export_check')) {
-            $this->_permanentAttributes = [self::ENTITY_ID, self::PARENT_ID, self::COLUMN_WEBSITE, self::COLUMN_EMAIL];
+            $this->_permanentAttributes = array_merge(
+                $this->includeColumns,
+                [self::COLUMN_WEBSITE, self::COLUMN_EMAIL]
+            );
         }
         return array_merge(
             $this->_permanentAttributes,
@@ -131,7 +148,15 @@ class Address extends MainAddress
         $entityColumn = $this->dataPersistor->get('gcrm_export_check') ? self::ENTITY_ID : self::COLUMN_ADDRESS_ID;
         $row[$entityColumn] = $item['entity_id'];
 
-        $row[self::PARENT_ID] = $item->getParentId();
+        if ($this->dataPersistor->get('gcrm_export_check')) {
+            $row[self::PARENT_ID] = $item->getParentId();
+            foreach ($this->includeColumns as $key => $columnName) {
+                if ($columnName != self::ENTITY_ID && $columnName != self::PARENT_ID) {
+                    $row[$columnName] = $item->getData($columnName);
+                }
+            }
+        }
+
         $row[self::COLUMN_EMAIL] = $customer['email'];
         $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$customer['website_id']];
         $row[self::COLUMN_REGION_ID] = $item->getRegionId();
