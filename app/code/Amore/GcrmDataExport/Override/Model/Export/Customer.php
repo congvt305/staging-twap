@@ -28,11 +28,16 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class Customer extends MainCustomer
 {
-    /**#@+
-     * Constants for export column.
+    /**
+     * Columns to include in exported file
+     *
+     * @var array
      */
-    const ENTITY_ID = 'entity_id';
-    /**#@-*/
+    private $includeColumns = [
+        'entity_id',
+        'is_active',
+        'increment_id'
+    ];
 
     /**
      * @var DataPersistorInterface
@@ -93,7 +98,7 @@ class Customer extends MainCustomer
                 $this->_permanentAttributes,
                 0,
                 0,
-                [self::ENTITY_ID]
+                $this->includeColumns
             );
         }
         return array_merge($this->_permanentAttributes, $validAttributeCodes);
@@ -109,7 +114,9 @@ class Customer extends MainCustomer
     {
         $row = $this->_addAttributeValuesToRow($item);
         if ($this->dataPersistor->get('gcrm_export_check')) {
-            $row[self::ENTITY_ID] = $item->getId();
+            foreach ($this->includeColumns as $key => $columnName) {
+                $row[$columnName] = $item->getData($columnName);
+            }
         }
         $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$item->getWebsiteId()];
         $row[self::COLUMN_STORE] = $this->_storeIdToCode[$item->getStoreId()];
