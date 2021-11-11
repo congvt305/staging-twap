@@ -1,11 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
--->
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
@@ -21,7 +14,7 @@
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
                 <field id="auto_add" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Add Simple/Virtual/Downloadable Products Automatically, Without Confirmation</label>
+                    <label>Add Simple/Virtual/Downloadable/Bundle Products Automatically, Without Confirmation</label>
                     <comment>Products will be added automatically only if there are no options to specify</comment>
                     <source_model>Amasty\Promo\Model\Config\Source\AutoAdd\Mode</source_model>
                 </field>

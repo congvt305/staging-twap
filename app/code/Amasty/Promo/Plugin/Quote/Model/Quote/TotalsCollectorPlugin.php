@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Plugin\Quote\Model\Quote;
 
@@ -29,6 +23,8 @@ use Magento\Quote\Model\Quote\TotalsCollector;
  */
 class TotalsCollectorPlugin
 {
+    const KEY_IS_ADDRESS_PROCESSED = 'amastyFreeGiftProcessed';
+
     /**
      * @var Cart
      */
@@ -113,29 +109,32 @@ class TotalsCollectorPlugin
         Quote $quote,
         Address $address
     ) {
+        if (!$address->getAllItems() || $address->getData(self::KEY_IS_ADDRESS_PROCESSED)) {
+            return $proceed($quote, $address);
+        }
+
         $this->recollectTotals = false;
         $this->promoItemRegistry->resetQtyAllowed();
 
         $totals = $proceed($quote, $address);
 
-        if ($address->getAllItems()) {
-            $this->updateQuoteItems($quote);
-            if ($this->storage->isAutoAddAllowed()) {
-                $this->addProductsAutomatically($quote);
-            } elseif (!$this->recollectTotals && $this->promoItemRegistry->getItemsForAutoAdd()) {
-                //save estimation address
-                $this->storage->setIsQuoteSaveRequired(true);
-            }
+        $address->setData(self::KEY_IS_ADDRESS_PROCESSED, true);
+        $this->updateQuoteItems($quote);
+        if ($this->storage->isAutoAddAllowed()) {
+            $this->addProductsAutomatically($quote);
+        } elseif (!$this->recollectTotals && $this->promoItemRegistry->getItemsForAutoAdd()) {
+            //save estimation address
+            $this->storage->setIsQuoteSaveRequired(true);
+        }
 
-            if ($this->recollectTotals) {
-                $this->promoCartHelper->updateTotalQty($quote);
-                $address->unsetData('cached_items_all');
-                $address->setCollectShippingRates(true);
+        if ($this->recollectTotals) {
+            $this->promoCartHelper->updateTotalQty($quote);
+            $address->unsetData('cached_items_all');
+            $address->setCollectShippingRates(true);
 
-                //execute closure one more time for recalculate totals
-                $totals = $proceed($quote, $address);
-                $this->storage->setIsQuoteSaveRequired(true);
-            }
+            //execute closure one more time for recalculate totals
+            $totals = $proceed($quote, $address);
+            $this->storage->setIsQuoteSaveRequired(true);
         }
 
         return $totals;

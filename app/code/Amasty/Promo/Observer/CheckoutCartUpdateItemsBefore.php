@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Observer;
 
@@ -50,7 +44,7 @@ class CheckoutCartUpdateItemsBefore implements ObserverInterface
                     $item->getProduct()->getData('sku'),
                     $this->helperItem->getRuleId($item)
                 );
-                if ($promoItemData->isAutoAdd()) {
+                if ($promoItemData && $promoItemData->isAutoAdd()) {
                     //disable auto add functionality if customer changing qty manually
                     $promoItemData->isDeleted(true);
                 }

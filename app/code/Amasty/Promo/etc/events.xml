@@ -1,11 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
--->
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="sales_order_place_after">
@@ -23,5 +16,8 @@
     <!-- for add prefix to item name -->
     <event name="items_additional_data">
         <observer name="Amasty_Promo::item_converter" instance="Amasty\Promo\Observer\Quote\Cart\Totals\ItemConverterObserver" />
+    </event>
+    <event name="checkout_cart_save_before">
+        <observer instance="Amasty\Promo\Observer\Quote\SetFlagBeforeSave" name="amasty_promo_set_restrict_save_flag"/>
     </event>
 </config>

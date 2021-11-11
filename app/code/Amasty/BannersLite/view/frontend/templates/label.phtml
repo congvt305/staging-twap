@@ -1,10 +1,3 @@
-<?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_BannersLite
- */
-?>
 <?php /** @var \Amasty\BannersLite\Block\Banner $block */?>
 <?php foreach ($block->getBanners() as $banner) : ?>
     <?php if ($block->isEnableBannerPosition() && $img = $block->getImage($banner)) : ?>

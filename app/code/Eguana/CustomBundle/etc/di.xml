@@ -17,4 +17,7 @@
     <type name="Magento\Bundle\Block\Sales\Order\Items\Renderer">
         <plugin name="change_bundle_product_format_my_orders" type="Eguana\CustomBundle\Plugin\Block\Sales\Order\Items\Renderer"/>
     </type>
+    <type name="Magento\Catalog\Model\Product\Type\AbstractType">
+        <plugin name="add_to_cart_single_option" disabled="true" />
+    </type>
 </config>
