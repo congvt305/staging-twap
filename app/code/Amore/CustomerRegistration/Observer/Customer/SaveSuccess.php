@@ -289,7 +289,7 @@ class SaveSuccess implements ObserverInterface
                 $regionCities = $cities[$regionObject->getRegionId()];
                 foreach ($regionCities as $regionCity) {
                     if ($regionCity['name'] == $cityName) {
-                        $parameters['homeState'] = $regionCity['code'];
+                        $parameters['homeState'] = $regionCity['pos_code'];
                         break;
                     }
                 }
@@ -348,7 +348,7 @@ class SaveSuccess implements ObserverInterface
             $regionCities = $cities[$address->getRegionId()];
             foreach ($regionCities as $regionCity) {
                 if ($regionCity['name'] == $cityName) {
-                    $parameters['homeState'] = $regionCity['code'];
+                    $parameters['homeState'] = $regionCity['pos_code'];
                     break;
                 }
             }
