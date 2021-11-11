@@ -222,6 +222,7 @@ class Payment
         $urls["confirmUrl"] = $this->url->getUrl('linepay/payment/authorize');
         $urls["cancelUrl"] = $this->url->getUrl('checkout/onepage/failure');
         $request["amount"] = (int)round($quote->getGrandTotal(), 0);
+
         $request["currency"] = "TWD";
         $request["orderId"] = $quoteId;
         $request["packages"] = $packages;
@@ -488,12 +489,12 @@ class Payment
     {
         $package = [];
         $package['id'] = '1';
-        $package['amount'] = (int)round($priceInPoints, 0);
+        $package['amount'] = round(round($priceInPoints, 2));
         $product['id'] = '1';
         $product['name'] = 'Products price';
         $product['imageUrl'] = $this->scopeConfig->getValue('catalog/placeholder/thumbnail_placeholder');
         $product['quantity'] = 1;
-        $product['price'] = (int)round($priceInPoints, 0);
+        $product['price'] = round(round($priceInPoints, 2));
         $products[] = $product;
         $package['products'] = $products;
         return $package;
