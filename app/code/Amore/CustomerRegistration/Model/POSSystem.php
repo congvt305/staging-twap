@@ -552,6 +552,8 @@ class POSSystem
         $result['verify'] = false;
         $response = [];
         $url = $this->config->getBaCodeInfoURL();
+        $storeId = $this->getStoreId();
+        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
         if (!$salOrgCd) {
             $salOrgCd = $this->config->getOrganizationSalesCode($websiteId);
         }
@@ -566,8 +568,13 @@ class POSSystem
                 'salOrgCd' => $salOrgCd,
                 'salOffCd' => $salOffCd
             ];
-
-            $jsonEncodedData = json_encode($parameters);
+            if ($isNewMiddlewareEnable) {
+                $url = $this->middlewareHelper->getNewMiddlewareURL('store', $storeId);
+                $parameters['APP_ID'] = $this->middlewareHelper->getBacodeInfoInterfaceId('store', $storeId);
+                $parameters['API_USER_ID'] = $this->middlewareHelper->getMiddlewareUsername('store', $storeId);
+                $parameters['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey('store', $storeId);
+            }
+            $jsonEncodedData = $this->json->serialize($parameters);
 
             $this->curlClient->setOptions([
                 CURLOPT_URL => $url,
@@ -598,15 +605,30 @@ class POSSystem
             $this->curlClient->post($url, $parameters);
             $apiRespone = $this->curlClient->getBody();
             $response = $this->json->unserialize($apiRespone);
-            if (isset($response['message']) == 'SUCCESS' && isset($response['data']['exitYN'])
-                && $response['data']['exitYN'] == 'Y') {
-                $result['verify']   = true;
-                $result['message']  = __('The code is confirmed as valid information');
-            } elseif (isset($response['message']) == 'SUCCESS' && isset($response['data']['exitYN'])
-                && $response['data']['exitYN'] == 'N') {
-                $result['message'] = __('No such information, please re-enter');
+            if ($isNewMiddlewareEnable) {
+                if ((isset($result['success']) && $result['success']) &&
+                    (isset($result['data']) && isset($result['data']['exitYN']) && $result['data']['exitYN'] == 'Y')
+                ) {
+                    $result['verify']   = true;
+                    $result['message']  = __('The code is confirmed as valid information');
+                } elseif ((isset($result['success']) && $result['success']) &&
+                    (isset($result['data']) && isset($result['data']['exitYN']) && $result['data']['exitYN'] == 'N')
+                ) {
+                    $result['message'] = __('No such information, please re-enter');
+                } else {
+                    $result['message'] = __('Unable to fetch information at this time');
+                }
             } else {
-                $result['message'] = __('Unable to fetch information at this time');
+                if (isset($response['message']) == 'SUCCESS' && isset($response['data']['exitYN'])
+                    && $response['data']['exitYN'] == 'Y') {
+                    $result['verify']   = true;
+                    $result['message']  = __('The code is confirmed as valid information');
+                } elseif (isset($response['message']) == 'SUCCESS' && isset($response['data']['exitYN'])
+                    && $response['data']['exitYN'] == 'N') {
+                    $result['message'] = __('No such information, please re-enter');
+                } else {
+                    $result['message'] = __('Unable to fetch information at this time');
+                }
             }
 
             $this->logger->addAPICallLog(
@@ -631,11 +653,24 @@ class POSSystem
         $websiteName = $this->storeManager->getWebsite()->getName();
 
         $resultMessage = isset($result['message'])?$result['message']:'Fail';
-        if ($response['message'] == 'SUCCESS' && $response['data']['exitYN'] == 'N') {
-            $resultMessage = __('No information exist in POS');
-        } elseif ($response['message'] == 'SUCCESS' && $response['data']['exitYN'] == 'Y' &&
-            $resultMessage == 'Fail') {
-            $resultMessage = __('Information loaded successfully');
+        if ($isNewMiddlewareEnable) {
+            if ((isset($result['success']) && $result['success']) &&
+                (isset($result['data']) && isset($result['data']['exitYN']) && $result['data']['exitYN'] == 'Y') &&
+                $resultMessage == 'Fail'
+            ) {
+                $resultMessage = __('Information loaded successfully');
+            } elseif ((isset($result['success']) && $result['success']) &&
+                (isset($result['data']) && isset($result['data']['exitYN']) && $result['data']['exitYN'] == 'N')
+            ) {
+                $resultMessage = __('No information exist in POS');
+            }
+        } else {
+            if ($response['message'] == 'SUCCESS' && $response['data']['exitYN'] == 'N') {
+                $resultMessage = __('No information exist in POS');
+            } elseif ($response['message'] == 'SUCCESS' && $response['data']['exitYN'] == 'Y' &&
+                $resultMessage == 'Fail') {
+                $resultMessage = __('Information loaded successfully');
+            }
         }
 
         $this->eventManager->dispatch(
