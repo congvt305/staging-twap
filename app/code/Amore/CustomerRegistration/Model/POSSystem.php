@@ -157,17 +157,24 @@ class POSSystem
         return $posData;
     }
 
-    private function callPOSInfoAPI($firstName, $lastName, $mobileNumber)
+    public function getStoreId()
     {
-        $result = [];
-        $response = [];
-        $url = $this->config->getMemberInfoURL();
         try {
             $storeId = $this->storeManager->getStore()->getId();
         } catch (NoSuchEntityException $e) {
             $storeId = $this->storeManager->getDefaultStoreView()->getId();
         }
+        return $storeId;
+    }
+
+    private function callPOSInfoAPI($firstName, $lastName, $mobileNumber)
+    {
+        $result = [];
+        $response = [];
+        $url = $this->config->getMemberInfoURL();
+
         $callSuccess = 1;
+        $storeId = $this->getStoreId();
         $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
         try {
             $parameters = [
@@ -398,10 +405,17 @@ class POSSystem
         $result = [];
         $callSuccess = 1;
         $response = [];
+        $storeId = $this->getStoreId();
+        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
         try {
             $url = $this->config->getMemberJoinURL();
-
-            $jsonEncodedData = json_encode($parameters);
+            if ($isNewMiddlewareEnable) {
+                $url = $this->middlewareHelper->getNewMiddlewareURL('store', $storeId);
+                $parameters['APP_ID'] = $this->middlewareHelper->getMemberJoinInterfaceId('store', $storeId);
+                $parameters['API_USER_ID'] = $this->middlewareHelper->getMiddlewareUsername('store', $storeId);
+                $parameters['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey('store', $storeId);
+            }
+            $jsonEncodedData = $this->json->serialize($parameters);
 
             $this->curlClient->setOptions([
                 CURLOPT_URL => $url,
@@ -431,12 +445,22 @@ class POSSystem
             $this->curlClient->post($url, $parameters);
             $apiRespone = $this->curlClient->getBody();
             $response = $this->json->unserialize($apiRespone);
-            if ($response['message'] == 'SUCCESS') {
-                $result['message'] = $response['message'];
-                $result['status'] = 1;
+            if ($isNewMiddlewareEnable) {
+                if (isset($response['success']) && $response['success']) {
+                    $result['message'] = $response['data']['statusMessage'];
+                    $result['status'] = 1;
+                } else {
+                    $result['message'] = $response['data']['statusMessage'];
+                    $result['status'] = 0;
+                }
             } else {
-                $result['message'] = $response['message'];
-                $result['status'] = 0;
+                if ($response['message'] == 'SUCCESS') {
+                    $result['message'] = $response['message'];
+                    $result['status'] = 1;
+                } else {
+                    $result['message'] = $response['message'];
+                    $result['status'] = 0;
+                }
             }
             $this->logger->addAPICallLog(
                 'POS set info API Response',
