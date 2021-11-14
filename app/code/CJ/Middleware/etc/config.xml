@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <middleware>
+            <general>
+                <active>0</active>
+                <url>https://stg-gecp-middleware.amorepacific.com/middleware/api/getUserData</url>
+                <api_user_id>magento</api_user_id>
+                <auth_key>123456</auth_key>
+            </general>
+            <sap_interface_ids>
+                <order_confirm_path>IF_EC_009</order_confirm_path>
+                <order_cancel_path>IF_EC_010</order_cancel_path>
+                <inventory_stock_path>IF_EC_011</inventory_stock_path>
+            </sap_interface_ids>
+            <pos_interface_ids>
+                <member_search>IF_EC_004</member_search>
+                <redeem_search>IF_EC_005</redeem_search>
+                <point_search>IF_EC_006</point_search>
+                <customer_order>IF_EC_007</customer_order>
+            </pos_interface_ids>
+            <customer_interface_ids>
+                <member_info>IF_EC_001</member_info>
+                <member_join>IF_EC_002</member_join>
+                <bacode_info>IF_EC_008</bacode_info>
+            </customer_interface_ids>
+        </middleware>
+    </default>
+</config>
