@@ -555,6 +555,8 @@ class POSSystem
         $result['verify'] = false;
         $response = [];
         $url = $this->config->getBaCodeInfoURL();
+        $storeId = $this->getStoreId();
+        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
         if (!$salOrgCd) {
             $salOrgCd = $this->config->getOrganizationSalesCode($websiteId);
         }
