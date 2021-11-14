@@ -172,9 +172,12 @@ class POSSystem
         $result = [];
         $response = [];
         $url = $this->config->getMemberInfoURL();
-
+        try {
+            $storeId = $this->storeManager->getStore()->getId();
+        } catch (NoSuchEntityException $e) {
+            $storeId = $this->storeManager->getDefaultStoreView()->getId();
+        }
         $callSuccess = 1;
-        $storeId = $this->getStoreId();
         $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
         try {
             $parameters = [
@@ -552,8 +555,6 @@ class POSSystem
         $result['verify'] = false;
         $response = [];
         $url = $this->config->getBaCodeInfoURL();
-        $storeId = $this->getStoreId();
-        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
         if (!$salOrgCd) {
             $salOrgCd = $this->config->getOrganizationSalesCode($websiteId);
         }
