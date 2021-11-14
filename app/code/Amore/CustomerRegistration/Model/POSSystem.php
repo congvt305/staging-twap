@@ -10,6 +10,7 @@
 
 namespace Amore\CustomerRegistration\Model;
 
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Amore\CustomerRegistration\Helper\Data;
@@ -24,6 +25,7 @@ use Amore\CustomerRegistration\Model\POSLogger;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 /**
  * In this class we will call the POS API
@@ -92,6 +94,26 @@ class POSSystem
      */
     private $cityHelper;
 
+    /**
+     * @var MiddlewareHelper
+     */
+    protected $middlewareHelper;
+
+    /**
+     * @param RegionFactory $regionFactory
+     * @param RegionResourceModel $regionResourceModel
+     * @param \Eguana\Directory\Helper\Data $cityHelper
+     * @param Curl $curl
+     * @param Data $config
+     * @param TimezoneInterface $timezone
+     * @param \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory
+     * @param \Zend\Http\Client $zendClient
+     * @param \Amore\CustomerRegistration\Model\POSLogger $logger
+     * @param Json $json
+     * @param \Magento\Framework\Event\ManagerInterface $eventManager
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param MiddlewareHelper $middlewareHelper
+     */
     public function __construct(
         RegionFactory $regionFactory,
         RegionResourceModel $regionResourceModel,
@@ -104,7 +126,8 @@ class POSSystem
         POSLogger $logger,
         Json $json,
         \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        MiddlewareHelper $middlewareHelper
     ) {
         $this->timezone = $timezone;
         $this->config = $config;
@@ -118,6 +141,7 @@ class POSSystem
         $this->regionFactory = $regionFactory;
         $this->regionResourceModel = $regionResourceModel;
         $this->cityHelper = $cityHelper;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     public function getMemberInfo($firstName, $lastName, $mobileNumber)
@@ -138,7 +162,13 @@ class POSSystem
         $result = [];
         $response = [];
         $url = $this->config->getMemberInfoURL();
+        try {
+            $storeId = $this->storeManager->getStore()->getId();
+        } catch (NoSuchEntityException $e) {
+            $storeId = $this->storeManager->getDefaultStoreView()->getId();
+        }
         $callSuccess = 1;
+        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
         try {
             $parameters = [
                 'firstName' => $firstName,
@@ -147,7 +177,14 @@ class POSSystem
                 'salOrgCd' => $this->config->getOrganizationSalesCode(),
                 'salOffCd' => $this->config->getOfficeSalesCode()
             ];
-            $jsonEncodedData = json_encode($parameters);
+
+            if ($isNewMiddlewareEnable) {
+                $url = $this->middlewareHelper->getNewMiddlewareURL('store', $storeId);
+                $parameters['APP_ID'] = $this->middlewareHelper->getMemberInfoInterfaceId('store', $storeId);
+                $parameters['API_USER_ID'] = $this->middlewareHelper->getMiddlewareUsername('store', $storeId);
+                $parameters['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey('store', $storeId);
+            }
+            $jsonEncodedData = $this->json->serialize($parameters);
 
             $this->curlClient->setOptions([
                 CURLOPT_URL => $url,
@@ -177,74 +214,12 @@ class POSSystem
             $this->curlClient->post($url, $parameters);
             $apiRespone = $this->curlClient->getBody();
             $response = $this->json->unserialize($apiRespone);
-            if ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'Y') {
-                if ($response['data']['mobilecheckCnt'] > 1) {
-                    $result['code'] = 4;
-                    $cmsPage = $this->config->getDuplicateMembershipCmsPage();
-                    if ($cmsPage) {
-                        $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
-                    } else {
-                        $link = $this->getCustomerServiceLink();
-                        $result['message'] = __(
-                            'There is a problem with the requested subscription information. Please contact our CS Center for registration. %1',
-                            $link
-                        );
-                    }
-                } elseif (isset($response['data']['customerInfo']['cstmIntgSeq']) == false ||
-                    $response['data']['customerInfo']['cstmIntgSeq'] == ''
-                ) {
-                    $result['code'] = 5;
-                    $cmsPage = $this->config->getMembershipErrorCmsPage();
-                    if ($cmsPage) {
-                        $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
-                    } else {
-                        $link = $this->getLogInLink();
-                        $result['message'] = __(
-                            'This member account has been registered, please %1 to the member directly, thank you',
-                            $link
-                        );
-                    }
-
-                } else {
-                    $result = $response['data']['customerInfo'];
-                    $result['region'] = [];
-                    if ($result['homeCity']) {
-                        /** @var \Magento\Directory\Model\Region $region */
-                        $region = $this->regionFactory->create();
-                        $this->regionResourceModel->load($region, $result['homeCity'], 'code');
-                        $result['region'] = $region->getData();
-                    }
-
-                    if (isset($result['region']['region_id']) && $result['homeState']) {
-                        if ($result['homeState'] && $result['region']['region_id']) {
-                            $cities = $this->cityHelper->getCityData();
-                            $regionCities = $cities[$result['region']['region_id']];
-                            foreach ($regionCities as $regionCity) {
-                                if ($regionCity['pos_code'] == $result['homeState']) {
-                                    $result['city'] = $regionCity;
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-                        $temp = [];
-                        $temp['code'] = '';
-                        $temp['name'] = '';
-                        $result['city'] = $temp;
-                    }
-                }
-            } elseif ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'N') {
-                $result = [];
-
-            } else {
-                $result['message'] = $response['message'];
-            }
+            $result = $this->handleResponse($response, $isNewMiddlewareEnable);
             $this->logger->addAPICallLog(
                 'POS get info API Response',
                 $url,
                 $response
             );
-
         } catch (\Exception $e) {
             if ($e->getMessage() == '<url> malformed') {
                 $result['message'] = __('Please first configure POS APIs properly. Then try again.');
@@ -259,12 +234,24 @@ class POSSystem
         $log['response'] = $response;
 
         $websiteName = $this->storeManager->getWebsite()->getName();
-
-        $resultMessage = isset($result['message'])?$result['message']:'Fail';
-        if ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'N') {
-            $resultMessage = __('No information exist in POS');
-        }elseif ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'Y' && $resultMessage == 'Fail') {
-            $resultMessage = __('Information loaded successfully');
+        $resultMessage = isset($result['message']) ? $result['message'] : 'Fail';
+        if ($isNewMiddlewareEnable) {
+            if ((isset($result['success']) && $result['success']) &&
+                (isset($result['data']) && isset($result['data']['checkYN']) && $result['data']['checkYN'] == 'N')
+            ) {
+                $resultMessage = __('No information exist in POS');
+            } elseif ((isset($result['success']) && $result['success']) &&
+                (isset($result['data']) && isset($result['data']['checkYN']) && $result['data']['checkYN'] == 'Y') &&
+                $resultMessage == 'Fail'
+            ) {
+                $resultMessage = __('Information loaded successfully');
+            }
+        } else {
+            if ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'N') {
+                $resultMessage = __('No information exist in POS');
+            }elseif ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'Y' && $resultMessage == 'Fail') {
+                $resultMessage = __('Information loaded successfully');
+            }
         }
 
         $this->eventManager->dispatch(
@@ -279,6 +266,113 @@ class POSSystem
             ]
         );
 
+        return $result;
+    }
+
+    /**
+     * Function to handle response for new and current middleware
+     * @param $response
+     * @param false $isNewMiddleware
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
+    public function handleResponse($response, $isNewMiddleware = false)
+    {
+        if ($isNewMiddleware) {
+            if ((isset($result['success']) && $result['success']) &&
+                (isset($result['data']) && isset($result['data']['checkYN']) && $result['data']['checkYN'] == 'Y')
+            ) {
+                $result = $this->processResponseData($result['data']);
+            } elseif ((isset($result['success']) && $result['success']) &&
+                (isset($result['data']) && isset($result['data']['checkYN']) && $result['data']['checkYN'] == 'N')
+            ) {
+                $result = [];
+            } else {
+                if (isset($result['data']) &&
+                    isset($result['data']['statusMessage']) &&
+                    $result['data']['statusMessage']
+                ) {
+                    $result['message'] = $response['data']['statusMessage'];
+                } else {
+                    $result = [];
+                }
+            }
+        } else {
+            if ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'Y') {
+                $result = $this->processResponseData($response);
+            } elseif ($response['message'] == 'SUCCESS' && $response['data']['checkYN'] == 'N') {
+                $result = [];
+
+            } else {
+                $result['message'] = $response['message'];
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Function to process data of response
+     * @param $response
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
+    public function processResponseData($response)
+    {
+        if ($response['data']['mobilecheckCnt'] > 1) {
+            $result['code'] = 4;
+            $cmsPage = $this->config->getDuplicateMembershipCmsPage();
+            if ($cmsPage) {
+                $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
+            } else {
+                $link = $this->getCustomerServiceLink();
+                $result['message'] = __(
+                    'There is a problem with the requested subscription information. Please contact our CS Center for registration. %1',
+                    $link
+                );
+            }
+        } elseif (isset($response['data']['customerInfo']['cstmIntgSeq']) == false ||
+            $response['data']['customerInfo']['cstmIntgSeq'] == ''
+        ) {
+            $result['code'] = 5;
+            $cmsPage = $this->config->getMembershipErrorCmsPage();
+            if ($cmsPage) {
+                $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
+            } else {
+                $link = $this->getLogInLink();
+                $result['message'] = __(
+                    'This member account has been registered, please %1 to the member directly, thank you',
+                    $link
+                );
+            }
+
+        } else {
+            $result = $response['data']['customerInfo'];
+            $result['region'] = [];
+            if ($result['homeCity']) {
+                /** @var \Magento\Directory\Model\Region $region */
+                $region = $this->regionFactory->create();
+                $this->regionResourceModel->load($region, $result['homeCity'], 'code');
+                $result['region'] = $region->getData();
+            }
+
+            if (isset($result['region']['region_id']) && $result['homeState']) {
+                if ($result['homeState'] && $result['region']['region_id']) {
+                    $cities = $this->cityHelper->getCityData();
+                    $regionCities = $cities[$result['region']['region_id']];
+                    foreach ($regionCities as $regionCity) {
+                        if ($regionCity['pos_code'] == $result['homeState']) {
+                            $result['city'] = $regionCity;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                $temp = [];
+                $temp['code'] = '';
+                $temp['name'] = '';
+                $result['city'] = $temp;
+            }
+        }
         return $result;
     }
 
