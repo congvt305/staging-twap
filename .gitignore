@@ -24,3 +24,5 @@
 !/README.md
 !/.github
 !/.github/*
+!pub/errors/default/503.phtml
+!pub/errors/enterprise/503.phtml
