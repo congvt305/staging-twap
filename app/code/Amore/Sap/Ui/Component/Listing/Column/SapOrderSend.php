@@ -102,8 +102,8 @@ class SapOrderSend extends Column
                                 ),
                                 'label' => __('Send'),
                                 'confirm' => [
-                                    'title' => __('Send Order "${ $.$data.increment_id }" to SAP'),
-                                    'message' => __('Are you sure you wan\'t to send a "${ $.$data.increment_id }" order?')
+                                    'title' => __('Send Order "%1" to SAP', $item['increment_id']),
+                                    'message' => __('Are you sure you wan\'t to send a "%1" order?', $item['increment_id'])
                                 ]
                             ]
                         ];

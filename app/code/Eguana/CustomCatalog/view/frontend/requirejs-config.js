@@ -9,9 +9,9 @@
 var config = {
     'config': {
         'mixins': {
-            'Magento_Wishlist/js/add-to-wishlist': {
+            /*'Magento_Wishlist/js/add-to-wishlist': {
                 'Eguana_CustomCatalog/js/add-to-wishlist-mixins': true
-            },
+            },*/
             "Magento_Swatches/js/swatch-renderer" : {
                 "Eguana_CustomCatalog/js/swatch-renderer-mixin": true
 

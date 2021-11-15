@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Plugin\Quote;
 
@@ -95,6 +89,14 @@ class Item
             'row_total_incl_tax',
             'base_row_total',
             'base_row_total_incl_tax',
+            'weee_tax_applied_amount',
+            'base_weee_tax_applied_amount',
+            'weee_tax_applied_row_amount',
+            'base_weee_tax_applied_row_amnt',
+            'weee_tax_applied_amount_incl_tax',
+            'base_weee_tax_applied_amount_incl_tax',
+            'weee_tax_applied_row_amount_incl_tax',
+            'base_weee_tax_applied_row_amnt_incl_tax',
         ];
 
         if (in_array($key, $fields)) {

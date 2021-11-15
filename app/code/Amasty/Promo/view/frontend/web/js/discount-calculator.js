@@ -7,10 +7,11 @@ define([
         update: function (products, item) {
             var priceHtml = $(item.target).parent().find('span[data-price-type="basePrice"]').find('span[class="price"]');
             if (priceHtml.length) {
-                var itemPrice = priceHtml.html().replace(/[^.0-9]/gim, ''),
+                var itemPrice = priceHtml.html().replace(/[^.,0-9]/gim, ''),
                     discount = 0,
                     productSku = $(item.target).closest('div.ampromo-item').attr('data-product-sku'),
                     product = null;
+                itemPrice = itemPrice.replace(',','.');
                 if (productSku in products) {
                     product = products[productSku];
                     var promoDiscount = String(product['discount']['discount_item']),

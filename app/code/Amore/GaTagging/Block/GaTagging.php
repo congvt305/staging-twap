@@ -59,6 +59,13 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      */
     private $productRepository;
 
+    /**
+     * Catalog Product collection
+     *
+     * @var \Magento\Catalog\Model\ResourceModel\Collection\AbstractCollection
+     */
+    protected $_productCollection;
+
     public function __construct(
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Framework\Message\ManagerInterface $messageManager,
@@ -133,10 +140,12 @@ class GaTagging extends \Magento\Framework\View\Element\Template
 
     public function getResultProductData()
     {
-        $resultProducts = $this->_layout->getBlock('search_result_list')->getLoadedProductCollection();
+        if ($this->_productCollection === null) {
+            $this->_productCollection = $this->getLayout()->getBlock('search_result_list')->getLoadedProductCollection();
+        }
         $productData = [];
         /** @var \Magento\Catalog\Model\Product $product */
-        foreach ($resultProducts as $product) {
+        foreach ($this->_productCollection as $product) {
             $productData[] = ['name' => $product->getName(), 'brand' => $this->helper->getSiteName()];
         }
         return $this->jsonSerializer->serialize($productData);
@@ -146,8 +155,10 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     public function getSearchNumber()
     {
         /** @var \Magento\Catalog\Model\ResourceModel\Product\Collection $collection */
-        $collection = $this->_layout->getBlock('search_result_list')->getLoadedProductCollection();
-        return $collection->getSize();
+        if ($this->_productCollection === null) {
+            $this->_productCollection = $this->getLayout()->getBlock('search_result_list')->getLoadedProductCollection();
+        }
+        return $this->_productCollection->getSize();
     }
 
     public function getSearchType()
@@ -254,7 +265,9 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         }
         foreach ($selectionProducts as $productId => $productInfo) {
             $product = $productInfo['product'];
-            $productInfos[] = $this->getSimpleProductInfo($product, $productInfo['qty'], $product->getPrice() / $selectionsTotal * $productInfo['qty']);
+            if ($selectionsTotal != 0) {
+                $productInfos[] = $this->getSimpleProductInfo($product, $productInfo['qty'], $product->getPrice() / $selectionsTotal * $productInfo['qty']);
+            }
         }
         return $productInfos;
     }
@@ -273,7 +286,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         }
         return $productInfos;
     }
-    
+
 
     /**
      * @param \Magento\Sales\Model\Order\Item[] $allItems
@@ -327,7 +340,11 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                         $hasChidlenPrice = false;
                         $children = $parentItem->getChildrenItems();
                         foreach ($children as $child) {
-                                $bundleSelectionTotal += $child->getPrice() * $child->getQtyOrdered() / $parentItem->getQtyOrdered();
+                                $childProduct = $this->productRepository->getById($child->getProductId());
+                                $bundleSelectionTotal += $childProduct->getPrice() * $child->getQtyOrdered() / $parentItem->getQtyOrdered();
+                        }
+                        if ($bundleSelectionTotal == 0) {
+                            $bundleSelectionTotal = $item->getPrice();
                         }
                         $proportionRate = $item->getPrice() / $bundleSelectionTotal;
                     }

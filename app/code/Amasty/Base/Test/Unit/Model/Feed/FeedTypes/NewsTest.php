@@ -1,9 +1,9 @@
 <?php
 /**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Base
- */
+* @author Amasty Team
+* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @package Amasty_Base
+*/
 
 
 namespace Amasty\Base\Test\Unit\Model\Feed\FeedTypes;
@@ -29,7 +29,7 @@ class NewsTest extends \PHPUnit\Framework\TestCase
      */
     private $moduleInfoProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $moduleList = $this->createMock(\Magento\Framework\Module\ModuleListInterface::class);
         $this->moduleInfoProvider = $this->createMock(ModuleInfoProvider::class);

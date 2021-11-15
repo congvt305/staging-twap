@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_BannersLite
- */
-
 
 namespace Amasty\BannersLite\Model\ResourceModel\Rule;
 
@@ -54,6 +48,8 @@ class Collection extends \Magento\SalesRule\Model\ResourceModel\Rule\Collection
             'aftern_fixdisc',
             'setof_percent',
             'setof_fixed',
+            'tiered_wholecheaper',
+            'tiered_buyxgetcheapern',
             //Free Gift Rules
             'ampromo_product',
             'ampromo_items',

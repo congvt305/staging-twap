@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
- * @package Amasty_Promo
- */
-
 
 namespace Amasty\Promo\Helper;
 
@@ -21,6 +15,7 @@ class Data
         \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE,
         \Magento\Catalog\Model\Product\Type::TYPE_VIRTUAL,
         \Magento\Downloadable\Model\Product\Type::TYPE_DOWNLOADABLE,
+        \Magento\Bundle\Model\Product\Type::TYPE_CODE,
         'giftcard',//EE
     ];
 
@@ -123,7 +118,7 @@ class Data
                 }
             }
 
-            if ($products->getSize() > 0) {
+            if ($products->getItems()) {
                 $this->productsCache = $products;
             }
         }
