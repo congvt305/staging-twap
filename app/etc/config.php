@@ -742,11 +742,11 @@ return [
         'Eguana_Pixlee' => 1,
         'Temando_ShippingRemover' => 1,
         'Vertex_Tax' => 0,
-        'Vertex_AddressValidationApi' => 1,
-        'Vertex_RequestLoggingApi' => 1,
-        'Vertex_RequestLogging' => 1,
+        'Vertex_AddressValidationApi' => 0,
+        'Vertex_RequestLoggingApi' => 0,
+        'Vertex_RequestLogging' => 0,
         'Vertex_AddressValidation' => 0,
-        'Vertex_TaxStaging' => 1,
+        'Vertex_TaxStaging' => 0,
         'Yotpo_Yotpo' => 1
     ],
     'admin_user' => [
