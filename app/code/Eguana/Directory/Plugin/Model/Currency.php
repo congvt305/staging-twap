@@ -31,6 +31,16 @@ class Currency
     private $request;
 
     /**
+     * @var array
+     */
+    protected $stores = [
+        'tw_laneige',
+        'vn_laneige',
+        'vn_sulwhasoo',
+        'default'
+    ];
+
+    /**
      * Currency constructor.
      * @param StoreManagerInterface $storeManager
      * @param Http $request
@@ -63,7 +73,7 @@ class Currency
     ) {
         $fullActionName = $this->request->getFullActionName();
         $storeCode = $this->storeManager->getStore()->getCode();
-        if ($storeCode == "vn_laneige" || $fullActionName == "mui_index_render") {
+        if (in_array($storeCode, $this->stores) || $fullActionName == "mui_index_render") {
             $precision = 0;
             return [$price, $precision, $options, $includeContainer, $addBrackets];
         }
