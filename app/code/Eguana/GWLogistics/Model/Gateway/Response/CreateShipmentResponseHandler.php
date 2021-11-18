@@ -80,7 +80,7 @@ class CreateShipmentResponseHandler implements \Eguana\GWLogistics\Model\Gateway
     private function createShipment(\Magento\Sales\Model\Order $order)
     {
         /** @var \Magento\Sales\Api\Data\ShipmentItemCreationInterface[] $shipmentItems */
-        $shipmentItems = $this->buildShipmentItems($order->getItems());
+        $shipmentItems = $this->buildShipmentItems($order->getAllVisibleItems());
         if (empty($shipmentItems)) {
             return null;
         }

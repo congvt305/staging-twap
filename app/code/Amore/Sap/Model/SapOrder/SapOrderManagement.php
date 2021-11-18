@@ -776,7 +776,7 @@ class SapOrderManagement implements SapOrderManagementInterface
     {
         $shipmentItems = [];
 
-        $orderItems = $order->getAllItems();
+        $orderItems = $order->getAllVisibleItems();
         /** @var \Magento\Sales\Model\Order\Item $item */
         foreach ($orderItems as $item) {
             /** @var \Magento\Sales\Model\Order\Shipment\ItemCreation $shipmentItem */
