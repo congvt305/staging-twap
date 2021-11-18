@@ -7,6 +7,7 @@
  * Date: 26/11/20
  * Time: 4:50 PM
  */
+
 namespace Eguana\Redemption\Controller\Details;
 
 use Eguana\FacebookPixel\Helper\Data;
@@ -112,19 +113,19 @@ class CounterSaveAjax extends Action
      * @param Data $facebookPixelHelper
      */
     public function __construct(
-        ResultFactory $resultFactory,
-        Context $context,
-        RedemptionConfiguration $redemptionConfig,
-        CounterFactory $counterFactory,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        CounterRepositoryInterface $counterRepository,
+        ResultFactory                 $resultFactory,
+        Context                       $context,
+        RedemptionConfiguration       $redemptionConfig,
+        CounterFactory                $counterFactory,
+        SearchCriteriaBuilder         $searchCriteriaBuilder,
+        CounterRepositoryInterface    $counterRepository,
         RedemptionRepositoryInterface $redemptionRepository,
-        SmsSender $smsSender,
-        EmailSender $emailSender,
-        DateTime $date,
-        FilterBuilder $filterBuilder,
-        FilterGroupBuilder $filterGroupBuilder,
-        Data $facebookPixelHelper
+        SmsSender                     $smsSender,
+        EmailSender                   $emailSender,
+        DateTime                      $date,
+        FilterBuilder                 $filterBuilder,
+        FilterGroupBuilder            $filterGroupBuilder,
+        Data                          $facebookPixelHelper
     ) {
         $this->resultFactory = $resultFactory;
         $this->context = $context;
@@ -146,23 +147,26 @@ class CounterSaveAjax extends Action
      * This method is used to save the counter form for registration
      *
      * @return ResponseInterface|ResultInterface|void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute()
     {
         if ($this->_request->isAjax()) {
             $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
             $token = substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, 15);
-            $post = (array) $this->getRequest()->getPost();
-            if (!empty($post)) {
+            $post = (array)$this->getRequest()->getPost();
+            $storeId = $post['store_id'] ?? '';
+            if ($post & $storeId) {
                 /** @var Counter $model */
                 $date = $this->date->gmtDate();
+                $individualNumber = $this->redemptionConfig->getIndividualNumber($storeId);
                 $model = $this->counterFactory->create();
                 $model->setData('redemption_id', $post['redemption_id']);
                 $model->setData('redeem_date', null);
                 $model->setData('customer_name', $post['name']);
                 $model->setData('email', $post['email']);
                 $model->setData('telephone', $post['phone']);
-                $homeDeliveryEnabled = $this->redemptionConfig->getHomeDeliveryEnabled($post['store_id']);
+                $homeDeliveryEnabled = $this->redemptionConfig->getHomeDeliveryEnabled($storeId);
                 if ($homeDeliveryEnabled) {
                     $post['counter'] = $post['counter_auto_assign'];
                     try {
@@ -188,11 +192,12 @@ class CounterSaveAjax extends Action
                     }
                 }
                 $model->setData('counter_id', $post['counter']);
-                $model->setData('store_id', $post['store_id']);
+                $model->setData('store_id', $storeId);
                 if (!$homeDeliveryEnabled) {
                     $model->setData('line_id', $post['line']);
                 }
                 $model->setData('token', $token);
+                $model->setData('individual_number', $individualNumber);
                 $model->setData('registration_date', $date);
                 $model->setData('utm_source', $post['utm_source']);
                 $model->setData('utm_medium', $post['utm_medium']);
@@ -207,7 +212,7 @@ class CounterSaveAjax extends Action
                     ->create();
 
                 $storeCond = $this->filterBuilder->setField('main_table.store_id')
-                    ->setValue($post['store_id'])
+                    ->setValue($storeId)
                     ->setConditionType('eq')
                     ->create();
                 $filterStore = $this->filterGroupBuilder
@@ -261,7 +266,7 @@ class CounterSaveAjax extends Action
                         return $resultJson;
                     }
                     $this->redemptionRepository->save($redemptionDetail);
-                    if ($this->emailSender->getRegistrationEmailEnableValue($post['store_id']) == 1) {
+                    if ($this->emailSender->getRegistrationEmailEnableValue($storeId) == 1) {
                         try {
                             $this->emailSender->sendEmail($model->getData('entity_id'));
                             $this->smsSender->sendSms($model->getData('entity_id'));

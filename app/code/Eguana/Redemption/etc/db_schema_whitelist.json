@@ -83,7 +83,8 @@
             "utm_medium": true,
             "utm_content": true,
             "creation_time": true,
-            "update_time": true
+            "update_time": true,
+            "individual_number": true
         },
         "index": {
             "EGUANA_REDEMPTION_USER_CUSTOMER_NAME": true

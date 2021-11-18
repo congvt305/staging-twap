@@ -108,6 +108,7 @@
         <column xsi:type="date" name="registration_date" comment="Registration Date"/>
         <column xsi:type="smallint" name="status" nullable="false" default="1" unsigned="false" identity="false" comment="Status 1 for Registration 2 for Redemption 3 for Expired"/>
         <column xsi:type="varchar" name="token" nullable="true" length="50" comment="Auth Token"/>
+        <column xsi:type="varchar" name="individual_number" nullable="true" length="50" comment="Individual Number"/>
         <column xsi:type="varchar" name="utm_source" nullable="true" length="255" comment="UTM Source"/>
         <column xsi:type="varchar" name="utm_medium" nullable="true" length="255" comment="UTM Medium"/>
         <column xsi:type="text" name="utm_content" nullable="true" comment="UTM Content"/>
@@ -120,6 +121,9 @@
         </constraint>
         <index referenceId="EGUANA_REDEMPTION_USER_CUSTOMER_NAME" indexType="fulltext">
             <column name="customer_name"/>
+        </index>
+        <index referenceId="EGUANA_REDEMPTION_USER_INDIVIDUAL_NUMBER" indexType="fulltext">
+            <column name="individual_number"/>
         </index>
         <constraint xsi:type="foreign" referenceId="FK_E514AE1E79FB0B3796BE2EC5D2BC4A6F"
                     table="eguana_redemption_user" column="redemption_id" referenceTable="eguana_redemption"

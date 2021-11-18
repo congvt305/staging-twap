@@ -108,16 +108,16 @@ class SmsSender
      * @param RedemptionRepositoryInterface $redemptionRepository
      */
     public function __construct(
-        SmsManagementInterface $smsManagement,
-        RedemptionConfiguration $redemptionConfig,
-        TemplateFactory $templateFactory,
-        CounterRepositoryInterface $counterRepository,
-        StoreManagerInterface $storeManager,
+        SmsManagementInterface          $smsManagement,
+        RedemptionConfiguration         $redemptionConfig,
+        TemplateFactory                 $templateFactory,
+        CounterRepositoryInterface      $counterRepository,
+        StoreManagerInterface           $storeManager,
         OrderAddressRepositoryInterface $orderAddressRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        StoreInfoRepositoryInterface $storeInfoRepository,
-        LoggerInterface $logger,
-        RedemptionRepositoryInterface $redemptionRepository
+        SearchCriteriaBuilder           $searchCriteriaBuilder,
+        StoreInfoRepositoryInterface    $storeInfoRepository,
+        LoggerInterface                 $logger,
+        RedemptionRepositoryInterface   $redemptionRepository
     ) {
         $this->smsManagement = $smsManagement;
         $this->redemptionConfig = $redemptionConfig;
@@ -192,11 +192,13 @@ class SmsSender
             $customer = $this->counterRepository->getById($counterId);
             $storeCounterId = $customer->getCounterId();
             $link = $this->getCounterLink($counterId);
+            $individualNumber = $customer->getIndividualNumber();
             $storeCounterName = $this->storeInfoRepository->getById($storeCounterId)->getTitle();
             $defaultSms = $this->getDefaultSmsContent(
                 $customer,
                 $storeCounterName,
-                $link
+                $link,
+                $individualNumber
             );
             if (!$defaultSms) {
                 $customerName = $customer->getCustomerName();
@@ -235,7 +237,7 @@ class SmsSender
         $token = $counter->getToken();
         try {
             $resultUrl = $this->storeManager->getStore()
-                ->getUrl('redemption/details/register', ['counter_id'=>$counterId, 'token' => $token]);
+                ->getUrl('redemption/details/register', ['counter_id' => $counterId, 'token' => $token]);
         } catch (\Exception $e) {
             $this->logger->info($e->getMessage());
         }
@@ -250,7 +252,7 @@ class SmsSender
      * @param $link
      * @return string
      */
-    private function getDefaultSmsContent($counter, $counterName, $link)
+    private function getDefaultSmsContent($counter, $counterName, $link, $individualNumber)
     {
         try {
             $redemptionId = $counter->getRedemptionId();
@@ -261,6 +263,7 @@ class SmsSender
                 $smsContent = str_replace('%counter', $counterName, $smsContent);
                 $smsContent = str_replace('%confirm', $link, $smsContent);
                 $smsContent = str_replace('%name', $customerName, $smsContent);
+                $smsContent = str_replace('%individual_number', $individualNumber, $smsContent);
             }
             return $smsContent;
         } catch (\Exception $exception) {

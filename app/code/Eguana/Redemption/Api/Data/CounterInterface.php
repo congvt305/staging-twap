@@ -37,6 +37,7 @@ interface CounterInterface
     const CREATION_TIME = 'creation_time';
     const UPDATE_TIME = 'update_time';
     const ADDRESS = 'address';
+    const INDIVIDUAL_NUMBER = 'individual_number';
     /**#@-*/
 
     /**
@@ -288,4 +289,15 @@ interface CounterInterface
      * @return RedemptionInterface
      */
     public function setAddress($address);
+
+    /**
+     * @return string
+     */
+    public function getIndividualNumber();
+
+    /**
+     * @param string $number
+     * @return RedemptionInterface
+     */
+    public function setIndividualNumber($number);
 }
