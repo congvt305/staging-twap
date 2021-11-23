@@ -57,7 +57,7 @@ class Index extends AbstractPointsBlock
             $this->logger->debug($customerPointsInfo);
         }
 
-        if ($this->responseValidation($customerPointsInfo)) {
+        if ($this->customerPointsSearch->responseValidation($customerPointsInfo, $customer->getWebsiteId())) {
             return $customerPointsInfo['data'];
         } else {
             return [];

@@ -20,4 +20,15 @@ class CustomerPointsSearch extends AbstractPointsModel
         $requestData = $this->requestData($customerId);
         return $this->request->sendRequest($requestData, $websiteId, 'memberSearch');
     }
+
+    /**
+     * Validate the response after get from API
+     * @param $response
+     * @param $websiteId
+     * @return int
+     */
+    public function responseValidation($response, $websiteId)
+    {
+        return $this->request->responseCheck($response, $websiteId);
+    }
 }
