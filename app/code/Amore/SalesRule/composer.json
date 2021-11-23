@@ -1,0 +1,14 @@
+{
+    "name": "amore/module-sales-rule",
+    "description": "Round without discount for cart item",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amore\\SalesRule\\": ""
+        }
+    }
+}
