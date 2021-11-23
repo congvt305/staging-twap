@@ -87,7 +87,7 @@ class OrderToPosSenderObserver implements ObserverInterface
                     $orderData = $this->posOrderData->getOrderData($order);
 
                     $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
-                    $status = $this->responseCheck($response);
+                    $status = $this->request->responseCheck($response, $websiteId);
 
                     if ($status) {
                         $this->posOrderData->updatePosSendCheck($order->getEntityId());
@@ -127,15 +127,6 @@ class OrderToPosSenderObserver implements ObserverInterface
             $posOrderRequestStatus = true;
         }
         return $posOrderRequestStatus;
-    }
-
-    public function responseCheck($response)
-    {
-        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
-            return 1;
-        } else {
-            return 0;
-        }
     }
 
     public function logging($sendData, $responseData, $status)

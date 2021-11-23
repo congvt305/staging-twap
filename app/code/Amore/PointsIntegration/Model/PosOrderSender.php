@@ -73,7 +73,7 @@ class PosOrderSender
         try {
             $orderData = $this->posOrderData->getOrderData($order);
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
-            $status = $this->responseCheck($response);
+            $status = $this->request->responseCheck($response, $websiteId);
             if ($status) {
                 $this->posOrderData->updatePosPaidOrderSendFlag($order);
             }

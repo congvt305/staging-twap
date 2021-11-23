@@ -67,7 +67,7 @@ class POSCancelledOrderSender
         try {
             $orderData = $this->posOrderData->getCancelledOrderData($order);
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
-            $status = $this->responseCheck($response);
+            $status = $this->request->responseCheck($response, $websiteId);
             if ($status) {
                 $this->posOrderData->updatePosCancelledOrderSendFlag($order);
             }

@@ -68,7 +68,7 @@ class PosReturnSender
         try {
             $rmaData = $this->posReturnData->getRmaData($rma);
             $response = $this->request->sendRequest($rmaData, $websiteId, 'customerOrder');
-            $success = $this->isSuccessResponse($response);
+            $success = $this->request->sendRequest($response, $websiteId);
             if ($success) {
                 $this->posReturnData->updatePosReturnOrderSendFlag($rma);
             }
