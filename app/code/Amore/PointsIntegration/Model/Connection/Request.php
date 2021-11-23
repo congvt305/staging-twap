@@ -13,6 +13,7 @@ use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Serialize\Serializer\Json;
 use Amore\PointsIntegration\Logger\Logger;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 class Request
 {
@@ -34,22 +35,30 @@ class Request
     private $logger;
 
     /**
+     * @var MiddlewareHelper
+     */
+    protected $middlewareHelper;
+
+    /**
      * Request constructor.
      * @param Curl $curl
      * @param Json $json
      * @param Config $config
      * @param Logger $logger
+     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         Curl $curl,
         Json $json,
         Config $config,
-        Logger $logger
+        Logger $logger,
+        MiddlewareHelper $middlewareHelper
     ) {
         $this->curl = $curl;
         $this->json = $json;
         $this->config = $config;
         $this->logger = $logger;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -66,6 +75,13 @@ class Request
             return [];
         }
 
+        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('website', $websiteId);
+        if ($isNewMiddlewareEnable) {
+            $url = $this->middlewareHelper->getNewMiddlewareURL('website', $websiteId);
+            $requestData['APP_ID'] = $this->getInterfaceID($websiteId, $type);
+            $requestData['API_USER_ID'] = $this->middlewareHelper->getMiddlewareUsername('website', $websiteId);
+            $requestData['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey('website', $websiteId);
+        }
         $logEnabled = $this->config->getLoggerActiveCheck($websiteId);
         if ($logEnabled) {
             $this->logger->info('POS Request: ' . $this->json->serialize($requestData));
@@ -107,6 +123,32 @@ class Request
                 break;
             case 'customerOrder':
                 $path = $this->config->getCustomerOrderURL($websiteId);
+                break;
+        }
+        return $path;
+    }
+
+    /**
+     * Get Interface Id for replacing path corresponding
+     * @param $websiteId
+     * @param $type
+     * @return mixed
+     */
+    public function getInterfaceID($websiteId, $type)
+    {
+        $path = '';
+        switch ($type) {
+            case 'memberSearch':
+                $path = $this->middlewareHelper->getMemberSearchInterfaceId('website', $websiteId);
+                break;
+            case 'redeemSearch':
+                $path = $this->middlewareHelper->getRedeemSearchInterfaceId('website', $websiteId);
+                break;
+            case 'pointSearch':
+                $path = $this->middlewareHelper->getPointSearchInterfaceId('website', $websiteId);
+                break;
+            case 'customerOrder':
+                $path = $this->middlewareHelper->getCustomerSearchInterfaceId('website', $websiteId);
                 break;
         }
         return $path;
