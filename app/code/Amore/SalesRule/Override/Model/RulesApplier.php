@@ -2,11 +2,42 @@
 
 namespace Amore\SalesRule\Override\Model;
 
+use Magento\SalesRule\Api\Data\DiscountDataInterfaceFactory;
+use Magento\SalesRule\Api\Data\RuleDiscountInterfaceFactory;
+use Magento\SalesRule\Model\Quote\ChildrenValidationLocator;
+use Magento\SalesRule\Model\Rule\Action\Discount\DataFactory;
+use Magento\Store\Model\StoreManagerInterface;
+
 /**
  * Override Rule applier model
  */
 class RulesApplier extends \Magento\SalesRule\Model\RulesApplier
 {
+    protected $stores = [
+        'tw_laneige',
+        'vn_laneige',
+        'vn_sulwhasoo',
+        'default'
+    ];
+
+    /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    public function __construct(
+        CalculatorFactory $calculatorFactory,
+        \Magento\Framework\Event\ManagerInterface $eventManager,
+        Utility $utility, ChildrenValidationLocator $childrenValidationLocator = null,
+        DataFactory $discountDataFactory = null,
+        RuleDiscountInterfaceFactory $discountInterfaceFactory = null,
+        StoreManagerInterface $storeManager,
+        DiscountDataInterfaceFactory $discountDataInterfaceFactory = null)
+    {
+        $this->storeManager = $storeManager;
+        parent::__construct($calculatorFactory, $eventManager, $utility, $childrenValidationLocator, $discountDataFactory, $discountInterfaceFactory, $discountDataInterfaceFactory);
+    }
+
     /**
      * Set Discount data and round without decimal
      *
@@ -16,11 +47,15 @@ class RulesApplier extends \Magento\SalesRule\Model\RulesApplier
      */
     protected function setDiscountData($discountData, $item)
     {
-        $item->setDiscountAmount(round($discountData->getAmount()));
-        $item->setBaseDiscountAmount(round($discountData->getBaseAmount()));
-        $item->setOriginalDiscountAmount(round($discountData->getOriginalAmount()));
-        $item->setBaseOriginalDiscountAmount(round($discountData->getBaseOriginalAmount()));
+        $storeCode = $this->storeManager->getStore()->getCode();
+        if (in_array($storeCode, $this->stores)) {
 
-        return $this;
+            $item->setDiscountAmount(round($discountData->getAmount()));
+            $item->setBaseDiscountAmount(round($discountData->getBaseAmount()));
+            $item->setOriginalDiscountAmount(round($discountData->getOriginalAmount()));
+            $item->setBaseOriginalDiscountAmount(round($discountData->getBaseOriginalAmount()));
+
+            return $this;
+        }
     }
 }
