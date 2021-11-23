@@ -13,6 +13,7 @@ use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Serialize\Serializer\Json;
 use Amore\Sap\Model\Source\Config;
 use Amore\Sap\Logger\Logger;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 class Request
 {
@@ -39,25 +40,30 @@ class Request
      */
     private $logger;
 
+    /**
+     * @var MiddlewareHelper
+     */
+    protected $middlewareHelper;
 
     /**
-     * Constructor.
-     *
      * @param Curl $curl
      * @param Json $json
      * @param Config $config
      * @param Logger $logger
+     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         Curl $curl,
         Json $json,
         Config $config,
-        Logger $logger
+        Logger $logger,
+        MiddlewareHelper $middlewareHelper
     ) {
         $this->curl = $curl;
         $this->json = $json;
         $this->config = $config;
         $this->logger = $logger;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     public function postRequest($requestData, $storeId, $type = 'confirm')
@@ -65,7 +71,15 @@ class Request
         $url = $this->getUrl($storeId);
         $path = $this->getPath($storeId, $type);
         $fullUrl = $url . $path;
-
+        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
+        if ($isNewMiddlewareEnable) {
+            $fullUrl = $this->middlewareHelper->getNewMiddlewareURL('store', $storeId);
+            $requestData = $this->json->unserialize($requestData);
+            $requestData['APP_ID'] = $this->getInterfaceID($storeId, $type);
+            $requestData['API_USER_ID'] = $this->middlewareHelper->getMiddlewareUsername('store', $storeId);
+            $requestData['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey('store', $storeId);
+            $requestData = $this->json->serialize($requestData);
+        }
         if ($this->config->getLoggingCheck()) {
             $this->logger->info('LIVE MODE REQUEST');
             $this->logger->info($requestData);
@@ -73,7 +87,7 @@ class Request
             $this->logger->info($fullUrl);
         }
 
-        if (empty($url) || empty($path)) {
+        if (empty($fullUrl)) {
             throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
         } else {
             try {
@@ -129,6 +143,21 @@ class Request
                 break;
             default:
                 $path = $this->config->getValue(self::ORDER_CONFIRM_PATH, 'store', $storeId);
+        }
+        return $path;
+    }
+
+    public function getInterfaceID($storeId, $type)
+    {
+        switch ($type) {
+            case 'confirm':
+                $path = $this->middlewareHelper->getOrderConfirmInterfaceId('store', $storeId);
+                break;
+            case 'cancel':
+                $path = $this->middlewareHelper->getOrderCancelInterfaceId('store', $storeId);
+                break;
+            default:
+                $path = $this->middlewareHelper->getOrderConfirmInterfaceId('store', $storeId);
         }
         return $path;
     }
