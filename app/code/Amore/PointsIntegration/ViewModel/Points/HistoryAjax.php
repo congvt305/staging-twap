@@ -66,7 +66,7 @@ class HistoryAjax implements ArgumentInterface
 
         $pointsHistoryResult = $this->pointsHistorySearch->getPointsHistoryResult($customer->getId(), $customer->getWebsiteId(), $page);
 
-        if ($this->responseValidation($pointsHistoryResult)) {
+        if ($this->pointsHistorySearch->responseValidation($pointsHistoryResult, $customer->getWebsiteId())) {
             $pointsData = $pointsHistoryResult['data']['point_data'];
             return $this->pagination->ajaxPagination($pointsData);
         } else {
