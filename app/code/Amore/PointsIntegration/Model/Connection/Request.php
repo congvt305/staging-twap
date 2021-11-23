@@ -183,4 +183,24 @@ class Request
         }
         return $path;
     }
+
+    public function responseCheck($response, $websiteId)
+    {
+        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('website', $websiteId);
+        if ($isNewMiddlewareEnable) {
+            if ((isset($response['success']) && $response['success']) &&
+                (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200')
+            ){
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
 }
