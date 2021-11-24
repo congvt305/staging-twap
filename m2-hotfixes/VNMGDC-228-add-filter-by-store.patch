@@ -4,13 +4,13 @@ Date: Wed, 24 Nov 2021 10:11:58 +0000
 Subject: [PATCH] add filter by store
 
 ---
- Model/ResourceModel/Item.php | 4 +++-
+ a/vendor/magento/module-rma/Model/ResourceModel/Item.php | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Model/ResourceModel/Item.php b/Model/ResourceModel/Item.php
+diff --git a/vendor/magento/module-rma/Model/ResourceModel/Item.php b/vendor/magento/module-rma/Model/ResourceModel/Item.php
 index bbcd410..3895602 100644
---- a/Model/ResourceModel/Item.php
-+++ b/Model/ResourceModel/Item.php
+--- a/vendor/magento/module-rma/Model/ResourceModel/Item.php
++++ b/vendor/magento/module-rma/Model/ResourceModel/Item.php
 @@ -422,7 +422,9 @@ class Item extends AbstractEntity
      private function getOrderProducts(Collection $orderItems): array
      {
