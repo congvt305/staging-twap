@@ -20,6 +20,8 @@
             <module name="Magento_ImportExport" />
             <module name="Magento_InventoryImportExport" />
             <module name="Magento_ScheduledImportExport"/>
+            <module name="Magento_CatalogImportExport"/>
+            <module name="Magento_CustomerImportExport"/>
         </sequence>
     </module>
 </config>
