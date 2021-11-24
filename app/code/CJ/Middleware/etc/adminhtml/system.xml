@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="middleware" translate="label" type="text" sortOrder="75" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Middleware Common Settings</label>
+            <tab>amore_extensions_tab</tab>
+            <resource>Amore_Sap::sap</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enabled New Middleware System</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="url" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>URL</label>
+                </field>
+                <field id="api_user_id" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Username</label>
+                </field>
+                <field id="auth_key" translate="label" type="password" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Auth Key</label>
+                </field>
+            </group>
+            <group id="sap_interface_ids" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>SAP Interface IDs</label>
+                <field id="order_confirm_path" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Order Confirm Path</label>
+                    <comment>This is for replacing path: magento/order/confirm</comment>
+                </field>
+                <field id="order_cancel_path" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Order Cancel Path</label>
+                    <comment>This is for replacing path: magento/order/update</comment>
+                </field>
+                <field id="inventory_stock_path" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>SAP Inventory Stock Info Path</label>
+                    <comment>This is for replacing path: magento/product/stock</comment>
+                </field>
+            </group>
+            <group id="pos_interface_ids" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <label>POS Interface IDs</label>
+                <field id="member_search" translate="label" type="text" sortOrder="51" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Member Points Search Path</label>
+                    <comment>This is for replacing path: magento/member/search</comment>
+                </field>
+                <field id="redeem_search" translate="label" type="text" sortOrder="52" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Points Redemption Search Path</label>
+                    <comment>This is for replacing path: magento/redeem/search</comment>
+                </field>
+                <field id="point_search" translate="label" type="text" sortOrder="53" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Points History Search Path</label>
+                    <comment>This is for replacing path: magento/point/search</comment>
+                </field>
+                <field id="customer_order" translate="label" type="text" sortOrder="54" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Member Order Path</label>
+                    <comment>This is for replacing path: magento/member/order</comment>
+                </field>
+            </group>
+            <group id="customer_interface_ids" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Customer Interface IDs</label>
+                <field id="member_info" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Member Information URI</label>
+                    <comment>Member info URI. Complete URL = BASE URL + Member Information URI. This is for replacing path: magento/member/info</comment>
+                </field>
+
+                <field id="member_join" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Memeber Join URI</label>
+                    <comment>Member join URI. Complete URL = BASE URL + Memeber Join URI. This is for replacing path: magento/member/join</comment>
+                </field>
+
+                <field id="bacode_info" translate="label" type="text" sortOrder="51" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>BA Code Information URI</label>
+                    <comment>BA Code info URI. Complete URL = BASE URL + BA Code Information URI. This is for replacing path: magento/baCheck</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

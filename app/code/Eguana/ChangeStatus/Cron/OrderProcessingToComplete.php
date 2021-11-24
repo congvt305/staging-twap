@@ -139,7 +139,7 @@ class OrderProcessingToComplete
                     $orderData = $this->posOrderData->getOrderData($order);
 
                     $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
-                    $status = $this->responseCheck($response);
+                    $status = $this->request->responseCheck($response, $websiteId);
 
                     if ($status) {
                         $this->posOrderData->updatePosSendCheck($order->getEntityId());
@@ -158,15 +158,6 @@ class OrderProcessingToComplete
             }
         } else {
             $this->logger->info('POS ORDER REQUEST FOR ORDER : ' . $order->getIncrementId() . ' IS NOT COMPLETED DUE TO POINTS INTEGRATION MODULE INACTIVE');
-        }
-    }
-
-    public function responseCheck($response)
-    {
-        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
-            return 1;
-        } else {
-            return 0;
         }
     }
 
