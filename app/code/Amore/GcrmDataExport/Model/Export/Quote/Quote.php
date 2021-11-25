@@ -9,6 +9,7 @@
  */
 namespace Amore\GcrmDataExport\Model\Export\Quote;
 
+use Amore\GcrmDataExport\Helper\Data;
 use Amore\GcrmDataExport\Model\ResourceModel\CustomImportExport\CollectionFactory as ExportCollection;
 use Amore\GcrmDataExport\Model\Export\Quote\AttributeCollectionProvider;
 use Amore\GcrmDataExport\Model\Export\Adapter\QuoteCsv;
@@ -178,6 +179,11 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
     const ATTRIBUTE_COLLECTION_NAME = Collection::class;
 
     /**
+     * @var Data
+     */
+    protected $dataHelper;
+
+    /**
      * Quote constructor.
      * @param ExportCollection $ExportCollectionFactory
      * @param AttributeCollectionProvider $attributeCollectionProvider
@@ -189,6 +195,7 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
      * @param CollectionByPagesIteratorFactory $resourceColFactory
      * @param RedirectFactory $resultRedirectFactory
      * @param ManagerInterface $messageManager
+     * @param Data $dataHelper
      * @param array $data
      */
     public function __construct(
@@ -202,6 +209,7 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
         CollectionByPagesIteratorFactory $resourceColFactory,
         RedirectFactory $resultRedirectFactory,
         ManagerInterface $messageManager,
+        Data $dataHelper,
         array $data = []
     ) {
         parent::__construct(
@@ -217,6 +225,7 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
         $this->quoteWriter = $quoteWriter;
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->messageManager = $messageManager;
+        $this->dataHelper = $dataHelper;
     }
 
     /**
@@ -266,7 +275,8 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
 
         $cnt = 0;
         foreach ($collection as $item) {
-            $itemRow[$item->getIncrementId()][$cnt] = $item->getData();
+            $itemData = $this->dataHelper->fixSingleRowData($item->getData());
+            $itemRow[$item->getIncrementId()][$cnt] = $itemData;
             $cnt++;
         }
         return $itemRow;
