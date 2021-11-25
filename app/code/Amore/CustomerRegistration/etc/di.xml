@@ -27,4 +27,11 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="amore_pos_address_sync" xsi:type="object">Amore\CustomerRegistration\Console\AddressSyncPos</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

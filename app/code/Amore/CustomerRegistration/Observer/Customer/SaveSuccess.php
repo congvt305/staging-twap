@@ -88,6 +88,11 @@ class SaveSuccess implements ObserverInterface
      */
     private $addressDataFactory;
 
+    /**
+     * @var \Magento\Framework\App\State
+     */
+    private $state;
+
     public function __construct(
         RequestInterface $request,
         RegionFactory $regionFactory,
@@ -100,7 +105,8 @@ class SaveSuccess implements ObserverInterface
         POSLogger $logger,
         POSSystem $POSSystem,
         AddressRepositoryInterface $addressRepository,
-        AddressInterfaceFactory $addressDataFactory
+        AddressInterfaceFactory $addressDataFactory,
+        \Magento\Framework\App\State $state
     ) {
         $this->sequence = $sequence;
         $this->POSSystem = $POSSystem;
@@ -114,6 +120,16 @@ class SaveSuccess implements ObserverInterface
         $this->regionResourceModel = $regionResourceModel;
         $this->addressRepository = $addressRepository;
         $this->addressDataFactory = $addressDataFactory;
+        $this->state = $state;
+    }
+
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    protected function getArea()
+    {
+        return $this->state->getAreaCode();
     }
 
     /**
@@ -134,6 +150,10 @@ class SaveSuccess implements ObserverInterface
              * @var Customer $oldCustomerData
              */
             $oldCustomerData = $observer->getEvent()->getData('orig_customer_data_object');
+
+            if ($this->getArea() === 'adminhtml' && !$oldCustomerData) {
+                return;
+            }
 
             /**
              * When customer register for the first time then old data will be null
@@ -289,7 +309,7 @@ class SaveSuccess implements ObserverInterface
                 $regionCities = $cities[$regionObject->getRegionId()];
                 foreach ($regionCities as $regionCity) {
                     if ($regionCity['name'] == $cityName) {
-                        $parameters['homeState'] = $regionCity['code'];
+                        $parameters['homeState'] = $regionCity['pos_code'];
                         break;
                     }
                 }
@@ -348,7 +368,7 @@ class SaveSuccess implements ObserverInterface
             $regionCities = $cities[$address->getRegionId()];
             foreach ($regionCities as $regionCity) {
                 if ($regionCity['name'] == $cityName) {
-                    $parameters['homeState'] = $regionCity['code'];
+                    $parameters['homeState'] = $regionCity['pos_code'];
                     break;
                 }
             }
