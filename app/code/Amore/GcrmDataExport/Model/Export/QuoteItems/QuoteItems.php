@@ -9,6 +9,7 @@
  */
 namespace Amore\GcrmDataExport\Model\Export\QuoteItems;
 
+use Amore\GcrmDataExport\Helper\Data;
 use Amore\GcrmDataExport\Model\ResourceModel\CustomImportExport\CollectionFactory as ExportCollection;
 use Amore\GcrmDataExport\Model\Export\QuoteItems\AttributeCollectionProvider;
 use Amore\GcrmDataExport\Model\Export\Adapter\QuoteItemsCsv;
@@ -149,6 +150,11 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
     const ATTRIBUTE_COLLECTION_NAME = Collection::class;
 
     /**
+     * @var Data
+     */
+    protected $dataHelper;
+
+    /**
      * QuoteItems constructor.
      * @param ExportCollection $ExportCollectionFactory
      * @param AttributeCollectionProvider $attributeCollectionProvider
@@ -160,6 +166,7 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
      * @param CollectionByPagesIteratorFactory $resourceColFactory
      * @param RedirectFactory $resultRedirectFactory
      * @param ManagerInterface $messageManager
+     * @param Data $dataHelper
      * @param array $data
      */
     public function __construct(
@@ -173,6 +180,7 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
         CollectionByPagesIteratorFactory $resourceColFactory,
         RedirectFactory $resultRedirectFactory,
         ManagerInterface $messageManager,
+        Data $dataHelper,
         array $data = []
     ) {
         parent::__construct(
@@ -188,6 +196,7 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
         $this->quoteItemsWriter = $quoteItemsWriter;
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->messageManager = $messageManager;
+        $this->dataHelper = $dataHelper;
     }
 
     /**
@@ -236,7 +245,8 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
         $collection = $this->joinedItemCollection();
         $cnt = 0;
         foreach ($collection->getData() as $item) {
-            $itemRow[$item['item_id']][$cnt] = $item;
+            $itemData = $this->dataHelper->fixSingleRowData($item);
+            $itemRow[$item['item_id']][$cnt] = $itemData;
             $cnt++;
         }
         return $itemRow;
