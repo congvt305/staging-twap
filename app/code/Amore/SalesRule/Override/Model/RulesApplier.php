@@ -6,6 +6,7 @@ use Magento\SalesRule\Api\Data\DiscountDataInterfaceFactory;
 use Magento\SalesRule\Api\Data\RuleDiscountInterfaceFactory;
 use Magento\SalesRule\Model\Quote\ChildrenValidationLocator;
 use Magento\SalesRule\Model\Rule\Action\Discount\DataFactory;
+use Magento\SalesRule\Model\Rule\Action\Discount\CalculatorFactory;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
@@ -28,7 +29,8 @@ class RulesApplier extends \Magento\SalesRule\Model\RulesApplier
     public function __construct(
         CalculatorFactory $calculatorFactory,
         \Magento\Framework\Event\ManagerInterface $eventManager,
-        Utility $utility, ChildrenValidationLocator $childrenValidationLocator = null,
+        \Magento\SalesRule\Model\Utility $utility,
+        ChildrenValidationLocator $childrenValidationLocator = null,
         DataFactory $discountDataFactory = null,
         RuleDiscountInterfaceFactory $discountInterfaceFactory = null,
         StoreManagerInterface $storeManager,
@@ -56,6 +58,8 @@ class RulesApplier extends \Magento\SalesRule\Model\RulesApplier
             $item->setBaseOriginalDiscountAmount(round($discountData->getBaseOriginalAmount()));
 
             return $this;
+        } else {
+            parent::setDiscountData($discountData, $item);
         }
     }
 }
