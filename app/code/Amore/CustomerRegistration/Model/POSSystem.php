@@ -220,7 +220,7 @@ class POSSystem
                             $cities = $this->cityHelper->getCityData();
                             $regionCities = $cities[$result['region']['region_id']];
                             foreach ($regionCities as $regionCity) {
-                                if ($regionCity['code'] == $result['homeState']) {
+                                if ($regionCity['pos_code'] == $result['homeState']) {
                                     $result['city'] = $regionCity;
                                     break;
                                 }

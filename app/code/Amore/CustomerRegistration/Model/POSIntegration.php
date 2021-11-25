@@ -305,7 +305,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 $cities = $this->cityHelper->getCityData();
                 $regionCities = $cities[$region->getRegionId()];
                 foreach ($regionCities as $regionCity) {
-                    if ($regionCity['code'] == $homeState) {
+                    if ($regionCity['pos_code'] == $homeState) {
                         $cityName = $regionCity['name'];
                         break;
                     }

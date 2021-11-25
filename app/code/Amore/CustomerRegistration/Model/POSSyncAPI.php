@@ -110,7 +110,7 @@ class POSSyncAPI
             $regionCities = $cities[$address->getRegionId()];
             foreach ($regionCities as $regionCity) {
                 if ($regionCity['name'] == $cityName) {
-                    $parameters['homeState'] = $regionCity['code'];
+                    $parameters['homeState'] = $regionCity['pos_code'];
                     break;
                 }
             }
