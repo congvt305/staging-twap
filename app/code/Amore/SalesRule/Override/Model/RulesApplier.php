@@ -52,10 +52,10 @@ class RulesApplier extends \Magento\SalesRule\Model\RulesApplier
         $storeCode = $this->storeManager->getStore()->getCode();
         if (in_array($storeCode, $this->stores)) {
 
-            $item->setDiscountAmount(round($discountData->getAmount()));
-            $item->setBaseDiscountAmount(round($discountData->getBaseAmount()));
-            $item->setOriginalDiscountAmount(round($discountData->getOriginalAmount()));
-            $item->setBaseOriginalDiscountAmount(round($discountData->getBaseOriginalAmount()));
+            $item->setDiscountAmount((int) $discountData->getAmount());
+            $item->setBaseDiscountAmount((int) $discountData->getBaseAmount());
+            $item->setOriginalDiscountAmount((int) $discountData->getOriginalAmount());
+            $item->setBaseOriginalDiscountAmount((int) $discountData->getBaseOriginalAmount());
 
             return $this;
         } else {
