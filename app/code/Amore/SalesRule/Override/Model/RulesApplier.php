@@ -51,9 +51,20 @@ class RulesApplier extends \Magento\SalesRule\Model\RulesApplier
     {
         $storeCode = $this->storeManager->getStore()->getCode();
         if (in_array($storeCode, $this->stores)) {
+            // Calculate and add odd data
+            $discountAmount = $discountData->getAmount();
+            $baseDiscountAmount = $discountData->getBaseAmount();
+           if ($discountAmount > 0 ) {
+               $oddDiscountAmount = $discountAmount - ((int) $discountAmount);
+               $oddBaseDiscountAmount = $baseDiscountAmount - (int) $baseDiscountAmount;
+               if ($oddDiscountAmount > 0) {
+                   $item->setOddDiscountAmount($oddDiscountAmount + $item->getOddDiscountAmount());
+                   $item->setOddBaseDiscountAmount($oddBaseDiscountAmount + $item->getOddBaseDiscountAmount());
+               }
+           }
 
-            $item->setDiscountAmount((int) $discountData->getAmount());
-            $item->setBaseDiscountAmount((int) $discountData->getBaseAmount());
+            $item->setDiscountAmount((int) $discountAmount);
+            $item->setBaseDiscountAmount((int) $baseDiscountAmount);
             $item->setOriginalDiscountAmount((int) $discountData->getOriginalAmount());
             $item->setBaseOriginalDiscountAmount((int) $discountData->getBaseOriginalAmount());
 
