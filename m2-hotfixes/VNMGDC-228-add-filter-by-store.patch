@@ -1,0 +1,35 @@
+From ad395461e0b6e70dd5ce5ca770726f5d92e208ac Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Wed, 24 Nov 2021 10:11:58 +0000
+Subject: [PATCH] add filter by store
+
+---
+ a/vendor/magento/module-rma/Model/ResourceModel/Item.php | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/vendor/magento/module-rma/Model/ResourceModel/Item.php b/vendor/magento/module-rma/Model/ResourceModel/Item.php
+index bbcd410..3895602 100644
+--- a/vendor/magento/module-rma/Model/ResourceModel/Item.php
++++ b/vendor/magento/module-rma/Model/ResourceModel/Item.php
+@@ -422,7 +422,9 @@ class Item extends AbstractEntity
+     private function getOrderProducts(Collection $orderItems): array
+     {
+         $productsIds = [];
++        $storeId = 0;
+         foreach ($orderItems as $item) {
++            $storeId = $item->getStoreId();
+             $productsIds[] = $this->adminOrderItem->getProductId($item);
+         }
+
+@@ -435,7 +437,7 @@ class Item extends AbstractEntity
+
+         $collection->addAttributeToSelect('is_returnable');
+         $collection->addFieldToFilter($collection->getIdFieldName(), ['in' => $productsIds]);
+-
++        $collection->addStoreFilter($storeId);
+         return $collection->getItems();
+     }
+
+--
+2.20.1
+
