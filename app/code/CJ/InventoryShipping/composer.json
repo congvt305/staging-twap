@@ -1,0 +1,16 @@
+{
+    "name": "cj/module-inventory-shipping",
+    "description": "CJ InventoryShipping",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "CJ\\InventoryShipping\\": ""
+        }
+    }
+}
