@@ -20,6 +20,7 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\ImportExport\Model\Export\Factory;
 use Magento\ImportExport\Model\ResourceModel\CollectionByPagesIteratorFactory;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Customer
@@ -50,6 +51,11 @@ class Customer extends MainCustomer
     protected $dataHelper;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
      * @param Factory $collectionFactory
@@ -59,6 +65,7 @@ class Customer extends MainCustomer
      * @param CollectionFactory $customerColFactory
      * @param DataPersistorInterface $dataPersistor
      * @param Data $dataHelper
+     * @param LoggerInterface $logger
      * @param array $data
      */
     public function __construct(
@@ -71,6 +78,7 @@ class Customer extends MainCustomer
         CollectionFactory $customerColFactory,
         DataPersistorInterface $dataPersistor,
         Data $dataHelper,
+        LoggerInterface $logger,
         array $data = []
     ) {
         parent::__construct(
@@ -83,6 +91,7 @@ class Customer extends MainCustomer
             $customerColFactory,
             $data
         );
+        $this->logger           = $logger;
         $this->dataHelper       = $dataHelper;
         $this->dataPersistor    = $dataPersistor;
     }
@@ -112,19 +121,23 @@ class Customer extends MainCustomer
      */
     public function exportItem($item)
     {
-        $row = $this->_addAttributeValuesToRow($item);
-        if ($this->dataPersistor->get('gcrm_export_check')) {
-            foreach ($this->includeColumns as $key => $columnName) {
-                $row[$columnName] = $item->getData($columnName);
+        try {
+            $row = $this->_addAttributeValuesToRow($item);
+            if ($this->dataPersistor->get('gcrm_export_check')) {
+                foreach ($this->includeColumns as $key => $columnName) {
+                    $row[$columnName] = $item->getData($columnName);
+                }
             }
-        }
-        $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$item->getWebsiteId()];
-        $row[self::COLUMN_STORE] = $this->_storeIdToCode[$item->getStoreId()];
+            $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$item->getWebsiteId()];
+            $row[self::COLUMN_STORE] = $this->_storeIdToCode[$item->getStoreId()];
 
-        foreach ($row as $columnName => $value) {
-            $row[$columnName] = $this->dataHelper->fixLineBreak($row[$columnName]);
-        }
+            foreach ($row as $columnName => $value) {
+                $row[$columnName] = $this->dataHelper->fixLineBreak($row[$columnName]);
+            }
 
-        $this->getWriter()->writeRow($row);
+            $this->getWriter()->writeRow($row);
+        } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
+        }
     }
 }

@@ -154,7 +154,11 @@ class Export extends ExportAlias
         }
         $this->dataPersistor->set('operation_status', true);
         $result = $operation->saveFileSource($this, $data);
-        $this->updateExportTable();
+        $lastOrderItem = $this->dataPersistor->get('lastOrder') ?: '';
+        if ($lastOrderItem) {
+            $this->dataPersistor->clear('lastOrder');
+        }
+        $this->updateExportTable($lastOrderItem);
         return (bool)$result;
     }
 
@@ -386,9 +390,9 @@ class Export extends ExportAlias
     /**
      * Set Last exported date & time in database
      */
-    public function updateExportTable()
+    public function updateExportTable($lastOrderItem = '')
     {
-        $runDate = $this->getRunDate() ? $this->getRunDate() : null;
+        $runDate = $lastOrderItem ?: ($this->getRunDate() ?: null);
         $date = $this->_dateModel->date('Y-m-d H:i:s', $runDate);
         if ($this->tableEntity == 'order') {
             try {
