@@ -159,7 +159,7 @@ class Address extends MainAddress
             $row[$entityColumn] = $item->getId() ?? '';
 
             if ($this->dataPersistor->get('gcrm_export_check')) {
-                $row[self::PARENT_ID] = $item->getParentId();
+                $row[self::PARENT_ID] = $item->getParentId() ?? '';
                 foreach ($this->includeColumns as $key => $columnName) {
                     if ($columnName != self::ENTITY_ID && $columnName != self::PARENT_ID) {
                         $row[$columnName] = $item->getData($columnName);
