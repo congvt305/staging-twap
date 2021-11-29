@@ -156,7 +156,7 @@ class Address extends MainAddress
 
             // Unique key
             $entityColumn = $this->dataPersistor->get('gcrm_export_check') ? self::ENTITY_ID : self::COLUMN_ADDRESS_ID;
-            $row[$entityColumn] = $item['entity_id'];
+            $row[$entityColumn] = $item->getId() ?? '';
 
             if ($this->dataPersistor->get('gcrm_export_check')) {
                 $row[self::PARENT_ID] = $item->getParentId();
@@ -167,9 +167,9 @@ class Address extends MainAddress
                 }
             }
 
-            $row[self::COLUMN_EMAIL] = $customer['email'];
-            $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$customer['website_id']];
-            $row[self::COLUMN_REGION_ID] = $item->getRegionId();
+            $row[self::COLUMN_EMAIL] = $customer['email'] ?? '';
+            $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$customer['website_id']] ?? '';
+            $row[self::COLUMN_REGION_ID] = $item->getRegionId() ?? '';
 
             foreach ($row as $columnName => $value) {
                 $row[$columnName] = $this->dataHelper->fixLineBreak($row[$columnName]);
