@@ -432,7 +432,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
                 }
                 $orderItems = $collection->getData();
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
         return $orderItems;
