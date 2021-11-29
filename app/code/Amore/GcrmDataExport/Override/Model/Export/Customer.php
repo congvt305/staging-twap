@@ -128,8 +128,8 @@ class Customer extends MainCustomer
                     $row[$columnName] = $item->getData($columnName);
                 }
             }
-            $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$item->getWebsiteId()];
-            $row[self::COLUMN_STORE] = $this->_storeIdToCode[$item->getStoreId()];
+            $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$item->getWebsiteId()] ?? '';
+            $row[self::COLUMN_STORE] = $this->_storeIdToCode[$item->getStoreId()] ?? '';
 
             foreach ($row as $columnName => $value) {
                 $row[$columnName] = $this->dataHelper->fixLineBreak($row[$columnName]);

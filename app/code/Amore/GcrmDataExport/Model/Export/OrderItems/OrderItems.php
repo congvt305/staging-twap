@@ -420,7 +420,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
                     foreach ($order->getAllItems() as $items) {
                         $orderItems[] = $items->getData();
                     }
-                    if ($i == $size) {
+                    if ($i == $size && $size == $saleOrderItemsLimit) {
                         $this->dataPersistor->set('lastOrder', $order->getUpdatedAt());
                     }
                     $i++;
@@ -432,7 +432,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
                 }
                 $orderItems = $collection->getData();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
         return $orderItems;
