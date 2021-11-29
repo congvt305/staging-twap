@@ -243,6 +243,8 @@ class PosOrderData
                 $bundleChildren = $this->getBundleChildren($orderItem->getSku(), $order->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
+                $oddToTal = 0;
+                $bundleChildSkus = [];
                 foreach ($bundleChildren as $bundleChild) {
                     $itemId = $orderItem->getItemId();
                     $stripSku = str_replace($skuPrefix, '', $bundleChild->getSku());
@@ -261,11 +263,14 @@ class PosOrderData
                     $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $bundleChild->getQty();
                     $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($priceGap)) / $bundleChild->getQty();
 
-                    $itemTotalDiscount = abs(round(
+                    $itemTotalDiscount = abs(
                         $bundleChildDiscountAmount +
                         (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) +
                         $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered()
-                    ));
+                    );
+                    $oddToTal += $itemTotalDiscount - (int) $itemTotalDiscount;
+                    $itemTotalDiscount = (int) $itemTotalDiscount;
+                    $bundleChildSkus[] = $stripSku;
 
                     $bundleChildGrandTotal = $bundleChildSubtotal - $itemTotalDiscount;
 
@@ -281,6 +286,20 @@ class PosOrderData
                     $itemsSubtotal += $bundleChildSubtotal;
                     $itemsDiscountAmount += $itemTotalDiscount;
                     $itemsGrandTotal += $bundleChildGrandTotal;
+                }
+                if ($oddToTal > 0) {
+                    foreach ($orderItemData as $key => $orderItemDataCalculation) {
+                        if (isset($orderItemDataCalculation['prdCD']) && in_array($orderItemDataCalculation['prdCD'], $bundleChildSkus)
+                            && isset($orderItemDataCalculation['dcAmt']) && $orderItemDataCalculation['dcAmt'] > 0
+                        ) {
+                            $orderItemDataCalculation['dcAmt'] += round($oddToTal);
+                            $orderItemDataCalculation['netSalAmt'] -= round($oddToTal);
+                            $orderItemData[$key] = $orderItemDataCalculation;
+                            $itemsDiscountAmount += round($oddToTal);
+                            $itemsGrandTotal -= round($oddToTal);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -434,8 +453,8 @@ class PosOrderData
     public function bundleChildDiscountAmount($bundlePriceType, $orderItem, LinkInterface $bundleChild)
     {
         $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
-            round($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getDiscountAmount())) :
-            round($this->getBundleChildFromOrder($orderItem->getItemId(), $bundleChild->getSku())->getDiscountAmount());
+            $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getDiscountAmount()) :
+            $this->getBundleChildFromOrder($orderItem->getItemId(), $bundleChild->getSku())->getDiscountAmount();
 
         return $bundleChildDiscountAmount;
     }

@@ -350,6 +350,8 @@ class SapOrderReturnData extends AbstractSapOrder
                 $bundleChildren = $this->getBundleChildren($orderItem->getSku(), $orderItem->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
+                $oddToTal = 0;
+                $bundleChildIds = [];
                 foreach ($bundleChildren as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
                     $bundleChildFromOrder = $this->getBundleChildFromOrder($itemId, $bundleChildrenItem->getSku());
@@ -366,9 +368,13 @@ class SapOrderReturnData extends AbstractSapOrder
                     $product = $this->productRepository->get($bundleChildrenItem->getSku(), false, $rma->getStoreId());
                     $meins = $product->getData('meins');
                     $itemDiscountAmountPerQty = $bundleChildDiscountAmount / $bundleChildrenItem->getQty();
-                    $itemDiscountAmount = abs(round($itemDiscountAmountPerQty * $rmaItem->getQtyRequested()));
+                    $itemDiscountAmount = abs($itemDiscountAmountPerQty * $rmaItem->getQtyRequested());
                     $itemSubtotal = abs(round($bundleChildItemPrice * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()));
                     $itemTaxAmount = abs(round($this->getRateAmount($bundleChildrenItem->getTaxAmount(), $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())));
+
+                    $oddToTal += $itemDiscountAmount - (int) $itemDiscountAmount;
+                    $itemDiscountAmount = (int) $itemDiscountAmount;
+                    $bundleChildIds[] = $originPosnr[$this->getBundleChildFromOrder($itemId, $bundleChildrenItem->getSku())->getItemId()];
 
                     $sku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
                     $itemNsamt = $itemSubtotal;
@@ -418,6 +424,21 @@ class SapOrderReturnData extends AbstractSapOrder
                     $itemsDiscountAmount += $itemDiscountAmount;
 
                     $itemsMileage += round($this->getRateAmount($mileagePerItem, $this->getNetQty($bundleChildFromOrder), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()));
+                }
+                if ($oddToTal > 0) {
+                    foreach ($rmaItemData as $key => $rmaItemDataCalculation) {
+                        if (isset($rmaItemDataCalculation['itemId']) && in_array($rmaItemDataCalculation['itemId'], $bundleChildIds)
+                            && isset($rmaItemDataCalculation['itemDcamt']) && $rmaItemDataCalculation['itemDcamt'] > 0
+                        ) {
+                            $rmaItemDataCalculation['itemDcamt'] += round($oddToTal);
+                            $rmaItemDataCalculation['itemSlamt'] -= round($oddToTal);
+                            $rmaItemDataCalculation['itemNetwr'] -= round($oddToTal);
+                            $rmaItemData[$key] = $rmaItemDataCalculation;
+                            $itemsDiscountAmount += round($oddToTal);
+                            $itemsGrandTotal -= round($oddToTal);
+                            break;
+                        }
+                    }
                 }
             }
         }
