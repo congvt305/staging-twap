@@ -139,6 +139,40 @@ class RmaPlugin
                             'result_message' => $this->json->serialize($result)
                         ]
                     );
+                    $responseHandled = $this->request->handleResponse($result, $order->getStoreId());
+                    if ($responseHandled === null) {
+                        throw new RmaSapException(__('Something went wrong while sending order data to SAP. No response'));
+                    } else {
+                        $outData = $responseHandled['data']['output']['outdata'];
+                        if (isset($responseHandled['success']) && $responseHandled['success'] == true) {
+                            foreach ($outData as $data) {
+                                if ($data['retcod'] == 'S') {
+                                    if ($rmaSendCheck == 0 || $rmaSendCheck == 2) {
+                                        $this->messageManager->addSuccessMessage(__("Resent Return Data to Sap Successfully."));
+                                    } else {
+                                        $this->messageManager->addSuccessMessage(__("Sent Return Data to Sap Successfully."));
+                                    }
+                                } else {
+                                    throw new RmaSapException(
+                                        __(
+                                            'Error returned from SAP for RMA %1. Error code : %2. Message : %3',
+                                            $subject->getIncrementId(),
+                                            $data['ugcod'],
+                                            $data['ugtxt']
+                                        )
+                                    );
+                                }
+                            }
+                        } else {
+                            throw new RmaSapException(
+                                __(
+                                    'Error returned from SAP for RMA %1. Message : %2',
+                                    $subject->getIncrementId(),
+                                    $result['message']
+                                )
+                            );
+                        }
+                    }
 
                     $resultSize = count($result);
 
@@ -174,7 +208,7 @@ class RmaPlugin
                             );
                         }
                     } else {
-                        throw new RmaSapException(__('Something went wrong while sending order data to SAP. No response'));
+
                     }
                 } catch (NoSuchEntityException $e) {
                     throw new NoSuchEntityException(__($e->getMessage()));

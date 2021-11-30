@@ -22,6 +22,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 class OrderSend extends AbstractAction
 {
@@ -38,7 +39,6 @@ class OrderSend extends AbstractAction
      * @var ManagerInterface
      */
     private $eventManager;
-
 
     /**
      * OrderSend constructor.
@@ -59,9 +59,10 @@ class OrderSend extends AbstractAction
         Config $config,
         OrderRepositoryInterface $orderRepository,
         SapOrderConfirmData $sapOrderConfirmData,
-        ManagerInterface $eventManager
+        ManagerInterface $eventManager,
+        MiddlewareHelper $middlewareHelper
     ) {
-        parent::__construct($context, $json, $request, $logger, $config);
+        parent::__construct($context, $json, $request, $logger, $config, $middlewareHelper);
         $this->orderRepository = $orderRepository;
         $this->sapOrderConfirmData = $sapOrderConfirmData;
         $this->eventManager = $eventManager;
@@ -130,12 +131,17 @@ class OrderSend extends AbstractAction
                 return $resultRedirect;
             }
 
-            $resultSize = count($result);
-
-            if ($resultSize > 0) {
-                if ($result['code'] == '0000') {
-                    $outdata = $result['data']['response']['output']['outdata'];
-                    foreach ($outdata as $data) {
+            $responseHandled = $this->request->handleResponse($result, $order->getStoreId());
+            if ($responseHandled === null) {
+                $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
+                $order->setStatus('sap_fail');
+                $this->messageManager->addErrorMessage(
+                    __('Something went wrong while sending order data to SAP. No response')
+                );
+            } else {
+                $outData = $responseHandled['data']['output']['outdata'];
+                if (isset($responseHandled['success']) && $responseHandled['success'] == true) {
+                    foreach ($outData as $data) {
                         if ($data['retcod'] == 'S') {
                             $order->setStatus('sap_processing');
                             if ($orderSendCheck == 0 || $orderSendCheck == 2) {
@@ -162,19 +168,12 @@ class OrderSend extends AbstractAction
                     $order->setStatus('sap_fail');
                     $this->messageManager->addErrorMessage(
                         __(
-                            'Error returned from SAP for order %1. Error code : %2. Message : %3',
+                            'Error returned from SAP for order %1. Message : %2',
                             $order->getIncrementId(),
-                            $result['code'],
-                            $result['message']
+                            $responseHandled['message']
                         )
                     );
                 }
-            } else {
-                $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
-                $order->setStatus('sap_fail');
-                $this->messageManager->addErrorMessage(
-                    __('Something went wrong while sending order data to SAP. No response')
-                );
             }
         } catch (ShipmentNotExistException $e) {
             $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
