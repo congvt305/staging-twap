@@ -557,8 +557,6 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $bundleChildren = $this->getBundleChildren($orderItem->getSku(), $orderItem->getStoreId());
                     $bundlePriceType = $bundleProduct->getPriceType();
 
-                    $oddToTal = 0;
-                    $bundleChildIds = [];
                     foreach ($bundleChildren as $bundleChild) {
                         $itemId = $orderItem->getItemId();
                         $bundleChildFromOrder = $this->getBundleChildFromOrder($itemId, $bundleChild->getSku());
@@ -569,8 +567,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                         }
 
                         $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
-                            $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getDiscountAmount()) :
-                            $bundleChildFromOrder->getDiscountAmount();
+                            round($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getDiscountAmount())) :
+                            round($bundleChildFromOrder->getDiscountAmount());
                         $mileagePerItem = $this->mileageSpentRateByItem(
                             $orderTotal,
                             $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getRowTotalInclTax()),
@@ -590,18 +588,15 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $bundleChild->getQty();
 
                         $itemSubtotal = abs(round($bundleChildPrice * $bundleChildFromOrder->getQtyOrdered()));
-                        $itemTotalDiscount = abs(
+                        $itemTotalDiscount = abs(round(
                             $bundleChildDiscountAmount +
                             (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) +
-                            $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered()
+                            $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered())
                         );
                         $itemTaxAmount = abs(round($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getTaxAmount())));
 
                         $sku = str_replace($skuPrefix, '', $bundleChild->getSku());
                         $item = $this->searchOrderItem($orderAllItems, $bundleChild->getSku(), $itemId);
-                        $oddToTal += $itemTotalDiscount - (int) $itemTotalDiscount;
-                        $itemTotalDiscount = (int) $itemTotalDiscount;
-                        $bundleChildIds[] = $item->getItemId();
 
                         $orderItemData[] = [
                             'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
@@ -636,21 +631,6 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $itemsDiscountAmount += $itemTotalDiscount;
 
                         $itemsMileage += round($mileagePerItem);
-                    }
-                    if ($oddToTal > 0) {
-                        foreach ($orderItemData as $key => $orderItemDataCalculation) {
-                            if (isset($orderItemDataCalculation['itemId']) && in_array($orderItemDataCalculation['itemId'], $bundleChildIds)
-                            && isset($orderItemDataCalculation['itemDcamt']) && $orderItemDataCalculation['itemDcamt'] > 0
-                            ) {
-                                $orderItemDataCalculation['itemDcamt'] += round($oddToTal);
-                                $orderItemDataCalculation['itemSlamt'] -= round($oddToTal);
-                                $orderItemDataCalculation['itemNetwr'] -= round($oddToTal);
-                                $orderItemData[$key] = $orderItemDataCalculation;
-                                $itemsDiscountAmount += round($oddToTal);
-                                $itemsGrandTotal -= round($oddToTal);
-                                break;
-                            }
-                        }
                     }
                 }
             }
