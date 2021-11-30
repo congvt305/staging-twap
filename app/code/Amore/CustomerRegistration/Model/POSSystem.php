@@ -26,13 +26,13 @@ use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
-
+use Amore\Base\Model\BaseRequest;
 /**
  * In this class we will call the POS API
  * Class POSSystem
  * @package Amore\CustomerRegistration\Model
  */
-class POSSystem
+class POSSystem extends BaseRequest
 {
     /**#@+
      * BA Code PREFIX
@@ -53,10 +53,6 @@ class POSSystem
     private $config;
 
     /**
-     * @var Curl
-     */
-    private $curlClient;
-    /**
      * @var \Magento\Framework\HTTP\ZendClientFactory
      */
     private $httpClientFactory;
@@ -68,11 +64,6 @@ class POSSystem
      * @var POSLogger
      */
     private $logger;
-    /**
-     * @var Json
-     */
-    private $json;
-
     /**
      * @var \Magento\Framework\Event\ManagerInterface
      */
@@ -95,24 +86,16 @@ class POSSystem
     private $cityHelper;
 
     /**
-     * @var MiddlewareHelper
-     */
-    protected $middlewareHelper;
-
-    /**
      * @param RegionFactory $regionFactory
      * @param RegionResourceModel $regionResourceModel
      * @param \Eguana\Directory\Helper\Data $cityHelper
-     * @param Curl $curl
      * @param Data $config
      * @param TimezoneInterface $timezone
      * @param \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory
      * @param \Zend\Http\Client $zendClient
      * @param \Amore\CustomerRegistration\Model\POSLogger $logger
-     * @param Json $json
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         RegionFactory $regionFactory,
@@ -129,19 +112,17 @@ class POSSystem
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         MiddlewareHelper $middlewareHelper
     ) {
+        parent::__construct($curl, $json, $middlewareHelper);
         $this->timezone = $timezone;
         $this->config = $config;
-        $this->curlClient = $curl;
         $this->httpClientFactory = $httpClientFactory;
         $this->zendClient = $zendClient;
         $this->logger = $logger;
-        $this->json = $json;
         $this->eventManager = $eventManager;
         $this->storeManager = $storeManager;
         $this->regionFactory = $regionFactory;
         $this->regionResourceModel = $regionResourceModel;
         $this->cityHelper = $cityHelper;
-        $this->middlewareHelper = $middlewareHelper;
     }
 
     public function getMemberInfo($firstName, $lastName, $mobileNumber)
@@ -179,24 +160,15 @@ class POSSystem
         }
         $callSuccess = 1;
         $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
+        $parameters = [
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'mobileNumber' => $mobileNumber,
+            'salOrgCd' => $this->config->getOrganizationSalesCode(),
+            'salOffCd' => $this->config->getOfficeSalesCode()
+        ];
         try {
-            $parameters = [
-                'firstName' => $firstName,
-                'lastName' => $lastName,
-                'mobileNumber' => $mobileNumber,
-                'salOrgCd' => $this->config->getOrganizationSalesCode(),
-                'salOffCd' => $this->config->getOfficeSalesCode()
-            ];
-
-            if ($isNewMiddlewareEnable) {
-                $url = $this->middlewareHelper->getNewMiddlewareURL('store', $storeId);
-                $parameters['APP_ID'] = $this->middlewareHelper->getMemberInfoInterfaceId('store', $storeId);
-                $parameters['API_USER_ID'] = $this->middlewareHelper->getMiddlewareUsername('store', $storeId);
-                $parameters['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey('store', $storeId);
-            }
-            $jsonEncodedData = $this->json->serialize($parameters);
-
-            $this->curlClient->setOptions([
+            $this->curl->setOptions([
                 CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
@@ -205,15 +177,14 @@ class POSSystem
                 CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => $jsonEncodedData,
                 CURLOPT_HTTPHEADER => [
                     'Content-type: application/json'
                 ],
             ]);
 
             if ($this->config->getSSLVerification()) {
-                $this->curlClient->setOption(CURLOPT_SSL_VERIFYHOST, false);
-                $this->curlClient->setOption(CURLOPT_SSL_VERIFYPEER, false);
+                $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
             }
 
             $this->logger->addAPICallLog(
@@ -221,9 +192,9 @@ class POSSystem
                 $url,
                 $parameters
             );
-            $this->curlClient->post($url, $parameters);
-            $apiRespone = $this->curlClient->getBody();
-            $response = $this->json->unserialize($apiRespone);
+
+            $apiResponse = $this->send($url, $parameters, 'store', $storeId, 'memberInfo');
+            $response = $this->json->unserialize($apiResponse);
             $result = $this->handleResponse($response, $isNewMiddlewareEnable);
             $this->logger->addAPICallLog(
                 'POS get info API Response',
@@ -412,15 +383,7 @@ class POSSystem
         $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
         try {
             $url = $this->config->getMemberJoinURL();
-            if ($isNewMiddlewareEnable) {
-                $url = $this->middlewareHelper->getNewMiddlewareURL('store', $storeId);
-                $parameters['APP_ID'] = $this->middlewareHelper->getMemberJoinInterfaceId('store', $storeId);
-                $parameters['API_USER_ID'] = $this->middlewareHelper->getMiddlewareUsername('store', $storeId);
-                $parameters['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey('store', $storeId);
-            }
-            $jsonEncodedData = $this->json->serialize($parameters);
-
-            $this->curlClient->setOptions([
+            $this->curl->setOptions([
                 CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
@@ -429,15 +392,14 @@ class POSSystem
                 CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => $jsonEncodedData,
                 CURLOPT_HTTPHEADER => [
                     'Content-type: application/json'
                 ],
             ]);
 
             if ($this->config->getSSLVerification()) {
-                $this->curlClient->setOption(CURLOPT_SSL_VERIFYHOST, false);
-                $this->curlClient->setOption(CURLOPT_SSL_VERIFYPEER, false);
+                $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
             }
 
             $this->logger->addAPICallLog(
@@ -445,9 +407,8 @@ class POSSystem
                 $url,
                 $parameters
             );
-            $this->curlClient->post($url, $parameters);
-            $apiRespone = $this->curlClient->getBody();
-            $response = $this->json->unserialize($apiRespone);
+            $apiResponse = $this->send($url, $parameters, 'store', $storeId, 'memberJoin');
+            $response = $this->json->unserialize($apiResponse);
             if ($isNewMiddlewareEnable) {
                 if (isset($response['success']) && $response['success']) {
                     $result['message'] = $response['data']['statusMessage'];
@@ -571,15 +532,8 @@ class POSSystem
                 'salOrgCd' => $salOrgCd,
                 'salOffCd' => $salOffCd
             ];
-            if ($isNewMiddlewareEnable) {
-                $url = $this->middlewareHelper->getNewMiddlewareURL('store', $storeId);
-                $parameters['APP_ID'] = $this->middlewareHelper->getBacodeInfoInterfaceId('store', $storeId);
-                $parameters['API_USER_ID'] = $this->middlewareHelper->getMiddlewareUsername('store', $storeId);
-                $parameters['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey('store', $storeId);
-            }
-            $jsonEncodedData = $this->json->serialize($parameters);
 
-            $this->curlClient->setOptions([
+            $this->curl->setOptions([
                 CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
@@ -588,15 +542,14 @@ class POSSystem
                 CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => $jsonEncodedData,
                 CURLOPT_HTTPHEADER => [
                     'Content-type: application/json'
                 ],
             ]);
 
             if ($this->config->getSSLVerification()) {
-                $this->curlClient->setOption(CURLOPT_SSL_VERIFYHOST, false);
-                $this->curlClient->setOption(CURLOPT_SSL_VERIFYPEER, false);
+                $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
+                $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
             }
 
             $this->logger->addAPICallLog(
@@ -604,10 +557,8 @@ class POSSystem
                 $url,
                 $parameters
             );
-
-            $this->curlClient->post($url, $parameters);
-            $apiRespone = $this->curlClient->getBody();
-            $response = $this->json->unserialize($apiRespone);
+            $apiResponse = $this->send($url, $parameters, 'store', $storeId, 'baInfo');
+            $response = $this->json->unserialize($apiResponse);
             if ($isNewMiddlewareEnable) {
                 if ((isset($result['success']) && $result['success']) &&
                     (isset($result['data']) && isset($result['data']['exitYN']) && $result['data']['exitYN'] == 'Y')
