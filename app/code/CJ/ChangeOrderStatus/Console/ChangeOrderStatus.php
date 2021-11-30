@@ -135,7 +135,10 @@ class ChangeOrderStatus extends \Symfony\Component\Console\Command\Command
                     }
 
                     $shipment->register();
-                    $shipment->getOrder()->save();
+                    $shipment->getOrder()
+                        ->setStatus('delivery_complete')
+                        ->setState('complete')
+                        ->save();
 
                     $shipment->save();
                     $output->writeln(
