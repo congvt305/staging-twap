@@ -38,14 +38,22 @@ class ChangeOrderStatus extends \Symfony\Component\Console\Command\Command
      */
     protected $state;
 
+    /**
+     * @var \Magento\Sales\Model\Convert\Order
+     */
     protected $convertOrder;
 
+    /**
+     * @var OrderFactory
+     */
     protected $orderFactory;
 
     /**
      * @param \Magento\Framework\App\State $state
      * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Magento\Sales\Model\Convert\Order $convertOrder
+     * @param \Magento\Sales\Model\OrderFactory $orderFactory
      * @param null $name
      */
     public function __construct(
