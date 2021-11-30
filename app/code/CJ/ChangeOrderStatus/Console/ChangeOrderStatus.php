@@ -2,7 +2,9 @@
 
 namespace CJ\ChangeOrderStatus\Console;
 
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NotFoundException;
+use Magento\Sales\Model\OrderFactory;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -36,6 +38,10 @@ class ChangeOrderStatus extends \Symfony\Component\Console\Command\Command
      */
     protected $state;
 
+    protected $convertOrder;
+
+    protected $orderFactory;
+
     /**
      * @param \Magento\Framework\App\State $state
      * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
@@ -46,11 +52,15 @@ class ChangeOrderStatus extends \Symfony\Component\Console\Command\Command
         \Magento\Framework\App\State $state,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
+        \Magento\Sales\Model\Convert\Order $convertOrder,
+        \Magento\Sales\Model\OrderFactory $orderFactory,
         $name = null
     ) {
+        $this->orderFactory = $orderFactory;
         $this->state = $state;
         $this->orderRepository = $orderRepository;
         $this->criteriaBuilder = $searchCriteriaBuilder;
+        $this->convertOrder = $convertOrder;
         parent::__construct($name);
     }
 
@@ -84,6 +94,7 @@ class ChangeOrderStatus extends \Symfony\Component\Console\Command\Command
                 ->create();
 
             $searchResult = $this->orderRepository->getList($filter);
+            $size = $searchResult->getTotalCount();
             $totalRecord = 0;
             $items = $searchResult->getItems();
 
@@ -91,22 +102,46 @@ class ChangeOrderStatus extends \Symfony\Component\Console\Command\Command
                 throw new NotFoundException(__('Order not found!'));
             }
 
+            $output->writeln(__('Found %1 orders', $size));
             foreach ($items as $item) {
+                $order = $this->orderFactory->create()->load($item->getEntityId());
                 $oldStatus = $item->getStatus();
-                $item->setStatus('delivery_complete')->setState('complete');
+
                 try {
-                    $this->orderRepository->save($item);
-                    $output->writeln(__("Updated an order status: '%1' to '%2'. Order Id: #%3",
-                        strtoupper($oldStatus),
-                        strtoupper($item->getStatus()),
-                        $item->getIncrementId()));
+                    if (!$order->canShip()) {
+                        throw new LocalizedException(__('You can\'t create an shipment. Order Id: #%1',
+                            $order->getIncrementId()));
+                    }
+                    $shipment = $this->convertOrder->toShipment($order);
+                    foreach ($order->getAllItems() as $orderItem) {
+                        if (!$orderItem->getQtyToShip() || $orderItem->getIsVirtual()) {
+                            continue;
+                        }
+
+                        $qtyShipped = $orderItem->getQtyToShip();
+                        $shipmentItem = $this->convertOrder
+                            ->itemToShipmentItem($orderItem)
+                            ->setQty($qtyShipped);
+
+                        $shipment->addItem($shipmentItem);
+                    }
+
+                    $shipment->register();
+                    $shipment->getOrder()->save();
+
+                    $shipment->save();
+                    $output->writeln(
+                        __('Created a shipment successfully. Order Id: #%1. Shipment Id: %2. Order Old Status: %3. New Status: %4',
+                        $order->getIncrementId(), $shipment->getIncrementId(), $oldStatus, $shipment->getOrder()->getStatus())
+                    );
+
                     $totalRecord++;
-                } catch(\Exception $e) {
+                } catch (\Exception $e) {
                     $output->writeln($e->getMessage());
                 }
             }
 
-            $output->writeln(__('Total orders have been updated status: %1', $totalRecord));
+            $output->writeln(__('Total orders affected: %1', $totalRecord));
 
         } catch (\Exception $exception) {
             $output->writeln($exception->getMessage());
