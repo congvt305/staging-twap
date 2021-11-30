@@ -226,8 +226,6 @@ class PosReturnData
                 $bundleChildren = $this->getBundleChildren($orderItem->getSku());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
-                $oddToTal = 0;
-                $bundleChildSkus = [];
                 foreach ($bundleChildren as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
                     $bundleChildFromOrder = $this->getBundleChildFromOrder($itemId, $bundleChildrenItem->getSku());
@@ -247,15 +245,12 @@ class PosReturnData
                     $product = $this->productRepository->get($bundleChildrenItem->getSku(), false, $rma->getStoreId());
                     $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getOriginalPrice()) / $bundleChildrenItem->getQty();
                     $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $bundleChildrenItem->getQty();
-                    $itemTotalDiscount = abs(
+                    $itemTotalDiscount = abs(round(
                         $this->getRateAmount($bundleChildDiscountAmount, $bundleChildFromOrder->getQtyOrdered(), $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())
                         + (($product->getPrice() - $childPriceRatio) * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty())
                         + $catalogRuledPriceRatio * $rmaItem->getQtyRequested() * $bundleChildrenItem->getQty()
-                    );
+                    ));
                     $stripSku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
-                    $oddToTal += $itemTotalDiscount - (int) $itemTotalDiscount;
-                    $itemTotalDiscount = (int) $itemTotalDiscount;
-                    $bundleChildSkus[] = $stripSku;
 
                     $rmaItemData[] = [
                         'prdCD' => $stripSku,
@@ -269,20 +264,6 @@ class PosReturnData
                     $itemsSubtotal += $itemSubtotal;
                     $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount);
                     $itemsDiscountAmount += $itemTotalDiscount;
-                }
-                if ($oddToTal > 0) {
-                    foreach ($rmaItemData as $key => $rmaItemDataCalculation) {
-                        if (isset($rmaItemDataCalculation['prdCD']) && in_array($rmaItemDataCalculation['prdCD'], $bundleChildSkus)
-                            && isset($rmaItemDataCalculation['dcAmt']) && $rmaItemDataCalculation['dcAmt'] > 0
-                        ) {
-                            $rmaItemDataCalculation['dcAmt'] += round($oddToTal);
-                            $rmaItemDataCalculation['netSalAmt'] -= round($oddToTal);
-                            $rmaItemData[$key] = $rmaItemDataCalculation;
-                            $itemsDiscountAmount += round($oddToTal);
-                            $itemsGrandTotal -= round($oddToTal);
-                            break;
-                        }
-                    }
                 }
             }
         }
