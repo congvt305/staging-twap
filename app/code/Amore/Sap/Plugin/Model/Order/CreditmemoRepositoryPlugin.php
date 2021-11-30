@@ -140,21 +140,33 @@ class CreditmemoRepositoryPlugin
                             'result_message' => $this->json->serialize($sapResult)
                         ]
                     );
-
-                    $resultSize = count($sapResult);
-                    if ($resultSize > 0) {
-                        if ($sapResult['code'] == '0000') {
-                            $responseHeader = $sapResult['data']['response']['header'];
+                    $responseHandled = $this->request->handleResponse($sapResult, $order->getStoreId());
+                    if ($responseHandled === null) {
+                        throw new CrditmemoException(__('Something went wrong while sending order data to SAP. No response.'));
+                    } else {
+                        $responseHeader = $responseHandled['data']['header'];
+                        if (isset($responseHandled['success']) && $responseHandled['success'] == true) {
                             if ($responseHeader['rtn_TYPE'] == 'S') {
                                 $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                             } else {
-                                throw new CrditmemoException(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                                throw new CrditmemoException(
+                                    __(
+                                        'Error returned from SAP for order %1. Error code : %2. Message : %3',
+                                        $order->getIncrementId(),
+                                        $responseHeader['rtn_TYPE'],
+                                        $responseHeader['rtn_MSG']
+                                    )
+                                );
                             }
                         } else {
-                            throw new CrditmemoException(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $sapResult['code'], $sapResult['message']));
+                            throw new CrditmemoException(
+                                __(
+                                    'Error returned from SAP for order %1. Message : %2',
+                                    $order->getIncrementId(),
+                                    $sapResult['message']
+                                )
+                            );
                         }
-                    } else {
-                        throw new CrditmemoException(__('Something went wrong while sending order data to SAP. No response.'));
                     }
                 } catch (NoSuchEntityException $e) {
                     throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));
