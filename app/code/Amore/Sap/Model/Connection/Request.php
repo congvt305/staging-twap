@@ -127,34 +127,24 @@ class Request extends BaseRequest
     {
         $resultSize = count($response);
         if ($resultSize > 0) {
+            $success = true;
+            $message = '';
             if ($this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId)) {
-                if ($response['success'] == true) {
-                    return [
-                        'success' => true,
-                        'data' => $response['data']['response']
-                    ];
-                } else {
-                    return [
-                        'success' => false,
-                        'data' => $response['data']['response'],
-                        'message' => $response['data']['message'],
-                    ];
+                if ($response['success'] != true) {
+                    $success = $response['success'];
+                    $message = $response['data']['message'];
                 }
             } else {
-                if ($response['code'] == '0000') {
-                    return [
-                        'success' => true,
-                        'data' => $response['data']['response']
-                    ];
-                } else {
-                    return [
-                        'success' => false,
-                        'data' => $response['data']['response'],
-                        'message' => $response['message'],
-
-                    ];
+                if ($response['code'] != '0000') {
+                    $success = false;
+                    $message = $response['message'];
                 }
             }
+            return [
+                'success' => $success,
+                'data' => $response['data']['response'],
+                'message' => $message
+            ];
         } else {
             return null;
         }
