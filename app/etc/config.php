@@ -680,6 +680,7 @@ return [
         'Amore_PointsIntegration' => 1,
         'Amore_SalesRule' => 1,
         'Ecpay_Ecpaypayment' => 1,
+        'CJ_ChangeOrderStatus' => 1,
         'CJ_InventoryShipping' => 1,
         'CJ_Middleware' => 1,
         'Dotdigitalgroup_Chat' => 1,

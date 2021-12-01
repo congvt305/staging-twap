@@ -23,6 +23,7 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\ImportExport\Model\Export\Factory;
 use Magento\ImportExport\Model\ResourceModel\CollectionByPagesIteratorFactory;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Address
@@ -63,6 +64,11 @@ class Address extends MainAddress
     protected $dataHelper;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
      * @param Factory $collectionFactory
@@ -74,6 +80,7 @@ class Address extends MainAddress
      * @param AddressCollectionFactory $addressColFactory
      * @param DataPersistorInterface $dataPersistor
      * @param Data $dataHelper
+     * @param LoggerInterface $logger
      * @param array $data
      */
     public function __construct(
@@ -88,6 +95,7 @@ class Address extends MainAddress
         AddressCollectionFactory $addressColFactory,
         DataPersistorInterface $dataPersistor,
         Data $dataHelper,
+        LoggerInterface $logger,
         array $data = []
     ) {
         parent::__construct(
@@ -102,6 +110,7 @@ class Address extends MainAddress
             $addressColFactory,
             $data
         );
+        $this->logger           = $logger;
         $this->dataHelper       = $dataHelper;
         $this->dataPersistor    = $dataPersistor;
     }
@@ -132,39 +141,43 @@ class Address extends MainAddress
      */
     public function exportItem($item)
     {
-        $row = $this->_addAttributeValuesToRow($item);
+        try {
+            $row = $this->_addAttributeValuesToRow($item);
 
-        /** @var $customer Customer */
-        $customer = $this->_customers[$item->getParentId()];
+            /** @var $customer Customer */
+            $customer = $this->_customers[$item->getParentId()];
 
-        // Fill row with default address attributes values
-        foreach (self::$_defaultAddressAttributeMapping as $columnName => $attributeCode) {
-            if (!empty($customer[$attributeCode]) && $customer[$attributeCode] == $item->getId()) {
-                $row[$columnName] = 1;
-            }
-        }
-
-        // Unique key
-        $entityColumn = $this->dataPersistor->get('gcrm_export_check') ? self::ENTITY_ID : self::COLUMN_ADDRESS_ID;
-        $row[$entityColumn] = $item['entity_id'];
-
-        if ($this->dataPersistor->get('gcrm_export_check')) {
-            $row[self::PARENT_ID] = $item->getParentId();
-            foreach ($this->includeColumns as $key => $columnName) {
-                if ($columnName != self::ENTITY_ID && $columnName != self::PARENT_ID) {
-                    $row[$columnName] = $item->getData($columnName);
+            // Fill row with default address attributes values
+            foreach (self::$_defaultAddressAttributeMapping as $columnName => $attributeCode) {
+                if (!empty($customer[$attributeCode]) && $customer[$attributeCode] == $item->getId()) {
+                    $row[$columnName] = 1;
                 }
             }
+
+            // Unique key
+            $entityColumn = $this->dataPersistor->get('gcrm_export_check') ? self::ENTITY_ID : self::COLUMN_ADDRESS_ID;
+            $row[$entityColumn] = $item->getId() ?? '';
+
+            if ($this->dataPersistor->get('gcrm_export_check')) {
+                $row[self::PARENT_ID] = $item->getParentId() ?? '';
+                foreach ($this->includeColumns as $key => $columnName) {
+                    if ($columnName != self::ENTITY_ID && $columnName != self::PARENT_ID) {
+                        $row[$columnName] = $item->getData($columnName);
+                    }
+                }
+            }
+
+            $row[self::COLUMN_EMAIL] = $customer['email'] ?? '';
+            $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$customer['website_id']] ?? '';
+            $row[self::COLUMN_REGION_ID] = $item->getRegionId() ?? '';
+
+            foreach ($row as $columnName => $value) {
+                $row[$columnName] = $this->dataHelper->fixLineBreak($row[$columnName]);
+            }
+
+            $this->getWriter()->writeRow($row);
+        } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
         }
-
-        $row[self::COLUMN_EMAIL] = $customer['email'];
-        $row[self::COLUMN_WEBSITE] = $this->_websiteIdToCode[$customer['website_id']];
-        $row[self::COLUMN_REGION_ID] = $item->getRegionId();
-
-        foreach ($row as $columnName => $value) {
-            $row[$columnName] = $this->dataHelper->fixLineBreak($row[$columnName]);
-        }
-
-        $this->getWriter()->writeRow($row);
     }
 }

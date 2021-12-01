@@ -13,6 +13,7 @@ use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Backend\App\Action;
+use Amore\Sap\Controller\Adminhtml\AbstractAction as BaseAction;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\App\ResponseInterface;
@@ -20,25 +21,10 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
-class CreditmemoResend extends Action
+class CreditmemoResend extends BaseAction
 {
-    /**
-     * @var Json
-     */
-    private $json;
-    /**
-     * @var Request
-     */
-    private $request;
-    /**
-     * @var Logger
-     */
-    private $logger;
-    /**
-     * @var Config
-     */
-    private $config;
     /**
      * @var SapOrderCancelData
      */
@@ -53,7 +39,6 @@ class CreditmemoResend extends Action
     private $resourceConnection;
 
     /**
-     * CreditmemoResend constructor.
      * @param Action\Context $context
      * @param Json $json
      * @param Request $request
@@ -62,6 +47,7 @@ class CreditmemoResend extends Action
      * @param SapOrderCancelData $sapOrderCancelData
      * @param OrderRepositoryInterface $orderRepository
      * @param ResourceConnection $resourceConnection
+     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         Action\Context $context,
@@ -71,8 +57,10 @@ class CreditmemoResend extends Action
         Config $config,
         SapOrderCancelData $sapOrderCancelData,
         OrderRepositoryInterface $orderRepository,
-        ResourceConnection $resourceConnection
+        ResourceConnection $resourceConnection,
+        MiddlewareHelper $middlewareHelper
     ) {
+        parent::__construct($context, $json, $request, $logger, $config, $middlewareHelper);
         $this->json = $json;
         $this->request = $request;
         $this->logger = $logger;
@@ -80,7 +68,6 @@ class CreditmemoResend extends Action
         $this->sapOrderCancelData = $sapOrderCancelData;
         $this->orderRepository = $orderRepository;
         $this->resourceConnection = $resourceConnection;
-        parent::__construct($context);
     }
 
 
@@ -113,30 +100,48 @@ class CreditmemoResend extends Action
                     $this->logger->info("Single Order Cancel Resend Result Data");
                     $this->logger->info($this->json->serialize($sapResult));
                 }
-
-                $resultSize = count($sapResult);
-                if ($resultSize > 0) {
-                    if ($sapResult['code'] == '0000') {
-                        $responseHeader = $sapResult['data']['response']['header'];
+                $responseHandled = $this->request->handleResponse($sapResult, $order->getStoreId());
+                if ($responseHandled === null) {
+                    $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
+                    $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
+                } else {
+                    $responseHeader = $responseHandled['data']['header'];
+                    if ($responseHandled['success'] === false) {
+                        $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
+                        $this->messageManager->addErrorMessage(
+                            __(
+                                'Error returned from SAP for order %1. Error code : %2. Message : %3',
+                                $order->getIncrementId(),
+                                $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']
+                            )
+                        );
+                    } else {
                         if ($responseHeader['rtn_TYPE'] == 'S') {
                             try {
                                 $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_RESENT_TO_SAP_SUCCESS);
                                 $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                             } catch (\Exception $exception) {
                                 $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                                $this->messageManager->addErrorMessage(__('Something went wrong while saving order %1. Message : %2', $order->getIncrementId(),$exception->getMessage()));
+                                $this->messageManager->addErrorMessage(
+                                    __(
+                                        'Something went wrong while saving order %1. Message : %2',
+                                        $order->getIncrementId(),
+                                        $exception->getMessage()
+                                    )
+                                );
                             }
                         } else {
                             $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                            $this->messageManager->addErrorMessage(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                            $this->messageManager->addErrorMessage(
+                                __(
+                                    'Error returned from SAP for order %1. Error code : %2. Message : %3',
+                                    $order->getIncrementId(),
+                                    $responseHeader['rtn_TYPE'],
+                                    $responseHeader['rtn_MSG']
+                                )
+                            );
                         }
-                    } else {
-                        $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                        $this->messageManager->addErrorMessage(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $sapResult['code'], $sapResult['message']));
                     }
-                } else {
-                    $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
-                    $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));
                 }
             } catch (NoSuchEntityException $e) {
                 $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
