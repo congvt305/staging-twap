@@ -168,7 +168,7 @@ class RmaPlugin
                                 __(
                                     'Error returned from SAP for RMA %1. Message : %2',
                                     $subject->getIncrementId(),
-                                    $result['message']
+                                    $responseHandled['message']
                                 )
                             );
                         }
