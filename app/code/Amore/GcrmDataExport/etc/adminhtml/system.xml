@@ -41,6 +41,14 @@
                     <label>Password</label>
                 </field>
             </group>
+            <group id="schedule_config" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Scheduled Imports/Exports Configurations</label>
+                <field id="order_items_limit" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Orders Limit for Items Export</label>
+                    <comment>Range 1 to 3000. Leave field is empty for not using this configuration.</comment>
+                    <validate>validate-digits validate-not-negative-number validate-digits-range digits-range-1-3000</validate>
+                </field>
+            </group>
         </section>
     </system>
 </config>

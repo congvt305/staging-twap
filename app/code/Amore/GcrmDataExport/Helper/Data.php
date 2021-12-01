@@ -38,7 +38,9 @@ class Data extends AbstractHelper
     public function fixSingleRowData($itemData)
     {
         foreach ($itemData as $columnName => $value) {
-            $itemData[$columnName] = $this->fixLineBreak($value);
+            if (!is_array($value) && !is_object($value)) {
+                $itemData[$columnName] = $this->fixLineBreak($value);
+            }
         }
 
         return $itemData;

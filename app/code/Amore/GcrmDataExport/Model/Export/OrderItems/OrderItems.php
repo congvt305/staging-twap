@@ -10,14 +10,18 @@
 namespace Amore\GcrmDataExport\Model\Export\OrderItems;
 
 use Amore\GcrmDataExport\Helper\Data;
+use Amore\GcrmDataExport\Model\Config\Config as ConfigHeler;
 use Amore\GcrmDataExport\Model\ResourceModel\CustomImportExport\CollectionFactory as ExportCollection;
 use Amore\GcrmDataExport\Model\Export\Adapter\OrderItemsCsv;
 use Amore\GcrmDataExport\Model\Export\Order\AttributeCollectionProvider;
 use Amore\GcrmDataExport\Model\OrderItemsColumnsInterface;
+use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Data\Collection as CollectionAlias;
 use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Sales\Model\ResourceModel\Order\CollectionFactory as OrderCollectionFactory;
+use Magento\Sales\Model\ResourceModel\Order\Collection as OrderCollection;
 use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
 use Magento\ImportExport\Model\Export\AbstractEntity;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
@@ -32,6 +36,7 @@ use Magento\Sales\Model\Order;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Controller\Result\Redirect;
+use Psr\Log\LoggerInterface;
 
 /**
  * This class Exports Sales Order Items
@@ -172,7 +177,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
     /**
      * @var ExportCollection
      */
-    private $ExportCollectionFactory;
+    private $exportCollectionFactory;
 
     /**
      * @var RedirectFactory
@@ -195,8 +200,28 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
     protected $dataHelper;
 
     /**
+     * @var ConfigHeler
+     */
+    private $configHelper;
+
+    /**
+     * @var OrderCollectionFactory
+     */
+    private $orderCollectionFactory;
+
+    /**
+     * @var DataPersistorInterface
+     */
+    private $dataPersistor;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * OrderItems constructor.
-     * @param ExportCollection $ExportCollectionFactory
+     * @param ExportCollection $exportCollectionFactory
      * @param AttributeCollectionProvider $attributeCollectionProvider
      * @param CollectionFactory $orderItemsColFactory
      * @param ScopeConfigInterface $scopeConfig
@@ -207,10 +232,14 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
      * @param RedirectFactory $resultRedirectFactory
      * @param ManagerInterface $messageManager
      * @param Data $dataHelper
+     * @param ConfigHeler $configHelper
+     * @param OrderCollectionFactory $orderCollectionFactory
+     * @param DataPersistorInterface $dataPersistor
+     * @param LoggerInterface $logger
      * @param array $data
      */
     public function __construct(
-        ExportCollection $ExportCollectionFactory,
+        ExportCollection $exportCollectionFactory,
         AttributeCollectionProvider $attributeCollectionProvider,
         CollectionFactory $orderItemsColFactory,
         ScopeConfigInterface $scopeConfig,
@@ -221,6 +250,10 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         RedirectFactory $resultRedirectFactory,
         ManagerInterface $messageManager,
         Data $dataHelper,
+        ConfigHeler $configHelper,
+        OrderCollectionFactory $orderCollectionFactory,
+        DataPersistorInterface $dataPersistor,
+        LoggerInterface $logger,
         array $data = []
     ) {
         parent::__construct(
@@ -230,13 +263,17 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
             $resourceColFactory,
             $data
         );
-        $this->ExportCollectionFactory = $ExportCollectionFactory;
+        $this->exportCollectionFactory = $exportCollectionFactory;
         $this->orderItemsColFactory = $orderItemsColFactory;
         $this->attributeCollectionProvider = $attributeCollectionProvider;
         $this->orderItemsWriter = $orderItemsWriter;
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->messageManager = $messageManager;
         $this->dataHelper = $dataHelper;
+        $this->configHelper = $configHelper;
+        $this->orderCollectionFactory = $orderCollectionFactory;
+        $this->dataPersistor = $dataPersistor;
+        $this->logger = $logger;
     }
 
     /**
@@ -262,10 +299,11 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         foreach ($orderItemData as $orderData) {
             foreach ($orderData as $itemData) {
                 if ($index == 0) {
+                    unset($itemData['product_option']);
                     unset($itemData['product_options']);
                     foreach (array_keys($itemData) as $key) {
                         $headersData[] = $key;
-                        $index += 1;
+                        $index = 1;
                     }
                     $writer->setHeaderCols($headersData);
                 }
@@ -286,7 +324,10 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         $collection = $this->joinedItemCollection();
 
         $cnt = 0;
-        foreach ($collection->getData() as $item) {
+        foreach ($collection as $item) {
+            unset($item['product_option']);
+            unset($item['product_options']);
+            unset($item['parent_item']);
             $itemData = $this->dataHelper->fixSingleRowData($item);
             $itemRow[$item['item_id']][$cnt] = $itemData;
             $cnt++;
@@ -357,22 +398,44 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
      */
     public function joinedItemCollection()
     {
+        $orderItems = [];
         try {
-            $customExportData = $this->ExportCollectionFactory->create()
+            $customExportData = $this->exportCollectionFactory->create()
                 ->addFieldToFilter('entity_code', ['eq' => 'sales_order_item'])->getFirstItem();
             $exportDate = $customExportData->getData('updated_at');
-            if ($exportDate == "NULL") {
-                /** @var CollectionFactory $collection */
-                $collection = $this->orderItemsColFactory->create();
+
+            $saleOrderItemsLimit = $this->configHelper->getOrderItemsLimit();
+            if ($saleOrderItemsLimit) {
+                $collection = $this->orderCollectionFactory->create();
+                if ($exportDate != "NULL") {
+                    $collection->addFieldToFilter('updated_at', ['gteq' => $exportDate]);
+                    $collection->setOrder('updated_at', 'ASC');
+                }
+                $collection->getSelect()->limit($saleOrderItemsLimit);
+                $i = 1;
+                $size = count($collection);
+                /** @var OrderCollection $order */
+                foreach ($collection as $order) {
+                    /** @var Collection $items */
+                    foreach ($order->getAllItems() as $items) {
+                        $orderItems[] = $items->getData();
+                    }
+                    if ($i == $size && $size == $saleOrderItemsLimit) {
+                        $this->dataPersistor->set('lastOrder', $order->getUpdatedAt());
+                    }
+                    $i++;
+                }
             } else {
-                /** @var CollectionFactory $collection */
                 $collection = $this->orderItemsColFactory->create();
-                $collection->addFieldToFilter('updated_at', ['gteq' => $exportDate]);
+                if ($exportDate != "NULL") {
+                    $collection->addFieldToFilter('updated_at', ['gteq' => $exportDate]);
+                }
+                $orderItems = $collection->getData();
             }
-        } catch (Exception $e) {
-            $e->getMessage();
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
         }
-        return $collection;
+        return $orderItems;
     }
 
     /**
