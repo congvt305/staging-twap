@@ -148,7 +148,7 @@ class AddressRepositoryPlugin
                                 __(
                                     'Error returned from SAP for order %1. Message : %2',
                                     $order->getIncrementId(),
-                                    $result['message']
+                                    $responseHandled['message']
                                 )
                             );
                         }

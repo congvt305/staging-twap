@@ -163,7 +163,7 @@ class CreditmemoRepositoryPlugin
                                 __(
                                     'Error returned from SAP for order %1. Message : %2',
                                     $order->getIncrementId(),
-                                    $sapResult['message']
+                                    $responseHandled['message']
                                 )
                             );
                         }
