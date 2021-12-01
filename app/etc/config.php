@@ -679,6 +679,7 @@ return [
         'Amore_SalesRule' => 1,
         'Ecpay_Ecpaypayment' => 1,
         'CJ_ChangeOrderStatus' => 1,
+        'CJ_InventoryShipping' => 1,
         'CJ_Invoice' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Dotdigitalgroup_Chat' => 1,
