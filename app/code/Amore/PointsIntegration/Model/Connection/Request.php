@@ -14,17 +14,10 @@ use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Serialize\Serializer\Json;
 use Amore\PointsIntegration\Logger\Logger;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
+use Amore\Base\Model\BaseRequest;
 
-class Request
+class Request extends BaseRequest
 {
-    /**
-     * @var Curl
-     */
-    private $curl;
-    /**
-     * @var Json
-     */
-    private $json;
     /**
      * @var Config
      */
@@ -33,11 +26,6 @@ class Request
      * @var Logger
      */
     private $logger;
-
-    /**
-     * @var MiddlewareHelper
-     */
-    protected $middlewareHelper;
 
     /**
      * Request constructor.
@@ -54,11 +42,9 @@ class Request
         Logger $logger,
         MiddlewareHelper $middlewareHelper
     ) {
-        $this->curl = $curl;
-        $this->json = $json;
+        parent::__construct($curl, $json, $middlewareHelper);
         $this->config = $config;
         $this->logger = $logger;
-        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -75,13 +61,6 @@ class Request
             return [];
         }
 
-        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('website', $websiteId);
-        if ($isNewMiddlewareEnable) {
-            $url = $this->middlewareHelper->getNewMiddlewareURL('website', $websiteId);
-            $requestData['APP_ID'] = $this->getInterfaceID($websiteId, $type);
-            $requestData['API_USER_ID'] = $this->middlewareHelper->getMiddlewareUsername('website', $websiteId);
-            $requestData['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey('website', $websiteId);
-        }
         $logEnabled = $this->config->getLoggerActiveCheck($websiteId);
         if ($logEnabled) {
             $this->logger->info('POS Request: ' . $this->json->serialize($requestData));
@@ -93,9 +72,7 @@ class Request
                 $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
             }
 
-            $this->curl->post($url, $this->json->serialize($requestData));
-
-            $response = $this->curl->getBody();
+            $response = $this->send($url, $requestData, 'website', $websiteId, $type);
 
             if ($logEnabled) {
                 $this->logger->info('POS Response: ' . $this->json->serialize($response));
@@ -123,32 +100,6 @@ class Request
                 break;
             case 'customerOrder':
                 $path = $this->config->getCustomerOrderURL($websiteId);
-                break;
-        }
-        return $path;
-    }
-
-    /**
-     * Get Interface Id for replacing path corresponding
-     * @param $websiteId
-     * @param $type
-     * @return mixed
-     */
-    public function getInterfaceID($websiteId, $type)
-    {
-        $path = '';
-        switch ($type) {
-            case 'memberSearch':
-                $path = $this->middlewareHelper->getMemberSearchInterfaceId('website', $websiteId);
-                break;
-            case 'redeemSearch':
-                $path = $this->middlewareHelper->getRedeemSearchInterfaceId('website', $websiteId);
-                break;
-            case 'pointSearch':
-                $path = $this->middlewareHelper->getPointSearchInterfaceId('website', $websiteId);
-                break;
-            case 'customerOrder':
-                $path = $this->middlewareHelper->getCustomerSearchInterfaceId('website', $websiteId);
                 break;
         }
         return $path;
