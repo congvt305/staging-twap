@@ -28,6 +28,7 @@ class Config
     const XML_PATH_USER = 'amore_gcrm/herokudbconfig/heroku_user';
     const XML_PATH_PORT = 'amore_gcrm/herokudbconfig/heroku_port';
     const XML_PATH_PASS = 'amore_gcrm/herokudbconfig/heroku_password';
+    const XML_PATH_ORDER_ITEMS_LIMIT = 'amore_gcrm/schedule_config/order_items_limit';
     /**#@-*/
 
     /**
@@ -112,5 +113,16 @@ class Config
     public function getHerokuPassword($storeId = null)
     {
         return $this->getConfigValue(self::XML_PATH_PASS, $storeId);
+    }
+
+    /**
+     * Get order_items limit config value
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getOrderItemsLimit($storeId = null)
+    {
+        return $this->getConfigValue(self::XML_PATH_ORDER_ITEMS_LIMIT, $storeId);
     }
 }
