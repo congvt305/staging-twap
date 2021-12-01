@@ -13,6 +13,7 @@ use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
 use Amore\Sap\Controller\Adminhtml\AbstractAction;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
@@ -40,6 +41,7 @@ class OrderCancelSend extends AbstractAction
      * @param Request $request
      * @param Logger $logger
      * @param Config $config
+     * @param MiddlewareHelper $middlewareHelper
      * @param OrderRepositoryInterface $orderRepository
      * @param SapOrderCancelData $sapOrderCancelData
      */
@@ -49,10 +51,11 @@ class OrderCancelSend extends AbstractAction
         Request $request,
         Logger $logger,
         Config $config,
+        MiddlewareHelper $middlewareHelper,
         OrderRepositoryInterface $orderRepository,
         SapOrderCancelData $sapOrderCancelData
     ) {
-        parent::__construct($context, $json, $request, $logger, $config);
+        parent::__construct($context, $json, $request, $logger, $config, $middlewareHelper);
         $this->orderRepository = $orderRepository;
         $this->sapOrderCancelData = $sapOrderCancelData;
     }
