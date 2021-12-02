@@ -156,7 +156,7 @@ class CounterSaveAjax extends Action
             $token = substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, 15);
             $post = (array)$this->getRequest()->getPost();
             $storeId = $post['store_id'] ?? '';
-            if ($post & $storeId) {
+            if ($post && $storeId) {
                 /** @var Counter $model */
                 $date = $this->date->gmtDate();
                 $individualNumber = $this->redemptionConfig->getIndividualNumber($storeId);
