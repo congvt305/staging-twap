@@ -156,6 +156,7 @@ class CounterSaveAjax extends Action
             $token = substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, 15);
             $post = (array)$this->getRequest()->getPost();
             $storeId = $post['store_id'] ?? '';
+            $entity = null;
             if ($post && $storeId) {
                 /** @var Counter $model */
                 $date = $this->date->gmtDate();
@@ -276,6 +277,7 @@ class CounterSaveAjax extends Action
                             );
                         }
                     }
+                    $entity = $model->getData('entity_id');
                 } catch (LocalizedException $e) {
                     $this->messageManager->addErrorMessage($e->getMessage());
                 } catch (\Exception $e) {
@@ -293,7 +295,7 @@ class CounterSaveAjax extends Action
                     "message" => __('You have successfully applied for redemption, please check your email and newsletter.'),
                     "success" => true,
                     'fbFunEnable' => $fbFunEnable,
-                    'entity_id' => $model->getData('entity_id')
+                    'entity_id' => $entity
                 ]
             );
             return $resultJson;
