@@ -12,11 +12,16 @@ $helper = $this->helper('Eguana\EcommerceStatus\Helper\Data');
 $storeLocatorHelper = $this->helper('Eguana\StoreLocator\Helper\ConfigData');
 $_product = $block->getProduct();
 $outOfStock = false;
+if ($_product->getTypeId() === 'simple') {
+    $stockHelper = $this->helper('Eguana\CustomCatalog\Helper\Data');
+    $outOfStock = !$stockHelper->getSimpleProductStockStatus($_product);
+}
 /** @var $viewModel \Eguana\CustomCatalog\ViewModel\DisableAddToCart */
 if ($block->getData('disable_addtocart_bundle')) {
     $viewModel = $block->getData('disable_addtocart_bundle');
     $outOfStock = $viewModel->getBundleItemsStockStatus($_product);
 }
+
 ?>
 <?php $buttonTitle = __('Add to Cart'); ?>
 <div class="box-tocart">
