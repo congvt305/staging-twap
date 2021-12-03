@@ -14,10 +14,10 @@ $pointAmount = $saleableItem ? $saleableItem->getData('point_redemption_amount')
     <?php if ($block->getDisplayLabel()) :?>
         <span class="price-label"><?= $block->escapeHtml($block->getDisplayLabel()) ?></span>
     <?php endif; ?>
-    <span <?php if ($block->getPriceId()) :?> id="<?= $block->escapeHtmlAttr($block->getPriceId()) ?>"<?php endif;?>
+    <span style="display: flex; font-size: 2rem;" <?php if ($block->getPriceId()) :?> id="<?= $block->escapeHtmlAttr($block->getPriceId()) ?>"<?php endif;?>
         <?= ($block->getPriceDisplayLabel()) ? 'data-label="' . $block->escapeHtmlAttr($block->getPriceDisplayLabel() . $block->getPriceDisplayInclExclTaxes()) . '"' : '' ?>
         data-price-amount="<?= $block->escapeHtmlAttr($block->getDisplayValue()) ?>"
         class="price-wrapper <?= $block->escapeHtmlAttr($block->getPriceWrapperCss()) ?>"
-    ><?= $pointAmount . ' ' . __('Points')?></span>
+    ><?= $pointAmount ?>    <img alt="point icon" src="<?php echo $this->getViewFileUrl('CJ_PointRedemption::/images/icon_point.png'); ?>" /></span>
 </span>
 

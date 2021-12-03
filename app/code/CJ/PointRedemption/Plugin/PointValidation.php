@@ -73,7 +73,7 @@ class PointValidation
                 );//todo translate
             }
             $pointAmount = $productInfo->getData(AddRedemptionAttributes::POINT_REDEMPTION_AMOUNT_ATTRIBUTE_CODE);
-            //$this->validate($pointAmount);
+            $this->validate($pointAmount);
         }
 
         return [$productInfo, $requestInfo];

@@ -752,7 +752,6 @@ return [
         'PayPal_Braintree' => 0,
         'PayPal_BraintreeGraphQl' => 0,
         'Eguana_Pixlee' => 1,
-        'Smile_ProductLabel' => 0,
         'Temando_ShippingRemover' => 1,
         'Vertex_Tax' => 0,
         'Vertex_AddressValidationApi' => 0,
