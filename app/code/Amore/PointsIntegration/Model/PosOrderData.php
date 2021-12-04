@@ -277,7 +277,7 @@ class PosOrderData
                         if ($childNumber == count($bundleChildren)) {
                             $pointAccount = ($totalPointAmount - $totalPointAccount) / $bundleChild->getQty();
                         } else {
-                            $pointAccount = $this->getPointAccount($orderItem, $bundleChild);
+                            $pointAccount = $this->getPointAccount($orderItem);
                         }
                         $totalPointAccount = $totalPointAccount + ($pointAccount * $bundleChild->getQty());
                     }
@@ -622,7 +622,7 @@ class PosOrderData
         );
     }
 
-    public function getPointAccount($bundleItem, $childItem)
+    public function getPointAccount($bundleItem)
     {
         $childrenItems = $bundleItem->getChildrenItems();
         $totalQty = 0;
