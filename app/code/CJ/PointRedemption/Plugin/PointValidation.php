@@ -96,7 +96,7 @@ class PointValidation
                     )
                 );
             }
-            $balanceAmount = $memberPointInfo['availablePoint'];
+            $balanceAmount = $memberPointInfo['data']['availablePoint'];
             $usedAmount = $this->getUsedPointAmount();
             if ($balanceAmount - $usedAmount < $pointAmount) {
                 throw new LocalizedException(
