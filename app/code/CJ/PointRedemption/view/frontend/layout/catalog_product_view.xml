@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<body>
+    <referenceContainer name="product.info.media">
+        <block class="CJ\PointRedemption\Block\RedeemableLabel"
+               name="category.product.label"
+               template="CJ_PointRedemption::product/redeemable_label.phtml">
+        </block>
+    </referenceContainer>
+</body>

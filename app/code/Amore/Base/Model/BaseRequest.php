@@ -59,6 +59,7 @@ abstract class BaseRequest
             $requestData['API_USER_ID'] = $this->middlewareHelper->getMiddlewareUsername($scope, $websiteId);
             $requestData['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey($scope, $websiteId);
         }
+        $this->curl->setTimeout(15);
         $this->curl->post($url, $this->json->serialize($requestData));
 
         return $this->curl->getBody();
