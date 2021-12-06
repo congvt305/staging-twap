@@ -89,7 +89,7 @@ class PointValidation
             $customerId = $this->customerSession->getCustomerId();
             $websiteId = $this->customerSession->getCustomer()->getWebsiteId();
             $memberPointInfo = $this->customerPointsSearch->getMemberSearchResult($customerId, $websiteId);
-            if (!isset($memberPointInfo['availablePoint'])) {
+            if (!isset($memberPointInfo['data']['availablePoint'])) {
                 throw new LocalizedException(
                     __(
                         "Point service is not available now, please try later. Sorry for the inconvenient"
