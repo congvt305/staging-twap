@@ -58,6 +58,8 @@ abstract class BaseRequest
             $requestData['API_ID'] = $this->getInterfaceID($scope, $websiteId, $type);
             $requestData['API_USER_ID'] = $this->middlewareHelper->getMiddlewareUsername($scope, $websiteId);
             $requestData['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey($scope, $websiteId);
+            $requestData['salOrgCd'] = $this->middlewareHelper->getSalesOrganizationCode($scope, $websiteId);
+            $requestData['salOffCd'] = $this->middlewareHelper->getSalesOfficeCode($scope, $websiteId);
         }
         $this->curl->post($url, $this->json->serialize($requestData));
 
