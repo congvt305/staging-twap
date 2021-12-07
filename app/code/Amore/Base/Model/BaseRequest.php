@@ -55,7 +55,7 @@ abstract class BaseRequest
                 $requestData = $this->json->unserialize($requestData);
             }
             $url = $this->middlewareHelper->getNewMiddlewareURL($scope, $websiteId);
-            $requestData['APP_ID'] = $this->getInterfaceID($scope, $websiteId, $type);
+            $requestData['API_ID'] = $this->getInterfaceID($scope, $websiteId, $type);
             $requestData['API_USER_ID'] = $this->middlewareHelper->getMiddlewareUsername($scope, $websiteId);
             $requestData['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey($scope, $websiteId);
         }
