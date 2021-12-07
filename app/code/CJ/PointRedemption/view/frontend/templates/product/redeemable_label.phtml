@@ -4,6 +4,8 @@
  */
 $imageUrl = $block->getRedemptionLabelImage();
 ?>
+<?php if($imageUrl): ?>
 <div class="redemption-label">
     <img src="<?php echo $imageUrl; ?>" alt="Redemption Label" title="Redemption Label"/>
 </div>
+<?php endif; ?>
