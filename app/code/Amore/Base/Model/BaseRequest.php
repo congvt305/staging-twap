@@ -72,6 +72,7 @@ abstract class BaseRequest
         $response = $this->curl->getBody();
         $logger->info('=====response by base request=====');
         $logger->info($response);
+        return $response;
     }
 
     /**
