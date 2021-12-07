@@ -20,10 +20,10 @@
                 <field id="auth_key" translate="label" type="password" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Auth Key</label>
                 </field>
-                <field id="sales_organization_code" translate="label" type="password" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="sales_organization_code" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Sales Organization Code</label>
                 </field>
-                <field id="sales_office_code" translate="label" type="password" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="sales_office_code" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Sales Office Code</label>
                 </field>
             </group>
