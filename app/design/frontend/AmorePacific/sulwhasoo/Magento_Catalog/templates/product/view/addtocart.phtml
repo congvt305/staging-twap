@@ -16,6 +16,10 @@ $storeLocatorHelper = $this->helper('Eguana\StoreLocator\Helper\ConfigData');
 <?php $_product = $block->getProduct(); ?>
 <?php
 $outOfStock = false;
+if ($_product->getTypeId() === 'simple') {
+    $stockHelper = $this->helper('Eguana\CustomCatalog\Helper\Data');
+    $outOfStock = !$stockHelper->getSimpleProductStockStatus($_product);
+}
 /** @var $viewModel \Eguana\CustomCatalog\ViewModel\DisableAddToCart */
 if ($block->getData('disable_addtocart_bundle')) {
     $viewModel = $block->getData('disable_addtocart_bundle');
