@@ -10,6 +10,8 @@ class Data extends AbstractHelper
     const XML_PATH_MIDDLEWARE_URL = 'middleware/general/url';
     const XML_PATH_MIDDLEWARE_USERNAME = 'middleware/general/api_user_id';
     const XML_PATH_MIDDLEWARE_AUTH_KEY = 'middleware/general/auth_key';
+    const XML_PATH_MIDDLEWARE_SALES_ORG_CODE = 'middleware/general/sales_organization_code';
+    const XML_PATH_MIDDLEWARE_SALES_OFF_CODE = 'middleware/general/sales_office_code';
     const XML_PATH_MIDDLEWARE_SAP_ORDER_CONFIRM = 'middleware/sap_interface_ids/order_confirm_path';
     const XML_PATH_MIDDLEWARE_SAP_ORDER_CANCEL = 'middleware/sap_interface_ids/order_cancel_path';
     const XML_PATH_MIDDLEWARE_SAP_STOCK_INFO = 'middleware/sap_interface_ids/inventory_stock_path';
@@ -89,5 +91,15 @@ class Data extends AbstractHelper
     public function getBacodeInfoInterfaceId($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_CUSTOMER_BACODE_INFO, $type, $storeId);
+    }
+
+    public function getSalesOrganizationCode($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_SALES_ORG_CODE, $type, $storeId);
+    }
+
+    public function getSalesOfficeCode($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_SALES_OFF_CODE, $type, $storeId);
     }
 }
