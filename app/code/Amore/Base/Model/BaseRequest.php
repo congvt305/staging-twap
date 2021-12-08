@@ -68,6 +68,11 @@ abstract class BaseRequest
         $logger->info('=====Submit request=====');
         $logger->info($url);
         $logger->info($this->json->serialize($requestData));
+
+        if ($type == "baInfo" || $type == "memberJoin" || $type == "memberInfo") {
+            $this->curl->setOption(CURLOPT_POSTFIELDS, $this->json->serialize($requestData));
+        }
+
         $this->curl->post($url, $this->json->serialize($requestData));
         $response = $this->curl->getBody();
         $logger->info('=====response by base request=====');
