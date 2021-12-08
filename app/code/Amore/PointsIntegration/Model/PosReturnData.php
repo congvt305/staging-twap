@@ -260,11 +260,13 @@ class PosReturnData
                     if ($isRedemptionItem) {
                         $childNumber++;
                         if ($childNumber == count($bundleChildren)) {
-                            $pointAccount = ($totalPointAmount - $totalPointAccount) / $bundleChildrenItem->getQty();
+                            $pointAccount = ($totalPointAmount - $totalPointAccount) /
+                                $bundleChildFromOrder->getQtyOrdered();
                         } else {
                             $pointAccount = $this->getPointAccount($orderItem);
                         }
-                        $totalPointAccount = $totalPointAccount + ($pointAccount * $bundleChildrenItem->getQty());
+                        $totalPointAccount = $totalPointAccount +
+                            ($pointAccount * $bundleChildFromOrder->getQtyOrdered());
                     }
 
                     $rmaItemData[] = [
@@ -637,6 +639,6 @@ class PosReturnData
             $totalQty = $totalQty + $item->getQtyOrdered();
         }
         $totalPointAmount = $bundleItem->getData('point_redemption_amount') * $bundleItem->getQtyOrdered();
-        return (int) $totalPointAmount  / $totalQty;
+        return (int)($totalPointAmount  / $totalQty);
     }
 }
