@@ -61,7 +61,7 @@ abstract class BaseRequest
             $requestData['salOrgCd'] = $this->middlewareHelper->getSalesOrganizationCode($scope, $websiteId);
             $requestData['salOffCd'] = $this->middlewareHelper->getSalesOfficeCode($scope, $websiteId);
         }
-        $this->curl->setTimeout(15);
+        $this->curl->setTimeout(60);
         $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/request.log');
         $logger = new \Zend_Log();
         $logger->addWriter($writer);
