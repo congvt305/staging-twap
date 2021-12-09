@@ -20,78 +20,55 @@ use Psr\Log\LoggerInterface;
 class DisableAddToCart implements ArgumentInterface
 {
     /**
-     * @var \Magento\CatalogInventory\Model\Stock\StockItemRepository
-     */
-    private $stock;
-
-    /**
      * @var LoggerInterface
      */
     private $logger;
 
     /**
+     * @var \Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku
+     */
+    protected $getSalableQuantityDataBySku;
+
+    /**
      * DisableAddToCart constructor.
-     * @param \Magento\CatalogInventory\Model\Stock\StockItemRepository $stock
+     * @param \Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku $getSalableQuantityDataBySku
+     * @param  LoggerInterface $logger
      */
     public function __construct(
-        \Magento\CatalogInventory\Model\Stock\StockItemRepository $stock,
+        \Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku $getSalableQuantityDataBySku,
         LoggerInterface $logger
     ) {
-        $this->stock = $stock;
         $this->logger = $logger;
+        $this->getSalableQuantityDataBySku = $getSalableQuantityDataBySku;
     }
 
     /**
      * Disable add to cart when any of bundle child is out of stock
-     * @param $product
+     * @param \Magento\Catalog\Model\Product $product
      * @return bool
      */
     public function getBundleItemsStockStatus($product)
     {
-        $outofstock = false;
-        $optionsCollection = $product->getTypeInstance(true)
-            ->getSelectionsCollection(
-                $product->getTypeInstance(true)->getOptionsIds($product),
-                $product
-            );
-        $options = $product->getTypeInstance(true)->getOptionsIds($product);
-        $newOptions = [];
-        foreach ($options as $option) {
-            $optionProducts = [];
-            foreach ($optionsCollection as $subproduct) {
-                if ($subproduct->getOptionId() == $option) {
-                    $data['entity_id'] = $subproduct->getEntityId();
-                    $data['is_default'] = $subproduct->getIsDefault();
-                    $data['option_id'] = $subproduct->getOptionId();
-                    $optionProducts[] = $data;
+        try {
+            /** @var \Magento\Bundle\Model\Product\Type $typeInstance */
+            $typeInstance = $product->getTypeInstance();
+            $optionIds = $typeInstance->getOptionsIds($product);
+            $selectionCollection = $typeInstance->getSelectionsCollection($optionIds, $product);
+            foreach ($selectionCollection as $item) {
+                $sku = $item->getSku();
+                $salable = $this->getSalableQuantityDataBySku->execute($sku);
+                $salableQuantity = 0;
+                foreach ($salable as $stock) {
+                    $salableQuantity += $stock['qty'];
+                }
+                if ($salableQuantity <= 0) {
+                    return true;
                 }
             }
-            $newOptions[] = $optionProducts;
+        } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
         }
-        $productIds = [];
-        if (count($newOptions) >= 2) {
-            foreach ($newOptions as $suboptions) {
-                foreach ($suboptions as $defaultoption) {
-                    if ($defaultoption['is_default'] == 1) {
-                        $productIds[] = $defaultoption['entity_id'];
-                    }
-                }
-            }
-        } else {
-            $productIds[] = $optionProducts[0];
-        }
-        foreach ($productIds as $productId) {
-            $id = $productId;
-            try {
-                $productStock = $this->stock->get($id);
-                if (!$productStock->getIsInStock()) {
-                    $outofstock = true;
-                    break;
-                }
-            } catch (\Exception $exception) {
-                $this->logger->error($exception->getMessage());
-            }
-        }
-        return $outofstock;
+
+        return false;
     }
 }
