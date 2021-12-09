@@ -62,7 +62,7 @@ abstract class BaseRequest
             $requestData['salOffCd'] = $this->middlewareHelper->getSalesOfficeCode($scope, $websiteId);
 
         }
-        $this->curl->setTimeout(60);
+        $this->curl->setTimeout(15);
         $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/request.log');
         $logger = new \Zend_Log();
         $logger->addWriter($writer);
