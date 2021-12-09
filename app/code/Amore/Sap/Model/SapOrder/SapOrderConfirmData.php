@@ -187,6 +187,17 @@ class SapOrderConfirmData extends AbstractSapOrder
             $incrementId = $sampleOrderData['odrno'];
 
             $sampleOrder = $this->getOrderInfo($incrementId);
+ 	    if ($sampleOrder == null) {
+                $exception = new NoSuchEntityException(
+                    __("Such order %1 does not exist. Check the data and try again", $incrementId)
+                );
+                $this->logger->log('INFO', $exception->getMessage(), [
+                    'order_id' => $incrementId,
+                    'error_trace' => $exception->getTraceAsString()
+                ]);
+                throw $exception;
+            }
+
             $source = $this->config->getSourceByStore('store', $sampleOrder->getStoreId());
         }
 
