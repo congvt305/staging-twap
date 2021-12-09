@@ -219,19 +219,20 @@ class PosOrderData
         /** @var Item $orderItem */
         foreach ($orderItems as $orderItem) {
             if ($orderItem->getProductType() != 'bundle') {
-
                 $itemSubtotal = $this->simpleAndConfigurableSubtotal($orderItem);
                 $itemTotalDiscount = $this->simpleAndConfigurableTotalDiscount($orderItem);
                 $itemGrandTotal = $itemSubtotal - $itemTotalDiscount;
                 $stripSku = str_replace($skuPrefix, '', $orderItem->getSku());
-
+                $isRedemptionItem = $orderItem->getData('is_point_redeemable');
                 $orderItemData[] = [
                     'prdCD' => $stripSku,
                     'qty' => (int)$orderItem->getQtyOrdered(),
                     'price' => (int)$orderItem->getOriginalPrice(),
                     'salAmt' => (int)$itemSubtotal,
                     'dcAmt' => (int)$itemTotalDiscount,
-                    'netSalAmt' => (int)$itemGrandTotal
+                    'netSalAmt' => (int)$itemGrandTotal,
+                    'redemptionFlag' => $isRedemptionItem ? 'Y' : 'N',
+                    'pointAccount' => (int)$orderItem->getData('point_redemption_amount')
                 ];
 
                 $itemsSubtotal += $itemSubtotal;
@@ -242,6 +243,11 @@ class PosOrderData
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
                 $bundleChildren = $this->getBundleChildren($orderItem->getSku());
                 $bundlePriceType = $bundleProduct->getPriceType();
+                $isRedemptionItem = $orderItem->getData('is_point_redeemable');
+                $totalPointAmount = $orderItem->getData('point_redemption_amount') * $orderItem->getQtyOrdered();
+                $pointAccount = 0;
+                $totalPointAccount = 0;
+                $childNumber = 0;
 
                 foreach ($bundleChildren as $bundleChild) {
                     $itemId = $orderItem->getItemId();
@@ -256,18 +262,27 @@ class PosOrderData
                     $product = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId());
                     $bundleChildSubtotal = $this->bundleChildSubtotal($bundleChildPrice, $bundleChildFromOrder);
                     $bundleChildDiscountAmount = $this->bundleChildDiscountAmount($bundlePriceType, $orderItem, $bundleChild);
-
                     $priceGap = $orderItem->getOriginalPrice() - $orderItem->getPrice();
                     $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $bundleChild->getQty();
                     $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($priceGap)) / $bundleChild->getQty();
-
                     $itemTotalDiscount = abs(round(
                         $bundleChildDiscountAmount +
                         (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) +
                         $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered()
                     ));
-
                     $bundleChildGrandTotal = $bundleChildSubtotal - $itemTotalDiscount;
+
+                    if ($isRedemptionItem) {
+                        $childNumber++;
+                        if ($childNumber == count($bundleChildren)) {
+                            $pointAccount = ($totalPointAmount - $totalPointAccount) /
+                                $bundleChildFromOrder->getQtyOrdered();
+                        } else {
+                            $pointAccount = $this->getPointAccount($orderItem);
+                        }
+                        $totalPointAccount = $totalPointAccount +
+                            ($pointAccount * $bundleChildFromOrder->getQtyOrdered());
+                    }
 
                     $orderItemData[] = [
                         'prdCD' => $stripSku,
@@ -275,7 +290,9 @@ class PosOrderData
                         'price' => (int)$bundleChildPrice,
                         'salAmt' => (int)$bundleChildSubtotal,
                         'dcAmt' => (int)$itemTotalDiscount,
-                        'netSalAmt' => (int)$bundleChildGrandTotal
+                        'netSalAmt' => (int)$bundleChildGrandTotal,
+                        'redemptionFlag' => $isRedemptionItem ? 'Y' : 'N',
+                        'pointAccount' => (int)$pointAccount
                     ];
 
                     $itemsSubtotal += $bundleChildSubtotal;
@@ -605,5 +622,17 @@ class PosOrderData
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
+    }
+
+    public function getPointAccount($bundleItem)
+    {
+        $childrenItems = $bundleItem->getChildrenItems();
+        $totalQty = 0;
+        /** @var Item $item */
+        foreach ($childrenItems as $item) {
+            $totalQty = $totalQty + $item->getQtyOrdered();
+        }
+        $totalPointAmount = $bundleItem->getData('point_redemption_amount') * $bundleItem->getQtyOrdered();
+        return (int)($totalPointAmount  / $totalQty);
     }
 }

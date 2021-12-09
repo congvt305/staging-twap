@@ -203,10 +203,8 @@ class PosReturnData
                 $itemSubtotal = abs(round($orderItem->getOriginalPrice() * $rmaItem->getQtyRequested()));
                 $itemTotalDiscount = abs(round($this->getRateAmount($orderItem->getDiscountAmount(), $orderItem->getQtyOrdered(), $rmaItem->getQtyRequested())
                     + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested())));
-
-                $product = $this->productRepository->get($rmaItem->getProductSku(), false, $storeId);
-
                 $stripSku = str_replace($skuPrefix, '', $orderItem->getSku());
+                $isRedemptionItem = $orderItem->getData('is_point_redeemable');
 
                 $rmaItemData[] = [
                     'prdCD' => $stripSku,
@@ -214,7 +212,9 @@ class PosReturnData
                     'price' => (int)$orderItem->getOriginalPrice(),
                     'salAmt' => (int)$itemSubtotal,
                     'dcAmt' => (int)$itemTotalDiscount,
-                    'netSalAmt' => (int)$itemGrandTotal
+                    'netSalAmt' => (int)$itemGrandTotal,
+                    'redemptionFlag' => $isRedemptionItem ? 'Y' : 'N',
+                    'pointAccount' => (int)$orderItem->getData('point_redemption_amount')
                 ];
 
                 $itemsSubtotal += $itemSubtotal;
@@ -225,6 +225,11 @@ class PosReturnData
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
                 $bundleChildren = $this->getBundleChildren($orderItem->getSku());
                 $bundlePriceType = $bundleProduct->getPriceType();
+                $isRedemptionItem = $orderItem->getData('is_point_redeemable');
+                $totalPointAmount = $orderItem->getData('point_redemption_amount') * $orderItem->getQtyOrdered();
+                $pointAccount = 0;
+                $totalPointAccount = 0;
+                $childNumber = 0;
 
                 foreach ($bundleChildren as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
@@ -252,13 +257,27 @@ class PosReturnData
                     ));
                     $stripSku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
 
+                    if ($isRedemptionItem) {
+                        $childNumber++;
+                        if ($childNumber == count($bundleChildren)) {
+                            $pointAccount = ($totalPointAmount - $totalPointAccount) /
+                                $bundleChildFromOrder->getQtyOrdered();
+                        } else {
+                            $pointAccount = $this->getPointAccount($orderItem);
+                        }
+                        $totalPointAccount = $totalPointAccount +
+                            ($pointAccount * $bundleChildFromOrder->getQtyOrdered());
+                    }
+
                     $rmaItemData[] = [
                         'prdCD' => $stripSku,
                         'qty' => (int)$rmaItem->getQtyRequested(),
                         'price' => (int)$bundleChildPrice,
                         'salAmt' => (int)$itemSubtotal,
                         'dcAmt' => (int)$itemTotalDiscount,
-                        'netSalAmt' => (int)$itemSubtotal - $itemTotalDiscount
+                        'netSalAmt' => (int)$itemSubtotal - $itemTotalDiscount,
+                        'redemptionFlag' => $isRedemptionItem ? 'Y' : 'N',
+                        'pointAccount' => (int)$pointAccount
                     ];
 
                     $itemsSubtotal += $itemSubtotal;
@@ -609,5 +628,17 @@ class PosReturnData
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
+    }
+
+    public function getPointAccount($bundleItem)
+    {
+        $childrenItems = $bundleItem->getChildrenItems();
+        $totalQty = 0;
+        /** @var Item $item */
+        foreach ($childrenItems as $item) {
+            $totalQty = $totalQty + $item->getQtyOrdered();
+        }
+        $totalPointAmount = $bundleItem->getData('point_redemption_amount') * $bundleItem->getQtyOrdered();
+        return (int)($totalPointAmount  / $totalQty);
     }
 }

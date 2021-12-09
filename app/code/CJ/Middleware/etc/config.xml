@@ -7,6 +7,8 @@
                 <url>https://stg-gecp-middleware.amorepacific.com/middleware/api/getUserData</url>
                 <api_user_id>magento</api_user_id>
                 <auth_key>123456</auth_key>
+                <sales_organization_code>VN10</sales_organization_code>
+                <sales_office_code>VN20</sales_office_code>
             </general>
             <sap_interface_ids>
                 <order_confirm_path>IF_EC_009</order_confirm_path>
