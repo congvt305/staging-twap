@@ -169,7 +169,6 @@ class POSSystem extends BaseRequest
         ];
         try {
             $this->curl->setOptions([
-                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -381,7 +380,6 @@ class POSSystem extends BaseRequest
         try {
             $url = $this->config->getMemberJoinURL();
             $this->curl->setOptions([
-                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -528,7 +526,6 @@ class POSSystem extends BaseRequest
             ];
 
             $this->curl->setOptions([
-                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
