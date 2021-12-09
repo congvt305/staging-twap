@@ -60,6 +60,7 @@ abstract class BaseRequest
             $requestData['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey($scope, $websiteId);
             $requestData['salOrgCd'] = $this->middlewareHelper->getSalesOrganizationCode($scope, $websiteId);
             $requestData['salOffCd'] = $this->middlewareHelper->getSalesOfficeCode($scope, $websiteId);
+
         }
         $this->curl->setTimeout(60);
         $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/request.log');
@@ -68,11 +69,6 @@ abstract class BaseRequest
         $logger->info('=====Submit request=====');
         $logger->info($url);
         $logger->info($this->json->serialize($requestData));
-
-        if ($type == "baInfo" || $type == "memberJoin" || $type == "memberInfo") {
-            $this->curl->setOption(CURLOPT_POSTFIELDS, $this->json->serialize($requestData));
-        }
-
         $this->curl->post($url, $this->json->serialize($requestData));
         $response = $this->curl->getBody();
         $logger->info('=====response by base request=====');
