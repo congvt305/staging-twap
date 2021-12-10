@@ -126,7 +126,7 @@ class CleanReservationCron
                                 $this->logger->info("NOT FOUND ORDER ID: " . $orderEntityId);
                             }
                             if ($orderEntityId) {
-                                $resultDelete = $this->getReservationOrder->deleteReservationByOrder($orderEntityId, 'complete');
+                                $resultDelete = $this->getReservationOrder->deleteReservationByOrder($orderEntityId, 'complete', $entityIdByIncrementId);
                                 if ($loggerActive) {
                                     if ($resultDelete) {
                                         $this->logger->info("DELETING RESERVATION ORDER ID: " . $orderEntityId);
