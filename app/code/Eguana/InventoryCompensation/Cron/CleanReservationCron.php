@@ -91,18 +91,27 @@ class CleanReservationCron
                         if (isset($metadata['object_id'])) {
                             $orderEntityId = $metadata['object_id'];
                         }
+                        $entityIdByIncrementId = false;
+                        if (empty($orderEntityId) && isset($metadata['object_increment_id'])) {
+                            $orderEntityId = $metadata['object_increment_id'];
+                            $entityIdByIncrementId = true;
+                        }
                         if ($loggerActive) {
                             $this->logger->info($index . ".CLEAN ORDER ID: " . $orderEntityId);
                         }
                         /* @var Order $order */
-                        $order = $this->getReservationOrder->getOrder($orderEntityId);
-                        if ($order) {
+                        if ($entityIdByIncrementId) {
+                            $order = $this->getReservationOrder->getOrderByIncrementId($orderEntityId);
+                        } else{
+                            $order = $this->getReservationOrder->getOrder($orderEntityId);
+                        }
+                        if ($order && $order->getId()) {
                             $orderStatus = $order->getStatus();
                             if ($loggerActive) {
                                 $this->logger->info('order status: ' . $orderStatus);
                             }
 
-                            $resultDelete = $this->getReservationOrder->deleteReservationByOrder($orderEntityId, $orderStatus);
+                            $resultDelete = $this->getReservationOrder->deleteReservationByOrder($orderEntityId, $orderStatus, $entityIdByIncrementId);
 
                             if ($loggerActive) {
                                 if ($resultDelete) {
@@ -116,7 +125,16 @@ class CleanReservationCron
                             if ($loggerActive) {
                                 $this->logger->info("NOT FOUND ORDER ID: " . $orderEntityId);
                             }
-                            $this->getReservationOrder->deleteReservationByOrder($orderEntityId, 'complete');
+                            if ($orderEntityId) {
+                                $resultDelete = $this->getReservationOrder->deleteReservationByOrder($orderEntityId, 'complete');
+                                if ($loggerActive) {
+                                    if ($resultDelete) {
+                                        $this->logger->info("DELETING RESERVATION ORDER ID: " . $orderEntityId);
+                                    } else {
+                                        $this->logger->info("PROCESSING RESERVATION ORDER ID: " . $orderEntityId);
+                                    }
+                                }
+                            }
                         }
                     } catch (\Exception $exception) {
                         if ($loggerActive) {
