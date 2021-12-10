@@ -37,6 +37,11 @@ class GetReservationOrder
      */
     private $orderRepository;
 
+    /**
+     * @var \Magento\Sales\Model\OrderFactory
+     */
+    protected $_order;
+
     protected $cleanStatuses = ['pending', 'payment_review', 'shipment_processing', 'complete', 'closed', 'canceled', 'delivery_complete'];
 
     /**
@@ -49,12 +54,14 @@ class GetReservationOrder
         ResourceConnection $resource,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         OrderRepositoryInterface $orderRepository,
+        \Magento\Sales\Model\OrderFactory $orderFactory,
         Config $config
     ) {
         $this->resource = $resource;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
         $this->config = $config;
+        $this->_order = $orderFactory;
     }
 
     /**
@@ -112,7 +119,7 @@ class GetReservationOrder
 
     }
 
-    public function deleteReservationByOrder($orderId, $orderStatus)
+    public function deleteReservationByOrder($orderId, $orderStatus, $byIncrementId = false)
     {
         $result = 0;
 
@@ -126,7 +133,11 @@ class GetReservationOrder
         if (in_array($orderStatus, $cleanStatuses)) {
             $connection = $this->resource->getConnection();
             $reservationTable = $this->resource->getTableName('inventory_reservation');
-            $condition = [ReservationInterface::METADATA . ' LIKE (?)' => '%"object_id":"' . $orderId. '"%'];
+            if ($byIncrementId) {
+                $condition = [ReservationInterface::METADATA . ' LIKE (?)' => '%"object_increment_id":"' . $orderId. '"%'];
+            } else {
+                $condition = [ReservationInterface::METADATA . ' LIKE (?)' => '%"object_id":"' . $orderId. '"%'];
+            }
             $result = $connection->delete($reservationTable, $condition);
         }
         return $result;
@@ -143,6 +154,22 @@ class GetReservationOrder
         $order = [];
         try {
             return $this->orderRepository->get($orderId);
+        } catch (\Exception $e) {
+            return $order;
+        }
+    }
+
+    /**
+     * Get order details by increment id
+     *
+     * @param $incrementId
+     * @return OrderInterface
+     */
+    public function getOrderByIncrementId($incrementId)
+    {
+        $order = [];
+        try {
+            return $this->_order->create()->loadByIncrementId($incrementId);
         } catch (\Exception $e) {
             return $order;
         }
