@@ -24,7 +24,7 @@ $schema = ($block->getZone() == 'item_view') ? true : false;
 
 ?>
 <?php if ($block->hasSpecialPrice()): ?>
-    <?php $discountedPrice = ($priceModel->getValue() - $finalPriceModel->getValue()) > 0 ? round(($priceModel->getValue() - $finalPriceModel->getValue())/$priceModel->getValue() * 100).'%' : false; ?>
+    <?php $discountedPrice = $priceModel->getValue() > 0 ? round(($priceModel->getValue() - $finalPriceModel->getValue())/$priceModel->getValue() * 100).'%' : false; ?>
     <?php if ($discountedPrice):?>
         <span class="discount-label">
                 <?= $discountedPrice?>
