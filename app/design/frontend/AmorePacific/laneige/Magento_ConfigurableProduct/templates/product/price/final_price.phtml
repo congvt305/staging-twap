@@ -25,10 +25,10 @@ $discountPercent = $oldPrice ? ($oldPrice - $discountedPrice) * 100 / $oldPrice 
     ]);
     ?>
 </span>
-<?php if ($block->isProductList()): ?>
+<?php if ($block->isProductList() && $block->hasSpecialPrice()): ?>
     <span class="old-price">
         <?php if ($discountPercent): ?>
-            <span class="discount-label"><?= $discountPercent ?>%</span>
+            <span class="discount-label"><?= round($discountPercent) ?>%</span>
         <?php endif; ?>
         <?= /* @noEscape */ $block->renderAmount($priceModel->getAmount(), [
             'display_label'     => __('Regular Price'),
