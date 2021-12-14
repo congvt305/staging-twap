@@ -13,7 +13,7 @@ $idSuffix = $block->getIdSuffix() ? $block->getIdSuffix() : '';
 $schema = ($block->getZone() == 'item_view') ? true : false;
 $oldPrice = $priceModel->getAmount()->getValue();
 $discountedPrice = $finalPriceModel->getAmount()->getValue();
-$discountPercent = $oldPrice && $oldPrice >0 ? ($oldPrice - $discountedPrice) * 100 / $oldPrice : false;
+$discountPercent = $oldPrice ? ($oldPrice - $discountedPrice) * 100 / $oldPrice : false;
 ?>
 <span class="normal-price">
     <?= /* @noEscape */ $block->renderAmount($finalPriceModel->getAmount(), [
