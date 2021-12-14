@@ -20,22 +20,12 @@ $priceModel = $block->getPriceType('regular_price');
 $finalPriceModel = $block->getPriceType('final_price');
 $idSuffix = $block->getIdSuffix() ? $block->getIdSuffix() : '';
 $schema = ($block->getZone() == 'item_view') ? true : false;
-
+$helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
 
 ?>
 <?php if ($block->hasSpecialPrice()): ?>
-    <?php 
-        $oldPrice = $priceModel->getValue() ;
-        $finalPrice = $finalPriceModel->getValue() ;
-        $discountedPrice =  $oldPrice - $finalPrice ;
-        if ($discountedPrice > 0 && $oldPrice > 0 ) {
-            $discountedPrice = round(($oldPrice - $finalPrice )/$oldPrice * 100)
-        }else {
-            $discountedPrice = false;
-        }
-        
-    ?>
-    <?php if ($discountedPrice):?>
+    
+    <?php if ($discountedPrice = $helper->getDiscountPrice($priceModel->getValue() ,  $finalPriceModel->getValue())):?>
         <span class="discount-label">
                 <?= $discountedPrice?>%
         </span>
