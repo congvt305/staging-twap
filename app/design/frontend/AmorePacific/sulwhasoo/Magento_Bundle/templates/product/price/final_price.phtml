@@ -30,10 +30,21 @@ $minimalRegularPrice = $regularPriceModel->getMinimalPrice();
             'include_container' => true
         ]); ?>
         <?php if ($minimalPrice < $minimalRegularPrice): ?>
-            <?php $discountedPrice = ($minimalRegularPrice->getValue() - $minimalPrice->getValue()) > 0 ? round(($minimalRegularPrice->getValue() - $minimalPrice->getValue())/$minimalRegularPrice->getValue() * 100).'%' : false; ?>
+          
+            <?php 
+                $oldPrice = $minimalRegularPrice->getValue() ;
+                $finalPrice = $minimalPrice->getValue() ;
+                $discountedPrice =  $oldPrice - $finalPrice ;
+                if ($discountedPrice > 0 && $oldPrice > 0 ) {
+                    $discountedPrice = round(($oldPrice - $finalPrice )/$oldPrice * 100)
+                }else {
+                    $discountedPrice = false;
+                }
+                
+            ?>
             <?php if($discountedPrice):?>
                 <span class="discount-label">
-                        <?= $discountedPrice ?>
+                        <?= $discountedPrice ?>%
                 </span>
             <?php endif;?> 
             <span class="old-price">
@@ -51,10 +62,21 @@ $minimalRegularPrice = $regularPriceModel->getMinimalPrice();
         <p class="price-from">
             <span class="price-label"><?= $block->escapeHtml(__('From'))?></span>
             <?php if ($minimalPrice < $minimalRegularPrice): ?>
-                <?php $discountedPrice = $minimalRegularPrice->getValue()  > 0 ? round(($minimalRegularPrice->getValue() - $minimalPrice->getValue())/$minimalRegularPrice->getValue() * 100).'%' : false ;?>
+                
+                <?php 
+                    $oldPrice = $minimalRegularPrice->getValue() ;
+                    $finalPrice = $minimalPrice->getValue() ;
+                    $discountedPrice =  $oldPrice - $finalPrice ;
+                    if ($discountedPrice > 0 && $oldPrice > 0 ) {
+                        $discountedPrice = round(($oldPrice - $finalPrice )/$oldPrice * 100)
+                    }else {
+                        $discountedPrice = false;
+                    }
+                    
+                ?>
                 <?php if($discountedPrice):?>
                     <span class="discount-label">
-                        <?= $discountedPrice?>
+                        <?= $discountedPrice?>%
                     </span>
                 <?php endif;?>
                 <span class="old-price">
@@ -75,10 +97,21 @@ $minimalRegularPrice = $regularPriceModel->getMinimalPrice();
         <p class="price-to">
             <span class="price-label"><?= __('To')?></span>
             <?php if ($maximalPrice < $maximalRegularPrice): ?>
-                <?php $discountedPrice = $minimalRegularPrice->getValue()) > 0 ? round(($maximalRegularPrice->getValue() - $maximalPrice->getValue())/$minimalRegularPrice->getValue() * 100).'%' : false ;?>
+               
+                <?php 
+                    $oldPrice = $minimalRegularPrice->getValue() ;
+                    $finalPrice = $maximalRegularPrice->getValue() ;
+                    $discountedPrice =  $oldPrice - $finalPrice ;
+                    if ($discountedPrice > 0 && $oldPrice > 0 ) {
+                        $discountedPrice = round(($oldPrice - $finalPrice )/$oldPrice * 100)
+                    }else {
+                        $discountedPrice = false;
+                    }
+                    
+                ?>
                 <?php if($discountedPrice):?>
                     <span class="discount-label">
-                        <?= $discountedPrice?>
+                        <?= $discountedPrice?>%
                     </span>
                 <?php endif;?>
                 <span class="old-price">
@@ -99,10 +132,21 @@ $minimalRegularPrice = $regularPriceModel->getMinimalPrice();
     <?php else: ?>
         <p class="bundle-regular-price">
         <?php if ($minimalPrice < $minimalRegularPrice): ?>
-            <?php $discountedPrice = ($minimalRegularPrice->getValue() - $minimalPrice->getValue()) > 0 ? round(($minimalRegularPrice->getValue() - $minimalPrice->getValue())/$minimalRegularPrice->getValue() * 100).'%' : false ;?>
+            
+            <?php 
+                $oldPrice = $minimalRegularPrice->getValue() ;
+                $finalPrice = $minimalPrice->getValue() ;
+                $discountedPrice =  $oldPrice - $finalPrice ;
+                if ($discountedPrice > 0 && $oldPrice > 0 ) {
+                    $discountedPrice = round(($oldPrice - $finalPrice )/$oldPrice * 100)
+                }else {
+                    $discountedPrice = false;
+                }
+                
+            ?>
             <?php if($discountedPrice):?>
                 <span class="discount-label">
-                    <?= $discountedPrice?>
+                    <?= $discountedPrice?>%
                 </span>
             <?php endif;?>
             <span class="old-price">

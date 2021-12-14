@@ -42,10 +42,21 @@ $discountPercent = $oldPrice ? ($oldPrice - $discountedPrice) * 100 / $oldPrice 
 
 <?php if (!$block->isProductList() && $block->hasSpecialPrice()) : ?>
     <span class="old-price sly-old-price">
-        <?php $discountedPrice = $priceModel->getValue()  > 0 ? round(($priceModel->getValue() - $finalPriceModel->getValue())/$priceModel->getValue() * 100).'%' : false ;?>
+      
+        <?php 
+                $oldPrice = $priceModel->getValue() ;
+                $finalPrice = $finalPriceModel->getValue() ;
+                $discountedPrice =  $oldPrice - $finalPrice ;
+                if ($discountedPrice > 0 && $oldPrice > 0 ) {
+                    $discountedPrice = round(($oldPrice - $finalPrice )/$oldPrice * 100)
+                }else {
+                    $discountedPrice = false;
+                }
+                
+            ?>
         <?php if($discountedPrice):?>
             <span class="discount-label">
-                <?= $discountedPrice?>
+                <?= $discountedPrice?>%
             </span>
         <?php endif;?>
         <?= /* @noEscape */ $block->renderAmount($priceModel->getAmount(), [
