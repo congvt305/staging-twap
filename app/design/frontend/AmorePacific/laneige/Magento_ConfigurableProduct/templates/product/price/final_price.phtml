@@ -14,6 +14,7 @@ $schema = ($block->getZone() == 'item_view') ? true : false;
 $oldPrice = $priceModel->getAmount()->getValue();
 $discountedPrice = $finalPriceModel->getAmount()->getValue();
 $discountPercent = $oldPrice ? ($oldPrice - $discountedPrice) * 100 / $oldPrice : false;
+$helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
 ?>
 <span class="normal-price">
     <?= /* @noEscape */ $block->renderAmount($finalPriceModel->getAmount(), [
@@ -42,9 +43,11 @@ $discountPercent = $oldPrice ? ($oldPrice - $discountedPrice) * 100 / $oldPrice 
 
 <?php if (!$block->isProductList() && $block->hasSpecialPrice()) : ?>
     <span class="old-price sly-old-price">
-        <span class="discount-label">
-            <?= /* @noEscape */ round(($priceModel->getValue() - $finalPriceModel->getValue())/$priceModel->getValue() * 100).'%'?>
-        </span>
+        <?php if($discountedPrice  = $helper->getDiscountPrice($priceModel->getValue(), $finalPriceModel->getValue()) ):?>
+            <span class="discount-label">
+                <?= $discountedPrice?>%
+            </span>
+        <?php endif;?>
         <?= /* @noEscape */ $block->renderAmount($priceModel->getAmount(), [
             'display_label'     => __('Regular Price'),
             'price_id'          => $block->getPriceId('old-price-' . $idSuffix),
