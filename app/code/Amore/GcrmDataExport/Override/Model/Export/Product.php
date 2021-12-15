@@ -194,7 +194,6 @@ class Product extends MainProduct
                     self::COL_PRODUCT_WEBSITES,
                 ],
                 $exportAttributes,
-                [self::COL_ADDITIONAL_ATTRIBUTES],
                 reset($stockItemRows) ? array_keys(end($stockItemRows)) : [],
                 [
                     'related_skus',
@@ -328,78 +327,6 @@ class Product extends MainProduct
                 $item = $itemByStore[$storeId];
                 $additionalAttributes = [];
                 $productLinkId = $item->getData($this->getProductEntityLinkField());
-                foreach ($this->_getExportAttrCodes() as $code) {
-                    $attrValue = $item->getData($code);
-                    if (!$this->isValidAttributeValue($code, $attrValue)) {
-                        continue;
-                    }
-
-                    if (isset($this->_attributeValues[$code][$attrValue]) && !empty($this->_attributeValues[$code])) {
-                        $attrValue = $this->_attributeValues[$code][$attrValue];
-                    }
-                    $fieldName = isset($this->_fieldsMap[$code]) ? $this->_fieldsMap[$code] : $code;
-
-                    if ($this->_attributeTypes[$code] == 'datetime') {
-                        if (in_array($code, $this->dateAttrCodes)
-                            || in_array($code, $this->userDefinedAttributes)
-                        ) {
-                            $attrValue = $this->_localeDate->formatDateTime(
-                                new \DateTime($attrValue),
-                                \IntlDateFormatter::SHORT,
-                                \IntlDateFormatter::NONE,
-                                null,
-                                date_default_timezone_get()
-                            );
-                        } else {
-                            $attrValue = $this->_localeDate->formatDateTime(
-                                new \DateTime($attrValue),
-                                \IntlDateFormatter::SHORT,
-                                \IntlDateFormatter::SHORT
-                            );
-                        }
-                    }
-
-                    if ($storeId != Store::DEFAULT_STORE_ID
-                        && isset($data[$itemId][Store::DEFAULT_STORE_ID][$fieldName])
-                        && $data[$itemId][Store::DEFAULT_STORE_ID][$fieldName] == htmlspecialchars_decode($attrValue)
-                    ) {
-                        continue;
-                    }
-
-                    if ($this->_attributeTypes[$code] !== 'multiselect') {
-                        if (is_scalar($attrValue)) {
-                            if (!in_array($fieldName, $this->_getExportMainAttrCodes())) {
-                                $additionalAttributes[$fieldName] = $fieldName .
-                                    ImportProduct::PAIR_NAME_VALUE_SEPARATOR . $this->wrapValue($attrValue);
-                            }
-                            $attrValue = $this->dataHelper->fixLineBreak($attrValue);
-                            $data[$itemId][$storeId][$fieldName] = htmlspecialchars_decode($attrValue);
-                        }
-                    } else {
-                        $this->collectMultiselectValues($item, $code, $storeId);
-                        if (!empty($this->collectedMultiselectsData[$storeId][$productLinkId][$code])) {
-                            $additionalAttributes[$code] = $fieldName .
-                                ImportProduct::PAIR_NAME_VALUE_SEPARATOR . implode(
-                                    ImportProduct::PSEUDO_MULTI_LINE_SEPARATOR,
-                                    $this->wrapValue($this->collectedMultiselectsData[$storeId][$productLinkId][$code])
-                                );
-                            $additionalAttributes[$code] = $this->dataHelper->fixLineBreak(
-                                $additionalAttributes[$code]
-                            );
-                        }
-                    }
-                }
-
-                if (!empty($additionalAttributes)) {
-                    $additionalAttributes = array_map('htmlspecialchars_decode', $additionalAttributes);
-                    $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES] =
-                        implode(Import::DEFAULT_GLOBAL_MULTI_VALUE_SEPARATOR, $additionalAttributes);
-                    $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES] = $this->dataHelper->fixLineBreak(
-                        $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES]
-                    );
-                } else {
-                    unset($data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES]);
-                }
 
                 $attrSetId = $item->getAttributeSetId();
                 if ($this->dataPersistor->get('gcrm_export_check')) {
