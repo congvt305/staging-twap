@@ -29,6 +29,10 @@ class SapOrderConfirmDataPlugin
         $this->middlewareHelper = $middlewareHelper;
     }
 
+    /**
+     * @param $incrementId
+     * @return false|mixed
+     */
     public function isNewMiddleware($incrementId)
     {
         $order = $this->orderFatory->create()->loadByIncrementId($incrementId);
@@ -40,6 +44,13 @@ class SapOrderConfirmDataPlugin
         return $this->middlewareHelper->isNewMiddlewareEnabled('store', $order->getStoreId());
     }
 
+    /**
+     * Convert price values to string if is new middleware
+     * @param SapOrderConfirmData $subject
+     * @param $result
+     * @param $incrementId
+     * @return mixed
+     */
     public function afterGetOrderData(SapOrderConfirmData $subject, $result, $incrementId)
     {
         if ($this->isNewMiddleware($incrementId)) {
@@ -48,6 +59,13 @@ class SapOrderConfirmDataPlugin
         return $result;
     }
 
+    /**
+     * Convert price values to string if is new middleware
+     * @param SapOrderConfirmData $subject
+     * @param $result
+     * @param $incrementId
+     * @return mixed
+     */
     public function afterGetOrderItem(SapOrderConfirmData $subject, $result, $incrementId)
     {
         if ($this->isNewMiddleware($incrementId)) {
@@ -56,6 +74,11 @@ class SapOrderConfirmDataPlugin
         return $result;
     }
 
+    /**
+     * @param $value
+     * @param $key
+     * @return void
+     */
     public function convertNumberToString(&$value, $key)
     {
         if (is_float($value)) {
