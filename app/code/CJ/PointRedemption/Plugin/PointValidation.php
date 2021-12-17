@@ -54,10 +54,11 @@ class PointValidation
                     __("Please login to redeem this product")
                 );//todo translate
             }
+            $qty = $requestInfo['qty'] ?? 1;
             $pointAmount =
                 $productInfo->getData(
                     AddRedemptionAttributes::POINT_REDEMPTION_AMOUNT_ATTRIBUTE_CODE
-                ) * $requestInfo['qty'];
+                ) * $qty;
             $this->pointRedemptionHelper->validatePointBalance($pointAmount, null);
         }
 
