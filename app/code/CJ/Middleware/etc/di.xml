@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Amore\Sap\Model\SapOrder\SapOrderConfirmData">
+        <plugin sortOrder="100" name="CJ_Middleware::CustomRequestForNewMiddleware"
+                type="CJ\Middleware\Plugin\Model\SapOrder\SapOrderConfirmDataPlugin"/>
+    </type>
+</config>
