@@ -81,7 +81,7 @@ class SapOrderConfirmDataPlugin
      */
     public function convertNumberToString(&$value, $key)
     {
-        if (is_float($value)) {
+        if (is_float($value) || is_int($value)) {
             $value = "$value";
         }
     }
