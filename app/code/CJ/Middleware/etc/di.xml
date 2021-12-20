@@ -5,4 +5,8 @@
         <plugin sortOrder="100" name="CJ_Middleware::CustomRequestForNewMiddleware"
                 type="CJ\Middleware\Plugin\Model\SapOrder\SapOrderConfirmDataPlugin"/>
     </type>
+    <type name="Amore\Sap\Model\SapOrder\SapOrderReturnData">
+        <plugin sortOrder="100" name="CJ_Middleware::CustomRequestReturnForNewMiddleware"
+                type="CJ\Middleware\Plugin\Model\SapOrder\SapOrderReturnDataPlugin"/>
+    </type>
 </config>
