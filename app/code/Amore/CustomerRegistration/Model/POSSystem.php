@@ -644,7 +644,11 @@ class POSSystem extends BaseRequest
             if ($checkTW == self::BA_CODE_PREFIX_LOWERCASE) {
                 $baCode = strtoupper($checkTW) . substr($baCode, 2);
             } elseif ($checkTW != self::BA_CODE_PREFIX) {
-                $baCode = self::BA_CODE_PREFIX . $baCode;
+                if (strtolower($checkTW) == "vn") {
+                    $baCode = $baCode;
+                } else {
+                    $baCode = self::BA_CODE_PREFIX . $baCode;
+                }
             }
         }
         return $baCode;
