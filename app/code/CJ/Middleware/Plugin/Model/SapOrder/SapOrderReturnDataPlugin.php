@@ -30,30 +30,16 @@ class SapOrderReturnDataPlugin
     }
 
     /**
-     * @param $incrementId
-     * @return false|mixed
-     */
-    public function isNewMiddleware($incrementId)
-    {
-        $order = $this->orderFatory->create()->loadByIncrementId($incrementId);
-        if (!$order->getEntityId() ||
-            !in_array($order->getStatus(), ['processing', 'sap_fail', 'processing_with_shipment'])
-        ) {
-            return false;
-        }
-        return $this->middlewareHelper->isNewMiddlewareEnabled('store', $order->getStoreId());
-    }
-
-    /**
      * Convert price values to string if is new middleware
      * @param SapOrderReturnData $subject
      * @param $result
-     * @param $incrementId
+     * @param \Magento\Rma\Model\Rma $rma
      * @return mixed
      */
-    public function afterGetOrderData(SapOrderReturnData $subject, $result, $incrementId)
+    public function afterGetRmaData(SapOrderReturnData $subject, $result, \Magento\Rma\Model\Rma $rma)
     {
-        if ($this->isNewMiddleware($incrementId)) {
+        $order = $rma->getOrder();
+        if ($this->middlewareHelper->isNewMiddlewareEnabled('store', $order->getStoreId())) {
             array_walk_recursive($result, [$this, 'convertNumberToString']);
         }
         return $result;
@@ -63,12 +49,13 @@ class SapOrderReturnDataPlugin
      * Convert price values to string if is new middleware
      * @param SapOrderReturnData $subject
      * @param $result
-     * @param $incrementId
+     * @param \Magento\Rma\Model\Rma $rma
      * @return mixed
      */
-    public function afterGetOrderItem(SapOrderReturnData $subject, $result, $incrementId)
+    public function afterGetRmaItemData(SapOrderReturnData $subject, $result, \Magento\Rma\Model\Rma $rma)
     {
-        if ($this->isNewMiddleware($incrementId)) {
+        $order = $rma->getOrder();
+        if ($this->middlewareHelper->isNewMiddlewareEnabled('store', $order->getStoreId())) {
             array_walk_recursive($result, [$this, 'convertNumberToString']);
         }
         return $result;
