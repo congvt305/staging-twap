@@ -545,13 +545,13 @@ class POSSystem extends BaseRequest
             $apiResponse = $this->send($url, $parameters, 'store', $storeId, 'baInfo');
             $response = $this->json->unserialize($apiResponse);
             if ($isNewMiddlewareEnable) {
-                if ((isset($result['success']) && $result['success']) &&
-                    (isset($result['data']) && isset($result['data']['exitYN']) && $result['data']['exitYN'] == 'Y')
+                if ((isset($response['success']) && $response['success']) &&
+                    (isset($response['data']) && isset($response['data']['exitYN']) && $response['data']['exitYN'] == 'Y')
                 ) {
                     $result['verify']   = true;
                     $result['message']  = __('The code is confirmed as valid information');
-                } elseif ((isset($result['success']) && $result['success']) &&
-                    (isset($result['data']) && isset($result['data']['exitYN']) && $result['data']['exitYN'] == 'N')
+                } elseif ((isset($response['success']) && $response['success']) &&
+                    (isset($response['data']) && isset($response['data']['exitYN']) && $response['data']['exitYN'] == 'N')
                 ) {
                     $result['message'] = __('No such information, please re-enter');
                 } else {
@@ -593,13 +593,13 @@ class POSSystem extends BaseRequest
 
         $resultMessage = isset($result['message'])?$result['message']:'Fail';
         if ($isNewMiddlewareEnable) {
-            if ((isset($result['success']) && $result['success']) &&
-                (isset($result['data']) && isset($result['data']['exitYN']) && $result['data']['exitYN'] == 'Y') &&
+            if ((isset($response['success']) && $response['success']) &&
+                (isset($response['data']) && isset($response['data']['exitYN']) && $response['data']['exitYN'] == 'Y') &&
                 $resultMessage == 'Fail'
             ) {
                 $resultMessage = __('Information loaded successfully');
-            } elseif ((isset($result['success']) && $result['success']) &&
-                (isset($result['data']) && isset($result['data']['exitYN']) && $result['data']['exitYN'] == 'N')
+            } elseif ((isset($response['success']) && $response['success']) &&
+                (isset($response['data']) && isset($response['data']['exitYN']) && $response['data']['exitYN'] == 'N')
             ) {
                 $resultMessage = __('No information exist in POS');
             }
