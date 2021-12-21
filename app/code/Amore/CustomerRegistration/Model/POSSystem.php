@@ -640,7 +640,7 @@ class POSSystem extends BaseRequest
             $websiteId = $this->storeManager->getWebsite()->getId();
             $checkTW = substr($baCode, 0, 2);
             $prefix = $this->config->getBaCodePrefix($websiteId);
-            if (in_array(strtolower($checkTW, ['tw', 'vn']))) {
+            if (in_array(strtolower($checkTW), ['tw', 'vn'])) {
                 $baCode = strtoupper($checkTW) . substr($baCode, 2);
             } else {
                 $baCode = strtoupper($prefix) . $baCode;
