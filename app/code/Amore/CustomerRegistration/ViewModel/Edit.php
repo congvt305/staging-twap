@@ -183,7 +183,7 @@ class Edit extends \Magento\Directory\Block\Data implements ArgumentInterface
     {
         $websiteId = (int)$this->storeManager->getStore()->getId();
         $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
-        if ($websiteCode == 'vn_laneige_website') {
+        if ($websiteCode == 'vn_laneige_website' || $websiteCode == 'vn_sulwhasoo_website') {
             return $this->timezone->date(new \DateTime($date))->format(self::DATE_FORMAT);
         }
         return $date;
