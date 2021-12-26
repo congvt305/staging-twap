@@ -27,6 +27,7 @@ use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Eguana\Directory\Helper\Data;
 
 class SapOrderReturnData extends AbstractSapOrder
 {
@@ -77,6 +78,11 @@ class SapOrderReturnData extends AbstractSapOrder
     private $storeManager;
 
     /**
+     * @var Data
+     */
+    protected $dataHelper;
+
+    /**
      * SapOrderReturnData constructor.
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -92,6 +98,7 @@ class SapOrderReturnData extends AbstractSapOrder
      * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
      * @param \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement
      * @param StoreManagerInterface $storeManager
+     * @param Data $helper
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -107,7 +114,8 @@ class SapOrderReturnData extends AbstractSapOrder
         ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
         \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        Data $helper
     ) {
         $this->rmaRepository = $rmaRepository;
         $this->customerRepository = $customerRepository;
@@ -120,6 +128,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
         $this->productLinkManagement = $productLinkManagement;
         $this->storeManager = $storeManager;
+        $this->dataHelper = $helper;
     }
 
     /**
@@ -210,6 +219,9 @@ class SapOrderReturnData extends AbstractSapOrder
             'addr1' => $this->cvsShippingCheck($order) ? '.' : $shippingAddress->getRegion(),
             'addr2' => $this->cvsShippingCheck($order) ? '.' : $shippingAddress->getCity(),
             'addr3' => $this->cvsShippingCheck($order) ? '.' : preg_replace('/\r\n|\r|\n/', ' ', implode(PHP_EOL, $shippingAddress->getStreet())),
+            'distrid' => $this->cvsShippingCheck($order) ? '.' : $this->dataHelper->getDistrictCode($shippingAddress->getCityId()),
+            'wardid' => $this->cvsShippingCheck($order) ? '.' : $this->dataHelper->getWardCode($shippingAddress->getWardId()),
+            'wardname' => $this->cvsShippingCheck($order) ? '.' : $shippingAddress->getWard(),
             'land1' => $shippingAddress->getCountryId(),
             'telno' => $this->getTelephone($shippingAddress->getTelephone()),
             'hpno' => $this->getTelephone($shippingAddress->getTelephone()),
