@@ -437,12 +437,14 @@ class SaveSuccess implements ObserverInterface
                     ->setPostcode($dmZipCode)
                     ->setCountryId($dmCountryId)
                     ->setCity($dmCity)
-                    ->setCustomAttribute('city_id',$cityId)
-                    ->setCustomAttribute('ward', $ward)
-                    ->setCustomAttribute('ward_id',$wardId)
                     ->setTelephone($mobileNumber)
                     ->setStreet([$dmDetailedAddress])
                     ->setIsDefaultShipping('1');
+                if ($cityId && $ward && $wardId) {
+                    $defaultShippingAddressData->setCustomAttribute('city_id',$cityId)
+                        ->setCustomAttribute('ward', $ward)
+                        ->setCustomAttribute('ward_id',$wardId);
+                }
                 $this->addressRepository->save($defaultShippingAddressData);
                 /** @var \Magento\Customer\Api\Data\AddressInterface $addressData */
                 $defaultBillingAddressData = $this->addressDataFactory->create();
@@ -453,12 +455,14 @@ class SaveSuccess implements ObserverInterface
                     ->setPostcode($dmZipCode)
                     ->setCountryId($dmCountryId)
                     ->setCity($dmCity)
-                    ->setCustomAttribute('city_id',$cityId)
-                    ->setCustomAttribute('ward', $ward)
-                    ->setCustomAttribute('ward_id',$wardId)
                     ->setTelephone($mobileNumber)
                     ->setStreet([$dmDetailedAddress])
                     ->setIsDefaultBilling('1');
+                if ($cityId && $ward && $wardId) {
+                    $defaultBillingAddressData->setCustomAttribute('city_id',$cityId)
+                        ->setCustomAttribute('ward', $ward)
+                        ->setCustomAttribute('ward_id',$wardId);
+                }
                 $this->addressRepository->save($defaultBillingAddressData);
             }
         } catch (\Exception $e) {
