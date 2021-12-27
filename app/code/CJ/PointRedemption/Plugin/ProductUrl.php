@@ -23,7 +23,7 @@ class ProductUrl
             if (!isset($params['_query'])) {
                 $params['_query'] = [];
             }
-            $params['_query']['point'] = 1;
+            $params['_query']['point'] = 'true';
         }
 
         return [$product, $params];

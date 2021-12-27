@@ -229,7 +229,7 @@ class Data extends AbstractHelper
     {
         if ($this->_getRequest()->isAjax()) {
             $referer = $this->redirect->getRefererUrl();
-            $queryString = '?point=1';
+            $queryString = '?point=true';
             if (strpos($referer, $queryString) !== false) {
                 return true;
             }
