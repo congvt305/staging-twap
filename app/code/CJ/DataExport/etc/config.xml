@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <cj_scheduleexport>
+            <general>
+                <enable>1</enable>
+            </general>
+            <redemption>
+                <duration_minutes>30</duration_minutes>
+                <store_ids>1,4</store_ids>
+            </redemption>
+            <order>
+                <duration_minutes>1440</duration_minutes>
+                <store_ids>1,4</store_ids>
+            </order>
+            <rma>
+                <duration_minutes>1440</duration_minutes>
+                <store_ids>1,4</store_ids>
+            </rma>
+        </cj_scheduleexport>
+    </default>
+</config>

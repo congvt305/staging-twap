@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="cj_extensions_tab" translate="label" sortOrder="2000">
+            <label>CJ Extensions</label>
+        </tab>
+        <section id="cj_scheduleexport" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Scheduled Export Settings</label>
+            <tab>cj_extensions_tab</tab>
+            <resource>CJ_DataExport::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Configuration</label>
+                <field id="enable" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Scheduled Export</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="redemption" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Redemption Configuration</label>
+                <field id="store_ids" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Store Ids</label>
+                    <comment><![CDATA[Default: 1,4 (It means only data from TW LNG/SWS Websites)]]><![CDATA[<br>]]><![CDATA[Enter the store id of the stores you want to retrieve data from. The store _ids are separated by commas. Example valid value: "1,4"]]></comment>
+                </field>
+                <field id="duration_minutes" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Duration</label>
+                    <comment>Default: 30 minutes. Every 30 min ETL batch run, Only TW LNG/SWS, Only created and updated data in 30 min</comment>
+                </field>
+            </group>
+            <group id="order" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Order Configuration</label>
+                <field id="store_ids" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Store Ids</label>
+                    <comment><![CDATA[Default: 1,4 (It means only data from TW LNG/SWS Websites)]]><![CDATA[<br>]]><![CDATA[Enter the store id of the stores you want to retrieve data from. The store _ids are separated by commas. Example valid value: "1,4"]]></comment>
+                </field>
+                <field id="duration_minutes" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Duration</label>
+                    <comment>Default: 1440 minutes (24h). Every 1 day ETL batch run, Only TW LNG/SWS, Only created and updated data last day.</comment>
+                </field>
+            </group>
+            <group id="rma" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>RMA Configuration</label>
+                <field id="store_ids" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Store Ids</label>
+                    <comment><![CDATA[Default: 1,4 (It means only data from TW LNG/SWS Websites)]]><![CDATA[<br>]]><![CDATA[Enter the store id of the stores you want to retrieve data from. The store _ids are separated by commas. Example valid value: "1,4"]]></comment>
+                </field>
+                <field id="duration_minutes" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Duration</label>
+                    <comment>Default: 1440 minutes (24h). Every 1 day ETL batch run, Only TW LNG/SWS, Only created and updated data last day.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
