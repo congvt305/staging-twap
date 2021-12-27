@@ -14,6 +14,7 @@
                 default="0" comment="Region ID"/>
         <column xsi:type="varchar" name="code" nullable="true" length="32" comment="City Post code"/>
         <column xsi:type="varchar" name="pos_code" nullable="true" length="32" comment="POS integration code"/>
+        <column xsi:type="varchar" name="ghn_code" nullable="true" length="32" comment="GHN integration City code"/>
         <column xsi:type="varchar" name="default_name" nullable="true" length="255" comment="Default City Name"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="city_id"/>
@@ -24,5 +25,38 @@
         <index referenceId="EGUANA_DIRECTORY_REGION_CITY_REGION_ID" indexType="btree">
             <column name="region_id"/>
         </index>
+    </table>
+
+    <table name="eguana_directory_region_ward" resource="default" engine="innodb" comment="Directory Region Ward">
+        <column xsi:type="int" name="ward_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Ward ID"/>
+        <column xsi:type="int" name="city_id" padding="10" unsigned="true" nullable="false" identity="false"
+                default="0" comment="City ID"/>
+        <column xsi:type="varchar" name="code" nullable="true" length="32" comment="GHN integration Ward code"/>
+        <column xsi:type="varchar" name="default_name" nullable="true" length="255" comment="Default Ward Name"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="ward_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="EGUANA_DIR_REGION_WARD_CITY_ID_EGUANA_DIR_REGION_CITY_CITY_ID"
+                    table="eguana_directory_region_ward" column="city_id" referenceTable="eguana_directory_region_city"
+                    referenceColumn="city_id" onDelete="CASCADE"/>
+        <index referenceId="EGUANA_DIRECTORY_REGION_WARD_CITY_ID" indexType="btree">
+            <column name="city_id"/>
+        </index>
+    </table>
+
+    <table name="sales_order_address" resource="sales" comment="Sales Flat Order Address">
+        <column xsi:type="int" name="city_id" unsigned="true" nullable="true" identity="false" comment="City Id"/>
+        <column xsi:type="int" name="ward_id" unsigned="true" nullable="true" identity="false" comment="Ward Id"/>
+        <column xsi:type="varchar" name="ward" nullable="true" length="255" comment="Ward Name"/>
+    </table>
+    <table name="quote_address" resource="checkout" comment="Sales Flat Quote Address">
+        <column xsi:type="int" name="city_id" unsigned="true" nullable="true" identity="false" comment="City Id"/>
+        <column xsi:type="int" name="ward_id" unsigned="true" nullable="true" identity="false" comment="Ward Id"/>
+        <column xsi:type="varchar" name="ward" nullable="true" length="255" comment="Ward Name"/>
+    </table>
+    <table name="customer_address_entity" resource="default" comment="Customer Address Entity">
+        <column xsi:type="int" name="city_id" unsigned="true" nullable="true" identity="false" comment="City Id"/>
+        <column xsi:type="int" name="ward_id" unsigned="true" nullable="true" identity="false" comment="Ward Id"/>
     </table>
 </schema>

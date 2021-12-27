@@ -9,6 +9,7 @@
 /** @var \Amore\CustomerRegistration\ViewModel\Register $viewModel */
 $viewModel = $block->getData('view_model');
 $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCodeAutofilled();
+$directoryHelper = $this->helper(\Eguana\Directory\Helper\Data::class);
 ?>
 <!-- This div is added by Abbas so in first step to hide all the content of registration and secnodly in case of disable module from admin panel to not effect the css -->
 <div class="customer-registration-form-create-account">
@@ -219,6 +220,16 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
                     </div>
                 </div>
 
+                <div class="field ward required">
+                    <label class="label" for="ward"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('ward') ?></span></label>
+                    <div class="control">
+                        <input type="hidden" name="ward" id="ward_txt" value="" />
+                        <select id="fward" name="ward_id" class="required-entry">
+                            <option value=""><?php echo __('Please select a ward'); ?></option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="field required">
                     <label for="dm_detailed_address" class="label"><span><?= $block->escapeHtml(__('Detailed Address')) ?></span></label>
                     <div class="control">
@@ -316,14 +327,7 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
             <div class="field required" style="display: none;">
                 <input type="hidden" name="integration_number" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('integration_number')) ?>" id="integration_number">
             </div>
-            <input type="hidden"
-                   name="cstmGradeCD"
-                   id="cstmGradeCD"
-                   value="">
-            <input type="hidden"
-                   name="cstmGradeNM"
-                   id="cstmGradeNM"
-                   value="">
+
         </fieldset>
         <div class="store-info" style="display: none">
             <input type="hidden"
@@ -445,4 +449,34 @@ require([
             "checkboxallselect":{}
         }
     }
+</script>
+
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function($){
+        $(document).ready(function(){
+
+            $(document).on("change", "#city_id", function(){
+                var _cityTxt = $(this).find("option:selected").text();
+                $("#city").val(_cityTxt);
+                var _cityId = $(this).val();
+                $("#fward option.opt").addClass("hidden");
+                $("#fward").val("");
+                $("#ward_txt").val("");
+                $.ajax({
+                    dataType : 'html',
+                    showLoader: false,
+                    url : '<?php echo $directoryHelper->getAjaxWardUrl() ?>?city_id='+_cityId,
+                    success : function(data){
+                        $("#fward").html(data);
+                    }
+                });
+            });
+            $(document).on("change", "#fward", function(){
+                var _wardTxt = $(this).find("option:selected").text();
+                $("#ward_txt").val(_wardTxt);
+            });
+        });
+    });
 </script>

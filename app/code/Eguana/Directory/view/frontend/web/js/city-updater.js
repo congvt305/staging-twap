@@ -228,7 +228,11 @@ define([
 
         _updateZipcode: function (cityId) {
             if (this.options.autofilledZipcode) {
-                $(this.options.postcodeId).val(cityId);
+                var regionId = this.element.find('option:selected').val(), zipcode = '';
+                if (typeof this.options.cityJson[regionId][cityId].zipcode !== 'undefined') {
+                    zipcode = this.options.cityJson[regionId][cityId].zipcode;
+                }
+                $(this.options.postcodeId).val(zipcode);
             }
         },
 

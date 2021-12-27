@@ -27,8 +27,46 @@ class Data extends \Magento\Directory\Helper\Data
      */
     protected $cityCollectionFactory;
 
+    /**
+     * @var \Eguana\Directory\Model\CityFactory
+     */
+    protected $cityFactory;
+
+    /**
+     * @var \Eguana\Directory\Model\WardFactory
+     */
+    protected $wardFactory;
+
+    /**
+     * @var \Eguana\Directory\Model\ResourceModel\Ward\CollectionFactory
+     */
+    protected $wardCollectionFactory;
+
+    /**
+     * @var \Magento\Customer\Model\AddressFactory
+     */
+    protected $addressFactory;
+
+    /**
+     * @param \Eguana\Directory\Model\ResourceModel\City\CollectionFactory $cityCollectionFactory
+     * @param \Eguana\Directory\Model\ResourceModel\Ward\CollectionFactory $wardCollectionFactory
+     * @param \Eguana\Directory\Model\WardFactory $wardFactory
+     * @param \Eguana\Directory\Model\CityFactory $cityFactory
+     * @param \Magento\Customer\Model\AddressFactory $addressFactory
+     * @param Context $context
+     * @param Config $configCacheType
+     * @param Collection $countryCollection
+     * @param CollectionFactory $regCollectionFactory
+     * @param JsonData $jsonHelper
+     * @param StoreManagerInterface $storeManager
+     * @param CurrencyFactory $currencyFactory
+     */
     public function __construct(
         \Eguana\Directory\Model\ResourceModel\City\CollectionFactory $cityCollectionFactory,
+        \Eguana\Directory\Model\ResourceModel\Ward\CollectionFactory $wardCollectionFactory,
+        \Eguana\Directory\Model\WardFactory $wardFactory,
+        \Eguana\Directory\Model\CityFactory $cityFactory,
+        \Magento\Customer\Model\AddressFactory $addressFactory,
         Context $context,
         Config $configCacheType,
         Collection $countryCollection,
@@ -47,6 +85,10 @@ class Data extends \Magento\Directory\Helper\Data
             $currencyFactory
         );
         $this->cityCollectionFactory = $cityCollectionFactory;
+        $this->wardCollectionFactory = $wardCollectionFactory;
+        $this->wardFactory = $wardFactory;
+        $this->cityFactory = $cityFactory;
+        $this->addressFactory = $addressFactory;
     }
 
     /**
@@ -90,15 +132,6 @@ class Data extends \Magento\Directory\Helper\Data
      */
     public function getCityData()
     {
-        $regions = $this->jsonHelper->jsonDecode($this->getRegionJson());
-        $defaultCountry = $this->getDefaultCountry();
-        $regionIds = [];
-        if (isset($regions[$defaultCountry])) {
-            foreach ($regions[$defaultCountry] as $key => $value) {
-                $regionIds[] = $key;
-            }
-        }
-
         /** @var \Eguana\Directory\Model\ResourceModel\City\Collection $collection */
         $collection = $this->cityCollectionFactory->create();
 //        $collection->addFieldToFilter('region_id', ['in' => $regionIds])->load();
@@ -116,7 +149,8 @@ class Data extends \Magento\Directory\Helper\Data
                 continue;
             }
             $cities[$city->getRegionId()][$city->getCityId()] = [
-                'code' => $city->getCode(),
+                'code' => $city->getCityId(),
+                'zipcode' => $city->getCode(),
                 'pos_code' => $city->getPosCode(),
                 'name' => (string)__($city->getName()),
             ];
@@ -130,20 +164,24 @@ class Data extends \Magento\Directory\Helper\Data
      * @return int
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getCityCodeByRegionName($regionId, $cityName)
+    public function getCityIdByRegionName($regionId, $cityName)
     {
-        $cityCode = 0;
+        $cityId = 0;
         $cityData = $this->jsonHelper->jsonDecode($this->getCityJson());
         if (isset($cityData[$regionId])) {
             foreach ($cityData[$regionId] as $key => $value) {
-                if ($value['name'] === $cityName) {
-                    $cityCode = $value['code'];
+                if (trim($value['name']) === trim($cityName)) {
+                    $cityId = $value['code'];
                 }
             }
         }
-        return $cityCode;
+        return $cityId;
     }
 
+    /**
+     * @param $asJson
+     * @return array|false|string|string[]
+     */
     public function getCountriesWithCityRequired($asJson = false)
     {
         $value = trim(
@@ -172,6 +210,9 @@ class Data extends \Magento\Directory\Helper\Data
         );
     }
 
+    /**
+     * @return bool
+     */
     public function isZipCodeAutofilled()
     {
         $defaultCountry = $this->scopeConfig->getValue(
@@ -186,5 +227,75 @@ class Data extends \Magento\Directory\Helper\Data
         $autofilledCountries = explode(',', $autofilledCountries);
 
         return in_array($defaultCountry, $autofilledCountries);
+    }
+
+    /**
+     * Get Customer addrerss by address_id
+     * @param $address_id
+     * @return mixed
+     */
+    public function loadCustomerAddress($address_id){
+        $address = $this->addressFactory->create()->load($address_id);
+        return $address;
+    }
+
+    /**
+    * Get Wards
+    * @param int $cityId
+    * @return mixed
+    */
+    public function getAllWard($cityId = 0){
+        $collection = $this->wardCollectionFactory->create()
+            ->addFieldToSelect('ward_id')
+            ->addFieldToSelect('default_name')
+            ->addFieldToSelect('city_id')
+            ->setOrder('city_id','ASC')
+            ->setOrder('default_name','ASC');
+        if($cityId) {
+            $collection->addFieldToFilter('city_id', $cityId);
+        }
+        $collection->load();
+        return $collection;
+    }
+
+    /**
+     * Get Url Ajax to get Ward list
+     * @return string
+     */
+    public function getAjaxWardUrl() {
+        return $this->_storeManager->getStore()->getBaseUrl().'custom_directory/account/getWard';
+    }
+
+    /**
+     * @param $cityId
+     * @return string
+     */
+    public function getDistrictCode($cityId) {
+        $cityCode = '';
+
+        if ($cityId) {
+            $city = $this->cityFactory->create()->load($cityId);
+            if ($city && $city->getId()) {
+                $cityCode = $city->getGhnCode();
+            }
+        }
+        return $cityCode;
+    }
+
+    /**
+     * @param $wardId
+     * @return string
+     */
+    public function getWardCode($wardId) {
+        $wardCode = '';
+
+        if ($wardId) {
+            $ward = $this->wardFactory->create()->load($wardId);
+            if ($ward && $ward->getId()) {
+                $wardCode = $ward->getCode();
+            }
+        }
+
+        return $wardCode;
     }
 }

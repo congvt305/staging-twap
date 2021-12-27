@@ -8,7 +8,7 @@
 
 namespace Amore\Sap\Exception;
 
-class RmaTrackNoException extends \Magento\Framework\Exception\LocalizedException
+class RmaTrackNoException extends \Exception
 {
 
 }

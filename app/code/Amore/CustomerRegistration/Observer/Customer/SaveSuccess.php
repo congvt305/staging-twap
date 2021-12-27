@@ -495,6 +495,9 @@ class SaveSuccess implements ObserverInterface
                 $customerData['dm_subscription_status_checkbox']:'';
             if (isset($customerData['dm_zipcode'])) {
                 $dmCity = $customerData['dm_city'];
+                $cityId = isset($customerData['city_id']) ? $customerData['city_id'] :'';
+                $ward = isset($customerData['ward']) ? $customerData['ward'] : '';
+                $wardId = isset($customerData['ward_id']) ? $customerData['ward_id'] : '';
                 $dmZipCode = $customerData['dm_zipcode'];
                 $dmDetailedAddress = $customerData['dm_detailed_address'];
                 $dmState = $customerData['dm_state'];
@@ -512,6 +515,9 @@ class SaveSuccess implements ObserverInterface
                     ->setPostcode($dmZipCode)
                     ->setCountryId($dmCountryId)
                     ->setCity($dmCity)
+                    ->setCustomAttribute('city_id',$cityId)
+                    ->setCustomAttribute('ward', $ward)
+                    ->setCustomAttribute('ward_id',$wardId)
                     ->setTelephone($mobileNumber)
                     ->setStreet([$dmDetailedAddress])
                     ->setIsDefaultShipping('1');
@@ -525,6 +531,9 @@ class SaveSuccess implements ObserverInterface
                     ->setPostcode($dmZipCode)
                     ->setCountryId($dmCountryId)
                     ->setCity($dmCity)
+                    ->setCustomAttribute('city_id',$cityId)
+                    ->setCustomAttribute('ward', $ward)
+                    ->setCustomAttribute('ward_id',$wardId)
                     ->setTelephone($mobileNumber)
                     ->setStreet([$dmDetailedAddress])
                     ->setIsDefaultBilling('1');
