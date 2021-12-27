@@ -4,17 +4,22 @@ namespace CJ\PointRedemption\Helper;
 
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
 use CJ\PointRedemption\Setup\Patch\Data\AddRedemptionAttributes;
+use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Registry;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
 class Data extends AbstractHelper
 {
+    const REGISTRY_KEY_IS_MEMBERSHIP_CATEGORY = 'is_membership_category';
+
     /**
      * @var Session
      */
@@ -42,6 +47,21 @@ class Data extends AbstractHelper
     protected CheckoutSession $checkoutSession;
 
     /**
+     * @var Resolver
+     */
+    protected $layerResolver;
+
+    /**
+     * @var Registry
+     */
+    protected $registry;
+
+    /**
+     * @var RedirectInterface
+     */
+    protected $redirect;
+
+    /**
      * @param Context $context
      * @param Session $customerSession
      * @param CustomerPointsSearch $customerPointsSearch
@@ -55,7 +75,10 @@ class Data extends AbstractHelper
         CustomerPointsSearch $customerPointsSearch,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         OrderRepositoryInterface $orderRepository,
-        CheckoutSession $checkoutSession
+        CheckoutSession $checkoutSession,
+        Resolver $layerResolver,
+        Registry $registry,
+        RedirectInterface $redirect
     ) {
         parent::__construct($context);
         $this->customerSession = $customerSession;
@@ -63,6 +86,9 @@ class Data extends AbstractHelper
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
         $this->checkoutSession = $checkoutSession;
+        $this->layerResolver = $layerResolver;
+        $this->registry = $registry;
+        $this->redirect = $redirect;
     }
 
     /**
@@ -185,5 +211,38 @@ class Data extends AbstractHelper
                 )
             ); //todo translate
         }
+    }
+
+    /**
+     * @return false|mixed|null
+     */
+    public function isMembershipCategory()
+    {
+        $currentCategory = $this->layerResolver->get()->getCurrentCategory();
+        return $currentCategory ? $currentCategory->getData('is_membership') : false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRedirectedFromMembershipCategory()
+    {
+        if ($this->_getRequest()->isAjax()) {
+            $referer = $this->redirect->getRefererUrl();
+            $queryString = '?point=1';
+            if (strpos($referer, $queryString) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPointDisplay()
+    {
+        return $this->isMembershipCategory() || $this->isRedirectedFromMembershipCategory();
     }
 }

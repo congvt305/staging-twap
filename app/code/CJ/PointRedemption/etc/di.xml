@@ -26,4 +26,7 @@
             <argument name="generalMessage" xsi:type="string" translatable="true">Your point balance is insufficient. Please check again.</argument>
         </arguments>
     </type>
+    <type name="Magento\Catalog\Model\Product\Url">
+        <plugin name="cj_point_redemption_product_url" type="CJ\PointRedemption\Plugin\ProductUrl"/>
+    </type>
 </config>
