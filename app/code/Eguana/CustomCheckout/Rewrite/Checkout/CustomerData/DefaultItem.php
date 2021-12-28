@@ -7,6 +7,7 @@
 namespace Eguana\CustomCheckout\Rewrite\Checkout\CustomerData;
 
 
+use CJ\PointRedemption\Setup\Patch\Data\AddRedemptionAttributes;
 use Magento\Catalog\Model\Product\Configuration\Item\ItemResolverInterface;
 
 class DefaultItem extends \Magento\Checkout\CustomerData\DefaultItem
@@ -45,8 +46,16 @@ class DefaultItem extends \Magento\Checkout\CustomerData\DefaultItem
     protected function doGetItemData()
     {
         $itemData = parent::doGetItemData();
-        $itemData['gift'] = $this->promoItemHelper->isPromoItem($this->item)?true:false;
+        $itemData['gift'] = $this->promoItemHelper->isPromoItem($this->item) ? true : false;
+        $itemData['is_point_redemption'] = (bool)$this->isPointRedemption();
         return $itemData;
     }
 
+    /**
+     * @return mixed|null
+     */
+    private function isPointRedemption()
+    {
+        return $this->item->getData(AddRedemptionAttributes::IS_POINT_REDEEMABLE_ATTRIBUTE_CODE);
+    }
 }
