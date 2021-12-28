@@ -10,7 +10,8 @@
                 type="CJ\PointRedemption\Plugin\AttributesQuoteItemToOrderItem"/>
     </type>
     <type name="Magento\Checkout\Model\Cart">
-        <plugin name="cj_point_redemption_get_point_balance" type="CJ\PointRedemption\Plugin\PointValidation"/>
+        <plugin name="cj_point_redemption_point_balance_validation" type="CJ\PointRedemption\Plugin\PointValidation"/>
+        <plugin name="cj_point_redemption_add_custom_option" type="CJ\PointRedemption\Plugin\CustomOption"/>
     </type>
     <type name="Magento\Quote\Model\ValidationRules\QuoteValidationComposite">
         <arguments>

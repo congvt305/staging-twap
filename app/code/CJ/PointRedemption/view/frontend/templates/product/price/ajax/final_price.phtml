@@ -5,14 +5,13 @@
  */
 $url = $block->getAjaxUrl();
 $productId = $block->getCurrentProductId();
-$isMembershipCategory = (int)$block->isRedirectedFromMembershipCategory();
 ?>
 <script type="text/javascript">
     require(['jquery'], function ($) {
             $.ajax({
                 url: "<?=$url?>",
                 type: "POST",
-                data: {product_id: <?=$productId?>, is_membership_category: <?=$isMembershipCategory?>},
+                data: {product_id: <?=$productId?>},
                 dataType: "json",
             }).done(function (data) {
                 $('#pdp-final-price-ajax').html(data.output);

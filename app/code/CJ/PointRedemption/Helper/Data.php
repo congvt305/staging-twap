@@ -225,7 +225,7 @@ class Data extends AbstractHelper
     /**
      * @return bool
      */
-    public function isRedirectedFromMembershipCategory()
+    public function isAjaxRequestFromPointRedemptionPDP()
     {
         if ($this->_getRequest()->isAjax()) {
             $referer = $this->redirect->getRefererUrl();
@@ -243,6 +243,6 @@ class Data extends AbstractHelper
      */
     public function isPointDisplay()
     {
-        return $this->isMembershipCategory() || $this->isRedirectedFromMembershipCategory();
+        return $this->isMembershipCategory() || $this->isAjaxRequestFromPointRedemptionPDP();
     }
 }

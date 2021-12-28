@@ -44,12 +44,4 @@ class FinalPriceAjax extends Template
     {
         return $this->registry->registry('current_product')->getId();
     }
-
-    /**
-     * @return bool
-     */
-    public function isRedirectedFromMembershipCategory()
-    {
-        return $this->pointRedemptionHelper->isRedirectedFromMembershipCategory();
-    }
 }

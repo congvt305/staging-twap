@@ -3,6 +3,7 @@
 namespace CJ\PointRedemption\Controller\Ajax;
 
 use CJ\PointRedemption\Helper\Data;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Pricing\Render;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -27,9 +28,14 @@ class FinalPrice extends Action
     protected $registry;
 
     /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     * @var ProductRepositoryInterface
      */
     protected $productRepository;
+
+    /**
+     * @var Data
+     */
+    protected $pointRedemptionHelper;
 
     /**
      * View constructor.
@@ -42,12 +48,14 @@ class FinalPrice extends Action
         PageFactory $resultPageFactory,
         JsonFactory $resultJsonFactory,
         \Magento\Framework\Registry $registry,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        Data $pointRedemptionHelper
     ) {
         $this->_resultPageFactory = $resultPageFactory;
         $this->_resultJsonFactory = $resultJsonFactory;
         $this->registry = $registry;
         $this->productRepository = $productRepository;
+        $this->pointRedemptionHelper = $pointRedemptionHelper;
         parent::__construct($context);
     }
 
@@ -61,11 +69,10 @@ class FinalPrice extends Action
         $blockHtml = '';
         $postData = $this->getRequest()->getPostValue();
         $productId = $postData['product_id'] ?? '';
-        $isMembershipCategory = $postData['is_membership_category'] ?? false;
         if ($productId) {
             $product = $this->productRepository->getById($productId);
+            $isAjaxRequestFromPointRedemptionPDP = (int)$this->pointRedemptionHelper->isAjaxRequestFromPointRedemptionPDP();
             $this->registry->register('product', $product);
-            $this->registry->register(Data::REGISTRY_KEY_IS_MEMBERSHIP_CATEGORY, $isMembershipCategory);
             $arguments = [
                 'price_render' => 'product.price.render.default',
                 'price_type_code' => 'final_price',
@@ -74,6 +81,8 @@ class FinalPrice extends Action
             $blockHtml = $resultPage->getLayout()
                 ->createBlock(Render::class, 'product.price.final', ['data' => $arguments])
                 ->toHtml();
+            $isPointRedemptionHtml = '<input type="hidden" name="is_point_redemption" value="' . $isAjaxRequestFromPointRedemptionPDP . '">';
+            $blockHtml = $blockHtml . $isPointRedemptionHtml;
         }
 
         $result->setData(['output' => $blockHtml]);
