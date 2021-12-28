@@ -26,6 +26,7 @@ use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Eguana\Directory\Helper\Data;
 
 class SapOrderConfirmData extends AbstractSapOrder
 {
@@ -85,6 +86,11 @@ class SapOrderConfirmData extends AbstractSapOrder
     private $storeManager;
 
     /**
+     * @var Data
+     */
+    protected $dataHelper;
+
+    /**
      * SapOrderConfirmData constructor.
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -101,6 +107,7 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository
      * @param Logger $logger
      * @param StoreManagerInterface $storeManager
+     * @param Data $helper
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -117,7 +124,8 @@ class SapOrderConfirmData extends AbstractSapOrder
         \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement,
         \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository,
         Logger $logger,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        Data $helper
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
@@ -131,6 +139,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->orderItemRepository = $orderItemRepository;
         $this->logger = $logger;
         $this->storeManager = $storeManager;
+        $this->dataHelper = $helper;
     }
 
     /**
@@ -187,6 +196,16 @@ class SapOrderConfirmData extends AbstractSapOrder
             $incrementId = $sampleOrderData['odrno'];
 
             $sampleOrder = $this->getOrderInfo($incrementId);
+	    if ($sampleOrder == null) {
+                $exception = new NoSuchEntityException(
+                    __("Such order %1 does not exist. Check the data and try again", $incrementId)
+                );
+                $this->logger->log('INFO', $exception->getMessage(), [
+                    'order_id' => $incrementId,
+                    'error_trace' => $exception->getTraceAsString()
+                ]);
+                throw $exception;
+            }
             $source = $this->config->getSourceByStore('store', $sampleOrder->getStoreId());
         }
 
@@ -303,6 +322,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'addr1' => $this->cvsShippingCheck($orderData) ? $this->getCsvAddress($shippingAddress) : $shippingAddress->getRegion(),
                 'addr2' => $this->cvsShippingCheck($orderData) ? '.' : $shippingAddress->getCity(),
                 'addr3' => $this->cvsShippingCheck($orderData) ? '.' : preg_replace('/\r\n|\r|\n/', ' ', implode(PHP_EOL, $shippingAddress->getStreet())),
+                'distrid' => $this->cvsShippingCheck($orderData) ? '.' : $this->dataHelper->getDistrictCode($shippingAddress->getCityId()),
+                'wardid' => $this->cvsShippingCheck($orderData) ? '.' : $this->dataHelper->getWardCode($shippingAddress->getWardId()),
+                'wardname' => $this->cvsShippingCheck($orderData) ? '.' : $shippingAddress->getWard(),
                 'land1' => $shippingAddress->getCountryId(),
                 'telno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'hpno' => $this->getTelephone($shippingAddress->getTelephone()),

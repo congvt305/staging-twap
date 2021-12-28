@@ -206,22 +206,35 @@ class OrderItemsCsv extends AbstractAdapter
      * Write row data to source file.
      *
      * @param array $rowData
-     * @param array $originColumnData
+     * @param array $headerColumns
      * @return $this
      * @throws FileSystemException
      */
-    public function writeSourceRowWithCustomColumns(array $rowData)
+    public function writeSourceRowWithCustomColumns(array $rowData, array $headerColumns = [])
     {
         unset($rowData['product_options']);
-        $headersData = [];
-        foreach (array_keys($rowData) as $key) {
-            $headersData[] = $key;
+        if (!$headerColumns) {
+            $headersData = [];
+            foreach (array_keys($rowData) as $key) {
+                $headersData[] = $key;
+            }
+
+            $this->_fileHandler->writeCsv(
+                array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
+                $this->_delimiter,
+                $this->_enclosure
+            );
+        } else {
+            $newRowData = [];
+            foreach ($headerColumns as $key => $data) {
+                $newRowData[$data] = $rowData[$data] ?? '';
+            }
+            $this->_fileHandler->writeCsv(
+                $newRowData,
+                $this->_delimiter,
+                $this->_enclosure
+            );
         }
-        $this->_fileHandler->writeCsv(
-            array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
-            $this->_delimiter,
-            $this->_enclosure
-        );
         return $this;
     }
 
@@ -251,6 +264,6 @@ class OrderItemsCsv extends AbstractAdapter
      */
     public function writeRow(array $rowData)
     {
-       //Abstract method
+        //Abstract method
     }
 }

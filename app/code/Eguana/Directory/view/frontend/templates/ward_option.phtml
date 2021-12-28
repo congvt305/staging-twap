@@ -1,0 +1,12 @@
+<?php
+    $cWardId = $block->getCurrentWardId();
+    $wards = $block->getWards();
+?>
+<option value=""><?php echo __('Please select a ward'); ?></option>
+<?php
+    if($wards->getSize()):
+        foreach($wards as $ward): ?>
+        <option class="opt" <?php echo (($cWardId == $ward->getWardId())? 'selected="selected"' : ''); ?> value="<?php echo $ward->getWardId(); ?>"><?php echo $ward->getDefaultName(); ?></option>
+<?php
+        endforeach;
+    endif; ?>

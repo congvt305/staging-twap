@@ -1,0 +1,23 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    <extension_attributes for="Magento\Customer\Api\Data\AddressInterface">
+        <attribute code="city_id" type="int"/>
+        <attribute code="ward_id" type="int"/>
+        <attribute code="ward" type="string"/>
+    </extension_attributes>
+    <extension_attributes for="Magento\Checkout\Api\Data\ShippingInformationInterface">
+        <attribute code="city_id" type="int"/>
+        <attribute code="ward_id" type="int"/>
+        <attribute code="ward" type="string"/>
+    </extension_attributes>
+    <extension_attributes for="Magento\Quote\Api\Data\AddressInterface">
+        <attribute code="city_id" type="int"/>
+        <attribute code="ward_id" type="int"/>
+        <attribute code="ward" type="string"/>
+    </extension_attributes>
+    <extension_attributes for="Magento\Sales\Api\Data\OrderAddressInterface">
+        <attribute code="city_id" type="int"/>
+        <attribute code="ward_id" type="int"/>
+        <attribute code="ward" type="string"/>
+    </extension_attributes>
+</config>

@@ -22,3 +22,6 @@ City,City
 "City is Required for","Thành phố là bắt buộc cho"
 "Allow to Choose City if It is Optional for Country","Cho phép chọn thành phố nếu nó là tùy chọn cho quốc gia"
 City/District,Quận/Huyện
+Ward Name,Xã/ Phường
+"Please select a ward","Vui lòng chọn xã/ phường"
+"The shipping address is missing. Please edit the address and try again.","Địa chỉ giao hàng bị thiếu thông tin. Vui lòng chỉnh sữa địa chỉ và thử lại."

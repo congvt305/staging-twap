@@ -50,19 +50,30 @@ abstract class BaseRequest
     public function send($url, $requestData, $scope = 'store', $websiteId, $type = 'confirm')
     {
         $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('website', $websiteId);
+        if (!is_array($requestData)) {
+            $requestData = $this->json->unserialize($requestData);
+        }
         if ($isNewMiddlewareEnable) {
-            if (!is_array($requestData)) {
-                $requestData = $this->json->unserialize($requestData);
-            }
             $url = $this->middlewareHelper->getNewMiddlewareURL($scope, $websiteId);
-            $requestData['APP_ID'] = $this->getInterfaceID($scope, $websiteId, $type);
+            $requestData['API_ID'] = $this->getInterfaceID($scope, $websiteId, $type);
             $requestData['API_USER_ID'] = $this->middlewareHelper->getMiddlewareUsername($scope, $websiteId);
             $requestData['AUTH_KEY'] = $this->middlewareHelper->getMiddlewareAuthKey($scope, $websiteId);
+            $requestData['salOrgCd'] = $this->middlewareHelper->getSalesOrganizationCode($scope, $websiteId);
+            $requestData['salOffCd'] = $this->middlewareHelper->getSalesOfficeCode($scope, $websiteId);
+
         }
         $this->curl->setTimeout(15);
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/request.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('=====Submit request=====');
+        $logger->info($url);
+        $logger->info($this->json->serialize($requestData));
         $this->curl->post($url, $this->json->serialize($requestData));
-
-        return $this->curl->getBody();
+        $response = $this->curl->getBody();
+        $logger->info('=====response by base request=====');
+        $logger->info($response);
+        return $response;
     }
 
     /**

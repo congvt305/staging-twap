@@ -174,13 +174,14 @@ class MassSend extends AbstractAction
             $orderCount = count($orderDataList);
             if ($orderCount > 0) {
                 $storeIdUnique = array_unique($storeIdList);
+                $storeId = array_shift($storeIdUnique);
                 $sendData = $this->sapOrderConfirmData->massSendOrderData($orderDataList, $orderItemDataList);
                 if ($this->config->getLoggingCheck()) {
                     $this->logger->info("ORDER MASS SEND DATA");
                     $this->logger->info($this->json->serialize($sendData));
                 }
 
-                $result = $this->request->postRequest($this->json->serialize($sendData), array_shift($storeIdUnique));
+                $result = $this->request->postRequest($this->json->serialize($sendData), $storeId);
 
                 if ($this->config->getLoggingCheck()) {
                     $this->logger->info("ORDER MASS SEND RESULT");
@@ -199,7 +200,7 @@ class MassSend extends AbstractAction
                     ]
                 );
 
-                $responseHandled = $this->request->handleResponse($result, array_shift($storeIdUnique));
+                $responseHandled = $this->request->handleResponse($result, $storeId);
                 if ($responseHandled === null) {
                     $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response'));
                 } else {

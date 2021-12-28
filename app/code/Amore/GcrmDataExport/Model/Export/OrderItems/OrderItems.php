@@ -152,6 +152,12 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         self::ORDER_ITEM_SAP_ITEM_SLAMT => 'sap_item_slamt',
         self::ORDER_ITEM_SAP_ITEM_NETWR => 'sap_item_netwr',
     ];
+
+    /**
+     * @var array
+     */
+    protected $headerColumns = [];
+
     /**#@-*/
 
     /**
@@ -295,22 +301,39 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         }
 
         $index = 0;
-        $headersData = [];
         foreach ($orderItemData as $orderData) {
             foreach ($orderData as $itemData) {
                 if ($index == 0) {
-                    unset($itemData['product_option']);
-                    unset($itemData['product_options']);
-                    foreach (array_keys($itemData) as $key) {
-                        $headersData[] = $key;
-                        $index = 1;
-                    }
-                    $writer->setHeaderCols($headersData);
+                    $writer->setHeaderCols($this->getHeaderColumns());
+                    $index = 1;
                 }
-                $writer->writeSourceRowWithCustomColumns($itemData);
+                $writer->writeSourceRowWithCustomColumns($itemData, $this->getHeaderColumns());
             }
         }
         return $writer->getContents();
+    }
+
+    /**
+     * Get CSV file header colums
+     *
+     * @return array
+     */
+    public function getHeaderColumns()
+    {
+        if (!$this->headerColumns) {
+            $collection = $this->orderItemsColFactory->create();
+            $collection->getSelect()->limit(1);
+
+            if (isset($collection->getData()[0])) {
+                $item = $collection->getData()[0];
+                unset($item['product_option']);
+                unset($item['product_options']);
+                unset($item['parent_item']);
+                $this->headerColumns = array_keys($item);
+            }
+        }
+
+        return $this->headerColumns;
     }
 
     /**
@@ -328,6 +351,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
             unset($item['product_option']);
             unset($item['product_options']);
             unset($item['parent_item']);
+            unset($item['has_children']);
             $itemData = $this->dataHelper->fixSingleRowData($item);
             $itemRow[$item['item_id']][$cnt] = $itemData;
             $cnt++;
@@ -394,7 +418,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
     /**
      * Get joined Item Collection
      *
-     * @return CollectionFactory
+     * @return array|null
      */
     public function joinedItemCollection()
     {

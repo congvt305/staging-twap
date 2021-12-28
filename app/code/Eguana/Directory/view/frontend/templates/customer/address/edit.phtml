@@ -191,7 +191,7 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
                 "form": "#form-validate",
                 "cityJson": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityJson() ?>,
                 "defaultRegion": "<?= /* @noEscape */ $block->getRegionId() ?>",
-                "defaultCity": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityCodeByRegionName((int)$block->getRegionId(), $block->getAddress()->getCity()) ?>,
+                "defaultCity": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->getCityIdByRegionName((int)$block->getRegionId(), $block->getAddress()->getCity()) ?>,
                 "autofilledZipcode": <?= /* @noEscape */ $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCodeAutofilled() ? 'true' : 'false' ?>
             }
         }

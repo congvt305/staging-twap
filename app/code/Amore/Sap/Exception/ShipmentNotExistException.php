@@ -8,7 +8,7 @@
 
 namespace Amore\Sap\Exception;
 
-class ShipmentNotExistException extends \Magento\Framework\Exception\LocalizedException
+class ShipmentNotExistException extends \Exception
 {
 
 }

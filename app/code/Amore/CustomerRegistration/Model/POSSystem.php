@@ -166,13 +166,9 @@ class POSSystem extends BaseRequest
         ];
         try {
             $this->curl->setOptions([
-                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
                 CURLOPT_HTTPHEADER => [
                     'Content-type: application/json'
@@ -381,13 +377,9 @@ class POSSystem extends BaseRequest
         try {
             $url = $this->config->getMemberJoinURL();
             $this->curl->setOptions([
-                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
                 CURLOPT_HTTPHEADER => [
                     'Content-type: application/json'
@@ -531,13 +523,9 @@ class POSSystem extends BaseRequest
             ];
 
             $this->curl->setOptions([
-                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
                 CURLOPT_HTTPHEADER => [
                     'Content-type: application/json'
@@ -557,13 +545,13 @@ class POSSystem extends BaseRequest
             $apiResponse = $this->send($url, $parameters, 'store', $storeId, 'baInfo');
             $response = $this->json->unserialize($apiResponse);
             if ($isNewMiddlewareEnable) {
-                if ((isset($result['success']) && $result['success']) &&
-                    (isset($result['data']) && isset($result['data']['exitYN']) && $result['data']['exitYN'] == 'Y')
+                if ((isset($response['success']) && $response['success']) &&
+                    (isset($response['data']) && isset($response['data']['exitYN']) && $response['data']['exitYN'] == 'Y')
                 ) {
                     $result['verify']   = true;
                     $result['message']  = __('The code is confirmed as valid information');
-                } elseif ((isset($result['success']) && $result['success']) &&
-                    (isset($result['data']) && isset($result['data']['exitYN']) && $result['data']['exitYN'] == 'N')
+                } elseif ((isset($response['success']) && $response['success']) &&
+                    (isset($response['data']) && isset($response['data']['exitYN']) && $response['data']['exitYN'] == 'N')
                 ) {
                     $result['message'] = __('No such information, please re-enter');
                 } else {
@@ -605,13 +593,13 @@ class POSSystem extends BaseRequest
 
         $resultMessage = isset($result['message'])?$result['message']:'Fail';
         if ($isNewMiddlewareEnable) {
-            if ((isset($result['success']) && $result['success']) &&
-                (isset($result['data']) && isset($result['data']['exitYN']) && $result['data']['exitYN'] == 'Y') &&
+            if ((isset($response['success']) && $response['success']) &&
+                (isset($response['data']) && isset($response['data']['exitYN']) && $response['data']['exitYN'] == 'Y') &&
                 $resultMessage == 'Fail'
             ) {
                 $resultMessage = __('Information loaded successfully');
-            } elseif ((isset($result['success']) && $result['success']) &&
-                (isset($result['data']) && isset($result['data']['exitYN']) && $result['data']['exitYN'] == 'N')
+            } elseif ((isset($response['success']) && $response['success']) &&
+                (isset($response['data']) && isset($response['data']['exitYN']) && $response['data']['exitYN'] == 'N')
             ) {
                 $resultMessage = __('No information exist in POS');
             }
@@ -649,11 +637,13 @@ class POSSystem extends BaseRequest
     {
         $baCode = $baCode ? trim($baCode) : '';
         if ($baCode) {
+            $websiteId = $this->storeManager->getWebsite()->getId();
             $checkTW = substr($baCode, 0, 2);
-            if ($checkTW == self::BA_CODE_PREFIX_LOWERCASE) {
+            $prefix = $this->config->getBaCodePrefix($websiteId);
+            if (in_array(strtolower($checkTW), ['tw', 'vn'])) {
                 $baCode = strtoupper($checkTW) . substr($baCode, 2);
-            } elseif ($checkTW != self::BA_CODE_PREFIX) {
-                $baCode = self::BA_CODE_PREFIX . $baCode;
+            } else {
+                $baCode = strtoupper($prefix) . $baCode;
             }
         }
         return $baCode;

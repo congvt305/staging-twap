@@ -5,7 +5,8 @@
             "region_id": true,
             "code": true,
             "pos_code": true,
-            "default_name": true
+            "default_name": true,
+            "ghn_code": true
         },
         "index": {
             "EGUANA_DIRECTORY_REGION_CITY_REGION_ID": true
@@ -13,6 +14,41 @@
         "constraint": {
             "PRIMARY": true,
             "EGUANA_DIR_REGION_CITY_REGION_ID_DIR_COUNTRY_REGION_REGION_ID": true
+        }
+    },
+    "eguana_directory_region_ward": {
+        "column": {
+            "ward_id": true,
+            "city_id": true,
+            "code": true,
+            "default_name": true
+        },
+        "index": {
+            "EGUANA_DIRECTORY_REGION_WARD_CITY_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "EGUANA_DIR_REGION_WARD_CITY_ID_EGUANA_DIR_REGION_CITY_CITY_ID": true
+        }
+    },
+    "sales_order_address": {
+        "column": {
+            "city_id": true,
+            "ward_id": true,
+            "ward": true
+        }
+    },
+    "quote_address": {
+        "column": {
+            "city_id": true,
+            "ward_id": true,
+            "ward": true
+        }
+    },
+    "customer_address_entity": {
+        "column": {
+            "city_id": true,
+            "ward_id": true
         }
     }
 }
