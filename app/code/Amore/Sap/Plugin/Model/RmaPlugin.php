@@ -186,7 +186,7 @@ class RmaPlugin
 
                     if ($resultSize > 0) {
                         $isSuccess = false;
-                        $outdata = $result['data']['response']['output']['outdata'];
+                        $outdata = isset($result['data']['response']['output']['outdata']) ? $result['data']['response']['output']['outdata'] : [];
                         $isNewMiddleware = $this->middlewareHelper->isNewMiddlewareEnabled('store', $order->getStoreId());
                         if ($isNewMiddleware || (!$isNewMiddleware && $result['code'] == '0000')) {
                             foreach ($outdata as $data) {
