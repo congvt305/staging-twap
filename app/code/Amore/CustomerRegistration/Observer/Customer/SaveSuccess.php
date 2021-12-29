@@ -417,6 +417,9 @@ class SaveSuccess implements ObserverInterface
                 $customerData['dm_subscription_status_checkbox']:'';
             if (isset($customerData['dm_zipcode'])) {
                 $dmCity = $customerData['dm_city'];
+                $cityId = isset($customerData['city_id']) ? $customerData['city_id'] :'';
+                $ward = isset($customerData['ward']) ? $customerData['ward'] : '';
+                $wardId = isset($customerData['ward_id']) ? $customerData['ward_id'] : '';
                 $dmZipCode = $customerData['dm_zipcode'];
                 $dmDetailedAddress = $customerData['dm_detailed_address'];
                 $dmState = $customerData['dm_state'];
@@ -437,6 +440,11 @@ class SaveSuccess implements ObserverInterface
                     ->setTelephone($mobileNumber)
                     ->setStreet([$dmDetailedAddress])
                     ->setIsDefaultShipping('1');
+                if ($cityId && $ward && $wardId) {
+                    $defaultShippingAddressData->setCustomAttribute('city_id',$cityId)
+                        ->setCustomAttribute('ward', $ward)
+                        ->setCustomAttribute('ward_id',$wardId);
+                }
                 $this->addressRepository->save($defaultShippingAddressData);
                 /** @var \Magento\Customer\Api\Data\AddressInterface $addressData */
                 $defaultBillingAddressData = $this->addressDataFactory->create();
@@ -450,6 +458,11 @@ class SaveSuccess implements ObserverInterface
                     ->setTelephone($mobileNumber)
                     ->setStreet([$dmDetailedAddress])
                     ->setIsDefaultBilling('1');
+                if ($cityId && $ward && $wardId) {
+                    $defaultBillingAddressData->setCustomAttribute('city_id',$cityId)
+                        ->setCustomAttribute('ward', $ward)
+                        ->setCustomAttribute('ward_id',$wardId);
+                }
                 $this->addressRepository->save($defaultBillingAddressData);
             }
         } catch (\Exception $e) {
