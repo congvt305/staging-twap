@@ -18,8 +18,6 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 
 class Data extends AbstractHelper
 {
-    const REGISTRY_KEY_IS_MEMBERSHIP_CATEGORY = 'is_membership_category';
-
     /**
      * @var Session
      */
@@ -229,7 +227,7 @@ class Data extends AbstractHelper
     {
         if ($this->_getRequest()->isAjax()) {
             $referer = $this->redirect->getRefererUrl();
-            $queryString = '?point=true';
+            $queryString = 'point=true';
             if (strpos($referer, $queryString) !== false) {
                 return true;
             }
