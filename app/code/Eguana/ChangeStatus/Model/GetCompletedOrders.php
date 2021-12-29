@@ -190,7 +190,6 @@ class GetCompletedOrders
                         $order->setStatus('complete');
                         $order->setState('complete');
                         $this->orderRepository->save($order);
-                        $this->posOrderSend($order);
                     }
                 }
             }

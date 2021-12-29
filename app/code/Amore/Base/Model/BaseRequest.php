@@ -66,13 +66,17 @@ abstract class BaseRequest
         $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/request.log');
         $logger = new \Zend_Log();
         $logger->addWriter($writer);
-        $logger->info('=====Submit request=====');
-        $logger->info($url);
-        $logger->info($this->json->serialize($requestData));
+        if ($isNewMiddlewareEnable) {
+            $logger->info('=====Submit request=====');
+            $logger->info($url);
+            $logger->info($this->json->serialize($requestData));
+        }
         $this->curl->post($url, $this->json->serialize($requestData));
         $response = $this->curl->getBody();
-        $logger->info('=====response by base request=====');
-        $logger->info($response);
+        if ($isNewMiddlewareEnable) {
+            $logger->info('=====response by base request=====');
+            $logger->info($response);
+        }
         return $response;
     }
 
