@@ -166,7 +166,11 @@ class GetCompletedOrders
             $payment = $order->getPayment();
             $eInvoiceData = json_decode($payment->getAdditionalData(), true);
 
-            if (!empty($eInvoiceData) && $eInvoiceData["RtnCode"] == 1) {
+            if ($payment->getMethod() == 'ecpay_ecpaypayment') {
+                if (!empty($eInvoiceData) && $eInvoiceData["RtnCode"] == 1) {
+                    $completeOrderList[] = $order;
+                }
+            } else {
                 $completeOrderList[] = $order;
             }
         }
