@@ -48,7 +48,8 @@ class PointValidation
     {
         $isLogin = $this->customerSession->isLoggedIn();
         $isRedeemableProduct = $productInfo->getData(AddRedemptionAttributes::IS_POINT_REDEEMABLE_ATTRIBUTE_CODE);
-        if ($isRedeemableProduct) {
+        $isPointRedemption = $requestInfo['is_point_redemption'] ?? false;
+        if ($isRedeemableProduct && $isPointRedemption) {
             if (!$isLogin) {
                 throw new LocalizedException(
                     __("Please login to redeem this product")
