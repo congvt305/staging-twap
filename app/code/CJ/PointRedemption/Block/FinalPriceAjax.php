@@ -42,6 +42,7 @@ class FinalPriceAjax extends Template
      */
     public function getCurrentProductId()
     {
-        return $this->registry->registry('current_product')->getId();
+        $product = $this->registry->registry('current_product');
+        return $product ? $product->getId() : null;
     }
 }
