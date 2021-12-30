@@ -13,8 +13,6 @@ class Rma
     extends \Magento\ImportExport\Model\Export\AbstractEntity
     implements RmaInterface
 {
-    protected $_frequency = 1440 * 60;
-
     /**
      * @var array
      */
@@ -263,16 +261,12 @@ class Rma
             if ($exportDate == "NULL") {
                 $collection = $this->rmaCollFactory->create();
             } else {
-                $endDate = strtotime($exportDate) +$this->_frequency;
-                $endDate = date('Y-m-d h:i:s', $endDate);
+
                 /** @var \Magento\Rma\Model\ResourceModel\Rma\Collection $collection */
                 $collection = $this->rmaCollFactory->create();
                 $collection->addFieldToFilter('main_table.store_id', ['in' => $this->getAllowStores()]);
                 $collection
-                    ->addFieldToFilter('main_table.date_requested', [
-                        'from' => $exportDate,
-                        'to' => $endDate
-                    ])
+                    ->addFieldToFilter('main_table.date_requested', ['gteq' => $exportDate])
                     ->getSelect()
                     ->joinLeft(['sales' => 'sales_order_payment'],
                         'sales.parent_id=main_table.order_id',

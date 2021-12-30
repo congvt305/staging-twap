@@ -218,7 +218,7 @@ class RedemptionCsv extends \Magento\ImportExport\Model\Export\Adapter\AbstractA
         }
 
         $headersData = [];
-        foreach (array_keys($rowData) as $key) {
+        foreach ($rowData as $key => $data) {
             $headersData[] = $key;
         }
         $this->_fileHandler->writeCsv(

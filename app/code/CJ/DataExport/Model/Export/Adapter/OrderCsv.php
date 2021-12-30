@@ -218,9 +218,10 @@ class OrderCsv extends \Magento\ImportExport\Model\Export\Adapter\AbstractAdapte
     public function writeRow(array $rowData)
     {
         $headersData = [];
-        foreach (array_keys($rowData) as $key) {
+        foreach ($rowData as $key => $data) {
             $headersData[] = $key;
         }
+
         $this->_fileHandler->writeCsv(
             array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
             $this->_delimiter,

@@ -214,7 +214,7 @@ class RmaCsv extends \Magento\ImportExport\Model\Export\Adapter\AbstractAdapter
     public function writeRow(array $rowData)
     {
         $headersData = [];
-        foreach (array_keys($rowData) as $key) {
+        foreach ($rowData as $key => $data) {
             $headersData[] = $key;
         }
         $this->_fileHandler->writeCsv(

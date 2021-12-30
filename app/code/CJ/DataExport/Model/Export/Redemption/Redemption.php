@@ -13,8 +13,6 @@ class Redemption
     implements RedemptionInterface
 {
 
-    protected $_frequency = 30 * 60;
-
     /**
      * @var string[]
      */
@@ -302,18 +300,14 @@ class Redemption
             if ($exportDate == "NULL") {
                 $collection = $this->counterCollectionFactory->create();
             } else {
-                $endDate = strtotime($exportDate) + $this->_frequency;
-                $endDate = date('Y-m-d h:i:s', $endDate);
+
                 $collection = $this->counterCollectionFactory->create();
                 $connection = $collection->getConnection();
                 $collection
                     ->addFieldToFilter(
                         'main_table.store_id',
                         [$this->getAllowStores()])
-                    ->addFieldToFilter('main_table.update_time', [
-                        'from' => $exportDate,
-                        'to' => $endDate
-                    ]);
+                    ->addFieldToFilter('main_table.update_time', ['gteq' => $exportDate]);
                 $collection
                     ->getSelect()
                     ->joinLeft(['redemption_store' => $connection->getTableName('eguana_redemption_store')],
