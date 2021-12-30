@@ -12,8 +12,10 @@ class Order
     extends \Magento\ImportExport\Model\Export\AbstractEntity
     implements OrderInterface
 {
-    protected $_frequency = 1440 * 60;
 
+    /**
+     * @var array
+     */
     protected $includeColumns = [
         'order_id' => 'increment_id',
         'purchase_date' => 'created_at',
@@ -21,6 +23,7 @@ class Order
         'status' => 'status',
         'shipping_information' => 'shipping_description'
     ];
+
     /**
      * @var array
      */
@@ -242,8 +245,6 @@ class Order
                 /** @var \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $collection */
                 $collection = $this->orderColFactory->create();
             } else {
-                $endDate = strtotime($exportDate) + $this->_frequency;
-                $endDate = date('Y-m-d h:i:s', $endDate);
                 /** @var \Magento\Sales\Model\ResourceModel\Order\Collection $collection */
                 $collection = $this->orderColFactory->create();
                 $connection = $collection->getConnection();
@@ -251,10 +252,7 @@ class Order
                     $collection->addFieldToSelect($fieldName, $alias);
                 }
                 $collection->addFieldToFilter('main_table.store_id', ['in'=> $this->getAllowStores()]);
-                $collection->addFieldToFilter('main_table.created_at', [
-                    'from' => $exportDate,
-                    'to' => $endDate
-                ]);
+                $collection->addFieldToFilter('main_table.created_at', ['gteq' => $exportDate]);
                 $collection->getSelect()
                     ->joinLeft(
                         [
