@@ -52,8 +52,8 @@ class PointValidation
         if ($isRedeemableProduct && $isPointRedemption) {
             if (!$isLogin) {
                 throw new LocalizedException(
-                    __("Please login to redeem this product")
-                );//todo translate
+                    __("Please login into your account to continue shopping")
+                );
             }
             $qty = $requestInfo['qty'] ?? 1;
             $pointAmount =
