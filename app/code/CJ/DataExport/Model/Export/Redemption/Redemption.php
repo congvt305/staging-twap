@@ -3,6 +3,7 @@
 namespace CJ\DataExport\Model\Export\Redemption;
 
 use Magento\Framework\Exception\LocalizedException;
+use Magento\ImportExport\Model\Export\Adapter\AbstractAdapter;
 
 /**
  * Class Redemption
@@ -11,6 +12,8 @@ class Redemption
     extends \Magento\ImportExport\Model\Export\AbstractEntity
     implements RedemptionInterface
 {
+
+    protected $_frequency = 30 * 60;
 
     /**
      * @var string[]
@@ -170,17 +173,13 @@ class Redemption
     /**
      * @return array
      */
-    protected function getAllowStores()
-    {
+    protected function getAllowStores() {
         $ids = [];
-        if ($storeIds = $this->configHelper->getRedemptionStoreIds()) {
-            if (strpos(',', $storeIds) !== -1) {
-                $stores = explode(',', $storeIds);
-                foreach ($stores as $store) {
-                    $ids[] = $store;
-                }
+        foreach ($this->_storeManager->getStores() as $id => $store) {
+            if ($this->configHelper->getModuleEnable($id)) {
+                $ids[] = $id;
             }
-        };
+        }
         return $ids;
     }
 
@@ -189,11 +188,10 @@ class Redemption
      */
     public function export()
     {
-        $writer = $this->getRedemptionWriter();
+        $writer = $this->getWriter();
 
         $redemptionsData = $this->getRedemptionsData();
         if ($redemptionsData == null) {
-            $resultRedirect = $this->resultRedirectFactory->create();
             $this->messageManager->addErrorMessage(__('There is no data for the export.'));
             return false;
         }
@@ -216,7 +214,7 @@ class Redemption
 
                     $writer->setHeaderCols($headersData);
                 }
-                $writer->writeSourceRowWithCustomColumns($singleRedemption);
+                $writer->writeRow($singleRedemption);
             }
         }
         return $writer->getContents();
@@ -235,7 +233,7 @@ class Redemption
      */
     public function getEntityTypeCode()
     {
-        return 'cj_redemption';
+        return self::ENTITY_TYPE;
     }
 
     /**
@@ -251,32 +249,12 @@ class Redemption
     }
 
     /**
-     * {@inheritDoc}
-     */
-    protected function _getEntityCollection()
-    {
-        // TODO: Implement _getEntityCollection() method.
-    }
-
-    /**
-     * @return \CJ\DataExport\Model\Export\Adapter\RedemptionCsv|\Magento\ImportExport\Model\Export\Factory
-     * @throws LocalizedException
-     */
-    private function getRedemptionWriter()
-    {
-        if (!$this->redemptionWriter) {
-            throw new LocalizedException(__('Please specify the redemption writer.'));
-        }
-        return $this->redemptionWriter;
-    }
-
-    /**
      * @return array
      */
     private function getRedemptionsData()
     {
         $itemRow = [];
-        $collection = $this->joinedItemCollection();
+        $collection = $this->_getEntityCollection();
 
         $cnt = 0;
 
@@ -291,10 +269,10 @@ class Redemption
     /**
      * Set Order Writer for CSV File
      *
-     * @param \CJ\DataExport\Model\Export\Adapter\RedemptionCsv $orderWriter
+     * @param \Magento\ImportExport\Model\Export\Adapter\AbstractAdapter $orderWriter
      * @return $this
      */
-    public function setRedemptionWriter(\CJ\DataExport\Model\Export\Adapter\RedemptionCsv $redemptionWriter)
+    public function setWriter(AbstractAdapter $redemptionWriter)
     {
         $this->redemptionWriter = $redemptionWriter;
         return $this;
@@ -314,20 +292,18 @@ class Redemption
     /**
      * @return \Eguana\Redemption\Model\ResourceModel\Counter\Collection
      */
-    private function joinedItemCollection()
+    protected function _getEntityCollection()
     {
         try {
             $customExportData = $this->exportCollectionFactory->create()
-                ->addFieldToFilter('entity_code', ['eq' => 'cj_redemption'])->getFirstItem();
+                ->addFieldToFilter('entity_code', ['eq' => self::ENTITY_TYPE])->getFirstItem();
             $exportDate = $customExportData->getData('updated_at');
-            $duration = $this->configHelper->getRedemptionDurationMinutes() * 60;
 
             if ($exportDate == "NULL") {
                 $collection = $this->counterCollectionFactory->create();
             } else {
-                $currentTime = time();
-                $startDate = date("Y-m-d h:i:s", $currentTime - $duration);
-                $endDate = date("Y-m-d h:i:s", $currentTime);
+                $endDate = strtotime($exportDate) + $this->_frequency;
+                $endDate = date('Y-m-d h:i:s', $endDate);
                 $collection = $this->counterCollectionFactory->create();
                 $connection = $collection->getConnection();
                 $collection
@@ -335,7 +311,7 @@ class Redemption
                         'main_table.store_id',
                         [$this->getAllowStores()])
                     ->addFieldToFilter('main_table.update_time', [
-                        'from' => $startDate,
+                        'from' => $exportDate,
                         'to' => $endDate
                     ]);
                 $collection
@@ -351,7 +327,6 @@ class Redemption
                     ->order('main_table.entity_id DESC');
 
                 $collection->getSelect()->setPart('COLUMNS', $this->_header);
-
             }
 
         } catch (\Exception $e) {
@@ -361,4 +336,11 @@ class Redemption
         return $collection;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getWriter()
+    {
+        return $this->redemptionWriter;
+    }
 }
