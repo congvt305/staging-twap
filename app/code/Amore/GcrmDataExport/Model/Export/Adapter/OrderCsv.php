@@ -214,7 +214,7 @@ class OrderCsv extends AbstractAdapter
     {
         unset($rowData['store_name']);
         $headersData = [];
-        foreach (array_keys($rowData) as $key) {
+        foreach ($rowData as $key => $data) {
             $headersData[] = $key;
         }
         $this->_fileHandler->writeCsv(

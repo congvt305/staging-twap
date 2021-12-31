@@ -192,29 +192,6 @@ class OrderCsv extends \Magento\ImportExport\Model\Export\Adapter\AbstractAdapte
     }
 
     /**
-     * Write row data to source file.
-     *
-     * @param array $rowData
-     * @param array $originColumnData
-     * @return $this
-     * @throws FileSystemException
-     */
-    public function writeSourceRowWithCustomColumns(array $rowData)
-    {
-        unset($rowData['store_name']);
-        $headersData = [];
-        foreach (array_keys($rowData) as $key) {
-            $headersData[] = $key;
-        }
-        $this->_fileHandler->writeCsv(
-            array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
-            $this->_delimiter,
-            $this->_enclosure
-        );
-        return $this;
-    }
-
-    /**
      * Get Values of header columns
      *
      * @param array $originCols
@@ -240,6 +217,17 @@ class OrderCsv extends \Magento\ImportExport\Model\Export\Adapter\AbstractAdapte
      */
     public function writeRow(array $rowData)
     {
-        //Abstract method
+        $headersData = [];
+        foreach ($rowData as $key => $data) {
+            $headersData[] = $key;
+        }
+
+        $this->_fileHandler->writeCsv(
+            array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
+            $this->_delimiter,
+            $this->_enclosure
+        );
+
+        return $this;
     }
 }

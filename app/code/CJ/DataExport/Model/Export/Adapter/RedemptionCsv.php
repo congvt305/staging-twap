@@ -188,32 +188,6 @@ class RedemptionCsv extends \Magento\ImportExport\Model\Export\Adapter\AbstractA
     }
 
     /**
-     * Write row data to source file.
-     *
-     * @param array $rowData
-     * @param array $originColumnData
-     * @return $this
-     * @throws FileSystemException
-     */
-    public function writeSourceRowWithCustomColumns(array $rowData)
-    {
-        foreach (\CJ\DataExport\Model\Export\Redemption\Data::$excludeColumns as $item) {
-            unset($rowData[$item]);
-        }
-
-        $headersData = [];
-        foreach (array_keys($rowData) as $key) {
-            $headersData[] = $key;
-        }
-        $this->_fileHandler->writeCsv(
-            array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
-            $this->_delimiter,
-            $this->_enclosure
-        );
-        return $this;
-    }
-
-    /**
      * Get Values of header columns
      *
      * @param array $originCols
@@ -239,6 +213,19 @@ class RedemptionCsv extends \Magento\ImportExport\Model\Export\Adapter\AbstractA
      */
     public function writeRow(array $rowData)
     {
-        //Abstract method
+        foreach (\CJ\DataExport\Model\Export\Redemption\Data::$excludeColumns as $item) {
+            unset($rowData[$item]);
+        }
+
+        $headersData = [];
+        foreach ($rowData as $key => $data) {
+            $headersData[] = $key;
+        }
+        $this->_fileHandler->writeCsv(
+            array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
+            $this->_delimiter,
+            $this->_enclosure
+        );
+        return $this;
     }
 }

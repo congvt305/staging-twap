@@ -15,4 +15,6 @@ interface RedemptionInterface
     const TELEPHONE = 'telephone';
     const STATUS = 'status';
     const STORE_COUNTER = 'store_counter';
+
+    const ENTITY_TYPE = 'cj_redemption';
 }

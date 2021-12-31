@@ -4,6 +4,7 @@ namespace CJ\DataExport\Model\Export\Rma;
 
 use CJ\DataExport\Model\Export\Order\Order;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\ImportExport\Model\Export\Adapter\AbstractAdapter;
 
 /**
  * Class Rma
@@ -153,14 +154,11 @@ class Rma
      */
     protected function getAllowStores() {
         $ids = [];
-        if ($storeIds = $this->configHelper->getRmaStoreIds()) {
-            if (strpos(',', $storeIds) !== -1) {
-                $stores = explode(',', $storeIds);
-                foreach ($stores as $store) {
-                    $ids[] = $store;
-                }
+        foreach ($this->_storeManager->getStores() as $id => $store) {
+            if ($this->configHelper->getModuleEnable($id)) {
+                $ids[] = $id;
             }
-        };
+        }
         return $ids;
     }
 
@@ -169,28 +167,27 @@ class Rma
      */
     public function export()
     {
-        $writer = $this->getRmaWriter();
+        $writer = $this->getWriter();
 
         $rmasData = $this->getRmasData();
         if ($rmasData == null) {
-            $resultRedirect = $this->resultRedirectFactory->create();
             $this->messageManager->addErrorMessage(__('There is no data for the export.'));
             return false;
         }
 
         $index = 0;
         $headersData = [];
-        foreach ($rmasData as $orders) {
-            foreach ($orders as $singleOrder) {
+        foreach ($rmasData as $rmas) {
+            foreach ($rmas as $rma) {
                 if ($index == 0) {
-                    unset($singleOrder['store_name']);
-                    foreach (array_keys($singleOrder) as $key) {
+                    unset($rma['store_name']);
+                    foreach (array_keys($rma) as $key) {
                         $headersData[] = $key;
                         $index += 1;
                     }
                     $writer->setHeaderCols($headersData);
                 }
-                $writer->writeSourceRowWithCustomColumns($singleOrder);
+                $writer->writeRow($rma);
             }
         }
         return $writer->getContents();
@@ -209,7 +206,7 @@ class Rma
      */
     public function getEntityTypeCode()
     {
-        return 'cj_rma';
+        return self::ENTITY_TYPE;
     }
 
     /**
@@ -225,32 +222,12 @@ class Rma
     }
 
     /**
-     * {@inheritDoc}
-     */
-    protected function _getEntityCollection()
-    {
-        // TODO: Implement _getEntityCollection() method.
-    }
-
-    /**
-     * @return \CJ\DataExport\Model\Export\Adapter\RmaCsv
-     * @throws LocalizedException
-     */
-    public function getRmaWriter()
-    {
-        if (!$this->rmaWriter) {
-            throw new LocalizedException(__('Please specify the rma writer.'));
-        }
-        return $this->rmaWriter;
-    }
-
-    /**
      * @return array
      */
     private function getRmasData()
     {
         $itemRow = [];
-        $collection = $this->joinedItemCollection();
+        $collection = $this->_getEntityCollection();
 
         $cnt = 0;
         foreach ($collection as $item) {
@@ -275,27 +252,21 @@ class Rma
     /**
      * @return \Magento\Rma\Model\ResourceModel\Rma\Collection
      */
-    private function joinedItemCollection()
+    protected function _getEntityCollection()
     {
         try {
             $customExportData = $this->exportCollectionFactory->create()
-                ->addFieldToFilter('entity_code', ['eq' => 'cj_rma'])->getFirstItem();
+                ->addFieldToFilter('entity_code', ['eq' => self::ENTITY_TYPE])->getFirstItem();
             $exportDate = $customExportData->getData('updated_at');
-            $duration = $this->configHelper->getRmaDurationMinutes() * 60;
             if ($exportDate == "NULL") {
                 $collection = $this->rmaCollFactory->create();
             } else {
-                $currentTime = time();
-                $startDate = date("Y-m-d h:i:s", $currentTime - $duration);
-                $endDate = date("Y-m-d h:i:s", $currentTime);
+
                 /** @var \Magento\Rma\Model\ResourceModel\Rma\Collection $collection */
                 $collection = $this->rmaCollFactory->create();
                 $collection->addFieldToFilter('main_table.store_id', ['in' => $this->getAllowStores()]);
                 $collection
-                    ->addFieldToFilter('main_table.date_requested', [
-                        'from' => $startDate,
-                        'to' => $endDate
-                    ])
+                    ->addFieldToFilter('main_table.date_requested', ['gteq' => $exportDate])
                     ->getSelect()
                     ->joinLeft(['sales' => 'sales_order_payment'],
                         'sales.parent_id=main_table.order_id',
@@ -321,12 +292,20 @@ class Rma
     /**
      * Set Order Writer for CSV File
      *
-     * @param \CJ\DataExport\Model\Export\Adapter\RmaCsv $rmaWriter
+     * @param \Magento\ImportExport\Model\Export\Adapter\AbstractAdapter $rmaWriter
      * @return $this
      */
-    public function setRmaWriter(\CJ\DataExport\Model\Export\Adapter\RmaCsv $rmaWriter)
+    public function setWriter(AbstractAdapter $rmaWriter)
     {
         $this->rmaWriter = $rmaWriter;
         return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWriter()
+    {
+        return $this->rmaWriter;
     }
 }
