@@ -107,7 +107,6 @@ class Data extends AbstractHelper
                         "Your point balance is insufficient."
                     )
                 );
-                //todo translate
             }
         } catch (\Exception $exception) {
             throw new LocalizedException(__($exception->getMessage()));
@@ -188,7 +187,7 @@ class Data extends AbstractHelper
             throw new LocalizedException(
                 __(
                     "Point service is not available now, please try later. Sorry for the inconvenient"
-                )//todo translate
+                )
             );
         }
 
@@ -207,7 +206,7 @@ class Data extends AbstractHelper
                 __(
                     "Please login into your account to continue shopping"
                 )
-            ); //todo translate
+            );
         }
     }
 
