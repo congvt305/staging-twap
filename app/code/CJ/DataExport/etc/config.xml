@@ -3,20 +3,8 @@
     <default>
         <cj_scheduleexport>
             <general>
-                <enable>1</enable>
+                <enable>0</enable>
             </general>
-            <redemption>
-                <duration_minutes>30</duration_minutes>
-                <store_ids>1,4</store_ids>
-            </redemption>
-            <order>
-                <duration_minutes>1440</duration_minutes>
-                <store_ids>1,4</store_ids>
-            </order>
-            <rma>
-                <duration_minutes>1440</duration_minutes>
-                <store_ids>1,4</store_ids>
-            </rma>
         </cj_scheduleexport>
     </default>
 </config>

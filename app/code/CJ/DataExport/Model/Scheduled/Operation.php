@@ -6,7 +6,7 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\ScheduledImportExport\Model\Scheduled\Operation\Data;
-
+use Magento\Framework\Message\ManagerInterface;
 /**
  * Class Operation
  */
@@ -32,6 +32,22 @@ class Operation
      * @var \Magento\Framework\Message\ManagerInterface
      */
     protected $messageManager;
+
+    /**
+     * @var array
+     */
+    protected $customType = [
+        'cj_rma',
+        'cj_redemption',
+        'cj_sales_order'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $customFreq = [
+        \CJ\DataExport\Model\Config\Source\Frequency::CRON_HALF_HOURLY => '*/30 * * * *'
+    ];
 
     /**
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
@@ -138,7 +154,7 @@ class Operation
             $filePathArr = explode('/', $filePath);
             $sftpFileName = isset($sftpArgs['filename_prefix']) ?
                 $this->assignFilenamePrefix($sftpArgs['filename_prefix']) :
-                $filePathArr[count($filePathArr) -1];
+                $filePathArr[count($filePathArr) - 1];
 
             $this->sftpAdapter->open($sftpArgs);
             $this->sftpAdapter->setAllowCreateFolders(true);
@@ -154,6 +170,7 @@ class Operation
 
         return $result;
     }
+
     /**
      * @param $fileNamePrefix
      * @return string
@@ -163,4 +180,51 @@ class Operation
         $date = $this->date->date('Ymd_His');
         return $fileNamePrefix . "_" . $date . ".csv";
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function _addCronTask()
+    {
+        if (in_array($this->getData('entity_type'), $this->customType)) {
+            $frequency = $this->getFreq();
+            if (in_array($frequency, array_keys($this->customFreq))) {
+                $cronExprString = $this->customFreq[$frequency];
+                $exprPath = $this->getExprConfigPath();
+                $modelPath = $this->getModelConfigPath();
+
+                try {
+                    /** @var \Magento\Framework\App\Config\ValueInterface $exprValue */
+                    $exprValue = $this->_configValueFactory->create()->load($exprPath, 'path');
+                    $oldCronExprString = $exprValue->getValue();
+
+                    if ($oldCronExprString != $cronExprString) {
+                        $exprValue->setValue($cronExprString)->setPath($exprPath)->save();
+                        $this->_cacheManager->clean(['crontab']);
+                    }
+
+                    $this->_configValueFactory->create()->load(
+                        $modelPath,
+                        'path'
+                    )->setValue(
+                        self::CRON_MODEL
+                    )->setPath(
+                        $modelPath
+                    )->save();
+                    $this->messageManager->addSuccessMessage(__('You have selected freqency as every 30 minutes. Then the system will not need to care about the value of start time, and scheduled update will be run at even time, like 10:00 AM, 10:30 AM, 11:00 AM...'));
+                } catch (\Exception $e) {
+                    $this->_logger->critical($e);
+                    throw new LocalizedException(
+                        __('We were unable to save the cron expression.')
+                    );
+                }
+                return $this;
+            }
+
+        } else {
+            return parent::_addCronTask();
+        }
+    }
+
+
 }

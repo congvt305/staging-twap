@@ -3,6 +3,7 @@
 namespace CJ\DataExport\Model\Export\Order;
 
 use Magento\Framework\Exception\LocalizedException;
+use Magento\ImportExport\Model\Export\Adapter\AbstractAdapter;
 
 /**
  * Class Order
@@ -11,6 +12,10 @@ class Order
     extends \Magento\ImportExport\Model\Export\AbstractEntity
     implements OrderInterface
 {
+
+    /**
+     * @var array
+     */
     protected $includeColumns = [
         'order_id' => 'increment_id',
         'purchase_date' => 'created_at',
@@ -18,6 +23,7 @@ class Order
         'status' => 'status',
         'shipping_information' => 'shipping_description'
     ];
+
     /**
      * @var array
      */
@@ -128,28 +134,30 @@ class Order
      */
     public function export()
     {
-        $writer = $this->getOrderWriter();
+        /** @var \CJ\DataExport\Model\Export\Adapter\OrderCsv $writer */
+        $writer = $this->getWriter();
 
         $ordersData = $this->getOrdersData();
+
         if ($ordersData == null) {
-            $resultRedirect = $this->resultRedirectFactory->create();
             $this->messageManager->addErrorMessage(__('There is no data for the export.'));
             return false;
         }
 
         $index = 0;
         $headersData = [];
+
         foreach ($ordersData as $orders) {
             foreach ($orders as $singleOrder) {
                 if ($index == 0) {
-                    unset($singleOrder['store_name']);
                     foreach (array_keys($singleOrder) as $key) {
                         $headersData[] = $key;
                         $index += 1;
                     }
                     $writer->setHeaderCols($headersData);
                 }
-                $writer->writeSourceRowWithCustomColumns($singleOrder);
+
+                $writer->writeRow($singleOrder);
             }
         }
         return $writer->getContents();
@@ -168,7 +176,7 @@ class Order
      */
     public function getEntityTypeCode()
     {
-        return "cj_sales_order";
+        return self::ENTITY_TYPE;
     }
 
     /**
@@ -192,38 +200,16 @@ class Order
     }
 
     /**
-     *{@inheritDoc}
-     */
-    protected function _getEntityCollection()
-    {
-        // TODO: Implement _getEntityCollection() method.
-    }
-
-    /**
-     * @return \CJ\DataExport\Model\Export\Adapter\OrderCsv
-     * @throws LocalizedException
-     */
-    public function getOrderWriter()
-    {
-        if (!$this->orderWriter) {
-            throw new LocalizedException(__('Please specify the order writer.'));
-        }
-        return $this->orderWriter;
-    }
-
-    /**
      * @return array
      */
     protected function getAllowStores() {
         $ids = [];
-        if ($storeIds = $this->configHelper->getOrderStoreIds()) {
-            if (strpos(',', $storeIds) !== -1) {
-                $stores = explode(',', $storeIds);
-                foreach ($stores as $store) {
-                    $ids[] = $store;
-                }
+        foreach ($this->_storeManager->getStores() as $id => $store) {
+            if ($this->configHelper->getModuleEnable($id)) {
+                $ids[] = $id;
             }
-        };
+        }
+
         return $ids;
     }
 
@@ -233,12 +219,13 @@ class Order
     public function getOrdersData()
     {
         $itemRow = [];
-        $collection = $this->joinedItemCollection();
+        $collection = $this->_getEntityCollection();
 
         $cnt = 0;
         foreach ($collection as $item) {
+
             $itemData = $this->dataHelper->fixSingleRowData($item->getData());
-            $itemRow[$item->getIncrementId()][$cnt] = $itemData;
+            $itemRow[$item->getOrderId()][$cnt] = $itemData;
             $cnt++;
         }
         return $itemRow;
@@ -247,22 +234,17 @@ class Order
     /**
      * @return \Magento\Sales\Model\ResourceModel\Order\CollectionFactory
      */
-    private function joinedItemCollection()
+    protected function _getEntityCollection()
     {
         try {
             $customExportData = $this->exportCollectionFactory->create()
-                ->addFieldToFilter('entity_code', ['eq' => 'cj_sales_order'])->getFirstItem();
+                ->addFieldToFilter('entity_code', ['eq' => self::ENTITY_TYPE])->getFirstItem();
             $exportDate = $customExportData->getData('updated_at');
-
-            $duration = $this->configHelper->getOrderDurationMinutes() * 60;
 
             if ($exportDate == "NULL") {
                 /** @var \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $collection */
                 $collection = $this->orderColFactory->create();
             } else {
-                $currentTime = time();
-                $startDate = date("Y-m-d h:i:s", $currentTime - $duration);
-                $endDate = date("Y-m-d h:i:s", $currentTime);
                 /** @var \Magento\Sales\Model\ResourceModel\Order\Collection $collection */
                 $collection = $this->orderColFactory->create();
                 $connection = $collection->getConnection();
@@ -270,10 +252,7 @@ class Order
                     $collection->addFieldToSelect($fieldName, $alias);
                 }
                 $collection->addFieldToFilter('main_table.store_id', ['in'=> $this->getAllowStores()]);
-                $collection->addFieldToFilter('main_table.created_at', [
-                    'from' => $startDate,
-                    'to' => $endDate
-                ]);
+                $collection->addFieldToFilter('main_table.created_at', ['gteq' => $exportDate]);
                 $collection->getSelect()
                     ->joinLeft(
                         [
@@ -284,6 +263,8 @@ class Order
                             'payment_method' => 'method'
                         ]
                     );
+
+
 
             }
         } catch (\Exception $e) {
@@ -296,12 +277,20 @@ class Order
     /**
      * Set Order Writer for CSV File
      *
-     * @param \CJ\DataExport\Model\Export\Adapter\OrderCsv $orderWriter
+     * @param \Magento\ImportExport\Model\Export\Adapter\AbstractAdapter $orderWriter
      * @return $this
      */
-    public function setOrderWriter(\CJ\DataExport\Model\Export\Adapter\OrderCsv $orderWriter)
+    public function setWriter(AbstractAdapter $orderWriter)
     {
         $this->orderWriter = $orderWriter;
         return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWriter()
+    {
+        return $this->orderWriter;
     }
 }

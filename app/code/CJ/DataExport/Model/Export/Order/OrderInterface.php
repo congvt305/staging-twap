@@ -13,4 +13,6 @@ interface OrderInterface
     const STATUS = 'status';
     const SHIPPING_INFORMATION = 'shipping_information';
     const PAYMENT_METHOD = 'payment_method';
+
+    const ENTITY_TYPE = 'cj_sales_order';
 }
