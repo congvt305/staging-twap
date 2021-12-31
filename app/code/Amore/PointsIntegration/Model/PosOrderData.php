@@ -9,6 +9,7 @@
 namespace Amore\PointsIntegration\Model;
 
 use Amore\PointsIntegration\Model\Source\Config;
+use CJ\PointRedemption\Setup\Patch\Data\AddRedemptionAttributes;
 use Magento\Bundle\Api\Data\LinkInterface;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -213,6 +214,7 @@ class PosOrderData
         $itemsSubtotal = 0;
         $itemsDiscountAmount = 0;
         $itemsGrandTotal = 0;
+        $itemsPointTotal = 0;
         $skuPrefix = $this->getSKUPrefix($order->getStoreId()) ?: '';
         $orderItems = $order->getAllVisibleItems();
 
@@ -224,6 +226,7 @@ class PosOrderData
                 $itemGrandTotal = $itemSubtotal - $itemTotalDiscount;
                 $stripSku = str_replace($skuPrefix, '', $orderItem->getSku());
                 $isRedemptionItem = $orderItem->getData('is_point_redeemable');
+                $pointAccount = $orderItem->getQtyOrdered() * $orderItem->getData('point_redemption_amount');
                 $orderItemData[] = [
                     'prdCD' => $stripSku,
                     'qty' => (int)$orderItem->getQtyOrdered(),
@@ -232,12 +235,13 @@ class PosOrderData
                     'dcAmt' => (int)$itemTotalDiscount,
                     'netSalAmt' => (int)$itemGrandTotal,
                     'redemptionFlag' => $isRedemptionItem ? 'Y' : 'N',
-                    'pointAccount' => (int)$orderItem->getData('point_redemption_amount')
+                    'pointAccount' => (int)$pointAccount
                 ];
 
                 $itemsSubtotal += $itemSubtotal;
                 $itemsDiscountAmount += $itemTotalDiscount;
                 $itemsGrandTotal += $itemGrandTotal;
+                $itemsPointTotal += $pointAccount;
             } else {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
@@ -245,9 +249,6 @@ class PosOrderData
                 $bundlePriceType = $bundleProduct->getPriceType();
                 $isRedemptionItem = $orderItem->getData('is_point_redeemable');
                 $totalPointAmount = $orderItem->getData('point_redemption_amount') * $orderItem->getQtyOrdered();
-                $pointAccount = 0;
-                $totalPointAccount = 0;
-                $childNumber = 0;
 
                 foreach ($bundleChildren as $bundleChild) {
                     $itemId = $orderItem->getItemId();
@@ -271,17 +272,9 @@ class PosOrderData
                         $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered()
                     ));
                     $bundleChildGrandTotal = $bundleChildSubtotal - $itemTotalDiscount;
-
+                    $pointAccount = 0;
                     if ($isRedemptionItem) {
-                        $childNumber++;
-                        if ($childNumber == count($bundleChildren)) {
-                            $pointAccount = ($totalPointAmount - $totalPointAccount) /
-                                $bundleChildFromOrder->getQtyOrdered();
-                        } else {
-                            $pointAccount = $this->getPointAccount($orderItem);
-                        }
-                        $totalPointAccount = $totalPointAccount +
-                            ($pointAccount * $bundleChildFromOrder->getQtyOrdered());
+                        $pointAccount = $totalPointAmount / count($bundleChildren);
                     }
 
                     $orderItemData[] = [
@@ -298,6 +291,7 @@ class PosOrderData
                     $itemsSubtotal += $bundleChildSubtotal;
                     $itemsDiscountAmount += $itemTotalDiscount;
                     $itemsGrandTotal += $bundleChildGrandTotal;
+                    $itemsPointTotal += (int)$pointAccount;
                 }
             }
         }
@@ -305,10 +299,12 @@ class PosOrderData
         $orderSubtotal = $this->getOrderSubtotal($order);
         $orderGrandTotal = $this->getOrderGrandTotal($order);
         $orderDiscount = $orderSubtotal - $orderGrandTotal;
+        $orderPointTotal = $this->getOrderPointTotal($order);
 
         $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'salAmt');
         $orderItemData = $this->priceCorrector($orderDiscount, $itemsDiscountAmount, $orderItemData, 'dcAmt');
         $orderItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $orderItemData, 'netSalAmt');
+        $orderItemData = $this->priceCorrector($orderPointTotal, $itemsPointTotal, $orderItemData, 'pointAccount');
 
         if (count($orderItems) > count($orderItemData)) {
             throw new \Exception('Missing items');
@@ -332,6 +328,23 @@ class PosOrderData
         }
 
         return $orderItemData;
+    }
+
+    /**
+     * @param Order $order
+     * @return float|int
+     */
+    public function getOrderPointTotal(Order $order)
+    {
+        $pointTotal = 0;
+        $orderItems = $order->getAllVisibleItems();
+        foreach ($orderItems as $item) {
+            if ($item->getData(AddRedemptionAttributes::IS_POINT_REDEEMABLE_ATTRIBUTE_CODE)) {
+                $pointTotal += $item->getData(AddRedemptionAttributes::POINT_REDEMPTION_AMOUNT_ATTRIBUTE_CODE)
+                    * $item->getQtyOrdered();
+            }
+        }
+        return $pointTotal;
     }
 
     /**
