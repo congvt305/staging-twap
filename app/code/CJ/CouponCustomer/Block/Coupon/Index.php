@@ -81,7 +81,7 @@ class Index extends Template
         if ($this->getRuleCollection()) {
             $pager = $this->getLayout()->createBlock(
                 Pager::class,
-                'custom.coupon.pager'
+                'customer.coupon.pager'
             )->setAvailableLimit([4 => 4, 8 => 8, 12 => 12, 16 => 16])
                 ->setShowPerPage(true)->setCollection(
                     $this->getRuleCollection()
