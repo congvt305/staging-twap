@@ -78,7 +78,7 @@ class Index extends Template
      */
     protected function _prepareLayout()
     {
-        if ($this->getRuleCollection()) {
+        if ($this->getRuleCollection()->count()) {
             $pager = $this->getLayout()->createBlock(
                 Pager::class,
                 'customer.coupon.pager'
