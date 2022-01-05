@@ -3,7 +3,7 @@
     <body>
         <referenceBlock name="customer_account_navigation">
             <block class="Magento\Framework\View\Element\Html\Link\Current"
-                   name="customer-account-navigation-pos-integration-points"
+                   name="customer-account-coupon-wallet"
                    after="-" ifconfig="coupon_wallet/general/active">
                 <arguments>
                     <argument name="path" xsi:type="string">customercoupon/coupon/index</argument>

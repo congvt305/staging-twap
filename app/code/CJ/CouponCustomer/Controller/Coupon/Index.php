@@ -6,23 +6,32 @@ use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\App\Action\Action;
 
-
-class Index extends AbstractController
+class Index extends Action
 {
+    /**
+     * @var Session
+     */
+    protected $customerSession;
+    /**
+     * @var PageFactory
+     */
+    protected $resultPageFactory;
+
     /**
      * @param Context $context
      * @param Session $customerSession
      * @param PageFactory $resultPageFactory
      */
     public function __construct(
-        Context $context,
-        Session $customerSession,
+        Context     $context,
+        Session     $customerSession,
         PageFactory $resultPageFactory
-
-    ) {
-        parent::__construct($context, $customerSession, $resultPageFactory);
-
+    ){
+        parent::__construct($context);
+        $this->customerSession = $customerSession;
+        $this->resultPageFactory = $resultPageFactory;
     }
 
 
