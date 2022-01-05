@@ -1,0 +1,192 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .customercoupon-coupon-index {
+        &.page-layout-2columns-left {
+            .sidebar-main {
+                padding-top: 35px;
+            }
+            .card {
+                &-container {
+                    width: 47%;
+                    height: 100%;
+                    padding: 1rem;
+                    border-radius: 8.5px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                }
+
+                &-main {
+                    display: flex;
+                    border: 2px solid lightgray;
+                    border-bottom: unset;
+                    border-radius: 5px 5px 0px 0px;
+
+                    &-image {
+                        padding: 1.3rem;
+                        img {
+                            width: 12rem;
+                            height: 4rem;
+                            object-fit: contain;
+                            border: 1px solid black;
+                            border-radius: 6px;
+                        }
+                    }
+
+                }
+                &-footer {
+                    &-coupon {
+                        border-top: 2px solid lightgray;
+                    }
+
+                    &-copyright {
+                        padding: 0.7rem;
+                        margin-left: 0.7rem;
+                    }
+                    &-copy-button {
+                        padding: 0.7rem;
+                        button {
+                            background: white;
+                            border: 1px solid lightgray;
+                            border-radius: 7.6px;
+                            color: gray;
+                            padding: 0.2rem;
+                            width: 3.8rem;
+                            outline: none;
+                        }
+                    }
+                }
+            }
+            .title {
+                font-size: 1.5rem;
+            }
+            h3{
+                font-weight: 600;
+                line-height: 25px;
+            }
+            .sub-title {
+                margin-bottom: unset;
+            }
+            .description {
+                color: gray;
+            }
+
+            /* scoop*/
+
+            .outer {
+                overflow: hidden;
+            }
+            .inner {
+                /* border: 1px solid lightgray; */
+                position: relative;
+                i {
+                    width: 28px;
+                    height: 25px;
+                    border: 2px solid lightgray;
+                    border-radius: 50%;
+                    background-color: #fff;
+                }
+                .top {
+                    margin-top: -40px;
+                }
+                .bottom {
+                    margin-top: -81.4px;
+                    margin-bottom: -22px;
+                }
+                .left {
+                    float: left;
+                    margin-left: -20px;
+                }
+                .right {
+                    float: right;
+                    margin-right: -20px;
+                }
+
+            }
+            .content {
+                min-height: 80px;
+            }
+            .line-break {
+                display: flex;
+                height: 2.5rem;
+                align-items: center;
+            }
+            .footer-group {
+                border: 2px solid lightgray;
+                margin-bottom: 1.7rem;
+                border-top: unset;
+                border-radius: 0px 0px 5px 5px;
+                display: flex;
+                justify-content: space-between;
+            }
+            .coupon {
+                &-code {
+                    padding: 0.5rem !important;
+                    margin-left: 0.5rem;
+                    display: flex;
+                    align-items: center;
+                }
+                &-button {
+                    padding: 0.5rem;
+                    margin-right: 1rem;
+                    button {
+                        background: white;
+                        color: lightslategrey;
+                        border: 1px solid lightgray;
+                        border-radius: 5px;
+                    }
+                }
+                &-code-detail{
+                    padding-top: 1rem;
+                    padding-left: 1rem;
+                }
+
+            }
+            .w-94 {
+                width: 94%;
+            }
+
+        }
+        .wrapper-container {
+            display: flex;
+            flex-wrap: wrap;
+
+        }
+        .block-title {
+            font-size: 2rem;
+            border-bottom: 2px solid #000000;
+            font-weight: 400;
+            // line-height: 30px;
+            padding-bottom: 9px;
+        }
+
+        }
+    }
+
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .customercoupon-coupon-index{
+        &.page-layout-2columns-left {
+            .sidebar-main {
+                padding-top: 35px;
+            }
+        }
+    }
+}
+
