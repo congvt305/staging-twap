@@ -8,7 +8,6 @@ use Magento\SalesRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollecti
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Theme\Block\Html\Header\Logo;
 use Magento\Theme\Block\Html\Pager;
-use Magento\SalesRule\Model\Rule;
 
 class Index extends Template
 {
@@ -31,7 +30,6 @@ class Index extends Template
      */
     private $storeManager;
 
-    private $rule;
 
     /**
      * @param Template\Context $context
@@ -41,21 +39,19 @@ class Index extends Template
      * @param StoreManagerInterface $storeManager
      * @param Logo $logo
      */
-    public function __construct(Template\Context      $context, array $data = [],
-                                RuleCollection        $ruleCollection,
-                                Session               $customerSession,
-                                StoreManagerInterface $storeManager,
-                                Logo                  $logo,
-                                Rule                  $rule
-
-    )
-    {
+    public function __construct(
+        Template\Context      $context,
+        array                 $data = [],
+        RuleCollection        $ruleCollection,
+        Session               $customerSession,
+        StoreManagerInterface $storeManager,
+        Logo                  $logo
+    ){
         parent::__construct($context, $data);
         $this->ruleCollection = $ruleCollection;
         $this->customerSession = $customerSession;
         $this->storeManager = $storeManager;
         $this->logo = $logo;
-        $this->rule = $rule;
     }
 
     /**
@@ -69,7 +65,7 @@ class Index extends Template
         $page = ($this->getRequest()->getParam('p')) ? $this->getRequest()->getParam('p') : 1;
         $pageSize = ($this->getRequest()->getParam('limit')) ? $this->getRequest()->getParam('limit') : 4;
         $rules->addWebsiteGroupDateFilter($websiteId, $customer->getGroupId())
-            ->addFieldToFilter('coupon_type', 2)
+            ->addFieldToFilter('coupon_type', \Magento\SalesRule\Model\Rule::COUPON_TYPE_SPECIFIC)
             ->addFieldToFilter('is_active', 1)
             ->setPageSize($pageSize)
             ->setCurPage($page);
@@ -77,43 +73,15 @@ class Index extends Template
     }
 
     /**
-     * prepare layout
-     *
-     * @return \Eguana\CustomerBulletin\Block\Index\Index|Index
+     * @return $this|Index
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _prepareLayout()
     {
-        if ($breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs')) {
-            $breadcrumbsBlock->addCrumb(
-                'home',
-                [
-                    'label' => __('Home'),
-                    'title' => __('Go to Home Page'),
-                    'link' => $this->storeManager->getStore()->getBaseUrl()
-                ]
-            );
-            $breadcrumbsBlock->addCrumb(
-                'account',
-                [
-                    'label' => __('My Account'),
-                    'title' => __('My Account'),
-                    'link' => $this->storeManager->getStore()->getBaseUrl() . 'customer/account/'
-                ]
-            );
-            $breadcrumbsBlock->addCrumb(
-                'coupon',
-                [
-                    'label' => __('Coupon Wallet'),
-                    'title' => __('Coupon Wallet'),
-                ]
-            );
-        }
-        parent::_prepareLayout();
-        $this->pageConfig->getTitle()->set(__('Coupon Wallet'));
         if ($this->getRuleCollection()) {
             $pager = $this->getLayout()->createBlock(
                 Pager::class,
-                'custom.history.pager'
+                'custom.coupon.pager'
             )->setAvailableLimit([4 => 4, 8 => 8, 12 => 12, 16 => 16])
                 ->setShowPerPage(true)->setCollection(
                     $this->getRuleCollection()
@@ -150,15 +118,13 @@ class Index extends Template
         return $this->logo->getLogoSrc();
     }
 
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getCurrencyCode()
     {
         return $this->storeManager->getStore()->getCurrentCurrency()->getCode();
     }
-
-    public function getRuleCondition($ruleId)
-    {
-        return $this->rule->load($ruleId)->getConditions()->getAggregatorName();
-
-    }
-
 }

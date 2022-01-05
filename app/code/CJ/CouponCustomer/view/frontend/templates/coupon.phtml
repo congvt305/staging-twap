@@ -6,7 +6,7 @@
     <strong><?= $block->escapeHtml(__('Coupon List')); ?></strong>
 </div>
 <div class="wrapper-container">
-    <?php foreach ($coupons->getData() as $coupon) : ?>
+    <?php foreach ($coupons->getItems() as $coupon) : ?>
         <div class="card-container">
             <div class="card-main border-scoop">
                 <div class="card-main-image">
@@ -14,7 +14,6 @@
                 </div>
                 <div class="card-main-description">
                     <h3 class="title"><?php echo $coupon['name']; ?></h3>
-
                     <?php if ($coupon['simple_action'] == 'by_percent'): ?>
                         <p class="sub-title"><?= $block->escapeHtml(__('Discount')); echo ': '.floatval($coupon['discount_amount']) . '%'; ?> </p>
                     <?php elseif ($coupon['simple_action'] == 'cart_fixed' || $coupon['simple_action'] == 'by_fixed'): ?>
@@ -24,9 +23,7 @@
                     <?php else: ?>
                         <p class="sub-title"><?= $block->escapeHtml(__('Discount')); ?>: Automatically add products to cart </p>
                     <?php endif; ?>
-
                     <p class="sub-title"><?= $block->escapeHtml(__('Expiration date')) ; ?>: <?php echo $coupon['to_date'] == null ? 'none' : $coupon['to_date']; ?></p>
-                    <?php // echo  $block->getRuleCondition($coupon['rule_id']) ?>
                     <p class="description"><?= $block->escapeHtml(__('Description')) ;echo ': '. $coupon['description'] ?> </p>
                 </div>
             </div>
@@ -43,7 +40,6 @@
                             </div>
                         </div>
                     </div>
-
                     <i class="bottom right"></i>
                     <i class="bottom left"></i>
                 </div>
