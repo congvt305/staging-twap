@@ -19,9 +19,9 @@
                     <?php elseif ($coupon['simple_action'] == 'cart_fixed' || $coupon['simple_action'] == 'by_fixed'): ?>
                         <p class="sub-title"><?= $block->escapeHtml(__('Discount')); echo ': '.floatval($coupon['discount_amount']) . $block->getCurrencyCode(); ?></p>
                     <?php elseif ($coupon['simple_action'] == 'buy_x_get_y'): ?>
-                        <p class="sub-title"><?= $block->escapeHtml(__('Discount')); ?>: Buy X get Y </p>
+                        <p class="sub-title"><?= $block->escapeHtml(__('Discount')); ?>:<?= $block->escapeHtml(__( 'Buy X get Y')); ?> </p>
                     <?php else: ?>
-                        <p class="sub-title"><?= $block->escapeHtml(__('Discount')); ?>: Automatically add products to cart </p>
+                        <p class="sub-title"><?= $block->escapeHtml(__('Discount')); ?>:<?= $block->escapeHtml(__('Automatically add products to cart')); ?> </p>
                     <?php endif; ?>
                     <p class="sub-title"><?= $block->escapeHtml(__('Expiration date')) ; ?>: <?php echo $coupon['to_date'] == null ? 'none' : $coupon['to_date']; ?></p>
                     <p class="description"><?= $block->escapeHtml(__('Description')) ;echo ': '. $coupon['description'] ?> </p>
