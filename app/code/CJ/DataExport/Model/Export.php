@@ -138,9 +138,12 @@ class Export extends \Amore\GcrmDataExport\Model\Export
                     $this->_logger->log('info', __('Exported %1 rows.', $countRows));
                     $this->_logger->log('info', __('The export is finished.'));
                 }
+                break;
             default:
-                return parent::export();
+                $result = parent::export();
         }
+
+        return $result;
     }
 
     /**
