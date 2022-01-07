@@ -185,7 +185,7 @@ class SapOrderReturnData extends AbstractSapOrder
         } else {
             $paymtd = $order->getPayment()->getMethod() == 'ecpay_ecpaypayment' ? 'P' : 'S';
             $nsamt  = abs(round($this->getRmaSubtotalInclTax($rma)));
-            $dcamt  = abs(round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma)));
+            $dcamt  = abs(round($this->getRmaDiscountAmount($rma)));
             $slamt = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
                 abs(round($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed)));
         }
@@ -435,7 +435,7 @@ class SapOrderReturnData extends AbstractSapOrder
         }
         $orderSubtotal = round($this->getRmaSubtotalInclTax($rma));
         $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed));
-        $orderDiscountAmount = round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma));
+        $orderDiscountAmount = round($this->getRmaDiscountAmount($rma));
 
         if ($websiteCode != 'vn_laneige_website') {
             $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'itemNsamt');
@@ -481,35 +481,6 @@ class SapOrderReturnData extends AbstractSapOrder
         return $bundleChild;
     }
 
-    /**
-     * @param $rma \Magento\Rma\Model\Rma
-     */
-    public function getBundleExtraAmount($rma)
-    {
-        $rmaItems = $rma->getItems();
-        $priceDifferences = 0;
-
-        foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
-            if ($orderItem->getProductType() == 'bundle') {
-                /** @var \Magento\Catalog\Model\Product $bundleProduct */
-                $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku(), $orderItem->getStoreId());
-                $bundlePriceType = $bundleProduct->getPriceType();
-
-                if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
-                    foreach ($bundleChildren as $bundleChild) {
-                        $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $bundleChild->getQty();
-                        $originItemPrice = $this->productRepository->get($bundleChild->getSku(), false, $rma->getStoreId())->getPrice();
-                        $bundleChildByOrder = $this->getBundleChildFromOrder($orderItem->getItemId(), $bundleChild->getSku());
-
-                        $priceDifferences += (($originItemPrice - $childPriceRatio) * $rmaItem->getQtyRequested() * $bundleChild->getQty());
-                    }
-                }
-            }
-        }
-        return $priceDifferences;
-    }
 
     /**
      * @param \Magento\Sales\Api\Data\OrderItemInterface $orderItem
