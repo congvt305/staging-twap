@@ -63,7 +63,7 @@ class Index extends Template
         $customer = $this->getCustomer();
         $websiteId = $customer->getWebsiteId();
         $page = ($this->getRequest()->getParam('p')) ? $this->getRequest()->getParam('p') : 1;
-        $pageSize = ($this->getRequest()->getParam('limit')) ? $this->getRequest()->getParam('limit') : 4;
+        $pageSize = ($this->getRequest()->getParam('limit')) ? $this->getRequest()->getParam('limit') : 6;
         $rules->addWebsiteGroupDateFilter($websiteId, $customer->getGroupId())
             ->addFieldToFilter('coupon_type', \Magento\SalesRule\Model\Rule::COUPON_TYPE_SPECIFIC)
             ->addFieldToFilter('is_active', 1)
@@ -82,7 +82,7 @@ class Index extends Template
             $pager = $this->getLayout()->createBlock(
                 Pager::class,
                 'customer.coupon.pager'
-            )->setAvailableLimit([4 => 4, 8 => 8, 12 => 12, 16 => 16])
+            )->setAvailableLimit([6 => 6, 12 => 12, 18 => 18, 24 => 24])
                 ->setShowPerPage(true)->setCollection(
                     $this->getRuleCollection()
                 );
