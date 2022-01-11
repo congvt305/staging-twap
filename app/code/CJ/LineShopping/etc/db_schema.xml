@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order">
+        <column xsi:type="text" name="line_ecid" nullable="true" comment="Line Ecid" />
+        <column xsi:type="text" name="line_utm_source" nullable="true" comment="Line Utm Source" />
+        <column xsi:type="text" name="line_utm_medium" nullable="true" comment="Line Utm Medium" />
+        <column xsi:type="text" name="line_utm_campaign" nullable="true" comment="Line Utm Campaign" />
+        <column xsi:type="boolean" name="is_line_shopping" nullable="false" default="0" comment="Line Shopping Order"/>
+        <column xsi:type="boolean" name="is_send_order_post_back" nullable="false" default="0" comment="Is Send Order Post Back"/>
+        <column xsi:type="boolean" name="is_send_fee_post_back" nullable="false" default="0" comment="Is Send Fee Post Back"/>
+    </table>
+    <table name="sales_order_grid">
+        <column xsi:type="text" name="line_utm_source" nullable="true" comment="Line Utm Source" />
+        <column xsi:type="text" name="line_utm_medium" nullable="true" comment="Line Utm Medium" />
+        <column xsi:type="text" name="line_utm_campaign" nullable="true" comment="Line Utm Campaign" />
+    </table>
+</schema>

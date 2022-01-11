@@ -1,0 +1,310 @@
+<?php
+
+namespace CJ\LineShopping\Model\Export;
+
+use Magento\Catalog\Model\Product;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\InventorySales\Model\IsProductSalableForRequestedQtyCondition\IsSalableWithReservationsCondition;
+use Magento\InventorySalesApi\Api\Data\SalesChannelInterface;
+use Magento\InventorySalesApi\Api\StockResolverInterface;
+use Magento\Framework\Url;
+use Magento\ConfigurableProduct\Api\LinkManagementInterface;
+use Magento\Bundle\Api\ProductLinkManagementInterface;
+
+class ProductAdapter
+{
+    const DEFAULT_BRAND = 'Amore Pacific';
+    const DEFAULT_AGE_GROUP = 'normal';
+    const DEFAULT_IN_STOCK = 'in stock';
+    const DEFAULT_DISCONTINUES = 'discontinued';
+
+    /**
+     * @var string[]
+     */
+    protected $productFeedMapping = [
+        'product_id' => 'sku',
+        'product_name' => 'name',
+        'price' => 'price',
+        'l_description' => 'description',
+        'description' => 'short_description',
+        'image_link' => 'base_image'
+    ];
+
+    /**
+     * @var Url
+     */
+    protected Url $url;
+
+    /**
+     * @var LinkManagementInterface
+     */
+    protected LinkManagementInterface $linkManagement;
+
+    /**
+     * @var IsSalableWithReservationsCondition
+     */
+    protected IsSalableWithReservationsCondition $isSalableWithReservationsCondition;
+
+    /**
+     * @var StockResolverInterface
+     */
+    protected StockResolverInterface $stockResolver;
+
+    /**
+     * @var ProductLinkManagementInterface
+     */
+    protected ProductLinkManagementInterface $productLinkManagement;
+
+    /**
+     * @param Url $url
+     * @param LinkManagementInterface $linkManagement
+     * @param ProductLinkManagementInterface $productLinkManagement
+     * @param IsSalableWithReservationsCondition $isSalableWithReservationsCondition
+     * @param StockResolverInterface $stockResolver
+     */
+    public function __construct(
+        Url $url,
+        LinkManagementInterface $linkManagement,
+        ProductLinkManagementInterface $productLinkManagement,
+        IsSalableWithReservationsCondition $isSalableWithReservationsCondition,
+        StockResolverInterface $stockResolver
+    ) {
+        $this->stockResolver = $stockResolver;
+        $this->isSalableWithReservationsCondition = $isSalableWithReservationsCondition;
+        $this->linkManagement = $linkManagement;
+        $this->productLinkManagement = $productLinkManagement;
+        $this->url = $url;
+    }
+
+    /**
+     * @param $products
+     * @param $website
+     * @return array
+     */
+    public function export($products, $website): array
+    {
+        $listProduct = [];
+        foreach ($products as $product) {
+            try {
+                switch ($product->getTypeId()) {
+                    case 'simple':
+                        $data = $this->getDataFromSimpleProduct($product, $website);
+                        break;
+                    case 'configurable':
+                        $data = $this->getDataFromConfigurableProduct($product, $website);
+                        break;
+                    case 'bundle':
+                        $data = $this->getDataFromBundleProduct($product, $website);
+                        break;
+                    default:
+                        break;
+                }
+                if ($data && count($data) > 0) {
+                    $data['availability'] = self::DEFAULT_IN_STOCK;
+                    $categories = $product->getCategoryIds();
+                    if ($categories) {
+                        $data['product_category_value'] = implode(',', $categories);
+                    }
+                    $data['link'] = $this->getProductUrl($product, $website->getDefaultStore());
+                    $data['age_group'] =  self::DEFAULT_AGE_GROUP;
+                    $data['brand'] =  self::DEFAULT_BRAND;
+                    $listProduct[] = $data;
+                }
+            } catch (\Exception $exception) {
+                //
+            }
+            $data = [];
+
+        }
+        return $listProduct;
+    }
+
+    /**
+     * @param $product
+     * @param $store
+     * @return string
+     */
+    protected function getProductUrl($product, $store): string
+    {
+        if (strpos($product->getProductUrl(), 'catalog/product/view') !== false || strpos($product->getProductUrl(), 'catalog\/product\/view') !== false) {
+            $routeParams = ['_nosid' => true, '_query' => ['___store' => $store->getCode()]];
+
+            $routeParams['id'] = $product->getId();
+            $routeParams['s'] = $product->getUrlKey();
+            $routeParams['_scope'] = $store;
+            $productUrl = $this->url->getUrl('catalog/product/view', $routeParams);
+            return $this->reConstructUrl($productUrl);
+        }
+        $productUrl = $product->getProductUrl();
+        return $this->reConstructUrl($productUrl);
+    }
+
+    /**
+     * Remove url param
+     *
+     * @param string $url
+     * @return string
+     */
+    protected function reConstructUrl($url): string
+    {
+        $url = explode('?', $url);
+        return $url[0];
+    }
+
+    /**
+     * @param $product
+     * @param $website
+     * @return array
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    protected function getDataFromSimpleProduct($product, $website): array
+    {
+        //Ignore product not visible, price = 0 and out of stock
+        if ($product->getVisibility() == 1 || $product->getPrice() == 0 || !$this->getSalableForSimpleProduct($product, $website)) {
+            return [];
+        }
+        $data = [];
+        foreach ($this->productFeedMapping as $key => $value) {
+            $data[$key] = $product->getData($value);
+        }
+        if ($product->getFinalPrice() && $product->getFinalPrice() > 0 && $product->getFinalPrice() < $product->getPrice()) {
+            $data['sale_price'] = $product->getFinalPrice();
+        }
+        return $data;
+    }
+
+    /**
+     * @param $product
+     * @param $website
+     * @return array
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    protected function getDataFromConfigurableProduct($product, $website): array
+    {
+        //Ignore product not visible and out of stock
+        if ($product->getVisibility() == 1 || !$this->getSalableForConfigurableProduct($product, $website)) {
+            return [];
+        }
+        $data = [];
+        foreach ($this->productFeedMapping as $key => $value) {
+            if ($key == 'price') {
+                $price = 0;
+                $childrens = $product->getTypeInstance()->getUsedProducts($product);
+
+                /** @var Product $children */
+                foreach ($childrens as $children) {
+                    if (!$this->getSalableForSimpleProduct($children, $website) || !$children->getStatus()) {
+                        continue;
+                    }
+                    if (!in_array($website->getId(), $children->getWebsiteIds())) {
+                        continue;
+                    }
+                    //get max price from child
+                    if ($price <= 0 || $children->getFinalPrice() > $price) {
+                        $price = $children->getPrice();
+                    }
+                }
+                if ($price == 0) {
+                    return [];
+                }
+                $data['price'] = $price;
+            } else {
+                $data[$key] = $product->getData($value);
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * @param $product
+     * @param $website
+     * @return array
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    protected function getDataFromBundleProduct($product, $website): array
+    {
+        $regularPrice = $product->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue();
+        $specialPrice = $product->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue();
+        //Ignore product not visible and out of stock
+        if ($product->getVisibility() == 1 || $regularPrice == 0 || !$this->getSalableForBundleProduct($product, $website)) {
+            return [];
+        }
+        $data = [];
+        if($specialPrice < $regularPrice && $specialPrice != 0) {
+            $data['sale_price'] = $specialPrice;
+        }
+        foreach ($this->productFeedMapping as $key => $value) {
+            $data[$key] = $product->getData($value);
+        }
+        return $data;
+    }
+
+    /**
+     * @param $product
+     * @param $website
+     * @param int $requestQty
+     * @return bool
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    protected function getSalableForSimpleProduct($product, $website, int $requestQty = 1): bool
+    {
+        $sku = $product->getSku();
+        $stock = $this->stockResolver->execute(SalesChannelInterface::TYPE_WEBSITE, $website->getCode());
+        $stockId = $stock->getStockId();
+        $result = $this->isSalableWithReservationsCondition->execute($sku, $stockId, $requestQty);
+
+        return $result->isSalable();
+    }
+
+    /**
+     * @param $product
+     * @param $website
+     * @return bool
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    protected function getSalableForConfigurableProduct($product, $website): bool
+    {
+        $isSalable = false;
+        $products = $this->linkManagement->getChildren($product->getSku());
+        if ($products) {
+            foreach ($products as $item) {
+                $salable = $this->getSalableForSimpleProduct($item, $website);
+                if ($salable) {
+                    $isSalable = true;
+                    break;
+                }
+            }
+        }
+        return $isSalable;
+    }
+
+    /**
+     * @param $product
+     * @param $website
+     * @return bool
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    protected function getSalableForBundleProduct($product, $website): bool
+    {
+        $isSalable = true;
+        $products = $this->productLinkManagement->getChildren($product->getSku());
+        if ($products) {
+            foreach ($products as $item) {
+                $salable = $this->getSalableForSimpleProduct($item, $website, $item->getQty());
+                if (!$salable) {
+                    $isSalable = false;
+                    break;
+                }
+            }
+        }
+        return $isSalable;
+    }
+}
+
