@@ -44,7 +44,7 @@ class RedemptionUserStatus implements OptionSourceInterface
         $options = [];
         foreach ($availableOptions as $key => $value) {
             $options[] = [
-                'label' => $value,
+                'label' => "$value",
                 'value' => $key,
             ];
         }
