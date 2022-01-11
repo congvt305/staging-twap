@@ -13,7 +13,9 @@ class CustomPrice implements ObserverInterface
         $item = $observer->getEvent()->getData('quote_item');
         $item = ($item->getParentItem() ? $item->getParentItem() : $item);
         $isRedeemableProduct = $item->getData(AddRedemptionAttributes::IS_POINT_REDEEMABLE_ATTRIBUTE_CODE);
-        if ($isRedeemableProduct) {
+        $isPointRedemptionOption = $item->getOptionByCode('is_point_redemption');
+        $isPointRedemption = $isPointRedemptionOption && $isPointRedemptionOption->getValue();
+        if ($isRedeemableProduct && $isPointRedemption) {
             $item->setCustomPrice(0);
             $item->setOriginalCustomPrice(0);
             $item->getProduct()->setIsSuperMode(true);

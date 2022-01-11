@@ -1,0 +1,63 @@
+<?php
+/** @var \CJ\CouponCustomer\Block\Coupon\Index $block */
+?>
+<?php $coupons = $block->getRuleCollection()->load(); ?>
+<div class="block-title">
+    <strong><?= $block->escapeHtml(__('Coupon List')); ?></strong>
+</div>
+<div class="wrapper-container">
+    <?php foreach ($coupons->getItems() as $coupon) : ?>
+        <div class="card-container">
+            <div class="card-main border-scoop">
+                <div class="card-main-image">
+                    <img src="<?php echo $block->getLogo() ?>"/>
+                </div>
+                <div class="card-main-description">
+                    <h3 class="title"><?php echo $coupon['name']; ?></h3>
+                    <?php if ($coupon['simple_action'] == 'by_percent'): ?>
+                        <p class="sub-title"><?= $block->escapeHtml(__('Discount')); echo ': '.floatval($coupon['discount_amount']) . '%'; ?> </p>
+                    <?php elseif ($coupon['simple_action'] == 'cart_fixed' || $coupon['simple_action'] == 'by_fixed'): ?>
+                        <p class="sub-title"><?= $block->escapeHtml(__('Discount')); echo ': '.floatval($coupon['discount_amount']) . $block->getCurrencyCode(); ?></p>
+                    <?php elseif ($coupon['simple_action'] == 'buy_x_get_y'): ?>
+                        <p class="sub-title"><?= $block->escapeHtml(__('Discount')); ?>:<?= $block->escapeHtml(__( 'Buy X get Y')); ?> </p>
+                    <?php else: ?>
+                        <p class="sub-title"><?= $block->escapeHtml(__('Discount')); ?>:<?= $block->escapeHtml(__('Automatically add products to cart')); ?> </p>
+                    <?php endif; ?>
+                    <p class="sub-title"><?= $block->escapeHtml(__('Expiration date')) ; ?>: <?php echo $coupon['to_date'] == null ? 'none' : $coupon['to_date']; ?></p>
+                    <p class="description"><?= $block->escapeHtml(__('Description')) ;echo ': '. $coupon['description'] ?> </p>
+                </div>
+            </div>
+            <div class="outer">
+                <div class="inner">
+                    <div class="content">
+                        <div class="line-break">
+                            <hr class="w-94"/>
+                        </div>
+                        <div class="footer-group">
+                            <div class="d-flex align-items-center coupon-code p-2 ml-1"><?= $block->escapeHtml(__('Coupon code')) ?> <p class="coupon-code-detail"><?php echo $coupon['code']; ?></p></div>
+                            <div class="coupon-button">
+                                <button id="<?php echo $coupon['code'] ?>"> <?= $block->escapeHtml(__('copy')) ?></button>
+                            </div>
+                        </div>
+                    </div>
+                    <i class="bottom right"></i>
+                    <i class="bottom left"></i>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+<?php if ($block->getPagerHtml()) : ?>
+    <div class="ticket-toolbar toolbar bottom table-bottom"><?= $block->getPagerHtml(); ?></div>
+<?php endif ?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "copy-coupon-code":{}
+        }
+    }
+
+</script>
+
+
+

@@ -166,7 +166,11 @@ class GetCompletedOrders
             $payment = $order->getPayment();
             $eInvoiceData = json_decode($payment->getAdditionalData(), true);
 
-            if (!empty($eInvoiceData) && $eInvoiceData["RtnCode"] == 1) {
+            if (in_array($payment->getMethod(), ['ecpay_ecpaypayment', 'linepay_payment'])) {
+                if (!empty($eInvoiceData) && $eInvoiceData["RtnCode"] == 1) {
+                    $completeOrderList[] = $order;
+                }
+            } else {
                 $completeOrderList[] = $order;
             }
         }
@@ -186,7 +190,6 @@ class GetCompletedOrders
                         $order->setStatus('complete');
                         $order->setState('complete');
                         $this->orderRepository->save($order);
-                        $this->posOrderSend($order);
                     }
                 }
             }
@@ -218,7 +221,7 @@ class GetCompletedOrders
                     $status = $this->request->responseCheck($response, $websiteId);
 
                     if ($status) {
-                        $this->posOrderData->updatePosSendCheck($order->getEntityId());
+                        $this->posOrderData->updatePosPaidOrderSendFlag($order);
                     }
                 } catch (NoSuchEntityException $exception) {
                     $this->pointsIntegrationLogger->info("===== NO SUCH ENTITY EXCEPTION =====");

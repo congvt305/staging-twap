@@ -16439,3 +16439,6 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Expiry dater","Ngày hết hạn"
 "We apologize, but your free gift <strong>%1</strong> is not available at the moment","Xin lỗi, sản phẩm <strong>%1</strong> đã hết hàng!"
 "The payment is REFUSED.","Vui lòng thử lại sau !"
+"Please login into your account to continue shopping","Vui lòng đăng nhập để tiếp tục đổi thưởng"
+"Point service is not available now, please try later. Sorry for the inconvenient","Lỗi hệ thống, vui lòng thử lại sau"
+"Your point balance is insufficient.","Điểm tích luỹ thành viên của bạn không đủ để đổi quà"

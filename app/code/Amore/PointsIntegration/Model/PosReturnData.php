@@ -9,6 +9,7 @@
 namespace Amore\PointsIntegration\Model;
 
 use Amore\PointsIntegration\Model\Source\Config;
+use CJ\PointRedemption\Setup\Patch\Data\AddRedemptionAttributes;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
@@ -23,6 +24,7 @@ use Magento\Rma\Api\Data\RmaInterface;
 use Magento\Rma\Api\RmaRepositoryInterface;
 use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Item;
 use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
@@ -195,6 +197,7 @@ class PosReturnData
         $itemsSubtotal = 0;
         $itemsDiscountAmount = 0;
         $itemsGrandTotal = 0;
+        $itemsPointTotal = 0;
 
         foreach ($rmaItems as $rmaItem) {
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
@@ -205,6 +208,7 @@ class PosReturnData
                     + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested())));
                 $stripSku = str_replace($skuPrefix, '', $orderItem->getSku());
                 $isRedemptionItem = $orderItem->getData('is_point_redeemable');
+                $pointAccount = $orderItem->getQtyOrdered() * $orderItem->getData('point_redemption_amount');
 
                 $rmaItemData[] = [
                     'prdCD' => $stripSku,
@@ -214,12 +218,13 @@ class PosReturnData
                     'dcAmt' => (int)$itemTotalDiscount,
                     'netSalAmt' => (int)$itemGrandTotal,
                     'redemptionFlag' => $isRedemptionItem ? 'Y' : 'N',
-                    'pointAccount' => (int)$orderItem->getData('point_redemption_amount')
+                    'pointAccount' => (int)$pointAccount
                 ];
 
                 $itemsSubtotal += $itemSubtotal;
                 $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount);
                 $itemsDiscountAmount += $itemTotalDiscount;
+                $itemsPointTotal += $pointAccount;
             } else {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
@@ -227,9 +232,6 @@ class PosReturnData
                 $bundlePriceType = $bundleProduct->getPriceType();
                 $isRedemptionItem = $orderItem->getData('is_point_redeemable');
                 $totalPointAmount = $orderItem->getData('point_redemption_amount') * $orderItem->getQtyOrdered();
-                $pointAccount = 0;
-                $totalPointAccount = 0;
-                $childNumber = 0;
 
                 foreach ($bundleChildren as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
@@ -257,16 +259,9 @@ class PosReturnData
                     ));
                     $stripSku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
 
+                    $pointAccount = 0;
                     if ($isRedemptionItem) {
-                        $childNumber++;
-                        if ($childNumber == count($bundleChildren)) {
-                            $pointAccount = ($totalPointAmount - $totalPointAccount) /
-                                $bundleChildFromOrder->getQtyOrdered();
-                        } else {
-                            $pointAccount = $this->getPointAccount($orderItem);
-                        }
-                        $totalPointAccount = $totalPointAccount +
-                            ($pointAccount * $bundleChildFromOrder->getQtyOrdered());
+                        $pointAccount = $totalPointAmount / count($bundleChildren);
                     }
 
                     $rmaItemData[] = [
@@ -283,16 +278,19 @@ class PosReturnData
                     $itemsSubtotal += $itemSubtotal;
                     $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount);
                     $itemsDiscountAmount += $itemTotalDiscount;
+                    $itemsPointTotal += (int)$pointAccount;
                 }
             }
         }
         $orderSubtotal = round($this->getRmaSubtotal($rma));
         $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($this->getRmaGrandTotal($rma));
         $orderDiscountAmount = round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma));
+        $orderPointTotal = $this->getOrderPointTotal($order);
 
         $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'salAmt');
         $rmaItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'dcAmt');
         $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'netSalAmt');
+        $rmaItemData = $this->priceCorrector($orderPointTotal, $itemsPointTotal, $rmaItemData, 'pointAccount');
 
         return $rmaItemData;
     }
@@ -396,6 +394,23 @@ class PosReturnData
             }
         }
         return $subtotal;
+    }
+
+    /**
+     * @param Order $order
+     * @return float|int
+     */
+    public function getOrderPointTotal(Order $order)
+    {
+        $pointTotal = 0;
+        $orderItems = $order->getAllVisibleItems();
+        foreach ($orderItems as $item) {
+            if ($item->getData(AddRedemptionAttributes::IS_POINT_REDEEMABLE_ATTRIBUTE_CODE)) {
+                $pointTotal += $item->getData(AddRedemptionAttributes::POINT_REDEMPTION_AMOUNT_ATTRIBUTE_CODE)
+                    * $item->getQtyOrdered();
+            }
+        }
+        return $pointTotal;
     }
 
     /**

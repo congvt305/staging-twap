@@ -12,4 +12,6 @@ interface RmaInterface
     const ORDER_ID = 'order_id';
     const SHIPPING_METHOD_NUMBER = 'shipping_method_number';
     const PAYMENT_METHOD = 'payment_method';
+
+    const ENTITY_TYPE = 'cj_rma';
 }

@@ -3,7 +3,6 @@
 namespace CJ\DataExport\Model;
 
 use Magento\Framework\Exception\LocalizedException;
-use Magento\ImportExport\Model\Export\Adapter\AbstractAdapter;
 
 /**
  * Class Export
@@ -36,9 +35,9 @@ class Export extends \Amore\GcrmDataExport\Model\Export
     protected $dataPersistor;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $tableEntity;
+    protected $fileFormats;
 
     /**
      * @var \Magento\Framework\ObjectManagerInterface
@@ -65,6 +64,9 @@ class Export extends \Amore\GcrmDataExport\Model\Export
      * @param array $data
      */
     public function __construct(
+        \CJ\DataExport\Model\Export\Adapter\OrderCsv $orderCsv,
+        \CJ\DataExport\Model\Export\Adapter\RedemptionCsv $redemptionCsv,
+        \CJ\DataExport\Model\Export\Adapter\RmaCsv $rmaCsv,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Framework\Serialize\SerializerInterface $serializer,
@@ -97,6 +99,10 @@ class Export extends \Amore\GcrmDataExport\Model\Export
         $this->dataPersistor = $dataPersistor;
         $this->objectManager = $objectManager;
         $this->collectionFactory = $collectionFactory;
+        $this->cjRmaWriter = $rmaCsv;
+        $this->cjOrderWriter = $orderCsv;
+        $this->cjRedemptionWriter = $redemptionCsv;
+        $this->fileFormats = $this->_exportConfig->getFileFormats();
     }
 
     /**
@@ -104,23 +110,40 @@ class Export extends \Amore\GcrmDataExport\Model\Export
      */
     public function export()
     {
-        $entityName = $this->getEntity();
-
-        if ($entityName == self::ENTITY_REDEMPTION) {
-            $this->tableEntity = self::ENTITY_REDEMPTION;
-            $adapter = $this->getCjRedemptionWriter();
-            return $this->_getEntityAdapter()->setRedemptionWriter($adapter)->export();
-        } elseif ($entityName == self::ENTITY_RMA) {
-            $this->tableEntity = self::ENTITY_RMA;
-            $adapter = $this->getCjRmaWriter();
-            return $this->_getEntityAdapter()->setRmaWriter($adapter)->export();
-        } elseif ($entityName == self::ENTITY_ORDER) {
-            $this->tableEntity = self::ENTITY_ORDER;
-            $adapter = $this->getCjOrderWriter();
-            return $this->_getEntityAdapter()->setOrderWriter($adapter)->export();
-        } else {
-            return parent::export();
+        if (!isset($this->_data[self::FILTER_ELEMENT_GROUP])) {
+            throw new LocalizedException(__('Please provide filter data.'));
         }
+
+        switch ($this->getEntity()) {
+            case self::ENTITY_REDEMPTION:
+            case self::ENTITY_RMA:
+            case self::ENTITY_ORDER:
+                $this->_logger->log('info', __('Begin export of %1', $this->getEntity()));
+                $fileFormat = $this->getFileFormat();
+                if (!isset($this->fileFormats[$fileFormat])) {
+                    throw new LocalizedException(__('Please correct the file format.'));
+                }
+                $adapter = $this->returnExport($this->fileFormats[$fileFormat]['model']);
+                $entityAdapter = $this->_getEntityAdapter()->setWriter($adapter);
+
+                $result = $entityAdapter->export();
+                if (!$result) {
+                    return false;
+                }
+                $countRows = substr_count(trim($result), "\n");
+                if (!$countRows) {
+                    throw new LocalizedException(__('There is no data for the export.'));
+                }
+                if ($result) {
+                    $this->_logger->log('info', __('Exported %1 rows.', $countRows));
+                    $this->_logger->log('info', __('The export is finished.'));
+                }
+                break;
+            default:
+                $result = parent::export();
+        }
+
+        return $result;
     }
 
     /**
@@ -128,121 +151,16 @@ class Export extends \Amore\GcrmDataExport\Model\Export
      */
     public function returnExport($className)
     {
-        $entity = $this->getEntity();
-        if ($entity == self::ENTITY_REDEMPTION) {
-            return $this->objectManager->create(\CJ\DataExport\Model\Export\Adapter\RedemptionCsv::class);
-        } elseif ($entity == self::ENTITY_RMA) {
-            return $this->objectManager->create(\CJ\DataExport\Model\Export\Adapter\RmaCsv::class);
-        } elseif ($entity == self::ENTITY_ORDER) {
-            return $this->objectManager->create(\CJ\DataExport\Model\Export\Adapter\OrderCsv::class);
-        } else {
-            return parent::returnExport($className);
+        switch ($this->getEntity()) {
+            case self::ENTITY_REDEMPTION:
+                return $this->cjRedemptionWriter;
+            case self::ENTITY_RMA:
+                return $this->cjRmaWriter;
+            case self::ENTITY_ORDER:
+                return $this->cjOrderWriter;
+            default:
+                return parent::returnExport($className);
         }
-    }
-
-    /**
-     * @return \CJ\DataExport\Model\Export\Adapter\RmaCsv
-     * @throws LocalizedException
-     */
-    protected function getCjRmaWriter()
-    {
-        if (!$this->cjRmaWriter) {
-            $fileFormats = $this->_exportConfig->getFileFormats();
-
-            if (isset($fileFormats[$this->getFileFormat()])) {
-                try {
-                    $this->cjRmaWriter = $this->returnExport($fileFormats[$this->getFileFormat()]['model']);
-                } catch (\Exception $e) {
-                    $this->_logger->critical($e);
-                    throw new LocalizedException(
-                        __('Please enter a correct entity model.')
-                    );
-                }
-
-                if (!$this->cjRmaWriter instanceof AbstractAdapter) {
-                    throw new LocalizedException(
-                        __(
-                            'The adapter object must be an instance of %1.',
-                            AbstractAdapter::class
-                        )
-                    );
-                }
-            } else {
-                throw new LocalizedException(__('Please correct the file format.'));
-            }
-        }
-
-        return $this->cjRmaWriter;
-    }
-
-    /**
-     * @return \CJ\DataExport\Model\Export\Adapter\OrderCsv
-     * @throws LocalizedException
-     */
-    public function getCjOrderWriter()
-    {
-        if (!$this->cjOrderWriter) {
-            $fileFormats = $this->_exportConfig->getFileFormats();
-
-            if (isset($fileFormats[$this->getFileFormat()])) {
-                try {
-                    $this->cjOrderWriter = $this->returnExport($fileFormats[$this->getFileFormat()]['model']);
-                } catch (\Exception $e) {
-                    $this->_logger->critical($e);
-                    throw new LocalizedException(
-                        __('Please enter a correct entity model.')
-                    );
-                }
-
-                if (!$this->cjOrderWriter instanceof AbstractAdapter) {
-                    throw new LocalizedException(
-                        __(
-                            'The adapter object must be an instance of %1.',
-                            AbstractAdapter::class
-                        )
-                    );
-                }
-            } else {
-                throw new LocalizedException(__('Please correct the file format.'));
-            }
-        }
-
-        return $this->cjOrderWriter;
-    }
-
-    /**
-     * @return \CJ\DataExport\Model\Export\Adapter\RedemptionCsv
-     * @throws LocalizedException
-     */
-    protected function getCjRedemptionWriter()
-    {
-        if (!$this->cjRedemptionWriter) {
-            $fileFormats = $this->_exportConfig->getFileFormats();
-
-            if (isset($fileFormats[$this->getFileFormat()])) {
-                try {
-                    $this->cjRedemptionWriter = $this->returnExport($fileFormats[$this->getFileFormat()]['model']);
-                } catch (\Exception $e) {
-                    $this->_logger->critical($e);
-                    throw new LocalizedException(
-                        __('Please enter a correct entity model.')
-                    );
-                }
-
-                if (!$this->cjRedemptionWriter instanceof AbstractAdapter) {
-                    throw new LocalizedException(
-                        __(
-                            'The adapter object must be an instance of %1.',
-                            AbstractAdapter::class
-                        )
-                    );
-                }
-            } else {
-                throw new LocalizedException(__('Please correct the file format.'));
-            }
-        }
-
-        return $this->cjRedemptionWriter;
     }
 
     /**
@@ -252,36 +170,25 @@ class Export extends \Amore\GcrmDataExport\Model\Export
     public function updateExportTable($lastOrderItem = '')
     {
         $runDate = $lastOrderItem ?: ($this->getRunDate() ?: null);
-        $date = $this->_dateModel->date('Y-m-d H:i:s', $runDate);
 
-        if ($this->tableEntity == self::ENTITY_ORDER) {
-            $this->_updateExportTable(self::ENTITY_ORDER, $date);
-        } elseif ($this->tableEntity == self::ENTITY_RMA) {
-            $this->_updateExportTable(self::ENTITY_RMA, $date);
-        } elseif ($this->tableEntity == self::ENTITY_REDEMPTION) {
-            $this->_updateExportTable(self::ENTITY_REDEMPTION, $date);
-        } else {
-            parent::updateExportTable($lastOrderItem);
+        $entity = $this->getEntity();
+
+        switch ($entity) {
+            case self::ENTITY_ORDER:
+            case self::ENTITY_RMA:
+            case self::ENTITY_REDEMPTION:
+                $date = $this->_dateModel->date('Y-m-d H:i:s', $runDate);
+                $this->collectionFactory
+                    ->create()
+                    ->addFieldToFilter('entity_code', ['eq' => $entity])
+                    ->getFirstItem()
+                    ->setData('last_status', 1)
+                    ->setData('updated_at', $date)
+                    ->save();
+                break;
+            default:
+                parent::updateExportTable($lastOrderItem);
         }
     }
 
-    /**
-     * @param string $entityName
-     * @param string $date
-     * @return void
-     */
-    protected function _updateExportTable($entityName, $date)
-    {
-        try {
-            $customExportData = $this->collectionFactory
-                ->create()
-                ->addFieldToFilter('entity_code', ['eq' => $entityName])
-                ->getFirstItem();
-            $customExportData->setData('last_status', 1);
-            $customExportData->setData('updated_at', $date);
-            $customExportData->save();
-        } catch (\Exception $e) {
-            $this->_logger->log('info', $e->getMessage());
-        }
-    }
 }
