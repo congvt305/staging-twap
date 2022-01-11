@@ -1,0 +1,17 @@
+<?php
+/** @var \CJ\LineShopping\ViewModel\LineData $viewModel */
+$viewModel = $block->getData('view_model');
+$ecid = $viewModel->getParamEcidValue();
+$lineInfo = $viewModel->getParamLineInfoValue();
+if ($ecid) { ?>
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "CJ_LineShopping/js/line-shopping": {
+                "lineEcid": "<?= /* @noEscape */ $ecid ?>",
+                "lineInfo": "<?= /* @noEscape */ $block->escapeJs($lineInfo) ?>"
+            }
+        }
+    }
+    </script>
+<?php } ?>
