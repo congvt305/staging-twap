@@ -181,7 +181,7 @@ class ConvertToXls
             if ($item->getRedemptionId() == $redemptionId) {
                 $status = $item->getStatus();
                 $availableStatuses = $this->counterModel->getAvailableStatuses();
-                $item->setStatus($availableStatuses[$status]);
+                $item->setStatus($status);
                 $filteredItems[] = $item;
             }
         }
