@@ -88,7 +88,7 @@ class ExportPartialProduct
                     $products = $this->productCollectionFactory->create()
                         ->addAttributeToSelect('*')
                         ->addAttributeToFilter('status', \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED)
-                        ->addAttributeToFilter('is_modify', true)
+                        ->addAttributeToFilter('line_sync_status', true)
                         ->addWebsiteFilter($website->getId());
                     $listProduct = $this->productAdapter->export($products, $website);
                     $this->feedOutput->createJsonFile(self::TYPE_EXPORT, $website->getId(), $listProduct);
@@ -120,7 +120,7 @@ class ExportPartialProduct
                 $ids[$i] = $product->getEntityId();
                 $i++;
             }
-            $this->productAction->updateAttributes($ids, array('is_modify' => false), $storeId);
+            $this->productAction->updateAttributes($ids, array('line_sync_status' => false), $storeId);
         } catch (Exception $exception) {
             $this->logger->addError(Logger::EXPORT_FEED_DATA,
                 [

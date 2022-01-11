@@ -42,7 +42,7 @@ class AddFlagModifyProductAttribute implements DataPatchInterface
         /** @var EavSetup $eavSetup */
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
 
-        $eavSetup->addAttribute('catalog_product', 'is_modify', [
+        $eavSetup->addAttribute('catalog_product', 'line_sync_status', [
             'type' => 'int',
             'label' => 'Is Modify',
             'input' => 'boolean',
