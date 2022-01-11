@@ -66,7 +66,7 @@ class FeePostBack
         $orderColelction = $this->orderCollectionFactory->create()
             ->addFieldToSelect('*')
             ->addFieldToFilter('is_line_shopping', 1)
-            ->addFieldToFilter('is_send_fee_post_back', 0);
+            ->addFieldToFilter(DataHelper::IS_SENT_FEE_POST_BACK, 0);
         $trialPeriod = $this->config->getTrialPeriod();
 
         /** @var Order $order */
@@ -79,7 +79,7 @@ class FeePostBack
                     $result = $this->lineShoppingApi->feePostBack($order);
                     if ($result == LineShoppingApi::LINE_SHOPPING_SUCCESS_MESSAGE) {
                         $this->dataHelper->updateOrderHistory($result, $order, 'fee');
-                        $this->dataHelper->updateOrderData($order, 'is_send_fee_post_back', 1);
+                        $this->dataHelper->updateOrderData($order, DataHelper::IS_SENT_FEE_POST_BACK, 1);
                     }
                 }
             } catch (\Exception $exception) {

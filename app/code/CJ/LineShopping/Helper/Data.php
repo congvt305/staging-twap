@@ -5,7 +5,6 @@ namespace CJ\LineShopping\Helper;
 use Magento\Framework\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem\Io\File;
 use Magento\Framework\Filesystem\Driver\File as FileDriver;
-use Magento\Framework\App\Filesystem\DirectoryList as DirectoryListApp;
 use Magento\Framework\Stdlib\CookieManagerInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
@@ -19,6 +18,9 @@ class Data
         'utm_medium'
     ];
     const TIME_FORMAT_YMDHIS = 'Y-m-d H:i:s';
+    const IS_LINE_SHOPPING = 'is_line_shopping';
+    const IS_SENT_FEE_POST_BACK = 'is_sent_fee_post_back';
+    const IS_SENT_ORDER_POST_BACK = 'is_sent_order_post_back';
 
     /**
      * @var DirectoryList

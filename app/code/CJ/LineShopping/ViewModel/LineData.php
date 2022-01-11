@@ -42,7 +42,7 @@ class LineData implements ArgumentInterface
     /**
      * @return mixed
      */
-    public function getParamLineInfoalue()
+    public function getParamLineInfoValue()
     {
         $data = $this->request->getParams();
         $dataLine = [];
