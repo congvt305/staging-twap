@@ -129,7 +129,7 @@ class GridToCsv extends Action
                 if ($document->getRedemptionId() == $redemptionId) {
                     $status = $document->getStatus();
                     $availableStatuses = $this->counterModel->getAvailableStatuses();
-                    $document->setStatus($availableStatuses[$status]);
+                    $document->setStatus($status);
                     $this->metadataProvider->convertDate($document, $component->getName());
                     $stream->writeCsv($this->metadataProvider->getRowData($document, $fields, $options));
                 }
