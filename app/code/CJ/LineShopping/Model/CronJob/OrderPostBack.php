@@ -56,8 +56,8 @@ class OrderPostBack
         /** @var OrderCollectionFactory $orderColelction */
         $orderCollection = $this->orderCollectionFactory->create()
             ->addFieldToSelect('*')
-            ->addFieldToFilter('is_line_shopping', 1)
-            ->addFieldToFilter('is_send_order_post_back', 0);
+            ->addFieldToFilter(DataHelper::IS_LINE_SHOPPING, 1)
+            ->addFieldToFilter(DataHelper::IS_SENT_ORDER_POST_BACK, 0);
 
         /** @var Order $order */
         foreach ($orderCollection as $order) {
@@ -66,7 +66,7 @@ class OrderPostBack
                     $result = $this->lineShoppingApi->orderPostBack($order);
                     if ($result == LineShoppingApi::LINE_SHOPPING_SUCCESS_MESSAGE) {
                         $this->dataHelper->updateOrderHistory($result, $order, 'order');
-                        $this->dataHelper->updateOrderData($order, 'is_send_order_post_back', 1);
+                        $this->dataHelper->updateOrderData($order, DataHelper::IS_SENT_ORDER_POST_BACK, 1);
                     }
                 }
             } catch (\Exception $exception) {
