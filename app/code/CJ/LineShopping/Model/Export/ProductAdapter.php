@@ -110,7 +110,7 @@ class ProductAdapter
                         break;
                 }
                 if ($data && count($data) > 0) {
-                    $data['price'] = '' . round($data['price']);
+                    $data['price'] = (string)round($data['price']);
                     $data['image_link'] = $this->getImageLinkProduct($product, $website);
                     $data['availability'] = self::DEFAULT_IN_STOCK;
                     $categories = $product->getCategoryIds();
@@ -173,7 +173,7 @@ class ProductAdapter
      */
     public function getImageLinkProduct($product, $website): string
     {
-        return $website->getDefaultStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' .$product->getImage();
+        return $website->getDefaultStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $product->getImage();
     }
 
     /**
@@ -194,7 +194,7 @@ class ProductAdapter
             $data[$key] = $product->getData($value);
         }
         if ($product->getFinalPrice() && $product->getFinalPrice() > 0 && $product->getFinalPrice() < $product->getPrice()) {
-            $data['sale_price'] = '' . round($product->getFinalPrice());
+            $data['sale_price'] = (string)round($product->getFinalPrice());
         }
         return $data;
     }
@@ -259,7 +259,7 @@ class ProductAdapter
         }
         $data = [];
         if($specialPrice < $regularPrice && $specialPrice != 0) {
-            $data['sale_price'] = '' . round($specialPrice);
+            $data['sale_price'] = (string)round($specialPrice);
         }
         foreach ($this->productFeedMapping as $key => $value) {
             $data[$key] = $product->getData($value);
