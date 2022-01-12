@@ -76,7 +76,7 @@ class ExportFullCategory
         foreach ($this->storeManager->getWebsites() as $website) {
             if ($this->config->isEnable($website->getId())) {
                 try {
-                    $parentId = $this->storeManager->getStore()->getRootCategoryId();
+                    $parentId = $website->getDefaultStore()->getRootCategoryId();
                     $categories = $this->categoryFactory->create()->getCategories($parentId, 0, false, true);
                     $listCategory = $this->categoryAdapter->export($categories, $parentId);
                     $this->feedOutput->createJsonFile(self::TYPE_EXPORT, $website->getId(), $listCategory);
