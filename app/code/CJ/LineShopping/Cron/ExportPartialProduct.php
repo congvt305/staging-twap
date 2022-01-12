@@ -1,6 +1,6 @@
 <?php
 
-namespace CJ\LineShopping\Model\CronJob;
+namespace CJ\LineShopping\Cron;
 
 use CJ\LineShopping\Logger\Logger;
 use CJ\LineShopping\Model\Export\ProductAdapter;
@@ -8,11 +8,12 @@ use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductColl
 use Magento\Store\Model\StoreManagerInterface;
 use CJ\LineShopping\Helper\Config;
 use CJ\LineShopping\Model\FileSystem\FeedOutput;
+use Magento\Catalog\Model\Product\Action as ProductAction;
 use Exception;
 
-class ExportFullProduct
+class ExportPartialProduct
 {
-    const TYPE_EXPORT = 'full_product';
+    const TYPE_EXPORT = 'partial_product';
 
     /**
      * @var ProductCollectionFactory
@@ -40,12 +41,18 @@ class ExportFullProduct
     protected FeedOutput $feedOutput;
 
     /**
+     * @var ProductAction
+     */
+    protected ProductAction $productAction;
+
+    /**
      * @var Logger
      */
     protected Logger $logger;
 
     /**
      * @param Logger $logger
+     * @param ProductAction $productAction
      * @param FeedOutput $feedOutput
      * @param Config $config
      * @param StoreManagerInterface $storeManager
@@ -54,6 +61,7 @@ class ExportFullProduct
      */
     public function __construct(
         Logger $logger,
+        ProductAction $productAction,
         FeedOutput $feedOutput,
         Config $config,
         StoreManagerInterface $storeManager,
@@ -61,6 +69,7 @@ class ExportFullProduct
         ProductCollectionFactory $productCollectionFactory
     ) {
         $this->logger = $logger;
+        $this->productAction = $productAction;
         $this->feedOutput = $feedOutput;
         $this->config = $config;
         $this->storeManager = $storeManager;
@@ -69,7 +78,7 @@ class ExportFullProduct
     }
 
     /**
-     * Execute export full product
+     * Execute export partial product
      */
     public function execute()
     {
@@ -78,10 +87,12 @@ class ExportFullProduct
                 try {
                     $products = $this->productCollectionFactory->create()
                         ->addAttributeToSelect('*')
-                        ->addAttributeToFilter('status',\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED)
+                        ->addAttributeToFilter('status', \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED)
+                        ->addAttributeToFilter('line_sync_status', true)
                         ->addWebsiteFilter($website->getId());
                     $listProduct = $this->productAdapter->export($products, $website);
                     $this->feedOutput->createJsonFile(self::TYPE_EXPORT, $website->getId(), $listProduct);
+                    $this->updateModifyProduct($products, $website->getDefaultStore()->getId());
                 } catch (Exception $exception) {
                     $this->logger->addError(Logger::EXPORT_FEED_DATA,
                         [
@@ -92,6 +103,31 @@ class ExportFullProduct
                     continue;
                 }
             }
+        }
+    }
+
+    /**
+     * @param $products
+     * @param $storeId
+     * @return void
+     */
+    public function updateModifyProduct($products, $storeId)
+    {
+        try {
+            $ids = [];
+            $i = 0;
+            foreach ($products as $product) {
+                $ids[$i] = $product->getEntityId();
+                $i++;
+            }
+            $this->productAction->updateAttributes($ids, array('line_sync_status' => false), $storeId);
+        } catch (Exception $exception) {
+            $this->logger->addError(Logger::EXPORT_FEED_DATA,
+                [
+                    'type' => self::TYPE_EXPORT,
+                    'message' => $exception->getMessage()
+                ]
+            );
         }
     }
 }

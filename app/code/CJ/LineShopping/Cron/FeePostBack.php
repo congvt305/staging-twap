@@ -1,6 +1,6 @@
 <?php
 
-namespace CJ\LineShopping\Model\CronJob;
+namespace CJ\LineShopping\Cron;
 
 use CJ\LineShopping\Model\Rest\Api as LineShoppingApi;
 use Magento\Sales\Model\Order;
@@ -75,7 +75,7 @@ class FeePostBack
                 $current = new \DateTime(date(DataHelper::TIME_FORMAT_YMDHIS));
                 $orderCreatedAt = new \DateTime($order->getCreatedAt());
                 $interval = $current->diff($orderCreatedAt);
-                if ($interval->days >= $trialPeriod && $this->dataHelper->verifyOrderSendToLine($order)) {
+                if ($interval->days >= $trialPeriod && $this->dataHelper->isValidToFeePostBack($order)) {
                     $result = $this->lineShoppingApi->feePostBack($order);
                     if ($result == LineShoppingApi::LINE_SHOPPING_SUCCESS_MESSAGE) {
                         $this->dataHelper->updateOrderHistory($result, $order, 'fee');

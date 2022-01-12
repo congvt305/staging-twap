@@ -15,4 +15,13 @@
             </argument>
         </arguments>
     </type>
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns">
+                <item name="line_utm_source" xsi:type="string">sales_order.line_utm_source</item>
+                <item name="line_utm_medium" xsi:type="string">sales_order.line_utm_medium</item>
+                <item name="line_utm_campaign" xsi:type="string">sales_order.line_utm_campaign</item>
+            </argument>
+        </arguments>
+    </virtualType>
 </config>
