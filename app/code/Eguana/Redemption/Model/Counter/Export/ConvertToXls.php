@@ -179,9 +179,10 @@ class ConvertToXls
         foreach ($searchResultItems as $item) {
             /** @var Counter $item */
             if ($item->getRedemptionId() == $redemptionId) {
-                $status = $item->getStatus();
+                // Remove below code because Magento 2.4.3 change logic for options
+                /*$status = $item->getStatus();
                 $availableStatuses = $this->counterModel->getAvailableStatuses();
-                $item->setStatus($status);
+                $item->setStatus($availableStatuses[$status]);*/
                 $filteredItems[] = $item;
             }
         }
