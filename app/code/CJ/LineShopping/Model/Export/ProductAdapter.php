@@ -11,6 +11,8 @@ use Magento\InventorySalesApi\Api\StockResolverInterface;
 use Magento\Framework\Url;
 use Magento\ConfigurableProduct\Api\LinkManagementInterface;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
+use CJ\LineShopping\Logger\Logger;
+use Magento\Framework\UrlInterface;
 
 class ProductAdapter
 {
@@ -27,8 +29,7 @@ class ProductAdapter
         'product_name' => 'name',
         'price' => 'price',
         'l_description' => 'description',
-        'description' => 'short_description',
-        'image_link' => 'base_image'
+        'description' => 'short_description'
     ];
 
     /**
@@ -57,6 +58,12 @@ class ProductAdapter
     protected ProductLinkManagementInterface $productLinkManagement;
 
     /**
+     * @var Logger
+     */
+    protected Logger $logger;
+
+    /**
+     * @param Logger $logger
      * @param Url $url
      * @param LinkManagementInterface $linkManagement
      * @param ProductLinkManagementInterface $productLinkManagement
@@ -64,12 +71,14 @@ class ProductAdapter
      * @param StockResolverInterface $stockResolver
      */
     public function __construct(
+        Logger $logger,
         Url $url,
         LinkManagementInterface $linkManagement,
         ProductLinkManagementInterface $productLinkManagement,
         IsSalableWithReservationsCondition $isSalableWithReservationsCondition,
         StockResolverInterface $stockResolver
     ) {
+        $this->logger = $logger;
         $this->stockResolver = $stockResolver;
         $this->isSalableWithReservationsCondition = $isSalableWithReservationsCondition;
         $this->linkManagement = $linkManagement;
@@ -101,6 +110,8 @@ class ProductAdapter
                         break;
                 }
                 if ($data && count($data) > 0) {
+                    $data['price'] = '' . round($data['price']);
+                    $data['image_link'] = $this->getImageLinkProduct($product, $website);
                     $data['availability'] = self::DEFAULT_IN_STOCK;
                     $categories = $product->getCategoryIds();
                     if ($categories) {
@@ -112,10 +123,14 @@ class ProductAdapter
                     $listProduct[] = $data;
                 }
             } catch (\Exception $exception) {
-                //
+                $this->logger->error(Logger::EXPORT_FEED_DATA,
+                    [
+                        'type' => 'Get Data Export',
+                        'message' => $exception->getMessage()
+                    ]
+                );
             }
             $data = [];
-
         }
         return $listProduct;
     }
@@ -129,7 +144,6 @@ class ProductAdapter
     {
         if (strpos($product->getProductUrl(), 'catalog/product/view') !== false || strpos($product->getProductUrl(), 'catalog\/product\/view') !== false) {
             $routeParams = ['_nosid' => true, '_query' => ['___store' => $store->getCode()]];
-
             $routeParams['id'] = $product->getId();
             $routeParams['s'] = $product->getUrlKey();
             $routeParams['_scope'] = $store;
@@ -155,6 +169,16 @@ class ProductAdapter
     /**
      * @param $product
      * @param $website
+     * @return string
+     */
+    public function getImageLinkProduct($product, $website): string
+    {
+        return $website->getDefaultStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' .$product->getImage();
+    }
+
+    /**
+     * @param $product
+     * @param $website
      * @return array
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -170,7 +194,7 @@ class ProductAdapter
             $data[$key] = $product->getData($value);
         }
         if ($product->getFinalPrice() && $product->getFinalPrice() > 0 && $product->getFinalPrice() < $product->getPrice()) {
-            $data['sale_price'] = $product->getFinalPrice();
+            $data['sale_price'] = '' . round($product->getFinalPrice());
         }
         return $data;
     }
@@ -235,7 +259,7 @@ class ProductAdapter
         }
         $data = [];
         if($specialPrice < $regularPrice && $specialPrice != 0) {
-            $data['sale_price'] = $specialPrice;
+            $data['sale_price'] = '' . round($specialPrice);
         }
         foreach ($this->productFeedMapping as $key => $value) {
             $data[$key] = $product->getData($value);

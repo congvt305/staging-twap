@@ -8,6 +8,7 @@ use Magento\Framework\Encryption\EncryptorInterface;
 class Config
 {
     const XML_PATH_LINE_ENABLE = 'line_shopping/general/enable';
+    const XML_PATH_LINE_COOKIE_LIFETIME = 'line_shopping/general/cookie_lifetime';
     const XML_PATH_LINE_TRIAL_PERIOD = 'line_shopping/general/trial_period';
     const XML_PATH_LINE_API = 'line_shopping/api/';
     const XML_PATH_LINE_STORE = 'line_shopping/setting/filepath';
@@ -62,6 +63,15 @@ class Config
     public function isEnable($websiteId = null)
     {
         return $this->getConfig(self::XML_PATH_LINE_ENABLE, $websiteId);
+    }
+
+    /**
+     * @param $websiteId
+     * @return mixed
+     */
+    public function getCookieLifeTime($websiteId = null)
+    {
+        return $this->getConfig(self::XML_PATH_LINE_COOKIE_LIFETIME, $websiteId);
     }
 
     /**

@@ -8,15 +8,15 @@ define([
         options: {
             cookieEcidName: 'line_ecid',
             cookieLineInfoName: 'line-information',
-            cookieLifeTime: 1,
+            cookieLifeTime: 24,
             lineEcid: '',
             lineInfo: ''
         },
         _init: function() {
             let self = this;
             if (this._isCookieSet ('line_ecid') !== "1" )  {
-                    self._setCookie(self.options.cookieEcidName, self.options.lineEcid, self.options.cookieLifeTime);
-                    self._setCookie(self.options.cookieLineInfoName, self.options.lineInfo, self.options.cookieLifeTime);
+                self._setCookie(self.options.cookieEcidName, self.options.lineEcid, self.options.cookieLifeTime);
+                self._setCookie(self.options.cookieLineInfoName, self.options.lineInfo, self.options.cookieLifeTime);
             }
         },
 
@@ -24,13 +24,13 @@ define([
          * Set cookie
          * @param name
          * @param value
-         * @param days
+         * @param hours
          * @returns {*|string}
          * @private
          */
-        _setCookie: function (name, value, days) {
+        _setCookie: function (name, value, hours) {
             let d = new Date();
-            d.setTime(d.getTime() + (days*24*60*60*1000));
+            d.setTime(d.getTime() + (hours*60*60*1000));
             let expires = "expires=" + d.toGMTString();
             document.cookie = name + "=" + value + ";" + expires + ";path=/";
         },

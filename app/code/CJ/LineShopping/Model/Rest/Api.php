@@ -256,13 +256,14 @@ class Api
      */
     protected function getOrderItemList($order): array
     {
+        $rootCategoryId = $order->getStore()->getRootCategoryId();
         $visibleItems = $this->getAllVisibleItems($order);
         $orderList = [];
         /** @var  \Magento\Sales\Api\Data\OrderItemInterface $item */
         foreach ($visibleItems as $item) {
             $productId = $item->getProductId();
             $product = $this->productRepository->getById($productId);
-            $subCatData = $this->getSubCatData($product);
+            $subCatData = $this->getSubCatData($product, $rootCategoryId);
 
             //product_amount
             $rowTotalInclTax = $item->getRowTotalInclTax();
@@ -289,13 +290,13 @@ class Api
 
     /**
      * @param $product
+     * @param $rootCategoryId
      * @return string[]
      */
-    protected function getSubCatData($product): array
+    protected function getSubCatData($product, $rootCategoryId): array
     {
         $result = [
-            'sub_category1' => '',
-            'sub_category2' => '',
+            'sub_category1' => ''
         ];
         try {
             /** @var \Magento\Framework\Data\Collection $catCollection */
@@ -314,21 +315,22 @@ class Api
             //subCat 1
             $subCatId1 = end($catIds);
             //load cat1 name
-            $subCat1 = $this->categoryRepository->get($subCatId1);
-            $subCat1Name = $subCat1->getName();
-
+            if ($subCatId1 != $rootCategoryId) {
+                $subCat1 = $this->categoryRepository->get($subCatId1);
+                $subCat1Name = $subCat1->getName();
+                $result['sub_category1'] = $subCat1Name;
+            } else {
+                return $result;
+            }
             array_pop($catIds);
             //subCat 2
             $subCatId2 = end($catIds);
-            if (!$subCatId1) {
-                $subCat2Name = '';
-            } else {
+            if ($subCatId2 != $rootCategoryId) {
                 //load cat2 name
                 $subCat2 = $this->categoryRepository->get($subCatId2);
                 $subCat2Name = $subCat2->getName();
+                $result['sub_category2'] = $subCat2Name;
             }
-            $result['sub_category1'] = $subCat1Name;
-            $result['sub_category2'] = $subCat2Name;
         } catch (\Exception $e) {
             return $result;
         }
@@ -342,13 +344,14 @@ class Api
      */
     protected function getFeeItemList($order): array
     {
+        $rootCategoryId = $order->getStore()->getRootCategoryId();
         $visibleItems = $this->getAllVisibleItems($order);
         $orderList = [];
         /** @var  \Magento\Sales\Api\Data\OrderItemInterface $item */
         foreach ($visibleItems as $item) {
             $productId = $item->getProductId();
             $product = $this->productRepository->getById($productId);
-            $subCatData = $this->getSubCatData($product);
+            $subCatData = $this->getSubCatData($product, $rootCategoryId);
 
             //product_fee
             $rowTotalInclTax = $item->getRowTotalInclTax();
@@ -394,7 +397,7 @@ class Api
 
     /**
      * @param $order
-     * @return false|string
+     * @return string
      * @throws Exception
      */
     protected function getOrderTime($order)
@@ -403,23 +406,5 @@ class Api
             $order->getCreatedAt(),
             self::TIME_ZONE_8
         );
-    }
-
-    /**
-     * @param $orderTime
-     * @return string
-     * @throws Exception
-     */
-    protected function getFeeTime($orderTime)
-    {
-        $trialPeriod = $this->configModel->getGeneralConfigValue('trial_period') ?
-            $this->configModel->getGeneralConfigValue('trial_period') : 10;
-        $feeTime = new \DateTime($orderTime . ' +' . $trialPeriod . ' day');
-        //for testing
-        $forceFee = $this->configModel->getGeneralConfigValue('force_fee');
-        if ($forceFee) {
-            $feeTime = new \DateTime($orderTime . ' +5 minute');
-        }
-        return $feeTime->format('Y-m-d H:i:s');
     }
 }

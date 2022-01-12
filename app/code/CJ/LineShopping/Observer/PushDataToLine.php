@@ -63,10 +63,10 @@ class PushDataToLine implements ObserverInterface
                 return $this;
             }
             $result = $this->lineShoppingApi->orderPostBack($order);
-            //if ($result == LineShoppingApi::LINE_SHOPPING_SUCCESS_MESSAGE) {
+            if ($result == LineShoppingApi::LINE_SHOPPING_SUCCESS_MESSAGE) {
                 $this->dataHelper->updateOrderHistory($result, $order, 'order');
                 $this->dataHelper->updateOrderData($order, DataHelper::IS_SENT_ORDER_POST_BACK, 1);
-            //}
+            }
         } catch (Exception $exception) {
             $this->logger->error(Logger::ORDER_POST_BACK,
                 [
