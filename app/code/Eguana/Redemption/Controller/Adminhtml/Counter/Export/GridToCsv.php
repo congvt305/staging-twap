@@ -127,9 +127,10 @@ class GridToCsv extends Action
             foreach ($searchResultItems as $document) {
                 /** @var Counter $document */
                 if ($document->getRedemptionId() == $redemptionId) {
-                    $status = $document->getStatus();
+                    // Remove below code because Magento 2.4.3 change logic for options
+                    /*$status = $document->getStatus();
                     $availableStatuses = $this->counterModel->getAvailableStatuses();
-                    $document->setStatus($availableStatuses[$status]);
+                    $document->setStatus($availableStatuses[$status]);*/
                     $this->metadataProvider->convertDate($document, $component->getName());
                     $stream->writeCsv($this->metadataProvider->getRowData($document, $fields, $options));
                 }
