@@ -1,6 +1,6 @@
 <?php
 
-namespace CJ\LineShopping\Model\CronJob;
+namespace CJ\LineShopping\Cron;
 
 use CJ\LineShopping\Logger\Logger;
 use CJ\LineShopping\Model\Rest\Api as LineShoppingApi;
@@ -62,12 +62,10 @@ class OrderPostBack
         /** @var Order $order */
         foreach ($orderCollection as $order) {
             try {
-                if($this->dataHelper->verifyOrderSendToLine($order)) {
-                    $result = $this->lineShoppingApi->orderPostBack($order);
-                    if ($result == LineShoppingApi::LINE_SHOPPING_SUCCESS_MESSAGE) {
-                        $this->dataHelper->updateOrderHistory($result, $order, 'order');
-                        $this->dataHelper->updateOrderData($order, DataHelper::IS_SENT_ORDER_POST_BACK, 1);
-                    }
+                $result = $this->lineShoppingApi->orderPostBack($order);
+                if ($result == LineShoppingApi::LINE_SHOPPING_SUCCESS_MESSAGE) {
+                    $this->dataHelper->updateOrderHistory($result, $order, 'order');
+                    $this->dataHelper->updateOrderData($order, DataHelper::IS_SENT_ORDER_POST_BACK, 1);
                 }
             } catch (\Exception $exception) {
                 $this->logger->addError(Logger::ORDER_POST_BACK,

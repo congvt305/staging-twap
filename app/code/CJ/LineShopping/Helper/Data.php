@@ -134,7 +134,7 @@ class Data
      * @param $order
      * @return bool
      */
-    public function verifyOrderSendToLine($order): bool
+    public function isValidToFeePostBack($order): bool
     {
         //order with partial refund/full refund/closed excluded
         $canceled = $order->getTotalCanceled();

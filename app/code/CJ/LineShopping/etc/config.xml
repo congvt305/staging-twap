@@ -5,8 +5,16 @@
         <line_shopping>
             <general>
                 <enable>0</enable>
-                <trial_period>10</trial_period>
+                <trial_period>30</trial_period>
+                <cookie_lifetime>24</cookie_lifetime>
             </general>
+            <cron>
+                <export_full_product>0 6 * * *</export_full_product>
+                <export_partial_product>0 * * * *</export_partial_product>
+                <export_full_category>0 6 * * *</export_full_category>
+                <order_post_back>*/5 * * * *</order_post_back>
+                <fee_post_back>*/5 * * * *</fee_post_back>
+            </cron>
         </line_shopping>
     </default>
 </config>
