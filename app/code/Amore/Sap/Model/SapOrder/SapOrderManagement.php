@@ -339,6 +339,9 @@ class SapOrderManagement implements SapOrderManagementInterface
                 $order = $this->getOrderFromList($incrementId);
                 if ($order->getStatus() == 'preparing' || $order->getStatus() == 'sap_processing' || $order->getStatus() == 'processing_with_shipment'
                     || $order->getStatus() == 'sap_success' || $order->getStatus() == 'sap_fail') {
+                    if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
+                        $result = $this->CreateEInvoice($order, $orderStatusData, $result);
+                    }
                     $shipmentCheck = $order->hasShipments();
 
                     if (!$shipmentCheck) {
@@ -384,9 +387,6 @@ class SapOrderManagement implements SapOrderManagementInterface
                                     );
                                 }
 
-                                if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                    $result = $this->CreateEInvoice($order, $orderStatusData, $result);
-                                }
                             }
                             //added start for VN
                         } elseif ($order->getShippingMethod() == "eguanadhl_tablerate") {
@@ -435,9 +435,6 @@ class SapOrderManagement implements SapOrderManagementInterface
                                     );
                                 }
 
-                                if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                    $result = $this->CreateEInvoice($order, $orderStatusData, $result);
-                                }
                             }
                         }
                         else {
@@ -477,9 +474,6 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 );
                             }
 
-                            if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                $result = $this->CreateEInvoice($order, $orderStatusData, $result);
-                            }
                         } else {
                             $result = $this->trackNoManager($order, $orderStatusData);
 
@@ -489,10 +483,6 @@ class SapOrderManagement implements SapOrderManagementInterface
                             }
                             $order->setData('sap_response', $orderStatusData['ugtxt']);
                             $this->orderRepository->save($order);
-
-                            if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                                $result = $this->CreateEInvoice($order, $orderStatusData, $result);
-                            }
                         }
                     }
                 } else {
@@ -910,6 +900,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         } catch (\Exception $exception) {
             $result[$orderStatusData['odrno']]['code'] = "0001";
             $result[$orderStatusData['odrno']]['ecpay'] = ['code' => '0001', 'message' => "Could not create EInvoice. " . $exception->getMessage()];
+            $this->logger->log('info', "Could not create EInvoice. " . $exception->getMessage());
         }
         return $result;
     }
