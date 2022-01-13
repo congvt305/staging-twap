@@ -137,9 +137,9 @@ class GridToCsv extends Action
                     $storeIds = $this->reservationValidation->availableCountersForEvent($eventId);
 
                     if (in_array($document->getOfflineStoreId(), $storeIds)) {
-                        $status = $document->getStatus();
+                        /*$status = $document->getStatus();
                         $availableStatuses = $this->userReservationModel->getAvailableStatuses();
-                        $document->setStatus($availableStatuses[$status]);
+                        $document->setStatus($availableStatuses[$status]);*/
 
                         $agreement = $document->getAgreement();
                         $agreementOptions = $this->userReservationModel->getAgreementOptions();
