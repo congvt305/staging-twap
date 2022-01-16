@@ -117,6 +117,12 @@ class ProductAdapter
                     if ($categories) {
                         $data['product_category_value'] = implode(',', $categories);
                     }
+                    if (!$data['l_description']) {
+                        $data['l_description'] = $product->getName();
+                    }
+                    if (!$data['description']) {
+                        $data['description'] = $product->getName();
+                    }
                     $data['link'] = $this->getProductUrl($product, $website->getDefaultStore());
                     $data['age_group'] =  self::DEFAULT_AGE_GROUP;
                     $data['brand'] =  self::DEFAULT_BRAND;

@@ -5,18 +5,10 @@ namespace CJ\LineShopping\Helper;
 use Magento\Framework\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem\Io\File;
 use Magento\Framework\Filesystem\Driver\File as FileDriver;
-use Magento\Framework\Stdlib\CookieManagerInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 class Data
 {
-    const LINE_SHOPPING_ECID_COOKIE_NAME = 'line_ecid';
-    const LINE_SHOPPING_INFORMATION_COOKIE_NAME = 'line-information';
-    const LINE_INFO = [
-        'utm_campaign',
-        'utm_source',
-        'utm_medium'
-    ];
     const TIME_FORMAT_YMDHIS = 'Y-m-d H:i:s';
     const IS_LINE_SHOPPING = 'is_line_shopping';
     const IS_SENT_FEE_POST_BACK = 'is_sent_fee_post_back';
@@ -38,31 +30,23 @@ class Data
     protected FileDriver $fileDriver;
 
     /**
-     * @var CookieManagerInterface
-     */
-    protected CookieManagerInterface $cookieManager;
-
-    /**
      * @var TimezoneInterface
      */
     protected TimezoneInterface $timezone;
 
     /**
      * @param TimezoneInterface $timezone
-     * @param CookieManagerInterface $cookieManager
      * @param DirectoryList $dir
      * @param File $file
      * @param FileDriver $fileDriver
      */
     public function __construct(
         TimezoneInterface $timezone,
-        CookieManagerInterface $cookieManager,
         DirectoryList $dir,
         File $file,
         FileDriver $fileDriver
     ) {
         $this->timezone = $timezone;
-        $this->cookieManager = $cookieManager;
         $this->dir = $dir;
         $this->file = $file;
         $this->fileDriver = $fileDriver;
@@ -98,22 +82,6 @@ class Data
     {
         $order->setData($column, $value);
         $order->save();
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLineEcidCookie()
-    {
-        return $this->cookieManager->getCookie(self::LINE_SHOPPING_ECID_COOKIE_NAME);
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLineInfomationCookie()
-    {
-        return $this->cookieManager->getCookie(self::LINE_SHOPPING_INFORMATION_COOKIE_NAME);
     }
 
     /**
