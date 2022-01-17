@@ -2,9 +2,8 @@
 
 namespace CJ\LineShopping\Block;
 
-use CJ\LineShopping\Cookie\LineInformation as CookieLineInformation;
+use CJ\LineShopping\Helper\CookieLineInformation;
 use CJ\LineShopping\Helper\Config;
-use CJ\LineShopping\Cookie\LineInformation;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
 use Exception;
@@ -34,7 +33,7 @@ class CookieRenderer extends Template
 
     /**
      * @param Logger $logger
-     * @param LineInformation $cookieLineInformation
+     * @param CookieLineInformation $cookieLineInformation
      * @param Config $config
      * @param Json $json
      * @param Template\Context $context

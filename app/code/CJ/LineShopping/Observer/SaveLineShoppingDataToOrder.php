@@ -7,7 +7,7 @@ use CJ\LineShopping\Logger\Logger;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Serialize\Serializer\Json;
-use CJ\LineShopping\Cookie\LineInformation as CookieLineInformation;
+use CJ\LineShopping\Helper\CookieLineInformation;
 
 class SaveLineShoppingDataToOrder implements ObserverInterface
 {
