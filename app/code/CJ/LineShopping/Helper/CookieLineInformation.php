@@ -9,7 +9,7 @@ use Magento\Framework\Session\SessionManagerInterface;
 class CookieLineInformation
 {
     const LINE_SHOPPING_ECID_COOKIE_NAME = 'line_ecid';
-    const LINE_SHOPPING_INFORMATION_COOKIE_NAME = 'line-information';
+    const LINE_SHOPPING_INFORMATION_COOKIE_NAME = 'line_information';
     const LINE_INFO_LIST = [
         'utm_campaign',
         'utm_source',
@@ -70,7 +70,7 @@ class CookieLineInformation
             [
                 'expires' => ($duration * 3600) + time(),
                 'path' => $this->sessionManager->getCookiePath(),
-                'domain' => $this->sessionManager->getCookieDomain()
+                'domain' => $this->sessionManager->getCookieDomain(),
             ]
         );
     }
