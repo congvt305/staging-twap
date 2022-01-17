@@ -1,12 +1,12 @@
 <?php
 
-namespace CJ\LineShopping\Cookie;
+namespace CJ\LineShopping\Helper;
 
 use Magento\Framework\Stdlib\CookieManagerInterface;
 use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
 use Magento\Framework\Session\SessionManagerInterface;
 
-class LineInformation
+class CookieLineInformation
 {
     const LINE_SHOPPING_ECID_COOKIE_NAME = 'line_ecid';
     const LINE_SHOPPING_INFORMATION_COOKIE_NAME = 'line-information';
