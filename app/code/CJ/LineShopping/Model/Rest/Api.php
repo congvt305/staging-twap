@@ -190,7 +190,12 @@ class Api
         //order_list
         $orderList = $this->getOrderItemList($order);
         $data['order_list'] = json_encode($orderList, JSON_UNESCAPED_UNICODE);
-        $data['ordertotal'] = round($order->getGrandTotal());
+        $data['ordertotal'] = 0;
+        if(is_array($orderList) && count($orderList) > 0) {
+            foreach ($orderList as $item) {
+                $data['ordertotal'] += round($item['product']['product_amount']);
+            }
+        }
         $data['ordertime'] = $this->getOrderTime($order);
         $data['timestamp'] = time();
 
@@ -217,8 +222,14 @@ class Api
     {
         $data = $this->getGeneralInfomation($order, $lineInfo);
 
-        $data['fee_list'] = $this->getFeeItemList($order);
-        $data['feetotal'] = round($order->getGrandTotal() - $order->getTotalRefunded());
+        $feeList = $this->getFeeItemList($order);
+        $data['fee_list'] = json_encode($feeList, JSON_UNESCAPED_UNICODE);
+        $data['feetotal'] = 0;
+        if(is_array($feeList) && count($feeList) > 0) {
+            foreach ($feeList as $item) {
+                $data['feetotal'] += round($item['product']['product_fee']);
+            }
+        }
         $data['feetime'] = $this->getOrderTime($order);
 
         //hash
