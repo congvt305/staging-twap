@@ -70,7 +70,7 @@ class CookieLineInformation
             [
                 'expires' => ($duration * 3600) + time(),
                 'path' => $this->sessionManager->getCookiePath(),
-                'domain' => $this->sessionManager->getCookieDomain(),
+                'domain' => $this->sessionManager->getCookieDomain()
             ]
         );
     }
