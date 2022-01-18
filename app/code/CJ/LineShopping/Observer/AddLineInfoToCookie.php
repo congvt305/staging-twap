@@ -1,17 +1,16 @@
 <?php
 
-namespace CJ\LineShopping\Plugin;
+namespace CJ\LineShopping\Observer;
 
-use CJ\LineShopping\Helper\CookieLineInformation;
 use CJ\LineShopping\Helper\Config;
-use Magento\Framework\App\Response\Http as ResponseHttp;
-use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\Serialize\Serializer\Json;
-use Exception;
+use CJ\LineShopping\Helper\CookieLineInformation;
 use CJ\LineShopping\Logger\Logger;
+use Exception;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Serialize\Serializer\Json;
 
-class CookieRendererResultPlugin
+class AddLineInfoToCookie implements ObserverInterface
 {
     /**
      * @var Json
@@ -60,15 +59,11 @@ class CookieRendererResultPlugin
     }
 
     /**
-     * @param ResultInterface $subject
-     * @param ResultInterface $result
-     * @param ResponseHttp $response
-     * @return ResultInterface
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return void
      */
-    public function afterRenderResult(ResultInterface $subject, ResultInterface $result, ResponseHttp $response)
-    {
+    public function execute(\Magento\Framework\Event\Observer $observer) {
         $this->setLineCookie();
-        return $result;
     }
 
     /**
