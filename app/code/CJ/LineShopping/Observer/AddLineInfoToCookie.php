@@ -1,15 +1,16 @@
 <?php
 
-namespace CJ\LineShopping\Block;
+namespace CJ\LineShopping\Observer;
 
-use CJ\LineShopping\Helper\CookieLineInformation;
 use CJ\LineShopping\Helper\Config;
-use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Framework\View\Element\Template;
-use Exception;
+use CJ\LineShopping\Helper\CookieLineInformation;
 use CJ\LineShopping\Logger\Logger;
+use Exception;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Serialize\Serializer\Json;
 
-class CookieRenderer extends Template
+class AddLineInfoToCookie implements ObserverInterface
 {
     /**
      * @var Json
@@ -32,26 +33,36 @@ class CookieRenderer extends Template
     protected Logger $logger;
 
     /**
+     * @var RequestInterface
+     */
+    protected RequestInterface $request;
+
+    /**
+     * @param RequestInterface $request
      * @param Logger $logger
      * @param CookieLineInformation $cookieLineInformation
      * @param Config $config
      * @param Json $json
-     * @param Template\Context $context
-     * @param array $data
      */
     public function __construct(
+        RequestInterface $request,
         Logger $logger,
         CookieLineInformation $cookieLineInformation,
         Config $config,
-        Json $json,
-        Template\Context $context,
-        array $data = []
+        Json $json
     ) {
+        $this->request = $request;
         $this->logger = $logger;
         $this->cookieLineInformation = $cookieLineInformation;
         $this->config = $config;
         $this->json = $json;
-        parent::__construct($context, $data);
+    }
+
+    /**
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return void
+     */
+    public function execute(\Magento\Framework\Event\Observer $observer) {
         $this->setLineCookie();
     }
 
@@ -61,8 +72,8 @@ class CookieRenderer extends Template
     public function setLineCookie()
     {
         try {
-            $params = $this->getRequest()->getParams();
-            if($this->config->isEnable() && isset($params['ecid'])) {
+            $params = $this->request->getParams();
+            if ($this->config->isEnable() && isset($params['ecid'])) {
                 $duration = $this->config->getCookieLifeTime();
                 $this->cookieLineInformation->setCookie(CookieLineInformation::LINE_SHOPPING_ECID_COOKIE_NAME, $params['ecid'] , $duration);
                 $dataLine = [];
@@ -71,7 +82,7 @@ class CookieRenderer extends Template
                         $dataLine[$item] = $params[$item];
                     }
                 }
-                if($dataLine) {
+                if ($dataLine) {
                     $dataLine = $this->json->serialize($dataLine);
                     $this->cookieLineInformation->setCookie(CookieLineInformation::LINE_SHOPPING_INFORMATION_COOKIE_NAME, $dataLine, $duration);
                 }
