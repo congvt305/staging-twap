@@ -7,7 +7,4 @@
     <event name="checkout_submit_all_after">
         <observer name="push_data_to_line" instance="CJ\LineShopping\Observer\PushDataToLine" />
     </event>
-    <event name="controller_front_send_response_before">
-        <observer name="line-shopping-add-cookie" instance="CJ\LineShopping\Observer\AddLineInfoToCookie" />
-    </event>
 </config>
