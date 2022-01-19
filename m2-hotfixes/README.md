@@ -11,5 +11,5 @@ diff -Naur a/vendor/package-name/ClassName.php b/vendor/package-name/ClassName.p
 
 You can use the following command to apply all Magento patches and your custom patches locally.
 ```
-php ./vendor/bin/ece-patches apply
+php ./vendor/bin/ece-patches apply 
 ```
