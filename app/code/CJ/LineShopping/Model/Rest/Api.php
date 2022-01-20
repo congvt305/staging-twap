@@ -119,13 +119,11 @@ class Api
         } catch (Exception $exception) {
             $this->logger->addError(Logger::ORDER_POST_BACK,
                 [
-                    'request_data' => $postData,
                     'error' => $exception->getMessage()
                 ]);
         } catch (GuzzleException $exception) {
             $this->logger->addError(Logger::ORDER_POST_BACK,
                 [
-                    'request_data' => $postData,
                     'error' => $exception->getMessage()
                 ]);
         }
@@ -163,13 +161,11 @@ class Api
         } catch (\Exception $exception) {
             $this->logger->addError(Logger::FEE_POST_BACK,
                 [
-                    'request_data' => $postData,
                     'error' => $exception->getMessage()
                 ]);
         } catch (GuzzleException $exception) {
             $this->logger->addError(Logger::FEE_POST_BACK,
                 [
-                    'request_data' => $postData,
                     'error' => $exception->getMessage()
                 ]);
         }
