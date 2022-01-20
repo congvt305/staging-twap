@@ -300,9 +300,7 @@ class Api
      */
     protected function getSubCatData($product, $rootCategoryId): array
     {
-        $result = [
-            'sub_category1' => ''
-        ];
+        $result = [];
         try {
             /** @var \Magento\Framework\Data\Collection $catCollection */
             $catCollection = $product->getCategoryCollection();
