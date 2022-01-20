@@ -340,8 +340,10 @@ class Api
                 if ($subCatId2 != $rootCategoryId) {
                     //load cat2 name
                     $subCat2 = $this->categoryRepository->get($subCatId2);
-                    $subCat2Name = $subCat2->getName();
-                    $result['sub_category2'] = $subCat2Name;
+                    if ($subCat1->getIsActive()) {
+                        $subCat2Name = $subCat2->getName();
+                        $result['sub_category2'] = $subCat2Name;
+                    }
                 }
                 break;
             }
