@@ -103,9 +103,14 @@ class Order
             ->setValue('complete')
             ->setConditionType('eq')
             ->create();
+        $statusFilterDeliveryComplete = $this->filterBuilder->setField('status')
+            ->setValue('delivery_complete')
+            ->setConditionType('eq')
+            ->create();
         $orFilter = $this->filterGroupBuilder
             ->addFilter($statusFilterShipmentProcessing)
             ->addFilter($statusFilterComplete)
+            ->addFilter($statusFilterDeliveryComplete)
             ->create();
 
         $this->searchCriteriaBuilder->setFilterGroups([$andFilter, $andFilter2, $orFilter]);
