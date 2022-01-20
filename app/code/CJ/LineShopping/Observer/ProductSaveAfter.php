@@ -35,7 +35,9 @@ class ProductSaveAfter implements ObserverInterface
         try {
             $product = $observer->getProduct();
             foreach ($product->getStoreIds() as $storeId) {
-                $this->productAction->updateAttributes([$product->getEntityId()], array('line_sync_status' => true), $storeId);
+                if ($product->getEntityId()) {
+                    $this->productAction->updateAttributes([$product->getEntityId()], array('line_sync_status' => true), $storeId);
+                }
             }
         } catch (Exception $exception) {
             $this->logger->error(Logger::EXPORT_FEED_DATA,

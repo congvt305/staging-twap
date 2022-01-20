@@ -13,6 +13,11 @@ if ($isSalable) {
 } else {
     $availability = 'OutOfStock';
 }
+if ($block->getProduct()->getTypeId() == 'bundle') {
+    $price = $block->getProduct()->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue();
+} else {
+    $price = $block->getProduct()->getFinalPrice();
+}
 ?>
 <script type="application/ld+json">
     {
@@ -27,7 +32,7 @@ if ($isSalable) {
             "name": "Sulwhasoo"
         },
         "offers": {
-            "price": "<?= /* @noEscape */ $block->escapeHtml($block->getProduct()->getFinalPrice()) ?>",
+            "price": "<?= /* @noEscape */ $block->escapeHtml(round($price)) ?>",
             "priceCurrency": "TWD",
             "availability": "<?= $availability ?>"
         }
