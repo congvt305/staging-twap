@@ -310,31 +310,40 @@ class Api
             foreach ($catCollection as $cat) {
                 $pathArray[] = $cat->getPath();
             }
-            $lengths = array_map('strlen', $pathArray);
-            $longestPath = $pathArray[array_search(max($lengths), $lengths)];
-            $path = $longestPath ? $longestPath : '';
-            if (!$path) {
-                return $result;
-            }
-            $catIds = explode('/', $path);
-            //subCat 1
-            $subCatId1 = end($catIds);
-            //load cat1 name
-            if ($subCatId1 != $rootCategoryId) {
-                $subCat1 = $this->categoryRepository->get($subCatId1);
-                $subCat1Name = $subCat1->getName();
-                $result['sub_category1'] = $subCat1Name;
-            } else {
-                return $result;
-            }
-            array_pop($catIds);
-            //subCat 2
-            $subCatId2 = end($catIds);
-            if ($subCatId2 != $rootCategoryId) {
-                //load cat2 name
-                $subCat2 = $this->categoryRepository->get($subCatId2);
-                $subCat2Name = $subCat2->getName();
-                $result['sub_category2'] = $subCat2Name;
+            while (count($pathArray) > 0) {
+                $lengths = array_map('strlen', $pathArray);
+                $longestPath = $pathArray[array_search(max($lengths), $lengths)];
+                $path = $longestPath ? $longestPath : '';
+                if (!$path) {
+                    return $result;
+                }
+                $catIds = explode('/', $path);
+                //subCat 1
+                $subCatId1 = end($catIds);
+                //load cat1 name
+                if ($subCatId1 != $rootCategoryId) {
+                    $subCat1 = $this->categoryRepository->get($subCatId1);
+                    if (!$subCat1->getIsActive()) {
+                        if (($key = array_search($longestPath, $pathArray)) !== false) {
+                            unset($pathArray[$key]);
+                            continue;
+                        }
+                    }
+                    $subCat1Name = $subCat1->getName();
+                    $result['sub_category1'] = $subCat1Name;
+                } else {
+                    return $result;
+                }
+                array_pop($catIds);
+                //subCat 2
+                $subCatId2 = end($catIds);
+                if ($subCatId2 != $rootCategoryId) {
+                    //load cat2 name
+                    $subCat2 = $this->categoryRepository->get($subCatId2);
+                    $subCat2Name = $subCat2->getName();
+                    $result['sub_category2'] = $subCat2Name;
+                }
+                break;
             }
         } catch (\Exception $e) {
             return $result;
