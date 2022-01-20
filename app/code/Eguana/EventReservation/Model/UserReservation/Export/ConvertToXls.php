@@ -189,9 +189,9 @@ class ConvertToXls
                 $storeIds = $this->reservationValidation->availableCountersForEvent($eventId);
 
                 if (in_array($item->getOfflineStoreId(), $storeIds)) {
-                    $status = $item->getStatus();
+                    /*$status = $item->getStatus();
                     $availableStatuses = $this->userReservationModel->getAvailableStatuses();
-                    $item->setStatus($availableStatuses[$status]);
+                    $item->setStatus($availableStatuses[$status]);*/
 
                     $agreement = $item->getAgreement();
                     $agreementOptions = $this->userReservationModel->getAgreementOptions();
