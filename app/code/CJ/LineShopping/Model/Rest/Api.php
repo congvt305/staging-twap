@@ -119,13 +119,11 @@ class Api
         } catch (Exception $exception) {
             $this->logger->addError(Logger::ORDER_POST_BACK,
                 [
-                    'request_data' => $postData,
                     'error' => $exception->getMessage()
                 ]);
         } catch (GuzzleException $exception) {
             $this->logger->addError(Logger::ORDER_POST_BACK,
                 [
-                    'request_data' => $postData,
                     'error' => $exception->getMessage()
                 ]);
         }
@@ -163,13 +161,11 @@ class Api
         } catch (\Exception $exception) {
             $this->logger->addError(Logger::FEE_POST_BACK,
                 [
-                    'request_data' => $postData,
                     'error' => $exception->getMessage()
                 ]);
         } catch (GuzzleException $exception) {
             $this->logger->addError(Logger::FEE_POST_BACK,
                 [
-                    'request_data' => $postData,
                     'error' => $exception->getMessage()
                 ]);
         }
@@ -286,14 +282,12 @@ class Api
                 ''
             );
             $orderList[] = [
-                'product' => [
+                'product' => array_merge([
                     'product_name' => $item->getName(),
                     'product_type' => self::PRODUCT_TYPE_NORMAL,
                     'product_id' => $product->getSku(),
-                    'product_amount' => $productAmount,
-                    'sub_category1' => $subCatData['sub_category1'],
-                    'sub_category2' => $subCatData['sub_category2']
-                ]
+                    'product_amount' => $productAmount
+                ], $subCatData)
             ];
         }
         return $orderList;
@@ -378,14 +372,12 @@ class Api
                 ''
             );
             $orderList[] = [
-                'product' => [
+                'product' => array_merge([
                     'product_name' => $item->getName(),
                     'product_type' => self::PRODUCT_TYPE_NORMAL,
                     'product_id' => $product->getSku(),
-                    'product_fee' => $productFee,
-                    'sub_category1' => $subCatData['sub_category1'],
-                    'sub_category2' => $subCatData['sub_category2']
-                ]
+                    'product_fee' => $productFee
+                ], $subCatData)
             ];
         }
         return $orderList;
