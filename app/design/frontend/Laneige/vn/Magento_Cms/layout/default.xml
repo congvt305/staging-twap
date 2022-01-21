@@ -9,5 +9,6 @@
     <body>
         <referenceBlock name="sitemap-link" remove="true" />
         <move element="sales-guest-form-link" destination="footer_links" after="payment-and-delivery-policy"/>
+        <referenceBlock name="sales-guest-form-link" remove="true"/>
     </body>
 </page>
