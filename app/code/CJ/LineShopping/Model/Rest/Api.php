@@ -274,7 +274,7 @@ class Api
 
             //product_amount
             $rowTotalInclTax = $item->getRowTotalInclTax();
-            $discountAmount = $item->getDiscountAmount();
+            $discountAmount = $this->getTotalDiscountAmount($order, $item);
             $productAmount = number_format(
                 $rowTotalInclTax - $discountAmount,
                 0,
@@ -369,7 +369,9 @@ class Api
 
             //product_fee
             $rowTotalInclTax = $item->getRowTotalInclTax();
-            $rowTotal = $rowTotalInclTax - $item->getDiscountAmount();
+            $discountAmount = $this->getTotalDiscountAmount($order, $item);
+            $rowTotal = $rowTotalInclTax - $discountAmount;
+
             $discountRefund = $item->getDiscountRefunded() ? $item->getDiscountRefunded() : 0;
             $rowRefunded = $item->getPriceInclTax() * $item->getQtyRefunded();
             $rowTotalRefunded = $rowRefunded  - $discountRefund;
@@ -405,6 +407,22 @@ class Api
             }
         }
         return $items;
+    }
+
+    /**
+     * @param $order
+     * @param $parentItem
+     * @return mixed
+     */
+    protected function getTotalDiscountAmount($order, $parentItem)
+    {
+        $discountAmount = $parentItem->getDiscountAmount();
+        foreach ($order->getItems() as $item) {
+            if (!$item->isDeleted() && $item->getParentItemId() == $parentItem->getId()) {
+                $discountAmount += $item->getDiscountAmount();
+            }
+        }
+        return $discountAmount;
     }
 
     /**
