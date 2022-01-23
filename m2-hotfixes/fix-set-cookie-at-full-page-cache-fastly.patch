@@ -2,12 +2,12 @@ diff -u a/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl b/vendor/fastly/mage
 index 3ee2rd..8349152 100755
 --- a/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl	2021-10-28 13:54:47.000000000 +0530
 +++ b/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl	2022-01-23 12:16:00.295466202 +0530
-@@ -15,7 +15,7 @@
+@@ -94,7 +94,7 @@
+     # validate if we need to cache it and prevent from setting cookie
+     # images, css and js are cacheable by default so we have to remove cookie also
+     if (beresp.ttl > 0s && (req.request == "GET" || req.request == "HEAD") && !req.http.x-pass ) {
+-        unset beresp.http.set-cookie;
++        #unset beresp.http.set-cookie;
 
-     # Remove Set-Cookies from responses for static content to match the cookie removal in recv.
-     if (req.http.x-long-cache || req.url ~ "^/(pub/)?(media|static)/") {
--        #unset beresp.http.set-cookie;
-+        unset beresp.http.set-cookie;
-
-         # Set a short TTL for 404's since those can be temporary during the site build/index
-         if (beresp.status == 404) {
+         # init surrogate keys
+         if (beresp.http.X-Magento-Tags) {
