@@ -6,17 +6,8 @@ index 3ee2rd..8349152 100755
 
      # Remove Set-Cookies from responses for static content to match the cookie removal in recv.
      if (req.http.x-long-cache || req.url ~ "^/(pub/)?(media|static)/") {
--        unset beresp.http.set-cookie;
-+        #unset beresp.http.set-cookie;
+-        #unset beresp.http.set-cookie;
++        unset beresp.http.set-cookie;
 
          # Set a short TTL for 404's since those can be temporary during the site build/index
          if (beresp.status == 404) {
-@@ -94,7 +94,7 @@
-     # validate if we need to cache it and prevent from setting cookie
-     # images, css and js are cacheable by default so we have to remove cookie also
-     if (beresp.ttl > 0s && (req.request == "GET" || req.request == "HEAD") && !req.http.x-pass ) {
--        unset beresp.http.set-cookie;
-+        #unset beresp.http.set-cookie;
-
-         # init surrogate keys
-         if (beresp.http.X-Magento-Tags) {
