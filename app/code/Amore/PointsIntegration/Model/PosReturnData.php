@@ -278,6 +278,7 @@ class PosReturnData
                     $itemsSubtotal += $itemSubtotal;
                     $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount);
                     $itemsDiscountAmount += $itemTotalDiscount;
+                    $itemsPointTotal += (int)$pointAccount;
                 }
             }
         }
