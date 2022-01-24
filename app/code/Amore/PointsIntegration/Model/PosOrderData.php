@@ -466,7 +466,7 @@ class PosOrderData
         return $bundleChild;
     }
 
-    public function getBundleChildren($item, $storeId)
+    public function getBundleChildren($item, $storeId = 0)
     {
         $bundleSku = '';
         $product = $this->productRepository->getById($item->getProductId(), false, $storeId);

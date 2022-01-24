@@ -179,7 +179,7 @@ class PosStaleOrderData extends PosOrderData
      * @return array|LinkInterface[]|void
      * @throws NoSuchEntityException
      */
-    public function getBundleChildren($orderItem, $storeId)
+    public function getBundleChildren($orderItem, $storeId = 0)
     {
         $children = [];
         $productId = $orderItem->getProductId();
