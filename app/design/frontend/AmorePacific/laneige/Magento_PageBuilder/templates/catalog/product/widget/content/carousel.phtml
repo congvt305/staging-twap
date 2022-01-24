@@ -36,6 +36,8 @@ use Magento\Framework\App\Action\Action;
                    ap-click-name="prd click"
                    ap-click-data="<?= /* @noEscape */ $block->getProductDefaultName($productSku) . '/' . $productSku; ?>">
                     <?= $block->getImage($_item, $image)->toHtml() ?>
+                    <?php $blockHoverImage = $block->getLayout()->createBlock(\CJ\HoverImage\Block\HoverImage::class)->setData(['product'=>$_item])?>
+                    <?php echo $blockHoverImage->toHtml(); ?>
                 </a>
                 <div class="product-item-details">
                     <strong class="product-item-name-en">
@@ -65,7 +67,7 @@ use Magento\Framework\App\Action\Action;
                     </div>
 
                     <?= $block->getProductPriceHtml($_item, $type) ?>
-                    
+
                     <?php if ($templateType) : ?>
                         <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
                     <?php endif; ?>
