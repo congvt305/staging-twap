@@ -535,14 +535,6 @@ class PosReturnData
 
     public function getBundleChildren($item, $storeId)
     {
-        /*$skuPrefix = $this->config->getSapSkuPrefix($storeId);
-        $skuPrefix = $skuPrefix ?: '';
-        $bundleSku = explode("-", $bundleDynamicSku);
-        if ($skuPrefix && strpos($skuPrefix, '-') !== false) {
-            $bundleSku = $skuPrefix . $bundleSku[1];
-        } else {
-            $bundleSku = $bundleSku[0];
-        }*/
         $bundleSku = '';
         $product = $this->productRepository->getById($item->getProductId(), false, $storeId);
         if ($product && $product->getId()) {
