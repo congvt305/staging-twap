@@ -31,6 +31,16 @@ class Currency
     private $request;
 
     /**
+     * @var \Magento\Framework\Locale\CurrencyInterface
+     */
+    protected $localeCurrency;
+
+    /**
+     * @var \Magento\Framework\Locale\FormatInterface
+     */
+    protected $localeFormat;
+
+    /**
      * @var array
      */
     protected $stores = [
@@ -47,9 +57,13 @@ class Currency
      */
     public function __construct(
         StoreManagerInterface $storeManager,
+        \Magento\Framework\Locale\CurrencyInterface $localeCurrency,
+        \Magento\Framework\Locale\FormatInterface $localeFormat,
         Http $request
     ) {
         $this->storeManager = $storeManager;
+        $this->localeCurrency = $localeCurrency;
+        $this->localeFormat = $localeFormat;
         $this->request = $request;
     }
 
@@ -77,5 +91,37 @@ class Currency
             $precision = 0;
             return [$price, $precision, $options, $includeContainer, $addBrackets];
         }
+    }
+
+    /**
+     * @param CurrencyAlias $subject
+     * @param callable $proceed
+     * @param $price
+     * @param $options
+     * @return string
+     * @throws \Zend_Currency_Exception
+     */
+    public function aroundFormatTxt(CurrencyAlias $subject, callable $proceed, $price, $options=[]) {
+        if (!is_numeric($price)) {
+            $price = $this->localeFormat->getNumber($price);
+        }
+        /**
+         * Fix problem with 12 000 000, 1 200 000
+         *
+         * %f - the argument is treated as a float, and presented as a floating-point number (locale aware).
+         * %F - the argument is treated as a float, and presented as a floating-point number (non-locale aware).
+         */
+        $price = sprintf("%F", $price);
+
+        /**
+         * Because numberformatter doesn't work with locale TW, so this plugin is used to remove numberformatter,
+         * & to use $this->localeCurrency->getCurrency
+         *
+         * if ($this->canUseNumberFormatter($options)) {
+         *     return $this->formatCurrency($price, $options);
+         * }
+         */
+
+        return $this->localeCurrency->getCurrency($subject->getData('currency_code'))->toCurrency($price, $options);
     }
 }
