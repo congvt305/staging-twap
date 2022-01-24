@@ -196,7 +196,6 @@ class Api
         $data['timestamp'] = time();
 
         //hash
-        $timestamp = time();
         $hashHmacData = 'orderid=' . $order->getIncrementId() .
             '&ordertotal=' . $data['ordertotal'] .
             '&timestamp=' . $data['timestamp'];
@@ -227,13 +226,14 @@ class Api
             }
         }
         $data['feetime'] = $this->getFeeTime($order);
+        $data['ordertime'] = $this->getOrderTime($order);
 
         //hash
-        $timestamp = time();
+        $data['timestamp'] = time();
         $hashHmacData = 'orderid=' . $order->getIncrementId() .
             '&feetime=' . $data['feetime'] .
             '&feetotal=' . $data['feetotal'] .
-            '&timestamp=' . $timestamp;
+            '&timestamp=' . $data['timestamp'];
         // @codingStandardsIgnoreStart
         $hashHmac = hash_hmac('sha256', $hashHmacData, md5($data['feetime']));
         // @codingStandardsIgnoreEnd
