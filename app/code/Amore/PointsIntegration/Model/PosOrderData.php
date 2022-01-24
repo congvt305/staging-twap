@@ -240,7 +240,7 @@ class PosOrderData
             } else {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku(), $order->getStoreId());
+                $bundleChildren = $this->getBundleChildren($orderItem, $order->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
                 foreach ($bundleChildren as $bundleChild) {
@@ -351,7 +351,7 @@ class PosOrderData
             if ($orderItem->getProductType() == 'bundle') {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku(), $order->getStoreId());
+                $bundleChildren = $this->getBundleChildren($orderItem, $order->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
                 if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
@@ -384,7 +384,7 @@ class PosOrderData
             } else {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku(), $order->getStoreId());
+                $bundleChildren = $this->getBundleChildren($orderItem, $order->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
                 if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
@@ -466,14 +466,20 @@ class PosOrderData
         return $bundleChild;
     }
 
-    public function getBundleChildren($bundleDynamicSku, $storeId)
+    public function getBundleChildren($item, $storeId)
     {
-        $skuPrefix = $this->getSKUPrefix($storeId) ?: '';
+        /*$skuPrefix = $this->config->getSapSkuPrefix($storeId);
+        $skuPrefix = $skuPrefix ?: '';
         $bundleSku = explode("-", $bundleDynamicSku);
         if ($skuPrefix && strpos($skuPrefix, '-') !== false) {
             $bundleSku = $skuPrefix . $bundleSku[1];
         } else {
             $bundleSku = $bundleSku[0];
+        }*/
+        $bundleSku = '';
+        $product = $this->productRepository->getById($item->getProductId(), false, $storeId);
+        if ($product && $product->getId()) {
+            $bundleSku = $product->getSku();
         }
 
         try {
@@ -510,7 +516,7 @@ class PosOrderData
     {
         $originalPriceTotal = 0;
 
-        $childrenItems = $this->getBundleChildren($orderItem->getSku(), $orderItem->getStoreId());
+        $childrenItems = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
 
         /** @var LinkInterface $childItem */
         foreach ($childrenItems as $childItem) {
