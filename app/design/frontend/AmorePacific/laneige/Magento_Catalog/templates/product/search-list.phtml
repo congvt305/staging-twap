@@ -77,8 +77,8 @@ $getDefault = $block->getData('view_model');
                         <?= $productImage->toHtml() ?>
                         <?php
                         // Product Hover Image
-                         $block->getChildBlock("product_image_hover")->setData(['product'=>$_product]);
-                         echo $block->getChildHtml('product_image_hover',false);
+                         $block->getChildBlock("product_image_hover")->setData(['product'=>$_product]); ?>
+                         <?= $block->getChildHtml('product_image_hover',false); ?>
                         ?>
                     </a>
                     <div class="product details product-item-details">
