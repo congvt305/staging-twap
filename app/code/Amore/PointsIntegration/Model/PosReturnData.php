@@ -228,7 +228,7 @@ class PosReturnData
             } else {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku());
+                $bundleChildren = $this->getBundleChildren($orderItem, $order->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
                 $isRedemptionItem = $orderItem->getData('is_point_redeemable');
                 $totalPointAmount = $orderItem->getData('point_redemption_amount') * $orderItem->getQtyOrdered();
@@ -329,7 +329,7 @@ class PosReturnData
             } else {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku());
+                $bundleChildren = $this->getBundleChildren($orderItem, $order->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
                 if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
@@ -357,7 +357,7 @@ class PosReturnData
             if ($orderItem->getProductType() == 'bundle') {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku());
+                $bundleChildren = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
                 if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
@@ -384,7 +384,7 @@ class PosReturnData
         foreach ($rmaItems as $rmaItem) {
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() == 'bundle') {
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku());
+                $bundleChildren = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
                 foreach ($bundleChildren as $bundleChild) {
                     $product = $this->productRepository->get($bundleChild->getSku(), false, $rma->getStoreId());
                     $subtotal += ($product->getPrice() * $rmaItem->getQtyRequested() * $bundleChild->getQty());
@@ -424,7 +424,7 @@ class PosReturnData
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() == 'bundle') {
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku());
+                $bundleChildren = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
                 foreach ($bundleChildren as $bundleChild) {
                     $bundleChildFromOrder = $this->getBundleChildFromOrder($rmaItem->getOrderItemId(), $bundleChild->getSku());
@@ -477,7 +477,7 @@ class PosReturnData
             if ($orderItem->getProductType() == 'bundle') {
 
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
-                $bundleChildren = $this->getBundleChildren($orderItem->getSku());
+                $bundleChildren = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
                 foreach ($bundleChildren as $bundleChild) {
@@ -512,7 +512,7 @@ class PosReturnData
     {
         $originalPriceSum = 0;
 
-        $childrenItems = $this->getBundleChildren($orderItem->getSku());
+        $childrenItems = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
 
         /** @var \Magento\Bundle\Api\Data\LinkInterface $childItem */
         foreach ($childrenItems as $childItem) {
@@ -567,11 +567,16 @@ class PosReturnData
         return $collection;
     }
 
-    public function getBundleChildren($bundleDynamicSku)
+    public function getBundleChildren($item, $storeId)
     {
-        $bundleSku = explode("-", $bundleDynamicSku);
+        $bundleSku = '';
+        $product = $this->productRepository->getById($item->getProductId(), false, $storeId);
+        if ($product && $product->getId()) {
+            $bundleSku = $product->getSku();
+        }
+
         try {
-            return $this->productLinkManagement->getChildren($bundleSku[0]);
+            return $this->productLinkManagement->getChildren($bundleSku);
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         }
