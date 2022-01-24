@@ -33,7 +33,7 @@ $getDefault = $block->getData('view_model');
     <?= $block->getImage($block->getProductForThumbnail($item), 'wishlist_thumbnail')->toHtml() ?>
     <?php
     // Product Hover Image
-    $block->getChildBlock("product_image_hover")->setProduct($product);
-    echo $block->getChildHtml('product_image_hover',false);
+    $block->getChildBlock("product_image_hover")->setProduct($product); ?>
+    <?= $block->getChildHtml('product_image_hover',false); ?>
     ?>
 </a>

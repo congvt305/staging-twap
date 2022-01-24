@@ -6,8 +6,9 @@ if(!isset($product)) {
 }
 $productHoverImage = $block->getImage($product, 'hover_image');
 ?>
-<?php if (!strpos($productHoverImage->getImageUrl(), 'placeholder') && $block->isEnable() ):?>
+<?php if ($block->getHoverImage($productHoverImage)):?>
     <span class="product-hover-image">
         <?= $productHoverImage->toHtml() ?>
     </span>
 <?php endif;?>
+

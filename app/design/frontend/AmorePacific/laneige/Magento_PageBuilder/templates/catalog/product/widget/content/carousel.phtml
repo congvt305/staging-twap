@@ -35,9 +35,17 @@ use Magento\Framework\App\Action\Action;
                    ap-click-area="product"
                    ap-click-name="prd click"
                    ap-click-data="<?= /* @noEscape */ $block->getProductDefaultName($productSku) . '/' . $productSku; ?>">
+                    <span class="flags">
+                        <?php if($_item->getData('new')):?>
+                            <span class="flag new"><?= $block->escapeHtml($_item->getResource()->getAttribute('new')->getStoreLabel());?></span>
+                        <?php endif;?>
+                        <?php if($_item->getData('best')):?>
+                            <span class="flag best"><?= $block->escapeHtml($_item->getResource()->getAttribute('best')->getStoreLabel()); ?></span>
+                        <?php endif;?>
+                    </span>
                     <?= $block->getImage($_item, $image)->toHtml() ?>
                     <?php $blockHoverImage = $block->getLayout()->createBlock(\CJ\HoverImage\Block\HoverImage::class)->setData(['product'=>$_item])?>
-                    <?php echo $blockHoverImage->toHtml(); ?>
+                    <?= $blockHoverImage->toHtml(); ?>
                 </a>
                 <div class="product-item-details">
                     <strong class="product-item-name-en">
