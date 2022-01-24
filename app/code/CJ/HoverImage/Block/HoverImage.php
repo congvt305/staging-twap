@@ -26,10 +26,6 @@ class HoverImage extends Template
      */
     const XML_CONFIG_PATH = 'hover_image/general/active';
 
-    /**
-     * @var string
-     */
-    protected $_template = 'CJ_HoverImage::product/hover_image.phtml';
 
     /**
      * @param ScopeConfigInterface $scopeConfig
