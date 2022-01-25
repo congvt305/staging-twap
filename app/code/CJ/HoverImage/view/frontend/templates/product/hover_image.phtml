@@ -5,7 +5,7 @@ if(!isset($product)) {
     return;
 } ?>
 <?php if ($block->showHoverImage()): ?>
-<?php $productHoverImage = $block->getImage($product, 'hover_image');?>
+<?php $productHoverImage = $block->getHoverImage($product);?>
     <?php if ($block->hasHoverImage($productHoverImage)): ?>
         <span class="product-hover-image">
             <?= $productHoverImage->toHtml() ?>
