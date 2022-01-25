@@ -32,6 +32,11 @@ class HoverImage extends Template
      */
     const XML_DEFAULT_LAYOUT_HOVER_IMAGE = ['catalog_category_view', 'catalogsearch_result_index'];
 
+    /**
+     * default hover image attribute
+     */
+    const HOVER_IMAGE_ATTRIBUTE = 'hover_image';
+
 
     /**
      * @param ScopeConfigInterface $scopeConfig
@@ -71,6 +76,15 @@ class HoverImage extends Template
     public function getImage($product, $imageId, $attributes = [])
     {
         return $this->listProduct->getImage($product, $imageId, $attributes);
+    }
+
+    /**
+     * @param $product
+     * @return \Magento\Catalog\Block\Product\Image
+     */
+    public function getHoverImage($product)
+    {
+        return $this->getImage($product, self::HOVER_IMAGE_ATTRIBUTE);
     }
 
     /**
