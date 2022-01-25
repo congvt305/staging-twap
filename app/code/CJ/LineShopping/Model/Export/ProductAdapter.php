@@ -18,6 +18,7 @@ class ProductAdapter
 {
     const DEFAULT_BRAND = 'Amore Pacific';
     const DEFAULT_AGE_GROUP = 'normal';
+    const DEFAULT_PRODUCT_TYPE = 'normal';
     const DEFAULT_IN_STOCK = 'in stock';
     const DEFAULT_DISCONTINUES = 'discontinued';
 
@@ -116,6 +117,8 @@ class ProductAdapter
                     $categories = $product->getCategoryIds();
                     if ($categories) {
                         $data['product_category_value'] = implode(',', $categories);
+                    } else {
+                        $data['product_category_value'] = $this->assignToDummyCategory($website->getName());
                     }
                     if (!$data['l_description']) {
                         $data['l_description'] = $product->getName();
@@ -126,6 +129,7 @@ class ProductAdapter
                     $data['link'] = $this->getProductUrl($product, $website->getDefaultStore());
                     $data['age_group'] =  self::DEFAULT_AGE_GROUP;
                     $data['brand'] =  self::DEFAULT_BRAND;
+                    $data['product_type'] =  self::DEFAULT_PRODUCT_TYPE;
                     $listProduct[] = $data;
                 }
             } catch (\Exception $exception) {
@@ -139,6 +143,23 @@ class ProductAdapter
             $data = [];
         }
         return $listProduct;
+    }
+
+    /**
+     * @param $websiteName
+     * @return string
+     */
+    protected function assignToDummyCategory($websiteName): string
+    {
+        switch ($websiteName) {
+            case CategoryAdapter::TW_SULWHASOO_WEBSITE_NAME:
+                return '01_SULWHASOO';
+            case CategoryAdapter::TW_LANEIGE_WEBSITE_NAME:
+                return '01_LENGENIE';
+            default:
+                return '';
+        }
+
     }
 
     /**
