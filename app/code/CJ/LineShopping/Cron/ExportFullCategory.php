@@ -78,7 +78,7 @@ class ExportFullCategory
                 try {
                     $parentId = $website->getDefaultStore()->getRootCategoryId();
                     $categories = $this->categoryFactory->create()->getCategories($parentId, 0, false, true);
-                    $listCategory = $this->categoryAdapter->export($categories, $parentId);
+                    $listCategory = $this->categoryAdapter->export($categories, $parentId, $website);
                     $this->feedOutput->createJsonFile(self::TYPE_EXPORT, $website->getId(), $listCategory);
                 } catch (Exception $exception) {
                     $this->logger->addError(Logger::EXPORT_FEED_DATA,

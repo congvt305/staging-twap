@@ -3,6 +3,7 @@
 namespace CJ\LineShopping\Model\Export;
 
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\Product\Visibility;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\InventorySales\Model\IsProductSalableForRequestedQtyCondition\IsSalableWithReservationsCondition;
@@ -18,6 +19,7 @@ class ProductAdapter
 {
     const DEFAULT_BRAND = 'Amore Pacific';
     const DEFAULT_AGE_GROUP = 'normal';
+    const DEFAULT_PRODUCT_TYPE = 'normal';
     const DEFAULT_IN_STOCK = 'in stock';
     const DEFAULT_DISCONTINUES = 'discontinued';
 
@@ -116,6 +118,8 @@ class ProductAdapter
                     $categories = $product->getCategoryIds();
                     if ($categories) {
                         $data['product_category_value'] = implode(',', $categories);
+                    } else {
+                        $data['product_category_value'] = $this->assignToDummyCategory($website->getCode());
                     }
                     if (!$data['l_description']) {
                         $data['l_description'] = $product->getName();
@@ -126,6 +130,7 @@ class ProductAdapter
                     $data['link'] = $this->getProductUrl($product, $website->getDefaultStore());
                     $data['age_group'] =  self::DEFAULT_AGE_GROUP;
                     $data['brand'] =  self::DEFAULT_BRAND;
+                    $data['product_type'] =  self::DEFAULT_PRODUCT_TYPE;
                     $listProduct[] = $data;
                 }
             } catch (\Exception $exception) {
@@ -139,6 +144,23 @@ class ProductAdapter
             $data = [];
         }
         return $listProduct;
+    }
+
+    /**
+     * @param $websiteCode
+     * @return string
+     */
+    protected function assignToDummyCategory($websiteCode): string
+    {
+        switch ($websiteCode) {
+            case CategoryAdapter::TW_SULWHASOO_WEBSITE_CODE:
+                return '01_SULWHASOO';
+            case CategoryAdapter::TW_LANEIGE_WEBSITE_CODE:
+                return '01_LANEIGE';
+            default:
+                return '';
+        }
+
     }
 
     /**
@@ -179,7 +201,7 @@ class ProductAdapter
      */
     public function getImageLinkProduct($product, $website): string
     {
-        return $website->getDefaultStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $product->getImage();
+        return $website->getDefaultStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA, true) . 'catalog/product' . $product->getImage();
     }
 
     /**
@@ -192,7 +214,7 @@ class ProductAdapter
     protected function getDataFromSimpleProduct($product, $website): array
     {
         //Ignore product not visible, price = 0 and out of stock
-        if ($product->getVisibility() == 1 || $product->getPrice() == 0 || !$this->getSalableForSimpleProduct($product, $website)) {
+        if ($product->getVisibility() == Visibility::VISIBILITY_NOT_VISIBLE || $product->getPrice() == 0 || !$this->getSalableForSimpleProduct($product, $website)) {
             return [];
         }
         $data = [];
@@ -215,7 +237,7 @@ class ProductAdapter
     protected function getDataFromConfigurableProduct($product, $website): array
     {
         //Ignore product not visible and out of stock
-        if ($product->getVisibility() == 1 || !$this->getSalableForConfigurableProduct($product, $website)) {
+        if ($product->getVisibility() == Visibility::VISIBILITY_NOT_VISIBLE || !$this->getSalableForConfigurableProduct($product, $website)) {
             return [];
         }
         $data = [];
@@ -257,18 +279,22 @@ class ProductAdapter
      */
     protected function getDataFromBundleProduct($product, $website): array
     {
-        $regularPrice = $product->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue();
-        $specialPrice = $product->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue();
-        //Ignore product not visible and out of stock
-        if ($product->getVisibility() == 1 || $regularPrice == 0 || !$this->getSalableForBundleProduct($product, $website)) {
-            return [];
-        }
         $data = [];
-        if($specialPrice < $regularPrice && $specialPrice != 0) {
-            $data['sale_price'] = (string)round($specialPrice);
-        }
         foreach ($this->productFeedMapping as $key => $value) {
-            $data[$key] = $product->getData($value);
+            if ($key == 'price') {
+                $regularPrice = $product->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue();
+                $specialPrice = $product->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue();
+                //Ignore product not visible and out of stock
+                if ($product->getVisibility() == Visibility::VISIBILITY_NOT_VISIBLE || $regularPrice == 0 || !$this->getSalableForBundleProduct($product, $website)) {
+                    return [];
+                }
+                $data['price'] = $regularPrice;
+                if($specialPrice < $regularPrice && $specialPrice != 0) {
+                    $data['sale_price'] = (string)round($specialPrice);
+                }
+            } else {
+                $data[$key] = $product->getData($value);
+            }
         }
         return $data;
     }

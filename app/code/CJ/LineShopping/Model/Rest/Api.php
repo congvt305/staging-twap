@@ -196,7 +196,6 @@ class Api
         $data['timestamp'] = time();
 
         //hash
-        $timestamp = time();
         $hashHmacData = 'orderid=' . $order->getIncrementId() .
             '&ordertotal=' . $data['ordertotal'] .
             '&timestamp=' . $data['timestamp'];
@@ -226,16 +225,17 @@ class Api
                 $data['feetotal'] += round($item['product']['product_fee']);
             }
         }
-        $data['feetime'] = $this->getOrderTime($order);
+        $data['feetime'] = $this->getFeeTime($order);
+        $data['ordertime'] = $this->getOrderTime($order);
 
         //hash
-        $timestamp = time();
+        $data['timestamp'] = time();
         $hashHmacData = 'orderid=' . $order->getIncrementId() .
             '&feetime=' . $data['feetime'] .
             '&feetotal=' . $data['feetotal'] .
-            '&timestamp=' . $timestamp;
+            '&timestamp=' . $data['timestamp'];
         // @codingStandardsIgnoreStart
-        $hashHmac = hash_hmac('sha256', $hashHmacData, md5($this->getOrderTime($order)));
+        $hashHmac = hash_hmac('sha256', $hashHmacData, md5($data['feetime']));
         // @codingStandardsIgnoreEnd
         $data['hash'] = $hashHmac;
         return $data;
@@ -434,6 +434,21 @@ class Api
     {
         return $this->dataHelper->convertTimeZone(
             $order->getCreatedAt(),
+            self::TIME_ZONE_8
+        );
+    }
+
+    /**
+     * @param $order
+     * @return string
+     * @throws Exception
+     */
+    protected function getFeeTime($order)
+    {
+        $trialPeriod = $this->config->getTrialPeriod();
+        $feeTime = new \DateTime($order->getCreatedAt() . ' +' . $trialPeriod . ' day');
+        return $this->dataHelper->convertTimeZone(
+            $feeTime,
             self::TIME_ZONE_8
         );
     }
