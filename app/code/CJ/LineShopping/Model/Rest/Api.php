@@ -447,9 +447,8 @@ class Api
     {
         $trialPeriod = $this->config->getTrialPeriod();
         $feeTime = new \DateTime($order->getCreatedAt() . ' +' . $trialPeriod . ' day');
-        $feeTimeFormat = $feeTime->format(Data::TIME_FORMAT_YMDHIS);
         return $this->dataHelper->convertTimeZone(
-            $feeTimeFormat,
+            $feeTime,
             self::TIME_ZONE_8
         );
     }

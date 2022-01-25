@@ -3,6 +3,7 @@
 namespace CJ\LineShopping\Model\Export;
 
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\Product\Visibility;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\InventorySales\Model\IsProductSalableForRequestedQtyCondition\IsSalableWithReservationsCondition;
@@ -118,7 +119,7 @@ class ProductAdapter
                     if ($categories) {
                         $data['product_category_value'] = implode(',', $categories);
                     } else {
-                        $data['product_category_value'] = $this->assignToDummyCategory($website->getName());
+                        $data['product_category_value'] = $this->assignToDummyCategory($website->getCode());
                     }
                     if (!$data['l_description']) {
                         $data['l_description'] = $product->getName();
@@ -146,15 +147,15 @@ class ProductAdapter
     }
 
     /**
-     * @param $websiteName
+     * @param $websiteCode
      * @return string
      */
-    protected function assignToDummyCategory($websiteName): string
+    protected function assignToDummyCategory($websiteCode): string
     {
-        switch ($websiteName) {
-            case CategoryAdapter::TW_SULWHASOO_WEBSITE_NAME:
+        switch ($websiteCode) {
+            case CategoryAdapter::TW_SULWHASOO_WEBSITE_CODE:
                 return '01_SULWHASOO';
-            case CategoryAdapter::TW_LANEIGE_WEBSITE_NAME:
+            case CategoryAdapter::TW_LANEIGE_WEBSITE_CODE:
                 return '01_LANEIGE';
             default:
                 return '';
@@ -213,7 +214,7 @@ class ProductAdapter
     protected function getDataFromSimpleProduct($product, $website): array
     {
         //Ignore product not visible, price = 0 and out of stock
-        if ($product->getVisibility() == 1 || $product->getPrice() == 0 || !$this->getSalableForSimpleProduct($product, $website)) {
+        if ($product->getVisibility() == Visibility::VISIBILITY_NOT_VISIBLE || $product->getPrice() == 0 || !$this->getSalableForSimpleProduct($product, $website)) {
             return [];
         }
         $data = [];
@@ -236,7 +237,7 @@ class ProductAdapter
     protected function getDataFromConfigurableProduct($product, $website): array
     {
         //Ignore product not visible and out of stock
-        if ($product->getVisibility() == 1 || !$this->getSalableForConfigurableProduct($product, $website)) {
+        if ($product->getVisibility() == Visibility::VISIBILITY_NOT_VISIBLE || !$this->getSalableForConfigurableProduct($product, $website)) {
             return [];
         }
         $data = [];
@@ -284,7 +285,7 @@ class ProductAdapter
                 $regularPrice = $product->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue();
                 $specialPrice = $product->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue();
                 //Ignore product not visible and out of stock
-                if ($product->getVisibility() == 1 || $regularPrice == 0 || !$this->getSalableForBundleProduct($product, $website)) {
+                if ($product->getVisibility() == Visibility::VISIBILITY_NOT_VISIBLE || $regularPrice == 0 || !$this->getSalableForBundleProduct($product, $website)) {
                     return [];
                 }
                 $data['price'] = $regularPrice;
