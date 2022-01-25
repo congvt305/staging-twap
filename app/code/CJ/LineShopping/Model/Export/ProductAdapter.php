@@ -155,7 +155,7 @@ class ProductAdapter
             case CategoryAdapter::TW_SULWHASOO_WEBSITE_NAME:
                 return '01_SULWHASOO';
             case CategoryAdapter::TW_LANEIGE_WEBSITE_NAME:
-                return '01_LENGENIE';
+                return '01_LANEIGE';
             default:
                 return '';
         }
@@ -278,18 +278,22 @@ class ProductAdapter
      */
     protected function getDataFromBundleProduct($product, $website): array
     {
-        $regularPrice = $product->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue();
-        $specialPrice = $product->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue();
-        //Ignore product not visible and out of stock
-        if ($product->getVisibility() == 1 || $regularPrice == 0 || !$this->getSalableForBundleProduct($product, $website)) {
-            return [];
-        }
         $data = [];
-        if($specialPrice < $regularPrice && $specialPrice != 0) {
-            $data['sale_price'] = (string)round($specialPrice);
-        }
         foreach ($this->productFeedMapping as $key => $value) {
-            $data[$key] = $product->getData($value);
+            if ($key == 'price') {
+                $regularPrice = $product->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue();
+                $specialPrice = $product->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue();
+                //Ignore product not visible and out of stock
+                if ($product->getVisibility() == 1 || $regularPrice == 0 || !$this->getSalableForBundleProduct($product, $website)) {
+                    return [];
+                }
+                $data['price'] = $regularPrice;
+                if($specialPrice < $regularPrice && $specialPrice != 0) {
+                    $data['sale_price'] = (string)round($specialPrice);
+                }
+            } else {
+                $data[$key] = $product->getData($value);
+            }
         }
         return $data;
     }
