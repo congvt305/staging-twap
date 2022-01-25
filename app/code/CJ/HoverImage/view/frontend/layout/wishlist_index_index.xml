@@ -1,7 +1,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="customer.wishlist.item.image">
-            <block class="CJ\HoverImage\Block\HoverImage" name="category.products.hover.image" as="product_image_hover" template="CJ_HoverImage::product/hover_image.phtml" />
+            <block class="CJ\HoverImage\Block\HoverImage" name="category.products.hover.image" as="product_image_hover" />
         </referenceBlock>
     </body>
 </page>
