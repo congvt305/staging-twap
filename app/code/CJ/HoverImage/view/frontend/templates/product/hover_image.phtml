@@ -1,0 +1,15 @@
+<?php
+/** @var \CJ\HoverImage\Block\HoverImage $block */
+$product = $block->getData('product');
+if(!isset($product)) {
+    return;
+} ?>
+<?php if ($block->showHoverImage()): ?>
+<?php $productHoverImage = $block->getHoverImage($product);?>
+    <?php if ($block->hasHoverImage($productHoverImage)): ?>
+        <span class="product-hover-image">
+            <?= $productHoverImage->toHtml() ?>
+        </span>
+    <?php endif; ?>
+<?php endif;?>
+

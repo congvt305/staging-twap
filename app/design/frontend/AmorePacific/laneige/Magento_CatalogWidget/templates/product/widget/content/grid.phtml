@@ -57,6 +57,8 @@ use Magento\Framework\App\Action\Action;
                                     <?php endif;?>
                                 </span>
                                 <?= $block->getImage($_item, $image)->toHtml() ?>
+                                <?php $blockHoverImage = $block->getLayout()->createBlock(\CJ\HoverImage\Block\HoverImage::class)->setData(['product'=>$_item])?>
+                                <?= $blockHoverImage->toHtml(); ?>
                             </a>
                             <div class="product-item-details">
                                 <strong class="product-item-name">
