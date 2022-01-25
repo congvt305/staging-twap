@@ -41,8 +41,8 @@ class CategoryAdapter
                 $data['category_flag'] = '0';
                 break;
             case self::TW_LANEIGE_WEBSITE_NAME:
-                $data['category_title'] = 'LENGENIE';
-                $data['category_value'] = '01_LENGENIE';
+                $data['category_title'] = 'LANEIGE';
+                $data['category_value'] = '01_LANEIGE';
                 $data['category_value_parent'] = '0';
                 $data['category_flag'] = '0';
                 break;
