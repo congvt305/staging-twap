@@ -15,12 +15,12 @@
                 <field id="trial_period" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Trial Period </label>
                     <comment>Number of Trial Period. Not negative number. Default value = 30.</comment>
-                    <validate>required-entry validate-number validate-greater-than-zero validate-digits validate-not-negative-number no-whitespace</validate>
+                    <validate>required-entry validate-number validate-digits validate-not-negative-number no-whitespace</validate>
                 </field>
                 <field id="cookie_lifetime" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Cookie Lifetime</label>
                     <comment>Hours cookie alive</comment>
-                    <validate>required-entry validate-number validate-greater-than-zero validate-digits validate-not-negative-number no-whitespace</validate>
+                    <validate>required-entry validate-number validate-digits validate-not-negative-number no-whitespace</validate>
                 </field>
             </group>
             <group id="api" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
