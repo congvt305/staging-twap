@@ -92,10 +92,12 @@ class Data
      */
     public function convertTimeZone($date, $timezone)
     {
-        $dt = new \DateTime($date);
+        if (!$date instanceof \DateTime) {
+            $date = new \DateTime($date);
+        }
         $timezone = new \DateTimeZone($timezone);
-        $dt->setTimezone($timezone);
-        return $dt->format(self::TIME_FORMAT_YMDHIS);
+        $date->setTimezone($timezone);
+        return $date->format(self::TIME_FORMAT_YMDHIS);
     }
 
     /**
