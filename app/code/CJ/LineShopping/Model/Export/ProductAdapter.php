@@ -200,7 +200,7 @@ class ProductAdapter
      */
     public function getImageLinkProduct($product, $website): string
     {
-        return $website->getDefaultStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $product->getImage();
+        return $website->getDefaultStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA, true) . 'catalog/product' . $product->getImage();
     }
 
     /**
