@@ -74,16 +74,41 @@ class HoverImage extends Template
     }
 
     /**
-     * @return void
+     * check is hover image enabled layout
+     * @return bool
      */
-    public function getHoverImage($productHoverImage)
-    {
+    public function isHoverImageEnabledLayout() {
         $xmlLayout = $this->request->getFullActionName();
-        // check for catalog_category_view.xml and catalogsearch_result_index.xml
-        if((!strpos($productHoverImage->getImageUrl(), 'placeholder') && in_array($xmlLayout,self::XML_DEFAULT_LAYOUT_HOVER_IMAGE))) {
+        if(in_array($xmlLayout,self::XML_DEFAULT_LAYOUT_HOVER_IMAGE)) {
             return true;
         }
-        if ((!strpos($productHoverImage->getImageUrl(), 'placeholder') && $this->isHoverImageEnabled())) {
+        return false;
+    }
+
+    /**
+     * check has hover image
+     * @param $productHoverImage
+     * @return bool
+     */
+    public function hasHoverImage($productHoverImage) {
+        if(!strpos($productHoverImage->getImageUrl(), 'placeholder')) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * show hover image
+     * @return void
+     */
+    public function showHoverImage()
+    {
+        // check for catalog_category_view.xml and catalogsearch_result_index.xml (default layout enabled hover image function)
+        if($this->isHoverImageEnabledLayout()) {
+            return true;
+        }
+        //check config
+        if ($this->isHoverImageEnabled()) {
             return true;
         }
         return false;
