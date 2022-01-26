@@ -7,7 +7,7 @@ use Magento\Framework\Event\ObserverInterface;
 use CJ\LineShopping\Logger\Logger;
 use Exception;
 
-class ProductSaveAfter implements ObserverInterface
+class ProductSaveBefore implements ObserverInterface
 {
     /**
      * @var ProductAction
