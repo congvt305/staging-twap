@@ -175,13 +175,13 @@ class ProductAdapter
             $routeParams['id'] = $product->getId();
             $routeParams['s'] = $product->getUrlKey();
             $routeParams['_scope'] = $store;
+            $routeParams['_secure'] = true;
             $productUrl = $this->url->getUrl('catalog/product/view', $routeParams);
             return $this->reConstructUrl($productUrl);
         }
-        $productUrl = $product->getProductUrl();
+        $productUrl = $product->getUrlModel()->getUrl($product, ['_secure' => true]);
         return $this->reConstructUrl($productUrl);
     }
-
     /**
      * Remove url param
      *
