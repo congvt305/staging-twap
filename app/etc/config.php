@@ -681,6 +681,7 @@ return [
         'CJ_ChangeOrderStatus' => 1,
         'CJ_InventoryShipping' => 1,
         'CJ_Invoice' => 1,
+        'CJ_HoverImage' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
