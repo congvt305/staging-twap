@@ -31,4 +31,8 @@ $getDefault = $block->getData('view_model');
         <?php endif;?>
     </span>
     <?= $block->getImage($block->getProductForThumbnail($item), 'wishlist_thumbnail')->toHtml() ?>
+    <?php
+    // Product Hover Image
+    $block->getChildBlock("product_image_hover")->setData(['product'=>$product])?>
+    <?= $block->getChildHtml('product_image_hover',false); ?>
 </a>

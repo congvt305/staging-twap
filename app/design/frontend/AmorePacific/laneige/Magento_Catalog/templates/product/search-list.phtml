@@ -54,7 +54,6 @@ $getDefault = $block->getData('view_model');
                     <?php /* @noEscape */ $productSku = $_product->getSku() ?>
                     <?php
                     $productImage = $block->getImage($_product, $imageDisplayArea);
-                    $productHoverImage = $block->getImage($_product, 'hover_image');
                     if ($pos != null) {
                         $position = ' style="left:' . $productImage->getWidth() . 'px;'
                             . 'top:' . $productImage->getHeight() . 'px;"';
@@ -76,11 +75,11 @@ $getDefault = $block->getData('view_model');
                         <?php endif;?>
                         </span>
                         <?= $productImage->toHtml() ?>
-                        <?php if (!strpos($productHoverImage->getImageUrl(), 'placeholder')):?>
-                            <span class="product-hover-image">
-                                <?= $productHoverImage->toHtml() ?>
-                            </span>
-                        <?php endif;?>
+                        <?php
+                        // Product Hover Image
+                         $block->getChildBlock("product_image_hover")->setData(['product'=>$_product]); ?>
+                         <?= $block->getChildHtml('product_image_hover',false); ?>
+                        ?>
                     </a>
                     <div class="product details product-item-details">
                         <?php
