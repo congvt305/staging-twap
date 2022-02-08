@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="line_shopping_export_full_product" instance="CJ\LineShopping\Cron\ExportFullProduct" method="execute">
+            <config_path>line_shopping/cron/export_full_product</config_path>
+        </job>
+        <job name="line_shopping_export_partial_product" instance="CJ\LineShopping\Cron\ExportPartialProduct" method="execute">
+            <config_path>line_shopping/cron/export_partial_product</config_path>
+        </job>
+        <job name="line_shopping_export_full_category" instance="CJ\LineShopping\Cron\ExportFullCategory" method="execute">
+            <config_path>line_shopping/cron/export_full_category</config_path>
+        </job>
+        <job name="line_shopping_order_post_back" instance="CJ\LineShopping\Cron\OrderPostBack" method="execute">
+            <config_path>line_shopping/cron/order_post_back</config_path>
+        </job>
+        <job name="line_shopping_fee_post_back" instance="CJ\LineShopping\Cron\FeePostBack" method="execute">
+            <config_path>line_shopping/cron/fee_post_back</config_path>
+        </job>
+    </group>
+</config>

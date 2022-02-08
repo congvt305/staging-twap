@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="line_shopping" translate="label" type="text" sortOrder="1000" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Line Shopping Integration</label>
+            <tab>sales</tab>
+            <resource>CJ_LineShopping::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>General</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="trial_period" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Trial Period </label>
+                    <comment>Number of Trial Period. Not negative number. Default value = 30.</comment>
+                    <validate>required-entry validate-number validate-digits validate-not-negative-number no-whitespace</validate>
+                </field>
+                <field id="cookie_lifetime" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Cookie Lifetime</label>
+                    <comment>Hours cookie alive</comment>
+                    <validate>required-entry validate-number validate-digits validate-not-negative-number no-whitespace</validate>
+                </field>
+            </group>
+            <group id="api" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Api config</label>
+                <field id="url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
+                    <label>API url</label>
+                </field>
+                <field id="site" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1">
+                    <label>LINE Shopping ID</label>
+                </field>
+                <field id="shop_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1">
+                    <label>LINE Shopping shop ID</label>
+                </field>
+                <field id="auth_key" translate="label" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="1">
+                    <label>Login authentication code</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+            </group>
+            <group id="setting" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>LineFeed Setting</label>
+                <field id="filepath" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>File Path</label>
+                </field>
+                <field id="full_product" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Full Product Feed File Name</label>
+                </field>
+                <field id="partial_product" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Partial Product Feed File Name</label>
+                </field>
+                <field id="full_category" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Full Category Feed File Name</label>
+                </field>
+            </group>
+            <group id="cron" translate="label" type="text" sortOrder="100" showInDefault="1">
+                <label>Schedule</label>
+                <field id="export_full_product" translate="label" type="text" sortOrder="10" showInDefault="1" canRestore="1">
+                    <label>Export Full Product</label>
+                </field>
+                <field id="export_partial_product" translate="label" type="text" sortOrder="20" showInDefault="1" canRestore="1">
+                    <label>Export Partial Product</label>
+                </field>
+                <field id="export_full_category" translate="label" type="text" sortOrder="30" showInDefault="1" canRestore="1">
+                    <label>Export Full Category</label>
+                </field>
+                <field id="order_post_back" translate="label" type="text" sortOrder="40" showInDefault="1" canRestore="1">
+                    <label>Order Post Back</label>
+                </field>
+                <field id="fee_post_back" translate="label" type="text" sortOrder="50" showInDefault="1" canRestore="1">
+                    <label>Fee Post Back</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
