@@ -13,7 +13,8 @@ use Magento\Framework\App\Action\Action;
 <?php if ($exist = ($block->getProductCollection() && $block->getProductCollection()->getSize())) : ?>
     <?php
     $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
-
+    /** @var \CJ\PageBuilder\Helper\Data $carouselHelper */
+    $carouselHelper = $this->helper(\CJ\PageBuilder\Helper\Data::class);
     $type = 'widget-product-carousel';
 
     $image = 'new_products_content_widget_grid';
@@ -48,16 +49,18 @@ use Magento\Framework\App\Action\Action;
                     <?= $blockHoverImage->toHtml(); ?>
                 </a>
                 <div class="product-item-details">
-                    <strong class="product-item-name-en">
-                        <a title="<?= $block->escapeHtml($_item->getName()) ?>"
-                           href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
-                           class="product-item-link"
-                           ap-click-area="product"
-                           ap-click-name="prd click"
-                           ap-click-data="<?= /* @noEscape */ $block->getProductDefaultName($productSku) . '/' . $productSku; ?>">
-                            <?= $block->escapeHtml($_item->getResource()->getAttributeRawValue($_item->getId(),'name',0));?>
-                        </a>
-                    </strong>
+                    <?php if ($carouselHelper->getConfigEngNameVisible()): ?>
+                        <strong class="product-item-name-en">
+                            <a title="<?= $block->escapeHtml($_item->getName()) ?>"
+                               href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
+                               class="product-item-link"
+                               ap-click-area="product"
+                               ap-click-name="prd click"
+                               ap-click-data="<?= /* @noEscape */ $block->getProductDefaultName($productSku) . '/' . $productSku; ?>">
+                                <?= $block->escapeHtml($_item->getResource()->getAttributeRawValue($_item->getId(),'name',0));?>
+                            </a>
+                        </strong>
+                    <?php endif; ?>
                     <strong class="product-item-name">
                         <a title="<?= $block->escapeHtml($_item->getName()) ?>"
                            href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
@@ -68,12 +71,13 @@ use Magento\Framework\App\Action\Action;
                             <?= $block->escapeHtml($_item->getName()) ?>
                         </a>
                     </strong>
+                    <?php if ($carouselHelper->getConfigDescVisible()): ?>
                     <div class="product attribute overview">
                         <div class="value" itemprop="<?=$block->escapeHtml(__('description'));?>">
                             <?= /* @noEscape */ $_helper->productAttribute($_item, $_item->getShortDescription(), 'short_description') ?>
                         </div>
                     </div>
-
+                    <?php endif; ?>
                     <?= $block->getProductPriceHtml($_item, $type) ?>
 
                     <?php if ($templateType) : ?>

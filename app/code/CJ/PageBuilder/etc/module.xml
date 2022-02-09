@@ -2,10 +2,10 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="CJ_DataExport">
+    <module name="CJ_PageBuilder">
         <sequence>
             <module name="CJ_Base"/>
-            <module name="Amore_GcrmDataExport"/>
+            <module name="Magento_PageBuilder"/>
         </sequence>
     </module>
 </config>
