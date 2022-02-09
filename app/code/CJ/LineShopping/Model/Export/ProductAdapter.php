@@ -30,7 +30,7 @@ class ProductAdapter
         'product_id' => 'sku',
         'product_name' => 'name',
         'price' => 'price',
-        'l_description' => 'description',
+        'l_description' => 'short_description',
         'description' => 'short_description'
     ];
 
