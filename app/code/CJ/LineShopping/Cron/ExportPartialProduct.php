@@ -89,7 +89,7 @@ class ExportPartialProduct
                         ->addAttributeToSelect('*')
                         ->addAttributeToFilter('status', \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED)
                         ->addAttributeToFilter('line_sync_status', true)
-                        ->addWebsiteFilter($website->getId());
+                        ->addStoreFilter($website->getDefaultStore()->getId());
                     $listProduct = $this->productAdapter->export($products, $website);
                     $this->feedOutput->createJsonFile(self::TYPE_EXPORT, $website->getId(), $listProduct);
                     $this->updateModifyProduct($products, $website->getDefaultStore()->getId());
