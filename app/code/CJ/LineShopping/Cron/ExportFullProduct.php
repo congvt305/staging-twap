@@ -79,7 +79,8 @@ class ExportFullProduct
                     $products = $this->productCollectionFactory->create()
                         ->addAttributeToSelect('*')
                         ->addAttributeToFilter('status',\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED)
-                        ->addWebsiteFilter($website->getId());
+                        ->addStoreFilter($website->getDefaultStore()->getId());
+
                     $listProduct = $this->productAdapter->export($products, $website);
                     $this->feedOutput->createJsonFile(self::TYPE_EXPORT, $website->getId(), $listProduct);
                 } catch (Exception $exception) {
