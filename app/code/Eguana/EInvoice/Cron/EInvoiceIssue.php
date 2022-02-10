@@ -34,6 +34,11 @@ class EInvoiceIssue
     private $helperEmail;
 
     /**
+     * @var \Eguana\EInvoice\Model\EInvoiceService
+     */
+    protected $einvoiceService;
+
+    /**
      * EInvoiceIssue constructor.
      * @param \Eguana\EInvoice\Model\Order $order
      * @param \Ecpay\Ecpaypayment\Model\Payment $ecpayPaymentModel
@@ -46,13 +51,15 @@ class EInvoiceIssue
         \Ecpay\Ecpaypayment\Model\Payment $ecpayPaymentModel,
         \Eguana\EInvoice\Model\Source\Config $config,
         \Magento\Store\Model\StoreManagerInterface $storeManagerInterface,
-        \Eguana\EInvoice\Model\Email $helperEmail
+        \Eguana\EInvoice\Model\Email $helperEmail,
+        \Eguana\EInvoice\Model\EInvoiceService $einvoiceService
     ) {
         $this->order = $order;
         $this->ecpayPaymentModel = $ecpayPaymentModel;
         $this->config = $config;
         $this->storeManagerInterface = $storeManagerInterface;
         $this->helperEmail = $helperEmail;
+        $this->einvoiceService = $einvoiceService;
     }
 
     public function execute()
@@ -67,11 +74,24 @@ class EInvoiceIssue
 
                 foreach ($notIssuedOrderList as $index => $order) {
                     try {
-                        $ecpayInvoiceResult = $this->ecpayPaymentModel->createEInvoice($order->getEntityId(), $order->getStoreId());
+                        $orderId = $order->getEntityId();
+                        // check if EInvoice has been created by ECPay for this order
+                        $isIssued = $this->einvoiceService->eInvoiceIssued($orderId);
+                        if ($isIssued) {
+                            // update payment information
+                            $payment = $order->getPayment();
+                            $additionalInfo = $payment->getAdditionalInformation();
+                            $rawDetailsInfo = $additionalInfo["raw_details_info"] ?? [];
+                            $payment->setAdditionalData(array_replace($rawDetailsInfo, ['RtnCode' => 1]));
+                            $payment->save();
+                        } else {
+                            $ecpayInvoiceResult = $this->ecpayPaymentModel->createEInvoice($orderId,
+                                $order->getStoreId());
 
-                        if ($ecpayInvoiceResult["RtnCode"] != "1") {
-                            //send mail
-                            $this->helperEmail->sendEmail($order, $ecpayInvoiceResult["RtnMsg"]);
+                            if ($ecpayInvoiceResult["RtnCode"] != "1") {
+                                //send mail
+                                $this->helperEmail->sendEmail($order, $ecpayInvoiceResult["RtnMsg"]);
+                            }
                         }
                     } catch (\Exception $e) {
                         $this->helperEmail->sendEmail($order, $e->getMessage());

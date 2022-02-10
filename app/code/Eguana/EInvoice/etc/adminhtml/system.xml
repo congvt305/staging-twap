@@ -47,6 +47,22 @@
                     <label>Run Now</label>
                     <frontend_model>Eguana\EInvoice\Block\System\Config\EInvoiceRun</frontend_model>
                 </field>
+                <field id="enabled_email_notification" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Send Notification Email</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Do you want the system to send an email notification when cronjob creates einvoice fails?</comment>
+                    <depends><field id="*/*/active">1</field></depends>
+                </field>
+                <field id="ecpay_query_test_flag" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>TEST Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ecpay_query_stage_url" translate="label" type="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Stage URL</label>
+                </field>
+                <field id="ecpay_query_production_url" translate="label" type="label" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Production URL</label>
+                </field>
             </group>
             <group id="days_limit_when_get_orders" translate="label" type="text" sortOrder="280" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Set Days Limit For Get Orders</label>
