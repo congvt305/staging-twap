@@ -191,7 +191,7 @@ class ProductAdapter
     protected function reConstructUrl($url): string
     {
         $url = explode('?', $url);
-        return $url[0];
+        return str_replace(' ', '%20', $url[0]);
     }
 
     /**
