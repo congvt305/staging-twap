@@ -6,6 +6,9 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="CJ_CouponCustomer::css/frontend/laneige/style.css" />
+    </head>
     <body>
         <referenceBlock name="checkout.root">
             <arguments>
@@ -29,7 +32,7 @@
                                                             </item>
                                                         </item>
                                                         <item name="discount" xsi:type="array">
-                                                            <item name="component" xsi:type="string">Magento_SalesRule/js/view/payment/discount</item>
+                                                            <item name="component" xsi:type="string">CJ_CouponCustomer/js/view/payment/discount</item>
                                                             <item name="displayArea" xsi:type="string">beforeMethods</item>
                                                             <item name="children" xsi:type="array">
                                                                 <item name="errors" xsi:type="array">

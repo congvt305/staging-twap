@@ -169,7 +169,7 @@ class Data
             }
 
             $itemData = [
-                'discount' => $promoItemData->getDiscountArray(),
+                'discount.js' => $promoItemData->getDiscountArray(),
                 'qty' => $itemQty
             ];
             $discountData[$ruleId]['rule_type'] = $promoItemData->getRuleType();
