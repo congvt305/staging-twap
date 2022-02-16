@@ -53,14 +53,6 @@ class Data
 
     public function getRuleCollection()
     {
-//        return [
-//            ['coupon_id' => 123123,
-//                'copun_des'=> "thanhdatr12312312"],
-//            [
-//                'coupon_id' => 222222,
-//                'copun_des'=> "test12312312"
-//            ]
-//        ];
         $rules = $this->ruleCollection->create();
         $customer = $this->getCustomer();
         $websiteId = $customer->getWebsiteId();
