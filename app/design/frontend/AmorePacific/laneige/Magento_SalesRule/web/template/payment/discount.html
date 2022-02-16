@@ -32,6 +32,7 @@
             </div>
             <div class="actions-toolbar">
                 <div class="primary">
+                    123123123123123
                     <!-- ko ifnot: isApplied() -->
                         <button class="action action-apply" type="submit" data-bind="'value': $t('Apply'), click: apply">
                             <span><!-- ko i18n: 'Apply'--><!-- /ko --></span>
@@ -47,6 +48,12 @@
             <!-- ko foreach: getRegion('captcha') -->
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!-- /ko -->
+            <div id="modal">
+                <div class="modal-body-content">
+                    <h2><!-- ko i18n: 'Title'--><!-- /ko --></h2>
+                    <p><!-- ko i18n: 'Content'--><!-- /ko --></p>
+                </div>
+            </div>
         </form>
     </div>
 </div>
