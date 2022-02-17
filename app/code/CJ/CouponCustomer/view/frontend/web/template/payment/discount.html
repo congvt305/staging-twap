@@ -42,9 +42,11 @@
                         <span><!-- ko i18n: 'Cancel'--><!-- /ko --></span>
                     </button>
                     <!-- /ko -->
-                    <button class="action action-apply" id="coupon-wallet" style="margin-top: 5px; border-left-color: #e0e0e0;">
+                    <!-- ko if: isEnableCouponPopup -->
+                    <button class="action action-apply action-show-coupon" id="coupon-wallet">
                         <span><!-- ko i18n: 'show coupon'--><!-- /ko --></span>
                     </button>
+                    <!-- /ko -->
                 </div>
             </div>
             <!-- ko foreach: getRegion('captcha') -->
@@ -52,6 +54,7 @@
             <!-- /ko -->
         </form>
     </div>
+    <!-- ko if: isEnableCouponPopup -->
     <div id="modal">
         <div class="modal-body-content">
             <div class="coupon-popup coupon-container">
@@ -66,7 +69,7 @@
                                         <div class="discount-label">
                                             <div class="discount-title">
                                                 <div class="landscape">
-                                                    <img src="https://www.gospree.sg/SharedImages/BrandImages/SULWHASOO/brandimage_1.JPG">
+                                                    <img data-bind="attr: { src : $data['logo'] }">
                                                 </div>
                                             </div>
                                             <div class="discount-date">
@@ -95,7 +98,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
+    <!-- /ko -->
 </div>
