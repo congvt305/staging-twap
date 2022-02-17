@@ -32,12 +32,12 @@
         <plugin name="eguana_directory_copy_address_field"
                 type="Eguana\Directory\Plugin\Quote\CopyAddressFieldPlugin" sortOrder="20"/>
     </type>
-<!--    <type name="Magento\Checkout\Model\ShippingInformationManagement">-->
-<!--        <plugin name="validate_address_for_vn"-->
-<!--                type="Eguana\Directory\Plugin\Model\ShippingInformationManagement" sortOrder="20"/>-->
-<!--    </type>-->
-<!--    <type name="Magento\Customer\Controller\Address\FormPost">-->
-<!--        <plugin name="unset_custom_attribute_address"-->
-<!--                type="Eguana\Directory\Plugin\Controller\Address\FormPost" sortOrder="20"/>-->
-<!--    </type>-->
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="validate_address_for_vn"
+                type="Eguana\Directory\Plugin\Model\ShippingInformationManagement" sortOrder="20"/>
+    </type>
+    <type name="Magento\Customer\Controller\Address\FormPost">
+        <plugin name="unset_custom_attribute_address"
+                type="Eguana\Directory\Plugin\Controller\Address\FormPost" sortOrder="20"/>
+    </type>
 </config>
