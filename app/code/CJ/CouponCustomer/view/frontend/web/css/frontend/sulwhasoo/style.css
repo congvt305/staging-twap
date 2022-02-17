@@ -1,24 +1,14 @@
 .coupon-wrap {
-    /* position: absolute; */
-    /* left: 0px; */
-    /* top: 0px; */
     background: #F8F8F8;
     padding-top: 10px;
-    /*border-radius: 10px;*/
-    /* overflow-y: auto;
-    overflow-x: hidden; */
     margin: auto;
-    /*width: 710px;*/
 }
 
 .coupon-header {
     position: relative;
     width: 780px;
     height: 54px;
-    /* left: 608px; */
-    /* top: 165px; */
     background: #FF9224;
-    /*border-radius: 10px 10px 0px 0px;*/
     display: inline-flex;
 }
 
@@ -34,13 +24,10 @@ p.coupon-title-header {
     padding-left: 30px;
     padding-right: 10px;
     margin: 0px;
-    /* width: 179px; */
-    /* display: flex; */
     text-transform: uppercase;
 }
 
 p.counpon-sub-title {
-    /* position: absolute; */
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
@@ -52,7 +39,6 @@ p.counpon-sub-title {
 }
 
 .coupon-content {
-    /*margin-top: 30px;*/
     margin-left: 50px;
     margin-bottom: 28px;
 }
@@ -70,9 +56,6 @@ p.promo-title {
 
 .discount-card-content {
     width: 500px;
-    /* min-height: 100px; */
-    /* margin-right: 1px; */
-    /* display: inline-flex; */
     display: inline-flex;
     background: #FFFFFF;
     border-radius: 10px;
@@ -91,7 +74,6 @@ p.promo-title {
     background: #FFFFFF;
     border-radius: 10px;
     width: 150px;
-    /* min-height: 100px; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,7 +88,6 @@ p.promo-title {
 .discount-title {
     height: 45px;
     width: 155px;
-    /* background: url(https://www.gospree.sg/SharedImages/BrandImages/SULWHASOO/brandimage_1.JPG); */
     border-radius: 5px;
 }
 
@@ -125,7 +106,6 @@ p.date-exp {
     font-weight: normal;
     font-size: 16px;
     line-height: 19px;
-    /* identical to box height */
     text-align: center;
     color: rgba(0, 0, 0, 0.8);
     margin-top: 5px;
@@ -135,9 +115,6 @@ p.date-exp {
     background: #E1E1E1;
     border-radius: 10px 0px 0px 10px;
     width: 9px;
-    /* height: auto; */
-    /* left: 628px; */
-    /* top: 289px; */
 }
 
 .discount-label {
@@ -148,21 +125,14 @@ p.date-exp {
 }
 
 .discount-border-center {
-    /* position: relative; */
     width: 60px;
     height: 0px;
-    /* left: 828px; */
-    /* top: 309px; */
     border: 1px solid rgba(0, 0, 0, 0.1);
     transform: rotate(90deg);
     align-self: center;
 }
 
 
-/* .discount-card-content {
-border-right: 1.5px dashed #E1E1E1;
-
-} */
 
 .discount-title-percent {
     font-family: Roboto;
@@ -251,12 +221,21 @@ p.button-text-apply {
 img {
     width: 155px;
     height: 45px;
-    object-fit: cover;
+    object-fit: contain;
 }
 .modal-popup .modal-content {
     padding: 0px;
 }
-
+.modal-popup.modal-inner-wrap  {
+    width: 780px;
+}
+.action-show-coupon {
+}
+@media screen and (min-width: 768px) {
+    .modal-popup .modal-inner-wrap {
+        width: 780px !important;
+    }
+}
 /*Iphone(480 x 640)*/
 @media screen and (max-width: 1200px){
     .coupon-wrap {
@@ -295,8 +274,6 @@ img {
         width: 228px;
     }
     .discount-label {
-        /* padding-right: 23px; */
-        /* padding-left: 13px; */
         margin: 10px 0px;
         align-self: normal;
         padding: 0px;

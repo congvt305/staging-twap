@@ -24,6 +24,8 @@ define([
 
     var couponList = window.checkoutConfig.cj_couponcustomer.coupon_list;
 
+    var isEnableCouponPopup = window.checkoutConfig.cj_couponcustomer.active_popup;
+
     var options = {
         type: 'popup',
         responsive: true,
@@ -49,7 +51,8 @@ define([
         $(".discount-card-button").on('click',function() {
             var couponCode = $(this).attr('id');
             setCouponCodeAction(couponCode, isApplied);
-            // $('#modal').modal('closeModal');
+            $('#modal').modal('closeModal');
+            $('#discount-code').val(couponCode);
 
             // change background and text
         });
@@ -74,6 +77,8 @@ define([
          * Applied flag
          */
         isApplied: isApplied,
+
+        isEnableCouponPopup: ko.observable(isEnableCouponPopup),
 
         /**
          * Coupon code application procedure

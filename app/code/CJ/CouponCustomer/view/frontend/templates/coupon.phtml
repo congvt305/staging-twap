@@ -17,7 +17,7 @@
                     <?php if ($coupon['simple_action'] == 'by_percent'): ?>
                         <p class="sub-title"><?= $block->escapeHtml(__('Discount')); echo ': '.floatval($coupon['discount_amount']) . '%'; ?> </p>
                     <?php elseif ($coupon['simple_action'] == 'cart_fixed' || $coupon['simple_action'] == 'by_fixed'): ?>
-                        <p class="sub-title"><?= $block->escapeHtml(__('Discount')); echo ': '.floatval($coupon['discount_amount']) . $block->getCurrencyCode(); ?></p>
+                        <p class="sub-title"><?= $block->escapeHtml(__('Discount')); echo ': '. $block->getCurrencyCode().floatval($coupon['discount_amount']); ?></p>
                     <?php elseif ($coupon['simple_action'] == 'buy_x_get_y'): ?>
                         <p class="sub-title"><?= $block->escapeHtml(__('Discount')); ?>:<?= $block->escapeHtml(__( 'Buy X get Y')); ?> </p>
                     <?php else: ?>
