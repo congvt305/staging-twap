@@ -9,12 +9,13 @@ use Magento\Framework\Session\SessionManagerInterface;
 class CookieLineInformation
 {
     const LINE_SHOPPING_ECID_COOKIE_NAME = 'line_ecid';
-    const LINE_SHOPPING_INFORMATION_COOKIE_NAME = 'line_information';
-    const LINE_INFO_LIST = [
+    const UTM_INFORMATION_COOKIE_NAME = 'utm_information';
+    const UTM_INFO_LIST = [
         'utm_campaign',
         'utm_source',
         'utm_medium'
     ];
+    const COOKIE_LIFETIME = 24;
 
     /**
      * @var CookieManagerInterface
@@ -73,5 +74,15 @@ class CookieLineInformation
                 'domain' => $this->sessionManager->getCookieDomain()
             ]
         );
+    }
+
+    /**
+     * @param $name
+     * @return void
+     */
+    public function removeCookie($name)
+    {
+        $this->setCookie($name, '');
+        unset($_COOKIE[$name]);
     }
 }
