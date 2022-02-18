@@ -64,11 +64,28 @@ define([
                 $('.discount-card-button').addClass('sws-discount-card-button');
             }
         });
+
+        // change text to cancel for coupon applied
+        var couponCodeApplied = $('#discount-code').val();
+        $('#' + couponCodeApplied).text('Cancel');
+
         $(".discount-card-button").on('click',function() {
             var couponCode = $(this).attr('id');
-            setCouponCodeAction(couponCode, isApplied);
-            $('#modal').modal('closeModal');
-            $('#discount-code').val(couponCode);
+
+            // cancel coupon code
+            if(couponCode == couponCodeApplied) {
+                cancelCouponAction(coupon.getIsApplied(false));
+                $('#discount-code').val('');
+                $('#modal').modal('closeModal');
+            }
+
+            // applied coupon code
+            else
+            {
+                setCouponCodeAction(couponCode, coupon.getIsApplied(true));
+                $('#modal').modal('closeModal');
+                $('#discount-code').val(couponCode);
+            }
 
             // change background and text
         });
