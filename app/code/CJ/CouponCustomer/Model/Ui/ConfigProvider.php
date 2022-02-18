@@ -22,7 +22,8 @@ class ConfigProvider implements ConfigProviderInterface
         return [
             self::CODE => [
                 'coupon_list' => $this->helper->getCustomerCouponList(),
-                'active_popup' => $this->helper->isEnableCouponListPopup()
+                'active_popup' => $this->helper->isEnableCouponListPopup(),
+                'website_code' => $this->helper->getCurrentWebsiteCode()
             ],
         ];
     }
