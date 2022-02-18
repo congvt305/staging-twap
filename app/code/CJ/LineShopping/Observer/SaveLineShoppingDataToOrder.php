@@ -59,26 +59,27 @@ class SaveLineShoppingDataToOrder implements ObserverInterface
         try {
             $order = $observer->getEvent()->getOrder();
             $websiteId = $order->getStore()->getWebsiteId();
-            $enable = $this->config->isEnable($websiteId);
 
-            if (!$enable) {
-                return $this;
-            }
-            $lineEcid = $this->cookieLineInformation->getCookie(CookieLineInformation::LINE_SHOPPING_ECID_COOKIE_NAME);
-            $lineInfo = $this->cookieLineInformation->getCookie(CookieLineInformation::LINE_SHOPPING_INFORMATION_COOKIE_NAME);
-            if (!$lineEcid) {
-                return $this;
-            }
-            if($lineInfo) {
+            $enableSaveUtm = $this->config->isEnableSaveUtm($websiteId);
+            $lineInfo = $this->cookieLineInformation->getCookie(CookieLineInformation::UTM_INFORMATION_COOKIE_NAME);
+            if($enableSaveUtm && $lineInfo) {
                 $data = $this->json->unserialize($lineInfo);
-                foreach (CookieLineInformation::LINE_INFO_LIST as $item) {
+                foreach (CookieLineInformation::UTM_INFO_LIST as $item) {
                     if (isset($data[$item])) {
                         $order->setData('line_' . $item, $data[$item]);
                     }
                 }
+                $this->cookieLineInformation->removeCookie(CookieLineInformation::UTM_INFORMATION_COOKIE_NAME);
             }
+            $enable = $this->config->isEnable($websiteId);
+            $lineEcid = $this->cookieLineInformation->getCookie(CookieLineInformation::LINE_SHOPPING_ECID_COOKIE_NAME);
+            if (!$lineEcid || !$enable) {
+                return $this;
+            }
+
             $order->setData('line_ecid', $lineEcid);
             $order->setData('is_line_shopping', 1);
+
             return $this;
         } catch (Exception $exception) {
             $this->logger->addError(Logger::ORDER_POST_BACK,

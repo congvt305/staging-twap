@@ -78,19 +78,24 @@ class AddLineInfoToCookiePlugin
     {
         try {
             $params = $this->request->getParams();
-            if ($this->config->isEnable() && isset($params['ecid'])) {
-                $duration = $this->config->getCookieLifeTime();
-                $this->cookieLineInformation->setCookie(CookieLineInformation::LINE_SHOPPING_ECID_COOKIE_NAME, $params['ecid'] , $duration);
+            $duration = $this->config->getCookieLifeTime() ? $this->config->getCookieLifeTime() : CookieLineInformation::COOKIE_LIFETIME;
+
+            if ($this->config->isEnableSaveUtm()) {
                 $dataLine = [];
-                foreach (CookieLineInformation::LINE_INFO_LIST as $item) {
+                foreach (CookieLineInformation::UTM_INFO_LIST as $item) {
                     if(isset($params[$item])) {
                         $dataLine[$item] = $params[$item];
                     }
                 }
+
                 if ($dataLine) {
                     $dataLine = $this->json->serialize($dataLine);
-                    $this->cookieLineInformation->setCookie(CookieLineInformation::LINE_SHOPPING_INFORMATION_COOKIE_NAME, $dataLine, $duration);
+                    $this->cookieLineInformation->setCookie(CookieLineInformation::UTM_INFORMATION_COOKIE_NAME, $dataLine, $duration);
                 }
+            }
+
+            if ($this->config->isEnable() && isset($params['ecid'])) {
+                $this->cookieLineInformation->setCookie(CookieLineInformation::LINE_SHOPPING_ECID_COOKIE_NAME, $params['ecid'] , $duration);
                 $this->logger->addInfo(Logger::LINE_COOKIE,
                     [
                         'ecidCookie' => $params['ecid'],
