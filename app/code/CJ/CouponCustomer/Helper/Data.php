@@ -174,5 +174,14 @@ class Data extends AbstractHelper
         return (bool)$this->scopeConfig->getValue(self::XML_PATH_COUPON_LIST_POPUP_ENABLE, ScopeInterface::SCOPE_WEBSITE);
     }
 
+    /**
+     * get current website code
+     * @return int
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getCurrentWebsiteCode() {
+        return $this->storeManager->getStore()->getWebsiteId();
+    }
+
 
 }

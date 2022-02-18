@@ -82,7 +82,7 @@ p.promo-title {
     line-height: 23px;
     text-align: center;
     /*color: #C07600;*/
-    color: #4477BE;
+    /*color: #4477BE;*/
     text-transform: uppercase;
 }
 
@@ -113,7 +113,7 @@ p.date-exp {
 }
 
 .discount-bar {
-    background: #E1E1E1;
+    /*background: #E1E1E1;*/
     border-radius: 10px 0px 0px 10px;
     width: 9px;
 }
@@ -226,7 +226,29 @@ img {
 }
 
 .action-show-coupon {
-    margin-top: 5px; border-left-color: #e0e0e0;
+    /*margin-top: 5px;*/
+    border-left-color: #e0e0e0;
+}
+.lng-coupon-popup-color {
+    background: #79A3DC;
+}
+
+.lng-discount-border-right {
+    border: 0.1px dashed #79A3DC;
+}
+.lng-discount-card-button {
+    color: #4477BE;
+}
+
+.sws-coupon-popup-color {
+    background: #FF9224;
+}
+
+.sws-discount-border-right {
+    border: 0.1px dashed #FF9224;
+}
+.sws-discount-card-button {
+    color: #C07600;
 }
 
 /*Iphone(480 x 640)*/
