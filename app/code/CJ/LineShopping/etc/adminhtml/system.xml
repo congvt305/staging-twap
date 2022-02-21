@@ -12,6 +12,10 @@
                     <label>Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="enable_utm" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Enable save UTM</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <field id="trial_period" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Trial Period </label>
                     <comment>Number of Trial Period. Not negative number. Default value = 30.</comment>

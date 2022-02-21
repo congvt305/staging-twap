@@ -5,6 +5,7 @@
         <line_shopping>
             <general>
                 <enable>0</enable>
+                <enable_utm>0</enable_utm>
                 <trial_period>30</trial_period>
                 <cookie_lifetime>24</cookie_lifetime>
             </general>
