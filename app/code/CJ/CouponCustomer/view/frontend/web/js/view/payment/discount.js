@@ -71,7 +71,7 @@ define([
             // change text to cancel for coupon applied
             var couponCodeApplied = $('#discount-code').val();
             $('#' + couponCodeApplied).text('Cancel');
-            $('#'+ couponCodeApplied).addClass('applied-button ');
+            $('#'+ couponCodeApplied).addClass('applied-button');
 
             $(".discount-card-button").on('click',function() {
                 var couponCode = $(this).attr('id');
@@ -80,6 +80,7 @@ define([
                     cancelCouponAction(coupon.getIsApplied(false));
                     $('#discount-code').val('');
                     $('#' + couponCodeApplied).text('Apply');
+                    $('#'+ couponCodeApplied).removeClass('applied-button');
                     $('#modal').modal('closeModal');
                 }
 
