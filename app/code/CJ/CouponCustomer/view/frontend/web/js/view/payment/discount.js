@@ -46,6 +46,11 @@ define([
 
     setTimeout(function() {
         modal(options, $('#modal'));
+        //css for sws webiste
+        if(websiteCode == '1') {
+            $('.coupon-wallet').removeClass('coupon-wallet').addClass('coupon-wallet-sws');
+
+        }
         $("#coupon-wallet").on('click',function() {
             $('#modal').modal(options).modal('openModal')
             // add class css

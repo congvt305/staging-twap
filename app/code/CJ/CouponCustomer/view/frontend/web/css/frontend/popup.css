@@ -262,6 +262,9 @@ img {
 .applied-button {
     color:black;
 }
+.coupon-wallet-sws {
+    margin-top: 1.1rem;
+}
 /*Iphone(480 x 640)*/
 @media screen and (max-width: 1200px){
     .coupon-wrap {
