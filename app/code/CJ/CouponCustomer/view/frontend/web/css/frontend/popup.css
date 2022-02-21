@@ -250,7 +250,18 @@ img {
 .sws-discount-card-button {
     color: #C07600;
 }
-
+.action-show-coupon-lng {
+    margin-top: 5px;
+    border-left-color: #e0e0e0;
+}
+.coupon-wallet {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.1rem;
+}
+.applied-button {
+    color:black;
+}
 /*Iphone(480 x 640)*/
 @media screen and (max-width: 1200px){
     .coupon-wrap {
