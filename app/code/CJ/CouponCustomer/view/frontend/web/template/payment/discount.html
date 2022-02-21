@@ -42,13 +42,15 @@
                         <span><!-- ko i18n: 'Cancel'--><!-- /ko --></span>
                     </button>
                     <!-- /ko -->
-                    <!-- ko if: isEnableCouponPopup -->
-                    <button class="action action-apply action-show-coupon" id="coupon-wallet">
-                        <span><!-- ko i18n: 'show coupon'--><!-- /ko --></span>
-                    </button>
-                    <!-- /ko -->
                 </div>
             </div>
+
+            <!-- ko if: isEnableCouponPopup -->
+            <div class="coupon-wallet">
+                <i id = "coupon-wallet"> <!-- ko i18n: 'view my coupon'--><!-- /ko --> </i>
+            </div>
+            <!-- /ko -->
+
             <!-- ko foreach: getRegion('captcha') -->
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!-- /ko -->
