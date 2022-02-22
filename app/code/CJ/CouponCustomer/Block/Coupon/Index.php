@@ -8,6 +8,7 @@ use Magento\SalesRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollecti
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Theme\Block\Html\Header\Logo;
 use Magento\Theme\Block\Html\Pager;
+use \Magento\Directory\Model\Currency;
 
 class Index extends Template
 {
@@ -30,6 +31,11 @@ class Index extends Template
      */
     private $storeManager;
 
+    /**
+     * @var Currency
+     */
+    private $currency;
+
 
     /**
      * @param Template\Context $context
@@ -45,13 +51,16 @@ class Index extends Template
         RuleCollection        $ruleCollection,
         Session               $customerSession,
         StoreManagerInterface $storeManager,
-        Logo                  $logo
+        Logo                  $logo,
+        Currency $currency
+
     ){
         parent::__construct($context, $data);
         $this->ruleCollection = $ruleCollection;
         $this->customerSession = $customerSession;
         $this->storeManager = $storeManager;
         $this->logo = $logo;
+        $this->currency = $currency;
     }
 
     /**
@@ -125,6 +134,6 @@ class Index extends Template
      */
     public function getCurrencyCode()
     {
-        return $this->storeManager->getStore()->getCurrentCurrency()->getCode();
+        return $this->currency->getCurrencySymbol();
     }
 }

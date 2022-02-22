@@ -1,0 +1,106 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="payment-option opc-payment-additional discount-code">
+    <div class="payment-option-title field choice">
+        <span class="action action-toggle" id="block-discount-heading" role="heading" aria-level="2">
+            <!-- ko i18n: 'Apply Discount Code'--><!-- /ko -->
+        </span>
+    </div>
+    <div class="payment-option-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <form class="form form-discount" id="discount-form">
+            <div class="payment-option-inner">
+                <div class="field">
+                    <label class="label" for="discount-code">
+                        <span data-bind="i18n: 'Enter discount code'"></span>
+                    </label>
+                    <div class="control">
+                        <input class="input-text"
+                               type="text"
+                               id="discount-code"
+                               name="discount_code"
+                               data-validate="{'required-entry':true}"
+                               data-bind="value: couponCode, attr:{disabled:isApplied() , placeholder: $t('Enter discount code')} "/>
+                    </div>
+                </div>
+            </div>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <!-- ko ifnot: isApplied() -->
+                    <button class="action action-apply" type="submit" data-bind="'value': $t('Apply'), click: apply">
+                        <span><!-- ko i18n: 'Apply'--><!-- /ko --></span>
+                    </button>
+                    <!-- /ko -->
+                    <!-- ko if: isApplied() -->
+                    <button class="action action-cancel" type="submit" data-bind="'value': $t('Cancel'), click: cancel">
+                        <span><!-- ko i18n: 'Cancel'--><!-- /ko --></span>
+                    </button>
+                    <!-- /ko -->
+                </div>
+            </div>
+
+            <!-- ko if: isEnableCouponPopup -->
+            <div class="coupon-wallet">
+                <i id = "coupon-wallet"> <!-- ko i18n: 'view my coupon'--><!-- /ko --> </i>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko foreach: getRegion('captcha') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+        </form>
+    </div>
+    <!-- ko if: isEnableCouponPopup -->
+    <div id="modal">
+        <div class="modal-body-content">
+            <div class="coupon-popup coupon-container">
+                <div class="coupon-wrap">
+                    <div class="other-promo">
+                        <div class="coupon-content">
+                            <div class="coupon-applied" data-bind="foreach:couponList">
+                                <!-- start card -->
+                                <div class="discount-card">
+                                    <div class="discount-bar"></div>
+                                    <div class="discount-card-content">
+                                        <div class="discount-label">
+                                            <div class="discount-title">
+                                                <div class="landscape">
+                                                    <img data-bind="attr: { src : $data['logo'] }">
+                                                </div>
+                                            </div>
+                                            <div class="discount-date">
+                                                Deadline: <p class="date-exp" data-bind="text: $data['to_date']"></p>
+                                            </div>
+                                        </div>
+                                        <div class="discount-border-center"></div>
+                                        <div class="discount-content">
+                                            <div class="discount-title-percent" data-bind="text: $data['name']" >
+                                            </div>
+                                            <div class="discount-percent">
+                                                Total discount for activities: <span style="color: red" data-bind="text: $data['simple_action_string']" ></span>
+                                            </div>
+                                            <div class="discount-description" data-bind="text: $data['description']">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="discount-border-right"></div>
+                                    <div class="discount-card-button"  data-bind="attr: { id : $data['code'] }">
+                                        apply
+                                    </div>
+                                </div>
+                                <!-- and card -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>
