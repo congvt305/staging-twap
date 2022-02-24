@@ -18,7 +18,7 @@ use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Sales\Model\Order;
+use Magento\Sales\Model\OrderFactory;
 use Magento\Sales\Model\ResourceModel\Order\Grid\CollectionFactory as OrderCollectionFactory;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory as ItemsCollectionFactory;
 use Magento\Ui\Component\MassAction\Filter;
@@ -81,6 +81,8 @@ class ConvertToCsv
      */
     private $customerRegistrationHelper;
 
+    private $orderFactory;
+
     /**
      * @param Data $customerRegistrationHelper
      * @param Filter $filter
@@ -101,7 +103,8 @@ class ConvertToCsv
         SearchCriteriaBuilder $searchCriteriaBuilder,
         OrderCollectionFactory $orderCollectionFactory,
         ItemsCollectionFactory $itemsCollectionFactory,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        OrderFactory             $orderFactory
     ) {
         $this->filter = $filter;
         $this->logger = $logger;
@@ -112,6 +115,7 @@ class ConvertToCsv
         $this->orderCollectionFactory = $orderCollectionFactory;
         $this->itemsCollectionFactory = $itemsCollectionFactory;
         $this->customerRegistrationHelper = $customerRegistrationHelper;
+        $this->orderFactory = $orderFactory;
     }
 
     /**
@@ -152,7 +156,8 @@ class ConvertToCsv
             'Discount Amount',
             'Shipping Fee',
             'Grand Total',
-            'Delivery Message'
+            'Delivery Message',
+            'POS Customer Grade'
         ];
 
         if ($this->customerRegistrationHelper->getBaCodeEnable()) {
@@ -192,6 +197,7 @@ class ConvertToCsv
             $orders[$item->getId()]['grand_total'] = $item->getGrandTotal();
             $orders[$item->getId()]['mobile'] = $mobile;
             $orders[$item->getId()]['ba_code'] = $item->getCustomerBaCode();
+            $orders[$item->getId()]['pos_customer_grade'] = $this->getPosCustomerGrade($order->getId());
         }
 
         $itemsCollection = $this->itemsCollectionFactory->create();
@@ -224,6 +230,7 @@ class ConvertToCsv
             $itemData[] = $orders[$item->getOrderId()]['shipping_amount'];
             $itemData[] = $orders[$item->getOrderId()]['grand_total'];
             $itemData[] = $orders[$item->getOrderId()]['delivery_message'];
+            $itemData[] = $orders[$item->getOrderId()]['pos_customer_grade'];
             if ($this->customerRegistrationHelper->getBaCodeEnable()) {
                 $itemData[] = $orders[$item->getOrderId()]['ba_code'];
             }
@@ -296,5 +303,18 @@ class ConvertToCsv
             $this->loadedSku = $product ? $product->getSku() : '';
             return $this->loadedSku;
         }
+    }
+
+    /**
+     * get pos customer grade
+     *
+     * @param $id
+     * @return float|mixed|null
+     */
+    private function getPosCustomerGrade($id)
+    {
+        $orderFactory = $this->orderFactory->create();
+        $orderData = $orderFactory->load($id);
+        return $orderData->getData('pos_customer_grade');
     }
 }
