@@ -223,7 +223,7 @@ class MassReport extends Action
                 'Grand Total (Purchased)','Status','Billing Address','Shipping Address',
                 'Shipping Information','Customer Email','Customer Group','Subtotal',
                 'Shipping and Handling','Customer Name','Payment Method','Total Refunded','Sap Response',
-                'Promotion'];
+                'Promotion','POS Customer Grade'];
             if ($this->customerRegistrationHelper->getBaCodeEnable()) {
                 $columns[] = 'BA Recruiter Code';
             }
@@ -256,6 +256,7 @@ class MassReport extends Action
                 $itemData[] = $order->getData('total_refunded');
                 $itemData[] = $this->getSapResponse($order->getData('entity_id'));
                 $itemData[] = $this->promotions($order->getData('entity_id'));
+                $itemData[] = $this->getPosCustomerGrade($order->getData('entity_id'));
                 if ($this->customerRegistrationHelper->getBaCodeEnable()) {
                     $itemData[] = $order->getData('customer_ba_code');
                 }
@@ -388,6 +389,19 @@ class MassReport extends Action
         $orderData = $orderFactory->load($id);
         return $orderData->getData('sap_response');
     }
+    /**
+     * get pos customer grade
+     *
+     * @param $id
+     * @return float|mixed|null
+     */
+    private function getPosCustomerGrade($id)
+    {
+        $orderFactory = $this->orderFactory->create();
+        $orderData = $orderFactory->load($id);
+        return $orderData->getData('pos_customer_grade');
+    }
+
 
     /**
      * Get customer shipping address mobile no

@@ -32,6 +32,7 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\User\Model\UserFactory;
 use Psr\Log\LoggerInterface;
+use Magento\Customer\Model\AddressFactory;
 
 /**
  * Class Detail
@@ -139,6 +140,8 @@ class Detail implements ArgumentInterface
      */
     private $timezone;
 
+    private $addressFactory;
+
     /**
      * Detail constructor.
      *
@@ -179,7 +182,8 @@ class Detail implements ArgumentInterface
         RequestInterface $request,
         NoteCollectionFactory $noteCollectionFactory,
         LoggerInterface $logger,
-        TimezoneInterface $timezone
+        TimezoneInterface $timezone,
+        AddressFactory $addressFactory
     ) {
         $this->ticketCollectionFactory = $ticketCollectionFactory;
         $this->helperData = $helperData;
@@ -200,6 +204,7 @@ class Detail implements ArgumentInterface
         $this->filterProvider = $filterProvider;
         $this->logger = $logger;
         $this->timezone = $timezone;
+        $this->addressFactory = $addressFactory;
     }
     /**
      * get note of Subject
@@ -288,7 +293,7 @@ class Detail implements ArgumentInterface
     }
 
     /**
-     * get customer name from its id
+     * get customer full name from its id
      *
      * @param $customerId
      * @return string
@@ -298,7 +303,45 @@ class Detail implements ArgumentInterface
         $customer = '';
         try {
             $customer = $this->customerRepository->getById($customerId);
-            return '(' . $customer->getFirstname() . ')';
+            return '(' . $customer->getLastname() . ' '. $customer->getFirstname(). ')';
+        } catch (\Exception $e) {
+            $this->logger->info($e->getMessage());
+        }
+        return $customer;
+    }
+
+    /**
+     * get customer email address from its id
+     *
+     * @param $customerId
+     * @return string
+     */
+    public function getCustomerEmailAddress($customerId)
+    {
+        $customer = '';
+        try {
+            $customer = $this->customerRepository->getById($customerId);
+            return $customer->getEmail();
+        } catch (\Exception $e) {
+            $this->logger->info($e->getMessage());
+        }
+        return $customer;
+    }
+
+    /**
+     * get customer phone number from its id
+     *
+     * @param $customerId
+     * @return string
+     */
+    public function getCustomerPhone($customerId)
+    {
+        $customer = '';
+        try {
+            $customer = $this->customerRepository->getById($customerId);
+            $billingAddressId = $customer->getDefaultBilling();
+            $billingAddress = $this->addressFactory->create()->load($billingAddressId);
+            return $billingAddress->getTelephone();
         } catch (\Exception $e) {
             $this->logger->info($e->getMessage());
         }
