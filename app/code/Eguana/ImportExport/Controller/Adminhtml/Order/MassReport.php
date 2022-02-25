@@ -34,6 +34,7 @@ use Magento\Sales\Model\ResourceModel\Order\Grid\CollectionFactory;
 use Magento\SalesRule\Api\RuleRepositoryInterface;
 use Magento\Ui\Component\MassAction\Filter;
 use Psr\Log\LoggerInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
 
 /**
  * This class is used for Orders Reports
@@ -128,6 +129,11 @@ class MassReport extends Action
     private $customerRepository;
 
     /**
+     * @var OrderRepositoryInterface
+     */
+    private $orderRepository;
+
+    /**
      * MassReport constructor.
      *
      * @param Context $context
@@ -168,7 +174,8 @@ class MassReport extends Action
         CollectionFactory $collectionFactory,
         Data $customerRegistrationHelper,
         OrderAddressRepositoryInterface $orderAddressRepository,
-        CustomerRepositoryInterface $customerRepository
+        CustomerRepositoryInterface $customerRepository,
+        OrderRepositoryInterface $orderRepository
     ) {
         $this->logger = $logger;
         $this->dateTimeFactory = $dateTimeFactory;
@@ -187,6 +194,7 @@ class MassReport extends Action
         $this->customerRegistrationHelper = $customerRegistrationHelper;
         $this->orderAddressRepository = $orderAddressRepository;
         $this->customerRepository = $customerRepository;
+        $this->orderRepository = $orderRepository;
         parent::__construct($context);
     }
 
@@ -223,7 +231,7 @@ class MassReport extends Action
                 'Grand Total (Purchased)','Status','Billing Address','Shipping Address',
                 'Shipping Information','Customer Email','Customer Group','Subtotal',
                 'Shipping and Handling','Customer Name','Payment Method','Total Refunded','Sap Response',
-                'Promotion'];
+                'Promotion','POS Customer Grade'];
             if ($this->customerRegistrationHelper->getBaCodeEnable()) {
                 $columns[] = 'BA Recruiter Code';
             }
@@ -256,6 +264,7 @@ class MassReport extends Action
                 $itemData[] = $order->getData('total_refunded');
                 $itemData[] = $this->getSapResponse($order->getData('entity_id'));
                 $itemData[] = $this->promotions($order->getData('entity_id'));
+                $itemData[] = $this->getPosCustomerGrade($order->getData('entity_id'));
                 if ($this->customerRegistrationHelper->getBaCodeEnable()) {
                     $itemData[] = $order->getData('customer_ba_code');
                 }
@@ -388,6 +397,18 @@ class MassReport extends Action
         $orderData = $orderFactory->load($id);
         return $orderData->getData('sap_response');
     }
+    /**
+     * get pos customer grade
+     *
+     * @param $id
+     * @return float|mixed|null
+     */
+    private function getPosCustomerGrade($id)
+    {
+        $orderData = $this->orderRepository->get($id);
+        return $orderData->getData('pos_customer_grade');
+    }
+
 
     /**
      * Get customer shipping address mobile no

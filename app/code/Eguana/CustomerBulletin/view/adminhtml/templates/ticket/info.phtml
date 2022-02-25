@@ -32,11 +32,31 @@ $ticket = $viewmodel->getTicketDetail();
                     </tr>
                     <tr>
                         <th>
-                            <?= $block->escapeHtml(__('Requester')) ?>
+                            <?= $block->escapeHtml(__('Full Name')) ?>
                         </th>
                         <td>
                             <span id="quote_mailto">
                                 <?= $block->escapeHtml($viewmodel->getCustomerName($ticket->getCustomerId())) ?>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <?= $block->escapeHtml(__('Phone Number')) ?>
+                        </th>
+                        <td>
+                            <span id="quote_mailto">
+                                <?= $block->escapeHtml($viewmodel->getCustomerPhone($ticket->getCustomerId())) ?>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <?= $block->escapeHtml(__('Email Address')) ?>
+                        </th>
+                        <td>
+                            <span id="quote_mailto">
+                                <?= $block->escapeHtml($viewmodel->getCustomerEmailAddress($ticket->getCustomerId())) ?>
                             </span>
                         </td>
                     </tr>
