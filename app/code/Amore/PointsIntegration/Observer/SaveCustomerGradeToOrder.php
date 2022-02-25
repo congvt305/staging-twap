@@ -12,7 +12,7 @@ use Amore\PointsIntegration\Model\CustomerPointsSearch;
 use Amore\PointsIntegration\Model\Source\Config;
 use Amore\PointsIntegration\Logger\Logger;
 
-class POSSaveCustomerGrade implements ObserverInterface
+class SaveCustomerGradeToOrder implements ObserverInterface
 {
     /**
      * @var PointConfig
@@ -60,6 +60,10 @@ class POSSaveCustomerGrade implements ObserverInterface
         $this->logger = $logger;
     }
 
+    /**
+     * @param Observer $observer
+     * @return void
+     */
     public function execute(Observer $observer)
     {
         /**
@@ -69,21 +73,19 @@ class POSSaveCustomerGrade implements ObserverInterface
 
         $moduleActive = $this->pointConfig->getActive($order->getStore()->getWebsiteId());
         if ($moduleActive) {
-            try {
-                $customerId = $order->getCustomerId();
-                $websiteId = $order->getStore()->getWebsiteId();
-                $customerPointData = $this->getCustomerGrade($customerId, $websiteId);
-                if(empty($customerPointData)) {
-                    $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE");
-                    $this->logger->debug($customerPointData);
-                    return;
-                }
-                $customerGrade = $customerPointData['cstmGradeNM'];
+            $customerId = $order->getCustomerId();
+            $websiteId = $order->getStore()->getWebsiteId();
+            $customerPointData = $this->getCustomerGrade($customerId, $websiteId);
+            if (empty($customerPointData)) {
+                return;
+            }
+            $customerGrade = $customerPointData['cstmGradeNM'];
+            if (isset($customerGrade)) {
                 $order->setData('pos_customer_grade', $customerGrade);
                 $this->orderRepository->save($order);
-            } catch (\Exception $e) {
-                throw $e;
             }
+            $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE");
+            $this->logger->debug($customerPointData);
         }
     }
 

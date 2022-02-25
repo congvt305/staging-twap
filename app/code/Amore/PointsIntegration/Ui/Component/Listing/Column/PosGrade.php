@@ -16,8 +16,14 @@ class PosGrade extends Column
      */
     private $orderRepository;
 
+    /**
+     * @var CustomerPointsSearch
+     */
     private $customerPointsSearch;
 
+    /**
+     * @var CustomerFactory
+     */
     private $customer;
 
     /**
@@ -44,6 +50,11 @@ class PosGrade extends Column
         $this->customer = $customer;
     }
 
+    /**
+     * assign data for pos_customer_grade sales_order_gird.xml
+     * @param array $dataSource
+     * @return array
+     */
     public function prepareDataSource(array $dataSource)
     {
         if (isset($dataSource['data']['items'])) {

@@ -140,6 +140,9 @@ class Detail implements ArgumentInterface
      */
     private $timezone;
 
+    /**
+     * @var AddressFactory
+     */
     private $addressFactory;
 
     /**

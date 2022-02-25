@@ -34,6 +34,7 @@ use Magento\Sales\Model\ResourceModel\Order\Grid\CollectionFactory;
 use Magento\SalesRule\Api\RuleRepositoryInterface;
 use Magento\Ui\Component\MassAction\Filter;
 use Psr\Log\LoggerInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
 
 /**
  * This class is used for Orders Reports
@@ -128,6 +129,11 @@ class MassReport extends Action
     private $customerRepository;
 
     /**
+     * @var OrderRepositoryInterface
+     */
+    private $orderRepository;
+
+    /**
      * MassReport constructor.
      *
      * @param Context $context
@@ -168,7 +174,8 @@ class MassReport extends Action
         CollectionFactory $collectionFactory,
         Data $customerRegistrationHelper,
         OrderAddressRepositoryInterface $orderAddressRepository,
-        CustomerRepositoryInterface $customerRepository
+        CustomerRepositoryInterface $customerRepository,
+        OrderRepositoryInterface $orderRepository
     ) {
         $this->logger = $logger;
         $this->dateTimeFactory = $dateTimeFactory;
@@ -187,6 +194,7 @@ class MassReport extends Action
         $this->customerRegistrationHelper = $customerRegistrationHelper;
         $this->orderAddressRepository = $orderAddressRepository;
         $this->customerRepository = $customerRepository;
+        $this->orderRepository = $orderRepository;
         parent::__construct($context);
     }
 
@@ -397,8 +405,7 @@ class MassReport extends Action
      */
     private function getPosCustomerGrade($id)
     {
-        $orderFactory = $this->orderFactory->create();
-        $orderData = $orderFactory->load($id);
+        $orderData = $this->orderRepository->get($id);
         return $orderData->getData('pos_customer_grade');
     }
 
