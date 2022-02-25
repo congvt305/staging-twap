@@ -18,7 +18,6 @@ use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Sales\Model\OrderFactory;
 use Magento\Sales\Model\ResourceModel\Order\Grid\CollectionFactory as OrderCollectionFactory;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory as ItemsCollectionFactory;
 use Magento\Ui\Component\MassAction\Filter;
@@ -81,7 +80,6 @@ class ConvertToCsv
      */
     private $customerRegistrationHelper;
 
-    private $orderFactory;
 
     /**
      * @param Data $customerRegistrationHelper
@@ -103,8 +101,7 @@ class ConvertToCsv
         SearchCriteriaBuilder $searchCriteriaBuilder,
         OrderCollectionFactory $orderCollectionFactory,
         ItemsCollectionFactory $itemsCollectionFactory,
-        OrderRepositoryInterface $orderRepository,
-        OrderFactory             $orderFactory
+        OrderRepositoryInterface $orderRepository
     ) {
         $this->filter = $filter;
         $this->logger = $logger;
@@ -115,7 +112,6 @@ class ConvertToCsv
         $this->orderCollectionFactory = $orderCollectionFactory;
         $this->itemsCollectionFactory = $itemsCollectionFactory;
         $this->customerRegistrationHelper = $customerRegistrationHelper;
-        $this->orderFactory = $orderFactory;
     }
 
     /**
@@ -313,8 +309,7 @@ class ConvertToCsv
      */
     private function getPosCustomerGrade($id)
     {
-        $orderFactory = $this->orderFactory->create();
-        $orderData = $orderFactory->load($id);
+        $orderData = $this->orderRepository->get($id);
         return $orderData->getData('pos_customer_grade');
     }
 }
