@@ -13,7 +13,6 @@ $defaultCountry = $block->getStoreCountryCode();
 $apiKeyAndRegion = $block->getApiKey();
 $storeSize = $block->getStoresCollection()->getSize();
 $storesCollection = $block->getStoresCollection();
-$searchLocationPoints = $block->getCustomerLocationPoints();
 $markerImages = [];
 $markerImages['FS']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/fs_marker1.png');
 $markerImages['FS_1']['image'] = $block->getViewFileUrl('Eguana_StoreLocator::images/fs_markere2.png');
@@ -41,16 +40,6 @@ if ($defaultCountry != null) {
                                value="<?= $block->escapeHtmlAttr($block->getSelectedLng()) ?>"/>
                         <input type="hidden"
                                id="current-location" name="use_my_location" value=""/>
-                        <?php if ($selectedSearch): ?>
-                            <input type="hidden"
-                                   id="search-lat"
-                                   name="search_Lat"
-                                   value="<?= $block->escapeHtmlAttr($searchLocationPoints['lat']) ?>"/>
-                            <input type="hidden"
-                                   id="searcht-lng"
-                                   name="search_Lng"
-                                   value="<?= $block->escapeHtmlAttr($searchLocationPoints['long']) ?>"/>
-                        <?php endif; ?>
                     </div>
                     <div class="field store-search">
                         <div class="control">
