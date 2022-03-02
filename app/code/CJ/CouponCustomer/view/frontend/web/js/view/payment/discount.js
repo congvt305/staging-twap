@@ -48,7 +48,7 @@ define([
         if(isEnableCouponPopup) {
             modal(options, $('#modal'));
             //css for sws webiste
-            if (websiteCode == '1') {
+            if (websiteCode == '') {
                 $('.coupon-wallet').removeClass('coupon-wallet').addClass('coupon-wallet-sws');
 
             }
@@ -56,14 +56,14 @@ define([
                 $('#modal').modal(options).modal('openModal')
                 // add class css
                 // for laneige website
-                if (websiteCode == '4') {
+                if (websiteCode == 'tw_lageige_website') {
                     $('.coupon-header').addClass('lng-coupon-popup-color');
                     $('.discount-bar').addClass('lng-coupon-popup-color');
                     $('.discount-border-right').addClass('lng-discount-border-right');
                     $('.discount-card-button').addClass('lng-discount-card-button');
                 }
                 // for sws website
-                if (websiteCode == '1') {
+                if (websiteCode == 'base') {
                     $('.coupon-header').addClass('sws-coupon-popup-color');
                     $('.discount-bar').addClass('sws-coupon-popup-color');
                     $('.discount-border-right').addClass('sws-discount-border-right');
