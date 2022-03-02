@@ -45,60 +45,58 @@ define([
     var delayInMilliseconds = 3000; //1 second
 
     setTimeout(function() {
-        modal(options, $('#modal'));
-        //css for sws webiste
-        if(websiteCode == '1') {
-            $('.coupon-wallet').removeClass('coupon-wallet').addClass('coupon-wallet-sws');
+        if(isEnableCouponPopup) {
+            modal(options, $('#modal'));
+            //css for sws webiste
+            if (websiteCode == '1') {
+                $('.coupon-wallet').removeClass('coupon-wallet').addClass('coupon-wallet-sws');
 
-        }
-        $("#coupon-wallet").on('click',function() {
-            $('#modal').modal(options).modal('openModal')
-            // add class css
-            // for laneige website
-            if(websiteCode == '4') {
-                $('.coupon-header').addClass('lng-coupon-popup-color');
-                $('.discount-bar').addClass('lng-coupon-popup-color');
-                $('.discount-border-right').addClass('lng-discount-border-right');
-                $('.discount-card-button').addClass('lng-discount-card-button');
             }
-            // for sws website
-            if(websiteCode == '1') {
-                $('.coupon-header').addClass('sws-coupon-popup-color');
-                $('.discount-bar').addClass('sws-coupon-popup-color');
-                $('.discount-border-right').addClass('sws-discount-border-right');
-                $('.discount-card-button').addClass('sws-discount-card-button');
-            }
-            // change text to cancel for coupon applied
-            var couponCodeApplied = $('#discount-code').val();
-            $('#' + couponCodeApplied).text('Cancel');
-            $('#'+ couponCodeApplied).addClass('applied-button');
-
-            $(".discount-card-button").on('click',function() {
-                var couponCode = $(this).attr('id');
-                // cancel coupon code
-                if(couponCode == couponCodeApplied) {
-                    cancelCouponAction(coupon.getIsApplied(false));
-                    $('#discount-code').val('');
-                    $('#' + couponCodeApplied).text('Apply');
-                    $('#'+ couponCodeApplied).removeClass('applied-button');
-                    $('#modal').modal('closeModal');
+            $("#coupon-wallet").on('click', function () {
+                $('#modal').modal(options).modal('openModal')
+                // add class css
+                // for laneige website
+                if (websiteCode == '4') {
+                    $('.coupon-header').addClass('lng-coupon-popup-color');
+                    $('.discount-bar').addClass('lng-coupon-popup-color');
+                    $('.discount-border-right').addClass('lng-discount-border-right');
+                    $('.discount-card-button').addClass('lng-discount-card-button');
                 }
-
-                // applied coupon code
-                else
-                {
-                    setCouponCodeAction(couponCode, coupon.getIsApplied(true));
-                    $('#modal').modal('closeModal');
-                    $('#discount-code').val(couponCode);
+                // for sws website
+                if (websiteCode == '1') {
+                    $('.coupon-header').addClass('sws-coupon-popup-color');
+                    $('.discount-bar').addClass('sws-coupon-popup-color');
+                    $('.discount-border-right').addClass('sws-discount-border-right');
+                    $('.discount-card-button').addClass('sws-discount-card-button');
                 }
+                // change text to cancel for coupon applied
+                var couponCodeApplied = $('#discount-code').val();
+                $('#' + couponCodeApplied).text('Cancel');
+                $('#' + couponCodeApplied).addClass('applied-button');
 
+                $(".discount-card-button").on('click', function () {
+                    var couponCode = $(this).attr('id');
+                    // cancel coupon code
+                    if (couponCode == couponCodeApplied) {
+                        cancelCouponAction(coupon.getIsApplied(false));
+                        $('#discount-code').val('');
+                        $('#' + couponCodeApplied).text('Apply');
+                        $('#' + couponCodeApplied).removeClass('applied-button');
+                        $('#modal').modal('closeModal');
+                    }
+
+                    // applied coupon code
+                    else {
+                        setCouponCodeAction(couponCode, coupon.getIsApplied(true));
+                        $('#modal').modal('closeModal');
+                        $('#discount-code').val(couponCode);
+                    }
+
+                });
             });
-        });
-
-
-
-
+        }
     }, delayInMilliseconds);
+
 
     if (totals()) {
         couponCode(totals()['coupon_code']);
