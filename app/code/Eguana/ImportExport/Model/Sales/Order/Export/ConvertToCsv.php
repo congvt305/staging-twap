@@ -18,7 +18,6 @@ use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Sales\Model\Order;
 use Magento\Sales\Model\ResourceModel\Order\Grid\CollectionFactory as OrderCollectionFactory;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory as ItemsCollectionFactory;
 use Magento\Ui\Component\MassAction\Filter;
@@ -80,6 +79,7 @@ class ConvertToCsv
      * @var Data
      */
     private $customerRegistrationHelper;
+
 
     /**
      * @param Data $customerRegistrationHelper
@@ -152,7 +152,8 @@ class ConvertToCsv
             'Discount Amount',
             'Shipping Fee',
             'Grand Total',
-            'Delivery Message'
+            'Delivery Message',
+            'POS Customer Grade'
         ];
 
         if ($this->customerRegistrationHelper->getBaCodeEnable()) {
@@ -192,6 +193,7 @@ class ConvertToCsv
             $orders[$item->getId()]['grand_total'] = $item->getGrandTotal();
             $orders[$item->getId()]['mobile'] = $mobile;
             $orders[$item->getId()]['ba_code'] = $item->getCustomerBaCode();
+            $orders[$item->getId()]['pos_customer_grade'] = $this->getPosCustomerGrade($order->getId());
         }
 
         $itemsCollection = $this->itemsCollectionFactory->create();
@@ -224,6 +226,7 @@ class ConvertToCsv
             $itemData[] = $orders[$item->getOrderId()]['shipping_amount'];
             $itemData[] = $orders[$item->getOrderId()]['grand_total'];
             $itemData[] = $orders[$item->getOrderId()]['delivery_message'];
+            $itemData[] = $orders[$item->getOrderId()]['pos_customer_grade'];
             if ($this->customerRegistrationHelper->getBaCodeEnable()) {
                 $itemData[] = $orders[$item->getOrderId()]['ba_code'];
             }
@@ -296,5 +299,17 @@ class ConvertToCsv
             $this->loadedSku = $product ? $product->getSku() : '';
             return $this->loadedSku;
         }
+    }
+
+    /**
+     * get pos customer grade
+     *
+     * @param $id
+     * @return float|mixed|null
+     */
+    private function getPosCustomerGrade($id)
+    {
+        $orderData = $this->orderRepository->get($id);
+        return $orderData->getData('pos_customer_grade');
     }
 }

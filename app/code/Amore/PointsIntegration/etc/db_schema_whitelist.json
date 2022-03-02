@@ -5,7 +5,8 @@
             "pos_order_paid_sent": true,
             "pos_order_paid_send": true,
             "pos_order_cancel_sent": true,
-            "pos_order_cancel_send": true
+            "pos_order_cancel_send": true,
+            "pos_customer_grade": true
         }
     },
     "magento_rma": {

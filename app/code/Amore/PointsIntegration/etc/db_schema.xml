@@ -13,6 +13,7 @@
         <column xsi:type="boolean" name="pos_order_paid_send" nullable="false" comment="POS Order Paid Send" default="false" />
         <column xsi:type="boolean" name="pos_order_cancel_sent" nullable="false" comment="POS Order Cancel Sent" default="false" />
         <column xsi:type="boolean" name="pos_order_cancel_send" nullable="false" comment="POS Order Cancel Send" default="false" />
+        <column xsi:type="varchar" name="pos_customer_grade" nullable="true" comment="POS Customer Grade" />
     </table>
 
     <table name="magento_rma" resource="default" engine="innodb" comment="RMA List">
