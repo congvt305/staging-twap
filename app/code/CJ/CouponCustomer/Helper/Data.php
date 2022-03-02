@@ -183,5 +183,13 @@ class Data extends AbstractHelper
         return $this->storeManager->getStore()->getWebsiteId();
     }
 
+    /**
+     * check customer login
+     * @return bool
+     */
+    public function isCustomerLogin() {
+        return $this->customerSession->isLoggedIn();
+    }
+
 
 }

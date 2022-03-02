@@ -19,6 +19,9 @@ class ConfigProvider implements ConfigProviderInterface
 
     public function getConfig()
     {
+        if(!$this->helper->isCustomerLogin() || !$this->helper->isEnableCouponListPopup()) {
+            return [];
+        }
         return [
             self::CODE => [
                 'coupon_list' => $this->helper->getCustomerCouponList(),
