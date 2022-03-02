@@ -180,7 +180,7 @@ class Data extends AbstractHelper
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getCurrentWebsiteCode() {
-        return $this->storeManager->getStore()->getWebsiteId();
+        return $this->storeManager->getWebsite()->getCode();
     }
 
     /**
