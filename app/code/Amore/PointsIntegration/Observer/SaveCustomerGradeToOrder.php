@@ -74,6 +74,9 @@ class SaveCustomerGradeToOrder implements ObserverInterface
         $moduleActive = $this->pointConfig->getActive($order->getStore()->getWebsiteId());
         if ($moduleActive) {
             $customerId = $order->getCustomerId();
+            if(empty($customerId)) {
+                return;
+            }
             $websiteId = $order->getStore()->getWebsiteId();
             $customerPointData = $this->getCustomerGrade($customerId, $websiteId);
             if (empty($customerPointData)) {
