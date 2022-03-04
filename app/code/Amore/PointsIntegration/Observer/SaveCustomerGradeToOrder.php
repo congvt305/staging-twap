@@ -11,6 +11,7 @@ use \Magento\Sales\Model\OrderRepository;
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
 use Amore\PointsIntegration\Model\Source\Config;
 use Amore\PointsIntegration\Logger\Logger;
+use Magento\TestFramework\Inspection\Exception;
 
 class SaveCustomerGradeToOrder implements ObserverInterface
 {
@@ -73,22 +74,35 @@ class SaveCustomerGradeToOrder implements ObserverInterface
 
         $moduleActive = $this->pointConfig->getActive($order->getStore()->getWebsiteId());
         if ($moduleActive) {
-            $customerId = $order->getCustomerId();
-            if(empty($customerId)) {
+            try {
+                $customerId = $order->getCustomerId();
+                if (empty($customerId)) {
+                    return;
+                }
+                $websiteId = $order->getStore()->getWebsiteId();
+                $customerPointData = $this->getCustomerGrade($customerId, $websiteId);
+                if (empty($customerPointData)) {
+                    return;
+                }
+                // is not exist customer grade
+                if(!isset($customerPointData['cstmGradeNM'])) {
+                    $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE IS EMPTY");
+                    $this->logger->info('customerID: '. $customerId);
+                    $this->logger->info('orderID: '. $order->getIncrementId());
+                    return;
+                }
+                if(isset($customerPointData['cstmGradeNM'])) {
+                    $customerGrade = $customerPointData['cstmGradeNM'];
+                    $order->setData('pos_customer_grade', $customerGrade);
+                    $this->orderRepository->save($order);
+                }
+                $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE");
+                $this->logger->debug($customerPointData);
+            } catch (\Exception $exception) {
+                $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED");
+                $this->logger->error($exception->getMessage());
                 return;
             }
-            $websiteId = $order->getStore()->getWebsiteId();
-            $customerPointData = $this->getCustomerGrade($customerId, $websiteId);
-            if (empty($customerPointData)) {
-                return;
-            }
-            if (isset($customerPointData['cstmGradeNM'])) {
-                $customerGrade = $customerPointData['cstmGradeNM'];
-                $order->setData('pos_customer_grade', $customerGrade);
-                $this->orderRepository->save($order);
-            }
-            $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE");
-            $this->logger->debug($customerPointData);
         }
     }
 
