@@ -11,6 +11,7 @@ use \Magento\Sales\Model\OrderRepository;
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
 use Amore\PointsIntegration\Model\Source\Config;
 use Amore\PointsIntegration\Logger\Logger;
+use Magento\TestFramework\Inspection\Exception;
 
 class SaveCustomerGradeToOrder implements ObserverInterface
 {
@@ -73,22 +74,29 @@ class SaveCustomerGradeToOrder implements ObserverInterface
 
         $moduleActive = $this->pointConfig->getActive($order->getStore()->getWebsiteId());
         if ($moduleActive) {
-            $customerId = $order->getCustomerId();
-            if(empty($customerId)) {
+            try {
+                $customerId = $order->getCustomerId();
+                if (empty($customerId)) {
+                    return;
+                }
+                $websiteId = $order->getStore()->getWebsiteId();
+                $customerPointData = $this->getCustomerGrade($customerId, $websiteId);
+                // is not exist customer grade or empty $customerPointData
+                if (empty($customerPointData) || !isset($customerPointData['cstmGradeNM']) || empty($customerPointData['cstmGradeNM'])) {
+                    $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE IS EMPTY: ". "customerID: ". $customerId. ";". "orderID: ".$order->getIncrementId());
+                    return;
+                }
+                if(isset($customerPointData['cstmGradeNM'])) {
+                    $customerGrade = $customerPointData['cstmGradeNM'];
+                    $order->setData('pos_customer_grade', $customerGrade);
+                    $this->orderRepository->save($order);
+                }
+                $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE");
+                $this->logger->debug($customerPointData);
+            } catch (\Exception $exception) {
+                $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED:" . $exception->getMessage());
                 return;
             }
-            $websiteId = $order->getStore()->getWebsiteId();
-            $customerPointData = $this->getCustomerGrade($customerId, $websiteId);
-            if (empty($customerPointData)) {
-                return;
-            }
-            $customerGrade = $customerPointData['cstmGradeNM'];
-            if (isset($customerGrade)) {
-                $order->setData('pos_customer_grade', $customerGrade);
-                $this->orderRepository->save($order);
-            }
-            $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE");
-            $this->logger->debug($customerPointData);
         }
     }
 
@@ -100,15 +108,21 @@ class SaveCustomerGradeToOrder implements ObserverInterface
      */
     private function getCustomerGrade($customerId, $websiteId)
     {
-        $customerPointsInfo = $this->customerPointsSearch->getMemberSearchResult($customerId, $websiteId);
-        if ($this->config->getLoggerActiveCheck($websiteId)) {
-            $this->logger->info("CUSTOMER POINTS INFO");
-            $this->logger->debug($customerPointsInfo);
-        }
+        try {
+            $customerPointsInfo = $this->customerPointsSearch->getMemberSearchResult($customerId, $websiteId);
+            if ($this->config->getLoggerActiveCheck($websiteId)) {
+                $this->logger->info("CUSTOMER POINTS INFO");
+                $this->logger->debug($customerPointsInfo);
+            }
 
-        if ($this->customerPointsSearch->responseValidation($customerPointsInfo, $websiteId)) {
-            return $customerPointsInfo['data'];
-        } else {
+            if ($this->customerPointsSearch->responseValidation($customerPointsInfo, $websiteId)) {
+                return $customerPointsInfo['data'];
+            } else {
+                return [];
+            }
+        }catch (\Exception $exception) {
+            $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED");
+            $this->logger->error($exception->getMessage());
             return [];
         }
     }
