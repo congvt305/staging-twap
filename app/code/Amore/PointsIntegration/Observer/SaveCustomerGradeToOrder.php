@@ -81,11 +81,8 @@ class SaveCustomerGradeToOrder implements ObserverInterface
                 }
                 $websiteId = $order->getStore()->getWebsiteId();
                 $customerPointData = $this->getCustomerGrade($customerId, $websiteId);
-                if (empty($customerPointData)) {
-                    return;
-                }
-                // is not exist customer grade
-                if(!isset($customerPointData['cstmGradeNM'])) {
+                // is not exist customer grade or empty $customerPointData
+                if (empty($customerPointData) || !isset($customerPointData['cstmGradeNM'])) {
                     $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE IS EMPTY");
                     $this->logger->info('customerID: '. $customerId);
                     $this->logger->info('orderID: '. $order->getIncrementId());
