@@ -82,10 +82,8 @@ class SaveCustomerGradeToOrder implements ObserverInterface
                 $websiteId = $order->getStore()->getWebsiteId();
                 $customerPointData = $this->getCustomerGrade($customerId, $websiteId);
                 // is not exist customer grade or empty $customerPointData
-                if (empty($customerPointData) || !isset($customerPointData['cstmGradeNM'])) {
-                    $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE IS EMPTY");
-                    $this->logger->info('customerID: '. $customerId);
-                    $this->logger->info('orderID: '. $order->getIncrementId());
+                if (empty($customerPointData) || !isset($customerPointData['cstmGradeNM']) || empty($customerPointData['cstmGradeNM'])) {
+                    $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE IS EMPTY: ". "customerID: ". $customerId. ";". "orderID: ".$order->getIncrementId());
                     return;
                 }
                 if(isset($customerPointData['cstmGradeNM'])) {
@@ -96,8 +94,7 @@ class SaveCustomerGradeToOrder implements ObserverInterface
                 $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE");
                 $this->logger->debug($customerPointData);
             } catch (\Exception $exception) {
-                $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED");
-                $this->logger->error($exception->getMessage());
+                $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED:" . $exception->getMessage());
                 return;
             }
         }
