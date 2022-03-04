@@ -60,7 +60,6 @@ class Request extends BaseRequest
             $this->logger->info("URL IS EMPTY");
             return [];
         }
-        $this->logger->info('Send Request Url:  ' . $url . ' Website Id ' . $websiteId);
 
         $logEnabled = $this->config->getLoggerActiveCheck($websiteId);
         if ($logEnabled) {
