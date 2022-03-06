@@ -115,7 +115,7 @@ class SaveCustomerGradeToOrder implements ObserverInterface
                 $this->logger->debug($customerPointsInfo);
             }
 
-            if ($this->customerPointsSearch->responseValidation($customerPointsInfo, $websiteId)) {
+            if ($this->responseValidation($customerPointsInfo)) {
                 return $customerPointsInfo['data'];
             } else {
                 return [];
@@ -124,6 +124,20 @@ class SaveCustomerGradeToOrder implements ObserverInterface
             $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED");
             $this->logger->error($exception->getMessage());
             return [];
+        }
+    }
+
+    /**
+     * check response Validation
+     * @param $response
+     * @return bool
+     */
+    public function responseValidation($response)
+    {
+        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
+            return true;
+        } else {
+            return false;
         }
     }
 }
