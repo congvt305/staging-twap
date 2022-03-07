@@ -44,6 +44,13 @@ class SaveCustomerGradeToOrder implements ObserverInterface
     protected $logger;
 
     /**
+     * const POS_CUSTOMER_GRADE
+     */
+    const POS_CUSTOMER_GRADE = 'pos_customer_grade';
+
+
+
+    /**
      * @param PointConfig $pointConfig
      * @param OrderRepository $orderRepository
      */
@@ -71,34 +78,23 @@ class SaveCustomerGradeToOrder implements ObserverInterface
          * @var Order $order
          */
         $order = $observer->getEvent()->getOrder();
-
+        $customerId = $order->getCustomerId();
         $moduleActive = $this->pointConfig->getActive($order->getStore()->getWebsiteId());
         if ($moduleActive) {
             try {
-                $customerId = $order->getCustomerId();
-                if (empty($customerId)) {
-                    return;
+                if ($customerId && !$order->getData(self::POS_CUSTOMER_GRADE)) {
+                    $websiteId = $order->getStore()->getWebsiteId();
+                    $customerPointData = $this->getCustomerGrade($customerId, $websiteId);
+                    if(isset($customerPointData['cstmGradeNM'])) {
+                        $order->setData(self::POS_CUSTOMER_GRADE, $customerPointData['cstmGradeNM']);
+                        $this->orderRepository->save($order);
+                    }
+                    else {
+                        $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED: " . "customerID: " . $customerId . ";" . "orderID: " . $order->getIncrementId());
+                    }
                 }
-                if(!empty($order->getData('pos_customer_grade'))) {
-                    return;
-                }
-                $websiteId = $order->getStore()->getWebsiteId();
-                $customerPointData = $this->getCustomerGrade($customerId, $websiteId);
-                // is not exist customer grade or empty $customerPointData
-                if (empty($customerPointData) || !isset($customerPointData['cstmGradeNM']) || empty($customerPointData['cstmGradeNM'])) {
-                    $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE IS EMPTY: ". "customerID: ". $customerId. ";". "orderID: ".$order->getIncrementId());
-                    return;
-                }
-                if(isset($customerPointData['cstmGradeNM'])) {
-                    $customerGrade = $customerPointData['cstmGradeNM'];
-                    $order->setData('pos_customer_grade', $customerGrade);
-                    $this->orderRepository->save($order);
-                }
-                $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE");
-                $this->logger->debug($customerPointData);
             } catch (\Exception $exception) {
-                $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED:" . $exception->getMessage());
-                return;
+                $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED: ". "message". $exception->getMessage());
             }
         }
     }
@@ -111,23 +107,16 @@ class SaveCustomerGradeToOrder implements ObserverInterface
      */
     private function getCustomerGrade($customerId, $websiteId)
     {
+        $pointData = null;
         try {
             $customerPointsInfo = $this->customerPointsSearch->getMemberSearchResult($customerId, $websiteId);
-            if ($this->config->getLoggerActiveCheck($websiteId)) {
-                $this->logger->info("CUSTOMER POINTS INFO");
-                $this->logger->debug($customerPointsInfo);
-            }
-
-            if ($this->responseValidation($customerPointsInfo)) {
-                return $customerPointsInfo['data'];
-            } else {
-                return [];
-            }
+            $pointData = $this->responseValidation($customerPointsInfo) ? $customerPointsInfo['data'] : null;
         }catch (\Exception $exception) {
             $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED");
             $this->logger->error($exception->getMessage());
-            return [];
         }
+
+        return $pointData;
     }
 
     /**
@@ -135,12 +124,8 @@ class SaveCustomerGradeToOrder implements ObserverInterface
      * @param $response
      * @return bool
      */
-    public function responseValidation($response)
+    private function responseValidation($response)
     {
-        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
-            return true;
-        } else {
-            return false;
-        }
+        return isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200';
     }
 }
