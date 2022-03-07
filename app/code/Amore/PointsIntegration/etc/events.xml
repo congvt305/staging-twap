@@ -11,9 +11,9 @@
     </event>
     <event name="sales_order_save_after">
         <observer name="pos_integration_set_pos_order_cancel_send" instance="Amore\PointsIntegration\Observer\POSSetOrderCancelSend"/>
+<!--        <observer name="pos_integration_save_pos_customer_grade" instance="Amore\PointsIntegration\Observer\SaveCustomerGradeToOrder"/>-->
+    </event>
+    <event name="sales_order_place_after">
         <observer name="pos_integration_save_pos_customer_grade" instance="Amore\PointsIntegration\Observer\SaveCustomerGradeToOrder"/>
     </event>
-    <!--<event name="checkout_submit_all_after">
-        <observer name="pos_integration_save_pos_customer_grade" instance="Amore\PointsIntegration\Observer\SaveCustomerGradeToOrder"/>
-    </event>-->
 </config>
