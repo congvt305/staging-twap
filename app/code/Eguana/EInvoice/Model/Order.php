@@ -132,7 +132,7 @@ class Order
             $payment = $order->getPayment();
             $eInvoiceData = json_decode($payment->getAdditionalData(), true);
 
-            if (empty($eInvoiceData) || $eInvoiceData["RtnCode"] != 1) {
+            if (empty($eInvoiceData) || (isset($eInvoiceData["RtnCode"]) && $eInvoiceData["RtnCode"] != 1)) {
                 $notIssuedOrderList[] = $order;
             }
         }

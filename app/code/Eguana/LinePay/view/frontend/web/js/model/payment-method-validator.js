@@ -28,7 +28,7 @@ define(
                 if (choosenEInvoice == 'cellphone-barcode-invoice') {
                     if ($("input:text[id=line_pay_ecpay_cellphone_barcode]").val() != '') {
                         var barCode = $("input:text[id=line_pay_ecpay_cellphone_barcode]").val();
-                        barCode = barCode.replace(/\s+/g, "+");
+                        barCode = barCode.replace(/[\s]/g, "+");
                         $("input:text[id=line_pay_ecpay_cellphone_barcode]").val(barCode);
                     }
                 }
