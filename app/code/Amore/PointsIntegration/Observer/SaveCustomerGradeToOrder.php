@@ -48,8 +48,6 @@ class SaveCustomerGradeToOrder implements ObserverInterface
      */
     const POS_CUSTOMER_GRADE = 'pos_customer_grade';
 
-
-
     /**
      * @param PointConfig $pointConfig
      * @param OrderRepository $orderRepository
