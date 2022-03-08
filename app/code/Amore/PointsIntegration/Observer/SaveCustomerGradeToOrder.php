@@ -108,7 +108,7 @@ class SaveCustomerGradeToOrder implements ObserverInterface
         $grade = null;
         try {
             $customerPointsInfo = $this->customerPointsSearch->getMemberSearchResult($customerId, $websiteId);
-            $grade = isset($customerPointsInfo['data']['grade']) ?? null;
+            $grade = isset($customerPointsInfo['data']['cstmGradeNM']) ?? null;
         }catch (\Exception $exception) {
             $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED");
             $this->logger->error($exception->getMessage());
