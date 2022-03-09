@@ -688,6 +688,7 @@ return [
         'CJ_PageBuilder' => 1,
         'CJ_PointRedemption' => 1,
         'CJ_HoverImage' => 1,
+        'CJ_CatalogFaq' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
         'Dotdigitalgroup_Enterprise' => 1,
