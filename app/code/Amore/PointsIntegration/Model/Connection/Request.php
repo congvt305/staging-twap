@@ -55,8 +55,9 @@ class Request extends BaseRequest
      */
     public function sendRequest($requestData, $websiteId, $type)
     {
+        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('website', $websiteId);
         $url = $this->getUrl($type, $websiteId);
-        if (!$url) {
+        if (!$url && !$isNewMiddlewareEnable) {
             $this->logger->info("URL IS EMPTY");
             return [];
         }
