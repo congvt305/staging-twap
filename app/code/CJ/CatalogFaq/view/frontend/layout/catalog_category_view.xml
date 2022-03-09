@@ -8,7 +8,9 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="head.additional">
-            <block class="CJ\CatalogFaq\Block\Catalog\CatalogFaq" name="catalog.faq" template="CJ_CatalogFaq::catalog/view/structured/faq.phtml">
+            <block class="CJ\CatalogFaq\Block\Catalog\CatalogFaq"
+                   name="catalog.faq" template="CJ_CatalogFaq::catalog/view/structured/faq.phtml"
+                   ifconfig="catalog_faq/general/active">
             </block>
         </referenceContainer>
     </body>

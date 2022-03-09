@@ -52,7 +52,7 @@ class AddCatalogFaqAttribute implements DataPatchInterface, PatchVersionInterfac
                 'label' => 'Catalog FAQ',
                 'input' => 'text',
                 'sort_order' => 999,
-                'global' => ScopedAttributeInterface::SCOPE_WEBSITE,
+                'global' => ScopedAttributeInterface::SCOPE_STORE,
                 'visible' => true,
                 'required' => false,
                 'user_defined' => false,
@@ -92,6 +92,9 @@ class AddCatalogFaqAttribute implements DataPatchInterface, PatchVersionInterfac
         return [];
     }
 
+    /**
+     * @return string
+     */
     public static function getVersion()
     {
         return '1.0';
