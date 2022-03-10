@@ -47,11 +47,12 @@ class AddRedirectUrlForProduct implements DataPatchInterface
             'label' => 'Url Redirect 301',
             'input' => 'text',
             'source' => '',
-            'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
+            'global' => ScopedAttributeInterface::SCOPE_STORE,
             'user_defined' => true,
             'visible' => true,
             'required' => false,
             'default' => false,
+            'group' => 'General',
             'is_used_in_grid' => true,
             'is_visible_in_grid' => false,
             'is_filterable_in_grid' => false

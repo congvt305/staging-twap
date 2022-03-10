@@ -68,12 +68,14 @@ class RedirectProductPermanent
     {
         try {
             $product = $this->getProduct($subject);
-            if ($redirectUrl = $product->getRedirectUrl()) {
+            if ($product->getRedirectUrl()  || !$this->canShow($product)) {
                 $redirect = $this->redirectFactory->create();
-                if (str_contains($redirectUrl, 'http')) {
-                    $redirect->setPath($redirectUrl);
+                if (str_contains($product->getRedirectUrl(), 'http')) {
+                    $redirect->setPath($product->getRedirectUrl());
+                } else if ($product->getRedirectUrl()) {
+                    $redirect->setPath($this->storeManager->getStore()->getBaseUrl() . $product->getRedirectUrl() . $this->getSuffixProduct());
                 } else {
-                    $redirect->setPath($this->storeManager->getStore()->getBaseUrl() . $redirectUrl . $this->getSuffixProduct());
+                    $redirect->setPath($this->storeManager->getStore()->getBaseUrl());
                 }
                 $redirect->setHttpResponseCode(301);
                 return $redirect;
@@ -85,10 +87,19 @@ class RedirectProductPermanent
     }
 
     /**
-     * @return void
+     * @param $product
+     * @return bool
+     */
+    protected function canShow($product)
+    {
+        return $product->isVisibleInCatalog() && $product->isVisibleInSiteVisibility();
+    }
+
+    /**
+     * @return mixed
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getSuffixProduct()
+    protected function getSuffixProduct()
     {
         return $this->scopeConfig->getValue(
             ProductUrlPathGenerator::XML_PATH_PRODUCT_URL_SUFFIX,
