@@ -33,7 +33,7 @@ class AddRedirectUrlForProduct implements DataPatchInterface
     }
 
     /**
-     * @return AddFlagModifyProductAttribute|void
+     * @return AddRedirectUrlForProduct|void
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Zend_Validate_Exception
      */
