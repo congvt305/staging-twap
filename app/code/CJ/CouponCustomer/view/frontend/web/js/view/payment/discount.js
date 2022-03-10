@@ -34,7 +34,6 @@ define([
         responsive: true,
         title: $.mage.__('Coupon List'),
         innerScroll: true,
-        clickableOverlay: true,
         popupTpl: popupTpl,
         buttons: [{
             text: $.mage.__('Ok'),
@@ -49,11 +48,6 @@ define([
     setTimeout(function() {
         if(isEnableCouponPopup) {
             modal(options, $('#modal'));
-            //css for sws webiste
-            if (websiteCode == '') {
-                $('.coupon-wallet').removeClass('coupon-wallet').addClass('coupon-wallet-sws');
-
-            }
             $("#coupon-wallet").on('click', function () {
                 $('#modal').modal(options).modal('openModal')
                 // add class css
@@ -94,6 +88,7 @@ define([
                     else {
                         setCouponCodeAction(couponCode, coupon.getIsApplied(true));
                         $('#modal').modal('closeModal');
+                        coupon.getCouponCode(couponCode);
                         $('#discount-code').val(couponCode);
                     }
 
@@ -137,9 +132,7 @@ define([
          * Coupon code application procedure
          */
         apply: function () {
-            if (this.validate()) {
                 setCouponCodeAction(couponCode(), isApplied);
-            }
         },
 
         /**
@@ -149,6 +142,7 @@ define([
             if (this.validate()) {
                 couponCode('');
                 cancelCouponAction(isApplied);
+                $('#discount-code').val('');
             }
         },
 
