@@ -13,6 +13,11 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class RedirectProductPermanent
 {
+    const COUNTRY_ALLOW_REDIRECT = [
+        'default',
+        'tw_laneige'
+    ];
+
     /**
      * @var RedirectFactory
      */
@@ -68,7 +73,7 @@ class RedirectProductPermanent
     {
         try {
             $product = $this->getProduct($subject);
-            if ($product->getRedirectUrl()  || !$this->canShow($product)) {
+            if (in_array($this->storeManager->getStore()->getCode(), self::COUNTRY_ALLOW_REDIRECT) && ($product->getRedirectUrl()  || !$this->canShow($product))) {
                 $redirect = $this->redirectFactory->create();
                 if (str_contains($product->getRedirectUrl(), 'http')) {
                     $redirect->setPath($product->getRedirectUrl());

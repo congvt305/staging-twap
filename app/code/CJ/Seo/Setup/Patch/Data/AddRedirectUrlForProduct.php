@@ -52,7 +52,6 @@ class AddRedirectUrlForProduct implements DataPatchInterface
             'visible' => true,
             'required' => false,
             'default' => false,
-            'group' => 'General',
             'is_used_in_grid' => true,
             'is_visible_in_grid' => false,
             'is_filterable_in_grid' => false
