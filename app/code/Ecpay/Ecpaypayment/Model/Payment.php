@@ -549,16 +549,36 @@ class Payment extends AbstractMethod
                 }
 
                 // 4.送出
-                $aReturn_Info = $ecpay_invoice->Check_Out();
+                try {
+                    $aReturn_Info = $ecpay_invoice->Check_Out();
 
-                // 5.返回
-                $aReturn_Info["RelateNumber"] = $RelateNumber;
-                $payment->setAdditionalData(json_encode($aReturn_Info));
-                $payment->save();
-                return [
-                    "RtnCode" => $aReturn_Info["RtnCode"],
-                    "RtnMsg" => $aReturn_Info["RtnMsg"]
-                ];
+                    // 5.返回
+                    $aReturn_Info["RelateNumber"] = $RelateNumber;
+                    $payment->setAdditionalData(json_encode($aReturn_Info));
+                    $payment->save();
+                    return [
+                        "RtnCode" => $aReturn_Info["RtnCode"],
+                        "RtnMsg" => $aReturn_Info["RtnMsg"]
+                    ];
+                } catch (\Exception $e) {
+                    $this->_logger->log('info', 'einvoice error | An error occurred while init EInvoice info: ' . $e->getMessage(), [
+                        'order_id'=> $order->getIncrementId(),
+                        'request_data' => $ecpay_invoice->Send
+                    ]);
+                    // Just issue the normal invoice when typo of mobile barcode
+                    $ecpay_invoice->Send = array_replace($ecpay_invoice->Send, $this->defaultEInvoiceParams);
+                    $aReturn_Info = $ecpay_invoice->Check_Out();
+
+                    // 5.返回
+                    $aReturn_Info["RelateNumber"] = $RelateNumber;
+                    $payment->setAdditionalData(json_encode($aReturn_Info));
+                    $payment->save();
+                    return [
+                        "RtnCode" => $aReturn_Info["RtnCode"],
+                        "RtnMsg" => $aReturn_Info["RtnMsg"]
+                    ];
+                }
+
             }
         } catch (\Exception $e) {
             // 例外錯誤處理。
