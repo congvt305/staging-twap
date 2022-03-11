@@ -42,6 +42,21 @@ class Payment extends AbstractMethod
     protected $_storeManager;
     protected $_urlBuilder;
 
+    const ECPAY_EINVOICE_TYPE = 'ecpay_einvoice_type';
+    const ECPAY_EINVOICE_TRIPLICATE = 'ecpay_einvoice_triplicate';
+    const ECPAY_EINVOICE_TAX_ID_NUMBER = 'ecpay_einvoice_tax_id_number';
+    const ECPAY_EINVOICE_CELLPHONE_BARCODE = 'ecpay_einvoice_cellphone_barcode';
+
+    /**
+     * @var array
+     */
+    protected $defaultEInvoiceParams = [
+        self::ECPAY_EINVOICE_TYPE => '',
+        self::ECPAY_EINVOICE_TRIPLICATE => '',
+        self::ECPAY_EINVOICE_TAX_ID_NUMBER => '',
+        self::ECPAY_EINVOICE_CELLPHONE_BARCODE => ''
+    ];
+
     private $prefix = 'ecpay_';
     private $libraryList = array('ECPayPaymentHelper.php');
     /**
@@ -522,7 +537,16 @@ class Payment extends AbstractMethod
                 // 商品資訊
                 $this->initOrderItems($order, $ecpay_invoice);
 
-                $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $rawDetailsInfo);
+                try {
+                    $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $rawDetailsInfo);
+                } catch (\Throwable $e) {
+                    $this->_logger->log('info', 'einvoice error | An error occurred while init EInvoice info: ' . $e->getMessage(), [
+                        'order_id'=> $order->getIncrementId(),
+                        'request_data' => $ecpay_invoice->Send
+                    ]);
+                    $rawDetailsInfo = array_replace($rawDetailsInfo, $this->defaultEInvoiceParams);
+                    $RelateNumber = $this->initEInvoiceInfo($ecpay_invoice, $order, $rawDetailsInfo);
+                }
 
                 // 4.送出
                 $aReturn_Info = $ecpay_invoice->Check_Out();

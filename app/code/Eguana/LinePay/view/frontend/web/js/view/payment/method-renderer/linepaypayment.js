@@ -83,7 +83,9 @@ define(
             replacePlus: function (data) {
                 if (typeof data.additional_data.ecpay_einvoice_cellphone_barcode !== 'undefined') {
                     var barcode = data.additional_data.ecpay_einvoice_cellphone_barcode;
-                    barcode = barcode.replace('+', '%2B');
+                    // replaceAll() replaces all occurrences of search with replaceWith,
+                    // while replace() only the first occurence
+                    barcode = barcode.replaceAll('+', '%2B');
                     data.additional_data.ecpay_einvoice_cellphone_barcode = barcode;
                 }
                 return data;
