@@ -54,7 +54,8 @@ class AddRedirectUrlForProduct implements DataPatchInterface
             'default' => false,
             'is_used_in_grid' => true,
             'is_visible_in_grid' => false,
-            'is_filterable_in_grid' => false
+            'is_filterable_in_grid' => false,
+            'note' => 'Input full URL or URL Key of another product'
         ]);
     }
 
