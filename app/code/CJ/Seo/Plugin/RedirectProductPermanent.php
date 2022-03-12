@@ -13,10 +13,7 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class RedirectProductPermanent
 {
-    const COUNTRY_ALLOW_REDIRECT = [
-        'default',
-        'tw_laneige'
-    ];
+    const IS_AUTOMATIC_REDIRECT = 'catalog/seo/is_automatic_redirect';
 
     /**
      * @var RedirectFactory
@@ -73,7 +70,7 @@ class RedirectProductPermanent
     {
         try {
             $product = $this->getProduct($subject);
-            if (in_array($this->storeManager->getStore()->getCode(), self::COUNTRY_ALLOW_REDIRECT) && ($product->getRedirectUrl()  || !$this->canShow($product))) {
+            if ($this->isAutomaticRedirect() && ($product->getRedirectUrl()  || !$this->canShow($product))) {
                 $redirect = $this->redirectFactory->create();
                 if (str_contains($product->getRedirectUrl(), 'http')) {
                     $redirect->setPath($product->getRedirectUrl());
@@ -108,6 +105,19 @@ class RedirectProductPermanent
     {
         return $this->scopeConfig->getValue(
             ProductUrlPathGenerator::XML_PATH_PRODUCT_URL_SUFFIX,
+            ScopeInterface::SCOPE_STORE,
+            $this->storeManager->getStore()->getId()
+        );
+    }
+
+    /**
+     * @return mixed
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    protected function isAutomaticRedirect()
+    {
+        return $this->scopeConfig->getValue(
+            self::IS_AUTOMATIC_REDIRECT,
             ScopeInterface::SCOPE_STORE,
             $this->storeManager->getStore()->getId()
         );
