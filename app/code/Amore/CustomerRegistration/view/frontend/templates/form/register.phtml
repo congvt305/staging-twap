@@ -277,6 +277,7 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
             <?php $_dmSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'dm_subscription_status', ['data'=>['attribute_code'=>'dm_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getDmSubscriptionStatus())]]) ?>
             <?php $_termsAndServicesPolicy = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'terms_and_services_policy', ['data'=>['attribute_code'=>'terms_and_services_policy', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getTermsAndServicesPolicy())]]) ?>
             <?php $callSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'call_subscription_status', ['data'=>['attribute_code'=>'call_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getCallSubscriptionStatus())]]) ?>
+            <?php $smsSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'sms_subscription_status', ['data'=>['attribute_code'=>'sms_subscription_status', 'form_value'=> $block->escapeHtmlAttr($block->getFormData()->getSmsSubscriptionStatus())]]) ?>
 
             <?php if ($callSubscriptionStatus->isEnabled() || $_dmSubscriptionStatus->isEnabled()) : ?>
                 <div class="checkbox-wrapper choice field" style="display: block;">
@@ -291,6 +292,10 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
 
             <?php if ($callSubscriptionStatus->isEnabled()) : ?>
                 <?= $callSubscriptionStatus->setDate($block->getFormData()->getCallSubscriptionStatus())->toHtml() ?>
+            <?php endif ?>
+
+            <?php if ($smsSubscriptionStatus->isEnabled()) : ?>
+                <?= $smsSubscriptionStatus->setDate($block->getFormData()->getSmsSubscriptionStatus())->toHtml() ?>
             <?php endif ?>
 
             <?php if ($block->isNewsletterEnabled()) : ?>
