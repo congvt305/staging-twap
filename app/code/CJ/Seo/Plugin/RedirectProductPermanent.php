@@ -70,7 +70,7 @@ class RedirectProductPermanent
     {
         try {
             $product = $this->getProduct($subject);
-            if ($this->isAutomaticRedirect() && ($product->getRedirectUrl()  || !$this->canShow($product))) {
+            if ($this->isAutomaticRedirectEnabled() && !$this->canShow($product)) {
                 $redirect = $this->redirectFactory->create();
                 if (str_contains($product->getRedirectUrl(), 'http')) {
                     $redirect->setPath($product->getRedirectUrl());
@@ -114,7 +114,7 @@ class RedirectProductPermanent
      * @return mixed
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    protected function isAutomaticRedirect()
+    protected function isAutomaticRedirectEnabled()
     {
         return $this->scopeConfig->getValue(
             self::IS_AUTOMATIC_REDIRECT,
