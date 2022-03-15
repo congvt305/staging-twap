@@ -694,6 +694,8 @@ return [
         'CJ_Middleware' => 1,
         'CJ_PageBuilder' => 1,
         'CJ_PointRedemption' => 1,
+        'CJ_HoverImage' => 1,
+        'CJ_CatelogFaq' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
         'Dotdigitalgroup_Enterprise' => 1,
