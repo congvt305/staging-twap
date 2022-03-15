@@ -49,7 +49,8 @@ define([
         if(isEnableCouponPopup) {
             modal(options, $('#modal'));
             $("#coupon-wallet").on('click', function () {
-                $('#modal').modal(options).modal('openModal')
+                var popup = modal(options, $('#modal'));
+                popup.openModal();
                 // add class css
                 // for laneige website
                 if (websiteCode == 'tw_lageige_website') {
@@ -81,15 +82,15 @@ define([
                         $('#discount-code').val('');
                         $('#' + couponCodeApplied).text('Apply');
                         $('#' + couponCodeApplied).removeClass('applied-button');
-                        $('#modal').modal('closeModal');
+                        popup.closeModal();
                     }
 
                     // applied coupon code
                     else {
                         setCouponCodeAction(couponCode, coupon.getIsApplied(true));
-                        $('#modal').modal('closeModal');
                         coupon.getCouponCode(couponCode);
                         $('#discount-code').val(couponCode);
+                        popup.closeModal();
                     }
 
                 });
