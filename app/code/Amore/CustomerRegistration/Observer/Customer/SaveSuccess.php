@@ -337,82 +337,87 @@ class SaveSuccess implements ObserverInterface
      */
     private function getAPIParameters($customer, $action)
     {
-        $parameters = [];
-        $parameters['cstmIntgSeq'] = $customer->getCustomAttribute('integration_number')->getValue();
-        $parameters['if_flag'] = $action == 'register' ? 'I' : 'U';
-        $parameters['firstName'] = trim($customer->getFirstname());
-        $parameters['lastName'] = trim($customer->getLastname());
-        $parameters['birthDay'] = $customer->getDob()?preg_replace('/\D/', '', $customer->getDob()):'';
-        $parameters['mobileNo'] = $customer->getCustomAttribute('mobile_number')->getValue();
-        $parameters['email'] = trim($customer->getEmail());
-        $parameters['sex'] = $customer->getGender() == '1' ? 'M' : 'F';
-        $parameters['emailYN'] = $this->isCustomerSubscribToNewsLetters($customer->getId()) ? 'Y' : 'N';
-        if ($customer->getCustomAttribute('ba_code')) {
-            $baCode = $this->POSSystem->checkBACodePrefix(
-                $customer->getCustomAttribute('ba_code')->getValue()
-            );
+        try {
+            $parameters = [];
+            $parameters['cstmIntgSeq'] = $customer->getCustomAttribute('integration_number')->getValue();
+            $parameters['if_flag'] = $action == 'register' ? 'I' : 'U';
+            $parameters['firstName'] = trim($customer->getFirstname());
+            $parameters['lastName'] = trim($customer->getLastname());
+            $parameters['birthDay'] = $customer->getDob() ? preg_replace('/\D/', '', $customer->getDob()) : '';
+            $parameters['mobileNo'] = $customer->getCustomAttribute('mobile_number')->getValue();
+            $parameters['email'] = trim($customer->getEmail());
+            $parameters['sex'] = $customer->getGender() == '1' ? 'M' : 'F';
+            $parameters['emailYN'] = $this->isCustomerSubscribToNewsLetters($customer->getId()) ? 'Y' : 'N';
+            if ($customer->getCustomAttribute('ba_code')) {
+                $baCode = $this->POSSystem->checkBACodePrefix(
+                    $customer->getCustomAttribute('ba_code')->getValue()
+                );
 
-            $parameters['empID'] = $baCode;
-        } else {
-            $parameters['empID'] = '';
-        }
-        if ($customer->getCustomAttribute('call_subscription_status')) {
-            $parameters['callYN'] = $customer->getCustomAttribute('call_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-        } else {
-            $parameters['callYN'] = 'N';
-        }
-        if ($customer->getCustomAttribute('dm_subscription_status')) {
-            $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-        } else {
-            $parameters['dmYN'] = '';
-        }
-        $defaultBillingAddressId = $customer->getDefaultBilling();
-        $customerData = $this->request->getParams();
-        if (isset($customerData['dm_zipcode']) && !$defaultBillingAddressId) {
-            $parameters['homeAddr1'] = $customerData['dm_detailed_address'];
-            $parameters['homeZip'] = $customerData['dm_zipcode'];
-            $regionName = $customerData['dm_state'];
-            $regionObject = null;
-            if ($regionName) {
-                $regionObject = $this->getRegionObject($regionName);
-                $parameters['homeCity'] = $regionObject->getCode()?$regionObject->getCode():'';
+                $parameters['empID'] = $baCode;
             } else {
-                $parameters['homeCity'] = '';
+                $parameters['empID'] = '';
             }
+            if ($customer->getCustomAttribute('call_subscription_status')) {
+                $parameters['callYN'] = $customer->getCustomAttribute('call_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+            } else {
+                $parameters['callYN'] = 'N';
+            }
+            if ($customer->getCustomAttribute('dm_subscription_status')) {
+                $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+            } else {
+                $parameters['dmYN'] = '';
+            }
+            $defaultBillingAddressId = $customer->getDefaultBilling();
+            $customerData = $this->request->getParams();
+            if (isset($customerData['dm_zipcode']) && !$defaultBillingAddressId) {
+                $parameters['homeAddr1'] = $customerData['dm_detailed_address'];
+                $parameters['homeZip'] = $customerData['dm_zipcode'];
+                $regionName = $customerData['dm_state'];
+                $regionObject = null;
+                if ($regionName) {
+                    $regionObject = $this->getRegionObject($regionName);
+                    $parameters['homeCity'] = $regionObject->getCode() ? $regionObject->getCode() : '';
+                } else {
+                    $parameters['homeCity'] = '';
+                }
 
-            $cityName = $customerData['dm_city'];
-            $parameters['homeState'] = '';
-            if ($cityName && $regionObject) {
-                $cities = $this->cityHelper->getCityData();
-                $regionCities = $cities[$regionObject->getRegionId()];
-                foreach ($regionCities as $regionCity) {
-                    if ($regionCity['name'] == $cityName) {
-                        $parameters['homeState'] = $regionCity['pos_code'];
+                $cityName = $customerData['dm_city'];
+                $parameters['homeState'] = '';
+                if ($cityName && $regionObject) {
+                    $cities = $this->cityHelper->getCityData();
+                    $regionCities = $cities[$regionObject->getRegionId()];
+                    foreach ($regionCities as $regionCity) {
+                        if ($regionCity['name'] == $cityName) {
+                            $parameters['homeState'] = $regionCity['pos_code'];
+                            break;
+                        }
+                    }
+                }
+            } elseif ($defaultBillingAddressId) {
+                $addresses = $customer->getAddresses();
+                $defaultBillingAddress = null;
+                foreach ($addresses as $address) {
+                    if ($address->getId() == $defaultBillingAddressId) {
+                        $defaultBillingAddress = $address;
                         break;
                     }
                 }
+                $addressParameters = $this->getAddressParameters($defaultBillingAddress);
+                $parameters = array_merge($parameters, $addressParameters);
             }
-        } elseif ($defaultBillingAddressId) {
-            $addresses = $customer->getAddresses();
-            $defaultBillingAddress = null;
-            foreach ($addresses as $address) {
-                if ($address->getId() == $defaultBillingAddressId) {
-                    $defaultBillingAddress = $address;
-                    break;
-                }
-            }
-            $addressParameters = $this->getAddressParameters($defaultBillingAddress);
-            $parameters = array_merge($parameters, $addressParameters);
-        }
-        $parameters['salOrgCd'] =  $customer->getCustomAttribute('sales_organization_code')?
-            $customer->getCustomAttribute('sales_organization_code')->getValue():'';
-        $parameters['salOffCd'] = $customer->getCustomAttribute('sales_office_code')?
-            $customer->getCustomAttribute('sales_office_code')->getValue():'';
-        $parameters['prtnrid'] = $customer->getCustomAttribute('partner_id')?
-            $customer->getCustomAttribute('partner_id')->getValue():'';
-        $parameters['statusCD'] = '01';
+            $parameters['salOrgCd'] = $customer->getCustomAttribute('sales_organization_code') ?
+                $customer->getCustomAttribute('sales_organization_code')->getValue() : '';
+            $parameters['salOffCd'] = $customer->getCustomAttribute('sales_office_code') ?
+                $customer->getCustomAttribute('sales_office_code')->getValue() : '';
+            $parameters['prtnrid'] = $customer->getCustomAttribute('partner_id') ?
+                $customer->getCustomAttribute('partner_id')->getValue() : '';
+            $parameters['statusCD'] = '01';
 
-        return $parameters;
+            return $parameters;
+        }catch (\Exception $exception) {
+            $this->logger->addExceptionMessage($exception->getMessage());
+            $this->logger->addExceptionMessage('Fail to get API Parameter: '. json_encode($parameters). 'Customer Data: '. json_encode($customerData));
+        }
     }
 
     private function getRegionObject($regionName)
