@@ -13,6 +13,7 @@ use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 
 class AddCustomerAttributeSMSSubscription implements DataPatchInterface
 {
+    const SMS_SUBSCRIPTION_STATUS = 'sms_subscription_status';
     /**
      * @var EavConfig
      */
@@ -78,18 +79,17 @@ class AddCustomerAttributeSMSSubscription implements DataPatchInterface
      */
     public function apply()
     {
-        $code = 'sms_subscription_status';
         $attribute = $this->customerAttributeResource
             ->getIdByCode(
                 CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
-                $code
+                self::SMS_SUBSCRIPTION_STATUS
             );
 
         if (!$attribute) {
             try {
                 $this->eavSetup->addAttribute(
                     CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
-                    $code,
+                    self::SMS_SUBSCRIPTION_STATUS,
                     [
                         'label' => 'SMS Marketing',
                         'type' => 'int',
@@ -106,25 +106,22 @@ class AddCustomerAttributeSMSSubscription implements DataPatchInterface
                     ]
                 );
 
-                $this->assignAttributeToForms($code);
+                $this->assignAttributeToForms();
             } catch (\Exception $e) {
-                $this->logger->error("Error while adding customer $code" . $e->getMessage());
+                $this->logger->error("Error while adding customer " . self::SMS_SUBSCRIPTION_STATUS . $e->getMessage());
             }
         }
     }
 
     /**
-     * This function is responsible to add custom attribute in form
-     *
-     * @param string $code
      * @return void
      */
-    private function assignAttributeToForms($code)
+    private function assignAttributeToForms()
     {
         try {
             $attribute = $this->eavConfig->getAttribute(
                 CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
-                $code
+                self::SMS_SUBSCRIPTION_STATUS
             );
 
             $forms = [
@@ -140,7 +137,7 @@ class AddCustomerAttributeSMSSubscription implements DataPatchInterface
 
             $this->customerAttributeResource->save($attribute);
         } catch (\Exception $e) {
-            $this->logger->error("Error while assiging attribute to forms" . $e->getMessage());
+            $this->logger->error("Error while assigning attribute to forms" . $e->getMessage());
         }
     }
 }
