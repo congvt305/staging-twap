@@ -227,7 +227,7 @@ class SaveSuccess implements ObserverInterface
             $sex = $customerData->getGender();
             $emailYN = $this->isCustomerSubscribToNewsLetters($customerData->getId()) ? 'Y' : 'N';
             $callYN = $customerData->getCustomAttribute('call_subscription_status')->getValue();
-            $smsYN = $callYN;
+            $smsYN = $customerData->getCustomAttribute('sms_subscription_status')->getValue();;
             $dmYN = $customerData->getCustomAttribute('dm_subscription_status')->getValue();
             $defaultBillingAddressId = $customerData->getDefaultBilling();
             $addresses = $customerData->getAddresses();
