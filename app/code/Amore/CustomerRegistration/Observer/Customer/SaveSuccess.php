@@ -361,8 +361,7 @@ class SaveSuccess implements ObserverInterface
         } else {
             $parameters['callYN'] = 'N';
         }
-        $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-
+        $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status') && $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y' : 'N';
         if ($customer->getCustomAttribute('dm_subscription_status')) {
             $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
         } else {
