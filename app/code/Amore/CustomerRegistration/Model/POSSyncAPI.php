@@ -70,6 +70,9 @@ class POSSyncAPI
         } else {
             $parameters['callYN'] = 'N';
         }
+
+        $parameters['smsYN'] = $customer->getData('sms_subscription_status') == 1 ? 'Y' : 'N';
+
         if ($customer->getData('dm_subscription_status')) {
             $parameters['dmYN'] = $customer->getData('dm_subscription_status') == 1 ? 'Y' : 'N';
         } else {

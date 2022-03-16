@@ -41,6 +41,14 @@ return [
                 'sort_order' => '0',
                 'default_group_id' => '9',
                 'is_default' => '0'
+            ],
+            'my_laneige_website' => [
+                'website_id' => '10',
+                'code' => 'my_laneige_website',
+                'name' => 'MY Laneige Website',
+                'sort_order' => '0',
+                'default_group_id' => '10',
+                'is_default' => '0'
             ]
         ],
         'groups' => [
@@ -83,6 +91,14 @@ return [
                 'root_category_id' => '533',
                 'default_store_id' => '9',
                 'code' => 'vn_sulwhasoo_website_store'
+            ],
+            10 => [
+                'group_id' => '10',
+                'website_id' => '10',
+                'name' => 'MY Laneige Website Store',
+                'root_category_id' => '751',
+                'default_store_id' => '10',
+                'code' => 'my_laneige_website_store'
             ]
         ],
         'stores' => [
@@ -128,6 +144,15 @@ return [
                 'website_id' => '9',
                 'group_id' => '9',
                 'name' => 'VN Sulwhasoo Store View',
+                'sort_order' => '0',
+                'is_active' => '1'
+            ],
+            'my_laneige' => [
+                'store_id' => '10',
+                'code' => 'my_laneige',
+                'website_id' => '10',
+                'group_id' => '10',
+                'name' => 'MY Laneige Store View',
                 'sort_order' => '0',
                 'is_active' => '1'
             ]
@@ -202,6 +227,13 @@ return [
                 'general' => [
                     'locale' => [
                         'code' => 'vi_VN'
+                    ]
+                ]
+            ],
+            'my_laneige_website' => [
+                'general' => [
+                    'locale' => [
+                        'code' => 'ms_MY'
                     ]
                 ]
             ]
@@ -584,7 +616,10 @@ return [
         'Magento_Rss' => 1,
         'Magento_SalesRuleStaging' => 1,
         'Magento_ServicesConnector' => 1,
+        'Magento_SaaSCategory' => 1,
         'Magento_SaaSCommon' => 1,
+        'Magento_SaaSProductOverride' => 1,
+        'Magento_SaaSProductVariant' => 1,
         'Magento_BannerPageBuilderAnalytics' => 1,
         'Magento_SalesAnalytics' => 1,
         'Magento_SalesArchive' => 1,
@@ -681,13 +716,18 @@ return [
         'Amore_SalesRule' => 1,
         'Ecpay_Ecpaypayment' => 1,
         'CJ_Base' => 1,
+        'CJ_CatalogFaq' => 1,
         'CJ_ChangeOrderStatus' => 1,
+        'CJ_CouponCustomer' => 1,
         'CJ_DataExport' => 1,
+        'CJ_HoverImage' => 1,
         'CJ_InventoryShipping' => 1,
+        'CJ_LineShopping' => 1,
         'CJ_Middleware' => 1,
         'CJ_PageBuilder' => 1,
         'CJ_PointRedemption' => 1,
         'CJ_HoverImage' => 1,
+        'CJ_CatelogFaq' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
         'Dotdigitalgroup_Enterprise' => 1,
@@ -695,6 +735,7 @@ return [
         'Amasty_Feed' => 1,
         'Dotdigitalgroup_Sms' => 1,
         'Eguana_GWLogistics' => 1,
+        'Eghl_PaymentMethod' => 1,
         'Amore_GcrmSegment' => 1,
         'Eguana_BizConnect' => 1,
         'Eguana_BlackCat' => 1,
@@ -748,6 +789,8 @@ return [
         'Klarna_Kp' => 0,
         'Klarna_Onsitemessaging' => 1,
         'Klarna_KpGraphQl' => 1,
+        'MagePal_Core' => 1,
+        'MagePal_Reindex' => 1,
         'PayPal_Braintree' => 0,
         'PayPal_BraintreeGraphQl' => 0,
         'Eguana_Pixlee' => 1,
@@ -765,7 +808,8 @@ return [
             'code' => [
                 'en_US',
                 'zh_Hant_TW',
-                'vi_VN'
+                'vi_VN',
+                'ms_MY'
             ]
         ]
     ]

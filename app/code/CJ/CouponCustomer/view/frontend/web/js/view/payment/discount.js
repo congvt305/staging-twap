@@ -27,6 +27,8 @@ define([
 
     var websiteCode = window.checkoutConfig.cj_couponcustomer.website_code;
 
+    var template = 'CJ_CouponCustomer/payment/discount';
+
     var options = {
         type: 'popup',
         responsive: true,
@@ -70,6 +72,9 @@ define([
                     $('.discount-card-button').addClass('sws-discount-card-button');
                 }
                 // change text to cancel for coupon applied
+                $('.discount-card-button').removeClass('applied-button');
+                $('.discount-card-button').text('Apply');
+
                 var couponCodeApplied = $('#discount-code').val();
                 $('#' + couponCodeApplied).text('Cancel');
                 $('#' + couponCodeApplied).addClass('applied-button');
@@ -103,9 +108,13 @@ define([
     }
     isApplied(couponCode() != null);
 
+    if(websiteCode == 'base') {
+        template = 'CJ_CouponCustomer/payment/sws/discount'
+    }
+
     return Component.extend({
         defaults: {
-            template: 'CJ_CouponCustomer/payment/discount'
+            template: template
         },
 
         couponCode: couponCode,

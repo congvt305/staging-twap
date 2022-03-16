@@ -108,7 +108,7 @@ class SendOrderToPos extends Action
         /** @var \Magento\Sales\Model\Order $order */
         foreach ($orders as $order) {
             if ($this->dateCheck($order)) {
-                 $this->posOrderSender->posOrderSend($order);
+                 $this->posOrderSender->send($order);
             }
         }
     }
