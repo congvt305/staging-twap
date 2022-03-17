@@ -41,7 +41,7 @@ define([
         if (utmContent) {
             $('#utm_content').val(_.escape(utmContent));
         }
-        if (!utmSource && !utmSource && !utmSource && $.mage.cookies.get('utm_information')) {
+        if (!utmSource && !utmMedium && !utmContent && $.mage.cookies.get('utm_information')) {
             let utmInformation = $.parseJSON($.mage.cookies.get('utm_information'));
             if (utmInformation.utm_source) {
                 $('#utm_source').val(_.escape(utmInformation.utm_source));
