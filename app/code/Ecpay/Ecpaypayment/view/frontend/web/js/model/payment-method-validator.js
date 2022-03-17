@@ -27,7 +27,7 @@ define(
                 if (choosenEInvoice == 'cellphone-barcode-invoice') {
                     if ($("input:text[id=cellphone_barcode]").val() != ' ') {
                         var barCode = $("input:text[id=cellphone_barcode]").val();
-                        barCode = barCode.replace(/\s+/g, "+");
+                        barCode = barCode.replace(/[\s]/g, "+");
                         $("input:text[id=cellphone_barcode]").val(barCode);
                     }
                 }
