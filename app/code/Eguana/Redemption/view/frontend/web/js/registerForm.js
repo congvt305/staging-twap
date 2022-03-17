@@ -11,7 +11,8 @@ define([
     'underscore',
     'mage/translate',
     'domReady!',
-    'Magento_Ui/js/modal/modal'
+    'Magento_Ui/js/modal/modal',
+    'mage/cookies'
 ], function ($, _, modal) {
     /**
      * @param config.countersaveurl
@@ -39,6 +40,18 @@ define([
         }
         if (utmContent) {
             $('#utm_content').val(_.escape(utmContent));
+        }
+        if (!utmSource && !utmSource && !utmSource && $.mage.cookies.get('utm_information')) {
+            let utmInformation = $.parseJSON($.mage.cookies.get('utm_information'));
+            if (utmInformation.utm_source) {
+                $('#utm_source').val(_.escape(utmInformation.utm_source));
+            }
+            if (utmInformation.utm_medium) {
+                $('#utm_medium').val(_.escape(utmInformation.utm_medium));
+            }
+            if (utmInformation.utm_content) {
+                $('#utm_content').val(_.escape(utmInformation.utm_content));
+            }
         }
         $(document).find('span[id="recaptcha-response"]').hide();
         $('#info-message').hide();
