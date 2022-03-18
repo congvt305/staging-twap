@@ -53,10 +53,14 @@ define([
         }]
     };
 
+    var popup = null;
+
+    var couponAppliedPopup = '';
+
     var delayInMilliseconds = 3000; // 3 second
     setTimeout(function() {
         if(isEnableCouponPopup) {
-            modal(options, $('#modal'));
+            popup = modal(options, $('#modal'));
         }
     }, delayInMilliseconds);
 
@@ -112,8 +116,29 @@ define([
         },
 
         showPopup: function() {
-            var popup = modal(options, $('#modal'));
             popup.openModal();
-        }
+            var couponCodeApplied = $('#discount-code').val();
+            $('#' + couponCodeApplied).text('Cancel');
+            $('#' + couponCodeApplied).addClass('applied-button');
+        },
+        applyCouponPopup: function(data, event) {
+            console.log("you clicked " + event.target.id);
+            couponCode = event.target.id;
+            console.log(couponCode);
+            if(couponCode == couponAppliedPopup) {
+                console.log("cancel");
+                cancelCouponAction(coupon.getIsApplied(false));
+                couponAppliedPopup = '';
+                $('#discount-code').val('');
+                popup.closeModal();
+            }
+            else
+            {
+                setCouponCodeAction(couponCode, coupon.getIsApplied(true));
+                $('#discount-code').val(couponCode);
+                couponAppliedPopup = couponCode;
+                popup.closeModal();
+            }
+        },
     });
 });
