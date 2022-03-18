@@ -21,6 +21,8 @@
                 <item name="line_utm_source" xsi:type="string">sales_order.line_utm_source</item>
                 <item name="line_utm_medium" xsi:type="string">sales_order.line_utm_medium</item>
                 <item name="line_utm_campaign" xsi:type="string">sales_order.line_utm_campaign</item>
+                <item name="line_utm_content" xsi:type="string">sales_order.line_utm_content</item>
+                <item name="line_utm_term" xsi:type="string">sales_order.line_utm_term</item>
             </argument>
         </arguments>
     </virtualType>
