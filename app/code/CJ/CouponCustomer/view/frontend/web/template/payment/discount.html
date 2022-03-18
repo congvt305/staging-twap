@@ -47,7 +47,10 @@
 
             <!-- ko if: isEnableCouponPopup -->
             <div class="coupon-wallet">
-                <i id = "coupon-wallet"> <!-- ko i18n: 'view my coupon'--><!-- /ko --> </i>
+<!--                <i id = "coupon-wallet"> &lt;!&ndash; ko i18n: 'view my coupon'&ndash;&gt;&lt;!&ndash; /ko &ndash;&gt; </i>-->
+                <button type="submit" data-bind="'value': $t('view my coupon'), click: showPopup">
+                    <span><!-- ko i18n: 'view my coupon'--><!-- /ko --></span>
+                </button>
             </div>
             <!-- /ko -->
 
