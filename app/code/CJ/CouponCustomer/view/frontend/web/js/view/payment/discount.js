@@ -37,7 +37,6 @@ define([
     isApplied(couponCode() != null);
 
     //define coupon popup
-
     var options = {
         type: 'popup',
         responsive: true,
@@ -95,6 +94,13 @@ define([
         },
 
         /**
+         * Coupon code application when turn on coupon popup
+         */
+        applyPopup: function() {
+            setCouponCodeAction(couponCode(), isApplied);
+        },
+
+        /**
          * Cancel using coupon
          */
         cancel: function () {
@@ -115,18 +121,53 @@ define([
             return $(form).validation() && $(form).validation('isValid');
         },
 
+        /**
+         * create popup base on website
+         *
+         * @returns {Boolean}
+         */
+
+        createPopupWebsite: function() {
+            if (websiteCode == 'tw_lageige_website') {
+                $('.coupon-header').addClass('lng-coupon-popup-color');
+                $('.discount-bar').addClass('lng-coupon-popup-color');
+                $('.discount-border-right').addClass('lng-discount-border-right');
+                $('.discount-card-button').addClass('lng-discount-card-button');
+            }
+            // for sws website
+            if (websiteCode == 'base') {
+                $('.coupon-header').addClass('sws-coupon-popup-color');
+                $('.discount-bar').addClass('sws-coupon-popup-color');
+                $('.discount-border-right').addClass('sws-discount-border-right');
+                $('.discount-card-button').addClass('sws-discount-card-button');
+            }
+
+        },
+
+        /**
+         * show popup
+         *
+         */
+
         showPopup: function() {
-            popup.openModal();
+            this.createPopupWebsite();
+            // change text to cancel for coupon applied
+            $('.discount-card-button').removeClass('applied-button');
+            $('.discount-card-button').text('Apply');
+
             var couponCodeApplied = $('#discount-code').val();
             $('#' + couponCodeApplied).text('Cancel');
             $('#' + couponCodeApplied).addClass('applied-button');
+            popup.openModal();
         },
+        /**
+         * apply coupon on coupon popup
+         *
+         */
+
         applyCouponPopup: function(data, event) {
-            console.log("you clicked " + event.target.id);
             couponCode = event.target.id;
-            console.log(couponCode);
             if(couponCode == couponAppliedPopup) {
-                console.log("cancel");
                 cancelCouponAction(coupon.getIsApplied(false));
                 couponAppliedPopup = '';
                 $('#discount-code').val('');

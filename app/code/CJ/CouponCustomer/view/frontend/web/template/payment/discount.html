@@ -32,10 +32,19 @@
             </div>
             <div class="actions-toolbar">
                 <div class="primary">
+                    <!-- ko ifnot: isEnableCouponPopup -->
                     <!-- ko ifnot: isApplied() -->
                     <button class="action action-apply" type="submit" data-bind="'value': $t('Apply'), click: apply">
                         <span><!-- ko i18n: 'Apply'--><!-- /ko --></span>
                     </button>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: isEnableCouponPopup -->
+                    <!-- ko ifnot: isApplied() -->
+                    <button class="action action-apply" type="submit" data-bind="'value': $t('Apply'), click: applyPopup">
+                        <span><!-- ko i18n: 'Apply'--><!-- /ko --></span>
+                    </button>
+                    <!-- /ko -->
                     <!-- /ko -->
                     <!-- ko if: isApplied() -->
                     <button class="action action-cancel" type="submit" data-bind="'value': $t('Cancel'), click: cancel">
@@ -47,10 +56,7 @@
 
             <!-- ko if: isEnableCouponPopup -->
             <div class="coupon-wallet">
-<!--                <i id = "coupon-wallet"> &lt;!&ndash; ko i18n: 'view my coupon'&ndash;&gt;&lt;!&ndash; /ko &ndash;&gt; </i>-->
-                <button type="submit" data-bind="'value': $t('view my coupon'), click: showPopup">
-                    <span><!-- ko i18n: 'view my coupon'--><!-- /ko --></span>
-                </button>
+                <i id = "coupon-wallet" data-bind="'value': $t('view my coupon'), click: showPopup"> <!-- ko i18n: 'view my coupon'--><!-- /ko --> </i>
             </div>
             <!-- /ko -->
 
@@ -90,8 +96,8 @@
                                         </div>
                                     </div>
                                     <div class="discount-border-right"></div>
-                                    <div class="discount-card-button">
-                                        <button data-bind="attr: { id : $data['code']}, click : $parent.applyCouponPopup">apply</button>
+                                    <div class="discount-card-button" data-bind="attr: { id : $data['code']}, click : $parent.applyCouponPopup">
+                                        apply
                                     </div>
                                 </div>
                                 <!-- and card -->
