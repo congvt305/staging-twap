@@ -17,7 +17,8 @@ define([
     'Magento_Checkout/js/model/shipping-rate-service',
     'Eguana_GWLogistics/js/model/shipping-rate-processor/cvs-pickup-address',
     // 'Eguana_GWLogistics/js/model/cvs-location',
-    'Eguana_GWLogistics/js/model/cvs-location-service'
+    'Eguana_GWLogistics/js/model/cvs-location-service',
+    'Magento_Customer/js/model/customer'
 ], function (
     Component,
     _,
@@ -32,7 +33,8 @@ define([
     shippingRateService,
     shippingRateProcessor,
     // cvsLocation,
-    pickupLocationsService
+    pickupLocationsService,
+    customer
 ) {
     'use strict';
 
@@ -211,6 +213,10 @@ define([
          */
         isCvsPickupAddress: function (address) {
             return address.getType() === 'cvs-pickup-address';
+        },
+
+        isLoggedIn: function () {
+            return customer.isLoggedIn();
         },
 
         isVnWebsite: function () {
