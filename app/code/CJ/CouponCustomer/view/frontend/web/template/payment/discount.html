@@ -90,8 +90,8 @@
                                         </div>
                                     </div>
                                     <div class="discount-border-right"></div>
-                                    <div class="discount-card-button"  data-bind="attr: { id : $data['code'] }">
-                                        apply
+                                    <div class="discount-card-button">
+                                        <button data-bind="attr: { id : $data['code']}, click : $parent.applyCouponPopup">apply</button>
                                     </div>
                                 </div>
                                 <!-- and card -->
