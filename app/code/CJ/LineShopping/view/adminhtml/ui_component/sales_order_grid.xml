@@ -29,5 +29,23 @@
                 </item>
             </argument>
         </column>
+        <column name="line_utm_content" class="Magento\Ui\Component\Listing\Columns\Column">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Utm Content</item>
+                </item>
+            </argument>
+        </column>
+        <column name="line_utm_term" class="Magento\Ui\Component\Listing\Columns\Column">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Utm Term</item>
+                </item>
+            </argument>
+        </column>
     </columns>
 </listing>

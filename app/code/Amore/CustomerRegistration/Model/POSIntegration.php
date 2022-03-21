@@ -139,10 +139,11 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      * @param string $lastName
      * @param string $birthDay
      * @param string $mobileNo
-     * @param string $emil
+     * @param string $email
      * @param string $sex
      * @param string $emailYN
      * @param string $callYN
+     * @param string $smsYN
      * @param string $dmYN
      * @param string $homeCity
      * @param string $homeState
@@ -163,6 +164,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $sex,
         $emailYN,
         $callYN,
+        $smsYN,
         $dmYN,
         $homeCity,
         $homeState,
@@ -186,6 +188,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 'sex' => $sex,
                 'emailYN' => $emailYN,
                 'callYN' => $callYN,
+                'smsYN' => $smsYN,
                 'dmYN' => $dmYN,
                 'homeCity' => $homeCity,
                 'homeState' => $homeState,
@@ -333,6 +336,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
                 trim($sex) ? $customer->setGender($sex == 'M' ? 1 : 2) : '';
                 trim($dmYN) ? $customer->setCustomAttribute('dm_subscription_status', $dmYN == 'Y' ? 1 : 0) : '';
                 trim($callYN) ? $customer->setCustomAttribute('call_subscription_status', $callYN == 'Y' ? 1 : 0) : '';
+                trim($smsYN) ? $customer->setCustomAttribute('sms_subscription_status', $smsYN == 'Y' ? 1 : 0) : '';
                 trim($statusCD) ? $customer->setCustomAttribute('status_code', $statusCD == '1' ? 1 : 0) : '';
 
                 //Confiremd with Client sales office and organization code will never change
