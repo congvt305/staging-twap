@@ -13,9 +13,8 @@ define([
     'Magento_SalesRule/js/model/coupon',
     'Magento_Ui/js/modal/modal',
     'text!CJ_CouponCustomer/template/modal/modal-popup.html'
-], function ($, ko, Component, quote, setCouponCodeAction, cancelCouponAction, coupon, modal,popupTpl ) {
+], function ($, ko, Component, quote, setCouponCodeAction, cancelCouponAction, coupon, modal, popupTpl ) {
     'use strict';
-
 
     var totals = quote.getTotals(),
         couponCode = coupon.getCouponCode(),
@@ -29,6 +28,15 @@ define([
 
     var template = 'CJ_CouponCustomer/payment/discount';
 
+    if(websiteCode == 'base') {
+        template = 'CJ_CouponCustomer/payment/sws/discount'
+    }
+    if (totals()) {
+        couponCode(totals()['coupon_code']);
+    }
+    isApplied(couponCode() != null);
+
+    //define coupon popup
     var options = {
         type: 'popup',
         responsive: true,
@@ -43,97 +51,53 @@ define([
             }
         }]
     };
-    var delayInMilliseconds = 3000; //1 second
 
+    var popup = null;
+
+    var couponAppliedPopup = '';
+
+    var delayInMilliseconds = 3000; // 3 second
     setTimeout(function() {
         if(isEnableCouponPopup) {
-            modal(options, $('#modal'));
-            $("#coupon-wallet").on('click', function () {
-                var popup = modal(options, $('#modal'));
-                popup.openModal();
-                // add class css
-                // for laneige website
-                if (websiteCode == 'tw_lageige_website') {
-                    $('.coupon-header').addClass('lng-coupon-popup-color');
-                    $('.discount-bar').addClass('lng-coupon-popup-color');
-                    $('.discount-border-right').addClass('lng-discount-border-right');
-                    $('.discount-card-button').addClass('lng-discount-card-button');
-                }
-                // for sws website
-                if (websiteCode == 'base') {
-                    $('.coupon-header').addClass('sws-coupon-popup-color');
-                    $('.discount-bar').addClass('sws-coupon-popup-color');
-                    $('.discount-border-right').addClass('sws-discount-border-right');
-                    $('.discount-card-button').addClass('sws-discount-card-button');
-                }
-                // change text to cancel for coupon applied
-                $('.discount-card-button').removeClass('applied-button');
-                $('.discount-card-button').text('Apply');
-
-                var couponCodeApplied = $('#discount-code').val();
-                $('#' + couponCodeApplied).text('Cancel');
-                $('#' + couponCodeApplied).addClass('applied-button');
-
-                $(".discount-card-button").on('click', function () {
-                    var couponCode = $(this).attr('id');
-                    // cancel coupon code
-                    if (couponCode == couponCodeApplied) {
-                        cancelCouponAction(coupon.getIsApplied(false));
-                        $('#discount-code').val('');
-                        $('#' + couponCodeApplied).text('Apply');
-                        $('#' + couponCodeApplied).removeClass('applied-button');
-                        popup.closeModal();
-                    }
-
-                    // applied coupon code
-                    else {
-                        setCouponCodeAction(couponCode, coupon.getIsApplied(true));
-                        coupon.getCouponCode(couponCode);
-                        $('#discount-code').val(couponCode);
-                        popup.closeModal();
-                    }
-
-                });
-            });
+            popup = modal(options, $('#modal'));
         }
     }, delayInMilliseconds);
-
-
-    if (totals()) {
-        couponCode(totals()['coupon_code']);
-    }
-    isApplied(couponCode() != null);
-
-    if(websiteCode == 'base') {
-        template = 'CJ_CouponCustomer/payment/sws/discount'
-    }
 
     return Component.extend({
         defaults: {
             template: template
         },
-
         couponCode: couponCode,
 
+        /**
+         * Coupon list
+         */
         couponList : ko.observableArray(couponList),
+
+        /**
+         * Is enable coupon popup
+         */
+        isEnableCouponPopup: ko.observable(isEnableCouponPopup),
 
         /**
          * Applied flag
          */
         isApplied: isApplied,
 
-        isEnableCouponPopup: ko.observable(isEnableCouponPopup),
-
-        popupColor: ko.pureComputed(function() {
-            return 'sws-coupon-popup-color';
-        }),
-
-
         /**
          * Coupon code application procedure
          */
         apply: function () {
+            if (this.validate()) {
                 setCouponCodeAction(couponCode(), isApplied);
+            }
+        },
+
+        /**
+         * Coupon code application when turn on coupon popup
+         */
+        applyPopup: function() {
+            setCouponCodeAction(couponCode(), isApplied);
         },
 
         /**
@@ -143,7 +107,6 @@ define([
             if (this.validate()) {
                 couponCode('');
                 cancelCouponAction(isApplied);
-                $('#discount-code').val('');
             }
         },
 
@@ -156,7 +119,67 @@ define([
             var form = '#discount-form';
 
             return $(form).validation() && $(form).validation('isValid');
-        }
+        },
 
+        /**
+         * create popup base on website
+         *
+         * @returns {Boolean}
+         */
+
+        createPopupWebsite: function() {
+            if (websiteCode == 'tw_lageige_website') {
+                $('.coupon-header').addClass('lng-coupon-popup-color');
+                $('.discount-bar').addClass('lng-coupon-popup-color');
+                $('.discount-border-right').addClass('lng-discount-border-right');
+                $('.discount-card-button').addClass('lng-discount-card-button');
+            }
+            // for sws website
+            if (websiteCode == 'base') {
+                $('.coupon-header').addClass('sws-coupon-popup-color');
+                $('.discount-bar').addClass('sws-coupon-popup-color');
+                $('.discount-border-right').addClass('sws-discount-border-right');
+                $('.discount-card-button').addClass('sws-discount-card-button');
+            }
+
+        },
+
+        /**
+         * show popup
+         *
+         */
+
+        showPopup: function() {
+            this.createPopupWebsite();
+            // change text to cancel for coupon applied
+            $('.discount-card-button').removeClass('applied-button');
+            $('.discount-card-button').text('Apply');
+
+            var couponCodeApplied = $('#discount-code').val();
+            $('#' + couponCodeApplied).text('Cancel');
+            $('#' + couponCodeApplied).addClass('applied-button');
+            popup.openModal();
+        },
+        /**
+         * apply coupon on coupon popup
+         *
+         */
+
+        applyCouponPopup: function(data, event) {
+            couponCode = event.target.id;
+            if(couponCode == couponAppliedPopup) {
+                cancelCouponAction(coupon.getIsApplied(false));
+                couponAppliedPopup = '';
+                $('#discount-code').val('');
+                popup.closeModal();
+            }
+            else
+            {
+                setCouponCodeAction(couponCode, coupon.getIsApplied(true));
+                $('#discount-code').val(couponCode);
+                couponAppliedPopup = couponCode;
+                popup.closeModal();
+            }
+        },
     });
 });
