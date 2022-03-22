@@ -1,0 +1,16 @@
+{
+    "sales_order_aggregated_created": {
+        "column": {
+            "atv": true,
+            "discount_rate": true,
+            "sku_value": true
+        }
+    },
+    "sales_order_aggregated_updated": {
+        "column": {
+            "atv": true,
+            "discount_rate": true,
+            "sku_value": true
+        }
+    }
+}
