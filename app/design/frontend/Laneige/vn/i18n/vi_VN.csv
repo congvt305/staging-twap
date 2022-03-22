@@ -120,7 +120,7 @@ Events,Sự kiện
 "or call <a href=""tel:%store_phone"">%store_phone</a>","hoặc gọi điện thoại đến <a href=""tel:%store_phone"">%store_phone</a>"
 "Customer Service Centre Service Hours <span class=""no-link"">%store_hours</span>.","Thời gian dịch vụ trung tâm dịch vụ khách hàng <span class=""no-link"">%store_hours</span>"
 "Shipped By","Người gửi hàng"
-"Tracking Number","Số theo dõi"
+"Tracking Number","Mã vận đơn"
 "Billing Info","Thông tin hoá đơn"
 "The requested qty is not available","Không có Qty yêu cầu"
 "This product is out of stock.","Sản phẩm này hết hàng."

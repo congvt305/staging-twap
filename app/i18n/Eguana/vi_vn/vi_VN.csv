@@ -1447,7 +1447,7 @@ href=""https://dashboard.rjmetrics.com/v2/magento/signup/"">Magento BI Essential
 "Voided capture.","Ghi lại phiếu khai khống.",module,Magento_Braintree
 "There was an error voiding the transaction: %1.","Đã có lỗi trong giao dịch: %1.",module,Magento_Braintree
 "Invoice","Hóa đơn bán lẻ",module,Magento_Braintree
-"Shipment","Lô hàng",module,Magento_Braintree
+"Shipment","Mã đơn hàng",module,Magento_Braintree
 "Invalid Customer ID provided","ID khách hàng không hợp lệ",module,Magento_Braintree
 "some error","có lỗi xảy ra",module,Magento_Braintree
 "a,b,c","a, b, c",module,Magento_Braintree
@@ -4819,7 +4819,7 @@ new products will be created. Use this step to customize images and price for yo
 "There was an error detecting Customer Group.","Đã có lỗi khi phát hiện các nhóm khách hàng.",module,Magento_Customer
 "Validate VAT Number","Xác nhận số thuế GTGT",module,Magento_Customer
 "Customer Login","ĐĂNG NHẬP",module,Magento_Customer
-"Create New Customer Account","Tạo mới tài khoản khách hàng",module,Magento_Customer
+"Create New Customer Account","Tạo tài khoản",module,Magento_Customer
 "Date of Birth","Ngày sinh",module,Magento_Customer
 "Bad request.","Yêu cầu bị lỗi.",module,Magento_Customer
 "This confirmation key is invalid or has expired.","Phím xác nhận là không hợp lệ hoặc đã hết hạn.",module,Magento_Customer
@@ -10229,7 +10229,7 @@ offered and the currency offered by the merchant is USD.",module,Magento_Paypal
 "The address failed to save. Verify the address and try again.","The address failed to save. Verify the address and try again.",module,Magento_Quote
 "The ""%1"" Cart doesn't contain products.","The ""%1"" Cart doesn't contain products.",module,Magento_Quote
 "The coupon code couldn't be applied. Verify the coupon code and try again.","The coupon code couldn't be applied. Verify the coupon code and try again.",module,Magento_Quote
-"The coupon code isn't valid. Verify the code and try again.","The coupon code isn't valid. Verify the code and try again.",module,Magento_Quote
+"The coupon code isn't valid. Verify the code and try again.","Mã giảm giá không đúng, xin vui lòng thử lại!",module,Magento_Quote
 "The coupon code couldn't be deleted. Verify the coupon code and try again.","The coupon code couldn't be deleted. Verify the coupon code and try again.",module,Magento_Quote
 "You don't have the correct permissions to assign the customer to the cart.","You don't have the correct permissions to assign the customer to the cart.",module,Magento_Quote
 "The shipping address is missing. Set the address and try again.","The shipping address is missing. Set the address and try again.",module,Magento_Quote
@@ -11919,8 +11919,8 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Information","Thông tin",module,Magento_Sales
 "Order Information","Thông tin đặt hàng",module,Magento_Sales
 "Order Invoices","Hoá đơn đơn hàng",module,Magento_Sales
-"Shipments","Lô hàng",module,Magento_Sales
-"Order Shipments","Các lô hàng của đơn hàng",module,Magento_Sales
+"Shipments","Mã đơn hàng",module,Magento_Sales
+"Order Shipments","Tình trạng đơn hàng",module,Magento_Sales
 "Transactions","Sổ giao dịch",module,Magento_Sales
 "Order View","Xem đơn hàng",module,Magento_Sales
 "Any","Bất kỳ",module,Magento_Sales
@@ -12386,7 +12386,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Items","Sản phẩm",module,Magento_Sales
 "Gift Message for this Order","Tin nhắn Quà tặng cho đơn đặt hàng này",module,Magento_Sales
 "Shipped By","Vận chuyển bằng",module,Magento_Sales
-"Tracking Number","Số theo dõi",module,Magento_Sales
+"Tracking Number","Mã vận đơn",module,Magento_Sales
 "Billing Last Name","Thanh toán tên cuối cùng",module,Magento_Sales
 "Find Order By","Tìm đơn hàng theo",module,Magento_Sales
 "ZIP Code","Mã bưu điện",module,Magento_Sales
@@ -12510,7 +12510,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Invoice Comment Email Template for Guest","Mẫu Email nhận xét Hoá đơn cho khách",module,Magento_Sales
 "Send Invoice Comment Email Copy To","Gửi Email sao chép nhận xét hoá đơn cho",module,Magento_Sales
 "Send Invoice Comments Email Copy Method","Gửi Email phương pháp sao chép nhận xét hoá đơn",module,Magento_Sales
-"Shipment","Lô hàng",module,Magento_Sales
+"Shipment","Mã đơn hàng",module,Magento_Sales
 "Shipment Email Sender","Lô hàng Email người gửi",module,Magento_Sales
 "Shipment Email Template","Lô hàng Email mẫu",module,Magento_Sales
 "Shipment Email Template for Guest","Mẫu email vận chuyển cho khách",module,Magento_Sales
@@ -12637,7 +12637,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Orders","Đơn hàng",module,Magento_SalesArchive
 "We have removed the order from the archive.","Chúng tôi đã gỡ bỏ đơn đặt hàng từ các kho lưu trữ.",module,Magento_SalesArchive
 "Please specify the order ID to be removed from archive.","Hãy chỉ định ID đơn đặt hàng để được gỡ bỏ từ kho lưu trữ.",module,Magento_SalesArchive
-"Shipments","Lô hàng",module,Magento_SalesArchive
+"Shipments","Mã đơn hàng",module,Magento_SalesArchive
 "There are %1 orders in this archive. All of them will be moved to the regular table after the archive is disabled.","Có %1 đơn đặt hàng trong kho lưu trữ này. Tất cả sẽ được chuyển đến bảng thường xuyên sau khi các kho lưu trữ bị vô hiệu hóa.",module,Magento_SalesArchive
 "Archive","Lưu trữ",module,Magento_SalesArchive
 "Restore from Archive","Khôi phục từ kho lưu trữ",module,Magento_SalesArchive
@@ -12696,7 +12696,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Order #","Đơn hàng #",module,Magento_SalesArchive
 "Amount","Số lượng",module,Magento_SalesArchive
 "PDF Shipments","Các lô hàng PDF",module,Magento_SalesArchive
-"Shipment","Lô hàng",module,Magento_SalesArchive
+"Shipment","Mã đơn hàng",module,Magento_SalesArchive
 "Ship Date","Ngày vận chuyển",module,Magento_SalesArchive
 "Total Quantity","Tổng số Số lượng",module,Magento_SalesArchive
 "Go to Archive","Đi đến lưu trữ",module,Magento_SalesArchive
@@ -13475,7 +13475,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Cannot add new comment.","Không thể bình luận.",module,Magento_Shipping
 "Please specify a carrier.","Hãy chỉ ra một tàu sân bay.",module,Magento_Shipping
 "Please enter a tracking number.","Vui lòng nhập một số theo dõi.",module,Magento_Shipping
-"Shipments","Lô hàng",module,Magento_Shipping
+"Shipments","Mã đơn hàng",module,Magento_Shipping
 "We can't initialize shipment for adding tracking number.","Chúng tôi không thể khởi tạo thêm các các lô hàng để thêm các số theo dõi.",module,Magento_Shipping
 "Cannot add tracking number.","Không thể thêm số theo dõi.",module,Magento_Shipping
 "You created the shipping label.","Bạn đã tạo ra một nhãn vận chuyển.",module,Magento_Shipping
@@ -13581,18 +13581,18 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Track Order","Theo dõi các đơn đặt hàng",module,Magento_Shipping
 "No shipping information available","Không có thông tin vận chuyển",module,Magento_Shipping
 "Shipping and Tracking Information","Vận chuyển và theo dõi thông tin",module,Magento_Shipping
-"Track this shipment","Theo dõi lô hàng này",module,Magento_Shipping
+"Track this shipment","Kiểm tra trạng thái đơn",module,Magento_Shipping
 "Items Shipped","Hàng vận chuyển",module,Magento_Shipping
 "Order Total","Tổng đơn đặt hàng",module,Magento_Shipping
 "Shipment History","Lịch sử vận chuyển",module,Magento_Shipping
 "Qty Shipped","Số lượng đã giao hàng",module,Magento_Shipping
 "Print All Shipments","In tất cả các vận chuyển",module,Magento_Shipping
 "Shipment #","Lô hàng #",module,Magento_Shipping
-"Print Shipment","In lô hàng",module,Magento_Shipping
-"Tracking Number(s):","Số Theo dõi:",module,Magento_Shipping
+"Print Shipment","In đơn hàng",module,Magento_Shipping
+"Tracking Number(s):","Mã vận đơn:",module,Magento_Shipping
 "SKU","MÃ SẢN PHẨM",module,Magento_Shipping
 "Order tracking","Thứ tự theo dõi",module,Magento_Shipping
-"Tracking Number:","Số theo dõi:",module,Magento_Shipping
+"Tracking Number:","Mã vận đơn:",module,Magento_Shipping
 "Carrier:","Đơn vị vận chuyển:",module,Magento_Shipping
 "Error:","Lỗi:",module,Magento_Shipping
 "Tracking information is currently not available. Please ","Thông tin Theo dõi là hiện nay không có sẵn. Vui lòng ",module,Magento_Shipping
@@ -13600,7 +13600,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 " for more information or "," để biết thêm thông tin hoặc ",module,Magento_Shipping
 "email us at ","gửi email cho chúng tôi tại ",module,Magento_Shipping
 "Info:","Thông tin:",module,Magento_Shipping
-"Track:","Theo dõi:",module,Magento_Shipping
+"Track:","Tra cứu trạng thái đơn:",module,Magento_Shipping
 ". ':'",". ':'",module,Magento_Shipping
 "Delivered on:","Gửi vào:",module,Magento_Shipping
 "N/A","Không xác định",module,Magento_Shipping
