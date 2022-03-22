@@ -97,6 +97,7 @@ define([
          * Coupon code application when turn on coupon popup
          */
         applyPopup: function() {
+            couponAppliedPopup = $('#discount-code').val();
             setCouponCodeAction(couponCode(), isApplied);
         },
 
@@ -107,6 +108,8 @@ define([
             if (this.validate()) {
                 couponCode('');
                 cancelCouponAction(isApplied);
+                couponAppliedPopup = '';
+                $('#discount-code').val('');
             }
         },
 
@@ -166,7 +169,7 @@ define([
          */
 
         applyCouponPopup: function(data, event) {
-            couponCode = event.target.id;
+            var couponCode = event.target.id;
             if(couponCode == couponAppliedPopup) {
                 cancelCouponAction(coupon.getIsApplied(false));
                 couponAppliedPopup = '';
