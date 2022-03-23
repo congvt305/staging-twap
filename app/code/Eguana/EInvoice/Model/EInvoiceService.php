@@ -24,6 +24,11 @@ class EInvoiceService
     protected $scopeConfig;
 
     /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * @param \Magento\Sales\Model\OrderFactory $orderFactory
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue
@@ -31,11 +36,13 @@ class EInvoiceService
     public function __construct(
         \Magento\Sales\Model\OrderFactory $orderFactory,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue
+        \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue,
+        \Psr\Log\LoggerInterface $logger
     ) {
         $this->orderFactory = $orderFactory;
         $this->scopeConfig = $scopeConfig;
         $this->ECPayInvoiceCheckMacValue = $ECPayInvoiceCheckMacValue;
+        $this->logger = $logger;
     }
 
     /**
@@ -79,7 +86,12 @@ class EInvoiceService
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $sSend_Info);
+        $this->logger->log('info', 'QUERY EINVOICE INFO', ['order_increment_id' => $relateNumber]);
+        $this->logger->log('info', 'API URL: ' . $ServiceURL);
+        $this->logger->log('info', 'REQUEST DATA: ' . json_encode($sSend_Info),
+            ['order_increment_id' => $relateNumber]);
         $rs = curl_exec($ch);
+        $this->logger->log('info', 'RESPONSE DATA: ' . $rs, ['order_increment_id' => $relateNumber]);
         parse_str($rs, $output);
         return isset($output['RtnCode']) && $output['RtnCode'] == 1;
     }
@@ -93,7 +105,7 @@ class EInvoiceService
         if ($this->scopeConfig->getValue('eguana_einvoice/ecpay_einvoice_issue/ecpay_query_test_flag', 'store', $storeId)) {
             return $this->scopeConfig->getValue('eguana_einvoice/ecpay_einvoice_issue/ecpay_query_stage_url', 'store', $storeId);
         } else {
-            $this->scopeConfig->getValue('eguana_einvoice/ecpay_einvoice_issue/ecpay_query_production_url', 'store', $storeId);
+            return $this->scopeConfig->getValue('eguana_einvoice/ecpay_einvoice_issue/ecpay_query_production_url', 'store', $storeId);
         }
     }
 
