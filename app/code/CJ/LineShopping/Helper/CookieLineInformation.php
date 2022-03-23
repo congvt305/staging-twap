@@ -13,7 +13,9 @@ class CookieLineInformation
     const UTM_INFO_LIST = [
         'utm_campaign',
         'utm_source',
-        'utm_medium'
+        'utm_medium',
+        'utm_content',
+        'utm_term'
     ];
     const COOKIE_LIFETIME = 24;
 
