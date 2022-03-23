@@ -274,23 +274,23 @@ class SaveSuccess implements ObserverInterface
                 $baCode = $this->POSSystem->checkBACodePrefix(
                     $customer->getCustomAttribute('ba_code')->getValue()
                 );
-
-                $parameters['empID'] = $baCode;
-            } else {
-                $parameters['empID'] = '';
-            }
-            if ($customer->getCustomAttribute('call_subscription_status')) {
-                $parameters['callYN'] = $customer->getCustomAttribute('call_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-            } else {
-                $parameters['callYN'] = 'N';
-            }
-            if ($customer->getCustomAttribute('dm_subscription_status')) {
-                $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-            } else {
-                $parameters['dmYN'] = '';
-            }
-            $defaultBillingAddressId = $customer->getDefaultBilling();
-            $customerData = $this->request->getParams();
+            $parameters['empID'] = $baCode;
+        } else {
+            $parameters['empID'] = '';
+        }
+        if ($customer->getCustomAttribute('call_subscription_status')) {
+            $parameters['callYN'] = $customer->getCustomAttribute('call_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+        } else {
+            $parameters['callYN'] = 'N';
+        }
+        $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status') && $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+        if ($customer->getCustomAttribute('dm_subscription_status')) {
+            $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+        } else {
+            $parameters['dmYN'] = '';
+        }
+        $defaultBillingAddressId = $customer->getDefaultBilling();
+        $customerData = $this->request->getParams();
             if (isset($customerData['dm_zipcode']) && !$defaultBillingAddressId) {
                 $parameters['homeAddr1'] = $customerData['dm_detailed_address'];
                 $parameters['homeZip'] = $customerData['dm_zipcode'];
@@ -336,7 +336,7 @@ class SaveSuccess implements ObserverInterface
             $parameters['statusCD'] = '01';
 
             return $parameters;
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $this->logger->addExceptionMessage($exception->getMessage());
             $this->logger->addExceptionMessage('Fail to get API Parameter: ' . json_encode($parameters) . 'Customer Data: ' . json_encode($customerData));
         }
