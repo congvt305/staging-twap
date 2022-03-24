@@ -19,6 +19,7 @@ class Config
     const SENDER_EMAIL_XML_PATH = "eguana_einvoice/ecpay_einvoice_issue/sender_email";
     const RECEIVER_EMAIL_XML_PATH = "eguana_einvoice/ecpay_einvoice_issue/receiver_email";
     const DAYS_LIMIT_XML_PATH = "eguana_einvoice/days_limit_when_get_orders/set_days";
+    const ENABLED_EMAIL_NOTIFICATION = 'eguana_einvoice/ecpay_einvoice_issue/enabled_email_notification';
 
     /**
      * @var ScopeConfigInterface
@@ -90,5 +91,14 @@ class Config
     public function getDaysLimit($storeId)
     {
         return $this->getValue(self::DAYS_LIMIT_XML_PATH, "store", $storeId);
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+    public function isNotificationEmailEnabled($storeId)
+    {
+        return $this->getValue(self::ENABLED_EMAIL_NOTIFICATION, "store", $storeId);
     }
 }
