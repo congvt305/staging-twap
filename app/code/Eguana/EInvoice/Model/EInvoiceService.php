@@ -9,11 +9,6 @@ namespace Eguana\EInvoice\Model;
 class EInvoiceService
 {
     /**
-     * @var \Magento\Sales\Model\OrderFactory
-     */
-    protected $orderFactory;
-
-    /**
      * @var \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue
      */
     protected $ECPayInvoiceCheckMacValue;
@@ -29,17 +24,29 @@ class EInvoiceService
     protected $logger;
 
     /**
-     * @param \Magento\Sales\Model\OrderFactory $orderFactory
+     * @var OrderRepositoryInterface
+     */
+    protected $orderRepository;
+
+    const ECPAY_QUERY_TEST_FLAG = 'ecpay_query_test_flag';
+
+    const ECPAY_QUERY_STAGE_URL = 'ecpay_query_stage_url';
+
+    const ECPAY_QUERY_PRODUCTION_URL = 'ecpay_query_production_url';
+
+    /**
+     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
-        \Magento\Sales\Model\OrderFactory $orderFactory,
+        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue,
         \Psr\Log\LoggerInterface $logger
     ) {
-        $this->orderFactory = $orderFactory;
+        $this->orderRepository = $orderRepository;
         $this->scopeConfig = $scopeConfig;
         $this->ECPayInvoiceCheckMacValue = $ECPayInvoiceCheckMacValue;
         $this->logger = $logger;
@@ -54,15 +61,10 @@ class EInvoiceService
      */
     public function eInvoiceIssued($orderId): bool
     {
-        $order = $this->orderFactory->create()->load($orderId);
+        $order = $this->orderRepository->get($orderId);
         $relateNumber = $order->getIncrementId();
         $storeId = $order->getStoreId();
-        $timestamp = time();
         $merchantId = $this->getEcpayConfigFromStore('merchant_id', $storeId);
-        $ch = curl_init();
-        if (false === $ch) {
-            throw new \Exception('curl failed to initialize');
-        }
         $checkMacValue = $this->ECPayInvoiceCheckMacValue->generate(
             [
                 'TimeStamp' => time(),
@@ -72,27 +74,31 @@ class EInvoiceService
             $this->getEcpayConfigFromStore('invoice/ecpay_invoice_hash_key', $storeId),
             $this->getEcpayConfigFromStore('invoice/ecpay_invoice_hash_iv', $storeId)
         );
-        $sSend_Info = [
+        $requestData = [
             'TimeStamp' => time(),
             'MerchantID' => $merchantId,
             'RelateNumber' => $relateNumber,
             'CheckMacValue' => $checkMacValue
         ];
-        $sSend_Info = http_build_query($sSend_Info);
-        $ServiceURL = $this->getInvoiceApiUrl($storeId) . 'Issue';
+        $requestData = http_build_query($requestData);
+        $ServiceURL = $this->getQueryEInvoiceApiUrl($storeId);
+        $ch = curl_init();
+        if (false === $ch) {
+            throw new \Exception('curl failed to initialize');
+        }
         curl_setopt($ch, CURLOPT_URL, $ServiceURL);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $sSend_Info);
-        $this->logger->log('info', 'QUERY EINVOICE INFO', ['order_increment_id' => $relateNumber]);
-        $this->logger->log('info', 'API URL: ' . $ServiceURL);
-        $this->logger->log('info', 'REQUEST DATA: ' . json_encode($sSend_Info),
-            ['order_increment_id' => $relateNumber]);
-        $rs = curl_exec($ch);
-        $this->logger->log('info', 'RESPONSE DATA: ' . $rs, ['order_increment_id' => $relateNumber]);
-        parse_str($rs, $output);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $requestData);
+        $result = curl_exec($ch);
+        $context = ['order_increment_id' => $relateNumber];
+        $this->logger->log('info', 'QUERY EINVOICE INFO', $context);
+        $this->logger->log('info', 'API URL: ' . $ServiceURL, $context);
+        $this->logger->log('info', 'REQUEST DATA: ' . json_encode($requestData), $context);
+        $this->logger->log('info', 'RESPONSE DATA: ' . $result, $context);
+        parse_str($result, $output);
         return isset($output['RtnCode']) && $output['RtnCode'] == 1;
     }
 
@@ -100,12 +106,13 @@ class EInvoiceService
      * @param int $storeId
      * @return string
      */
-    protected function getInvoiceApiUrl($storeId)
+    protected function getQueryEInvoiceApiUrl($storeId)
     {
-        if ($this->scopeConfig->getValue('eguana_einvoice/ecpay_einvoice_issue/ecpay_query_test_flag', 'store', $storeId)) {
-            return $this->scopeConfig->getValue('eguana_einvoice/ecpay_einvoice_issue/ecpay_query_stage_url', 'store', $storeId);
+        $testFlag = $this->scopeConfig->getValue(self::ECPAY_QUERY_TEST_FLAG, 'store', $storeId);
+        if ($testFlag) {
+            return $this->scopeConfig->getValue(self::ECPAY_QUERY_STAGE_URL, 'store', $storeId) . 'Issue';
         } else {
-            return $this->scopeConfig->getValue('eguana_einvoice/ecpay_einvoice_issue/ecpay_query_production_url', 'store', $storeId);
+            return $this->scopeConfig->getValue(self::ECPAY_QUERY_PRODUCTION_URL, 'store', $storeId) . 'Issue';
         }
     }
 

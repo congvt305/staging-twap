@@ -39,6 +39,11 @@ class EInvoiceIssue
     protected $einvoiceService;
 
     /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * EInvoiceIssue constructor.
      * @param \Eguana\EInvoice\Model\Order $order
      * @param \Ecpay\Ecpaypayment\Model\Payment $ecpayPaymentModel
@@ -52,9 +57,11 @@ class EInvoiceIssue
         \Eguana\EInvoice\Model\Source\Config $config,
         \Magento\Store\Model\StoreManagerInterface $storeManagerInterface,
         \Eguana\EInvoice\Model\Email $helperEmail,
-        \Eguana\EInvoice\Model\EInvoiceService $einvoiceService
+        \Eguana\EInvoice\Model\EInvoiceService $einvoiceService,
+        \Psr\Log\LoggerInterface $logger
     ) {
         $this->order = $order;
+        $this->logger = $logger;
         $this->ecpayPaymentModel = $ecpayPaymentModel;
         $this->config = $config;
         $this->storeManagerInterface = $storeManagerInterface;
@@ -94,7 +101,11 @@ class EInvoiceIssue
                             }
                         }
                     } catch (\Exception $e) {
-                        $this->helperEmail->sendEmail($order, $e->getMessage());
+                        //$this->helperEmail->sendEmail($order, $e->getMessage());
+                        $this->logger->log('info', 'EINVOICE EXCEPTION',
+                            ['order_increment_id' => $order->getIncrementId()]);
+                        $this->logger->log('info',
+                            'ERROR TRACE: ' . $e->getTraceAsString()),  ['order_increment_id' => $order->getIncrementId()];
                     }
                 }
             }
