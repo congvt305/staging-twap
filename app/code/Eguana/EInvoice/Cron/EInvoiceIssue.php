@@ -104,8 +104,7 @@ class EInvoiceIssue
                         //$this->helperEmail->sendEmail($order, $e->getMessage());
                         $this->logger->log('info', 'EINVOICE EXCEPTION',
                             ['order_increment_id' => $order->getIncrementId()]);
-                        $this->logger->log('info',
-                            'ERROR TRACE: ' . $e->getTraceAsString()),  ['order_increment_id' => $order->getIncrementId()];
+                        $this->logger->log('info','ERROR TRACE: ' . $e->getTraceAsString(),  ['order_increment_id' => $order->getIncrementId()]);
                     }
                 }
             }
