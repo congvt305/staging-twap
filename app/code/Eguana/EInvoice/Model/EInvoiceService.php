@@ -28,11 +28,11 @@ class EInvoiceService
      */
     protected $orderRepository;
 
-    const ECPAY_QUERY_TEST_FLAG = 'ecpay_query_test_flag';
+    const ECPAY_QUERY_TEST_FLAG = 'eguana_einvoice/ecpay_einvoice_issue/ecpay_query_test_flag';
 
-    const ECPAY_QUERY_STAGE_URL = 'ecpay_query_stage_url';
+    const ECPAY_QUERY_STAGE_URL = 'eguana_einvoice/ecpay_einvoice_issue/ecpay_query_stage_url';
 
-    const ECPAY_QUERY_PRODUCTION_URL = 'ecpay_query_production_url';
+    const ECPAY_QUERY_PRODUCTION_URL = 'eguana_einvoice/ecpay_einvoice_issue/ecpay_query_production_url';
 
     /**
      * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
@@ -108,11 +108,12 @@ class EInvoiceService
      */
     protected function getQueryEInvoiceApiUrl($storeId)
     {
-        $testFlag = $this->scopeConfig->getValue(self::ECPAY_QUERY_TEST_FLAG, 'store', $storeId);
+        $testFlag = $this->scopeConfig->getValue(self::ECPAY_QUERY_TEST_FLAG, 'websites', $storeId);
+
         if ($testFlag) {
-            return $this->scopeConfig->getValue(self::ECPAY_QUERY_STAGE_URL, 'store', $storeId) . 'Issue';
+            return $this->scopeConfig->getValue(self::ECPAY_QUERY_STAGE_URL, 'default') . 'Issue';
         } else {
-            return $this->scopeConfig->getValue(self::ECPAY_QUERY_PRODUCTION_URL, 'store', $storeId) . 'Issue';
+            return $this->scopeConfig->getValue(self::ECPAY_QUERY_PRODUCTION_URL, 'default') . 'Issue';
         }
     }
 
