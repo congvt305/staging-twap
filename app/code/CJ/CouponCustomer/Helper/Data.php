@@ -82,7 +82,8 @@ class Data extends AbstractHelper
         $websiteId = $customer->getWebsiteId();
         $rules->addWebsiteGroupDateFilter($websiteId, $customer->getGroupId())
             ->addFieldToFilter('coupon_type', \Magento\SalesRule\Model\Rule::COUPON_TYPE_SPECIFIC)
-            ->addFieldToFilter('is_active', 1);
+            ->addFieldToFilter('is_active', 1)
+            ->addFieldToFilter('use_auto_generation', 0);
         return $rules;
     }
 
