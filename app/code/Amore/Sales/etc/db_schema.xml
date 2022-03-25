@@ -7,6 +7,12 @@
                 default="0" comment="Discount Rate"/>
         <column xsi:type="decimal" name="sku_value" scale="4" precision="12" unsigned="false" nullable="false"
                 default="0" comment="SKU Value"/>
+        <column xsi:type="decimal" name="net_sales" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Net Sales"/>
+        <column xsi:type="decimal" name="total_income_amount_before_discount" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Total Income Amount Before Discount"/>
+        <column xsi:type="decimal" name="total_refunded_amount_actual" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Total Refund Amount Actual"/>
     </table>
     <table name="sales_order_aggregated_updated" resource="sales" engine="innodb"
            comment="Sales Order Aggregated Created">
@@ -16,5 +22,11 @@
                 default="0" comment="Discount Rate"/>
         <column xsi:type="decimal" name="sku_value" scale="4" precision="12" unsigned="false" nullable="false"
                 default="0" comment="SKU Value"/>
+        <column xsi:type="decimal" name="net_sales" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Net Sales"/>
+        <column xsi:type="decimal" name="total_income_amount_before_discount" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Total Income Amount Before Discount"/>
+        <column xsi:type="decimal" name="total_refunded_amount_actual" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Total Refund Amount Actual"/>
     </table>
 </schema>
