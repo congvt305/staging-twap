@@ -195,11 +195,54 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                         ),
                         0
                     )
-                )
+                ),
+                'net_sales' => new \Zend_Db_Expr(
+                    $connection->getIfNullSql(
+                        sprintf(
+                            'SUM((%s - %s) * %s) - %s',
+                            $connection->getIfNullSql('o.base_grand_total', 0),
+                            $connection->getIfNullSql('o.base_total_canceled', 0),
+                            $connection->getIfNullSql('o.base_to_global_rate', 0),
+                            new \Zend_Db_Expr('SUM(IFNULL(orma.total_refunded_amount_actual, 0))')
+                        ),
+                        0
+                    )
+                ),
+                'total_income_amount_before_discount' => new \Zend_Db_Expr(
+                    $connection->getIfNullSql(
+                        sprintf(
+                            'SUM((%s - %s) * %s) + SUM((ABS(%s) - %s) * %s)',
+                            $connection->getIfNullSql('o.base_grand_total', 0),
+                            $connection->getIfNullSql('o.base_total_canceled', 0),
+                            $connection->getIfNullSql('o.base_to_global_rate', 0),
+                            $connection->getIfNullSql('o.base_discount_amount', 0),
+                            $connection->getIfNullSql('o.base_discount_canceled', 0),
+                            $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        ),
+                        0
+                    )
+                ),
+                'total_refunded_amount_actual' => new \Zend_Db_Expr('SUM(IFNULL(orma.total_refunded_amount_actual, 0))')
             ];
 
             $select = $connection->select();
             $selectOrderItem = $connection->select();
+            $selectRmaData = $connection->select();
+            $selectRmaData->from(
+                ['so' => $this->getTable('sales_order')],
+                [
+                    'so.entity_id',
+                    'total_refunded_amount_actual' => new \Zend_Db_Expr("SUM(IFNULL(so.base_total_refunded, 0) * IFNULL(so.base_to_global_rate, 0))")
+                ]
+            )->join(
+                ['rma' => $this->getTable('magento_rma')],
+                'rma.order_id = so.entity_id',
+                []
+            )-> where(
+                "rma.status = 'processed_closed'"
+            )->group(
+                'so.entity_id'
+            );
 
             $qtyCanceledExpr = $connection->getIfNullSql('qty_canceled', 0);
             $cols = [
@@ -222,6 +265,10 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
             )->join(
                 ['oi' => $selectOrderItem],
                 'oi.order_id = o.entity_id',
+                []
+            )->joinLeft(
+                ['orma' => $selectRmaData],
+                'orma.entity_id = o.entity_id',
                 []
             )->where(
                 'o.state NOT IN (?)',
