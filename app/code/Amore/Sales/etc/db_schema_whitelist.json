@@ -3,14 +3,20 @@
         "column": {
             "atv": true,
             "discount_rate": true,
-            "sku_value": true
+            "sku_value": true,
+            "net_sales": true,
+            "total_income_amount_before_discount": true,
+            "total_refunded_amount_actual": true
         }
     },
     "sales_order_aggregated_updated": {
         "column": {
             "atv": true,
             "discount_rate": true,
-            "sku_value": true
+            "sku_value": true,
+            "net_sales": true,
+            "total_income_amount_before_discount": true,
+            "total_refunded_amount_actual": true
         }
     }
 }
