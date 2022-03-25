@@ -12,8 +12,9 @@ define([
     'Magento_SalesRule/js/action/cancel-coupon',
     'Magento_SalesRule/js/model/coupon',
     'Magento_Ui/js/modal/modal',
-    'text!CJ_CouponCustomer/template/modal/modal-popup.html'
-], function ($, ko, Component, quote, setCouponCodeAction, cancelCouponAction, coupon, modal, popupTpl ) {
+    'text!CJ_CouponCustomer/template/modal/modal-popup.html',
+    'mage/translate'
+], function ($, ko, Component, quote, setCouponCodeAction, cancelCouponAction, coupon, modal, popupTpl, $t ) {
     'use strict';
 
     var totals = quote.getTotals(),
@@ -40,7 +41,7 @@ define([
     var options = {
         type: 'popup',
         responsive: true,
-        title: $.mage.__('Coupon List'),
+        title: $t('Coupon List'),
         innerScroll: true,
         popupTpl: popupTpl,
         buttons: [{
@@ -156,10 +157,10 @@ define([
             this.createPopupWebsite();
             // change text to cancel for coupon applied
             $('.discount-card-button').removeClass('applied-button');
-            $('.discount-card-button').text('Apply');
+            $('.discount-card-button').text($t('Apply'));
 
             var couponCodeApplied = $('#discount-code').val();
-            $('#' + couponCodeApplied).text('Cancel');
+            $('#' + couponCodeApplied).text($t('Cancel'));
             $('#' + couponCodeApplied).addClass('applied-button');
             popup.openModal();
         },
