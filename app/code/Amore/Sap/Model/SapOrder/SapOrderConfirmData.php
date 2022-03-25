@@ -626,7 +626,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
                         $sku = str_replace($skuPrefix, '', $bundleChild->getSku());
                         $item = $this->searchOrderItem($orderAllItems, $bundleChild->getSku(), $itemId);
-
+                        $itemSaleAmount = $itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem));
                         $orderItemData[] = [
                             'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                             'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -638,10 +638,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemMeins' => $this->getMeins($meins),
                             'itemNsamt' => $itemSubtotal,
                             'itemDcamt' => $itemTotalDiscount,
-                            'itemSlamt' => $itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem)),
+                            'itemSlamt' => $itemSaleAmount,
                             'itemMiamt' => abs(round($mileagePerItem)),
                             // 상품이 무상제공인 경우 Y 아니면 N
-                            'itemFgflg' => $product->getPrice() == 0 ? 'Y' : 'N',
+                            'itemFgflg' => $itemSaleAmount == 0 ? 'Y' : 'N',
                             'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                             'itemAuart' => self::NORMAL_ORDER,
                             'itemAugru' => '',
