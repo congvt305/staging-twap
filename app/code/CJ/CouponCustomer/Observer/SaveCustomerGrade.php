@@ -2,10 +2,12 @@
 
 namespace CJ\CouponCustomer\Observer;
 
-use CJ\CouponCustomer\Logger\Logger;
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
 use Magento\Framework\Event\ObserverInterface;
+use CJ\CouponCustomer\Logger\Logger;
 use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Model\Customer;
+use Magento\Customer\Model\ResourceModel\CustomerFactory;
 
 class SaveCustomerGrade implements ObserverInterface
 {
@@ -23,6 +25,10 @@ class SaveCustomerGrade implements ObserverInterface
      */
     protected $customerPointsSearch;
 
+    protected $customer;
+
+    protected $customerFactory;
+
     /**
      * const CUSTOMER_GRADE
      */
@@ -36,33 +42,35 @@ class SaveCustomerGrade implements ObserverInterface
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
         CustomerPointsSearch        $customerPointsSearch,
-        Logger                      $logger){
+        Logger                      $logger,
+        Customer $customer,
+        CustomerFactory $customerFactory
+    ){
         $this->customerRepository = $customerRepository;
         $this->customerPointsSearch = $customerPointsSearch;
         $this->logger = $logger;
-
+        $this->customer = $customer;
+        $this->customerFactory = $customerFactory;
     }
-
-    /**
-     * @param $observer
-     * @return void
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Magento\Framework\Exception\State\InputMismatchException
-     */
-    public function execute($observer)
+    public function execute(\Magento\Framework\Event\Observer $observer)
     {
+        $customerData = $observer->getEvent()->getCustomer();
         try {
-            /** @var \Magento\Customer\Model\Data\Customer $customer */
-            $customer = $observer->getEvent()->getCustomer();
-            $customerRepository = $this->customerRepository->getById($customer->getId());
-            $grade = $this->getCustomerGrade($customer->getId(), $customer->getWebsiteId());
-            $customerRepository->setCustomAttribute(self::POS_CUSTOMER_GRADE, $grade);
-            $this->customerRepository->save($customerRepository);
-        } catch (\Exception $exception) {
+            if (isset($customerData)) {
+                $customerId = $customerData->getId();
+                $customer = $this->customer->load($customerId);
+                $posCustomerGroup = $customer->getData(self::POS_CUSTOMER_GRADE);
+                $grade = $this->getCustomerGrade($customer->getId(), $customer->getWebsiteId());
+                //$grade = 'Thanh Dat Group';
+                if($grade && $grade != $posCustomerGroup) {
+                    $customer->setData(self::POS_CUSTOMER_GRADE, $grade);
+                    $customerResource = $this->customerFactory->create();
+                    $customerResource->save($customer);
+                }
+            }
+        }catch (\Exception $exception) {
             $this->logger->info("FAIL TO SAVE POS CUSTOMER GRADE WHEN CUSTOMER LOGIN:" . $exception->getMessage());
-            $this->logger->info("Customer Id:" . $customer->getId());
+            $this->logger->info("Customer Id:" . $customerData->getId());
         }
     }
 
@@ -86,4 +94,5 @@ class SaveCustomerGrade implements ObserverInterface
 
         return $grade;
     }
+
 }

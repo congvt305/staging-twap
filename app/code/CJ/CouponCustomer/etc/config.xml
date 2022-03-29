@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <coupon_wallet>
+            <cron>
+                <active>1</active>
+                <cron_expr>00 03 * * * </cron_expr>
+            </cron>
+        </coupon_wallet>
+    </default>
+</config>

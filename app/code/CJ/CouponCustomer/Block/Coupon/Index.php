@@ -9,6 +9,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Theme\Block\Html\Header\Logo;
 use Magento\Theme\Block\Html\Pager;
 use \Magento\Directory\Model\Currency;
+use CJ\CouponCustomer\Helper\Data;
 
 class Index extends Template
 {
@@ -36,6 +37,16 @@ class Index extends Template
      */
     private $currency;
 
+    /**
+     * @var
+     */
+    protected $helperData;
+
+    /**
+     * const pos customer grade
+     */
+    const POS_CUSTOMER_GRADE = 'pos_customer_grade';
+
 
     /**
      * @param Template\Context $context
@@ -52,7 +63,8 @@ class Index extends Template
         Session               $customerSession,
         StoreManagerInterface $storeManager,
         Logo                  $logo,
-        Currency $currency
+        Currency $currency,
+        Data $helperData
 
     ){
         parent::__construct($context, $data);
@@ -61,6 +73,7 @@ class Index extends Template
         $this->storeManager = $storeManager;
         $this->logo = $logo;
         $this->currency = $currency;
+        $this->helperData = $helperData;
     }
 
     /**
@@ -70,12 +83,15 @@ class Index extends Template
     {
         $rules = $this->ruleCollection->create();
         $customer = $this->getCustomer();
+        $posCustomerGroup = $customer->getData(self::POS_CUSTOMER_GRADE);
+        $posCustomerGroupId = $this->helperData->getPOSCustomerGroupIdByName($posCustomerGroup);
         $websiteId = $customer->getWebsiteId();
         $page = ($this->getRequest()->getParam('p')) ? $this->getRequest()->getParam('p') : 1;
         $pageSize = ($this->getRequest()->getParam('limit')) ? $this->getRequest()->getParam('limit') : 6;
-        $rules->addWebsiteGroupDateFilter($websiteId, $customer->getGroupId())
+        $rules->addWebsiteGroupDateFilter($websiteId, $posCustomerGroupId)
             ->addFieldToFilter('coupon_type', \Magento\SalesRule\Model\Rule::COUPON_TYPE_SPECIFIC)
             ->addFieldToFilter('is_active', 1)
+            ->addFieldToFilter('use_auto_generation', 0)
             ->setPageSize($pageSize)
             ->setCurPage($page);
         return $rules;

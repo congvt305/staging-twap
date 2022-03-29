@@ -8,6 +8,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\View\Element\Template;
 use Magento\SalesRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollection;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Customer\Model\GroupFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Theme\Block\Html\Header\Logo;
 use \Magento\Directory\Model\Currency;
@@ -15,6 +16,13 @@ use \Magento\Directory\Model\Currency;
 
 class Data extends AbstractHelper
 {
+    /**
+     * xml path cron for creating new customer group from POS
+     */
+    const XML_PATH_CRON_JOB_CREATE_CUSTOMER_GROUP_ENABLE = 'coupon_wallet/cron/cron_expr';
+    /**
+     * xml path coupon list popup
+     */
     const XML_PATH_COUPON_LIST_POPUP_ENABLE = 'coupon_wallet/general/popup';
     /**
      * @var RuleCollection
@@ -45,6 +53,11 @@ class Data extends AbstractHelper
      */
     private $context;
 
+    /**
+     * @var GroupFactory
+     */
+    private $customerGroup;
+
 
     /**
      * @param Template\Context $context
@@ -60,7 +73,8 @@ class Data extends AbstractHelper
         Session               $customerSession,
         StoreManagerInterface $storeManager,
         Logo                  $logo,
-        Currency              $currency
+        Currency              $currency,
+        GroupFactory          $customerGroup
     )
     {
         parent::__construct($context);
@@ -69,6 +83,7 @@ class Data extends AbstractHelper
         $this->storeManager = $storeManager;
         $this->logo = $logo;
         $this->currency = $currency;
+        $this->customerGroup = $customerGroup;
     }
 
     /**
@@ -176,11 +191,21 @@ class Data extends AbstractHelper
     }
 
     /**
+     * is enabled crob job for creating customer group
+     * @return bool
+     */
+    public function isEnableCronjob()
+    {
+        return (bool)$this->scopeConfig->getValue(self::XML_PATH_CRON_JOB_CREATE_CUSTOMER_GROUP_ENABLE, ScopeInterface::SCOPE_WEBSITE);
+    }
+
+    /**
      * get current website code
      * @return int
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getCurrentWebsiteCode() {
+    public function getCurrentWebsiteCode()
+    {
         return $this->storeManager->getWebsite()->getCode();
     }
 
@@ -188,8 +213,42 @@ class Data extends AbstractHelper
      * check customer login
      * @return bool
      */
-    public function isCustomerLogin() {
+    public function isCustomerLogin()
+    {
         return $this->customerSession->isLoggedIn();
+    }
+
+    /**
+     * get POS customer group Id
+     * @param $name
+     * @return mixed
+     */
+    public function getPOSCustomerGroupIdByName($name)
+    {
+        $group = $this->customerGroup->create();
+        $groupCollection = $group->getCollection();
+        $groupCollection->addFieldToFilter('customer_group_code', $name);
+
+        return $groupCollection->getFirstItem()->getId();
+    }
+
+    public function getAllCustomerGroup()
+    {
+        $group = $this->customerGroup->create();
+        $groupCollection = $group->getCollection();
+        return $groupCollection->getItems();
+
+    }
+
+    public function isCreatedCustomerGroup($posCustomerGroup)
+    {
+        $customerGroups = $this->getAllCustomerGroup();
+        foreach ($customerGroups as $customerGroup) {
+            if($customerGroup->getData('customer_group_code') == $posCustomerGroup) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
