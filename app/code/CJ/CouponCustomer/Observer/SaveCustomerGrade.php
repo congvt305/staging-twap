@@ -54,16 +54,45 @@ class SaveCustomerGrade implements ObserverInterface
     }
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $customerObserver = $observer->getEvent()->getCustomer();
-        if(isset($customerObserver)) {
-            $customerId = $customerObserver->getId();
-            $customer = $this->customer->load($customerId);
-            $data = "posgrade";
-            $customerData = $customer->getDataModel();
-            $customerData->setCustomAttribute(self::POS_CUSTOMER_GRADE,$data);
-            $customer->updateData($customerData);
-            $customerResource = $this->customerFactory->create();
-            $customerResource->saveAttribute($customer, self::POS_CUSTOMER_GRADE);
+        $customerData = $observer->getEvent()->getCustomer();
+        try {
+            if (isset($customerData)) {
+                $customerId = $customerData->getId();
+                $customer = $this->customer->load($customerId);
+                $posCustomerGroup = $customer->getData(self::POS_CUSTOMER_GRADE);
+                $grade = $this->getCustomerGrade($customer->getId(), $customer->getWebsiteId());
+                //$grade = 'Thanh Dat Group';
+                if($grade && $grade != $posCustomerGroup) {
+                    $customer->setData(self::POS_CUSTOMER_GRADE, $grade);
+                    $customerResource = $this->customerFactory->create();
+                    $customerResource->save($customer);
+                }
+            }
+        }catch (\Exception $exception) {
+            $this->logger->info("FAIL TO SAVE POS CUSTOMER GRADE WHEN CUSTOMER LOGIN:" . $exception->getMessage());
+            $this->logger->info("Customer Id:" . $customerData->getId());
         }
     }
+
+    /**
+     * get Customer Points Data use API
+     * @param $customer
+     * @return array|mixed
+     */
+    private function getCustomerGrade($customerId, $websiteId)
+    {
+        $grade = null;
+        try {
+            $customerPointsInfo = $this->customerPointsSearch->getMemberSearchResult($customerId, $websiteId);
+            if (isset($customerPointsInfo['data']['cstmGradeNM']) && !empty($customerPointsInfo['data']['cstmGradeNM'])) {
+                $grade = $customerPointsInfo['data']['cstmGradeNM'];
+            }
+        } catch (\Exception $exception) {
+            $this->logger->info("FAIL TO GET POS CUSTOMER GRADE WHEN CUSTOMER LOGIN");
+            $this->logger->error($exception->getMessage());
+        }
+
+        return $grade;
+    }
+
 }
