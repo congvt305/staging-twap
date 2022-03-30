@@ -40,11 +40,11 @@ class Request extends BaseRequestAbstract
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function send(
-        string $url,
+        $url,
         $requestData,
         $websiteId,
-        string $scope = 'store',
-        string $type = 'confirm'
+        $scope = 'store',
+        $type = 'confirm'
     ): string
     {
         return parent::send($url, $requestData, $websiteId, $scope, $type);
