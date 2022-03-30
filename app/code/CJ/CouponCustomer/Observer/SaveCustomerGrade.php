@@ -8,6 +8,7 @@ use CJ\CouponCustomer\Logger\Logger;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\ResourceModel\CustomerFactory;
+use CJ\CouponCustomer\Helper\Data;
 
 class SaveCustomerGrade implements ObserverInterface
 {
@@ -29,6 +30,8 @@ class SaveCustomerGrade implements ObserverInterface
 
     protected $customerFactory;
 
+    protected $helperData;
+
     /**
      * const CUSTOMER_GRADE
      */
@@ -44,33 +47,38 @@ class SaveCustomerGrade implements ObserverInterface
         CustomerPointsSearch        $customerPointsSearch,
         Logger                      $logger,
         Customer $customer,
-        CustomerFactory $customerFactory
+        CustomerFactory $customerFactory,
+        Data $helperData
     ){
         $this->customerRepository = $customerRepository;
         $this->customerPointsSearch = $customerPointsSearch;
         $this->logger = $logger;
         $this->customer = $customer;
         $this->customerFactory = $customerFactory;
+        $this->helperData = $helperData;
     }
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $customerData = $observer->getEvent()->getCustomer();
-        try {
-            if (isset($customerData)) {
-                $customerId = $customerData->getId();
-                $customer = $this->customer->load($customerId);
-                $posCustomerGroup = $customer->getData(self::POS_CUSTOMER_GRADE);
-                $grade = $this->getCustomerGrade($customer->getId(), $customer->getWebsiteId());
-                //$grade = 'Thanh Dat Group';
-                if($grade && $grade != $posCustomerGroup) {
-                    $customer->setData(self::POS_CUSTOMER_GRADE, $grade);
-                    $customerResource = $this->customerFactory->create();
-                    $customerResource->save($customer);
+        $isEnableCouponList = $this->helperData->isEnableCouponListPopup();
+        if($isEnableCouponList) {
+            $customerData = $observer->getEvent()->getCustomer();
+            try {
+                if (isset($customerData)) {
+                    $customerId = $customerData->getId();
+                    $customer = $this->customer->load($customerId);
+                    $posCustomerGroup = $customer->getData(self::POS_CUSTOMER_GRADE);
+                    // $grade = $this->getCustomerGrade($customer->getId(), $customer->getWebsiteId());
+                    $grade = 'Thanh Dat Group';
+                    if ($grade && $grade != $posCustomerGroup) {
+                        $customer->setData(self::POS_CUSTOMER_GRADE, $grade);
+                        $customerResource = $this->customerFactory->create();
+                        $customerResource->save($customer);
+                    }
                 }
+            } catch (\Exception $exception) {
+                $this->logger->info("FAIL TO SAVE POS CUSTOMER GRADE WHEN CUSTOMER LOGIN:" . $exception->getMessage());
+                $this->logger->info("Customer Id:" . $customerData->getId());
             }
-        }catch (\Exception $exception) {
-            $this->logger->info("FAIL TO SAVE POS CUSTOMER GRADE WHEN CUSTOMER LOGIN:" . $exception->getMessage());
-            $this->logger->info("Customer Id:" . $customerData->getId());
         }
     }
 
