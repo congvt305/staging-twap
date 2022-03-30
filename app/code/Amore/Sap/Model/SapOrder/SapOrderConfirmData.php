@@ -196,7 +196,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             $incrementId = $sampleOrderData['odrno'];
 
             $sampleOrder = $this->getOrderInfo($incrementId);
- 	    if ($sampleOrder == null) {
+            if ($sampleOrder == null) {
                 $exception = new NoSuchEntityException(
                     __("Such order %1 does not exist. Check the data and try again", $incrementId)
                 );
@@ -488,7 +488,9 @@ class SapOrderConfirmData extends AbstractSapOrder
     }
 
     /**
-     * @param $incrementId
+     * Get order item data
+     *
+     * @param string $incrementId
      * @return mixed
      * @throws NoSuchEntityException
      * @throws \Exception
@@ -533,12 +535,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $orderItem->getRowTotalInclTax(),
                         $orderItem->getDiscountAmount(),
                         $mileageUsedAmount);
-                    $itemGrandTotal = $orderItem->getRowTotal()
-                        - $orderItem->getDiscountAmount()
-                        - $mileagePerItem;
-                    $itemGrandTotalInclTax = $orderItem->getRowTotalInclTax()
-                        - $orderItem->getDiscountAmount()
-                        - $mileagePerItem;
+
                     $itemSubtotal = abs(round($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered()));
                     $itemTotalDiscount = abs(round($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered())));
                     $itemSaleAmount = $itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem));
@@ -585,44 +582,36 @@ class SapOrderConfirmData extends AbstractSapOrder
                 } else {
                     /** @var \Magento\Catalog\Model\Product $bundleProduct */
                     $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
-                    $bundleChildren = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
                     $bundlePriceType = $bundleProduct->getPriceType();
 
-                    foreach ($bundleChildren as $bundleChild) {
+                    foreach ($orderItem->getChildrenItems() as $bundleChild) {
                         $itemId = $orderItem->getItemId();
-                        $bundleChildFromOrder = $this->getBundleChildFromOrder($itemId, $bundleChild->getSku());
                         if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
                             $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
                         } else {
-                            $bundleChildPrice = $bundleChildFromOrder->getOriginalPrice();
+                            $bundleChildPrice = $bundleChild->getOriginalPrice();
                         }
 
                         $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
                             round($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getDiscountAmount())) :
-                            round($bundleChildFromOrder->getDiscountAmount());
+                            round($bundleChild->getDiscountAmount());
                         $mileagePerItem = $this->mileageSpentRateByItem(
                             $orderTotal,
                             $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getRowTotalInclTax()),
                             $bundleChildDiscountAmount,
                             $mileageUsedAmount);
-                        $itemGrandTotal = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getRowTotal())
-                            - $bundleChildDiscountAmount
-                            - $mileagePerItem;
-                        $itemGrandTotalInclTax = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getRowTotalInclTax())
-                            - $bundleChildDiscountAmount
-                            - $mileagePerItem;
 
                         $product = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId());
                         $meins = $product->getData('meins');
+                        $qtyPerBundle = $bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered();
+                        $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $qtyPerBundle;
+                        $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $qtyPerBundle;
 
-                        $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $bundleChild->getQty();
-                        $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $bundleChild->getQty();
-
-                        $itemSubtotal = abs(round($bundleChildPrice * $bundleChildFromOrder->getQtyOrdered()));
+                        $itemSubtotal = abs(round($bundleChildPrice * $bundleChild->getQtyOrdered()));
                         $itemTotalDiscount = abs(round(
-                            $bundleChildDiscountAmount +
-                            (($product->getPrice() - $childPriceRatio) * $bundleChildFromOrder->getQtyOrdered()) +
-                            $catalogRuledPriceRatio * $bundleChildFromOrder->getQtyOrdered())
+                                $bundleChildDiscountAmount +
+                                (($product->getPrice() - $childPriceRatio) * $bundleChild->getQtyOrdered()) +
+                                $catalogRuledPriceRatio * $bundleChild->getQtyOrdered())
                         );
                         $itemTaxAmount = abs(round($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getTaxAmount())));
 
@@ -635,7 +624,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemOdrno' => $order->getIncrementId(),
                             'itemPosnr' => $cnt,
                             'itemMatnr' => $sku,
-                            'itemMenge' => intval($bundleChildFromOrder->getQtyOrdered()),
+                            'itemMenge' => intval($bundleChild->getQtyOrdered()),
                             // 아이템 단위, Default : EA
                             'itemMeins' => $this->getMeins($meins),
                             'itemNsamt' => $itemSubtotal,
@@ -680,24 +669,10 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $orderItemData;
     }
 
-    public function getBundleChildFromOrder($itemId, $bundleChildSku)
-    {
-        $bundleChild = null;
-        /** @var Item $itemOrdered */
-        $itemOrdered = $this->orderItemRepository->get($itemId);
-        $childrenItems = $itemOrdered->getChildrenItems();
-        /** @var Item $childItem */
-        foreach ($childrenItems as $childItem) {
-            if ($childItem->getSku() == $bundleChildSku) {
-                $bundleChild = $childItem;
-                break;
-            }
-        }
-        return $bundleChild;
-    }
-
     /**
-     * @param $order \Magento\Sales\Model\Order
+     * Get bundle extra amount
+     *
+     * @param \Magento\Sales\Model\Order $order
      * @throws NoSuchEntityException
      * @throws \Exception
      */
@@ -711,16 +686,15 @@ class SapOrderConfirmData extends AbstractSapOrder
             if ($orderItem->getProductType() == 'bundle') {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
-                $bundleChildren = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
                 $bundlePriceType = $bundleProduct->getPriceType();
 
                 if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
-                    foreach ($bundleChildren as $bundleChild) {
-                        $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $bundleChild->getQty();
+                    foreach ($orderItem->getChildrenItems() as $bundleChild) {
+                        $qtyProductPerBundle = $bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered();
+                        $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $qtyProductPerBundle;
                         $originItemPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
-                        $bundleChildByOrder = $this->getBundleChildFromOrder($orderItem->getItemId(), $bundleChild->getSku());
 
-                        $priceDifferences += (($originItemPrice - $childPriceRatio) * $bundleChildByOrder->getQtyOrdered());
+                        $priceDifferences += (($originItemPrice - $childPriceRatio) * $bundleChild->getQtyOrdered());
                     }
                 }
             }
@@ -729,7 +703,9 @@ class SapOrderConfirmData extends AbstractSapOrder
     }
 
     /**
-     * @param $order \Magento\Sales\Model\Order
+     * Get discount amount for catalog rule
+     *
+     * @param \Magento\Sales\Model\Order $order
      * @throws NoSuchEntityException
      * @throws \Exception
      */
@@ -744,15 +720,14 @@ class SapOrderConfirmData extends AbstractSapOrder
            } else {
                /** @var \Magento\Catalog\Model\Product $bundleProduct */
                $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
-               $bundleChildren = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
                $bundlePriceType = $bundleProduct->getPriceType();
 
                if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
-                   foreach ($bundleChildren as $bundleChild) {
-                       $bundleChildByOrder = $this->getBundleChildFromOrder($orderItem->getItemId(), $bundleChild->getSku());
-                       $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $bundleChild->getQty();
+                   foreach ($orderItem->getChildrenItems() as $bundleChild) {
+                       $qtyPerBundle = $bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered();
+                       $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $qtyPerBundle;
 
-                       $catalogRuleDiscount += $catalogRuledPriceRatio * $bundleChildByOrder->getQtyOrdered();
+                       $catalogRuleDiscount += $catalogRuledPriceRatio * $bundleChild->getQtyOrdered();
                    }
                }
            }
@@ -795,34 +770,22 @@ class SapOrderConfirmData extends AbstractSapOrder
         }
     }
 
-    public function getBundleChildren($item, $storeId = 0)
-    {
-        $bundleSku = '';
-        $product = $this->productRepository->getById($item->getProductId(), false, $storeId);
-        if ($product && $product->getId()) {
-            $bundleSku = $product->getSku();
-        }
-
-        try {
-            return $this->productLinkManagement->getChildren($bundleSku);
-        } catch (\Exception $exception) {
-            throw new \Exception($exception->getMessage());
-        }
-    }
-
     /**
+     * get proportion of child in 1 bundle
+     *
      * @param Item $orderItem
-     * @param \Magento\Bundle\Api\Data\LinkInterface $bundleChild
+     * @param \Magento\Sales\Model\Order\Item $bundleChild
      * @param float $valueToCalculate
      * @return float|int
      * @throws NoSuchEntityException
      */
-    public function getProportionOfBundleChild($orderItem, $bundleChild, $valueToCalculate)
+    private function getProportionOfBundleChild($orderItem, $bundleChild, $valueToCalculate)
     {
         $originalPriceSum = $this->getSumOfChildrenOriginPrice($orderItem);
 
         $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $orderItem->getStoreId())->getPrice();
-        $rate = ($bundleChildPrice / $originalPriceSum) * $bundleChild->getQty();
+        //get rate for product per bundle
+        $rate = ($bundleChildPrice / $originalPriceSum) * ($bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered());
 
         return $valueToCalculate * $rate;
     }
@@ -901,21 +864,21 @@ class SapOrderConfirmData extends AbstractSapOrder
     }
 
     /**
+     * Get total price for children original price
+     *
      * @param Item $orderItem
      * @return float|null
      * @throws NoSuchEntityException
      * @throws \Exception
      */
-    public function getSumOfChildrenOriginPrice(Item $orderItem)
+    private function getSumOfChildrenOriginPrice(Item $orderItem)
     {
         $originalPriceSum = 0;
 
-        $childrenItems = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
-
-        /** @var \Magento\Bundle\Api\Data\LinkInterface $childItem */
-        foreach ($childrenItems as $childItem) {
+        foreach ($orderItem->getChildrenItems() as $childItem) {
             $originalProductPrice = $this->productRepository->get($childItem->getSku(), false, $orderItem->getStoreId())->getPrice();
-            $originalPriceSum += ($originalProductPrice * $childItem->getQty());
+            //total original price product per bundle
+            $originalPriceSum += ($originalProductPrice * ($childItem->getQtyOrdered() / $orderItem->getQtyOrdered()));
         }
         return $originalPriceSum;
     }
