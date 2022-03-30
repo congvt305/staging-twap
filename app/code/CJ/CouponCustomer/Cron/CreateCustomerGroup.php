@@ -7,6 +7,7 @@ use Amore\PointsIntegration\Model\Connection\Request;
 use CJ\CouponCustomer\Logger\Logger;
 use Magento\Store\Model\StoreManagerInterface;
 use CJ\CouponCustomer\Helper\Data;
+use Magento\Framework\Serialize\Serializer\Json;
 
 class CreateCustomerGroup
 {
@@ -39,6 +40,8 @@ class CreateCustomerGroup
      */
     protected $helperData;
 
+    protected $json;
+
 
     /**
      * @param GroupFactory $groupFactory
@@ -48,12 +51,15 @@ class CreateCustomerGroup
         Request               $request,
         Logger                $logger,
         Data                  $helperData,
-        StoreManagerInterface $storeManager){
+        StoreManagerInterface $storeManager,
+        Json $json
+    ){
         $this->groupFactory = $groupFactory;
         $this->request = $request;
         $this->logger = $logger;
         $this->storeManager = $storeManager;
         $this->helperData = $helperData;
+        $this->json = $json;
     }
 
     /**
@@ -63,19 +69,19 @@ class CreateCustomerGroup
     {
         if ($this->helperData->isEnableCronjob()) {
             try {
-                $requestData = '';
-                $websiteId = $this->storeManager->getStore()->getWebsiteId();
-                $response = $this->request->sendRequest($requestData, $websiteId, self::POS_ALL_CUSTOMER_GRADE_TYPE);
-                $customerGroup = '';
-                foreach ($response as $posCustomerGroup) {
-                    if (!$this->helperData->isCreatedCustomerGroup($posCustomerGroup)) {
-                        $group = $this->groupFactory->create();
-                        $group->setCode('Thanh Dat Group')->save();
+                $posCustomerGrades = $this->getAllPOSCustomerGrade();
+                if(isset($posCustomerGrades)) {
+                    foreach ($posCustomerGrades as $posCustomerGrade) {
+                        $posCustomerGradeName = $posCustomerGrade['cstmGradeNM'];
+                        if (!$this->helperData->isCreatedCustomerGroup($posCustomerGradeName)) {
+                            $group = $this->groupFactory->create();
+                            $group->setCode($posCustomerGradeName)->save();
+                        }
                     }
                 }
             } catch (\Exception $exception) {
                 $this->logger->info('Fail to create customer group: ' . $exception->getMessage());
-                $this->logger->info($customerGroup);
+                $this->logger->info($posCustomerGrades);
             }
         }
     }
@@ -84,8 +90,48 @@ class CreateCustomerGroup
      * prepare request data
      * @return void
      */
-    public function getRequestData()
+
+    private function getAllPOSCustomerGrade()
     {
+        $customerGrades = null;
+        try {
+            $requestData = '';
+            $websiteId = $this->storeManager->getStore()->getWebsiteId();
+            $responseData = $this->request->sendRequest($requestData, $websiteId, self::POS_ALL_CUSTOMER_GRADE_TYPE);
+//            $response = '{
+//          "success": true,
+//          "data": {
+//            "statusCode": "200",
+//            "statusMessage": "ok",
+//            "csmGradeData": [
+//              {
+//                "cstmGradeCD": "TWL0003",
+//                "cstmGradeNM": "Snow Crystal"
+//              },
+//              {
+//                "cstmGradeCD": "VNL0001",
+//                "cstmGradeNM": "Guest"
+//              },
+//              {
+//                "cstmGradeCD": "TWS0014",
+//                "cstmGradeNM": "Snow Diamond"
+//              },
+//              {
+//                "cstmGradeCD": "TWS0014",
+//                "cstmGradeNM": "VIPPPDatTest"
+//              }
+//            ]
+//          }
+//        }';
+            // $responseData = $this->json->unserialize($response);
+            if (isset($responseData['data']['csmGradeData'])) {
+                $customerGrades = $responseData['data']['csmGradeData'];
+            }
+        }catch (\Exception $exception) {
+            $this->logger->info("FAIL TO GET ALL POS CUSTOMER GRADES");
+            $this->logger->error($exception->getMessage());
+        }
+        return $customerGrades;
 
     }
 
