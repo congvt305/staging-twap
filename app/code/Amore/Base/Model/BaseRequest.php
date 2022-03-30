@@ -40,14 +40,14 @@ abstract class BaseRequest
 
     /**
      * Send request via middleware
-     * @param $url
-     * @param $requestData
-     * @param string $scope
+     * @param string $url
+     * @param array|string $requestData
      * @param $websiteId
+     * @param string $scope
      * @param string $type
      * @return string
      */
-    public function send($url, $requestData, $scope = 'store', $websiteId, $type = 'confirm')
+    public function send($url, $requestData, $websiteId, $scope = 'store',$type = 'confirm')
     {
         $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('website', $websiteId);
         if (!is_array($requestData)) {
