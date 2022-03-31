@@ -124,10 +124,10 @@ Reset,Reset
 Save,Save
 "Output Value","Output Value"
 Attribute,Attribute
-"If you can't find the needed attribute in the list, please edit the needed attribute. 
-                Open the 'Storefront Properties' tab in the attribute edit menu and set 
-                'Use for Promo Rule Conditions' field to 'YES'.","If you can't find the needed attribute in the list, please edit the needed attribute. 
-                Open the 'Storefront Properties' tab in the attribute edit menu and set 
+"If you can't find the needed attribute in the list, please edit the needed attribute.
+                Open the 'Storefront Properties' tab in the attribute edit menu and set
+                'Use for Promo Rule Conditions' field to 'YES'.","If you can't find the needed attribute in the list, please edit the needed attribute.
+                Open the 'Storefront Properties' tab in the attribute edit menu and set
                 'Use for Promo Rule Conditions' field to 'YES'."
 Modification,Modification
 "Percentage (like +15%), or fixed value (like -20)","Percentage (like +15%), or fixed value (like -20)"
@@ -185,7 +185,6 @@ Short,Short
 "No cron jobs found","No cron jobs found"
 "Learn more","Learn more"
 "Cron (Last 5)","Cron (Last 5)"
-"Please update Amasty Base module. Re-upload it and replace all the files.","Please update Amasty Base module. Re-upload it and replace all the files."
 "Warning: 'pcntl' php extension is required for parallel feed generation.","Warning: 'pcntl' php extension is required for parallel feed generation."
 "You deleted the category.","You deleted the category."
 "We can't delete the category right now. Please review the log and try again.","We can't delete the category right now. Please review the log and try again."
@@ -272,6 +271,8 @@ Monthly,Monthly
 "Conditions Combination","Conditions Combination"
 "Product Attribute","Product Attribute"
 "Stock Status","Stock Status"
+"Invalid field","Invalid field"
+"Unknown condition operator","Unknown condition operator"
 "Unable to save model %1","Unable to save model %1"
 "Entity with specified ID ""%1"" not found.","Entity with specified ID ""%1"" not found."
 "Unable to remove entity with ID ""%1""","Unable to remove entity with ID ""%1"""
@@ -310,7 +311,6 @@ Error,Error
 Download,Download
 Reload,Reload
 "Product Feed","Product Feed"
-Information,Information
 "Batch Size","Batch Size"
 "Indicate how many products will be handled during one iteration. Affects the feed generation time and the server memory consumption.","Indicate how many products will be handled during one iteration. Affects the feed generation time and the server memory consumption."
 "URL with category","URL with category"

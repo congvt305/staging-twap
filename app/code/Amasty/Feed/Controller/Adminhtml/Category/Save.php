@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\Category;
 
@@ -14,11 +8,6 @@ use Magento\Backend\App\Action;
 use Magento\Framework\Exception\LocalizedException;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class Save
- *
- * @package Amasty\Feed
- */
 class Save extends \Amasty\Feed\Controller\Adminhtml\AbstractCategory
 {
     /**
@@ -56,16 +45,22 @@ class Save extends \Amasty\Feed\Controller\Adminhtml\AbstractCategory
                 $this->messageManager->addSuccessMessage(__('You saved the category mapping.'));
                 $this->_session->setPageData(false);
                 if ($this->getRequest()->getParam('back')) {
-                    return $this->_redirect('amfeed/*/edit', ['feed_category_id' => $model->getId()]);
+                    return $this->resultRedirectFactory->create()->setPath(
+                        'amfeed/*/edit',
+                        ['feed_category_id' => $model->getId()]
+                    );
                 }
 
-                return $this->_redirect('amfeed/*/');
+                return $this->resultRedirectFactory->create()->setPath('amfeed/*/');
             } catch (LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
                 if (!empty($categoryId)) {
-                    return $this->_redirect('amfeed/*/edit', ['feed_category_id' => $categoryId]);
+                    return $this->resultRedirectFactory->create()->setPath(
+                        'amfeed/*/edit',
+                        ['feed_category_id' => $categoryId]
+                    );
                 } else {
-                    return $this->_redirect('amfeed/*/new');
+                    return $this->resultRedirectFactory->create()->setPath('amfeed/*/new');
                 }
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage(
@@ -73,10 +68,11 @@ class Save extends \Amasty\Feed\Controller\Adminhtml\AbstractCategory
                 );
                 $this->logger->critical($e);
                 $this->_session->setPageData($data);
-                return $this->_redirect('amfeed/*/edit', ['id' => $categoryId]);
+
+                return $this->resultRedirectFactory->create()->setPath('amfeed/*/edit', ['id' => $categoryId]);
             }
         }
 
-        return $this->_redirect('amfeed/*/');
+        return $this->resultRedirectFactory->create()->setPath('amfeed/*/');
     }
 }

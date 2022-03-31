@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -16,7 +16,7 @@ use Magento\Framework\Event\ObserverInterface;
  */
 class AddBodyClassName implements ObserverInterface
 {
-    const SMARTWAVE_PORTO_CODE = 'Smartwave/porto';
+    public const SMARTWAVE_PORTO_CODE = 'Smartwave/porto';
 
     /**
      * @var \Magento\Framework\View\Page\Config

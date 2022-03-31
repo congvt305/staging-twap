@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -24,9 +24,9 @@ use Psr\Log\LoggerInterface;
 
 class Builder
 {
-    const BASE_MENU = 'MenuAmasty_Base::menu';
+    public const BASE_MENU = 'MenuAmasty_Base::menu';
 
-    const SETTING_ENABLE = 'amasty_base/menu/enable';
+    public const SETTING_ENABLE = 'amasty_base/menu/enable';
 
     /**
      * @var Config

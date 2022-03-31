@@ -58,7 +58,7 @@ define([
                 reg = /(>)(<)(\/*)/g,
                 pad = 0;
             xmlString = xmlString.replace(reg, '$1\r\n$2$3');
-            $.each(xmlString.split('\r\n'), function(index, node) {
+            $.each(xmlString.split('\r\n'), function (index, node) {
                 var indent = 0;
 
                 if (node.match( /.+<\/\w[^>]*>$/ )) {
@@ -99,7 +99,7 @@ define([
             document.body.appendChild(downloadLink);
         },
 
-        downloadFile = function() {
+        downloadFile = function () {
             if (downloadLink !== undefined) {
                 downloadLink.click();
             }

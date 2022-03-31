@@ -1,21 +1,10 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\Category;
 
 use Amasty\Feed\Controller\Adminhtml\AbstractCategory;
 use Magento\Framework\Controller\ResultFactory;
 
-/**
- * Class Index
- *
- * @package Amasty\Feed
- */
 class Index extends AbstractCategory
 {
     public function execute()

@@ -4,7 +4,8 @@ require([
 ], function (jQuery) {
     'use strict';
 
-    function resetForm() {
+    function resetForm()
+    {
         jQuery('#edit_form').trigger('reset');
 
         var oEvent = document.createEvent('Event');

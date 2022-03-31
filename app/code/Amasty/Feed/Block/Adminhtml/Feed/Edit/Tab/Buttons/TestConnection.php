@@ -1,21 +1,10 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml\Feed\Edit\Tab\Buttons;
 
-/**
- * Class TestConnection
- *
- * @package Amasty\Feed
- */
 class TestConnection extends \Magento\Config\Block\System\Config\Form\Field
 {
-    const TEST_CONNECTION = 'amfeed/feed/connection';
+    public const TEST_CONNECTION = 'amfeed/feed/connection';
 
     /**
      * @var string

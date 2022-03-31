@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -10,7 +10,7 @@ namespace Amasty\Base\Model\AdminNotification;
 
 class Messages
 {
-    const AMBASE_SESSION_IDENTIFIER = 'ambase-session-messages';
+    public const AMBASE_SESSION_IDENTIFIER = 'ambase-session-messages';
 
     /**
      * @var \Magento\Backend\Model\Session

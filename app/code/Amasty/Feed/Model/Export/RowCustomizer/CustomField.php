@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Export\RowCustomizer;
 
@@ -20,9 +14,9 @@ class CustomField implements RowCustomizerInterface
     /**#@+
      * Modifier constants
      */
-    const OPERATION = 0;
+    public const OPERATION = 0;
 
-    const VALUE = 1;
+    public const VALUE = 1;
     /**#@-*/
 
     /**

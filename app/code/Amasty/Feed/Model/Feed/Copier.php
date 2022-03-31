@@ -1,21 +1,10 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Feed;
 
 use Amasty\Feed\Api\Data\FeedInterface;
 use Amasty\Feed\Model\Config\Source\FeedStatus;
 
-/**
- * Class Copier
- *
- * @package Amasty\Feed
- */
 class Copier
 {
     /**

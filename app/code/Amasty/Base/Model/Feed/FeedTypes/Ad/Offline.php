@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -18,7 +18,7 @@ use Magento\Framework\Module\Dir\Reader as ModuleDirReader;
  */
 class Offline
 {
-    const OFFLINE_ADS_FILENAME = 'offline_ads.json';
+    public const OFFLINE_ADS_FILENAME = 'offline_ads.json';
 
     /**
      * @var Filesystem

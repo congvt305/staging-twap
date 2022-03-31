@@ -1,18 +1,9 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Ui\Component\Form;
 
 use Amasty\Feed\Model\Category\ResourceModel\TaxonomyCollectionFactory;
 
-/**
- * Class GoogleTaxonomyOptions
- */
 class GoogleTaxonomyOptions implements \Magento\Framework\Data\OptionSourceInterface
 {
     /**

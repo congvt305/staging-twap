@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Console\Command;
 
@@ -36,7 +30,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Generate extends AbstractSetupCommand
 {
-    const JOBS_AMOUNT = 'jobs';
+    public const JOBS_AMOUNT = 'jobs';
 
     /**
      * @var FeedRepositoryInterface

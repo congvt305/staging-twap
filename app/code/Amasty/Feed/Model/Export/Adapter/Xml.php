@@ -1,34 +1,63 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Export\Adapter;
 
-/**
- * Class Xml
- */
+use Magento\Framework\Filesystem\File\Write;
+
 class Xml extends \Amasty\Feed\Model\Export\Adapter\Csv
 {
     /**
      * Index of result array that consists of strings matched by the first parenthesized subpattern
      * @see http://php.net/manual/function.preg-match-all.php
      */
-    const PREG_FIRST_SUBMASK= 1;
+    public const PREG_FIRST_SUBMASK= 1;
 
+    public const DATE_DIRECTIVE = '{{DATE}}';
+
+    /**
+     * @var Write
+     */
     protected $_fileHandler;
-    protected $_header;
+
+    /**
+     * @var string|null
+     */
+    protected $header;
+
+    /**
+     * @var string
+     */
     protected $_item;
+
+    /**
+     * @var string
+     */
     protected $_content;
+
+    /**
+     * @var array
+     */
     protected $_contentAttributes;
+
+    /**
+     * @var string|null
+     */
     protected $_footer;
 
+    /**
+     * @var string[]
+     */
     private $tagsToRemove = [
         "g:additional_image_link",
         "g:sale_price_effective_date"
+    ];
+
+    /**
+     * @var string[]
+     */
+    private $currDateReplacements = [
+        'created_at' => 'Y-m-d H:i',
+        'lastBuildDate' => 'D M d H:i:s Y'
     ];
 
     /**
@@ -58,12 +87,18 @@ class Xml extends \Amasty\Feed\Model\Export\Adapter\Csv
      */
     public function writeHeader()
     {
-        if (!empty($this->_header)) {
-            $header = str_replace(
-                '<created_at>{{DATE}}</created_at>',
-                '<created_at>' . date('Y-m-d H:i') . '</created_at>',
-                $this->_header
-            );
+        if (!empty($this->header)) {
+            $header = $this->header;
+            foreach ($this->currDateReplacements as $tagName => $dateFormat) {
+                $openTag = '<' . $tagName . '>';
+                $closeTag = '</' . $tagName . '>';
+                $header = str_replace(
+                    $openTag . self::DATE_DIRECTIVE . $closeTag,
+                    $openTag . date($dateFormat) . $closeTag,
+                    $header
+                );
+            }
+
             $this->_fileHandler->write($header);
         }
 
@@ -195,7 +230,7 @@ class Xml extends \Amasty\Feed\Model\Export\Adapter\Csv
     {
         parent::initBasics($feed);
 
-        $this->_header = $feed->getXmlHeader();
+        $this->header = $feed->getXmlHeader();
         $this->_item = $feed->getXmlItem();
         $this->_footer = $feed->getXmlFooter();
 

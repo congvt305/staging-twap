@@ -1,29 +1,38 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\GoogleWizard;
 
 use Amasty\Feed\Model\Export\Product as ExportProduct;
 
-/**
- * Class Color
- */
 class Color extends Element
 {
+    /**
+     * @var string
+     */
     protected $type = 'attribute';
 
+    /**
+     * @var string
+     */
     protected $tag = 'g:color';
 
+    /**
+     * @var string
+     */
     protected $modify = 'html_escape';
 
+    /**
+     * @var string
+     */
     protected $name = 'color';
 
+    /**
+     * @var string
+     */
     protected $description = 'Color of the item';
 
+    /**
+     * @var int
+     */
     protected $limit = 100;
 }

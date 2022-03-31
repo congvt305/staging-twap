@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml\Feed\Edit\Tab;
 
@@ -12,11 +6,6 @@ use Magento\Backend\Block\Widget\Form;
 use Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
 
-/**
- * Class General
- *
- * @package Amasty\Feed
- */
 class General extends Generic implements TabInterface
 {
     /**

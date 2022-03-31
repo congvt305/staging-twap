@@ -1,23 +1,15 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml\Category\Edit\Tab;
 
 use Magento\Catalog\Block\Adminhtml\Category\AbstractCategory;
 use Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
 
-/**
- * Class ExcludeMapping
- *
- * @package Amasty\Feed
- */
 class ExcludeMapping extends AbstractCategory implements RendererInterface
 {
+    /**
+     * @var string
+     */
     protected $_template = 'category/exclude_mapping.phtml';
 
     public function render(\Magento\Framework\Data\Form\Element\AbstractElement $element)

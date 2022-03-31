@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -11,7 +11,7 @@ namespace Amasty\Base\Model;
 
 class LinkValidator
 {
-    const ALLOWED_DOMAINS = [
+    public const ALLOWED_DOMAINS = [
         'amasty.com',
         'marketplace.magento.com'
     ];

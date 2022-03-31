@@ -1,20 +1,9 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Field\DataProvider;
 
 use Amasty\Feed\Model\Field\ResourceModel\CollectionFactory;
 
-/**
- * Class Listing
- *
- * @package Amasty\Feed
- */
 class Listing extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
     public function __construct(

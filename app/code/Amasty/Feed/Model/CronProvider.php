@@ -1,22 +1,13 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model;
 
-/**
- * Class CronProvider
- */
 class CronProvider
 {
-    const MINUTES_IN_DAY = 1440;
-    const MINUTES_IN_HOUR = 60;
-    const MINUTES_IN_STEP = 30;
-    const EVERY_DAY = '7';
+    public const MINUTES_IN_DAY = 1440;
+    public const MINUTES_IN_HOUR = 60;
+    public const MINUTES_IN_STEP = 30;
+    public const EVERY_DAY = '7';
 
     /**
      * @var \Magento\Framework\Locale\ListsInterface
