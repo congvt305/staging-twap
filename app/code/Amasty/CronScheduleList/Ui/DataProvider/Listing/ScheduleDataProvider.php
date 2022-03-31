@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_CronScheduleList
- */
-
 
 namespace Amasty\CronScheduleList\Ui\DataProvider\Listing;
 

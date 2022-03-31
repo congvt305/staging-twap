@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\Category;
 
@@ -16,14 +10,9 @@ use Magento\Framework\Registry;
 use Magento\Framework\View\Result\LayoutFactory;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class Search
- *
- * @package Amasty\Feed
- */
 class Search extends \Amasty\Feed\Controller\Adminhtml\AbstractCategory
 {
-    const LANGUAGE_CODE = 'language_code';
+    public const LANGUAGE_CODE = 'language_code';
 
     /**
      * @var TaxonomyCollectionFactory

@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -27,9 +27,9 @@ use Magento\ImportExport\Model\ResourceModel\Helper;
  */
 abstract class AbstractImport extends AbstractEntity
 {
-    const ALLOWED_ERROR_LIMIT = 'isErrorLimit';
-    const MULTI_VALUE_SEPARATOR = ',';
-    const RUNTIME_ERRORS = 'am_runtime_errors';
+    public const ALLOWED_ERROR_LIMIT = 'isErrorLimit';
+    public const MULTI_VALUE_SEPARATOR = ',';
+    public const RUNTIME_ERRORS = 'am_runtime_errors';
 
     /**
      * @var int
@@ -61,6 +61,9 @@ abstract class AbstractImport extends AbstractEntity
      */
     private $mapping;
 
+    /**
+     * @var string
+     */
     private $entityTypeCode;
 
     /**

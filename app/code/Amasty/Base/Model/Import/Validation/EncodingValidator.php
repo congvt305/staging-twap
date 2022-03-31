@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -12,7 +12,7 @@ use Magento\ImportExport\Model\Import\ErrorProcessing\ProcessingError;
 
 class EncodingValidator extends Validator implements ValidatorInterface
 {
-    const ENCODING_ERROR = 'encodingError';
+    public const ENCODING_ERROR = 'encodingError';
 
     /**
      * @var array
@@ -28,7 +28,7 @@ class EncodingValidator extends Validator implements ValidatorInterface
     {
         $this->errors = [];
         foreach ($rowData as $value) {
-            if (!mb_check_encoding($value, 'UTF-8')) {
+            if (!mb_check_encoding((string)$value, 'UTF-8')) {
                 $this->errors[self::ENCODING_ERROR] = ProcessingError::ERROR_LEVEL_CRITICAL;
                 break;
             }

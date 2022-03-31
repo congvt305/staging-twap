@@ -1,34 +1,49 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\GoogleWizard;
 
 use Amasty\Feed\Model\Export\Product as ExportProduct;
 
-/**
- * Class Description
- */
 class Description extends Element
 {
+    /**
+     * @var string
+     */
     protected $type = 'attribute';
 
+    /**
+     * @var string
+     */
     protected $tag = 'description';
 
+    /**
+     * @var int
+     */
     protected $limit = 500;
 
+    /**
+     * @var string
+     */
     protected $modify = 'html_escape';
 
+    /**
+     * @var string
+     */
     protected $value = ExportProduct::PREFIX_PRODUCT_ATTRIBUTE . '|description';
 
+    /**
+     * @var bool
+     */
     protected $required = true;
 
+    /**
+     * @var string
+     */
     protected $name = 'description';
 
+    /**
+     * @var string
+     */
     protected $description = 'Description of the item';
 
     public function getModify()

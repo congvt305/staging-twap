@@ -1,18 +1,7 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml;
 
-/**
- * Class GoogleWizard
- *
- * @package Amasty\Feed
- */
 class GoogleWizard extends \Magento\Backend\Block\Widget\Grid\Container
 {
     protected function _construct()

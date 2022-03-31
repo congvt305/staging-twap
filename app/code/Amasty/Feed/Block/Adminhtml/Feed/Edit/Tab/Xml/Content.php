@@ -1,20 +1,12 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml\Feed\Edit\Tab\Xml;
 
-/**
- * Class Content
- *
- * @package Amasty\Feed
- */
 class Content extends \Amasty\Feed\Block\Adminhtml\Feed\Edit\Tab\Content
 {
+    /**
+     * @var string
+     */
     protected $_template = 'feed/xml.phtml';
 
     protected function _prepareLayout()
@@ -55,12 +47,12 @@ class Content extends \Amasty\Feed\Block\Adminhtml\Feed\Edit\Tab\Content
     {
         return $this->getChildHtml('update_button');
     }
-    
+
     public function escapeHtmlInContent($value)
     {
         // phpcs:ignore
         $html = htmlspecialchars($value, ENT_NOQUOTES, 'UTF-8');
-        
+
         return $this->escapeHtml($html);
     }
 }

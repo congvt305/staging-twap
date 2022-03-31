@@ -2,7 +2,7 @@
 <!--
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 -->
@@ -19,6 +19,9 @@
             <menu>
                 <enable>1</enable>
             </menu>
+            <licence_service>
+                <api_url>https://irs.amasty.com</api_url>
+            </licence_service>
         </amasty_base>
     </default>
 </config>

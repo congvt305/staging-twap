@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -21,38 +21,44 @@ class Config extends ConfigProviderAbstract
 {
     /**
      * xpath prefix of module (section)
+     *
+     * @var string
      */
     protected $pathPrefix = 'amasty_base/';
 
     /**#@+
      * xpath group parts
      */
-    const NOTIFICATIONS_BLOCK = 'notifications/';
+    public const NOTIFICATIONS_BLOCK = 'notifications/';
 
-    const SYSTEM_VALUE_BLOCK = 'system_value/';
+    public const SYSTEM_VALUE_BLOCK = 'system_value/';
+
+    public const LICENCE_SERVICE_VALUE_BLOCK = 'licence_service/';
 
     /**#@-*/
 
     /**#@+
      * xpath field parts
      */
-    const LAST_UPDATE = 'last_update';
+    public const LAST_UPDATE = 'last_update';
 
-    const FREQUENCY = 'frequency';
+    public const FREQUENCY = 'frequency';
 
-    const FIRST_MODULE_RUN = 'first_module_run';
+    public const FIRST_MODULE_RUN = 'first_module_run';
 
-    const REMOVE_DATE = 'remove_date';
+    public const REMOVE_DATE = 'remove_date';
 
-    const ADS_ENABLE = 'ads_enable';
+    public const ADS_ENABLE = 'ads_enable';
 
-    const NOTIFICATIONS_TYPE = 'type';
+    public const NOTIFICATIONS_TYPE = 'type';
+
+    public const LICENCE_SERVICE_API_URL = 'api_url';
 
     /**#@-*/
 
-    const HOUR_MIN_SEC_VALUE = 60 * 60 * 24;
+    public const HOUR_MIN_SEC_VALUE = 60 * 60 * 24;
 
-    const REMOVE_EXPIRED_FREQUENCY = 60 * 60 * 6;//4 times per day
+    public const REMOVE_EXPIRED_FREQUENCY = 60 * 60 * 6;//4 times per day
 
     /**
      * @var WriterInterface
@@ -168,5 +174,13 @@ class Config extends ConfigProviderAbstract
         $value = $this->getValue(self::NOTIFICATIONS_BLOCK . self::NOTIFICATIONS_TYPE);
 
         return empty($value) ? [] : explode(',', $value);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLicenceServiceApiUrl()
+    {
+        return $this->getValue(self::LICENCE_SERVICE_VALUE_BLOCK . self::LICENCE_SERVICE_API_URL);
     }
 }

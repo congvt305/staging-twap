@@ -1,22 +1,13 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Schedule\ResourceModel;
 
 use Amasty\Feed\Api\Data\ScheduleInterface;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
-/**
- * Class Schedule
- */
 class Schedule extends AbstractDb
 {
-    const TABLE = 'amasty_feed_schedule';
+    public const TABLE_NAME = 'amasty_feed_schedule';
 
     /**
      * Resource initialization
@@ -25,7 +16,7 @@ class Schedule extends AbstractDb
      */
     public function _construct()
     {
-        $this->_init(self::TABLE, ScheduleInterface::ID);
+        $this->_init(self::TABLE_NAME, ScheduleInterface::ID);
     }
 
     /**

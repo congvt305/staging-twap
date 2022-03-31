@@ -1,20 +1,9 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\Feed;
 
 use Magento\Rule\Model\Condition\AbstractCondition;
 
-/**
- * Class NewConditionHtml
- *
- * @package Amasty\Feed
- */
 class NewConditionHtml extends \Amasty\Feed\Controller\Adminhtml\AbstractFeed
 {
     /**

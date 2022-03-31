@@ -1,13 +1,15 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
 
 namespace Amasty\Base\Model\Feed;
 
+use Amasty\Base\Model\Feed\Response\FeedResponseInterface;
+use Amasty\Base\Model\Feed\Response\FeedResponseInterfaceFactory;
 use Magento\Framework\HTTP\Adapter\Curl;
 use Magento\Framework\HTTP\Adapter\CurlFactory;
 use Magento\Store\Model\StoreManagerInterface;
@@ -20,17 +22,17 @@ class FeedContentProvider
     /**
      * Path to NEWS
      */
-    const URN_NEWS = 'cdn.amasty.com/feed-news-segments.xml';//do not use https:// or http
+    public const URN_NEWS = 'cdn.amasty.com/feed-news-segments.xml';//do not use https:// or http
 
     /**
      * Path to ADS
      */
-    const URN_ADS = 'amasty.com/media/marketing/upsells.csv';
+    public const URN_ADS = 'cdn.amasty.com/media/marketing/upsells.csv';
 
     /**
      * Path to EXTENSIONS
      */
-    const URN_EXTENSIONS = 'cdn.amasty.com/feed-extensions-m2.xml';
+    public const URN_EXTENSIONS = 'cdn.amasty.com/feed-extensions-m2.xml';
 
     /**
      * @var CurlFactory
@@ -47,45 +49,65 @@ class FeedContentProvider
      */
     private $baseUrlObject;
 
+    /**
+     * @var FeedResponseInterfaceFactory
+     */
+    private $feedResponseFactory;
+
     public function __construct(
         CurlFactory $curlFactory,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        FeedResponseInterfaceFactory $feedResponseFactory
     ) {
         $this->curlFactory = $curlFactory;
         $this->storeManager = $storeManager;
+        $this->feedResponseFactory = $feedResponseFactory;
     }
 
     /**
      * @param string $url
+     * @param array $options
      *
-     * @return false|string
+     * @return FeedResponseInterface
      */
-    public function getFeedContent(string $url)
+    public function getFeedResponse(string $url, array $options = []): FeedResponseInterface
     {
         /** @var Curl $curlObject */
         $curlObject = $this->curlFactory->create();
+        $curlObject->addOption(CURLOPT_ACCEPT_ENCODING, 'gzip');
         $curlObject->setConfig(
             [
                 'timeout' => 2,
                 'useragent' => 'Amasty Base Feed'
             ]
         );
-        $curlObject->write(\Zend_Http_Client::GET, $url);
+        $headers = [];
+        if (isset($options['modified_since'])) {
+            $headers = ['If-Modified-Since: ' . $options['modified_since']];
+        }
+        $curlObject->write(\Zend_Http_Client::GET, $url, '1.1', $headers);
         $result = $curlObject->read();
 
+        /** @var FeedResponseInterface $feedResponse */
+        $feedResponse = $this->feedResponseFactory->create();
         if ($result === false || $result === '') {
-            return false;
+            return $feedResponse;
         }
         $result = preg_split('/^\r?$/m', $result, 2);
         preg_match("/(?i)(\W|^)(Status: 404 File not found)(\W|$)/", $result[0], $notFoundFile);
-
         if ($notFoundFile) {
-            return false;
+            return $feedResponse->setStatus('404');
         }
+        preg_match("/(?i)(\W|^)(HTTP\/1.1 304)(\W|$)/", $result[0], $notModifiedFile);
+        if ($notModifiedFile) {
+            return $feedResponse->setStatus('304');
+        }
+
         $result = trim($result[1]);
+        $feedResponse->setContent($result);
         $curlObject->close();
 
-        return $result;
+        return $feedResponse;
     }
 
     public function getFeedUrl(string $urn): string

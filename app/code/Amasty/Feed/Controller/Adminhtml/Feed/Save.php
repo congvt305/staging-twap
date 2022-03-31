@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\Feed;
 
@@ -13,11 +7,6 @@ use Amasty\Feed\Controller\Adminhtml\AbstractFeed;
 use Amasty\Feed\Model\Rule\Rule;
 use Magento\Framework\Exception\LocalizedException;
 
-/**
- * Class Save
- *
- * @package Amasty\Feed
- */
 class Save extends AbstractFeed
 {
     /**
@@ -159,18 +148,18 @@ class Save extends AbstractFeed
             $this->messageManager->addSuccessMessage(__('You saved the feed.'));
 
             if ($this->getRequest()->getParam('back')) {
-                return $this->_redirect('amfeed/feed/edit', ['id' => $model->getId()]);
+                return $this->resultRedirectFactory->create()->setPath('amfeed/feed/edit', ['id' => $model->getId()]);
             }
 
-            return $this->_redirect('amfeed/*/');
+            return $this->resultRedirectFactory->create()->setPath('amfeed/*/');
         } catch (LocalizedException $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
             $id = (int)$this->getRequest()->getParam('feed_entity_id');
 
             if (!empty($id)) {
-                return $this->_redirect('amfeed/*/edit', ['id' => $id]);
+                return $this->resultRedirectFactory->create()->setPath('amfeed/*/edit', ['id' => $id]);
             } else {
-                return $this->_redirect('amfeed/*/new');
+                return $this->resultRedirectFactory->create()->setPath('amfeed/*/new');
             }
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage(
@@ -178,7 +167,11 @@ class Save extends AbstractFeed
             );
             $this->logger->critical($e);
             $this->_session->setPageData($data);
-            return $this->_redirect('amfeed/*/edit', ['id' => $this->getRequest()->getParam('feed_entity_id')]);
+
+            return $this->resultRedirectFactory->create()->setPath(
+                'amfeed/*/edit',
+                ['id' => $this->getRequest()->getParam('feed_entity_id')]
+            );
         }
     }
 }

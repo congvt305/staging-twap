@@ -1,25 +1,25 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\GoogleWizard;
 
 use Amasty\Feed\Model\Export\Product as ExportProduct;
 use Amasty\Feed\Model\RegistryContainer;
 
-/**
- * Class Category
- */
 class Category extends Element
 {
+    /**
+     * @var string
+     */
     protected $type = RegistryContainer::TYPE_CATEGORY;
 
+    /**
+     * @var string
+     */
     protected $tag = 'g:google_product_category';
 
+    /**
+     * @var string
+     */
     protected $modify = 'html_escape|length:150';
 
     public function setValue($value)

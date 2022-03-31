@@ -68,7 +68,7 @@ td.amasty-modify-cell table {
 .amasty-xml-table td.amasty-modify-cell,
 .amasty-csv-table td.amasty-modify-cell {
     border-bottom-width: 1px;
-    border-color: white;
+    border-color: #FFFFFF;
     border-style: solid;
     padding-top: 0;
 }

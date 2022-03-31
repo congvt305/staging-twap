@@ -1,23 +1,14 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Config\Source;
 
 use Magento\Framework\Option\ArrayInterface;
 
-/**
- * Class Path
- */
 class Path implements ArrayInterface
 {
-    const USE_DEFAULT = 0;
-    const USE_SHORTEST = 1;
-    const USE_LONGEST = 2;
+    public const USE_DEFAULT = 0;
+    public const USE_SHORTEST = 1;
+    public const USE_LONGEST = 2;
 
     public function toOptionArray()
     {

@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\ValidProduct;
 
@@ -21,9 +15,6 @@ use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Ui\Api\Data\BookmarkSearchResultsInterfaceFactory;
 
-/**
- * Class Repository
- */
 class Repository implements \Amasty\Feed\Api\ValidProductsRepositoryInterface
 {
     /**

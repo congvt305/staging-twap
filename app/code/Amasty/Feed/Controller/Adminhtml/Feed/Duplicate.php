@@ -1,18 +1,7 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\Feed;
 
-/**
- * Class Duplicate
- *
- * @package Amasty\Feed
- */
 class Duplicate extends AbstractMassAction
 {
     /**
