@@ -68,6 +68,7 @@ class CreateCustomerGroup
     public function execute()
     {
         if ($this->helperData->isEnableCronjob()) {
+            $posCustomerGrades = null;
             try {
                 $posCustomerGrades = $this->getAllPOSCustomerGrade();
                 if(isset($posCustomerGrades)) {

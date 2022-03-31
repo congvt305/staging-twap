@@ -24,6 +24,11 @@ class Data extends AbstractHelper
      * xml path coupon list popup
      */
     const XML_PATH_COUPON_LIST_POPUP_ENABLE = 'coupon_wallet/general/popup';
+
+    /**
+     * pos_customer_grade attribute
+     */
+    const POS_CUSTOMER_GRADE = 'pos_customer_grade';
     /**
      * @var RuleCollection
      */
@@ -75,8 +80,7 @@ class Data extends AbstractHelper
         Logo                  $logo,
         Currency              $currency,
         GroupFactory          $customerGroup
-    )
-    {
+    ){
         parent::__construct($context);
         $this->ruleCollection = $ruleCollection;
         $this->customerSession = $customerSession;
@@ -95,7 +99,9 @@ class Data extends AbstractHelper
         $rules = $this->ruleCollection->create();
         $customer = $this->getCustomer();
         $websiteId = $customer->getWebsiteId();
-        $rules->addWebsiteGroupDateFilter($websiteId, $customer->getGroupId())
+        $posCustomerGroup = $customer->getData(self::POS_CUSTOMER_GRADE);
+        $posCustomerGroupId = $this->getPOSCustomerGroupIdByName($posCustomerGroup);
+        $rules->addWebsiteGroupDateFilter($websiteId, $posCustomerGroupId)
             ->addFieldToFilter('coupon_type', \Magento\SalesRule\Model\Rule::COUPON_TYPE_SPECIFIC)
             ->addFieldToFilter('is_active', 1)
             ->addFieldToFilter('use_auto_generation', 0);
@@ -191,7 +197,7 @@ class Data extends AbstractHelper
     }
 
     /**
-     * is enabled crob job for creating customer group
+     * is enabled cronjob for creating customer group
      * @return bool
      */
     public function isEnableCronjob()
@@ -232,6 +238,10 @@ class Data extends AbstractHelper
         return $groupCollection->getFirstItem()->getId();
     }
 
+    /**
+     * get all magento customer group
+     * @return \Magento\Framework\DataObject[]
+     */
     public function getAllCustomerGroup()
     {
         $group = $this->customerGroup->create();
@@ -240,6 +250,11 @@ class Data extends AbstractHelper
 
     }
 
+    /**
+     * is created pos customer groups for magento
+     * @param $posCustomerGroup
+     * @return bool
+     */
     public function isCreatedCustomerGroup($posCustomerGroup)
     {
         $customerGroups = $this->getAllCustomerGroup();
