@@ -748,6 +748,7 @@ return [
         'Klarna_KpGraphQl' => 1,
         'PayPal_Braintree' => 0,
         'PayPal_BraintreeGraphQl' => 0,
+        'Payoo_PayNow' => 1,
         'Eguana_Pixlee' => 1,
         'Temando_ShippingRemover' => 1,
         'Vertex_Tax' => 0,
