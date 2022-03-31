@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_ImportExport:etc/export.xsd">
+    <entity name="cj_sales_order" label="New Sales Order" model="CJ\DataExport\Model\Export\Order\Order"
+            entityAttributeFilterType="cj_sales_order"/>
+    <entity name="cj_rma" label="New RMA" model="CJ\DataExport\Model\Export\Rma\Rma" entityAttributeFilterType="cj_rma"/>
+    <entity name="cj_redemption" label="New Redemption" model="CJ\DataExport\Model\Export\Redemption\Redemption"
+            entityAttributeFilterType="cj_redemption"/>
+</config>
