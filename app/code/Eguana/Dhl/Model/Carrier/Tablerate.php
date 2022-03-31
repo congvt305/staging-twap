@@ -284,7 +284,7 @@ class Tablerate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implemen
         $tracking->setTracking($trackingValue);
         $tracking->setPopup(1);
         $tracking->setUrl(
-            "https://www.dhl.com/us-en/home/tracking/tracking-ecommerce.html?submit=1&tracking-id={$trackingValue}"
+            "https://donhang.ghn.vn/?order_code={$trackingValue}"
         );
         $this->result->append($tracking);
     }
