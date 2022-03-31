@@ -680,6 +680,7 @@ return [
         'Ecpay_Ecpaypayment' => 1,
         'CJ_Base' => 1,
         'CJ_ChangeOrderStatus' => 1,
+        'CJ_DataExport' => 1,
         'CJ_InventoryShipping' => 1,
         'CJ_Invoice' => 1,
         'CJ_HoverImage' => 1,

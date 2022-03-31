@@ -1,34 +1,15 @@
 <?php
-/**
- * @author Eguana Team
- * @copyriht Copyright (c) 2021 Eguana {http://eguanacommerce.com}
- * Created by PhpStorm
- * User: adeel
- * Date: 29/6/21
- * Time: 12:55 PM
- */
-namespace Amore\GcrmDataExport\Model\Export\Adapter;
+
+namespace CJ\DataExport\Model\Export\Adapter;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
-use Magento\ImportExport\Model\Export\Adapter\AbstractAdapter;
-use Magento\ImportExport\Model\Export\Adapter\Csv;
-use Magento\InventoryApi\Api\Data\SourceItemInterface;
-use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Framework\Filesystem\File\Write;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-use Magento\Framework\App\ResourceConnection;
-use Amore\GcrmDataExport\Model\Config\Config;
-use Amore\GcrmDataExport\Logger\Logger;
-use Magento\Framework\Filesystem;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
- * Class to setup csv file
- *
- * Class OrderItemsCsv
+ * Class RmaCsv
  */
-class OrderItemsCsv extends AbstractAdapter
+class RmaCsv extends \Magento\ImportExport\Model\Export\Adapter\AbstractAdapter
 {
     /**
      * Field delimiter.
@@ -47,67 +28,71 @@ class OrderItemsCsv extends AbstractAdapter
     /**
      * Source file handler.
      *
-     * @var Write
+     * @var \Magento\Framework\Filesystem\File\Write
      */
     protected $_fileHandler;
 
     /**
-     * @var OrderRepositoryInterface
+     * @var \Magento\Rma\Api\RmaRepositoryInterface
      */
-    private $orderRepositoryInterface;
+    protected $rmaRepository;
 
     /**
-     * @var TimezoneInterface
+     * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
      */
-    private $timezoneInterface;
+    protected $timezoneInterface;
 
     /**
-     * @var ResourceConnection
+     * @var \Magento\Framework\App\ResourceConnection
      */
-    private $resourceConnection;
+    protected $resourceConnection;
 
     /**
-     * @var Config
+     * @var \CJ\DataExport\Model\Config\Config
      */
-    private $config;
+    protected $config;
 
     /**
-     * @var Logger
+     * @var \CJ\DataExport\Logger\Logger
      */
-    private $logger;
+    protected $logger;
 
     /**
-     * OrderItemsCsv constructor.
-     * @param Logger $logger
-     * @param ResourceConnection $resourceConnection
-     * @param Config $config
-     * @param OrderRepositoryInterface $orderRepositoryInterface
-     * @param TimezoneInterface $timezoneInterface
-     * @param Filesystem $filesystem
+     * @var string
+     */
+    protected $_namePrefix = 'cj_rma';
+
+    /**
+     * @param \CJ\DataExport\Logger\Logger $logger
+     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     * @param \CJ\DataExport\Model\Config\Config $config
+     * @param \Magento\Rma\Api\RmaRepositoryInterface $rmaRepository
+     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface
+     * @param \Magento\Framework\Filesystem $filesystem
      * @param null $destination
      * @param string $destinationDirectoryCode
      * @throws FileSystemException
      * @throws LocalizedException
      */
     public function __construct(
-        Logger $logger,
-        ResourceConnection $resourceConnection,
-        Config $config,
-        OrderRepositoryInterface $orderRepositoryInterface,
-        TimezoneInterface $timezoneInterface,
-        Filesystem $filesystem,
+        \CJ\DataExport\Logger\Logger $logger,
+        \Magento\Framework\App\ResourceConnection $resourceConnection,
+        \CJ\DataExport\Model\Config\Config $config,
+        \Magento\Rma\Api\RmaRepositoryInterface $rmaRepository,
+        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface,
+        \Magento\Framework\Filesystem $filesystem,
         $destination = null,
-        $destinationDirectoryCode = DirectoryList::VAR_DIR
+        string $destinationDirectoryCode = DirectoryList::VAR_DIR
     ) {
         register_shutdown_function([$this, 'destruct']);
         $this->resourceConnection = $resourceConnection;
         $this->config = $config;
         $this->logger = $logger;
-        $this->orderRepositoryInterface = $orderRepositoryInterface;
+        $this->rmaRepository = $rmaRepository;
         $this->timezoneInterface = $timezoneInterface;
         $this->_directoryHandle = $filesystem->getDirectoryWrite($destinationDirectoryCode);
         if (!$destination) {
-            $destination = uniqid('OrderItems_');
+            $destination = uniqid($this->_namePrefix);
             $this->_directoryHandle->touch($destination);
         }
         if (!is_string($destination)) {
@@ -185,8 +170,8 @@ class OrderItemsCsv extends AbstractAdapter
      * Set column names.
      *
      * @param array $headerColumns
-     * @throws \Exception
      * @return $this
+     * @throws \Exception
      */
     public function setHeaderCols(array $headerColumns)
     {
@@ -198,42 +183,6 @@ class OrderItemsCsv extends AbstractAdapter
                 $this->_headerCols[$columnName] = false;
             }
             $this->_fileHandler->writeCsv(array_keys($this->_headerCols), $this->_delimiter, $this->_enclosure);
-        }
-        return $this;
-    }
-
-    /**
-     * Write row data to source file.
-     *
-     * @param array $rowData
-     * @param array $headerColumns
-     * @return $this
-     * @throws FileSystemException
-     */
-    public function writeSourceRowWithCustomColumns(array $rowData, array $headerColumns = [])
-    {
-        unset($rowData['product_options']);
-        if (!$headerColumns) {
-            $headersData = [];
-            foreach ($rowData as $key => $data) {
-                $headersData[] = $key;
-            }
-
-            $this->_fileHandler->writeCsv(
-                array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
-                $this->_delimiter,
-                $this->_enclosure
-            );
-        } else {
-            $newRowData = [];
-            foreach ($headerColumns as $key => $data) {
-                $newRowData[$data] = $rowData[$data] ?? '';
-            }
-            $this->_fileHandler->writeCsv(
-                $newRowData,
-                $this->_delimiter,
-                $this->_enclosure
-            );
         }
         return $this;
     }
@@ -259,11 +208,20 @@ class OrderItemsCsv extends AbstractAdapter
      * Write row data to source file.
      *
      * @param array $rowData
-     * @throws \Exception
      * @return $this
+     * @throws \Exception
      */
     public function writeRow(array $rowData)
     {
-        //Abstract method
+        $headersData = [];
+        foreach ($rowData as $key => $data) {
+            $headersData[] = $key;
+        }
+        $this->_fileHandler->writeCsv(
+            array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
+            $this->_delimiter,
+            $this->_enclosure
+        );
+        return $this;
     }
 }
