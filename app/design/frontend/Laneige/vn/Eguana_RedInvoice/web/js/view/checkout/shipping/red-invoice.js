@@ -66,7 +66,7 @@ define([
                 showLoader: true,
                 data: {selectedValue:  selectedValue},
             }).done(function (data) {
-                cities = data.cities;
+                var cities = data.cities;
                 step.availableCities.removeAll();
                 if (cities == "") {
                     step.availableCities.push(
