@@ -33,8 +33,8 @@ class Request extends BaseRequestAbstract
     /**
      * @param string $url
      * @param array|string $requestData
-     * @param $websiteId
      * @param string $scope
+     * @param $websiteId
      * @param string $type
      * @return string
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -42,12 +42,12 @@ class Request extends BaseRequestAbstract
     public function send(
         $url,
         $requestData,
-        $websiteId,
         $scope = 'store',
+        $websiteId,
         $type = 'confirm'
     ): string
     {
-        return parent::send($url, $requestData, $websiteId, $scope, $type);
+        return parent::send($url, $requestData, $scope, $websiteId, $type);
     }
 
     /**
