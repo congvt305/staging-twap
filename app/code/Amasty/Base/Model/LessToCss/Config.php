@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -16,7 +16,7 @@ use Amasty\Base\Model\LessToCss\Config\Reader;
  */
 class Config extends \Magento\Framework\Config\Data
 {
-    const CACHE_ID = 'amasty_less_to_css';
+    public const CACHE_ID = 'amasty_less_to_css';
 
     /**
      * Initialize reader and cache.

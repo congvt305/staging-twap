@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -15,17 +15,26 @@ use Magento\Config\Model\Config\Structure;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Module\Manager;
 use Magento\Framework\View\Asset\Repository;
+use Magento\Framework\View\Element\AbstractBlock;
 
+/**
+ * @deprecated
+ * @since 1.12.18
+ * @see \Amasty\Base\Block\Adminhtml\System\Config\Information
+ */
 class GenerateInformationTab implements ObserverInterface
 {
-    const SEO_PARAMS = '?utm_source=extension&utm_medium=backend&utm_campaign=';
+    public const SEO_PARAMS = '?utm_source=extension&utm_medium=backend&utm_campaign=';
 
-    const FEATURE_LINK = 'https://products.amasty.com/request-a-feature';
+    public const FEATURE_LINK = 'https://products.amasty.com/request-a-feature';
 
-    const FEATURE_UTM = '?utm_source=extension&utm_medium=backend&utm_campaign=request_a_feature';
+    public const FEATURE_UTM = '?utm_source=extension&utm_medium=backend&utm_campaign=request_a_feature';
 
-    const MAGENTO_VERSION = '_m2';
+    public const MAGENTO_VERSION = '_m2';
 
+    /**
+     * @var AbstractBlock
+     */
     private $block;
 
     /**
@@ -254,8 +263,8 @@ class GenerateInformationTab implements ObserverInterface
         return '<a href="' . self::FEATURE_LINK . self::FEATURE_UTM . '"
                    class="ambase-button"
                    target="_blank"
-                   title="' . __("Feature Request") . '">'
-                . __("Feature Request") . ' </a>';
+                   title="' . __("Request New Feature") . '">'
+                . __("Request New Feature") . ' </a>';
     }
 
     /**
