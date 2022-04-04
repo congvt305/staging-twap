@@ -266,5 +266,15 @@ class Data extends AbstractHelper
         return false;
     }
 
+    /**
+     * prepare prefix for creating customer group
+     * @param $customerGradeCode
+     * @return false|string
+     */
+    public function getPrefix($customerGradeCode)
+    {
+        return !empty($customerGradeCode) ? substr($customerGradeCode, 0 , 3) : '';
+    }
+
 
 }

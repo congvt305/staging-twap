@@ -67,10 +67,15 @@ class SaveCustomerGrade implements ObserverInterface
                     $customerId = $customerData->getId();
                     $customer = $this->customer->load($customerId);
                     $posCustomerGroup = $customer->getData(self::POS_CUSTOMER_GRADE);
-                    // $grade = $this->getCustomerGrade($customer->getId(), $customer->getWebsiteId());
-                    $grade = 'Thanh Dat Group';
-                    if ($grade && $grade != $posCustomerGroup) {
-                        $customer->setData(self::POS_CUSTOMER_GRADE, $grade);
+                    $gradeData = $this->getCustomerGrade($customer->getId(), $customer->getWebsiteId());
+                    $gradeName = '';
+                    if(isset($gradeData['cstmGradeCD']) && isset($gradeData['cstmGradeNM'])) {
+                        $prefix = $this->helperData->getPrefix($gradeData['cstmGradeCD']);
+                        $gradeName = $prefix.'_'.$gradeData['cstmGradeNM'];
+                    }
+                    // $gradeName = 'Thanh Dat Group';
+                    if ($gradeName && $gradeName != $posCustomerGroup) {
+                        $customer->setData(self::POS_CUSTOMER_GRADE, $gradeName);
                         $customerResource = $this->customerFactory->create();
                         $customerResource->save($customer);
                     }
@@ -89,18 +94,24 @@ class SaveCustomerGrade implements ObserverInterface
      */
     private function getCustomerGrade($customerId, $websiteId)
     {
-        $grade = null;
+        $customerGradeData = [];
+        $customerGradeData['cstmGradeCD'] = 'TWL0003';
+        $customerGradeData['cstmGradeNM'] ='Snow Crystal';
+        return $customerGradeData;
         try {
             $customerPointsInfo = $this->customerPointsSearch->getMemberSearchResult($customerId, $websiteId);
+            if (isset($customerPointsInfo['data']['cstmGradeCD']) && !empty($customerPointsInfo['data']['cstmGradeCD'])) {
+                $customerGradeData['cstmGradeCD'] = $customerPointsInfo['data']['cstmGradeCD'];
+            }
             if (isset($customerPointsInfo['data']['cstmGradeNM']) && !empty($customerPointsInfo['data']['cstmGradeNM'])) {
-                $grade = $customerPointsInfo['data']['cstmGradeNM'];
+                $customerGradeData['cstmGradeNM'] = $customerPointsInfo['data']['cstmGradeNM'];
             }
         } catch (\Exception $exception) {
             $this->logger->info("FAIL TO GET POS CUSTOMER GRADE WHEN CUSTOMER LOGIN");
             $this->logger->error($exception->getMessage());
         }
 
-        return $grade;
+
     }
 
 }

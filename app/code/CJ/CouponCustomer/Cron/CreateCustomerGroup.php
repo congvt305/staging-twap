@@ -74,9 +74,12 @@ class CreateCustomerGroup
                 if(isset($posCustomerGrades)) {
                     foreach ($posCustomerGrades as $posCustomerGrade) {
                         $posCustomerGradeName = $posCustomerGrade['cstmGradeNM'];
-                        if (!$this->helperData->isCreatedCustomerGroup($posCustomerGradeName)) {
+                        $posCustomerGradeCode = $posCustomerGrade['cstmGradeCD'];
+                        $prefix = $this->helperData->getPrefix($posCustomerGradeCode);
+                        $posCustomerGradeGroup = $prefix.'_'.$posCustomerGradeName;
+                        if (!$this->helperData->isCreatedCustomerGroup($posCustomerGradeGroup)) {
                             $group = $this->groupFactory->create();
-                            $group->setCode($posCustomerGradeName)->save();
+                            $group->setCode($posCustomerGradeGroup)->save();
                         }
                     }
                 }
@@ -98,33 +101,33 @@ class CreateCustomerGroup
         try {
             $requestData = '';
             $websiteId = $this->storeManager->getStore()->getWebsiteId();
-            $responseData = $this->request->sendRequest($requestData, $websiteId, self::POS_ALL_CUSTOMER_GRADE_TYPE);
-//            $response = '{
-//          "success": true,
-//          "data": {
-//            "statusCode": "200",
-//            "statusMessage": "ok",
-//            "csmGradeData": [
-//              {
-//                "cstmGradeCD": "TWL0003",
-//                "cstmGradeNM": "Snow Crystal"
-//              },
-//              {
-//                "cstmGradeCD": "VNL0001",
-//                "cstmGradeNM": "Guest"
-//              },
-//              {
-//                "cstmGradeCD": "TWS0014",
-//                "cstmGradeNM": "Snow Diamond"
-//              },
-//              {
-//                "cstmGradeCD": "TWS0014",
-//                "cstmGradeNM": "VIPPPDatTest"
-//              }
-//            ]
-//          }
-//        }';
-            // $responseData = $this->json->unserialize($response);
+            // $responseData = $this->request->sendRequest($requestData, $websiteId, self::POS_ALL_CUSTOMER_GRADE_TYPE);
+            $response = '{
+          "success": true,
+          "data": {
+            "statusCode": "200",
+            "statusMessage": "ok",
+            "csmGradeData": [
+              {
+                "cstmGradeCD": "TWL0003",
+                "cstmGradeNM": "Snow Crystal"
+              },
+              {
+                "cstmGradeCD": "VNL0001",
+                "cstmGradeNM": "Guest"
+              },
+              {
+                "cstmGradeCD": "TWS0014",
+                "cstmGradeNM": "Snow Diamond"
+              },
+              {
+                "cstmGradeCD": "TWS0014",
+                "cstmGradeNM": "VIPPPDatTest"
+              }
+            ]
+          }
+        }';
+            $responseData = $this->json->unserialize($response);
             if (isset($responseData['data']['csmGradeData'])) {
                 $customerGrades = $responseData['data']['csmGradeData'];
             }
