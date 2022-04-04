@@ -993,6 +993,41 @@
         .configurable-price-title {
             float: left;
         }
+
+        .visual-aids, .visual-aids-header-container {
+            background: #F9F9F9;
+        }
+        .visual-aids {
+            width: 70%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .visual-aids-header-container {
+            display: flex;
+            align-items: flex-end;
+        }
+        .visual-aids-header {
+            width: 80%;
+        }
+        .visual-aids-header-container > div > span:after {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 13px;
+            color: inherit;
+            content: "\e90b";
+            font-family: 'icons';
+            margin: 0 0 0 8px;
+            font-weight: normal;
+            float: right;
+        }
+        .visual-aids-header-container > svg {
+            width: 20%;
+        }
+
+        .visual-aids-content {
+            margin-top: 20px;
+        }
     }
 
     .block.upsell .block-title,

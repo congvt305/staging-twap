@@ -1,0 +1,63 @@
+<?php
+/**
+ * @var $block \Magento\Catalog\Block\Product\View\Description
+ * @var $product \Magento\Catalog\Model\Product
+ */
+$product = $block->getProduct();
+?>
+<div id="visual-aids" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": false, "multipleCollapsible": true}}'>
+    <?php if ($product->getExtraPromotionDescription()): ?>
+        <div data-role="collapsible" class="visual-aids">
+            <div class="visual-aids-header-container">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3.9889 14.6604L2.46891 13.1404C1.84891 12.5204 1.84891 11.5004 2.46891 10.8804L3.9889 9.36039C4.2489 9.10039 4.4589 8.59038 4.4589 8.23038V6.08036C4.4589 5.20036 5.1789 4.48038 6.0589 4.48038H8.2089C8.5689 4.48038 9.0789 4.27041 9.3389 4.01041L10.8589 2.49039C11.4789 1.87039 12.4989 1.87039 13.1189 2.49039L14.6389 4.01041C14.8989 4.27041 15.4089 4.48038 15.7689 4.48038H17.9189C18.7989 4.48038 19.5189 5.20036 19.5189 6.08036V8.23038C19.5189 8.59038 19.7289 9.10039 19.9889 9.36039L21.5089 10.8804C22.1289 11.5004 22.1289 12.5204 21.5089 13.1404L19.9889 14.6604C19.7289 14.9204 19.5189 15.4304 19.5189 15.7904V17.9403C19.5189 18.8203 18.7989 19.5404 17.9189 19.5404H15.7689C15.4089 19.5404 14.8989 19.7504 14.6389 20.0104L13.1189 21.5304C12.4989 22.1504 11.4789 22.1504 10.8589 21.5304L9.3389 20.0104C9.0789 19.7504 8.5689 19.5404 8.2089 19.5404H6.0589C5.1789 19.5404 4.4589 18.8203 4.4589 17.9403V15.7904C4.4589 15.4204 4.2489 14.9104 3.9889 14.6604Z" stroke="#888888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 15L15 9" stroke="#888888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14.4945 14.5H14.5035" stroke="#888888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.49451 9.5H9.50349" stroke="#888888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="visual-aids-header" data-role="trigger">
+                    <span><?= $block->escapeHtml(__('Extra Promotion Description')) ?></span>
+                </div>
+            </div>
+            <div class="visual-aids-content" data-role="content">
+                <?= $product->getExtraPromotionDescription() ?>
+            </div>
+        </div>
+    <?php endif; ?>
+    <?php if ($product->getFreeSample()): ?>
+        <div data-role="collapsible" class="visual-aids">
+            <div class="visual-aids-header-container">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3.76999 15.56L7.22999 19.02C9.65999 21.45 10.49 21.41 12.89 19.02L18.46 13.45C20.4 11.51 20.89 10.22 18.46 7.78999L15 4.32999C12.41 1.74 11.28 2.38999 9.33999 4.32999L3.76999 9.89999C1.37999 12.3 1.17999 12.97 3.76999 15.56Z" stroke="#888888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M19.2 16.79L18.54 17.88C17.61 19.43 18.33 20.7 20.14 20.7C21.95 20.7 22.67 19.43 21.74 17.88L21.08 16.79C20.56 15.93 19.71 15.93 19.2 16.79Z" stroke="#888888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12.24C7.56 10.73 13.42 10.68 19 12.11L19.5 12.24" stroke="#888888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="visual-aids-header" data-role="trigger">
+                    <span><?= $block->escapeHtml(__('Free Sample')) ?></span>
+                </div>
+            </div>
+            <div class="visual-aids-content" data-role="content">
+                <?= $product->getFreeSample() ?>
+            </div>
+        </div>
+    <?php endif; ?>
+    <?php if ($product->getPointsDescription()): ?>
+        <div data-role="collapsible" class="visual-aids">
+            <div class="visual-aids-header-container">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.5 11.3V7.04001C20.5 3.01001 19.56 2 15.78 2H8.22C4.44 2 3.5 3.01001 3.5 7.04001V18.3C3.5 20.96 4.96001 21.59 6.73001 19.69L6.73999 19.68C7.55999 18.81 8.80999 18.88 9.51999 19.83L10.53 21.18" stroke="#888888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M8 7H16" stroke="#888888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 11H15" stroke="#888888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M18.211 14.7703L14.671 18.3103C14.531 18.4503 14.401 18.7103 14.371 18.9003L14.181 20.2503C14.111 20.7403 14.451 21.0803 14.941 21.0103L16.291 20.8203C16.481 20.7903 16.751 20.6603 16.881 20.5203L20.421 16.9803C21.031 16.3703 21.321 15.6603 20.421 14.7603C19.531 13.8703 18.821 14.1603 18.211 14.7703Z" stroke="#888888" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17.6992 15.2803C17.9992 16.3603 18.8392 17.2003 19.9192 17.5003" stroke="#888888" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="visual-aids-header" data-role="trigger">
+                    <span><?= $block->escapeHtml(__('Points Description')) ?></span>
+                </div>
+            </div>
+            <div class="visual-aids-content" data-role="content">
+                <?= $product->getPointsDescription() ?>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>
