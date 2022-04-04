@@ -12,7 +12,11 @@
         <referenceBlock name="upsell.product.addto.compare" remove="true"/>
         <referenceBlock name="product.info.stock.sku" remove="true"/>
         <referenceBlock name="content">
-            <container name="product.info.top.wrapper" before="-" htmlTag="div" htmlClass="product-info-top-wrapper"/>
+            <container name="product.info.top.wrapper" before="-" htmlTag="div" htmlClass="product-info-top-wrapper">
+                <block class="Magento\Catalog\Block\Product\View\Description"
+                       name="product.info.visualaids" as="visualaids"
+                       template="Magento_Catalog::product/view/visualaids.phtml" after="page.main.title"/>
+            </container>
         </referenceBlock>
         <referenceBlock name="page.main.title">
             <action method="setTemplate">
@@ -67,13 +71,14 @@
             </arguments>
         </referenceBlock>
         <move element="page.main.title" destination="product.info.top.wrapper" before="-"/>
-        <move element="product.info.main" destination="product.info.top.wrapper" after="page.main.title"/>
+        <move element="product.info.main" destination="product.info.top.wrapper" after="product.info.visualaids"/>
         <move element="product.info.media" destination="product.info.top.wrapper" after="product.info.main"/>
         <move element="product.info.review" destination="page.main.title" after="-"/>
         <move element="product.info.overview" destination="product.info.main" before="-"/>
         <move element="product.info.price" destination="product.info.addtocart"/>
         <referenceBlock name="skip_gallery_before" remove="true"/>
         <referenceBlock name="skip_gallery_after" remove="true"/>
+
         <referenceContainer name="skip_gallery_before.wrapper">
             <block class="Magento\Framework\View\Element\Template" name="skip_gallery_before" template="Magento_Theme::html/skip.phtml">
                 <arguments>
