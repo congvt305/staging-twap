@@ -160,7 +160,7 @@ define([
                 },
                 this
             );
-
+            $('#delivery_message').val('');
             this.selectShippingMethod(pickupShippingMethod);
         },
 
