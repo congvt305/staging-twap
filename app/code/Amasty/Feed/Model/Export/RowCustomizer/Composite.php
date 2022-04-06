@@ -1,26 +1,29 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Export\RowCustomizer;
 
 use Amasty\Feed\Model\Export\Product as ExportProduct;
 
-/**
- * Class Composite
- */
 class Composite extends \Magento\CatalogImportExport\Model\Export\RowCustomizer\Composite
 {
-    protected $_storeId;
+    /**
+     * @var int|string
+     */
+    protected $storeId;
 
-    protected $_skipRelationCustomizer = false;
+    /**
+     * @var bool
+     */
+    protected $skipRelationCustomizer = false;
 
-    protected $_objects = [];
+    /**
+     * @var array
+     */
+    protected $objects = [];
 
+    /**
+     * @var ExportProduct
+     */
     private $exportModel;
 
     /**
@@ -73,7 +76,7 @@ class Composite extends \Magento\CatalogImportExport\Model\Export\RowCustomizer\
      */
     public function setStoreId($storeId)
     {
-        $this->_storeId = $storeId;
+        $this->storeId = $storeId;
     }
 
     /**
@@ -81,7 +84,7 @@ class Composite extends \Magento\CatalogImportExport\Model\Export\RowCustomizer\
      */
     public function skipRelationCustomizer($skipRelationCustomizer)
     {
-        $this->_skipRelationCustomizer = $skipRelationCustomizer;
+        $this->skipRelationCustomizer = $skipRelationCustomizer;
     }
 
     /**
@@ -91,11 +94,11 @@ class Composite extends \Magento\CatalogImportExport\Model\Export\RowCustomizer\
      */
     protected function _getObject($className)
     {
-        if (!isset($this->_objects[$className])) {
-            $this->_objects[$className] = $this->objectManager->create($className, ['export' => $this->exportModel]);
+        if (!isset($this->objects[$className])) {
+            $this->objects[$className] = $this->objectManager->create($className, ['export' => $this->exportModel]);
         }
 
-        return $this->_objects[$className];
+        return $this->objects[$className];
     }
 
     /**
@@ -104,10 +107,10 @@ class Composite extends \Magento\CatalogImportExport\Model\Export\RowCustomizer\
     public function prepareData($collection, $productIds)
     {
         foreach ($this->customizers as $key => $className) {
-            if ($this->_skipRelationCustomizer && $key == 'relationData') {
+            if ($this->skipRelationCustomizer && $key == 'relationData') {
                 continue;
             }
-            $collection->setStoreId($this->_storeId);
+            $collection->setStoreId($this->storeId);
             $this->_getObject($className)->prepareData(clone $collection, $productIds);
         }
     }
@@ -124,7 +127,7 @@ class Composite extends \Magento\CatalogImportExport\Model\Export\RowCustomizer\
         }
 
         foreach ($this->customizers as $key => $className) {
-            if ($this->_skipRelationCustomizer && $key == 'relationData') {
+            if ($this->skipRelationCustomizer && $key == 'relationData') {
                 continue;
             }
             $dataRow = $this->_getObject($className)->addData($dataRow, $productId);

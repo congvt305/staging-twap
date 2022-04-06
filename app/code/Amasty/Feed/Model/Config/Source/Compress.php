@@ -1,28 +1,19 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Config\Source;
 
 use Amasty\Feed\Model\Feed;
 use Magento\Framework\Option\ArrayInterface;
 
-/**
- * Class Compress
- */
 class Compress implements ArrayInterface
 {
     /**#@+
      * Compressing types
      */
-    const COMPRESS_NONE = '';
-    const COMPRESS_ZIP = 'zip';
-    const COMPRESS_GZ = 'gz';
-    const COMPRESS_BZ = 'bz2';
+    public const COMPRESS_NONE = '';
+    public const COMPRESS_ZIP = 'zip';
+    public const COMPRESS_GZ = 'gz';
+    public const COMPRESS_BZ = 'bz2';
     /**#@-*/
 
     /**

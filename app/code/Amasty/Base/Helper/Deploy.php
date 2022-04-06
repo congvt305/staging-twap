@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -28,8 +28,8 @@ class Deploy extends AbstractHelper
      */
     protected $filesystem;
 
-    const DEFAULT_FILE_PERMISSIONS = 0666;
-    const DEFAULT_DIR_PERMISSIONS = 0777;
+    public const DEFAULT_FILE_PERMISSIONS = 0666;
+    public const DEFAULT_DIR_PERMISSIONS = 0777;
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,

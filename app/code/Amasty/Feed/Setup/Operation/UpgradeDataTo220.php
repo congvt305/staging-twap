@@ -1,45 +1,26 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
+declare(strict_types=1);
 
 namespace Amasty\Feed\Setup\Operation;
 
 use Amasty\Feed\Api\Data\ValidProductsInterface;
-use Amasty\Feed\Api\ScheduleRepositoryInterface;
 use Amasty\Feed\Model\Config\Source\ExecuteModeList;
 use Amasty\Feed\Model\Config\Source\FeedStatus;
-use Amasty\Feed\Model\CronProvider;
-use Amasty\Feed\Model\Feed;
+use Amasty\Feed\Model\Feed as FeedModel;
 use Amasty\Feed\Model\Import;
-use Amasty\Feed\Model\ResourceModel\Feed as ResourceFeed;
+use Amasty\Feed\Model\ResourceModel\Feed\Collection;
 use Amasty\Feed\Model\ResourceModel\Feed\CollectionFactory;
-use Amasty\Feed\Model\Schedule\ScheduleFactory;
+use Amasty\Feed\Model\Schedule\ResourceModel\Schedule as ScheduleResource;
 use Amasty\Feed\Model\ValidProduct\ResourceModel\CollectionFactory as ValidProductsCollectionFactory;
+use Amasty\Feed\Setup\Operation\MigrateFeedSchedule\ScheduleRegistry;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 
-/**
- * Class UpgradeDataTo220
- */
-class UpgradeDataTo220
+class UpgradeDataTo220 implements UpgradeDataOperationInterface
 {
     /**
      * @var CollectionFactory
      */
     private $feedCollectionFactory;
-
-    /**
-     * @var ScheduleRepositoryInterface
-     */
-    private $scheduleRepository;
-
-    /**
-     * @var ScheduleFactory
-     */
-    private $scheduleFactory;
 
     /**
      * @var ValidProductsCollectionFactory
@@ -51,96 +32,57 @@ class UpgradeDataTo220
      */
     private $import;
 
+    /**
+     * @var ScheduleRegistry
+     */
+    private $scheduleRegistry;
+
     public function __construct(
         CollectionFactory $feedCollectionFactory,
-        ScheduleRepositoryInterface $scheduleRepository,
-        ScheduleFactory $scheduleFactory,
         ValidProductsCollectionFactory $validProductsFactory,
-        Import $import
+        Import $import,
+        ScheduleRegistry $scheduleRegistry
     ) {
         $this->feedCollectionFactory = $feedCollectionFactory;
-        $this->scheduleRepository = $scheduleRepository;
-        $this->scheduleFactory = $scheduleFactory;
         $this->validProductsFactory = $validProductsFactory;
         $this->import = $import;
+        $this->scheduleRegistry = $scheduleRegistry;
     }
 
-    /**
-     * @param ModuleDataSetupInterface $setup
-     *
-     * @throws \Zend_Db_Exception
-     */
-    public function execute(ModuleDataSetupInterface $setup)
+    public function execute(ModuleDataSetupInterface $moduleDataSetup, string $setupVersion): void
     {
-        $this->import->update('google');
+        if (version_compare($setupVersion, '2.2.0', '<')) {
+            $this->import->update('google');
 
-        /** @var \Amasty\Feed\Model\ResourceModel\Feed\Collection $feedCollection */
-        $feedCollection = $this->feedCollectionFactory->create();
-        $feedCollection->addFieldToFilter('is_template', 0);
+            /** @var Collection $feedCollection */
+            $feedCollection = $this->feedCollectionFactory->create();
+            $feedCollection->addFieldToFilter('is_template', 0);
 
-        /** @var Feed $feed */
-        foreach ($feedCollection->getItems() as $feed) {
-            $this->transferScheduleData($feed);
-            $this->fillDataToNewColumns($feed);
-            $this->addOptionModificatorToExisted($feed);
-        }
-
-        $feedCollection->save();
-
-        $this->removeScheduleDataFromFeedTable($setup);
-    }
-
-    /**
-     * Transfer schedule data from Feed table
-     *
-     * @param Feed $feed
-     */
-    private function transferScheduleData($feed)
-    {
-        if ($feed->getCronDay() != CronProvider::EVERY_DAY) {
-            $this->createScheduleData($feed, $feed->getCronDay());
-        } else {
-            for ($i = 0; $i < CronProvider::EVERY_DAY; $i++) {
-                $this->createScheduleData($feed, $i);
+            /** @var FeedModel $feed */
+            foreach ($feedCollection->getItems() as $feed) {
+                $this->fillDataToNewColumns($feed);
+                $this->addOptionModificatorToExisted($feed);
             }
+
+            $feedCollection->save();
+
+            $this->transferScheduleData($moduleDataSetup);
+        }
+    }
+
+    private function transferScheduleData(ModuleDataSetupInterface $moduleDataSetup)
+    {
+        $scheduleData = (array)$this->scheduleRegistry->registry(ScheduleRegistry::SCHEDULE_DATA);
+        if ($scheduleData) {
+            $moduleDataSetup->getConnection()->insertMultiple(
+                $moduleDataSetup->getTable(ScheduleResource::TABLE_NAME),
+                $scheduleData
+            );
         }
     }
 
     /**
-     * @param \Amasty\Feed\Model\Feed $feed
-     * @param int $cronDay
-     */
-    private function createScheduleData($feed, $cronDay)
-    {
-        /** @var \Amasty\Feed\Model\Schedule $schedule */
-        $schedule = $this->scheduleFactory->create();
-        $schedule->setCronDay($cronDay)
-            ->setCronTime($feed->getCronTime())
-            ->setFeedId($feed->getId());
-
-        $this->scheduleRepository->save($schedule);
-    }
-
-    /**
-     * @param ModuleDataSetupInterface $setup
-     */
-    private function removeScheduleDataFromFeedTable(ModuleDataSetupInterface $setup)
-    {
-        $connection = $setup->getConnection();
-
-        $connection->dropColumn(
-            $setup->getTable(ResourceFeed::TABLE_NAME),
-            'cron_time'
-        );
-
-        $connection->dropColumn(
-            $setup->getTable(ResourceFeed::TABLE_NAME),
-            'cron_day'
-        );
-    }
-
-    /**
-     * @param Feed $feed
+     * @param FeedModel $feed
      */
     private function addOptionModificatorToExisted($feed)
     {
@@ -152,7 +94,7 @@ class UpgradeDataTo220
     }
 
     /**
-     * @param Feed $feed
+     * @param FeedModel $feed
      */
     private function fillDataToNewColumns($feed)
     {
@@ -161,7 +103,9 @@ class UpgradeDataTo220
         $feed->setProductsAmount($validProductsCollection->getSize());
         $feed->setStatus($feed->getGeneratedAt() ? FeedStatus::READY : FeedStatus::NOT_GENERATED);
         $feed->setGenerationType(
-            $feed->getExecuteMode() === 'manual' ? ExecuteModeList::MANUAL_GENERATED : ExecuteModeList::CRON_GENERATED
+            $feed->getExecuteMode() === 'manual'
+                ? ExecuteModeList::MANUAL_GENERATED
+                : ExecuteModeList::CRON_GENERATED
         );
     }
 }

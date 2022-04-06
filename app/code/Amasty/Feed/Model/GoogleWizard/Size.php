@@ -1,27 +1,36 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\GoogleWizard;
 
-/**
- * Class Size
- */
 class Size extends Element
 {
+    /**
+     * @var string
+     */
     protected $type = 'attribute';
 
+    /**
+     * @var string
+     */
     protected $tag = 'g:size';
 
+    /**
+     * @var string
+     */
     protected $modify = 'html_escape';
 
+    /**
+     * @var string
+     */
     protected $name = 'size';
 
+    /**
+     * @var string
+     */
     protected $description = 'Size of the item';
 
+    /**
+     * @var int
+     */
     protected $limit = 100;
 }

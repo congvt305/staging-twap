@@ -1,23 +1,12 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml\GoogleWizard\Edit\Tab;
 
 use Magento\Framework\Exception\NoSuchEntityException;
 
-/**
- * Class General
- *
- * @package Amasty\Feed
- */
 class General extends TabGeneric
 {
-    const HTML_ID_PREFIX = 'feed_googlewizard_general_';
+    public const HTML_ID_PREFIX = 'feed_googlewizard_general_';
 
     /**
      * @var \Amasty\Feed\Model\GoogleWizard

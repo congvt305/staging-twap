@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -38,13 +38,9 @@ class FrequencyTest extends TestCase
     {
         $messageManager = $this->createMock(ManagerInterface::class);
         $redirect = $this->createMock(RedirectInterface::class);
-        $resultRedirect = $this->createPartialMock(
-            Redirect::class,
-            []
-        );
-        $resultRedirectFactory = $this->createPartialMock(
-            RedirectFactory::class,
-            ['create']
+        $resultRedirect = $this->createMock(Redirect::class);
+        $resultRedirectFactory = $this->createMock(
+            RedirectFactory::class
         );
         $request = $this->createPartialMock(
             Http::class,

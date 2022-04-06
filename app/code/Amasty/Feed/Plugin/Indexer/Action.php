@@ -1,19 +1,10 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Plugin\Indexer;
 
 use Amasty\Feed\Model\Indexer\Product\ProductFeedProcessor;
 use Magento\Catalog\Model\Product\Action as ProductAction;
 
-/**
- * Class Action
- */
 class Action
 {
     /**

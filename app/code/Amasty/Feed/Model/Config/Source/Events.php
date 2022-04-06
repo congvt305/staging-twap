@@ -1,23 +1,14 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Config\Source;
 
 use Magento\Framework\Option\ArrayInterface;
 
-/**
- * Class Events
- */
 class Events implements ArrayInterface
 {
-    const SUCCESS = 'success';
-    const UNSUCCESS = 'unsuccess';
-    const NONE = 'none';
+    public const SUCCESS = 'success';
+    public const UNSUCCESS = 'unsuccess';
+    public const NONE = 'none';
 
     /**
      * Return array of options as value-label pairs

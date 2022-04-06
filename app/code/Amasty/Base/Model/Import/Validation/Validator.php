@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -22,6 +22,9 @@ class Validator implements ValidatorInterface
         $this->validationData = $validationData;
     }
 
+    /**
+     * @var array
+     */
     protected $errors = [];
 
     /**

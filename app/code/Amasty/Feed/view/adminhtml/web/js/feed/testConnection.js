@@ -6,7 +6,8 @@ define([
         messageSpan = jQuery(".feed-connection-result"),
         xhr = null;
 
-    function changeButtonState() {
+    function changeButtonState()
+    {
         if (jQuery("#feed_delivery_enabled").val() === "1") {
             testButton.show();
             messageSpan.show();
@@ -16,7 +17,8 @@ define([
         }
     }
 
-    return function main(config) {
+    return function main(config)
+    {
         changeButtonState();
         jQuery("#feed_delivery_enabled").change(changeButtonState);
 

@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -17,6 +17,9 @@ use Amasty\Base\Model\Config;
 
 class Notification extends Field
 {
+    /**
+     * @var string
+     */
     protected $_template = 'Amasty_Base::notification.phtml';
 
     /**

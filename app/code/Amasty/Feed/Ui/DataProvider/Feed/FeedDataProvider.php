@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Ui\DataProvider\Feed;
 
@@ -12,9 +6,6 @@ use Amasty\Feed\Model\ResourceModel\Feed\CollectionFactory;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 use Magento\Framework\Escaper;
 
-/**
- * Class FeedDataProvider
- */
 class FeedDataProvider extends AbstractDataProvider
 {
     /**

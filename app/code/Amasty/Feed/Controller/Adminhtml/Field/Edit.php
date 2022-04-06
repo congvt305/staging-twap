@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\Field;
 
@@ -41,7 +35,7 @@ class Edit extends AbstractField
             if (!$model->getId()) {
                 $this->messageManager->addErrorMessage(__('This Condition-Based Attribute no longer exists.'));
 
-                return $this->_redirect('amfeed/*');
+                return $this->resultRedirectFactory->create()->setPath('amfeed/*');
             }
             $resultPage->getConfig()->getTitle()->prepend($model->getName());
         }

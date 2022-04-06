@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Schedule\ResourceModel;
 
@@ -12,9 +6,6 @@ use Amasty\Feed\Api\Data\ScheduleInterface;
 use Amasty\Feed\Model\CronProvider;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
-/**
- * Class Collection
- */
 class Collection extends AbstractCollection
 {
     /**

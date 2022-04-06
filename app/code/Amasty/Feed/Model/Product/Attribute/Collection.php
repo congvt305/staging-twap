@@ -1,20 +1,9 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Product\Attribute;
 
 use Magento\Framework\DB\Select;
 
-/**
- * Class Collection
- *
- * @package Amasty\Feed
- */
 class Collection extends \Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection
 {
     /**

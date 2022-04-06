@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml;
 
@@ -20,5 +14,5 @@ abstract class AbstractCategory extends \Magento\Backend\App\Action
      *
      * @see _isAllowed()
      */
-    const ADMIN_RESOURCE = 'Amasty_Feed::feed';
+    public const ADMIN_RESOURCE = 'Amasty_Feed::feed';
 }

@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\Feed;
 
@@ -83,7 +77,7 @@ class Preview extends AbstractFeed
     /**
      * Use only one page
      */
-    const PAGE = 0;
+    public const PAGE = 0;
 
     public function execute()
     {

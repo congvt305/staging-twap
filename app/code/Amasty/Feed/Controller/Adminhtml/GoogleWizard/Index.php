@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\GoogleWizard;
 
@@ -12,11 +6,6 @@ use Amasty\Feed\Controller\Adminhtml\AbstractGoogleWizard;
 use Amasty\Feed\Model\RegistryContainer;
 use Magento\Framework\Controller\ResultFactory;
 
-/**
- * Class Index
- *
- * @package Amasty\Feed
- */
 class Index extends AbstractGoogleWizard
 {
     /**

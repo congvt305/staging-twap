@@ -1,27 +1,33 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\GoogleWizard;
 
 use Amasty\Feed\Model\RegistryContainer;
 
-/**
- * Class Noidentifierexists
- */
 class Noidentifierexists extends Element
 {
+    /**
+     * @var string
+     */
     protected $type = RegistryContainer::TYPE_CUSTOM_FIELD;
 
+    /**
+     * @var string
+     */
     protected $tag = 'g:identifier_exists';
 
+    /**
+     * @var string
+     */
     protected $format = 'as_is';
 
+    /**
+     * @var string
+     */
     protected $value = 'FALSE';
 
+    /**
+     * @var string
+     */
     protected $template = '<:tag>:value</:tag>' . PHP_EOL;
 }

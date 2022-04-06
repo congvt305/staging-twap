@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml\GoogleWizard\Edit\Tab;
 
@@ -13,11 +7,6 @@ use Amasty\Feed\Block\Adminhtml\Category\Edit\Tab\General as CategoryGeneral;
 use Amasty\Feed\Model\Category\Notes;
 use Magento\Framework\Exception\LocalizedException;
 
-/**
- * Class ExcludeCategories
- *
- * @package Amasty\Feed
- */
 class ExcludeCategories extends TabGeneric
 {
     /**

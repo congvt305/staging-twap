@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\Category;
 
@@ -16,11 +10,6 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 
-/**
- * Class Edit
- *
- * @package Amasty\Feed
- */
 class Edit extends AbstractCategory
 {
     /**
@@ -59,11 +48,11 @@ class Edit extends AbstractCategory
             } catch (NoSuchEntityException $exception) {
                 $this->messageManager->addErrorMessage(__('This category no longer exists.'));
 
-                return $this->_redirect('amfeed/*');
+                return $this->resultRedirectFactory->create()->setPath('amfeed/*');
             } catch (\Exception $exception) {
                 $this->messageManager->addErrorMessage($exception->getMessage());
 
-                return $this->_redirect('amfeed/*');
+                return $this->resultRedirectFactory->create()->setPath('amfeed/*');
             }
         }
 

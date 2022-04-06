@@ -1,18 +1,7 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml\Field\Edit\Button;
 
-/**
- * Class Reset
- *
- * @package Amasty\Feed
- */
 class Reset extends Generic
 {
     /**

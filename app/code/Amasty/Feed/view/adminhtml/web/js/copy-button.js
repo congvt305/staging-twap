@@ -4,7 +4,8 @@ define([
 ], function ($) {
     'use strict';
 
-    function fallbackCopyTextToClipboard(text) {
+    function fallbackCopyTextToClipboard(text)
+    {
         var textArea = document.createElement("textarea"),
             result = false;
         textArea.value = text;

@@ -1,20 +1,17 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Rule;
 
+use Amasty\Feed\Model\Feed;
 use Amasty\Feed\Model\InventoryResolver;
-use Magento\Catalog\Model\Product\Attribute\Source\Status;
+use Amasty\Feed\Model\Rule\Condition\Sql\Builder;
 use Amasty\Feed\Model\ValidProduct\ResourceModel\ValidProduct;
+use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 use Magento\Framework\DB\Select;
-use Magento\Rule\Model\Condition\Sql\Builder;
+use Magento\Store\Model\StoreManagerInterface;
 
 class GetValidFeedProducts
 {
@@ -43,36 +40,38 @@ class GetValidFeedProducts
      */
     private $inventoryResolver;
 
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
     public function __construct(
         RuleFactory $ruleFactory,
         CollectionFactory $productCollectionFactory,
         Builder $sqlBuilder,
-        InventoryResolver $inventoryResolver
+        InventoryResolver $inventoryResolver,
+        StoreManagerInterface $storeManager
     ) {
         $this->productCollectionFactory = $productCollectionFactory;
         $this->ruleFactory = $ruleFactory;
         $this->sqlBuilder = $sqlBuilder;
         $this->inventoryResolver = $inventoryResolver;
+        $this->storeManager = $storeManager;
     }
 
-    /**
-     * @param \Amasty\Feed\Model\Feed $model
-     * @param array $ids
-     *
-     * @return array
-     */
-    public function execute(\Amasty\Feed\Model\Feed $model, array $ids = [])
+    public function execute(Feed $model, array $ids = []): void
     {
         $rule = $this->ruleFactory->create();
         $rule->setConditionsSerialized($model->getConditionsSerialized());
         $rule->setStoreId($model->getStoreId());
+        $this->storeManager->setCurrentStore($model->getStoreId());
         $model->setRule($rule);
         $this->updateIndex($model, $ids);
     }
 
-    public function updateIndex(\Amasty\Feed\Model\Feed $model, array $ids = [])
+    public function updateIndex(Feed $model, array $ids = []): void
     {
-        /** @var $productCollection \Magento\Catalog\Model\ResourceModel\Product\Collection */
+        /** @var $productCollection Collection */
         $productCollection = $this->prepareCollection($model, $ids);
         $this->productIds = [];
 
@@ -99,15 +98,9 @@ class GetValidFeedProducts
         $productCollection->getConnection()->query($query);
     }
 
-    /**
-     * @param \Amasty\Feed\Model\Feed $model
-     * @param array $ids
-     *
-     * @return \Magento\Catalog\Model\ResourceModel\Product\Collection
-     */
-    private function prepareCollection(\Amasty\Feed\Model\Feed $model, $ids = [])
+    private function prepareCollection(Feed $model, array $ids = []): AbstractCollection
     {
-        /** @var $productCollection \Magento\Catalog\Model\ResourceModel\Product\Collection */
+        /** $productCollection Collection */
         $productCollection = $this->productCollectionFactory->create();
         $productCollection->addStoreFilter($model->getStoreId());
 

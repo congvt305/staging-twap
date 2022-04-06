@@ -57,22 +57,23 @@ class Grid extends \Magento\Reports\Block\Adminhtml\Sales\Sales\Grid
         $currencyCode = $this->getCurrentCurrencyCode();
         $rate = $this->getRate($currencyCode);
 
-        $this->addColumn(
+        $this->addColumnAfter(
             'atv',
             [
                 'header' => __('ATV'),
                 'type' => 'currency',
                 'currency_code' => $currencyCode,
                 'index' => 'atv',
-                'total' => 'sum',
                 'sortable' => false,
                 'renderer' => Currency::class,
                 'rate' => $rate,
                 'header_css_class' => 'col-atv',
                 'column_css_class' => 'col-atv'
-            ]
+            ],
+            'total_discount_amount'
         );
-        $this->addColumn(
+
+        $this->addColumnAfter(
             'discount_rate',
             [
                 'header' => __('Discount Rate (%)'),
@@ -81,30 +82,90 @@ class Grid extends \Magento\Reports\Block\Adminhtml\Sales\Sales\Grid
                 'sortable' => false,
                 'header_css_class' => 'col-discount-rate',
                 'column_css_class' => 'col-discount-rate'
-            ]
+            ],
+            'atv'
         );
 
-        $this->addColumn(
+        $this->addColumnAfter(
             'sku_value',
             [
                 'header' => __('SKU Value'),
                 'type' => 'currency',
                 'currency_code' => $currencyCode,
                 'index' => 'sku_value',
+                'sortable' => false,
+                'renderer' => Currency::class,
+                'rate' => $rate,
+                'header_css_class' => 'col-sku-value',
+                'column_css_class' => 'col-sku-value'
+            ],
+            'discount_rate'
+        );
+
+        $this->addColumnAfter(
+            'net_sales',
+            [
+                'header' => __('Net Sales'),
+                'type' => 'float',
+                'currency_code' => $currencyCode,
+                'index' => 'net_sales',
                 'total' => 'sum',
                 'sortable' => false,
                 'renderer' => Currency::class,
                 'rate' => $rate,
                 'header_css_class' => 'col-sku-value',
                 'column_css_class' => 'col-sku-value'
-            ]
+            ],
+            'total_discount_amount'
         );
 
-        $this->addColumnsOrder('atv', 'total_canceled_amount');
-        $this->addColumnsOrder('discount_rate', 'atv');
-        $this->addColumnsOrder('sku_value', 'discount_rate');
+        $this->addColumnAfter(
+            'total_income_amount_before_discount',
+            [
+                'header' => __('Sales Total'),
+                'type' => 'currency',
+                'currency_code' => $currencyCode,
+                'index' => 'total_income_amount_before_discount',
+                'total' => 'sum',
+                'sortable' => false,
+                'renderer' => Currency::class,
+                'rate' => $rate,
+                'header_css_class' => 'col-sku-value',
+                'column_css_class' => 'col-sku-value'
+            ],
+            'total_qty_ordered'
+        );
 
-        return parent::_prepareColumns();
+        $this->addColumnAfter(
+            'total_refunded_amount_actual',
+            [
+                'header' => __('Refunded'),
+                'type' => 'currency',
+                'currency_code' => $currencyCode,
+                'index' => 'total_refunded_amount_actual',
+                'total' => 'sum',
+                'sortable' => false,
+                'renderer' => Currency::class,
+                'rate' => $rate,
+                'header_css_class' => 'col-sku-value',
+                'column_css_class' => 'col-sku-value'
+            ],
+            'total_invoiced_amount'
+        );
+
+        $this->addColumnsOrder('total_canceled_amount', 'total_refunded_amount');
+
+        parent::_prepareColumns();
+
+        $this->getColumn('period')->setData('header', __('Date'));
+        $this->getColumn('total_income_amount')->setData('header', __('Invoice'));
+        $this->removeColumn('total_tax_amount');
+        $this->removeColumn('total_shipping_amount');
+        $this->removeColumn('total_invoiced_amount');
+        $this->removeColumn('total_canceled_amount');
+        $this->removeColumn('total_refunded_amount');
+
+        return $this;
     }
 
     /**

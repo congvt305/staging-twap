@@ -1,20 +1,9 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml\GoogleWizard\Edit\Tab;
 
 use Amasty\Feed\Block\Adminhtml\Feed\Edit\Tab\Buttons\TestConnection;
 
-/**
- * Class Delivery
- *
- * @package Amasty\Feed
- */
 class Delivery extends TabGeneric
 {
     /**

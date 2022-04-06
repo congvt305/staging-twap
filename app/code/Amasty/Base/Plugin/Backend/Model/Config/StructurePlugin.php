@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -24,7 +24,7 @@ class StructurePlugin
     /**
      * Fieldset for each tab in configuration us modules
      */
-    const AMASTY_ADVERTISE = [
+    public const AMASTY_ADVERTISE = [
         'amasty_advertise' => [
                 'id' => 'amasty_base_advertise',
                 'type' => 'text',
@@ -51,7 +51,7 @@ class StructurePlugin
     /**
      * Tab name
      */
-    const AMASTY_TAB_NAME = 'amasty';
+    public const AMASTY_TAB_NAME = 'amasty';
 
     /**
      * @var AdsProvider

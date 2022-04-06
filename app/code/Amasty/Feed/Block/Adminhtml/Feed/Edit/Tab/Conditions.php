@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml\Feed\Edit\Tab;
 
@@ -13,11 +7,6 @@ use Magento\Backend\Block\Widget\Form;
 use Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
 
-/**
- * Class Conditions
- *
- * @package Amasty\Feed
- */
 class Conditions extends Generic implements TabInterface
 {
     /**
@@ -109,6 +98,8 @@ class Conditions extends Generic implements TabInterface
 
         $renderer = $this->rendererFieldset->setTemplate(
             'Magento_CatalogRule::promo/fieldset.phtml'
+        )->setNameInLayout(
+            $this->getNameInLayout() . '_renderer'
         )->setNewChildUrl(
             $this->getUrl('amfeed/feed/newConditionHtml/form/rule_conditions_fieldset')
         );

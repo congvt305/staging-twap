@@ -1,20 +1,9 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Category;
 
 use Magento\Framework\Model\AbstractModel;
 
-/**
- * Class Mapping Model
- *
- * @package Amasty\Feed
- */
 class Mapping extends AbstractModel
 {
     protected function _construct()

@@ -1,21 +1,10 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml\GoogleWizard\Edit\Tab\Content;
 
 use Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
 use Amasty\Feed\Model\Export\Product as ExportProduct;
 
-/**
- * Class Element
- *
- * @package Amasty\Feed
- */
 class Element extends \Magento\Backend\Block\Template implements RendererInterface
 {
     /**

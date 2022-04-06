@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Schedule;
 
@@ -12,9 +6,6 @@ use Amasty\Feed\Api\Data\ScheduleInterface;
 use Amasty\Feed\Model\Schedule\ResourceModel\Schedule as ScheduleResourceModel;
 use Magento\Framework\Model\AbstractModel;
 
-/**
- * Class Schedule
- */
 class Schedule extends AbstractModel implements ScheduleInterface
 {
     /**

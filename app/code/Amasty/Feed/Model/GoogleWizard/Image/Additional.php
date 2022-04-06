@@ -1,30 +1,39 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\GoogleWizard\Image;
 
 use Amasty\Feed\Model\Export\Product as ExportProduct;
 
-/**
- * Class Additional
- */
 class Additional extends \Amasty\Feed\Model\GoogleWizard\Element
 {
+    /**
+     * @var string
+     */
     protected $type = 'images';
 
+    /**
+     * @var string
+     */
     protected $tag = 'g:additional_image_link';
 
+    /**
+     * @var string
+     */
     protected $name = 'additional image link';
 
+    /**
+     * @var string
+     */
     protected $description = 'Additional URLs of images of the item';
 
+    /**
+     * @var bool
+     */
     protected $required = false;
 
+    /**
+     * @var int
+     */
     protected $limit = 2000;
 
     public function setImageIdx($idx)

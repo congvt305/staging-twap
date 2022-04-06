@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model;
 
@@ -12,11 +6,11 @@ use Magento\Framework\App\ResourceConnection;
 
 class JobManager
 {
-    const JOB_STATUS_DONE = 0;
-    const JOB_STATUS_FAILED = 1;
-    const JOB_STATUS_PROCESSING = 2;
+    public const JOB_STATUS_DONE = 0;
+    public const JOB_STATUS_FAILED = 1;
+    public const JOB_STATUS_PROCESSING = 2;
 
-    const DEFAULT_JOBS_LIMIT = 4;
+    public const DEFAULT_JOBS_LIMIT = 4;
 
     /**
      * @var array
@@ -33,6 +27,9 @@ class JobManager
      */
     private $resourceConnection;
 
+    /**
+     * @var int
+     */
     private $maxJobs;
 
     public function __construct(
@@ -103,6 +100,7 @@ class JobManager
                     'Error while waiting for feed chunk generated; Status: ' . $status
                 );
             }
+            unset($this->jobsInProgress[$pid]);
 
             yield $pid;
         }
@@ -115,7 +113,12 @@ class JobManager
 
     public function waitForAllJobs()
     {
-        return $this->waitForJobs($this->allPids);
+        $result = [];
+        foreach ($this->waitForJobCompletion() as $pid) {
+            $result[] = $pid;
+        }
+
+        return $result;
     }
 
     /**

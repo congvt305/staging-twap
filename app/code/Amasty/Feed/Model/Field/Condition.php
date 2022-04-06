@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Field;
 
@@ -22,15 +16,15 @@ class Condition extends AbstractModel
     /**#@+
      * Table columns
      */
-    const COLUMN_CONDITION = 'conditions_serialized';
-    const COLUMN_RESULT = 'result_serialized';
-    const COLUMN_FIELD_ID = 'feed_field_id';
+    public const COLUMN_CONDITION = 'conditions_serialized';
+    public const COLUMN_RESULT = 'result_serialized';
+    public const COLUMN_FIELD_ID = 'feed_field_id';
     /**#@-*/
 
     /**
      * Index for result array
      */
-    const RESULT_KEY = 'result';
+    public const RESULT_KEY = 'result';
 
     /**
      * @var \Magento\Framework\Json\Helper\Data

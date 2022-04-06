@@ -1,26 +1,17 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Field\ResourceModel;
 
 use Magento\Framework\DB\Select;
 use Magento\Framework\Model\ResourceModel\Db\VersionControl\AbstractDb;
 
-/**
- * Class Conditions
- *
- * @package Amasty\Feed
- */
 class Condition extends AbstractDb
 {
+    public const TABLE_NAME = 'amasty_feed_field_conditions';
+
     protected function _construct()
     {
-        $this->_init('amasty_feed_field_conditions', 'entity_id');
+        $this->_init(self::TABLE_NAME, 'entity_id');
     }
 
     /**

@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Export;
 
@@ -26,41 +20,41 @@ class Product extends \Magento\CatalogImportExport\Model\Export\Product
     /**#@+
      * Attributes prefixes
      */
-    const PREFIX_CATEGORY_ATTRIBUTE = 'category';
+    public const PREFIX_CATEGORY_ATTRIBUTE = 'category';
 
-    const PREFIX_CATEGORY_ID_ATTRIBUTE = 'category_id';
+    public const PREFIX_CATEGORY_ID_ATTRIBUTE = 'category_id';
 
-    const PREFIX_CATEGORY_PATH_ATTRIBUTE = 'category_path';
+    public const PREFIX_CATEGORY_PATH_ATTRIBUTE = 'category_path';
 
-    const PREFIX_MAPPED_CATEGORY_ATTRIBUTE = 'mapped_category';
+    public const PREFIX_MAPPED_CATEGORY_ATTRIBUTE = 'mapped_category';
 
-    const PREFIX_MAPPED_CATEGORY_PATHS_ATTRIBUTE = 'mapped_category_path';
+    public const PREFIX_MAPPED_CATEGORY_PATHS_ATTRIBUTE = 'mapped_category_path';
 
-    const PREFIX_CUSTOM_FIELD_ATTRIBUTE = 'custom_field';
+    public const PREFIX_CUSTOM_FIELD_ATTRIBUTE = 'custom_field';
 
-    const PREFIX_PRODUCT_ATTRIBUTE = 'product';
+    public const PREFIX_PRODUCT_ATTRIBUTE = 'product';
 
-    const PREFIX_BASIC_ATTRIBUTE = 'basic';
+    public const PREFIX_BASIC_ATTRIBUTE = 'basic';
 
-    const PREFIX_INVENTORY_ATTRIBUTE = 'inventory';
+    public const PREFIX_INVENTORY_ATTRIBUTE = 'inventory';
 
-    const PREFIX_IMAGE_ATTRIBUTE = 'image';
+    public const PREFIX_IMAGE_ATTRIBUTE = 'image';
 
-    const PREFIX_GALLERY_ATTRIBUTE = 'gallery';
+    public const PREFIX_GALLERY_ATTRIBUTE = 'gallery';
 
-    const PREFIX_PRICE_ATTRIBUTE = 'price';
+    public const PREFIX_PRICE_ATTRIBUTE = 'price';
 
-    const PREFIX_URL_ATTRIBUTE = 'url';
+    public const PREFIX_URL_ATTRIBUTE = 'url';
 
-    const PREFIX_OTHER_ATTRIBUTES = 'other';
+    public const PREFIX_OTHER_ATTRIBUTES = 'other';
 
-    const PREFIX_ADVANCED_ATTRIBUTE = 'advanced';
+    public const PREFIX_ADVANCED_ATTRIBUTE = 'advanced';
     /**#@-*/
 
     /**
      * The shift position of the separator
      */
-    const SHIFT_OF_SEPARATOR_POSITION = 1;
+    public const SHIFT_OF_SEPARATOR_POSITION = 1;
 
     /**
      * @var array
@@ -640,15 +634,13 @@ class Product extends \Magento\CatalogImportExport\Model\Export\Product
                         ?: $this->getAttributeValue($childDataRow, $code);
 
                     if ($code === 'is_in_stock') {
-                        $stockStatusBySku = $this->stockRegistry->getStockStatusBySku(
-                            $dataRow['sku'],
-                            $this->_storeManager->getWebsite()->getId()
-                        )->getStockStatus();
-
-                        if ($stockStatusBySku !== null) {
-                            $attributeValue = $stockStatusBySku;
-                        } else {
+                        if ($this->getAttributeValue($dataRow, $code) !== false) {
                             $attributeValue = $this->getAttributeValue($dataRow, $code);
+                        } elseif (isset($dataRow['sku'])) {
+                            $attributeValue = $this->stockRegistry->getStockStatusBySku(
+                                $dataRow['sku'],
+                                $this->_storeManager->getWebsite()->getId()
+                            )->getStockStatus();
                         }
                     }
 
@@ -973,6 +965,9 @@ class Product extends \Magento\CatalogImportExport\Model\Export\Product
         )->where(
             "ent.entity_id IN (?)",
             $productIds
+        )->where(
+            "mgv.store_id IN (?)",
+            [\Magento\Store\Model\Store::DEFAULT_STORE_ID, $this->_storeId]
         );
         $rowMediaGallery = [];
         $stmt = $this->_connection->query($select);

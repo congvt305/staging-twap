@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\Feed;
 
@@ -82,7 +76,7 @@ abstract class AbstractMassAction extends \Amasty\Feed\Controller\Adminhtml\Abst
             $this->logger->critical($e);
         }
 
-        $this->_redirect('amfeed/*/index');
+        return $this->resultRedirectFactory->create()->setPath('amfeed/*/index');
     }
 
     /**
