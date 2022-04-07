@@ -26,6 +26,7 @@ class DefaultConfigProvider
      * Get country path
      */
     const COUNTRY_CODE_PATH = 'general/country/default';
+    const NOTE_TEXT_PATH = 'redinvoice/general/note_text';
 
     /**
      * @var Country
@@ -57,6 +58,7 @@ class DefaultConfigProvider
         $countryCode = $this->getCountryByWebsite();
         $states = $this->getRegionsOfCountry($countryCode);
         $result['stateList'] = $states;
+        $result['noteText'] = $this->getNoteText();
         return $result;
     }
 
@@ -84,5 +86,15 @@ class DefaultConfigProvider
         $regionCollection = $this->country->loadByCode($countryCode)->getRegions();
         $regions = $regionCollection->loadData()->toOptionArray(false);
         return $regions;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNoteText():string {
+        return $this->scopeConfig->getValue(
+            self::NOTE_TEXT_PATH,
+            ScopeInterface::SCOPE_WEBSITES
+        );
     }
 }
