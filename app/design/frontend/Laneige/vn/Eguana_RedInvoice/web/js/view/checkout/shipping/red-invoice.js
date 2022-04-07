@@ -19,6 +19,7 @@ define([
 	'use strict';
 
     var states = window.checkoutConfig.stateList;
+    var cities = "";
     var note = window.checkoutConfig.noteText;
 
     $(document).on('change', 'input[type="radio"]', function(){
@@ -66,7 +67,7 @@ define([
                 showLoader: true,
                 data: {selectedValue:  selectedValue},
             }).done(function (data) {
-                var cities = data.cities;
+                cities = data.cities;
                 step.availableCities.removeAll();
                 if (cities == "") {
                     step.availableCities.push(

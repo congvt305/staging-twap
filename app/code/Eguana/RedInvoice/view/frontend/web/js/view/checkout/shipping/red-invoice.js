@@ -19,8 +19,7 @@ define([
 	'use strict';
 
     var states = window.checkoutConfig.stateList;
-    var note = window.checkoutConfig.noteText;
-
+    var cities = "";
     $(document).on('change', 'input[type="radio"]', function(){
         var isApply = $(this).val();
         $(".company-name-error, .tax-code-error, .state-error, .road-name-error").css("display", "none");
@@ -51,9 +50,6 @@ define([
         initialize: function () {
             this._super();
             return this;
-        },
-        getNoteText: function () {
-            return note;
         },
         updateCities: function () {
 		    var step = this;

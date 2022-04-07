@@ -88,6 +88,9 @@ class DefaultConfigProvider
         return $regions;
     }
 
+    /**
+     * @return string
+     */
     public function getNoteText():string {
         return $this->scopeConfig->getValue(
             self::NOTE_TEXT_PATH,
