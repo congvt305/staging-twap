@@ -22,7 +22,6 @@
                     </container>
                     <container name="product.info.main.wrapper" htmlTag="div" htmlClass="product-info-main-wrapper"  after="product.info.meida.wrapper">
                         <container name="product.info.main.attribute" htmlTag="div" htmlClass="product-info-main-attribute"  before="-">
-
                             <container name="product.info.attribute.social.wrapper" htmlTag="div" htmlClass="product-social-links"  before="-">
                                 <block class="Magento\Framework\View\Element\Template" name="product.info.attribute.social" template="Eguana_Share::share_icon_list.phtml" before="-"/>
                             </container>
