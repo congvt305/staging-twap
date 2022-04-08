@@ -3,6 +3,7 @@
 namespace CJ\Payoo\Controller\Payment;
 
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class Status
@@ -70,33 +71,24 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
      */
     public function execute()
     {
-        $session = $this->request->getParam('session');
-        $orderNo = $this->request->getParam('order_no');
-        $status = $this->request->getParam('status');
-        $checksum = $this->request->getParam('checksum');
+        $session = $this->request->getParam('session', '');
+        $orderCode = $this->request->getParam('order_no', '');
+        $status = $this->request->getParam('status', '');
+        $checksum = $this->request->getParam('checksum', '');
 
-        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
-        $key = $this->scopeConfig->getValue('payment/paynow/checksum_key', $storeScope);
-        $cs = hash('sha512', $key . $session . '.' . $orderNo . '.' . $status);
+        $key = $this->scopeConfig->getValue('payment/paynow/checksum_key', ScopeInterface::SCOPE_STORE);
+        $cs = hash('sha512', $key . $session . '.' . $orderCode . '.' . $status);
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
 
         if (strtoupper($cs) == strtoupper($checksum)) {
-            $order_code = @$_GET['order_no'];
-
-            if ($order_code != '' && $status == 1) {
-                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/test.log');
-                $logger = new \Zend_Log();
-                $logger->addWriter($writer);
-                $logger->info('--' . get_class());
-                $logger->info('3. before exec function updateOrderStatus');
+            if ($orderCode != '' && $status == 1) {
                 //complete
-                $this->UpdateOrderStatus($order_code, $this->config->getStatusPaymentSuccess());
-                $logger->info('4. after exec function updateOrderStatus');
+                $this->UpdateOrderStatus($orderCode, $this->config->getStatusPaymentSuccess());
                 $resultRedirect->setPath('checkout/onepage/success');
                 return $resultRedirect;
             } else {
                 //canceled
-                $this->UpdateOrderStatus($order_code, \Magento\Sales\Model\Order::STATE_CANCELED);
+                $this->UpdateOrderStatus($orderCode, \Magento\Sales\Model\Order::STATE_CANCELED);
             }
         }
 
