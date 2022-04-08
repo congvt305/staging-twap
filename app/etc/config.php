@@ -825,6 +825,7 @@ return [
         'MagePal_Core' => 1,
         'MagePal_Reindex' => 1,
         'PayPal_Braintree' => 0,
+        'CJ_Payoo' => 1,
         'PayPal_BraintreeGraphQl' => 0,
         'Payoo_PayNow' => 1,
         'Eguana_Pixlee' => 1,
