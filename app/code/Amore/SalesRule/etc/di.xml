@@ -3,6 +3,6 @@
 	<preference for="Magento\SalesRule\Model\RulesApplier" type="Amore\SalesRule\Override\Model\RulesApplier" />
 	<preference for="Magento\SalesRule\Model\Quote\Discount" type="Amore\SalesRule\Override\Model\Quote\Discount" />
     <type name="Magento\SalesRule\Model\Rule">
-        <plugin name="amoreSalesRuleAroundSave" type="Amore\SalesRule\Plugin\Rule" sortOrder="500"/>
+        <plugin name="amoreSalesRuleBeforeSave" type="Amore\SalesRule\Plugin\Rule" sortOrder="100"/>
     </type>
 </config>
