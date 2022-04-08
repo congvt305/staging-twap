@@ -56,6 +56,9 @@ class Index extends Action implements HttpPostActionInterface, CsrfAwareActionIn
                 //canceled
                 $this->UpdateOrderStatus($order_code,\Magento\Sales\Model\Order::STATE_CANCELED);
             }
+            echo 'NOTIFY_RECEIVED';
+        } else {
+            echo "<h3>Listening....</h3>";
         }
     }
 

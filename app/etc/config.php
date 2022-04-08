@@ -747,6 +747,7 @@ return [
         'Klarna_Onsitemessaging' => 1,
         'Klarna_KpGraphQl' => 1,
         'PayPal_Braintree' => 0,
+        'CJ_Payoo' => 1,
         'PayPal_BraintreeGraphQl' => 0,
         'Payoo_PayNow' => 1,
         'Eguana_Pixlee' => 1,
