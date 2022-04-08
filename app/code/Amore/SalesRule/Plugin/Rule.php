@@ -8,7 +8,7 @@ class Rule
     /**
      * Before plugin needed for existing and new rules alike
      * @param SalesRule $subject
-     * @return SalesRule
+     * @return array
      */
     public function beforeSave(SalesRule $subject)
     {
