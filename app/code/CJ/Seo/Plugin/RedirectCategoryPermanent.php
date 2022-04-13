@@ -96,7 +96,7 @@ class RedirectCategoryPermanent
      */
     protected function getCategory($subject)
     {
-        $categoryId = $this->request->getParam('page_id') ?? $this->request->getParam('id');
+        $categoryId = $subject->getRequest()->getParam('page_id') ?? $subject->getRequest()->getParam('id');
         return $this->categoryRepository->get($categoryId, $this->storeManager->getStore()->getId());
     }
 }

@@ -15,6 +15,7 @@
             <general>
                 <active>0</active>
                 <debug>1</debug>
+                <note_text><![CDATA[Lưu ý: Hóa đơn sẽ xuất theo thông tin mua hàng nếu quý khách không đăng ký thông tin xuất hóa đơn tại thời điểm mua hàng]]></note_text>
             </general>
         </redinvoice>
     </default>

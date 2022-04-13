@@ -103,7 +103,10 @@
                     <argument name="sort_order" xsi:type="string">20</argument>
                 </arguments>
             </block>
-            <container name="product.info.attribute.size" htmlTag="div" htmlClass="product attribute size" after="product.info.skinconcern">
+            <block class="Magento\Catalog\Block\Product\View\Description"
+                   name="product.info.visualaids" as="visualaids"
+                   template="Magento_Catalog::product/view/visualaids.phtml" after="product.info.skinconcern"/>
+            <container name="product.info.attribute.size" htmlTag="div" htmlClass="product attribute size" after="product.info.visualaids">
                 <block class="Magento\Catalog\Block\Product\View\Description"
                        name="product.info.size" as="size"
                        template="Magento_Catalog::product/view/attribute.phtml">
