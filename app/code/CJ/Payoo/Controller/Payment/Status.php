@@ -95,4 +95,36 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
         $resultRedirect->setPath('checkout/cart');
         return $resultRedirect;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    function UpdateOrderStatus($order_no, $status)
+    {
+        $order = $this->orderFactory->create()->loadByIncrementId($order_no);
+        $statusPaymentSuccess = $this->config->getStatusPaymentSuccess();
+        if ($status === $statusPaymentSuccess) {
+            if (!$order->hasInvoices()) {
+                $invoice = $this->invoiceService->prepareInvoice($order);
+                $invoice->register();
+                $invoice->pay();
+
+                $transactionSave = $this->transaction->addObject(
+                    $invoice
+                )->addObject(
+                    $invoice->getOrder()
+                );
+                $transactionSave->save();
+            }
+            $message = 'Payoo Transaction Complete';
+        } else {
+            $message = 'Payoo Transaction Cancel';
+        }
+        $order->setStatus($status)->save();
+        $order->addStatusHistoryComment(
+            __($message, $status)
+        )
+            ->setIsCustomerNotified(true)
+            ->save();
+    }
 }
