@@ -291,7 +291,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
             $orderSubTotal = abs(round($orderData->getSubtotalInclTax() + $this->getBundleExtraAmount($orderData) + $this->getCatalogRuleDiscountAmount($orderData)));
             $orderGrandTotal = $orderData->getGrandTotal() == 0 ? $orderData->getGrandTotal() : abs(round($orderData->getGrandTotal() - $orderData->getShippingAmount()));
-
+            $mileageUsedAmount = $this->getMileageUsedAmount($orderData);
             $bindData[] = [
                 'vkorg' => $this->config->getSalesOrg('store', $storeId),
                 'kunnr' => $this->config->getClient('store', $storeId),
@@ -330,9 +330,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'hpno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'waerk' => $orderData->getOrderCurrencyCode(),
                 'nsamt' => $orderSubTotal,
-                'dcamt' => $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal),
-                'slamt' => $orderGrandTotal,
-                'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : round($orderData->getRewardPointsBalance()),
+                'dcamt' => $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal) - $mileageUsedAmount,
+                'slamt' => $orderGrandTotal + $mileageUsedAmount,
+                'miamt' => is_null($orderData->getRewardPointsBalance()) ? $mileageUsedAmount : round($orderData->getRewardPointsBalance()) + $mileageUsedAmount,
                 'shpwr' => round($orderData->getShippingAmount()),
                 'mwsbp' => round($orderData->getTaxAmount()),
                 'spitn1' => $orderData->getDeliveryMessage(),
@@ -353,6 +353,77 @@ class SapOrderConfirmData extends AbstractSapOrder
         }
 
         return $bindData;
+    }
+
+    /**
+     * Apply for full point redemption
+     * @param $order
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    protected function getMileageUsedAmount($order)
+    {
+        $mileageUsedAmount = 0;
+        $orderItems = $order->getAllVisibleItems();
+        /** @var \Magento\Sales\Model\Order\Item $orderItem */
+        foreach ($orderItems as $orderItem) {
+            if ($orderItem->getIsPointRedeemable()) {
+                if ($orderItem->getProductType() != 'bundle') {
+                    $mileageUsedAmount += $orderItem->getOriginalPrice() * $orderItem->getQtyOrdered();
+                } else {
+                    /** @var \Magento\Catalog\Model\Product $bundleProduct */
+                    $bundleChildren = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
+                    foreach ($bundleChildren as $bundleChild) {
+                            $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
+                            $bundleChildByOrder = $this->getBundleChildFromOrder($orderItem->getItemId(), $bundleChild->getSku());
+                            $mileageUsedAmount += $bundleChildPrice * $bundleChildByOrder->getQtyOrdered();
+                        }
+
+                }
+            }
+        }
+        return $mileageUsedAmount;
+    }
+
+    /**
+     * @param $item
+     * @param $storeId
+     * @return \Magento\Bundle\Api\Data\LinkInterface[]
+     * @throws NoSuchEntityException
+     */
+    public function getBundleChildren($item, $storeId = 0)
+    {
+        $bundleSku = '';
+        $product = $this->productRepository->getById($item->getProductId(), false, $storeId);
+        if ($product && $product->getId()) {
+            $bundleSku = $product->getSku();
+        }
+        try {
+            return $this->productLinkManagement->getChildren($bundleSku);
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage());
+        }
+    }
+
+    /**
+     * @param $itemId
+     * @param $bundleChildSku
+     * @return Item|null
+     */
+    public function getBundleChildFromOrder($itemId, $bundleChildSku)
+    {
+        $bundleChild = null;
+        /** @var Item $itemOrdered */
+        $itemOrdered = $this->orderItemRepository->get($itemId);
+        $childrenItems = $itemOrdered->getChildrenItems();
+        /** @var Item $childItem */
+        foreach ($childrenItems as $childItem) {
+            if ($childItem->getSku() == $bundleChildSku) {
+                $bundleChild = $childItem;
+                break;
+            }
+        }
+        return $bundleChild;
     }
 
     /**
@@ -543,7 +614,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $meins = $product->getData('meins');
 
                     $sku = str_replace($skuPrefix, '', $orderItem->getSku());
-
+                    $mileageUsedAmountOfItem = 0;
+                    if ($orderItem->getIsPointRedeemable()) {
+                        $mileageUsedAmountOfItem = $this->getMileageUsedAmountOfItem($order, $orderItem);
+                    }
                     $orderItemData[] = [
                         'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -554,14 +628,14 @@ class SapOrderConfirmData extends AbstractSapOrder
                         // 아이템 단위, Default : EA
                         'itemMeins' => $this->getMeins($meins),
                         'itemNsamt' => $itemSubtotal,
-                        'itemDcamt' => $itemTotalDiscount,
-                        'itemSlamt' => $itemSaleAmount,
-                        'itemMiamt' => abs(round($mileagePerItem)),
+                        'itemDcamt' => $itemTotalDiscount - $mileageUsedAmountOfItem,
+                        'itemSlamt' => $itemSaleAmount + $mileageUsedAmountOfItem,
+                        'itemMiamt' => abs(round($mileagePerItem)) + $mileageUsedAmountOfItem,
                         // 상품이 무상제공인 경우 Y 아니면 N
-                        'itemFgflg' => $itemSaleAmount == 0 ? 'Y' : 'N',
-                        'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
-                        'itemAuart' => self::NORMAL_ORDER,
-                        'itemAugru' => '',
+                        'itemFgflg' => ($itemSaleAmount + $mileageUsedAmount) == 0 ? 'Y' : 'N',
+                        'itemMilfg' => empty($mileageUsedAmount + $mileageUsedAmountOfItem) ? 'N' : 'Y',
+                        'itemAuart' => $mileageUsedAmountOfItem ? self::SAMPLE_ORDER : self::NORMAL_ORDER,
+                        'itemAugru' => $mileageUsedAmountOfItem ? 'F07' : '',
                         'itemNetwr' => $itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount,
                         'itemMwsbp' => $itemTaxAmount,
                         'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
@@ -616,6 +690,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $sku = str_replace($skuPrefix, '', $bundleChild->getSku());
                         $item = $this->searchOrderItem($orderAllItems, $bundleChild->getSku(), $itemId);
                         $itemSaleAmount = $itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem));
+                        $mileageUsedAmountOfItem = 0;
+                        if ($orderItem->getIsPointRedeemable()) {
+                            $mileageUsedAmountOfItem = $this->getMileageUsedAmountOfItem($order, $bundleChild);
+                        }
                         $orderItemData[] = [
                             'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                             'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -626,14 +704,14 @@ class SapOrderConfirmData extends AbstractSapOrder
                             // 아이템 단위, Default : EA
                             'itemMeins' => $this->getMeins($meins),
                             'itemNsamt' => $itemSubtotal,
-                            'itemDcamt' => $itemTotalDiscount,
-                            'itemSlamt' => $itemSaleAmount,
-                            'itemMiamt' => abs(round($mileagePerItem)),
+                            'itemDcamt' => $itemTotalDiscount - $mileageUsedAmountOfItem,
+                            'itemSlamt' => $itemSaleAmount + $mileageUsedAmountOfItem,
+                            'itemMiamt' => abs(round($mileagePerItem)) + $mileageUsedAmountOfItem,
                             // 상품이 무상제공인 경우 Y 아니면 N
-                            'itemFgflg' => $itemSaleAmount == 0 ? 'Y' : 'N',
-                            'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
-                            'itemAuart' => self::NORMAL_ORDER,
-                            'itemAugru' => '',
+                            'itemFgflg' => ($itemSaleAmount + $mileageUsedAmountOfItem) == 0 ? 'Y' : 'N',
+                            'itemMilfg' => empty($mileageUsedAmount + $mileageUsedAmountOfItem) ? 'N' : 'Y',
+                            'itemAuart' => $mileageUsedAmountOfItem ? self::SAMPLE_ORDER : self::NORMAL_ORDER,
+                            'itemAugru' => $mileageUsedAmountOfItem ? 'F07' : '',
                             'itemNetwr' => $itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount,
                             'itemMwsbp' => $itemTaxAmount,
                             'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
@@ -668,6 +746,18 @@ class SapOrderConfirmData extends AbstractSapOrder
     }
 
     /**
+     * @param $order
+     * @param $orderItem
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    protected function getMileageUsedAmountOfItem($order, $orderItem)
+    {
+        $price = $this->productRepository->get($orderItem->getSku(), false, $order->getStoreId())->getPrice();
+        return $price * $orderItem->getQtyOrdered();
+    }
+
+/**
      * Get bundle extra amount
      *
      * @param \Magento\Sales\Model\Order $order
