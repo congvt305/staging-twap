@@ -24,6 +24,8 @@ class Config
 
     const CHANGE_DELIVERY_COMPLETE_STATUS_ACTIVE = 'change_status/order_status_delivery_complete_cron/active';
 
+    const UPDATE_NINJAVAN_ORDER_TO_DELIVERY_COMPLETE_AFTER_DAYS = 'change_status/date/update_ninjavan_order_to_delivery_complete_days';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -74,6 +76,19 @@ class Config
     {
         return $this->scopeConfig->getValue(
             self::CHANGE_DELIVERY_COMPLETE_STATUS_ACTIVE,
+            'store',
+            $storeId
+        );
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+    public function getDaysUpdateNinjaVanOrderToDeliveryComplete($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::UPDATE_NINJAVAN_ORDER_TO_DELIVERY_COMPLETE_AFTER_DAYS,
             'store',
             $storeId
         );
