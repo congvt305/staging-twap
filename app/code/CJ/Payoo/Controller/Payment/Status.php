@@ -65,6 +65,7 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
         $this->invoiceService = $invoiceService;
         $this->scopeConfig = $scopeConfig;
         $this->transaction = $transaction;
+        $this->orderFactory = $orderFactory;
         parent::__construct($context, $request, $scopeConfig, $orderFactory, $invoiceService, $transaction);
     }
 
