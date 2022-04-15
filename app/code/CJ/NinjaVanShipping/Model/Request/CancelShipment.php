@@ -45,13 +45,15 @@ class CancelShipment
     {
         $tokenData = $this->authToken->getToken($order->getStoreId());
         $token = '';
-        if (!$tokenData->getToken()) {
+        if (!$tokenData) {
             $auth = $this->authToken->requestAuthToken('array', $order->getStoreId());
             if (isset($auth['access_token']) && $auth['access_token']) {
                 $token = $auth['access_token'];
             } else {
                 return $auth;
             }
+        }else{
+            $token = $tokenData->getToken();
         }
         $contents = [];
 

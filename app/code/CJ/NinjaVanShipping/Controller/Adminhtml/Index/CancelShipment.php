@@ -1,65 +1,66 @@
 <?php
 
-namespace CJ\OrderCancel\Observer;
+namespace CJ\NinjaVanShipping\Controller\Adminhtml\Index;
 
 use CJ\NinjaVanShipping\Helper\Data as NinjaVanHelper;
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Message\Manager as MessageManager;
-use Magento\Sales\Model\Order;
-use CJ\NinjaVanShipping\Model\Request\CancelShipment as NinjaVanCancelShipment;
 use CJ\NinjaVanShipping\Logger\Logger as NinjaVanShippingLogger;
+use CJ\NinjaVanShipping\Model\Request\CancelShipment as NinjaVanCancelShipment;
+use Exception;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Shipment\Track;
+use Magento\Sales\Model\OrderFactory;
+use Magento\Sales\Model\ResourceModel\Order\Shipment\Track\Collection;
+use Magento\Framework\Controller\ResultFactory;
 
-class CancelNinjaVanShipment implements ObserverInterface
+class CancelShipment extends Action
 {
     /**
      * @var NinjaVanHelper
      */
-    private NinjaVanHelper $ninjavanHelper;
+    protected $ninjavanHelper;
     /**
      * @var NinjaVanShippingLogger
      */
-    private NinjaVanShippingLogger $logger;
+    protected $logger;
     /**
      * @var NinjaVanCancelShipment
      */
-    private NinjaVanCancelShipment $ninjavanCancelShipment;
+    protected $ninjavanCancelShipment;
     /**
-     * @var MessageManager
+     * @var OrderFactory
      */
-    protected MessageManager $messageManager;
+    protected $orderFactory;
 
     /**
+     * @param Context $context
      * @param NinjaVanHelper $ninjavanHelper
      * @param NinjaVanShippingLogger $logger
      * @param NinjaVanCancelShipment $ninjavanCancelShipment
-     * @param MessageManager $messageManager
+     * @param OrderFactory $orderFactory
      */
     public function __construct(
-        NinjaVanHelper $ninjavanHelper,
+        Context                $context,
+        NinjaVanHelper         $ninjavanHelper,
         NinjaVanShippingLogger $logger,
         NinjaVanCancelShipment $ninjavanCancelShipment,
-        MessageManager $messageManager
+        OrderFactory           $orderFactory
     )
     {
+        parent::__construct($context);
         $this->ninjavanHelper = $ninjavanHelper;
         $this->logger = $logger;
         $this->ninjavanCancelShipment = $ninjavanCancelShipment;
-        $this->messageManager = $messageManager;
+        $this->orderFactory = $orderFactory;
     }
 
-
-    /**
-     * @param Observer $observer
-     */
-    public function execute(Observer $observer)
+    public function execute()
     {
-        if ((bool)$this->ninjavanHelper->isNinjaVanEnabled()) {
-            /** @var Order $order */
-            $order = $observer->getEvent()->getData('order');
-            if ($order->getShippingMethod() == 'ninjavan_tablerate' &&
-                $trackingNumber = $this->getTrackingNumber($order)
-            ) {
+        $orderId = $this->getRequest()->getParam('order_id');
+        $order = $this->orderFactory->create()->load($orderId);
+        if ((bool)$this->ninjavanHelper->isNinjaVanEnabled() && $order->getId()) {
+            if ($order->getShippingMethod() == 'ninjavan_tablerate' && $trackingNumber = $this->getTrackingNumber($order)) {
                 try {
                     $response = $this->ninjavanCancelShipment->requestCancelShipment($trackingNumber, $order);
                     $message = 'The NinjaVan Shipment successfully cancelled';
@@ -74,7 +75,9 @@ class CancelNinjaVanShipment implements ObserverInterface
                     }
                     $this->messageManager->addSuccessMessage($message);
                     $this->logger->info($message);
-                } catch (\Exception $exception) {
+                    $order->addCommentToStatusHistory($message);
+                    $order->save();
+                } catch (Exception $exception) {
                     $this->messageManager->addExceptionMessage(
                         $exception,
                         __('Something went wrong while canceling the shipment.')
@@ -82,21 +85,25 @@ class CancelNinjaVanShipment implements ObserverInterface
                 }
             }
         }
+
+        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+        $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+        return $resultRedirect;
     }
 
     /**
      * @param Order $order
      * @return string
      */
-    private function getTrackingNumber(Order $order):string
+    private function getTrackingNumber(Order $order)
     {
         $trackingNumber = '';
-        /** @var \Magento\Sales\Model\ResourceModel\Order\Shipment\Track\Collection $tracking */
+        /** @var Collection $trackingCollection */
         $trackingCollection = $order->getTracksCollection();
         if ($trackingCollection->getSize()) {
             // innis only has 1 shipment per 1 order
-            /** @var \Magento\Sales\Model\Order\Shipment\Track $tracking */
-            $tracking = $trackingCollection->getFirstItem();
+            /** @var Track $tracking */
+            $tracking = $trackingCollection->getLastItem();
             $trackingNumber = $tracking->getTrackNumber();
         }
         return $trackingNumber;
