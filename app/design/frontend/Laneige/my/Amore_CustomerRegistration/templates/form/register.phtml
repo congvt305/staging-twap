@@ -220,13 +220,10 @@ $directoryHelper = $this->helper(\Eguana\Directory\Helper\Data::class);
                     </div>
                 </div>
 
-                <div class="field ward required">
+                <div class="field ward">
                     <label class="label" for="ward"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('ward') ?></span></label>
                     <div class="control">
-                        <input type="hidden" name="ward" id="ward_txt" value="" />
-                        <select id="fward" name="ward_id" class="required-entry">
-                            <option value=""><?php echo __('Please select a ward'); ?></option>
-                        </select>
+                        <input type="text" name="ward" id="ward_txt" value="" />
                     </div>
                 </div>
 
