@@ -8,7 +8,7 @@ class View
     {
         $order = $subject->getOrder();
         $shippingMethod = $order->getShippingMethod();
-        if ($shippingMethod === 'ninjavan_tablerate' && $order->getStatus() === 'processing_with_shipment'){
+        if ($shippingMethod === 'ninjavan_tablerate' && $order->getStatus() === 'processing_with_shipment' && !$order->getData('ninjavan_shipment_cancel')){
             $message = __('Do you want to cancel the Ninja Van shipment?');
             $url = $subject->getUrl('ninjavan/index/cancelshipment', ['order_id' => $order->getId()]);
 
