@@ -76,6 +76,7 @@ class CancelShipment extends Action
                     $this->messageManager->addSuccessMessage($message);
                     $this->logger->info($message);
                     $order->addCommentToStatusHistory($message);
+                    $order->setData('ninjavan_shipment_cancel', 1);
                     $order->save();
                 } catch (Exception $exception) {
                     $this->messageManager->addExceptionMessage(
