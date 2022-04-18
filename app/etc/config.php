@@ -727,12 +727,16 @@ return [
         'Magento_WishlistGiftCardGraphQl' => 1,
         'Magento_GiftCardGraphQl' => 1,
         'Adyen_Payment' => 1,
+        'Amasty_AdvancedReview' => 1,
         'Amasty_BannersLite' => 1,
         'Amasty_Base' => 1,
         'Amasty_Conditions' => 1,
         'Amasty_CronScheduleList' => 1,
         'Dotdigitalgroup_Email' => 1,
+        'Amasty_InvisibleCaptcha' => 1,
         'Amasty_Promo' => 1,
+        'Amasty_ReviewPageBuilder' => 1,
+        'Amasty_ReviewsImportExport' => 1,
         'Amasty_Rgrid' => 1,
         'Amasty_SalesRuleWizard' => 1,
         'Amazon_Core' => 0,
@@ -760,6 +764,7 @@ return [
         'CJ_PageBuilder' => 1,
         'CJ_PointRedemption' => 1,
         'CJ_HoverImage' => 1,
+        'CJ_ReviewsImportExport' => 1,
         'CJ_CatelogFaq' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
@@ -836,7 +841,7 @@ return [
         'Vertex_RequestLogging' => 0,
         'Vertex_AddressValidation' => 0,
         'Vertex_TaxStaging' => 1,
-        'Yotpo_Yotpo' => 1
+        'Yotpo_Yotpo' => 0
     ],
     'admin_user' => [
         'locale' => [
