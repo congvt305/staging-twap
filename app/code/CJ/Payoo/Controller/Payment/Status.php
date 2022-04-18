@@ -40,6 +40,8 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
      */
     protected $config;
 
+    const SUCCESS_STATUS = 1;
+
     /**
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\App\Request\Http $request
@@ -63,6 +65,7 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
         $this->invoiceService = $invoiceService;
         $this->scopeConfig = $scopeConfig;
         $this->transaction = $transaction;
+        $this->orderFactory = $orderFactory;
         parent::__construct($context, $request, $scopeConfig, $orderFactory, $invoiceService, $transaction);
     }
 
@@ -81,9 +84,9 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
 
         if (strtoupper($cs) == strtoupper($checksum)) {
-            if ($orderCode != '' && $status == 1) {
+            if ($orderCode != '' && $status == self::SUCCESS_STATUS) {
                 //complete
-                $this->UpdateOrderStatus($orderCode, $this->config->getStatusPaymentSuccess());
+                $this->UpdateOrderStatus($orderCode, $this->config->getPaymentSuccessStatus());
                 $resultRedirect->setPath('checkout/onepage/success');
                 return $resultRedirect;
             } else {
@@ -94,5 +97,37 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
 
         $resultRedirect->setPath('checkout/cart');
         return $resultRedirect;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    function UpdateOrderStatus($order_no, $status)
+    {
+        $order = $this->orderFactory->create()->loadByIncrementId($order_no);
+        $statusPaymentSuccess = $this->config->getPaymentSuccessStatus();
+        if ($status === $statusPaymentSuccess) {
+            if (!$order->hasInvoices()) {
+                $invoice = $this->invoiceService->prepareInvoice($order);
+                $invoice->register();
+                $invoice->pay();
+
+                $transactionSave = $this->transaction->addObject(
+                    $invoice
+                )->addObject(
+                    $invoice->getOrder()
+                );
+                $transactionSave->save();
+            }
+            $message = 'Payoo Transaction Complete';
+        } else {
+            $message = 'Payoo Transaction Cancel';
+        }
+        $order->setStatus($status)->save();
+        $order->addStatusHistoryComment(
+            __($message, $status)
+        )
+            ->setIsCustomerNotified(true)
+            ->save();
     }
 }
