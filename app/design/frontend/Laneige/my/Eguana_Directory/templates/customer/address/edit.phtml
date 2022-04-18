@@ -95,23 +95,10 @@ $autofilledFlag = $directoryHelper->isZipCodeAutofilled();
             $wards = $directoryHelper->getAllWard($cityId);
         }
         ?>
-        <div class="field ward required">
+        <div class="field ward ">
             <label class="label" for="ward"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('ward') ?></span></label>
             <div class="control">
-                <input type="hidden" name="ward" id="ward_txt" value="<?php echo $ward; ?>" />
-                <select id="fward" name="ward_id" class="required-entry">
-                    <option value=""><?php echo __('Please select a ward'); ?></option>
-                    <?php
-                    if(count($wards)){
-                        foreach($wards as $ward):?>
-                            <option class="opt" <?php echo (($wardId == $ward->getWardId())? 'selected="selected"' : '') ?>
-                                    data-city_id="<?php echo $ward->getCityId(); ?>"
-                                    value="<?php echo $ward->getWardId(); ?>"><?php echo $ward->getDefaultName(); ?></option>
-                        <?php
-                        endforeach;
-                    }
-                    ?>
-                </select>
+                <input type="text" name="ward" id="ward_txt" value="<?php echo $ward; ?>" />
             </div>
         </div>
         <?php $_streetValidationClass = $addressHelper->getAttributeValidationClass('street'); ?>

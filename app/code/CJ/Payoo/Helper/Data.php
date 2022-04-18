@@ -26,7 +26,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param int|null $storeId
      * @return string
      */
-    public function getStatusPaymentSuccess(int $storeId = null): string
+    public function getPaymentSuccessStatus(int $storeId = null): string
     {
         return $this->getConfig(self::STATUS_PAYMENT_SUCCESS_PATH_XML, $storeId);
     }
