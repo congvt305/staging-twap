@@ -371,59 +371,14 @@ class SapOrderConfirmData extends AbstractSapOrder
                 if ($orderItem->getProductType() != 'bundle') {
                     $mileageUsedAmount += $orderItem->getOriginalPrice() * $orderItem->getQtyOrdered();
                 } else {
-                    /** @var \Magento\Catalog\Model\Product $bundleProduct */
-                    $bundleChildren = $this->getBundleChildren($orderItem, $orderItem->getStoreId());
-                    foreach ($bundleChildren as $bundleChild) {
-                            $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
-                            $bundleChildByOrder = $this->getBundleChildFromOrder($orderItem->getItemId(), $bundleChild->getSku());
-                            $mileageUsedAmount += $bundleChildPrice * $bundleChildByOrder->getQtyOrdered();
-                        }
-
+                    foreach ($orderItem->getChildrenItems() as $bundleChild) {
+                        $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
+                        $mileageUsedAmount += $bundleChildPrice * $bundleChild->getQtyOrdered();
+                    }
                 }
             }
         }
         return $mileageUsedAmount;
-    }
-
-    /**
-     * @param $item
-     * @param $storeId
-     * @return \Magento\Bundle\Api\Data\LinkInterface[]
-     * @throws NoSuchEntityException
-     */
-    public function getBundleChildren($item, $storeId = 0)
-    {
-        $bundleSku = '';
-        $product = $this->productRepository->getById($item->getProductId(), false, $storeId);
-        if ($product && $product->getId()) {
-            $bundleSku = $product->getSku();
-        }
-        try {
-            return $this->productLinkManagement->getChildren($bundleSku);
-        } catch (\Exception $exception) {
-            throw new \Exception($exception->getMessage());
-        }
-    }
-
-    /**
-     * @param $itemId
-     * @param $bundleChildSku
-     * @return Item|null
-     */
-    public function getBundleChildFromOrder($itemId, $bundleChildSku)
-    {
-        $bundleChild = null;
-        /** @var Item $itemOrdered */
-        $itemOrdered = $this->orderItemRepository->get($itemId);
-        $childrenItems = $itemOrdered->getChildrenItems();
-        /** @var Item $childItem */
-        foreach ($childrenItems as $childItem) {
-            if ($childItem->getSku() == $bundleChildSku) {
-                $bundleChild = $childItem;
-                break;
-            }
-        }
-        return $bundleChild;
     }
 
     /**
