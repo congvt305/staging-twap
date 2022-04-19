@@ -170,11 +170,11 @@ $eventExpired = $viewModel->isEventExpired($counters);
     </div>
 </div>
 <?php if($viewModel->getEvent()->getTrackingCode() != null): ?>
-    <div id = "tracking_code">
+    <div id="tracking_code">
         <?= $viewModel->getEvent()->getTrackingCode(); ?>
     </div>
 <?php endif; ?>
-<div id = "extend_tracking_code"></div>
+<div id ="completed_tracking_code"></div>
 <script type="text/x-magento-init">
     {
         "*": {

@@ -35,7 +35,7 @@
         <column xsi:type="mediumtext" name="success_image" nullable="true" comment="Reservation Success Image"/>
         <column xsi:type="mediumtext" name="sms_content" nullable="true" comment="Reservation Pending Sms Content"/>
         <column xsi:type="text" name="tracking_code" nullable="true" comment="Tracking Code Content"/>
-        <column xsi:type="text" name="extend_tracking_code" nullable="true" comment="Send Tracking Code Content"/>
+        <column xsi:type="text" name="completed_tracking_code" nullable="true" comment="Send Tracking Code Content"/>
         <column xsi:type="varchar" name="fixed_banner_message" nullable="true" length="255" comment="Fixed Text Banner Message"/>
         <column xsi:type="varchar" name="fixed_banner_hyperlink" nullable="true" length="255" comment="Fixed Text Banner Hyperlink"/>
         <column xsi:type="varchar" name="fixed_banner_bg_color" nullable="true" length="255" comment="Fixed Text Banner Background Color"/>

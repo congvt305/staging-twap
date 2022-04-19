@@ -212,7 +212,7 @@
                 <visible>true</visible>
             </settings>
         </field>
-        <field name="extend_tracking_code" sortOrder="75" formElement="textarea">
+        <field name="completed_tracking_code" sortOrder="75" formElement="textarea">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="cols" xsi:type="number">15</item>

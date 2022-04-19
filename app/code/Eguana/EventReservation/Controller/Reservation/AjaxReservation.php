@@ -213,11 +213,7 @@ class AjaxReservation extends Action
                         $response['message'] = __('Successfully booked an event');
                         $response['reserve_id'] = $model->getData('user_reserve_id');
                         $eventId = $model->getData('event_id');
-                        $extendTrackingCode = $this->getExtendTrackingCode($eventId);
-                        if(isset($extendTrackingCode)) {
-                            $response['extend_tracking_code'] = $extendTrackingCode;
-                        }
-
+                        $response['completed_tracking_code'] = $this->getCompletedTrackingCode($eventId);;
                     } else {
                         $response['message'] = __('Event reservation could not be saved. Please try again');
                     }
@@ -242,14 +238,14 @@ class AjaxReservation extends Action
      *
      * get extend tracking code
      */
-    private function getExtendTrackingCode($id)
+    private function getCompletedTrackingCode($id)
     {
         try {
             $event = $this->eventRepository->getById($id);
-            $extendTrackingCode = $event->getExtendTrackingCode();
+            $extendTrackingCode = $event->getCompletedTrackingCode();
         } catch (\Exception $e) {
             $this->logger->error('Error while fetching Event:' . $e->getMessage());
         }
-        return isset($extendTrackingCode) ? $extendTrackingCode : '';
+        return $extendTrackingCode ?? '';
     }
 }
