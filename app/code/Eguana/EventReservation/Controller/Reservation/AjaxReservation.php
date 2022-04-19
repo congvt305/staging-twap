@@ -121,7 +121,6 @@ class AjaxReservation extends Action
         CounterRepositoryInterface $counterRepository,
         UserReservationRepositoryInterface $userReservationRepository,
         EventRepositoryInterface $eventRepository
-
     ) {
         $this->logger = $logger;
         $this->dateTime = $dateTime;
