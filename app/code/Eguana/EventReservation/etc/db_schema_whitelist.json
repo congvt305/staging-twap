@@ -18,7 +18,9 @@
             "sms_content": true,
             "fixed_banner_message": true,
             "fixed_banner_hyperlink": true,
-            "fixed_banner_bg_color": true
+            "fixed_banner_bg_color": true,
+            "tracking_code": true,
+            "extend_tracking_code": true
         },
         "index": {
             "EGUANA_EVENT_RESERVATION_IDENTIFIER": true,

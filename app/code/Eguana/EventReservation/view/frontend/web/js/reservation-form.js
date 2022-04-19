@@ -22,6 +22,7 @@ define([
         let minutes = config.counterTime;
         let resendUrl = config.resendUrl;
         let reserveId = "";
+        let extendTrackingCode = "";
         let successErrorDiv = $("#error-and-success-message");
         $("#reservation-form").submit(function(e) {
             e.preventDefault();
@@ -49,6 +50,10 @@ define([
                             startTimer();
                             $('#reservation-success-img, #reservation-btn').show();
                             $('#event-thumbnail-img, #reservation-resend-btn').hide();
+                            if(typeof data['extend_tracking_code'] != "undefined" ) {
+                                extendTrackingCode = data['extend_tracking_code'];
+                            }
+                            $('#extend_tracking_code').html(extendTrackingCode);
                         } else {
                             successErrorDiv.removeClass("message success")
                                 .addClass("message info")

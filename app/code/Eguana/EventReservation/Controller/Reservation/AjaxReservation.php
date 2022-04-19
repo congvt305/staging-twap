@@ -25,6 +25,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
+use Eguana\EventReservation\Api\EventRepositoryInterface;
 
 /**
  * To reserve event with ajax request
@@ -90,6 +91,11 @@ class AjaxReservation extends Action
     private $logger;
 
     /**
+     * @var EventRepositoryInterface
+     */
+    private $eventRepository;
+
+    /**
      * @param Context $context
      * @param DateTime $dateTime
      * @param SmsSender $smsSender
@@ -113,7 +119,9 @@ class AjaxReservation extends Action
         ReservationValidation $reservationValidation,
         UserReservationFactory $userReservationFactory,
         CounterRepositoryInterface $counterRepository,
-        UserReservationRepositoryInterface $userReservationRepository
+        UserReservationRepositoryInterface $userReservationRepository,
+        EventRepositoryInterface $eventRepository
+
     ) {
         $this->logger = $logger;
         $this->dateTime = $dateTime;
@@ -125,6 +133,7 @@ class AjaxReservation extends Action
         $this->reservationValidation = $reservationValidation;
         $this->userReservationFactory = $userReservationFactory;
         $this->userReservationRepository = $userReservationRepository;
+        $this->eventRepository = $eventRepository;
         parent::__construct($context);
     }
 
@@ -203,6 +212,12 @@ class AjaxReservation extends Action
                         $response['success'] = true;
                         $response['message'] = __('Successfully booked an event');
                         $response['reserve_id'] = $model->getData('user_reserve_id');
+                        $eventId = $model->getData('event_id');
+                        $extendTrackingCode = $this->getExtendTrackingCode($eventId);
+                        if(isset($extendTrackingCode)) {
+                            $response['extend_tracking_code'] = $extendTrackingCode;
+                        }
+
                     } else {
                         $response['message'] = __('Event reservation could not be saved. Please try again');
                     }
@@ -218,5 +233,23 @@ class AjaxReservation extends Action
             $resultRedirect->setUrl('/');
             return $resultRedirect;
         }
+    }
+
+
+    /**
+     * @param $id
+     * @return string
+     *
+     * get extend tracking code
+     */
+    private function getExtendTrackingCode($id)
+    {
+        try {
+            $event = $this->eventRepository->getById($id);
+            $extendTrackingCode = $event->getExtendTrackingCode();
+        } catch (\Exception $e) {
+            $this->logger->error('Error while fetching Event:' . $e->getMessage());
+        }
+        return isset($extendTrackingCode) ? $extendTrackingCode : '';
     }
 }
