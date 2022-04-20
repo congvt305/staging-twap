@@ -1,0 +1,53 @@
+<?php
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Amasty\AdvancedReview\ViewModel\Reviews\Product\View\ListView\WriteReviewButton $viewModel
+ */
+
+$viewModel = $block->getViewModel();
+?>
+
+<?php if ($viewModel && $viewModel->isCanRender()): ?>
+    <div class="amreview-add-new">
+        <a href="<?= $escaper->escapeUrl($viewModel->getButtonUrl()) ?>"
+           title="<?= $escaper->escapeHtml(__('Write a review')) ?>"
+           id="amreview-toform"
+           class="action primary amreview-button">
+            <?= $escaper->escapeHtml(__('Write a review'));?>
+        </a>
+        <p class="amreview-label">
+            <?= $escaper->escapeHtml(__('Share your thoughts with other customers'));?>
+        </p>
+    </div>
+    <div id="review-mpdal" style="display: none">
+        <?php echo $block->getLayout()->createBlock("Magento\Review\Block\Form")->setTemplate("Magento_Review::form.phtml")->toHtml(); ?>
+    </div>
+
+    <script type="text/javascript">
+        require(['jquery','Magento_Ui/js/modal/modal'],function($, modal) {
+            'use strict';
+            var options = {
+                'type': 'popup',
+                'title': '',
+                'modalClass': 'review_form_modal',
+                'responsive': true,
+                'innerScroll': true,
+                'buttons': [{
+                    text: $.mage.__('Back'),
+                    class: 'back_button_class',
+                    click: function () {
+                        this.closeModal();
+                    }
+                }]
+            };
+
+            var popup = modal(options, $('#review-mpdal'));
+            $(".amreview-button").on('click',function(){
+                $("#review-mpdal").modal("openModal");
+            });
+
+        });
+    </script>
+
+<?php endif; ?>

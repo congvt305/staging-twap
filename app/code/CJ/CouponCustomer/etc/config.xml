@@ -2,8 +2,11 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <coupon_wallet>
+            <general>
+                <sync_pos_customer_grade>0</sync_pos_customer_grade>
+            </general>
             <cron>
-                <active>1</active>
+                <active>0</active>
                 <cron_expr>00 03 * * * </cron_expr>
             </cron>
         </coupon_wallet>

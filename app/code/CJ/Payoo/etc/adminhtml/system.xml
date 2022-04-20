@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="paynow">
+                <field id="order_payment_status" translate="label" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="250"  type="select" canRestore="1">
+                    <label>Successful Payment Status</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                    <comment><![CDATA[<p>Status of order after successful payoo payment.<br /><strong>Default: "Processing"</strong></p>]]></comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

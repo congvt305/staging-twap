@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <change_status>
+            <date>
+                <update_ninjavan_order_to_delivery_complete_days>5</update_ninjavan_order_to_delivery_complete_days>
+            </date>
+        </change_status>
+    </default>
+</config>

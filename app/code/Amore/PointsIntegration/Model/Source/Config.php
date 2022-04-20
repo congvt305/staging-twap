@@ -193,11 +193,13 @@ class Config
     }
 
     /**
-     * get all customer grades from POS
-     * @param $websiteId
+     * Get all customer grades from POS
+     *
+     * @param int $websiteId
      * @return string
      */
-    public function getAllCustomerGradeURL($websiteId) {
+    public function getAllCustomerGradeURL($websiteId)
+    {
         $baseURL = $this->getPosUrl($websiteId);
         $customerOrderURL = $this->scopeConfig->getValue(
             self::POS_CUSTOMER_GRADE_URL,
@@ -205,7 +207,7 @@ class Config
             $websiteId
         );
 
-        return $baseURL.$customerOrderURL;
+        return $baseURL . $customerOrderURL;
     }
 
     public function getCronActive($websiteId)
