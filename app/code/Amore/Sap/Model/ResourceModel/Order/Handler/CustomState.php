@@ -12,9 +12,6 @@ use Magento\Sales\Model\Order;
 
 class CustomState extends \Magento\Sales\Model\ResourceModel\Order\Handler\State
 {
-    const STORES_VN = ['vn_laneige'];
-    const PAYOO_PAYMENT_METHOD = 'paynow';
-
     public function check(Order $order)
     {
         $shippingMethod = $order->getShippingMethod();
@@ -40,27 +37,10 @@ class CustomState extends \Magento\Sales\Model\ResourceModel\Order\Handler\State
                 } elseif ($currentState === Order::STATE_PROCESSING && !$order->canShip()) {
                     $order->setState(Order::STATE_COMPLETE)
                         ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_COMPLETE));
-                } elseif ($this->isOrderPayooPayment($order)
-                    &&  $order->getStatus() == Order::STATE_PROCESSING
-                    && $currentState == Order::STATE_PAYMENT_REVIEW) {
-                    $order->setState(Order::STATE_PROCESSING);
                 }
             }
-        };
+        }
 
         return $this;
-    }
-
-    /**
-     * Check if an order is VN laneige order, using Payoo as payment method
-     * @param \Magento\Sales\Model\Order $order
-     * @see /app/code/Payoo/PayNow/view/frontend/web/js/view/payment/method-renderer/paynow.js
-     * @return bool
-     */
-    protected function isOrderPayooPayment(\Magento\Sales\Model\Order $order) {
-        $storeCode = $order->getStore()->getCode();
-        $paymentMethod = $order->getPayment()->getMethod();
-
-        return in_array($storeCode, self::STORES_VN) && $paymentMethod == self::PAYOO_PAYMENT_METHOD;
     }
 }
