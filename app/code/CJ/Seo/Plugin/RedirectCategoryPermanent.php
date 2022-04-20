@@ -2,15 +2,15 @@
 
 namespace CJ\Seo\Plugin;
 
-use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Helper\Category as CategoryHelper;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Catalog\Controller\Product\View;
+use Magento\Catalog\Controller\Category\View;
 use Psr\Log\LoggerInterface as Logger;
 use CJ\Seo\Helper\Data as DataHelper;
-use Magento\Catalog\Helper\Category as CategoryHelper;
+use Magento\Catalog\Api\CategoryRepositoryInterface;
 
-class RedirectProductPermanent
+class RedirectCategoryPermanent
 {
 
 
@@ -25,9 +25,9 @@ class RedirectProductPermanent
     protected StoreManagerInterface $storeManager;
 
     /**
-     * @var ProductRepositoryInterface
+     * @var CategoryRepositoryInterface
      */
-    protected ProductRepositoryInterface $productRepository;
+    protected CategoryRepositoryInterface $categoryRepository;
 
     /**
      * @var Logger
@@ -40,8 +40,13 @@ class RedirectProductPermanent
     protected DataHelper $dataHelper;
 
     /**
+     * @var CategoryHelper
+     */
+    protected CategoryHelper $categoryHelper;
+
+    /**
      * @param Logger $logger
-     * @param ProductRepositoryInterface $productRepository
+     * @param CategoryRepositoryInterface $categoryRepository
      * @param StoreManagerInterface $storeManager
      * @param RedirectFactory $redirectFactory
      * @param DataHelper $dataHelper
@@ -49,16 +54,18 @@ class RedirectProductPermanent
      */
     public function __construct(
         Logger $logger,
-        ProductRepositoryInterface $productRepository,
+        CategoryRepositoryInterface $categoryRepository,
         StoreManagerInterface $storeManager,
         RedirectFactory $redirectFactory,
-        DataHelper $dataHelper
+        DataHelper $dataHelper,
+        CategoryHelper $categoryHelper
     ) {
         $this->logger = $logger;
-        $this->productRepository = $productRepository;
+        $this->categoryRepository = $categoryRepository;
         $this->storeManager = $storeManager;
         $this->redirectFactory = $redirectFactory;
         $this->dataHelper = $dataHelper;
+        $this->categoryHelper = $categoryHelper;
     }
 
     /**
@@ -69,16 +76,10 @@ class RedirectProductPermanent
     public function aroundExecute(View $subject, callable $proceed)
     {
         try {
-            $product = $this->getProduct($subject);
-            if ($this->dataHelper->isAutomaticRedirectEnabled() && !$this->canShow($product)) {
+            $category = $this->getCategory($subject);
+            if ($this->dataHelper->isAutomaticRedirectEnabled() && !$this->categoryHelper->canShow($category)) {
                 $redirect = $this->redirectFactory->create();
-                if (str_contains($product->getRedirectUrl(), 'http')) {
-                    $redirect->setPath($product->getRedirectUrl());
-                } else if ($product->getRedirectUrl()) {
-                    $redirect->setPath($this->storeManager->getStore()->getBaseUrl() . $product->getRedirectUrl() . $this->dataHelper->getSuffixProduct());
-                } else {
-                    $redirect->setPath($this->storeManager->getStore()->getBaseUrl());
-                }
+                $redirect->setPath($this->storeManager->getStore()->getBaseUrl());
                 $redirect->setHttpResponseCode(301);
                 return $redirect;
             }
@@ -89,22 +90,13 @@ class RedirectProductPermanent
     }
 
     /**
-     * @param $product
-     * @return bool
-     */
-    protected function canShow($product)
-    {
-        return $product->isVisibleInCatalog() && $product->isVisibleInSiteVisibility();
-    }
-
-    /**
      * @param $subject
-     * @return \Magento\Catalog\Api\Data\ProductInterface
+     * @return \Magento\Catalog\Api\Data\CategoryInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    protected function getProduct($subject)
+    protected function getCategory($subject)
     {
-        $productId = (int) $subject->getRequest()->getParam('id');
-        return $this->productRepository->getById($productId, false, $this->storeManager->getStore()->getId());
+        $categoryId = $subject->getRequest()->getParam('page_id') ?? $subject->getRequest()->getParam('id');
+        return $this->categoryRepository->get($categoryId, $this->storeManager->getStore()->getId());
     }
 }
