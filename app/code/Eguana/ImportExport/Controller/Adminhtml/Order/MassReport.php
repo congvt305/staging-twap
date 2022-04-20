@@ -231,7 +231,7 @@ class MassReport extends Action
                 'Grand Total (Purchased)','Status','Billing Address','Shipping Address',
                 'Shipping Information','Customer Email','Customer Group','Subtotal',
                 'Shipping and Handling','Customer Name','Payment Method','Total Refunded','Sap Response',
-                'Promotion','POS Customer Grade'];
+                'Promotion','POS Customer Grade','UTM Source','UTM Medium','UTM Campaign'];
             if ($this->customerRegistrationHelper->getBaCodeEnable()) {
                 $columns[] = 'BA Recruiter Code';
             }
@@ -265,6 +265,9 @@ class MassReport extends Action
                 $itemData[] = $this->getSapResponse($order->getData('entity_id'));
                 $itemData[] = $this->promotions($order->getData('entity_id'));
                 $itemData[] = $this->getPosCustomerGrade($order->getData('entity_id'));
+                $itemData[] = $order->getData('line_utm_source');
+                $itemData[] = $order->getData('line_utm_medium');
+                $itemData[] = $order->getData('line_utm_campaign');
                 if ($this->customerRegistrationHelper->getBaCodeEnable()) {
                     $itemData[] = $order->getData('customer_ba_code');
                 }
