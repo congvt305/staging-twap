@@ -186,45 +186,61 @@ class Operation
      */
     protected function _addCronTask()
     {
+        // If the entity type is a custom type,  we will change logic.
         if (in_array($this->getData('entity_type'), $this->customType)) {
             $frequency = $this->getFreq();
-            if (in_array($frequency, array_keys($this->customFreq))) {
-                $cronExprString = $this->customFreq[$frequency];
-                $exprPath = $this->getExprConfigPath();
-                $modelPath = $this->getModelConfigPath();
 
-                try {
-                    /** @var \Magento\Framework\App\Config\ValueInterface $exprValue */
-                    $exprValue = $this->_configValueFactory->create()->load($exprPath, 'path');
-                    $oldCronExprString = $exprValue->getValue();
-
-                    if ($oldCronExprString != $cronExprString) {
-                        $exprValue->setValue($cronExprString)->setPath($exprPath)->save();
-                        $this->_cacheManager->clean(['crontab']);
-                    }
-
-                    $this->_configValueFactory->create()->load(
-                        $modelPath,
-                        'path'
-                    )->setValue(
-                        self::CRON_MODEL
-                    )->setPath(
-                        $modelPath
-                    )->save();
-                    $this->messageManager->addSuccessMessage(__('You have selected freqency as every 30 minutes. Then the system will not need to care about the value of start time, and scheduled update will be run at even time, like 10:00 AM, 10:30 AM, 11:00 AM...'));
-                } catch (\Exception $e) {
-                    $this->_logger->critical($e);
-                    throw new LocalizedException(
-                        __('We were unable to save the cron expression.')
-                    );
+            // Build the cron expression string
+            if ($frequency == \CJ\DataExport\Model\Config\Source\Frequency::CRON_HALF_HOURLY) {
+                $cronExprString = $this->customFreq[\CJ\DataExport\Model\Config\Source\Frequency::CRON_HALF_HOURLY];
+            } else {
+                $time = $this->getStartTime();
+                if (!is_array($time)) {
+                    $time = explode(':', $time);
                 }
-                return $this;
+                $cronExprArray = [
+                    (int)$time[1],
+                    (int)$time[0],
+                    $frequency == \Magento\Cron\Model\Config\Source\Frequency::CRON_MONTHLY ? '1' : '*',
+                    '*',
+                    $frequency == \Magento\Cron\Model\Config\Source\Frequency::CRON_WEEKLY ? '1' : '*',
+                ];
+                $cronExprString = join(' ', $cronExprArray);
             }
+            $exprPath = $this->getExprConfigPath();
+            $modelPath = $this->getModelConfigPath();
+            try {
+                /** @var \Magento\Framework\App\Config\ValueInterface $exprValue */
+                $exprValue = $this->_configValueFactory->create()->load($exprPath, 'path');
+                $oldCronExprString = $exprValue->getValue();
+                if ($oldCronExprString != $cronExprString) {
+                    $exprValue->setValue($cronExprString)->setPath($exprPath)->save();
+                    $this->_cacheManager->clean(['crontab']);
+                }
 
+                $this->_configValueFactory->create()->load(
+                    $modelPath,
+                    'path'
+                )->setValue(
+                    self::CRON_MODEL
+                )->setPath(
+                    $modelPath
+                )->save();
+
+                // Show a notice message only if the admin user chooses the custom type of frequency - "HALF_HOURLY"
+                if ($frequency == \CJ\DataExport\Model\Config\Source\Frequency::CRON_HALF_HOURLY) {
+                    $this->messageManager->addSuccessMessage(__('You have selected freqency as every 30 minutes. Then the system will not need to care about the value of start time, and scheduled update will be run at even time, like 10:00 AM, 10:30 AM, 11:00 AM...'));
+                }
+            } catch (\Exception $e) {
+                $this->_logger->critical($e);
+                throw new LocalizedException(
+                    __('We were unable to save the cron expression.')
+                );
+            }
+            return $this;
         } else {
+            // If entity type is not a custom type, we don't change any logic. The program will run like before
             return parent::_addCronTask();
         }
     }
-
-
 }
