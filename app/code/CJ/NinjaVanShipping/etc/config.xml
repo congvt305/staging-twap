@@ -37,6 +37,9 @@
                 <address_from>17 Lorong Jambu 3</address_from>
                 <postcode_from>51200</postcode_from>
             </additional>
+            <cancel_order_with_nv>
+                <allows_order_status_can_cacel>processing_with_shipment</allows_order_status_can_cacel>
+            </cancel_order_with_nv>
         </ninjavan>
         <carriers>
             <ninjavan>

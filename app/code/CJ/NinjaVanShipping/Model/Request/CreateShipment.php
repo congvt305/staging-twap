@@ -10,9 +10,16 @@ use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use CJ\NinjaVanShipping\Logger\Logger as NinjaVanShippingLogger;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Sales\Model\Order\Shipment;
+use Magento\Directory\Model\ResourceModel\Region\CollectionFactory as RegionCollectionFactory;
 
 class CreateShipment
 {
+    const INVALID_TOKEN_CODE = 2001;
+    const DUPLICATE_TRACKING_CODE = 109201;
+
     /**
      * @var NinjaVanToken
      */
@@ -21,6 +28,12 @@ class CreateShipment
      * @var NinjaVanHelper
      */
     private NinjaVanHelper $ninjavanHelper;
+
+    /**
+     * @var ScopeConfigInterface
+     */
+    protected ScopeConfigInterface $scopeConfig;
+
     /**
      * @var Json
      */
@@ -49,6 +62,11 @@ class CreateShipment
     protected $logger;
 
     /**
+     * @var RegionCollectionFactory
+     */
+    private RegionCollectionFactory $regionCollectionFactory;
+
+    /**
      * @param TokenDataFactory $tokenDataFactory
      * @param AuthToken $authToken
      * @param NinjaVanHelper $ninjavanHelper
@@ -61,17 +79,21 @@ class CreateShipment
         TokenDataFactory $tokenDataFactory,
         NinjaVanToken $authToken,
         NinjaVanHelper $ninjavanHelper,
+        ScopeConfigInterface $scopeConfig,
         Json $json,
         DateTime $dateTime,
-        TimezoneInterface $timezone
+        TimezoneInterface $timezone,
+        RegionCollectionFactory $regionCollectionFactory
     ) {
         $this->logger = $logger;
         $this->tokenDataFactory = $tokenDataFactory;
         $this->authToken = $authToken;
         $this->ninjavanHelper = $ninjavanHelper;
+        $this->scopeConfig = $scopeConfig;
         $this->json = $json;
         $this->dateTime = $dateTime;
         $this->timezone = $timezone;
+        $this->regionCollectionFactory = $regionCollectionFactory;
     }
 
     /**
@@ -116,26 +138,50 @@ class CreateShipment
                 'timeout' => 60,
                 'http_errors' => false,
             ];
+            $this->logger->info('ninjavan | request header: ' . $this->json->serialize($headers));
             $client = new \GuzzleHttp\Client($headers);
             $response = $client->post($url, ['json' => $data]);
             $contents = $this->json->unserialize($response->getBody()->getContents());
-            if (isset($contents['error']) && $response->getStatusCode() == 401) {
-                try {
-                    if ($tokenData && $tokenData->getDataByKey('token_id')) {
-                        $tokenDataFactory = $this->tokenDataFactory->create()->load($tokenData->getDataByKey('token_id'));
-                        $tokenDataFactory->setStatus(0);
-                        $tokenDataFactory->save();
+            if (isset($contents['error'])
+                && ($response->getStatusCode() == 401 || isset($contents['error']['code']))
+            ) {
+                if ($contents['error']['code'] == self::INVALID_TOKEN_CODE) {
+                    try {
+                        if ($tokenData && $tokenData->getDataByKey('token_id')) {
+                            $tokenDataFactory = $this->tokenDataFactory->create()->load($tokenData->getDataByKey('token_id'));
+                            $tokenDataFactory->setStatus(0);
+                            $tokenDataFactory->save();
+                        }
+                    } catch (\Exception $exception) {
+                        $this->logger->addError('Error when disable access token: ' . $exception->getMessage());
                     }
-                } catch (\Exception $exception) {
-                    $this->logger->addError('Error when disable access token: ' . $exception->getMessage());
-                }
 
-                $this->retryCount++;
-                $numOfRetry = $this->ninjavanHelper->getNinjaVanNumberRetry() ?? 4;
-                if ($this->retryCount == $numOfRetry) {
-                    throw new \Exception('Something went wrong while connecting to NinjaVan.');
+                    $numOfRetry = $this->ninjavanHelper->getNinjaVanNumberRetry() ?? 4;
+                    while ($this->retryCount < $numOfRetry) {
+                        $this->retryCount++;
+                        $this->logger->info(__("Retry to make create Order request {$this->retryCount} time(s)"));
+
+                        $auth = $this->authToken->requestAuthToken('array', $order->getStoreId());
+                        $this->logger->addInfo('retry to get request token: ', $auth);
+                        if (empty($auth['access_token'])) {
+                            throw new \Exception('Cannot get access token from NinjaVan.');
+                        }
+
+                        $headers[RequestOptions::HEADERS] = ['Authorization' => 'Bearer ' . $auth['access_token']];
+                        $this->logger->info('ninjavan | request header: ' . $this->json->serialize($headers));
+
+                        $client = new \GuzzleHttp\Client($headers);
+                        $response = $client->post($url, ['json' => $data]);
+                        $contentsRetry = $this->json->unserialize($response->getBody()->getContents());
+
+                        if (isset($contentsRetry['error']) && $contentsRetry['error']['code'] == self::INVALID_TOKEN_CODE) {
+                            $this->logger->addError('Error when retrying to create NV Order: ' . $this->json->serialize($contentsRetry['error']));
+                            continue;
+                        }
+                        $contents = $contentsRetry;
+                        break;
+                    }
                 }
-                $this->requestCreateOrder($data, $order);
             }
             if (isset($contents['messages'])) {
                 throw new \Exception(implode (' | ', $contents['messages']));
@@ -151,13 +197,10 @@ class CreateShipment
 
     /**
      * @param \Magento\Sales\Model\Order $order
-     * @param \Magento\Sales\Model\Order\Shipment $shipment
-     * @param \Magento\Sales\Model\Order\Shipment\Track $track
      * @return array
      */
-    public function payloadSendToNinjaVan($order, $shipment, $track): array
+    public function payloadSendToNinjaVan($order): array
     {
-        $trackingNum = $track->getTrackNumber();
         $merchantOrderNumber = $order->getIncrementId();
 
         $nameFrom = $this->ninjavanHelper->getNinjaVanSendFrom();
@@ -165,11 +208,17 @@ class CreateShipment
         $mailFrom = $this->ninjavanHelper->getNinjaVanMailFrom();
         $addressFrom = $this->ninjavanHelper->getNinjaVanAddressFrom();
         $postCodeFrom = $this->ninjavanHelper->getNinjaVanPostcodeFrom();
+        $cityFrom = $this->scopeConfig->getValue(Shipment::XML_PATH_STORE_CITY, ScopeInterface::SCOPE_WEBSITE) ?? '';
+        $stateIdFrom = $this->scopeConfig->getValue(Shipment::XML_PATH_STORE_REGION_ID, ScopeInterface::SCOPE_WEBSITE);
+        $stateFrom = $stateIdFrom ? $this->getRegionById($stateIdFrom) : '';
 
         $nameTo = $order->getCustomerFirstname() .' '. $order->getCustomerLastname();
         $phoneTo = $order->getShippingAddress()->getTelephone();
         $mailTo = $order->getCustomerEmail();
         $addressTo = implode(" ",$order->getShippingAddress()->getStreet());
+        $cityTo = $order->getShippingAddress()->getCity() ?? '';
+        $stateIdTo = $order->getShippingAddress()->getRegionId();
+        $stateTo = $stateIdTo ? $this->getRegionById($stateIdTo) : '';
         $postCode = $order->getShippingAddress()->getPostcode();
         if (strlen($postCode) < 5) {
             $postCode = str_pad($postCode, 5, "0", STR_PAD_LEFT);
@@ -195,7 +244,6 @@ class CreateShipment
         $data = [
             'service_type' => 'Parcel',
             'service_level' => 'Standard',
-            'requested_tracking_number' => $trackingNum,
             'reference' => [
                 'merchant_order_number' => $merchantOrderNumber,
             ],
@@ -207,8 +255,8 @@ class CreateShipment
                     'address1' => $addressFrom,
                     'address2' => '',
                     'area' => '',
-                    'city' => '',
-                    'state' => '',
+                    'city' => $cityFrom,
+                    'state' => $stateFrom,
                     'address_type' => 'office',
                     'country' => 'MY',
                     'postcode' => $postCodeFrom,
@@ -222,8 +270,8 @@ class CreateShipment
                     'address1' => $addressTo,
                     'address2' => '',
                     'area' => '',
-                    'city' => '',
-                    'state' => '',
+                    'city' => $cityTo,
+                    'state' => $stateTo,
                     'address_type' => 'home',
                     'country' => 'MY',
                     'postcode' => $postCode,
@@ -257,4 +305,14 @@ class CreateShipment
         return $data;
     }
 
+    /**
+     * @param $regionId
+     * @return string
+     */
+    private function getRegionById($regionId): string
+    {
+        $regionCollection = $this->regionCollectionFactory->create();
+        $region = $regionCollection->addFieldToFilter('main_table.region_id', $regionId)->getFirstItem();
+        return $region->getDefaultName() ?? '';
+    }
 }

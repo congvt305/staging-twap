@@ -33,6 +33,8 @@ class Data extends AbstractHelper
     const XML_PATH_NINJAVAN_ADDRESS_FROM = 'ninjavan/additional/address_from';
     const XML_PATH_NINJAVAN_POSTCODE_FROM = 'ninjavan/additional/postcode_from';
 
+    const XML_PATH_NINJAVAN_ALLOWS_ORDER_STATUS_CAN_CANCEL = 'ninjavan/cancel_order_with_nv/allows_order_status_can_cacel';
+
     public function isNinjaVanEnabled()
     {
         return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_ENABLE, ScopeInterface::SCOPE_WEBSITE);
@@ -141,5 +143,10 @@ class Data extends AbstractHelper
     public function getNinjaVanNumberRetry()
     {
         return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_NUM_OF_RETRY, ScopeInterface::SCOPE_WEBSITE);
+    }
+
+    public function getNinjaVanAllowsOrderStatusCancel()
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_ALLOWS_ORDER_STATUS_CAN_CANCEL, ScopeInterface::SCOPE_WEBSITE);
     }
 }
