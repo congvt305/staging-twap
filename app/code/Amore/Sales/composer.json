@@ -1,0 +1,14 @@
+{
+    "name": "amore/sales",
+    "description": "Customize module sales",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amore\\Sales\\": ""
+        }
+    }
+}
