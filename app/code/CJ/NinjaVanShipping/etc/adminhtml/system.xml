@@ -99,6 +99,13 @@
                     <label>Start Time</label>
                 </field>
             </group>
+            <group id="cancel_order_with_nv" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Cancel Order With Shipment Ninja Van</label>
+                <field id="allows_order_status_can_cacel" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Allows Order Status Can Cacel</label>
+                    <source_model>CJ\NinjaVanShipping\Model\Config\Source\OrderStatusCanCancel</source_model>
+                </field>
+            </group>
         </section>
         <section id="carriers" type="text" sortOrder="320" showInDefault="1" showInWebsite="1" showInStore="1">
             <group id="ninjavan" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">

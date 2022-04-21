@@ -2,6 +2,7 @@
 
 namespace CJ\NinjaVanShipping\Controller\Adminhtml\Index;
 
+use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use CJ\NinjaVanShipping\Helper\Data as NinjaVanHelper;
 use CJ\NinjaVanShipping\Logger\Logger as NinjaVanShippingLogger;
 use CJ\NinjaVanShipping\Model\Request\CancelShipment as NinjaVanCancelShipment;
@@ -59,7 +60,18 @@ class CancelShipment extends Action
     {
         $orderId = $this->getRequest()->getParam('order_id');
         $order = $this->orderFactory->create()->load($orderId);
+
+        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+        $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+
+        if (in_array($order->getData('sap_order_send_check'), [SapOrderConfirmData::ORDER_RESENT_TO_SAP_SUCCESS, SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS])){
+            $this->messageManager->addErrorMessage(__('This order cannot cancel now.. plz cancel sap order first and then credit memo for refund and cancel ninjavan shipment'));
+            return $resultRedirect;
+        }
+
         if ((bool)$this->ninjavanHelper->isNinjaVanEnabled() && $order->getId()) {
+
+
             if ($order->getShippingMethod() == 'ninjavan_tablerate' && $trackingNumber = $this->getTrackingNumber($order)) {
                 try {
                     $response = $this->ninjavanCancelShipment->requestCancelShipment($trackingNumber, $order);
@@ -87,8 +99,6 @@ class CancelShipment extends Action
             }
         }
 
-        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-        $resultRedirect->setUrl($this->_redirect->getRefererUrl());
         return $resultRedirect;
     }
 
