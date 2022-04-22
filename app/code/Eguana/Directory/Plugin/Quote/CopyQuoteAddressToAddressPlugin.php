@@ -7,6 +7,8 @@ use Magento\Quote\Model\Quote\Address;
 class CopyQuoteAddressToAddressPlugin
 {
     /**
+     * Set custom attribute to address
+     *
      * @param Address $subject
      * @param $result
      * @return mixed
