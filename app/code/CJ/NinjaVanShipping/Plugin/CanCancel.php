@@ -34,7 +34,6 @@ class CanCancel
         if ($result === false
             && $subject->getState() == Order::STATE_PROCESSING
             && in_array($subject->getStatus(), $allowOrderStatus)
-            && !$subject->getData('ninjavan_shipment_cancel')
             && $subject->getShippingMethod() === 'ninjavan_tablerate'
         ) {
             $result = true;

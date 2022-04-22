@@ -22,8 +22,8 @@
     <type name="Magento\Checkout\Block\Cart\LayoutProcessor">
         <plugin name="checkout_cart_shipping_plugin" type="CJ\NinjaVanShipping\Model\Plugin\Checkout\Block\Cart\Shipping"/>
     </type>
-    <type name="Magento\Sales\Block\Adminhtml\Order\View">
-        <plugin name="addButtonCancelShipment" type="CJ\NinjaVanShipping\Plugin\Block\Adminhtml\Order\View"/>
+    <type name="Magento\Sales\Model\Order">
+        <plugin name="before_cancel_order" type="CJ\NinjaVanShipping\Plugin\Magento\Sales\Model\Order"/>
     </type>
     <type name="CJ\OrderCancel\Logger\Logger">
         <arguments>
