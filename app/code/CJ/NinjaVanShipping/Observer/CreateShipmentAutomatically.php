@@ -21,7 +21,6 @@ use Magento\Sales\Api\Data\ShipmentItemCreationInterfaceFactory;
 use Magento\Sales\Api\Data\ShipmentTrackCreationInterfaceFactory;
 use Magento\Sales\Api\Data\OrderInterface as OrderDataInterface;
 use Magento\Sales\Model\Order\Shipment\TrackFactory as ShipmentTrackFactory;
-use Magento\Sales\Model\OrderRepository;
 
 class CreateShipmentAutomatically implements ObserverInterface
 {
@@ -98,12 +97,10 @@ class CreateShipmentAutomatically implements ObserverInterface
      * @var ShipmentTrackFactory
      */
     private ShipmentTrackFactory $shipmentTrackFactory;
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
 
     /**
+     * CreateShipment constructor
+     *
      * @param NinjaVanShippingLogger $logger
      * @param OrderFactory $orderFactory
      * @param ConvertOrder $convertOrder
@@ -112,14 +109,10 @@ class CreateShipmentAutomatically implements ObserverInterface
      * @param CarrierFactory $carrierFactory
      * @param ShipmentRepositoryInterface $shipmentRepository
      * @param CreateShipment $createShipment
+     * @param DateTime $dateTime
+     * @param TimezoneInterface $timezone
      * @param Json $json
      * @param NinjaVanHelper $ninjavanHelper
-     * @param ShipmentItemCreationInterfaceFactory $shipmentItemCreationInterfaceFactory
-     * @param ShipmentTrackCreationInterfaceFactory $shipmentTrackCreationInterfaceFactory
-     * @param ShipOrderInterface $shipOrder
-     * @param ShipmentIdentity $shipmentIdentity
-     * @param ShipmentTrackFactory $shipmentTrackFactory
-     * @param OrderRepository $orderRepository
      */
     public function __construct(
         NinjaVanShippingLogger $logger,
@@ -136,8 +129,7 @@ class CreateShipmentAutomatically implements ObserverInterface
         ShipmentTrackCreationInterfaceFactory $shipmentTrackCreationInterfaceFactory,
         ShipOrderInterface $shipOrder,
         ShipmentIdentity $shipmentIdentity,
-        ShipmentTrackFactory $shipmentTrackFactory,
-        OrderRepository $orderRepository
+        ShipmentTrackFactory $shipmentTrackFactory
     ) {
         $this->logger = $logger;
         $this->orderFactory = $orderFactory;
@@ -154,7 +146,6 @@ class CreateShipmentAutomatically implements ObserverInterface
         $this->shipOrderInterface = $shipOrder;
         $this->shipmentIdentity = $shipmentIdentity;
         $this->shipmentTrackFactory = $shipmentTrackFactory;
-        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -190,7 +181,6 @@ class CreateShipmentAutomatically implements ObserverInterface
         if ($shipmentItems == null) {
             return null;
         }
-
         if (!$order->canShip()) {
             throw new \Magento\Framework\Exception\LocalizedException(
                 __('You can\'t create an shipment.')
@@ -198,7 +188,6 @@ class CreateShipmentAutomatically implements ObserverInterface
         }
 
         try {
-            $shipment = $order->getShipmentsCollection()->getFirstItem();
             // Send the order's information to NinjaVan to create new delivery order
             $data = $this->createShipment->payloadSendToNinjaVan($order);
             $this->logger->info('request body to create delivery order: ');
@@ -208,27 +197,36 @@ class CreateShipmentAutomatically implements ObserverInterface
             $this->logger->info('ninjavan | response: ', $response);
 
             $message = 'success';
-
             if (isset($response['tracking_number'])) {
                 $ninjaVanTrack = $this->createTrackNo($order, $response['tracking_number']);
-                $shipmentId = $this->shipOrderInterface->execute(
-                    $order->getEntityId(),
-                    $shipmentItems,
-                    $this->shipmentIdentity->isEnabled(),
-                    false,
-                    null,
-                    [$ninjaVanTrack]
-                );
+                $shipmentId = $this->shipOrderInterface
+                    ->execute(
+                        $order->getEntityId(),
+                        $shipmentItems,
+                        $this->shipmentIdentity->isEnabled(),
+                        false,
+                        null,
+                        []
+                    );
                 if (empty($shipmentId)) {
                     $this->logger->info("Cannot Create delivery order: {$order->getIncrementId()}");
                     throw new \Exception(__("Cannot Create delivery order: {$order->getIncrementId()}"));
                 }
 
                 $this->setQtyShipToOrderItem($order);
-
                 $order->setState('processing');
                 $order->setStatus('processing_with_shipment');
                 $order->setData('sent_to_ninjavan', 1);
+                $order->save();
+
+                $dataTrack = [
+                    'carrier_code' => $ninjaVanTrack->getCarrierCode(),
+                    'title' => $ninjaVanTrack->getTitle(),
+                    'number' => $ninjaVanTrack->getTrackNumber()
+                ];
+                $shipment = $order->getShipmentsCollection()->getFirstItem();
+                $newDataTrack = $this->shipmentTrackFactory->create()->addData($dataTrack);
+                $shipment->addTrack($newDataTrack)->save();
             }
             if (isset($response['error'])) {
                 $message = $response['error']['message'];
@@ -238,10 +236,10 @@ class CreateShipmentAutomatically implements ObserverInterface
                 }
             }
             $this->logger->info('ninjavan | message: ', [$message]);
-            $this->orderRepository->save($order);
+            $message = "Shipment Created Successfully.";
+
         } catch (\Exception $exception) {
             $this->logger->info("Create delivery order failed: {$exception->getMessage()}");
-            $this->handleNoShipmentItemIssue($shipment, $exception->getMessage());
             return $exception->getMessage();
         }
     }
@@ -286,22 +284,16 @@ class CreateShipmentAutomatically implements ObserverInterface
 
     /**
      * @param $order
-     * @return string
-     */
-    protected function generateTrackNumber($order): string
-    {
-        return substr($order->getIncrementId(), -9);
-    }
-
-    /**
-     * @param $order
      * @param string $trackingNum
      * @return Order\Shipment\TrackCreation
      */
-    public function createTrackNo($order, string $trackingNum)
+    public function createTrackNo($order, string $trackingNum = '')
     {
         $carrierCode = (string)$order->getShippingMethod(true)->getCarrierCode();
         $shippingMethod = $order->getShippingMethod();
+        if (!$trackingNum) {
+            $trackingNum = substr($order->getIncrementId(), -9);
+        }
         /** @var \Magento\Sales\Model\Order\Shipment\TrackCreation $trackNo */
         $trackNo = $this->shipmentTrackCreationInterfaceFactory->create();
         $trackNo->setCarrierCode($carrierCode);
@@ -309,51 +301,5 @@ class CreateShipmentAutomatically implements ObserverInterface
         $trackNo->setTrackNumber($trackingNum);
 
         return $trackNo;
-    }
-
-    /**
-     * Log No shipment item issue when creating new track by NinjaVan tracking number
-     *
-     * @param $shipment
-     * @param string $errorMessage
-     * @return bool
-     */
-    private function handleNoShipmentItemIssue($shipment, string $errorMessage): bool
-    {
-        if (!$shipment) {
-            $this->logger->error("Create shipment's track by NinjaVan tracking number failed: Shipment is empty");
-        }
-
-        if ($errorMessage != 'We cannot create an empty shipment.') {
-            return false;
-        }
-
-        $shipmentItems = [];
-        if ($shipment->getItems() !== null) {
-            foreach ($shipment->getItems() as $item) {
-                if (!$item->getEntityId()) {
-                    continue;
-                }
-                $shipmentItems[] = $item->getData();
-            }
-        }
-
-        $shipmentAllItems = [];
-        if ($shipment->getAllItems() !== null) {
-            foreach ($shipment->getAllItems() as $item) {
-                if (!$item->getEntityId()) {
-                    continue;
-                }
-                $shipmentAllItems[] = $item->getData();
-            }
-        }
-
-        $this->logger->error("Create shipment's track by NinjaVan tracking number failed: " . json_encode([
-                'shipment_id' => $shipment->getId(),
-                'shipment_items' => $shipmentItems,
-                'shipment_all_items' => $shipmentAllItems,
-            ])
-        );
-        return true;
     }
 }
