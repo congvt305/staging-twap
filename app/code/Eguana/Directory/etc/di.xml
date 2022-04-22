@@ -32,6 +32,10 @@
         <plugin name="eguana_directory_copy_address_field"
                 type="Eguana\Directory\Plugin\Quote\CopyAddressFieldPlugin" sortOrder="20"/>
     </type>
+    <type name="Magento\Quote\Model\Quote\Address">
+        <plugin name="eguana_directory_copy_quote_address_to_address"
+                type="Eguana\Directory\Plugin\Quote\CopyQuoteAddressToAddressPlugin" sortOrder="20"/>
+    </type>
     <type name="Magento\Checkout\Model\ShippingInformationManagement">
         <plugin name="validate_address_for_vn"
                 type="Eguana\Directory\Plugin\Model\ShippingInformationManagement" sortOrder="20"/>
