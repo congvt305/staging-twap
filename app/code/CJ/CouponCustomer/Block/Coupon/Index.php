@@ -9,6 +9,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Theme\Block\Html\Header\Logo;
 use Magento\Theme\Block\Html\Pager;
 use \Magento\Directory\Model\Currency;
+use CJ\CouponCustomer\Helper\Data;
 
 class Index extends Template
 {
@@ -36,6 +37,11 @@ class Index extends Template
      */
     private $currency;
 
+    /**
+     * @var Data
+     */
+    protected $helperData;
+
 
     /**
      * @param Template\Context $context
@@ -52,18 +58,22 @@ class Index extends Template
         Session               $customerSession,
         StoreManagerInterface $storeManager,
         Logo                  $logo,
-        Currency $currency
+        Currency $currency,
+        Data $helperData
 
-    ){
+    ) {
         parent::__construct($context, $data);
         $this->ruleCollection = $ruleCollection;
         $this->customerSession = $customerSession;
         $this->storeManager = $storeManager;
         $this->logo = $logo;
         $this->currency = $currency;
+        $this->helperData = $helperData;
     }
 
     /**
+     * Get rule collection
+     *
      * @return \Magento\SalesRule\Model\ResourceModel\Rule\Collection
      */
     public function getRuleCollection()
@@ -76,6 +86,7 @@ class Index extends Template
         $rules->addWebsiteGroupDateFilter($websiteId, $customer->getGroupId())
             ->addFieldToFilter('coupon_type', \Magento\SalesRule\Model\Rule::COUPON_TYPE_SPECIFIC)
             ->addFieldToFilter('is_active', 1)
+            ->addFieldToFilter('use_auto_generation', 0)
             ->setPageSize($pageSize)
             ->setCurPage($page);
         return $rules;
@@ -112,6 +123,8 @@ class Index extends Template
 
 
     /**
+     * Get customer
+     *
      * @return \Magento\Customer\Model\Customer
      */
     public function getCustomer()
@@ -120,6 +133,8 @@ class Index extends Template
     }
 
     /**
+     * Get logo
+     *
      * @return string
      */
     public function getLogo()
@@ -128,6 +143,8 @@ class Index extends Template
     }
 
     /**
+     * Get currency code
+     *
      * @return string
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
