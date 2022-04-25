@@ -129,9 +129,6 @@ class SendOrderToNinjaVan
         $this->logger->info('=====Start cron send order to NinjaVan=====');
         /** @var Order $order */
         foreach ($orderCollection->getItems() as $order) {
-            if ($order->getId() != 8365){
-                continue;
-            }
             try {
                 $shipmentItems = $this->createShipmentItem($order);
                 if ($shipmentItems == null) {
