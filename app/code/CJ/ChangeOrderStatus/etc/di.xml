@@ -5,6 +5,7 @@
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="cj_change_order_status" xsi:type="object">CJ\ChangeOrderStatus\Console\ChangeOrderStatus</item>
+                <item name="cj_remove_shipment_and_change_order_status" xsi:type="object">CJ\ChangeOrderStatus\Console\RemoveShipment</item>
             </argument>
         </arguments>
     </type>
