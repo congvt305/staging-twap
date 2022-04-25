@@ -84,13 +84,14 @@ class Order
             throw new Exception(__('This order cannot cancel now.'));
         }
 
-        if ((bool)$this->ninjavanHelper->isNinjaVanEnabled() && !$order->getData('ninjavan_shipment_cancel')) {
-            if ($order->getShippingMethod() == 'ninjavan_tablerate' && $trackingNumber = $this->getTrackingNumber($order)) {
-                try {
+        if ((bool)$this->ninjavanHelper->isNinjaVanEnabled() && $order->getShippingMethod() == 'ninjavan_tablerate' && $trackingNumber = $this->getTrackingNumber($order)) {
+            try {
+                if (!$order->getData('ninjavan_shipment_cancel')) {
                     $response = $this->ninjavanCancelShipment->requestCancelShipment($trackingNumber, $order);
                     $message = 'The NinjaVan Shipment successfully cancelled';
                     if (isset($response['trackingId'])) {
                         $message .= ' - Tracking Id: ' . $response['trackingId'];
+                        $order->setData('ninjavan_shipment_cancel', 1);
                     }
                     if (isset($response['status'])) {
                         $message .= ' - Status: ' . $response['status'];
@@ -100,23 +101,19 @@ class Order
                     }
                     $this->logger->info($message);
                     $order->addCommentToStatusHistory($message);
-                    $order->setData('ninjavan_shipment_cancel', 1);
                     $order->save();
-
-                    /**
-                     * create credit memo and refun order
-                     */
-                    if (!$order->hasCreditmemos()){
-                        $this->creatCreditMemo($order);
-                    }
-
-                } catch (Exception $exception) {
-                    $this->messageManager->addErrorMessage(__($exception->getMessage()));
-                    throw new \Exception(__('Something went wrong while canceling'));
                 }
+                /**
+                 * create credit memo and refun order
+                 */
+                if (!$order->hasCreditmemos()){
+                    $this->creatCreditMemo($order);
+                }
+            } catch (Exception $exception) {
+                $this->messageManager->addErrorMessage(__($exception->getMessage()));
+                throw new \Exception(__('Something went wrong while canceling'));
             }
         }
-
     }
 
     public function creatCreditMemo(\Magento\Sales\Model\Order $order)
