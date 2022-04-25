@@ -100,12 +100,12 @@ class ResponseHandler extends Action implements CsrfAwareActionInterface{
 			$params = array(
                 'form_key' => $form_key,
                 'product' => $productId,
-                'qty'   => $item->getQtyOrdered()                
+                'qty'   => $item->getQtyOrdered()
             );
 			//Load the product based on productID
-			$product = $this->_objectManager->create('\Magento\Catalog\Model\Product');  
-			$_product = $product->load($productId);   
-			
+			$product = $this->_objectManager->create('\Magento\Catalog\Model\Product');
+			$_product = $product->load($productId);
+
 			// For adding product attributes configuration of any
 			if ($item->getProductType() == 'configurable'){
 				$productOptionsArray = $item->getProductOptions()['info_buyRequest'];
@@ -122,11 +122,16 @@ class ResponseHandler extends Action implements CsrfAwareActionInterface{
         $canInvoice = $this->_order->canInvoice();
         Logger::writeString('['.$this->urlType.'] has Invoice check '.json_encode($this->_order->hasInvoices(),1));
         if($canInvoice && !$this->_order->hasInvoices()) {
+            $vars = $this->request->getParams();
             $this->_order->addStatusHistoryComment('Create Invoice.')->setIsCustomerNotified(false)->save();
+            /**
+             * @var \Magento\Sales\Model\Order\Invoice $invoice
+             */
             $invoice = $this->_invoiceService->prepareInvoice($this->_order);
             $invoice->setRequestedCaptureCase(\Magento\Sales\Model\Order\Invoice::CAPTURE_ONLINE);
             $invoice->register();
             $invoice->setState(\Magento\Sales\Model\Order\Invoice::STATE_PAID);
+            $invoice->setTransactionId( $vars['TxnID'] );
             $invoice->save();
             $transactionSave = $this->_transaction->addObject($invoice)->addObject($invoice->getOrder());
             $transactionSave->save();
@@ -198,7 +203,7 @@ class ResponseHandler extends Action implements CsrfAwareActionInterface{
 				else{
 					$comment .= " [Transaction ID:" . $vars['TxnID'] . "]" . " [Payment method: " . $vars['PymtMethod'] . "]"." [Order ID:" . $vars['OrderNumber'] . "]";
 				}
-	
+
 				$history = $this->_order->addStatusHistoryComment($comment, false);
 				if($bSentEmail){
 					$history->setIsCustomerNotified(true);
