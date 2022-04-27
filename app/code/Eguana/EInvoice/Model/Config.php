@@ -7,17 +7,17 @@ namespace Eguana\EInvoice\Model;
  */
 class Config
 {
-    /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
-     */
-    protected $scopeConfig;
-
     const XML_PATH_MERCHANT_ID = 'payment/ecpay_ecpaypayment/ecpay_merchant_id';
     const XML_PATH_EINVOICE_HASH_KEY = 'payment/ecpay_ecpaypayment/ecpay_invoice/ecpay_invoice_hash_key';
     const XML_PATH_EINVOICE_HASH_IV = 'payment/ecpay_ecpaypayment/ecpay_invoice/ecpay_invoice_hash_iv';
     const XML_PATH_ECPAY_QUERY_TEST_FLAG = 'eguana_einvoice/ecpay_einvoice_issue/ecpay_query_test_flag';
     const XML_PATH_ECPAY_QUERY_STAGE_URL = 'eguana_einvoice/ecpay_einvoice_issue/ecpay_query_stage_url';
     const XML_PATH_ECPAY_QUERY_PRODUCTION_URL = 'eguana_einvoice/ecpay_einvoice_issue/ecpay_query_production_url';
+
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    protected $scopeConfig;
 
     /**
      * Constructor
