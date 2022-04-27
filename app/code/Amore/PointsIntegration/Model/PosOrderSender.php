@@ -12,6 +12,7 @@ use Amore\PointsIntegration\Logger\Logger;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Model\Order;
+use CJ\CouponCustomer\Helper\UpdatePOSCustomerGradeHelper;
 
 class PosOrderSender
 {
@@ -36,6 +37,11 @@ class PosOrderSender
      */
     private $pointsIntegrationLogger;
 
+
+    /**
+     * @var UpdatePOSCustomerGradeHelper
+     */
+    private $updatePOSCustomerGradeHelper;
     /**
      * PosOrderSender constructor.
      * @param PosOrderData $posOrderData
@@ -51,7 +57,8 @@ class PosOrderSender
         \Magento\Framework\Event\ManagerInterface         $eventManager,
         Json                                              $json,
         \Amore\PointsIntegration\Model\Source\Config      $PointsIntegrationConfig,
-        Logger                                            $pointsIntegrationLogger
+        Logger                                            $pointsIntegrationLogger,
+        UpdatePOSCustomerGradeHelper                      $updatePOSCustomerGradeHelper
     )
     {
         $this->posOrderData = $posOrderData;
@@ -60,9 +67,12 @@ class PosOrderSender
         $this->json = $json;
         $this->PointsIntegrationConfig = $PointsIntegrationConfig;
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
+        $this->updatePOSCustomerGradeHelper = $updatePOSCustomerGradeHelper;
     }
 
     /**
+     * Send order to POS and update flag
+     *
      * @param Order $order
      */
     public function send(Order $order)
@@ -75,7 +85,11 @@ class PosOrderSender
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
             $status = $this->request->responseCheck($response, $websiteId);
             if ($status) {
-                $this->posOrderData->updatePosPaidOrderSendFlag($order);
+               $this->posOrderData->updatePosPaidOrderSendFlag($order);
+                // update Pos customer grade
+                if($order->getCustomerId() !== null){
+                    $this->updatePOSCustomerGradeHelper->updatePOSCustomerGrade($order->getCustomerId());
+                }
             }
         } catch (\Exception $exception) {
             $message = 'POS Integration Fail: ' . $order->getIncrementId();

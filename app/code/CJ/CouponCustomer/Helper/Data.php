@@ -20,27 +20,26 @@ class Data extends AbstractHelper
      * xml path cron for creating new customer group from POS
      */
     const XML_PATH_CRON_JOB_CREATE_CUSTOMER_GROUP_ENABLE = 'coupon_wallet/cron/active';
+
     /**
      * xml path coupon list popup
      */
     const XML_PATH_COUPON_LIST_POPUP_ENABLE = 'coupon_wallet/general/popup';
+
     /**
      * xml path sync pos customer grade
      */
     const XML_PATH_SYNC_POS_CUSTOMER_GRADE_ENABLE = 'coupon_wallet/general/sync_pos_customer_grade';
+
     /**
      * @var RuleCollection
      */
     private $ruleCollection;
+
     /**
      * @var Session
      */
     private $customerSession;
-
-    /**
-     * @var Logo
-     */
-    private $logo;
 
     /**
      * @var StoreManagerInterface
@@ -76,17 +75,15 @@ class Data extends AbstractHelper
         RuleCollection        $ruleCollection,
         Session               $customerSession,
         StoreManagerInterface $storeManager,
-        Logo                  $logo,
         Currency              $currency,
         GroupFactory          $customerGroup
     ) {
-        parent::__construct($context);
         $this->ruleCollection = $ruleCollection;
         $this->customerSession = $customerSession;
         $this->storeManager = $storeManager;
-        $this->logo = $logo;
         $this->currency = $currency;
         $this->customerGroup = $customerGroup;
+        parent::__construct($context);
     }
 
     /**
@@ -133,7 +130,6 @@ class Data extends AbstractHelper
             $couponData['to_date'] = $coupon['to_date'];
             $couponData['description'] = $coupon['description'];
             $couponData['discount_amount'] = $coupon['discount_amount'];
-            $couponData['logo'] = $this->getLogo();
 
             $simpleActionString = $this->convertActionCouponToText($coupon['simple_action'], $coupon['discount_amount']);
             $couponData['simple_action_string'] = $simpleActionString;
@@ -141,16 +137,6 @@ class Data extends AbstractHelper
             array_push($couponList, $couponData);
         }
         return $couponList;
-    }
-
-    /**
-     * Get logo base on store
-     *
-     * @return string
-     */
-    public function getLogo()
-    {
-        return $this->logo->getLogoSrc();
     }
 
     /**
