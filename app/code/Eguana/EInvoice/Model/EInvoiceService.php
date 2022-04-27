@@ -126,7 +126,8 @@ class EInvoiceService
      */
     protected function getEcpayEInvoiceData(\Magento\Sales\Model\Order $order): array
     {
-        $serviceUrl = $this->helper->getQueryEInvoiceApiUrl($order->getStoreId());
+        $orderId = (int) $order->getStoreId();
+        $serviceUrl = $this->helper->getQueryEInvoiceApiUrl($orderId);
         $request = $this->buildRequestData($order);
         try {
             $ch = curl_init();
@@ -161,7 +162,7 @@ class EInvoiceService
      */
     protected function buildRequestData(\Magento\Sales\Model\Order $order): string
     {
-        $storeId = $order->getStoreId();
+        $storeId = (int)$order->getStoreId();
         $merchantId = $this->helper->getMerchantId($storeId);
         $relateNumber = $order->getIncrementId();
         $checkMacValue = $this->checkMacValue->generate(

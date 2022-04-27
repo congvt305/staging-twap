@@ -12,9 +12,9 @@ class Config
      */
     protected $scopeConfig;
 
-    const KEY_MERCHANT_ID = 'MerchantID';
-    const XML_PATH_EINVOICE_HASH_KEY = 'invoice/ecpay_invoice_hash_key';
-    const XML_PATH_EINVOICE_HASH_IV = 'invoice/ecpay_invoice_hash_iv';
+    const XML_PATH_MERCHANT_ID = 'payment/ecpay_ecpaypayment/ecpay_merchant_id';
+    const XML_PATH_EINVOICE_HASH_KEY = 'payment/ecpay_ecpaypayment/ecpay_invoice/ecpay_invoice_hash_key';
+    const XML_PATH_EINVOICE_HASH_IV = 'payment/ecpay_ecpaypayment/ecpay_invoice/ecpay_invoice_hash_iv';
     const XML_PATH_ECPAY_QUERY_TEST_FLAG = 'eguana_einvoice/ecpay_einvoice_issue/ecpay_query_test_flag';
     const XML_PATH_ECPAY_QUERY_STAGE_URL = 'eguana_einvoice/ecpay_einvoice_issue/ecpay_query_stage_url';
     const XML_PATH_ECPAY_QUERY_PRODUCTION_URL = 'eguana_einvoice/ecpay_einvoice_issue/ecpay_query_production_url';
@@ -71,15 +71,13 @@ class Config
      *
      * @param int|null $storeId
      * @param string $scopeType
-     * @param string $prefix
      * @return string
      */
     public function getHashKey(
         ?int $storeId,
-        string $scopeType = 'store',
-        string $prefix = "payment/ecpay_ecpaypayment/ecpay_"
+        string $scopeType = 'store'
     ): string {
-        return $this->scopeConfig->getValue($prefix . self::XML_PATH_EINVOICE_HASH_KEY, $scopeType, $storeId);
+        return $this->scopeConfig->getValue(self::XML_PATH_EINVOICE_HASH_KEY, $scopeType, $storeId);
     }
 
     /**
@@ -87,15 +85,13 @@ class Config
      *
      * @param int|null $storeId
      * @param string $scopeType
-     * @param string $prefix
      * @return string
      */
     public function getHashIv(
         ?int $storeId,
-        string $scopeType = 'store',
-        string $prefix = "payment/ecpay_ecpaypayment/ecpay_"
+        string $scopeType = 'store'
     ): string {
-        return $this->scopeConfig->getValue($prefix . self::XML_PATH_EINVOICE_HASH_IV, $scopeType, $storeId);
+        return $this->scopeConfig->getValue( self::XML_PATH_EINVOICE_HASH_IV, $scopeType, $storeId);
     }
 
     /**
@@ -103,15 +99,13 @@ class Config
      *
      * @param int|null $storeId
      * @param string $scopeType
-     * @param string $prefix
      * @return string
      */
     public function getMerchantId(
         ?int $storeId,
-        string $scopeType = 'store',
-        string $prefix = "payment/ecpay_ecpaypayment/ecpay_"
+        string $scopeType = 'store'
     ): string {
-        return $this->scopeConfig->getValue($prefix . self::KEY_MERCHANT_ID, $scopeType, $storeId);
+        return $this->scopeConfig->getValue( self::XML_PATH_MERCHANT_ID, $scopeType, $storeId);
     }
 
     /**
