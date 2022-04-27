@@ -8,6 +8,8 @@ use Magento\Store\Model\StoreManagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Magento\Customer\Model\ResourceModel\CustomerRepository;
+use Magento\Framework\App\State;
 
 class SmsMarketingSyncPos extends \Symfony\Component\Console\Command\Command
 {
@@ -16,6 +18,7 @@ class SmsMarketingSyncPos extends \Symfony\Component\Console\Command\Command
     const STORE_CODE_APPLY = ['default', 'tw_laneige'];
     const QUANTITY = 'qty';
     const QUANTITY_DEFAULT = 100;
+    const SMS_SUBSCRIPTION_STATUS= 'sms_subscription_status';
 
     /**
      * @var CustomerCollectionFactory
@@ -33,17 +36,33 @@ class SmsMarketingSyncPos extends \Symfony\Component\Console\Command\Command
     protected AddressRegistry $addressRegistry;
 
     /**
+     * @var CustomerRepository
+     */
+    protected CustomerRepository $customerRepository;
+
+    /**
+     * @var State
+     */
+    protected State $state;
+
+    /**
+     * @param State $state
+     * @param CustomerRepository $customerRepository
      * @param CustomerCollectionFactory $customerCollectionFactory
      * @param StoreManagerInterface $storeManager
      * @param AddressRegistry $addressRegistry
      * @param string|null $name
      */
     public function __construct(
+        State $state,
+        CustomerRepository $customerRepository,
         CustomerCollectionFactory $customerCollectionFactory,
         StoreManagerInterface $storeManager,
         AddressRegistry $addressRegistry,
         string $name = null
     ) {
+        $this->state = $state;
+        $this->customerRepository = $customerRepository;
         $this->customerCollectionFactory = $customerCollectionFactory;
         $this->storeManager = $storeManager;
         $this->addressRegistry = $addressRegistry;
@@ -69,6 +88,7 @@ class SmsMarketingSyncPos extends \Symfony\Component\Console\Command\Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->state->setAreaCode(\Magento\Framework\App\Area::AREA_FRONTEND);
         $quantity = $input->getOption(self::QUANTITY) ? $input->getOption(self::QUANTITY) : self::QUANTITY_DEFAULT;
 
         $customers = $this->customerCollectionFactory->create()
@@ -86,8 +106,9 @@ class SmsMarketingSyncPos extends \Symfony\Component\Console\Command\Command
         foreach ($customers as $customer) {
             try {
                 $this->disableAddressValidation($customer);
-                $customer->setSmsSubscriptionStatus(1);
-                $customer->save();
+                $customerRes = $this->customerRepository->getById($customer->getId());
+                $customerRes->setCustomAttribute(self::SMS_SUBSCRIPTION_STATUS, 1);
+                $this->customerRepository->save($customerRes);
                 $output->writeln("Done sync customer with ID: " . $customer->getEntityId());
             } catch (\Exception $exception) {
                 $output->writeln('Exception when sync customer with ID: ' . $customer->getEntityId());
