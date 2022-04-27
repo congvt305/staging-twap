@@ -76,6 +76,8 @@ class Create extends \Magento\Backend\App\Action
                     $this->messageManager->addSuccessMessage($result['RtnMsg']);
                 } else {
                     $this->messageManager->addErrorMessage('create E-Invoice failed.');
+                    $this->logger->log('info', 'EINVOICE RESULT', ['order_id' => $order->getIncrementId()]);
+                    $this->logger->log(json_encode($result));
                 }
             } else {
                 // update payment information
