@@ -9,6 +9,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Rma\Api\Data\RmaInterface;
 use Magento\Rma\Model\RmaRepository;
+use CJ\CouponCustomer\Helper\UpdatePOSCustomerGradeHelper;
 
 class PosReturnSender
 {
@@ -39,24 +40,41 @@ class PosReturnSender
      */
     private $rmaRepository;
 
+    /**
+     * @var UpdatePOSCustomerGradeHelper
+     */
+    private $updatePOSCustomerGradeHelper;
+
+    /**
+     * @param Request $request
+     * @param ManagerInterface $eventManager
+     * @param Json $json
+     * @param Logger $pointsIntegrationLogger
+     * @param PosReturnData $posReturnData
+     * @param RmaRepository $rmaRepository
+     * @param UpdatePOSCustomerGradeHelper $updatePOSCustomerGradeHelper
+     */
     public function __construct(
         Request $request,
         ManagerInterface $eventManager,
         Json $json,
         Logger $pointsIntegrationLogger,
         PosReturnData $posReturnData,
-        RmaRepository $rmaRepository
-    )
-    {
+        RmaRepository $rmaRepository,
+        UpdatePOSCustomerGradeHelper $updatePOSCustomerGradeHelper
+    ) {
         $this->request = $request;
         $this->eventManager = $eventManager;
         $this->json = $json;
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
         $this->posReturnData = $posReturnData;
         $this->rmaRepository = $rmaRepository;
+        $this->updatePOSCustomerGradeHelper = $updatePOSCustomerGradeHelper;
     }
 
     /**
+     * Send order to POS and update flag
+     *
      * @param RmaInterface $rma
      */
     public function send(RmaInterface $rma)
@@ -71,6 +89,9 @@ class PosReturnSender
             $success = $this->isSuccessResponse($response);
             if ($success) {
                 $this->posReturnData->updatePosReturnOrderSendFlag($rma);
+                if($rma->getCustomerId() !== null){
+                    $this->updatePOSCustomerGradeHelper->updatePOSCustomerGrade($rma->getCustomerId());
+                }
             }
         } catch (\Exception $exception) {
             $message = 'POS Integration Fail: ' . $rma->getOrderIncrementId();

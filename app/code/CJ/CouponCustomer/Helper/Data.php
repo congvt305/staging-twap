@@ -19,24 +19,27 @@ class Data extends AbstractHelper
     /**
      * xml path cron for creating new customer group from POS
      */
-    const XML_PATH_CRON_JOB_CREATE_CUSTOMER_GROUP_ENABLE = 'coupon_wallet/cron/cron_expr';
+    const XML_PATH_CRON_JOB_CREATE_CUSTOMER_GROUP_ENABLE = 'coupon_wallet/cron/active';
+
     /**
      * xml path coupon list popup
      */
     const XML_PATH_COUPON_LIST_POPUP_ENABLE = 'coupon_wallet/general/popup';
+
+    /**
+     * xml path sync pos customer grade
+     */
+    const XML_PATH_SYNC_POS_CUSTOMER_GRADE_ENABLE = 'coupon_wallet/general/sync_pos_customer_grade';
+
     /**
      * @var RuleCollection
      */
     private $ruleCollection;
+
     /**
      * @var Session
      */
     private $customerSession;
-
-    /**
-     * @var Logo
-     */
-    private $logo;
 
     /**
      * @var StoreManagerInterface
@@ -72,22 +75,20 @@ class Data extends AbstractHelper
         RuleCollection        $ruleCollection,
         Session               $customerSession,
         StoreManagerInterface $storeManager,
-        Logo                  $logo,
         Currency              $currency,
         GroupFactory          $customerGroup
-    )
-    {
-        parent::__construct($context);
+    ) {
         $this->ruleCollection = $ruleCollection;
         $this->customerSession = $customerSession;
         $this->storeManager = $storeManager;
-        $this->logo = $logo;
         $this->currency = $currency;
         $this->customerGroup = $customerGroup;
+        parent::__construct($context);
     }
 
     /**
-     * get rule collection
+     * Get rule collection
+     *
      * @return \Magento\SalesRule\Model\ResourceModel\Rule\Collection
      */
     public function getCustomerAvailableCoupons()
@@ -103,7 +104,8 @@ class Data extends AbstractHelper
     }
 
     /**
-     * get customer
+     * Get customer
+     *
      * @return \Magento\Customer\Model\Customer
      */
     public function getCustomer()
@@ -112,7 +114,8 @@ class Data extends AbstractHelper
     }
 
     /**
-     * get available coupons
+     * Get available coupons
+     *
      * @return array
      */
     public function getCustomerCouponList()
@@ -127,7 +130,6 @@ class Data extends AbstractHelper
             $couponData['to_date'] = $coupon['to_date'];
             $couponData['description'] = $coupon['description'];
             $couponData['discount_amount'] = $coupon['discount_amount'];
-            $couponData['logo'] = $this->getLogo();
 
             $simpleActionString = $this->convertActionCouponToText($coupon['simple_action'], $coupon['discount_amount']);
             $couponData['simple_action_string'] = $simpleActionString;
@@ -138,16 +140,8 @@ class Data extends AbstractHelper
     }
 
     /**
-     * get logo base on store
-     * @return string
-     */
-    public function getLogo()
-    {
-        return $this->logo->getLogoSrc();
-    }
-
-    /**
-     * get currency code base on store
+     * Get currency code base on store
+     *
      * @return string
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
@@ -157,9 +151,11 @@ class Data extends AbstractHelper
         return $this->currency->getCurrencySymbol();
     }
 
-    /**S
-     * @param $simpleAction
-     * @param $discountAmount
+    /**
+     * Convert action coupon to text
+     *
+     * @param string $simpleAction
+     * @param string $discountAmount
      * @return string
      */
     public function convertActionCouponToText($simpleAction, $discountAmount = '')
@@ -182,7 +178,8 @@ class Data extends AbstractHelper
     }
 
     /**
-     * is enabled coupon list popup
+     * Is enabled coupon list popup
+     *
      * @return bool
      */
     public function isEnableCouponListPopup()
@@ -191,12 +188,18 @@ class Data extends AbstractHelper
     }
 
     /**
-     * is enabled crob job for creating customer group
+     * Is enabled cronjob for creating customer group
+     *
      * @return bool
      */
-    public function isEnableCronjob()
+    public function isCronCustomerGroupEnabled()
     {
         return (bool)$this->scopeConfig->getValue(self::XML_PATH_CRON_JOB_CREATE_CUSTOMER_GROUP_ENABLE, ScopeInterface::SCOPE_WEBSITE);
+    }
+
+    public function isPOSCustomerGradeSyncEnabled()
+    {
+        return (bool)$this->scopeConfig->getValue(self::XML_PATH_SYNC_POS_CUSTOMER_GRADE_ENABLE, ScopeInterface::SCOPE_WEBSITE);
     }
 
     /**
@@ -210,7 +213,8 @@ class Data extends AbstractHelper
     }
 
     /**
-     * check customer login
+     * Check customer login
+     *
      * @return bool
      */
     public function isCustomerLogin()
@@ -219,11 +223,12 @@ class Data extends AbstractHelper
     }
 
     /**
-     * get POS customer group Id
-     * @param $name
+     * Get customer group Id
+     *
+     * @param string $name
      * @return mixed
      */
-    public function getPOSCustomerGroupIdByName($name)
+    public function getCustomerGroupIdByName($name)
     {
         $group = $this->customerGroup->create();
         $groupCollection = $group->getCollection();
@@ -232,6 +237,11 @@ class Data extends AbstractHelper
         return $groupCollection->getFirstItem()->getId();
     }
 
+    /**
+     * Get all magento customer group
+     *
+     * @return \Magento\Framework\DataObject[]
+     */
     public function getAllCustomerGroup()
     {
         $group = $this->customerGroup->create();
@@ -240,15 +250,32 @@ class Data extends AbstractHelper
 
     }
 
-    public function isCreatedCustomerGroup($posCustomerGroup)
+    /**
+     * Is created pos customer groups for magento
+     *
+     * @param string $posCustomerGroup
+     * @return bool
+     */
+    public function isCustomerGroupExist($posCustomerGroup)
     {
         $customerGroups = $this->getAllCustomerGroup();
         foreach ($customerGroups as $customerGroup) {
-            if($customerGroup->getData('customer_group_code') == $posCustomerGroup) {
+            if ($customerGroup->getData('customer_group_code') == $posCustomerGroup) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Prepare prefix for creating customer group
+     *
+     * @param string $customerGradeCode
+     * @return false|string
+     */
+    public function getPrefix($customerGradeCode)
+    {
+        return !empty($customerGradeCode) ? substr($customerGradeCode, 0 , 3) : '';
     }
 
 
