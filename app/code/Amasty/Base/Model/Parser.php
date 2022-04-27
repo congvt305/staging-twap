@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -15,7 +15,7 @@ use Magento\Framework\Escaper;
  */
 class Parser
 {
-    const RESTRICTED_CHARS = [
+    public const RESTRICTED_CHARS = [
         "\r\n",
         "\n",
         "\r"

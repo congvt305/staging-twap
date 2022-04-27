@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -9,6 +9,7 @@
 namespace Amasty\Base\Block;
 
 use Amasty\Base\Model\ModuleInfoProvider;
+use Amasty\Base\Block\Adminhtml\System\Config\SysInfo\DownloadButton;
 use Magento\Backend\Block\Context;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Config\Block\System\Config\Form\Field;
@@ -95,6 +96,7 @@ class Info extends Fieldset
         $html .= $this->getOwnerInfo($element);
         $html .= $this->getSystemTime($element);
         $html .= $this->getCronInfo($element);
+        $html .= $this->getDownloadButtonHtml($element);
 
         $html .= $this->_getFooterHtml($element);
 
@@ -214,6 +216,18 @@ class Info extends Fieldset
         $label = __('Cron (Last 5)');
 
         return $this->getFieldHtml($fieldset, 'cron_configuration', $label, $value);
+    }
+
+    private function getDownloadButtonHtml(AbstractElement $fieldset): string
+    {
+        $button = $this->getLayout()->createBlock(DownloadButton::class);
+
+        return $this->getFieldHtml(
+            $fieldset,
+            DownloadButton::ELEMENT_ID,
+            __('Extensions data'),
+            $button->toHtml()
+        );
     }
 
     /**

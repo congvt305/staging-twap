@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model;
 
@@ -12,9 +6,6 @@ use Magento\Backend\Block\Widget\Form\Element\Dependence;
 use Magento\Config\Model\Config\Structure\Element\Dependency\FieldFactory;
 use Magento\Framework\View\Element\AbstractBlock;
 
-/**
- * Class FormFieldDependency
- */
 class FormFieldDependency
 {
     /**

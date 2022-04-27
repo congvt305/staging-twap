@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Schedule;
 
@@ -16,9 +10,6 @@ use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
-/**
- * Class Repository
- */
 class Repository implements ScheduleRepositoryInterface
 {
     /**

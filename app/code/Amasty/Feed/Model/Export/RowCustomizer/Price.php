@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Export\RowCustomizer;
 
@@ -18,22 +12,37 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Tax\Model\Calculation;
 use Magento\Tax\Model\ResourceModel\Calculation\CollectionFactory;
 
-/**
- * Class Price
- */
 class Price implements RowCustomizerInterface
 {
-    protected $_prices = [];
+    /**
+     * @var array
+     */
+    protected $prices = [];
 
-    protected $_storeManager;
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
 
-    protected $_export;
+    /**
+     * @var Product
+     */
+    protected $export;
 
-    protected $_calculationCollectionFactory;
+    /**
+     * @var CollectionFactory
+     */
+    protected $calculationCollectionFactory;
 
-    protected $_objectConverter;
+    /**
+     * @var DataObject
+     */
+    protected $objectConverter;
 
-    protected $_data;
+    /**
+     * @var array
+     */
+    protected $data;
 
     /**
      * @var Calculation
@@ -53,10 +62,10 @@ class Price implements RowCustomizerInterface
         Http $request,
         DataObject $objectConverter
     ) {
-        $this->_storeManager = $storeManager;
-        $this->_export = $export;
-        $this->_calculationCollectionFactory = $calculationCollectionFactory;
-        $this->_objectConverter = $objectConverter;
+        $this->storeManager = $storeManager;
+        $this->export = $export;
+        $this->calculationCollectionFactory = $calculationCollectionFactory;
+        $this->objectConverter = $objectConverter;
         $this->calculation = $calculation;
         $this->request = $request;
     }
@@ -66,16 +75,16 @@ class Price implements RowCustomizerInterface
      */
     public function prepareData($collection, $productIds)
     {
-        if ($this->_export->hasAttributes(Product::PREFIX_PRICE_ATTRIBUTE)) {
+        if ($this->export->hasAttributes(Product::PREFIX_PRICE_ATTRIBUTE)) {
 
             $collection->applyFrontendPriceLimitations();
             $collection->addAttributeToSelect(['special_price', 'special_from_date', 'special_to_date']);
 
             $storeId = $this->request->getParam('store_id') ?: $collection->getStoreId();
 
-            $currentCurrency = $this->_storeManager->getStore()->getCurrentCurrency();
-            $this->_storeManager->setCurrentStore($storeId);
-            $this->_storeManager->getStore()->setCurrentCurrency($this->_storeManager->getStore()->getBaseCurrency());
+            $currentCurrency = $this->storeManager->getStore()->getCurrentCurrency();
+            $this->storeManager->setCurrentStore($storeId);
+            $this->storeManager->getStore()->setCurrentCurrency($this->storeManager->getStore()->getBaseCurrency());
 
             foreach ($collection as &$item) {
                 $addressRequestObject = $this->calculation->getDefaultRateRequest($storeId);
@@ -94,7 +103,7 @@ class Price implements RowCustomizerInterface
                     }
                 }
 
-                $this->_prices[$item['entity_id']] = [
+                $this->prices[$item['entity_id']] = [
                     'final_price' => $finalPrice,
                     'price' => $item['price'],
                     'min_price' => $item['min_price'],
@@ -111,7 +120,7 @@ class Price implements RowCustomizerInterface
                 ];
             }
 
-            $this->_storeManager->getStore()->setCurrentCurrency($currentCurrency);
+            $this->storeManager->getStore()->setCurrentCurrency($currentCurrency);
         }
     }
 
@@ -131,7 +140,7 @@ class Price implements RowCustomizerInterface
         $customData = &$dataRow['amasty_custom_data'];
 
         $customData[Product::PREFIX_PRICE_ATTRIBUTE]
-            = isset($this->_prices[$productId]) ? $this->_prices[$productId]
+            = isset($this->prices[$productId]) ? $this->prices[$productId]
             : [];
 
         return $dataRow;

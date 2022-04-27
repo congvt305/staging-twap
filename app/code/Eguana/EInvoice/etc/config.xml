@@ -12,6 +12,11 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <eguana_einvoice>
+            <ecpay_einvoice_issue>
+                <enabled_email_notification>1</enabled_email_notification>
+                <ecpay_query_stage_url>https://einvoice-stage.ecpay.com.tw/Query/</ecpay_query_stage_url>
+                <ecpay_query_production_url>https://einvoice.ecpay.com.tw/Query/</ecpay_query_production_url>
+            </ecpay_einvoice_issue>
             <days_limit_when_get_orders>
                 <set_days>30</set_days>
             </days_limit_when_get_orders>

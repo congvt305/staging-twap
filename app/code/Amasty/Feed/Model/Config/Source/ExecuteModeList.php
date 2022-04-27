@@ -1,28 +1,19 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Config\Source;
 
-/**
- * Class ExecuteModeList
- */
 class ExecuteModeList implements \Magento\Framework\Option\ArrayInterface
 {
     /**#@+
      * Feed generation types
      */
-    const CRON = 'schedule';
+    public const CRON = 'schedule';
 
-    const MANUAL = 'manual';
+    public const MANUAL = 'manual';
 
-    const CRON_GENERATED = 'By Schedule';
+    public const CRON_GENERATED = 'By Schedule';
 
-    const MANUAL_GENERATED = 'Manually';
+    public const MANUAL_GENERATED = 'Manually';
     /**#@-*/
 
     /**

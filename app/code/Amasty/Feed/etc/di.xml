@@ -1,11 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
--->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Amasty\Feed\Api\ValidProductsRepositoryInterface" type="Amasty\Feed\Model\ValidProduct\Repository" />
     <preference for="Amasty\Feed\Api\Data\ValidProductsInterface" type="Amasty\Feed\Model\ValidProduct\ValidProduct" />
@@ -117,28 +110,37 @@
         </arguments>
     </type>
 
-    <type name="Amasty\Feed\Setup\UpgradeSchema">
+    <type name="Amasty\Feed\Setup\Patch\Data\UpgradeDataTo270">
         <arguments>
-            <argument name="upgradeTo160" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo160\Proxy</argument>
-            <argument name="upgradeTo170" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo170\Proxy</argument>
-            <argument name="upgradeTo190" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo190\Proxy</argument>
-            <argument name="upgradeTo191" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo191\Proxy</argument>
-            <argument name="upgradeTo200" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo200\Proxy</argument>
-            <argument name="upgradeTo210" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo210\Proxy</argument>
-            <argument name="upgradeTo220" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo220\Proxy</argument>
+            <argument name="operations" xsi:type="array">
+                <item name="upgradeTo101" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo101\Proxy</item>
+                <item name="upgradeTo114" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo114\Proxy</item>
+                <item name="upgradeTo135" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo135\Proxy</item>
+                <item name="upgradeTo180" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo180\Proxy</item>
+                <item name="upgradeTo191" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo191\Proxy</item>
+                <item name="upgradeTo200" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo200\Proxy</item>
+                <item name="upgradeTo210" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo210\Proxy</item>
+                <item name="upgradeTo220" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo220\Proxy</item>
+                <item name="upgradeTo227" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo227\Proxy</item>
+                <item name="upgradeTo230" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo230\Proxy</item>
+                <item name="upgradeTo236" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo236\Proxy</item>
+            </argument>
         </arguments>
     </type>
 
-    <type name="Amasty\Feed\Setup\UpgradeData">
+    <type name="Amasty\Feed\Setup\RecurringData">
         <arguments>
-            <argument name="upgradeTo101" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo101\Proxy</argument>
-            <argument name="upgradeTo114" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo114\Proxy</argument>
-            <argument name="upgradeTo135" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo135\Proxy</argument>
-            <argument name="upgradeTo180" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo180\Proxy</argument>
-            <argument name="upgradeDataTo191" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo191\Proxy</argument>
-            <argument name="upgradeDataTo210" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo210\Proxy</argument>
-            <argument name="upgradeDataTo220" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo220\Proxy</argument>
-            <argument name="upgradeDataTo227" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo227\Proxy</argument>
+            <argument name="operations" xsi:type="array">
+                <item name="upgradeTo170" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeDataTo170\Proxy</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Base\Plugin\Setup\Model\DeclarationInstaller\ApplyPatchesBeforeDeclarativeSchema">
+        <arguments>
+            <argument name="moduleNames" xsi:type="array">
+                <item name="amasty_feed" xsi:type="string">Amasty_Feed</item>
+            </argument>
         </arguments>
     </type>
 </config>

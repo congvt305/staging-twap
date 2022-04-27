@@ -1,10 +1,5 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
+declare(strict_types=1);
 
 namespace Amasty\Feed\Setup\Operation;
 
@@ -17,16 +12,10 @@ use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\SampleData\Context as SampleDataContext;
 use Magento\Framework\Setup\SampleData\FixtureManager;
 
-/**
- * Class UpgradeDataTo210
- *
- * Add table for Google Taxonomy
- */
-class UpgradeDataTo210
+class UpgradeDataTo210 implements UpgradeDataOperationInterface
 {
-    const GOOGLE_CATEGORY = 'googlecategory';
-
-    const LOCALE_CODE_ID = 1;
+    public const GOOGLE_CATEGORY = 'googlecategory';
+    public const LOCALE_CODE_ID = 1;
 
     /**
      * @var File
@@ -66,29 +55,25 @@ class UpgradeDataTo210
         $this->fixtureManager = $sampleDataContext->getFixtureManager();
     }
 
-    /**
-     * @param ModuleDataSetupInterface $setup
-     *
-     * @throws \Zend_Db_Exception
-     */
-    public function execute(ModuleDataSetupInterface $setup)
+    public function execute(ModuleDataSetupInterface $moduleDataSetup, string $setupVersion): void
     {
-        $this->connection->truncateTable($setup->getTable(Taxonomy::TABLE_NAME));
+        if (version_compare($setupVersion, '2.1.0', '<')) {
+            // Workaround for DDL statements are not allowed in transactions
+            $this->connection->delete($moduleDataSetup->getTable(Taxonomy::TABLE_NAME));
 
-        $directoryPath = $this->getDirectoryPath();
+            $directoryPath = $this->getDirectoryPath();
 
-        if ($this->driverFile->isExists($directoryPath)) {
-            $files = $this->driverFile->readDirectory($directoryPath);
+            if ($this->driverFile->isExists($directoryPath)) {
+                $files = $this->driverFile->readDirectory($directoryPath);
 
-            foreach ($files as $file) {
-                if ($this->driverFile->isFile($file)) {
-                    $this->getGoogleCategories($file);
-                    $this->connection->insertMultiple(
-                        $this->resource->getTableName(
-                            \Amasty\Feed\Model\Category\ResourceModel\Taxonomy::TABLE_NAME
-                        ),
-                        $this->getGoogleCategories($file)
-                    );
+                foreach ($files as $file) {
+                    if ($this->driverFile->isFile($file)) {
+                        $this->getGoogleCategories($file);
+                        $this->connection->insertMultiple(
+                            $this->resource->getTableName(Taxonomy::TABLE_NAME),
+                            $this->getGoogleCategories($file)
+                        );
+                    }
                 }
             }
         }

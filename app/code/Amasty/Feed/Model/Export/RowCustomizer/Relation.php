@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Export\RowCustomizer;
 
@@ -17,10 +11,19 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class Relation implements RowCustomizerInterface
 {
+    /**
+     * @var array
+     */
     protected $parent2child;
 
+    /**
+     * @var array
+     */
     protected $child2parent;
 
+    /**
+     * @var array
+     */
     protected $parentData;
 
     /**

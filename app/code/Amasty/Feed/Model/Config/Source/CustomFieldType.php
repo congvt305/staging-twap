@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Config\Source;
 
@@ -12,8 +6,8 @@ use Magento\Framework\Option\ArrayInterface;
 
 class CustomFieldType implements ArrayInterface
 {
-    const ATTRIBUTE = 0;
-    const CUSTOM_TEXT = 1;
+    public const ATTRIBUTE = 0;
+    public const CUSTOM_TEXT = 1;
 
     public function toOptionArray()
     {

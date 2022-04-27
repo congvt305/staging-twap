@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Field;
 
@@ -12,11 +6,6 @@ use Magento\Framework\Config\Dom\ValidationException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\CouldNotDeleteException;
 
-/**
- * Class Repository
- *
- * @package Amasty\Feed
- */
 class Repository implements \Amasty\Feed\Api\CustomFieldsRepositoryInterface
 {
     /**

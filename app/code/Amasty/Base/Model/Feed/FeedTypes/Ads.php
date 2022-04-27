@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -17,7 +17,8 @@ use Magento\Framework\Config\CacheInterface;
 
 class Ads
 {
-    const CSV_CACHE_ID = 'amasty_base_csv';
+    public const CSV_CACHE_ID = 'amasty_base_csv';
+    public const AMASTY_ADS_LAST_MODIFIED_DATE = 'amasty_ads_last_modified_date';
 
     /**
      * @var CacheInterface
@@ -82,24 +83,48 @@ class Ads
     public function getFeed(): array
     {
         $result = [];
-
+        $cachedData = $this->cache->load(self::CSV_CACHE_ID);
+        $options = $cachedData ? ['modified_since' => $this->getLastModified()] : [];
+        $feedResponse = $this->feedContentProvider->getFeedResponse(
+            $this->feedContentProvider->getFeedUrl(FeedContentProvider::URN_ADS),
+            $options
+        );
         if (!$this->moduleInfoProvider->isOriginMarketplace()) {
-            $content = $this->feedContentProvider->getFeedContent(
-                $this->feedContentProvider->getFeedUrl(FeedContentProvider::URN_ADS)
-            );
-            $result = $this->parser->parseCsv($content);
+            if ($feedResponse->isNeedToUpdateCache()) {
+                $result = $this->parser->parseCsv($feedResponse->getContent());
+                $result = $this->parser->trimCsvData($result, ['upsell_module_code', 'module_code']);
+                $this->saveCache($result);
+                $this->setLastModified();
+            }
         }
 
-        if (!$result) {
+        if (!$result || $feedResponse->isFailed()) {
             $result = $this->adOffline->getOfflineData($this->moduleInfoProvider->isOriginMarketplace());
+            $result = $this->parser->trimCsvData($result, ['upsell_module_code', 'module_code']);
+            $this->saveCache($result);
         }
-        $result = $this->parser->trimCsvData($result, ['upsell_module_code', 'module_code']);
+
+        return $result;
+    }
+
+    private function getLastModified()
+    {
+        return $this->cache->load(self::AMASTY_ADS_LAST_MODIFIED_DATE);
+    }
+
+    private function setLastModified()
+    {
+        $dateTime = gmdate('D, d M Y H:i:s') . ' GMT';
+
+        return $this->cache->save($dateTime, self::AMASTY_ADS_LAST_MODIFIED_DATE);
+    }
+
+    private function saveCache(array $result)
+    {
         $this->cache->save(
             $this->serializer->serialize($result),
             self::CSV_CACHE_ID,
             [self::CSV_CACHE_ID]
         );
-
-        return $result;
     }
 }

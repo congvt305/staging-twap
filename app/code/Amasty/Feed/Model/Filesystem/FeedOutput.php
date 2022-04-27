@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Filesystem;
 
@@ -15,9 +9,6 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem\Directory\WriteInterface;
 
-/**
- * Class FeedOutput
- */
 class FeedOutput
 {
     /**

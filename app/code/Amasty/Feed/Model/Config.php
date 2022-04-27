@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model;
 
@@ -13,35 +7,35 @@ class Config
     /**#@+
      * Configuration paths
      */
-    const FEED_SECTION = 'amasty_feed/';
+    public const FEED_SECTION = 'amasty_feed/';
 
-    const GENERAL_GROUP = 'general/';
+    public const GENERAL_GROUP = 'general/';
 
-    const MULTI_PROCESS_GROUP = 'multi_process/';
+    public const MULTI_PROCESS_GROUP = 'multi_process/';
 
-    const NOTIFICATION_GROUP = 'notifications/';
+    public const NOTIFICATION_GROUP = 'notifications/';
 
-    const BATCH_SIZE_FIELD = 'batch_size';
+    public const BATCH_SIZE_FIELD = 'batch_size';
 
-    const FILE_PATH_FIELD = 'file_path';
+    public const FILE_PATH_FIELD = 'file_path';
 
-    const STORAGE_FOLDER = 'storage_folder';
+    public const STORAGE_FOLDER = 'storage_folder';
 
-    const ENABLED_FIELD = 'enabled';
+    public const ENABLED_FIELD = 'enabled';
 
-    const PROCESS_COUNT_FIELD = 'process_count';
+    public const PROCESS_COUNT_FIELD = 'process_count';
 
-    const PREVIEW_ITEMS = 'preview_items';
+    public const PREVIEW_ITEMS = 'preview_items';
 
-    const EVENTS_FIELD = 'events';
+    public const EVENTS_FIELD = 'events';
 
-    const SENDER_FIELD = 'email_sender';
+    public const SENDER_FIELD = 'email_sender';
 
-    const EMAILS_FIELD = 'emails';
+    public const EMAILS_FIELD = 'emails';
 
-    const SUCCESS_TEMPLATE_FIELD = 'success_template';
+    public const SUCCESS_TEMPLATE_FIELD = 'success_template';
 
-    const UNSUCCESS_TEMPLATE_FIELD = 'unsuccess_template';
+    public const UNSUCCESS_TEMPLATE_FIELD = 'unsuccess_template';
     /**#@-*/
 
     /**

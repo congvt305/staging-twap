@@ -1,21 +1,10 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml\Field\Edit\Button;
 
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 use Magento\Framework\View\Element\UiComponent\Context;
 
-/**
- * Class Generic
- *
- * @package Amasty\Feed
- */
 class Generic implements ButtonProviderInterface
 {
     /**

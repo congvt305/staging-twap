@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\Field;
 
@@ -12,11 +6,6 @@ use Amasty\Feed\Controller\Adminhtml\AbstractField;
 use Amasty\Feed\Model\Field\Field;
 use Magento\Framework\Controller\ResultFactory;
 
-/**
- * Class MassDelete
- *
- * @package Amasty\Feed
- */
 class MassDelete extends AbstractField
 {
     /**

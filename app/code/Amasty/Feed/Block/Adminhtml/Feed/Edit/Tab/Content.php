@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml\Feed\Edit\Tab;
 
@@ -13,55 +7,50 @@ use Amasty\Feed\Model\Export\RowCustomizer\Advanced;
 use Magento\Backend\Block\Widget;
 use Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
 
-/**
- * Class Content
- *
- * @package Amasty\Feed
- */
 class Content extends Widget implements RendererInterface
 {
     /**#@+
      * Keys for collection data array
      */
-    const CODE = 'code';
+    public const CODE = 'code';
 
-    const NAME = 'name';
+    public const NAME = 'name';
     /**#@-*/
 
     /**#@+
      * Modifiers
      */
-    const STRIP_TAGS = 'strip_tags';
+    public const STRIP_TAGS = 'strip_tags';
 
-    const HTML_ESCAPE = 'html_escape';
+    public const HTML_ESCAPE = 'html_escape';
 
-    const UPPERCASE = 'uppercase';
+    public const UPPERCASE = 'uppercase';
 
-    const CAPITALIZE = 'capitalize';
+    public const CAPITALIZE = 'capitalize';
 
-    const LOWERCASE = 'lowercase';
+    public const LOWERCASE = 'lowercase';
 
-    const INTEGER = 'integer';
+    public const INTEGER = 'integer';
 
-    const LENGTH = 'length';
+    public const LENGTH = 'length';
 
-    const PREPEND = 'prepend';
+    public const PREPEND = 'prepend';
 
-    const APPEND = 'append';
+    public const APPEND = 'append';
 
-    const REPLACE = 'replace';
+    public const REPLACE = 'replace';
 
-    const ROUND = 'round';
+    public const ROUND = 'round';
 
-    const IF_EMPTY = 'if_empty';
+    public const IF_EMPTY = 'if_empty';
 
-    const IF_NOT_EMPTY = 'if_not_empty';
+    public const IF_NOT_EMPTY = 'if_not_empty';
 
-    const FULL_IF_NOT_EMPTY = 'full_if_not_empty';
+    public const FULL_IF_NOT_EMPTY = 'full_if_not_empty';
 
-    const TO_SECURE_URL = 'to_secure_url';
+    public const TO_SECURE_URL = 'to_secure_url';
 
-    const TO_UNSECURE_URL = 'to_unsecure_url';
+    public const TO_UNSECURE_URL = 'to_unsecure_url';
     /**#@-*/
 
     /**

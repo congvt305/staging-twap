@@ -1,23 +1,15 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
+declare(strict_types=1);
 
 namespace Amasty\Feed\Setup\Operation;
 
 use Amasty\Feed\Api\FeedRepositoryInterface;
 use Amasty\Feed\Model\Feed;
 use Amasty\Feed\Model\ResourceModel\Feed\CollectionFactory;
-use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
+use Magento\Framework\Setup\ModuleDataSetupInterface;
 
-/**
- * Class UpgradeDataTo227
- */
-class UpgradeDataTo227
+class UpgradeDataTo227 implements UpgradeDataOperationInterface
 {
     /**
      * @var CollectionFactory
@@ -25,7 +17,7 @@ class UpgradeDataTo227
     private $feedCollectionFactory;
 
     /**
-     * @var \Magento\Framework\Encryption\EncryptorInterface
+     * @var EncryptorInterface
      */
     private $encryptor;
 
@@ -44,22 +36,19 @@ class UpgradeDataTo227
         $this->feedRepository = $feedRepository;
     }
 
-    /**
-     * @param ModuleDataSetupInterface $setup
-     *
-     * @throws \Zend_Db_Exception
-     */
-    public function execute(ModuleDataSetupInterface $setup)
+    public function execute(ModuleDataSetupInterface $moduleDataSetup, string $setupVersion): void
     {
-        $feeds = $this->feedCollectionFactory->create()->getItems();
+        if (version_compare($setupVersion, '2.2.7', '<')) {
+            $feeds = $this->feedCollectionFactory->create()->getItems();
 
-        /** @var Feed $feed */
-        foreach ($feeds as $feed) {
-            $oldPass = $feed->getDeliveryPassword();
+            /** @var Feed $feed */
+            foreach ($feeds as $feed) {
+                $oldPass = $feed->getDeliveryPassword();
 
-            if ($oldPass) {
-                $feed->setDeliveryPassword($this->encryptor->encrypt($feed->getDeliveryPassword()));
-                $this->feedRepository->save($feed);
+                if ($oldPass) {
+                    $feed->setDeliveryPassword($this->encryptor->encrypt($feed->getDeliveryPassword()));
+                    $this->feedRepository->save($feed);
+                }
             }
         }
     }

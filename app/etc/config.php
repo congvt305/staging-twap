@@ -41,6 +41,22 @@ return [
                 'sort_order' => '0',
                 'default_group_id' => '9',
                 'is_default' => '0'
+            ],
+            'my_laneige_website' => [
+                'website_id' => '10',
+                'code' => 'my_laneige_website',
+                'name' => 'MY Laneige Website',
+                'sort_order' => '0',
+                'default_group_id' => '10',
+                'is_default' => '0'
+            ],
+            'my_sulwhasoo_website' => [
+                'website_id' => '11',
+                'code' => 'my_sulwhasoo_website',
+                'name' => 'MY Sulwhasoo Website',
+                'sort_order' => '0',
+                'default_group_id' => '11',
+                'is_default' => '0'
             ]
         ],
         'groups' => [
@@ -83,6 +99,22 @@ return [
                 'root_category_id' => '533',
                 'default_store_id' => '9',
                 'code' => 'vn_sulwhasoo_website_store'
+            ],
+            10 => [
+                'group_id' => '10',
+                'website_id' => '10',
+                'name' => 'MY Laneige Website Store',
+                'root_category_id' => '751',
+                'default_store_id' => '10',
+                'code' => 'my_laneige_website_store'
+            ],
+            11 => [
+                'group_id' => '11',
+                'website_id' => '11',
+                'name' => 'MY Sulwhasoo Website Store',
+                'root_category_id' => '751',
+                'default_store_id' => '11',
+                'code' => 'my_sulwhasoo_website_store'
             ]
         ],
         'stores' => [
@@ -128,6 +160,24 @@ return [
                 'website_id' => '9',
                 'group_id' => '9',
                 'name' => 'VN Sulwhasoo Store View',
+                'sort_order' => '0',
+                'is_active' => '1'
+            ],
+            'my_laneige' => [
+                'store_id' => '10',
+                'code' => 'my_laneige',
+                'website_id' => '10',
+                'group_id' => '10',
+                'name' => 'MY Laneige Store View',
+                'sort_order' => '0',
+                'is_active' => '1'
+            ],
+            'my_sulwhasoo' => [
+                'store_id' => '11',
+                'code' => 'my_sulwhasoo',
+                'website_id' => '11',
+                'group_id' => '11',
+                'name' => 'MY Sulwhasoo Store View',
                 'sort_order' => '0',
                 'is_active' => '1'
             ]
@@ -202,6 +252,20 @@ return [
                 'general' => [
                     'locale' => [
                         'code' => 'vi_VN'
+                    ]
+                ]
+            ],
+            'my_laneige_website' => [
+                'general' => [
+                    'locale' => [
+                        'code' => 'ms_MY'
+                    ]
+                ]
+            ],
+            'my_sulwhasoo_website' => [
+                'general' => [
+                    'locale' => [
+                        'code' => 'ms_MY'
                     ]
                 ]
             ]
@@ -681,6 +745,7 @@ return [
         'Amore_CustomerRegistration' => 1,
         'Amore_GcrmDataExport' => 1,
         'Amore_PointsIntegration' => 1,
+        'Amore_Sales' => 1,
         'Amore_SalesRule' => 1,
         'Ecpay_Ecpaypayment' => 1,
         'CJ_Base' => 1,
@@ -761,6 +826,7 @@ return [
         'MagePal_Reindex' => 1,
         'PayPal_Braintree' => 0,
         'PayPal_BraintreeGraphQl' => 0,
+        'Payoo_PayNow' => 1,
         'Eguana_Pixlee' => 1,
         'Temando_ShippingRemover' => 1,
         'Vertex_Tax' => 0,
@@ -776,7 +842,8 @@ return [
             'code' => [
                 'en_US',
                 'zh_Hant_TW',
-                'vi_VN'
+                'vi_VN',
+                'ms_MY'
             ]
         ]
     ]

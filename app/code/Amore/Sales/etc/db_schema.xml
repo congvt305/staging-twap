@@ -1,0 +1,32 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order_aggregated_created" resource="sales" engine="innodb"
+           comment="Sales Order Aggregated Created">
+        <column xsi:type="decimal" name="atv" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Average Per Order"/>
+        <column xsi:type="decimal" name="discount_rate" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Discount Rate"/>
+        <column xsi:type="decimal" name="sku_value" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="SKU Value"/>
+        <column xsi:type="decimal" name="net_sales" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Net Sales"/>
+        <column xsi:type="decimal" name="total_income_amount_before_discount" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Total Income Amount Before Discount"/>
+        <column xsi:type="decimal" name="total_refunded_amount_actual" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Total Refund Amount Actual"/>
+    </table>
+    <table name="sales_order_aggregated_updated" resource="sales" engine="innodb"
+           comment="Sales Order Aggregated Created">
+        <column xsi:type="decimal" name="atv" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Average Per Order"/>
+        <column xsi:type="decimal" name="discount_rate" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Discount Rate"/>
+        <column xsi:type="decimal" name="sku_value" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="SKU Value"/>
+        <column xsi:type="decimal" name="net_sales" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Net Sales"/>
+        <column xsi:type="decimal" name="total_income_amount_before_discount" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Total Income Amount Before Discount"/>
+        <column xsi:type="decimal" name="total_refunded_amount_actual" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Total Refund Amount Actual"/>
+    </table>
+</schema>

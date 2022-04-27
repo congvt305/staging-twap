@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\Feed;
 
@@ -13,11 +7,6 @@ use Amasty\Feed\Controller\Adminhtml\AbstractFeed;
 use Magento\Backend\App\Action;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class Delete
- *
- * @package Amasty\Feed
- */
 class Delete extends AbstractFeed
 {
     /**
@@ -50,18 +39,21 @@ class Delete extends AbstractFeed
                 $this->repository->deleteById($feedId);
                 $this->messageManager->addSuccessMessage(__('You deleted the feed.'));
 
-                return $this->_redirect('amfeed/*/');
+                return $this->resultRedirectFactory->create()->setPath('amfeed/*/');
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage(
                     __('We can\'t delete the feed right now. Please review the log and try again.')
                 );
                 $this->logger->critical($e);
 
-                return $this->_redirect('amfeed/*/edit', ['id' => $this->getRequest()->getParam('id')]);
+                return $this->resultRedirectFactory->create()->setPath(
+                    'amfeed/*/edit',
+                    ['id' => $this->getRequest()->getParam('id')]
+                );
             }
         }
         $this->messageManager->addErrorMessage(__('We can\'t find a feed to delete.'));
 
-        return $this->_redirect('amfeed/*/');
+        return $this->resultRedirectFactory->create()->setPath('amfeed/*/');
     }
 }

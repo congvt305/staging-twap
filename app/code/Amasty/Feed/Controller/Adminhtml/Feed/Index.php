@@ -1,20 +1,9 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Controller\Adminhtml\Feed;
 
 use Magento\Framework\Controller\ResultFactory;
 
-/**
- * Class Index
- *
- * @package Amasty\Feed
- */
 class Index extends \Amasty\Feed\Controller\Adminhtml\AbstractFeed
 {
     /**

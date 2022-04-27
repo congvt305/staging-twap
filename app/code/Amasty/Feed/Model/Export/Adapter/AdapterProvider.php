@@ -1,20 +1,14 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Export\Adapter;
 
 use Magento\Framework\Exception\LocalizedException;
 
-/**
- * Class AdapterProvider
- */
 class AdapterProvider
 {
+    /**
+     * @var array
+     */
     private $adapters;
 
     public function __construct($adapters)

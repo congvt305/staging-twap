@@ -1,19 +1,10 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\Export\RowCustomizer;
 
 use Amasty\Feed\Model\Export\Product as ExportProduct;
 use Magento\CatalogImportExport\Model\Export\RowCustomizerInterface;
 
-/**
- * Class Taxpercents
- */
 class Taxpercents implements RowCustomizerInterface
 {
     /**

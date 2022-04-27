@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Block\Adminhtml\Field\Edit;
 
@@ -16,9 +10,9 @@ class Conditions extends Generic
     /**#@+
      * Keys for DataPersistor and UI
      */
-    const FORM_NAMESPACE = 'amfeed_field_form';
+    public const FORM_NAMESPACE = 'amfeed_field_form';
 
-    const CONDITION_IDS = 'amdeed_feed_field_condition_ids';
+    public const CONDITION_IDS = 'amdeed_feed_field_condition_ids';
     /**#@-*/
 
     /**
@@ -116,7 +110,8 @@ class Conditions extends Generic
         $form = $this->formFactory->create();
         $renderer = $this->fieldset->setTemplate('Magento_CatalogRule::promo/fieldset.phtml')
             ->setNewChildUrl($newChildUrl)
-            ->setFieldSetId($conditionsFieldSetId);
+            ->setFieldSetId($conditionsFieldSetId)
+            ->setNameInLayout('amasty.feed.field.fieldset.conditions');
 
         $fieldset = $form->addFieldset(
             $conditionsFieldSetId,
@@ -160,8 +155,8 @@ class Conditions extends Generic
                 'title' => __('Attribute'),
                 'options' => $this->attributeOptions->getOptionsForBlock(),
                 'data-form-part' => self::FORM_NAMESPACE,
-                'note' => __("If you can't find the needed attribute in the list, please edit the needed attribute. 
-                Open the 'Storefront Properties' tab in the attribute edit menu and set 
+                'note' => __("If you can't find the needed attribute in the list, please edit the needed attribute.
+                Open the 'Storefront Properties' tab in the attribute edit menu and set
                 'Use for Promo Rule Conditions' field to 'YES'.")
             ]
         );

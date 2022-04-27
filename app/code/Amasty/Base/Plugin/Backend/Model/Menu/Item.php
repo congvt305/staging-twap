@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -14,14 +14,14 @@ use Magento\Backend\Model\Menu\Item as NativeItem;
 
 class Item
 {
-    const BASE_MARKETPLACE = 'Amasty_Base::marketplace';
+    public const BASE_MARKETPLACE = 'Amasty_Base::marketplace';
 
-    const SEO_PARAMS = '?utm_source=extension&utm_medium=backend&utm_campaign=main_menu_to_user_guide';
+    public const SEO_PARAMS = '?utm_source=extension&utm_medium=backend&utm_campaign=main_menu_to_user_guide';
 
-    const MARKET_URL = 'https://amasty.com/magento-2-extensions.html'
+    public const MARKET_URL = 'https://amasty.com/magento-2-extensions.html'
     . '?utm_source=extension&utm_medium=backend&utm_campaign=main_menu_to_catalog';
 
-    const MAGENTO_MARKET_URL = 'https://marketplace.magento.com/partner/Amasty';
+    public const MAGENTO_MARKET_URL = 'https://marketplace.magento.com/partner/Amasty';
 
     /**
      * @var ExtensionsProvider

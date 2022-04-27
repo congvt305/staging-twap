@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -13,7 +13,7 @@ namespace Amasty\Base\Model;
  */
 class MagentoVersion
 {
-    const MAGENTO_VERSION = 'amasty_magento_version';
+    public const MAGENTO_VERSION = 'amasty_magento_version';
 
     /**
      * @var \Magento\Framework\App\ProductMetadataInterface

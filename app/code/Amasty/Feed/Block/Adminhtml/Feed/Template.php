@@ -1,9 +1,4 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
 
 namespace Amasty\Feed\Block\Adminhtml\Feed;
 
@@ -11,11 +6,6 @@ use Amasty\Feed\Api\Data\FeedInterface;
 use Amasty\Feed\Model\ResourceModel\Feed\CollectionFactory;
 use Magento\Backend\Block\Widget\Context;
 
-/**
- * Class Template
- *
- * @package Amasty\Feed
- */
 class Template extends \Magento\Backend\Block\Widget\Container
 {
     /**

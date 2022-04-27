@@ -1,20 +1,9 @@
 <?php
-/**
- * @author Amasty Team
- * @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
- * @package Amasty_Feed
- */
-
 
 namespace Amasty\Feed\Model\ValidProduct;
 
 use Amasty\Feed\Api\Data\ValidProductsInterface;
 
-/**
- * Class ValidProduct
- *
- * @package Amasty\Feed
- */
 class ValidProduct extends \Magento\Framework\Model\AbstractModel implements ValidProductsInterface
 {
     /**
