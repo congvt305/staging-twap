@@ -607,7 +607,7 @@ class Payment extends AbstractMethod
                 $orderItem->getDiscountAmount(),
                 $mileageUsedAmount
             );
-            if ($orderItem->getProductType() == 'bundle' && !$orderItem->getProduct()->getPriceType()) {
+            if ($orderItem->getProductType() == 'bundle' && $orderItem->getProduct()->getPriceType() == \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
                 $discountAmount = 0;
                 foreach ($orderItem->getChildrenItems() as $childItem) {
                     /** @var \Magento\Sales\Model\Order\Item $childItem */
