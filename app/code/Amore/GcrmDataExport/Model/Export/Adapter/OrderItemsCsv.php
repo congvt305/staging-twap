@@ -215,7 +215,7 @@ class OrderItemsCsv extends AbstractAdapter
         unset($rowData['product_options']);
         if (!$headerColumns) {
             $headersData = [];
-            foreach (array_keys($rowData) as $key) {
+            foreach ($rowData as $key => $data) {
                 $headersData[] = $key;
             }
 
