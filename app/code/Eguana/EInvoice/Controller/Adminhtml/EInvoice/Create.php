@@ -84,7 +84,6 @@ class Create extends \Magento\Backend\App\Action
                 $payment->save();
                 $this->messageManager->addSuccessMessage($data['RtnMsg']);
             }
-
         } catch (LocalizedException $e) {
             $context = ['order_id' => $order->getIncrementId()];
             $this->logger->log('info', 'CREATE EINVOICE EXCEPTION: ' . $e->getMessage(), $context);

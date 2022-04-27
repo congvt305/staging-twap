@@ -107,7 +107,7 @@ class EInvoiceService
     }
 
     /**
-     * check whether order has einvoice data in payment already
+     * Check whether order has einvoice data in payment already
      * it returns an array
      *
      * @param \Magento\Sales\Model\Order $order
@@ -121,6 +121,8 @@ class EInvoiceService
     }
 
     /**
+     * Call API to query einvoice information
+     *
      * @param \Magento\Sales\Model\Order $order
      * @return array
      */
@@ -157,6 +159,8 @@ class EInvoiceService
     }
 
     /**
+     * Build request data
+     *
      * @param \Magento\Sales\Model\Order $order
      * @return string
      */
@@ -185,7 +189,7 @@ class EInvoiceService
     }
 
     /**
-     * write log
+     * Write log
      *
      * @param string $request
      * @param string $response
