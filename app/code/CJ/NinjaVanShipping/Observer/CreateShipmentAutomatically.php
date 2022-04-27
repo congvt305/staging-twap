@@ -206,7 +206,7 @@ class CreateShipmentAutomatically implements ObserverInterface
                         $this->shipmentIdentity->isEnabled(),
                         false,
                         null,
-                        []
+                        [$ninjaVanTrack]
                     );
                 if (empty($shipmentId)) {
                     $this->logger->info("Cannot Create delivery order: {$order->getIncrementId()}");
@@ -218,15 +218,6 @@ class CreateShipmentAutomatically implements ObserverInterface
                 $order->setStatus('processing_with_shipment');
                 $order->setData('sent_to_ninjavan', 1);
                 $order->save();
-
-                $dataTrack = [
-                    'carrier_code' => $ninjaVanTrack->getCarrierCode(),
-                    'title' => $ninjaVanTrack->getTitle(),
-                    'number' => $ninjaVanTrack->getTrackNumber()
-                ];
-                $shipment = $order->getShipmentsCollection()->getFirstItem();
-                $newDataTrack = $this->shipmentTrackFactory->create()->addData($dataTrack);
-                $shipment->addTrack($newDataTrack)->save();
             }
             if (isset($response['error'])) {
                 $message = $response['error']['message'];
