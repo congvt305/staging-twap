@@ -29,7 +29,7 @@ class Config
     }
 
     /**
-     * check whether it is on test mode
+     * Check whether it is on test mode
      *
      * @param int|null $storeId
      * @param string $scopeType
@@ -41,7 +41,7 @@ class Config
     }
 
     /**
-     * return staging API Endpoint that queries invoice information
+     * Return staging API Endpoint that queries invoice information
      *
      * @param int|null $storeId
      * @param string $scopeType
@@ -54,7 +54,7 @@ class Config
     }
 
     /**
-     * return production API Endpoint that queries invoice information
+     * Return production API Endpoint that queries invoice information
      *
      * @param int|null $storeId
      * @param string $scopeType
@@ -67,7 +67,7 @@ class Config
     }
 
     /**
-     * return config hash key
+     * Return config hash key
      *
      * @param int|null $storeId
      * @param string $scopeType
@@ -81,7 +81,7 @@ class Config
     }
 
     /**
-     * return config hash iv
+     * Return config hash iv
      *
      * @param int|null $storeId
      * @param string $scopeType
@@ -95,7 +95,7 @@ class Config
     }
 
     /**
-     * return config merchant id
+     * Return config merchant id
      *
      * @param int|null $storeId
      * @param string $scopeType
@@ -109,6 +109,8 @@ class Config
     }
 
     /**
+     * Get API Query EInvoice endpoint
+     *
      * @param int|null $storeId
      * @return string
      */
