@@ -118,9 +118,9 @@ class Order
 
     public function creatCreditMemo(\Magento\Sales\Model\Order $order)
     {
-        $offlineRequest = false;
+        $offlineRequest = true;
         if ($order->getPayment()->getLastTransId()){
-            $offlineRequest = true;
+            $offlineRequest = false;
         }
         $order->setBaseTotalPaid($order->getBaseGrandTotal());
         $order->setBaseTotalRefunded(0);
