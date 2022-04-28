@@ -227,7 +227,6 @@ class CreateShipmentAutomatically implements ObserverInterface
                 }
             }
             $this->logger->info('ninjavan | message: ', [$message]);
-            $message = "Shipment Created Successfully.";
 
         } catch (\Exception $exception) {
             $this->logger->info("Create delivery order failed: {$exception->getMessage()}");

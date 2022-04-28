@@ -161,7 +161,7 @@ class SendOrderToNinjaVan
                         $this->shipmentIdentity->isEnabled(),
                         false,
                         null,
-                        []
+                        [$ninjaVanTrack]
                     );
                     if (empty($shipmentId)) {
                         $this->logger->info("Cannot Create delivery order: {$order->getIncrementId()}");
@@ -169,19 +169,10 @@ class SendOrderToNinjaVan
                     }
 
                     $this->setQtyShipToOrderItem($order);
-
                     $order->setState('processing');
                     $order->setStatus('processing_with_shipment');
                     $order->setData('sent_to_ninjavan', 1);
                     $order->save();
-                    $shipment = $order->getShipmentsCollection()->getFirstItem();
-                    $dataTrack = [
-                        'carrier_code' => $ninjaVanTrack->getCarrierCode(),
-                        'title' => $ninjaVanTrack->getTitle(),
-                        'number' => $ninjaVanTrack->getTrackNumber()
-                    ];
-                    $newDataTrack = $this->shipmentTrackFactory->create()->addData($dataTrack);
-                    $shipment->addTrack($newDataTrack)->save();
                 }
                 if (isset($response['error'])) {
                     $message = $response['error']['message'];

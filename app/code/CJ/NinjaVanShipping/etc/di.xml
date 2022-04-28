@@ -5,6 +5,8 @@
                 type="CJ\NinjaVanShipping\Model\TokenData"/>
     <preference for="CJ\NinjaVanShipping\Api\GetTrackUrlByOrderInterface"
                 type="CJ\NinjaVanShipping\Model\GetTrackUrlByOrder"/>
+    <preference for="CJ\NinjaVanShipping\Api\GenerateWaybillInterface"
+                type="CJ\NinjaVanShipping\Model\Request\GenerateWaybill"/>
 
     <type name="CJ\NinjaVanShipping\Logger\Handler">
         <arguments>

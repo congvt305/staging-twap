@@ -53,6 +53,10 @@
                     <label>Cancel Order</label>
                     <comment>URI for cancel order</comment>
                 </field>
+                <field id="generate_waybill" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Generate Waybill</label>
+                    <comment>URI for generate waybill</comment>
+                </field>
                 <field id="track_url" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Tracking URL</label>
                 </field>

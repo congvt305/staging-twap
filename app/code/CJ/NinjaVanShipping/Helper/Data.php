@@ -26,6 +26,7 @@ class Data extends AbstractHelper
     const XML_PATH_NINJAVAN_CANCEL_ORDER = 'ninjavan/sandbox_api/cancel_order';
     const XML_PATH_NINJAVAN_TRACK_URL = 'ninjavan/sandbox_api/track_url';
     const XML_PATH_NINJAVAN_NUM_OF_RETRY = 'ninjavan/sandbox_api/number_of_retry';
+    const XML_PATH_NINJAVAN_GENERATE_WAYBILL = 'ninjavan/sandbox_api/generate_waybill';
 
     const XML_PATH_NINJAVAN_SEND_FROM = 'ninjavan/additional/send_from';
     const XML_PATH_NINJAVAN_PHONE_FROM = 'ninjavan/additional/phone_from';
@@ -148,5 +149,10 @@ class Data extends AbstractHelper
     public function getNinjaVanAllowsOrderStatusCancel()
     {
         return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_ALLOWS_ORDER_STATUS_CAN_CANCEL, ScopeInterface::SCOPE_WEBSITE);
+    }
+
+    public function getNinjaVanUriGenerateWaybill()
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_GENERATE_WAYBILL, ScopeInterface::SCOPE_WEBSITE);
     }
 }
