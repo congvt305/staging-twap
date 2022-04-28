@@ -18,7 +18,9 @@ class SmsMarketingSyncPos extends \Symfony\Component\Console\Command\Command
     const STORE_CODE_APPLY = ['default', 'tw_laneige'];
     const QUANTITY = 'qty';
     const QUANTITY_DEFAULT = 100;
-    const SMS_SUBSCRIPTION_STATUS= 'sms_subscription_status';
+    const SMS_SUBSCRIPTION_STATUS = 'sms_subscription_status';
+    const ENABLE_VALUE = 1;
+
 
     /**
      * @var CustomerCollectionFactory
@@ -107,7 +109,7 @@ class SmsMarketingSyncPos extends \Symfony\Component\Console\Command\Command
             try {
                 $this->disableAddressValidation($customer);
                 $customerRes = $this->customerRepository->getById($customer->getId());
-                $customerRes->setCustomAttribute(self::SMS_SUBSCRIPTION_STATUS, 1);
+                $customerRes->setCustomAttribute(self::SMS_SUBSCRIPTION_STATUS, self::ENABLE_VALUE);
                 $this->customerRepository->save($customerRes);
                 $output->writeln("Done sync customer with ID: " . $customer->getEntityId());
             } catch (\Exception $exception) {
