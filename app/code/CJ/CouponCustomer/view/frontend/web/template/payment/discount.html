@@ -9,6 +9,13 @@
         <span class="action action-toggle" id="block-discount-heading" role="heading" aria-level="2">
             <!-- ko i18n: 'Apply Discount Code'--><!-- /ko -->
         </span>
+        <!-- ko if: isEnableCouponPopup -->
+        <div class="coupon-wallet">
+            <i id = "coupon-wallet" data-bind="'value': $t('view my coupon'), click: showPopup"> <!-- ko i18n: 'view my coupon'--><!-- /ko -->
+            <p class="icon"> >> </p>
+            </i>
+        </div>
+        <!-- /ko -->
     </div>
     <div class="payment-option-content">
         <!-- ko foreach: getRegion('messages') -->
@@ -53,13 +60,6 @@
                     <!-- /ko -->
                 </div>
             </div>
-
-            <!-- ko if: isEnableCouponPopup -->
-            <div class="coupon-wallet">
-                <i id = "coupon-wallet" data-bind="'value': $t('view my coupon'), click: showPopup"> <!-- ko i18n: 'view my coupon'--><!-- /ko --> </i>
-            </div>
-            <!-- /ko -->
-
             <!-- ko foreach: getRegion('captcha') -->
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!-- /ko -->
@@ -89,7 +89,10 @@
                                             <div class="discount-title-percent" data-bind="text: $data['name']" >
                                             </div>
                                             <div class="discount-percent">
-                                                Total discount for activities: <span style="color: red" data-bind="text: $data['simple_action_string']" ></span>
+                                                <span data-bind="i18n: 'Total discount for activities:'" ></span> <span style="color: red" data-bind="text: $data['simple_action_string']" ></span>
+                                            </div>
+                                            <div class="discount-percent">
+                                                <span data-bind="i18n: 'Expiration date:'" ></span> <span style="color: red" data-bind="text: $data['to_date']" ></span>
                                             </div>
                                             <div class="discount-description" data-bind="text: $data['description']">
                                             </div>
@@ -97,7 +100,7 @@
                                     </div>
                                     <div class="discount-border-right"></div>
                                     <div class="discount-card-button" data-bind="attr: { id : $data['code']}, click : $parent.applyCouponPopup">
-                                        apply
+                                        <!-- ko i18n: 'Apply'--><!-- /ko -->
                                     </div>
                                 </div>
                                 <!-- and card -->

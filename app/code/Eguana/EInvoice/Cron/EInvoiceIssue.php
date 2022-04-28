@@ -82,14 +82,10 @@ class EInvoiceIssue
                 foreach ($notIssuedOrderList as $index => $order) {
                     try {
                         $orderId = $order->getEntityId();
-                        // check if EInvoice has been created by ECPay for this order
-                        $isIssued = $this->einvoiceService->eInvoiceIssued($orderId);
-                        if ($isIssued) {
+                        if (!empty($data = $this->einvoiceService->fetchEInvoiceDetail($orderId))) {
                             // update payment information
                             $payment = $order->getPayment();
-                            $additionalInfo = $payment->getAdditionalInformation();
-                            $rawDetailsInfo = $additionalInfo["raw_details_info"] ?? [];
-                            $payment->setAdditionalData(array_replace($rawDetailsInfo, ['RtnCode' => 1]));
+                            $payment->setAdditionalData(json_encode($data));
                             $payment->save();
                         } else {
                             $ecpayInvoiceResult = $this->ecpayPaymentModel->createEInvoice($orderId,
@@ -102,9 +98,12 @@ class EInvoiceIssue
                         }
                     } catch (\Exception $e) {
                         //$this->helperEmail->sendEmail($order, $e->getMessage());
-                        $this->logger->log('info', 'EINVOICE EXCEPTION',
-                            ['order_increment_id' => $order->getIncrementId()]);
-                        $this->logger->log('info','ERROR TRACE: ' . $e->getTraceAsString(),  ['order_increment_id' => $order->getIncrementId()]);
+                        $context = [
+                            'order_id' => $order->getIncrementId()
+                        ];
+                        $this->logger->log('info', 'EINVOICE EXCEPTION: ' . $e->getMessage(), $context);
+                        $this->logger->log('info', 'ERROR TRACE', $context);
+                        $this->logger->log('info', $e->getTraceAsString(), $context);
                     }
                 }
             }

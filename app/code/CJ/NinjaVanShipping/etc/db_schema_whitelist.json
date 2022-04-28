@@ -1,0 +1,21 @@
+{
+    "ninjavan_access_token": {
+        "column": {
+            "token_id": true,
+            "token": true,
+            "status": true,
+            "store_id": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "NINJAVAN_ACCESS_TOKEN_TOKEN": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "sent_to_ninjavan": true
+        }
+    }
+}

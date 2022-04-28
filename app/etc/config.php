@@ -49,6 +49,14 @@ return [
                 'sort_order' => '0',
                 'default_group_id' => '10',
                 'is_default' => '0'
+            ],
+            'my_sulwhasoo_website' => [
+                'website_id' => '11',
+                'code' => 'my_sulwhasoo_website',
+                'name' => 'MY Sulwhasoo Website',
+                'sort_order' => '0',
+                'default_group_id' => '11',
+                'is_default' => '0'
             ]
         ],
         'groups' => [
@@ -99,6 +107,14 @@ return [
                 'root_category_id' => '751',
                 'default_store_id' => '10',
                 'code' => 'my_laneige_website_store'
+            ],
+            11 => [
+                'group_id' => '11',
+                'website_id' => '11',
+                'name' => 'MY Sulwhasoo Website Store',
+                'root_category_id' => '751',
+                'default_store_id' => '11',
+                'code' => 'my_sulwhasoo_website_store'
             ]
         ],
         'stores' => [
@@ -153,6 +169,15 @@ return [
                 'website_id' => '10',
                 'group_id' => '10',
                 'name' => 'MY Laneige Store View',
+                'sort_order' => '0',
+                'is_active' => '1'
+            ],
+            'my_sulwhasoo' => [
+                'store_id' => '11',
+                'code' => 'my_sulwhasoo',
+                'website_id' => '11',
+                'group_id' => '11',
+                'name' => 'MY Sulwhasoo Store View',
                 'sort_order' => '0',
                 'is_active' => '1'
             ]
@@ -231,6 +256,13 @@ return [
                 ]
             ],
             'my_laneige_website' => [
+                'general' => [
+                    'locale' => [
+                        'code' => 'ms_MY'
+                    ]
+                ]
+            ],
+            'my_sulwhasoo_website' => [
                 'general' => [
                     'locale' => [
                         'code' => 'ms_MY'
@@ -695,12 +727,16 @@ return [
         'Magento_WishlistGiftCardGraphQl' => 1,
         'Magento_GiftCardGraphQl' => 1,
         'Adyen_Payment' => 1,
+        'Amasty_AdvancedReview' => 1,
         'Amasty_BannersLite' => 1,
         'Amasty_Base' => 1,
         'Amasty_Conditions' => 1,
         'Amasty_CronScheduleList' => 1,
         'Dotdigitalgroup_Email' => 1,
+        'Amasty_InvisibleCaptcha' => 1,
         'Amasty_Promo' => 1,
+        'Amasty_ReviewPageBuilder' => 1,
+        'Amasty_ReviewsImportExport' => 1,
         'Amasty_Rgrid' => 1,
         'Amasty_SalesRuleWizard' => 1,
         'Amazon_Core' => 0,
@@ -728,6 +764,7 @@ return [
         'CJ_PageBuilder' => 1,
         'CJ_PointRedemption' => 1,
         'CJ_HoverImage' => 1,
+        'CJ_ReviewsImportExport' => 1,
         'CJ_CatelogFaq' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
@@ -793,6 +830,7 @@ return [
         'MagePal_Core' => 1,
         'MagePal_Reindex' => 1,
         'PayPal_Braintree' => 0,
+        'CJ_Payoo' => 1,
         'PayPal_BraintreeGraphQl' => 0,
         'Payoo_PayNow' => 1,
         'Eguana_Pixlee' => 1,
@@ -803,7 +841,7 @@ return [
         'Vertex_RequestLogging' => 0,
         'Vertex_AddressValidation' => 0,
         'Vertex_TaxStaging' => 1,
-        'Yotpo_Yotpo' => 1
+        'Yotpo_Yotpo' => 0
     ],
     'admin_user' => [
         'locale' => [

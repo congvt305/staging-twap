@@ -8,6 +8,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\View\Element\Template;
 use Magento\SalesRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollection;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Customer\Model\GroupFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Theme\Block\Html\Header\Logo;
 use \Magento\Directory\Model\Currency;
@@ -15,7 +16,18 @@ use \Magento\Directory\Model\Currency;
 
 class Data extends AbstractHelper
 {
+    /**
+     * xml path cron for creating new customer group from POS
+     */
+    const XML_PATH_CRON_JOB_CREATE_CUSTOMER_GROUP_ENABLE = 'coupon_wallet/cron/active';
+    /**
+     * xml path coupon list popup
+     */
     const XML_PATH_COUPON_LIST_POPUP_ENABLE = 'coupon_wallet/general/popup';
+    /**
+     * xml path sync pos customer grade
+     */
+    const XML_PATH_SYNC_POS_CUSTOMER_GRADE_ENABLE = 'coupon_wallet/general/sync_pos_customer_grade';
     /**
      * @var RuleCollection
      */
@@ -45,6 +57,11 @@ class Data extends AbstractHelper
      */
     private $context;
 
+    /**
+     * @var GroupFactory
+     */
+    private $customerGroup;
+
 
     /**
      * @param Template\Context $context
@@ -60,19 +77,21 @@ class Data extends AbstractHelper
         Session               $customerSession,
         StoreManagerInterface $storeManager,
         Logo                  $logo,
-        Currency              $currency
-    )
-    {
+        Currency              $currency,
+        GroupFactory          $customerGroup
+    ) {
         parent::__construct($context);
         $this->ruleCollection = $ruleCollection;
         $this->customerSession = $customerSession;
         $this->storeManager = $storeManager;
         $this->logo = $logo;
         $this->currency = $currency;
+        $this->customerGroup = $customerGroup;
     }
 
     /**
-     * get rule collection
+     * Get rule collection
+     *
      * @return \Magento\SalesRule\Model\ResourceModel\Rule\Collection
      */
     public function getCustomerAvailableCoupons()
@@ -82,12 +101,14 @@ class Data extends AbstractHelper
         $websiteId = $customer->getWebsiteId();
         $rules->addWebsiteGroupDateFilter($websiteId, $customer->getGroupId())
             ->addFieldToFilter('coupon_type', \Magento\SalesRule\Model\Rule::COUPON_TYPE_SPECIFIC)
-            ->addFieldToFilter('is_active', 1);
+            ->addFieldToFilter('is_active', 1)
+            ->addFieldToFilter('use_auto_generation', 0);
         return $rules;
     }
 
     /**
-     * get customer
+     * Get customer
+     *
      * @return \Magento\Customer\Model\Customer
      */
     public function getCustomer()
@@ -96,7 +117,8 @@ class Data extends AbstractHelper
     }
 
     /**
-     * get available coupons
+     * Get available coupons
+     *
      * @return array
      */
     public function getCustomerCouponList()
@@ -122,7 +144,8 @@ class Data extends AbstractHelper
     }
 
     /**
-     * get logo base on store
+     * Get logo base on store
+     *
      * @return string
      */
     public function getLogo()
@@ -131,7 +154,8 @@ class Data extends AbstractHelper
     }
 
     /**
-     * get currency code base on store
+     * Get currency code base on store
+     *
      * @return string
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
@@ -141,9 +165,11 @@ class Data extends AbstractHelper
         return $this->currency->getCurrencySymbol();
     }
 
-    /**S
-     * @param $simpleAction
-     * @param $discountAmount
+    /**
+     * Convert action coupon to text
+     *
+     * @param string $simpleAction
+     * @param string $discountAmount
      * @return string
      */
     public function convertActionCouponToText($simpleAction, $discountAmount = '')
@@ -166,7 +192,8 @@ class Data extends AbstractHelper
     }
 
     /**
-     * is enabled coupon list popup
+     * Is enabled coupon list popup
+     *
      * @return bool
      */
     public function isEnableCouponListPopup()
@@ -175,20 +202,94 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Is enabled cronjob for creating customer group
+     *
+     * @return bool
+     */
+    public function isCronCustomerGroupEnabled()
+    {
+        return (bool)$this->scopeConfig->getValue(self::XML_PATH_CRON_JOB_CREATE_CUSTOMER_GROUP_ENABLE, ScopeInterface::SCOPE_WEBSITE);
+    }
+
+    public function isPOSCustomerGradeSyncEnabled()
+    {
+        return (bool)$this->scopeConfig->getValue(self::XML_PATH_SYNC_POS_CUSTOMER_GRADE_ENABLE, ScopeInterface::SCOPE_WEBSITE);
+    }
+
+    /**
      * get current website code
      * @return int
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getCurrentWebsiteCode() {
+    public function getCurrentWebsiteCode()
+    {
         return $this->storeManager->getWebsite()->getCode();
     }
 
     /**
-     * check customer login
+     * Check customer login
+     *
      * @return bool
      */
-    public function isCustomerLogin() {
+    public function isCustomerLogin()
+    {
         return $this->customerSession->isLoggedIn();
+    }
+
+    /**
+     * Get customer group Id
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getCustomerGroupIdByName($name)
+    {
+        $group = $this->customerGroup->create();
+        $groupCollection = $group->getCollection();
+        $groupCollection->addFieldToFilter('customer_group_code', $name);
+
+        return $groupCollection->getFirstItem()->getId();
+    }
+
+    /**
+     * Get all magento customer group
+     *
+     * @return \Magento\Framework\DataObject[]
+     */
+    public function getAllCustomerGroup()
+    {
+        $group = $this->customerGroup->create();
+        $groupCollection = $group->getCollection();
+        return $groupCollection->getItems();
+
+    }
+
+    /**
+     * Is created pos customer groups for magento
+     *
+     * @param string $posCustomerGroup
+     * @return bool
+     */
+    public function isCustomerGroupExist($posCustomerGroup)
+    {
+        $customerGroups = $this->getAllCustomerGroup();
+        foreach ($customerGroups as $customerGroup) {
+            if ($customerGroup->getData('customer_group_code') == $posCustomerGroup) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Prepare prefix for creating customer group
+     *
+     * @param string $customerGradeCode
+     * @return false|string
+     */
+    public function getPrefix($customerGradeCode)
+    {
+        return !empty($customerGradeCode) ? substr($customerGradeCode, 0 , 3) : '';
     }
 
 

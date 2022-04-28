@@ -28,7 +28,7 @@ class Index extends Action
         Context     $context,
         Session     $customerSession,
         PageFactory $resultPageFactory
-    ){
+    ) {
         parent::__construct($context);
         $this->customerSession = $customerSession;
         $this->resultPageFactory = $resultPageFactory;

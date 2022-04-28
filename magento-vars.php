@@ -84,6 +84,12 @@ if (isHttpHost("tw.sulwhasoo.com")
     || isHttpHost("mcstaging.my.laneige.com")) {
     $_SERVER["MAGE_RUN_CODE"] = "my_laneige";
     $_SERVER["MAGE_RUN_TYPE"] = "store";
+} elseif (isHttpHost("my.sulwhasoo.com")
+    || isHttpHost("mcprod.my.sulwhasoo.com")
+    || isHttpHost("www.my.sulwhasoo.com")
+    || isHttpHost("mcstaging.my.sulwhasoo.com")) {
+    $_SERVER["MAGE_RUN_CODE"] = "my_sulwhasoo";
+    $_SERVER["MAGE_RUN_TYPE"] = "store";
 }
 //if (isAdminBackendUri($_SERVER['REQUEST_URI'])) {
 //    $_SERVER["MAGE_RUN_CODE"] = "default";
