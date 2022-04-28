@@ -10,4 +10,8 @@
     <type name="Magento\Cms\Controller\Page\View">
         <plugin name="redirect-page-permanent" type="CJ\Seo\Plugin\RedirectPagePermanent" sortOrder="0"/>
     </type>
+    <type name="Magento\Cms\Controller\Noroute\Index">
+        <plugin name="redirect-noroute-permanent" type="CJ\Seo\Plugin\RedirectNoroutePermanent" sortOrder="0"/>
+    </type>
+
 </config>
