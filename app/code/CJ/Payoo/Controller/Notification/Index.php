@@ -74,7 +74,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
-        Context $context,
+        \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\App\Request\Http $request,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Sales\Api\Data\OrderInterfaceFactory  $orderFactory,
@@ -84,7 +84,6 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
         \Magento\Framework\Serialize\Serializer\Json $json,
         \Psr\Log\LoggerInterface $logger
     ) {
-        parent::__construct($context);
         $this->request = $request;
         $this->scopeConfig = $scopeConfig;
         $this->orderFactory = $orderFactory;
@@ -93,6 +92,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
         $this->config = $config;
         $this->json = $json;
         $this->logger = $logger;
+        parent::__construct($context, $request, $scopeConfig, $orderFactory, $invoiceService, $transaction);
     }
 
     /**
