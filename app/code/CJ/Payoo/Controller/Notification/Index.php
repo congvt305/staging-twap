@@ -33,13 +33,34 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
     private $orderFactory;
     /**
      * @var \CJ\Payoo\Helper\Data
+     *
      */
     private $config;
+    /**
+     * @var  \Magento\Framework\Serialize\Serializer\Json
+     */
+    private $json;
+
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * Const Payoo success status
      */
     const SUCCESS_STATUS = 1;
+
+    /**
+     * Const Payoo Payment check sum key
+     */
+    const PAYOO_PAYMENT_CHECK_SUM_KEY_URL = 'payment/paynow/checksum_key';
+
+    /**
+     * Const Payoo Payment environment
+     */
+    const PAYOO_PAYMENT_ENVIRONMENT_URL = 'payment/paynow/environment';
+
 
     /**
      * @param Context $context
@@ -49,6 +70,8 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
      * @param \Magento\Sales\Model\Service\InvoiceService $invoiceService
      * @param \Magento\Framework\DB\Transaction $transaction
      * @param \CJ\Payoo\Helper\Data $config
+     * @param \Magento\Framework\Serialize\Serializer\Json $json
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         Context $context,
@@ -57,7 +80,9 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
         \Magento\Sales\Api\Data\OrderInterfaceFactory  $orderFactory,
         \Magento\Sales\Model\Service\InvoiceService $invoiceService,
         \Magento\Framework\DB\Transaction $transaction,
-        \CJ\Payoo\Helper\Data $config
+        \CJ\Payoo\Helper\Data $config,
+        \Magento\Framework\Serialize\Serializer\Json $json,
+        \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context);
         $this->request = $request;
@@ -66,6 +91,8 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
         $this->invoiceService = $invoiceService;
         $this->transaction = $transaction;
         $this->config = $config;
+        $this->json = $json;
+        $this->logger = $logger;
     }
 
     /**
@@ -75,28 +102,35 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
     {
         $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
         $message = $this->request->getParam('NotifyData');
-        $checksum = $this->scopeConfig->getValue('payment/paynow/checksum_key', $storeScope);
-        $ipRequest = $this->scopeConfig->getValue('payment/paynow/environment', $storeScope);
-        $response = json_decode(base64_decode($message), true);
+        $checksum = $this->scopeConfig->getValue(self::PAYOO_PAYMENT_CHECK_SUM_KEY_URL, $storeScope);
+        $ipRequest = $this->scopeConfig->getValue(self::PAYOO_PAYMENT_ENVIRONMENT_URL, $storeScope);
+        $response = $this->json->unserialize(base64_decode($message), true);
 
-        if (strtoupper(hash('sha512',$checksum.$response['ResponseData'].$ipRequest)) != strtoupper($response['Signature'])) {
-            $data = json_decode($response['ResponseData'], true);
-            $order_code = $data['OrderNo'];
-            $status = $data['PaymentStatus'];
+        if(isset($response['ResponseData']) && ($checksum . $response['ResponseData'] . $ipRequest !== null) && isset($response['Signature'])) {
+            if (strtoupper(hash('sha512', $checksum . $response['ResponseData'] . $ipRequest)) != strtoupper($response['Signature'])) {
+                $order_code = '';
+                $status = '';
+                $data = $this->json->unserialize($response['ResponseData'], true);
+                if(isset($data['OrderNo'])) {
+                    $order_code = $data['OrderNo'];
+                }
+                if(isset($data['PaymentStatus'])) {
+                    $status = $data['PaymentStatus'];
+                }
 
-            if($order_code != '' && $status == self::SUCCESS_STATUS)
-            {
-                //complete
-                $this->UpdateOrderStatus($order_code, $this->config->getPaymentSuccessStatus());
+                if ($order_code != '' && $status == self::SUCCESS_STATUS) {
+                    //complete
+                    $this->UpdateOrderStatus($order_code, $this->config->getPaymentSuccessStatus());
+                } else {
+                    //canceled
+                    $this->UpdateOrderStatus($order_code, \Magento\Sales\Model\Order::STATE_CANCELED);
+                }
+                echo 'NOTIFY_RECEIVED';
+            } else {
+                echo "<h3>Listening....</h3>";
             }
-            else
-            {
-                //canceled
-                $this->UpdateOrderStatus($order_code,\Magento\Sales\Model\Order::STATE_CANCELED);
-            }
-            echo 'NOTIFY_RECEIVED';
         } else {
-            echo "<h3>Listening....</h3>";
+            $this->logger->error("Payoo Response: " . $response);
         }
     }
 
@@ -112,7 +146,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
     {
         $order = $this->orderFactory->create()->loadByIncrementId($order_no);
         $statusPaymentSuccess = $this->config->getPaymentSuccessStatus();
-        if ($status === $statusPaymentSuccess ) {
+        if ((string)$status === (string)$statusPaymentSuccess) {
             if(!$order->hasInvoices()) {
                 $invoice = $this->invoiceService->prepareInvoice($order);
                 $invoice->register();
