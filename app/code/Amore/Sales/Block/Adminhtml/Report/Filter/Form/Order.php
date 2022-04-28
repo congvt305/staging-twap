@@ -11,7 +11,8 @@ class Order extends \Magento\Sales\Block\Adminhtml\Report\Filter\Form\Order
         'complete',
         'delivery_complete',
         'processing',
-        'shipment_processing'
+        'shipment_processing',
+        'processing_with_shipment'
     ];
 
     /**
