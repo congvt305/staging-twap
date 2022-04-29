@@ -11,6 +11,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Helper\Data as MagentoPaymentHelper;
 use Magento\Payment\Model\Method\AbstractMethod;
@@ -112,6 +113,39 @@ class Payment extends AbstractMethod
      */
     private $invoiceSender;
 
+    /**
+     * @var Json
+     */
+    private $json;
+
+    /**
+     * @param Context $context
+     * @param Registry $registry
+     * @param ExtensionAttributesFactory $extensionFactory
+     * @param AttributeValueFactory $customAttributeFactory
+     * @param MagentoPaymentHelper $paymentData
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Logger $logger
+     * @param StoreManagerInterface $storeManager
+     * @param UrlInterface $urlInterface
+     * @param Transaction\BuilderInterface $transactionBuilder
+     * @param \Magento\Framework\HTTP\Client\Curl $curl
+     * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
+     * @param \Magento\Sales\Model\Service\InvoiceService $invoiceService
+     * @param \Magento\Framework\DB\Transaction $transaction
+     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+     * @param \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpayInvoice
+     * @param \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory
+     * @param \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue
+     * @param \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository
+     * @param \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
+     * @param Json $json
+     * @param AbstractResource|null $resource
+     * @param AbstractDb|null $resourceCollection
+     * @param array $data
+     */
     public function __construct(
         Context $context,
         Registry $registry,
@@ -135,6 +169,7 @@ class Payment extends AbstractMethod
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository,
         \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
+        Json $json,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
@@ -167,6 +202,7 @@ class Payment extends AbstractMethod
         $this->productRepository = $productRepository;
         $this->orderItemRepository = $orderItemRepository;
         $this->invoiceSender = $invoiceSender;
+        $this->json = $json;
     }
 
     public function getValidPayments()
@@ -509,23 +545,28 @@ class Payment extends AbstractMethod
         }
     }
 
-    public function createEInvoice($orderId, $storeId)
+    /**
+     * Create e-invoice
+     *
+     * @param \Magento\Sales\Model\Order $order
+     * @return array
+     * @throws LocalizedException
+     */
+    public function createEInvoice(\Magento\Sales\Model\Order $order)
     {
         try
         {
-            $sMsg = '';
+            $storeId = $order->getStoreId();
             // 1.載入SDK程式
             $ecpay_invoice = $this->ecpayInvoice;
 
             // 2.寫入基本介接參數
             $this->initEInvoice($ecpay_invoice, $storeId);
 
-            $order = $this->orderRepository->get($orderId);
             $payment = $order->getPayment();
             $additionalInfo = $payment->getAdditionalInformation();
             $rawDetailsInfo = $additionalInfo["raw_details_info"];
-            $addtionalData = json_decode($payment->getAdditionalData(), true);
-
+            $addtionalData = $payment->getAdditionalData() ? $this->json->unserialize($payment->getAdditionalData()) : [];
             if (isset($addtionalData["RtnCode"]) && $addtionalData["RtnCode"] == 1) {
                 return [
                     "RtnCode" => $addtionalData["RtnCode"],
@@ -554,7 +595,7 @@ class Payment extends AbstractMethod
 
                     // 5.返回
                     $aReturn_Info["RelateNumber"] = $RelateNumber;
-                    $payment->setAdditionalData(json_encode($aReturn_Info));
+                    $payment->setAdditionalData($this->json->serialize($aReturn_Info));
                     $payment->save();
                     return [
                         "RtnCode" => $aReturn_Info["RtnCode"],
@@ -571,7 +612,7 @@ class Payment extends AbstractMethod
 
                     // 5.返回
                     $aReturn_Info["RelateNumber"] = $RelateNumber;
-                    $payment->setAdditionalData(json_encode($aReturn_Info));
+                    $payment->setAdditionalData($this->json->serialize($aReturn_Info));
                     $payment->save();
                     return [
                         "RtnCode" => $aReturn_Info["RtnCode"],
