@@ -80,7 +80,10 @@ class CancelShipment
             $client = new \GuzzleHttp\Client($headers);
             $response = $client->delete($url);
             $contents = $this->json->unserialize($response->getBody()->getContents());
-            if (isset($contents['code']) && $contents['code'] == 401) {
+            if (isset($contents['error'])
+                && ($response->getStatusCode() == 401
+                    || (isset($contents['error']['code']) && $contents['error']['code'] == 2001))
+            ) {
                 $tokenData->setStatus(0)->save();
                 $this->numberOfRetry++;
                 $numOfRetry = $this->ninjavanHelper->getNinjaVanNumberRetry() ?? 4;
