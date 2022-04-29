@@ -10,6 +10,8 @@
 
 namespace Eguana\EInvoice\Cron;
 
+use Magento\Framework\Serialize\Serializer\Json;
+
 class EInvoiceIssue
 {
     /**
@@ -44,6 +46,11 @@ class EInvoiceIssue
     protected $logger;
 
     /**
+     * @var Json
+     */
+    private $json;
+
+    /**
      * EInvoiceIssue constructor.
      * @param \Eguana\EInvoice\Model\Order $order
      * @param \Ecpay\Ecpaypayment\Model\Payment $ecpayPaymentModel
@@ -58,7 +65,8 @@ class EInvoiceIssue
         \Magento\Store\Model\StoreManagerInterface $storeManagerInterface,
         \Eguana\EInvoice\Model\Email $helperEmail,
         \Eguana\EInvoice\Model\EInvoiceService $einvoiceService,
-        \Psr\Log\LoggerInterface $logger
+        \Psr\Log\LoggerInterface $logger,
+        Json $json
     ) {
         $this->order = $order;
         $this->logger = $logger;
@@ -67,6 +75,7 @@ class EInvoiceIssue
         $this->storeManagerInterface = $storeManagerInterface;
         $this->helperEmail = $helperEmail;
         $this->einvoiceService = $einvoiceService;
+        $this->json = $json;
     }
 
     public function execute()
@@ -85,11 +94,10 @@ class EInvoiceIssue
                         if (!empty($data = $this->einvoiceService->fetchEInvoiceDetail($orderId))) {
                             // update payment information
                             $payment = $order->getPayment();
-                            $payment->setAdditionalData(json_encode($data));
+                            $payment->setAdditionalData($this->json->serialize($data));
                             $payment->save();
                         } else {
-                            $ecpayInvoiceResult = $this->ecpayPaymentModel->createEInvoice($orderId,
-                                $order->getStoreId());
+                            $ecpayInvoiceResult = $this->ecpayPaymentModel->createEInvoice($order);
 
                             if ($ecpayInvoiceResult["RtnCode"] != "1") {
                                 //send mail

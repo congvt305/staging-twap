@@ -71,7 +71,7 @@ class Create extends \Magento\Backend\App\Action
             $invoice = $this->invoiceRepository->get($invoiceId);
             $order = $this->orderRepository->get($invoice->getOrderId());
             if (empty($data = $this->service->fetchEInvoiceDetail($invoice->getOrderId()))) {
-                $result = $this->ecpayPaymentModel->createEInvoice($order->getEntityId(), $order->getStoreId());
+                $result = $this->ecpayPaymentModel->createEInvoice($order);
                 if (isset($result['RtnCode'], $result['RtnMsg']) && $result['RtnCode'] === '1') {
                     $this->messageManager->addSuccessMessage($result['RtnMsg']);
                 } else {
