@@ -52,10 +52,10 @@ class RedirectNoRoutePermanent
      * Redirect to homepage when enable automatic redirect
      *
      * @param NorouteIndex $subject
-     * @param callable $proceed
-     * @return \Magento\Framework\Controller\Result\Redirect
+     * @param $result
+     * @return \Magento\Framework\Controller\Result\Redirect|mixed|void
      */
-    public function aroundExecute(NorouteIndex $subject, callable $proceed)
+    public function afterExecute(NorouteIndex $subject, $result)
     {
         try {
             if ($this->dataHelper->isAutomaticRedirectEnabled()) {
@@ -67,6 +67,6 @@ class RedirectNoRoutePermanent
         } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());
         }
-        return $proceed();
+        return $result;
     }
 }
