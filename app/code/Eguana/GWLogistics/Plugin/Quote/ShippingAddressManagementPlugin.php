@@ -82,6 +82,7 @@ class ShippingAddressManagementPlugin
                     throw new LocalizedException(__('Cannot find the CVS store location. Please try to choose CVS store again if it still error, please contact our CS Center'));
                 }
             } catch (\Exception $e) {
+                $this->logger->error("Error when choose CVS Location Id: " . $e->getMessage());
                 throw new LocalizedException(__('Cannot find the CVS store location. Please try to choose CVS store again if it still error, please contact our CS Center'));
             }
             $address->setExtensionAttributes($extensionAttributes);
