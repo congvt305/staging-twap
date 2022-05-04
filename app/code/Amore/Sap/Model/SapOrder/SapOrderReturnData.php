@@ -933,7 +933,13 @@ class SapOrderReturnData extends AbstractSapOrder
      */
     public function getNetQty($orderItem)
     {
-        return $orderItem->getQtyOrdered() - $orderItem->getQtyRefunded() - $orderItem->getQtyReturned();
+        $netQty = $orderItem->getQtyOrdered() - $orderItem->getQtyRefunded() - $orderItem->getQtyReturned();
+        // When order item has been refunded before creating return, Net qty will be 0, it will cause an issue when calculating discount amount, ...
+        // Since our sites don't allow partial refund, so we can ignore refunded qty when calculating net qty
+        if (0 == $netQty) {
+            $netQty = $orderItem->getQtyOrdered() - $orderItem->getQtyReturned();
+        }
+        return $netQty;
     }
 
     /**
