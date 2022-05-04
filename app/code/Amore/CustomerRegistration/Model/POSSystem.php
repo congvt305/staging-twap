@@ -253,18 +253,18 @@ class POSSystem extends BaseRequest
     public function handleResponse($response, $isNewMiddleware = false)
     {
         if ($isNewMiddleware) {
-            if ((isset($result['success']) && $result['success']) &&
-                (isset($result['data']) && isset($result['data']['checkYN']) && $result['data']['checkYN'] == 'Y')
+            if ((isset($response['success']) && $response['success']) &&
+                (isset($response['data']) && isset($response['data']['checkYN']) && $response['data']['checkYN'] == 'Y')
             ) {
-                $result = $this->processResponseData($result['data']);
-            } elseif ((isset($result['success']) && $result['success']) &&
-                (isset($result['data']) && isset($result['data']['checkYN']) && $result['data']['checkYN'] == 'N')
+                $result = $this->processResponseData($response);
+            } elseif ((isset($response['success']) && $response['success']) &&
+                (isset($response['data']) && isset($response['data']['checkYN']) && $response['data']['checkYN'] == 'N')
             ) {
                 $result = [];
             } else {
-                if (isset($result['data']) &&
-                    isset($result['data']['statusMessage']) &&
-                    $result['data']['statusMessage']
+                if (isset($response['data']) &&
+                    isset($response['data']['statusMessage']) &&
+                    $response['data']['statusMessage']
                 ) {
                     $result['message'] = $response['data']['statusMessage'];
                 } else {
@@ -332,7 +332,7 @@ class POSSystem extends BaseRequest
             if (isset($result['region']['region_id']) && $result['homeState']) {
                 if ($result['homeState'] && $result['region']['region_id']) {
                     $cities = $this->cityHelper->getCityData();
-                    $regionCities = $cities[$result['region']['region_id']];
+                    $regionCities = isset($cities[$result['region']['region_id']]) ? $cities[$result['region']['region_id']] : [];
                     foreach ($regionCities as $regionCity) {
                         if ($regionCity['pos_code'] == $result['homeState']) {
                             $result['city'] = $regionCity;
@@ -340,7 +340,9 @@ class POSSystem extends BaseRequest
                         }
                     }
                 }
-            } else {
+            }
+
+            if (!isset($result['city'])) {
                 $temp = [];
                 $temp['code'] = '';
                 $temp['name'] = '';
