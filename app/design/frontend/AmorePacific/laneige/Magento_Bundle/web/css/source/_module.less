@@ -29,7 +29,19 @@
 
     .page-product-bundle {
         .bundle-options-wrapper {
-            &:extend(.abs-visually-hidden all);
+            button.select-option {
+                margin-bottom: 10px;
+                margin-right: 10px;
+            }
+
+            button.select-option.selected {
+                background-color: #33333380;
+                border: solid 0.4rem #5a8cd2;
+            }
+
+            p.required {
+                display: none;
+            }
         }
     }
 

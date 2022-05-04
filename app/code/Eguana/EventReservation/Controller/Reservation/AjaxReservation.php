@@ -25,6 +25,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
+use Eguana\EventReservation\Api\EventRepositoryInterface;
 
 /**
  * To reserve event with ajax request
@@ -90,6 +91,11 @@ class AjaxReservation extends Action
     private $logger;
 
     /**
+     * @var EventRepositoryInterface
+     */
+    private $eventRepository;
+
+    /**
      * @param Context $context
      * @param DateTime $dateTime
      * @param SmsSender $smsSender
@@ -113,7 +119,8 @@ class AjaxReservation extends Action
         ReservationValidation $reservationValidation,
         UserReservationFactory $userReservationFactory,
         CounterRepositoryInterface $counterRepository,
-        UserReservationRepositoryInterface $userReservationRepository
+        UserReservationRepositoryInterface $userReservationRepository,
+        EventRepositoryInterface $eventRepository
     ) {
         $this->logger = $logger;
         $this->dateTime = $dateTime;
@@ -125,6 +132,7 @@ class AjaxReservation extends Action
         $this->reservationValidation = $reservationValidation;
         $this->userReservationFactory = $userReservationFactory;
         $this->userReservationRepository = $userReservationRepository;
+        $this->eventRepository = $eventRepository;
         parent::__construct($context);
     }
 
@@ -147,7 +155,7 @@ class AjaxReservation extends Action
                 try {
                     $counter = $this->counterRepository->getById($post['counter_id']);
                 } catch (\Exception $exception) {
-                    $this->logger->errot($exception->getMessage());
+                    $this->logger->error($exception->getMessage());
                     $response['message'] = __('This Counter doesn\'t exist.');
                     return $resultJson->setData($response);
                 }
@@ -203,6 +211,10 @@ class AjaxReservation extends Action
                         $response['success'] = true;
                         $response['message'] = __('Successfully booked an event');
                         $response['reserve_id'] = $model->getData('user_reserve_id');
+                        $eventId = $model->getData('event_id');
+                        if(isset($eventId)) {
+                            $response['completed_tracking_code'] = $this->getCompletedTrackingCode($eventId);
+                        }
                     } else {
                         $response['message'] = __('Event reservation could not be saved. Please try again');
                     }
@@ -210,6 +222,7 @@ class AjaxReservation extends Action
                     $response['message'] = $e->getMessage();
                 } catch (\Exception $e) {
                     $response['message'] = __('Something went wrong while reserving the event');
+                    $this->logger->error('Error while fetching Event:' . $e->getMessage());
                 }
             }
             return $resultJson->setData($response);
@@ -218,5 +231,19 @@ class AjaxReservation extends Action
             $resultRedirect->setUrl('/');
             return $resultRedirect;
         }
+    }
+
+
+    /**
+     * Get completed tracking code
+     *
+     * @param int $id
+     * @return string
+     *
+     */
+    private function getCompletedTrackingCode($id)
+    {
+        $event = $this->eventRepository->getById($id);
+        return $event->getCompletedTrackingCode() ?? '';
     }
 }

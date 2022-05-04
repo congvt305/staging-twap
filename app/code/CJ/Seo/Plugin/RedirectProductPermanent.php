@@ -4,16 +4,15 @@ namespace CJ\Seo\Plugin;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Controller\Result\RedirectFactory;
-use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Catalog\Controller\Product\View;
 use Psr\Log\LoggerInterface as Logger;
-use Magento\CatalogUrlRewrite\Model\ProductUrlPathGenerator;
-use Magento\Framework\App\Config\ScopeConfigInterface;
+use CJ\Seo\Helper\Data as DataHelper;
+use Magento\Catalog\Helper\Category as CategoryHelper;
 
 class RedirectProductPermanent
 {
-    const IS_AUTOMATIC_REDIRECT = 'catalog/seo/is_automatic_redirect';
+
 
     /**
      * @var RedirectFactory
@@ -36,29 +35,30 @@ class RedirectProductPermanent
     protected Logger $logger;
 
     /**
-     * @var ScopeConfigInterface
+     * @var DataHelper
      */
-    protected $scopeConfig;
+    protected DataHelper $dataHelper;
 
     /**
      * @param Logger $logger
      * @param ProductRepositoryInterface $productRepository
      * @param StoreManagerInterface $storeManager
      * @param RedirectFactory $redirectFactory
-     * @param ScopeConfigInterface $scopeConfig
+     * @param DataHelper $dataHelper
+     * @param CategoryHelper $categoryHelper
      */
     public function __construct(
         Logger $logger,
         ProductRepositoryInterface $productRepository,
         StoreManagerInterface $storeManager,
         RedirectFactory $redirectFactory,
-        ScopeConfigInterface $scopeConfig
+        DataHelper $dataHelper
     ) {
         $this->logger = $logger;
         $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;
         $this->redirectFactory = $redirectFactory;
-        $this->scopeConfig = $scopeConfig;
+        $this->dataHelper = $dataHelper;
     }
 
     /**
@@ -70,12 +70,12 @@ class RedirectProductPermanent
     {
         try {
             $product = $this->getProduct($subject);
-            if ($this->isAutomaticRedirectEnabled() && !$this->canShow($product)) {
+            if ($this->dataHelper->isAutomaticRedirectEnabled() && !$this->canShow($product)) {
                 $redirect = $this->redirectFactory->create();
                 if (str_contains($product->getRedirectUrl(), 'http')) {
                     $redirect->setPath($product->getRedirectUrl());
                 } else if ($product->getRedirectUrl()) {
-                    $redirect->setPath($this->storeManager->getStore()->getBaseUrl() . $product->getRedirectUrl() . $this->getSuffixProduct());
+                    $redirect->setPath($this->storeManager->getStore()->getBaseUrl() . $product->getRedirectUrl() . $this->dataHelper->getSuffixProduct());
                 } else {
                     $redirect->setPath($this->storeManager->getStore()->getBaseUrl());
                 }
@@ -95,32 +95,6 @@ class RedirectProductPermanent
     protected function canShow($product)
     {
         return $product->isVisibleInCatalog() && $product->isVisibleInSiteVisibility();
-    }
-
-    /**
-     * @return mixed
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
-    protected function getSuffixProduct()
-    {
-        return $this->scopeConfig->getValue(
-            ProductUrlPathGenerator::XML_PATH_PRODUCT_URL_SUFFIX,
-            ScopeInterface::SCOPE_STORE,
-            $this->storeManager->getStore()->getId()
-        );
-    }
-
-    /**
-     * @return mixed
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
-    protected function isAutomaticRedirectEnabled()
-    {
-        return $this->scopeConfig->getValue(
-            self::IS_AUTOMATIC_REDIRECT,
-            ScopeInterface::SCOPE_STORE,
-            $this->storeManager->getStore()->getId()
-        );
     }
 
     /**
