@@ -31,6 +31,8 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Webapi\Rest\Request;
+use Amore\CustomerRegistration\Plugin\CreateCustomer;
 
 /**
  * Call POS API on customer information change
@@ -140,7 +142,13 @@ class SaveSuccess implements ObserverInterface
      */
     private $state;
 
+    /**
+     * @var Request
+     */
+    private $requestApi;
+
     public function __construct(
+        Request $requestApi,
         RequestInterface $request,
         RegionFactory $regionFactory,
         RegionResourceModel $regionResourceModel,
@@ -161,6 +169,7 @@ class SaveSuccess implements ObserverInterface
         ManagerInterface $eventManager,
         \Magento\Framework\App\State $state
     ) {
+        $this->requestApi = $requestApi;
         $this->sequence = $sequence;
         $this->POSSystem = $POSSystem;
         $this->subscriberFactory = $subscriberFactory;
@@ -202,7 +211,7 @@ class SaveSuccess implements ObserverInterface
         try {
             try {
                 //prevent push data to POS
-                if ($this->request && $this->request->getContent() && json_decode($this->request->getContent())->isPos == 1) {
+                if ($this->requestApi->getRequestData() && isset($this->requestApi->getRequestData()[CreateCustomer::IS_POS]) && $this->requestApi->getRequestData()[CreateCustomer::IS_POS] == 1) {
                     return true;
                 }
             } catch (\Throwable $throwable) {
