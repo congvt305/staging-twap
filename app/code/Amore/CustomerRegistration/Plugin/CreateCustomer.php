@@ -6,12 +6,14 @@ use Amore\CustomerRegistration\Helper\Data;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Model\AccountManagement;
 use Magento\Store\Model\StoreRepository;
-use Magento\Framework\App\RequestInterface;
 use Amore\CustomerRegistration\Logger\Logger;
+use Magento\Framework\Webapi\Rest\Request;
 
 class CreateCustomer
 {
-    /**
+    const IS_POS = 'isPos';
+    const SALOFFCD= 'salOffCd';
+   /**
      * @var Data
      */
     private Data $configHelper;
@@ -22,9 +24,9 @@ class CreateCustomer
     private StoreRepository $storeRepository;
 
     /**
-     * @var RequestInterface
+     * @var Request
      */
-    private RequestInterface $request;
+    private Request $request;
 
     /**
      * @var Logger
@@ -35,13 +37,13 @@ class CreateCustomer
      * @param Logger $logger
      * @param Data $configHelper
      * @param StoreRepository $storeRepository
-     * @param RequestInterface $request
+     * @param Request $request
      */
     public function __construct(
         Logger $logger,
         Data $configHelper,
         StoreRepository $storeRepository,
-        RequestInterface $request
+        Request $request
     ) {
         $this->logger = $logger;
         $this->configHelper = $configHelper;
@@ -50,6 +52,8 @@ class CreateCustomer
     }
 
     /**
+     * assign website for customer
+     *
      * @param AccountManagement $subject
      * @param CustomerInterface $customer
      * @param $password
@@ -63,8 +67,8 @@ class CreateCustomer
         $redirectUrl = ''
     ) {
         try {
-            if ($this->request && $this->request->getContent() && json_decode($this->request->getContent())->isPos == 1) {
-                $salOffCd = json_decode($this->request->getContent())->salOffCd;
+            if ($this->request->getRequestData() && isset($this->request->getRequestData()[self::IS_POS]) && isset($this->request->getRequestData()[self::SALOFFCD]) && $this->request->getRequestData()[self::IS_POS] == 1) {
+                $salOffCd = $this->request->getRequestData()[self::SALOFFCD];
                 $customerWebsiteId = $this->getCustomerWebsiteId($salOffCd);
                 $customer->setWebsiteId($customerWebsiteId);
             }
