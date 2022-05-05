@@ -7,8 +7,10 @@
         <div template=" {name: getTemplate()}"></div>
     </each>
     <if args="isCvsPickupSelected">
-        <each args="getRegion('cvs-selector')">
-            <div template=" {name: getTemplate()}"></div>
-        </each>
+        <if args="isVisible">
+            <each args="getRegion('cvs-selector')">
+                <div template=" {name: getTemplate()}"></div>
+            </each>
+        </if>
     </if>
 </li>
