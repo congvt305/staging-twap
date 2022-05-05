@@ -200,6 +200,14 @@ class SaveSuccess implements ObserverInterface
         \Magento\Framework\Event\Observer $observer
     ) {
         try {
+            try {
+                //prevent push data to POS
+                if ($this->request && $this->request->getContent() && json_decode($this->request->getContent())->isPos == 1) {
+                    return true;
+                }
+            } catch (\Throwable $throwable) {
+                $this->logger->addExceptionMessage($throwable->getMessage());
+            }
             /**
              * @var Customer $newCustomerData
              */
