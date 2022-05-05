@@ -8,6 +8,7 @@
 
 namespace Eguana\GWLogistics\Plugin\Quote;
 
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Model\ShippingAddressManagementInterface;
@@ -77,9 +78,12 @@ class ShippingAddressManagementPlugin
                 if ($cvsLocation->getLocationId()) {
                     $extensionAttributes->setCvsLocationId($cvsLocation->getLocationId());
                     $address->setCvsLocationId($extensionAttributes->getCvsLocationId());
+                } else {
+                    throw new LocalizedException(__('Cannot find the CVS store location. Please try to choose CVS store again if it still error, please contact our CS Center'));
                 }
             } catch (\Exception $e) {
-                $extensionAttributes->setCvsLocationId(null);
+                $this->logger->error("Error when choose CVS Location Id: " . $e->getMessage());
+                throw new LocalizedException(__('Cannot find the CVS store location. Please try to choose CVS store again if it still error, please contact our CS Center'));
             }
             $address->setExtensionAttributes($extensionAttributes);
         }
