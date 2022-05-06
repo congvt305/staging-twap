@@ -766,6 +766,7 @@ return [
         'CJ_HoverImage' => 1,
         'CJ_ReviewsImportExport' => 1,
         'CJ_CatelogFaq' => 1,
+        'CJ_Rgrid' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
         'Dotdigitalgroup_Enterprise' => 1,
