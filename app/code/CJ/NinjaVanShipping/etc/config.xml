@@ -27,6 +27,7 @@
                 <client_key>a85a2b0f6a6e4816a80dfea380f28f6e</client_key>
                 <create_order>/4.1/orders</create_order>
                 <cancel_order>/2.2/orders/</cancel_order>
+                <generate_waybill>/2.0/reports/waybill</generate_waybill>
                 <track_url>https://www.ninjavan.co/en-my/tracking?id=</track_url>
                 <number_of_retry>3</number_of_retry>
             </sandbox_api>
@@ -37,6 +38,9 @@
                 <address_from>17 Lorong Jambu 3</address_from>
                 <postcode_from>51200</postcode_from>
             </additional>
+            <cancel_order_with_nv>
+                <allows_order_status_can_cacel>processing_with_shipment</allows_order_status_can_cacel>
+            </cancel_order_with_nv>
         </ninjavan>
         <carriers>
             <ninjavan>

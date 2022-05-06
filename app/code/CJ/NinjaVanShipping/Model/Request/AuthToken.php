@@ -82,8 +82,9 @@ class AuthToken
             "client_secret" => $this->ninjavanHelper->getNinjaVanClientKey(),
             "grant_type" => "client_credentials"
         ];
-
+        $this->logger->info('ninjavan | request access token payload: ' . $this->json->serialize($postData));
         $client = $this->clientFactory->create();
+        $response = [];
         try {
             $response = $client->request(
                 'POST',
@@ -95,24 +96,26 @@ class AuthToken
                     'json' => $postData
                 ]
             );
-        } catch (GuzzleException $exception) {
-            $this->logger->addError('Error when get access token: ' . $exception->getMessage());
-        }
-        if ($format == 'array') {
-            $response = $this->json->unserialize($response->getBody()->getContents());
-            if (isset($response['access_token']) && $response['access_token']) {
-                try {
-                    $token = $this->tokenDataFactory->create();
-                    $token->setData([
-                        'token' => $response['access_token'],
-                        'status' => 1,
-                        'store_id' => $storeId
-                    ]);
-                    $token->save();
-                } catch (\Exception $exception) {
-                    $this->logger->addError('Error when save access token: ' . $exception->getMessage());
+
+            if ($format == 'array') {
+                $response = $this->json->unserialize($response->getBody()->getContents());
+                if (isset($response['access_token']) && $response['access_token']) {
+                    try {
+                        $token = $this->tokenDataFactory->create();
+                        $token->setData([
+                            'token' => $response['access_token'],
+                            'status' => 1,
+                            'store_id' => $storeId
+                        ]);
+                        $token->save();
+                        sleep(1);
+                    } catch (\Exception $exception) {
+                        $this->logger->addError('Error when save access token: ' . $exception->getMessage());
+                    }
                 }
             }
+        } catch (GuzzleException $exception) {
+            $this->logger->addError('Error when get access token: ' . $exception->getMessage());
         }
         return $response;
     }

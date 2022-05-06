@@ -19,7 +19,7 @@
         <!-- ko foreach: getRegion('messages') -->
         <!-- ko template: getTemplate() --><!-- /ko -->
         <!--/ko-->
-        <img src="https://www.payoo.vn/website/static/css/image/payoo-logo.png" alt="logo payoo" />
+        <img data-bind="attr: { src: require.toUrl('')+'images/payoo-logo.png' }" alt="logo payoo" />
         <div class="actions-toolbar">
             <div class="primary">
                 <button class="action primary checkout"
