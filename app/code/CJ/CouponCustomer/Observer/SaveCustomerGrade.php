@@ -6,9 +6,8 @@ use Amore\PointsIntegration\Model\CustomerPointsSearch;
 use Magento\Framework\Event\ObserverInterface;
 use CJ\CouponCustomer\Logger\Logger;
 use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Customer\Model\Customer;
-use Magento\Customer\Model\ResourceModel\CustomerFactory;
 use CJ\CouponCustomer\Helper\Data;
+use CJ\CouponCustomer\Model\PosCustomerGradeUpdater;
 
 class SaveCustomerGrade implements ObserverInterface
 {
@@ -27,42 +26,35 @@ class SaveCustomerGrade implements ObserverInterface
     protected $customerPointsSearch;
 
     /**
-     * @var Customer
-     */
-    protected $customer;
-
-    /**
-     * @var CustomerFactory
-     */
-    protected $customerFactory;
-
-    /**
      * @var Data
      */
     protected $helperData;
 
     /**
+     * @var PosCustomerGradeUpdater
+     */
+    protected $posCustomerGradeUpdater;
+
+
+    /**
      * @param CustomerRepositoryInterface $customerRepository
      * @param CustomerPointsSearch $customerPointsSearch
      * @param Logger $logger
-     * @param Customer $customer
-     * @param CustomerFactory $customerFactory
      * @param Data $helperData
+     * @param PosCustomerGradeUpdater $posCustomerGradeUpdater
      */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
         CustomerPointsSearch        $customerPointsSearch,
         Logger                      $logger,
-        Customer $customer,
-        CustomerFactory $customerFactory,
-        Data $helperData
+        Data $helperData,
+        PosCustomerGradeUpdater $posCustomerGradeUpdater
     ) {
         $this->customerRepository = $customerRepository;
         $this->customerPointsSearch = $customerPointsSearch;
         $this->logger = $logger;
-        $this->customer = $customer;
-        $this->customerFactory = $customerFactory;
         $this->helperData = $helperData;
+        $this->posCustomerGradeUpdater = $posCustomerGradeUpdater;
     }
 
     /**
@@ -79,18 +71,19 @@ class SaveCustomerGrade implements ObserverInterface
             try {
                 if (isset($customerData)) {
                     $customerId = $customerData->getId();
-                    $customer = $this->customer->load($customerId);
-                    $gradeData = $this->getCustomerGrade($customer->getId(), $customer->getWebsiteId());
+                    $customer = $this->customerRepository->getById($customerId);
+                    $gradeData = $this->posCustomerGradeUpdater->getCustomerGrade($customerId, $customer->getWebsiteId());
                     $gradeName = '';
                     if (isset($gradeData['cstmGradeCD']) && isset($gradeData['cstmGradeNM'])) {
                         $prefix = $this->helperData->getPrefix($gradeData['cstmGradeCD']);
                         $gradeName = $prefix . '_' . $gradeData['cstmGradeNM'];
+                        $this->logger->info("Call API POS customer grade: " . $gradeName . " customer ID: " . $customerId);
                     }
                     $posCustomerGroupId = $this->helperData->getCustomerGroupIdByName($gradeName);
                     if ($posCustomerGroupId && $posCustomerGroupId != $customer->getGroupId()) {
-                       $customerData = $this->customerRepository->getById($customerId);
-                       $customerData->setGroupId($posCustomerGroupId);
-                       $this->customerRepository->save($customerData);
+                        $this->logger->info("Update POS customer grade - Customer Id:" . $customerData->getId() . "Grade: " . $gradeName);
+                        $customer->setGroupId($posCustomerGroupId);
+                        $this->customerRepository->save($customer);
                     }
                 }
             } catch (\Exception $exception) {
@@ -100,29 +93,5 @@ class SaveCustomerGrade implements ObserverInterface
         }
     }
 
-    /**
-     * Get customer Points Data use API
-     *
-     * @param int $customerId
-     * @param int $websiteId
-     * @return array|mixed
-     */
-    private function getCustomerGrade($customerId, $websiteId)
-    {
-        $customerGradeData = [];
-        try {
-            $customerPointsInfo = $this->customerPointsSearch->getMemberSearchResult($customerId, $websiteId);
-            if (isset($customerPointsInfo['data']['cstmGradeCD']) && !empty($customerPointsInfo['data']['cstmGradeCD'])) {
-                $customerGradeData['cstmGradeCD'] = $customerPointsInfo['data']['cstmGradeCD'];
-            }
-            if (isset($customerPointsInfo['data']['cstmGradeNM']) && !empty($customerPointsInfo['data']['cstmGradeNM'])) {
-                $customerGradeData['cstmGradeNM'] = $customerPointsInfo['data']['cstmGradeNM'];
-            }
-        } catch (\Exception $exception) {
-            $this->logger->info("FAIL TO GET POS CUSTOMER GRADE WHEN CUSTOMER LOGIN");
-            $this->logger->error($exception->getMessage());
-        }
-        return $customerGradeData;
-    }
 
 }
