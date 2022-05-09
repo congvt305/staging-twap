@@ -125,7 +125,7 @@ define([
         _changeSelectOption: function () {
             let self = this;
             $('.select-option').click(function () {
-                $('.select-option').removeClass('selected');
+                $(this).parent().find('.select-option').removeClass('selected');
                 $(this).addClass('selected');
                 $('.bundle-option-' + $(this).data("parent-id")).val(this.value);
                 self.element
