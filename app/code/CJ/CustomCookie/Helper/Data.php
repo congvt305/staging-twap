@@ -4,28 +4,32 @@ namespace CJ\CustomCookie\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Magento\Setup\Exception;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Cms\Api\BlockRepositoryInterface;
+use Magento\Framework\Stdlib\CookieManagerInterface;
 
 class Data extends AbstractHelper
 {
     /**
-     * @var BlockRepositoryInterface
-     */
-    private $blockRepository;
-    public function __construct(
-        BlockRepositoryInterface $blockRepository,
-        Context $context
-    ) {
-        $this->blockRepository = $blockRepository;
-        parent::__construct($context);
-    }
-
-    /**
      * constant cms block id for cookie template
      */
     const COOKIE_TEMPLATE_CMS_BLOCK_ID = 'web/cookie/cookie_cms_block_id';
+    /**
+     * @var CookieManagerInterface
+     */
+    protected $cookieManager;
+
+    /**
+     * @param CookieManagerInterface $cookieManager
+     * @param Context $context
+     */
+    public function __construct(
+        CookieManagerInterface $cookieManager,
+        Context $context
+    ) {
+        $this->cookieManager = $cookieManager;
+        parent::__construct($context);
+    }
 
     /**
      * Get cookie template block id
@@ -41,22 +45,14 @@ class Data extends AbstractHelper
     }
 
     /**
-     * Get CMS Block Identifier
+     * Is Enabled Cookie on Browser
      *
-     * @return string
+     * @return bool
      */
-    public function getCmsBlockIdentifier()
+    public function isEnabledCookieBrowser()
     {
-        $id = $this->getCookieTemplateBlockId();
-        $identifier = '';
-        if($id) {
-            try {
-                $block = $this->blockRepository->getById($id);
-                $identifier = $block->getIdentifier();
-            } catch (\Exception $exception) {
-                throw new \Exception('Cookie Template block identifier error:' . $exception->getMessage());
-            }
-        }
-        return $identifier;
+        return !empty($this->cookieManager->getCookie(\Magento\Cookie\Helper\Cookie::IS_USER_ALLOWED_SAVE_COOKIE));
     }
+
+
 }
