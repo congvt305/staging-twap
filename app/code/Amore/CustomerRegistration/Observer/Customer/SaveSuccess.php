@@ -154,13 +154,8 @@ class SaveSuccess implements ObserverInterface
         \Magento\Framework\Event\Observer $observer
     ) {
         try {
-            try {
-                //prevent push data to POS
-                if ($this->requestApi->getRequestData() && isset($this->requestApi->getRequestData()[CreateCustomer::IS_POS]) && $this->requestApi->getRequestData()[CreateCustomer::IS_POS] == 1) {
-                    return true;
-                }
-            } catch (\Throwable $throwable) {
-                $this->logger->addExceptionMessage($throwable->getMessage());
+            if ($this->isPOSRequest()) {
+                return true;
             }
             /**
              * @var Customer $newCustomerData
@@ -221,6 +216,20 @@ class SaveSuccess implements ObserverInterface
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
         }
+    }
+
+    /**
+     * check POS request
+     *
+     * @return bool
+     */
+    private function isPOSRequest()
+    {
+        $data = $this->requestApi->getRequestData();
+        if ($data && isset($data[CreateCustomer::IS_POS]) && $data[CreateCustomer::IS_POS] == 1) {
+            return true;
+        }
+        return false;
     }
 
     /**
