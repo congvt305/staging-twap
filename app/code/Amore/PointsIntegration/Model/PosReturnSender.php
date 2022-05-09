@@ -5,11 +5,10 @@ namespace Amore\PointsIntegration\Model;
 use Amore\PointsIntegration\Logger\Logger;
 use Amore\PointsIntegration\Model\Connection\Request;
 use Magento\Framework\Event\ManagerInterface;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Rma\Api\Data\RmaInterface;
 use Magento\Rma\Model\RmaRepository;
-use CJ\CouponCustomer\Helper\UpdatePOSCustomerGradeHelper;
+use CJ\CouponCustomer\Model\PosCustomerGradeUpdater;
 
 class PosReturnSender
 {
@@ -41,9 +40,9 @@ class PosReturnSender
     private $rmaRepository;
 
     /**
-     * @var UpdatePOSCustomerGradeHelper
+     * @var PosCustomerGradeUpdater
      */
-    private $updatePOSCustomerGradeHelper;
+    private $posCustomerGradeUpdater;
 
     /**
      * @param Request $request
@@ -52,7 +51,7 @@ class PosReturnSender
      * @param Logger $pointsIntegrationLogger
      * @param PosReturnData $posReturnData
      * @param RmaRepository $rmaRepository
-     * @param UpdatePOSCustomerGradeHelper $updatePOSCustomerGradeHelper
+     * @param PosCustomerGradeUpdater $posCustomerGradeUpdater
      */
     public function __construct(
         Request $request,
@@ -61,7 +60,7 @@ class PosReturnSender
         Logger $pointsIntegrationLogger,
         PosReturnData $posReturnData,
         RmaRepository $rmaRepository,
-        UpdatePOSCustomerGradeHelper $updatePOSCustomerGradeHelper
+        PosCustomerGradeUpdater $posCustomerGradeUpdater
     ) {
         $this->request = $request;
         $this->eventManager = $eventManager;
@@ -69,7 +68,7 @@ class PosReturnSender
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
         $this->posReturnData = $posReturnData;
         $this->rmaRepository = $rmaRepository;
-        $this->updatePOSCustomerGradeHelper = $updatePOSCustomerGradeHelper;
+        $this->posCustomerGradeUpdater = $posCustomerGradeUpdater;
     }
 
     /**
@@ -89,8 +88,9 @@ class PosReturnSender
             $success = $this->request->responseCheck($response, $websiteId);
             if ($success) {
                 $this->posReturnData->updatePosReturnOrderSendFlag($rma);
-                if($rma->getCustomerId() !== null){
-                    $this->updatePOSCustomerGradeHelper->updatePOSCustomerGrade($rma->getCustomerId());
+                // update Pos customer grade
+                if ($rma->getCustomerId() !== null) {
+                    $this->posCustomerGradeUpdater->updatePOSCustomerGrade($rma->getCustomerId());
                 }
             }
         } catch (\Exception $exception) {
