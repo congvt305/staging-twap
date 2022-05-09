@@ -33,15 +33,16 @@ class CmsBlocks implements OptionSourceInterface
      */
     public function toOptionArray() : array
     {
-        $options = $this->collectionFactory->create()->toOptionArray();
-        array_splice(
-            $options,
-            0,
-            0,
-            [
-                ['value' => '', 'label' => __('Select Block')]
-            ]
-        );
+        $cmsBlockCollection = $this->collectionFactory->create();
+        $options = [
+            ['value' => '', 'label' => __('Select Block')]
+        ];
+        foreach ($cmsBlockCollection as $cmsBlock) {
+            $options[] = [
+                'value' => $cmsBlock->getIdentifier(),
+                'label' => $cmsBlock->getTitle()
+            ];
+        }
         return $options;
     }
 }

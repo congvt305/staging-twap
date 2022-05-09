@@ -1,10 +1,3 @@
-<!--
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
-
 <aside role="dialog"
        class="modal-<%- data.type %> <%- data.modalClass %>
                <% if(data.responsive){ %><%- data.responsiveClass %><% } %>
@@ -17,41 +10,8 @@ tabindex="0">
 <div data-role="focusable-start" tabindex="0"></div>
 <div class="modal-inner-wrap custom-cookie-inner-wrap"
      data-role="focusable-scope">
-<!--    <header class="modal-header">-->
-<!--        <% if(data.title || data.subTitle){ %>-->
-<!--        <h1 id="modal-title-<%- data.id %>" class="modal-title"-->
-<!--            data-role="title">-->
-<!--            <% if(data.title){ %>-->
-<!--            <%= data.title %>-->
-<!--            <% } %>-->
-
-<!--            <% if(data.subTitle){ %>-->
-<!--            <span class="modal-subtitle"-->
-<!--                  data-role="subTitle">-->
-<!--                    <%= data.subTitle %>-->
-<!--                </span>-->
-<!--            <% } %>-->
-<!--        </h1>-->
-<!--        <% } %>-->
-<!--        <button-->
-<!--            class="action-close"-->
-<!--            data-role="closeBtn"-->
-<!--            type="button">-->
-<!--            <span><%= data.closeText %></span>-->
-<!--        </button>-->
-<!--    </header>-->
     <div id="modal-content-<%- data.id %>"
          data-role="content"></div>
-    <% if(data.buttons.length > 0){ %>
-<!--    <footer class="modal-footer">-->
-<!--        <% _.each(data.buttons, function(button) { %>-->
-<!--        <button-->
-<!--            class="<%- button.class %>"-->
-<!--            type="button"-->
-<!--            data-role="action"><span><%= button.text %></span></button>-->
-<!--        <% }); %>-->
-<!--    </footer>-->
-    <% } %>
 </div>
 <div data-role="focusable-end" tabindex="0"></div>
 </aside>

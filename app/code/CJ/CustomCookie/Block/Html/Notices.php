@@ -14,16 +14,21 @@ use CJ\CustomCookie\Helper\Data as HelperData;
  */
 class Notices extends \Magento\Framework\View\Element\Template
 {
+    /**
+     * @var HelperData
+     */
     public $helperData;
+
     /**
      * @param Template\Context $context
+     * @param HelperData $helperData
      * @param array $data
      * @param CookieHelper|null $cookieHelper
      */
     public function __construct(
         Template\Context $context,
-        array $data = [],
         HelperData $helperData,
+        array $data = [],
         ?CookieHelper $cookieHelper = null
     ) {
         $this->helperData = $helperData;
@@ -42,9 +47,24 @@ class Notices extends \Magento\Framework\View\Element\Template
         return $this->_urlBuilder->getUrl('privacy-policy-cookie-restriction-mode');
     }
 
+    /**
+     * Get CMS Block Identifier
+     *
+     * @return string
+     * @throws \Exception
+     */
     public function getCookieTemplateIdentifier()
     {
-        return $this->helperData->getCmsBlockIdentifier();
+        return $this->helperData->getCookieTemplateBlockId();
     }
 
+    /**
+     * Is enabled cookie on browser
+     *
+     * @return bool
+     */
+    public function isEnabledCookieBrowser()
+    {
+        return $this->helperData->isEnabledCookieBrowser();
+    }
 }
