@@ -6,10 +6,8 @@ use Amore\PointsIntegration\Model\CustomerPointsSearch;
 use Magento\Framework\Event\ObserverInterface;
 use CJ\CouponCustomer\Logger\Logger;
 use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Customer\Model\Customer;
-use Magento\Customer\Model\ResourceModel\CustomerFactory;
 use CJ\CouponCustomer\Helper\Data;
-use CJ\CouponCustomer\Helper\UpdatePOSCustomerGradeHelper;
+use CJ\CouponCustomer\Model\PosCustomerGradeUpdater;
 
 class SaveCustomerGrade implements ObserverInterface
 {
@@ -28,46 +26,35 @@ class SaveCustomerGrade implements ObserverInterface
     protected $customerPointsSearch;
 
     /**
-     * @var Customer
-     */
-    protected $customer;
-
-    /**
-     * @var CustomerFactory
-     */
-    protected $customerFactory;
-
-    /**
      * @var Data
      */
     protected $helperData;
 
-    protected $updateCustomerGradeHelper;
+    /**
+     * @var PosCustomerGradeUpdater
+     */
+    protected $posCustomerGradeUpdater;
+
 
     /**
      * @param CustomerRepositoryInterface $customerRepository
      * @param CustomerPointsSearch $customerPointsSearch
      * @param Logger $logger
-     * @param Customer $customer
-     * @param CustomerFactory $customerFactory
      * @param Data $helperData
+     * @param PosCustomerGradeUpdater $posCustomerGradeUpdater
      */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
         CustomerPointsSearch        $customerPointsSearch,
         Logger                      $logger,
-        Customer $customer,
-        CustomerFactory $customerFactory,
         Data $helperData,
-        UpdatePOSCustomerGradeHelper $updateCustomerGradeHelper
+        PosCustomerGradeUpdater $posCustomerGradeUpdater
     ) {
         $this->customerRepository = $customerRepository;
         $this->customerPointsSearch = $customerPointsSearch;
         $this->logger = $logger;
-        $this->customer = $customer;
-        $this->customerFactory = $customerFactory;
         $this->helperData = $helperData;
-        $this->updateCustomerGradeHelper = $updateCustomerGradeHelper;
+        $this->posCustomerGradeUpdater = $posCustomerGradeUpdater;
     }
 
     /**
@@ -84,20 +71,19 @@ class SaveCustomerGrade implements ObserverInterface
             try {
                 if (isset($customerData)) {
                     $customerId = $customerData->getId();
-                    $customer = $this->customer->load($customerId);
-                    $gradeData = $this->updateCustomerGradeHelper->getCustomerGrade($customer->getId(), $customer->getWebsiteId());
+                    $customer = $this->customerRepository->getById($customerId);
+                    $gradeData = $this->posCustomerGradeUpdater->getCustomerGrade($customerId, $customer->getWebsiteId());
                     $gradeName = '';
                     if (isset($gradeData['cstmGradeCD']) && isset($gradeData['cstmGradeNM'])) {
                         $prefix = $this->helperData->getPrefix($gradeData['cstmGradeCD']);
                         $gradeName = $prefix . '_' . $gradeData['cstmGradeNM'];
-                        $this->logger->info("Call API POS customer grade: " . $gradeName . "customer ID" . $customerId);
+                        $this->logger->info("Call API POS customer grade: " . $gradeName . " customer ID: " . $customerId);
                     }
                     $posCustomerGroupId = $this->helperData->getCustomerGroupIdByName($gradeName);
                     if ($posCustomerGroupId && $posCustomerGroupId != $customer->getGroupId()) {
                         $this->logger->info("Update POS customer grade - Customer Id:" . $customerData->getId() . "Grade: " . $gradeName);
-                        $customerData = $this->customerRepository->getById($customerId);
-                        $customerData->setGroupId($posCustomerGroupId);
-                        $this->customerRepository->save($customerData);
+                        $customer->setGroupId($posCustomerGroupId);
+                        $this->customerRepository->save($customer);
                     }
                 }
             } catch (\Exception $exception) {

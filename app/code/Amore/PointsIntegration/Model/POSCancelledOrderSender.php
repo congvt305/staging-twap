@@ -8,7 +8,7 @@ use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Model\Order;
-use CJ\CouponCustomer\Helper\UpdatePOSCustomerGradeHelper;
+use CJ\CouponCustomer\Model\PosCustomerGradeUpdater;
 
 class POSCancelledOrderSender
 {
@@ -34,9 +34,9 @@ class POSCancelledOrderSender
     private $pointsIntegrationLogger;
 
     /**
-     * @var UpdatePOSCustomerGradeHelper
+     * @var PosCustomerGradeUpdater
      */
-    private $updatePOSCustomerGradeHelper;
+    private $posCustomerGradeUpdater;
 
 
     /**
@@ -55,14 +55,14 @@ class POSCancelledOrderSender
         ManagerInterface $eventManager,
         Json $json,
         Logger $pointsIntegrationLogger,
-        UpdatePOSCustomerGradeHelper $updatePOSCustomerGradeHelper
+        PosCustomerGradeUpdater $posCustomerGradeUpdater
     ) {
         $this->posOrderData = $posOrderData;
         $this->request = $request;
         $this->eventManager = $eventManager;
         $this->json = $json;
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
-        $this->updatePOSCustomerGradeHelper = $updatePOSCustomerGradeHelper;
+        $this->posCustomerGradeUpdater = $posCustomerGradeUpdater;
     }
 
     /**
@@ -83,8 +83,8 @@ class POSCancelledOrderSender
             if ($status) {
                 $this->posOrderData->updatePosCancelledOrderSendFlag($order);
                 // update Pos customer grade
-                if($order->getCustomerId() !== null){
-                    $this->updatePOSCustomerGradeHelper->updatePOSCustomerGrade($order->getCustomerId());
+                if ($order->getCustomerId() !== null) {
+                    $this->posCustomerGradeUpdater->updatePOSCustomerGrade($order->getCustomerId());
                 }
             }
         } catch (\Exception $exception) {
