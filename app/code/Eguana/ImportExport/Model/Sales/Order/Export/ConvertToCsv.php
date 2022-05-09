@@ -153,7 +153,10 @@ class ConvertToCsv
             'Shipping Fee',
             'Grand Total',
             'Delivery Message',
-            'POS Customer Grade'
+            'POS Customer Grade',
+            'UTM Source',
+            'UTM Medium',
+            'UTM Campaign'
         ];
 
         if ($this->customerRegistrationHelper->getBaCodeEnable()) {
@@ -194,6 +197,9 @@ class ConvertToCsv
             $orders[$item->getId()]['mobile'] = $mobile;
             $orders[$item->getId()]['ba_code'] = $item->getCustomerBaCode();
             $orders[$item->getId()]['pos_customer_grade'] = $this->getPosCustomerGrade($order->getId());
+            $orders[$item->getId()]['utm_source'] = $item->getLineUtmSource();
+            $orders[$item->getId()]['utm_medium'] = $item->getLineUtmMedium();
+            $orders[$item->getId()]['utm_campaign'] = $item->getLineUtmCampaign();
         }
 
         $itemsCollection = $this->itemsCollectionFactory->create();
@@ -227,6 +233,9 @@ class ConvertToCsv
             $itemData[] = $orders[$item->getOrderId()]['grand_total'];
             $itemData[] = $orders[$item->getOrderId()]['delivery_message'];
             $itemData[] = $orders[$item->getOrderId()]['pos_customer_grade'];
+            $itemData[] = $orders[$item->getOrderId()]['utm_source'];
+            $itemData[] = $orders[$item->getOrderId()]['utm_medium'];
+            $itemData[] = $orders[$item->getOrderId()]['utm_campaign'];
             if ($this->customerRegistrationHelper->getBaCodeEnable()) {
                 $itemData[] = $orders[$item->getOrderId()]['ba_code'];
             }

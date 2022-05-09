@@ -80,6 +80,9 @@ class Email extends AbstractHelper
      */
     public function sendEmail($order, $message)
     {
+        if (!$this->helper->isNotificationEmailEnabled($order->getStoreId())) {
+            return;
+        }
         try {
             $templateId = $this->emailTemplate->load("E-Invoice Fail", "template_code")->getId();
             $templateVars = [

@@ -153,6 +153,12 @@ class PlaceOrder extends AppAction implements
     {
         $quote = $quoteObject ? $quoteObject : $this->getQuote();
         if (!$quote->hasItems() || $quote->getHasError()) {
+            $this->logger->info('quote id ' . $quote->getId());
+            $hasItem = $quote->hasItems() ? 'has item' : 'no item';
+            $hasError = $quote->getHasError() ? 'has error' : 'no error';
+            $this->logger->info('quote id ' . $quote->getId());
+            $this->logger->info($hasItem);
+            $this->logger->info($hasError);
             $this->getResponse()->setStatusHeader(403, '1.1', 'Forbidden');
             throw new LocalizedException(__('We can\'t initialize LINEPay Checkout.'));
         }
@@ -195,12 +201,7 @@ class PlaceOrder extends AppAction implements
     {
         if (!$this->_quote) {
             try {
-                if ($this->getSession()->getQuoteId()) {
-                    $this->_quote = $this->quoteRepository->get($this->_getSession()->getQuoteId());
-                    $this->getCheckoutSession()->replaceQuote($this->_quote);
-                } else {
-                    $this->_quote = $this->getCheckoutSession()->getQuote();
-                }
+                $this->_quote = $this->getCheckoutSession()->getQuote();
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
             }

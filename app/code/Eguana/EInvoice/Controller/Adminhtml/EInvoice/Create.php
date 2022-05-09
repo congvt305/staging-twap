@@ -34,13 +34,20 @@ class Create extends \Magento\Backend\App\Action
      */
     private $orderRepository;
 
+    /**
+     * @var \Eguana\EInvoice\Model\EInvoiceService
+     */
+    protected $service;
+
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         InvoiceRepositoryInterface $invoiceRepository,
         \Ecpay\Ecpaypayment\Model\Payment $ecpayPaymentModel,
         \Psr\Log\LoggerInterface $logger,
+        \Eguana\EInvoice\Model\EInvoiceService $service,
         Action\Context $context
     ) {
+        $this->service = $service;
         parent::__construct($context);
         $this->logger = $logger;
         $this->ecpayPaymentModel = $ecpayPaymentModel;
@@ -63,13 +70,26 @@ class Create extends \Magento\Backend\App\Action
             $invoiceId = $this->getRequest()->getParam('invoice_id');
             $invoice = $this->invoiceRepository->get($invoiceId);
             $order = $this->orderRepository->get($invoice->getOrderId());
-            $result = $this->ecpayPaymentModel->createEInvoice($order->getEntityId(), $order->getStoreId());
-            if (isset($result['RtnCode'], $result['RtnMsg']) && $result['RtnCode'] === '1') {
-                $this->messageManager->addSuccessMessage($result['RtnMsg']);
+            if (empty($data = $this->service->fetchEInvoiceDetail($invoice->getOrderId()))) {
+                $result = $this->ecpayPaymentModel->createEInvoice($order);
+                if (isset($result['RtnCode'], $result['RtnMsg']) && $result['RtnCode'] === '1') {
+                    $this->messageManager->addSuccessMessage($result['RtnMsg']);
+                } else {
+                    $this->messageManager->addErrorMessage('create E-Invoice failed.');
+                    $this->logger->log('info', 'EINVOICE RESULT', ['order_id' => $order->getIncrementId()]);
+                    $this->logger->log(json_encode($result));
+                }
             } else {
-                $this->messageManager->addErrorMessage('create E-Invoice failed.');
+                // update payment information
+                $payment = $order->getPayment();
+                $payment->setAdditionalData(json_encode($data));
+                $payment->save();
+                $this->messageManager->addSuccessMessage($data['RtnMsg']);
             }
         } catch (LocalizedException $e) {
+            $context = ['order_id' => $order->getIncrementId()];
+            $this->logger->log('info', 'CREATE EINVOICE EXCEPTION: ' . $e->getMessage(), $context);
+            $this->logger->log('info', $e->getTraceAsString(), $context);
             $this->messageManager->addErrorMessage($e->getMessage());
             $this->_redirect('sales/order_invoice/view', ['invoice_id' => $invoiceId]);
         }

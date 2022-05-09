@@ -102,6 +102,10 @@ class Request extends BaseRequest
             case 'customerOrder':
                 $path = $this->config->getCustomerOrderURL($websiteId);
                 break;
+            // get all customer grades
+            case 'customerGrade':
+                $path = $this->config->getAllCustomerGradeURL($websiteId);
+                break;
         }
         return $path;
     }
