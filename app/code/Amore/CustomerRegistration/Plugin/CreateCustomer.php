@@ -67,9 +67,9 @@ class CreateCustomer
         $redirectUrl = ''
     ) {
         try {
-            if ($this->request->getRequestData() && isset($this->request->getRequestData()[self::IS_POS]) && isset($this->request->getRequestData()[self::SALOFFCD]) && $this->request->getRequestData()[self::IS_POS] == 1) {
-                $salOffCd = $this->request->getRequestData()[self::SALOFFCD];
-                $customerWebsiteId = $this->getCustomerWebsiteId($salOffCd);
+            $data = $this->request->getRequestData();
+            if ($data && isset($data[self::IS_POS]) && isset($data[self::SALOFFCD]) && $data[self::IS_POS] == 1) {
+                $customerWebsiteId = $this->getCustomerWebsiteId($data[self::SALOFFCD]);
                 $customer->setWebsiteId($customerWebsiteId);
             }
         } catch (\Throwable $throwable) {
