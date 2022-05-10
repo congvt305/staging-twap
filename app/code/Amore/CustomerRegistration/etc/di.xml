@@ -41,4 +41,7 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Customer\Model\AccountManagement">
+        <plugin name="amore_register_customer_from_pos" type="Amore\CustomerRegistration\Plugin\CreateCustomer" sortOrder="0"/>
+    </type>
 </config>
