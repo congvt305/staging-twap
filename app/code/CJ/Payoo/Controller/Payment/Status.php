@@ -119,6 +119,7 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
                 );
                 $transactionSave->save();
             }
+            $order->setState($status);
             $message = 'Payoo Transaction Complete';
         } else {
             $message = 'Payoo Transaction Cancel';

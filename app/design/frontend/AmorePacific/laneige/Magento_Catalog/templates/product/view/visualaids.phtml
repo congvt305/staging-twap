@@ -16,7 +16,7 @@ $product = $block->getProduct();
                     <path d="M9.49451 9.5H9.50349" stroke="#888888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <div class="visual-aids-header" data-role="trigger">
-                    <span><?= $block->escapeHtml(__('Extra Promotion Description')) ?></span>
+                    <span><?= $block->escapeHtml($product->getResource()->getAttribute('extra_promotion_description')->getStoreLabel()) ?></span>
                 </div>
             </div>
             <div class="visual-aids-content" data-role="content">
@@ -33,7 +33,7 @@ $product = $block->getProduct();
                     <path d="M2 12.24C7.56 10.73 13.42 10.68 19 12.11L19.5 12.24" stroke="#888888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <div class="visual-aids-header" data-role="trigger">
-                    <span><?= $block->escapeHtml(__('Free Sample')) ?></span>
+                    <span><?= $block->escapeHtml($product->getResource()->getAttribute('free_sample')->getStoreLabel()) ?></span>
                 </div>
             </div>
             <div class="visual-aids-content" data-role="content">
@@ -52,7 +52,7 @@ $product = $block->getProduct();
                     <path d="M17.6992 15.2803C17.9992 16.3603 18.8392 17.2003 19.9192 17.5003" stroke="#888888" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <div class="visual-aids-header" data-role="trigger">
-                    <span><?= $block->escapeHtml(__('Points Description')) ?></span>
+                    <span><?= $block->escapeHtml($product->getResource()->getAttribute('points_description')->getStoreLabel()) ?></span>
                 </div>
             </div>
             <div class="visual-aids-content" data-role="content">

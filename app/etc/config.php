@@ -198,11 +198,11 @@ return [
                     'type' => 'server_side_compilation'
                 ],
                 'template' => [
-                    'minify_html' => '0'
+                    'minify_html' => '1'
                 ],
                 'js' => [
-                    'merge_files' => '0',
-                    'minify_files' => '0',
+                    'merge_files' => '1',
+                    'minify_files' => '1',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/',
                         'cardinal_commerce' => '/v1/songbird',
@@ -212,9 +212,10 @@ return [
                     'enable_baler_js_bundling' => '1',
                     'session_storage_logging' => '0',
                     'translate_strategy' => 'dictionary',
-                    'enable_js_bundling' => '0'
+                    'enable_js_bundling' => '1'
                 ],
                 'css' => [
+                    'merge_css_files' => '1',
                     'minify_files' => '1',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/'
@@ -726,13 +727,17 @@ return [
         'Magento_WishlistGiftCard' => 1,
         'Magento_WishlistGiftCardGraphQl' => 1,
         'Magento_GiftCardGraphQl' => 1,
-        'Adyen_Payment' => 1,
+        'Adyen_Payment' => 0,
+        'Amasty_AdvancedReview' => 1,
         'Amasty_BannersLite' => 1,
         'Amasty_Base' => 1,
         'Amasty_Conditions' => 1,
         'Amasty_CronScheduleList' => 1,
         'Dotdigitalgroup_Email' => 1,
+        'Amasty_InvisibleCaptcha' => 1,
         'Amasty_Promo' => 1,
+        'Amasty_ReviewPageBuilder' => 1,
+        'Amasty_ReviewsImportExport' => 1,
         'Amasty_Rgrid' => 1,
         'Amasty_SalesRuleWizard' => 1,
         'Amazon_Core' => 0,
@@ -760,6 +765,7 @@ return [
         'CJ_PageBuilder' => 1,
         'CJ_PointRedemption' => 1,
         'CJ_HoverImage' => 1,
+        'CJ_ReviewsImportExport' => 1,
         'CJ_CatelogFaq' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
@@ -836,7 +842,7 @@ return [
         'Vertex_RequestLogging' => 0,
         'Vertex_AddressValidation' => 0,
         'Vertex_TaxStaging' => 1,
-        'Yotpo_Yotpo' => 1
+        'Yotpo_Yotpo' => 0
     ],
     'admin_user' => [
         'locale' => [

@@ -340,7 +340,7 @@ class SapOrderManagement implements SapOrderManagementInterface
                 if ($order->getStatus() == 'preparing' || $order->getStatus() == 'sap_processing' || $order->getStatus() == 'processing_with_shipment'
                     || $order->getStatus() == 'sap_success' || $order->getStatus() == 'sap_fail') {
                     if ($this->config->getEInvoiceActiveCheck('store', $order->getStoreId())) {
-                        $result = $this->CreateEInvoice($order, $orderStatusData, $result);
+                        $result = $this->createEInvoice($order, $orderStatusData, $result);
                     }
                     $shipmentCheck = $order->hasShipments();
 
@@ -883,15 +883,17 @@ class SapOrderManagement implements SapOrderManagementInterface
     }
 
     /**
+     * Create e-invoice for SAP
+     *
      * @param \Magento\Sales\Api\Data\OrderInterface $order
      * @param SapOrderStatusInterface $orderStatusData
      * @param array $result
      * @return array
      */
-    public function CreateEInvoice(\Magento\Sales\Api\Data\OrderInterface $order, SapOrderStatusInterface $orderStatusData, array $result)
+    public function createEInvoice(\Magento\Sales\Api\Data\OrderInterface $order, SapOrderStatusInterface $orderStatusData, array $result)
     {
         try {
-            $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order->getEntityId(), $order->getStoreId());
+            $ecpayInvoiceResult = $this->ecpayPayment->createEInvoice($order);
             $result[$orderStatusData['odrno']]['ecpay'] = $this->validateEInvoiceResult($orderStatusData, $ecpayInvoiceResult);
             if ($this->config->getLoggingCheck()) {
                 $this->logger->info('EINVOICE ISSUE RESULT');

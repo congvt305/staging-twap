@@ -27,6 +27,8 @@ class Config
 
     const POS_CUSTOMER_ORDER_URL = 'points_integration/pos/customer_order';
 
+    const POS_CUSTOMER_GRADE_URL = 'points_integration/pos/customer_grade';
+
     const POS_ORDER_ACTIVE_CHECK = 'points_integration/general/pos_order_active';
 
     const POS_CANCELLED_ORDER_ACTIVE_CHECK = 'points_integration/general/pos_cancelled_active';
@@ -188,6 +190,24 @@ class Config
         );
 
         return $baseURL.$customerOrderURL;
+    }
+
+    /**
+     * Get all customer grades from POS
+     *
+     * @param int $websiteId
+     * @return string
+     */
+    public function getAllCustomerGradeURL($websiteId)
+    {
+        $baseURL = $this->getPosUrl($websiteId);
+        $customerOrderURL = $this->scopeConfig->getValue(
+            self::POS_CUSTOMER_GRADE_URL,
+            ScopeInterface::SCOPE_WEBSITE,
+            $websiteId
+        );
+
+        return $baseURL . $customerOrderURL;
     }
 
     public function getCronActive($websiteId)
