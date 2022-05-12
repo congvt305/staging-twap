@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -15,8 +15,16 @@ use Magento\Framework\Module\Dir\Reader;
 
 class ModuleInfoProvider
 {
+    public const MODULE_VERSION_KEY = 'version';
+
+    /**
+     * @var string[]
+     */
     protected $moduleDataStorage = [];
 
+    /**
+     * @var string[]
+     */
     protected $restrictedModules = [
         'Amasty_CommonRules',
         'Amasty_Router'

@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -20,8 +20,11 @@ use Magento\Framework\App\ObjectManager;
 
 class AddAssets
 {
-    const CACHE_KEY = 'amasty_should_load_css_files';
+    public const CACHE_KEY = 'amasty_should_load_css_files';
 
+    /**
+     * @var string[]
+     */
     protected $filesToCheck = ['css/styles-l.css', 'css/styles-m.css'];
 
     /**
