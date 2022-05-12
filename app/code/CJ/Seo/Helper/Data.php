@@ -10,6 +10,7 @@ use Magento\Store\Model\StoreManagerInterface;
 class Data
 {
     const IS_AUTOMATIC_REDIRECT = 'catalog/seo/is_automatic_redirect';
+    const PERMANENT_CODE = 301;
 
     /**
      * @var StoreManagerInterface
