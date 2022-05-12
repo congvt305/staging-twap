@@ -37,6 +37,16 @@
                 background-color: #33333380;
                 border: solid 0.4rem #5a8cd2;
             }
+            .field.option {
+                .label {
+                    height: auto;
+                    font-weight: bold;
+                }
+
+                .label:after {
+                    font-size: 1.2rem;
+                }
+            }
             p.required {
                 display: none;
             }
@@ -63,20 +73,6 @@
 
         .fieldset-bundle-options {
             margin-bottom: @indent__xs;
-
-            .field.option {
-                > .label {
-                    display: none;
-                }
-
-                .choice {
-                    .control {
-                        > .qty-disabled {
-                            display: none;
-                        }
-                    }
-                }
-            }
         }
 
         .input-text.qty {
