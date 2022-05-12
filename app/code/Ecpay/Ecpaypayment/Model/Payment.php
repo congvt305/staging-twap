@@ -11,6 +11,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Helper\Data as MagentoPaymentHelper;
 use Magento\Payment\Model\Method\AbstractMethod;
@@ -112,6 +113,39 @@ class Payment extends AbstractMethod
      */
     private $invoiceSender;
 
+    /**
+     * @var Json
+     */
+    private $json;
+
+    /**
+     * @param Context $context
+     * @param Registry $registry
+     * @param ExtensionAttributesFactory $extensionFactory
+     * @param AttributeValueFactory $customAttributeFactory
+     * @param MagentoPaymentHelper $paymentData
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Logger $logger
+     * @param StoreManagerInterface $storeManager
+     * @param UrlInterface $urlInterface
+     * @param Transaction\BuilderInterface $transactionBuilder
+     * @param \Magento\Framework\HTTP\Client\Curl $curl
+     * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
+     * @param \Magento\Sales\Model\Service\InvoiceService $invoiceService
+     * @param \Magento\Framework\DB\Transaction $transaction
+     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+     * @param \Ecpay\Ecpaypayment\Helper\Library\EcpayInvoice $ecpayInvoice
+     * @param \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory
+     * @param \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue
+     * @param \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository
+     * @param \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
+     * @param Json $json
+     * @param AbstractResource|null $resource
+     * @param AbstractDb|null $resourceCollection
+     * @param array $data
+     */
     public function __construct(
         Context $context,
         Registry $registry,
@@ -135,6 +169,7 @@ class Payment extends AbstractMethod
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository,
         \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
+        Json $json,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
@@ -167,6 +202,7 @@ class Payment extends AbstractMethod
         $this->productRepository = $productRepository;
         $this->orderItemRepository = $orderItemRepository;
         $this->invoiceSender = $invoiceSender;
+        $this->json = $json;
     }
 
     public function getValidPayments()
@@ -509,30 +545,28 @@ class Payment extends AbstractMethod
         }
     }
 
-    public function createEInvoice($orderId, $storeId)
+    /**
+     * Create e-invoice
+     *
+     * @param \Magento\Sales\Model\Order $order
+     * @return array
+     * @throws LocalizedException
+     */
+    public function createEInvoice(\Magento\Sales\Model\Order $order)
     {
         try
         {
-            $sMsg = '';
+            $storeId = $order->getStoreId();
             // 1.載入SDK程式
             $ecpay_invoice = $this->ecpayInvoice;
 
             // 2.寫入基本介接參數
             $this->initEInvoice($ecpay_invoice, $storeId);
 
-            $order = $this->orderRepository->get($orderId);
             $payment = $order->getPayment();
             $additionalInfo = $payment->getAdditionalInformation();
-            $rawDetailsInfo = $additionalInfo["raw_details_info"] ?? [];
-            $addtionalData = json_decode($payment->getAdditionalData(), true);
-
-            if (empty($rawDetailsInfo)) {
-                return [
-                    "RtnCode"   => '',
-                    "RtnMsg"    => ''
-                ];
-            }
-
+            $rawDetailsInfo = $additionalInfo["raw_details_info"];
+            $addtionalData = $payment->getAdditionalData() ? $this->json->unserialize($payment->getAdditionalData()) : [];
             if (isset($addtionalData["RtnCode"]) && $addtionalData["RtnCode"] == 1) {
                 return [
                     "RtnCode" => $addtionalData["RtnCode"],
@@ -556,16 +590,36 @@ class Payment extends AbstractMethod
                 }
 
                 // 4.送出
-                $aReturn_Info = $ecpay_invoice->Check_Out();
+                try {
+                    $aReturn_Info = $ecpay_invoice->Check_Out();
 
-                // 5.返回
-                $aReturn_Info["RelateNumber"] = $RelateNumber;
-                $payment->setAdditionalData(json_encode($aReturn_Info));
-                $payment->save();
-                return [
-                    "RtnCode" => $aReturn_Info["RtnCode"],
-                    "RtnMsg" => $aReturn_Info["RtnMsg"]
-                ];
+                    // 5.返回
+                    $aReturn_Info["RelateNumber"] = $RelateNumber;
+                    $payment->setAdditionalData($this->json->serialize($aReturn_Info));
+                    $payment->save();
+                    return [
+                        "RtnCode" => $aReturn_Info["RtnCode"],
+                        "RtnMsg" => $aReturn_Info["RtnMsg"]
+                    ];
+                } catch (\Exception $e) {
+                    $this->_logger->log('info', 'einvoice error | An error occurred while init EInvoice info: ' . $e->getMessage(), [
+                        'order_id'=> $order->getIncrementId(),
+                        'request_data' => $ecpay_invoice->Send
+                    ]);
+                    // Just issue the normal invoice when typo of mobile barcode
+                    $ecpay_invoice->Send = array_replace($ecpay_invoice->Send, $this->defaultEInvoiceParams);
+                    $aReturn_Info = $ecpay_invoice->Check_Out();
+
+                    // 5.返回
+                    $aReturn_Info["RelateNumber"] = $RelateNumber;
+                    $payment->setAdditionalData($this->json->serialize($aReturn_Info));
+                    $payment->save();
+                    return [
+                        "RtnCode" => $aReturn_Info["RtnCode"],
+                        "RtnMsg" => $aReturn_Info["RtnMsg"]
+                    ];
+                }
+
             }
         } catch (\Exception $e) {
             // 例外錯誤處理。
@@ -607,8 +661,17 @@ class Payment extends AbstractMethod
                 $orderItem->getDiscountAmount(),
                 $mileageUsedAmount
             );
+            if ($orderItem->getProductType() == 'bundle' && $orderItem->getProduct()->getPriceType() == \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
+                $discountAmount = 0;
+                foreach ($orderItem->getChildrenItems() as $childItem) {
+                    /** @var \Magento\Sales\Model\Order\Item $childItem */
+                    $discountAmount += $childItem->getDiscountAmount();
+                }
+            } else {
+                $discountAmount = $orderItem->getDiscountAmount();
+            }
             $itemGrandTotalInclTax = $orderItem->getRowTotalInclTax()
-                - $orderItem->getDiscountAmount()
+                - $discountAmount
                 - $mileagePerItem;
 
             if ($orderItem->getOriginalPrice() == 0) {
