@@ -49,7 +49,15 @@ class PointValidation
         $isLogin = $this->customerSession->isLoggedIn();
         $isRedeemableProduct = $productInfo->getData(AddRedemptionAttributes::IS_POINT_REDEEMABLE_ATTRIBUTE_CODE);
         $isPointRedemption = $requestInfo['is_point_redemption'] ?? false;
-        if ($isRedeemableProduct && $isPointRedemption) {
+        $isRedemptionItem = $isRedeemableProduct && $isPointRedemption;
+        if ($subject->getItemsCount()) {
+            if(($this->isRedemptionProductInCart($subject) && !$isRedemptionItem) || (!$this->isRedemptionProductInCart($subject) && $isRedemptionItem)) {
+                throw new LocalizedException(
+                    __("You can't buy redemption product and normal product in same time")
+                );
+            }
+        }
+        if ($isRedemptionItem) {
             if (!$isLogin) {
                 throw new LocalizedException(
                     __("Please login into your account to continue shopping")
@@ -64,5 +72,20 @@ class PointValidation
         }
 
         return [$productInfo, $requestInfo];
+    }
+
+    /**
+     * check cart have item redemption
+     * @param $cart
+     * @return boolean
+     */
+    public function isRedemptionProductInCart($cart)
+    {
+        foreach ($cart->getQuote()->getAllItems() as $item) {
+            if ($item->getIsPointRedeemable()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
