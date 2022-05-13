@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<view>
+    <vars module="Magento_PageBuilder">
+        <var name="breakpoints">
+            <var name="tablet">
+                <var name="label">Tablet</var>
+                <var name="stage">true</var>
+                <var name="class">tablet-switcher</var>
+                <var name="icon">Magento_PageBuilder::css/images/switcher/switcher-tablet.svg</var>
+                <var name="media">only screen and (max-width: 1024px)</var>
+            </var>
+            <var name="mobile">
+                <var name="conditions">
+                    <var name="max-width">640px</var>
+                </var>
+            </var>
+        </var>
+    </vars>
+</view>
