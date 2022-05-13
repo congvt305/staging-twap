@@ -197,9 +197,15 @@ class Data extends AbstractHelper
         return (bool)$this->scopeConfig->getValue(self::XML_PATH_CRON_JOB_CREATE_CUSTOMER_GROUP_ENABLE, ScopeInterface::SCOPE_WEBSITE);
     }
 
-    public function isPOSCustomerGradeSyncEnabled()
+    /**
+     * Is enabled sync pos customer grade
+     *
+     * @param $websiteId
+     * @return bool
+     */
+    public function isPOSCustomerGradeSyncEnabled($websiteId = null)
     {
-        return (bool)$this->scopeConfig->getValue(self::XML_PATH_SYNC_POS_CUSTOMER_GRADE_ENABLE, ScopeInterface::SCOPE_WEBSITE);
+        return (bool)$this->scopeConfig->getValue(self::XML_PATH_SYNC_POS_CUSTOMER_GRADE_ENABLE, ScopeInterface::SCOPE_WEBSITE, $websiteId);
     }
 
     /**
