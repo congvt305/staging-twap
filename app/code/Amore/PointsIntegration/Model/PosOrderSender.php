@@ -87,7 +87,7 @@ class PosOrderSender
                 $this->posOrderData->updatePosPaidOrderSendFlag($order);
                 // update Pos customer grade
                 if ($order->getCustomerId() !== null) {
-                    $this->posCustomerGradeUpdater->updatePOSCustomerGrade($order->getCustomerId());
+                    $this->posCustomerGradeUpdater->updatePOSCustomerGrade($order->getCustomerId(), $websiteId);
                 }
             }
         } catch (\Exception $exception) {

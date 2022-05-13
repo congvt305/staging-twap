@@ -90,7 +90,7 @@ class PosReturnSender
                 $this->posReturnData->updatePosReturnOrderSendFlag($rma);
                 // update Pos customer grade
                 if ($rma->getCustomerId() !== null) {
-                    $this->posCustomerGradeUpdater->updatePOSCustomerGrade($rma->getCustomerId());
+                    $this->posCustomerGradeUpdater->updatePOSCustomerGrade($rma->getCustomerId(), $websiteId);
                 }
             }
         } catch (\Exception $exception) {

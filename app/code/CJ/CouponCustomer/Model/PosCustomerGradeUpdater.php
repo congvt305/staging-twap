@@ -58,13 +58,16 @@ class PosCustomerGradeUpdater
      * @param $customerId
      * @return void
      */
-    public function updatePOSCustomerGrade($customerId)
+    public function updatePOSCustomerGrade($customerId, $websiteId)
     {
-        $isPOSCustomerGradeSyncEnabled = $this->helperData->isPOSCustomerGradeSyncEnabled();
+        $isPOSCustomerGradeSyncEnabled = $this->helperData->isPOSCustomerGradeSyncEnabled($websiteId);
         if ($isPOSCustomerGradeSyncEnabled) {
+            $this->logger->info("-----Call API POS customer grade on Cronjob-----");
             try {
                 $customerData = $this->customerRepository->getById($customerId);
                 $gradeData = $this->getCustomerGrade($customerData->getId(), $customerData->getWebsiteId());
+                $this->logger->info("Call API POS customer grade on cronjob gradeData");
+                $this->logger->info("grade Data: ", $gradeData);
                 $gradeName = '';
                 if (isset($gradeData['cstmGradeCD']) && isset($gradeData['cstmGradeNM'])) {
                     $prefix = $this->helperData->getPrefix($gradeData['cstmGradeCD']);
