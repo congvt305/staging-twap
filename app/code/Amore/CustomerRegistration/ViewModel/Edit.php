@@ -176,14 +176,15 @@ class Edit extends \Magento\Directory\Block\Data implements ArgumentInterface
     }
 
     /**
-     * Change the date format for before save if the website is Veitnam
+     * Change the date format for before save if the website is Vietnam or MY
      * @param $date
      */
     public function changeDateFormat($date)
     {
         $websiteId = (int)$this->storeManager->getStore()->getId();
         $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
-        if ($websiteCode == 'vn_laneige_website' || $websiteCode == 'vn_sulwhasoo_website') {
+        if (in_array($websiteCode, ['vn_laneige_website', 'vn_sulwhasoo_website', 'my_laneige_website', 'my_sulwhasoo_website']))
+        {
             return $this->timezone->date(new \DateTime($date))->format(self::DATE_FORMAT);
         }
         return $date;
