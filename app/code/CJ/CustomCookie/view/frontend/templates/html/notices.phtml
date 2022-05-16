@@ -46,7 +46,6 @@ if ($cookieHelper->isCookieRestrictionModeEnabled()): ?>
                             ->setBlockId($cookieIdentifier)
                             ->toHtml();
                         ?>
-                        <?= $block->escapeHtml(__('<a href="%1">Learn more</a>.', $block->getPrivacyPolicyLink()), ['a']) ?>
                 </div>
                 <div class="custom-allow-cookie">
                     <button id="btn-cookie-allow" class="custom-btn-cookie">
