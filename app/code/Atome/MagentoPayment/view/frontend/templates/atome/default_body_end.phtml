@@ -1,0 +1,59 @@
+<?php
+/** @var \Atome\MagentoPayment\Block\DefaultPageEnd $this */
+/** @var \Atome\MagentoPayment\Helper\PaymentHelper $paymentHelper */
+$paymentHelper = $this->helper('\Atome\MagentoPayment\Helper\PaymentHelper');
+$commonHelper = $this->helper('\Atome\MagentoPayment\Helper\CommonHelper');
+$paymentGatewayConfig = $paymentHelper->paymentGatewayConfig;
+
+if ($paymentGatewayConfig->isActive()):
+    $css = $this->getViewFileUrl('Atome_MagentoPayment::css/atome-plugin-frontend.css');
+    $priceDividerPluginUrl = '';
+
+    $shopBaseUrl = $this->getStoreManager()->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_WEB);
+    $isDevMode = false !== strpos($shopBaseUrl, '.apaylater.net');
+
+    if (!$isDevMode) {
+        // non-dev mode, use default plugin url
+        $priceDividerPluginUrl = \Atome\MagentoPayment\Model\Config\PaymentGatewayConfig::DEFAULT_PRICE_DIVIDER_PLUGIN_URL;
+    } else {
+        $priceDividerPluginUrl = $paymentGatewayConfig->getPriceDividerPluginUrl();
+        if (!$priceDividerPluginUrl) {
+            $magentoRootDir = BP;
+            if (file_exists($magentoRootDir . '/pub/public-shared')) {
+                $priceDividerPluginUrl = $shopBaseUrl . 'public-shared/plugins/magento2/price-divider.js';
+            }
+        }
+        if (!$priceDividerPluginUrl) {
+            $priceDividerPluginUrl = \Atome\MagentoPayment\Model\Config\PaymentGatewayConfig::DEFAULT_PRICE_DIVIDER_PLUGIN_URL;
+        }
+    }
+    ?>
+    <link  rel="stylesheet" type="text/css"  media="all" href="<?php echo $css; ?>" />
+    <script>
+        require(['Atome_MagentoPayment/js/atome-plugin-frontend'], function (plugin) {
+            plugin.init(<?php
+                echo json_encode([
+                    'shopBaseUrl' => $shopBaseUrl,
+                    'pluginUrl' => $priceDividerPluginUrl,
+                    'currencyCode' => $this->getStoreManager()->getStore()->getCurrentCurrency()->getCode(),
+                    'showInProductListPage' => $paymentGatewayConfig->isPriceDividerProductListVisible(),
+                    'showInProductDetailPage' => $paymentGatewayConfig->isPriceDividerProductDetailVisible(),
+                    'priceTemplate' => __('or 3 payments of [[installment_price]] by [[atome_logo]]'),
+                    'atome_logo' => $block->getAtomeLogoName(),
+                    'atome_payment_logo' => $block->getAtomePaymentLogoName(),
+                    'minimum_spend' => $block->getMinimumSpend(),
+                    'country_config' => $block->getCountryConfig($this->getStoreManager()->getStore()->getCurrentCurrency()->getCode()),
+                    'locale_code' => $this->getScopeConfig()->getValue('general/locale/code', \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $this->getStoreManager()->getStore()->getId()),
+                    'country_code' => $this->getScopeConfig()->getValue('general/country/default', \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $this->getStoreManager()->getStore()->getId()),
+                    'version' => $commonHelper->getModuleVersion(),
+                    'debug_mode' => $commonHelper->getConfig('payment/' . \Atome\MagentoPayment\Model\PaymentGateway::METHOD_CODE . '/' . \Atome\MagentoPayment\Model\Config\PaymentGatewayConfig::DEBUG_MODE),
+                    'order_created_when' => $commonHelper->getConfig('payment/' . \Atome\MagentoPayment\Model\PaymentGateway::METHOD_CODE . '/' . \Atome\MagentoPayment\Model\Config\PaymentGatewayConfig::ORDER_CREATED_WHEN),
+                    'delete_orders_without_paying' => $commonHelper->getConfig('payment/' . \Atome\MagentoPayment\Model\PaymentGateway::METHOD_CODE . '/' . \Atome\MagentoPayment\Model\Config\PaymentGatewayConfig::DELETE_ORDERS_WITHOUT_PAYING),
+                    'clear_cart_without_paying' => $commonHelper->getConfig('payment/' . \Atome\MagentoPayment\Model\PaymentGateway::METHOD_CODE . '/' . \Atome\MagentoPayment\Model\Config\PaymentGatewayConfig::CLEAR_CART_WITHOUT_PAYING),
+                    'max_spend' => $commonHelper->getConfig('payment/' . \Atome\MagentoPayment\Model\PaymentGateway::METHOD_CODE . '/' . \Atome\MagentoPayment\Model\Config\PaymentGatewayConfig::MAX_SPEND),
+                ]);
+                ?>);
+        });
+    </script>
+<?php
+endif;
