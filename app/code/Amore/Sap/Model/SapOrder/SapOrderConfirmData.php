@@ -291,7 +291,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
             $orderSubTotal = abs(round($orderData->getSubtotalInclTax() + $this->getBundleExtraAmount($orderData) + $this->getCatalogRuleDiscountAmount($orderData)));
             $orderGrandTotal = $orderData->getGrandTotal() == 0 ? $orderData->getGrandTotal() : abs(round($orderData->getGrandTotal() - $orderData->getShippingAmount()));
-
+            $totalPointRedemption = $this->getTotalPointRedemption($orderData);
             $bindData[] = [
                 'vkorg' => $this->config->getSalesOrg('store', $storeId),
                 'kunnr' => $this->config->getClient('store', $storeId),
@@ -329,10 +329,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'telno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'hpno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'waerk' => $orderData->getOrderCurrencyCode(),
-                'nsamt' => $orderSubTotal,
-                'dcamt' => $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal),
-                'slamt' => $orderGrandTotal,
-                'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : round($orderData->getRewardPointsBalance()),
+                'nsamt' => $totalPointRedemption ?? $orderSubTotal,
+                'dcamt' => $totalPointRedemption ? 0 : $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal),
+                'slamt' => $totalPointRedemption ?? $orderGrandTotal,
+                'miamt' => $totalPointRedemption ?? (is_null($orderData->getRewardPointsBalance()) ? '0' : round($orderData->getRewardPointsBalance())),
                 'shpwr' => round($orderData->getShippingAmount()),
                 'mwsbp' => round($orderData->getTaxAmount()),
                 'spitn1' => $orderData->getDeliveryMessage(),
@@ -353,6 +353,23 @@ class SapOrderConfirmData extends AbstractSapOrder
         }
 
         return $bindData;
+    }
+
+    /**
+     * Apply for full point redemption
+     * @param $order
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    protected function getTotalPointRedemption($order)
+    {
+        $totalPointRedemption = 0;
+        $orderItems = $order->getAllVisibleItems();
+        /** @var \Magento\Sales\Model\Order\Item $orderItem */
+        foreach ($orderItems as $orderItem) {
+            $totalPointRedemption += $orderItem->getPointRedemptionAmount() * $orderItem->getQtyOrdered();
+        }
+        return $totalPointRedemption;
     }
 
     /**
@@ -543,7 +560,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $meins = $product->getData('meins');
 
                     $sku = str_replace($skuPrefix, '', $orderItem->getSku());
-
+                    $pointRedemption = round($this->getPointRedemptionPerItem($order, $orderItem));
                     $orderItemData[] = [
                         'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -553,15 +570,15 @@ class SapOrderConfirmData extends AbstractSapOrder
                         'itemMenge' => intval($orderItem->getQtyOrdered()),
                         // 아이템 단위, Default : EA
                         'itemMeins' => $this->getMeins($meins),
-                        'itemNsamt' => $itemSubtotal,
-                        'itemDcamt' => $itemTotalDiscount,
-                        'itemSlamt' => $itemSaleAmount,
-                        'itemMiamt' => abs(round($mileagePerItem)),
+                        'itemNsamt' => $pointRedemption ?? $itemSubtotal,
+                        'itemDcamt' => $pointRedemption ? 0 : $itemTotalDiscount,
+                        'itemSlamt' => $pointRedemption ?? $itemSaleAmount,
+                        'itemMiamt' => $pointRedemption ?? abs(round($mileagePerItem)),
                         // 상품이 무상제공인 경우 Y 아니면 N
-                        'itemFgflg' => $itemSaleAmount == 0 ? 'Y' : 'N',
-                        'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
-                        'itemAuart' => self::NORMAL_ORDER,
-                        'itemAugru' => '',
+                        'itemFgflg' => $pointRedemption ? 'N' : ($itemSaleAmount == 0 ? 'Y' : 'N'),
+                        'itemMilfg' => $pointRedemption ? 'Y' : (empty($mileageUsedAmount) ? 'N' : 'Y'),
+                        'itemAuart' => $pointRedemption ? self::SAMPLE_ORDER : self::NORMAL_ORDER,
+                        'itemAugru' => $pointRedemption ? 'F07' : '',
                         'itemNetwr' => $itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount,
                         'itemMwsbp' => $itemTaxAmount,
                         'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
@@ -615,7 +632,8 @@ class SapOrderConfirmData extends AbstractSapOrder
 
                         $sku = str_replace($skuPrefix, '', $bundleChild->getSku());
                         $item = $this->searchOrderItem($orderAllItems, $bundleChild->getSku(), $itemId);
-
+                        $itemSaleAmount = $itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem));
+                        $pointRedemption =  round($this->getPointRedemptionPerItem($order, $orderItem, $bundleChild));
                         $orderItemData[] = [
                             'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                             'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -625,15 +643,15 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemMenge' => intval($bundleChild->getQtyOrdered()),
                             // 아이템 단위, Default : EA
                             'itemMeins' => $this->getMeins($meins),
-                            'itemNsamt' => $itemSubtotal,
-                            'itemDcamt' => $itemTotalDiscount,
-                            'itemSlamt' => $itemSubtotal - $itemTotalDiscount - abs(round($mileagePerItem)),
-                            'itemMiamt' => abs(round($mileagePerItem)),
+                            'itemNsamt' => $pointRedemption ?? $itemSubtotal,
+                            'itemDcamt' => $pointRedemption ? 0 : $itemTotalDiscount,
+                            'itemSlamt' => $pointRedemption ?? $itemSaleAmount,
+                            'itemMiamt' => $pointRedemption ?? abs(round($mileagePerItem)),
                             // 상품이 무상제공인 경우 Y 아니면 N
-                            'itemFgflg' => $product->getPrice() == 0 ? 'Y' : 'N',
-                            'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
-                            'itemAuart' => self::NORMAL_ORDER,
-                            'itemAugru' => '',
+                            'itemFgflg' => $pointRedemption ? 'N' : ($itemSaleAmount == 0 ? 'Y' : 'N'),
+                            'itemMilfg' => $pointRedemption ? 'Y' : (empty($mileageUsedAmount) ? 'N' : 'Y'),
+                            'itemAuart' => $pointRedemption ? self::SAMPLE_ORDER : self::NORMAL_ORDER,
+                            'itemAugru' => $pointRedemption ? 'F07' : '',
                             'itemNetwr' => $itemSubtotal - $itemTotalDiscount - round($mileagePerItem) - $itemTaxAmount,
                             'itemMwsbp' => $itemTaxAmount,
                             'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
@@ -668,6 +686,25 @@ class SapOrderConfirmData extends AbstractSapOrder
     }
 
     /**
+     * @param $order
+     * @param $orderItem
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    protected function getPointRedemptionPerItem($order, $orderItem, $childItem = null)
+    {
+        if (!$childItem) {
+            return $orderItem->getPointRedemptionAmount() * $orderItem->getQtyOrdered();
+        } else {
+            $sumBundle = $this->getSumOfChildrenOriginPrice($orderItem);
+            $price = $this->productRepository->get($childItem->getSku(), false, $order->getStoreId())->getPrice();
+            $priceProductPerBundle = $price * ($childItem->getQtyOrdered() / $orderItem->getQtyOrdered());
+            return ($orderItem->getPointRedemptionAmount() / $sumBundle) * $priceProductPerBundle;
+        }
+    }
+
+
+/**
      * Get bundle extra amount
      *
      * @param \Magento\Sales\Model\Order $order
