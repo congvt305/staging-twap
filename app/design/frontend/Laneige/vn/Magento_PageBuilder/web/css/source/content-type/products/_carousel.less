@@ -43,7 +43,11 @@
 
         .product-item {
             &-name {
-                font-size: 20px;
+                font-size: 16px;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
             }
 
             &-details {
@@ -89,6 +93,9 @@
         .product-item {
             &-name {
                 font-size: 1.6rem;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
             }
             .old-price .price {
                 font-size: 1.4rem;
