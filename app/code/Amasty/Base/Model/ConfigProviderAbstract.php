@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -13,6 +13,7 @@ use Magento\Store\Model\ScopeInterface;
 
 /**
  * @since 1.4.4
+ * @since 1.12.9 fixed cache for emulated store
  */
 abstract class ConfigProviderAbstract
 {
@@ -73,15 +74,15 @@ abstract class ConfigProviderAbstract
         $storeId = null,
         $scope = ScopeInterface::SCOPE_STORE
     ) {
+        if ($storeId === null && $scope !== ScopeConfigInterface::SCOPE_TYPE_DEFAULT) {
+            return $this->scopeConfig->getValue($this->pathPrefix . $path, $scope, $storeId);
+        }
+
         if ($storeId instanceof \Magento\Framework\App\ScopeInterface) {
             $storeId = $storeId->getId();
         }
-        $scopeKey = $storeId;
-        if ($scopeKey === null) {
-            $scopeKey = 'current_';
-        }
-        $scopeKey .= $scope;
-        if (empty($this->data[$path][$scopeKey])) {
+        $scopeKey = $storeId . $scope;
+        if (!isset($this->data[$path]) || !\array_key_exists($scopeKey, $this->data[$path])) {
             $this->data[$path][$scopeKey] = $this->scopeConfig->getValue($this->pathPrefix . $path, $scope, $storeId);
         }
 

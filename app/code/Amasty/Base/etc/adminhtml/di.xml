@@ -2,7 +2,7 @@
 <!--
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 -->
@@ -48,5 +48,9 @@
 
     <type name="Magento\Config\Model\Config\Structure">
         <plugin name="Amasty_Base:advertise" type="Amasty\Base\Plugin\Backend\Model\Config\StructurePlugin"/>
+    </type>
+
+    <type name="Magento\Config\Model\Config\Structure">
+        <plugin name="Amasty_Base:infoblock" type="Amasty\Base\Plugin\Backend\Model\Config\AddInformationBlockPlugin"/>
     </type>
 </config>

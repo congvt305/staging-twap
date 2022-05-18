@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Amasty Team
-* @copyright Copyright (c) 2021 Amasty (https://www.amasty.com)
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
 * @package Amasty_Base
 */
 
@@ -10,11 +10,11 @@ namespace Amasty\Base\Model\Source;
 
 class NotificationType implements \Magento\Framework\Option\ArrayInterface
 {
-    const GENERAL = 'INFO';
-    const SPECIAL_DEALS = 'PROMO';
-    const AVAILABLE_UPDATE = 'INSTALLED_UPDATE';
-    const UNSUBSCRIBE_ALL = 'UNSUBSCRIBE_ALL';
-    const TIPS_TRICKS = 'TIPS_TRICKS';
+    public const GENERAL = 'INFO';
+    public const SPECIAL_DEALS = 'PROMO';
+    public const AVAILABLE_UPDATE = 'INSTALLED_UPDATE';
+    public const UNSUBSCRIBE_ALL = 'UNSUBSCRIBE_ALL';
+    public const TIPS_TRICKS = 'TIPS_TRICKS';
 
     public function toOptionArray()
     {

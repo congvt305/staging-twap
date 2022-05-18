@@ -1,0 +1,33 @@
+<?php
+
+namespace Amasty\Feed\Model\GoogleWizard;
+
+use Amasty\Feed\Model\RegistryContainer;
+
+class Identifierexists extends Element
+{
+    /**
+     * @var string
+     */
+    protected $type = RegistryContainer::TYPE_CUSTOM_FIELD;
+
+    /**
+     * @var string
+     */
+    protected $tag = 'g:identifier_exists';
+
+    /**
+     * @var string
+     */
+    protected $format = 'as_is';
+
+    /**
+     * @var string
+     */
+    protected $value = 'TRUE';
+
+    /**
+     * @var string
+     */
+    protected $template = '<:tag>:value</:tag>' . PHP_EOL;
+}
