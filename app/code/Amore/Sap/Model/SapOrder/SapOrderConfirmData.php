@@ -292,6 +292,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             $orderSubTotal = abs(round($orderData->getSubtotalInclTax() + $this->getBundleExtraAmount($orderData) + $this->getCatalogRuleDiscountAmount($orderData)));
             $orderGrandTotal = $orderData->getGrandTotal() == 0 ? $orderData->getGrandTotal() : abs(round($orderData->getGrandTotal() - $orderData->getShippingAmount()));
             $totalPointRedemption = $this->getTotalPointRedemption($orderData);
+            $mileageUsedAmount = is_null($orderData->getRewardPointsBalance()) ? 0 : round($orderData->getRewardPointsBalance());
             $bindData[] = [
                 'vkorg' => $this->config->getSalesOrg('store', $storeId),
                 'kunnr' => $this->config->getClient('store', $storeId),
@@ -329,10 +330,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'telno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'hpno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'waerk' => $orderData->getOrderCurrencyCode(),
-                'nsamt' => $totalPointRedemption ?? $orderSubTotal,
+                'nsamt' => $totalPointRedemption > 0 ? $totalPointRedemption : $orderSubTotal,
                 'dcamt' => $totalPointRedemption ? 0 : $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal),
-                'slamt' => $totalPointRedemption ?? $orderGrandTotal,
-                'miamt' => $totalPointRedemption ?? (is_null($orderData->getRewardPointsBalance()) ? '0' : round($orderData->getRewardPointsBalance())),
+                'slamt' => $totalPointRedemption > 0 ? $totalPointRedemption : $orderGrandTotal,
+                'miamt' => $totalPointRedemption > 0 ? $totalPointRedemption : $mileageUsedAmount,
                 'shpwr' => round($orderData->getShippingAmount()),
                 'mwsbp' => round($orderData->getTaxAmount()),
                 'spitn1' => $orderData->getDeliveryMessage(),
