@@ -171,4 +171,28 @@ class Faq extends Template implements IdentityInterface
         $filterDescription = $this->filterProvider->getPageFilter()->filter($description);
         return $filterDescription;
     }
+
+    /**
+     * Is show Faq in PDP
+     *
+     * @return int|string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function isShowFaqInPDP()
+    {
+        $currentStoreId = $this->_storeManager->getStore()->getId();
+        return $this->helper->getFaqEnabled() && $this->helper->getFaqEnabledInPDP($currentStoreId);
+    }
+
+    /**
+     * Is show Faq in PLP
+     *
+     * @return int|string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function isShowFaqInPLP()
+    {
+        $currentStoreId = $this->_storeManager->getStore()->getId();
+        return $this->helper->getFaqEnabled() && $this->helper->getFaqEnabledInPLP($currentStoreId);
+    }
 }

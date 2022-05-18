@@ -18,7 +18,7 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-    .faqs {
+    .faqs, .faqs-page {
         .search-block {
             margin-bottom: @indent__xl;
 
@@ -180,6 +180,34 @@
     .faqs {
         max-width: 780px;
         margin: 55px auto 0;
+
+        .search-block {
+            .control {
+                width: calc(~'100% - 200px');
+            }
+
+            .actions {
+                width: 180px;
+                margin-left: 15px;
+            }
+        }
+
+        .block {
+            .list {
+                .title {
+                    padding: 15px 0 15px @indent__s;
+                }
+
+                .content {
+                    padding-right: @indent__l*2;
+                    padding-bottom: @indent__xl*2;
+                }
+            }
+        }
+    }
+
+    .faqs-page {
+        margin: 0 auto;
 
         .search-block {
             .control {
