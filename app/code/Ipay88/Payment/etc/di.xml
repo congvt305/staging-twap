@@ -1,0 +1,80 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <type name="Ipay88\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Ipay88\Payment\Model\Ui\ConfigProvider::CODE</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Ipay88PaymentFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Ipay88\Payment\Model\Ui\ConfigProvider::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Ipay88\Payment\Block\Sales\Order\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">Ipay88PaymentValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">Ipay88PaymentCommandPool</argument>
+            <argument name="logger" xsi:type="object">Ipay88\Payment\Logger\Logger</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Ipay88PaymentValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">Ipay88PaymentConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Ipay88PaymentConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">Ipay88\Payment\Gateway\Config\Config</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Ipay88PaymentCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">Ipay88PaymentInitializeCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Ipay88PaymentInitializeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">Ipay88InitializationRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Ipay88\Payment\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Ipay88\Payment\Gateway\Http\Client\Client</argument>
+            <argument name="logger" xsi:type="object">Ipay88\Payment\Logger\Logger</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Ipay88InitializationRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">Ipay88\Payment\Gateway\Request\InitializationRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Ipay88\Payment\Gateway\Request\InitializationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">Ipay88\Payment\Gateway\Config\Config</argument>
+        </arguments>
+    </type>
+    
+    <type name="Ipay88\Payment\Logger\Handler\Base">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+
+    <type name="Ipay88\Payment\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">ipay88_payment</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="base" xsi:type="object">Ipay88\Payment\Logger\Handler\Base</item>
+            </argument>
+        </arguments>
+    </type>
+
+</config>
