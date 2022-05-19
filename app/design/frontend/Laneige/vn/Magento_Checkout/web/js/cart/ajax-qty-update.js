@@ -11,6 +11,9 @@ define([
     return function (config) {
         var button = config.increase + ',' + config.decrease;
 
+        /**
+         * Update Item qty
+         */
         function updateQty() {
             var form = $('form#form-validate');
             if (!(form.validation() && form.validation('isValid'))) {
@@ -57,11 +60,18 @@ define([
             });
         }
 
+        /**
+         * Click button increase or decrease item qty
+         */
         $(document).on('click',  button, function (e) {
             updateQty();
         });
+
+        /**
+         * Edit item qty in input field
+         */
         $(document).keyup(function(event) {
-            if ($(".qty").is(":focus") && event.key == "Enter") {
+            if ($(".qty").is(":focus") && event.keyCode == 13) {
                 updateQty();
                 event.preventDefault();
                 event.stopImmediatePropagation();
