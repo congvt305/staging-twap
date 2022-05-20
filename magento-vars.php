@@ -78,6 +78,12 @@ if (isHttpHost("tw.sulwhasoo.com")
     || isHttpHost("vs.dev-54ta5gq-kqevkj6gpg7si.ap-3.magentosite.cloud")) {
     $_SERVER["MAGE_RUN_CODE"] = "vn_sulwhasoo";
     $_SERVER["MAGE_RUN_TYPE"] = "store";
+} elseif (isHttpHost("my.laneige.com")
+    || isHttpHost("mcprod.my.laneige.com")
+    || isHttpHost("www.my.laneige.com")
+    || isHttpHost("mcstaging.my.laneige.com")) {
+    $_SERVER["MAGE_RUN_CODE"] = "my_laneige";
+    $_SERVER["MAGE_RUN_TYPE"] = "store";
 }
 //if (isAdminBackendUri($_SERVER['REQUEST_URI'])) {
 //    $_SERVER["MAGE_RUN_CODE"] = "default";
