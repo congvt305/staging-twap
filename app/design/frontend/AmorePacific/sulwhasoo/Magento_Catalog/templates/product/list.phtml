@@ -136,11 +136,9 @@ $apProductPosition = "";
                                     </a>
                                 </strong>
 
-                                <?php if( $viewMode == 'list' ):?>
-                                    <div class="product-item-short-description">
-                                        <?= $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
-                                    </div>
-                                <?php endif;?>
+                                <div class="product-item-short-description">
+                                    <?= $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                </div>
 
                                 <?= /* @escapeNotVerified */ $block->getProductPrice($_product) ?>
 

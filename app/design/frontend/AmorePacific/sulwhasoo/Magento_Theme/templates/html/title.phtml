@@ -19,6 +19,10 @@ if (trim($block->getPageHeading())) {
         $titleHtml = str_replace('itemprop="name"', '', $titleHtml);
     }
 }
+/** @var \CJ\Catalog\ViewModel\CategoryDescription $viewModel */
+$viewModel = $block->getCategoryDescViewModel();
+/** @var \CJ\PageBuilder\Helper\Data $helper */
+$helper = $this->helper(\CJ\PageBuilder\Helper\Data::class);
 ?>
 <?php if ($titleHtml) : ?>
 <div class="page-title-wrapper<?= $block->escapeHtmlAttr($cssClass) ?>">
@@ -29,6 +33,19 @@ if (trim($block->getPageHeading())) {
         <?php endif; ?>>
         <?= /* @noEscape */ $titleHtml ?>
     </h1>
+    <?php if($helper->getConfigDescriptionBelowTitleEnabled() && $viewModel->getCurrentCategory()) :?>
+        <?php if ($description = $viewModel->getCurrentCategory()->getDescription()):?>
+            <p class="category-description">
+                <?php $descriptionHtml = $viewModel->getCatalogHelper()->categoryAttribute(
+                    $viewModel->getCurrentCategory(),
+                    $description,
+                    'description'
+                );?>
+                <?= /* @noEscape */$descriptionHtml; ?>
+            </p>
+        <?php endif; ?>
+    <?php endif; ?>
+
     <?= $block->getChildHtml() ?>
 </div>
 <?php endif; ?>

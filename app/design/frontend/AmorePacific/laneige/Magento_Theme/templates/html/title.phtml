@@ -33,9 +33,19 @@ $helper = $this->helper(\CJ\PageBuilder\Helper\Data::class);
             <?php endif; ?>>
             <?= /* @noEscape */ $titleHtml ?>
         </h1>
-        <?php if ($viewModel && $categoryDescription = $viewModel->getCatalogCategoryDescription()): ?>
-            <p><?= $categoryDescription ?></p>
+        <?php if($helper->getConfigDescriptionBelowTitleEnabled() && $viewModel->getCurrentCategory()) :?>
+            <?php if ($description = $viewModel->getCurrentCategory()->getDescription()):?>
+                <p class="category-description">
+                <?php $descriptionHtml = $viewModel->getCatalogHelper()->categoryAttribute(
+                    $viewModel->getCurrentCategory(),
+                    $description,
+                    'description'
+                );?>
+                <?= /* @noEscape */$descriptionHtml; ?>
+                </p>
+            <?php endif; ?>
         <?php endif; ?>
+
         <?= $block->getChildHtml() ?>
     </div>
 <?php endif; ?>
