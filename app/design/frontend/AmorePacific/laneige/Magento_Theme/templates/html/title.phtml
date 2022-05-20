@@ -25,27 +25,27 @@ $viewModel = $block->getCategoryDescViewModel();
 $helper = $this->helper(\CJ\PageBuilder\Helper\Data::class);
 ?>
 <?php if ($titleHtml) : ?>
-<div class="page-title-wrapper<?= $block->escapeHtmlAttr($cssClass) ?>">
-    <h1 class="page-title"
-        <?php if ($block->getId()) : ?> id="<?= $block->escapeHtmlAttr($block->getId()) ?>" <?php endif; ?>
-        <?php if ($block->getAddBaseAttributeAria()) : ?>
-            aria-labelledby="<?= $block->escapeHtmlAttr($block->getAddBaseAttributeAria()) ?>"
-        <?php endif; ?>>
-        <?= /* @noEscape */ $titleHtml ?>
-    </h1>
-    <?php if($helper->getConfigDescriptionBelowTitleEnabled() && $viewModel->getCurrentCategory()) :?>
-        <?php if ($description = $viewModel->getCurrentCategory()->getDescription()):?>
-            <p class="category-description">
+    <div class="page-title-wrapper<?= $block->escapeHtmlAttr($cssClass) ?>">
+        <h1 class="page-title"
+            <?php if ($block->getId()) : ?> id="<?= $block->escapeHtmlAttr($block->getId()) ?>" <?php endif; ?>
+            <?php if ($block->getAddBaseAttributeAria()) : ?>
+                aria-labelledby="<?= $block->escapeHtmlAttr($block->getAddBaseAttributeAria()) ?>"
+            <?php endif; ?>>
+            <?= /* @noEscape */ $titleHtml ?>
+        </h1>
+        <?php if($helper->getConfigDescriptionBelowTitleEnabled() && $viewModel->getCurrentCategory()) :?>
+            <?php if ($description = $viewModel->getCurrentCategory()->getDescription()):?>
+                <p class="category-description">
                 <?php $descriptionHtml = $viewModel->getCatalogHelper()->categoryAttribute(
                     $viewModel->getCurrentCategory(),
                     $description,
                     'description'
                 );?>
                 <?= /* @noEscape */$descriptionHtml; ?>
-            </p>
+                </p>
+            <?php endif; ?>
         <?php endif; ?>
-    <?php endif; ?>
 
-    <?= $block->getChildHtml() ?>
-</div>
+        <?= $block->getChildHtml() ?>
+    </div>
 <?php endif; ?>

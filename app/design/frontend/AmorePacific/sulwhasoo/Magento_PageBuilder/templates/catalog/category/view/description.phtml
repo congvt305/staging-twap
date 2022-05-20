@@ -1,0 +1,27 @@
+<?php
+/**
+ * Copyright © CJONS
+ */
+?>
+<?php
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+
+/**
+ * Category view template
+ *
+ * @var $block \Magento\Catalog\Block\Category\View
+ */
+/** @var \CJ\PageBuilder\Helper\Data $helper */
+$helper = $this->helper(\CJ\PageBuilder\Helper\Data::class);
+?>
+<?php if (!$helper->getConfigDescriptionBelowTitleEnabled()
+    && $description = $block->getCurrentCategory()->getDescription()): ?>
+    <div class="category-description">
+        <?php $descriptionHtml = $this->helper(Magento\Catalog\Helper\Output::class)->categoryAttribute(
+            $block->getCurrentCategory(),
+            $description,
+            'description'
+        );?>
+        <?= /* @noEscape */$descriptionHtml; ?>
+    </div>
+<?php endif; ?>
