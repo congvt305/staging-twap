@@ -1,0 +1,36 @@
+<?php
+/**
+ * @var \Ipay88\Payment\Block\Checkout\Form $block
+ */
+?>
+<h1><?= __('Redirecting to Ipay88') ?></h1>
+<p><?= __('Processing, please wait. Do not click refresh/back button or this transaction may be interrupted or terminated.') ?></p>
+<form
+  id="ipay88-payment-checkout-form"
+  method="post"
+  action="https://payment.ipay88.com.my/epayment/entry.asp"
+>
+    <input type="hidden" name="MerchantCode" value="<?= $block->getMerchantCode() ?>">
+    <input type="hidden" name="PaymentId" value="<?= $block->getPaymentId() ?>">
+    <input type="hidden" name="RefNo" value="<?= $block->getRefNo() ?>">
+    <input type="hidden" name="Amount" value="<?= $block->getAmount() ?>">
+    <input type="hidden" name="Currency" value="<?= $block->getCurrency() ?>">
+    <input type="hidden" name="ProdDesc" value="<?= $block->getProdDesc() ?>">
+    <input type="hidden" name="UserName" value="<?= $block->getUserName() ?>">
+    <input type="hidden" name="UserEmail" value="<?= $block->getUserEmail() ?>">
+    <input type="hidden" name="UserContact" value="<?= $block->getUserContact() ?>">
+    <input type="hidden" name="Remark" value="<?= $block->getRemark() ?>">
+    <input type="hidden" name="Lang" value="<?= $block->getLang() ?>">
+    <input type="hidden" name="SignatureType" value="<?= $block->getSignatureType() ?>">
+    <input type="hidden" name="Signature" value="<?= $block->getSignature() ?>">
+    <input type="hidden" name="ResponseURL" value="<?= $block->getResponseUrl() ?>">
+    <input type="hidden" name="BackendURL" value="<?= $block->getBackendUrl() ?>">
+    <input type="hidden" name="appdeeplink" value="<?= $block->getAppdeeplink() ?>">
+    <input type="hidden" name="Xfield1" value="<?= $block->getXfield1() ?>">
+</form>
+<script>
+  (function (){
+    const $form = window.document.getElementById('ipay88-payment-checkout-form')
+    $form.submit()
+  })()
+</script>
