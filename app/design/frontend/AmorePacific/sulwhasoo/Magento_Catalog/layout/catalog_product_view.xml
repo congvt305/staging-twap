@@ -7,6 +7,8 @@
 -->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <attribute name="itemtype" value=""/>
+        <attribute name="itemscope" value=""/>
         <referenceContainer name="content">
             <container name="product.info.container" htmlTag="div" htmlClass="product-info-container"  before="-">
                 <container name="product.info.wrapper" htmlTag="div" htmlClass="product-info-wrapper"  before="-">
