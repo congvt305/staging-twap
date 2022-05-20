@@ -63,4 +63,34 @@ class Data extends AbstractHelper
             $storeCode
         );
     }
+
+    /**
+     * Get config show faq in PDP
+     *
+     * @param $storeCode
+     * @return mixed
+     */
+    public function getFaqEnabledInPDP($storeCode)
+    {
+        return $this->scopeConfig->getValue(
+            'faq/general/show_on_pdp',
+            ScopeInterface::SCOPE_STORE,
+            $storeCode
+        );
+    }
+
+    /**
+     * Get config show faq in PlP
+     *
+     * @param $storeCode
+     * @return mixed
+     */
+    public function getFaqEnabledInPLP($storeCode)
+    {
+        return $this->scopeConfig->getValue(
+            'faq/general/show_on_plp',
+            ScopeInterface::SCOPE_STORE,
+            $storeCode
+        );
+    }
 }
