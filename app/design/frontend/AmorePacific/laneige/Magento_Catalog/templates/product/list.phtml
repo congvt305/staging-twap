@@ -24,6 +24,9 @@ $currentCategory = $block->getLayer()->getCurrentCategory();
 $categoryName = $currentCategory->getName();
 $isMembershipCategory = (int)$currentCategory->getData('is_membership');
 $getDefault = $block->getData('view_model');
+$productPosition = $block->getData('ga_enhanced');
+$page = $productPosition->getCurrentPage();
+$productPerPage = $productPosition->getProductPerPage();
 ?>
 <?php if (!$_productCollection->count()) :?>
     <div class="message info empty"><div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div></div>
@@ -56,6 +59,16 @@ $getDefault = $block->getData('view_model');
                     <?php /* @noEscape */ $productName = $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
 
                     <?php /* @noEscape */ $productSku = $_product->getSku() ?>
+                    <?php /* @noEscape */ $apRecommendName = $_product->getData('recommend_name')?>
+                    <?php
+                    if (!empty($apRecommendName)) {
+                        $apProductName = $_product->getName();
+                        $apProductId = $_product->getId();
+                        $apProductPrice = $_product->getPriceInfo()->getPrice('final_price')->getValue();
+                        $apProductBrand = "laneige";
+                        $apProductPosition = $_product->getCatIndexPosition() + ($page - 1) * $productPerPage + 1;
+                    }
+                    ?>
                     <?php
                     $productImage = $block->getImage($_product, $imageDisplayArea);
                     if ($pos != null) {
@@ -69,7 +82,17 @@ $getDefault = $block->getData('view_model');
                        tabindex="-1"
                        ap-click-area="prds-<?= /* @noEscape */ $getDefault->getDefaultCategory($currentCategory->getEntityId())->getName() ?>"
                        ap-click-name="prd click"
-                       ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                       ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>"
+                        <?php if(!empty($apRecommendName)): ?>
+                            ap-prd-name="<?= $apProductName ?>"
+                            ap-prd-id="<?= $apProductId ?>"
+                            ap-prd-price="<?= $apProductPrice ?>"
+                            ap-prd-cate="<?= $categoryName ?>"
+                            ap-prd-brand="<?= $apProductBrand ?>"
+                            ap-prd-position="<?= $apProductPosition ?>"
+                            ap-prd-list="<?= $apRecommendName ?>"
+                        <? endif; ?>
+                    >
                         <span class="flags">
                         <?php if($_product->getData('new')):?>
                             <span class="flag new"><?= $block->escapeHtml($_product->getResource()->getAttribute('new')->getStoreLabel());?></span>
@@ -94,7 +117,17 @@ $getDefault = $block->getData('view_model');
                                href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
                                ap-click-area="prds-<?= /* @noEscape */ $getDefault->getDefaultCategory($currentCategory->getEntityId())->getName() ?>"
                                ap-click-name="prd click"
-                               ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                               ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>"
+                                <?php if(!empty($apRecommendName)): ?>
+                                    ap-prd-name="<?= $apProductName ?>"
+                                    ap-prd-id="<?= $apProductId ?>"
+                                    ap-prd-price="<?= $apProductPrice ?>"
+                                    ap-prd-cate="<?= $categoryName ?>"
+                                    ap-prd-brand="<?= $apProductBrand ?>"
+                                    ap-prd-position="<?= $apProductPosition ?>"
+                                    ap-prd-list="<?= $apRecommendName ?>"
+                                <?endif; ?>
+                            >
                                 <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a>
                         </strong>
