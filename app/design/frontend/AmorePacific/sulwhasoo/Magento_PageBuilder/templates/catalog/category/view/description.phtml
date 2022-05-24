@@ -15,6 +15,7 @@
 $helper = $this->helper(\CJ\PageBuilder\Helper\Data::class);
 ?>
 <?php if (!$helper->getConfigDescriptionBelowTitleEnabled()
+    && $block->getCurrentCategory()
     && $description = $block->getCurrentCategory()->getDescription()): ?>
     <div class="category-description">
         <?php $descriptionHtml = $this->helper(Magento\Catalog\Helper\Output::class)->categoryAttribute(
