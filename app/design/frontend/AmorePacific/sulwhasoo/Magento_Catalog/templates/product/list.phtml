@@ -26,6 +26,13 @@ $getDefault = $block->getData('view_model');
 $productPosition = $block->getData('ga_enhanced');
 $page = $productPosition->getCurrentPage();
 $productPerPage = $productPosition->getProductPerPage();
+
+$apRecommendName = "";
+$apProductName = "";
+$apProductId = "";
+$apProductPrice = "";
+$apProductBrand = "";
+$apProductPosition = "";
 ?>
 <?php if (!$_productCollection->count()): ?>
     <div class="message info empty"><div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div></div>
