@@ -34,7 +34,7 @@ $getDefault = $block->getData('view_model');
     if ($block->getMode() == 'grid') {
         $viewMode = 'grid';
         $imageDisplayArea = 'category_page_grid';
-        $showDescription = false;
+        $showDescription = true;
         $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
     } else {
         $viewMode = 'list';

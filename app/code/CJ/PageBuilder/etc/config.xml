@@ -7,6 +7,9 @@
                 <en_product_name_visible>1</en_product_name_visible>
                 <desc_visible>1</desc_visible>
             </carousel>
+            <catalog_category>
+                <display_below>1</display_below>
+            </catalog_category>
         </cj_pagebuilder>
     </default>
 </config>
