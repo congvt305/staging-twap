@@ -719,6 +719,7 @@ return [
         'CJ_HoverImage' => 1,
         'CJ_PageBuilder' => 1,
         'CJ_CatalogFaq' => 1,
+        'CJ_Checkout' => 1,
         'CJ_CouponCustomer' => 1,
         'CJ_CustomCookie' => 1,
         'Dotdigitalgroup_Email' => 1,
