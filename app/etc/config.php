@@ -35,11 +35,19 @@ return [
                 'is_default' => '0'
             ],
             'vn_sulwhasoo_website' => [
-                'website_id' => '9',
+                'website_id' => '10',
                 'code' => 'vn_sulwhasoo_website',
                 'name' => 'VN Sulwhasoo Website',
                 'sort_order' => '0',
-                'default_group_id' => '9',
+                'default_group_id' => '10',
+                'is_default' => '0'
+            ],
+            'my_laneige_website' => [
+                'website_id' => '12',
+                'code' => 'my_laneige_website',
+                'name' => 'MY Laneige Website',
+                'sort_order' => '0',
+                'default_group_id' => '12',
                 'is_default' => '0'
             ]
         ],
@@ -76,13 +84,21 @@ return [
                 'default_store_id' => '8',
                 'code' => 'vn_laneige_website_store'
             ],
-            9 => [
-                'group_id' => '9',
-                'website_id' => '9',
+            10 => [
+                'group_id' => '10',
+                'website_id' => '10',
                 'name' => 'VN Sulwhasoo Website Store',
                 'root_category_id' => '533',
-                'default_store_id' => '9',
+                'default_store_id' => '10',
                 'code' => 'vn_sulwhasoo_website_store'
+            ],
+            12 => [
+                'group_id' => '12',
+                'website_id' => '12',
+                'name' => 'MY Laneige Website Store',
+                'root_category_id' => '751',
+                'default_store_id' => '12',
+                'code' => 'my_laneige_website_store'
             ]
         ],
         'stores' => [
@@ -123,11 +139,20 @@ return [
                 'is_active' => '1'
             ],
             'vn_sulwhasoo' => [
-                'store_id' => '9',
+                'store_id' => '10',
                 'code' => 'vn_sulwhasoo',
-                'website_id' => '9',
-                'group_id' => '9',
+                'website_id' => '10',
+                'group_id' => '10',
                 'name' => 'VN Sulwhasoo Store View',
+                'sort_order' => '0',
+                'is_active' => '1'
+            ],
+            'my_laneige' => [
+                'store_id' => '12',
+                'code' => 'my_laneige',
+                'website_id' => '12',
+                'group_id' => '12',
+                'name' => 'MY Laneige Store View',
                 'sort_order' => '0',
                 'is_active' => '1'
             ]
@@ -165,7 +190,7 @@ return [
                     'enable_js_bundling' => '0'
                 ],
                 'css' => [
-                    'minify_files' => '1',
+                    'minify_files' => '0',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/'
                     ],
@@ -202,6 +227,13 @@ return [
                 'general' => [
                     'locale' => [
                         'code' => 'vi_VN'
+                    ]
+                ]
+            ],
+            'my_laneige_website' => [
+                'general' => [
+                    'locale' => [
+                        'code' => 'ms_MY'
                     ]
                 ]
             ]
@@ -659,12 +691,10 @@ return [
         'Magento_WishlistGiftCard' => 1,
         'Magento_WishlistGiftCardGraphQl' => 1,
         'Magento_GiftCardGraphQl' => 1,
-        'Adyen_Payment' => 1,
+        'Adyen_Payment' => 0,
         'Amasty_BannersLite' => 1,
         'Amasty_Base' => 1,
         'Amasty_Conditions' => 1,
-        'Amasty_CronScheduleList' => 1,
-        'Dotdigitalgroup_Email' => 1,
         'Amasty_Promo' => 1,
         'Amasty_Rgrid' => 1,
         'Amasty_SalesRuleWizard' => 1,
@@ -678,13 +708,25 @@ return [
         'Amore_CustomerRegistration' => 1,
         'Amore_GcrmDataExport' => 1,
         'Amore_PointsIntegration' => 1,
+        'Amore_Sales' => 1,
+        'Amore_SalesRule' => 1,
         'Ecpay_Ecpaypayment' => 1,
-        'CJ_Middleware' => 1,
+        'CJ_Base' => 1,
+        'CJ_ChangeOrderStatus' => 1,
+        'CJ_DataExport' => 1,
+        'CJ_InventoryShipping' => 1,
+        'CJ_Invoice' => 1,
+        'CJ_HoverImage' => 1,
+        'CJ_PageBuilder' => 1,
+        'CJ_CatalogFaq' => 1,
+        'CJ_Checkout' => 1,
+        'CJ_CouponCustomer' => 1,
+        'CJ_CustomCookie' => 1,
+        'Dotdigitalgroup_Email' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
-        'Dotdigitalgroup_Enterprise' => 1,
         'Dotdigitalgroup_EmailGraphQl' => 1,
-        'Amasty_Feed' => 1,
+        'Dotdigitalgroup_Enterprise' => 1,
         'Dotdigitalgroup_Sms' => 1,
         'Eguana_GWLogistics' => 1,
         'Amore_GcrmSegment' => 1,
@@ -727,7 +769,6 @@ return [
         'Pixlee_Pixlee' => 1,
         'Eguana_RedInvoice' => 1,
         'Eguana_Redemption' => 1,
-        'Eguana_ScheduledImportExport' => 0,
         'Eguana_Share' => 1,
         'Eguana_MobileLogin' => 1,
         'Eguana_EventReservation' => 1,
@@ -741,15 +782,17 @@ return [
         'Klarna_Onsitemessaging' => 1,
         'Klarna_KpGraphQl' => 1,
         'PayPal_Braintree' => 0,
+        'CJ_Payoo' => 1,
         'PayPal_BraintreeGraphQl' => 0,
+        'Payoo_PayNow' => 1,
         'Eguana_Pixlee' => 1,
         'Temando_ShippingRemover' => 1,
         'Vertex_Tax' => 0,
-        'Vertex_AddressValidationApi' => 1,
-        'Vertex_RequestLoggingApi' => 1,
-        'Vertex_RequestLogging' => 1,
+        'Vertex_AddressValidationApi' => 0,
+        'Vertex_RequestLoggingApi' => 0,
+        'Vertex_RequestLogging' => 0,
         'Vertex_AddressValidation' => 0,
-        'Vertex_TaxStaging' => 1,
+        'Vertex_TaxStaging' => 0,
         'Yotpo_Yotpo' => 1
     ],
     'admin_user' => [
@@ -757,7 +800,8 @@ return [
             'code' => [
                 'en_US',
                 'zh_Hant_TW',
-                'vi_VN'
+                'vi_VN',
+                'ms_MY'
             ]
         ]
     ]
