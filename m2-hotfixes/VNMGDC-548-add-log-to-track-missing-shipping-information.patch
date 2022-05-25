@@ -1,0 +1,204 @@
+Index: vendor/magento/module-quote/Model/ShippingAddressManagement.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/module-quote/Model/ShippingAddressManagement.php b/vendor/magento/module-quote/Model/ShippingAddressManagement.php
+--- a/vendor/magento/module-quote/Model/ShippingAddressManagement.php	(revision b8ac1226f34faea27cc7925c56bcda305ae8aa74)
++++ b/vendor/magento/module-quote/Model/ShippingAddressManagement.php	(date 1653471523353)
+@@ -99,6 +99,15 @@
+         $quote->setShippingAddress($address);
+         $address = $quote->getShippingAddress();
+
++        if (!$address->getFirstname() || !$address->getLastname() || !$address->getStreet()) {
++            $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++            $backTrace = '';
++            foreach ($debugBackTrace as $item) {
++                $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . "\n";
++            }
++            $this->logger->critical('Missing data shipping adress when assign shipping address: ' . $backTrace);
++        }
++
+         if ($customerAddressId === null) {
+             $address->setCustomerAddressId(null);
+         }
+Index: vendor/magento/module-quote/Model/QuoteManagement.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/module-quote/Model/QuoteManagement.php b/vendor/magento/module-quote/Model/QuoteManagement.php
+--- a/vendor/magento/module-quote/Model/QuoteManagement.php	(revision b8ac1226f34faea27cc7925c56bcda305ae8aa74)
++++ b/vendor/magento/module-quote/Model/QuoteManagement.php	(date 1653471523361)
+@@ -23,6 +23,7 @@
+ use Magento\Sales\Api\Data\OrderInterfaceFactory as OrderFactory;
+ use Magento\Sales\Api\OrderManagementInterface as OrderManagement;
+ use Magento\Store\Model\StoreManagerInterface;
++use Psr\Log\LoggerInterface;
+
+ /**
+  * Class for managing quote
+@@ -158,6 +159,12 @@
+      */
+     private $remoteAddress;
+
++
++    /**
++     * @var LoggerInterface
++     */
++    private $logger;
++
+     /**
+      * @param EventManager $eventManager
+      * @param SubmitQuoteValidator $submitQuoteValidator
+@@ -206,6 +213,7 @@
+         \Magento\Customer\Model\Session $customerSession,
+         \Magento\Customer\Api\AccountManagementInterface $accountManagement,
+         \Magento\Quote\Model\QuoteFactory $quoteFactory,
++        LoggerInterface $logger,
+         \Magento\Quote\Model\QuoteIdMaskFactory $quoteIdMaskFactory = null,
+         \Magento\Customer\Api\AddressRepositoryInterface $addressRepository = null,
+         \Magento\Framework\App\RequestInterface $request = null,
+@@ -231,6 +239,7 @@
+         $this->accountManagement = $accountManagement;
+         $this->customerSession = $customerSession;
+         $this->quoteFactory = $quoteFactory;
++        $this->logger = $logger;
+         $this->quoteIdMaskFactory = $quoteIdMaskFactory ?: ObjectManager::getInstance()
+             ->get(\Magento\Quote\Model\QuoteIdMaskFactory::class);
+         $this->addressRepository = $addressRepository ?: ObjectManager::getInstance()
+@@ -527,6 +536,16 @@
+                     'email' => $quote->getCustomerEmail()
+                 ]
+             );
++
++            if (!$shippingAddress->getFirstname() || !$shippingAddress->getLastname() || !$shippingAddress->getStreet()) {
++                $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++                $backTrace = '';
++                foreach ($debugBackTrace as $item) {
++                    $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . "\n";
++                }
++                $this->logger->critical('Missing data shipping adress when submit quote: ' . $backTrace);
++            }
++
+             $shippingAddress->setData('quote_address_id', $quote->getShippingAddress()->getId());
+             $addresses[] = $shippingAddress;
+             $order->setShippingAddress($shippingAddress);
+Index: vendor/magento/module-quote/Model/QuoteRepository/SaveHandler.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/module-quote/Model/QuoteRepository/SaveHandler.php b/vendor/magento/module-quote/Model/QuoteRepository/SaveHandler.php
+--- a/vendor/magento/module-quote/Model/QuoteRepository/SaveHandler.php	(revision b8ac1226f34faea27cc7925c56bcda305ae8aa74)
++++ b/vendor/magento/module-quote/Model/QuoteRepository/SaveHandler.php	(date 1653471523369)
+@@ -13,6 +13,7 @@
+ use Magento\Framework\Exception\NoSuchEntityException;
+ use Magento\Framework\Exception\InputException;
+ use Magento\Quote\Api\Data\AddressInterfaceFactory;
++use Psr\Log\LoggerInterface;
+
+ /**
+  * Handler for saving quote.
+@@ -49,6 +50,11 @@
+      */
+     private $quoteAddressFactory;
+
++    /**
++     * @var LoggerInterface
++     */
++    private $logger;
++
+     /**
+      * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResource
+      * @param \Magento\Quote\Model\Quote\Item\CartItemPersister $cartItemPersister
+@@ -62,6 +68,7 @@
+         \Magento\Quote\Model\Quote\Item\CartItemPersister $cartItemPersister,
+         \Magento\Quote\Model\Quote\Address\BillingAddressPersister $billingAddressPersister,
+         \Magento\Quote\Model\Quote\ShippingAssignment\ShippingAssignmentPersister $shippingAssignmentPersister,
++        LoggerInterface $logger,
+         AddressRepositoryInterface $addressRepository = null,
+         AddressInterfaceFactory $addressFactory = null
+     ) {
+@@ -69,6 +76,7 @@
+         $this->cartItemPersister = $cartItemPersister;
+         $this->billingAddressPersister = $billingAddressPersister;
+         $this->shippingAssignmentPersister = $shippingAssignmentPersister;
++        $this->logger = $logger;
+         $this->addressRepository = $addressRepository
+             ?: ObjectManager::getInstance()->get(AddressRepositoryInterface::class);
+         $this->quoteAddressFactory = $addressFactory ?:ObjectManager::getInstance()
+@@ -117,6 +125,16 @@
+             $this->billingAddressPersister->save($quote, $billingAddress);
+         }
+
++        $address = $quote->getShippingAddress();
++        if (!$address->getFirstname() || !$address->getLastname() || !$address->getStreet()) {
++            $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++            $backTrace = '';
++            foreach ($debugBackTrace as $item) {
++                $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . "\n";
++            }
++            $this->logger->critical('Missing data shipping adress when save quote: ' . $backTrace);
++        }
++
+         $this->processShippingAssignment($quote);
+         $this->quoteResourceModel->save($quote->collectTotals());
+
+Index: vendor/magento/module-checkout/Model/ShippingInformationManagement.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/module-checkout/Model/ShippingInformationManagement.php b/vendor/magento/module-checkout/Model/ShippingInformationManagement.php
+--- a/vendor/magento/module-checkout/Model/ShippingInformationManagement.php	(revision b8ac1226f34faea27cc7925c56bcda305ae8aa74)
++++ b/vendor/magento/module-checkout/Model/ShippingInformationManagement.php	(date 1653471523373)
+@@ -170,6 +170,15 @@
+             $address->setCustomerAddressId(null);
+         }
+
++        if (!$address->getFirstname() || !$address->getLastname() || !$address->getStreet()) {
++            $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++            $backTrace = '';
++            foreach ($debugBackTrace as $item) {
++                $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . "\n";
++            }
++            $this->logger->critical('Missing data shipping adress when save shipping information: ' . $backTrace);
++        }
++
+         try {
+             $billingAddress = $addressInformation->getBillingAddress();
+             if ($billingAddress) {
+Index: vendor/magento/framework/DB/Adapter/Pdo/Mysql.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/framework/DB/Adapter/Pdo/Mysql.php b/vendor/magento/framework/DB/Adapter/Pdo/Mysql.php
+--- a/vendor/magento/framework/DB/Adapter/Pdo/Mysql.php	(revision 721b6b778347abe19aa015be46ca4ecb94d6e0de)
++++ b/vendor/magento/framework/DB/Adapter/Pdo/Mysql.php	(date 1653632799187)
+@@ -619,6 +619,24 @@
+      */
+     public function query($sql, $bind = [])
+     {
++        if ((stripos($sql, "quote_address") !== false || stripos($sql, "sales_order_address") !== false) && in_array('shipping', $bind) &&
++            (stripos($sql, "insert") !== false || (stripos($sql, "update") !== false && in_array(NULL, $bind)))) {
++            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-query.log');
++            $logger = new \Zend_Log();
++            $logger->addWriter($writer);
++            $nl = "\n";
++            $message = 'SQL: ' . $sql . $nl;
++            if ($bind) {
++                $message .= 'BIND: ' . var_export($bind, true) . $nl;
++            }
++            $logger->info('Insert | Update query: ' . $message);
++            try {
++                throw new \Exception("trace");
++            } catch (\Exception $exception) {
++                $logger->info($exception->getTraceAsString());
++            }
++        }
++
+         if (strpos(rtrim($sql, " \t\n\r\0;"), ';') !== false && count($this->_splitMultiQuery($sql)) > 1) {
+             throw new \Magento\Framework\Exception\LocalizedException(
+                 new Phrase("Multiple queries can't be executed. Run a single query and try again.")
