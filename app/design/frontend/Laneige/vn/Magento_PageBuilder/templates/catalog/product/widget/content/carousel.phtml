@@ -20,9 +20,9 @@ use Magento\Framework\App\Action\Action;
     $image = 'new_products_content_widget_grid';
     $items = $block->getProductCollection()->getItems();
 
-    $showWishlist = false;
+    $showWishlist = true;
     $showCompare = false;
-    $showCart = false;
+    $showCart = true;
     $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
     ?>
     <ol class="product-items <?= /* @noEscape */ $type ?>">
