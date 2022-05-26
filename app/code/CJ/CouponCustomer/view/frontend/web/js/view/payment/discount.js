@@ -13,8 +13,9 @@ define([
     'Magento_SalesRule/js/model/coupon',
     'Magento_Ui/js/modal/modal',
     'text!CJ_CouponCustomer/template/modal/modal-popup.html',
-    'mage/translate'
-], function ($, ko, Component, quote, setCouponCodeAction, cancelCouponAction, coupon, modal, popupTpl, $t ) {
+    'mage/translate',
+    'domReady!'
+], function ($, ko, Component, quote, setCouponCodeAction, cancelCouponAction, coupon, modal, popupTpl, $t) {
     'use strict';
 
     var totals = quote.getTotals(),

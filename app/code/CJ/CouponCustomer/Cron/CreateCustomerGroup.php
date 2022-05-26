@@ -7,12 +7,11 @@ use Amore\PointsIntegration\Model\Connection\Request;
 use CJ\CouponCustomer\Logger\Logger;
 use Magento\Store\Model\StoreManagerInterface;
 use CJ\CouponCustomer\Helper\Data;
-use Magento\Framework\Serialize\Serializer\Json;
 
 class CreateCustomerGroup
 {
     /**
-     * pos all customer grade type
+     * Pos all customer grade type
      */
     const POS_ALL_CUSTOMER_GRADE_TYPE = 'customerGrade';
     /**
@@ -40,8 +39,6 @@ class CreateCustomerGroup
      */
     protected $helperData;
 
-    protected $json;
-
 
     /**
      * @param GroupFactory $groupFactory
@@ -51,31 +48,34 @@ class CreateCustomerGroup
         Request               $request,
         Logger                $logger,
         Data                  $helperData,
-        StoreManagerInterface $storeManager,
-        Json $json
-    ){
+        StoreManagerInterface $storeManager
+    ) {
         $this->groupFactory = $groupFactory;
         $this->request = $request;
         $this->logger = $logger;
         $this->storeManager = $storeManager;
         $this->helperData = $helperData;
-        $this->json = $json;
     }
 
+
     /**
-     * @return void
+     * todo cronjob create pos customer grade using api
      */
     public function execute()
     {
-        if ($this->helperData->isEnableCronjob()) {
+        if ($this->helperData->isCronCustomerGroupEnabled()) {
+            $posCustomerGrades = null;
             try {
                 $posCustomerGrades = $this->getAllPOSCustomerGrade();
                 if(isset($posCustomerGrades)) {
                     foreach ($posCustomerGrades as $posCustomerGrade) {
                         $posCustomerGradeName = $posCustomerGrade['cstmGradeNM'];
-                        if (!$this->helperData->isCreatedCustomerGroup($posCustomerGradeName)) {
+                        $posCustomerGradeCode = $posCustomerGrade['cstmGradeCD'];
+                        $prefix = $this->helperData->getPrefix($posCustomerGradeCode);
+                        $posCustomerGradeGroup = $prefix.'_'.$posCustomerGradeName;
+                        if (!$this->helperData->isCustomerGroupExist($posCustomerGradeGroup)) {
                             $group = $this->groupFactory->create();
-                            $group->setCode($posCustomerGradeName)->save();
+                            $group->setCode($posCustomerGradeGroup)->save();
                         }
                     }
                 }
@@ -87,7 +87,8 @@ class CreateCustomerGroup
     }
 
     /**
-     * prepare request data
+     * Get all POS customer grade use API
+     *
      * @return void
      */
 
@@ -98,41 +99,13 @@ class CreateCustomerGroup
             $requestData = '';
             $websiteId = $this->storeManager->getStore()->getWebsiteId();
             $responseData = $this->request->sendRequest($requestData, $websiteId, self::POS_ALL_CUSTOMER_GRADE_TYPE);
-//            $response = '{
-//          "success": true,
-//          "data": {
-//            "statusCode": "200",
-//            "statusMessage": "ok",
-//            "csmGradeData": [
-//              {
-//                "cstmGradeCD": "TWL0003",
-//                "cstmGradeNM": "Snow Crystal"
-//              },
-//              {
-//                "cstmGradeCD": "VNL0001",
-//                "cstmGradeNM": "Guest"
-//              },
-//              {
-//                "cstmGradeCD": "TWS0014",
-//                "cstmGradeNM": "Snow Diamond"
-//              },
-//              {
-//                "cstmGradeCD": "TWS0014",
-//                "cstmGradeNM": "VIPPPDatTest"
-//              }
-//            ]
-//          }
-//        }';
-            // $responseData = $this->json->unserialize($response);
             if (isset($responseData['data']['csmGradeData'])) {
                 $customerGrades = $responseData['data']['csmGradeData'];
             }
-        }catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             $this->logger->info("FAIL TO GET ALL POS CUSTOMER GRADES");
             $this->logger->error($exception->getMessage());
         }
         return $customerGrades;
-
     }
-
 }
