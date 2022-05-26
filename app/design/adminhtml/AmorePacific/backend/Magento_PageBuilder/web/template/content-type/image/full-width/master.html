@@ -15,11 +15,6 @@
              class="pagebuilder-mobile-only"
              css="data.mobile_image.css"
              ko-style="data.mobile_image.style" />
-        <img if="data.mobile_small_image.attributes().src"
-             attr="data.mobile_small_image.attributes"
-             class="pagebuilder-small-mobile-only"
-             css="data.mobile_small_image.css"
-             ko-style="data.mobile_small_image.style" />
     </a>
 
     <ifnot args="data.link.attributes().href">
@@ -38,11 +33,6 @@
              class="pagebuilder-mobile-only"
              css="data.mobile_image.css"
              ko-style="data.mobile_image.style" />
-        <img if="data.mobile_small_image.attributes().src"
-             attr="data.mobile_small_image.attributes"
-             class="pagebuilder-small-mobile-only"
-             css="data.mobile_small_image.css"
-             ko-style="data.mobile_small_image.style" />
     </ifnot>
 
     <figcaption if="data.caption.html()"
