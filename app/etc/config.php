@@ -148,7 +148,7 @@ return [
                 'is_active' => '1'
             ],
             'my_laneige' => [
-                'store_id' => '10',
+                'store_id' => '17',
                 'code' => 'my_laneige',
                 'website_id' => '10',
                 'group_id' => '10',
