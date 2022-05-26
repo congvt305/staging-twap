@@ -43,11 +43,11 @@ return [
                 'is_default' => '0'
             ],
             'my_laneige_website' => [
-                'website_id' => '10',
+                'website_id' => '12',
                 'code' => 'my_laneige_website',
                 'name' => 'MY Laneige Website',
                 'sort_order' => '0',
-                'default_group_id' => '10',
+                'default_group_id' => '12',
                 'is_default' => '0'
             ]
         ],
@@ -92,12 +92,12 @@ return [
                 'default_store_id' => '10',
                 'code' => 'vn_sulwhasoo_website_store'
             ],
-            10 => [
-                'group_id' => '10',
-                'website_id' => '10',
+            12 => [
+                'group_id' => '12',
+                'website_id' => '12',
                 'name' => 'MY Laneige Website Store',
                 'root_category_id' => '751',
-                'default_store_id' => '10',
+                'default_store_id' => '12',
                 'code' => 'my_laneige_website_store'
             ]
         ],
@@ -148,10 +148,10 @@ return [
                 'is_active' => '1'
             ],
             'my_laneige' => [
-                'store_id' => '10',
+                'store_id' => '12',
                 'code' => 'my_laneige',
-                'website_id' => '10',
-                'group_id' => '10',
+                'website_id' => '12',
+                'group_id' => '12',
                 'name' => 'MY Laneige Store View',
                 'sort_order' => '0',
                 'is_active' => '1'
