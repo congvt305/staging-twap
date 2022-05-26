@@ -87,6 +87,7 @@ class Index extends Template
             ->addFieldToFilter('coupon_type', \Magento\SalesRule\Model\Rule::COUPON_TYPE_SPECIFIC)
             ->addFieldToFilter('is_active', 1)
             ->addFieldToFilter('use_auto_generation', 0)
+            ->addFieldToFilter('is_active_wallet', 1)
             ->setPageSize($pageSize)
             ->setCurPage($page);
         return $rules;
