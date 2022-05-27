@@ -15,6 +15,9 @@ use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\UrlInterface;
 
+/**
+ * Class ValidateLoggedInCustomer
+ */
 class ValidateLoggedInCustomer implements ObserverInterface
 {
     /**
