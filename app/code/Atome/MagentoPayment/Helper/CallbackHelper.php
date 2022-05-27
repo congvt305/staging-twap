@@ -374,7 +374,7 @@ class CallbackHelper extends \Magento\Framework\App\Helper\AbstractHelper
         if (!$ctx->orderCreated) {
             throw new LocalizedException(__('Error occurs when placing order: can not submit'));
         }
-        
+
         if ($this->paymentHelper->formatAmount($ctx->orderCreated->getGrandTotal()) != $ctx->paymentResponse->getAmount()) {
             throw new LocalizedException(__("The grand total of this order is not equal to the amount of the payment.(order: {$this->paymentHelper->formatAmount($ctx->orderCreated->getGrandTotal())}, quote: {$this->paymentHelper->formatAmount($ctx->quote->getGrandTotal())}, atome: {$ctx->paymentResponse->getAmount()})"));
         }
@@ -446,7 +446,7 @@ class CallbackHelper extends \Magento\Framework\App\Helper\AbstractHelper
             throw new LocalizedException(__("Atome payment doesn't complete. Please wait a while."));
         }
 
-        if (!in_array($ctx->orderCreated->getStatus(), [\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT, \Magento\Sales\Model\Order::STATE_PROCESSING, \Magento\Sales\Model\Order::STATE_COMPLETE])) {
+        if (!in_array($ctx->orderCreated->getStatus(), [\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT, \Magento\Sales\Model\Order::STATE_PROCESSING, \Magento\Sales\Model\Order::STATE_COMPLETE, "processing_with_shipment"])) {
             throw new LocalizedException(__("The order has wrong status: {$ctx->orderCreated->getStatus()}"));
         }
 
@@ -471,7 +471,7 @@ class CallbackHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 ->setTransactionId($ctx->paymentResponse->getReferenceId())
                 ->setFailSafe(true)
                 ->build(Transaction::TYPE_CAPTURE);  // can not use payment here, or it will not be displayed in the Order View => Transactions list
-    
+
             $transaction = $this->transactionRepository->save($transaction);
             $payment->setLastTransId($ctx->paymentResponse->getReferenceId());
             $payment->setTransactionId($ctx->paymentResponse->getReferenceId());
