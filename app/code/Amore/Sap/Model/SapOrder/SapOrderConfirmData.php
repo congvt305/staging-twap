@@ -571,10 +571,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                         'itemMenge' => intval($orderItem->getQtyOrdered()),
                         // 아이템 단위, Default : EA
                         'itemMeins' => $this->getMeins($meins),
-                        'itemNsamt' => $pointRedemption ?? $itemSubtotal,
+                        'itemNsamt' => $pointRedemption > 0 ? $pointRedemption : $itemSubtotal,
                         'itemDcamt' => $pointRedemption ? 0 : $itemTotalDiscount,
-                        'itemSlamt' => $pointRedemption ?? $itemSaleAmount,
-                        'itemMiamt' => $pointRedemption ?? abs(round($mileagePerItem)),
+                        'itemSlamt' => $pointRedemption > 0 ? $pointRedemption : $itemSaleAmount,
+                        'itemMiamt' => $pointRedemption > 0 ? $pointRedemption : abs(round($mileagePerItem)),
                         // 상품이 무상제공인 경우 Y 아니면 N
                         'itemFgflg' => $pointRedemption ? 'N' : ($itemSaleAmount == 0 ? 'Y' : 'N'),
                         'itemMilfg' => $pointRedemption ? 'Y' : (empty($mileageUsedAmount) ? 'N' : 'Y'),
@@ -644,10 +644,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemMenge' => intval($bundleChild->getQtyOrdered()),
                             // 아이템 단위, Default : EA
                             'itemMeins' => $this->getMeins($meins),
-                            'itemNsamt' => $pointRedemption ?? $itemSubtotal,
+                            'itemNsamt' => $pointRedemption > 0 ? $pointRedemption : $itemSubtotal,
                             'itemDcamt' => $pointRedemption ? 0 : $itemTotalDiscount,
-                            'itemSlamt' => $pointRedemption ?? $itemSaleAmount,
-                            'itemMiamt' => $pointRedemption ?? abs(round($mileagePerItem)),
+                            'itemSlamt' => $pointRedemption > 0 ? $pointRedemption : $itemSaleAmount,
+                            'itemMiamt' => $pointRedemption > 0 ? $pointRedemption : abs(round($mileagePerItem)),
                             // 상품이 무상제공인 경우 Y 아니면 N
                             'itemFgflg' => $pointRedemption ? 'N' : ($itemSaleAmount == 0 ? 'Y' : 'N'),
                             'itemMilfg' => $pointRedemption ? 'Y' : (empty($mileageUsedAmount) ? 'N' : 'Y'),
