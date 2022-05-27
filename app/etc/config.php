@@ -756,6 +756,7 @@ return [
         'CJ_Base' => 1,
         'CJ_CatalogFaq' => 1,
         'CJ_ChangeOrderStatus' => 1,
+        'CJ_Checkout' => 1,
         'CJ_CouponCustomer' => 1,
         'CJ_DataExport' => 1,
         'CJ_HoverImage' => 1,
