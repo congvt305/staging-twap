@@ -1,0 +1,7 @@
+{
+    "salesrule": {
+        "column": {
+            "is_active_wallet": true
+        }
+    }
+}

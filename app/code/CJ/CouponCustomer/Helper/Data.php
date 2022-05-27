@@ -99,6 +99,7 @@ class Data extends AbstractHelper
         $rules->addWebsiteGroupDateFilter($websiteId, $customer->getGroupId())
             ->addFieldToFilter('coupon_type', \Magento\SalesRule\Model\Rule::COUPON_TYPE_SPECIFIC)
             ->addFieldToFilter('is_active', 1)
+            ->addFieldToFilter('is_active_wallet', 1)
             ->addFieldToFilter('use_auto_generation', 0);
         return $rules;
     }
@@ -166,6 +167,7 @@ class Data extends AbstractHelper
                 $simpleActionString = floatval($discountAmount) . "%";
                 break;
             case "cart_fixed":
+            case "by_fixed":
                 $simpleActionString = $this->getCurrencyCode() . floatval($discountAmount);
                 break;
             case "buy_x_get_y":
