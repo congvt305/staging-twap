@@ -4629,7 +4629,7 @@ new products will be created. Use this step to customize images and price for yo
 "We use cookies to make your experience better.","We use cookies to make your experience better.",module,Magento_Cookie
 "To comply with the new e-Privacy directive, we need to ask for your consent to set the cookies.","To comply with the new e-Privacy directive, we need to ask for your consent to set the cookies.",module,Magento_Cookie
 "<a href=""%1"">Learn more</a>.","<a href=""%1"">Learn more</a>.",module,Magento_Cookie
-"Allow Cookies","同意使用Cookies",module,Magento_Cookie
+"Allow Cookies","我同意",module,Magento_Cookie
 "Default Cookie Settings","Default Cookie Settings",module,Magento_Cookie
 "Cookie Lifetime","Cookie Lifetime",module,Magento_Cookie
 "Cookie Path","Cookie Path",module,Magento_Cookie
