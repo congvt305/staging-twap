@@ -64,17 +64,12 @@
         }
     }
 }
-@media screen and (max-width: 768px) {
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .modal-popup {
         .custom-cookie-inner-wrap {
             top: unset;
-            box-sizing: border-box;
-            position: absolute;
             width: 165px !important;
             height: 100px !important;
-            background: #FFFFFF;
-            border: 1px solid #D9DBE9;
-            border-radius: 12px;
             margin-left: 52% !important;
             bottom: 2px;
             left: unset;
@@ -82,47 +77,23 @@
         }
         .cookie-content {
             width: 95%;
-            font-family: 'Roboto Condensed';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 10px;
             height: 120px;
-            line-height: 20px;
-            color: #6F6C90;
             margin-left: 5px;
             margin-top: 5px;
+            line-height: 22px;
         }
 
         .custom-allow-cookie {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             padding-top: 5px;
             padding-bottom: 5px;
             width: 60px;
             height: 13px;
-            background: lightgrey;
             border-radius: 5px;
-            position: absolute;
-            margin-top: 70px;
             margin-left: 95px;
         }
 
         .custom-btn-cookie {
-            font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 700;
-            font-size: 10px;
-            line-height: 18px;
-            color: #FFFFFF;
-            border: none;
-            outline: none;
-            background: none;
             margin-top: 4px;
-        }
-        .cookie-content span {
-            margin-right: 5px;
         }
     }
 }
