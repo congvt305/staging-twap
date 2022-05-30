@@ -15,9 +15,10 @@ class CustomState extends \Magento\Sales\Model\ResourceModel\Order\Handler\State
     public function check(Order $order)
     {
         $shippingMethod = $order->getShippingMethod();
-        if ($shippingMethod == 'gwlogistics_CVS' && ($order->getStatus() == 'sap_processing' ||
+        if ($shippingMethod == 'gwlogistics_CVS' || $shippingMethod == 'ninjavan_tablerate' &&
+            ($order->getStatus() == 'sap_processing' ||
             $order->getStatus() == 'sap_success' || $order->getStatus() == 'sap_fail' ||
-            $order->getStatus() == 'preparing')) {
+            $order->getStatus() == 'preparing' || $order->getStatus() == 'shipment_processing')) {
             $order->setState("processing")->setStatus($order->getStatus());
         } else {
             $currentState = $order->getState();
@@ -34,7 +35,8 @@ class CustomState extends \Magento\Sales\Model\ResourceModel\Order\Handler\State
                 ) {
                     $order->setState(Order::STATE_CLOSED)
                         ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CLOSED));
-                } elseif ($currentState === Order::STATE_PROCESSING && !$order->canShip()) {
+                } elseif ($currentState === Order::STATE_PROCESSING && !$order->canShip() &&
+                    $order->getStatus() != 'processing_with_shipment') {
                     $order->setState(Order::STATE_COMPLETE)
                         ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_COMPLETE));
                 }
