@@ -23,7 +23,7 @@ class CustomState extends \Magento\Sales\Model\ResourceModel\Order\Handler\State
         } elseif ($shippingMethod == 'ninjavan_tablerate' &&
             ($order->getStatus() == 'sap_processing' ||
                 $order->getStatus() == 'sap_success' || $order->getStatus() == 'sap_fail' ||
-                $order->getStatus() == 'preparing' || $order->getStatus() == 'shipment_processing')) {
+                $order->getStatus() == 'preparing' || $order->getStatus() == 'processing_with_shipment')) {
             $order->setState("processing")->setStatus($order->getStatus());
         } else {
             $currentState = $order->getState();
