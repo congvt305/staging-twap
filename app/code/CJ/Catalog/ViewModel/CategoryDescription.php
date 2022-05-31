@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace CJ\Catalog\ViewModel;
 
+use CJ\Catalog\Setup\Patch\Data\AddCategoryDescriptionAttribute;
+
 /**
  * Class CategoryDescription
  */
@@ -89,5 +91,19 @@ class CategoryDescription implements \Magento\Framework\View\Element\Block\Argum
     protected function getStoreId(): int
     {
         return $this->storeManager->getStore()->getId();
+    }
+
+    /**
+     * Get catalog category description
+     *
+     * @return string
+     */
+    public function getCatalogCategoryDescription(): string
+    {
+        $category = $this->getCurrentCategory();
+        if ($category && $category->getData(AddCategoryDescriptionAttribute::EAV_CATEGORY_DESCRIPTION)) {
+            return $category->getData(AddCategoryDescriptionAttribute::EAV_CATEGORY_DESCRIPTION);
+        }
+        return '';
     }
 }
