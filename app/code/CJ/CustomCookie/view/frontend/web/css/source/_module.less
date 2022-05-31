@@ -3,24 +3,27 @@
         .custom-cookie-inner-wrap {
             box-sizing: border-box;
             position: absolute;
-            width: 935px !important;
-            height: 60px;
-            top: 85%;
+            width: 550px !important;
+            height: 38px;
+            bottom: 20px;
+            margin-bottom: unset;
             background: #FFFFFF;
             border: 1px solid #D9DBE9;
             box-shadow: 0 14px 42px rgba(8, 15, 52, 0.06);
-            border-radius: 20px;
+            border-radius: 12px;
         }
 
         .cookie-content {
-            width: 85%;
+            width: 90%;
             height: 60px;
             font-family: 'Roboto Condensed';
             font-style: normal;
             font-weight: 400;
-            font-size: 12px;
+            font-size: 10px;
             line-height: 30px;
             color: #6F6C90;
+            display: flex;
+            justify-content: center;
         }
 
         .custom-allow-cookie {
@@ -29,36 +32,32 @@
             justify-content: center;
             align-items: center;
             position: static;
-            width: 84px;
-            height: 30px;
+            width: 60px;
+            height: 20px;
             left: 0px;
             top: 0px;
-            background: #506AE5;
+            background: lightgrey;;
             box-shadow: 0px 3px 12px rgba(74, 58, 255, 0.18);
-            border-radius: 56px;
+            border-radius: 6px;
             flex: none;
             order: 0;
             flex-grow: 0;
-            margin-left: 86%;
-            margin-top: -60px;
+            margin-left: 87%;
+            margin-top: -53px;
         }
 
         .custom-btn-cookie {
             font-family: 'Roboto';
             font-style: normal;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 10px;
             line-height: 18px;
             color: #FFFFFF;
             border: none;
             outline: none;
             background: none;
+            margin-top: 4px;
         }
-
-        .action-close {
-            padding: unset;
-        }
-
         .custom-allow-cookie img {
             position: absolute;
             margin-left: -65px;
@@ -68,27 +67,30 @@
 @media screen and (max-width: 768px) {
     .modal-popup {
         .custom-cookie-inner-wrap {
+            top: unset;
             box-sizing: border-box;
             position: absolute;
-            width: 95% !important;
-            height: 120px !important;
-            margin: auto !important;
-            bottom: 1%;
+            width: 195px !important;
+            height: 70px !important;
             background: #FFFFFF;
             border: 1px solid #D9DBE9;
-            border-radius: 20px;
+            border-radius: 12px;
+            margin-left: 52% !important;
+            bottom: 2px;
+            left: unset;
+            margin-right: 2px !important;
         }
         .cookie-content {
             width: 90%;
             font-family: 'Roboto Condensed';
             font-style: normal;
             font-weight: 400;
-            font-size: 12px;
+            font-size: 10px;
             height: 120px;
             line-height: 20px;
-            text-align: center;
             color: #6F6C90;
-            margin-top: 18px;
+            margin-left: 5px;
+            margin-top: 5px;
         }
 
         .custom-allow-cookie {
@@ -96,61 +98,32 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            padding-left: 15px;
-            width: 88px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            width: 60px;
             height: 13px;
-            background: #506AE5;
-            border-radius: 56px;
+            background: lightgrey;
+            border-radius: 5px;
             position: absolute;
             top: 0;
             bottom: 0;
             left: 0;
             right: 0;
-            margin: auto;
-            margin-top: 80px;
+            margin-top: 40px;
+            margin-left: 112px;
         }
 
         .custom-btn-cookie {
             font-family: 'Roboto';
             font-style: normal;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 10px;
             line-height: 18px;
             color: #FFFFFF;
             border: none;
             outline: none;
             background: none;
-        }
-
-        .action-close {
-            padding: unset !important;
-        }
-
-    }
-}
-/* iPads (portrait and landscape) ----------- */
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-    /* Styles */
-    .modal-popup {
-        .custom-cookie-inner-wrap {
-            width: 90% !important;
-            height: 90px;
-        }
-
-        .custom-allow-cookie {
-            position: absolute !important;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            margin: auto;
-            margin-top: 52px;
-        }
-
-        .cookie-content {
-            margin: auto;
+            margin-top: 4px;
         }
     }
 }
