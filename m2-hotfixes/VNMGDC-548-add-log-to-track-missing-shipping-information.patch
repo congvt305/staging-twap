@@ -9,7 +9,7 @@ diff --git a/vendor/magento/module-quote/Model/ShippingAddressManagement.php b/v
 @@ -99,6 +99,18 @@
          $quote->setShippingAddress($address);
          $address = $quote->getShippingAddress();
- 
+
 +        if (!$address->getFirstname() || !$address->getLastname() || !$address->getStreet()) {
 +            $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 +            $backTrace = '';
@@ -19,7 +19,7 @@ diff --git a/vendor/magento/module-quote/Model/ShippingAddressManagement.php b/v
 +            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-548.log');
 +            $logger = new \Zend_Log();
 +            $logger->addWriter($writer);
-+            $logger->crit('Missing data shipping adress when assign shipping address: ' . $backTrace);
++            $logger->crit('Missing data shipping adress when assign shipping address for quote ' . $quote->getId() . ' : ' . $backTrace);
 +        }
 +
          if ($customerAddressId === null) {
@@ -47,7 +47,7 @@ diff --git a/vendor/magento/module-quote/Model/QuoteManagement.php b/vendor/mage
 +                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-548.log');
 +                $logger = new \Zend_Log();
 +                $logger->addWriter($writer);
-+                $logger->crit('Missing data shipping adress when submit quote: ' . $backTrace);
++                $logger->crit('Missing data shipping adress when submit quote ' . $quote->getId() . ' : ' . $backTrace);
 +            }
 +
              $shippingAddress->setData('quote_address_id', $quote->getShippingAddress()->getId());
@@ -64,7 +64,7 @@ diff --git a/vendor/magento/module-quote/Model/QuoteRepository/SaveHandler.php b
 @@ -117,6 +117,19 @@
              $this->billingAddressPersister->save($quote, $billingAddress);
          }
- 
+
 +        $address = $quote->getShippingAddress();
 +        if (!$address->getFirstname() || !$address->getLastname() || !$address->getStreet()) {
 +            $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
@@ -75,12 +75,12 @@ diff --git a/vendor/magento/module-quote/Model/QuoteRepository/SaveHandler.php b
 +            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-548.log');
 +            $logger = new \Zend_Log();
 +            $logger->addWriter($writer);
-+            $logger->crit('Missing data shipping adress when save quote: ' . $backTrace);
++            $logger->crit('Missing data shipping adress when save quote ' . $quote->getId() . ' : ' . $backTrace);
 +        }
 +
          $this->processShippingAssignment($quote);
          $this->quoteResourceModel->save($quote->collectTotals());
- 
+
 Index: vendor/magento/framework/DB/Adapter/Pdo/Mysql.php
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -101,7 +101,7 @@ diff --git a/vendor/magento/framework/DB/Adapter/Pdo/Mysql.php b/vendor/magento/
 +            $nl = "\n";
 +            $message = 'SQL: ' . $sql . $nl;
 +            if ($bind) {
-+                $message .= 'BIND: ' . var_export($bind, true) . $nl;
++                $message .= 'BIND: ' . json_encode($bind) . $nl;
 +            }
 +            $logger->info('Insert | Update query: ' . $message);
 +            try {
@@ -125,7 +125,7 @@ diff --git a/vendor/magento/module-checkout/Model/ShippingInformationManagement.
 @@ -170,6 +170,18 @@
              $address->setCustomerAddressId(null);
          }
- 
+
 +        if (!$address->getFirstname() || !$address->getLastname() || !$address->getStreet()) {
 +            $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 +            $backTrace = '';
@@ -135,7 +135,7 @@ diff --git a/vendor/magento/module-checkout/Model/ShippingInformationManagement.
 +            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-548.log');
 +            $logger = new \Zend_Log();
 +            $logger->addWriter($writer);
-+            $this->logger->critical('Missing data shipping adress when save shipping information: ' . $backTrace);
++            $this->logger->critical('Missing data shipping address when save shipping information for quote ' . $quote->getid() . ' : ' . $backTrace);
 +        }
 +
          try {
