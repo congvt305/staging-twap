@@ -15,10 +15,15 @@ class CustomState extends \Magento\Sales\Model\ResourceModel\Order\Handler\State
     public function check(Order $order)
     {
         $shippingMethod = $order->getShippingMethod();
-        if ($shippingMethod == 'gwlogistics_CVS' || $shippingMethod == 'ninjavan_tablerate' &&
+        if ($shippingMethod == 'gwlogistics_CVS' &&
             ($order->getStatus() == 'sap_processing' ||
             $order->getStatus() == 'sap_success' || $order->getStatus() == 'sap_fail' ||
-            $order->getStatus() == 'preparing' || $order->getStatus() == 'shipment_processing')) {
+            $order->getStatus() == 'preparing')) {
+            $order->setState("processing")->setStatus($order->getStatus());
+        } elseif ($shippingMethod == 'ninjavan_tablerate' &&
+            ($order->getStatus() == 'sap_processing' ||
+                $order->getStatus() == 'sap_success' || $order->getStatus() == 'sap_fail' ||
+                $order->getStatus() == 'preparing' || $order->getStatus() == 'shipment_processing')) {
             $order->setState("processing")->setStatus($order->getStatus());
         } else {
             $currentState = $order->getState();
