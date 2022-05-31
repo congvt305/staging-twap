@@ -40,8 +40,7 @@ class CustomState extends \Magento\Sales\Model\ResourceModel\Order\Handler\State
                 ) {
                     $order->setState(Order::STATE_CLOSED)
                         ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CLOSED));
-                } elseif ($currentState === Order::STATE_PROCESSING && !$order->canShip() &&
-                    $order->getStatus() != 'processing_with_shipment') {
+                } elseif ($currentState === Order::STATE_PROCESSING && !$order->canShip()) {
                     $order->setState(Order::STATE_COMPLETE)
                         ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_COMPLETE));
                 }
