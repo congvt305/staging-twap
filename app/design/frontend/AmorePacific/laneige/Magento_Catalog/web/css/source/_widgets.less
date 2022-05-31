@@ -81,12 +81,6 @@
             }
         }
     }
-
-    .widget-product-carousel {
-        .product-item-inner {
-            display: none;
-        }
-    }
 }
 
 
@@ -110,56 +104,6 @@
     .widget-product-carousel {
         .product-item {
             width: 100%/3;
-
-            .tocart,
-            .towishlist {
-                color: @color-white;
-
-                &:before {
-                    color: @color-white !important;
-                    margin-bottom: 0;
-                }
-
-                span {
-                    display: none;
-                }
-            }
-        }
-
-        .product-item-info {
-            &:hover {
-                border-color: @border-color__base;
-
-                .product-item-details {
-                    position: relative;
-                }
-
-                .product-item-inner {
-                    box-sizing: border-box;
-                    display: block;
-                    position: absolute;
-                    top: -110px;
-                    left: 0;
-                    right: 0;
-                    width: 100%;
-                    z-index: 3;
-                }
-
-                .product-hover-image {
-                    opacity: 1;
-                }
-            }
-
-            .product-item-inner {
-                display: none;
-            }
-
-            .stock {
-                &.available,
-                &.unavailable {
-                    display: none;
-                }
-            }
         }
     }
 
