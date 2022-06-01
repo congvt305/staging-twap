@@ -47,6 +47,27 @@
     //  Category view
     //  ---------------------------------------------
 
+    .catalog-category-view {
+        &.page-layout-1column {
+            &[class*="categorypath-homme"], &[class*="categorypath-make-up"], &[class*="categorypath-skincare"] {
+                .page-title-wrapper {
+                    .page-title {
+                        float: left;
+                        font-size: 32px;
+                        &+p {
+                            float: left;
+                            text-align: left;
+                        }
+                    }
+                }
+
+                .product-item-description {
+                    font-style: italic;
+                }
+            }
+        }
+    }
+
     .prices-tier {
         .price-container {
             .price-including-tax {
