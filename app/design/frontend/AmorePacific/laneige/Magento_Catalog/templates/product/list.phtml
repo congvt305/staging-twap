@@ -44,12 +44,10 @@ $apProductPosition = "";
     if ($block->getMode() == 'grid') {
         $viewMode = 'grid';
         $imageDisplayArea = 'category_page_grid';
-        $showDescription = true;
         $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
     } else {
         $viewMode = 'list';
         $imageDisplayArea = 'category_page_list';
-        $showDescription = true;
         $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
     }
     /**
@@ -138,7 +136,12 @@ $apProductPosition = "";
                                 <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a>
                         </strong>
-
+                        <div class="product description product-item-description">
+                            <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                            <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
+                               title="<?= /* @noEscape */ $_productNameStripped ?>"
+                               class="action more"><?= $block->escapeHtml(__('Learn More')) ?></a>
+                        </div>
                         <?= /* @noEscape */ $block->getProductPrice($_product) ?>
                         <?php if ($_product->isAvailable()) :?>
                             <?= $block->getProductDetailsHtml($_product) ?>
@@ -179,14 +182,6 @@ $apProductPosition = "";
                                 </div>
                                 <?php endif;?>
                             </div>
-                            <?php if ($showDescription) :?>
-                                <div class="product description product-item-description">
-                                    <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
-                                    <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
-                                       title="<?= /* @noEscape */ $_productNameStripped ?>"
-                                       class="action more"><?= $block->escapeHtml(__('Learn More')) ?></a>
-                                </div>
-                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
