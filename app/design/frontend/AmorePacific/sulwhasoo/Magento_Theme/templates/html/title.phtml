@@ -1,7 +1,6 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Copyright © CJONS
  */
 
 /**
@@ -23,7 +22,6 @@ if (trim($block->getPageHeading())) {
 ?>
 <?php if ($titleHtml) : ?>
 <div class="page-title-wrapper<?= $block->escapeHtmlAttr($cssClass) ?>">
-    <?= $block->getChildHtml('product.info.tag') ?>
     <h1 class="page-title"
         <?php if ($block->getId()) : ?> id="<?= $block->escapeHtmlAttr($block->getId()) ?>" <?php endif; ?>
         <?php if ($block->getAddBaseAttributeAria()) : ?>
@@ -31,8 +29,6 @@ if (trim($block->getPageHeading())) {
         <?php endif; ?>>
         <?= /* @noEscape */ $titleHtml ?>
     </h1>
-    <?= $block->getChildHtml('product.default.name') ?>
-    <?= $block->getChildHtml('product.info.review') ?>
-    <?= $block->getChildHtml('yotpo_bottomline') ?>
+    <?= $block->getChildHtml() ?>
 </div>
 <?php endif; ?>
