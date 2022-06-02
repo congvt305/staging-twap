@@ -46,17 +46,18 @@ if ($_attributeType && $_attributeType == 'text') {
 ?>
 
 <?php if ($_attributeValue) :?>
-<div class="product attribute <?= $block->escapeHtmlAttr($_className) ?>">
-    <?php if ($renderLabel) :?>
-        <strong class="type"><?= $block->escapeHtml($_attributeLabel) ?></strong>
-    <?php endif; ?>
-    <?php if ($_code == 'hash_tag'):?>
-        <?php $_attributeValues = explode(',',$_attributeValue) ?>
-        <?php foreach($_attributeValues as $_value): ?>
-            <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_value ?></div>
-        <?php endforeach;?>
-    <?php else:?>
-        <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_attributeValue ?></div>
-    <?php endif; ?>
-</div>
+    <div class="product attribute <?= $block->escapeHtmlAttr($_className) ?>">
+        <?php if ($renderLabel) :?>
+            <strong class="type"><?= $block->escapeHtml($_attributeLabel) ?></strong>
+        <?php endif; ?>
+        <?php if ($_code == 'hash_tag'):?>
+            <?php $_attributeValues = explode(',',$_attributeValue) ?>
+            <?php foreach($_attributeValues as $_value): ?>
+                <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_value ?></div>
+            <?php endforeach;?>
+        <?php else:?>
+        <?php // if _attributeAddAttribute is itemprop="description" or similar , do not print  ?>
+            <div class="value" <?= /* @noEscape */  $_attributeAddAttribute && strpos('itemprop=', $_attributeAddAttribute) !== -1 ? '':  $_attributeAddAttribute ?>><?= /* @noEscape */ $_attributeValue ?></div>
+        <?php endif; ?>
+    </div>
 <?php endif; ?>
