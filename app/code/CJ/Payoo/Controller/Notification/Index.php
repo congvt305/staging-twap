@@ -107,7 +107,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
         $response = $this->json->unserialize(base64_decode($message), true);
 
         if(isset($response['ResponseData']) && ($checksum . $response['ResponseData'] . $ipRequest !== null) && isset($response['Signature'])) {
-            if (strtoupper(hash('sha512', $checksum . $response['ResponseData'] . $ipRequest)) != strtoupper($response['Signature'])) {
+            if (strtoupper(hash('sha512', $checksum . $response['ResponseData'] . $ipRequest)) == strtoupper($response['Signature'])) {
                 $order_code = '';
                 $status = '';
                 $data = $this->json->unserialize($response['ResponseData'], true);
