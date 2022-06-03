@@ -557,6 +557,14 @@ class SapOrderManagement implements SapOrderManagementInterface
         $shippingMethod = $order->getShippingMethod(true); //todo : added for VN DHL
         $carrierCode = $shippingMethod['carrier_code']; //todo : added for VN DHL
 
+        //Never update tracking number for Ninjavan
+        if ($carrierCode == 'ninjavan') {
+            $message = __("Shipping method is ninjavan and we won't change tracking number.");
+            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+
+            return $result;
+        }
+
         if (empty($track->getData())) {
             /** @var \Magento\Sales\Model\Order\Shipment $shipment */
             $shipment = $this->getShipmentListByOrder($order->getEntityId());
