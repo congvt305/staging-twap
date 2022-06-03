@@ -18,7 +18,8 @@ if (trim($block->getPageHeading())) {
     if (strpos('itemprop="name"', $titleHtml) !== 1) {
         $titleHtml = str_replace('itemprop="name"', '', $titleHtml);
     }
-}/** @var \CJ\Catalog\ViewModel\CategoryDescription $viewModel */
+}
+/** @var \CJ\Catalog\ViewModel\CategoryDescription $viewModel */
 $viewModel = $block->getCategoryDescViewModel();
 /** @var \CJ\PageBuilder\Helper\Data $helper */
 $helper = $this->helper(\CJ\PageBuilder\Helper\Data::class);
