@@ -59,4 +59,21 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\FilterApplierInterface">
+        <plugin name="red_invoice_sales_order_grid_filter_modifier"
+                type="Eguana\RedInvoice\Plugin\UiComponent\DataProvider\FilterApplier" sortOrder="10"/>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="sales_order_grid_data_source" xsi:type="string">Eguana\RedInvoice\Model\ResourceModel\Order\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Eguana\RedInvoice\Model\ResourceModel\Order\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">sales_order_grid</argument>
+            <argument name="resourceModel" xsi:type="string">Magento\Sales\Model\ResourceModel\Order</argument>
+        </arguments>
+    </type>
 </config>
