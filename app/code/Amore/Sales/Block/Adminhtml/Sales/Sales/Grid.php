@@ -158,7 +158,7 @@ class Grid extends \Magento\Reports\Block\Adminhtml\Sales\Sales\Grid
         parent::_prepareColumns();
 
         $this->getColumn('period')->setData('header', __('Date'));
-        $this->getColumn('total_income_amount')->setData('header', __('Invoice'));
+        $this->getColumn('total_income_amount')->setData('header', __('Invoice Amount'));
         $this->removeColumn('total_tax_amount');
         $this->removeColumn('total_shipping_amount');
         $this->removeColumn('total_invoiced_amount');
