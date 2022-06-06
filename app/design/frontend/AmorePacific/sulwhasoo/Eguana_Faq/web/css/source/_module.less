@@ -26,6 +26,17 @@
         }
     }
 
+    .faqs-page {
+        .block {
+            .list {
+                &:first-child {
+                    .title {
+                        .lib-css(border-top, none) !important;
+                    }
+                }
+            }
+        }
+    }
     .faqs, .faqs-page {
         .search-block {
             margin-bottom: @indent__xl;
@@ -211,6 +222,16 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .left {
+        float: left;
+        width: 48%;
+    }
+
+    .right {
+        float:right;
+        width: 48%;
+    }
+
     .faqs {
         max-width: 780px;
         margin: 0 auto;

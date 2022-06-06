@@ -4,47 +4,60 @@
  * @var \Eguana\Faq\Block\Faq $block
  */
 
-$categoryData = $block->getCategoryOptionArray();
-$faqData = $block->getFaqBindData();
+/** @var \Eguana\Faq\ViewModel\Faq  $faqViewModel */
+$faqViewModel = $block->getData('faq_view_model');
+$faqList = $faqViewModel->getFaqData(5, 1);
+$productId = null;
+$categoryId = null;
+if ($faqViewModel->isPdpPage()) {
+    $product = $faqViewModel->getProduct();
+    $productId = $product->getId();
+} else {
+    $category = $faqViewModel->getCategory();
+    $categoryId = $category->getId();
+}
 ?>
-<?php if ($block->isShowFaqInPLP()):?>
-    <div class="faqs-page">
-    <?php foreach ($categoryData as $key => $value):?>
-        <?php if (!empty($faqData[$key])):?>
-            <div class="block">
-                <div class="item title" data-role="tab-collapsible">
-                    <strong class="switch"
-                            role="heading"
-                            data-toggle="trigger"
-                            data-role="tab-title"
-                            aria-level="2">
-                        <?= $block->escapeHtml($value) ?>
-                    </strong>
-                </div>
-                <div class="item content" data-role="tab-content">
-                    <div class="lists"
-                         data-mage-init='{"accordion":{
+<?php if ($faqList) :?>
+    <div class="faqs-page" data-product-id="<?=$productId?>" data-category-id="<?=$categoryId?>">
+        <div class="block">
+            <div class="item content" data-role="tab-content">
+                <div class="lists"
+                     data-mage-init='{"accordion":{
                              "collapsible": true,
                              "animate": {"duration": 300},
-                             "openedState": "_active",
                              "active": false,
                              "multipleCollapsible": true}}'>
-                        <?php foreach ($faqData[$key] as $faq):?>
-                            <div class="list">
-                                <div data-role="collapsible">
-                                    <div class="title" data-role="title">
-                                        <span><?= $block->escapeHtml($faq->getTitle()) ?></span>
-                                    </div>
-                                </div>
-                                <div class="content" data-role="content">
-                                    <?= /* @noEscape */ $block->descriptionFilter($faq->getDescription()) ?>
+                    <?php foreach ($faqList as $key => $faq) :?>
+                        <?php $html = ''?>
+                        <?php if ($key % 2 != 0) {
+                            $class = 'right';
+                            $html = '<div class="clearfix"></div>';
+                        } else {
+                            $class = 'left';
+                        }?>
+                        <div class="list <?=$class?>">
+                            <div data-role="collapsible">
+                                <div class="title" data-role="title">
+                                    <span><?= $block->escapeHtml($faq->getTitle()) ?></span>
                                 </div>
                             </div>
-                        <?php endforeach;?>
-                    </div>
+                            <div class="content" data-role="content">
+                                <?= /* @noEscape */
+                                $block->descriptionFilter($faq->getDescription()) ?>
+                            </div>
+                        </div>
+                        <?=$html?>
+                    <?php endforeach; ?>
                 </div>
             </div>
-        <?php endif;?>
-    <?php endforeach;?>
-</div>
-<?php endif;?>
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "faqLoadAjaxJs": {}
+        }
+    }
+
+    </script>
+<?php endif; ?>
