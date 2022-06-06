@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <cj_custom_catalog>
+            <custom_catalog>
+                <description_under_name_enabled>1</description_under_name_enabled>
+            </custom_catalog>
+        </cj_custom_catalog>
+    </default>
+</config>
