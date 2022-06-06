@@ -26,6 +26,7 @@ use Magento\Sales\Model\Order\Item;
 use Amore\PointsIntegration\Logger\Logger;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Store\Model\ScopeInterface;
+use Eguana\RedInvoice\Model\ResourceModel\RedInvoice\CollectionFactory as RedInvoiceCollectionFactory;
 
 class PosOrderData
 {
@@ -86,6 +87,12 @@ class PosOrderData
     private $pointsIntegrationLogger;
 
     /**
+     * @var RedInvoiceCollectionFactory
+     */
+    private $redInvoiceCollectionFactory;
+
+    /**
+     * @param RedInvoiceCollectionFactory $redInvoiceCollectionFactory
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -100,6 +107,7 @@ class PosOrderData
      * @param Logger $pointsIntegrationLogger
      */
     public function __construct(
+        RedInvoiceCollectionFactory    $redInvoiceCollectionFactory,
         Config                         $config,
         SearchCriteriaBuilder          $searchCriteriaBuilder,
         OrderRepositoryInterface       $orderRepository,
@@ -114,6 +122,7 @@ class PosOrderData
         Logger                         $pointsIntegrationLogger
     )
     {
+        $this->redInvoiceCollectionFactory = $redInvoiceCollectionFactory;
         $this->config = $config;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
@@ -143,8 +152,18 @@ class PosOrderData
         $orderItemData = $this->getItemData($order);
         $couponCode = $order->getCouponCode();
         $invoice = $this->getInvoice($order->getEntityId());
-
-        return [
+        $redInvoiceData = [];
+        $redInvoice = $this->getDataRedInvoice($order->getEntityId());
+        if($redInvoice->getId()) {
+            $redInvoiceData = [
+                'company' => $redInvoice->getCompanyName(),
+                'taxID' => $redInvoice->getTaxCode(),
+                'address' => $redInvoice->getRoadName() . ' ' . $redInvoice->getCity() . ' ' . $redInvoice->getState(),
+                'email' => $order->getCustomerEmail(),
+                'mobile' => $order->getShippingAddress()->getTelephone(),
+            ];
+        }
+        $orderData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
             'saledate' => $this->dateFormat($order->getCreatedAt()),
@@ -155,6 +174,18 @@ class PosOrderData
             'promotionKey' => $couponCode,
             'orderInfo' => $orderItemData
         ];
+        return array_merge($orderData, $redInvoiceData);
+    }
+
+    /**
+     * @param $orderId
+     * @return DataObject
+     */
+    public function getDataRedInvoice($orderId)
+    {
+        $redInvoiceCollection = $this->redInvoiceCollectionFactory->create();
+        $redInvoiceCollection->addFieldToFilter('order_id', $orderId);
+        return $redInvoiceCollection->getFirstItem();
     }
 
     /**
