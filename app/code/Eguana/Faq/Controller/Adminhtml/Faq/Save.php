@@ -94,14 +94,13 @@ class Save extends AbstractController
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         $data = $this->getRequest()->getPostValue();
-        if ($data) {
 
+        /** @var Faq $model */
+        $model = $this->faqFactory->create();
+        if ($data) {
             if (empty($data['entity_id'])) {
                 $data['entity_id'] = null;
             }
-
-            /** @var Faq $model */
-            $model = $this->faqFactory->create();
 
             $id = $this->getRequest()->getParam('entity_id');
             if ($id) {
@@ -112,22 +111,24 @@ class Save extends AbstractController
                     return $this->processResultRedirect($model, $resultRedirect, $data);
                 }
             }
-
-            $check = $this->categoryValidation($data);
-            if ($check['error']) {
-                if ($check['redirect'] == 'edit' && $data['entity_id']) {
-                    return $resultRedirect->setPath(
-                        '*/*/edit',
-                        [
-                            'entity_id' => $data['entity_id'],
-                            '_current' => true
-                        ]
-                    );
-                } else {
-                    $this->dataPersistor->set('eguana_faq', $data);
-                    return $resultRedirect->setPath('*/*/new');
+            if (!isset($data['is_use_in_catalog']) || !$data['is_use_in_catalog']) {
+                $check = $this->categoryValidation($data);
+                if ($check['error']) {
+                    if ($check['redirect'] == 'edit' && $data['entity_id']) {
+                        return $resultRedirect->setPath(
+                            '*/*/edit',
+                            [
+                                'entity_id' => $data['entity_id'],
+                                '_current' => true
+                            ]
+                        );
+                    } else {
+                        $this->dataPersistor->set('eguana_faq', $data);
+                        return $resultRedirect->setPath('*/*/new');
+                    }
                 }
             }
+
             $model->setData($data);
 
             try {
@@ -157,6 +158,11 @@ class Save extends AbstractController
      */
     private function processResultRedirect($model, $resultRedirect, $data)
     {
+        if (!isset($data['is_use_in_catalog']) || !$data['is_use_in_catalog']) {
+            $urlPath = '*/*/edit';
+        } else {
+            $urlPath = '*/*/editfaqcatalog';
+        }
         if ($this->getRequest()->getParam('back', false) === 'duplicate') {
             $newFaq = $this->faqFactory->create(['data' => $data]);
             $newFaq->setId(null);
@@ -164,17 +170,17 @@ class Save extends AbstractController
             $newFaq->setStoreId($model->getStoreId());
             $this->faqRepository->save($newFaq);
             $this->messageManager->addSuccessMessage(__('You duplicated the faq.'));
-            return $resultRedirect->setPath(
-                '*/*/edit',
-                [
-                    'entity_id' => $newFaq->getId(),
-                    '_current' => true
-                ]
-            );
+                return $resultRedirect->setPath(
+                    $urlPath,
+                    [
+                        'entity_id' => $newFaq->getId(),
+                        '_current' => true
+                    ]
+                );
         }
         $this->dataPersistor->clear('eguana_faq');
         if ($this->getRequest()->getParam('back', false) === 'continue') {
-            return $resultRedirect->setPath('*/*/edit', ['entity_id' => $model->getId(), '_current' => true]);
+            return $resultRedirect->setPath($urlPath, ['entity_id' => $model->getId(), '_current' => true]);
         }
 
         return $resultRedirect->setPath('*/*/index');
