@@ -33,7 +33,7 @@ $helper = $this->helper(\CJ\PageBuilder\Helper\Data::class);
         <?php endif; ?>>
         <?= /* @noEscape */ $titleHtml ?>
     </h1>
-    <?php if ($categoryDescription = $viewModel->getCatalogCategoryDescription()): ?>
+    <?php if ($viewModel && $categoryDescription = $viewModel->getCatalogCategoryDescription()): ?>
         <p><?= $categoryDescription ?></p>
     <?php endif; ?>
     <?= $block->getChildHtml() ?>
