@@ -197,6 +197,48 @@ class RedInvoice extends AbstractModel implements RedInvoiceInterface, IdentityI
     }
 
     /**
+     * Get Email
+     *
+     * @return string|null
+     */
+    public function getEmail()
+    {
+        return $this->getData(self::EMAIL);
+    }
+
+    /**
+     * Set Email
+     *
+     * @param string $email
+     * @return RedInvoice
+     */
+    public function setEmail($email)
+    {
+        return $this->setData(self::EMAIL, $email);
+    }
+
+    /**
+     * Get Ward
+     *
+     * @return string|null
+     */
+    public function getWard()
+    {
+        return $this->getData(self::WARD);
+    }
+
+    /**
+     * Set Ward
+     *
+     * @param string $ward
+     * @return RedInvoice
+     */
+    public function setWard($ward)
+    {
+        return $this->setData(self::WARD, $ward);
+    }
+
+    /**
      * Get Road Name
      *
      * @return string|null

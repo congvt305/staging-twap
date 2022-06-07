@@ -42,6 +42,15 @@ define([
                                 return false;
                             }
 
+                            var email = '[name="email"]';
+                            email = $(email).val();
+                            $(".email-error").css("display", "none");
+                            if (email.length == 0) {
+                                $(".email-error").css("display", "block");
+                                $("#email").focus();
+                                return false;
+                            }
+
                             var state = '[name="state"]';
                             state = $(state).val();
                             $(".state-error").css("display", "none");
