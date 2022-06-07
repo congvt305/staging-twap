@@ -34,6 +34,52 @@
 }
 
 //
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .widget-product-carousel {
+        .product-item-inner {
+            display: block !important;
+
+            .stock {
+                display: none;
+            }
+        }
+
+        .slick-slide {
+            vertical-align: top;
+        }
+
+        .product-item {
+            .tocart,
+            .towishlist {
+                padding: 15px 10px;
+
+                &:before {
+                    color: @primary__color__lighter !important;
+                }
+            }
+
+            .product-reviews-summary {
+                display: block;
+                margin: 0;
+
+                .reviews-actions {
+                    display: none;
+                }
+
+                .rating-summary {
+                    text-align: center;
+                    left: 0;
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
+//
 //  Tablet
 //  _____________________________________________
 
