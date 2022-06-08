@@ -168,7 +168,6 @@ class PosOrderData
             } else {
                 $shippingAddress = $order->getShippingAddress();
                 $redInvoiceData = [
-                    'company' => $shippingAddress->getFirstname() . ' ' . $shippingAddress->getLastname(),
                     'address' => preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())) . ', ' .
                         $shippingAddress->getWard() . ', ' . $shippingAddress->getCity() . ', ' . $shippingAddress->getRegion(),
                     'email' => $shippingAddress->getEmail()
