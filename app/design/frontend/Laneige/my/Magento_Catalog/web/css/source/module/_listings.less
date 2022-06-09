@@ -461,7 +461,7 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    .products-grid {
+    .products-grid, .widget-product-carousel {
         .product-item {
             margin-bottom: @indent__l;
             width: calc(~'(100% - @{indent__base}*3) / 4');
