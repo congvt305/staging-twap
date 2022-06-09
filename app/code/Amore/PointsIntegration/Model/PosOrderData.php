@@ -30,7 +30,6 @@ use Eguana\RedInvoice\Model\ResourceModel\RedInvoice\CollectionFactory as RedInv
 
 class PosOrderData
 {
-    const VN_LANEIGE = 'vn_laneige';
     const POS_ORDER_TYPE_ORDER = '000010';
     const POS_ORDER_TYPE_CANCEL = '000030';
     const SKU_PREFIX_XML_PATH = 'sap/mall_info/sku_prefix';
@@ -154,24 +153,14 @@ class PosOrderData
         $couponCode = $order->getCouponCode();
         $invoice = $this->getInvoice($order->getEntityId());
         $redInvoiceData = [];
-
-        if ($order->getStore()->getCode() == self::VN_LANEIGE) {
-            $redInvoice = $this->getDataRedInvoice($order->getEntityId());
-            if(!$redInvoice->getId()) {
-                $redInvoiceData = [
-                    'company' => $redInvoice->getCompanyName(),
-                    'taxID' => $redInvoice->getTaxCode(),
-                    'address' => $redInvoice->getRoadName() . ', ' . $redInvoice->getWard() . ', ' . $redInvoice->getCity() . ', ' . $redInvoice->getState(),
-                    'email' => $redInvoice->getEmail()
-                ];
-            } else {
-                $shippingAddress = $order->getShippingAddress();
-                $redInvoiceData = [
-                    'address' => preg_replace('/\r\n|\r|\n/',' ',implode(PHP_EOL, $shippingAddress->getStreet())) . ', ' .
-                        $shippingAddress->getWard() . ', ' . $shippingAddress->getCity() . ', ' . $shippingAddress->getRegion(),
-                    'email' => $shippingAddress->getEmail()
-                ];
-            }
+        $redInvoice = $this->getDataRedInvoice($order->getEntityId());
+        if ($redInvoice->getId()) {
+            $redInvoiceData = [
+                'company' => $redInvoice->getCompanyName(),
+                'taxID' => $redInvoice->getTaxCode(),
+                'address' => $redInvoice->getRoadName() . ', ' . $redInvoice->getWard() . ', ' . $redInvoice->getCity() . ', ' . $redInvoice->getState(),
+                'email' => $redInvoice->getEmail()
+            ];
         }
         $orderData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
