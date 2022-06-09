@@ -71,16 +71,20 @@ class ShippingInformationManagement
         $isApply = $extAttributes->getIsApply();
         $companyName = $extAttributes->getCompanyName();
         $taxCode = $extAttributes->getTaxCode();
+        $email = $extAttributes->getEmail();
         $state = $extAttributes->getState();
         $city = $extAttributes->getCity();
+        $ward = $extAttributes->getWard();
         $roadName = $extAttributes->getRoadName();
 
         try {
             $this->checkoutSession->setIsApply($isApply);
             $this->checkoutSession->setCompanyName($companyName);
             $this->checkoutSession->setTaxCode($taxCode);
+            $this->checkoutSession->setEmail($email);
             $this->checkoutSession->setState($state);
             $this->checkoutSession->setCity($city);
+            $this->checkoutSession->setWard($ward);
             $this->checkoutSession->setRoadName($roadName);
 
             $message = 'Red invoice info after setting into checkout session';
@@ -88,8 +92,10 @@ class ShippingInformationManagement
               'is_apply' => $isApply ? 'Yes' : 'No',
                 'company_name' => $companyName,
                 'tax_code' => $taxCode,
+                'email' => $email,
                 'state' => $state,
                 'city' => $city,
+                'ward' => $ward,
                 'road_name' => $roadName
             ];
             $this->redInvoicelogger->logRedInvoiceInfo($message, $redInvoiceInfo);
