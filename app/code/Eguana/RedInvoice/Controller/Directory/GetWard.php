@@ -39,8 +39,10 @@ class GetWard extends Action
             ->addFieldToFilter('city_id', $cityId)
             ->getSelect()->order('default_name asc');
         $collection->load();
-        $wards = $collection->getData();
-
+        $wards = "";
+        if ($collection) {
+            $wards = $collection->getData();
+        }
         $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
         $resultJson->setData(["message" => "list of states", "suceess" => true, "wards" => $wards]);
         return $resultJson;
