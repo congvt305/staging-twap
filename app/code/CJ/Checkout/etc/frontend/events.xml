@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_action_postdispatch_checkout_cart_index">
+        <observer name="CJ_Checkout::controller_action_predispatch_checkout_cart_index"
+                  instance="CJ\Checkout\Observer\ValidateLoggedInCustomer"/>
+    </event>
+    <event name="controller_action_postdispatch_checkout_cart_add">
+        <observer name="CJ_Checkout::controller_action_predispatch_checkout_cart_add"
+                  instance="CJ\Checkout\Observer\ValidateLoggedInCustomer"/>
+    </event>
+</config>
