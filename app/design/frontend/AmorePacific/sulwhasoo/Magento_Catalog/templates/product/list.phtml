@@ -23,9 +23,11 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
 $currentCategory = $block->getLayer()->getCurrentCategory();
 $categoryName = $currentCategory->getName();
 $getDefault = $block->getData('view_model');
-$productPosition = $block->getData('ga_enhanced');
-$page = $productPosition->getCurrentPage();
-$productPerPage = $productPosition->getProductPerPage();
+$gaEnhancedData = $block->getData('ga_enhanced');
+$page = $gaEnhancedData->getCurrentPage();
+$productPerPage = $gaEnhancedData->getProductPerPage();
+$rootCategory = $gaEnhancedData->getRooCategory();
+$isEnabledGAEnhanced = $gaEnhancedData->isEnabledGAEnhanced();
 
 $apRecommendName = "";
 $apProductName = "";
@@ -63,9 +65,8 @@ $apProductPosition = "";
             <?php foreach ($_productCollection as $_product): ?>
                 <li class="<?php if( $viewMode == 'list' && $i == 0 ):?>product-item-first<?php else: ?>item product product-item<?php endif;?>" data-index="<?= $i ?>">
                     <?php /* @noEscape */ $productSku = $_product->getSku() ?>
-                    <?php /* @noEscape */ $apRecommendName = $_product->getData('recommend_name')?>
                     <?php
-                    if (!empty($apRecommendName)) {
+                    if ($isEnabledGAEnhanced) {
                         $apProductName = $_product->getName();
                         $apProductId = $_product->getId();
                         $apProductPrice = $_product->getPriceInfo()->getPrice('final_price')->getValue();
@@ -99,14 +100,14 @@ $apProductPosition = "";
                                ap-click-area="prds-<?= /* @noEscape */ $getDefault->getDefaultCategory($currentCategory->getEntityId())->getName() ?>"
                                ap-click-name="prd click"
                                ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>"
-                                <?php if(!empty($apRecommendName)): ?>
+                                <?php if($isEnabledGAEnhanced): ?>
                                     ap-prd-name="<?= $apProductName ?>"
                                     ap-prd-id="<?= $apProductId ?>"
                                     ap-prd-price="<?= $apProductPrice ?>"
-                                    ap-prd-cate="<?= $categoryName ?>"
+                                    ap-prd-cate="<?= $rootCategory ?>"
                                     ap-prd-brand="<?= $apProductBrand ?>"
                                     ap-prd-position="<?= $apProductPosition ?>"
-                                    ap-prd-list="<?= $apRecommendName ?>"
+                                    ap-prd-list="<?= $categoryName ?>"
                                 <? endif; ?>
                             >
                                 <?= $productImage->toHtml() ?>
@@ -121,14 +122,14 @@ $apProductPosition = "";
                                        ap-click-area="prds-<?= /* @noEscape */ $getDefault->getDefaultCategory($currentCategory->getEntityId())->getName() ?>"
                                        ap-click-name="prd click"
                                        ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>"
-                                        <?php if(!empty($apRecommendName)): ?>
+                                        <?php if($isEnabledGAEnhanced): ?>
                                             ap-prd-name="<?= $apProductName ?>"
                                             ap-prd-id="<?= $apProductId ?>"
                                             ap-prd-price="<?= $apProductPrice ?>"
-                                            ap-prd-cate="<?= $categoryName ?>"
+                                            ap-prd-cate="<?= $rootCategory ?>"
                                             ap-prd-brand="<?= $apProductBrand ?>"
                                             ap-prd-position="<?= $apProductPosition ?>"
-                                            ap-prd-list="<?= $apRecommendName ?>"
+                                            ap-prd-list="<?= $categoryName ?>"
                                         <? endif; ?>
                                     >
                                         <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
@@ -153,14 +154,14 @@ $apProductPosition = "";
                                                    ap-click-area="prds-<?= /* @noEscape */ $getDefault->getDefaultCategory($currentCategory->getEntityId())->getName() ?>"
                                                    ap-click-name="prd click"
                                                    ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>"
-                                                    <?php if(!empty($apRecommendName)): ?>
+                                                    <?php if($apRecommendName): ?>
                                                         ap-prd-name="<?= $apProductName ?>"
                                                         ap-prd-id="<?= $apProductId ?>"
                                                         ap-prd-price="<?= $apProductPrice ?>"
-                                                        ap-prd-cate="<?= $categoryName ?>"
+                                                        ap-prd-cate="<?= $rootCategory ?>"
                                                         ap-prd-brand="<?= $apProductBrand ?>"
                                                         ap-prd-position="<?= $apProductPosition ?>"
-                                                        ap-prd-list="<?= $apRecommendName ?>"
+                                                        ap-prd-list="<?= $categoryName ?>"
                                                     <? endif; ?>
                                                 >
                                                     <span><?= $block->escapeHtml(__('Detail')) ?></span>
