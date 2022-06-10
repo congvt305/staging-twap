@@ -24,7 +24,8 @@ class Redemption
         'utm_source' => 'utm_source',
         'utm_medium' => 'utm_medium',
         'utm_content' => 'utm_content',
-        'creation_time' => 'redeem_date',
+        'creation_time' => 'creation_time',
+        'redeem_date' => 'redeem_date',
         'update_time' => 'update_time'
     ];
 
@@ -42,6 +43,11 @@ class Redemption
         [
             'main_table',
             'creation_time',
+            'creation_time'
+        ],
+        [
+            'main_table',
+            'redeem_date',
             'redeem_date'
         ],
         [
@@ -63,6 +69,16 @@ class Redemption
             'storeinfo',
             'title',
             'store_counter'
+        ],
+        [
+            'storeview',
+            'name',
+            'store_view'
+        ],
+        [
+            'main_table',
+            'email',
+            'email'
         ]
     ];
 
@@ -312,14 +328,15 @@ class Redemption
                     ->getSelect()
                     ->joinLeft(['redemption_store' => $connection->getTableName('eguana_redemption_store')],
                         'redemption_store.redemption_id = secondTable.redemption_id', [])
+                    ->joinLeft(['storeview' => $connection->getTableName('store')],
+                    'storeview.store_id = redemption_store.store_id', [])
                     ->joinRight(['counter' => $connection->getTableName('eguana_redemption_counter')],
                         'main_table.counter_id = counter.offline_store_id', [])
                     ->joinLeft(['storeinfo' => 'storeinfo'], 'storeinfo.entity_id = counter.offline_store_id', [
                         RedemptionInterface::STORE_COUNTER => 'title'
                     ])
-                    ->group('main_table.entity_id')
+                    ->group(['main_table.entity_id', 'storeview.name'])
                     ->order('main_table.entity_id DESC');
-
                 $collection->getSelect()->setPart('COLUMNS', $this->_header);
             }
 
