@@ -154,7 +154,7 @@ $apProductPosition = "";
                                                    ap-click-area="prds-<?= /* @noEscape */ $getDefault->getDefaultCategory($currentCategory->getEntityId())->getName() ?>"
                                                    ap-click-name="prd click"
                                                    ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>"
-                                                    <?php if($apRecommendName): ?>
+                                                    <?php if($isEnabledGAEnhanced): ?>
                                                         ap-prd-name="<?= $apProductName ?>"
                                                         ap-prd-id="<?= $apProductId ?>"
                                                         ap-prd-price="<?= $apProductPrice ?>"
