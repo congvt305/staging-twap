@@ -4,4 +4,5 @@
 	<preference for="Magento\AdminGws\Plugin\CollectionFilter" type="Amore\Sales\Plugin\CollectionFilter" />
 	<preference for="Magento\Sales\Model\ResourceModel\Report\Order" type="Amore\Sales\Model\ResourceModel\Report\Order" />
 	<preference for="Magento\Reports\Block\Adminhtml\Sales\Sales\Grid" type="Amore\Sales\Block\Adminhtml\Sales\Sales\Grid" />
+    <preference for="Magento\Sales\Block\Adminhtml\Order\View" type="Amore\Sales\Block\Adminhtml\Order\View" />
 </config>
