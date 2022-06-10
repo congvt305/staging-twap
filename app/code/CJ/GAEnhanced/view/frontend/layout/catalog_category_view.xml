@@ -4,7 +4,7 @@
         <referenceBlock name="category.products.list">
             <arguments>
                 <argument name="ga_enhanced"
-                          xsi:type="object">CJ\GAEnhanced\ViewModel\GetProductPosition</argument>
+                          xsi:type="object">CJ\GAEnhanced\ViewModel\GetGAEnhancedData</argument>
             </arguments>
         </referenceBlock>
     </body>
