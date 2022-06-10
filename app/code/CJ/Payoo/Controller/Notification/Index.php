@@ -71,7 +71,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
      * @param \Magento\Framework\DB\Transaction $transaction
      * @param \CJ\Payoo\Helper\Data $config
      * @param \Magento\Framework\Serialize\Serializer\Json $json
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param \CJ\Payoo\Logger\Logger $logger
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -82,7 +82,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
         \Magento\Framework\DB\Transaction $transaction,
         \CJ\Payoo\Helper\Data $config,
         \Magento\Framework\Serialize\Serializer\Json $json,
-        \Psr\Log\LoggerInterface $logger
+        \CJ\Payoo\Logger\Logger $logger
     ) {
         $this->request = $request;
         $this->scopeConfig = $scopeConfig;
@@ -96,6 +96,8 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
     }
 
     /**
+     * Update status order after redirect from Payoo
+     *
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
      */
     public function execute()
@@ -137,40 +139,45 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
     /**
      * Update Order Status
      *
-     * @param $order_no
-     * @param $status
+     * @param string $order_no
+     * @param string $status
      * @return void
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     function UpdateOrderStatus($order_no, $status)
     {
-        $order = $this->orderFactory->create()->loadByIncrementId($order_no);
-        $statusPaymentSuccess = $this->config->getPaymentSuccessStatus();
-        if ((string)$status === (string)$statusPaymentSuccess) {
-            if(!$order->hasInvoices()) {
-                $invoice = $this->invoiceService->prepareInvoice($order);
-                $invoice->register();
-                $invoice->pay();
+        try {
+            $order = $this->orderFactory->create()->loadByIncrementId($order_no);
+            $statusPaymentSuccess = $this->config->getPaymentSuccessStatus();
+            if ((string)$status === (string)$statusPaymentSuccess) {
+                if(!$order->hasInvoices()) {
+                    $invoice = $this->invoiceService->prepareInvoice($order);
+                    $invoice->register();
+                    $invoice->pay();
 
-                $transactionSave = $this->transaction->addObject(
-                    $invoice
-                )->addObject(
-                    $invoice->getOrder()
-                );
-                $transactionSave->save();
+                    $transactionSave = $this->transaction->addObject(
+                        $invoice
+                    )->addObject(
+                        $invoice->getOrder()
+                    );
+                    $transactionSave->save();
 
+                }
+                $order->setState($status);
+                $message = 'Payoo Transaction Complete';
             }
-            $order->setState($status);
-            $message = 'Payoo Transaction Complete';
+            else {
+                $message = 'Payoo Transaction Cancel';
+            }
+            $order->setStatus($status)->save();
+            $order->addStatusHistoryComment(
+                __($message, $status)
+            )
+                ->setIsCustomerNotified(true)
+                ->save();
+        } catch (\Exception $e) {
+            $this->logger->error('Payoo update status ' . $status . ' for order ' . $order_no . ' error in notification: ' . $e->getMessage());
         }
-        else {
-            $message = 'Payoo Transaction Cancel';
-        }
-        $order->setStatus($status)->save();
-        $order->addStatusHistoryComment(
-            __($message, $status)
-        )
-            ->setIsCustomerNotified(true)
-            ->save();
+
     }
 }
