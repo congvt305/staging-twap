@@ -303,7 +303,7 @@ class Tablerate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implemen
      */
     private function getNinjaVanTracking($trackingValue)
     {
-        $trackingUrl = $this->ninjavanHelper->getNinjaVanTrackingUrl();
+        $trackingUrl = $this->ninjavanHelper->getNinjaVanTrackingUrl() ?: $this->ninjavanHelper->getNinjaVanTrackUrl();
         $title = $this->ninjavanHelper->getNinjaVanTitle();
         if (!$this->result) {
             $this->result = $this->trackFactory->create();
@@ -314,7 +314,7 @@ class Tablerate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implemen
         $tracking->setTracking($trackingValue);
         $tracking->setPopup(1);
         $tracking->setUrl(
-            "{$trackingUrl}=={$trackingValue}"
+            "{$trackingUrl}{$trackingValue}"
         );
         $this->result->append($tracking);
     }

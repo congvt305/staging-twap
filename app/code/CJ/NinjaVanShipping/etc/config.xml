@@ -53,6 +53,7 @@
                 <title>NinjaVan</title>
                 <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
                 <handling_type>F</handling_type>
+                <tracking_url>https://www.ninjavan.co/en-my/tracking?id=</tracking_url>
             </ninjavan>
         </carriers>
     </default>
