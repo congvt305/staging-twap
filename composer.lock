@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9a0e10b6b339859643591cd8bc96f5f6",
+    "content-hash": "11848e05d20d78d49d00ab29bb14a475",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -136,6 +136,455 @@
                 "adyen"
             ],
             "time": "2021-04-30T14:03:59+00:00"
+        },
+        {
+            "name": "amasty/advanced-review",
+            "version": "1.15.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/advanced-review-1.15.2-ee.zip"
+            },
+            "require": {
+                "amasty/aminvisiblecaptcha": ">=2.4.4",
+                "amasty/base": ">=1.12.19",
+                "amasty/cron-schedule-list": ">=1.0.5",
+                "php": ">=7.3.0"
+            },
+            "suggest": {
+                "amasty/advanced-review-graphql": "Install advanced-review-graphql module to activate GraphQl and Advanced Review integration.",
+                "amasty/advanced-review-mftf-3": "Install advanced-review-mftf-3 module to implement module's mftf-tests for Magento 2.4.0+ version.",
+                "amasty/advanced-reviews-page-builder": "Install advanced-reviews-page-builder module to activate PageBuilder and Advanced Review integration."
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\AdvancedReview\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Advanced Review by Amasty"
+        },
+        {
+            "name": "amasty/aminvisiblecaptcha",
+            "version": "2.4.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/aminvisiblecaptcha-2.4.4-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.10.2",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\InvisibleCaptcha\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Amasty Google Invisible Captcha"
+        },
+        {
+            "name": "amasty/base",
+            "version": "1.13.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/base-1.13.2-ee.zip"
+            },
+            "require": {
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Base\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Amasty Base"
+        },
+        {
+            "name": "amasty/cron-schedule-list",
+            "version": "1.0.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/cron-schedule-list-1.0.5-ee.zip"
+            },
+            "require": {
+                "amasty/base": "^1.3.5",
+                "php": "7.0.2|7.0.4|~7.0.6|^7.1.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\CronScheduleList\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Cron Schedule List by Amasty"
+        },
+        {
+            "name": "amasty/feed",
+            "version": "2.6.20",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/feed-2.6.20-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "amasty/cron-schedule-list": ">=1.0.5",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Feed\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Product Feed by Amasty"
+        },
+        {
+            "name": "amasty/module-advanced-conditions",
+            "version": "1.5.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/module-advanced-conditions-1.5.4-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.4.7",
+                "php": "^7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Conditions\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Advanced Conditions by Amasty"
+        },
+        {
+            "name": "amasty/module-banners-lite",
+            "version": "1.0.19",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/module-banners-lite-1.0.19-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.4.5",
+                "php": "^7.1.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\BannersLite\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Promo Banners Lite by Amasty"
+        },
+        {
+            "name": "amasty/module-image-optimizer",
+            "version": "1.1.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-image-optimizer-1.1.4-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "amasty/module-page-speed-tools": ">=1.0.5",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ImageOptimizer\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Image Optimizer by Amasty"
+        },
+        {
+            "name": "amasty/module-image-optimizer-ui",
+            "version": "1.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-image-optimizer-ui-1.1.2-ee.zip"
+            },
+            "require": {
+                "amasty/base": "*",
+                "amasty/module-image-optimizer": ">=1.1.4",
+                "php": "^7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ImageOptimizerUi\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Image Optimizer Ui by Amasty"
+        },
+        {
+            "name": "amasty/module-lazy-load",
+            "version": "1.1.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-lazy-load-1.1.4-ee.zip"
+            },
+            "require": {
+                "amasty/base": "*",
+                "amasty/module-page-speed-tools": ">=1.0.5",
+                "php": "^7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\LazyLoad\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Lazy Load by Amasty"
+        },
+        {
+            "name": "amasty/module-lazy-load-ui",
+            "version": "1.0.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-lazy-load-ui-1.0.0-ee.zip"
+            },
+            "require": {
+                "amasty/base": "*",
+                "amasty/module-lazy-load": ">=1.1.4",
+                "php": "^7.1.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\LazyLoadUi\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Lazy Load Admin Ui by Amasty"
+        },
+        {
+            "name": "amasty/module-page-speed-optimizer",
+            "version": "2.2.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-page-speed-optimizer-2.2.0-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.9.4",
+                "amasty/module-image-optimizer-ui": ">=1.1.2",
+                "amasty/module-lazy-load-ui": ">=1.0.0",
+                "amasty/module-page-speed-tools": ">=1.0.5",
+                "php": "^7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\PageSpeedOptimizer\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Google Page Speed Optimizer by Amasty"
+        },
+        {
+            "name": "amasty/module-page-speed-tools",
+            "version": "1.0.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-page-speed-tools-1.0.5-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.9.4",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\PageSpeedTools\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Google Page Speed Tools by Amasty"
+        },
+        {
+            "name": "amasty/module-salesrulewizard",
+            "version": "1.0.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/module-salesrulewizard-1.0.3-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.4.5",
+                "amasty/promo": ">=2.11.0",
+                "php": "^7.1.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\SalesRuleWizard\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Sales Rule Wizard by Amasty"
+        },
+        {
+            "name": "amasty/promo",
+            "version": "2.11.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/promo-2.11.0-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.4.5",
+                "amasty/module-advanced-conditions": ">=1.5.4",
+                "amasty/module-banners-lite": ">=1.0.19",
+                "amasty/module-salesrulewizard": ">=1.0.3",
+                "amasty/rgrid": ">=1.0.7",
+                "php": "^7.3.0"
+            },
+            "suggest": {
+                "amasty/module-promo-mftf-2": "Install module-promo-mftf-2 module to be able to run Free Gift MFTF tests for Magento 2.3.5+ version.",
+                "amasty/module-promo-mftf-3": "Install module-promo-mftf-3 module to be able to run Free Gift MFTF tests for Magento 2.4.0+ version."
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Promo\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Free Gift by Amasty"
+        },
+        {
+            "name": "amasty/reviews_import_export",
+            "version": "1.0.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/reviews_import_export-1.0.3-ee.zip"
+            },
+            "require": {
+                "amasty/advanced-review": ">=1.15.2",
+                "amasty/base": "*",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ReviewsImportExport\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Reviews Import Export by Amasty"
+        },
+        {
+            "name": "amasty/rgrid",
+            "version": "1.0.8",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/rgrid-1.0.8-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.4.7",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Rgrid\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Extended Rules Grid by Amasty"
         },
         {
             "name": "amzn/amazon-pay-and-login-magento-2-module",
