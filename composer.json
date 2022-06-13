@@ -36,6 +36,7 @@
         "amasty/feed": ">=2.6.19",
         "amasty/module-advanced-conditions": ">=1.5.3",
         "amasty/module-banners-lite": ">=1.0.19",
+        "amasty/module-page-speed-optimizer": "^2.2",
         "amasty/module-salesrulewizard": ">=1.0.3",
         "amasty/promo": "^2.11",
         "amasty/reviews_import_export": "^1.0",
