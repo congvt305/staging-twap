@@ -208,8 +208,6 @@ class PosReturnData
                 $itemTotalDiscount = abs(round($this->getRateAmount($orderItem->getDiscountAmount(), $orderItem->getQtyOrdered(), $rmaItem->getQtyRequested())
                     + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested())));
 
-                $product = $this->productRepository->get($rmaItem->getProductSku(), false, $storeId);
-
                 $stripSku = str_replace($skuPrefix, '', $orderItem->getSku());
 
                 $rmaItemData[] = [
