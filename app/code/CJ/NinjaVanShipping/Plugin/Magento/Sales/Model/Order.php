@@ -84,25 +84,8 @@ class Order
             throw new Exception(__('This order cannot cancel now.'));
         }
 
-        if ((bool)$this->ninjavanHelper->isNinjaVanEnabled() && $order->getShippingMethod() == 'ninjavan_tablerate' && $trackingNumber = $this->getTrackingNumber($order)) {
+        if ((bool)$this->ninjavanHelper->isNinjaVanEnabled() && $order->getShippingMethod() == 'ninjavan_tablerate') {
             try {
-                if (!$order->getData('ninjavan_shipment_cancel')) {
-                    $response = $this->ninjavanCancelShipment->requestCancelShipment($trackingNumber, $order);
-                    $message = 'The NinjaVan Shipment successfully cancelled';
-                    if (isset($response['trackingId'])) {
-                        $message .= ' - Tracking Id: ' . $response['trackingId'];
-                        $order->setData('ninjavan_shipment_cancel', 1);
-                    }
-                    if (isset($response['status'])) {
-                        $message .= ' - Status: ' . $response['status'];
-                    }
-                    if (isset($response['updatedAt'])) {
-                        $message .= ' - Updated at: ' . $response['updatedAt'];
-                    }
-                    $this->logger->info($message);
-                    $order->addCommentToStatusHistory($message);
-                    $order->save();
-                }
                 /**
                  * create credit memo and refun order
                  */
@@ -154,19 +137,5 @@ class Order
             }
         }
 
-    }
-
-    private function getTrackingNumber(\Magento\Sales\Model\Order $order)
-    {
-        $trackingNumber = '';
-        /** @var Collection $trackingCollection */
-        $trackingCollection = $order->getTracksCollection();
-        if ($trackingCollection->getSize()) {
-            // innis only has 1 shipment per 1 order
-            /** @var Track $tracking */
-            $tracking = $trackingCollection->getLastItem();
-            $trackingNumber = $tracking->getTrackNumber();
-        }
-        return $trackingNumber;
     }
 }
