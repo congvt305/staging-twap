@@ -43,6 +43,11 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
     const SUCCESS_STATUS = 1;
 
     /**
+     * @var \CJ\Payoo\Logger\Logger $logger
+     */
+    private $logger;
+
+    /**
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
@@ -50,6 +55,7 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
      * @param \Magento\Sales\Model\Service\InvoiceService $invoiceService
      * @param \CJ\Payoo\Helper\Data $config
      * @param \Magento\Framework\DB\Transaction $transaction
+     * @param \CJ\Payoo\Logger\Logger $logger
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -58,7 +64,8 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
         \Magento\Sales\Api\Data\OrderInterfaceFactory $orderFactory,
         \Magento\Sales\Model\Service\InvoiceService $invoiceService,
         \CJ\Payoo\Helper\Data $config,
-        \Magento\Framework\DB\Transaction $transaction
+        \Magento\Framework\DB\Transaction $transaction,
+        \CJ\Payoo\Logger\Logger $logger
     ) {
         $this->config = $config;
         $this->request = $request;
@@ -66,6 +73,7 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
         $this->scopeConfig = $scopeConfig;
         $this->transaction = $transaction;
         $this->orderFactory = $orderFactory;
+        $this->logger = $logger;
         parent::__construct($context, $request, $scopeConfig, $orderFactory, $invoiceService, $transaction);
     }
 
@@ -100,35 +108,43 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
     }
 
     /**
-     * {@inheritDoc}
+     * Update Order Status
+     *
+     * @param string $order_no
+     * @param string $status
+     * @return void
      */
     function UpdateOrderStatus($order_no, $status)
     {
-        $order = $this->orderFactory->create()->loadByIncrementId($order_no);
-        $statusPaymentSuccess = $this->config->getPaymentSuccessStatus();
-        if ($status === $statusPaymentSuccess) {
-            if (!$order->hasInvoices()) {
-                $invoice = $this->invoiceService->prepareInvoice($order);
-                $invoice->register();
-                $invoice->pay();
+        try {
+            $order = $this->orderFactory->create()->loadByIncrementId($order_no);
+            $statusPaymentSuccess = $this->config->getPaymentSuccessStatus();
+            if ($status === $statusPaymentSuccess) {
+                if (!$order->hasInvoices()) {
+                    $invoice = $this->invoiceService->prepareInvoice($order);
+                    $invoice->register();
+                    $invoice->pay();
 
-                $transactionSave = $this->transaction->addObject(
-                    $invoice
-                )->addObject(
-                    $invoice->getOrder()
-                );
-                $transactionSave->save();
+                    $transactionSave = $this->transaction->addObject(
+                        $invoice
+                    )->addObject(
+                        $invoice->getOrder()
+                    );
+                    $transactionSave->save();
+                }
+                $order->setState($status);
+                $message = 'Payoo Transaction Complete';
+            } else {
+                $message = 'Payoo Transaction Cancel';
             }
-            $order->setState($status);
-            $message = 'Payoo Transaction Complete';
-        } else {
-            $message = 'Payoo Transaction Cancel';
+            $order->setStatus($status)->save();
+            $order->addStatusHistoryComment(
+                __($message, $status)
+            )
+                ->setIsCustomerNotified(true)
+                ->save();
+        } catch (\Exception $e) {
+            $this->logger->error('Payoo update status ' . $status . ' for order ' . $order_no . ' error: ' . $e->getMessage());
         }
-        $order->setStatus($status)->save();
-        $order->addStatusHistoryComment(
-            __($message, $status)
-        )
-            ->setIsCustomerNotified(true)
-            ->save();
     }
 }
