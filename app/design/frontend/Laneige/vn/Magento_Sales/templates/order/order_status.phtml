@@ -1,0 +1,15 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php /** @var $block \Magento\Sales\Block\Order\Info */ ?>
+<div class="order-id">
+    <strong><?= $block->escapeHtml(__('Order #')) ?></strong>
+    <?= $block->escapeHtml($block->getOrder()->getRealOrderId()) ?>
+    <div class="order-status"><?= $block->getOrder()->getStatus() == 'payment_review' ? __('Payment Review') : $block->escapeHtml($block->getOrder()->getStatusLabel()) ?></div>
+    <?php if ($block->getOrder()->getStatus() === 'shipment_failure'): ?>
+    <div class="order-status-message"><?= $block->escapeHtml(__('Due to the abnormal delivery of the CVS, please contact the customer service and place the order again.')) ?></div>
+    <?php endif; ?>
+</div>
