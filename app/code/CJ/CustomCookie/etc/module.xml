@@ -5,6 +5,9 @@
     <module name="CJ_CustomCookie">
         <sequence>
             <module name="Magento_Cookie"/>
+            <module name="Magento_GoogleAnalytics"/>
+            <module name="Magento_DataServices"/>
+            <module name="Magento_GoogleTagManager"/>
         </sequence>
     </module>
 </config>
