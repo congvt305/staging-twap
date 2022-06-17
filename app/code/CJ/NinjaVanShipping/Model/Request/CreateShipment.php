@@ -146,6 +146,9 @@ class CreateShipment
                 && ($response->getStatusCode() == 401 || isset($contents['error']['code']))
             ) {
                 if ($contents['error']['code'] == self::INVALID_TOKEN_CODE) {
+                    $this->logger->addError('Error when creating order in Ninjavan: ' .
+                        $this->json->serialize($contents)
+                    );
                     try {
                         if ($tokenData && $tokenData->getDataByKey('token_id')) {
                             $tokenDataFactory = $this->tokenDataFactory->create()->load($tokenData->getDataByKey('token_id'));
@@ -174,13 +177,19 @@ class CreateShipment
                         $response = $client->post($url, ['json' => $data]);
                         $contentsRetry = $this->json->unserialize($response->getBody()->getContents());
 
-                        if (isset($contentsRetry['error']) && $contentsRetry['error']['code'] == self::INVALID_TOKEN_CODE) {
+                        if (isset($contentsRetry['error'])) {
                             $this->logger->addError('Error when retrying to create NV Order: ' . $this->json->serialize($contentsRetry['error']));
                             continue;
                         }
                         $contents = $contentsRetry;
                         break;
                     }
+                }
+
+                if (isset($contents['error'], $contents['error']['code']) && $contents['error']['code'] == self::DUPLICATE_TRACKING_CODE) {
+                    $this->logger->addError('Error when creating order in Ninjavan: ' .
+                        $this->json->serialize($contents)
+                    );
                 }
             }
             if (isset($contents['messages'])) {
@@ -194,7 +203,6 @@ class CreateShipment
 
         return $contents;
     }
-
     /**
      * @param \Magento\Sales\Model\Order $order
      * @return array
