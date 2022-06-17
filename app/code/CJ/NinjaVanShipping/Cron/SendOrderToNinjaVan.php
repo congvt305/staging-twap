@@ -172,7 +172,6 @@ class SendOrderToNinjaVan
                     $order->setState('processing');
                     $order->setStatus('processing_with_shipment');
                     $order->setData('sent_to_ninjavan', 1);
-                    $order->save();
                 }
                 if (isset($response['error'])) {
                     $message = $response['error']['message'];
@@ -182,6 +181,7 @@ class SendOrderToNinjaVan
                     }
                 }
                 $this->logger->info('ninjavan | message: ', [$message]);
+                $order->save();
             } catch (\Exception $e) {
                 $this->logger->critical('ninjavan | start creating shipment failed: order id ', [$order->getId()]);
                 $this->logger->error($e->getMessage());

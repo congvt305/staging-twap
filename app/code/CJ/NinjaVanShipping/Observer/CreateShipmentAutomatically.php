@@ -217,7 +217,6 @@ class CreateShipmentAutomatically implements ObserverInterface
                 $order->setState('processing');
                 $order->setStatus('processing_with_shipment');
                 $order->setData('sent_to_ninjavan', 1);
-                $order->save();
             }
             if (isset($response['error'])) {
                 $message = $response['error']['message'];
@@ -227,7 +226,7 @@ class CreateShipmentAutomatically implements ObserverInterface
                 }
             }
             $this->logger->info('ninjavan | message: ', [$message]);
-
+            $order->save();
         } catch (\Exception $exception) {
             $this->logger->info("Create delivery order failed: {$exception->getMessage()}");
             return $exception->getMessage();
