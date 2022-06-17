@@ -208,11 +208,11 @@ return [
                         'cardinal_commerce' => '/v1/songbird',
                         'authorizenet_acceptjs' => '\\.authorize\\.net/v1/Accept'
                     ],
-                    'move_script_to_bottom' => '1',
+                    'move_script_to_bottom' => '0',
                     'enable_baler_js_bundling' => '1',
                     'session_storage_logging' => '0',
                     'translate_strategy' => 'dictionary',
-                    'enable_js_bundling' => '1'
+                    'enable_js_bundling' => '0'
                 ],
                 'css' => [
                     'merge_css_files' => '1',
