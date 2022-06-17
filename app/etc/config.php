@@ -201,7 +201,7 @@ return [
                     'minify_html' => '1'
                 ],
                 'js' => [
-                    'merge_files' => '1',
+                    'merge_files' => '0',
                     'minify_files' => '1',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/',
@@ -734,13 +734,13 @@ return [
         'Amasty_Conditions' => 1,
         'Amasty_CronScheduleList' => 1,
         'Dotdigitalgroup_Email' => 1,
-        'Amasty_ImageOptimizer' => 1,
-        'Amasty_ImageOptimizerUi' => 1,
+        'Amasty_ImageOptimizer' => 0,
+        'Amasty_ImageOptimizerUi' => 0,
         'Amasty_InvisibleCaptcha' => 0,
-        'Amasty_LazyLoad' => 1,
-        'Amasty_LazyLoadUi' => 1,
-        'Amasty_PageSpeedOptimizer' => 1,
-        'Amasty_PageSpeedTools' => 1,
+        'Amasty_LazyLoad' => 0,
+        'Amasty_LazyLoadUi' => 0,
+        'Amasty_PageSpeedOptimizer' => 0,
+        'Amasty_PageSpeedTools' => 0,
         'Amasty_Promo' => 1,
         'Amasty_ReviewsImportExport' => 1,
         'Amasty_Rgrid' => 1,
