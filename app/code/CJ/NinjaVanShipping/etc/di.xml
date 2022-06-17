@@ -35,4 +35,7 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Sales\Model\Service\CreditmemoService">
+        <plugin name="before_refund" type="CJ\NinjaVanShipping\Plugin\Magento\Sales\Model\Service\CreditmemoService"/>
+    </type>
 </config>
