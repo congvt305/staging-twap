@@ -34,6 +34,18 @@
                         .lib-css(border-top, none) !important;
                     }
                 }
+                .title {
+                    &:before {
+                        content: '' !important;
+                    }
+                }
+                .content {
+                    background: none !important;
+                    padding: 15px 30px 20px 10px !important;
+                    &:before {
+                        content: '' !important;
+                    }
+                }
             }
         }
     }
@@ -283,7 +295,7 @@
 
                 .content {
                     padding-right: @indent__l*2;
-                    padding-bottom: @indent__xl*2;
+                    padding-bottom: 10px;
                 }
             }
         }
