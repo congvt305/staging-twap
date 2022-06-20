@@ -58,6 +58,16 @@ class Faq implements ArgumentInterface
     }
 
     /**
+     * Get header for faq
+     *
+     * @return null
+     */
+    public function getHeaderFaq()
+    {
+        return $this->faqHelper->getHeaderFaq();
+    }
+
+    /**
      * IsPdpPage
      *
      * @return bool

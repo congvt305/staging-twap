@@ -190,6 +190,23 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Get header for faq
+     *
+     * @return null
+     */
+    public function getHeaderFaq()
+    {
+        if ($this->isPdpPage()) {
+            $product = $this->getProduct();
+            $headerTitleFaq = ($product && $product->getHeaderTitleFaq()) ? $product->getHeaderTitleFaq() : null;
+        } else {
+            $category = $this->getCategory();
+            $headerTitleFaq = ($category && $category->getHeaderTitleFaq()) ? $category->getHeaderTitleFaq() : null;
+        }
+        return $headerTitleFaq;
+    }
+
+    /**
      * IsPdpPage
      *
      * @return bool
