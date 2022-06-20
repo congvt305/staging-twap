@@ -51,7 +51,7 @@ define([
             {default_name: $.mage.__('Please select a city or district.'), city_id: '0000'}
         ]),
         availableWards: ko.observableArray([
-            {default_name: $.mage.__(''), ward_id: '0000'}
+            {default_name: $.mage.__('Please select a ward'), ward_id: '0000'}
         ]),
         initialize: function () {
             this._super();
@@ -103,6 +103,10 @@ define([
                             for (i = 0; i < wards.length; i++) {
                                 step.availableWards.push(wards[i]);
                             }
+                        } else {
+                            step.availableWards.push(
+                                {default_name: $.mage.__('Please select a ward'), city_id: '0000'}
+                            );
                         }
                     }
                 });
