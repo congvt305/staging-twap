@@ -1,0 +1,16 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--<div data-bind="text: ko.computed(function() { console.log(222);debugger; })"></div>-->
+<if args="visible()">
+    <strong><text args="address().prefix"/> <text args="address().lastname"/> <text args="address().middlename"/>
+    <text args="address().firstname"/> <text args="address().telephone"/></strong><br/>
+    <text args="address().postcode"/>
+    <span text="address().region"></span>
+    <text args="address().city "/>
+    <text args="_.values(address().street).join(', ')"/><br/>
+
+</if>

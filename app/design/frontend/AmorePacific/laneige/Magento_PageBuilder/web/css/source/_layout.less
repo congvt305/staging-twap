@@ -40,13 +40,39 @@
     .product-item-info:hover .product-hover-image {
         opacity: 1;
     }
-}
-//
-//  Page -- Full Width
-//  _____________________________________________
 
-& when (@media-common = true) {
     .cms-index-index.page-layout-cms-full-width .nav-sections {
         margin-bottom: 0;
+    }
+
+    .half-background-image {
+        background-position: 50% 0 !important;
+        background-size: 100% 50% !important;
+    }
+
+    .main-category-banner,
+    .main-promotion-banner {
+        .pagebuilder-column-group {
+            flex-wrap: nowrap;
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .main-category-banner,
+    .main-promotion-banner {
+        margin-bottom: 0 !important;
+    }
+
+    .main-promotion-banner {
+        p {
+            &:first-child {
+                min-height: 48px;
+            }
+        }
     }
 }

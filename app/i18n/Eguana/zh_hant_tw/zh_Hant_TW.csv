@@ -4629,7 +4629,7 @@ new products will be created. Use this step to customize images and price for yo
 "We use cookies to make your experience better.","We use cookies to make your experience better.",module,Magento_Cookie
 "To comply with the new e-Privacy directive, we need to ask for your consent to set the cookies.","To comply with the new e-Privacy directive, we need to ask for your consent to set the cookies.",module,Magento_Cookie
 "<a href=""%1"">Learn more</a>.","<a href=""%1"">Learn more</a>.",module,Magento_Cookie
-"Allow Cookies","同意使用Cookies",module,Magento_Cookie
+"Allow Cookies","關閉",module,Magento_Cookie
 "Default Cookie Settings","Default Cookie Settings",module,Magento_Cookie
 "Cookie Lifetime","Cookie Lifetime",module,Magento_Cookie
 "Cookie Path","Cookie Path",module,Magento_Cookie
@@ -12833,7 +12833,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Enter discount code","輸入折扣碼",module,Magento_SalesRule
 "Apply Discount","申請折扣",module,Magento_SalesRule
 "Cancel coupon","取消扣款機",module,Magento_SalesRule
-"Your coupon was successfully removed.","Your coupon was successfully removed.",module,Magento_SalesRule
+"Your coupon was successfully removed.","已成功刪除折扣碼.",module,Magento_SalesRule
 "Your coupon was successfully applied.","您已成功使用此折扣碼.",module,Magento_SalesRule
 "Promotion","晉升",module,Magento_SalesRule
 "Auto Generated Specific Coupon Codes","Auto Generated Specific Coupon Codes",module,Magento_SalesRule
