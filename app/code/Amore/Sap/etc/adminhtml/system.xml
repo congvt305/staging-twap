@@ -126,6 +126,20 @@
                     <label>SKU Prefix</label>
                 </field>
             </group>
+            <group id="send_order_to_sap_cron" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Send order to SAP Cron</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Enable cron</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="number_of_order" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Number Of Order Per Sending Time</label>
+                </field>
+                <field id="cron_expr" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Cron Expr</label>
+                    <backend_model>Amore\Sap\Model\Config\Cron\SendOrderToSap</backend_model>
+                </field>
+            </group>
         </section>
     </system>
 </config>
