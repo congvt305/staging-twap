@@ -109,6 +109,7 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
         if ($status === $statusPaymentSuccess) {
             if (!$order->hasInvoices()) {
                 $invoice = $this->invoiceService->prepareInvoice($order);
+                $invoice->setTransactionId($order_no);
                 $invoice->register();
                 $invoice->pay();
 
