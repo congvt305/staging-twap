@@ -439,6 +439,7 @@ class SaveSuccess implements ObserverInterface
             $parameters['prtnrid'] = $customer->getCustomAttribute('partner_id') ?
                 $customer->getCustomAttribute('partner_id')->getValue() : '';
             $parameters['statusCD'] = '01';
+            $parameters['race'] = $customer->getCustomAttribute('race');
 
             return $parameters;
         } catch (\Exception $exception) {
