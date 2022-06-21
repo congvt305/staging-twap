@@ -152,6 +152,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
             if ((string)$status === (string)$statusPaymentSuccess) {
                 if(!$order->hasInvoices()) {
                     $invoice = $this->invoiceService->prepareInvoice($order);
+                    $invoice->setTransactionId($order_no);
                     $invoice->register();
                     $invoice->pay();
 
