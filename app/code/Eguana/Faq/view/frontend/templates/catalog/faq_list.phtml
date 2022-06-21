@@ -7,6 +7,7 @@
 /** @var \Eguana\Faq\ViewModel\Faq  $faqViewModel */
 $faqViewModel = $block->getData('faq_view_model');
 $faqList = $faqViewModel->getFaqData(5, 1);
+$faqHeader = $faqViewModel->getHeaderFaq();
 $productId = null;
 $categoryId = null;
 if ($faqViewModel->isPdpPage()) {
@@ -19,6 +20,7 @@ if ($faqViewModel->isPdpPage()) {
 ?>
 <?php if ($faqList) :?>
     <div class="faqs-page" data-product-id="<?=$productId?>" data-category-id="<?=$categoryId?>">
+        <div class="header-faq"><?=$faqHeader?></div>
         <div class="block">
             <div class="item content" data-role="tab-content">
                 <div class="lists"
@@ -48,6 +50,7 @@ if ($faqViewModel->isPdpPage()) {
                         </div>
                         <?=$html?>
                     <?php endforeach; ?>
+                    <div class="clearfix"></div>
                 </div>
             </div>
         </div>
