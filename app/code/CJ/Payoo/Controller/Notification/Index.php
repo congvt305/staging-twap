@@ -8,6 +8,7 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
+use Payoo\PayNow\Logger\Logger as PayooLogger;
 
 class Index extends \Payoo\PayNow\Controller\Notification\Index
 {
@@ -42,9 +43,9 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
     private $json;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var PayooLogger
      */
-    private $logger;
+    private PayooLogger $payooLogger;
 
     /**
      * Const Payoo success status
@@ -71,7 +72,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
      * @param \Magento\Framework\DB\Transaction $transaction
      * @param \CJ\Payoo\Helper\Data $config
      * @param \Magento\Framework\Serialize\Serializer\Json $json
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param PayooLogger $payooLogger
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -82,7 +83,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
         \Magento\Framework\DB\Transaction $transaction,
         \CJ\Payoo\Helper\Data $config,
         \Magento\Framework\Serialize\Serializer\Json $json,
-        \Psr\Log\LoggerInterface $logger
+        PayooLogger $payooLogger
     ) {
         $this->request = $request;
         $this->scopeConfig = $scopeConfig;
@@ -91,7 +92,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
         $this->transaction = $transaction;
         $this->config = $config;
         $this->json = $json;
-        $this->logger = $logger;
+        $this->payooLogger = $payooLogger;
         parent::__construct($context, $request, $scopeConfig, $orderFactory, $invoiceService, $transaction);
     }
 
@@ -105,7 +106,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
         $checksum = $this->scopeConfig->getValue(self::PAYOO_PAYMENT_CHECK_SUM_KEY_URL, $storeScope);
         $ipRequest = $this->scopeConfig->getValue(self::PAYOO_PAYMENT_ENVIRONMENT_URL, $storeScope);
         $response = $this->json->unserialize(base64_decode($message), true);
-
+        $this->payooLogger->addInfo(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => $this->request->getParams()]);
         if(isset($response['ResponseData']) && ($checksum . $response['ResponseData'] . $ipRequest !== null) && isset($response['Signature'])) {
             if (strtoupper(hash('sha512', $checksum . $response['ResponseData'] . $ipRequest)) == strtoupper($response['Signature'])) {
                 $order_code = '';
@@ -130,7 +131,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
                 echo "<h3>Listening....</h3>";
             }
         } else {
-            $this->logger->error("Payoo Response: " . $response);
+            $this->payooLogger->addError(PayooLogger::TYPE_LOG_CREATE, ['Payoo Response:' => $response]);
         }
     }
 
@@ -144,34 +145,39 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
      */
     function UpdateOrderStatus($order_no, $status)
     {
-        $order = $this->orderFactory->create()->loadByIncrementId($order_no);
-        $statusPaymentSuccess = $this->config->getPaymentSuccessStatus();
-        if ((string)$status === (string)$statusPaymentSuccess) {
-            if(!$order->hasInvoices()) {
-                $invoice = $this->invoiceService->prepareInvoice($order);
-                $invoice->setTransactionId($order_no);
-                $invoice->register();
-                $invoice->pay();
+        try {
+            $order = $this->orderFactory->create()->loadByIncrementId($order_no);
+            $statusPaymentSuccess = $this->config->getPaymentSuccessStatus();
+            if ((string)$status === (string)$statusPaymentSuccess) {
+                $this->payooLogger->addInfo(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => 'Start Create Invoice']);
+                if(!$order->hasInvoices()) {
+                    $invoice = $this->invoiceService->prepareInvoice($order);
+                    $invoice->setTransactionId($order_no);
+                    $invoice->register();
+                    $invoice->pay();
 
-                $transactionSave = $this->transaction->addObject(
-                    $invoice
-                )->addObject(
-                    $invoice->getOrder()
-                );
-                $transactionSave->save();
-
+                    $transactionSave = $this->transaction->addObject(
+                        $invoice
+                    )->addObject(
+                        $invoice->getOrder()
+                    );
+                    $transactionSave->save();
+                    $this->payooLogger->addInfo(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => 'Create Invoice Success']);
+                }
+                $order->setState($status);
+                $message = 'Payoo Transaction Complete';
             }
-            $order->setState($status);
-            $message = 'Payoo Transaction Complete';
+            else {
+                $message = 'Payoo Transaction Cancel';
+            }
+            $order->setStatus($status)->save();
+            $order->addStatusHistoryComment(
+                __($message, $status)
+            )
+                ->setIsCustomerNotified(true)
+                ->save();
+        } catch (\Exception $exception) {
+            $this->payooLogger->addError(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => $exception->getMessage()]);
         }
-        else {
-            $message = 'Payoo Transaction Cancel';
-        }
-        $order->setStatus($status)->save();
-        $order->addStatusHistoryComment(
-            __($message, $status)
-        )
-            ->setIsCustomerNotified(true)
-            ->save();
     }
 }
