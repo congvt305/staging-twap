@@ -8,6 +8,7 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
+use Payoo\PayNow\Logger\Logger as PayooLogger;
 
 class Index extends \Payoo\PayNow\Controller\Notification\Index
 {
@@ -42,9 +43,9 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
     private $json;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var PayooLogger
      */
-    private $logger;
+    private PayooLogger $payooLogger;
 
     /**
      * Const Payoo success status
@@ -71,7 +72,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
      * @param \Magento\Framework\DB\Transaction $transaction
      * @param \CJ\Payoo\Helper\Data $config
      * @param \Magento\Framework\Serialize\Serializer\Json $json
-     * @param \CJ\Payoo\Logger\Logger $logger
+     * @param PayooLogger $payooLogger
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -82,7 +83,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
         \Magento\Framework\DB\Transaction $transaction,
         \CJ\Payoo\Helper\Data $config,
         \Magento\Framework\Serialize\Serializer\Json $json,
-        \CJ\Payoo\Logger\Logger $logger
+        PayooLogger $payooLogger
     ) {
         $this->request = $request;
         $this->scopeConfig = $scopeConfig;
@@ -91,13 +92,11 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
         $this->transaction = $transaction;
         $this->config = $config;
         $this->json = $json;
-        $this->logger = $logger;
+        $this->payooLogger = $payooLogger;
         parent::__construct($context, $request, $scopeConfig, $orderFactory, $invoiceService, $transaction);
     }
 
     /**
-     * Update status order after redirect from Payoo
-     *
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
      */
     public function execute()
@@ -107,7 +106,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
         $checksum = $this->scopeConfig->getValue(self::PAYOO_PAYMENT_CHECK_SUM_KEY_URL, $storeScope);
         $ipRequest = $this->scopeConfig->getValue(self::PAYOO_PAYMENT_ENVIRONMENT_URL, $storeScope);
         $response = $this->json->unserialize(base64_decode($message), true);
-
+        $this->payooLogger->addInfo(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => $this->request->getParams()]);
         if(isset($response['ResponseData']) && ($checksum . $response['ResponseData'] . $ipRequest !== null) && isset($response['Signature'])) {
             if (strtoupper(hash('sha512', $checksum . $response['ResponseData'] . $ipRequest)) == strtoupper($response['Signature'])) {
                 $order_code = '';
@@ -132,15 +131,15 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
                 echo "<h3>Listening....</h3>";
             }
         } else {
-            $this->logger->error("Payoo Response: " . $response);
+            $this->payooLogger->addError(PayooLogger::TYPE_LOG_CREATE, ['Payoo Response:' => $response]);
         }
     }
 
     /**
      * Update Order Status
      *
-     * @param string $order_no
-     * @param string $status
+     * @param $order_no
+     * @param $status
      * @return void
      * @throws \Magento\Framework\Exception\LocalizedException
      */
@@ -150,6 +149,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
             $order = $this->orderFactory->create()->loadByIncrementId($order_no);
             $statusPaymentSuccess = $this->config->getPaymentSuccessStatus();
             if ((string)$status === (string)$statusPaymentSuccess) {
+                $this->payooLogger->addInfo(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => 'Start Create Invoice']);
                 if(!$order->hasInvoices()) {
                     $invoice = $this->invoiceService->prepareInvoice($order);
                     $invoice->setTransactionId($order_no);
@@ -162,7 +162,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
                         $invoice->getOrder()
                     );
                     $transactionSave->save();
-
+                    $this->payooLogger->addInfo(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => 'Create Invoice Success']);
                 }
                 $order->setState($status);
                 $message = 'Payoo Transaction Complete';
@@ -176,9 +176,8 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
             )
                 ->setIsCustomerNotified(true)
                 ->save();
-        } catch (\Exception $e) {
-            $this->logger->error('Payoo update status ' . $status . ' for order ' . $order_no . ' error in notification: ' . $e->getMessage());
+        } catch (\Exception $exception) {
+            $this->payooLogger->addError(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => $exception->getMessage()]);
         }
-
     }
 }
