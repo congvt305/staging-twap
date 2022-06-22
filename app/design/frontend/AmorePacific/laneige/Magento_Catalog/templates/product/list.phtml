@@ -69,7 +69,7 @@ $apProductPosition = "";
                     <?php
                     if ($isEnabledGAEnhanced) {
                         $apProductName = $_product->getName();
-                        $apProductId = $_product->getId();
+                        $apProductId = $_product->getSku();
                         $apProductPrice = $_product->getPriceInfo()->getPrice('final_price')->getValue();
                         $apProductBrand = "laneige";
                         $apProductPosition = $_product->getCatIndexPosition() + ($page - 1) * $productPerPage + 1;
