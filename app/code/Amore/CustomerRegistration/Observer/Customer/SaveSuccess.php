@@ -336,7 +336,7 @@ class SaveSuccess implements ObserverInterface
             $parameters['statusCD'] = '01';
             $store = $this->storeManager->getStore($customer->getStoreId());
             if ($store->getCode() == 'my_laneige') {
-                $parameters['race'] = $customer->getCustomAttribute('race') ? $customer->getCustomAttribute('race') : '';
+                $parameters['race'] = $customer->getCustomAttribute('race') ? $customer->getCustomAttribute('race')->getValue() : '';
             }
 
             return $parameters;
