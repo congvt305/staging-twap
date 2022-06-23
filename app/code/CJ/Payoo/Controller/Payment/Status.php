@@ -95,56 +95,11 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
         if (strtoupper($cs) == strtoupper($checksum)) {
             if ($orderCode != '' && $status == self::SUCCESS_STATUS) {
                 //complete
-                $this->UpdateOrderStatus($orderCode, $this->config->getPaymentSuccessStatus());
                 $resultRedirect->setPath('checkout/onepage/success');
                 return $resultRedirect;
-            } else {
-                //canceled
-                $this->UpdateOrderStatus($orderCode, \Magento\Sales\Model\Order::STATE_CANCELED);
             }
         }
-
         $resultRedirect->setPath('checkout/cart');
         return $resultRedirect;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    function UpdateOrderStatus($order_no, $status)
-    {
-        try {
-            $order = $this->orderFactory->create()->loadByIncrementId($order_no);
-            $statusPaymentSuccess = $this->config->getPaymentSuccessStatus();
-            if ($status === $statusPaymentSuccess) {
-                $this->payooLogger->addInfo(PayooLogger::TYPE_LOG_CREATE, ['request_status' => 'Start Create Invoice']);
-                if (!$order->hasInvoices()) {
-                    $invoice = $this->invoiceService->prepareInvoice($order);
-                    $invoice->setTransactionId($order_no);
-                    $invoice->register();
-                    $invoice->pay();
-
-                    $transactionSave = $this->transaction->addObject(
-                        $invoice
-                    )->addObject(
-                        $invoice->getOrder()
-                    );
-                    $transactionSave->save();
-                    $this->payooLogger->addInfo(PayooLogger::TYPE_LOG_CREATE, ['request_status' => 'Create Invoice Success']);
-                }
-                $order->setState($status);
-                $message = 'Payoo Transaction Complete';
-            } else {
-                $message = 'Payoo Transaction Cancel';
-            }
-            $order->setStatus($status)->save();
-            $order->addStatusHistoryComment(
-                __($message, $status)
-            )
-                ->setIsCustomerNotified(true)
-                ->save();
-        } catch (\Exception $exception) {
-            $this->payooLogger->addError(PayooLogger::TYPE_LOG_CREATE, ['request_status' => $exception->getMessage()]);
-        }
     }
 }
