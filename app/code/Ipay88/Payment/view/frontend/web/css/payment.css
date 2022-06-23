@@ -1,0 +1,16 @@
+.ipay88-payment-types .ipay88-payment-type-group-header {
+  margin-bottom: 1rem;
+}
+
+.ipay88-payment-types .ipay88-payment-type-label {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  margin: 1em 0;
+}
+
+.ipay88-payment-types .ipay88-payment-type-logo {
+  height: 3em;
+  margin-left: 1em;
+  margin-right: 1em;
+}
