@@ -158,6 +158,8 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
             'cartName',
             'currency',
             'needExtraPaidInfo',
+            'isSaveCard',
+            'customerId'
         );
         $inputs = $this->only($data, $whiteList);
 
@@ -167,6 +169,11 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
         $this->sdk->MerchantID = $this->getMerchantId();
         $this->sdk->HashKey = $inputs['hashKey'];
         $this->sdk->HashIV = $inputs['hashIv'];
+        if (isset($inputs['isSaveCard']) && isset($inputs['customerId']) && $inputs['customerId'] && $inputs['isSaveCard'] == 1) {
+            $this->sdk->BindingCard = 1;
+            $this->sdk->MerchantMemberID = $this->getMerchantId() . $inputs['customerId']; //(MerchantID + MemberID)
+        }
+
         $this->sdk->ServiceURL = $this->getUrl('checkOut'); // Get Checkout URL
         $this->sdk->EncryptType = $this->encryptType;
         $this->sdk->Send['ReturnURL'] = $inputs['returnUrl'];
