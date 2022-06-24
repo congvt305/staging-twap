@@ -103,11 +103,13 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
                 $this->UpdateOrderStatus($orderCode, \Magento\Sales\Model\Order::STATE_CANCELED);
             }
         }
+
         $resultRedirect->setPath('checkout/cart');
         return $resultRedirect;
     }
 
     /**
+     * {@inheritDoc}
      * Update Order Status
      *
      * @param $order_no
@@ -123,13 +125,12 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
             if ((string)$status === (string)$statusPaymentSuccess) {
                 $order->setState($status);
                 $message = 'Payoo Transaction Complete';
-            }
-            else {
+            } else {
                 $message = 'Payoo Transaction Cancel';
             }
             $order->setStatus($status)->save();
         } catch (\Exception $exception) {
-            $this->payooLogger->addError(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => $exception->getMessage()]);
+            $this->payooLogger->addError(PayooLogger::TYPE_LOG_CREATE, ['request_status' => $exception->getMessage()]);
         }
     }
 }
