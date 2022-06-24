@@ -110,39 +110,25 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
 
     /**
      * {@inheritDoc}
+     * Update Order Status
+     *
+     * @param $order_no
+     * @param $status
+     * @return void
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     function UpdateOrderStatus($order_no, $status)
     {
         try {
             $order = $this->orderFactory->create()->loadByIncrementId($order_no);
             $statusPaymentSuccess = $this->config->getPaymentSuccessStatus();
-            if ($status === $statusPaymentSuccess) {
-                $this->payooLogger->addInfo(PayooLogger::TYPE_LOG_CREATE, ['request_status' => 'Start Create Invoice']);
-                if (!$order->hasInvoices()) {
-                    $invoice = $this->invoiceService->prepareInvoice($order);
-                    $invoice->setTransactionId($order_no);
-                    $invoice->register();
-                    $invoice->pay();
-
-                    $transactionSave = $this->transaction->addObject(
-                        $invoice
-                    )->addObject(
-                        $invoice->getOrder()
-                    );
-                    $transactionSave->save();
-                    $this->payooLogger->addInfo(PayooLogger::TYPE_LOG_CREATE, ['request_status' => 'Create Invoice Success']);
-                }
+            if ((string)$status === (string)$statusPaymentSuccess) {
                 $order->setState($status);
                 $message = 'Payoo Transaction Complete';
             } else {
                 $message = 'Payoo Transaction Cancel';
             }
             $order->setStatus($status)->save();
-            $order->addStatusHistoryComment(
-                __($message, $status)
-            )
-                ->setIsCustomerNotified(true)
-                ->save();
         } catch (\Exception $exception) {
             $this->payooLogger->addError(PayooLogger::TYPE_LOG_CREATE, ['request_status' => $exception->getMessage()]);
         }
