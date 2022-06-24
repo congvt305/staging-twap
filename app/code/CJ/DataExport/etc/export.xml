@@ -7,4 +7,6 @@
     <entity name="cj_rma" label="New RMA" model="CJ\DataExport\Model\Export\Rma\Rma" entityAttributeFilterType="cj_rma"/>
     <entity name="cj_redemption" label="New Redemption" model="CJ\DataExport\Model\Export\Redemption\Redemption"
             entityAttributeFilterType="cj_redemption"/>
+    <entity name="cj_redemption_pos" label="New Redemption To Pos" model="CJ\DataExport\Model\Export\Redemption\RedemptionPos"
+            entityAttributeFilterType="cj_redemption_pos"/>
 </config>
