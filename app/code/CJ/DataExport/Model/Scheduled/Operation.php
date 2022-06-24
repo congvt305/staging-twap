@@ -39,6 +39,7 @@ class Operation
     protected $customType = [
         'cj_rma',
         'cj_redemption',
+        'cj_redemption_pos',
         'cj_sales_order'
     ];
 
