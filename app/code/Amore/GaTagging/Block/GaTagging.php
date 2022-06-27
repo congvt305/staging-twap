@@ -213,7 +213,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             return $cartData;
         }
         $cartData['AP_CART_PRICE'] = intval($quote->getSubtotalWithDiscount());
-        $realItemsData = $this->getQuoteRealItemsData($allItems);
+        $realItemsData = $this->getQuoteRealParentItemsData($allItems);
         $cartProds = 0;
         foreach ($realItemsData as $item) {
             $cartProds += $item['prdprice'] * $item['quantity'];
@@ -282,13 +282,12 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $productInfo['v2code'] = $product->getId();
         $productInfo['sapcode'] = $product->getSku();
         $productInfo['brand'] = $this->helper->getSiteName() ?? '';
-        $productInfo['prdprice'] = intval($product->getPriceInfo()->getPrice('final_price')->getValue());
+        $productInfo['prdprice'] = intval($product->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue());
         $productInfo['variant'] = '';
         $productInfo['promotion'] = '';
         $productInfo['cate'] = '';
         $productInfo['catecode'] = '';
-        $productInfo['quantity'] = 1;
-        $productInfo['price'] = intval($product->getPriceInfo()->getPrice('final_price')->getValue());
+        $productInfo['price'] = intval($product->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue());
         $productInfos[] = $productInfo;
         return $productInfos;
     }
@@ -305,12 +304,11 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $productInfo['v2code'] = $product->getId();
         $productInfo['sapcode'] = $product->getSku();
         $productInfo['brand'] = $this->helper->getSiteName() ?? '';
-        $productInfo['prdprice'] = intval($product->getPriceInfo()->getPrice('final_price')->getValue());
+        $productInfo['prdprice'] = intval($product->getPriceInfo()->getPrice('regular_price')->getValue());
         $productInfo['variant'] = '';
         $productInfo['promotion'] = '';
         $productInfo['cate'] = '';
         $productInfo['catecode'] = '';
-        $productInfo['quantity'] = 1;
         $productInfo['price'] = intval($product->getPriceInfo()->getPrice('final_price')->getValue());
         $productInfos[] = $productInfo;
         return $productInfos;
@@ -342,23 +340,28 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 $product['code'] = $parentProduct->getData('sku');
                 $product['sapcode'] = $parentProduct->getData('sku');
                 $product['brand'] = $this->helper->getSiteName() ?? '';
-                $product['prdprice'] = intval($parentItem->getProduct()->getPriceInfo()->getPrice('final_price')->getValue());
-                $product['price'] =  intval($parentItem->getPrice());
-                $product['quantity'] = intval($parentItem->getQty());
-                $product['variant'] =  '';
+                $product['quantity'] = intval($parentItem->getQtyOrdered());
+                $product['variant'] = '';
                 $product['promotion'] = '';
                 $product['cate'] = '';
                 $product['catecode'] = '';
+                if ($parentItem->getProductType() === 'bundle') {
+                    $product['prdprice'] = intval($parentProduct->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue()) ;
+                    $product['price'] = intval($parentProduct->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue());
+
+                }
 
                 if ($parentItem->getAppliedRuleIds()) {
                     $product['promotion'] = $parentItem->getAppliedRuleIds();
                 }
+
                 if ($parentItem->getProductType() === 'configurable') {
                     $product['price'] =  intval($parentItem->getPrice()); // cat rule applied
+                    $product['prdprice'] = intval($parentProduct->getPriceInfo()->getPrice('regular_price')->getValue()) ?? 0;
+                    // $product['price'] = intval($parentProduct->getPriceInfo()->getPrice('final_price')->getValue()) ?? 0;
                     $nameArr = explode(' ', $item->getName());
                     $product['variant'] = $nameArr[(count($nameArr) - 1)];
                 }
-
                 $products[] = $product;
                 $parentSku = $parentItem->getSku();
             }
@@ -370,7 +373,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                     $product['brand'] = $this->helper->getSiteName() ?? '';
                     $product['prdprice'] = intval($item->getProduct()->getPrice());
                     $product['price'] =  intval($item->getPrice()); // // cat rule applied, need an attention 얼마에 팔았냐? 일단 로우토탈을 qty로 나눈다.
-                    $product['quantity'] = intval($item->getQty());
+                    $product['quantity'] = intval($item->getQtyOrdered());
                     $product['variant'] =  '';
                     $product['promotion'] = ''; //todo simple promotion??
                     $product['cate'] = '';
@@ -482,7 +485,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             $product = [];
             if ($item->getParentItemId()) {
                 $parentItem = $allItems[array_search($item->getParentItemId(), array_column($allItemsArr, 'item_id'))];
-                if($parentSku == $parentItem->getSku()) {
+                if ($parentSku == $parentItem->getSku()) {
                     continue;
                 }
                 $parentProduct = $parentItem->getProduct();
@@ -490,19 +493,24 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 $product['code'] = $parentProduct->getData('sku');
                 $product['sapcode'] = $parentProduct->getData('sku');
                 $product['brand'] = $this->helper->getSiteName() ?? '';
-                $product['prdprice'] = intval($parentItem->getProduct()->getPriceInfo()->getPrice('final_price')->getValue());
-                $product['price'] =  intval($parentItem->getPrice());
                 $product['quantity'] = intval($parentItem->getQty());
-                $product['variant'] =  '';
+                $product['variant'] = '';
                 $product['promotion'] = '';
                 $product['cate'] = '';
                 $product['catecode'] = '';
+                if ($parentItem->getProductType() === 'bundle') {
+                    $product['prdprice'] = intval($parentProduct->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue());
+                    $product['price'] = intval($parentProduct->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue());
+
+                }
 
                 if ($parentItem->getAppliedRuleIds()) {
                     $product['promotion'] = $parentItem->getAppliedRuleIds();
                 }
+
                 if ($parentItem->getProductType() === 'configurable') {
-                    $product['price'] =  intval($parentItem->getPrice()); // cat rule applied
+                    $product['prdprice'] = intval($parentProduct->getPriceInfo()->getPrice('regular_price')->getValue()) ?? 0;
+                    $product['price'] = intval($parentProduct->getPriceInfo()->getPrice('final_price')->getValue()) ?? 0;
                     $nameArr = explode(' ', $item->getName());
                     $product['variant'] = $nameArr[(count($nameArr) - 1)];
                 }
@@ -741,7 +749,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         if (count($allItems) < 1) {
             return false;
         }
-        $realItemsData = $this->getOrderRealParentItemsData($allItems);
+        $realItemsData = $this->getOrderRealItemsData($allItems);
         $orderProdPrice = 0;
         foreach ($realItemsData as $item) {
             $orderProdPrice += $item['prdprice'] * $item['quantity'];
