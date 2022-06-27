@@ -124,23 +124,17 @@ define(
 
             showPopup: function() {
                 var currentCode = this.couponCode().split(',');
-                console.log(this.couponCode().split(','));
                 if(!appliedCouponList.length) {
                     appliedCouponList = appliedCouponList.concat(currentCode);
                 }
                 appliedCouponList = appliedCouponList.filter(function (n) {
                     return n != ''
                 })
-                console.log("appliedCoupinList");
-                console.log(appliedCouponList);
                 this.createPopupWebsite();
                 // change text to cancel for coupon applied
                 $('.discount-card-button').removeClass('applied-button');
                 $('.discount-card-button').text($t('Apply'));
 
-
-                console.log("show coupon");
-                console.log(currentCode);
                 for (let i = 0; i < currentCode.length; i++) {
                     $('#' + currentCode[i]).text($t('Cancel'));
                     $('#' + currentCode[i]).addClass('applied-button');
@@ -162,11 +156,16 @@ define(
                         this.couponCode(response);
                         messageList.addSuccessMessage({'message': messageDelete});
                         this.fakeCouponCode('');
+                        var index = appliedCouponList.indexOf(coupon);
+                        if (index > -1) {
+                            appliedCouponList.splice(index, 1);
+                        }
                     }.bind(this)).always(function(){
                         isLoading(false);
                     });
                 }else{
                     this.couponCode('');
+                    appliedCouponList = [];
                     cancelCouponAction(isApplied, isLoading).always(function(){
                         isLoading(false);
                     });
@@ -234,29 +233,16 @@ define(
                 var code = [];
                 if(!appliedCouponList.includes(newCodePopup)) {
                     appliedCouponList.push(newCodePopup);
-                    console.log("new code" + newCodePopup);
                     code = appliedCouponList.filter(function (n) {
                         return n != ''
                     });
-                    console.log("lenght of coupon list");
-                    console.log(appliedCouponList.length);
-                    // if(appliedCouponList.length) {
-                        console.log("dat123123123");
-                        code = appliedCouponList.join(',');
-                   // }
-                    console.log("codeasaaaaa");
-                    console.log(code);
+                    code = appliedCouponList.join(',');
                     if (_.difference(newCodePopup, code)) {
                         setCouponCodeAction(code, isApplied).done(function (response) {
                             var codeList = response.split(',');
-                            console.log("codeList after set");
-                            console.log(codeList);
-                            console.log("new code");
                             couponCode(response);
                             var newCode = code.split(',');
-                            console.log(newCode);
                             if (_.difference(newCode, codeList).length) {
-                                console.log("thanhdat 123123");
                                 messageList.addErrorMessage({'message': messageError});
                                 // remove new code
                                 var index = appliedCouponList.indexOf(newCodePopup);
@@ -264,7 +250,6 @@ define(
                                     appliedCouponList.splice(index, 1);
                                 }
                             } else {
-                                console.log("else thandha dat1232");
                                 messageList.addSuccessMessage({'message': message});
                             }
                         }.bind(this)).always(function () {
