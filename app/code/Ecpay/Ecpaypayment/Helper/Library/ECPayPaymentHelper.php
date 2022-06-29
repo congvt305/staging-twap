@@ -169,11 +169,6 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
         $this->sdk->MerchantID = $this->getMerchantId();
         $this->sdk->HashKey = $inputs['hashKey'];
         $this->sdk->HashIV = $inputs['hashIv'];
-        if (isset($inputs['isSaveCard']) && isset($inputs['customerId']) && $inputs['customerId'] && $inputs['isSaveCard'] == 1) {
-            $this->sdk->BindingCard = 1;
-            $this->sdk->MerchantMemberID = $this->getMerchantId() . $inputs['customerId']; //(MerchantID + MemberID)
-        }
-
         $this->sdk->ServiceURL = $this->getUrl('checkOut'); // Get Checkout URL
         $this->sdk->EncryptType = $this->encryptType;
         $this->sdk->Send['ReturnURL'] = $inputs['returnUrl'];
@@ -184,6 +179,10 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
         $this->sdk->Send['TotalAmount'] = $this->getAmount($inputs['total']);
         $this->sdk->Send['ChoosePayment'] = $this->getPaymentMethod($paymentType);
         $this->sdk->Send['NeedExtraPaidInfo'] = $this->getSdkExtraPaymentInfoOption($inputs['needExtraPaidInfo']);
+        if (isset($inputs['isSaveCard']) && isset($inputs['customerId']) && $inputs['customerId'] && $inputs['isSaveCard'] == 1) {
+            $this->sdk->Send['BindingCard'] = 1;
+            $this->sdk->Send['MerchantMemberID'] = $this->getMerchantId() . $inputs['customerId']; //(MerchantID + MemberID)
+        }
 
         // Set the product info
         $this->sdk->Send['Items'][] = array(
