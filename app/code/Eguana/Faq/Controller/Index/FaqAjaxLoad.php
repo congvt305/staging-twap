@@ -9,8 +9,8 @@ use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Controller\ResultFactory;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\Controller\Result\JsonFactory;
 
 class FaqAjaxLoad extends Action
 {
@@ -40,8 +40,12 @@ class FaqAjaxLoad extends Action
     private $faqHelper;
 
     /**
+     * @var JsonFactory
+     */
+    private $resultJsonFactory;
+
+    /**
      * @param Context $context
-     * @param ResultFactory $resultFactory
      * @param LoggerInterface $logger
      * @param Data $faqHelper
      * @param \Magento\Framework\Registry $registry
@@ -50,19 +54,19 @@ class FaqAjaxLoad extends Action
      */
     public function __construct(
         Context $context,
-        ResultFactory $resultFactory,
         LoggerInterface $logger,
         Data $faqHelper,
         \Magento\Framework\Registry $registry,
         ProductRepository $productRepository,
-        CategoryRepository $categoryRepository
+        CategoryRepository $categoryRepository,
+        JsonFactory $resultJsonFactory
     ) {
         $this->logger = $logger;
-        $this->resultFactory = $resultFactory;
         $this->faqHelper = $faqHelper;
         $this->registry = $registry;
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->resultJsonFactory = $resultJsonFactory;
         parent::__construct($context);
     }
 
@@ -74,6 +78,7 @@ class FaqAjaxLoad extends Action
      */
     public function execute()
     {
+        $resultJson = $this->resultJsonFactory->create();
         $params = $this->_request->getParams();
         try {
             if ($this->faqHelper->isPdpPage()) {
@@ -85,10 +90,26 @@ class FaqAjaxLoad extends Action
                     $this->registry->register('current_category', $this->categoryRepository->get($params['category_id']));
                 }
             }
+            /** @var \Magento\Framework\View\Layout $layout */
+            $layout = $this->_view->getLayout();
+            $block = $layout
+                ->createBlock('\Eguana\Faq\Block\Faq')
+                ->setTemplate('Eguana_Faq::catalog/faq_ajax_load.phtml')
+                ->setData('faq_list', $this->faqHelper->getFaqData());
+
+            $response = [
+                'status' => 'success',
+                'content' => $block->toHtml(),
+            ];
         } catch (\Exception $e) {
+            /** @var array $response */
+            $response = [
+                'status' => 'error',
+                'message' => __('An error occurred')
+            ];
             $this->logger->critical('Error when call faq ajax: ' . $e);
         }
 
-        return $this->resultFactory->create(ResultFactory::TYPE_LAYOUT);
+        return $resultJson->setData($response);
     }
 }
