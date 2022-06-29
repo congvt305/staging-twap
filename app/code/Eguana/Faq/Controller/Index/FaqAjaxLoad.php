@@ -12,7 +12,7 @@ use Magento\Framework\App\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
 
-class FaqAjaxLoad extends Action
+class FaqAjaxLoad extends Action implements \Magento\Framework\App\Action\HttpPostActionInterface
 {
     /**
      * @var LoggerInterface
