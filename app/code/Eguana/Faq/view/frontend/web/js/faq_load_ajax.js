@@ -2,7 +2,7 @@ define([
     'jquery',
     'mage/url',
     'accordion',
-], function ($, $url) {
+], function ($, url) {
     'use strict';
 
     var productId = $('.faqs-page').data('product-id');
@@ -16,8 +16,9 @@ define([
         }
         if (scrollTop > top && scrollTop > 0 && !isLoadedFaq) {
             isLoadedFaq = 1;
+            url.setBaseUrl(window.BASE_URL);
             $.ajax({
-                url: $url.build('faq/index/faqajaxload'),
+                url: url.build('faq/index/faqajaxload'),
                 type: "POST",
                 showLoader: false,
                 data: {product_id: productId, category_id: categoryId},
