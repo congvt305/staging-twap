@@ -2,10 +2,7 @@
 /**
  * @var \Eguana\Faq\Block\Faq $block
  */
-
-/** @var \Eguana\Faq\ViewModel\Faq  $faqViewModel */
-$faqViewModel = $block->getData('faq_view_model');
-$faqList = $faqViewModel->getFaqData();
+$faqList = $block->getData('faq_list');
 ?>
 
 <?php foreach ($faqList as $key => $faq) :?>
