@@ -28,7 +28,8 @@ class OrderStatePlugin
             if ($order->getData('sap_order_send_check') === NULL) {
                 $order->setState(Order::STATE_PROCESSING)
                     ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
-                if (($order->getStatus() === $order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING)) && $order->hasShipments()){
+                if (($order->getStatus() === $order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING))
+                    && ($order->hasShipments() || $order->getData('sent_to_ninjavan'))){
                     $order->setStatus('processing_with_shipment');
                 }
             }

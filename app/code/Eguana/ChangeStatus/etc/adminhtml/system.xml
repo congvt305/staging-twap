@@ -26,6 +26,9 @@
                 <field id="rma_auto_authorization_days" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>RMA status auto-change days</label>
                 </field>
+                <field id="update_ninjavan_order_to_delivery_complete_days" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Update Ninjavan Order to Delivery Complete days</label>
+                </field>
             </group>
             <group id="rma_authorization_cron" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>Rma Pending to Authorized Cron</label>
