@@ -171,6 +171,7 @@ class ConvertToXls
 
         /** @var SearchResultInterface $searchResult */
         $searchResult = $component->getContext()->getDataProvider()->getSearchResult();
+        $searchResult->addFilter('main_table.redemption_id', $redemptionId, 'eq');
 
         /** @var DocumentInterface[] $searchResultItems */
         $searchResultItems = $searchResult->getItems();
