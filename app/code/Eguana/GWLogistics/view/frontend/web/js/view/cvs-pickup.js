@@ -99,17 +99,19 @@ define([
 
         preselectLocation: function () {
             var selectedLocation = pickupLocationsService.selectedLocation();
-
-            if (selectedLocation) {
-                pickupLocationsService.selectForShipping(selectedLocation);
+            if (this.isCvsPickupSelected()) {
+                if (selectedLocation) {
+                    pickupLocationsService.selectForShipping(selectedLocation);
+                }
+                pickupLocationsService.getLocation()
+                    .then(function (location) {
+                        if (!location.CVSAddress) {
+                            return;
+                        }
+                        pickupLocationsService.selectForShipping(location);
+                    });
             }
-            pickupLocationsService.getLocation()
-                .then(function (location) {
-                    if (!location.CVSAddress) {
-                        return;
-                    }
-                    pickupLocationsService.selectForShipping(location);
-                });
+
         },
 
 
