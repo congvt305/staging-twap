@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ninjavan>
+            <general>
+                <active>1</active>
+                <name>Ninja Van Shipping</name>
+                <price>0</price>
+                <handling_type>F</handling_type>
+                <handling_fee>0</handling_fee>
+                <title>"Home delivery" method</title>
+                <sallowspecific>0</sallowspecific>
+                <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
+            </general>
+            <sandbox_api>
+                <sandbox_mode>1</sandbox_mode>
+                <host>https://api-sandbox.ninjavan.co/</host>
+                <country_code>sg</country_code>
+                <api_key>Innisfree</api_key>
+                <client_id>62f56611e634428f9123e84600d1b484</client_id>
+                <client_key>a85a2b0f6a6e4816a80dfea380f28f6e</client_key>
+                <create_order>/4.1/orders</create_order>
+                <cancel_order>/2.2/orders/</cancel_order>
+                <generate_waybill>/2.0/reports/waybill</generate_waybill>
+                <track_url>https://www.ninjavan.co/en-my/tracking?id=</track_url>
+                <number_of_retry>3</number_of_retry>
+            </sandbox_api>
+            <additional>
+                <send_from>John Doe</send_from>
+                <phone_from>+60138201527e</phone_from>
+                <mail_from>john.doe@gmail.com</mail_from>
+                <address_from>17 Lorong Jambu 3</address_from>
+                <postcode_from>51200</postcode_from>
+            </additional>
+            <cancel_order_with_nv>
+                <allows_order_status_can_cacel>processing_with_shipment</allows_order_status_can_cacel>
+            </cancel_order_with_nv>
+        </ninjavan>
+        <carriers>
+            <ninjavan>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <condition_name>package_weight</condition_name>
+                <include_virtual_price>1</include_virtual_price>
+                <model>CJ\NinjaVanShipping\Model\Carrier\Tablerate</model>
+                <name>NinjaVan Table Rate</name>
+                <title>NinjaVan</title>
+                <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
+                <handling_type>F</handling_type>
+                <tracking_url>https://www.ninjavan.co/en-my/tracking?id=</tracking_url>
+            </ninjavan>
+        </carriers>
+    </default>
+</config>

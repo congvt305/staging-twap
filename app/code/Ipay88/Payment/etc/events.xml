@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="payment_method_assign_data_ipay88_payment">
+        <observer name="ipay88_payment_payment_method_assign_data" instance="Ipay88\Payment\Observer\DataAssignObserver" />
+    </event>
+</config>

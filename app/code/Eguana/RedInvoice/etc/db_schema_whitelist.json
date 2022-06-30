@@ -11,7 +11,9 @@
             "road_name": true,
             "creation_time": true,
             "update_time": true,
-            "city": true
+            "city": true,
+            "email": true,
+            "ward": true
         },
         "constraint": {
             "EGUANA_RED_INVOICE_DATA_ORDER_ID_SALES_ORDER_ENTITY_ID": true,

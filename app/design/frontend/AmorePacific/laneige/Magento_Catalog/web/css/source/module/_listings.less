@@ -489,6 +489,16 @@
              &-info {
                  margin-top: @indent__l;
                  border: 2px solid transparent;
+                 .product-item-details {
+                     .product-item-name {
+                         height: 40px;
+                         text-overflow: ellipsis;
+                         overflow: hidden;
+                         display: -webkit-box;
+                         -webkit-line-clamp: 2;
+                         -webkit-box-orient: vertical;
+                     }
+                 }
 
                  &:hover {
                      border-color: @border-color__base;
