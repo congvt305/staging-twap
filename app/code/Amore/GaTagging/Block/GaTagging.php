@@ -119,6 +119,11 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         return $this->registry->registry($registryName);
     }
 
+    public function getCurrentCategory()
+    {
+        return $this->registry->registry('current_category');
+    }
+
     /**
      * todo get Category Data
      * @param \Magento\Catalog\Model\Product $product
@@ -131,6 +136,26 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         //skincare => 16,256, make up => 19,259, homme =>  22,262
 
         return '스킨케어';
+    }
+
+    /**
+     * get Root Category
+     *
+     * @return mixed|null
+     */
+    public function getRooCategory()
+    {
+        if ($this->getCurrentCategory()) {
+            if ($this->getCurrentCategory()->getParentCategories()) {
+                foreach ($this->getCurrentCategory()->getParentCategories() as $parent) {
+                    if ($parent->getLevel() == 2) {
+                        // return the level 2 category name;
+                        return $parent->getName();
+                    }
+                }
+            }
+        }
+        return '韓系保養';
     }
 
     public function getQueryText()
