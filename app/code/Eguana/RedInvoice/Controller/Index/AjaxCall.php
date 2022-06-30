@@ -59,7 +59,10 @@ class AjaxCall extends Action
             "main_table.region_id",
             ["eq" => $regionId]
         );
-        $cities = $citiesCollection->getData();
+        $cities = "";
+        if ($citiesCollection) {
+            $cities = $citiesCollection->getData();
+        }
         $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
         $resultJson->setData(["message" => "list of states", "suceess" => true, "cities" => $cities]);
         return $resultJson;

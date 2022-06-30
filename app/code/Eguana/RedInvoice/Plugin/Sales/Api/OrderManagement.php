@@ -17,6 +17,7 @@ use Eguana\RedInvoice\Model\RedInvoiceFactory;
 use Eguana\RedInvoice\Api\RedInvoiceRepositoryInterface;
 use Magento\Directory\Model\Region;
 use Eguana\Directory\Model\City;
+use Eguana\Directory\Model\Ward;
 
 /**
  * This class is consists of after plugin for process to add the red invoice
@@ -56,6 +57,11 @@ class OrderManagement
     private $city;
 
     /**
+     * @var Ward
+     */
+    private $ward;
+
+    /**
      * OrderManagement constructor.
      * @param Session $checkoutSession
      * @param RedInvoiceFactory $redInvoiceFactory
@@ -70,7 +76,8 @@ class OrderManagement
         RedInvoiceRepositoryInterface $redInvoiceRepository,
         RedInvoiceLogger $redInvoicelogger,
         Region $region,
-        City $city
+        City $city,
+        Ward $ward
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->redInvoiceFactory = $redInvoiceFactory;
@@ -78,6 +85,7 @@ class OrderManagement
         $this->redInvoicelogger = $redInvoicelogger;
         $this->region = $region;
         $this->city = $city;
+        $this->ward = $ward;
     }
 
     /**
@@ -99,19 +107,25 @@ class OrderManagement
                 $taxCode = $this->checkoutSession->getTaxCode();
                 $stateId = $this->checkoutSession->getState();
                 $cityId = $this->checkoutSession->getCity();
+                $email = $this->checkoutSession->getEmail();
+                $wardId = $this->checkoutSession->getWard();
                 $roadName = $this->checkoutSession->getRoadName();
 
                 $stateInfo = $this->region->load($stateId);
 
                 $cityInfo = $this->city->load($cityId);
 
+                $wardInfo = $this->ward->load($wardId);
+
                 $model = $this->redInvoiceFactory->create();
                 $model->setOrderId($orderId);
                 $model->setIsApply($isApply);
                 $model->setCompanyName($companyName);
                 $model->setTaxCode($taxCode);
+                $model->setEmail($email);
                 $model->setState($stateInfo->getDefaultName());
                 $model->setCity($cityInfo->getDefaultName());
+                $model->setWard($wardInfo->getDefaultName());
                 $model->setRoadName($roadName);
                 $this->redInvoiceRepository->save($model);
 
@@ -121,8 +135,10 @@ class OrderManagement
                     'is_apply' => $isApply ? 'Yes' : 'No',
                     'company_name' => $companyName,
                     'tax_code' => $taxCode,
+                    'email' => $email,
                     'state' => $stateId,
                     'city' => $cityId,
+                    'ward' => $wardId,
                     'road_name' => $roadName
                 ];
                 $this->redInvoicelogger->logRedInvoiceInfo($message, $redInvoiceInfo);
