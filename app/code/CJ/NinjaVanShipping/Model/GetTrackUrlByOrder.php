@@ -32,12 +32,6 @@ class GetTrackUrlByOrder implements GetTrackUrlByOrderInterface
         $trackUrl = '';
         foreach ($order->getShipmentsCollection() as $shipment) {
             foreach ($shipment->getTracksCollection() as $track) {
-                $trackNumber = $track->getNumber();
-                $trackNumberPrefix = substr($trackNumber, 0, 4);
-                if ($trackNumberPrefix != self::MY_PREFIX) {
-                    continue;
-                }
-
                 $ninjaVanTrackUrl = $this->ninjaVanShippingHelper->getNinjaVanTrackUrl();
                 return $ninjaVanTrackUrl . $track->getTrackNumber();
             }
