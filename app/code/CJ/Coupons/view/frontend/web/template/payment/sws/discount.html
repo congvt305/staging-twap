@@ -1,0 +1,119 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="payment-option opc-payment-additional discount-code">
+    <div class="block">
+        <div class="payment-option-title choice title" data-role="title">
+            <strong id="block-discount-heading">
+                <!-- ko i18n: 'Apply Discount Code'--><!-- /ko -->
+            </strong>
+            <!-- ko if: isEnableCouponPopup -->
+            <div class="coupon-wallet">
+                <i id = "coupon-wallet" data-bind="'value': $t('view my coupon'), click: showPopup"> <!-- ko i18n: 'view my coupon'--><!-- /ko -->
+                    <span class="icon"> >> </span>
+                </i>
+            </div>
+            <!-- /ko -->
+        </div>
+        <div class="payment-option-content content" data-role="content">
+            <!-- ko foreach: getRegion('messages') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+            <form class="form form-discount" id="discount-form">
+                <div class="fieldset payment-option-inner">
+                    <div class="field">
+                        <label class="label" for="discount-code">
+                            <span data-bind="i18n: 'Enter discount code'"></span>
+                        </label>
+                        <div class="control">
+                            <input class="input-text"
+                                   type="text"
+                                   id="discount-code-fake"
+                                   name="discount_code_fake"
+                                   data-validate="{'required-entry':true}"
+                                   data-bind=" value: fakeCouponCode, attr:{placeholder: $t('Enter promo code')} " />
+                            <input class="input-text"
+                                   type="hidden"
+                                   id="discount-code"
+                                   name="discount_code"
+                                   data-bind="value: couponCode, attr:{placeholder: $t('Enter promo code')} " />
+                        </div>
+                    </div>
+                    <div class="actions-toolbar">
+                        <div class="primary">
+                            <button class="action primary action-apply" type="submit" data-bind="'value': $t('Apply'), click: apply">
+                                <span><!-- ko i18n: 'Apply'--><!-- /ko --></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- ko foreach: getRegion('captcha') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- /ko -->
+            </form>
+        </div>
+    </div>
+    <!-- ko if : couponCode().length > 0 -->
+    <span class="payment-option-title field choice"> <!--ko text:$t('Applied Coupons')--><!--/ko--></span>
+    <!-- /ko -->
+    <!-- ko foreach: { data: couponCode().split(','), as: 'code' }  -->
+    <!-- ko if : code.length > 0 -->
+    <div>
+        <!--ko text: code--><!--/ko-->
+        <a href="#" data-bind="click: $parent.removeSelected.bind($parent),'value': code">
+            <!-- ko text: $t('Remove')--><!-- /ko -->
+        </a>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: isEnableCouponPopup -->
+    <div id="modal">
+        <div class="modal-body-content">
+            <div class="coupon-popup coupon-container">
+                <div class="coupon-wrap">
+                    <div class="other-promo">
+                        <div class="coupon-content">
+                            <div class="coupon-applied" data-bind="foreach:couponList">
+                                <!-- start card -->
+                                <div class="discount-card">
+                                    <div class="discount-bar"></div>
+                                    <div class="discount-card-content">
+                                        <div class="discount-label">
+                                            <div class="discount-title">
+                                                <div class="landscape">
+                                                    <img data-bind="attr: { src: require.toUrl('')+'images/logo.svg' }">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="discount-border-center"></div>
+                                        <div class="discount-content">
+                                            <div class="discount-title-percent" data-bind="text: $data['name']" >
+                                            </div>
+                                            <div class="discount-percent">
+                                                Total discount for activities: <span style="color: red" data-bind="text: $data['simple_action_string']" ></span>
+                                            </div>
+                                            <div class="discount-percent">
+                                                <span data-bind="i18n: 'Expiration date:'" ></span> <span style="color: red" data-bind="text: $data['to_date']" ></span>
+                                            </div>
+                                            <div class="discount-description" data-bind="text: $data['description']">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="discount-border-right"></div>
+                                    <div class="discount-card-button"  data-bind="attr: { id : $data['code']}, click : $parent.applyCouponPopup">
+                                        apply
+                                    </div>
+                                </div>
+                                <!-- and card -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>

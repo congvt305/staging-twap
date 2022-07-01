@@ -25,6 +25,10 @@
         "magento-baler": {
             "type": "vcs",
             "url": "git@github.com:magento/m2-baler.git"
+        },
+        "amasty_1": {
+            "type": "composer",
+            "url": "https://composer1.amasty.com/community/"
         }
     },
     "require": {
@@ -32,6 +36,7 @@
         "adyen/php-api-library": "^10.0",
         "amasty/advanced-review": "^1.15",
         "amasty/base": ">=1.13.2",
+        "amasty/coupons": "1.4.3",
         "amasty/cron-schedule-list": ">=1.0.5",
         "amasty/feed": ">=2.6.19",
         "amasty/module-advanced-conditions": ">=1.5.3",
