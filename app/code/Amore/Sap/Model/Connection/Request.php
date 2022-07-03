@@ -25,14 +25,6 @@ class Request extends BaseRequest
     const ORDER_CANCEL_PATH = 'sap/url_path/order_cancel_path';
 
     /**
-     * @var Curl
-     */
-    private $curl;
-    /**
-     * @var Json
-     */
-    private $json;
-    /**
      * @var Config
      */
     private $config;
@@ -71,7 +63,6 @@ class Request extends BaseRequest
 
         if ($this->config->getLoggingCheck()) {
             $this->logger->info('LIVE MODE REQUEST');
-            $this->logger->info($this->json->serialize($requestData));
             if (is_array($requestData)) {
                 $this->logger->info($this->json->serialize($requestData));
             } else {
@@ -95,9 +86,7 @@ class Request extends BaseRequest
                     $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
                 }
 
-                $this->curl->post($fullUrl, $requestData);
-
-                $response = $this->curl->getBody();
+                $response = $this->send($fullUrl, $requestData, 'store', $storeId, $type);
 
                 if ($this->config->getLoggingCheck()) {
                     $this->logger->info('LIVE RESPONSE');
