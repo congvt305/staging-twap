@@ -96,6 +96,11 @@ class OrderProcessingToComplete
         $this->logger = $logger;
     }
 
+    /**
+     * Update status order
+     *
+     * @return void
+     */
     public function execute()
     {
         $stores = $this->storeManagerInterface->getStores();
@@ -111,7 +116,6 @@ class OrderProcessingToComplete
                         $order->setStatus('complete');
                         $order->setState('complete');
                         $this->orderRepository->save($order);
-                        $this->posOrderSend($order);
                     } catch (\Exception $exception) {
                         $this->logger->info($exception->getMessage());
                     }

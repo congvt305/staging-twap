@@ -110,32 +110,6 @@ class Request extends BaseRequest
         return $path;
     }
 
-    /**
-     * Get Interface Id for replacing path corresponding
-     * @param $websiteId
-     * @param $type
-     * @return mixed
-     */
-    public function getInterfaceID($websiteId, $type)
-    {
-        $path = '';
-        switch ($type) {
-            case 'memberSearch':
-                $path = $this->middlewareHelper->getMemberSearchInterfaceId('website', $websiteId);
-                break;
-            case 'redeemSearch':
-                $path = $this->middlewareHelper->getRedeemSearchInterfaceId('website', $websiteId);
-                break;
-            case 'pointSearch':
-                $path = $this->middlewareHelper->getPointSearchInterfaceId('website', $websiteId);
-                break;
-            case 'customerOrder':
-                $path = $this->middlewareHelper->getCustomerSearchInterfaceId('website', $websiteId);
-                break;
-        }
-        return $path;
-    }
-
     public function responseCheck($response, $websiteId)
     {
         $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('website', $websiteId);
