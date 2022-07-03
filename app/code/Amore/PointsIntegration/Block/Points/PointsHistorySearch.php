@@ -65,7 +65,7 @@ class PointsHistorySearch extends AbstractPointsBlock
             $this->logger->info($this->json->serialize($pointsHistoryResult));
         }
 
-        if ($this->responseValidation($pointsHistoryResult)) {
+        if ($this->pointsHistorySearch->responseValidation($pointsHistoryResult, $customer->getWebsiteId())) {
             $pointsData = $pointsHistoryResult['data']['point_data'];
             return $this->pagination->ajaxPagination($pointsData);
         } else {
@@ -78,7 +78,7 @@ class PointsHistorySearch extends AbstractPointsBlock
         $customer = $this->getCustomer();
         $customerPointsResult = $this->customerPointsSearch->getMemberSearchResult($customer->getId(), $customer->getWebsiteId());
 
-        if ($this->responseValidation($customerPointsResult)) {
+        if ($this->customerPointsSearch->responseValidation($customerPointsResult, $customer->getWebsiteId())) {
             return $customerPointsResult['data'];
         } else {
             return [];

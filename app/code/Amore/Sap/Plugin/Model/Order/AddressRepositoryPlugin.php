@@ -126,20 +126,32 @@ class AddressRepositoryPlugin
                         ]
                     );
 
-                    $resultSize = count($result);
-                    if ($resultSize > 0) {
-                        if ($result['code'] == '0000') {
-                            $responseHeader = $result['data']['response']['header'];
+                    $responseHandled = $this->request->handleResponse($result, $order->getStoreId());
+                    if ($responseHandled === null) {
+                        throw new AddressException(__('Something went wrong while sending order data to SAP. No response.'));
+                    } else {
+                        if (isset($responseHandled['success']) && $responseHandled['success'] == true) {
+                            $responseHeader = $responseHandled['data']['header'];
                             if ($responseHeader['rtn_TYPE'] == 'S') {
                                 $this->messageManager->addSuccessMessage(__('Order %1 sent to SAP Successfully.', $order->getIncrementId()));
                             } else {
-                                throw new AddressException(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $responseHeader['rtn_TYPE'], $responseHeader['rtn_MSG']));
+                                throw new AddressException(
+                                    __('Error returned from SAP for order %1. Error code : %2. Message : %3',
+                                        $order->getIncrementId(),
+                                        $responseHeader['rtn_TYPE'],
+                                        $responseHeader['rtn_MSG']
+                                    )
+                                );
                             }
                         } else {
-                            throw new AddressException(__('Error returned from SAP for order %1. Error code : %2. Message : %3', $order->getIncrementId(), $result['code'], $result['message']));
+                            throw new AddressException(
+                                __(
+                                    'Error returned from SAP for order %1. Message : %2',
+                                    $order->getIncrementId(),
+                                    $responseHandled['message']
+                                )
+                            );
                         }
-                    } else {
-                        throw new AddressException(__('Something went wrong while sending order data to SAP. No response.'));
                     }
                 } catch (NoSuchEntityException $e) {
                     throw new NoSuchEntityException(__('SAP : ' . $e->getMessage()));

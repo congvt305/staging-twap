@@ -10,6 +10,7 @@
 
 namespace Eguana\ChangeStatus\Cron;
 
+use Amore\PointsIntegration\Logger\Logger;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
 class OrderProcessingToComplete
@@ -31,18 +32,37 @@ class OrderProcessingToComplete
      */
     private $orderRepository;
 
+    /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManagerInterface
+     * @param \Eguana\ChangeStatus\Model\Source\Config $config
+     * @param \Eguana\ChangeStatus\Model\GetCompletedOrders $completedOrders
+     * @param OrderRepositoryInterface $orderRepository
+     * @param Logger $logger
+     */
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManagerInterface,
         \Eguana\ChangeStatus\Model\Source\Config $config,
         \Eguana\ChangeStatus\Model\GetCompletedOrders $completedOrders,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        Logger $logger
     ) {
         $this->storeManagerInterface = $storeManagerInterface;
         $this->config = $config;
         $this->completedOrders = $completedOrders;
         $this->orderRepository = $orderRepository;
+        $this->logger = $logger;
     }
 
+    /**
+     * Update status order
+     *
+     * @return void
+     */
     public function execute()
     {
         $stores = $this->storeManagerInterface->getStores();
@@ -54,9 +74,13 @@ class OrderProcessingToComplete
                 $orderList = $this->completedOrders->getCompletedOrder($store->getId());
 
                 foreach ($orderList as $order) {
-                    $order->setStatus('complete');
-                    $order->setState('complete');
-                    $this->orderRepository->save($order);
+                    try {
+                        $order->setStatus('complete');
+                        $order->setState('complete');
+                        $this->orderRepository->save($order);
+                    } catch (\Exception $exception) {
+                        $this->logger->info($exception->getMessage());
+                    }
                 }
             }
         }

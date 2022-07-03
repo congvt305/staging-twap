@@ -25,6 +25,7 @@ use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Source\Config;
 use Amore\Sap\Controller\Adminhtml\AbstractAction;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 class MassSend extends AbstractAction
 {
@@ -54,7 +55,6 @@ class MassSend extends AbstractAction
     private $eventManager;
 
     /**
-     * MassSend constructor.
      * @param Action\Context $context
      * @param Json $json
      * @param Request $request
@@ -66,6 +66,7 @@ class MassSend extends AbstractAction
      * @param OrderRepositoryInterface $orderRepository
      * @param TimezoneInterface $timezoneInterface
      * @param ManagerInterface $eventManager
+     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         Action\Context $context,
@@ -78,9 +79,10 @@ class MassSend extends AbstractAction
         SapOrderConfirmData $sapOrderConfirmData,
         OrderRepositoryInterface $orderRepository,
         TimezoneInterface $timezoneInterface,
-        ManagerInterface $eventManager
+        ManagerInterface $eventManager,
+        MiddlewareHelper $middlewareHelper
     ) {
-        parent::__construct($context, $json, $request, $logger, $config);
+        parent::__construct($context, $json, $request, $logger, $config, $middlewareHelper);
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
         $this->sapOrderConfirmData = $sapOrderConfirmData;
@@ -172,13 +174,14 @@ class MassSend extends AbstractAction
             $orderCount = count($orderDataList);
             if ($orderCount > 0) {
                 $storeIdUnique = array_unique($storeIdList);
+                $storeId = array_shift($storeIdUnique);
                 $sendData = $this->sapOrderConfirmData->massSendOrderData($orderDataList, $orderItemDataList);
                 if ($this->config->getLoggingCheck()) {
                     $this->logger->info("ORDER MASS SEND DATA");
                     $this->logger->info($this->json->serialize($sendData));
                 }
 
-                $result = $this->request->postRequest($this->json->serialize($sendData), array_shift($storeIdUnique));
+                $result = $this->request->postRequest($this->json->serialize($sendData), $storeId);
 
                 if ($this->config->getLoggingCheck()) {
                     $this->logger->info("ORDER MASS SEND RESULT");
@@ -197,14 +200,15 @@ class MassSend extends AbstractAction
                     ]
                 );
 
-                $resultSize = count($result);
-
-                if ($resultSize > 0) {
-                    if ($result['code'] == '0000') {
-                        $outdata = $result['data']['response']['output']['outdata'];
+                $responseHandled = $this->request->handleResponse($result, $storeId);
+                if ($responseHandled === null) {
+                    $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response'));
+                } else {
+                    $outData = $responseHandled['data']['output']['outdata'];
+                    if (isset($responseHandled['success']) && $responseHandled['success'] == true) {
                         $ordersSucceeded = [];
                         $orderFailed = [];
-                        foreach ($outdata as $data) {
+                        foreach ($outData as $data) {
                             if ($data['retcod'] == 'S') {
                                 $ordersSucceeded[] = $this->getOriginOrderIncrementId($data);
                                 $succeededOrderObject = $this->sapOrderConfirmData->getOrderInfo($data['odrno']);
@@ -251,21 +255,17 @@ class MassSend extends AbstractAction
                             );
                         }
                     } else {
-                        $outdata = $result['data']['response']['output']['outdata'];
-                        foreach ($outdata as $data) {
+                        foreach ($outData as $data) {
                             $this->changeOrderSendCheckValue($data, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL, "sap_fail");
                         }
                         $this->messageManager->addErrorMessage(
                             __(
-                                'Error returned from SAP for order %1. Error code : %2. Message : %3',
+                                'Error returned from SAP for order %1. Message : %2',
                                 $order->getIncrementId(),
-                                $result['code'],
-                                $result['message']
+                                $responseHandled['message']
                             )
                         );
                     }
-                } else {
-                    $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response'));
                 }
             } else {
                 $this->messageManager->addErrorMessage(__('There is no order to send. Check order and try again.'));
