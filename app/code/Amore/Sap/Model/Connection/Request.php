@@ -68,7 +68,11 @@ class Request
 
         if ($this->config->getLoggingCheck()) {
             $this->logger->info('LIVE MODE REQUEST');
-            $this->logger->info($this->json->serialize($requestData));
+            if (is_array($requestData)) {
+                $this->logger->info($this->json->serialize($requestData));
+            } else {
+                $this->logger->info($requestData);
+            }
             $this->logger->info("FUlL URL");
             $this->logger->info($fullUrl);
         }
