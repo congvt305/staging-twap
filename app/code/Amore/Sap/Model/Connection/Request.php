@@ -33,10 +33,7 @@ class Request extends BaseRequest
      */
     private $logger;
 
-
     /**
-     * Constructor.
-     *
      * @param Curl $curl
      * @param Json $json
      * @param Config $config
@@ -60,19 +57,14 @@ class Request extends BaseRequest
         $url = $this->getUrl($storeId);
         $path = $this->getPath($storeId, $type);
         $fullUrl = $url . $path;
-
         if ($this->config->getLoggingCheck()) {
             $this->logger->info('LIVE MODE REQUEST');
-            if (is_array($requestData)) {
-                $this->logger->info($this->json->serialize($requestData));
-            } else {
-                $this->logger->info($requestData);
-            }
+            $this->logger->info($this->json->serialize($requestData));
             $this->logger->info("FUlL URL");
             $this->logger->info($fullUrl);
         }
 
-        if (empty($url) || empty($path)) {
+        if (empty($fullUrl)) {
             throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
         } else {
             try {
