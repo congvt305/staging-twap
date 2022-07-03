@@ -53,6 +53,10 @@ class Config
 
     const SAP_SKU_PREFIX_XML_PATH = 'sap/mall_info/sku_prefix';
 
+    const SAP_CRON_ENABLE = 'sap/send_order_to_sap_cron/enable';
+
+    const SAP_CRON_LIMITATION = 'sap/send_order_to_sap_cron/number_of_order';
+
     /**
      * @var ScopeConfigInterface
      */

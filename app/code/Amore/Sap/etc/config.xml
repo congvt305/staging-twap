@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <sap>
+            <send_order_to_sap_cron>
+                <enable>0</enable>
+                <cron_expr>0 * * * *</cron_expr>
+                <number_of_order>10</number_of_order>
+            </send_order_to_sap_cron>
+        </sap>
+    </default>
+</config>
