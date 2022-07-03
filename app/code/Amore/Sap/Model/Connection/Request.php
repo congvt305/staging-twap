@@ -8,7 +8,6 @@
 
 namespace Amore\Sap\Model\Connection;
 
-use Braintree\Base;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -26,6 +25,14 @@ class Request extends BaseRequest
     const ORDER_CANCEL_PATH = 'sap/url_path/order_cancel_path';
 
     /**
+     * @var Curl
+     */
+    private $curl;
+    /**
+     * @var Json
+     */
+    private $json;
+    /**
      * @var Config
      */
     private $config;
@@ -34,7 +41,10 @@ class Request extends BaseRequest
      */
     private $logger;
 
+
     /**
+     * Constructor.
+     *
      * @param Curl $curl
      * @param Json $json
      * @param Config $config
@@ -58,14 +68,20 @@ class Request extends BaseRequest
         $url = $this->getUrl($storeId);
         $path = $this->getPath($storeId, $type);
         $fullUrl = $url . $path;
+
         if ($this->config->getLoggingCheck()) {
             $this->logger->info('LIVE MODE REQUEST');
             $this->logger->info($this->json->serialize($requestData));
+            if (is_array($requestData)) {
+                $this->logger->info($this->json->serialize($requestData));
+            } else {
+                $this->logger->info($requestData);
+            }
             $this->logger->info("FUlL URL");
             $this->logger->info($fullUrl);
         }
 
-        if (empty($fullUrl)) {
+        if (empty($url) || empty($path)) {
             throw new LocalizedException(__("Url or Path is empty. Please check configuration and try again."));
         } else {
             try {
@@ -79,7 +95,9 @@ class Request extends BaseRequest
                     $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
                 }
 
-                $response = $this->send($fullUrl, $requestData, 'store', $storeId, $type);
+                $this->curl->post($fullUrl, $requestData);
+
+                $response = $this->curl->getBody();
 
                 if ($this->config->getLoggingCheck()) {
                     $this->logger->info('LIVE RESPONSE');
