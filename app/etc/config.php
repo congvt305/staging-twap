@@ -732,7 +732,7 @@ return [
         'Amasty_BannersLite' => 1,
         'Amasty_Base' => 1,
         'Amasty_Conditions' => 1,
-        'Amasty_Coupons' => 0,
+        'Amasty_Coupons' => 1,
         'Amasty_CronScheduleList' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Amasty_ImageOptimizer' => 1,
