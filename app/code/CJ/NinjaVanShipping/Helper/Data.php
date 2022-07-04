@@ -146,9 +146,9 @@ class Data extends AbstractHelper
         return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_NUM_OF_RETRY, ScopeInterface::SCOPE_WEBSITE);
     }
 
-    public function getNinjaVanAllowsOrderStatusCancel()
+    public function getNinjaVanAllowsOrderStatusCancel($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_ALLOWS_ORDER_STATUS_CAN_CANCEL, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_ALLOWS_ORDER_STATUS_CAN_CANCEL, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     public function getNinjaVanUriGenerateWaybill()
