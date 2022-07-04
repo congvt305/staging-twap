@@ -19,7 +19,7 @@ $productInfo = $block->getProductInfo($currentProduct);
     var AP_PRD_CODE = "<?= $block->escapeHtml($currentProduct->getSku())?>";
     var AP_PRD_PRICE = "<?= $block->escapeHtml($currentProduct->getFinalPrice())?>";
     var AP_PRD_BRAND = "<?= $block->escapeHtml($currentProduct->getBctxten())?>";
-    var AP_PRD_CATEGORY = "<?= $block->escapeHtml($block->getProductCategory($currentProduct))?>";
+    var AP_PRD_CATEGORY = "<?= $block->escapeHtml($block->getRooCategory())?>";
     var PRD_DATA = [
         <?php foreach($productInfo as $info) : ?>
         <?= $info ?>,
