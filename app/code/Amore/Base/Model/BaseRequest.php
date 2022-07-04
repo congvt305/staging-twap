@@ -49,7 +49,7 @@ abstract class BaseRequest
      */
     public function send($url, $requestData, $scope = 'store', $websiteId, $type = 'confirm')
     {
-        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('website', $websiteId);
+        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled($scope, $websiteId);
         if (!is_array($requestData)) {
             $requestData = $this->json->unserialize($requestData);
         }
