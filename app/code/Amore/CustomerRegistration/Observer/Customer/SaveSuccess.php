@@ -24,6 +24,7 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use Magento\Customer\Api\AddressRepositoryInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Call POS API on customer information change
@@ -32,6 +33,7 @@ use Magento\Customer\Api\AddressRepositoryInterface;
  */
 class SaveSuccess implements ObserverInterface
 {
+    protected $storeManager;
     /**
      * @var \Amore\CustomerRegistration\Model\Sequence
      */
@@ -106,7 +108,8 @@ class SaveSuccess implements ObserverInterface
         POSSystem $POSSystem,
         AddressRepositoryInterface $addressRepository,
         AddressInterfaceFactory $addressDataFactory,
-        \Magento\Framework\App\State $state
+        \Magento\Framework\App\State $state,
+        StoreManagerInterface $storeManager
     ) {
         $this->sequence = $sequence;
         $this->POSSystem = $POSSystem;
@@ -121,6 +124,7 @@ class SaveSuccess implements ObserverInterface
         $this->addressRepository = $addressRepository;
         $this->addressDataFactory = $addressDataFactory;
         $this->state = $state;
+        $this->storeManager = $storeManager;
     }
 
     /**
