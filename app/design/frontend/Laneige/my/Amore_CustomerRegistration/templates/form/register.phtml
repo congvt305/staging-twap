@@ -185,6 +185,11 @@ $directoryHelper = $this->helper(\Eguana\Directory\Helper\Data::class);
             <?php if ($_gender->isEnabled()) : ?>
                 <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
             <?php endif ?>
+
+            <?php $_race = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\Race::class) ?>
+            <?php if ($_race->isEnabled()) : ?>
+                <?= $_race->setRace($block->getFormData()->getRace())->toHtml() ?>
+            <?php endif ?>
         </fieldset>
         <fieldset class="fieldset address">
             <div class="fieldset dm-address">
