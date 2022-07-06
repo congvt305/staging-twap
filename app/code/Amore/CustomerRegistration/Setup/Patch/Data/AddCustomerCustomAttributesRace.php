@@ -80,7 +80,7 @@ class AddCustomerCustomAttributesRace implements DataPatchInterface
                         'group' => 'General',
                         'input' => 'select',
                         'source' => \Magento\Eav\Model\Entity\Attribute\Source\Table::class,
-                        'required' => true,
+                        'required' => false,
                         'sort_order' => 110,
                         'visible' => true,
                         'system' => false,
