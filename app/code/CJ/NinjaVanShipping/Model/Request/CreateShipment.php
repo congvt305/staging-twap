@@ -104,9 +104,10 @@ class CreateShipment
      */
     public function requestCreateOrder($data, $order)
     {
-        $tokenData = $this->authToken->getToken($order->getStoreId());
+        $storeId = $order->getStoreId();
+        $tokenData = $this->authToken->getToken($storeId);
         if (!$tokenData || !$tokenData->getToken()) {
-            $auth = $this->authToken->requestAuthToken('array', $order->getStoreId());
+            $auth = $this->authToken->requestAuthToken('array', $storeId);
             $this->logger->addInfo('auth: ', $auth);
             if (isset($auth['access_token']) && $auth['access_token']) {
                 $token = $auth['access_token'];
@@ -117,14 +118,14 @@ class CreateShipment
             $token = $tokenData->getToken();
         }
 
-        $host = $this->ninjavanHelper->getNinjaVanHost();
-        $hostLive = $this->ninjavanHelper->getNinjaVanHostLive();
-        $countryCode = $this->ninjavanHelper->getNinjaVanCountryCode();
-        $uri = $this->ninjavanHelper->getNinjaVanUriCreateOrder();
+        $host = $this->ninjavanHelper->getNinjaVanHost($storeId);
+        $hostLive = $this->ninjavanHelper->getNinjaVanHostLive($storeId);
+        $countryCode = $this->ninjavanHelper->getNinjaVanCountryCode($storeId);
+        $uri = $this->ninjavanHelper->getNinjaVanUriCreateOrder($storeId);
 
         $contents = [];
         if ($token) {
-            $sandbox = (bool)$this->ninjavanHelper->isNinjaVanSandboxModeEnabled();
+            $sandbox = (bool)$this->ninjavanHelper->isNinjaVanSandboxModeEnabled($order->getStoreId());
             if ($sandbox === false) {
                 $url = $hostLive . strtoupper($countryCode) . $uri;
             } else {
@@ -210,12 +211,13 @@ class CreateShipment
     public function payloadSendToNinjaVan($order): array
     {
         $merchantOrderNumber = $order->getIncrementId();
+        $storeId = $order->getStoreId();
 
-        $nameFrom = $this->ninjavanHelper->getNinjaVanSendFrom();
-        $phoneFrom = $this->ninjavanHelper->getNinjaVanPhoneFrom();
-        $mailFrom = $this->ninjavanHelper->getNinjaVanMailFrom();
-        $addressFrom = $this->ninjavanHelper->getNinjaVanAddressFrom();
-        $postCodeFrom = $this->ninjavanHelper->getNinjaVanPostcodeFrom();
+        $nameFrom = $this->ninjavanHelper->getNinjaVanSendFrom($storeId);
+        $phoneFrom = $this->ninjavanHelper->getNinjaVanPhoneFrom($storeId);
+        $mailFrom = $this->ninjavanHelper->getNinjaVanMailFrom($storeId);
+        $addressFrom = $this->ninjavanHelper->getNinjaVanAddressFrom($storeId);
+        $postCodeFrom = $this->ninjavanHelper->getNinjaVanPostcodeFrom($storeId);
         $cityFrom = $this->scopeConfig->getValue(Shipment::XML_PATH_STORE_CITY, ScopeInterface::SCOPE_WEBSITE) ?? '';
         $stateIdFrom = $this->scopeConfig->getValue(Shipment::XML_PATH_STORE_REGION_ID, ScopeInterface::SCOPE_WEBSITE);
         $stateFrom = $stateIdFrom ? $this->getRegionById($stateIdFrom) : '';

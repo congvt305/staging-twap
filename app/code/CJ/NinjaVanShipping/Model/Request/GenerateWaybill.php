@@ -111,7 +111,7 @@ class GenerateWaybill implements GenerateWaybillInterface
 
         $client = $this->clientFactory->create(['config' => $this->prepareConfigs($token)]);
         $queryParams = $this->prepareParams($trackingNumbers);
-        $apiUri = $this->getBaseUrl() . $uri . $queryParams;
+        $apiUri = $this->getBaseUrl($storeId) . $uri . $queryParams;
 
         $this->logger->info('Request body to generate NinjaVan waybill:');
         $this->logger->info($this->json->serialize(['config' => $client->getConfig(), 'uri' => $apiUri]));
@@ -179,14 +179,14 @@ class GenerateWaybill implements GenerateWaybillInterface
     /**
      * @return string
      */
-    protected function getBaseUrl(): string
+    protected function getBaseUrl($storeId): string
     {
-        $countryCode = $this->ninjavanHelper->getNinjaVanCountryCode();
-        $isSandboxMode = (bool)$this->ninjavanHelper->isNinjaVanSandboxModeEnabled();
+        $countryCode = $this->ninjavanHelper->getNinjaVanCountryCode($storeId);
+        $isSandboxMode = (bool)$this->ninjavanHelper->isNinjaVanSandboxModeEnabled($storeId);
         if ($isSandboxMode) {
-            return $this->ninjavanHelper->getNinjaVanHost() . 'SG';
+            return $this->ninjavanHelper->getNinjaVanHost($storeId) . 'SG';
         }
-        return $this->ninjavanHelper->getNinjaVanHostLive() . strtoupper($countryCode);
+        return $this->ninjavanHelper->getNinjaVanHostLive($storeId) . strtoupper($countryCode);
     }
 
     /**

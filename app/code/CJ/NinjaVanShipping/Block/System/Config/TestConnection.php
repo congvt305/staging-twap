@@ -44,7 +44,7 @@ class TestConnection extends Field
      */
     public function getAjaxUrl()
     {
-        return $this->getUrl('ninjavan/system_config/testconnection');
+        return $this->getUrl('ninjavan/system_config/testconnection', ['store' => $this->getRequest()->getParam('store')]);
     }
 
     /**

@@ -7,7 +7,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <section id="ninjavan" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1">
+        <section id="ninjavan" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>Ninja Van Shipping</label>
             <tab>cj_extensions_tab</tab>
@@ -21,70 +21,70 @@
                 </field>
             </group>
 
-            <group id="sandbox_api" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
+            <group id="sandbox_api" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Sandbox API</label>
-                <field id="sandbox_mode" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="sandbox_mode" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Sandbox Mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="host" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="host" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Host</label>
                 </field>
-                <field id="host_live" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="host_live" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Host Live</label>
                 </field>
-                <field id="country_code" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="country_code" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Country Code</label>
                 </field>
-                <field id="api_key" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="api_key" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>API Key</label>
                 </field>
-                <field id="client_id" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="client_id" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Client ID</label>
                 </field>
-                <field id="client_key" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="client_key" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Client Key</label>
                 </field>
-                <field id="create_order" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="create_order" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Create Order</label>
                     <comment>URI for create order</comment>
                 </field>
-                <field id="cancel_order" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="cancel_order" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Cancel Order</label>
                     <comment>URI for cancel order</comment>
                 </field>
-                <field id="generate_waybill" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="generate_waybill" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Generate Waybill</label>
                     <comment>URI for generate waybill</comment>
                 </field>
-                <field id="track_url" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="track_url" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Tracking URL</label>
                 </field>
-                <field id="test_connection" translate="Test Connection" type="button" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="test_connection" translate="Test Connection" type="button" sortOrder="20" showInDefault="0" showInWebsite="0" showInStore="1">
                     <label>Test Connection</label>
                     <frontend_model>CJ\NinjaVanShipping\Block\System\Config\TestConnection</frontend_model>
                 </field>
-                <field id="number_of_retry" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="number_of_retry" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Number Of Retry</label>
                 </field>
             </group>
 
             <group id="additional" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
                 <label>Additional</label>
-                <field id="send_from" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="send_from" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Send From</label>
                     <comment>Firstname and lastname</comment>
                 </field>
-                <field id="phone_from" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="phone_from" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Phone From</label>
                 </field>
-                <field id="mail_from" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="mail_from" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Mail From</label>
                 </field>
-                <field id="address_from" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="address_from" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Address From</label>
                 </field>
-                <field id="postcode_from" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="postcode_from" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Postcode From</label>
                 </field>
             </group>
@@ -122,7 +122,7 @@
                     <label>Handling Fee</label>
                     <validate>validate-number validate-zero-or-greater</validate>
                 </field>
-                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" canRestore="1">
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>

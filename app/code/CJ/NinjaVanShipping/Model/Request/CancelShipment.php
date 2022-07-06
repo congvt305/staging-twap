@@ -51,10 +51,11 @@ class CancelShipment
      */
     public function requestCancelShipment(string $trackingId = '', $order)
     {
-        $tokenData = $this->authToken->getToken($order->getStoreId());
+        $storeId = $order->getStoreId();
+        $tokenData = $this->authToken->getToken($storeId);
         $token = '';
         if (!$tokenData || !$tokenData->getToken()) {
-            $auth = $this->authToken->requestAuthToken('array', $order->getStoreId());
+            $auth = $this->authToken->requestAuthToken('array', $storeId);
             if (isset($auth['access_token']) && $auth['access_token']) {
                 $token = $auth['access_token'];
             } else {
@@ -65,12 +66,12 @@ class CancelShipment
         }
         $contents = [];
 
-        $host = $this->ninjavanHelper->getNinjaVanHost();
-        $hostLive = $this->ninjavanHelper->getNinjaVanHostLive();
-        $countryCode = $this->ninjavanHelper->getNinjaVanCountryCode();
-        $uri = $this->ninjavanHelper->getNinjaVanUriCancelOrder();
+        $host = $this->ninjavanHelper->getNinjaVanHost($storeId);
+        $hostLive = $this->ninjavanHelper->getNinjaVanHostLive($storeId);
+        $countryCode = $this->ninjavanHelper->getNinjaVanCountryCode($storeId);
+        $uri = $this->ninjavanHelper->getNinjaVanUriCancelOrder($storeId);
         if ($trackingId && $token) {
-            $sandbox = (bool)$this->ninjavanHelper->isNinjaVanSandboxModeEnabled();
+            $sandbox = (bool)$this->ninjavanHelper->isNinjaVanSandboxModeEnabled($order->getStoreId());
             if ($sandbox === false) {
                 $url = $hostLive . strtoupper($countryCode) . $uri;
             } else {

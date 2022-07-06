@@ -69,17 +69,17 @@ class AuthToken
 
     public function requestAuthToken($format = 'json', $storeId)
     {
-        $sandbox = (bool)$this->ninjavanHelper->isNinjaVanSandboxModeEnabled();
+        $sandbox = (bool)$this->ninjavanHelper->isNinjaVanSandboxModeEnabled($storeId);
         if ($sandbox === false) {
-            $countryCode = $this->ninjavanHelper->getNinjaVanCountryCode();
+            $countryCode = $this->ninjavanHelper->getNinjaVanCountryCode($storeId);
         } else {
             $countryCode = 'sg';
         }
         $uri = strtoupper($countryCode) . '/2.0/oauth/access_token';
-        $url = $this->ninjavanHelper->getNinjaVanHost() . $uri;
+        $url = $this->ninjavanHelper->getNinjaVanHost($storeId) . $uri;
         $postData = [
-            "client_id" => $this->ninjavanHelper->getNinjaVanClientId(),
-            "client_secret" => $this->ninjavanHelper->getNinjaVanClientKey(),
+            "client_id" => $this->ninjavanHelper->getNinjaVanClientId($storeId),
+            "client_secret" => $this->ninjavanHelper->getNinjaVanClientKey($storeId),
             "grant_type" => "client_credentials"
         ];
         $this->logger->info('ninjavan | request access token payload: ' . $this->json->serialize($postData));
