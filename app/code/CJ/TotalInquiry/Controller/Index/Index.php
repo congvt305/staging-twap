@@ -9,7 +9,9 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Index
@@ -36,6 +38,10 @@ class Index extends Action implements HttpGetActionInterface
      * @var OrderResourceModel
      */
     protected $orderResource;
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * Index constructor.
@@ -43,17 +49,20 @@ class Index extends Action implements HttpGetActionInterface
      * @param JsonFactory $resultJsonFactory
      * @param CustomerSession $customerSession
      * @param OrderResourceModel $orderResource
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
         CustomerSession $customerSession,
-        OrderResourceModel $orderResource
+        OrderResourceModel $orderResource,
+        LoggerInterface $logger
     )
     {
         $this->resultJsonFactory = $resultJsonFactory;
         $this->customerSession = $customerSession;
         $this->orderResource = $orderResource;
+        $this->logger = $logger;
         parent::__construct($context);
     }
 
@@ -74,10 +83,14 @@ class Index extends Action implements HttpGetActionInterface
                     'complete' => $this->orderResource->getTotalOrders(self::STATUS_DELIVERY_COMPLETE, $customerId, self::STATUS_COMPLETE)
                 ];
             } else {
-                $data = ['error' => __('You are not logged in. Please login and try again')];
+                throw new LocalizedException(__('You are not logged in. Please login and try again'));
             }
         } catch (LocalizedException $exception) {
-            $data = ['error' => $exception->getMessage()];
+            $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+            $this->messageManager->addErrorMessage(__('Something went wrong with total inquiry!'));
+            $this->logger->info(__('Total Inquiry: %1', $exception->getMessage()));
+
+            return $resultRedirect->setPath('');
         }
         $result->setData($data);
 
