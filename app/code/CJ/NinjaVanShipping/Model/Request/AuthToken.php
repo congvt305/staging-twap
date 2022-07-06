@@ -72,11 +72,15 @@ class AuthToken
         $sandbox = (bool)$this->ninjavanHelper->isNinjaVanSandboxModeEnabled($storeId);
         if ($sandbox === false) {
             $countryCode = $this->ninjavanHelper->getNinjaVanCountryCode($storeId);
+            $url = $this->ninjavanHelper->getNinjaVanHostLive($storeId);
         } else {
             $countryCode = 'sg';
+            $url = $this->ninjavanHelper->getNinjaVanHost($storeId);
         }
         $uri = strtoupper($countryCode) . '/2.0/oauth/access_token';
-        $url = $this->ninjavanHelper->getNinjaVanHost($storeId) . $uri;
+
+        $url .= $uri;
+
         $postData = [
             "client_id" => $this->ninjavanHelper->getNinjaVanClientId($storeId),
             "client_secret" => $this->ninjavanHelper->getNinjaVanClientKey($storeId),
