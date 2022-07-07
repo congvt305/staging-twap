@@ -28,7 +28,7 @@ class CanCancel
      */
     public function afterCanCancel(Order $subject, bool $result)
     {
-        $allowOrderStatus = $this->data->getNinjaVanAllowsOrderStatusCancel();
+        $allowOrderStatus = $this->data->getNinjaVanAllowsOrderStatusCancel($subject->getStoreId());
         $allowOrderStatus = explode(",", $allowOrderStatus);
 
         if ($result === false

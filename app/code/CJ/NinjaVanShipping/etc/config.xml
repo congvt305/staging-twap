@@ -39,7 +39,7 @@
                 <postcode_from>51200</postcode_from>
             </additional>
             <cancel_order_with_nv>
-                <allows_order_status_can_cacel>processing_with_shipment</allows_order_status_can_cacel>
+                <allows_order_status_can_cacel>processing_with_shipment,sap_processing</allows_order_status_can_cacel>
             </cancel_order_with_nv>
         </ninjavan>
         <carriers>
