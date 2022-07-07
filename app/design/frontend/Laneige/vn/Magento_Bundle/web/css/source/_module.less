@@ -8,6 +8,17 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+    .catalog-product-view {
+        &.page-layout-1column {
+            .bundle-options-container {
+                .visual-aids-container {
+                    width: 100%;
+                    float: inherit;
+                }
+            }
+        }
+    }
+
     .bundle-actions {
         &:extend(.abs-visually-hidden all);
         &:extend(.abs-box-tocart all);
