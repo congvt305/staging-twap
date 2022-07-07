@@ -642,13 +642,15 @@ class POSSystem extends BaseRequest
     {
         $baCode = $baCode ? trim($baCode) : '';
         if ($baCode) {
-            $websiteId = $this->storeManager->getWebsite()->getId();
             $checkTW = substr($baCode, 0, 2);
-            $prefix = $this->config->getBaCodePrefix($websiteId);
-            if (in_array(strtolower($checkTW), ['tw', 'vn'])) {
+            if ($checkTW == self::BA_CODE_PREFIX_LOWERCASE) {
                 $baCode = strtoupper($checkTW) . substr($baCode, 2);
-            } else {
-                $baCode = strtoupper($prefix) . $baCode;
+            } elseif ($checkTW != self::BA_CODE_PREFIX) {
+                if (strtolower($checkTW) == "vn") {
+                    $baCode = $baCode;
+                } else {
+                    $baCode = self::BA_CODE_PREFIX . $baCode;
+                }
             }
         }
         return $baCode;
