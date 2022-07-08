@@ -190,6 +190,11 @@ return [
                     'code' => 'en_US'
                 ]
             ],
+            'advanced' => [
+                'modules_disable_output' => [
+                    'Magento_Banner' => '1'
+                ]
+            ],
             'dev' => [
                 'static' => [
                     'sign' => '1'
@@ -232,11 +237,6 @@ return [
                 'general' => [
                     'locale' => [
                         'code' => 'zh_Hant_TW'
-                    ]
-                ],
-                'advanced' => [
-                    'modules_disable_output' => [
-                        'Magento_Banner' => '1'
                     ]
                 ]
             ],
