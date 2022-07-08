@@ -207,6 +207,11 @@ return [
                     'locale' => [
                         'code' => 'zh_Hant_TW'
                     ]
+                ],
+                'advanced' => [
+                    'modules_disable_output' => [
+                        'Magento_Banner' => '1'
+                    ]
                 ]
             ],
             'tw_lageige_website' => [
