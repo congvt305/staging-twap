@@ -69,7 +69,10 @@ class ReturnSaveAfter implements ObserverInterface
                 $invoicedata = $this->invoice->loadByIncrementId($invoice->getIncrementId());
                 $creditmemo = $this->creditmemoFactory->createByOrder($order);
                 $creditmemo->setInvoice($invoicedata );
-                $this->creditmemoService->refund($creditmemo);
+                if (!$order->getTotalRefunded()) {
+                    $this->creditmemoService->refund($creditmemo);
+                }
+
             }
         } catch (Exception $exception) {
             $this->logger->error(PayooLogger::TYPE_LOG_RETURN,
