@@ -13618,7 +13618,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "There is no tracking available.","There is no tracking available.",module,Magento_Shipping
 "Close Window","關閉視窗",module,Magento_Shipping
 "Track history","Track history",module,Magento_Shipping
-"Location","位置",module,Magento_Shipping
+"Location","預設",module,Magento_Shipping
 "Date","日期",module,Magento_Shipping
 "Local Time","Local Time",module,Magento_Shipping
 "Description","描述",module,Magento_Shipping
