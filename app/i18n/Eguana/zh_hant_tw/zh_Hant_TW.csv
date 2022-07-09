@@ -1154,7 +1154,7 @@
 "Delete","刪除",module,Magento_Banner
 "Are you sure you want to delete these banners?","確實要刪除這些橫幅嗎？",module,Magento_Banner
 "Related Banners","相關橫幅",module,Magento_Banner
-"Position","位置",module,Magento_Banner
+"Position","預設",module,Magento_Banner
 "This rule no longer exists.","此規則不再存在。",module,Magento_Banner
 "This banner does not exist.","這面橫幅不存在。",module,Magento_Banner
 "You deleted the banner.","你刪除了橫幅。",module,Magento_Banner
@@ -1699,6 +1699,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "CAPTCHA for ""Create user"" and ""Forgot password"" forms is always enabled if chosen.","如果選擇了“創建用戶”和“忘記密碼”表單，一律啟用驗證碼。",module,Magento_Captcha
 "Please enter the letters from the image","請從圖像，輸入字母",module,Magento_Captcha
 "Please type the letters below","請鍵入下面的字母",module,Magento_Captcha
+"Position","預設",module,Magento_Catalog
 "Root","根",module,Magento_Catalog
 "Delete","刪除",module,Magento_Catalog
 "Save","儲存",module,Magento_Catalog
@@ -1710,7 +1711,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Visibility","可見度",module,Magento_Catalog
 "Status","狀態",module,Magento_Catalog
 "Price","價格",module,Magento_Catalog
-"Position","位置",module,Magento_Catalog
+"Position","預設",module,Magento_Catalog
 "Add Subcategory","添加子類別",module,Magento_Catalog
 "Add Root Category","添加根類別",module,Magento_Catalog
 "Day","日",module,Magento_Catalog
@@ -2285,7 +2286,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Buy %1 for %2 each and <strong class=""benefit"">save<span class=""percent tier-%3"">&nbsp;%4</span>%</strong>","每個購買 %2 附送 %1並且<strong class =“benefit”>保存<span class =“percent tier-<span class=""percent tier-%3"">&nbsp;%4 </span>％</strong>",module,Magento_Catalog
 "Buy %1 for %2 each","Buy %1 for %2 each",module,Magento_Catalog
 "Shop By","Shop By",module,Magento_Catalog
-"Shopping Options","Shopping Options",module,Magento_Catalog
+"Shopping Options","商品篩選",module,Magento_Catalog
 "Compare Products","比較產品",module,Magento_Catalog
 "Print This Page","打印此頁",module,Magento_Catalog
 "Remove Product","刪除该商品",module,Magento_Catalog
@@ -7440,7 +7441,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Quantity","數量",module,Magento_GroupedProduct
 "AttributeSetText","AttributeSetText",module,Magento_GroupedProduct
 "StatusText","StatusText",module,Magento_GroupedProduct
-"Position","位置",module,Magento_GroupedProduct
+"Position","預設",module,Magento_GroupedProduct
 """model"" value should be specified","""model"" value should be specified",module,Magento_GroupedProductGraphQl
 "Select...","選擇… ",module,Magento_GroupedProductStaging
 "Status","狀態",module,Magento_GroupedProductStaging
@@ -7962,7 +7963,7 @@ e.g. var/export, var/import, var/export/some/dir",module,Magento_ImportExport
 "Can be used only with catalog input type Dropdown, Multiple Select and Price","Can be used only with catalog input type Dropdown, Multiple Select and Price",module,Magento_LayeredNavigation
 "Can be used only with catalog input type Dropdown, Multiple Select and Price.","Can be used only with catalog input type Dropdown, Multiple Select and Price.",module,Magento_LayeredNavigation
 "Use in Search Results Layered Navigation","Use in Search Results Layered Navigation",module,Magento_LayeredNavigation
-"Position","位置",module,Magento_LayeredNavigation
+"Position","預設",module,Magento_LayeredNavigation
 "Position in Layered Navigation","Position in Layered Navigation",module,Magento_LayeredNavigation
 "Position of attribute in layered navigation block.","Position of attribute in layered navigation block.",module,Magento_LayeredNavigation
 "item","item",module,Magento_LayeredNavigation
@@ -7971,9 +7972,9 @@ e.g. var/export, var/import, var/export/some/dir",module,Magento_ImportExport
 "Previous","上一頁",module,Magento_LayeredNavigation
 "Remove","移除",module,Magento_LayeredNavigation
 "Remove This Item","移除此物品",module,Magento_LayeredNavigation
-"Shop By","Shop By",module,Magento_LayeredNavigation
+"Shop By","分類",module,Magento_LayeredNavigation
 "Clear All","全部清除",module,Magento_LayeredNavigation
-"Shopping Options","Shopping Options",module,Magento_LayeredNavigation
+"Shopping Options","商品篩選",module,Magento_LayeredNavigation
 "Layered Navigation","Layered Navigation",module,Magento_LayeredNavigation
 "Display Product Count","Display Product Count",module,Magento_LayeredNavigation
 "Price Navigation Step Calculation","Price Navigation Step Calculation",module,Magento_LayeredNavigation
@@ -9750,7 +9751,7 @@ or more. <a href=""https:/financing.paypal.com/ppfinportal/content/forrester"" t
 "Get Publisher ID from PayPal","Get Publisher ID from PayPal",module,Magento_Paypal
 "Home Page","Home Page",module,Magento_Paypal
 "Display","Display",module,Magento_Paypal
-"Position","位置",module,Magento_Paypal
+"Position","預設",module,Magento_Paypal
 "Size","Size",module,Magento_Paypal
 "Catalog Category Page","Catalog Category Page",module,Magento_Paypal
 "Catalog Product Page","Catalog Product Page",module,Magento_Paypal
@@ -13617,7 +13618,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "There is no tracking available.","There is no tracking available.",module,Magento_Shipping
 "Close Window","關閉視窗",module,Magento_Shipping
 "Track history","Track history",module,Magento_Shipping
-"Location","位置",module,Magento_Shipping
+"Location","預設",module,Magento_Shipping
 "Date","日期",module,Magento_Shipping
 "Local Time","Local Time",module,Magento_Shipping
 "Description","描述",module,Magento_Shipping
@@ -15786,7 +15787,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "The CMS node with the ""%1"" ID doesn't exist.","The CMS node with the ""%1"" ID doesn't exist.",module,Magento_VersionsCms
 "Search All Products","Search All Products",module,Magento_VisualMerchandiser
 "Add Product by SKU","Add Product by SKU",module,Magento_VisualMerchandiser
-"Position","位置",module,Magento_VisualMerchandiser
+"Position","預設",module,Magento_VisualMerchandiser
 "Action","操作",module,Magento_VisualMerchandiser
 "Unassign","Unassign",module,Magento_VisualMerchandiser
 "Top","Top",module,Magento_VisualMerchandiser
@@ -16258,13 +16259,13 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Menu","Menu",theme,frontend\Magento\blank
 "Account","Account",theme,frontend\Magento\blank
 "Settings","設定",theme,frontend\Magento\blank
-"Now Shopping by","Now Shopping by",theme,frontend\Magento\luma
+"Now Shopping by","分類",theme,frontend\Magento\luma
 "Previous","上一頁",theme,frontend\Magento\luma
 "Remove","移除",theme,frontend\Magento\luma
 "Remove This Item","移除此物品",theme,frontend\Magento\luma
-"Shop By","Shop By",theme,frontend\Magento\luma
+"Shop By","分類",theme,frontend\Magento\luma
 "Clear All","全部清除",theme,frontend\Magento\luma
-"Shopping Options","Shopping Options",theme,frontend\Magento\luma
+"Shopping Options","商品篩選",theme,frontend\Magento\luma
 "Welcome to %store_name","歡迎來到%store_name",theme,frontend\Magento\luma
 "%name,","%name,",theme,frontend\Magento\luma
 "Welcome to %store_name.","歡迎來到%store_name.",theme,frontend\Magento\luma
