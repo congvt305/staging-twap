@@ -11,7 +11,7 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 class RefundRequest implements BuilderInterface
 {
-
+    const TIME_FORMAT_YMD = 'Ymd';
     const CHECKSUM_KEY= 'payment/paynow/checksum_key';
     const REFUND_URL= 'payment/paynow/refund_url';
     const API_PASSWORD= 'payment/paynow/api_password';
@@ -104,7 +104,7 @@ class RefundRequest implements BuilderInterface
             'Money' => $amount,
             'Description' => 'Refund from GECP',
             'ActionType' => 2, // refund
-            'PurchaseDate' => date('Ymd', strtotime($currentDateOrder))
+            'PurchaseDate' => $currentDateOrder
         ];
         $checksumKey = nl2br($this->getInformation(self::CHECKSUM_KEY, $order->getStoreId()));
         $strData = json_encode($data);
@@ -116,20 +116,20 @@ class RefundRequest implements BuilderInterface
      * @param $date
      * @param $store
      * @return string
+     * @throws \Exception
      */
-    private function getTimezoneStore($date, $store)
+    public function getTimezoneStore($date, $store)
     {
         $timezone =  $this->localeDate->getConfigTimezone(
             ScopeInterface::SCOPE_STORE,
             $store->getCode()
         );
 
-        return $this->localeDate->formatDateTime(
-            $date,
-            \IntlDateFormatter::MEDIUM,
-            \IntlDateFormatter::MEDIUM,
-            null,
-            $timezone
-        );
+        if (!$date instanceof \DateTime) {
+            $date = new \DateTime($date);
+        }
+        $timezone = new \DateTimeZone($timezone);
+        $date->setTimezone($timezone);
+        return $date->format(self::TIME_FORMAT_YMD);
     }
 }
