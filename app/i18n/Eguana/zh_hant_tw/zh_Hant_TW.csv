@@ -1154,7 +1154,7 @@
 "Delete","刪除",module,Magento_Banner
 "Are you sure you want to delete these banners?","確實要刪除這些橫幅嗎？",module,Magento_Banner
 "Related Banners","相關橫幅",module,Magento_Banner
-"Position","預設",module,Magento_Banner
+"Position","位置",module,Magento_Banner
 "This rule no longer exists.","此規則不再存在。",module,Magento_Banner
 "This banner does not exist.","這面橫幅不存在。",module,Magento_Banner
 "You deleted the banner.","你刪除了橫幅。",module,Magento_Banner
@@ -13618,7 +13618,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "There is no tracking available.","There is no tracking available.",module,Magento_Shipping
 "Close Window","關閉視窗",module,Magento_Shipping
 "Track history","Track history",module,Magento_Shipping
-"Location","預設",module,Magento_Shipping
+"Location","位置",module,Magento_Shipping
 "Date","日期",module,Magento_Shipping
 "Local Time","Local Time",module,Magento_Shipping
 "Description","描述",module,Magento_Shipping
