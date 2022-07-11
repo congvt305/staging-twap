@@ -293,10 +293,10 @@ class PosOrderData
                 $orderItemData[] = [
                     'prdCD' => $stripSku,
                     'qty' => (int)$orderItem->getQtyOrdered(),
-                    'price' => $this->formatPrice($orderItem->getOriginalPrice(), $isDecimalFormat),
-                    'salAmt' => $this->formatPrice($itemSubtotal, $isDecimalFormat),
-                    'dcAmt' => $this->formatPrice($itemTotalDiscount, $isDecimalFormat),
-                    'netSalAmt' => $this->formatPrice($itemGrandTotal, $isDecimalFormat),
+                    'price' => $orderItem->getOriginalPrice(),
+                    'salAmt' => $itemSubtotal,
+                    'dcAmt' => $itemTotalDiscount,
+                    'netSalAmt' => $itemGrandTotal,
                     'redemptionFlag' => $isRedemptionItem ? 'Y' : 'N',
                     'pointAccount' => (int)$pointAccount
                 ];
@@ -343,10 +343,10 @@ class PosOrderData
                     $orderItemData[] = [
                         'prdCD' => $stripSku,
                         'qty' => (int)$bundleChild->getQtyOrdered(),
-                        'price' => $this->formatPrice($bundleChildPrice, $isDecimalFormat),
-                        'salAmt' => $this->formatPrice($bundleChildSubtotal, $isDecimalFormat),
-                        'dcAmt' => $this->formatPrice($itemTotalDiscount, $isDecimalFormat),
-                        'netSalAmt' => $this->formatPrice($bundleChildGrandTotal, $isDecimalFormat),
+                        'price' => $bundleChildPrice,
+                        'salAmt' => $bundleChildSubtotal,
+                        'dcAmt' => $itemTotalDiscount,
+                        'netSalAmt' => $bundleChildGrandTotal,
                         'redemptionFlag' => $isRedemptionItem ? 'Y' : 'N',
                         'pointAccount' => (int)$pointAccount
                     ];
@@ -364,10 +364,10 @@ class PosOrderData
         $orderDiscount = $orderSubtotal - $orderGrandTotal;
         $orderPointTotal = $this->getOrderPointTotal($order);
 
-        $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'salAmt');
-        $orderItemData = $this->priceCorrector($orderDiscount, $itemsDiscountAmount, $orderItemData, 'dcAmt');
-        $orderItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $orderItemData, 'netSalAmt');
-        $orderItemData = $this->priceCorrector($orderPointTotal, $itemsPointTotal, $orderItemData, 'pointAccount');
+        $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'salAmt', $isDecimalFormat);
+        $orderItemData = $this->priceCorrector($orderDiscount, $itemsDiscountAmount, $orderItemData, 'dcAmt', $isDecimalFormat);
+        $orderItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $orderItemData, 'netSalAmt', $isDecimalFormat);
+        $orderItemData = $this->priceCorrector($orderPointTotal, $itemsPointTotal, $orderItemData, 'pointAccount', $isDecimalFormat);
 
         if (count($orderItems) > count($orderItemData)) {
             throw new Exception('Missing items');
@@ -376,7 +376,15 @@ class PosOrderData
         return $orderItemData;
     }
 
-    public function priceCorrector($orderAmount, $itemTotalAmount, $orderItemData, $field)
+    /**
+     * @param $orderAmount
+     * @param $itemTotalAmount
+     * @param $orderItemData
+     * @param $field
+     * @param $isDecimalFormat
+     * @return array
+     */
+    public function priceCorrector($orderAmount, $itemTotalAmount, $orderItemData, $field, $isDecimalFormat = false)
     {
         if ($orderAmount != $itemTotalAmount) {
             $amountDifference = $orderAmount - $itemTotalAmount;
@@ -385,7 +393,7 @@ class PosOrderData
                 if ($value['price'] == 0) {
                     continue;
                 }
-                $orderItemData[$key][$field] = $value[$field] + $amountDifference;
+                $orderItemData[$key][$field] = $this->formatPrice($value[$field] + $amountDifference, $isDecimalFormat);
                 break;
             }
         }
