@@ -342,7 +342,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'hpno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'waerk' => $orderData->getOrderCurrencyCode(),
                 'nsamt' => $orderSubTotal,
-                'dcamt' => $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal),
+                'dcamt' => $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal, $isDecimalFormat),
                 'slamt' => $orderGrandTotal,
                 'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : $this->roundingPrice($orderData->getRewardPointsBalance(), $isDecimalFormat),
                 'shpwr' => $this->roundingPrice($orderData->getShippingAmount(), $isDecimalFormat),
