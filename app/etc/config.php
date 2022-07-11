@@ -190,6 +190,11 @@ return [
                     'code' => 'en_US'
                 ]
             ],
+            'advanced' => [
+                'modules_disable_output' => [
+                    'Magento_Banner' => '1'
+                ]
+            ],
             'dev' => [
                 'static' => [
                     'sign' => '1'

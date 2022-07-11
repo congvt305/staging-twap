@@ -4,20 +4,9 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl b/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl
---- a/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl	(revision 7f59e60121d81938e55fd5b72f8499e5994ee05d)
-+++ b/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl	(date 1657245517176)
-@@ -15,7 +15,9 @@
-
-     # Remove Set-Cookies from responses for static content to match the cookie removal in recv.
-     if (req.http.x-long-cache || req.url ~ "^/(pub/)?(media|static)/") {
--        unset beresp.http.set-cookie;
-+        if (req.url !~ "lineshopping") {
-+           unset beresp.http.set-cookie;
-+        }
-
-         # Set a short TTL for 404's since those can be temporary during the site build/index
-         if (beresp.status == 404) {
-@@ -94,7 +96,9 @@
+--- a/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl	(revision 1e9fc41c8043ecaac199b934c247708854f0b9e7)
++++ b/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl	(date 1657184370130)
+@@ -94,7 +94,9 @@
      # validate if we need to cache it and prevent from setting cookie
      # images, css and js are cacheable by default so we have to remove cookie also
      if (beresp.ttl > 0s && (req.request == "GET" || req.request == "HEAD") && !req.http.x-pass ) {
