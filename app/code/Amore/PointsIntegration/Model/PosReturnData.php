@@ -216,9 +216,12 @@ class PosReturnData
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() != 'bundle') {
                 $itemGrandTotal = $orderItem->getRowTotal() - $orderItem->getDiscountAmount();
-                $itemSubtotal = abs(round($orderItem->getOriginalPrice() * $rmaItem->getQtyRequested()));
-                $itemTotalDiscount = abs(round($this->getRateAmount($orderItem->getDiscountAmount(), $orderItem->getQtyOrdered(), $rmaItem->getQtyRequested())
-                    + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested())));
+                $itemSubtotal = abs($this->roundingPrice($orderItem->getOriginalPrice() * $rmaItem->getQtyRequested(), $isDecimalFormat));
+                $itemTotalDiscount = abs($this->roundingPrice(
+                    $this->getRateAmount($orderItem->getDiscountAmount(), $orderItem->getQtyOrdered(), $rmaItem->getQtyRequested())
+                    + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested()),
+                    $isDecimalFormat
+                ));
                 $stripSku = str_replace($skuPrefix, '', $orderItem->getSku());
                 $isRedemptionItem = $orderItem->getData('is_point_redeemable');
                 $pointAccount = $orderItem->getQtyOrdered() * $orderItem->getData('point_redemption_amount');
