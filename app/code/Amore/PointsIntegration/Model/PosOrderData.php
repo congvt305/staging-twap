@@ -293,10 +293,10 @@ class PosOrderData
                 $orderItemData[] = [
                     'prdCD' => $stripSku,
                     'qty' => (int)$orderItem->getQtyOrdered(),
-                    'price' => $orderItem->getOriginalPrice(),
-                    'salAmt' => $itemSubtotal,
-                    'dcAmt' => $itemTotalDiscount,
-                    'netSalAmt' => $itemGrandTotal,
+                    'price' => $this->roundingPrice($orderItem->getOriginalPrice(), $isDecimalFormat),
+                    'salAmt' => $this->roundingPrice($itemSubtotal, $isDecimalFormat),
+                    'dcAmt' => $this->roundingPrice($itemTotalDiscount, $isDecimalFormat),
+                    'netSalAmt' => $this->roundingPrice($itemGrandTotal, $isDecimalFormat),
                     'redemptionFlag' => $isRedemptionItem ? 'Y' : 'N',
                     'pointAccount' => (int)$pointAccount
                 ];
@@ -343,10 +343,10 @@ class PosOrderData
                     $orderItemData[] = [
                         'prdCD' => $stripSku,
                         'qty' => (int)$bundleChild->getQtyOrdered(),
-                        'price' => $bundleChildPrice,
-                        'salAmt' => $bundleChildSubtotal,
-                        'dcAmt' => $itemTotalDiscount,
-                        'netSalAmt' => $bundleChildGrandTotal,
+                        'price' => $this->roundingPrice($bundleChildPrice, $isDecimalFormat),
+                        'salAmt' => $this->roundingPrice($bundleChildSubtotal, $isDecimalFormat),
+                        'dcAmt' => $this->roundingPrice($itemTotalDiscount, $isDecimalFormat),
+                        'netSalAmt' => $this->roundingPrice($bundleChildGrandTotal, $isDecimalFormat),
                         'redemptionFlag' => $isRedemptionItem ? 'Y' : 'N',
                         'pointAccount' => (int)$pointAccount
                     ];
@@ -713,5 +713,16 @@ class PosOrderData
             return number_format($price, 2, '.', '');
         }
         return (int)$price;
+    }
+
+    /**
+     * @param $price
+     * @param $isDecimal
+     * @return float
+     */
+    public function roundingPrice($price, $isDecimal = false)
+    {
+        $precision = $isDecimal ? 2 : 0;
+        return round($price, $precision);
     }
 }
