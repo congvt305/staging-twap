@@ -306,6 +306,18 @@ class PosReturnData
         $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'netSalAmt', $isDecimalFormat);
         $rmaItemData = $this->priceCorrector($orderPointTotal, $itemsPointTotal, $rmaItemData, 'pointAccount', $isDecimalFormat);
 
+        if ($isDecimalFormat) {
+            $listToFormat = ['salAmt', 'dcAmt', 'netSalAmt', 'pointAccount', 'price'];
+
+            foreach ($listToFormat as $field) {
+                foreach ($rmaItemData as $key => $value) {
+                    if (isset($value[$field]) && (is_float($value[$field]) || is_int($value[$field]))) {
+                        $rmaItemData[$key][$field] = $this->formatPrice($value[$field], $isDecimalFormat);
+                    }
+                }
+            }
+        }
+
         return $rmaItemData;
     }
 

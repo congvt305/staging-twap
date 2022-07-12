@@ -464,12 +464,24 @@ class SapOrderReturnData extends AbstractSapOrder
         $orderDiscountAmount = $this->roundingPrice($this->getRmaDiscountAmount($rma), $isDecimalFormat);
 
         if ($websiteCode != 'vn_laneige_website') {
-            $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'itemNsamt');
-            $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotalInclTax, $rmaItemData, 'itemSlamt');
-            $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'itemNetwr');
-            $rmaItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'itemDcamt');
+            $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'itemNsamt', $isDecimalFormat);
+            $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotalInclTax, $rmaItemData, 'itemSlamt', $isDecimalFormat);
+            $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'itemNetwr', $isDecimalFormat);
+            $rmaItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'itemDcamt', $isDecimalFormat);
         }
-        $rmaItemData = $this->priceCorrector($mileageUsedAmount, $itemsMileage, $rmaItemData, 'itemMiamt');
+        $rmaItemData = $this->priceCorrector($mileageUsedAmount, $itemsMileage, $rmaItemData, 'itemMiamt', $isDecimalFormat);
+
+        if ($isDecimalFormat) {
+            $listToFormat = ['itemNsamt', 'itemSlamt', 'itemNetwr', 'itemDcamt', 'itemMiamt'];
+
+            foreach ($listToFormat as $field) {
+                foreach ($rmaItemData as $key => $value) {
+                    if (isset($value[$field]) && (is_float($value[$field]) || is_int($value[$field]))) {
+                        $rmaItemData[$key][$field] = $this->formatPrice($value[$field], $isDecimalFormat);
+                    }
+                }
+            }
+        }
 
         return $rmaItemData;
     }
@@ -560,7 +572,7 @@ class SapOrderReturnData extends AbstractSapOrder
         return $itemCount;
     }
 
-    public function priceCorrector($orderAmount, $itemsAmount, $orderItemData, $field)
+    public function priceCorrector($orderAmount, $itemsAmount, $orderItemData, $field, $isDecimalFormat = false)
     {
         if ($orderAmount != $itemsAmount) {
             $correctAmount = $orderAmount - $itemsAmount;
@@ -569,7 +581,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 if ($value['itemFgflg'] == 'Y') {
                     continue;
                 }
-                $orderItemData[$key][$field] = $value[$field] + $correctAmount;
+                $orderItemData[$key][$field] = $this->formatPrice($value[$field] + $correctAmount, $isDecimalFormat);
                 break;
             }
         }
