@@ -1,0 +1,359 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+@b3: #b3b3b3;
+@color-pagebuilder-darkest-gray: @primary__color__light;
+
+//
+//  Slick slider styles
+//  _____________________________________________
+
+.slick-slider {
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-touch-action: pan-y;
+    -ms-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    box-sizing: border-box;
+    display: block;
+    position: relative;
+    touch-action: pan-y;
+    user-select: none;
+}
+.slick-list {
+    display: block;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+
+    &:focus {
+        outline: none;
+    }
+
+    &.dragging {
+        cursor: pointer;
+        cursor: hand;
+    }
+}
+
+.slick-track {
+    display: block;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top: 0;
+
+    &:before,
+    &:after {
+        content: '';
+        display: table;
+    }
+
+    &:after {
+        clear: both;
+    }
+
+    .slick-loading & {
+        visibility: hidden;
+    }
+}
+.slick-slide {
+    display: none;
+    float: left;
+    height: 100%;
+    min-height: 1px;
+    [dir='rtl'] & {
+        float: right;
+    }
+    img {
+        display: block;
+    }
+    &.slick-loading img {
+        display: none;
+    }
+
+    &.dragging img {
+        pointer-events: none;
+    }
+
+    .slick-initialized & {
+        display: block;
+    }
+
+    .slick-loading & {
+        visibility: hidden;
+    }
+
+    .slick-vertical & {
+        border: 1px solid transparent;
+        display: block;
+        height: auto;
+    }
+}
+
+.slick-slider .slick-track,
+.slick-slider .slick-list {
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+.slick-arrow.slick-hidden {
+    display: none;
+}
+
+.slick-prev {
+    left: 9%;
+    &:before {
+        content: @icon-prev;
+        padding-right: 5px;
+    }
+}
+
+.slick-next {
+    right: 9%;
+    &:before {
+        content: @icon-next;
+        padding-left: 5px;
+    }
+}
+
+.slick-prev,
+.slick-next {
+    -ms-transform: translate(0, -50%);
+    -webkit-transform: translate(0, -50%);
+    background: rgba(252, 252, 252, .6);
+    border: none;
+    border-radius: 0;
+    color: transparent;
+    cursor: pointer;
+    display: block;
+    font-size: 0;
+    height: 79px;
+    line-height: 0;
+    outline: none;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 65px;
+    z-index: 101;
+
+    &.slick-disabled {
+        opacity: .2;
+    }
+
+
+    &:hover {
+        background: rgba(252, 252, 252, 1);
+        border: none;
+        &.slick-disabled {
+            opacity: .2;
+        }
+        &:before {
+            color: @primary__color__darker;
+        }
+    }
+
+    &:before,
+    &:after {
+        &:extend(.pagebuilder-icon all);
+        color: @primary__color__darker;
+        font-size: 60px;
+        opacity: 1;
+    }
+
+    &:active,
+    &:focus,
+    &:not(.primary) {
+        background: none;
+        border: none;
+        box-shadow: none;
+
+        &:active {
+            box-shadow: none;
+        }
+    }
+}
+
+.slick-button {
+    .slick-dots,
+    .slick-pause {
+        display: inline-block;
+    }
+
+    .slick-pause {
+        border: none;
+        background: transparent;
+        padding-left: 4px;
+        padding-right: 0;
+        position: relative;
+
+        span {
+            &:extend(.abs-visually-hidden all);
+        }
+    }
+
+    .slick-dots {
+        padding-left: 0;
+    }
+}
+
+.slick-button {
+    bottom: 0;
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    li {
+        cursor: pointer;
+        display: inline-block;
+        height: @indent__s;
+        margin: 0 5px;
+        padding: 0;
+        position: relative;
+        vertical-align: middle;
+        width: @indent__s;
+        button {
+            background: @color-pagebuilder-darkest-gray;
+            border: none;
+            border-radius: 10px;
+            box-shadow: none;
+            cursor: pointer;
+            display: block;
+            height: @indent__s;
+            padding: 0;
+            text-indent: -99999px;
+            transition: .3s;
+            width: @indent__s;
+
+            &:active,
+            &:focus,
+            &:not(.primary) {
+                box-shadow: none;
+            }
+        }
+
+        &.slick-active {
+            width: 25px;
+
+            button {
+                width: 25px;
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .slick-dots {
+        li {
+            height: 2.6vw;
+            margin: 0 5px;
+            width: 2.6vw;
+            transition: width .4s;
+
+            button {
+                height: 2.5vw;
+                width: 2.5vw;
+                transition: width .4s;
+            }
+
+            &.slick-active {
+                width: 6.6vw;
+
+                button {
+                    width: 6.5vw;
+                }
+            }
+        }
+    }
+
+    .slick-pause {
+        top: -3px;
+
+        .lib-icon-font(
+                @icon-play,
+            @_icon-font-color: @secondary__color__light,
+            @_icon-font-size: 5vw,
+            @_icon-font-line-height: 1.2,
+            @_icon-font-margin: 0,
+            @_icon-font-position: after
+        );
+
+        &.active {
+            .lib-icon-font(
+                    @icon-pause,
+                @_icon-font-color: @secondary__color__light,
+                @_icon-font-size: 5vw,
+                @_icon-font-line-height: 1.2,
+                @_icon-font-margin: 0,
+                @_icon-font-position: after
+            );
+        }
+
+        &:after {
+            width: 5.5vw;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .slick-dots {
+        li {
+            height: 11px;
+            margin: 0 5px;
+            width: 11px;
+            button {
+                height: @indent__s;
+                width: @indent__s;
+            }
+        }
+    }
+
+    .slick-pause {
+        top: -2px;
+
+        .lib-icon-font(
+                @icon-play,
+            @_icon-font-color: @color-pagebuilder-darkest-gray,
+            @_icon-font-size: 18px,
+            @_icon-font-line-height: 1.2,
+            @_icon-font-margin: 0,
+            @_icon-font-position: after
+        );
+
+        &.active {
+            .lib-icon-font(
+                    @icon-pause,
+                @_icon-font-color: @color-pagebuilder-darkest-gray,
+                @_icon-font-size: 18px,
+                @_icon-font-line-height: 1.2,
+                @_icon-font-margin: 0,
+                @_icon-font-position: after
+            );
+        }
+
+        &:after {
+            width: 22px;
+        }
+    }
+}

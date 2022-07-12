@@ -1,0 +1,311 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+@gift-message-field-label__color: @color-gray40;
+@gift-item-block__border-color: @color-gray-light5;
+@gift-item-block__border-width: @border-width__base;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .gift-message {
+        .field {
+            &:extend(.abs-clearfix all);
+            margin-bottom: @indent__base;
+
+            .label {
+                .lib-css(color, @gift-message-field-label__color);
+                .lib-css(font-weight, @font-weight__regular);
+            }
+        }
+    }
+
+    .gift-options {
+        &:extend(.abs-add-clearfix all);
+
+        .actions-toolbar {
+            .action-cancel {
+                display: none;
+            }
+        }
+    }
+
+    .gift-options-title {
+        .lib-css(color, @form-field-note__color);
+        .lib-css(font-size, @form-field-note__font-size);
+        .lib-css(margin, @form-field-note__margin);
+    }
+
+    .gift-options-content {
+        .fieldset {
+            margin: 0 0 @indent__base;
+        }
+    }
+
+    .gift-summary {
+        .actions-toolbar {
+            > .secondary {
+                float: none;
+                display: inline-block;
+
+                .action {
+                    margin: @indent__base @indent__s 0 0;
+                    width: auto;
+
+                    &.primary {
+                        float: right;
+                    }
+                }
+            }
+        }
+    }
+
+    .action-gift {
+        .lib-button-reset();
+        .lib-button-icon(
+            @icon-down,
+            @_icon-font-size: 14px,
+            @_icon-font-line-height: 24px,
+            @_icon-font-position: after
+        );
+
+        &,
+        &:focus,
+        &:active,
+        &:hover {
+            color: @primary__color;
+        }
+
+        &.active,
+        &._active {
+            .lib-icon-font-symbol(
+                @icon-up,
+                @_icon-font-position: after
+            );
+        }
+    }
+
+    //
+    //  In-table block
+    //  ---------------------------------------------
+
+    .cart {
+        &.table-wrapper {
+            .gift-options-title {
+                margin-bottom: @indent__s;
+            }
+
+            .gift-content {
+                box-sizing: border-box;
+                clear: left;
+                display: none;
+                float: left;
+                margin: @indent__s 0 0;
+                text-align: left;
+                width: 100%;
+
+                &._active {
+                    display: block;
+                }
+
+                .actions-toolbar {
+                    .action-cancel {
+                        &:extend(.abs-action-button-as-link all);
+                        margin-top: 15px;
+                        margin-right: 0;
+                        float: none;
+                    }
+                }
+            }
+
+            .action-gift {
+                float: left;
+                margin-bottom: 0;
+            }
+
+            .gift-message-summary {
+                & + .actions-toolbar {
+                    .secondary {
+                        text-align: left;
+
+                        .primary {
+                            width: auto !important;
+                            display: inline-block !important;
+                            padding: @button-primary__padding !important;
+                            font-size: @button-primary__font-size !important;
+                            line-height: @button-primary__line-height !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //
+    //  Collapsible block
+    //  ---------------------------------------------
+
+    .gift-item-block {
+        border: 1px solid @border-color__base;
+        padding: @indent__base;
+
+        .title {
+            .lib-heading(h4);
+        }
+
+        .content {
+            &:extend(.abs-add-clearfix all);
+            position: relative;
+        }
+    }
+
+    //
+    //  Account order gift message
+    //  ---------------------------------------------
+
+    .order-details-items {
+        .order-gift-message,
+        .block-order-details-gift-message {
+            .item-options {
+                dt {
+                    .lib-css(font-weight, @font-weight__regular);
+                    margin: @indent__s 0;
+                }
+            }
+
+            &:extend(.abs-add-clearfix all);
+
+            dt {
+                &:after {
+                    content: '';
+                }
+            }
+
+            .label {
+                &:extend(.abs-colon all);
+            }
+
+            .item-message {
+                clear: left;
+            }
+        }
+
+        .order-items {
+            .order-gift-message {
+                &:not(.expanded-content) {
+                    &:extend(.abs-hidden);
+                }
+
+                .action.close {
+                    &:extend(.abs-no-display all);
+                }
+            }
+
+            .action.show {
+                .lib-icon-font(
+                @_icon-font-content: @icon-down,
+                @_icon-font-size: 22px,
+                @_icon-font-text-hide: false,
+                @_icon-font-position: after,
+                @_icon-font-display: inline-block
+                );
+                padding-right: @indent__base;
+                position: relative;
+
+                &:after {
+                    position: absolute;
+                    right: 0;
+                    top: -4px;
+                }
+
+                &.expanded {
+                    .lib-icon-font-symbol(
+                    @_icon-font-content: @icon-up,
+                    @_icon-font-position: after
+                    );
+                }
+            }
+        }
+    }
+
+    .block-order-details-gift-message {
+        border-top: @border-width__base solid @border-color__base;
+        padding-top: @indent__s;
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .gift-options {
+        position: relative;
+        z-index: 1;
+
+        .actions-toolbar {
+            clear: both;
+            position: static;
+
+            .secondary {
+                float: left;
+
+                .action {
+                    float: right;
+                    margin-right: @indent__s;
+                }
+
+                .action-cancel {
+                    display: block;
+                    float: left;
+                }
+            }
+
+            &:nth-child(3) {
+                &:before {
+                    .lib-css(border-left, 1px solid @gift-item-block__border-color);
+                    bottom: 5rem;
+                    content: '';
+                    display: block;
+                    left: 50%;
+                    overflow: hidden;
+                    position: absolute;
+                    top: 0;
+                    width: 0;
+                }
+            }
+        }
+    }
+
+    .gift-summary,
+    .cart.table-wrapper .gift-summary {
+        .actions-toolbar {
+            &:extend(.abs-reset-left-margin-desktop all);
+        }
+    }
+
+    .cart-container {
+        .cart-gift-item {
+            &:extend(.abs-shopping-cart-items-desktop all);
+        }
+    }
+
+    //
+    //  Multiple Shipping Checkout
+    //  ---------------------------------------------
+
+    .order-options,
+    .table-order-review {
+        .gift-wrapping {
+            max-width: 50%;
+        }
+    }
+}
