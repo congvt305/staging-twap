@@ -46,7 +46,8 @@ class Currency
     protected $stores = [
         'tw_laneige',
         'vn_laneige',
-        'vn_sulwhasoo'
+        'vn_sulwhasoo',
+        'default'
     ];
 
     /**
