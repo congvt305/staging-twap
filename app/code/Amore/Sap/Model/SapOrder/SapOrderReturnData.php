@@ -83,6 +83,11 @@ class SapOrderReturnData extends AbstractSapOrder
     protected $dataHelper;
 
     /**
+     * @var \CJ\Middleware\Helper\Data
+     */
+    private $middlewareHelper;
+
+    /**
      * SapOrderReturnData constructor.
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -99,6 +104,7 @@ class SapOrderReturnData extends AbstractSapOrder
      * @param \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement
      * @param StoreManagerInterface $storeManager
      * @param Data $helper
+     * @param \CJ\Middleware\Helper\Data $middlewareHelper
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -115,7 +121,8 @@ class SapOrderReturnData extends AbstractSapOrder
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
         \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement,
         StoreManagerInterface $storeManager,
-        Data $helper
+        Data $helper,
+        \CJ\Middleware\Helper\Data $middlewareHelper
     ) {
         $this->rmaRepository = $rmaRepository;
         $this->customerRepository = $customerRepository;
@@ -129,6 +136,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->productLinkManagement = $productLinkManagement;
         $this->storeManager = $storeManager;
         $this->dataHelper = $helper;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -170,7 +178,8 @@ class SapOrderReturnData extends AbstractSapOrder
         $customer = $this->getCustomer($rma->getCustomerId());
         $shippingAddress = $order->getShippingAddress();
         $pointUsed = $order->getRewardPointsBalance();
-        $orderTotal = round($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount());
+        $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $storeId);
+        $orderTotal = $this->roundingPrice($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount(), $isDecimalFormat);
         $trackData = $this->getTracks($rma);
         $ztrackId = $trackData['track_number'] ?? '';
         $shippingMethod = $order->getShippingMethod();
@@ -184,10 +193,10 @@ class SapOrderReturnData extends AbstractSapOrder
             $slamt  = $order->getData('sap_slamt');
         } else {
             $paymtd = $order->getPayment()->getMethod() == 'ecpay_ecpaypayment' ? 'P' : 'S';
-            $nsamt  = abs(round($this->getRmaSubtotalInclTax($rma)));
-            $dcamt  = abs(round($this->getRmaDiscountAmount($rma)));
+            $nsamt  = abs($this->roundingPrice($this->getRmaSubtotalInclTax($rma), $isDecimalFormat));
+            $dcamt  = abs($this->roundingPrice($this->getRmaDiscountAmount($rma), $isDecimalFormat));
             $slamt = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
-                abs(round($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed)));
+                abs($this->roundingPrice($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed), $isDecimalFormat));
         }
 
         $bindData[] = [
@@ -229,9 +238,9 @@ class SapOrderReturnData extends AbstractSapOrder
             'nsamt' => $nsamt,
             'dcamt' => $dcamt,
             'slamt' => $slamt,
-            'miamt' => abs(round($this->getRmaPointsUsed($rma, $pointUsed, $orderTotal))),
+            'miamt' => abs($this->roundingPrice($this->getRmaPointsUsed($rma, $pointUsed, $orderTotal), $isDecimalFormat)),
             'shpwr' => '',
-            'mwsbp' => round($order->getTaxAmount()),
+            'mwsbp' => $this->roundingPrice($order->getTaxAmount(), $isDecimalFormat),
             'spitn1' => '',
             'vkorgOri' => $this->config->getSalesOrg('store', $storeId),
             'kunnrOri' => $this->config->getClient('store', $storeId),
@@ -248,6 +257,15 @@ class SapOrderReturnData extends AbstractSapOrder
             // trackNo 가져와야 함
             'ztrackId' => $ztrackId
         ];
+
+        if ($isDecimalFormat) {
+            $listToFormat = ['nsamt', 'dcamt', 'dcamt', 'miamt', 'shpwr', 'mwsbp'];
+            foreach ($bindData[0] as $k => $value) {
+                if (in_array($k, $listToFormat) && (is_float($value) || is_int($value))) {
+                    $bindData[0][$k] = $this->formatPrice($value, $isDecimalFormat);
+                }
+            }
+        }
 
         return $bindData;
     }
@@ -959,5 +977,29 @@ class SapOrderReturnData extends AbstractSapOrder
             }
         }
         return [];
+    }
+
+    /**
+     * @param $price
+     * @param $isDecimal
+     * @return float|string
+     */
+    public function formatPrice($price, $isDecimal = false)
+    {
+        if ($isDecimal) {
+            return number_format($price, 2, '.', '');
+        }
+        return $price;
+    }
+
+    /**
+     * @param $price
+     * @param $isDecimal
+     * @return float
+     */
+    public function roundingPrice($price, $isDecimal = false)
+    {
+        $precision = $isDecimal ? 2 : 0;
+        return round($price, $precision);
     }
 }

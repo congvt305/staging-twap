@@ -368,7 +368,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             if ($isDecimalFormat) {
                 $listToFormat = ['nsamt', 'dcamt', 'slamt', 'miamt', 'shpwr', 'mwsbp'];
                 foreach ($bindData[0] as $k => $value) {
-                    if (in_array($k, $listToFormat)) {
+                    if (in_array($k, $listToFormat) && (is_float($value) || is_int($value))) {
                         $bindData[0][$k] = $this->formatPrice($value, $isDecimalFormat);
                     }
                 }
@@ -575,7 +575,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $orderTotal,
                         $orderItem->getRowTotalInclTax(),
                         $orderItem->getDiscountAmount(),
-                        $mileageUsedAmount);
+                        $mileageUsedAmount,
+                        $isDecimalFormat);
 
                     $itemSubtotal = abs($this->roundingPrice($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered(), $isDecimalFormat));
                     $itemTotalDiscount = abs($this->roundingPrice($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()), $isDecimalFormat));
@@ -640,7 +641,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                             $orderTotal,
                             $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getRowTotalInclTax()),
                             $bundleChildDiscountAmount,
-                            $mileageUsedAmount);
+                            $mileageUsedAmount,
+                            $isDecimalFormat);
 
                         $product = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId());
                         $meins = $product->getData('meins');
@@ -859,12 +861,12 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $valueToCalculate * $rate;
     }
 
-    public function mileageSpentRateByItem($orderTotal, $itemRowTotal, $itemDiscountAmount, $mileageUsed)
+    public function mileageSpentRateByItem($orderTotal, $itemRowTotal, $itemDiscountAmount, $mileageUsed, $isDecimalFormat = false)
     {
         $itemTotal = round($itemRowTotal - $itemDiscountAmount, 2);
 
         if ($mileageUsed) {
-            return round(($itemTotal/$orderTotal) * $mileageUsed);
+            return $this->roundingPrice(($itemTotal/$orderTotal) * $mileageUsed, $isDecimalFormat);
         }
         return is_null($mileageUsed) ? '0' : $mileageUsed;
     }
@@ -1030,7 +1032,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         if ($isDecimal) {
             return number_format($price, 2, '.', '');
         }
-        return round($price);
+        return $price;
     }
 
     /**
