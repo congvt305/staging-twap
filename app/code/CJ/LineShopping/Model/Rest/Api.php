@@ -22,6 +22,7 @@ class Api
     const LINE_SHOPPING_SUCCESS_MESSAGE = 'OK';
     const PRODUCT_TYPE_NORMAL = 'normal';
     const TIME_ZONE_8 = 'Asia/Hong_Kong';
+    const MESSAGE_RESET_PASSWORD = 'Welcome to the Brand, please click the URL to rest the Magento PW so you could activate your membership account.';
     /**
      * @var Config
      */
@@ -451,5 +452,54 @@ class Api
             $feeTime,
             self::TIME_ZONE_8
         );
+    }
+
+    /**
+     * @param $lineId
+     * @param $resetPasswordUrl
+     * @param $websiteId
+     * @return array|string
+     */
+    public function sendMessageToLine($lineId, $resetPasswordUrl, $websiteId = null) {
+        try {
+            $url = $this->config->getUrlSendMulticastMessage($websiteId);
+            $channelAccessToken = $this->config->getChannelAccessToken($websiteId);
+            $data = [
+                'to' => [$lineId],
+                'messages' => [
+                    [
+                        'type' => 'text',
+                        'text' => self::MESSAGE_RESET_PASSWORD . ' ' . $resetPasswordUrl
+                    ]
+                ]
+            ];
+            $body = json_encode($data);
+            $response = $this->restClient->sendMessageClient($url, $channelAccessToken, $body);
+            $statusCode = $response->getStatusCode();
+            if ($statusCode != Response::HTTP_OK) {
+                throw new \LogicException('Response error with status code: ' . $statusCode);
+            }
+
+            $result = $response->getBody()->getContents();
+
+            $this->logger->addInfo(Logger::LINE_CUSTOMER,
+                [
+                    'request_data' => $body,
+                    'result' => $result
+                ]);
+            return $result;
+        } catch (\Exception $exception) {
+            $this->logger->addError(Logger::LINE_CUSTOMER,
+                [
+                    'request_data' => $body,
+                    'error' => $exception->getMessage()
+                ]);
+        } catch (GuzzleException $exception) {
+            $this->logger->addError(Logger::LINE_CUSTOMER, [
+                'request_data' => $body,
+                'error' => $exception->getMessage()
+            ]);
+        }
+        return [];
     }
 }
