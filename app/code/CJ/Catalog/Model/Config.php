@@ -12,6 +12,8 @@ class Config
 {
     const XML_PATH_DESC_UNDER_NAME_ENABLE = 'cj_custom_catalog/custom_catalog/description_under_name_enabled';
 
+    const XML_PATH_LIMIT = 'cj_custom_catalog/custom_catalog/limit';
+
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      */
@@ -62,5 +64,21 @@ class Config
     protected function getStoreId(): int
     {
         return (int)$this->storeManager->getStore()->getId();
+    }
+
+    /**
+     * Get the limit
+     *
+     * @return string
+     */
+    public function getLimit(): string
+    {
+        try {
+            $storeId = $this->getStoreId();
+            $limit = $this->scopeConfig->getValue(self::XML_PATH_LIMIT, 'store', $storeId) ;
+        } catch (NoSuchEntityException $e) {
+            $limit = $this->scopeConfig->getValue(self::XML_PATH_LIMIT);
+        }
+        return $limit;
     }
 }

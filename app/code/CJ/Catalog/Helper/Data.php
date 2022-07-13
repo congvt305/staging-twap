@@ -33,4 +33,25 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         return $this->config;
     }
+
+    /**
+     * @param string $str
+     * @return array
+     */
+    public function mb_chunk_split(string $str): array
+    {
+        $limit = (int)$this->config->getLimit();
+        $result = [];
+        $offset = 0;
+        // VNMGDC-541 has a requirement that there are four lines
+        for ($i = 0; $i < 4; $i++) {
+            $offset += $limit;
+            if ($new = mb_substr($str, $offset, $limit)) {
+                $result[] = $new;
+            } else {
+                break;
+            }
+        }
+        return $result;
+    }
 }
