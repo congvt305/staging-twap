@@ -10,6 +10,8 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class Config
 {
+    const XML_PATH_LIMIT = 'cj_custom_catalog/custom_catalog/limit';
+
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      */
@@ -40,5 +42,21 @@ class Config
     protected function getStoreId(): int
     {
         return (int)$this->storeManager->getStore()->getId();
+    }
+
+    /**
+     * Get the limit
+     *
+     * @return string
+     */
+    public function getLimit(): string
+    {
+        try {
+            $storeId = $this->getStoreId();
+            $limit = $this->scopeConfig->getValue(self::XML_PATH_LIMIT, 'store', $storeId) ;
+        } catch (NoSuchEntityException $e) {
+            $limit = $this->scopeConfig->getValue(self::XML_PATH_LIMIT);
+        }
+        return $limit;
     }
 }
