@@ -19,7 +19,8 @@ use Magento\Framework\App\Action\Action;
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
-
+/** @var CJ\Catalog\Helper\Data $helper */
+$helper = $this->helper(\CJ\Catalog\Helper\Data::class);
 $currentCategory = $block->getLayer()->getCurrentCategory();
 $categoryName = $currentCategory->getName();
 $getDefault = $block->getData('view_model');
@@ -137,7 +138,12 @@ $apProductPosition = "";
                                 </strong>
 
                                 <div class="product description product-item-description">
-                                    <?= $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                    <?php if ($rawDescription = $_product->getProductExtraDescription()): ?>
+                                        <?php $chunks = $helper->mb_chunk_split($rawDescription); ?>
+                                        <?php foreach ($chunks as $chunk): ?>
+                                            <p><?= $chunk ?></p>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </div>
 
                                 <?= /* @escapeNotVerified */ $block->getProductPrice($_product) ?>
