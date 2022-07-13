@@ -216,9 +216,12 @@ class PosReturnData
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() != 'bundle') {
                 $itemGrandTotal = $orderItem->getRowTotal() - $orderItem->getDiscountAmount();
-                $itemSubtotal = abs(round($orderItem->getOriginalPrice() * $rmaItem->getQtyRequested()));
-                $itemTotalDiscount = abs(round($this->getRateAmount($orderItem->getDiscountAmount(), $orderItem->getQtyOrdered(), $rmaItem->getQtyRequested())
-                    + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested())));
+                $itemSubtotal = abs($this->roundingPrice($orderItem->getOriginalPrice() * $rmaItem->getQtyRequested(), $isDecimalFormat));
+                $itemTotalDiscount = abs($this->roundingPrice(
+                    $this->getRateAmount($orderItem->getDiscountAmount(), $orderItem->getQtyOrdered(), $rmaItem->getQtyRequested())
+                    + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested()),
+                    $isDecimalFormat
+                ));
                 $stripSku = str_replace($skuPrefix, '', $orderItem->getSku());
                 $isRedemptionItem = $orderItem->getData('is_point_redeemable');
                 $pointAccount = $orderItem->getQtyOrdered() * $orderItem->getData('point_redemption_amount');
@@ -302,6 +305,18 @@ class PosReturnData
         $rmaItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'dcAmt', $isDecimalFormat);
         $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'netSalAmt', $isDecimalFormat);
         $rmaItemData = $this->priceCorrector($orderPointTotal, $itemsPointTotal, $rmaItemData, 'pointAccount', $isDecimalFormat);
+
+        if ($isDecimalFormat) {
+            $listToFormat = ['salAmt', 'dcAmt', 'netSalAmt', 'pointAccount', 'price'];
+
+            foreach ($listToFormat as $field) {
+                foreach ($rmaItemData as $key => $value) {
+                    if (isset($value[$field]) && (is_float($value[$field]) || is_int($value[$field]))) {
+                        $rmaItemData[$key][$field] = $this->formatPrice($value[$field], $isDecimalFormat);
+                    }
+                }
+            }
+        }
 
         return $rmaItemData;
     }
