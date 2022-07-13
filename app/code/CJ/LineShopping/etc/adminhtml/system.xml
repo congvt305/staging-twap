@@ -76,6 +76,15 @@
                     <label>Fee Post Back</label>
                 </field>
             </group>
+            <group id="customer_integration" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Customer Integration</label>
+                <field id="line_url_multicast_message" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Line URL For Send Multicast Message</label>
+                </field>
+                <field id="channel_access_token" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Channel Access Token</label>
+                </field>
+            </group>
         </section>
     </system>
 </config>
