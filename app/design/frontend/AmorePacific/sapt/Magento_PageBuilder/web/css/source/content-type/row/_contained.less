@@ -12,13 +12,11 @@
     margin-left: auto !important;
     margin-right: auto !important;
     max-width: @layout__max-width;
+    padding-left: 30px;
+    padding-right: 30px;
 
     [data-element='inner'] {
         box-sizing: border-box;
-    }
-
-    .cms-home & {
-        max-width: @layout__max-width-secondary;
     }
 }
 
@@ -31,5 +29,12 @@
         [data-element='inner'] {
             background-attachment: scroll !important;
         }
+    }
+}
+
+@media(max-width: 767px){
+    [data-content-type='row'][data-appearance='contained'] {
+        padding-left: 0;
+        padding-right: 0;
     }
 }
