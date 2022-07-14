@@ -22,6 +22,7 @@ abstract class AbstractMigrateData extends \Symfony\Component\Console\Command\Co
     const STORE_ID = 'store_id';
     const TYPE_PAGE = 'page';
     const TYPE_BLOCK = 'block';
+    const TYPE_WIDGET = 'widget';
     const MY_SWS_STORE_CODE = 'my_sulwhasoo';
     /**
      * @var RequestHelper

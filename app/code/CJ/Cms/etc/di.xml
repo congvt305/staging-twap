@@ -23,6 +23,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="cj_migrate_cms_page_data" xsi:type="object">CJ\Cms\Console\MigrateCmsPageData</item>
                 <item name="cj_migrate_cms_block_data" xsi:type="object">CJ\Cms\Console\MigrateCmsBlockData</item>
+                <item name="cj_migrate_widget_data" xsi:type="object">CJ\Cms\Console\MigrateWidgetsData</item>
             </argument>
         </arguments>
     </type>
