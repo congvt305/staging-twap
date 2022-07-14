@@ -48,6 +48,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $offset += $limit;
             if ($new = mb_substr($str, $offset, $limit)) {
                 $result[] = $new;
+            } elseif (mb_strlen($str) <= $limit) {
+                $result[] = $str;
+                break;
             } else {
                 break;
             }
