@@ -1,0 +1,165 @@
+@charset 'UTF-8';
+/* Slider */
+.slick-loading .slick-list
+{
+    background: #fff url('./ajax-loader.gif') center center no-repeat;
+}
+/* Arrows */
+.slick-prev,
+.slick-next
+{
+    font-size: 0;
+    line-height: 32px;
+    position: absolute;
+    top: 50%;
+    display: block;
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    -webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+	font-weight: normal;
+    cursor: pointer;
+	opacity: 0;
+	 transition: all 0.3s ease 0s;
+    visibility: hidden;
+    color: #666666;
+    border: 1px solid #dddddd;
+    outline: none;
+    background: #ffffff;
+	z-index: 100;
+}
+.slick-slider:hover .slick-prev, .slick-slider:hover .slick-next {
+    opacity: 1;
+	-webkit-transform: translate(0px, -50%);
+    -ms-transform: translate(0px, -50%);
+    transform: translate(0px, -50%);
+    visibility: visible;
+}
+.slick-prev:hover,
+.slick-prev:focus,
+.slick-next:hover,
+.slick-next:focus
+{
+    color: #333;
+    outline: none;
+}
+.slick-prev:hover:before,
+.slick-prev:focus:before,
+.slick-next:hover:before,
+.slick-next:focus:before
+{
+    opacity: 1;
+}
+.slick-prev.slick-disabled:before,
+.slick-next.slick-disabled:before
+{
+    opacity: .25;
+}
+
+.slick-prev:before,
+.slick-next:before
+{
+    font-family: 'FontAwesome';
+    font-size: 22px;
+    line-height: 32px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.slick-prev
+{
+    left: 15px;
+	 transform: translate(50px, -50%);
+}
+[dir='rtl'] .slick-prev
+{
+    right: -25px;
+    left: auto;
+}
+.slick-prev:before
+{
+   content: '\f104';
+}
+[dir='rtl'] .slick-prev:before
+{
+    content: '\f104';
+}
+
+.slick-next
+{
+    right: 15px;
+	 transform: translate(-50px, -50%);
+}
+[dir='rtl'] .slick-next
+{
+    right: auto;
+    left: -25px;
+}
+.slick-next:before
+{
+    content: '\f105';
+}
+[dir='rtl'] .slick-next:before
+{
+    content: '←';
+}
+
+/* Dots */
+.slick-dotted.slick-slider
+{
+    margin-bottom: 30px;
+}
+
+.slick-dots
+{
+    position: absolute;
+    bottom: 25px;
+
+    display: block;
+
+    width: 100%;
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+
+    text-align: center;
+}
+.slick-dots li
+{
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 5px;
+    padding: 0;
+    position: relative;
+}
+.slick-dots li button
+{
+    background: transparent;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0;
+    height: 14px;
+    line-height: 14px;
+    margin: 0;
+    outline: 0 none;
+    padding: 0;
+    width: 14px;
+}
+.slick-dots li button:hover,
+.slick-dots li button:focus
+{
+    outline: none;
+}
+.slick-dots li button:hover:before,
+.slick-dots li button:focus:before
+{
+    opacity: 1;
+}
+.slick-dots li.slick-active button {
+    background-color: #fff;
+}

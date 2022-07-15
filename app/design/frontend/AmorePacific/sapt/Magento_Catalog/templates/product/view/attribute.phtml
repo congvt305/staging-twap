@@ -1,0 +1,77 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * Product view template
+ *
+ * @see \Magento\Catalog\Block\Product\View\Description
+ */
+?>
+<?php
+$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+$_product = $block->getProduct();
+
+if (!$_product instanceof \Magento\Catalog\Model\Product) {
+    return;
+}
+
+$_call = $block->getAtCall();
+$_code = $block->getAtCode();
+$_className = $block->getCssClass();
+$_attributeLabel = $block->getAtLabel();
+$_attributeType = $block->getAtType();
+$_attributeAddAttribute = $block->getAddAttribute();
+$_title = $block->getTitle();
+
+$renderLabel = true;
+// if defined as 'none' in layout, do not render
+if ($_attributeLabel == 'none') {
+    $renderLabel = false;
+}
+if ($_attributeLabel && $_attributeLabel == 'default') {
+    $isExist = $_product->getResource()->getAttribute($_code);
+    if ($isExist) {
+        $_attributeLabel = $_product->getResource()->getAttribute($_code)->getStoreLabel();
+    }
+}
+if ($_attributeType && $_attributeType == 'text') {
+    $_attributeValue = ($_helper->productAttribute($_product, $_product->$_call(), $_code)) ? $_product->getAttributeText($_code) : '';
+} else {
+    $_attributeValue = $_helper->productAttribute($_product, $_product->$_call(), $_code);
+}
+?>
+
+<?php if ($_attributeValue): ?>
+    <?php if ($_code == 'prdvl'):?>
+        <?php if ($renderLabel): ?><strong class="type"><?= $block->escapeHtml($_title) ?></strong><?php endif; ?>
+        <div class="value <?= $block->escapeHtmlAttr($_className) ?>" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_attributeValue ?></div>
+    <?php elseif ($_code == 'vlunt' || $_code == 'product_count'):?>
+        <div class="value <?= $block->escapeHtmlAttr($_className) ?>" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_attributeValue ?></div>
+    <?php else:?>
+        <div class="product attribute <?= $block->escapeHtmlAttr($_className) ?>">
+            <?php if ($renderLabel): ?><strong class="type"><?= $block->escapeHtml($_attributeLabel) ?></strong><?php endif; ?>
+            <?php if($_className == 'ingredients'):?>
+                <div class="attribute title">
+                    <span><?= $_attributeLabel?></span>
+                </div>
+            <?php endif?>
+            <?php if($_code == 'skin_concern'):?>
+                <?php if(is_array($_attributeValue)):?>
+                    <?php foreach($_attributeValue as $_value): ?>
+                        <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_value ?></div>
+                    <?php endforeach;?>
+                <?php else:?>
+                    <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_attributeValue ?></div>
+                <?php endif?>
+
+            <?php else:?>
+                <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>><?= /* @noEscape */ $_attributeValue ?></div>
+            <?php endif?>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
