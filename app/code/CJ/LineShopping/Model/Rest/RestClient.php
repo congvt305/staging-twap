@@ -66,4 +66,21 @@ class RestClient
         $requestOptions = array_merge($options, $connectTimeout);
         return $this->client->send($request, $requestOptions);
     }
+
+    /**
+     * @param $uri
+     * @param $channelAccessToken
+     * @param $body
+     * @return ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function sendMessageClient($uri, $channelAccessToken, $body)
+    {
+        $header = [
+            "Authorization" =>  "Bearer " . $channelAccessToken,
+            "Content-Type" => "application/json"
+        ];
+        $request = new Request('POST', $uri, $header, $body);
+        return $this->sendRequest($request);
+    }
 }
