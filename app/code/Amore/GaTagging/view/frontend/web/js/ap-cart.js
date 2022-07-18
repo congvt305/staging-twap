@@ -60,8 +60,7 @@ define([
         getBundleProductData: function (product) {
             var productInfosArr = window.PRD_DATA;
             productInfosArr.forEach(function (productInfo) {
-                productInfo.price = parseInt(product.product_price_value * productInfo.rate);
-                productInfo.quantity = parseInt(productInfo.quantity * product.qty);
+                productInfo.quantity = parseInt(product.qty);
                 delete productInfo.rate;
             });
             return productInfosArr;
@@ -89,12 +88,9 @@ define([
             var productInfosArr = window.PRD_DATA;
             var selectedProductInfo = [];
             productInfosArr.forEach(function (productInfo) {
-                if (productInfo.code === product.product_sku) {
-                    productInfo.quantity = parseInt(product.qty);
-                    productInfo.variant = productInfo.name.replace(product.product_name, '');
-                    selectedProductInfo.push(productInfo);
-
-                }
+                productInfo.quantity = parseInt(product.qty);
+                productInfo.variant = productInfo.name.replace(product.product_name, '');
+                selectedProductInfo.push(productInfo);
             });
             return selectedProductInfo;
         },
