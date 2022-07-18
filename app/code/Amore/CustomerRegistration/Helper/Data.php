@@ -65,6 +65,7 @@ class Data extends AbstractHelper
         = 'customerregistraion/validation/list_of_character';
     const EXTENSION_ENABLE = 'customerregistraion/general/active';
     const BA_CODE_ENABLE = 'customerregistraion/general/ba_code_enable';
+    const BA_CODE_PREFIX = 'customerregistraion/general/ba_code_prefix';
     const POS_BA_CODE_INFO_URL = 'customerregistraion/pos/bacode_info';
 
     /**
@@ -369,6 +370,26 @@ class Data extends AbstractHelper
                 );
             }
         }
+        return false;
+    }
+
+    /**
+     * Get BA Code Prefix
+     *
+     * @param null $websiteId
+     * @return mixed
+     */
+    public function getBaCodePrefix($websiteId = null)
+    {
+        $moduleEnable = $this->getRegistrationModuleEnable($websiteId);
+
+        if ($moduleEnable) {
+            return $this->scopeConfig->getValue(
+                self::BA_CODE_PREFIX,
+                ScopeInterface::SCOPE_WEBSITE
+            );
+        }
+
         return false;
     }
 

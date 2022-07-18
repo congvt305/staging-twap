@@ -60,7 +60,10 @@ class RedeemPointsSearch extends AbstractPointsBlock
         }
 
         if ($this->redeemPointsSearch->responseValidation($redeemPointsResult, $customer->getWebsiteId())) {
-            return $this->pagination->ajaxPagination($redeemPointsResult['data']['redemption_data']);
+            if (isset($redeemPointsResult['data']['redemption_data']) && $redeemPointsResult['data']['redemption_data']) {
+                return $this->pagination->ajaxPagination($redeemPointsResult['data']['redemption_data']);
+            }
+            return [];
         } else {
             return [];
         }

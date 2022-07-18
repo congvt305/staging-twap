@@ -96,6 +96,13 @@
                     </depends>
                 </field>
 
+                <field id="ba_code_prefix" translate="label" type="text" sortOrder="135" showInDefault="1" showInWebsite="1">
+                    <label>BA Code Prefix</label>
+                    <depends>
+                        <field id="ba_code_enable">1</field>
+                    </depends>
+                </field>
+
                 <field id="datalayer_singup_success" translate="label comment" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" >
                     <label>Enable Event Signup Success</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
