@@ -1,0 +1,27 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+ -->
+<div class="payment-option opc-payment-additional rewardpoints" id="reward_placer" data-bind="visible: isAvailable()">
+    <div class="block">
+        <div class="payment-option-title title">
+            <strong><span data-bind="i18n: 'Reward points'"></span></strong>
+        </div>
+        <div class="payment-option-content content choice">
+            <div class="fieldset payment-option-inner">
+                <div class="field">
+                    <span data-bind="html: $t(label)"></span>
+                </div>
+                <div class="actions-toolbar" id="reward-points-buttons-container">
+                    <div class="primary">
+                        <button data-role="opc-use-reward" class="action primary action-use" data-bind="click: useRewardPoints">
+                            <span><!-- ko i18n: 'Use reward points'--><!-- /ko --></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

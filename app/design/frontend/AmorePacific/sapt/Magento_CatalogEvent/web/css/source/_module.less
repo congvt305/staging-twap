@@ -1,0 +1,173 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+@catalog-event-background-color: @secondary__color__light;
+@catalog-event-color: @primary__color;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //
+    //  Catalog Events
+    //  ---------------------------------------------
+
+    .block-category-event {
+        .lib-css(background, @catalog-event-background-color);
+        .lib-css(color, @catalog-event-color);
+        padding: @indent__m 0;
+        text-align: center;
+        font-family: 'buri', @font-family__sans-serif;
+
+        &.block:last-child {
+            margin-bottom: @indent__s;
+        }
+
+        .block-title {
+            margin: 0 0 @indent__s;
+
+            strong {
+                .lib-font-size(20);
+                font-weight: @font-weight__light;
+            }
+        }
+
+        .ticker {
+            .lib-list-reset-styles();
+
+            li {
+                display: none;
+                margin: 0;
+
+                &.second {
+                    display: inline-block !important;
+                }
+            }
+
+            .value {
+                .lib-font-size(24);
+                font-weight: @font-weight__light;
+            }
+
+            .label {
+                .lib-font-size(24);
+                display: inline-block;
+                text-transform: lowercase;
+                margin: 0 15px;
+            }
+
+            .days {
+                .label {
+                    margin-left: @indent__xs;
+                }
+            }
+
+            .second {
+                .label {
+                    display: none;
+                }
+            }
+        }
+
+        .dates {
+            display: table;
+            margin: 0 auto;
+
+            .start,
+            .end {
+                display: table-cell;
+                vertical-align: top;
+            }
+
+            .date {
+                .lib-font-size(18);
+            }
+
+            .time {
+                .lib-font-size(16);
+                display: block;
+            }
+
+            .start {
+                padding-right: @indent__l;
+                position: relative;
+
+                &:after {
+                    .lib-font-size(18);
+                    content: '\2013';
+                    display: block;
+                    position: absolute;
+                    right: @indent__s;
+                    top: 0;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .block-category-event {
+        padding: 50px 0;
+
+        &.block:last-child {
+            margin-bottom: @indent__l;
+        }
+
+        .block-title {
+            strong {
+                .lib-font-size(30);
+            }
+        }
+
+        .ticker {
+            li {
+                display: none;
+                margin: 0;
+            }
+
+            .value {
+                .lib-font-size(40);
+            }
+
+            .label {
+                .lib-font-size(40);
+                margin: 0 ;
+                text-transform: none;
+                margin: 0 50px;
+            }
+
+            .days {
+                .label {
+                    margin-left: @indent__s;
+                }
+            }
+        }
+
+        .dates {
+            .date {
+                .lib-font-size(40);
+            }
+
+            .time {
+                .lib-font-size(30)
+            }
+
+            .start {
+                padding-right: 60px;
+
+                &:after {
+                    .lib-font-size(40);
+                    right: @indent__base;
+                }
+            }
+        }
+    }
+}

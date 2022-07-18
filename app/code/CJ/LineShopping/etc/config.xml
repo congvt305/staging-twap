@@ -16,6 +16,9 @@
                 <order_post_back>*/5 * * * *</order_post_back>
                 <fee_post_back>*/5 * * * *</fee_post_back>
             </cron>
+            <customer_integration>
+                <line_url_multicast_message>https://api.line.me/v2/bot/message/multicast</line_url_multicast_message>
+            </customer_integration>
         </line_shopping>
     </default>
 </config>

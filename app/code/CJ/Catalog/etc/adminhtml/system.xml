@@ -12,6 +12,10 @@
                     <label>Display Product Description Below Product Name</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="limit" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Every line's maximum chinese character</label>
+                    <comment>Default: 30</comment>
+                </field>
             </group>
         </section>
     </system>

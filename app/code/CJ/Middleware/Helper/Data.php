@@ -22,6 +22,7 @@ class Data extends AbstractHelper
     const XML_PATH_MIDDLEWARE_CUSTOMER_MEMBER_INFO = 'middleware/customer_interface_ids/member_info';
     const XML_PATH_MIDDLEWARE_CUSTOMER_MEMBER_JOIN = 'middleware/customer_interface_ids/member_join';
     const XML_PATH_MIDDLEWARE_CUSTOMER_BACODE_INFO = 'middleware/customer_interface_ids/bacode_info';
+    const XML_PATH_IS_DECIMAL_FORMAT = 'middleware/general/is_decimal_format';
 
     public function isNewMiddlewareEnabled($type, $storeId)
     {
@@ -101,5 +102,10 @@ class Data extends AbstractHelper
     public function getSalesOfficeCode($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_SALES_OFF_CODE, $type, $storeId);
+    }
+
+    public function getIsDecimalFormat($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_IS_DECIMAL_FORMAT, $type, $storeId);
     }
 }
