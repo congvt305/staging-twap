@@ -159,7 +159,7 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
     public function getReadMoreContent($attributeCode = null)
     {
         $privacyPolicyCMSBlockId = $this->config->getTermsAndServicesPolicyCMSBlockId();
-        if ($attributeCode == 'term_personal_data'){
+        if ($attributeCode == 'term_personal_data' && $this->_storeManager->getStore()->getCode() == 'my_laneige'){
             $privacyPolicyCMSBlockId = $this->config->getPrivacyPolicyCMSBlockId();
         }
 
