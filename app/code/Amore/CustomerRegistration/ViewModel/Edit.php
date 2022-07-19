@@ -181,8 +181,7 @@ class Edit extends \Magento\Directory\Block\Data implements ArgumentInterface
      */
     public function changeDateFormat($date)
     {
-        $websiteId = (int)$this->storeManager->getStore()->getId();
-        $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
+        $websiteCode = $this->storeManager->getWebsite()->getCode();
         if (in_array($websiteCode, ['vn_laneige_website', 'vn_sulwhasoo_website', 'my_laneige_website', 'my_sulwhasoo_website']))
         {
             return $this->timezone->date(new \DateTime($date))->format(self::DATE_FORMAT);

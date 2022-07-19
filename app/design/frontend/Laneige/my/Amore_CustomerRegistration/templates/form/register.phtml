@@ -185,6 +185,11 @@ $directoryHelper = $this->helper(\Eguana\Directory\Helper\Data::class);
             <?php if ($_gender->isEnabled()) : ?>
                 <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
             <?php endif ?>
+
+            <?php $_race = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\Race::class) ?>
+            <?php if ($_race->isEnabled()) : ?>
+                <?= $_race->setRace($block->getFormData()->getRace())->toHtml() ?>
+            <?php endif ?>
         </fieldset>
         <fieldset class="fieldset address">
             <div class="fieldset dm-address">
@@ -217,16 +222,6 @@ $directoryHelper = $this->helper(\Eguana\Directory\Helper\Data::class);
                         </select>
                         <input type="text" placeholder="<?= $block->escapeHtml(__('City')) ?>" name="dm_city" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmCity()) ?>" title="<?= $block->escapeHtml(__('City')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_city')) ?>" id="dm_city">
                         <?php //phpcs:enable ?>
-                    </div>
-                </div>
-
-                <div class="field ward required">
-                    <label class="label" for="ward"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('ward') ?></span></label>
-                    <div class="control">
-                        <input type="hidden" name="ward" id="ward_txt" value="" />
-                        <select id="fward" name="ward_id" class="required-entry">
-                            <option value=""><?php echo __('Please select a ward'); ?></option>
-                        </select>
                     </div>
                 </div>
 
@@ -449,34 +444,4 @@ require([
             "checkboxallselect":{}
         }
     }
-</script>
-
-<script type="text/javascript">
-    require([
-        'jquery'
-    ], function($){
-        $(document).ready(function(){
-
-            $(document).on("change", "#city_id", function(){
-                var _cityTxt = $(this).find("option:selected").text();
-                $("#city").val(_cityTxt);
-                var _cityId = $(this).val();
-                $("#fward option.opt").addClass("hidden");
-                $("#fward").val("");
-                $("#ward_txt").val("");
-                $.ajax({
-                    dataType : 'html',
-                    showLoader: false,
-                    url : '<?php echo $directoryHelper->getAjaxWardUrl() ?>?city_id='+_cityId,
-                    success : function(data){
-                        $("#fward").html(data);
-                    }
-                });
-            });
-            $(document).on("change", "#fward", function(){
-                var _wardTxt = $(this).find("option:selected").text();
-                $("#ward_txt").val(_wardTxt);
-            });
-        });
-    });
 </script>

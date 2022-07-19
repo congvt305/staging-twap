@@ -179,6 +179,8 @@ class Data extends AbstractHelper
                 'cartName' => 'magento_' . $this->getModuleVersion(),
                 'currency' => $orderCurrencyCode,
                 'needExtraPaidInfo' => 'Y',
+                'isSaveCard' => $this->_ecpayPaymentModel->getEcpayConfigFromStore('issavecard', $order->getStoreId()),
+                'customerId' => $order->getCustomerId()
             );
 
             $sdkHelper->checkout($helperData);

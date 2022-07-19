@@ -5,6 +5,7 @@
         <arguments>
             <argument name="configProviders" xsi:type="array">
                 <item name="cj_couponcustomer_checkout_config_provider" xsi:type="object">CJ\CouponCustomer\Model\Ui\ConfigProvider</item>
+                <item name="postcode_auto_fill" xsi:type="object">Eguana\Directory\Model\PostCodeAutoFill</item>
             </argument>
         </arguments>
     </type>

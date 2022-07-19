@@ -1,0 +1,24 @@
+<?php
+/** @var \Amore\CustomerRegistration\Block\Widget\Race $block */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+<div class="field race<?= $block->isRequired() ? ' required' : ''?>">
+    <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFieldId('race')) ?>">
+        <span><?= $escaper->escapeHtml($block->getStoreLabel()) ?></span>
+    </label>
+    <div class="control">
+        <select id="<?= $escaper->escapeHtmlAttr($block->getFieldId('race')) ?>"
+                name="<?= $escaper->escapeHtmlAttr($block->getFieldName('race')) ?>"
+                title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel()) ?>"
+            <?php if ($block->isRequired()) : ?> class="validate-select" data-validate="{required:true}"<?php endif; ?>>
+            <?php $options = $block->getRaceOptions(); ?>
+            <?php $value = $block->getRace(); ?>
+            <?php foreach ($options as $option) : ?>
+                <option value="<?= $escaper->escapeHtmlAttr($option->getValue()) ?>"
+                    <?= ($option->getValue() == $value) ? ' selected="selected"' : '' ?>>
+                    <?= $escaper->escapeHtml(__($option->getLabel())) ?>
+                </option>
+            <?php endforeach;?>
+        </select>
+    </div>
+</div>

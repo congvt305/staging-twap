@@ -84,7 +84,7 @@ class Order
             throw new Exception(__('This order cannot cancel now.'));
         }
 
-        if ((bool)$this->ninjavanHelper->isNinjaVanEnabled() && $order->getShippingMethod() == 'ninjavan_tablerate') {
+        if ((bool)$this->ninjavanHelper->isNinjaVanEnabled($order->getStoreId()) && $order->getShippingMethod() == 'ninjavan_tablerate') {
             try {
                 /**
                  * create credit memo and refun order

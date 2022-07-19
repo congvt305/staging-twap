@@ -9,15 +9,20 @@
 namespace Amore\PointsIntegration\Model;
 
 use Amore\PointsIntegration\Model\Source\Config;
+use CJ\Middleware\Helper\Data;
+use Exception;
 use Magento\Bundle\Api\Data\LinkInterface;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
+use Magento\Bundle\Model\Product\Price;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\InvoiceRepositoryInterface;
 use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -99,6 +104,11 @@ class PosOrderData
     private $storeManager;
 
     /**
+     * @var Data
+     */
+    private $middlewareConfig;
+
+    /**
      * @param RedInvoiceCollectionFactory $redInvoiceCollectionFactory
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -113,6 +123,7 @@ class PosOrderData
      * @param CollectionFactory $orderCollectionFactory
      * @param Logger $pointsIntegrationLogger
      * @param StoreManagerInterface $storeManager
+     * @param Data $middlewareConfig
      */
     public function __construct(
         RedInvoiceCollectionFactory    $redInvoiceCollectionFactory,
@@ -128,7 +139,8 @@ class PosOrderData
         ResourceConnection             $resourceConnection,
         CollectionFactory              $orderCollectionFactory,
         Logger                         $pointsIntegrationLogger,
-        StoreManagerInterface          $storeManager
+        StoreManagerInterface          $storeManager,
+        Data                           $middlewareConfig
     )
     {
         $this->redInvoiceCollectionFactory = $redInvoiceCollectionFactory;
@@ -145,6 +157,7 @@ class PosOrderData
         $this->orderCollectionFactory = $orderCollectionFactory;
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
         $this->storeManager = $storeManager;
+        $this->middlewareConfig = $middlewareConfig;
     }
 
     /**
@@ -255,7 +268,7 @@ class PosOrderData
      * @param Order $order
      * @return array
      * @throws NoSuchEntityException
-     * @throws \Exception
+     * @throws Exception
      */
     public function getItemData(Order $order)
     {
@@ -265,23 +278,24 @@ class PosOrderData
         $itemsGrandTotal = 0;
         $skuPrefix = $this->getSKUPrefix($order->getStoreId()) ?: '';
         $orderItems = $order->getAllVisibleItems();
+        $isDecimalFormat = $this->middlewareConfig->getIsDecimalFormat('store', $order->getStoreId());
 
         /** @var Item $orderItem */
         foreach ($orderItems as $orderItem) {
             if ($orderItem->getProductType() != 'bundle') {
 
-                $itemSubtotal = $this->simpleAndConfigurableSubtotal($orderItem);
-                $itemTotalDiscount = $this->simpleAndConfigurableTotalDiscount($orderItem);
+                $itemSubtotal = $this->simpleAndConfigurableSubtotal($orderItem, $isDecimalFormat);
+                $itemTotalDiscount = $this->simpleAndConfigurableTotalDiscount($orderItem, $isDecimalFormat);
                 $itemGrandTotal = $itemSubtotal - $itemTotalDiscount;
                 $stripSku = str_replace($skuPrefix, '', $orderItem->getSku());
 
                 $orderItemData[] = [
                     'prdCD' => $stripSku,
                     'qty' => (int)$orderItem->getQtyOrdered(),
-                    'price' => (int)$orderItem->getOriginalPrice(),
-                    'salAmt' => (int)$itemSubtotal,
-                    'dcAmt' => (int)$itemTotalDiscount,
-                    'netSalAmt' => (int)$itemGrandTotal
+                    'price' => $this->roundingPrice($orderItem->getOriginalPrice(), $isDecimalFormat),
+                    'salAmt' => $this->roundingPrice($itemSubtotal, $isDecimalFormat),
+                    'dcAmt' => $this->roundingPrice($itemTotalDiscount, $isDecimalFormat),
+                    'netSalAmt' => $this->roundingPrice($itemGrandTotal, $isDecimalFormat)
                 ];
 
                 $itemsSubtotal += $itemSubtotal;
@@ -302,17 +316,18 @@ class PosOrderData
                     }
 
                     $product = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId());
-                    $bundleChildSubtotal = $this->bundleChildSubtotal($bundleChildPrice, $bundleChild);
-                    $bundleChildDiscountAmount = $this->getBundleChildDiscountAmount($bundlePriceType, $orderItem, $bundleChild);
+                    $bundleChildSubtotal = $this->bundleChildSubtotal($bundleChildPrice, $bundleChild, $isDecimalFormat);
+                    $bundleChildDiscountAmount = $this->getBundleChildDiscountAmount($bundlePriceType, $orderItem, $bundleChild, $isDecimalFormat);
                     $priceGap = $orderItem->getOriginalPrice() - $orderItem->getPrice();
 
                     $qtyPerBundle = $bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered();
                     $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $qtyPerBundle;
                     $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($priceGap)) / $qtyPerBundle;
-                    $itemTotalDiscount = abs(round(
+                    $itemTotalDiscount = abs($this->roundingPrice(
                         $bundleChildDiscountAmount +
                         (($product->getPrice() - $childPriceRatio) * $bundleChild->getQtyOrdered()) +
-                        $catalogRuledPriceRatio * $bundleChild->getQtyOrdered()
+                        $catalogRuledPriceRatio * $bundleChild->getQtyOrdered(),
+                        $isDecimalFormat
                     ));
 
                     $bundleChildGrandTotal = $bundleChildSubtotal - $itemTotalDiscount;
@@ -320,10 +335,10 @@ class PosOrderData
                     $orderItemData[] = [
                         'prdCD' => $stripSku,
                         'qty' => (int)$bundleChild->getQtyOrdered(),
-                        'price' => (int)$bundleChildPrice,
-                        'salAmt' => (int)$bundleChildSubtotal,
-                        'dcAmt' => (int)$itemTotalDiscount,
-                        'netSalAmt' => (int)$bundleChildGrandTotal
+                        'price' => $this->roundingPrice($bundleChildPrice, $isDecimalFormat),
+                        'salAmt' => $this->roundingPrice($bundleChildSubtotal, $isDecimalFormat),
+                        'dcAmt' => $this->roundingPrice($itemTotalDiscount, $isDecimalFormat),
+                        'netSalAmt' => $this->roundingPrice($bundleChildGrandTotal, $isDecimalFormat)
                     ];
 
                     $itemsSubtotal += $bundleChildSubtotal;
@@ -333,22 +348,42 @@ class PosOrderData
             }
         }
 
-        $orderSubtotal = $this->getOrderSubtotal($order);
-        $orderGrandTotal = $this->getOrderGrandTotal($order);
+        $orderSubtotal = $this->getOrderSubtotal($order, $isDecimalFormat);
+        $orderGrandTotal = $this->getOrderGrandTotal($order, $isDecimalFormat);
         $orderDiscount = $orderSubtotal - $orderGrandTotal;
 
-        $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'salAmt');
-        $orderItemData = $this->priceCorrector($orderDiscount, $itemsDiscountAmount, $orderItemData, 'dcAmt');
-        $orderItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $orderItemData, 'netSalAmt');
+        $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'salAmt', $isDecimalFormat);
+        $orderItemData = $this->priceCorrector($orderDiscount, $itemsDiscountAmount, $orderItemData, 'dcAmt', $isDecimalFormat);
+        $orderItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $orderItemData, 'netSalAmt', $isDecimalFormat);
 
         if (count($orderItems) > count($orderItemData)) {
-            throw new \Exception('Missing items');
+            throw new Exception('Missing items');
+        }
+
+        if ($isDecimalFormat) {
+            $listToFormat = ['salAmt', 'dcAmt', 'netSalAmt', 'price'];
+
+            foreach ($listToFormat as $field) {
+                foreach ($orderItemData as $key => $value) {
+                    if (isset($value[$field]) && (is_float($value[$field]) || is_int($value[$field]))) {
+                        $orderItemData[$key][$field] = $this->formatPrice($value[$field], $isDecimalFormat);
+                    }
+                }
+            }
         }
 
         return $orderItemData;
     }
 
-    public function priceCorrector($orderAmount, $itemTotalAmount, $orderItemData, $field)
+    /**
+     * @param $orderAmount
+     * @param $itemTotalAmount
+     * @param $orderItemData
+     * @param $field
+     * @param $isDecimalFormat
+     * @return array
+     */
+    public function priceCorrector($orderAmount, $itemTotalAmount, $orderItemData, $field, $isDecimalFormat = false)
     {
         if ($orderAmount != $itemTotalAmount) {
             $amountDifference = $orderAmount - $itemTotalAmount;
@@ -357,7 +392,7 @@ class PosOrderData
                 if ($value['price'] == 0) {
                     continue;
                 }
-                $orderItemData[$key][$field] = $value[$field] + $amountDifference;
+                $orderItemData[$key][$field] = $this->formatPrice($value[$field] + $amountDifference, $isDecimalFormat);
                 break;
             }
         }
@@ -366,22 +401,23 @@ class PosOrderData
     }
 
     /**
-     * @param Order $order
+     * @param $order
+     * @param $isDecimalFormat
      * @return float
-     * @throws \Exception
+     * @throws NoSuchEntityException
      */
-    public function getOrderSubtotal($order)
+    public function getOrderSubtotal($order, $isDecimalFormat = false)
     {
-        return round($order->getSubtotal() + $this->getBundleExtraAmount($order) + $this->getCatalogRuleDiscountAmount($order));
+        return $this->roundingPrice($order->getSubtotal() + $this->getBundleExtraAmount($order) + $this->getCatalogRuleDiscountAmount($order), $isDecimalFormat);
     }
 
     /**
      * @param Order $order
      * @return float|null
      */
-    public function getOrderGrandTotal(Order $order)
+    public function getOrderGrandTotal(Order $order, $isDecimalFormat = false)
     {
-        return $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($order->getGrandTotal() - $order->getShippingAmount());
+        return $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->roundingPrice($order->getGrandTotal() - $order->getShippingAmount(), $isDecimalFormat);
     }
 
     /**
@@ -448,26 +484,34 @@ class PosOrderData
 
     /**
      * @param Item $orderItem
+     * @param $isDecimalFormat
      * @return float|int
      */
-    public function simpleAndConfigurableSubtotal(Item $orderItem)
+    public function simpleAndConfigurableSubtotal(Item $orderItem, $isDecimalFormat = false)
     {
-        return abs(round($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered()));
+        return abs($this->roundingPrice($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered(), $isDecimalFormat));
     }
 
     /**
      * @param Item $orderItem
+     * @param $isDecimalFormat
      * @return float|int
      * @throw NoSuchEntityException
      */
-    public function simpleAndConfigurableTotalDiscount(Item $orderItem)
+    public function simpleAndConfigurableTotalDiscount(Item $orderItem, $isDecimalFormat = false)
     {
-        return abs(round($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered())));
+        return abs($this->roundingPrice($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()), $isDecimalFormat));
     }
 
-    public function bundleChildSubtotal($bundleChildPrice, $bundleChildFromOrder)
+    /**
+     * @param $bundleChildPrice
+     * @param $bundleChildFromOrder
+     * @param $isDecimalFormat
+     * @return float|int
+     */
+    public function bundleChildSubtotal($bundleChildPrice, $bundleChildFromOrder, $isDecimalFormat)
     {
-        return abs(round($bundleChildPrice * $bundleChildFromOrder->getQtyOrdered()));
+        return abs($this->roundingPrice($bundleChildPrice * $bundleChildFromOrder->getQtyOrdered(), $isDecimalFormat));
     }
 
     /**
@@ -479,11 +523,11 @@ class PosOrderData
      * @return float
      * @throws NoSuchEntityException
      */
-    public function getBundleChildDiscountAmount($bundlePriceType, $orderItem, $bundleChild)
+    public function getBundleChildDiscountAmount($bundlePriceType, $orderItem, $bundleChild, $isDecimalFormat = false)
     {
-        $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
-            round($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getDiscountAmount())) :
-            round($bundleChild->getDiscountAmount());
+        $bundleChildDiscountAmount = (int)$bundlePriceType !== Price::PRICE_TYPE_DYNAMIC ?
+            $this->roundingPrice($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getDiscountAmount()), $isDecimalFormat) :
+            $this->roundingPrice($bundleChild->getDiscountAmount(), $isDecimalFormat);
 
         return $bundleChildDiscountAmount;
     }
@@ -635,5 +679,29 @@ class PosOrderData
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
+    }
+
+    /**
+     * @param $price
+     * @param false $isDecimal
+     * @return int|string
+     */
+    public function formatPrice($price, $isDecimal = false)
+    {
+        if ($isDecimal) {
+            return number_format($price, 2, '.', '');
+        }
+        return (int)$price;
+    }
+
+    /**
+     * @param $price
+     * @param $isDecimal
+     * @return float
+     */
+    public function roundingPrice($price, $isDecimal = false)
+    {
+        $precision = $isDecimal ? 2 : 0;
+        return round($price, $precision);
     }
 }

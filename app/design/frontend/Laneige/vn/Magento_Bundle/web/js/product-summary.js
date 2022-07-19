@@ -41,6 +41,7 @@ define([
                 .on('updateProductSummary', $.proxy(this._renderSummaryBox, this))
                 .priceBundle({})
             ;
+            this._changeSelectOption();
         },
 
         /**
@@ -116,8 +117,24 @@ define([
             this.cache.summaryContainer
                 .find(this.options.optionSelector)
                 .append(template);
+        },
+
+        /**
+         * @private
+         */
+        _changeSelectOption: function () {
+            let self = this;
+            $('.select-option').click(function () {
+                $(this).parent().find('.select-option').removeClass('selected');
+                $(this).addClass('selected');
+                $('.bundle-option-' + $(this).data("parent-id")).val(this.value);
+                self.element
+                    .closest(self.options.mainContainer)
+                    .on('updateProductSummary', $.proxy(self._renderSummaryBox, self))
+                    .priceBundle({})
+                ;
+            })
         }
     });
-
     return $.mage.productSummary;
 });
