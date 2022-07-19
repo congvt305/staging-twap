@@ -82,6 +82,13 @@
                     </depends>
                 </field>
 
+                <field id="privacy_policy_cms_block" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1">
+                    <label>Privacy Policy CMS Block</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+
                 <field id="sms_verification_enable" translate="label comment" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" >
                     <label>SMS Verification Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
