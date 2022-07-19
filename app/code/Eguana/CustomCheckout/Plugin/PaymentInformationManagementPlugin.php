@@ -2,6 +2,7 @@
 
 namespace Eguana\CustomCheckout\Plugin;
 
+use Amasty\CheckoutCore\Model\Config;
 use Magento\Checkout\Api\PaymentInformationManagementInterface;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -29,18 +30,29 @@ class PaymentInformationManagementPlugin extends \Magento\CheckoutStaging\Plugin
     private $addressRepository;
 
     /**
+     * @var Config
+     */
+    private $amastyConfig;
+
+    /**
      * PaymentInformationManagement constructor
      *
      * @param VersionManager $versionManager
      * @param CartRepositoryInterface $quoteRepository
      * @param AddressRepositoryInterface $addressRepository
+     * @param Config $amastyConfig
      */
-    public function __construct(VersionManager $versionManager, CartRepositoryInterface $quoteRepository,
-                                AddressRepositoryInterface $addressRepository)
-    {
+    public function __construct(
+        VersionManager $versionManager,
+        CartRepositoryInterface $quoteRepository,
+        AddressRepositoryInterface $addressRepository,
+        Config $amastyConfig
+    ) {
         $this->versionManager = $versionManager;
         $this->quoteRepository = $quoteRepository;
         $this->addressRepository = $addressRepository;
+        $this->amastyConfig = $amastyConfig;
+        parent::__construct($versionManager, $quoteRepository, $addressRepository);
     }
 
     /**
@@ -80,6 +92,11 @@ class PaymentInformationManagementPlugin extends \Magento\CheckoutStaging\Plugin
             if ($quoteSameAsBilling === 1) {
                 $sameAsBillingFlag = 1;
             } elseif (!empty($shippingAddress) && !empty($billingAddress)) {
+                if ($this->amastyConfig->isEnabled()) {
+                    //must remove to avoid error in function checkIfShippingNullOrNotSameAsBillingAddress
+                    $billingAddress->setData('extension_attributes', null);
+                }
+
                 $sameAsBillingFlag = $quote->getCustomerId() &&
                     $this->checkIfShippingNullOrNotSameAsBillingAddress($shippingAddress, $billingAddress);
             } else {
