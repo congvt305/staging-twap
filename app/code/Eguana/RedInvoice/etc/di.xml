@@ -27,6 +27,15 @@
             <argument name="resourceModel" xsi:type="string">Eguana\RedInvoice\Model\ResourceModel\RedInvoice</argument>
         </arguments>
     </type>
+    <type name="Magento\Checkout\Api\PaymentInformationManagementInterface">
+        <plugin name="add_red_invoice_one_page_checkout_plugin" type="Eguana\RedInvoice\Plugin\Checkout\Model\AddDataRedInvoice" sortOrder="1"/>
+
+    </type>
+    <type name="Magento\Checkout\Api\GuestPaymentInformationManagementInterface">
+        <plugin name="add_red_invoice_one_page_guest_checkout_plugin" type="Eguana\RedInvoice\Plugin\Checkout\Model\GuestAddDataRedInvoice" sortOrder="1"/>
+        <plugin name="remove_billing_extension_attribute" type="Eguana\RedInvoice\Plugin\Checkout\Model\RemoveBillingExtensionAttributeForGuest" sortOrder="3"/>
+        <plugin name="disable-guest-place-order" sortOrder="10"/>
+    </type>
     <type name="Magento\Framework\EntityManager\MetadataPool">
         <arguments>
             <argument name="metadata" xsi:type="array">

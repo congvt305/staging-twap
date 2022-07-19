@@ -1,0 +1,16 @@
+<div class="delivery-message">
+	<div for="delivery_message">
+        <span class="message-title" data-bind="i18n: 'Delivery Message'"></span>
+        <button class="checkout-button clearfix" data-bind="i18n: 'Request for delivery message', click: showDeliveryMessageText"></button>
+    </div>
+    <div class="line-through clearfix"></div>
+	<div id="delivery_form" class="control">
+		<textarea class="input-text" id="delivery_message" name="delivery_message"></textarea>
+	</div>
+</div>
+<div class="delivery-message-error">
+    <div role="alert"
+         class="message notice">
+        <span data-bind="i18n: 'Delivery Message is too long. Please type less than 512 characters.'"></span>
+    </div>
+</div>
