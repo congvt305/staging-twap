@@ -85,9 +85,8 @@ class Currency
         $includeContainer = true,
         $addBrackets = false
     ) {
-        $fullActionName = $this->request->getFullActionName();
         $storeCode = $this->storeManager->getStore()->getCode();
-        if (in_array($storeCode, $this->stores) || $fullActionName == "mui_index_render") {
+        if (in_array($storeCode, $this->stores)) {
             $precision = 0;
             return [$price, $precision, $options, $includeContainer, $addBrackets];
         }

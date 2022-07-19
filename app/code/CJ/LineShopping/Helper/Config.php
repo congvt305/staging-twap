@@ -14,6 +14,8 @@ class Config
     const XML_PATH_LINE_API = 'line_shopping/api/';
     const XML_PATH_LINE_STORE = 'line_shopping/setting/filepath';
     const XML_PATH_LINE_STORE_FILE = 'line_shopping/setting/';
+    const XML_PATH_LINE_CUSTOMER_URL_MULTICAST_MESSAGE = 'line_shopping/customer_integration/line_url_multicast_message';
+    const XML_PATH_LINE_CUSTOMER_CHANNEL_ACCESS_TOKEN = 'line_shopping/customer_integration/channel_access_token';
 
     /**
      * @var ScopeConfigInterface
@@ -123,4 +125,21 @@ class Config
         return $this->getConfig(self::XML_PATH_LINE_API . $path, $website, $isEncrypt);
     }
 
+    /**
+     * @param $websiteId
+     * @return mixed
+     */
+    public function getUrlSendMulticastMessage($websiteId = null)
+    {
+        return $this->getConfig(self::XML_PATH_LINE_CUSTOMER_URL_MULTICAST_MESSAGE, $websiteId);
+    }
+
+    /**
+     * @param $websiteId
+     * @return mixed
+     */
+    public function getChannelAccessToken($websiteId = null)
+    {
+        return $this->getConfig(self::XML_PATH_LINE_CUSTOMER_CHANNEL_ACCESS_TOKEN, $websiteId);
+    }
 }

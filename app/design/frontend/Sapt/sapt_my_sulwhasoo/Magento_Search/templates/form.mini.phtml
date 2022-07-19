@@ -1,0 +1,163 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
+/** @var $helper \Magento\Search\Helper\Data */
+$helper = $this->helper(\Magento\Search\Helper\Data::class);
+?>
+<div class="block block-search" >
+    <div class="block-search-popup"><a href="#" class="icon-search-popup"></a></div>
+    <div class="block block-content" id="top-search">
+        <form class="form minisearch" id="search_mini_form" action="<?= $block->escapeUrl($helper->getResultUrl()) ?>" method="get">
+            <div class="field search">
+                <label class="label" for="search" data-role="minisearch-label">
+                    <span><?= $block->escapeHtml(__('Search')) ?></span>
+                </label>
+                <div class="control">
+                    <input id="search"
+                           data-mage-init='{"quickSearch":{
+                                "formSelector":"#search_mini_form",
+                                "url":"<?= $block->escapeUrl($helper->getSuggestUrl()) ?>",
+                                "destinationSelector":"#search_autocomplete",
+                                "destinationHistory":"#search_wrapper"
+                                }
+                           }'
+                           type="text"
+                           name="<?= $block->escapeHtmlAttr($helper->getQueryParamName()) ?>"
+                           value="<?= /* @noEscape */ $helper->getEscapedQueryText() ?>"
+                           placeholder="<?= $block->escapeHtmlAttr(__('Enter a search term')) ?>"
+                           class="input-text"
+                           maxlength="<?= $block->escapeHtmlAttr($helper->getMaxQueryLength()) ?>"
+                           role="combobox"
+                           aria-haspopup="false"
+                           aria-autocomplete="both"
+                           autocomplete="off"
+                           aria-expanded="false"/>
+                    <div id="search_wrapper">
+                        <div id="search_history">
+                            <div class="search_history_top">
+                                <h2><?= $block->escapeHtmlAttr(__('Recent Searches')) ?></h2>
+                                <a href="#" class="delete_all_search"><?= $block->escapeHtmlAttr(__('Delete
+                                all')) ?></a>
+                            </div>
+                            <ul id="search_history_list"></ul>
+                        </div>
+                        <div id="search_trending">
+                            <div class="search_history_top">
+                                <h2><?= $block->escapeHtmlAttr(__('Trending Now')) ?></h2>
+                            </div>
+                            <ul id="search_trending_list">
+                                <li class="normal"><span class="rank">1</span> Toner</li>
+                                <li class="down"><span class="rank">2</span> Ginseng cream</li>
+                                <li class="up"><span class="rank">3</span> Lucky knot collection</li>
+                                <li><span class="rank">4</span> First Care Activating Serum</li>
+                                <li class="normal"><span class="rank">5</span> Mask</li>
+                                <li class="normal"><span class="rank">6</span> Toner</li>
+                                <li class="up"><span class="rank">7</span> Ginseng cream</li>
+                                <li class="down"><span class="rank">8</span> Lucky knot collection</li>
+                                <li class="up"><span class="rank">9</span> First Care Activating Serum</li>
+                                <li class="normal"><span class="rank">10</span> Mask </li>
+                            </ul>
+                        </div>
+                        <div id="search_autocomplete" class="search-autocomplete"></div>
+                    </div>
+                    <?= $block->getChildHtml() ?>
+                </div>
+                <div class="actions">
+                    <button type="submit"
+                            title="<?= $block->escapeHtmlAttr(__('Search')) ?>"
+                            class="action search"
+                            aria-label="Search"
+                    >
+                        <span><?= $block->escapeHtml(__('Search')) ?></span>
+                    </button>
+                </div>
+            </div>
+            <div class="actions-bottom">
+                <button type="button" class="action close" data-role="minisearch-close">
+                    <span><?= $block->escapeHtml(__('Close')) ?></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    require([
+        'jquery'
+    ], function ($) {
+        $(document).ready(function(){
+            var RecentSearch = (function(){
+                function init(){
+                    $("#search").change(function() {
+                        var val = $(this).val();
+                        searchHistory(val);
+                    });
+                    $(".icon-search-popup").off('click').on('click',function(e){
+                        if(!$("html").hasClass("is-open-search")) {
+                            $("html").addClass("is-open-search");
+                        }
+                        else {
+                            $("html").removeClass("is-open-search");
+                        }
+                    });
+                    updateSearchHistoryUi();
+                    removeSearchHistory();
+                    deleteallSearchHistory();
+                }
+
+                function searchHistory(searchParam) {
+                    const maxHistoryLength = 4;
+                    const history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+                    const isHistoryMaxed = history.length === maxHistoryLength;
+                    const workingHistory = isHistoryMaxed ? history.slice(1) : history;
+                    const updatedHistory = workingHistory.concat(searchParam);
+                    localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+                }
+
+                function updateSearchHistoryUi(){
+                    const history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+                    var arr = history instanceof Array ? history : [];
+                    if(arr.length > 0) {
+                        $('.search_history_top').show();
+                        $('#search_history_list').empty().append(history.map(v => `
+                <li>
+                  <span class="search_history_item" data-history="${v}">${v}</span>
+                </li>
+              `).join(''));
+                    } else {
+                        $('.search_history_top').hide();
+                    }
+                }
+
+                function removeSearchHistory(){
+                    $('.search_history_item').on('click',function(){
+                        $(this).parent().remove();
+                        var target = $(this).data('history');
+                        const searchs = JSON.parse(localStorage.getItem("searchHistory"));
+                        const filtered = searchs.filter(item => item !== target);
+                        localStorage.setItem("searchHistory", JSON.stringify(filtered));
+                    });
+                }
+
+                function deleteallSearchHistory(){
+                    $('.delete_all_search').on('click',function(){
+                        $('.search_history_item').remove();
+                        $('#search_history').hide();
+                        localStorage.removeItem('searchHistory');
+                    });
+                }
+
+                return {
+                    init: init
+                }
+            })();
+            RecentSearch.init();
+        });
+    });
+</script>

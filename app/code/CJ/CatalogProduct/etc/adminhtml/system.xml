@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="catalog">
+            <label>Catalog</label>
+            <tab>catalog</tab>
+            <resource>Magento_Catalog::config_catalog</resource>
+            <group id="best_seller_products" translate="label" type="text" sortOrder="355" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Best Seller Products</label>
+                <field id="limit_products" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Limit Products</label>
+                    <validate>required-entry validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="use_product_sale" translate="label" type="select" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Use Product Sale</label>
+                    <source_model>CJ\CatalogProduct\Model\Source\Config\ProductSalesSource</source_model>
+                </field>
+                <field id="allow_stores" translate="label" type="multiselect" sortOrder="30" showInDefault="1"
+                       showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Allow Stores</label>
+                    <source_model>CJ\CatalogProduct\Model\Source\Config\Stores</source_model>
+                    <comment>Choose store to update product ranking</comment>
+                </field>
+            </group>
+            <group id="update_rank_cron" translate="label" type="text" sortOrder="365" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Update Rank Cron</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Enable Cron</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="cron_expr" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Cron Expr</label>
+                    <comment><![CDATA[Calendar setting instructions: <a href="https://crontab.guru/" target="_blank">https://crontab.guru/</a>]]></comment>
+                    <backend_model>CJ\CatalogProduct\Model\Source\Config\CronConfig</backend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

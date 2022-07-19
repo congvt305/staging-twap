@@ -86,11 +86,7 @@ class CreateCustomer
     {
         $customerWebsiteId = 0;
         $websiteIds = $this->getWebsiteIds();
-        /**
-         * Magento core also use the arsort function
-         * vendor/magento/module-dhl/Model/Carrier.php at LINE 856
-         */
-        arsort($websiteIds);
+        asort($websiteIds);
         foreach ($websiteIds as $websiteId) {
             $officeSaleCode = $this->configHelper->getOfficeSalesCode($websiteId);
             if ($officeSaleCode == $salOffCd) {

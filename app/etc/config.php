@@ -190,6 +190,11 @@ return [
                     'code' => 'en_US'
                 ]
             ],
+            'advanced' => [
+                'modules_disable_output' => [
+                    'Magento_Banner' => '1'
+                ]
+            ],
             'dev' => [
                 'static' => [
                     'sign' => '1'
@@ -697,7 +702,7 @@ return [
         'Magento_GoogleTagManager' => 1,
         'Magento_ThemeGraphQl' => 1,
         'Magento_Translation' => 1,
-        'Magento_TwoFactorAuth' => 0,
+        'Magento_TwoFactorAuth' => 1,
         'Magento_ElasticsearchCatalogPermissions' => 1,
         'Magento_Ups' => 1,
         'Magento_CatalogUrlRewriteDataExporter' => 1,
@@ -732,6 +737,7 @@ return [
         'Amasty_BannersLite' => 1,
         'Amasty_Base' => 1,
         'Amasty_Conditions' => 1,
+        'Amasty_Coupons' => 1,
         'Amasty_CronScheduleList' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Amasty_ImageOptimizer' => 1,
@@ -766,6 +772,7 @@ return [
         'CJ_Checkout' => 1,
         'CJ_Cms' => 1,
         'CJ_CouponCustomer' => 1,
+        'CJ_Coupons' => 1,
         'CJ_CustomCookie' => 1,
         'CJ_DataExport' => 1,
         'CJ_EventManager' => 1,

@@ -664,7 +664,7 @@ class ECPay_Send extends ECPay_Aio
         $arExtend = self::$PaymentObj->filter_string($arExtend,$arParameters['InvoiceMark']);
 
         //合併共同參數及延伸參數
-        return array_merge($arParameters,$arExtend) ;
+        return array_merge($arExtend, $arParameters) ;
     }
 
 
@@ -673,7 +673,8 @@ class ECPay_Send extends ECPay_Aio
         $arParameters = self::process($arParameters,$arExtend);
         //產生檢查碼
         $szCheckMacValue = ECPay_CheckMacValue::generate($arParameters,$HashKey,$HashIV,$arParameters['EncryptType']);
-
+        $logger = self::getLogger();
+        $logger->info('payload request ECPay_Send: '. json_encode($arParameters, true));
         //生成表單，自動送出
         $szHtml = parent::HtmlEncode($target, $arParameters, $ServiceURL, $szCheckMacValue, '') ;
         echo $szHtml ;
@@ -689,6 +690,18 @@ class ECPay_Send extends ECPay_Aio
         //生成表單
         $szHtml = parent::HtmlEncode($target, $arParameters, $ServiceURL, $szCheckMacValue, $paymentButton) ;
         return  $szHtml ;
+    }
+
+    /**
+     * @return Zend_Log
+     * @throws Zend_Log_Exception
+     */
+    static function getLogger()
+    {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/ecpay.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        return $logger;
     }
 }
 
@@ -981,7 +994,7 @@ class ECPay_CreateTrade extends ECPay_Aio
         $arExtend = self::$PaymentObj->filter_string($arExtend,$arParameters['InvoiceMark']);
 
         //合併共同參數及延伸參數
-        return array_merge($arParameters,$arExtend) ;
+        return array_merge($arExtend, $arParameters) ;
     }
 
     static function CheckOut($arParameters = array(),$arExtend = array(),$HashKey='',$HashIV='',$ServiceURL=''){

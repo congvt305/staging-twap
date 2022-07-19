@@ -26,4 +26,7 @@
             </argument>
         </arguments>
     </virtualType>
+    <type name="Magento\Customer\Model\AccountManagementApi">
+        <plugin name="cj_line_shopping_create_account" type="CJ\LineShopping\Plugin\CreateAccountPlugin"/>
+    </type>
 </config>
