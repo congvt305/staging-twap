@@ -191,31 +191,6 @@ class AddCustomerCustomAttributeTermPersonalData implements DataPatchInterface
                 'customer_account_create'
             ];
 
-            $onlyInAdmin = [
-                'customer_integration_number',
-                'status_code',
-                'sales_organization_code',
-                'sales_office_code'
-            ];
-
-            $myAccountEditableAttributes = [
-                'mobile_number',
-                'dm_subscription_status'
-            ];
-
-            if (in_array($code, $onlyInAdmin)) {
-                $forms = [
-                    'adminhtml_customer'
-                ];
-            }
-
-            if (in_array($code, $myAccountEditableAttributes)) {
-                $forms = [
-                    'customer_account_edit',
-                    'customer_account_create'
-                ];
-            }
-
             $attribute->setData(
                 'used_in_forms',
                 $forms
