@@ -69,15 +69,15 @@ class RestClient
 
     /**
      * @param $uri
-     * @param $channelAccessToken
+     * @param $secretKeyHash
      * @param $body
      * @return ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function sendMessageClient($uri, $channelAccessToken, $body)
+    public function sendMessageClient($uri, $secretKeyHash, $body)
     {
         $header = [
-            "Authorization" =>  "Bearer " . $channelAccessToken,
+            "X-Coolbe-Signature" =>  $secretKeyHash,
             "Content-Type" => "application/json"
         ];
         $request = new Request('POST', $uri, $header, $body);
