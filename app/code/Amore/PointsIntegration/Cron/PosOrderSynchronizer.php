@@ -90,7 +90,9 @@ class PosOrderSynchronizer
 
             if ($cronActive) {
                 $this->paidOrderToPOS($storeId);
-                $this->cancelledOrderToPOS($storeId);
+                if ($store->getCode() != PosOrderData::VN_LANEIGE) {
+                    $this->cancelledOrderToPOS($storeId);
+                }
                 $this->completedReturnToPOS($storeId);
             }
         }
