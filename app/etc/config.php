@@ -876,7 +876,7 @@ return [
         'Vertex_RequestLogging' => 0,
         'Vertex_AddressValidation' => 0,
         'Vertex_TaxStaging' => 1,
-        'Yotpo_Yotpo' => 0
+        'Yotpo_Yotpo' => 1
     ],
     'admin_user' => [
         'locale' => [
