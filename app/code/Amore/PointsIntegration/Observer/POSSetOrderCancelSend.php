@@ -9,6 +9,7 @@ use Magento\Rma\Model\ResourceModel\Rma\CollectionFactory;
 use Magento\Sales\Model\Order;
 use \Magento\Sales\Model\OrderRepository;
 use \Magento\Framework\Exception\CouldNotSaveException;
+use Amore\PointsIntegration\Logger\Logger as AmoreLogger;
 
 class POSSetOrderCancelSend implements ObserverInterface
 {
@@ -28,18 +29,26 @@ class POSSetOrderCancelSend implements ObserverInterface
     protected $rmaCollectionFactory;
 
     /**
+     * @var AmoreLogger
+     */
+    protected $logger;
+
+    /**
      * @param PointConfig $pointConfig
      * @param OrderRepository $orderRepository
      * @param CollectionFactory $rmaCollectionFactory
+     * @param AmoreLogger $logger
      */
     public function __construct(
         PointConfig       $pointConfig,
         OrderRepository   $orderRepository,
-        CollectionFactory $rmaCollectionFactory
+        CollectionFactory $rmaCollectionFactory,
+        AmoreLogger       $logger
     ) {
         $this->pointConfig = $pointConfig;
         $this->orderRepository = $orderRepository;
         $this->rmaCollectionFactory = $rmaCollectionFactory;
+        $this->logger = $logger;
     }
 
     /**
@@ -62,9 +71,12 @@ class POSSetOrderCancelSend implements ObserverInterface
                 !$this->getRMA($order)
             ) {
                 try {
+                    $this->logger->info('Before save flag pos_order_cancel_send with id: ' . $order->getIncrementId());
                     $order->setData('pos_order_cancel_send', true);
                     $this->orderRepository->save($order);
+                    $this->logger->info('After save flag pos_order_cancel_send with id: ' . $order->getIncrementId());
                 } catch (\Exception $exception) {
+                    $this->logger->error('Error save flag pos_order_cancel_send with id: ' . $order->getIncrementId() . ' ' . $exception->getMessage());
                     throw new CouldNotSaveException(__("Order can not be saved"));
                 }
             }
@@ -95,7 +107,7 @@ class POSSetOrderCancelSend implements ObserverInterface
      */
     private function isCancelSent(Order $order)
     {
-        return $order->getData('pos_order_cancel_sent');
+        return $order->getData('pos_order_cancel_sent') || $order->getData('pos_order_cancel_send');
     }
 
     /**

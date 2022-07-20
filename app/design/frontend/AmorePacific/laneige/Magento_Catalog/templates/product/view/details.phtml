@@ -52,7 +52,9 @@
                     ?>
                     <div class="data item content"
                          aria-labelledby="tab-label-<?= $block->escapeHtmlAttr($alias) ?>-title" id="<?= $block->escapeHtmlAttr($alias) ?>">
-                        <div class="content-title"><?= /* @noEscape */ $label ?></div>
+                        <?php if ($name != 'faq_list'):?>
+                            <div class="content-title"><?= /* @noEscape */ $label ?></div>
+                        <?php endif;?>
                         <?= /* @noEscape */ $html ?>
                     </div>
                 <?php endforeach;?>
