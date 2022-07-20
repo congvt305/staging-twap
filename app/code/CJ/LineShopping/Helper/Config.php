@@ -14,8 +14,10 @@ class Config
     const XML_PATH_LINE_API = 'line_shopping/api/';
     const XML_PATH_LINE_STORE = 'line_shopping/setting/filepath';
     const XML_PATH_LINE_STORE_FILE = 'line_shopping/setting/';
-    const XML_PATH_LINE_CUSTOMER_URL_MULTICAST_MESSAGE = 'line_shopping/customer_integration/line_url_multicast_message';
-    const XML_PATH_LINE_CUSTOMER_CHANNEL_ACCESS_TOKEN = 'line_shopping/customer_integration/channel_access_token';
+    const XML_PATH_LINE_CUSTOMER_ENDPOINT_URL = 'line_shopping/customer_integration/endpoint_url';
+    const XML_PATH_LINE_CUSTOMER_SECRET_KEY = 'line_shopping/customer_integration/secret_key';
+    const XML_PATH_LINE_CUSTOMER_WELCOME_TEXT = 'line_shopping/customer_integration/welcome_text';
+    const XML_PATH_LINE_CUSTOMER_URL_MULTICAST = 'https://api.line.me/v2/bot/message/multicast/';
 
     /**
      * @var ScopeConfigInterface
@@ -129,17 +131,26 @@ class Config
      * @param $websiteId
      * @return mixed
      */
-    public function getUrlSendMulticastMessage($websiteId = null)
+    public function getEndpointUrl($websiteId = null)
     {
-        return $this->getConfig(self::XML_PATH_LINE_CUSTOMER_URL_MULTICAST_MESSAGE, $websiteId);
+        return $this->getConfig(self::XML_PATH_LINE_CUSTOMER_ENDPOINT_URL, $websiteId);
     }
 
     /**
      * @param $websiteId
      * @return mixed
      */
-    public function getChannelAccessToken($websiteId = null)
+    public function getSecretKey($websiteId = null)
     {
-        return $this->getConfig(self::XML_PATH_LINE_CUSTOMER_CHANNEL_ACCESS_TOKEN, $websiteId);
+        return $this->getConfig(self::XML_PATH_LINE_CUSTOMER_SECRET_KEY, $websiteId);
+    }
+
+    /**
+     * @param $websiteId
+     * @return mixed
+     */
+    public function getWelcomeText($websiteId = null)
+    {
+        return $this->getConfig(self::XML_PATH_LINE_CUSTOMER_WELCOME_TEXT, $websiteId);
     }
 }
