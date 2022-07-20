@@ -56,6 +56,24 @@
                     <label>New Order Status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
                 </field>
+
+                <field id="refund_url" translate="label" type="text" sortOrder="240" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Refund Url</label>
+                </field>
+                <field id="api_password" translate="label" type="text" sortOrder="240" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>API Password</label>
+                </field>
+                <field id="api_signature" translate="label" type="text" sortOrder="240" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>API Signature</label>
+                </field>
+                <field id="api_username" translate="label" type="text" sortOrder="240" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>API Username</label>
+                </field>
+
             </group>
         </section>
     </system>
