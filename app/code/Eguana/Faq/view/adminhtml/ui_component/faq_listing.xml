@@ -22,6 +22,11 @@
                 <class>primary</class>
                 <label translate="true">Add New Faq</label>
             </button>
+            <button name="add-fag-plp-pdp">
+                <url path="*/*/newfaqcatalog"/>
+                <class>primary</class>
+                <label translate="true">Add New Faq Catalog</label>
+            </button>
         </buttons>
         <spinner>faq_columns</spinner>
         <deps>
@@ -165,6 +170,17 @@
                 </editor>
                 <dataType>select</dataType>
                 <label translate="true">Status</label>
+            </settings>
+        </column>
+        <column name="is_use_in_catalog" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Eguana\Faq\Model\Source\YesNo"/>
+                <filter>select</filter>
+                <editor>
+                    <editorType>select</editorType>
+                </editor>
+                <dataType>select</dataType>
+                <label translate="true">Is Use In Catalog</label>
             </settings>
         </column>
         <actionsColumn name="actions" class="Eguana\Faq\Ui\Component\Listing\Column\FaqActions">

@@ -9,6 +9,7 @@
  */
 namespace Eguana\Faq\Model\ResourceModel\Faq\Relation\Store;
 
+use Magento\Framework\DataObject;
 use Magento\Framework\EntityManager\Operation\ExtensionInterface;
 use Eguana\Faq\Api\Data\FaqInterface;
 use Eguana\Faq\Model\ResourceModel\Faq;
@@ -89,11 +90,13 @@ class SaveHandler implements ExtensionInterface
     }
 
     /**
-     * @param $entity
+     * Insert multi line
+     *
+     * @param DataObject $entity
      * @param array $insert
-     * @param $linkField
+     * @param string $linkField
      * @param AdapterInterface $connection
-     * @param $table
+     * @param string $table
      */
     private function diffInsert($entity, array $insert, $linkField, AdapterInterface $connection, $table)
     {
@@ -104,7 +107,7 @@ class SaveHandler implements ExtensionInterface
             $data[] = [
                 $linkField => (int)$entity->getData($linkField),
                 'store_id' => (int)$storeId,
-                'category' => $newCategories[$index],
+                'category' => $newCategories[$index] ?? null,
             ];
             $index++;
         }
