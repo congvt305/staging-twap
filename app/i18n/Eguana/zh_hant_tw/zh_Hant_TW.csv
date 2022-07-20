@@ -16456,3 +16456,21 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "The password can't be the same as the email address. Create a new password and try again.","密碼不能與電子郵件地址相同。 創建一個新密碼，然後重試。",lib,web
 "Enter your destination to get a shipping estimate.","輸入目的地以獲取運輸估算。"
 "Welcome to %store_name. To sign in to our site, use these credentials during checkout or on the <a href=""%customer_url"">My Account</a> page:","歡迎成為%store_name會員！以下為您的會員帳戶／中心<a href=""%customer_url"">我的帳戶</a> :",module,Magento_Customer
+"Please update Amasty Base module. Re-upload it and replace all the files.","請更新 Amasty Base module。 重新上載並更換所有文件。"
+"Add to cart","加到購物車"
+"Free Items","免費的贈品序號"
+"Free gift <strong>%1</strong> was added to your shopping cart","贈品 <strong>%1</strong> 已加入至您的購物車"
+"We apologize, but requested quantity of free gift <strong>%1</strong> is not available at the moment","我們表示歉意,但要求提供免費贈品 <strong>%1</strong> 暫時無法提供"
+"We apologize, but products of type <strong>%1</strong> are not supported","我們道歉,但 <strong>%1</strong> 類型產品不支持"
+"We apologize, but your free gift <strong>%1</strong> is not available at the moment","我們道歉,但您的免費贈品 <strong>%1</strong> 暫時無法使用"
+"Subtotal Before Discounts","折扣前小計"
+"Subtotal After Discounts","折扣後小計"
+No,否
+"Yes, free products only","是的,只限免費商品"
+"Yes, discounted and free products","是的,折扣和免費的產品。"
+"One By One","一個一個地"
+Multiple,多重
+"Could not migrate banners data. Exception message: %1. For details see exception log.","無法遷移橫幅數據。 例外消息: %1. 詳情請參閱例外日誌。"
+sample,樣本
+"Select all","全選"
+"Unselect all","全部取消選擇"
