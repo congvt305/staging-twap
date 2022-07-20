@@ -23,8 +23,12 @@
 
 & when (@media-common = true) {
     .checkout-payment-method {
+        #co-payment-form {
+            hr {
+                display: none;
+            }
+        }
         .payment-methods {
-            border-top: 1px solid @border-color__base;
             padding-top: @indent__base;
             padding-bottom: @indent__base;
         }
