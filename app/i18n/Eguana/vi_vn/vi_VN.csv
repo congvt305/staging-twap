@@ -11087,7 +11087,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Click <a href=""%1"">here</a> to see the review.","Bấm vào <a href=""%1""> đây</a> để xem các bài đánh giá.",module,Magento_Review
 "Product: ""%1"" reviewed by: %2","Sản phẩm: ""%1"" được đánh giá bởi: %2",module,Magento_Review
 "Pending Reviews RSS","Đang chờ giải quyết giá RSS",module,Magento_Review
-"Reviews %1","đánh Giá %1",module,Magento_Review
+"Reviews %1","Đánh giá %1",module,Magento_Review
 "Reviews","Các đánh giá",module,Magento_Review
 "The review has been deleted.","đánh giá đã bị xóa.",module,Magento_Review
 "Something went wrong  deleting this review.","Một cái gì đó đã đi sai xoá nhận xét này.",module,Magento_Review
@@ -11165,7 +11165,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Status","Trạng thái",module,Magento_ReviewStaging
 "Title","Tiêu đề",module,Magento_ReviewStaging
 "Nickname","Tên của bạn",module,Magento_ReviewStaging
-"Review","Đánh giá",module,Magento_ReviewStaging
+"Review","Đánh giá chi tiết",module,Magento_ReviewStaging
 "Visibility","Hiển thị",module,Magento_ReviewStaging
 "Type","Loại",module,Magento_ReviewStaging
 "Product","Sản phẩm",module,Magento_ReviewStaging
@@ -16214,7 +16214,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Transaction has been canceled","Transaction has been canceled",module,Magento_Worldpay
 "Transaction has been declined","Giao dịch đã bị từ chối",module,Magento_Worldpay
 "The response type is incorrect. Verify the type and try again.","The response type is incorrect. Verify the type and try again.",module,Magento_Worldpay
-"Summary","Điểm đánh giá (từ 1 đến 5)",theme,frontend/Magento/blank
+"Summary","Đánh giá chung",theme,frontend/Magento/blank
 "Account Dashboard","Trang tổng quan tài khoản",theme,frontend/Magento/blank
 "Account Information","Thông tin tài khoản",theme,frontend/Magento/blank
 "Address Book","Sổ địa chỉ",theme,frontend/Magento/blank
@@ -16439,3 +16439,18 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Expiry dater","Ngày hết hạn"
 "We apologize, but your free gift <strong>%1</strong> is not available at the moment","Xin lỗi, sản phẩm <strong>%1</strong> đã hết hàng!"
 "The payment is REFUSED.","Vui lòng thử lại sau !"
+"Please login into your account to continue shopping","Vui lòng đăng nhập để tiếp tục đổi thưởng"
+"Point service is not available now, please try later. Sorry for the inconvenient","Lỗi hệ thống, vui lòng thử lại sau"
+"Your point balance is insufficient.","Điểm tích luỹ thành viên của bạn không đủ để đổi quà"
+"of customers recommend this product","Khách hàng khuyên dùng"
+"reviews","Nhận xét"
+"Top customer reviews","Nhận xét từ khách hàng"
+"I recommend this product","Khách hàng khuyên dùng"
+"people found this helpful","người thấy hữu ích"
+"Was this review helpful?","Bạn thấy nhận xét có hữu ích không ?"
+" star"," sao"
+" stars"," sao"
+"Add your photo","Chèn hình ảnh"
+"Share your thoughts with other customers","Chia sẻ đánh giá của bạn"
+"Write a review","Viết đánh giá"
+"No reviews","Không có nhận xét"
