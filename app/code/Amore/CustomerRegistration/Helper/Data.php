@@ -43,6 +43,8 @@ class Data extends AbstractHelper
         = 'customerregistraion/general/call_policy_cms_block';
     const TERMS_AND_SERVICES_POLICY_CMS_BLOCK
         = 'customerregistraion/general/terms_and_services_policy_cms_block';
+    const PRIVACY_POLICY_CMS_BLOCK
+        = 'customerregistraion/general/privacy_policy_cms_block';
     const SMS_VERIFICATION_ENABLE
         = 'customerregistraion/general/sms_verification_enable';
     const POS_BASE_URL
@@ -179,6 +181,19 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::TERMS_AND_SERVICES_POLICY_CMS_BLOCK,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
+     * Get Terms and Services policy CMS block id
+     *
+     * @return mixed
+     */
+    public function getPrivacyPolicyCMSBlockId()
+    {
+        return $this->scopeConfig->getValue(
+            self::PRIVACY_POLICY_CMS_BLOCK,
             ScopeInterface::SCOPE_WEBSITE
         );
     }

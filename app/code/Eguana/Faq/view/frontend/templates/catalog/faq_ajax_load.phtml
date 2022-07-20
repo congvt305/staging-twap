@@ -1,0 +1,29 @@
+<?php
+/**
+ * @var \Eguana\Faq\Block\Faq $block
+ */
+$faqList = $block->getData('faq_list');
+?>
+
+<?php foreach ($faqList as $key => $faq) :?>
+    <?php $html = ''?>
+    <?php if ($key % 2 != 0) {
+        $class = 'right';
+        $html = '<div class="clearfix"></div>';
+    } else {
+        $class = 'left';
+    }?>
+    <div class="list <?=$class?>">
+        <div data-role="collapsible">
+            <div class="title" data-role="title">
+                <span><?= $block->escapeHtml($faq->getTitle()) ?></span>
+            </div>
+        </div>
+        <div class="content" data-role="content">
+            <?= /* @noEscape */
+            $block->descriptionFilter($faq->getDescription()) ?>
+        </div>
+    </div>
+    <?=$html?>
+<?php endforeach;?>
+<div class="clearfix"></div>
