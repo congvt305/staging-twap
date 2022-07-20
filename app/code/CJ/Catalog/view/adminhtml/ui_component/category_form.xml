@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="search_engine_optimization">
+        <field name="product_category_description">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="required" xsi:type="boolean">false</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">339</item>
+                    <item name="dataType" xsi:type="string">string</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="label" translate="true" xsi:type="string">Product Category Description</item>
+                    <item name="rows" xsi:type ="number">10</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

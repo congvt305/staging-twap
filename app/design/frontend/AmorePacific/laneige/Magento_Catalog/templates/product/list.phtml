@@ -19,7 +19,8 @@ use Magento\Framework\App\Action\Action;
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
-
+/** @var CJ\Catalog\Helper\Data $helper */
+$helper = $this->helper(\CJ\Catalog\Helper\Data::class);
 $currentCategory = $block->getLayer()->getCurrentCategory();
 $categoryName = $currentCategory->getName();
 $getDefault = $block->getData('view_model');
@@ -45,12 +46,10 @@ $apProductPosition = "";
     if ($block->getMode() == 'grid') {
         $viewMode = 'grid';
         $imageDisplayArea = 'category_page_grid';
-        $showDescription = false;
         $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
     } else {
         $viewMode = 'list';
         $imageDisplayArea = 'category_page_list';
-        $showDescription = true;
         $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
     }
     /**
@@ -138,7 +137,14 @@ $apProductPosition = "";
                                 <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a>
                         </strong>
-
+                        <div class="product description product-item-description">
+                            <?php if ($rawDescription = $_product->getProductExtraDescription()): ?>
+                                <?php $chunks = $helper->mb_chunk_split($rawDescription); ?>
+                                <?php foreach ($chunks as $chunk): ?>
+                                    <p><?= $chunk ?></p>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
                         <?= /* @noEscape */ $block->getProductPrice($_product) ?>
                         <?php if ($_product->isAvailable()) :?>
                             <?= $block->getProductDetailsHtml($_product) ?>
@@ -177,14 +183,6 @@ $apProductPosition = "";
                                 </div>
                                 <?php endif;?>
                             </div>
-                            <?php if ($showDescription) :?>
-                                <div class="product description product-item-description">
-                                    <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
-                                    <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
-                                       title="<?= /* @noEscape */ $_productNameStripped ?>"
-                                       class="action more"><?= $block->escapeHtml(__('Learn More')) ?></a>
-                                </div>
-                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

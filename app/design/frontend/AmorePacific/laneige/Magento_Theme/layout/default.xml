@@ -24,5 +24,10 @@
         </referenceContainer>
         <container name="sidebar.additional" label="Sidebar Additional" htmlTag="div"/>
         <referenceContainer name="sidebar.additional" remove="true"/>
+        <referenceBlock name="page.main.title">
+            <arguments>
+                <argument name="category_desc_view_model" xsi:type="object">CJ\Catalog\ViewModel\CategoryDescription</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>

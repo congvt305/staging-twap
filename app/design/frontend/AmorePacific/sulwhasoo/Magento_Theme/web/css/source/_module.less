@@ -562,6 +562,12 @@
             }
         }
     }
+
+    .page-title-wrapper .page-title {
+        &+p {
+            margin-bottom: @indent__s;
+        }
+    }
 }
 
 //
@@ -580,7 +586,9 @@
 
     .page-title-wrapper .page-title {
         .lib-font-size(36);
-        margin-bottom: @indent__l;
+        &+p {
+            margin-bottom: @indent__l;
+        }
     }
 
     .header {
