@@ -1,0 +1,18 @@
+& when (@media-common = true) {
+   #discount-coupon-form {
+       .label {
+           display: none;
+       }
+
+       .coupon .actions-toolbar {
+           display: flex;
+           justify-content: space-between;
+       }
+   }
+}
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__xl) {
+
+    .sidebar-additional {
+        padding-left: 2.5%;
+    }
+}
