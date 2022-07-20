@@ -16454,3 +16454,4 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Share your thoughts with other customers","Chia sẻ đánh giá của bạn"
 "Write a review","Viết đánh giá"
 "No reviews","Không có nhận xét"
+"%1 people found this helpful", "%1 người thấy hữu ích"
