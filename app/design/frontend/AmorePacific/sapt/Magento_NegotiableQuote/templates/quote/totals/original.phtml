@@ -1,0 +1,46 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Magento\NegotiableQuote\Block\Quote\Totals\Original */ ?>
+<?php $total = $block->getTotal() ?>
+<tr class="<?= $block->escapeHtml($total->getCode()) ?>_table">
+    <td <?= $block->escapeHtml($block->getValueProperties()) ?>
+        data-th="<?= $block->escapeHtml($total->getLabel()) ?>" colspan="2">
+        <table class="data-table toggle-action toggle-table"
+               data-mage-init='{"Magento_NegotiableQuote/js/quote/actions/toggle-show":{
+               "toggleBlockId": "toggle-part",
+               "delay": 300,
+               "toggleClass": {
+                "element" : "[data-action=toggle-arrow]",
+                "class" : "active"
+               }
+               }}'>
+            <tbody>
+                <?php foreach ($total->getSubtotals() as $key => $option): ?>
+                    <tr class="<?= /* @noEscape */ $block->escapeHtml($key . ' ' . $option['class']) ?>">
+                        <th scope="row" class="mark">
+                            <?= $block->escapeHtml($option['label']) ?>
+                        </th>
+                        <td data-th="<?= $block->escapeHtml($option['label']) ?>" class="amount">
+                            <?= /* @noEscape */ $block->displayPrices($option['value'], $total->getCurrency()) ?>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
+                <tr class="<?= $block->escapeHtml($total->getCode()) ?>">
+                    <th scope="row" class="mark">
+                        <span data-action="toggle-arrow" class="toggle"><?= $block->escapeHtml($total->getLabel()) ?></span>
+                    </th>
+                    <td data-th="<?= $block->escapeHtml($total->getLabel()) ?>" class="amount">
+                        <?= /* @noEscape */ $block->displayPrices($total->getValue(), $total->getCurrency()) ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>

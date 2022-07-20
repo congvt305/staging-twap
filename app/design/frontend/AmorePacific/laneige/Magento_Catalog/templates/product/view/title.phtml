@@ -15,6 +15,10 @@ if (trim($block->getPageHeading())) {
         . '>'
         . $block->escapeHtml($block->getPageHeading())
         . '</span>';
+    // Remove microdata
+    if (strpos('itemprop="name"', $titleHtml) !== 1) {
+        $titleHtml = str_replace('itemprop="name"', '', $titleHtml);
+    }
 }
 ?>
 <?php if ($titleHtml) : ?>

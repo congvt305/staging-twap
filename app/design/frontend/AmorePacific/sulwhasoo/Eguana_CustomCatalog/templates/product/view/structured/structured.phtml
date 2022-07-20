@@ -9,9 +9,9 @@
 <?php
 $isSalable = $block->getProduct()->getIsSalable();
 if ($isSalable) {
-    $availability = 'InStock';
+    $availability = 'https://schema.org/InStock';
 } else {
-    $availability = 'OutOfStock';
+    $availability = 'https://schema.org/OutOfStock';
 }
 if ($block->getProduct()->getTypeId() == 'bundle') {
     $price = $block->getProduct()->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue();
@@ -20,11 +20,12 @@ if ($block->getProduct()->getTypeId() == 'bundle') {
 }
 ?>
 <?php
-$sortDescription = $this->helper(Magento\Catalog\Helper\Output::class)->productAttribute(
+$shortDescription = $this->helper(Magento\Catalog\Helper\Output::class)->productAttribute(
     $block->getProduct(),
     $block->getProduct()->getShortDescription(),
     'short_description'
 );
+$shortDescription = trim(preg_replace('/\s\s+/',' ', $shortDescription));
 ?>
 <script type="application/ld+json">
     {
@@ -33,12 +34,10 @@ $sortDescription = $this->helper(Magento\Catalog\Helper\Output::class)->productA
         "name": "<?= /* @noEscape */ $block->escapeHtml($block->getProduct()->getName()) ?>",
         "productID": "<?= /* @noEscape */ $block->escapeHtml($block->getProduct()->getSku()) ?>",
         "image": "<?= $block->escapeUrl($block->getImage($block->getProduct(), 'product_base_image')->getImageUrl()) ?>",
-        "description": "<?= /* @noEscape */ $block->getProduct()->getShortDescription() ? $sortDescription : $block->escapeHtml($block->getProduct()->getName()) ?>",
-        "brand": {
-            "@type": "Thing",
-            "name": "Sulwhasoo"
-        },
+        "description": "<?= /* @noEscape */ $shortDescription ? $block->stripTags($shortDescription) : $block->escapeHtml($block->getProduct()->getName()) ?>",
+        "brand": "Sulwhasoo",
         "offers": {
+            "@type": "Offer",
             "price": "<?= /* @noEscape */ $block->escapeHtml(round($price)) ?>",
             "priceCurrency": "TWD",
             "availability": "<?= $availability ?>"

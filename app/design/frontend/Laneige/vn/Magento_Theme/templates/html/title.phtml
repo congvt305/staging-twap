@@ -1,0 +1,41 @@
+<?php
+/**
+ * Copyright © CJONS
+ */
+
+/**
+ * @var $block \Magento\Theme\Block\Html\Title
+ */
+$cssClass = $block->getCssClass() ? ' ' . $block->getCssClass() : '';
+$titleHtml = '';
+if (trim($block->getPageHeading())) {
+    $titleHtml = '<span class="base" data-ui-id="page-title-wrapper" '
+        . $block->getAddBaseAttribute()
+        . '>'
+        . $block->escapeHtml($block->getPageHeading())
+        . '</span>';
+    // Remove microdata
+    if (strpos('itemprop="name"', $titleHtml) !== 1) {
+        $titleHtml = str_replace('itemprop="name"', '', $titleHtml);
+    }
+}
+/** @var \CJ\Catalog\ViewModel\CategoryDescription $viewModel */
+$viewModel = $block->getCategoryDescViewModel();
+/** @var \CJ\PageBuilder\Helper\Data $helper */
+$helper = $this->helper(\CJ\PageBuilder\Helper\Data::class);
+?>
+<?php if ($titleHtml) : ?>
+<div class="page-title-wrapper<?= $block->escapeHtmlAttr($cssClass) ?>">
+    <h1 class="page-title"
+        <?php if ($block->getId()) : ?> id="<?= $block->escapeHtmlAttr($block->getId()) ?>" <?php endif; ?>
+        <?php if ($block->getAddBaseAttributeAria()) : ?>
+            aria-labelledby="<?= $block->escapeHtmlAttr($block->getAddBaseAttributeAria()) ?>"
+        <?php endif; ?>>
+        <?= /* @noEscape */ $titleHtml ?>
+    </h1>
+    <?php if ($viewModel && $categoryDescription = $viewModel->getCatalogCategoryDescription()): ?>
+        <p><?= $categoryDescription ?></p>
+    <?php endif; ?>
+    <?= $block->getChildHtml() ?>
+</div>
+<?php endif; ?>

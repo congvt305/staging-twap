@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="CJ_CustomCookie">
+        <sequence>
+            <module name="Magento_Cookie"/>
+            <module name="Magento_GoogleAnalytics"/>
+            <module name="Magento_DataServices"/>
+            <module name="Magento_GoogleTagManager"/>
+        </sequence>
+    </module>
+</config>
+

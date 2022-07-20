@@ -64,8 +64,8 @@ Events,Sự kiện
 "Code","Mã xác minh"
 "Code has been verified please move to the next step","Mã đã được xác nhận, xin hãy chuyển sang bước tiếp theo"
 "I'm LANEIGE","《I'm LANEIGE》"
-"Privacy Policy","Chính sách riêng tư"
-"UGCT&C","UGCT&C"
+"Privacy Policy","Chính sách bảo mật"
+"UGCT&C","Điều khoản sử dụng"
 "Terms&Conditions","Điều khoản & điều kiện"
 "All Ingredients / Precautions","Thành phần/Lưu ý khi sử dụng"
 "Brand","Hiểu về Laneige"
@@ -162,3 +162,6 @@ Hướng dẫn chi nhánh,Danh Sách Cửa Hàng
 "Points History Does not Exist.","Lịch sử nhận điểm không tồn tại"
 "Card number","Số thẻ"
 "Expiry date","Ngày hết hạn"
+"Apply Discount Code","Mã giảm giá"
+"You need to register for Laneige membership before making a purchase","Bạn cần đăng ký thành viên Laneige trước khi mua hàng"
+"Payment Review","Chờ thanh toán",module,Magento_Sales

@@ -47,6 +47,55 @@
     //  Category view
     //  ---------------------------------------------
 
+    .catalog-category-view {
+        &.page-layout-1column {
+            &[class*="categorypath-homme"], &[class*="categorypath-make-up"], &[class*="categorypath-skincare"] {
+                .column.main {
+                    display: flex;
+                    flex-flow: column;
+                }
+
+                .message.info.empty {
+                    order: 0;
+                }
+
+                .page-title-wrapper {
+                    order: 1;
+                    margin-top: 30px;
+
+                    .page-title {
+                        float: left;
+                        font-size: 32px;
+                        &+p {
+                            float: left;
+                            text-align: left;
+                            width: 100%;
+                        }
+                    }
+                }
+
+                .products-grid {
+                    order: 2;
+                }
+
+                .toolbar-products {
+                    order: 3;
+                }
+
+                .faqs-page {
+                    order: 4;
+                    width: 100%;
+                }
+                .product-item-description {
+                    font-style: italic;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+
     .prices-tier {
         .price-container {
             .price-including-tax {
@@ -866,63 +915,7 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .product-options-wrapper {
         .options-toggle {
-            .lib-icon-font(
-                    @icon-expand,
-                @_icon-font: @icon-font,
-                @_icon-font-size: 20px,
-                @_icon-font-line-height: 26px,
-                @_icon-font-color: @primary__color__lighter,
-                @_icon-font-color-hover: @primary__color__lighter,
-                @_icon-font-color-active: @primary__color__lighter,
-                @_icon-font-margin: 0,
-                @_icon-font-vertical-align: middle,
-                @_icon-font-position: after,
-                @_icon-font-display: block
-            );
-            .lib-font-size(16);
-            color: @primary__color__lighter;
-            position: absolute;
-            right: @layout__width-xs-indent;
-
-            &:after {
-                position: relative;
-                top: -2px;
-            }
-
-            &.active {
-                .lib-icon-font-symbol(
-                    @_icon-font-content: @icon-collapse,
-                    @_icon-font-position: after
-                );
-
-                & + .fieldset {
-                    .swatch-attribute-options {
-                        display: block;
-                        height: auto;
-                        padding-left: 0;
-
-                        > div {
-                            box-sizing: border-box;
-                            display: inline-block;
-                            margin: 0 auto;
-                            padding: 0 2px;
-                            text-align: center;
-                            width: 100%/4;
-                            vertical-align: top;
-
-                            .swatch-option {
-                                display: inline-block;
-                                float: none;
-                                margin: 0 auto;
-                            }
-
-                            .label {
-                                display: block;
-                            }
-                        }
-                    }
-                }
-            }
+            display: none;
         }
     }
 
@@ -1427,12 +1420,7 @@
                 clear: right;
                 float: right;
             }
-
-            .visual-aids, .visual-aids-header-container {
-                background: #F9F9F9;
-            }
             .visual-aids {
-                width: 70%;
                 padding-top: 10px;
                 padding-bottom: 10px;
                 margin-bottom: 10px;
@@ -1442,7 +1430,7 @@
                 align-items: flex-end;
             }
             .visual-aids-header {
-                width: 80%;
+                width: 90%;
             }
             .visual-aids-header-container > div > span:after {
                 -webkit-font-smoothing: antialiased;
@@ -1456,7 +1444,7 @@
                 float: right;
             }
             .visual-aids-header-container > svg {
-                width: 20%;
+                width: 10%;
             }
 
             .visual-aids-content {

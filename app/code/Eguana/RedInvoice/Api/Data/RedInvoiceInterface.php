@@ -30,6 +30,8 @@ interface RedInvoiceInterface
     const ROAD_NAME = 'road_name';
     const CREATION_TIME = 'creation_time';
     const UPDATE_TIME = 'update_time';
+    const EMAIL = 'email';
+    const WARD = 'ward';
     /**#@-*/
 
     /**
@@ -137,6 +139,36 @@ interface RedInvoiceInterface
      * @return RedInvoiceInterface
      */
     public function setCity($city);
+
+    /**
+     * Get Email
+     *
+     * @return string|null
+     */
+    public function getEmail();
+
+    /**
+     * Set Eamil
+     *
+     * @param string $email
+     * @return RedInvoiceInterface
+     */
+    public function setEmail($email);
+
+    /**
+     * Get Ward
+     *
+     * @return string|null
+     */
+    public function getWard();
+
+    /**
+     * Set Ward
+     *
+     * @param string $ward
+     * @return RedInvoiceInterface
+     */
+    public function setWard($ward);
 
     /**
      * Get Road Name

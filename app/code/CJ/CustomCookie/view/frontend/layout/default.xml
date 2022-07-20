@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock class="CJ\CustomCookie\Block\Html\Notices" name="cookie_notices" template="CJ_CustomCookie::html/notices.phtml" />
+        <referenceBlock name="google_analyticsuniversal">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">CJ_CustomCookie::gtm/ga.phtml</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="dataservices_base">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">CJ_CustomCookie::ds/ds.phtml</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

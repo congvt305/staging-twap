@@ -52,6 +52,7 @@ define([
             },
             defaultCountry: window.checkoutConfig.defaultCountryId,
             rates: shippingService.getShippingRates(),
+            shippingMethod : null,
         },
 
         /**
@@ -99,17 +100,19 @@ define([
 
         preselectLocation: function () {
             var selectedLocation = pickupLocationsService.selectedLocation();
-
-            if (selectedLocation) {
-                pickupLocationsService.selectForShipping(selectedLocation);
+            if (this.isCvsPickupSelected()) {
+                if (selectedLocation) {
+                    pickupLocationsService.selectForShipping(selectedLocation);
+                }
+                pickupLocationsService.getLocation()
+                    .then(function (location) {
+                        if (!location.CVSAddress) {
+                            return;
+                        }
+                        pickupLocationsService.selectForShipping(location);
+                    });
             }
-            pickupLocationsService.getLocation()
-                .then(function (location) {
-                    if (!location.CVSAddress) {
-                        return;
-                    }
-                    pickupLocationsService.selectForShipping(location);
-                });
+
         },
 
 
@@ -168,7 +171,16 @@ define([
          * @param {Object} shippingMethod
          */
         selectShippingMethod: function (shippingMethod) {
+            this.shippingMethod = quote.shippingMethod();
             selectShippingMethodAction(shippingMethod);
+            //reset data when change shipping method
+            if (typeof shippingMethod === 'object' &&
+                typeof this.shippingMethod === 'object' &&
+                this.shippingMethod['carrier_code'] !== shippingMethod['carrier_code']) {
+                quote.shippingAddress().firstname = null;
+                quote.shippingAddress().lastname = null;
+                quote.shippingAddress().street = null;
+            }
             checkoutData.setSelectedShippingAddress(
                 quote.shippingAddress().getKey()
             );

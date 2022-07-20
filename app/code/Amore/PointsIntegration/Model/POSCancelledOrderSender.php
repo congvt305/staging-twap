@@ -8,6 +8,7 @@ use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Model\Order;
+use CJ\CouponCustomer\Model\PosCustomerGradeUpdater;
 
 class POSCancelledOrderSender
 {
@@ -33,29 +34,40 @@ class POSCancelledOrderSender
     private $pointsIntegrationLogger;
 
     /**
+     * @var PosCustomerGradeUpdater
+     */
+    private $posCustomerGradeUpdater;
+
+
+    /**
      * PosOrderSender constructor.
+     *
      * @param PosOrderData $posOrderData
-     * @param Connection\Request $request
+     * @param Request $request
      * @param ManagerInterface $eventManager
      * @param Json $json
      * @param Logger $pointsIntegrationLogger
+     * @param UpdatePOSCustomerGradeHelper $updatePOSCustomerGradeHelper
      */
     public function __construct(
-        PosOrderData     $posOrderData,
-        Request          $request,
+        PosOrderData $posOrderData,
+        Request $request,
         ManagerInterface $eventManager,
-        Json             $json,
-        Logger           $pointsIntegrationLogger
-    )
-    {
+        Json $json,
+        Logger $pointsIntegrationLogger,
+        PosCustomerGradeUpdater $posCustomerGradeUpdater
+    ) {
         $this->posOrderData = $posOrderData;
         $this->request = $request;
         $this->eventManager = $eventManager;
         $this->json = $json;
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
+        $this->posCustomerGradeUpdater = $posCustomerGradeUpdater;
     }
 
     /**
+     * Send order to POS and update flag
+     *
      * @param Order $order
      */
     public function send(Order $order)
@@ -70,6 +82,10 @@ class POSCancelledOrderSender
             $status = $this->request->responseCheck($response, $websiteId);
             if ($status) {
                 $this->posOrderData->updatePosCancelledOrderSendFlag($order);
+                // update Pos customer grade
+                if ($order->getCustomerId() !== null) {
+                    $this->posCustomerGradeUpdater->updatePOSCustomerGrade($order->getCustomerId(), $websiteId);
+                }
             }
         } catch (\Exception $exception) {
             $message = 'POS Integration Fail: ' . $order->getIncrementId();

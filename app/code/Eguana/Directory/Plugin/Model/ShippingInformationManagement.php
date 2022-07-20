@@ -2,6 +2,7 @@
 namespace Eguana\Directory\Plugin\Model;
 
 use Magento\Checkout\Api\Data\ShippingInformationInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\StateException;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -40,9 +41,12 @@ class ShippingInformationManagement
         \Magento\Checkout\Model\ShippingInformationManagement $subject, $cartId,ShippingInformationInterface $addressInformation
     ) {
         $storeCode = $this->storeManager->getStore()->getCode();
+        $address = $addressInformation->getShippingAddress();
         if ($storeCode === $this->storeCode) {
-            $address = $addressInformation->getShippingAddress();
             $this->validateAddress($address);
+        }
+        if (!$address->getLastname() || !$address->getFirstname() || !$address->getStreet() || !$address->getTelephone()) {
+            throw new StateException(__('The shipping address is missing. Please edit the address and try again.'));
         }
     }
 

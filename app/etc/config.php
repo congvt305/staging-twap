@@ -190,6 +190,11 @@ return [
                     'code' => 'en_US'
                 ]
             ],
+            'advanced' => [
+                'modules_disable_output' => [
+                    'Magento_Banner' => '1'
+                ]
+            ],
             'dev' => [
                 'static' => [
                     'sign' => '1'
@@ -198,11 +203,11 @@ return [
                     'type' => 'server_side_compilation'
                 ],
                 'template' => [
-                    'minify_html' => '0'
+                    'minify_html' => '1'
                 ],
                 'js' => [
                     'merge_files' => '0',
-                    'minify_files' => '0',
+                    'minify_files' => '1',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/',
                         'cardinal_commerce' => '/v1/songbird',
@@ -215,6 +220,7 @@ return [
                     'enable_js_bundling' => '0'
                 ],
                 'css' => [
+                    'merge_css_files' => '1',
                     'minify_files' => '1',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/'
@@ -696,7 +702,7 @@ return [
         'Magento_GoogleTagManager' => 1,
         'Magento_ThemeGraphQl' => 1,
         'Magento_Translation' => 1,
-        'Magento_TwoFactorAuth' => 0,
+        'Magento_TwoFactorAuth' => 1,
         'Magento_ElasticsearchCatalogPermissions' => 1,
         'Magento_Ups' => 1,
         'Magento_CatalogUrlRewriteDataExporter' => 1,
@@ -726,16 +732,22 @@ return [
         'Magento_WishlistGiftCard' => 1,
         'Magento_WishlistGiftCardGraphQl' => 1,
         'Magento_GiftCardGraphQl' => 1,
-        'Adyen_Payment' => 1,
+        'Adyen_Payment' => 0,
         'Amasty_AdvancedReview' => 1,
         'Amasty_BannersLite' => 1,
         'Amasty_Base' => 1,
         'Amasty_Conditions' => 1,
+        'Amasty_Coupons' => 1,
         'Amasty_CronScheduleList' => 1,
         'Dotdigitalgroup_Email' => 1,
-        'Amasty_InvisibleCaptcha' => 1,
+        'Amasty_ImageOptimizer' => 1,
+        'Amasty_ImageOptimizerUi' => 1,
+        'Amasty_InvisibleCaptcha' => 0,
+        'Amasty_LazyLoad' => 1,
+        'Amasty_LazyLoadUi' => 1,
+        'Amasty_PageSpeedOptimizer' => 1,
+        'Amasty_PageSpeedTools' => 1,
         'Amasty_Promo' => 1,
-        'Amasty_ReviewPageBuilder' => 1,
         'Amasty_ReviewsImportExport' => 1,
         'Amasty_Rgrid' => 1,
         'Amasty_SalesRuleWizard' => 1,
@@ -752,20 +764,31 @@ return [
         'Amore_Sales' => 1,
         'Amore_SalesRule' => 1,
         'Ecpay_Ecpaypayment' => 1,
+        'Atome_MagentoPayment' => 1,
         'CJ_Base' => 1,
+        'CJ_Catalog' => 1,
         'CJ_CatalogFaq' => 1,
         'CJ_ChangeOrderStatus' => 1,
+        'CJ_Checkout' => 1,
+        'CJ_Cms' => 1,
         'CJ_CouponCustomer' => 1,
+        'CJ_Coupons' => 1,
+        'CJ_CustomCookie' => 1,
         'CJ_DataExport' => 1,
+        'CJ_EventManager' => 1,
+        'CJ_GAEnhanced' => 1,
         'CJ_HoverImage' => 1,
+        'CJ_ImportExport' => 1,
         'CJ_InventoryShipping' => 1,
         'CJ_LineShopping' => 1,
         'CJ_Middleware' => 1,
+        'CJ_NinjaVanShipping' => 1,
         'CJ_PageBuilder' => 1,
+        'Payoo_PayNow' => 1,
         'CJ_PointRedemption' => 1,
-        'CJ_HoverImage' => 1,
+        'CJ_PromotionManager' => 1,
         'CJ_ReviewsImportExport' => 1,
-        'CJ_CatelogFaq' => 1,
+        'CJ_Seo' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
         'Dotdigitalgroup_Enterprise' => 1,
@@ -773,7 +796,6 @@ return [
         'Amasty_Feed' => 1,
         'Dotdigitalgroup_Sms' => 1,
         'Eguana_GWLogistics' => 1,
-        'Eghl_PaymentMethod' => 1,
         'Amore_GcrmSegment' => 1,
         'Eguana_BizConnect' => 1,
         'Eguana_BlackCat' => 1,
@@ -822,6 +844,7 @@ return [
         'Eguana_CustomCheckout' => 1,
         'Eguana_VideoBoard' => 1,
         'Fastly_Cdn' => 1,
+        'Ipay88_Payment' => 1,
         'Klarna_Core' => 0,
         'Klarna_Ordermanagement' => 0,
         'Klarna_Kp' => 0,
@@ -830,9 +853,8 @@ return [
         'MagePal_Core' => 1,
         'MagePal_Reindex' => 1,
         'PayPal_Braintree' => 0,
-        'CJ_Payoo' => 1,
         'PayPal_BraintreeGraphQl' => 0,
-        'Payoo_PayNow' => 1,
+        'CJ_Payoo' => 1,
         'Eguana_Pixlee' => 1,
         'Temando_ShippingRemover' => 1,
         'Vertex_Tax' => 0,
@@ -841,7 +863,7 @@ return [
         'Vertex_RequestLogging' => 0,
         'Vertex_AddressValidation' => 0,
         'Vertex_TaxStaging' => 1,
-        'Yotpo_Yotpo' => 0
+        'Yotpo_Yotpo' => 1
     ],
     'admin_user' => [
         'locale' => [

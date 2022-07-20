@@ -15,10 +15,12 @@
                 comment="Order ID"/>
         <column xsi:type="smallint" name="is_apply" padding="5" default="0" nullable="false" comment="Is Apply RedInvoice 0 for no and 1 for yes"/>
         <column xsi:type="varchar" name="company_name" nullable="true" comment="Company Name"/>
+        <column xsi:type="varchar" name="email" nullable="true" comment="Email"/>
         <column xsi:type="varchar" name="tax_code" nullable="true" comment="Tax Code"/>
         <column xsi:type="varchar" name="state" nullable="true" comment="State"/>
         <column xsi:type="varchar" name="country" disabled="true" nullable="true" comment="Country"/>
         <column xsi:type="varchar" name="city" nullable="true" comment="City"/>
+        <column xsi:type="varchar" name="ward" nullable="true" comment="Ward"/>
         <column xsi:type="varchar" name="road_name" nullable="true" comment="Road Name"/>
         <column xsi:type="timestamp" name="creation_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Creation Time"/>

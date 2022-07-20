@@ -1,0 +1,237 @@
+//
+//  Listing page
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .video-board-list {
+        .lib-list-reset-styles();
+        font-size: 0;
+
+        .video-board-item {
+            vertical-align: top;
+
+            .video-link {
+                border: 1px solid @border-color__base;
+                display: block;
+                overflow: hidden;
+                position: relative;
+
+                &:after {
+                    content: '';
+                    background: transparent url('../Eguana_VideoBoard/images/play.svg') no-repeat;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 34px;
+                    height: 34px;
+                    margin-top: -17px;
+                    margin-left: -17px;
+                }
+
+                img {
+                    -webkit-transition: all .5s;
+                    -moz-transition: all .5s;
+                    -o-transition: all .5s;
+                    transition: all .5s;
+                }
+            }
+
+            &:hover,
+            &:focus {
+                img {
+                    -ms-transform: scale(1.15);
+                    -moz-transform: scale(1.15);
+                    -webkit-transform: scale(1.15);
+                    -o-transform: scale(1.15);
+                    transform: scale(1.15);
+                }
+            }
+
+            .video-heading {
+                padding: 0 @layout__width-xs-indent;
+                margin-top: 15px;
+            }
+
+            .video-title {
+                color: @primary__color__dark;
+                font-size: 16px;
+            }
+        }
+    }
+
+    .video-created-date {
+        font-size: @font-size__base;
+        color: #787878;
+        margin-top: @indent__s;
+    }
+
+    .more-item-button {
+        text-align: center;
+        font-weight: @font-weight__bold;
+        padding-top: @indent__l;
+
+        .primary {
+            .lib-button-icon(
+                @icon-down,
+                @_icon-font-size: 16px,
+                @_icon-font-position: before,
+                @_icon-font-text-hide: true
+            );
+            border-radius: 50%;
+            padding: 8px 11px;
+            margin-bottom: 7px;
+            line-height: 1;
+        }
+    }
+
+    .back-button {
+        text-align: center;
+        font-weight: @font-weight__bold;
+        padding-top: @indent__l;
+
+        .primary {
+            .lib-button-icon(
+                @icon-list,
+                @_icon-font-position: before,
+                @_icon-font-text-hide: true
+            );
+            border-radius: 50%;
+            padding: 10px;
+            margin-bottom: 7px;
+        }
+    }
+
+    .videoboard-index-index {
+        .page-title-wrapper {
+            display: none;
+        }
+    }
+
+    //
+    //  Detail page
+    //  _____________________________________________
+
+    .block-video-board-details {
+        .video-created-date {
+            margin-top: 15px;
+            margin-bottom: @indent__base;
+            text-align: center;
+        }
+
+        iframe {
+            margin-bottom: @indent__l*2;
+        }
+
+        figure[data-content-type='image'] {
+            img {
+                display: block;
+            }
+        }
+    }
+
+    .videoboard-detail-index {
+        .page-title-wrapper {
+            text-align: center;
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .video-board-list {
+        margin-left: -@layout__width-xs-indent;
+        margin-right: -@layout__width-xs-indent;
+
+        .video-board-item {
+            margin-bottom: @indent__l;
+
+            .video-link {
+                border-left: none;
+                border-right: none;
+            }
+        }
+    }
+
+    .block-video-board-details {
+        .video-created-date {
+            margin-top: 0;
+            margin-bottom: @indent__m;
+        }
+
+        [data-content-type='row'][data-appearance='contained'] {
+            .pagebuilder-column-group {
+                .pagebuilder-column {
+                    &:nth-child(odd) {
+                        padding-bottom: 15px !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .videoboard-detail-index {
+        .page-title {
+            margin-bottom: @indent__xs;
+            margin-top: @indent__s;
+        }
+    }
+
+    .video-iframe {
+        margin-left: -@layout__width-xs-indent;
+        margin-right: -@layout__width-xs-indent;
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .video-board-list {
+        .video-board-item {
+            display: inline-block;
+            margin-left: @indent__base;
+            margin-bottom: 50px;
+            width: calc(~'(100% - @{indent__base}*2) / 3');
+
+            &:nth-child(3n+1) {
+                margin-left: 0;
+            }
+        }
+    }
+
+    .block-video-board-details {
+        iframe {
+            height: 632px;
+            margin-bottom: @indent__xl*2;
+        }
+
+        [data-content-type='row'][data-appearance='contained'] {
+            max-width: 780px;
+            margin-bottom: 30px !important;
+
+            .pagebuilder-column-group {
+                .pagebuilder-column {
+                    &:nth-child(odd) {
+                        padding-right: @indent__s !important;
+                    }
+
+                    &:nth-child(even) {
+                        padding-left: @indent__s !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .videoboard-detail-index {
+        .page-title-wrapper {
+            .page-title {
+                margin-bottom: 0;
+            }
+        }
+    }
+}

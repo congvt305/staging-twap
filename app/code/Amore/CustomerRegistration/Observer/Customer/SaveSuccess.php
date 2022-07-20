@@ -31,6 +31,8 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Webapi\Rest\Request;
+use Amore\CustomerRegistration\Plugin\CreateCustomer;
 
 /**
  * Call POS API on customer information change
@@ -140,7 +142,13 @@ class SaveSuccess implements ObserverInterface
      */
     private $state;
 
+    /**
+     * @var Request
+     */
+    private $requestApi;
+
     public function __construct(
+        Request $requestApi,
         RequestInterface $request,
         RegionFactory $regionFactory,
         RegionResourceModel $regionResourceModel,
@@ -161,6 +169,7 @@ class SaveSuccess implements ObserverInterface
         ManagerInterface $eventManager,
         \Magento\Framework\App\State $state
     ) {
+        $this->requestApi = $requestApi;
         $this->sequence = $sequence;
         $this->POSSystem = $POSSystem;
         $this->subscriberFactory = $subscriberFactory;
@@ -200,6 +209,9 @@ class SaveSuccess implements ObserverInterface
         \Magento\Framework\Event\Observer $observer
     ) {
         try {
+            if ($this->isPOSRequest()) {
+                return true;
+            }
             /**
              * @var Customer $newCustomerData
              */
@@ -273,6 +285,20 @@ class SaveSuccess implements ObserverInterface
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
         }
+    }
+
+    /**
+     * check POS request
+     *
+     * @return bool
+     */
+    private function isPOSRequest()
+    {
+        $data = $this->requestApi->getRequestData();
+        if ($data && isset($data[CreateCustomer::IS_POS]) && $data[CreateCustomer::IS_POS] == 1) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -413,6 +439,10 @@ class SaveSuccess implements ObserverInterface
             $parameters['prtnrid'] = $customer->getCustomAttribute('partner_id') ?
                 $customer->getCustomAttribute('partner_id')->getValue() : '';
             $parameters['statusCD'] = '01';
+            $store = $this->storeManager->getStore($customer->getStoreId());
+            if ($store->getCode() == 'my_laneige') {
+                $parameters['race'] = $customer->getCustomAttribute('race') ? $customer->getCustomAttribute('race')->getValue() : '';
+            }
 
             return $parameters;
         } catch (\Exception $exception) {

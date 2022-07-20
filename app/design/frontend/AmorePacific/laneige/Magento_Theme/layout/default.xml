@@ -7,9 +7,6 @@
 -->
 <page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="after.body.start">
-            <block name="preloader" as="preloader" template="Magento_Theme::preloader.phtml" before="-"/>
-        </referenceContainer>
         <referenceContainer name="footer-container">
             <container name="footer.top" as="footer.top" label="Page Footer Top" htmlTag="div" htmlClass="footer content top" before="footer"/>
         </referenceContainer>
@@ -27,5 +24,10 @@
         </referenceContainer>
         <container name="sidebar.additional" label="Sidebar Additional" htmlTag="div"/>
         <referenceContainer name="sidebar.additional" remove="true"/>
+        <referenceBlock name="page.main.title">
+            <arguments>
+                <argument name="category_desc_view_model" xsi:type="object">CJ\Catalog\ViewModel\CategoryDescription</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>

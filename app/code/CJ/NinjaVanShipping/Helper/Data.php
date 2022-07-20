@@ -26,6 +26,7 @@ class Data extends AbstractHelper
     const XML_PATH_NINJAVAN_CANCEL_ORDER = 'ninjavan/sandbox_api/cancel_order';
     const XML_PATH_NINJAVAN_TRACK_URL = 'ninjavan/sandbox_api/track_url';
     const XML_PATH_NINJAVAN_NUM_OF_RETRY = 'ninjavan/sandbox_api/number_of_retry';
+    const XML_PATH_NINJAVAN_GENERATE_WAYBILL = 'ninjavan/sandbox_api/generate_waybill';
 
     const XML_PATH_NINJAVAN_SEND_FROM = 'ninjavan/additional/send_from';
     const XML_PATH_NINJAVAN_PHONE_FROM = 'ninjavan/additional/phone_from';
@@ -33,49 +34,51 @@ class Data extends AbstractHelper
     const XML_PATH_NINJAVAN_ADDRESS_FROM = 'ninjavan/additional/address_from';
     const XML_PATH_NINJAVAN_POSTCODE_FROM = 'ninjavan/additional/postcode_from';
 
-    public function isNinjaVanEnabled()
+    const XML_PATH_NINJAVAN_ALLOWS_ORDER_STATUS_CAN_CANCEL = 'ninjavan/cancel_order_with_nv/allows_order_status_can_cacel';
+
+    public function isNinjaVanEnabled($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_ENABLE, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_ENABLE, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
-    public function isNinjaVanSandboxModeEnabled()
+    public function isNinjaVanSandboxModeEnabled($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_SANDBOXMODE, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_SANDBOXMODE, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
-    public function getNinjaVanHost()
+    public function getNinjaVanHost($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_HOST, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_HOST, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
-    public function getNinjaVanHostLive()
+    public function getNinjaVanHostLive($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_HOST_LIVE, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_HOST_LIVE, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
-    public function getNinjaVanCountryCode()
+    public function getNinjaVanCountryCode($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_COUNTRYCODE, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_COUNTRYCODE, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
-    public function getNinjaVanUriCreateOrder()
+    public function getNinjaVanUriCreateOrder($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_CREATE_ORDER, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_CREATE_ORDER, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
-    public function getNinjaVanUriCancelOrder()
+    public function getNinjaVanUriCancelOrder($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_CANCEL_ORDER, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_CANCEL_ORDER, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
-    public function getNinjaVanClientId()
+    public function getNinjaVanClientId($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_CLIENTID, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_CLIENTID, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
-    public function getNinjaVanClientKey()
+    public function getNinjaVanClientKey($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_CLIENTKEY, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_CLIENTKEY, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     public function getNinjaVanTrackingUrl()
@@ -108,29 +111,29 @@ class Data extends AbstractHelper
         return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_SPECIFICERMSG, ScopeInterface::SCOPE_WEBSITE);
     }
 
-    public function getNinjaVanSendFrom()
+    public function getNinjaVanSendFrom($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_SEND_FROM, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_SEND_FROM, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
-    public function getNinjaVanPhoneFrom()
+    public function getNinjaVanPhoneFrom($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_PHONE_FROM, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_PHONE_FROM, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
-    public function getNinjaVanMailFrom()
+    public function getNinjaVanMailFrom($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_MAIL_FROM, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_MAIL_FROM, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
-    public function getNinjaVanAddressFrom()
+    public function getNinjaVanAddressFrom($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_ADDRESS_FROM, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_ADDRESS_FROM, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
-    public function getNinjaVanPostcodeFrom()
+    public function getNinjaVanPostcodeFrom($storeId)
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_POSTCODE_FROM, ScopeInterface::SCOPE_WEBSITE);
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_POSTCODE_FROM, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     public function getNinjaVanTrackUrl()
@@ -141,5 +144,15 @@ class Data extends AbstractHelper
     public function getNinjaVanNumberRetry()
     {
         return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_NUM_OF_RETRY, ScopeInterface::SCOPE_WEBSITE);
+    }
+
+    public function getNinjaVanAllowsOrderStatusCancel($storeId)
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_ALLOWS_ORDER_STATUS_CAN_CANCEL, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    public function getNinjaVanUriGenerateWaybill()
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_GENERATE_WAYBILL, ScopeInterface::SCOPE_WEBSITE);
     }
 }

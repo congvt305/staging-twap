@@ -57,6 +57,23 @@
                 display: block;
             }
         }
+
+        .product-item-description {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            text-align: center;
+            font-style: italic;
+            ul {
+                font-style: italic;
+                list-style: none;
+                padding-left: 0;
+                text-align: center;
+                li {
+                    display: inline;
+                }
+            }
+        }
     }
 
     .old-price,
@@ -961,6 +978,7 @@
             .page-title {
                 .lib-font-size(20);
                 margin-bottom: 8px;
+                word-wrap: break-word;
             }
 
             .product-item-name-en {
@@ -1269,6 +1287,17 @@
             min-height: inherit;
         }
     }
+
+    // breadcrumbs
+    .page-wrapper {
+        > .breadcrumbs,
+        > .top-container,
+        > .widget {
+            box-sizing: border-box;
+            width: 100%;
+            margin-top: 30px;
+        }
+    }
 }
 
 //
@@ -1510,7 +1539,7 @@
     .product-info-content {
         position: absolute;
         top: 0;
-        width: 27%;
+        width: 25%;
         z-index: 2;
 
         > span {
@@ -1766,11 +1795,7 @@
 
     .catalog-product-view {
         &.page-layout-1column {
-            .visual-aids, .visual-aids-header-container {
-                background: #F9F9F9;
-            }
             .visual-aids {
-                width: 70%;
                 padding-top: 10px;
                 padding-bottom: 10px;
                 margin-bottom: 10px;
@@ -1780,7 +1805,7 @@
                 align-items: flex-end;
             }
             .visual-aids-header {
-                width: 80%;
+                width: 90%;
             }
             .visual-aids-header-container > div > span:after {
                 -webkit-font-smoothing: antialiased;
@@ -1794,7 +1819,7 @@
                 float: right;
             }
             .visual-aids-header-container > svg {
-                width: 20%;
+                width: 10%;
             }
 
             .visual-aids-content {

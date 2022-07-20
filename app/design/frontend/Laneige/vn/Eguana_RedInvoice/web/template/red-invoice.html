@@ -7,28 +7,26 @@
  * Time: 10:10 AM
  */-->
 <div class="red-invoice-form control">
-	<div id="show-red-invoice-button" class="step-title" for="red_invoice">
+    <div id="show-red-invoice-button" class="step-title" for="red_invoice">
         <button data-bind="i18n: 'Request for redinvoice', click: showRedInvoiceForm"></button>
-        <div id="red-invoice-note" data-bind="text: getNoteText()"></div>
     </div>
-
-	<div id="red-invoice-form" class="control">
+    <div id="red-invoice-form" class="control">
         <table class="red-invoice-form-table">
             <tbody>
-                <tr class="row">
-                    <td class="col">
-                        <input type="radio" class="radio" id="apply_button" name="is_apply" value="1">
-                    </td>
-                    <td class="col">
-                        <span data-bind="i18n: 'Apply'"></span>
-                    </td>
-                    <td class="col">
-                        <input type="radio" class="radio" id="do_not_apply_button" name="is_apply" value="0" checked="checked">
-                    </td>
-                    <td class="col">
-                        <span data-bind="i18n: 'Do not apply'"></span>
-                    </td>
-                </tr>
+            <tr class="row">
+                <td class="col">
+                    <input type="radio" class="radio" id="apply_button" name="is_apply" value="1">
+                </td>
+                <td class="col">
+                    <span data-bind="i18n: 'Apply'"></span>
+                </td>
+                <td class="col">
+                    <input type="radio" class="radio" id="do_not_apply_button" name="is_apply" value="0" checked="checked">
+                </td>
+                <td class="col">
+                    <span data-bind="i18n: 'Do not apply'"></span>
+                </td>
+            </tr>
             </tbody>
         </table>
 
@@ -65,6 +63,21 @@
                 </div>
 
                 <div class="field _required">
+                    <label for="email" class="label">
+                        <span data-bind="i18n: 'Email'"></span>
+                    </label>
+
+                    <div class="control">
+                        <input type="text" name="email" id="email" class="input-text required" data-validate="{required:true}">
+                    </div>
+                    <div class="email-error">
+                        <div role="error" class="message error">
+                            <span data-bind="i18n: 'This is required field'"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field _required">
                     <label class="label">
                         <span data-bind="i18n: 'Company address'"></span>
                     </label>
@@ -78,12 +91,17 @@
                         </div>
                     </div>
                     <div class="control" id="city-select-field">
-                        <select name="city" data-bind="options: availableCities, optionsText: 'default_name', optionsValue: 'city_id'"></select>
+                        <select name="city" data-bind="options: availableCities, optionsText: 'default_name', optionsValue: 'city_id', event: { change: updateWards}"></select>
+                    </div>
+
+                    <div class="control" id="ward-select-field">
+                        <select name="ward" data-bind="options: availableWards, optionsText: 'default_name', optionsValue: 'ward_id'"></select>
                     </div>
 
                     <div class="control">
                         <input type="text" name="road_name" id="road_name" data-bind="attr:{placeholder: $t('Road Name/Building')}" class="input-text required" data-validate="{required:true}">
                     </div>
+
                     <div class="road-name-error">
                         <div role="error" class="message error">
                             <span data-bind="i18n: 'This is required field'"></span>
@@ -92,5 +110,5 @@
                 </div>
             </div>
         </fieldset>
-	</div>
+    </div>
 </div>

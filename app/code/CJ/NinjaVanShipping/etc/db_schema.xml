@@ -23,6 +23,7 @@
     </table>
     <table name="sales_order" resource="default" engine="innodb" comment="ninjavan flag">
         <column xsi:type="int" name="sent_to_ninjavan" nullable="true" comment="sent to ninjaVan"/>
+        <column xsi:type="int" name="ninjavan_shipment_cancel" nullable="true" default="0" comment="Ninjavan Shipment Cancel"/>
     </table>
 
     <table name="shipping_ninjavan" resource="default" engine="innodb" comment="Shipping Tablerate">

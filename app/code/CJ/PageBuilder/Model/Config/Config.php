@@ -13,6 +13,8 @@ class Config
 
     const XML_PATH_DESC_VISIBLE = 'cj_pagebuilder/carousel/desc_visible';
 
+    const XML_PATH_DISPLAY_BELOW = 'cj_pagebuilder/catalog_category/display_below';
+
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
@@ -57,5 +59,15 @@ class Config
     public function getProductDescriptionVisible($type, $storeId = null): bool
     {
         return (bool)$this->getValue(self::XML_PATH_DESC_VISIBLE, $type, $storeId);
+    }
+
+    /**
+     * @param  $type
+     * @param int|null $storeId
+     * @return bool
+     */
+    public function getDescriptionBelowTitleEnabled($type, int $storeId = null): bool
+    {
+        return $this->scopeConfig->isSetFlag(self::XML_PATH_DISPLAY_BELOW, $type, $storeId);
     }
 }

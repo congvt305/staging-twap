@@ -44,7 +44,4 @@
                 type="Amore\Sap\Model\ResourceModel\Order\Handler\CustomState" />
     <preference for="Magento\InventoryShipping\Observer\SourceDeductionProcessor"
                 type="Amore\Sap\Observer\SourceDeductionProcessor" />
-    <type name="Amore\Sap\Model\SapOrder\SapOrderManagement">
-        <plugin name="amoreSapOrderManagement" type="Amore\Sap\Plugin\Model\SapOrder\SapOrderManagementPlugin" sortOrder="1" disabled="false"/>
-    </type>
 </config>

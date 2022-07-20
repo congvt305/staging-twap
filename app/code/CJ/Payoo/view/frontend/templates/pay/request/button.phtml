@@ -1,0 +1,16 @@
+<?php
+
+/** @var \CJ\Payoo\ViewModel\OrderData $viewModel */
+/** @var \Magento\Framework\View\Element\Template $block */
+$viewModel = $block->getOrderDataViewModel();
+/** @var \Magento\Sales\Model\Order $order */
+$order = $viewModel->getOrder();
+$linkPayoo = $viewModel->getLinkPayoo($order);
+?>
+
+<?php if (!$viewModel->isPay($order) && $linkPayoo): ?>
+    <a href="<?= $linkPayoo?>" class="action payoo">
+        <span><?= $block->escapeHtml(__('Checkout')) ?></span>
+    </a>
+<?php endif;?>
+

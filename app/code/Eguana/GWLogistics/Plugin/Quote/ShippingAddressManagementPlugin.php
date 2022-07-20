@@ -9,9 +9,7 @@
 namespace Eguana\GWLogistics\Plugin\Quote;
 
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\Data\AddressInterface;
-use Magento\Quote\Model\ShippingAddressManagementInterface;
 
 class ShippingAddressManagementPlugin
 {
@@ -51,14 +49,17 @@ class ShippingAddressManagementPlugin
      */
     public function afterGet(\Magento\Quote\Model\ShippingAddressManagementInterface $subject, \Magento\Quote\Api\Data\AddressInterface $result, $cartId)
     {
-        if ($result->getData('cvs_location_id')) {
-            $extensionAttributes = $result->getExtensionAttributes();
-            try {
-                $extensionAttributes->setCvsLocationId($result->getData('cvs_location_id'));
-            } catch (\Exception $e) {
-                $extensionAttributes->setCvsLocationId(null);
+        if ($result->getShippingMethod() == 'gwlogistics_CVS') {
+            if ($result->getData('cvs_location_id')) {
+                $extensionAttributes = $result->getExtensionAttributes();
+                try {
+                    $extensionAttributes->setCvsLocationId($result->getData('cvs_location_id'));
+                } catch (\Exception $e) {
+                    $this->logger->error("Error when set CVS Location Id: " . $e->getMessage());
+                    throw new LocalizedException(__('Cannot find the CVS store location. Please try to choose CVS store again if it still error, please contact our CS Center'));
+                }
+                $result->setExtensionAttributes($extensionAttributes);
             }
-            $result->setExtensionAttributes($extensionAttributes);
         }
         return $result;
     }
@@ -82,6 +83,7 @@ class ShippingAddressManagementPlugin
                     throw new LocalizedException(__('Cannot find the CVS store location. Please try to choose CVS store again if it still error, please contact our CS Center'));
                 }
             } catch (\Exception $e) {
+                $this->logger->error("Error when choose CVS Location Id: " . $e->getMessage());
                 throw new LocalizedException(__('Cannot find the CVS store location. Please try to choose CVS store again if it still error, please contact our CS Center'));
             }
             $address->setExtensionAttributes($extensionAttributes);

@@ -198,6 +198,35 @@
                 <visible>true</visible>
             </settings>
         </field>
+        <field name="tracking_code" sortOrder="70" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="cols" xsi:type="number">15</item>
+                    <item name="rows" xsi:type="number">30</item>
+                    <item name="source" xsi:type="string">event_reservation</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Tracking Code Content</label>
+                <visible>true</visible>
+            </settings>
+        </field>
+        <field name="completed_tracking_code" sortOrder="75" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="cols" xsi:type="number">15</item>
+                    <item name="rows" xsi:type="number">30</item>
+                    <item name="source" xsi:type="string">event_reservation</item>
+                    <item name="notice" xsi:type="string" translate="true">The scripts will be sent when customer click "send" button</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Completed Tracking Code Content</label>
+                <visible>true</visible>
+            </settings>
+        </field>
     </fieldset>
     <fieldset name="fixed_text_banner" sortOrder="48">
         <settings>

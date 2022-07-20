@@ -26,6 +26,8 @@ class FaqActions extends Column
      */
     const URL_PATH_EDIT = 'eguana_faq/faq/edit';
 
+    const URL_PATH_EDIT_FAQ_IN_CATALOG = 'eguana_faq/faq/editfaqcatalog';
+
     const URL_PATH_DELETE = 'eguana_faq/faq/delete';
     /**
      * @var UrlInterface
@@ -66,10 +68,15 @@ class FaqActions extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 if (isset($item['entity_id'])) {
+                    if ($item['is_use_in_catalog']) {
+                        $urlEdit = self::URL_PATH_EDIT_FAQ_IN_CATALOG;
+                    } else {
+                        $urlEdit = self::URL_PATH_EDIT;
+                    }
                     $item[$this->getData('name')] = [
                         'edit' => [
                             'href' => $this->urlBuilder->getUrl(
-                                static::URL_PATH_EDIT,
+                                $urlEdit,
                                 [
                                     'entity_id' => $item['entity_id']
                                 ]
@@ -85,8 +92,8 @@ class FaqActions extends Column
                             ),
                             'label' => __('Delete'),
                             'confirm' => [
-                                'title' => __('Delete "${ $.$data.title }"'),
-                                'message' => __('Are you sure you wan\'t to delete a "${ $.$data.title }" record?')
+                                'title' => __('Delete ' . $item['title']),
+                                'message' => __('Are you sure you wan\'t to delete a ' . $item['title'] . ' record?')
                             ]
                         ]
                     ];

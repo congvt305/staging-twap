@@ -86,6 +86,9 @@
                 <field id="customer_order" translate="label" type="text" sortOrder="54" showInDefault="1" showInWebsite="1">
                     <label>Member Order Path</label>
                 </field>
+                <field id="customer_grade" translate="label" type="text" sortOrder="54" showInDefault="1" showInWebsite="1">
+                    <label>All Customer Grade Path</label>
+                </field>
             </group>
             <group id="configurable_cron" translate="label" type="text" sortOrder="270" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Order/Return to POS Cron</label>

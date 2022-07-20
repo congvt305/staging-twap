@@ -247,7 +247,7 @@ class Quote
         $product['imageUrl'] = $imageSrc;
         if ($item->getParentItem()) {
             if ($item->getParentItem()->getProductType()  == 'bundle') {
-                $qty = $item->getParentItem()->getQty();
+                $qty = $item->getParentItem()->getQty() * $item->getQty();
                 $discount = $item->getDiscountAmount();
                 $product['quantity'] = $qty;
             } else {
