@@ -866,63 +866,7 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .product-options-wrapper {
         .options-toggle {
-            .lib-icon-font(
-                    @icon-expand,
-                @_icon-font: @icon-font,
-                @_icon-font-size: 20px,
-                @_icon-font-line-height: 26px,
-                @_icon-font-color: @primary__color__lighter,
-                @_icon-font-color-hover: @primary__color__lighter,
-                @_icon-font-color-active: @primary__color__lighter,
-                @_icon-font-margin: 0,
-                @_icon-font-vertical-align: middle,
-                @_icon-font-position: after,
-                @_icon-font-display: block
-            );
-            .lib-font-size(16);
-            color: @primary__color__lighter;
-            position: absolute;
-            right: @layout__width-xs-indent;
-
-            &:after {
-                position: relative;
-                top: -2px;
-            }
-
-            &.active {
-                .lib-icon-font-symbol(
-                    @_icon-font-content: @icon-collapse,
-                    @_icon-font-position: after
-                );
-
-                & + .fieldset {
-                    .swatch-attribute-options {
-                        display: block;
-                        height: auto;
-                        padding-left: 0;
-
-                        > div {
-                            box-sizing: border-box;
-                            display: inline-block;
-                            margin: 0 auto;
-                            padding: 0 2px;
-                            text-align: center;
-                            width: 100%/4;
-                            vertical-align: top;
-
-                            .swatch-option {
-                                display: inline-block;
-                                float: none;
-                                margin: 0 auto;
-                            }
-
-                            .label {
-                                display: block;
-                            }
-                        }
-                    }
-                }
-            }
+            display: none;
         }
     }
 

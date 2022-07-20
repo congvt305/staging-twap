@@ -13,17 +13,11 @@ use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Serialize\Serializer\Json;
 use Amore\PointsIntegration\Logger\Logger;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
+use Amore\Base\Model\BaseRequest;
 
-class Request
+class Request extends BaseRequest
 {
-    /**
-     * @var Curl
-     */
-    private $curl;
-    /**
-     * @var Json
-     */
-    private $json;
     /**
      * @var Config
      */
@@ -39,15 +33,16 @@ class Request
      * @param Json $json
      * @param Config $config
      * @param Logger $logger
+     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         Curl $curl,
         Json $json,
         Config $config,
-        Logger $logger
+        Logger $logger,
+        MiddlewareHelper $middlewareHelper
     ) {
-        $this->curl = $curl;
-        $this->json = $json;
+        parent::__construct($curl, $json, $middlewareHelper);
         $this->config = $config;
         $this->logger = $logger;
     }
@@ -60,8 +55,9 @@ class Request
      */
     public function sendRequest($requestData, $websiteId, $type)
     {
+        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('website', $websiteId);
         $url = $this->getUrl($type, $websiteId);
-        if (!$url) {
+        if (!$url && !$isNewMiddlewareEnable) {
             $this->logger->info("URL IS EMPTY");
             return [];
         }
@@ -77,9 +73,7 @@ class Request
                 $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
             }
 
-            $this->curl->post($url, $this->json->serialize($requestData));
-
-            $response = $this->curl->getBody();
+            $response = $this->send($url, $requestData, 'website', $websiteId, $type);
 
             if ($logEnabled) {
                 $this->logger->info('POS Response: ' . $this->json->serialize($response));
@@ -108,7 +102,31 @@ class Request
             case 'customerOrder':
                 $path = $this->config->getCustomerOrderURL($websiteId);
                 break;
+            // get all customer grades
+            case 'customerGrade':
+                $path = $this->config->getAllCustomerGradeURL($websiteId);
+                break;
         }
         return $path;
+    }
+
+    public function responseCheck($response, $websiteId)
+    {
+        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('website', $websiteId);
+        if ($isNewMiddlewareEnable) {
+            if ((isset($response['success']) && $response['success']) &&
+                (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200')
+            ){
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
     }
 }

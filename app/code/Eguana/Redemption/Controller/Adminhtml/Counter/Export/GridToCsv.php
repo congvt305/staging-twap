@@ -17,6 +17,7 @@ use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Response\Http\FileFactory;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Filesystem\Directory\WriteInterface;
@@ -112,6 +113,7 @@ class GridToCsv extends Action
 
             /** @var SearchResultInterface $searchResult */
             $searchResult = $component->getContext()->getDataProvider()->getSearchResult();
+            $searchResult->addFilter('main_table.redemption_id', $redemptionId, 'eq');
 
             /** @var DocumentInterface[] $searchResultItems */
             $searchResultItems = $searchResult->getItems();

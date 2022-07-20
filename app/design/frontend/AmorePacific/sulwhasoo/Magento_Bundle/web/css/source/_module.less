@@ -35,7 +35,7 @@
             }
             button.select-option.selected {
                 background-color: #33333380;
-                border: solid 0.4rem #5a8cd2;
+                color: #ffffff;
             }
             .field.option {
                 .label {
@@ -60,6 +60,12 @@
                     margin-left: @indent__xs;
                 }
             }
+        }
+    }
+
+    .page-layout-1column {
+        .product-info-main-attribute {
+            width: 48% !important;
         }
     }
 
@@ -364,9 +370,17 @@
             &:extend(.abs-reset-left-margin-desktop all);
         }
 
-        .bundle-options-wrapper,
-        .product-options-wrapper {
+        .bundle-options-wrapper {
             margin-bottom: @indent__l;
+        }
+
+        .product-options-wrapper {
+            margin-bottom: 0;
+        }
+        .visual-aids-content-bundle {
+            .fieldset {
+                margin: 0;
+            }
         }
 
         .block-bundle-summary {

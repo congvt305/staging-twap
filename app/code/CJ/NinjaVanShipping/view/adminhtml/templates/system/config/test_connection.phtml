@@ -1,0 +1,21 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+/**
+ * @var CJ\NinjaVanShipping\Block\System\Config\TestConnection $block
+ */
+?>
+<?= /* @noEscape */ $block->getButtonHtml(); ?>
+
+<span class="collect-indicator" id="collect_span_connection">
+    <span id="collect_message"></span>
+</span>
+<script type="text/x-magento-init">
+   {
+       "*": {
+           "test_connection": {"connectionAjaxUrl":"<?= $block->escapeUrl($block->getAjaxUrl()) ?>"}
+       }
+   }
+</script>

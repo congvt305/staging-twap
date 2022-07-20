@@ -36,10 +36,6 @@ if ($cookieHelper->isCookieRestrictionModeEnabled()): ?>
                  tabindex="-1"
                  class=""
                  id="notice-cookie-block">
-                <div class="cookie-image">
-                <img src="<?php echo $this->getViewFileUrl('CJ_CustomCookie::images/cookie.png')?>"
-                     alt="cookie-image"/>
-                </div>
                 <div role="document" class="cookie-content" tabindex="0">
                         <?= $this->getLayout()
                             ->createBlock('Magento\Cms\Block\Block')
@@ -52,11 +48,6 @@ if ($cookieHelper->isCookieRestrictionModeEnabled()): ?>
                         <span><?= $block->escapeHtml(__('Allow Cookies')) ?></span>
                     </button>
                 </div>
-                <button
-                    class="action-close"
-                    data-role="closeBtn"
-                    type="button">
-                </button>
             </div>
         </div>
         <script type="text/x-magento-init">

@@ -93,4 +93,15 @@ abstract class AbstractPointsModel
             ];
         }
     }
+
+    /**
+     * Validate the response after get from API
+     * @param $response
+     * @param $websiteId
+     * @return int
+     */
+    public function responseValidation($response, $websiteId)
+    {
+        return $this->request->responseCheck($response, $websiteId);
+    }
 }

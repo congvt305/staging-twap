@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="sales_order_columns">
+        <column name="red_invoice" class="Eguana\RedInvoice\Ui\Component\Listing\Column\RedInvoiceColumnRender">
+            <settings>
+                <filter>select</filter>
+                <sortable>false</sortable>
+                <options class="Eguana\RedInvoice\Model\Source\RedInvoiceOption"/>
+                <dataType>select</dataType>
+                <label translate="true">Red Invoice</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

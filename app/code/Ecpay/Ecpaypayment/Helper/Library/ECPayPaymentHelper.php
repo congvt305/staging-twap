@@ -158,6 +158,8 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
             'cartName',
             'currency',
             'needExtraPaidInfo',
+            'isSaveCard',
+            'customerId'
         );
         $inputs = $this->only($data, $whiteList);
 
@@ -177,6 +179,10 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
         $this->sdk->Send['TotalAmount'] = $this->getAmount($inputs['total']);
         $this->sdk->Send['ChoosePayment'] = $this->getPaymentMethod($paymentType);
         $this->sdk->Send['NeedExtraPaidInfo'] = $this->getSdkExtraPaymentInfoOption($inputs['needExtraPaidInfo']);
+        if (isset($inputs['isSaveCard']) && isset($inputs['customerId']) && $inputs['customerId'] && $inputs['isSaveCard'] == 1) {
+            $this->sdk->Send['BindingCard'] = 1;
+            $this->sdk->Send['MerchantMemberID'] = $this->getMerchantId() . $inputs['customerId']; //(MerchantID + MemberID)
+        }
 
         // Set the product info
         $this->sdk->Send['Items'][] = array(

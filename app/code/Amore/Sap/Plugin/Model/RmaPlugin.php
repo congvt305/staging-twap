@@ -22,6 +22,7 @@ use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Rma\Model\Rma;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Status\HistoryFactory;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 class RmaPlugin
 {
@@ -69,7 +70,11 @@ class RmaPlugin
     private $eventManager;
 
     /**
-     * RmaPlugin constructor.
+     * @var MiddlewareHelper
+     */
+    protected $middlewareHelper;
+
+    /**
      * @param Json $json
      * @param Request $request
      * @param Config $config
@@ -78,6 +83,7 @@ class RmaPlugin
      * @param SapOrderReturnData $sapOrderReturnData
      * @param ManagerInterface $messageManager
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
+     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         Json $json,
@@ -87,7 +93,8 @@ class RmaPlugin
         OrderRepositoryInterface $orderRepository,
         SapOrderReturnData $sapOrderReturnData,
         ManagerInterface $messageManager,
-        \Magento\Framework\Event\ManagerInterface $eventManager
+        \Magento\Framework\Event\ManagerInterface $eventManager,
+        MiddlewareHelper $middlewareHelper
     ) {
         $this->json = $json;
         $this->request = $request;
@@ -97,6 +104,7 @@ class RmaPlugin
         $this->sapOrderReturnData = $sapOrderReturnData;
         $this->messageManager = $messageManager;
         $this->eventManager = $eventManager;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     public function beforeSaveRma(Rma $subject, $data)
@@ -139,13 +147,13 @@ class RmaPlugin
                             'result_message' => $this->json->serialize($result)
                         ]
                     );
-
-                    $resultSize = count($result);
-
-                    if ($resultSize > 0) {
-                        if ($result['code'] == '0000') {
-                            $outdata = $result['data']['response']['output']['outdata'];
-                            foreach ($outdata as $data) {
+                    $responseHandled = $this->request->handleResponse($result, $order->getStoreId());
+                    if ($responseHandled === null) {
+                        throw new RmaSapException(__('Something went wrong while sending order data to SAP. No response'));
+                    } else {
+                        $outData = $responseHandled['data']['output']['outdata'];
+                        if (isset($responseHandled['success']) && $responseHandled['success'] == true) {
+                            foreach ($outData as $data) {
                                 if ($data['retcod'] == 'S') {
                                     if ($rmaSendCheck == 0 || $rmaSendCheck == 2) {
                                         $this->messageManager->addSuccessMessage(__("Resent Return Data to Sap Successfully."));
@@ -166,6 +174,35 @@ class RmaPlugin
                         } else {
                             throw new RmaSapException(
                                 __(
+                                    'Error returned from SAP for RMA %1. Message : %2',
+                                    $subject->getIncrementId(),
+                                    $responseHandled['message']
+                                )
+                            );
+                        }
+                    }
+
+                    $resultSize = count($result);
+
+                    if ($resultSize > 0) {
+                        $isSuccess = false;
+                        $outdata = isset($result['data']['response']['output']['outdata']) ? $result['data']['response']['output']['outdata'] : [];
+                        $isNewMiddleware = $this->middlewareHelper->isNewMiddlewareEnabled('store', $order->getStoreId());
+                        if ($isNewMiddleware || (!$isNewMiddleware && $result['code'] == '0000')) {
+                            foreach ($outdata as $data) {
+                                if ($data['retcod'] == 'S') {
+                                    if ($rmaSendCheck == 0 || $rmaSendCheck == 2) {
+                                        $this->messageManager->addSuccessMessage(__("Resent Return Data to Sap Successfully."));
+                                    } else {
+                                        $this->messageManager->addSuccessMessage(__("Sent Return Data to Sap Successfully."));
+                                    }
+                                    $isSuccess = true;
+                                }
+                            }
+                        }
+                        if (!$isSuccess) {
+                            throw new RmaSapException(
+                                __(
                                     'Error returned from SAP for RMA %1. Error code : %2. Message : %3',
                                     $subject->getIncrementId(),
                                     $result['code'],
@@ -173,8 +210,6 @@ class RmaPlugin
                                 )
                             );
                         }
-                    } else {
-                        throw new RmaSapException(__('Something went wrong while sending order data to SAP. No response'));
                     }
                 } catch (NoSuchEntityException $e) {
                     throw new NoSuchEntityException(__($e->getMessage()));

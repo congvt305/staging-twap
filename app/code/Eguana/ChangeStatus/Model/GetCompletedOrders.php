@@ -10,9 +10,12 @@
 
 namespace Eguana\ChangeStatus\Model;
 
+use Amore\PointsIntegration\Logger\Logger;
 use Eguana\ChangeStatus\Model\Source\Config;
 use Eguana\GWLogistics\Model\ResourceModel\StatusNotification\CollectionFactory as NotificationCollectionFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -51,6 +54,30 @@ class GetCompletedOrders
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var \Amore\PointsIntegration\Model\PosOrderData
+     */
+    private $posOrderData;
+    /**
+     * @var \Amore\PointsIntegration\Model\Connection\Request
+     */
+    private $request;
+    /**
+     * @var \Magento\Framework\Event\ManagerInterface
+     */
+    private $eventManager;
+    /**
+     * @var Json
+     */
+    private $json;
+    /**
+     * @var \Amore\PointsIntegration\Model\Source\Config
+     */
+    private $PointsIntegrationConfig;
+    /**
+     * @var Logger
+     */
+    private $pointsIntegrationLogger;
 
     /**
      * @var OrderCollectionFactory
@@ -71,6 +98,12 @@ class GetCompletedOrders
      * @param StoreManagerInterface $storeManagerInterface
      * @param LoggerInterface $logger
      * @param TimezoneInterface $timezone
+     * @param \Amore\PointsIntegration\Model\PosOrderData $posOrderData
+     * @param \Amore\PointsIntegration\Model\Connection\Request $request
+     * @param \Magento\Framework\Event\ManagerInterface $eventManager
+     * @param Json $json
+     * @param \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig
+     * @param Logger $pointsIntegrationLogger
      * @param OrderCollectionFactory $orderCollectionFactory
      * @param NotificationCollectionFactory $statusNotificationCollection
      */
@@ -82,6 +115,12 @@ class GetCompletedOrders
         StoreManagerInterface $storeManagerInterface,
         LoggerInterface $logger,
         TimezoneInterface $timezone,
+        \Amore\PointsIntegration\Model\PosOrderData $posOrderData,
+        \Amore\PointsIntegration\Model\Connection\Request $request,
+        \Magento\Framework\Event\ManagerInterface $eventManager,
+        Json $json,
+        \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig,
+        Logger $pointsIntegrationLogger,
         OrderCollectionFactory $orderCollectionFactory,
         NotificationCollectionFactory $statusNotificationCollection
     ) {
@@ -92,6 +131,12 @@ class GetCompletedOrders
         $this->storeManagerInterface = $storeManagerInterface;
         $this->logger = $logger;
         $this->timezone = $timezone;
+        $this->posOrderData = $posOrderData;
+        $this->request = $request;
+        $this->eventManager = $eventManager;
+        $this->json = $json;
+        $this->PointsIntegrationConfig = $PointsIntegrationConfig;
+        $this->pointsIntegrationLogger = $pointsIntegrationLogger;
         $this->orderCollectionFactory = $orderCollectionFactory;
         $this->statusNotificationCollection = $statusNotificationCollection;
     }
@@ -111,7 +156,7 @@ class GetCompletedOrders
             ->addFilter('status', 'shipment_processing', 'eq')
             ->addFilter('updated_at', $coveredDate, 'lteq')
             ->addFilter('store_id', $storeId, 'eq')
-            ->addFilter('shipping_method', ['blackcat_homedelivery', 'eguanadhl_tablerate'], 'in')
+            ->addFilter('shipping_method', ['blackcat_homedelivery', 'eguanadhl_tablerate', 'ninjavan_tablerate'], 'in')
             ->create();
 
         $orderList = $this->orderRepository->getList($searchCriteria);
@@ -121,7 +166,11 @@ class GetCompletedOrders
             $payment = $order->getPayment();
             $eInvoiceData = json_decode($payment->getAdditionalData(), true);
 
-            if (!empty($eInvoiceData) && $eInvoiceData["RtnCode"] == 1) {
+            if (in_array($payment->getMethod(), ['ecpay_ecpaypayment', 'linepay_payment'])) {
+                if (!empty($eInvoiceData) && $eInvoiceData["RtnCode"] == 1) {
+                    $completeOrderList[] = $order;
+                }
+            } else {
                 $completeOrderList[] = $order;
             }
         }
@@ -164,9 +213,9 @@ class GetCompletedOrders
             $orderCollection->addFieldToFilter('status', ['eq' => 'shipment_processing']);
             $orderCollection->addFieldToFilter('store_id', ['eq' => $storeId]);
             $orderCollection->getSelect()
-                ->where('shipping_method IN (?)', ['blackcat_homedelivery', 'gwlogistics_CVS', 'eguanadhl_tablerate']);
-            $query = $orderCollection->getSelect()->__toString();
-            $orderList = $orderCollection->getItems();
+                ->where('shipping_method IN (?)', ['blackcat_homedelivery', 'gwlogistics_CVS', 'eguanadhl_tablerate', 'ninjavan_tablerate']);
+            $orderList       = $orderCollection->getItems();
+            $updateAfterDays = (int)$this->config->getDaysUpdateNinjaVanOrderToDeliveryComplete($storeId);
             foreach ($orderList as $order) {
                 if ($order->getShippingMethod() == 'gwlogistics_CVS') {
                     $notificationCollection = $this->statusNotificationCollection->create();
@@ -181,6 +230,12 @@ class GetCompletedOrders
                 } elseif ($order->getShippingMethod() == 'blackcat_homedelivery' || $order->getShippingMethod() == 'eguanadhl_tablerate') {
                     $updatedAt = $this->dateTime->date('Y-m-d H:i:s', strtotime($order->getUpdatedAt()));
                     $dateFrom = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -7 days'));
+                    if ($updatedAt <= $dateFrom) {
+                        $completeOrderList[] = $order;
+                    }
+                } elseif ($order->getShippingMethod() == 'ninjavan_tablerate') {
+                    $updatedAt = $this->dateTime->date('Y-m-d H:i:s', strtotime($order->getUpdatedAt()));
+                    $dateFrom  = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -'. $updateAfterDays .' days'));
                     if ($updatedAt <= $dateFrom) {
                         $completeOrderList[] = $order;
                     }

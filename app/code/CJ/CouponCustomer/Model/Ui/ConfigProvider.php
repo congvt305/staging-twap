@@ -6,21 +6,29 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 
 class ConfigProvider implements ConfigProviderInterface
 {
+    /**
+     * Constant
+     */
     const CODE = 'cj_couponcustomer';
     /**
-     * @var \Eguana\BlackCat\Helper\Data
+     * @var \CJ\CouponCustomer\Helper\Data
      */
     private $helper;
 
     public function __construct(
-        \CJ\CouponCustomer\Helper\Data $helper){
+        \CJ\CouponCustomer\Helper\Data $helper
+    ) {
         $this->helper = $helper;
     }
 
+    /**
+     * @return array[]
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getConfig()
     {
         // for guest checkout
-        if(!$this->helper->isCustomerLogin() || !$this->helper->isEnableCouponListPopup()) {
+        if (!$this->helper->isCustomerLogin() || !$this->helper->isEnableCouponListPopup()) {
             return [
                 self::CODE => [
                     'coupon_list' => [],
