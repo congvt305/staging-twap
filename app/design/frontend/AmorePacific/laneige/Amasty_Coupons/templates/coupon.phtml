@@ -1,5 +1,7 @@
 <?php
 /** @var \Amasty\Coupons\Block\Coupon $block */
+/** @var \CJ\Coupons\ViewModel\CouponList $couponListViewModel */
+$couponListViewModel = $block->getData('couponListViewModel');
 ?>
 <div class="block discount"
      id="block-discount"
@@ -69,23 +71,102 @@
 <div class="popup-container">
     <div id="popup-modal">
         <div class="modal-body-content">
-            <p><?= $block->escapeHtml(__('Coupon List')); ?></p>
+            <div class="coupon-popup coupon-container">
+                <div class="coupon-wrap">
+                    <div class="other-promo">
+                        <div class="coupon-content">
+                            <?php if ($couponListViewModel): ?>
+                                <?php $coupons = $couponListViewModel->getRuleCollection()->load(); ?>
+                                <div class="coupon-applied">
+                                    <?php foreach ($coupons->getItems() as $coupon) : ?>
+
+                                        <!-- start card -->
+                                        <div class="discount-card">
+                                            <div class="discount-bar lng-coupon-popup-color"></div>
+                                            <div class="discount-card-content">
+                                                <div class="discount-label">
+                                                    <div class="discount-title">
+                                                        <div class="landscape">
+                                                            <img src="<?= $block->escapeHtml($couponListViewModel->getLogo()) ?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="discount-border-center"></div>
+                                                <div class="discount-content">
+                                                    <div class="discount-title-percent"><?=$block->escapeHtml($coupon['name']);?></div>
+                                                    <div class="discount-percent">
+                                                        <span><?=$block->escapeHtml(__('Total discount for activities:'))?></span> <span style="color: red"><?=$couponListViewModel->getCurrencyCode().floatval($coupon['discount_amount'])?></span>
+                                                    </div>
+                                                    <div class="discount-percent">
+                                                        <span><?=$block->escapeHtml(__('Expiration date:'))?></span> <span style="color: red"><?= $coupon['to_date'] == null ? '' : $coupon['to_date']; ?></span>
+                                                    </div>
+                                                    <div class="discount-description"><?=$block->escapeHtml($coupon['description'])?></div>
+                                                </div>
+                                            </div>
+                                            <div class="discount-border-right lng-discount-border-right"></div>
+                                            <?php
+                                            $beenUsed = in_array($coupon['code'], $block->getCouponsCode());
+                                            ?>
+                                            <div data-beenused="<?= $beenUsed ? 1 : 0 ?>"
+                                                 class="discount-card-button lng-discount-card-button"
+                                                 id="<?= $coupon['code'] ?>">
+                                                <?= $beenUsed ? $block->escapeHtml(__('Cancel')) : $block->escapeHtml(__('Apply')) ?>
+                                            </div>
+                                        </div>
+                                        <!-- and card -->
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <script>
     require([
+        'ko',
         'jquery',
+        'mage/translate',
+        'Magento_Checkout/js/model/quote',
         'Magento_Ui/js/modal/modal'
-    ], function ($, modal) {
+    ], function (ko,$,$t, quote, modal) {
         $(function () {
-            var options = {
+            'use strict';
+            //define coupon popup
+            let options = {
                 type: 'popup',
-                responsive: false,
+                responsive: true,
+                title: $t('Coupon List'),
+                innerScroll: true,
+                buttons: [
+                    {
+                        text: $.mage.__('Ok'),
+                        class: '',
+                        click: function () {
+                            this.closeModal();
+                        }
+                    }
+                ]
             };
+            let popup = null;
             $('.coupon-wallet').on('click', function() {
-                let popup = modal(options, $('#popup-modal'));
+                popup = modal(options, $('#popup-modal'));
                 $('#popup-modal').modal(options).modal('openModal');
+            });
+
+            $('.discount-card-button').on('click', function () {
+                let action = $(this).data('beenused');
+                if (action) {
+                    // this is cancel action
+                    amCancelCoupon(this.id); return false;
+                } else {
+                    // resubmit form coupon
+                    $('#coupon_code_fake').val(this.id);
+                    $('#discount-coupon-form').submit();
+                }
+
             });
         });
     });
