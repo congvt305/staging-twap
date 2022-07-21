@@ -2,6 +2,7 @@
 namespace Eguana\Directory\Plugin\Model;
 
 use Magento\Checkout\Api\Data\ShippingInformationInterface;
+use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\StateException;
 use Magento\Quote\Api\Data\AddressInterface;
@@ -46,7 +47,12 @@ class ShippingInformationManagement
             $this->validateAddress($address);
         }
         if (!$address->getLastname() || !$address->getFirstname() || !$address->getStreet() || !$address->getTelephone()) {
-            throw new StateException(__('The shipping address is missing. Please edit the address and try again.'));
+            throw new InputException(
+                __("If you want to change the shipping method, please select your HD address. If you want to stay with CVS service, please select the CVS store again." .
+                    "<br>" .
+                    "Note. Once you select the Shipping method, please stay in your current page in case of the address data missing. Thank you"
+                )
+            );
         }
     }
 
