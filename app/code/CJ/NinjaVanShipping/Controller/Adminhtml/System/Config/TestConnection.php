@@ -58,13 +58,14 @@ class TestConnection extends Action
         try {
             // https://api-sandbox.ninjavan.co/{countryCode}/2.0/oauth/access_token
             // https://api.ninjavan.co/{countryCode}/2.0/oauth/access_token
+            $storeId = $this->getRequest()->getParam('store');
             $result = $this->jsonFactory->create();
             $country = 'my';
             $uri = $country.'/2.0/oauth/access_token';
-            $url = $this->ninjavanHelper->getNinjaVanHost() . $uri;
+            $url = $this->ninjavanHelper->getNinjaVanHost($storeId) . $uri;
             $postData = [
-                "client_id" => $this->ninjavanHelper->getNinjaVanClientId(),
-                "client_secret" => $this->ninjavanHelper->getNinjaVanClientKey(),
+                "client_id" => $this->ninjavanHelper->getNinjaVanClientId($storeId),
+                "client_secret" => $this->ninjavanHelper->getNinjaVanClientKey($storeId),
                 "grant_type" => "client_credentials"
             ];
             $this->curl->addHeader('Content-Type', 'application/json');

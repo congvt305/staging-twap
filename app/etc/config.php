@@ -190,6 +190,11 @@ return [
                     'code' => 'en_US'
                 ]
             ],
+            'advanced' => [
+                'modules_disable_output' => [
+                    'Magento_Banner' => '1'
+                ]
+            ],
             'dev' => [
                 'static' => [
                     'sign' => '1'
@@ -697,7 +702,7 @@ return [
         'Magento_GoogleTagManager' => 1,
         'Magento_ThemeGraphQl' => 1,
         'Magento_Translation' => 1,
-        'Magento_TwoFactorAuth' => 0,
+        'Magento_TwoFactorAuth' => 1,
         'Magento_ElasticsearchCatalogPermissions' => 1,
         'Magento_Ups' => 1,
         'Magento_CatalogUrlRewriteDataExporter' => 1,
@@ -728,23 +733,37 @@ return [
         'Magento_WishlistGiftCardGraphQl' => 1,
         'Magento_GiftCardGraphQl' => 1,
         'Adyen_Payment' => 0,
+        'Amasty_Acart' => 1,
         'Amasty_AdvancedReview' => 1,
         'Amasty_BannersLite' => 1,
         'Amasty_Base' => 1,
+        'Amasty_Geoip' => 1,
+        'Amasty_CheckoutCore' => 1,
+        'Amasty_CheckoutGiftWrap' => 1,
+        'Amasty_CheckoutLayoutBuilder' => 1,
+        'Amasty_CheckoutStyleSwitcher' => 1,
+        'Amasty_CheckoutThankYouPage' => 1,
         'Amasty_Conditions' => 1,
+        'Amasty_Coupons' => 1,
         'Amasty_CronScheduleList' => 1,
         'Dotdigitalgroup_Email' => 1,
+        'Amasty_Checkout' => 1,
+        'Amasty_GoogleAddressAutocomplete' => 1,
         'Amasty_ImageOptimizer' => 1,
         'Amasty_ImageOptimizerUi' => 1,
         'Amasty_InvisibleCaptcha' => 0,
         'Amasty_LazyLoad' => 1,
         'Amasty_LazyLoadUi' => 1,
+        'Amasty_LegacyTemplates' => 1,
+        'Amasty_Orderattr' => 1,
         'Amasty_PageSpeedOptimizer' => 1,
         'Amasty_PageSpeedTools' => 1,
         'Amasty_Promo' => 1,
         'Amasty_ReviewsImportExport' => 1,
         'Amasty_Rgrid' => 1,
         'Amasty_SalesRuleWizard' => 1,
+        'Amasty_SocialLogin' => 1,
+        'Amasty_ThankYouPage' => 1,
         'Amazon_Core' => 0,
         'Amazon_Login' => 0,
         'Amazon_Payment' => 0,
@@ -766,6 +785,7 @@ return [
         'CJ_Checkout' => 1,
         'CJ_Cms' => 1,
         'CJ_CouponCustomer' => 1,
+        'CJ_Coupons' => 1,
         'CJ_CustomCookie' => 1,
         'CJ_DataExport' => 1,
         'CJ_EventManager' => 1,
@@ -856,7 +876,7 @@ return [
         'Vertex_RequestLogging' => 0,
         'Vertex_AddressValidation' => 0,
         'Vertex_TaxStaging' => 1,
-        'Yotpo_Yotpo' => 0
+        'Yotpo_Yotpo' => 1
     ],
     'admin_user' => [
         'locale' => [

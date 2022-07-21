@@ -1,0 +1,256 @@
+///**
+// * @author Eguana Team
+// * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+// * Created by PhpStorm
+// * User: arslan
+// * Date: 17/6/20
+// * Time: 08:00 PM
+// */
+
+//
+//  Variables
+//  _____________________________________________
+@faq__border: 1px solid @border-color__base;
+
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    body[class^=faq] {
+        .page-title-wrapper {
+            text-align: center;
+            overflow: hidden;
+
+        }
+    }
+
+    .faqs {
+        .search-block {
+            margin-bottom: @indent__xl;
+
+            .fieldset {
+                margin-bottom: 0;
+            }
+
+            .label {
+                &:extend(.abs-visually-hidden all);
+            }
+
+            .control {
+                display: inline-block;
+                width: calc(~'100% - 100px');
+                position: relative;
+
+                input {
+                    .lib-font-size(18);
+                    border-left: none;
+                    border-right: none;
+                    border-top: none;
+                    height: 55px;
+                    .lib-input-placeholder(#a0a0a0);
+
+                    &:focus {
+                        background: transparent !important;
+                    }
+                }
+
+                .links {
+                    .lib-button-reset();
+                    .lib-button-icon(
+                        @_icon-font-content: @icon-remove,
+                        @_icon-font-size: 18px,
+                        @_icon-font-line-height: 55px,
+                        @_icon-font-color: @primary__color__lighter,
+                        @_icon-font-color-active: @primary__color__lighter,
+                        @_icon-font-color-hover: @primary__color__lighter,
+                        @_icon-font-text-hide: true
+                    );
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
+            }
+
+            .actions {
+                display: inline-block;
+                margin-left: @indent__xs;
+                width: 90px;
+                vertical-align: top;
+
+                .primary {
+                    &:extend(.abs-button-l all);
+                    .lib-button-size(
+                        @_button-padding: 0
+                    );
+                    width: 100%;
+                    height: 55px;
+
+                }
+            }
+        }
+
+        .block {
+            .item {
+                &.title {
+                    font-size: 20px;
+                    margin-bottom: 15px;
+                }
+            }
+
+            .list {
+                &:first-child {
+                    .title {
+                        .lib-css(border-top, @faq__border);
+                    }
+                }
+
+                .title {
+                    .lib-css(border-bottom, @faq__border);
+                    .lib-icon-font(
+                        @icon-down,
+                        @_icon-font-size: 14px,
+                        @_icon-font-line-height: 20px,
+                        @_icon-font-color: #5f5f5f,
+                        @_icon-font-vertical-align: top,
+                        @_icon-font-display: block,
+                        @_icon-font-position: after
+                    );
+                    color: #8e8e8e;
+                    cursor: pointer;
+                    font-size: 16px;
+                    padding: 15px 0;
+                    margin-bottom: 0;
+
+                    span {
+                        display: inline-block;
+                        font-size: 16px;
+                        width: calc(~'100% - @{indent__l}*2');
+                    }
+
+                    &:before {
+                        content: 'Q';
+                        color: @theme__color__primary;
+                        display: inline-block;
+                        font-weight: @font-weight__bold;
+                        margin-right: @indent__s;
+                        vertical-align: top;
+                    }
+
+                    &:after {
+                        font-weight: @font-weight__bold;
+                    }
+
+                    &[aria-expanded="true"] {
+                        .lib-icon-font-symbol(
+                            @icon-up,
+                            @_icon-font-position: after
+                        );
+                    }
+                }
+
+                .content {
+                    .lib-css(background, @sidebar__background-color);
+                    .lib-css(border-bottom, @faq__border);
+                    color: #787878;
+                    font-size: 16px;
+                    padding: 15px @indent__l @indent__xl @indent__s;
+
+                    &:before {
+                        content: 'A';
+                        color: @theme__color__primary-alt;
+                        display: inline-block;
+                        font-weight: @font-weight__bold;
+                        margin-right: @indent__s;
+                        vertical-align: top;
+                    }
+
+                    > div {
+                        width: calc(~'100% - @{indent__l}');
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+
+        .search-word {
+            color: @active__color;
+        }
+    }
+}
+
+
+//  Mobile
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    body[class^=faq] {
+        .page-main {
+            padding: 0;
+        }
+
+        .column.main {
+            padding: 0 10%;
+        }
+
+        .page-title-wrapper {
+            border: @indent__base solid @border-color__base;
+            border-bottom: none;
+            padding: 17% 0 0 0;
+        }
+
+        .columns {
+            border: @indent__base solid @border-color__base;
+            border-top: none;
+            padding: 0 0 17% 0;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .faqs {
+        max-width: 780px;
+        margin: 0 auto;
+
+        .search-block {
+            .control {
+                width: calc(~'100% - 200px');
+            }
+
+            .actions {
+                width: 180px;
+                margin-left: 15px;
+            }
+        }
+
+        .block {
+            .list {
+                .title {
+                    padding: 15px 0 15px @indent__s;
+                }
+
+                .content {
+                    padding-right: @indent__l*2;
+                    padding-bottom: @indent__xl*2;
+                }
+            }
+        }
+    }
+
+    body[class^=faq] {
+        .page-title-wrapper {
+            border: @indent__xl solid @border-color__base;
+            border-bottom: none;
+            padding: @indent__l @indent__l 0;
+        }
+
+        .columns {
+            border: @indent__xl solid @border-color__base;
+            border-top: none;
+            padding: 0 @indent__l @indent__l;
+        }
+    }
+}

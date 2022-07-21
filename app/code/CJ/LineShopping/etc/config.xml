@@ -16,6 +16,9 @@
                 <order_post_back>*/5 * * * *</order_post_back>
                 <fee_post_back>*/5 * * * *</fee_post_back>
             </cron>
+            <customer_integration>
+                <welcome_text>Welcome to the Brand, please click the URL to rest the Magento PW so you could activate your membership account.</welcome_text>
+            </customer_integration>
         </line_shopping>
     </default>
 </config>

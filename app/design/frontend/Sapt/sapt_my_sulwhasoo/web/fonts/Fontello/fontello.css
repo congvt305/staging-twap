@@ -1,0 +1,136 @@
+@font-face {
+    font-family: fontello;
+    src: url(fontello.eot?48567283);
+    src: url(fontello.eot?48567283#iefix) format("embedded-opentype"), url(fontello.woff?48567283) format("woff"), url(fontello.ttf?48567283) format("truetype"), url(fontello.svg?48567283#fontello) format("svg");
+    font-weight: 400;
+    font-style: normal
+}
+
+[class^=icon-] {
+    display: inline-block
+}
+
+[class*=" icon-"]:before,
+[class^=icon-]:before {
+    font-family: fontello;
+    font-style: normal;
+    font-weight: 400;
+    speak: none;
+    display: inline-block;
+    width: 1em;
+    color: inherit;
+    font-size: 1em;
+    text-align: center;
+    text-decoration: inherit;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em
+}
+
+.icon-arr-up:before {
+    content: '\e800'
+}
+
+.icon-unmute:before {
+    content: '\e801'
+}
+
+.icon-arr-down:before {
+    content: '\e802'
+}
+
+.icon-arr-up-big:before {
+    content: '\e803'
+}
+
+.icon-pause-circle:before {
+    content: '\e804'
+}
+
+.icon-arr-down-big:before {
+    content: '\e805'
+}
+
+.icon-arr-left:before {
+    content: '\e806'
+}
+
+.icon-arr-right:before {
+    content: '\e807'
+}
+
+.icon-arr-left-small:before {
+    content: '\e808'
+}
+
+.icon-arr-right-small:before {
+    content: '\e809'
+}
+
+.icon-arr-left-big:before {
+    content: '\e80a'
+}
+
+.icon-arr-right-big:before {
+    content: '\e80b'
+}
+
+.icon-globe:before {
+    content: '\e80c'
+}
+
+.icon-location2:before {
+    content: '\e80d'
+}
+
+.icon-location:before {
+    content: '\e80e'
+}
+
+/* .icon-search:before {
+    content: '\e80f'
+} */
+
+.icon-phone:before {
+    content: '\e810'
+}
+
+.icon-play:before {
+    content: '\e811'
+}
+
+.icon-play2:before {
+    content: '\e812'
+}
+
+.icon-pause2:before {
+    content: '\e813'
+}
+
+.icon-play-circle:before {
+    content: '\e814'
+}
+
+.icon-mute:before {
+    content: '\e815'
+}
+
+.icon-palyer-full:before {
+    content: '\e816'
+}
+
+.icon-youtube-play:before {
+    content: '\e817'
+}
+
+.icon-ok:before {
+    content: '\e818'
+}
+
+.icon-twitter:before {
+    content: '\e819'
+}
+
+.icon-facebook:before {
+    content: '\e81a'
+}

@@ -9,6 +9,7 @@
 namespace Amore\PointsIntegration\Model;
 
 use Amore\PointsIntegration\Model\Source\Config;
+use CJ\Middleware\Helper\Data;
 use CJ\PointRedemption\Setup\Patch\Data\AddRedemptionAttributes;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -103,6 +104,11 @@ class PosReturnData
     private $commentInterfaceFactory;
 
     /**
+     * @var Data
+     */
+    private $middlewareHelper;
+
+    /**
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -134,7 +140,8 @@ class PosReturnData
         ResourceConnection                                     $resourceConnection,
         \Magento\Rma\Model\ResourceModel\Rma\CollectionFactory $rmaCollectionFactory,
         Logger                                                 $pointsIntegrationLogger,
-        CommentInterfaceFactory                                $commentInterfaceFactory
+        CommentInterfaceFactory                                $commentInterfaceFactory,
+        Data                                                   $middlewareHelper
     )
     {
         $this->config = $config;
@@ -152,6 +159,7 @@ class PosReturnData
         $this->rmaCollectionFactory = $rmaCollectionFactory;
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
         $this->commentInterfaceFactory = $commentInterfaceFactory;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -202,14 +210,18 @@ class PosReturnData
         $itemsDiscountAmount = 0;
         $itemsGrandTotal = 0;
         $itemsPointTotal = 0;
+        $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $order->getStoreId());
 
         foreach ($rmaItems as $rmaItem) {
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() != 'bundle') {
                 $itemGrandTotal = $orderItem->getRowTotal() - $orderItem->getDiscountAmount();
-                $itemSubtotal = abs(round($orderItem->getOriginalPrice() * $rmaItem->getQtyRequested()));
-                $itemTotalDiscount = abs(round($this->getRateAmount($orderItem->getDiscountAmount(), $orderItem->getQtyOrdered(), $rmaItem->getQtyRequested())
-                    + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested())));
+                $itemSubtotal = abs($this->roundingPrice($orderItem->getOriginalPrice() * $rmaItem->getQtyRequested(), $isDecimalFormat));
+                $itemTotalDiscount = abs($this->roundingPrice(
+                    $this->getRateAmount($orderItem->getDiscountAmount(), $orderItem->getQtyOrdered(), $rmaItem->getQtyRequested())
+                    + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $rmaItem->getQtyRequested()),
+                    $isDecimalFormat
+                ));
                 $stripSku = str_replace($skuPrefix, '', $orderItem->getSku());
                 $isRedemptionItem = $orderItem->getData('is_point_redeemable');
                 $pointAccount = $orderItem->getQtyOrdered() * $orderItem->getData('point_redemption_amount');
@@ -217,10 +229,10 @@ class PosReturnData
                 $rmaItemData[] = [
                     'prdCD' => $stripSku,
                     'qty' => (int)$rmaItem->getQtyRequested(),
-                    'price' => (int)$orderItem->getOriginalPrice(),
-                    'salAmt' => (int)$itemSubtotal,
-                    'dcAmt' => (int)$itemTotalDiscount,
-                    'netSalAmt' => (int)$itemGrandTotal,
+                    'price' => $this->convertPrice($orderItem->getOriginalPrice(), $isDecimalFormat),
+                    'salAmt' => $this->convertPrice($itemSubtotal, $isDecimalFormat),
+                    'dcAmt' => $this->convertPrice($itemTotalDiscount, $isDecimalFormat),
+                    'netSalAmt' => $this->convertPrice($itemGrandTotal, $isDecimalFormat),
                     'redemptionFlag' => $isRedemptionItem ? 'Y' : 'N',
                     'pointAccount' => (int)$pointAccount
                 ];
@@ -246,7 +258,7 @@ class PosReturnData
                         $bundleChildPrice = $bundleChildrenItem->getOriginalPrice();
                     }
                     $qtyPerBundle = $bundleChildrenItem->getQtyOrdered() / $orderItem->getQtyOrdered();
-                    $itemSubtotal = abs(round($product->getPrice() * $rmaItem->getQtyRequested() * $qtyPerBundle));
+                    $itemSubtotal = abs($this->roundingPrice($product->getPrice() * $rmaItem->getQtyRequested() * $qtyPerBundle, $isDecimalFormat));
                     $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
                         $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getDiscountAmount()) :
                         $bundleChildrenItem->getDiscountAmount();
@@ -254,11 +266,11 @@ class PosReturnData
                     $product = $this->productRepository->get($bundleChildrenItem->getSku(), false, $rma->getStoreId());
                     $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getOriginalPrice()) / $qtyPerBundle;
                     $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $qtyPerBundle;
-                    $itemTotalDiscount = abs(round(
+                    $itemTotalDiscount = abs($this->roundingPrice(
                         $this->getRateAmount($bundleChildDiscountAmount, $bundleChildrenItem->getQtyOrdered(), $rmaItem->getQtyRequested() * $qtyPerBundle)
                         + (($product->getPrice() - $childPriceRatio) * $rmaItem->getQtyRequested() * $qtyPerBundle)
                         + $catalogRuledPriceRatio * $rmaItem->getQtyRequested() * $qtyPerBundle
-                    ));
+                    , $isDecimalFormat));
                     $stripSku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
 
                     $pointAccount = 0;
@@ -269,10 +281,10 @@ class PosReturnData
                     $rmaItemData[] = [
                         'prdCD' => $stripSku,
                         'qty' => (int)$rmaItem->getQtyRequested(),
-                        'price' => (int)$bundleChildPrice,
-                        'salAmt' => (int)$itemSubtotal,
-                        'dcAmt' => (int)$itemTotalDiscount,
-                        'netSalAmt' => (int)$itemSubtotal - $itemTotalDiscount,
+                        'price' => $this->convertPrice($bundleChildPrice, $isDecimalFormat),
+                        'salAmt' => $this->convertPrice($itemSubtotal, $isDecimalFormat),
+                        'dcAmt' => $this->convertPrice($itemTotalDiscount, $isDecimalFormat),
+                        'netSalAmt' => $this->convertPrice($itemSubtotal, $isDecimalFormat) - $itemTotalDiscount,
                         'redemptionFlag' => $isRedemptionItem ? 'Y' : 'N',
                         'pointAccount' => (int)$pointAccount
                     ];
@@ -284,20 +296,32 @@ class PosReturnData
                 }
             }
         }
-        $orderSubtotal = round($this->getRmaSubtotal($rma));
-        $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : round($this->getRmaGrandTotal($rma));
-        $orderDiscountAmount = round($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma));
+        $orderSubtotal = $this->roundingPrice($this->getRmaSubtotal($rma), $isDecimalFormat);
+        $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->roundingPrice($this->getRmaGrandTotal($rma), $isDecimalFormat);
+        $orderDiscountAmount = $this->roundingPrice($this->getRmaDiscountAmount($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma), $isDecimalFormat);
         $orderPointTotal = $this->getOrderPointTotal($order);
 
-        $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'salAmt');
-        $rmaItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'dcAmt');
-        $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'netSalAmt');
-        $rmaItemData = $this->priceCorrector($orderPointTotal, $itemsPointTotal, $rmaItemData, 'pointAccount');
+        $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'salAmt', $isDecimalFormat);
+        $rmaItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'dcAmt', $isDecimalFormat);
+        $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'netSalAmt', $isDecimalFormat);
+        $rmaItemData = $this->priceCorrector($orderPointTotal, $itemsPointTotal, $rmaItemData, 'pointAccount', $isDecimalFormat);
+
+        if ($isDecimalFormat) {
+            $listToFormat = ['salAmt', 'dcAmt', 'netSalAmt', 'pointAccount', 'price'];
+
+            foreach ($listToFormat as $field) {
+                foreach ($rmaItemData as $key => $value) {
+                    if (isset($value[$field]) && (is_float($value[$field]) || is_int($value[$field]))) {
+                        $rmaItemData[$key][$field] = $this->formatPrice($value[$field], $isDecimalFormat);
+                    }
+                }
+            }
+        }
 
         return $rmaItemData;
     }
 
-    public function priceCorrector($orderAmount, $itemTotalAmount, $orderItemData, $field)
+    public function priceCorrector($orderAmount, $itemTotalAmount, $orderItemData, $field, $isDecimalFormat = false)
     {
         if ($orderAmount != $itemTotalAmount) {
             $amountDifference = $orderAmount - $itemTotalAmount;
@@ -306,7 +330,7 @@ class PosReturnData
                 if ($value['price'] == 0) {
                     continue;
                 }
-                $orderItemData[$key][$field] = $value[$field] + $amountDifference;
+                $orderItemData[$key][$field] = $this->formatPrice($value[$field] + $amountDifference, $isDecimalFormat);
                 break;
             }
         }
@@ -645,5 +669,43 @@ class PosReturnData
         }
         $totalPointAmount = $bundleItem->getData('point_redemption_amount') * $bundleItem->getQtyOrdered();
         return (int)($totalPointAmount  / $totalQty);
+    }
+
+    /**
+     * @param $price
+     * @param $isDecimal
+     * @return float|string
+     */
+    public function formatPrice($price, $isDecimal = false)
+    {
+        if ($isDecimal) {
+            return number_format($price, 2, '.', '');
+        }
+        return $price;
+    }
+
+    /**
+     * @param $price
+     * @param $isDecimal
+     * @return float
+     */
+    public function roundingPrice($price, $isDecimal = false)
+    {
+        $precision = $isDecimal ? 2 : 0;
+        return round($price, $precision);
+    }
+
+    /**
+     * @param $price
+     * @param $isDecimal
+     * @return int|mixed
+     */
+    public function convertPrice($price, $isDecimal = false)
+    {
+        if ($isDecimal) {
+            return $price;
+        }
+
+        return (int)$price;
     }
 }

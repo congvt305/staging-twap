@@ -49,7 +49,7 @@ class CreditmemoService
                                                        $offlineRequested = false
     ){
         $order = $creditmemo->getOrder();
-        if ((bool)$this->ninjavanHelper->isNinjaVanEnabled() && $order->getShippingMethod() == 'ninjavan_tablerate'
+        if ((bool)$this->ninjavanHelper->isNinjaVanEnabled($order->getStoreId()) && $order->getShippingMethod() == 'ninjavan_tablerate'
             && !$order->getData('ninjavan_shipment_cancel') && $order->getStatus() == 'processing_with_shipment'
         ) {
             try {

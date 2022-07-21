@@ -245,8 +245,6 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
                 throw new \Exception('Invalid payment method.');
                 break;
         }
-        $logger = $this->getLogger();
-        $logger->info('payload request: '. json_encode($this->sdk, true));
     }
 
     /**
@@ -1017,17 +1015,5 @@ class ECPayPaymentHelper extends ECPayPaymentModuleHelper
     public function setOrderStatusEcpay($value)
     {
         $this->orderStatus['ecpay'] = $value;
-    }
-
-    /**
-     * @return Zend_Log
-     * @throws Zend_Log_Exception
-     */
-    protected function getLogger()
-    {
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/ecpay.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-        return $logger;
     }
 }

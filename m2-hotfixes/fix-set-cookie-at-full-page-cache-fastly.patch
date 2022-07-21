@@ -1,13 +1,19 @@
-diff -u a/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl b/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl
-index 3ee2rd..8349152 100755
---- a/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl	2021-10-28 13:54:47.000000000 +0530
-+++ b/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl	2022-01-23 12:16:00.295466202 +0530
-@@ -94,7 +94,7 @@
+Index: vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl b/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl
+--- a/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl	(revision 1e9fc41c8043ecaac199b934c247708854f0b9e7)
++++ b/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl	(date 1657184370130)
+@@ -94,7 +94,9 @@
      # validate if we need to cache it and prevent from setting cookie
      # images, css and js are cacheable by default so we have to remove cookie also
      if (beresp.ttl > 0s && (req.request == "GET" || req.request == "HEAD") && !req.http.x-pass ) {
 -        unset beresp.http.set-cookie;
-+        #unset beresp.http.set-cookie;
++        if (req.url !~ "lineshopping") {
++          unset beresp.http.set-cookie;
++        }
 
          # init surrogate keys
          if (beresp.http.X-Magento-Tags) {

@@ -8,4 +8,5 @@ class Logger extends \Monolog\Logger
     const FEE_POST_BACK = 'FEE POST BACK';
     const EXPORT_FEED_DATA = 'EXPORT FEED DATA';
     const LINE_COOKIE = 'COOKIE';
+    const LINE_CUSTOMER = 'CUSTOMER CREATE';
 }

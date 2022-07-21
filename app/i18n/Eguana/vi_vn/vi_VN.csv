@@ -3230,7 +3230,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "We can't update the shopping cart.","Chúng tôi không thể cập nhật giỏ mua hàng.",module,Magento_Checkout
 "One-page checkout is turned off.","One-page checkout đã tắt.",module,Magento_Checkout
 "Guest checkout is disabled.","Thanh toán như khách đã bị tắt.",module,Magento_Checkout
-"Checkout","Thanh toán",module,Magento_Checkout
+"Checkout","Thanh toán và đặt hàng",module,Magento_Checkout
 "Page not found.","Không tìm thấy trang.",module,Magento_Checkout
 "Please agree to all the terms and conditions before placing the order.","Xin vui lòng đồng ý với tất cả các điều khoản và điều kiện trước khi đặt các đơn đặt hàng.",module,Magento_Checkout
 "Something went wrong while processing your order. Please try again later.","Có lỗi xảy ra khi xử lý đơn hàng của bạn. Xin vui lòng thử lại sau.",module,Magento_Checkout
@@ -3335,7 +3335,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Ship Here","Gửi ở đây",module,Magento_Checkout
 "Ship To:","Gửi đến:",module,Magento_Checkout
 "edit","sửa",module,Magento_Checkout
-"Order Summary","Tóm tắt đơn hàng",module,Magento_Checkout
+"Order Summary","Giỏ mua hàng",module,Magento_Checkout
 "View and Edit Cart","Giỏ mua hàng",module,Magento_Checkout
 "View Details","Xem chi tiết",module,Magento_Checkout
 "Field ","Trường ",module,Magento_Checkout
@@ -3400,8 +3400,8 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Carrier Title","Tiêu đề vận chuyển",module,Magento_Checkout
 "Next","Tiếp theo",module,Magento_Checkout
 "Sorry, no quotes are available for this order at this time","Vui lòng điền các thông tin ở mục trên!",module,Magento_Checkout
-"Item in Cart","Sản phẩm trong giỏ",module,Magento_Checkout
-"Items in Cart","Sản phẩm trong giỏ",module,Magento_Checkout
+"Item in Cart","sản phẩm",module,Magento_Checkout
+"Items in Cart","sản phẩm",module,Magento_Checkout
 "Require Customer To Be Logged In To Checkout","Yêu cầu khách hàng đăng nhập trước khi thanh toán",module,Magento_Checkout
 "Maximum Display Recently Added Item(s)","Màn hình hiển thị tối đa sản phẩm mới thêm gần đây",module,Magento_Checkout
 "of","của",module,Magento_Checkout
@@ -9971,7 +9971,7 @@ or more. <a href=""https://financing.paypal.com/ppfinportal/content/forrester"" 
 "Medium","Trung bình",module,Magento_Paypal
 "Large","Lớn",module,Magento_Paypal
 "Responsive","Responsive",module,Magento_Paypal
-"Checkout","Thanh toán",module,Magento_Paypal
+"Checkout","Thanh toán và đặt hàng",module,Magento_Paypal
 "Pay","Pay",module,Magento_Paypal
 "Buy Now","Buy Now",module,Magento_Paypal
 "PayPal","PayPal",module,Magento_Paypal
@@ -11087,7 +11087,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Click <a href=""%1"">here</a> to see the review.","Bấm vào <a href=""%1""> đây</a> để xem các bài đánh giá.",module,Magento_Review
 "Product: ""%1"" reviewed by: %2","Sản phẩm: ""%1"" được đánh giá bởi: %2",module,Magento_Review
 "Pending Reviews RSS","Đang chờ giải quyết giá RSS",module,Magento_Review
-"Reviews %1","đánh Giá %1",module,Magento_Review
+"Reviews %1","Đánh giá %1",module,Magento_Review
 "Reviews","Các đánh giá",module,Magento_Review
 "The review has been deleted.","đánh giá đã bị xóa.",module,Magento_Review
 "Something went wrong  deleting this review.","Một cái gì đó đã đi sai xoá nhận xét này.",module,Magento_Review
@@ -11165,7 +11165,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Status","Trạng thái",module,Magento_ReviewStaging
 "Title","Tiêu đề",module,Magento_ReviewStaging
 "Nickname","Tên của bạn",module,Magento_ReviewStaging
-"Review","Đánh giá",module,Magento_ReviewStaging
+"Review","Đánh giá chi tiết",module,Magento_ReviewStaging
 "Visibility","Hiển thị",module,Magento_ReviewStaging
 "Type","Loại",module,Magento_ReviewStaging
 "Product","Sản phẩm",module,Magento_ReviewStaging
@@ -13380,7 +13380,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "Assign","Chỉ định",module,Magento_SharedCatalog
 "Unassign","Bỏ chỉ định",module,Magento_SharedCatalog
 "Fixed","Cố định",module,Magento_SharedCatalog
-"Discount","Chiết khấu",module,Magento_SharedCatalog
+"Discount","Khuyến mãi",module,Magento_SharedCatalog
 "Apply","Áp dụng",module,Magento_SharedCatalog
 "Proceed to Store Configuration?","Proceed to Store Configuration?",module,Magento_SharedCatalog
 "You've made changes into the shared catalog. If you leave this page now, the changes will be lost.","You've made changes into the shared catalog. If you leave this page now, the changes will be lost.",module,Magento_SharedCatalog
@@ -13540,7 +13540,7 @@ configuring in shared catalogs will not be restricted to customers.",module,Mage
 "message","tin nhắn",module,Magento_Shipping
 "Email has not been sent","Email chưa được gửi",module,Magento_Shipping
 "Payment &amp; Shipping Method","Thanh toán &amp; phương pháp vận chuyển",module,Magento_Shipping
-"Payment Information","Thông tin thanh toán",module,Magento_Shipping
+"Payment Information","Hình thức thanh toán",module,Magento_Shipping
 "The order was placed using %1.","Đơn hàng được đặt bằng cách sử dụng %1.",module,Magento_Shipping
 "Shipping Information","Thông tin vận chuyển",module,Magento_Shipping
 "Total Shipping Charges","Tổng Chi phí vận chuyển",module,Magento_Shipping
@@ -14514,7 +14514,7 @@ Select a different range to add a new Future Update.",module,Magento_Staging
 "(Incl. Tax)","(Bao gồm cả thuế)",module,Magento_Tax
 "Order Total Excl. Tax","Đơn hàng tổng số chưa bao gồm thuế",module,Magento_Tax
 "Order Total Incl. Tax","Đơn hàng tổng số đã bao gồm thuế",module,Magento_Tax
-"Order Total","Tổng đơn đặt hàng",module,Magento_Tax
+"Order Total","Tổng đơn hàng",module,Magento_Tax
 "You will be charged for","You will be charged for",module,Magento_Tax
 "Warning tax configuration can result in rounding errors. ","Cảnh cấu hình báo thuế có thể gây ra lỗi làm tròn. ",module,Magento_Tax
 "Warning tax discount configuration might result in different discounts,module,Magento_Tax
@@ -16214,7 +16214,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Transaction has been canceled","Transaction has been canceled",module,Magento_Worldpay
 "Transaction has been declined","Giao dịch đã bị từ chối",module,Magento_Worldpay
 "The response type is incorrect. Verify the type and try again.","The response type is incorrect. Verify the type and try again.",module,Magento_Worldpay
-"Summary","Điểm đánh giá (từ 1 đến 5)",theme,frontend/Magento/blank
+"Summary","Đánh giá chung",theme,frontend/Magento/blank
 "Account Dashboard","Trang tổng quan tài khoản",theme,frontend/Magento/blank
 "Account Information","Thông tin tài khoản",theme,frontend/Magento/blank
 "Address Book","Sổ địa chỉ",theme,frontend/Magento/blank
@@ -16442,3 +16442,20 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Please login into your account to continue shopping","Vui lòng đăng nhập để tiếp tục đổi thưởng"
 "Point service is not available now, please try later. Sorry for the inconvenient","Lỗi hệ thống, vui lòng thử lại sau"
 "Your point balance is insufficient.","Điểm tích luỹ thành viên của bạn không đủ để đổi quà"
+"of customers recommend this product","Khách hàng khuyên dùng"
+"reviews","Nhận xét"
+"Top customer reviews","Nhận xét từ khách hàng"
+"I recommend this product","Khách hàng khuyên dùng"
+"people found this helpful","người thấy hữu ích"
+"Was this review helpful?","Bạn thấy nhận xét có hữu ích không ?"
+" star"," sao"
+" stars"," sao"
+"Add your photo","Chèn hình ảnh"
+"Share your thoughts with other customers","Chia sẻ đánh giá của bạn"
+"Write a review","Viết đánh giá"
+"No reviews","Không có nhận xét"
+"%1 people found this helpful", "%1 người thấy hữu ích"
+"Have","Có"
+"Pay with bank","Thanh toán qua thẻ nội địa"
+"Pay with wallet","Thanh toán qua ví điện tử"
+"Pay with visa","Thanh toán qua thẻ quốc tế"

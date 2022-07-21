@@ -13,6 +13,7 @@
             <module name="Eguana_OrderDeliveryMessage"/>
             <module name="Eguana_Base"/>
             <module name="Magento_Sales"/>
+            <module name="Amasty_CheckoutCore"/>
         </sequence>
     </module>
 </config>

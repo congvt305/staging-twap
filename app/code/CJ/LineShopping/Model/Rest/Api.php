@@ -22,6 +22,7 @@ class Api
     const LINE_SHOPPING_SUCCESS_MESSAGE = 'OK';
     const PRODUCT_TYPE_NORMAL = 'normal';
     const TIME_ZONE_8 = 'Asia/Hong_Kong';
+
     /**
      * @var Config
      */
@@ -451,5 +452,63 @@ class Api
             $feeTime,
             self::TIME_ZONE_8
         );
+    }
+
+    /**
+     * @param $lineId
+     * @param $resetPasswordUrl
+     * @param $websiteId
+     * @return array|string
+     */
+    public function sendMessageToLine($lineId, $resetPasswordUrl, $websiteId = null) {
+        try {
+            $endpointUrl = $this->config->getEndpointUrl($websiteId);
+            $secretKey = $this->config->getSecretKey($websiteId);
+            $welcomeText = $this->config->getWelcomeText($websiteId);
+            if (!$endpointUrl || !$secretKey) {
+                $body = $lineId . ' ' . $resetPasswordUrl;
+                throw new Exception('Missing configuration Endpoint Url or Secret Key');
+            }
+            $data = [
+                'bURI' => Config::XML_PATH_LINE_CUSTOMER_URL_MULTICAST,
+                'bBody' => [
+                    'to' => [$lineId],
+                    'messages' => [
+                        [
+                            'type' => 'text',
+                            'text' => $welcomeText . ' ' . $resetPasswordUrl
+                        ]
+                    ]
+                ]
+            ];
+            $body = json_encode($data);
+            $secretKeyHash = base64_encode(hash_hmac('sha256', $body, $secretKey, true));
+            $response = $this->restClient->sendMessageClient($endpointUrl, $secretKeyHash, $body);
+            $statusCode = $response->getStatusCode();
+            if ($statusCode != Response::HTTP_OK) {
+                throw new \LogicException('Response error with status code: ' . $statusCode);
+            }
+
+            $result = $response->getBody()->getContents();
+
+            $this->logger->addInfo(Logger::LINE_CUSTOMER,
+                [
+                    'request_data' => $body,
+                    'result' => $result
+                ]);
+            return $result;
+        } catch (\Exception $exception) {
+            $this->logger->addError(Logger::LINE_CUSTOMER,
+                [
+                    'request_data' => $body,
+                    'error' => $exception->getMessage()
+                ]);
+        } catch (GuzzleException $exception) {
+            $this->logger->addError(Logger::LINE_CUSTOMER, [
+                'request_data' => $body,
+                'error' => $exception->getMessage()
+            ]);
+        }
+        return [];
     }
 }

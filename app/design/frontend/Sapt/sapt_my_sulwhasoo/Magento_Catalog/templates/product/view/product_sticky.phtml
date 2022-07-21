@@ -1,0 +1,36 @@
+<?php
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
+$_product = $block->getProduct();
+    $productImage = $_imagehelper->init($_product, 'category_page_grid')->constrainOnly(FALSE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(72);
+    $productImageUrl = $productImage->getUrl();
+    ?>
+    <div class="sticky-product">
+        <div class="sticky-product-images">
+            <div class="sticky-image">
+                <img class="default_image" src="<?php echo $productImageUrl; ?>" alt="<?php echo $productImage->getLabel(); ?>"/>
+            </div>
+            <div class="sticky-detail">
+                <h2 class="product-name"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name'); ?></h2>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        require([
+            'jquery'
+        ], function ($) {
+            var p_scrolled = false;
+            var offset = $('.box-tocart').offset().top + 400;
+            $(window).scroll(function(){
+                if(offset < $(window).scrollTop() && !p_scrolled){
+                    p_scrolled = true;
+                    $(".product-info-main").addClass("sticky");
+                }
+                if(offset >= $(window).scrollTop() && p_scrolled){
+                    p_scrolled = false;
+                    $(".product-info-main").removeClass("sticky");
+                }
+            });
+        });
+    </script>
+

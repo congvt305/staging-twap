@@ -31,6 +31,14 @@
             font-size: 12px;
         }
     }
+
+    .catalog-product-view.page-layout-1column .visual-aids-header-container > svg {
+        width: unset;
+
+        & + .visual-aids-header {
+            margin: 0 0 0 6px;
+        }
+    }
 }
 
 //
@@ -75,6 +83,14 @@
                     display: block;
                 }
             }
+        }
+    }
+
+    .catalog-product-view.page-layout-1column .visual-aids-container {
+        width: unset;
+
+        & > svg + .visual-aids-header {
+            margin-left: 4px;
         }
     }
 }
