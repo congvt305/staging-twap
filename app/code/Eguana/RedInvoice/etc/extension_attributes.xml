@@ -18,4 +18,15 @@
         <attribute code="ward" type="string"/>
         <attribute code="road_name" type="string"/>
     </extension_attributes>
+
+    <extension_attributes for="Magento\Quote\Api\Data\AddressInterface">
+        <attribute code="is_apply" type="string"/>
+        <attribute code="company_name" type="string"/>
+        <attribute code="tax_code" type="string"/>
+        <attribute code="email" type="string"/>
+        <attribute code="state" type="string"/>
+        <attribute code="city" type="string"/>
+        <attribute code="ward" type="string"/>
+        <attribute code="road_name" type="string"/>
+    </extension_attributes>
 </config>

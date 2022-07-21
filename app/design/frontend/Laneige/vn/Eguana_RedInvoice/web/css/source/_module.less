@@ -12,8 +12,31 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-    .red-invoice-form {
+    .checkout-button {
+        float: right;
+    }
+    #delivery_form {
+        display:none;
+    }
+    #show-red-invoice-button .checkout-button {
+        margin-top: 25px;
+    }
 
+    .line-through {
+        border-bottom: 2px solid #000000;
+        padding: 25px 0 20px 20px;
+    }
+    .delivery-message .line-through {
+        margin-bottom: 20px;
+    }
+
+    .message-title {
+        color: #000000;
+        font-weight: 600;
+        font-size: 1.5rem;
+    }
+    .red-invoice-form {
+        margin-top:20px;
         #red-invoice-note {
             padding: 25px 0 0 0;
             text-align: left;
