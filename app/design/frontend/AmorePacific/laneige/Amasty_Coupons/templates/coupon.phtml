@@ -57,7 +57,7 @@ $couponListViewModel = $block->getData('couponListViewModel');
                     <?php
                     foreach ($couponCodes as $couponCode) :
                         ?>
-                        <div>
+                        <div class="amCoupons">
                             <input type="hidden"  class="amCouponsCode" value="<?= $block->escapeHtml($couponCode);?>"/>
                             <?= $block->escapeHtml($couponCode);?>
                             <a href="#" onclick="javascript: amCancelCoupon('<?= $block->escapeHtml($couponCode);?>'); return false;"><?= $block->escapeHtml(__('Cancel'));?></a>
