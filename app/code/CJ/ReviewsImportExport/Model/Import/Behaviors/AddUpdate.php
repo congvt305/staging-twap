@@ -14,9 +14,12 @@ class AddUpdate extends \Amasty\ReviewsImportExport\Model\Import\Behaviors\AddUp
      */
     protected function saveRating($reviewId, $reviewData, $isUpdate)
     {
-        $voteId = $isUpdate
-            ? $this->ratingOptionCollection->getItemByColumnValue('review_id', $reviewId)->getVoteId()
-            : null;
+        $rateOptionData = $this->ratingOptionCollection->getItemByColumnValue('review_id', $reviewId);
+        if ($rateOptionData && $isUpdate) {
+            $voteId = $rateOptionData->getVoteId();
+        } else {
+            $voteId = null;
+        }
 
         $optionIds = isset($reviewData['option_ids']) && $reviewData['option_ids']
             ? explode(',', $reviewData['option_ids'])
