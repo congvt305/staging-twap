@@ -63,7 +63,9 @@
 
                 &:after {
                     position: absolute;
-                    right: 15px;
+                    right: 5px;
+                    color: #222;
+                    font-size: 18px;
                 }
 
                 &.ui-state-active {
@@ -81,13 +83,11 @@
         -webkit-overflow-scrolling: touch;
         .lib-css(transition, left .3s, 1);
         height: 100%;
-        left: -80%;
-        left: calc(~'-1 * (100% - @{active-nav-indent})');
+        left: -100%;
         overflow: auto;
         position: fixed;
         top: 0;
-        width: 80%;
-        width: calc(~'100% - @{active-nav-indent}');
+        width: 100%;
 
         .switcher {
             display: none;
@@ -361,7 +361,6 @@
             }
 
             .submenu {
-                padding-left: @indent__xs !important;
 
                 > li {
                     a {
@@ -385,7 +384,6 @@
     .nav-sections {
         .lib-vendor-prefix-flex-shrink(0);
         .lib-vendor-prefix-flex-basis(auto);
-        margin-bottom: @indent__base;
     }
 
     .nav-sections-item-title {
@@ -454,7 +452,7 @@
             .submenu {
                 .lib-list-inline();
 
-                .active {
+                .level1.active {
                     > a {
                         color: @navigation-desktop-level0-item__active__color;
                     }

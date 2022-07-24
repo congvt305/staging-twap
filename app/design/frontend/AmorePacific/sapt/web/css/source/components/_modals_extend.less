@@ -12,9 +12,9 @@
 //  ---------------------------------------------
 
 @modal-title__color: @primary__color__lighter;
-@modal-title__border: 1px solid @primary__color__light;
+@modal-title__border: 1px solid #ddd;
 
-@modal-popup-title__font-size: 20px;
+@modal-popup-title__font-size: 24px;
 @modal-popup-title-mobile__font-size: 18px;
 
 @modal-slide__first__indent-left: 44px;
@@ -68,9 +68,8 @@
 
         .modal-title {
             .lib-css(border-bottom, @modal-title__border);
-            .lib-css(font-weight, @font-weight__regular);
-            .lib-css(padding-bottom, @indent__s);
-            font-family: 'buri', @font-family__sans-serif;
+            .lib-css(font-weight, 700);
+            .lib-css(padding-bottom, 5px);
             margin-bottom: 0;
             font-size: @modal-popup-title__font-size;
             word-wrap: break-word;

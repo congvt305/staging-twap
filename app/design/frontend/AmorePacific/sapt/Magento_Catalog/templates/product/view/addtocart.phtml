@@ -30,34 +30,58 @@ if ($block->getData('disable_addtocart_bundle')) {
 <?php if ($_product->isSaleable()): ?>
     <div class="box-tocart">
         <div class="fieldset">
-            <?php if ($block->shouldRenderQuantity() && !$_product->getData('offline')): ?>
-                <div class="field-wrapper">
-                    <div class="field qty">
-                        <label class="label" for="qty"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
-                        <div class="control">
-                            <button onclick="var qty_el = document.getElementById('qty'); var qty = qty_el.value; if( !isNaN( qty ) &amp;&amp; qty > 1 ) qty_el.value--; return false;" class="qty-decrease qty-selector" >
-                                <span class="icon"><?= $block->escapeHtml(__('collapse')) ?></span>
-                            </button>
-                            <input type="number"
-                                   name="qty"
-                                   id="qty"
-                                   min="0"
-                                   value="<?= $block->getProductDefaultQty() * 1 ?>"
-                                   title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
-                                   class="input-text qty"
-                                   readonly
-                                   data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
-                            />
-                            <button onclick="var qty_el = document.getElementById('qty'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;return false;" class="qty-increase qty-selector">
-                                <span class="icon"><?= $block->escapeHtml(__('expand')) ?></span>
-                            </button>
+            <div class="field-wrapper-qty">
+                <?= $block->getChildHtml('', true) ?>
+                <?php if ($block->shouldRenderQuantity() && !$_product->getData('offline')): ?>
+                    <div class="field-wrapper">
+                        <div class="field qty">
+                            <label class="label" for="qty"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
+                            <div class="control">
+                                <button onclick="var qty_el = document.getElementById('qty'); var qty = qty_el.value; if( !isNaN( qty ) &amp;&amp; qty > 1 ) qty_el.value--; return false;" class="qty-decrease qty-selector disable" >
+                                    <span class="icon"><?= $block->escapeHtml(__('collapse')) ?></span>
+                                </button>
+                                <input type="number"
+                                       name="qty"
+                                       id="qty"
+                                       min="0"
+                                       value="<?= $block->getProductDefaultQty() * 1 ?>"
+                                       title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
+                                       class="input-text qty"
+                                       readonly
+                                       data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                                />
+                                <button onclick="var qty_el = document.getElementById('qty'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;return false;" class="qty-increase qty-selector">
+                                    <span class="icon"><?= $block->escapeHtml(__('expand')) ?></span>
+                                </button>
+                                <script type="text/javascript">
+                                    require([
+                                        "jquery"
+                                    ],function($) {
+                                        $('input.qty').on('change', function(e){
+                                            console.log($(this).val());
+                                            if ($(this).val() == 1) {
+                                                $('button.qty-decrease').addClass('disable');
+                                            } else {
+                                                $('button.qty-decrease').removeClass('disable');
+                                            }
+                                        })
+                                    })
+                                </script>
+                            </div>
                         </div>
                     </div>
+                <?php endif; ?>
+            </div>
+            <?php if ($_product->getTypeId() === 'simple'): ?>
+                <?php if($_product->getData('prdvl') && $_product->getAttributeText('vlunt')): ?>
+                <div class="custom-attribute">
+                    <input type="text" disabled=disabled value="<?= $_product->getData('prdvl') . $_product->getAttributeText('vlunt'); ?>" />
                 </div>
-            <?php endif; ?>
+                <?php endif ?>
+            <?php endif ?>
             <div class="actions">
                 <?php if($outOfStock): ?>
-                    <button type="submit" title="<?= $block->escapeHtmlAttr($buttonTitle) ?>" class="action tocart disabled" id="product-addtocart-button">
+                    <button type="submit" title="<?= $block->escapeHtmlAttr($buttonTitle) ?>" class="action primary tocart disabled" id="product-addtocart-button">
                         <span><?php /* @escapeNotVerified */ echo __('Out of stock'); ?></span>
                     </button>
                 <?php else: ?>
@@ -71,10 +95,9 @@ if ($block->getData('disable_addtocart_bundle')) {
                             title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
                             class="action primary tocheckout"
                             id="product-addtocheckout-button" onclick="return setCheckoutURL()">
-                        <span><?php /* @escapeNotVerified */ echo __('Go to shopping cart'); ?></span>
+                        <span><?php /* @escapeNotVerified */ echo __('Buy Now'); ?></span>
                     </button>
                 <?php endif; ?>
-                <?= $block->getChildHtml('', true) ?>
             </div>
         </div>
     </div>
@@ -84,13 +107,13 @@ if ($block->getData('disable_addtocart_bundle')) {
             <?php if($_product->getData('offline')):?>
                 <a href="<?= $block->escapeUrl($storeLocatorHelper->getStoreLocatorUrl()) ?>"
                    title="<?= $block->escapeHtml(__('Find a store')) ?>"
-                   class="action action-offline">
+                   class="action primary action-offline">
                     <span><?= $block->escapeHtml(__('Find a store')) ?></span>
                 </a>
             <?php else :?>
                 <button type="submit"
                         title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
-                        class="action tocart disabled"
+                        class="action primary tocart disabled"
                         id="product-addtocart-button" disabled>
                     <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
                 </button>

@@ -39,24 +39,44 @@
         form {
             .store-search {
                 margin-bottom: 0;
-
+                width: 100%;
+                position: relative;
                 .label {
                     &:extend(.abs-visually-hidden all);
                 }
 
                 .control {
                     display: inline-block;
-                    width: calc(~'100% - 60px') !important;
+                    width: 100%!important;
                     float: none !important;
+                    max-width: 350px;
 
                     input {
                         height: @indent__xl !important;
+                        padding: 0 50px 0 0;
+                        width: 100%;
+                        max-width: 350px;
+                        border: none;
+                        border-bottom: 2px solid #000;
+                        &::-moz-placeholder {
+                            color: #666;
+                        }
+                        &::-webkit-input-placeholder {
+                            color: #666;
+                        }
+                        &:-ms-input-placeholder {
+                            color: #666;
+                        }
+                        &:focus {
+                            border: none;
+                            border-bottom: 2px solid #000;
+                        }
                     }
                 }
             }
 
             .store-fields {
-                margin-bottom: 0;
+                margin-bottom: 20px;
             }
 
             .stores-result {
@@ -89,13 +109,32 @@
                     }
 
                     .button {
-                        .lib-button-primary(
-                            @_button-padding: 0 @indent__s,
-                            @_button-background: @primary__color__light,
-                            @_button-border: 1px solid @primary__color__light,
-                            @_button-border-hover: 1px solid @primary__color__light,
-                            @_button-border-active: 1px solid @primary__color__light
-                        )
+                        position: absolute;
+                        right: 30px;
+                        top: 7px;
+                        width: 24px;
+                        height: 24px;
+                        background-color: #fff;
+                        border: none;
+                        span {
+                            display: none;
+                        }
+                        &:before {
+                            content: "\e80f";
+                            font-size: 20px;
+                            color: #222;
+                            margin-top: 0;
+                            font-family: fontello;
+                            font-style: normal;
+                            font-weight: 400;
+                            width: 24px;
+                            height: 24px;
+                            text-align: center;
+                            line-height: 1em;
+                            position: absolute;
+                            top: 3px;
+                            right: -1px;
+                        }
                     }
                 }
 
@@ -192,7 +231,13 @@
             }
 
             .stores-listing-ul {
+                padding-right: 0!important;
+                width: 100%;
+                max-width: 380px;
+                margin-left: 0!important;
+                max-height: 588px;
                 li.store-list {
+                    max-width: 350px;
                     border-bottom: 1px solid #ddd;
 
                     .store-title {
@@ -336,7 +381,7 @@
 //  Mobile
 //  _____________________________________________
 
-.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+@media (max-width: 991px) {
     .stw-stores-locator {
         margin-left: -@layout__width-xs-indent;
         margin-right: -@layout__width-xs-indent;
@@ -371,6 +416,7 @@
                     &.items {
                         height: 100% !important;
                         margin-bottom: 40px;
+                        max-height: 100%;
                     }
 
                     li.store-list {
@@ -551,7 +597,7 @@
 //  Desktop
 //  _____________________________________________
 
-.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+@media (min-width: 992px) {
     .main-store-block {
         .lib-vendor-prefix-display(flex);
     }
@@ -570,6 +616,12 @@
             box-sizing: border-box;
             padding-right: @indent__base;
             width: 34%;
+            .store-list {
+                width: 100%;
+                overflow: initial;
+                height: auto;
+                padding-right: 0;
+            }
         }
 
         .desktop-map_container {
@@ -642,6 +694,7 @@
             box-sizing: border-box;
             width: 100%;
             height: 900px;
+            max-height: 700px;
         }
 
         .description {
@@ -655,7 +708,6 @@
         .stores-list {
             .stores-listing-ul {
                 height: 772px !important;
-                overflow-y: auto !important;
 
                 li.store-list {
                     border-bottom: 1px solid #ddd;
@@ -770,3 +822,65 @@
     }
 }
 
+
+.stores {
+	.main-store-block {
+		.store_list_left {
+			width: 28%;
+			max-width: 380px;
+			padding-right: 0px;
+			.stores-list {
+				padding-top: 33px;
+				padding-right: 5px;
+				.stores-listing-ul {
+					padding-right: 21px;
+					li.store-list {
+						margin-bottom: 24px;
+						.store-title {
+							font-size: 18px;
+							color: #959595;
+                            font-weight: 500;
+						}
+						p {
+							font-size: 16px;
+							color: #959595;
+						}
+					}
+					li.store-list.selected-store {
+						.store-title {
+							font-size: 18px;
+							font-weight: 500;
+							color: #222;
+						}
+						p {
+							font-size: 16px;
+							color: #222;
+						}
+					}
+					.store-info {
+						padding-bottom: 24px;
+						padding-top: 0px;
+					}
+                    &::-webkit-scrollbar {
+                        width: 4px;
+                    }
+                    &::-webkit-scrollbar-track {
+                        background: #f1f1f1;
+                    }
+                    &::-webkit-scrollbar-thumb {
+                        background: #959595;
+                        &:hover {
+                            background: rgb(110, 110, 110);
+                        }
+                    }
+				}
+			}
+		}
+		.desktop-map_container {
+			width: 72%;
+			padding-left: 20px;
+			max-width: 980px;
+            max-height: 700px;
+		}
+	}
+}

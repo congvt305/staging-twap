@@ -41,7 +41,9 @@
             display: none;
         }
     }
-
+    .products.wrapper ~ .toolbar .sale_filter {
+        display: none;
+    }
     .toolbar-products {
         padding: 0;
         text-align: center;
@@ -60,11 +62,23 @@
                 display: inline-block;
             }
         }
+        .sale_filter {
+            float: left;
+            margin-top: 8px;
+            .label {
+                font-size: 16px;
+                font-family: Theinhardt;
+                top: 2px;
+            }
+        }
     }
 
     .sorter {
-        display: none;
-        padding: 4px 0 0;
+        padding: 0;
+        margin-bottom: 15px;
+        .sorter-label {
+            display: none;
+        }
 
         .products.wrapper ~ .toolbar & {
             display: none;
@@ -73,12 +87,22 @@
         .sorter-action {
             position: relative;
             top: -2px;
+            display: none;
         }
     }
 
     .sorter-options {
         margin: 0 0 0 7px;
         width: auto;
+        text-align: left;
+        border-bottom-color: #ddd;
+        text-indent: 0;
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+        border-width: 2px;
+        color: @black__color;
+        padding-left: 0;
     }
 
     .sorter-action {

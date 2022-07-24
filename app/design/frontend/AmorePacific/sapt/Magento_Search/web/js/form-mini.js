@@ -13,7 +13,8 @@ define([
     'matchMedia',
     'jquery-ui-modules/widget',
     'jquery-ui-modules/core',
-    'mage/translate'
+    'mage/translate',
+    'mage/cookies'
 ], function ($, _, mageTemplate, mediaCheck) {
     'use strict';
 
@@ -46,7 +47,9 @@ define([
             searchLabel: '[data-role=minisearch-label]',
             searchClose: '[data-role=minisearch-close]',
             isExpandable: false,
-            suggestionDelay: 300
+            suggestionDelay: 300,
+            searcTermUrlTemplate:
+                '<li class="<%- data.up_and_down %> jsSearchTermRank" title="<%- data._query_text %>" ><span class="rank"><%- data.rank %></span> <%- data.query_text %></li>',
         },
 
         /** @inheritdoc */
@@ -56,6 +59,7 @@ define([
                 selected: null
             };
             this.autoComplete = $(this.options.destinationSelector);
+            this.searchHistory = $(this.options.destinationHistory);
             this.searchForm = $(this.options.formSelector);
             this.submitBtn = this.searchForm.find(this.options.submitBtn)[0];
             this.searchLabel = this.searchForm.find(this.options.searchLabel);
@@ -78,6 +82,23 @@ define([
                 }.bind(this)
             });
 
+            var _self = this;
+            $(document).on('click','.jsSearchTermRank',function(){
+                $('#search').val($(this).attr('title'));
+                if ($(this).attr('title') !== '' ) {
+                    $.cookie('ap_search_type', '인기검색어', { expires: 1, path: '/' });
+                    _self.submitBtn.disabled = false;
+                }
+            });
+
+            $(document).on('click','.jsRecentTerm',function(){
+                $('#search').val($(this).attr('title'));
+                if ($(this).attr('title') !== '' ) {
+                    $.cookie('ap_search_type', '최근검색어', { expires: 1, path: '/' });
+                    _self.submitBtn.disabled = false;
+                }
+            });
+
             this.searchLabel.on('click', function (e) {
                 // allow input to lose its' focus when clicking on label
                 if (this.isActive()) {
@@ -86,7 +107,7 @@ define([
             }.bind(this));
 
             this.searchClose.on('click', function (e) {
-                this.setActiveState(false);
+                $("html").removeClass("is-open-search");
             }.bind(this));
 
             this.element.on('blur', $.proxy(function () {
@@ -101,6 +122,9 @@ define([
                         this.element.trigger('focus');
                     }
                     this.autoComplete.hide();
+                    this.searchHistory.hide();
+                    $('#search_history').show();
+                    $('#search_trending').show();
                     this._updateAriaHasPopup(false);
                 }, this), 250);
             }, this));
@@ -129,12 +153,35 @@ define([
             return this.searchLabel.hasClass('active');
         },
 
+        _setSearchTermElement: function (data) {
+            var source = this.options.searcTermUrlTemplate;
+            var template = mageTemplate(source);
+
+            var html = '';
+            $.each(data, function (index, element) {
+                html += template({
+                    data: element
+                });
+            });
+
+            $('#search_trending_list').html(html);
+        },
+
         /**
          * Sets state of the search field to provided value.
          *
          * @param {Boolean} isActive
          */
         setActiveState: function (isActive) {
+            var _self = this;
+
+            $.getJSON(this.options.searcTermUrl, function(data) {
+                if (data.length === 0) {
+                    return false;
+                }
+                _self._setSearchTermElement(data);
+            });
+
             var searchValue;
 
             this.searchForm.toggleClass('active', isActive);
@@ -146,6 +193,7 @@ define([
                         width: "385px",
                         opacity: 1
                     });
+                    this.searchHistory.show();
                 }
             } else {
                 if (!this.isExpandable) {
@@ -231,6 +279,8 @@ define([
          * @return {Boolean} Default return type for any unhandled keys
          */
         _onKeyDown: function (e) {
+            $.cookie('ap_search_type', '직접입력', { expires: 1, path: '/' });
+
             var keyCode = e.keyCode || e.which;
 
             switch (keyCode) {
@@ -251,6 +301,9 @@ define([
                 case $.ui.keyCode.ESCAPE:
                     this._resetResponseList(true);
                     this.autoComplete.hide();
+                    this.searchHistory.hide();
+                    $('#search_history').show();
+                    $('#search_trending').show();
                     break;
 
                 case $.ui.keyCode.ENTER:
@@ -339,14 +392,24 @@ define([
                             .css(clonePosition)
                             .show()
                             .find(this.options.responseFieldElements + ':visible');
-
+                        this.searchHistory.show();
                         this.element.removeAttr('aria-activedescendant');
+
+                        $('#search_history').hide();
+                        $('#search_trending').hide();
+
 
                         if (this.responseList.indexList.length) {
                             this._updateAriaHasPopup(true);
                         } else {
                             this._updateAriaHasPopup(false);
                         }
+
+                        dropdown.find(`.qs-option-name:contains(${value})`)
+                            .html((idx,old) => old
+                                .split(value)
+                                .join(`<span class="highlighted">${value}</span>`)
+                            );
 
                         this.responseList.indexList
                             .on('click', function (e) {
@@ -369,6 +432,9 @@ define([
                     } else {
                         this._resetResponseList(true);
                         this.autoComplete.hide();
+                        this.searchHistory.hide();
+                        $('#search_history').show();
+                        $('#search_trending').show();
                         this._updateAriaHasPopup(false);
                         this.element.removeAttr('aria-activedescendant');
                     }
@@ -376,6 +442,9 @@ define([
             } else {
                 this._resetResponseList(true);
                 this.autoComplete.hide();
+                this.searchHistory.hide();
+                $('#search_history').show();
+                $('#search_trending').show();
                 this._updateAriaHasPopup(false);
                 this.element.removeAttr('aria-activedescendant');
             }

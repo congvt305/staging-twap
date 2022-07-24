@@ -31,25 +31,38 @@
                 <!-- /ko -->
             </strong>
 
-            <!-- ko if: options.length -->
-            <div class="product options">
-                <div data-role="content" class="content">
-                    <dl class="product options list">
-                        <!-- ko foreach: { data: options, as: 'option' } -->
-                        <dt class="label"><!-- ko text: option.label --><!-- /ko --></dt>
-                        <dd class="values">
-                            <!-- ko if: Array.isArray(option.value) -->
-                                <span data-bind="html: option.value.join('<br>')"></span>
-                            <!-- /ko -->
-                            <!-- ko ifnot: Array.isArray(option.value) -->
-                                <span data-bind="text: option.value"></span>
-                            <!-- /ko -->
-                        </dd>
-                        <!-- /ko -->
-                    </dl>
-                </div>
+            <!-- ko if: is_point_redemption -->
+            <div class="member-gift">
+                <span>Member Gift</span>
             </div>
             <!-- /ko -->
+
+            <div  class="product-options">
+                <dl>
+                <!-- ko if: ap_size -->
+                    <dt class="label" data-bind="i18n: 'size'"></dt>
+                    <dd>
+                        <span data-bind="text: ap_size"/>
+                    </dd>
+                <!-- /ko -->
+                <!-- ko if: options.length -->
+                    <!-- ko foreach: { data: options, as: 'option' } -->
+                    <dt class="label"><!-- ko text: option.label --><!-- /ko --></dt>
+                    <dd class="values">
+                        <!-- ko if: Array.isArray(option.value) -->
+                        <span data-bind="html: option.value.join('<br>')"></span>
+                        <!-- /ko -->
+                        <!-- ko if: (!Array.isArray(option.value) && option.option_type == 'file') -->
+                        <span data-bind="html: option.value"></span>
+                        <!-- /ko -->
+                        <!-- ko if: (!Array.isArray(option.value) && option.option_type != 'file') -->
+                        <span data-bind="text: option.value"></span>
+                        <!-- /ko -->
+                    </dd>
+                    <!-- /ko -->
+                <!-- /ko -->
+                </dl>
+            </div>
 
             <div class="product-item-pricing">
                 <!-- ko if: canApplyMsrp -->
@@ -59,66 +72,34 @@
                     <span class="value" data-bind="i18n: 'See price before order confirmation.'"></span>
                 </div>
                 <!-- /ko -->
+
+                <div class="details-qty qty">
+                    <label class="label" data-bind="i18n: 'Qty', attr: {
+                           for: 'cart-item-'+item_id+'-qty'}"></label>
+                    <span data-bind="attr: {
+                           'data-cart-item': item_id,
+                           'data-item-qty': qty,
+                           'data-cart-item-id': product_sku
+                           }, text: qty"
+                          class="item-qty cart-item-qty"/>
+
+                </div>
                 <!-- ko ifnot: canApplyMsrp -->
                 <!-- ko foreach: $parent.getRegion('priceSidebar') -->
                     <!-- ko template: {name: getTemplate(), data: item.product_price, as: 'price'} --><!-- /ko -->
                 <!-- /ko -->
                 <!-- /ko -->
-
-                <div class="details-qty qty">
-                    <label class="label" data-bind="i18n: 'Qty', attr: {
-                           for: 'cart-item-'+item_id+'-qty'}"></label>
-                    <!-- ko if: gift -->
-                    <input data-bind="attr: {
-                           id: 'cart-item-'+item_id+'-qty',
-                           'data-cart-item': item_id,
-                           'data-item-qty': qty,
-                           'data-cart-item-id': product_sku
-                           }, value: qty"
-                           type="number"
-                           size="4"
-                           readonly
-                           class="item-qty cart-item-qty">
-                    <!-- /ko -->
-                    <!-- ko ifnot: gift -->
-                    <input data-bind="attr: {
-                           id: 'cart-item-'+item_id+'-qty',
-                           'data-cart-item': item_id,
-                           'data-item-qty': qty,
-                           'data-cart-item-id': product_sku
-                           }, value: qty"
-                           type="number"
-                           size="4"
-                           class="item-qty cart-item-qty">
-                    <!-- /ko -->
-                    <button data-bind="attr: {
-                           id: 'update-cart-item-'+item_id,
-                           'data-cart-item': item_id,
-                           title: $t('Update')
-                           }"
-                            class="update-cart-item"
-                            style="display: none">
-                        <span data-bind="i18n: 'Update'"></span>
-                    </button>
-                </div>
             </div>
 
             <div class="product actions">
-                <!-- ko ifnot: gift -->
-                <!-- ko if: is_visible_in_site_visibility -->
-                <div class="primary">
-                    <a data-bind="attr: {href: configure_url, title: $t('Edit item')}" class="action edit">
-                        <span data-bind="i18n: 'Edit'"></span>
-                    </a>
-                </div>
-                <!-- /ko -->
                 <div class="secondary">
+                    <!-- ko ifnot: gift -->
                     <a href="#" data-bind="attr: {'data-cart-item': item_id, title: $t('Remove item')}"
                        class="action delete">
                         <span data-bind="i18n: 'Remove'"></span>
                     </a>
+                    <!-- /ko -->
                 </div>
-                <!-- /ko -->
             </div>
         </div>
     </div>
