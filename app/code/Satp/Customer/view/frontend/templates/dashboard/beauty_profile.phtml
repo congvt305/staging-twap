@@ -1,0 +1,22 @@
+<?php
+/** @var \Satp\Customer\Block\Widget\BeautyProfile $block */
+$values = $block->getFormValue();
+?>
+
+<?php if (!empty($values)): ?>
+    <div class="block block-dashboard-beauty-profile">
+        <div class="block-title">
+            <strong><?= __('Beauty Profile') ?></strong>
+        </div>
+        <div class="block-content">
+            <?php $options = $block->getOptions(); ?>
+            <ul>
+                <?php foreach ($options as $option) : ?>
+                    <?php if (!empty($option->getValue()) && in_array($option->getValue(), $values)): ?>
+                        <li><?= $block->escapeHtml(__($option->getLabel())) ?></li>
+                    <?php endif; ?>
+                <?php endforeach;?>
+            </ul>
+        </div>
+    </div>
+<?php endif; ?>

@@ -1,0 +1,27 @@
+<?php
+/** @var AjaxWishlistStatus $viewModel */
+
+use Satp\AjaxWishlist\ViewModel\AjaxWishlistStatus;
+
+?>
+<?php $viewModel = $block->getData('moduleStatusViewModel'); ?>
+<?php if ($viewModel->moduleStatus()): ?>
+    <script type="text/x-magento-init">
+        {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "ajaxwishlist": {
+                        "component": "addAjaxWishlist"
+                    }
+                }
+            },
+             "wishlistAction": {}
+        }
+
+
+    }
+
+
+    </script>
+<?php endif; ?>

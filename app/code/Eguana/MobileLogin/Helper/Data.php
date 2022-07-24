@@ -20,6 +20,8 @@ use Magento\Store\Model\ScopeInterface;
 class Data extends AbstractHelper
 {
     const XML_MOBILE_LOGIN_ENABLE = 'MobileLogin/general/mobilelogin_mod_enable';
+    const MINIMUM_MOBILE_NUMBER_DIGITS = 'customerregistraion/general/minimum_mobile_number_digits';
+    const MAXIMUM_MOBILE_NUMBER_DIGITS = 'customerregistraion/general/maximum_mobile_number_digits';
 
     /**
      * Check if module is enabled or not
@@ -32,6 +34,34 @@ class Data extends AbstractHelper
             self::XML_MOBILE_LOGIN_ENABLE,
             ScopeInterface::SCOPE_WEBSITE,
             $store
+        );
+    }
+
+    /**
+     * Get minimum mobile number digits allowed
+     * Get minimum mobile number digits allowed set in setting from admin setting
+     *
+     * @return null|int
+     */
+    public function getMinimumMobileNumberDigits()
+    {
+        return (int)$this->scopeConfig->getValue(
+            self::MINIMUM_MOBILE_NUMBER_DIGITS,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
+     * Get maximum mobile number digits allowed
+     * Get maximum mobile number digits allowed set in setting from admin setting
+     *
+     * @return null|int
+     */
+    public function getMaximumMobileNumberDigits()
+    {
+        return (int)$this->scopeConfig->getValue(
+            self::MAXIMUM_MOBILE_NUMBER_DIGITS,
+            ScopeInterface::SCOPE_WEBSITE
         );
     }
 }

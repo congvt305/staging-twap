@@ -13,7 +13,8 @@ var config = {
             validateName: 'Amore_CustomerRegistration/js/validateNameRule',
             checkbacodevalue: 'Amore_CustomerRegistration/js/check-bacode-value',
             verifybacode: 'Amore_CustomerRegistration/js/verify-bacode',
-            checkboxallselect: 'Amore_CustomerRegistration/js/checkbox-select-terms'
+            checkboxallselect: 'Amore_CustomerRegistration/js/checkbox-select-terms',
+            validateNumber: 'Amore_CustomerRegistration/js/validateNumber'
         }
     },
     config: {
