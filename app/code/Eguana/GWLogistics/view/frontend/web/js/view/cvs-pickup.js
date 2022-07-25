@@ -69,6 +69,10 @@ define([
             this.convertAddressType(quote.shippingAddress());
 
             this.syncWithShipping();
+            this.isCvsPickupSelected.subscribe(function () {
+                //set select shipping null for cvs to avoid miss data when change back home delivery tab
+                pickupLocationsService.selectForShipping({});
+            }, this);
         },
 
         /**
