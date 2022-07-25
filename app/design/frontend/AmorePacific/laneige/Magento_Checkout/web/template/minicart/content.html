@@ -61,7 +61,7 @@
             <div class="actions">
                 <div class="secondary">
                     <a class="action viewcart" data-bind="attr: {href: shoppingCartUrl}">
-                        <span translate="'View and Edit Cart'"/>
+                        <span translate="'Proceed to Checkout'"/>
                     </a>
                 </div>
             </div>
@@ -69,25 +69,9 @@
     </ifnot>
 
     <div class="actions" if="getCartParam('summary_count')">
-        <div class="primary" if="getCartParam('possible_onepage_checkout')">
-            <button
-                    id="top-cart-btn-checkout"
-                    type="button"
-                    class="action primary checkout"
-                    data-action="close"
-                    data-bind="
-                        attr: {
-                            title: $t('Proceed to Checkout')
-                        },
-                        click: closeMinicart()
-                    "
-                    translate="'Proceed to Checkout'"
-            />
-            <div data-bind="html: getCartParam('extra_actions')"></div>
-        </div>
         <div class="secondary">
             <a class="action viewcart" data-bind="attr: {href: shoppingCartUrl}">
-                <span translate="'View and Edit Cart'"/>
+                <span translate="'Proceed to Checkout'"/>
             </a>
         </div>
     </div>
