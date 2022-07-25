@@ -33,7 +33,7 @@ class Info extends Template
      * @var Json
      */
     protected $json;
-    
+
     /**
      * @var CustomerPointsSearch
      */
@@ -123,7 +123,7 @@ class Info extends Template
         {
             return 0;
         }else{
-            return $customerPointsInfo['data']['availablePoint'];
+            return isset($customerPointsInfo['data']) ? $customerPointsInfo['data']['availablePoint'] ?? 0 : 0;
         }
     }
 }
