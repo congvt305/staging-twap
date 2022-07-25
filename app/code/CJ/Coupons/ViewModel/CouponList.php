@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace CJ\Coupons\ViewModel;
 
+use Magento\Framework\Exception\LocalizedException;
+
 /**
  * Class CouponList
  */
@@ -65,10 +67,14 @@ class CouponList implements \Magento\Framework\View\Element\Block\ArgumentInterf
      * Get rule collection
      *
      * @return \Magento\SalesRule\Model\ResourceModel\Rule\Collection
+     * @throws LocalizedException
      */
     public function getRuleCollection(): \Magento\SalesRule\Model\ResourceModel\Rule\Collection
     {
         $rules = $this->ruleCollection->create();
+        if (!$this->customerSession->isLoggedIn()) {
+            throw new LocalizedException(__('Custom is not logged in.'));
+        }
         $customer = $this->customerSession->getCustomer();
         $websiteId = $customer->getWebsiteId();
         $page = ($this->request->getParam('p')) ? $this->request->getParam('p') : 1;
