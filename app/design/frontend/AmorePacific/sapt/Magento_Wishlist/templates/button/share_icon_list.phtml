@@ -1,0 +1,65 @@
+<?php
+/** @var \Eguana\Share\Helper\Data $helper */
+/** @var \Magento\Wishlist\Block\Customer\Wishlist\Button $block */
+
+try {
+    $helper = $this->helper('Eguana\Share\Helper\Data');
+    $result = true;
+}catch (\Exception $e){
+    $result = false;
+}
+?>
+<?php if($result != false):
+    $wishlist = $block->getWishlist();
+    $share_enabled = $helper->getShareIconEnabled();
+    $url = $this->getUrl('wishlist/shared/index', ['code' => $wishlist->getSharingCode()]);
+?>
+<?php if($share_enabled): ?>
+    <div class="info_shares_wrap">
+        <div class="info_shares">
+            <a href="javascript: void(0);" class="modal-share-button" type="button"><span><?= __('Share'); ?></span></a>
+            <div class="toggle_shares" id="modal-share">
+                <h2><?= __('Share The Wishlist') ?></h2>
+                <p><?= __('Please select a sharing route') ?></p>
+                <ul class="social-links">
+                    <?php if($helper->getWhatappEnable()):?>
+                        <li class="shares">
+                            <a class="link icon whatapp" href="<?php echo $helper->getWhatappUrl().$url;?>" title="<?= __('Opens new window');?>" data-action="share/whatsapp/share"  target="_blank">
+                                <span><?= __('Facebook')?></span>
+                            </a>
+                        </li>
+                    <?php endif;?>
+                    <?php if($helper->getFacebookEnable()):?>
+                        <li class="shares">
+                            <a class="link icon facebook" href="#" title="<?= __('Opens new window');?>" onclick="window.open('<?php echo $helper->getFacebookUrl().$url;?>','Facebook','width=1030,height=650');" target="_blank">
+                                <span><?= __('Facebook')?></span>
+                            </a>
+                        </li>
+                    <?php endif;?>
+                    <?php if($helper->getInstagramEnable()):?>
+                        <li class="shares">
+                            <a class="link icon instagram" href="<?php echo $helper->getInstagramUrl().$url;?>" target="_blank" title="<?= __('Opens new window');?>">
+                                <span><?= __('Instagram')?></span>
+                            </a>
+                        </li>
+                    <?php endif;?>
+                    <?php if($helper->getGoogleEnable()): ?>
+                        <li class="shares">
+                            <a class="link icon google" href="<?php echo $helper->getGoogleUrl().$url;?>" target="_blank" title="<?= __('Opens new window');?>">
+                                <span><?= __('Google')?></span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Eguana_Share/js/detail_shares": {}
+            }
+        }
+    </script>
+<?php endif;?>
+<?php endif;?>

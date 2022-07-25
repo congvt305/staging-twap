@@ -48,6 +48,7 @@ define([
 
             $(document).on('click touch touchstart', removeButton, function (event) {
                 $(event.target).closest('div.message').slideUp();
+                $(event.target).closest('.message-visible').removeClass('has_message');
             });
         },
 

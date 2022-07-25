@@ -12,6 +12,7 @@
                 <argument translate="true" name="title" xsi:type="string">Create an Account</argument>
             </action>
         </referenceBlock>
+        <!--
         <referenceBlock name="breadcrumbs">
             <action method="addCrumb">
                 <argument name="crumbName" xsi:type="string">Home</argument>
@@ -29,5 +30,8 @@
                 </argument>
             </action>
         </referenceBlock>
+        -->
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+        <referenceBlock name="persistent.remember.me" remove="true"/>
     </body>
 </page>

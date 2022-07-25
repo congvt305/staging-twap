@@ -5,19 +5,26 @@
  * See COPYING.txt for license details.
  */
 -->
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="search_result_list">
             <action method="setTemplate">
                 <argument name="template" xsi:type="string">Magento_Catalog::product/search-list.phtml</argument>
             </action>
         </referenceBlock>
+
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">search</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Search</item>
+                    <item name="label" xsi:type="string" translate="true">Search</item>
+                </argument>
+            </action>
+        </referenceBlock>
+
+        <move element="page.main.title" destination="content" before="-"/>
+
         <referenceBlock name="catalogsearch.product.addto.compare" remove="true"/>
-        <referenceContainer name="columns">
-            <container name="div.sidebar.main" htmlTag="div" htmlClass="sidebar sidebar-main" after="main">
-                <container name="sidebar.main" as="sidebar_main" label="Sidebar Main">
-                </container>
-            </container>
-        </referenceContainer>
     </body>
 </page>

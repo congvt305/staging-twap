@@ -1,0 +1,24 @@
+<div class="package-option">
+    <div class="inner">
+        <div class="step-sub-tit">
+            <p class="tit"><span data-bind="i18n: 'Package Option'"></span></p>
+            <p class="note"><span data-bind="i18n: 'All goods of this order will be package delivered if you picked Gift Package'"></span></p>
+        </div>
+        <form class="package-option-form">
+            <div class="fieldset">
+                <div class="field">
+                    <div class="control">
+                        <div class="rdo-set" css="'active': economyPackage()" data-bind="click: function() { selectEconomyPackage()}">
+                            <input type="radio" id="economy-package" name="package_type" class="input-rdo" checked="true" value="economy-package">
+                            <label for="economy-package"><span data-bind="i18n: 'Economy Package'"></span></label>
+                        </div>
+                        <div class="rdo-set" css="'active': giftPackage()" data-bind="click: function() { selectGiftPackage()}">
+                            <input type="radio" id="gift-package" name="package_type" class="input-rdo" value="gift-package">
+                            <label for="gift-package"><span data-bind="i18n: 'Gift Package'"></span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

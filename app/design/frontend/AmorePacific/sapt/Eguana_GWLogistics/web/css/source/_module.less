@@ -48,22 +48,6 @@
         }
     }
 
-    .table-checkout-shipping-method {
-        tbody {
-            tr:not([id=blackcat]):not([id=eguanadhl]):not(.row-error) {
-                &:extend(.abs-visually-hidden all);
-
-                td > * {
-                    &:extend(.abs-visually-hidden all);
-                }
-            }
-
-            td:not(.col-radio):not(.col-note) {
-                &:extend(.abs-visually-hidden all);
-            }
-        }
-    }
-
     #delivery-method-selector {
         //  @codingStandardsIgnoreEnd
         .lib-vendor-prefix-display(flex);

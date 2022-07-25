@@ -4,8 +4,8 @@
  * See COPYING.txt for license details.
  */
 ?>
-<div data-bind="scope: 'messages'">
-    <div class="message-visible">
+<div class="message-main" data-bind="scope: 'messages'">
+    <div class="message-visible"  data-bind="css: { has_message: messages().messages && messages().messages.length > 0 ? true : false }">
         <!-- ko if: cookieMessages && cookieMessages.length > 0 -->
         <div role="alert" data-bind="foreach: { data: cookieMessages, as: 'message' }" class="messages">
             <div data-bind="attr: {
@@ -50,3 +50,4 @@
             }
     }
 </script>
+

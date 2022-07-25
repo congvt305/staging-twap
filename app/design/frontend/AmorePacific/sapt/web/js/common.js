@@ -1,12 +1,13 @@
 /**
  * Created by Eguana
  */
-require([
+ require([
     'jquery',
     'swiper',
     'matchMedia',
+    'mage/translate',
     'domReady!',
-],function ($,Swiper, mediaCheck) {
+],function ($,Swiper, mediaCheck, $t) {
     /**
      * Mobile Navigation slideToggle
      * @author Hyuna Ju
@@ -20,15 +21,38 @@ require([
             });
         }
     }
-    
+
+    $('.bundle-button-toggle').click(function () {
+        $(this).next().slideToggle(300);
+        $(this).toggleClass('active');
+    });
+
+    $('.qty_control .increaseQty, .qty_control .decreaseQty').on("click",function(){
+        var $this = $(this);
+        var ctrl = ($(this).attr('id').replace('-upt','')).replace('-dec','');
+        var currentQty = $("#cart-"+ctrl+"-qty").val();
+        if($this.hasClass('increaseQty')){
+            var newAdd = parseInt(currentQty)+parseInt(1);
+            $("#cart-"+ctrl+"-qty").val(newAdd);
+            $('.form.form-cart .action.update').click();
+        }else{
+            if(currentQty>1){
+                var newAdd = parseInt(currentQty)-parseInt(1);
+                $("#cart-"+ctrl+"-qty").val(newAdd);
+                $('.form.form-cart .action.update').click();
+            }
+        }
+    });
+
+
     /**
      * Top Button
      * @author Hyuna Ju
      * @version 1.0
      */
     // Initial value setting
-    var position = $('.footer.content').offset().left + 20;
-    $('.back-top').css('right',position);
+    var position = $('.footer.content').offset().left - 90;
+    $('.box_totop').css('right',position);
     if ($(window).scrollTop() > 100) {
         $('.back-top').slideDown();
     }
@@ -47,32 +71,11 @@ require([
 
     $(window).resize(function () {
         if (!isApplication()) {
-            position = $('.footer.content').offset().left + 20;
-            $('.back-top').css('right',position);
+            position = $('.footer.content').offset().left - 90;
+            $('.box_totop').css('right',position);
         }
     });
 
-    /**
-     * Layered Navigation
-     * @author Soojin An
-     * @version 1.0
-     */
-    if ($('.block.filter').offset()) {
-        $('.filter-option').click(function () {
-            if ($(this).hasClass('active')) {
-                $(this).toggleClass('active');
-            } else {
-                $('.filter-option').removeClass('active');
-                $(this).toggleClass('active');
-            }
-        });
-        
-        $('body').click(function (e) {
-            if (!$('.filter-option').has(e.target).length) {
-                $('.filter-option').removeClass('active');
-            }
-        });
-    }
 
     /**
      *  Add Placeholder
@@ -152,7 +155,7 @@ require([
      */
 
     if ($('.catalog-product-view .product-info-wrapper').offset()) {
-        var detailPosition = $('.product.info.detailed').offset().top;
+        var detailPosition = $('.product-info-scroll').offset().top;
 
         $('.product-info-main .attribute.ingredients .title').click(function () {
             $(this).toggleClass('active');
@@ -165,9 +168,9 @@ require([
     }
 
 
-    if ($('.product.info.detailed').offset()) {
-        var Titles = $('.product.info.detailed .titles');
-        var Contents = $('.product.info.detailed .contents');
+    if ($('.product-info-scroll').offset()) {
+        var Titles = $('.product-info-scroll .titles');
+        var Contents = $('.product-info-scroll .contents');
         var titleLength = Titles.find('.title').length;
 
         Titles.find('.title:first-child').addClass('active');
@@ -189,8 +192,8 @@ require([
 
         var stickyDetailTab = function (e) {
             var scrollTop = $(window).scrollTop();
-            var stickyDetailed = $('.product.info.detailed').offset().top;
-            var DetailedEnd = stickyDetailed + $('.product.info.detailed').outerHeight();
+            var stickyDetailed = $('.product-info-scroll').offset().top;
+            var DetailedEnd = stickyDetailed + $('.product-info-scroll').outerHeight();
 
             if (scrollTop > stickyDetailed && scrollTop < DetailedEnd) {
                 Titles.addClass('sticky');
@@ -227,7 +230,7 @@ require([
             var scrollPosition = $(window).height() + $(window).scrollTop();
             var scrollHeight = $(document).height();
             var tabTitlesPosition = Titles.outerHeight();
-            var detailedPosition = $('.product.info.detailed').offset().top;
+            var detailedPosition = $('.product-info-scroll').offset().top;
 
             if (currentScroll > detailedPosition) {
                 var cur = scrollItems.map(function () {
@@ -252,21 +255,74 @@ require([
         });
     }
 
+    if ($('.products-crosssell .product-items').offset()) {
+        mediaCheck({
+            media: '(min-width: 768px)',
+            entry: function () {
+                if ($('.products-crosssell .product-items .item').length < 5) {
+                    $('.block.crosssell .content, .products-crosssell .product-items').addClass('align-items');
+                } else {
+                    var crosssellSlider = new Swiper('.products-crosssell', {
+                        slidesPerView: 5,
+                        freeMode: false,
+                        autoHeight: true,
+                        direction: 'horizontal',
+                        loop: true,
+                        spaceBetween: 20,
+                        autoplay: {
+                            delay: 1000,
+                        },
+                        breakpoints: {
+                            768: {
+                                slidesPerView: 3
+                            }
+                        },
+                        navigation: {
+                            nextEl: '.block.crosssell .swiper-button-next',
+                            prevEl: '.block.crosssell .swiper-button-prev'
+                        }
+                    });
+                }
+            },
+            exit: function () {
+                if ($('.products-crosssell .product-items .item').length < 2) {
+                    $('.products-crosssell .product-items').addClass('align-items');
+                } else {
+                    var crosssellSlider = new Swiper('.products-crosssell', {
+                        slidesPerView: 1.7,
+                        spaceBetween: 16,
+                        freeMode: false,
+                        autoHeight: true,
+                        direction: 'horizontal',
+                        loop: false,
+                        navigation: {
+                            nextEl: '.block.crosssell .swiper-button-next',
+                            prevEl: '.block.crosssell .swiper-button-prev'
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     if ($('.product-config-items').offset()) {
         if ($('.products-related .product-items').offset()) {
             mediaCheck({
                 media: '(min-width: 768px)',
                 entry: function () {
-                    if ($('.products-related .product-items .item').length < 4) {
+                    if ($('.products-related .product-items .item').length < 5) {
                         $('.block.related .content, .products-related .product-items').addClass('align-items');
                     } else {
                         var relatedSlider = new Swiper('.products-related', {
-                            slidesPerView: 4,
+                            slidesPerView: 5,
                             freeMode: false,
                             autoHeight: true,
                             direction: 'horizontal',
-                            loop: false,
-                            threshold: 30,
+                            loop: true,
+                            spaceBetween: 20,
+                            autoplay: {
+                                delay: 1000,
+                            },
                             breakpoints: {
                                 768: {
                                     slidesPerView: 3
@@ -284,12 +340,12 @@ require([
                         $('.products-related .product-items').addClass('align-items');
                     } else {
                         var relatedSlider = new Swiper('.products-related', {
-                            slidesPerView: 2,
+                            slidesPerView: 1.7,
+                            spaceBetween: 16,
                             freeMode: false,
                             autoHeight: true,
                             direction: 'horizontal',
                             loop: false,
-                            threshold: 30,
                             navigation: {
                                 nextEl: '.block.related .swiper-button-next',
                                 prevEl: '.block.related .swiper-button-prev'
@@ -299,6 +355,7 @@ require([
                 }
             });
         }
+
 
         if ($('.products-upsell .product-items').offset()) {
             mediaCheck({
@@ -313,7 +370,10 @@ require([
                             autoHeight: true,
                             direction: 'horizontal',
                             loop: false,
-                            threshold: 30,
+                            spaceBetween: 20,
+                            autoplay: {
+                                delay: 1000,
+                            },
                             breakpoints: {
                                 768: {
                                     slidesPerView: 3
@@ -331,12 +391,12 @@ require([
                         $('.block.upsell .content, .products-upsell .product-items').addClass('align-items');
                     } else {
                         var upsellSlider = new Swiper('.products-upsell', {
-                            slidesPerView: 2,
+                            slidesPerView: 1.7,
                             freeMode: false,
                             autoHeight: true,
                             direction: 'horizontal',
                             loop: false,
-                            threshold: 30,
+                            spaceBetween: 16,
                             navigation: {
                                 nextEl: '.block.upsell .swiper-button-next',
                                 prevEl: '.block.upsell .swiper-button-prev'
@@ -371,4 +431,46 @@ require([
         }
         return isMobile;
     }
+
+    /**
+     * Footer Arcodian
+     * @author Kenn
+     * @version 1.0
+     */
+    $('.footer_top_nav .footer_nav .nav_item > h5').click(function(){
+        $(this).parent().toggleClass('_active');
+        $(this).parent().find('> ul').slideToggle();
+    });
+
+
+    /**
+     * My account - my page
+     * @author Kenn
+     * @version 2.0
+     */
+    $(document).ready(function(){
+        if($('.sidebar #account-nav').length){
+            var myPageHtml = $('.sidebar .account-nav-content .items').html();
+            var myPageContainer = '<div class="mobile-my-page"><div class="mobile-my-page-title">' + $t('My page') + '</div><div class="mobile-my-page-content"></div></div>';
+            $('.page-wrapper .sections.nav-sections').after(myPageContainer);
+            $('.mobile-my-page-content').append(myPageHtml);
+
+            $('.mobile-my-page .mobile-my-page-title').click(function(){
+                $('.mobile-my-page .mobile-my-page-content').slideToggle();
+                $('.mobile-my-page').toggleClass('_active');
+            });
+        }
+    });
+
+    /**
+     * Mobile Privacy Policy, T&C, Membership T&C, FAQ, Shipping Info Nav Accordion
+     * @author Luke
+     * @version 2.0
+     */
+    $('.cms-2columns-sidebar > h2').click(function(){
+        if($(window).width() < 768){
+            $(this).parent().toggleClass('_active');
+            $(this).parent().find('ul').slideToggle();
+        }
+    });
 });

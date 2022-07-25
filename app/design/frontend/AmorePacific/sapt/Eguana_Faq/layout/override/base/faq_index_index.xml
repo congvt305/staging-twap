@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link rel="canonical" src="{{baseUrl}}faq" src_type="url"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Eguana\Faq\Block\Faq" name="faq.list" template="Eguana_Faq::faq.phtml"/>
+        </referenceContainer>
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string" translate="true">Legal Information</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Legal Information</item>
+                    <item name="label" xsi:type="string" translate="true">Legal Information</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}faq</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string" translate="true">Frequently Asked Questions</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Frequently Asked Questions</item>
+                    <item name="label" xsi:type="string" translate="true">Frequently Asked Questions</item>
+                </argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

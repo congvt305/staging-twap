@@ -134,6 +134,8 @@
             @_icon-font-color-active: @minicart-icons-color
         );
 
+        z-index: 200;
+
         .block-minicart {
             .lib-css(padding, @indent__xl @minicart__padding-horizontal 15px);
 
@@ -385,6 +387,52 @@
             }
         }
     }
+    .minicart-wrapper {
+        vertical-align: middle;
+        line-height: 24px;
+        .action.showcart {
+            &,
+            &.active {
+                &:before {
+                    font-size: 20px;
+                    color: #222;
+                    background: url(../images/icon_cart.svg) 50% 50% no-repeat transparent;
+                    background-size: contain;
+                    content: "";
+                    width: 24px;
+                    height: 24px;
+                    margin-left: 0;
+                }
+            }
+
+            .text {
+                .lib-visually-hidden-reset();
+                font-size: 11px;
+                line-height: 1.6;
+                vertical-align: top;
+                display: none;
+            }
+
+            .counter.qty {
+                background: #b17c5c;
+                color: #fff;
+                font-size: 9px;
+                font-weight: 700;
+                height: 15px;
+                min-width: auto;
+                line-height: 15px;
+                margin: 0;
+                padding: 0;
+                width: 15px;
+                position: absolute;
+                top: 0;
+                right: -8px;
+                &.empty {
+                    display: none;
+                }
+            }
+        }
+    }
 }
 
 //
@@ -392,12 +440,16 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .minicart-wrapper .action.showcart::before, .minicart-wrapper .action.showcart.active::before {
+        background-size: 24px;
+        width: 32px;
+    }
     .minicart-wrapper {
         float: right;
 
         .action.showcart {
-            padding-right: @indent__xs;
-            padding-bottom: @indent__xs;
+            padding-right: 0;
+            padding-bottom: 0;
 
             .counter {
                 &.qty {
@@ -422,6 +474,7 @@
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
     .minicart-wrapper {
+        vertical-align: middle;
         .block-minicart {
             width: 290px;
         }
@@ -435,52 +488,3 @@
 }
 
 
-//
-//  Desktop
-//  _____________________________________________
-
-.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    .minicart-wrapper {
-        vertical-align: middle;
-
-        .action.showcart {
-            &,
-            &.active {
-                &:before {
-                    display: none;
-                }
-            }
-
-            .text {
-                .lib-visually-hidden-reset();
-                font-size: 11px;
-                line-height: 1.6;
-                vertical-align: top;
-
-            }
-
-            .counter.qty {
-                background: transparent;
-                color: @active__color;
-                font-size: 11px;
-                font-weight: @font-weight__bold;
-                height: auto;
-                min-width: auto;
-                line-height: inherit;
-                margin: 0;
-                padding: 0;
-                vertical-align: top;
-
-                &:before {
-                    content: '(';
-                    line-height: 1.6;
-                }
-
-                &:after {
-                    content: ')';
-                    line-height: 1.6;
-                }
-            }
-        }
-    }
-}

@@ -42,6 +42,7 @@
     </form>
 </div>
 
+<?php if ($block->getRequest()->getModuleName() != 'ajaxcart'): ?>
 <script type="text/x-magento-init">
     {
         "[data-role=priceBox][data-price-box=product-id-<?= $block->escapeHtml($_product->getId()) ?>]": {
@@ -51,3 +52,14 @@
         }
     }
 </script>
+<?php else: ?>
+    <script type="text/x-magento-init">
+    {
+        ".content-quickview [data-role=priceBox][data-price-box=product-id-<?= $block->escapeHtml($_product->getId()) ?>]": {
+            "priceBox": {
+                "priceConfig":  <?= /* @noEscape */ $block->getJsonConfig() ?>
+            }
+        }
+    }
+</script>
+<?php endif; ?>

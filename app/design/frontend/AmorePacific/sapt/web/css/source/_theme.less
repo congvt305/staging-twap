@@ -15,7 +15,7 @@
 //  Layout variables
 //  _____________________________________________
 
-@layout__max-width: 1140px;
+@layout__max-width: 1440px;
 @layout-column__sidebar-width: 3;
 
 //
@@ -43,27 +43,36 @@
 //  Headings
 //  ---------------------------------------------
 
-@heading__font-family__base: 'buri';
+@heading__font-family__base: 'Theinhardt';
 @heading__font-weight__base: @font-weight__regular;
 @heading__color__base: @primary__color__darker;
 @heading__margin-top__base: 0;
 @heading__margin-bottom__base: @indent__base;
 
 @h1__margin-bottom__desktop: @heading__margin-bottom__base;
+@h1__font-size: 40px;
+@h1__line-height: 40px;
+@h1__font-size-desktop: 46px;
 
-@h2__font-size: 25px;
-@h2__margin-top: @heading__margin-top__base;
+@h2__font-weight: @heading__font-weight__base;
+@h2__line-height: 34px;
 
-@h3__margin-top: 0;
-@h3__margin-bottom: @heading__margin-bottom__base;
+@h3__font-size: 30px;
+@h3__font-weight: @font-weight__regular;
+@h3__margin-top: @indent__s;
+@h3__line-height: 36px;
 
-@h4__font-size: 18px;
+@h4__font-size: 28px; // 14px
 @h4__font-weight: @font-weight__regular;
+@h4__line-height: 33px;
 
-@h5__font-size: 18px;
-@h5__font-weight: @font-weight__regular;
+@h5__font-size: 24px;
+@h5__font-weight: @heading__font-weight__base;
+@h5__line-height: 26px;
 
-@h6__font-size: 18px;
+@h6__font-size: 20px;
+@h6__font-weight: @font-weight__regular;
+@h6__line-height: 26px;
 
 //
 //  Links
@@ -78,7 +87,7 @@
 //  _____________________________________________
 
 @button__shadow: none;
-@button__font-size: 15px;
+@button__font-size: 16px;
 @button__line-height: 38px;
 @button__border-radius: 0;
 @button__padding: 0 24px;
@@ -121,7 +130,7 @@
 //
 //  Navigation variables
 //  _____________________________________________
-@navigation__background: @primary__color;
+@navigation__background: #fff;
 @navigation-level0-item__color: #d5d5d5;
 @navigation-level0-item__border: 1px solid #414141;
 @navigation-level0-item__padding: 12px @indent__xl 12px 15px;
@@ -190,7 +199,7 @@
 //  Form variables
 //  _____________________________________________
 @form-element-input__height: 50px;
-@form-element-input__border-color: #ccc;
+@form-element-input__border-color: #ddd;
 @form-element-input-placeholder__color: #aaa;
 @form-element-input__color: @primary__color__lighter;
 @form-element-input__font-size: 14px;
@@ -213,7 +222,7 @@
 @form-fieldset-legend__width: 100%;
 @form-fieldset-legend__color: @primary__color__lighter;
 @form-element-input__background-clip: border-box;
-@select__background: transparent url('../images/select-bg-silver.svg') no-repeat 100% 60%;
+@select__background: transparent url('../images/select-bg-silver.svg') no-repeat 99% 60%;
 @select__padding: 0 @indent__m 0 0;
 @select__border: 2px solid @primary__color;
 @select__height: 35px;

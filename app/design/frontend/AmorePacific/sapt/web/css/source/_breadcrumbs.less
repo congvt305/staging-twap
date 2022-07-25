@@ -8,12 +8,28 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+    .page-wrapper > .breadcrumbs {
+        padding-top: 16px;
+        margin-bottom: 16px;
+        margin-top: 0;
+    }
     .breadcrumbs {
         .lib-breadcrumbs();
-
-        .items > li {
-            font-weight: @breadcrumbs-current__font-weight;
-            text-transform: uppercase;
+         a {
+            color: @black__color !important;
+            font-weight: 500;
+            font-size: 14px;
+            text-decoration: underline !important;
+            line-height: 16px;
+        }
+        strong {
+            color: @black__color;
+            font-weight: 400;
+            line-height: 24px;
+            font-size: 14px;
+        }
+        .items > li:last-child a {
+            text-decoration: none !important;
         }
     }
 }
@@ -24,8 +40,6 @@
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .breadcrumbs {
-        text-align: center;
-
         .lib-breadcrumbs(
             @_breadcrumbs-container-margin: @indent__s 0
         );
