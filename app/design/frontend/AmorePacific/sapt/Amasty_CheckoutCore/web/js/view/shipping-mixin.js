@@ -20,7 +20,6 @@ define(
         'Amasty_CheckoutCore/js/model/address-form-state',
         'Amasty_CheckoutCore/js/model/events',
         'Magento_Checkout/js/action/create-shipping-address',
-        'CJ_SFLocker/js/view/home-delivery-selector',
         'uiRegistry',
         'rjsResolver',
         'mage/translate'
@@ -46,7 +45,6 @@ define(
         addressFormState,
         events,
         createShippingAddress,
-        homeDeliverySelector,
         registry,
         onLoad,
         $t
@@ -632,29 +630,10 @@ define(
                         selectShippingAddress(newShippingAddress);
                         checkoutData.setSelectedShippingAddress(newShippingAddress.getKey());
                         checkoutData.setNewCustomerShippingAddress($.extend(true, {}, addressData));
-                        if(newShippingAddress) {
-                            homeDeliverySelector().fillShippingAddressInfo(newShippingAddress);
-                        }
 
                         this.getPopUp().closeModal();
                         this.isNewAddressAdded(true);
                     }
-                },
-
-                /**
-                 * select same person address type
-                 */
-                chooseSamePersonAddressType: function () {
-                    let shippingAddress = quote.shippingAddress();
-                    if(shippingAddress.customerAddressId) {
-                        if(customerData.addresses[shippingAddress.customerAddressId]) {
-                            let address = customerData.addresses[shippingAddress.customerAddressId];
-                            homeDeliverySelector().fillShippingAddressInfo(addressConverter.formAddressDataToQuoteAddress(address));
-                        }
-                    }
-                    this.isSamePerson(true);
-                    this.isDifferentPerson(false);
-                    $('#address-type-1').prop('checked', true);
                 },
 
                 /**

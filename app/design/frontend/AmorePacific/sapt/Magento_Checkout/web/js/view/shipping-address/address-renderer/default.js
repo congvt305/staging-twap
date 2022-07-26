@@ -13,9 +13,8 @@
     'Magento_Checkout/js/model/shipping-address/form-popup-state',
     'Magento_Checkout/js/checkout-data',
     'Magento_Customer/js/customer-data',
-    'CJ_SFLocker/js/view/home-delivery-selector',
     'mage/translate',
-], function ($, ko, Component, _, selectShippingAddressAction, quote, formPopUpState, checkoutData, customerData, homeDeliverySelector, $t) {
+], function ($, ko, Component, _, selectShippingAddressAction, quote, formPopUpState, checkoutData, customerData, $t) {
     'use strict';
 
     var countryData = customerData.get('directory-data');
@@ -83,10 +82,8 @@
 
         /** Set selected customer shipping address  */
         selectAddress: function () {
-            homeDeliverySelector().getRegionValue();
-            if($('#address-type-1').prop('checked')) {
-                homeDeliverySelector().fillShippingAddressInfo(this.address());
-            }
+            selectShippingAddressAction(this.address());
+            checkoutData.setSelectedShippingAddress(this.address().getKey());
         },
 
         /**
