@@ -56,7 +56,7 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                         'SUM((%s - %s) * %s)',
                         $connection->getIfNullSql('o.base_grand_total', 0),
                         $connection->getIfNullSql('o.base_total_canceled', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        $connection->getIfNullSql('o.base_to_order_rate', 0)
                     )
                 ),
                 'total_revenue_amount' => new \Zend_Db_Expr(
@@ -68,7 +68,7 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                         $connection->getIfNullSql('o.base_total_refunded', 0),
                         $connection->getIfNullSql('o.base_tax_refunded', 0),
                         $connection->getIfNullSql('o.base_shipping_refunded', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        $connection->getIfNullSql('o.base_to_order_rate', 0)
                     )
                 ),
                 'total_profit_amount' => new \Zend_Db_Expr(
@@ -79,35 +79,35 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                         $connection->getIfNullSql('o.base_tax_invoiced', 0),
                         $connection->getIfNullSql('o.base_shipping_invoiced', 0),
                         $connection->getIfNullSql('o.base_total_invoiced_cost', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        $connection->getIfNullSql('o.base_to_order_rate', 0)
                     )
                 ),
                 'total_invoiced_amount' => new \Zend_Db_Expr(
                     sprintf(
                         'SUM(%s * %s)',
                         $connection->getIfNullSql('o.base_total_invoiced', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        $connection->getIfNullSql('o.base_to_order_rate', 0)
                     )
                 ),
                 'total_canceled_amount' => new \Zend_Db_Expr(
                     sprintf(
                         'SUM(%s * %s)',
                         $connection->getIfNullSql('o.base_total_canceled', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        $connection->getIfNullSql('o.base_to_order_rate', 0)
                     )
                 ),
                 'total_paid_amount' => new \Zend_Db_Expr(
                     sprintf(
                         'SUM(%s * %s)',
                         $connection->getIfNullSql('o.base_total_paid', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        $connection->getIfNullSql('o.base_to_order_rate', 0)
                     )
                 ),
                 'total_refunded_amount' => new \Zend_Db_Expr(
                     sprintf(
                         'SUM(%s * %s)',
                         $connection->getIfNullSql('o.base_total_refunded', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        $connection->getIfNullSql('o.base_to_order_rate', 0)
                     )
                 ),
                 'total_tax_amount' => new \Zend_Db_Expr(
@@ -115,7 +115,7 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                         'SUM((%s - %s) * %s)',
                         $connection->getIfNullSql('o.base_tax_amount', 0),
                         $connection->getIfNullSql('o.base_tax_canceled', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        $connection->getIfNullSql('o.base_to_order_rate', 0)
                     )
                 ),
                 'total_tax_amount_actual' => new \Zend_Db_Expr(
@@ -123,7 +123,7 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                         'SUM((%s -%s) * %s)',
                         $connection->getIfNullSql('o.base_tax_invoiced', 0),
                         $connection->getIfNullSql('o.base_tax_refunded', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        $connection->getIfNullSql('o.base_to_order_rate', 0)
                     )
                 ),
                 'total_shipping_amount' => new \Zend_Db_Expr(
@@ -131,7 +131,7 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                         'SUM((%s - %s) * %s)',
                         $connection->getIfNullSql('o.base_shipping_amount', 0),
                         $connection->getIfNullSql('o.base_shipping_canceled', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        $connection->getIfNullSql('o.base_to_order_rate', 0)
                     )
                 ),
                 'total_shipping_amount_actual' => new \Zend_Db_Expr(
@@ -139,7 +139,7 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                         'SUM((%s - %s) * %s)',
                         $connection->getIfNullSql('o.base_shipping_invoiced', 0),
                         $connection->getIfNullSql('o.base_shipping_refunded', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        $connection->getIfNullSql('o.base_to_order_rate', 0)
                     )
                 ),
                 'total_discount_amount' => new \Zend_Db_Expr(
@@ -147,7 +147,7 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                         'SUM((ABS(%s) - %s) * %s)',
                         $connection->getIfNullSql('o.base_discount_amount', 0),
                         $connection->getIfNullSql('o.base_discount_canceled', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        $connection->getIfNullSql('o.base_to_order_rate', 0)
                     )
                 ),
                 'total_discount_amount_actual' => new \Zend_Db_Expr(
@@ -155,7 +155,7 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                         'SUM((%s - %s) * %s)',
                         $connection->getIfNullSql('o.base_discount_invoiced', 0),
                         $connection->getIfNullSql('o.base_discount_refunded', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0)
+                        $connection->getIfNullSql('o.base_to_order_rate', 0)
                     )
                 ),
                 'atv' => new \Zend_Db_Expr(
@@ -163,7 +163,7 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                         'SUM((%s - %s) * %s) / %s',
                         $connection->getIfNullSql('o.base_grand_total', 0),
                         $connection->getIfNullSql('o.base_total_canceled', 0),
-                        $connection->getIfNullSql('o.base_to_global_rate', 0),
+                        $connection->getIfNullSql('o.base_to_order_rate', 0),
                         new \Zend_Db_Expr('COUNT(o.entity_id)')
                     )
                 ),
@@ -173,13 +173,13 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                             '(SUM((ABS(%s) - %s) * %s)/ (SUM((%s - %s) * %s) + SUM((ABS(%s) - %s) * %s))) * 100',
                             $connection->getIfNullSql('o.base_discount_amount', 0),
                             $connection->getIfNullSql('o.base_discount_canceled', 0),
-                            $connection->getIfNullSql('o.base_to_global_rate', 0),
+                            $connection->getIfNullSql('o.base_to_order_rate', 0),
                             $connection->getIfNullSql('o.base_grand_total', 0),
                             $connection->getIfNullSql('o.base_total_canceled', 0),
-                            $connection->getIfNullSql('o.base_to_global_rate', 0),
+                            $connection->getIfNullSql('o.base_to_order_rate', 0),
                             $connection->getIfNullSql('o.base_discount_amount', 0),
                             $connection->getIfNullSql('o.base_discount_canceled', 0),
-                            $connection->getIfNullSql('o.base_to_global_rate', 0)
+                            $connection->getIfNullSql('o.base_to_order_rate', 0)
                         ),
                         0
                     )
@@ -190,7 +190,7 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                             'SUM((%s - %s) * %s) / %s',
                             $connection->getIfNullSql('o.base_grand_total', 0),
                             $connection->getIfNullSql('o.base_total_canceled', 0),
-                            $connection->getIfNullSql('o.base_to_global_rate', 0),
+                            $connection->getIfNullSql('o.base_to_order_rate', 0),
                             new \Zend_Db_Expr('SUM(oi.total_qty_ordered)')
                         ),
                         0
@@ -202,7 +202,7 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                             'SUM((%s - %s) * %s) - %s',
                             $connection->getIfNullSql('o.base_grand_total', 0),
                             $connection->getIfNullSql('o.base_total_canceled', 0),
-                            $connection->getIfNullSql('o.base_to_global_rate', 0),
+                            $connection->getIfNullSql('o.base_to_order_rate', 0),
                             new \Zend_Db_Expr('SUM(IFNULL(orma.total_refunded_amount_actual, 0))')
                         ),
                         0
@@ -214,10 +214,10 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                             'SUM((%s - %s) * %s) + SUM((ABS(%s) - %s) * %s)',
                             $connection->getIfNullSql('o.base_grand_total', 0),
                             $connection->getIfNullSql('o.base_total_canceled', 0),
-                            $connection->getIfNullSql('o.base_to_global_rate', 0),
+                            $connection->getIfNullSql('o.base_to_order_rate', 0),
                             $connection->getIfNullSql('o.base_discount_amount', 0),
                             $connection->getIfNullSql('o.base_discount_canceled', 0),
-                            $connection->getIfNullSql('o.base_to_global_rate', 0)
+                            $connection->getIfNullSql('o.base_to_order_rate', 0)
                         ),
                         0
                     )
@@ -232,7 +232,7 @@ class Createdat extends \Magento\Sales\Model\ResourceModel\Report\Order\Createda
                 ['so' => $this->getTable('sales_order')],
                 [
                     'so.entity_id',
-                    'total_refunded_amount_actual' => new \Zend_Db_Expr("SUM(IFNULL(so.base_total_refunded, 0) * IFNULL(so.base_to_global_rate, 0))")
+                    'total_refunded_amount_actual' => new \Zend_Db_Expr("SUM(IFNULL(so.base_total_refunded, 0) * IFNULL(so.base_to_order_rate, 0))")
                 ]
             )->join(
                 ['rma' => $this->getTable('magento_rma')],
