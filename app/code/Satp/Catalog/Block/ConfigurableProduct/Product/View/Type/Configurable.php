@@ -55,8 +55,9 @@ class Configurable
             }
 
             $config['quantities'] = $quantities;
+            $config = $this->jsonEncoder->encode($config);
         }
 
-        return $this->jsonEncoder->encode($config);
+        return $config;
     }
 }
