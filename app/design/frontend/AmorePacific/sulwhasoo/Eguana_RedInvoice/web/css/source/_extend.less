@@ -22,3 +22,15 @@
         }
     }
 }
+
+& when (@media-target = 'desktop'), (@media-target = 'all') {
+    @media only screen and (min-width: @screen__m) and (max-width: (@screen__l - 1)) {
+        #shipping-method-buttons-container .secondary .viewcart {
+            box-sizing: border-box;
+            width: 200px;
+        }
+        .opc-wrapper .step-content .methods-shipping > .actions-toolbar > .primary {
+            width: 200px;
+        }
+    }
+}
