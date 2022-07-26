@@ -123,7 +123,7 @@ class Info extends Template
         {
             return 0;
         }else{
-            return isset($customerPointsInfo['data']) ? $customerPointsInfo['data']['availablePoint'] ?? 0 : 0;
+            return (int) $customerPointsInfo['data']['availablePoint'] ?? 0;
         }
     }
 }
