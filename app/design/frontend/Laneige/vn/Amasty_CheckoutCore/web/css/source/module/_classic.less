@@ -585,7 +585,18 @@
 //  ---------------------------------------------
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
-    .checkout-index-index .opc-wrapper.am-opc-wrapper .shipping-address-item {
-        width: 100%;
+    .checkout-index-index .opc-wrapper.am-opc-wrapper {
+        .shipping-address-item {
+            width: 100%;
+        }
+        &.layout-2columns {
+            .checkout-column:nth-child(1) {
+                width: 60%;
+            }
+
+            .checkout-column:nth-child(2) {
+                width: 40%;
+            }
+        }
     }
 }
