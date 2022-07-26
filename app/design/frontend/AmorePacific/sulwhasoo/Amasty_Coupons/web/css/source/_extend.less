@@ -53,3 +53,21 @@
     /* End Style popup coupon list */
 }
 
+& when (@media-target = 'desktop'), (@media-target = 'all') {
+    @media only screen and (min-width: @screen__m) and (max-width: (@screen__l - 1)) {
+        #discount-coupon-form {
+            .coupon .actions-toolbar {
+                flex-direction: column;
+
+                .secondary, .apply {
+                    width: 100%;
+                    line-height: 5.4rem;
+                }
+
+                .secondary {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+}
