@@ -6,17 +6,19 @@
     }
 }
 
-@media only screen and (max-width: 375px) {
-    #shipping-method-buttons-container {
-        display: flex;
-        flex-direction: column;
-        .secondary .viewcart {
-            line-height: 4rem;
-            padding: 0 24px;
-            box-sizing: border-box;
-            vertical-align: text-top;
-            width: 100%;
+& when (@media-target = 'mobile'), (@media-target = 'all') {
+    @media only screen and (max-width: 375px) {
+        #shipping-method-buttons-container {
+            display: flex;
+            flex-direction: column;
+
+            .secondary .viewcart {
+                line-height: 4rem;
+                padding: 0 24px;
+                box-sizing: border-box;
+                vertical-align: text-top;
+                width: 100%;
+            }
         }
     }
 }
-
