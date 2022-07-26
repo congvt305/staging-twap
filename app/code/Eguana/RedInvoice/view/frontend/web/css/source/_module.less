@@ -78,3 +78,34 @@
         }
     }
 }
+& when (@media-target = 'mobile'), (@media-target = 'all') {
+    @media only screen and (max-width: 375px) {
+        .checkout-shipping-method .actions-toolbar .action.viewcart {
+            position: fixed;
+            bottom: 55px;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            padding: 15px 0 !important;
+        }
+    }
+}
+& when (@media-target = 'desktop'), (@media-target = 'all') {
+    @media only screen and (min-width: @screen__m) and (max-width: (@screen__l - 1)) {
+        .checkout-shipping-method .actions-toolbar {
+            .action.primary {
+                display: inline-block;
+                width: 140px !important;
+                margin-right: 17px;
+            }
+        }
+
+        #shipping-method-buttons-container .secondary .viewcart {
+            padding: 15px 0;
+            span {
+                display: inline-block;
+                width: 140px;
+            }
+        }
+    }
+}
