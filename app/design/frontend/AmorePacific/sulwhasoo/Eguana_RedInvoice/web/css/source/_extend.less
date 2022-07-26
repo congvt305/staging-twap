@@ -1,0 +1,36 @@
+& when (@media-common = true) {
+    #shipping-method-buttons-container {
+        .secondary .viewcart {
+            width: 300px;
+        }
+    }
+}
+
+& when (@media-target = 'mobile'), (@media-target = 'all') {
+    @media only screen and (max-width: 375px) {
+        #shipping-method-buttons-container {
+            display: flex;
+            flex-direction: column;
+
+            .secondary .viewcart {
+                line-height: 4rem;
+                padding: 0 24px;
+                box-sizing: border-box;
+                vertical-align: text-top;
+                width: 100%;
+            }
+        }
+    }
+}
+
+& when (@media-target = 'desktop'), (@media-target = 'all') {
+    @media only screen and (min-width: @screen__m) and (max-width: (@screen__l - 1)) {
+        #shipping-method-buttons-container .secondary .viewcart {
+            box-sizing: border-box;
+            width: 200px;
+        }
+        .opc-wrapper .step-content .methods-shipping > .actions-toolbar > .primary {
+            width: 200px;
+        }
+    }
+}
