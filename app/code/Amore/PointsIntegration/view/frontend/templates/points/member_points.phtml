@@ -28,10 +28,12 @@ $pointSearchResult = $block->getPointsSearchResult();
                     <span class="primary"><?= $block->escapeHtml(__('%1 Points',$pointSearchResult['availablePoint'])) ?></span>
                     <?= $block->getChildHtml('member.points.modal.info'); ?>
                 </div>
-                <div class="pos-customer-expireDate">
-                    <?= $block->escapeHtml(__('Expiry Date')) . ' : '; ?>
-                    <?= $block->dateFormat($pointSearchResult['expireDate']); ?>
-                </div>
+                <?php if (isset($pointSearchResult['expireDate']) && $pointSearchResult['expireDate']): ?>
+                    <div class="pos-customer-expireDate">
+                        <?= $block->escapeHtml(__('Expiry Date')) . ' : '; ?>
+                        <?= $block->dateFormat($pointSearchResult['expireDate']); ?>
+                    </div>
+                <?php endif ?>
             </div>
         <?php else : ?>
             <div class="message info empty">
