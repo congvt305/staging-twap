@@ -135,12 +135,13 @@
             .payment-method-content,
             .methods-shipping {
                 > .actions-toolbar {
-                    max-width: 300px;
-                    margin-left: auto;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
 
                     > .primary {
-                        width: 100%;
-                        
+                        width: 300px;
+
                         .action {
                             &.primary {
                                 width: 100%;
