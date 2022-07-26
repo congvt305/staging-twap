@@ -88,7 +88,7 @@ $couponListViewModel = $block->getData('couponListViewModel');
 
                                         <!-- start card -->
                                         <div class="discount-card">
-                                            <div class="discount-bar lng-coupon-popup-color"></div>
+                                            <div class="discount-bar sws-coupon-popup-color"></div>
                                             <div class="discount-card-content">
                                                 <div class="discount-label">
                                                     <div class="discount-title">
@@ -109,12 +109,12 @@ $couponListViewModel = $block->getData('couponListViewModel');
                                                     <div class="discount-description"><?=$block->escapeHtml($coupon['description'])?></div>
                                                 </div>
                                             </div>
-                                            <div class="discount-border-right lng-discount-border-right"></div>
+                                            <div class="discount-border-right sws-discount-border-right"></div>
                                             <?php
                                             $beenUsed = in_array($coupon['code'], $block->getCouponsCode());
                                             ?>
                                             <div data-beenused="<?= $beenUsed ? 1 : 0 ?>"
-                                                 class="discount-card-button lng-discount-card-button"
+                                                 class="discount-card-button sws-discount-card-button"
                                                  id="<?= $coupon['code'] ?>">
                                                 <?= $beenUsed ? $block->escapeHtml(__('Cancel')) : $block->escapeHtml(__('Apply')) ?>
                                             </div>
