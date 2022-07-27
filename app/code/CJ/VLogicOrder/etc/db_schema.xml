@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="vlogic_access_token" resource="default" engine="innodb" comment="VLogic Access Token">
+        <column xsi:type="int" name="token_id" identity="true" unsigned="true" nullable="false" comment="token ID"/>
+        <column xsi:type="varchar" name="token" nullable="false" default="0" comment="token"/>
+        <column xsi:type="int" name="status" nullable="true" default="0" comment="status of token"/>
+        <column xsi:type="int" name="store_id" nullable="true" comment="store id"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="token_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="V_LOGIC_ACCESS_TOKEN_UNIQUE">
+            <column name="token"/>
+        </constraint>
+    </table>
+    <table name="sales_order" resource="default" engine="innodb" comment="vlogic flag">
+        <column xsi:type="int" name="sent_to_vlogic" nullable="true" comment="sent to vLogic"/>
+        <column xsi:type="int" name="receive_track_number_vlogic" nullable="true" comment="track shipment activity vLogic"/>
+        <column xsi:type="text" name="vlogic_create_order_response" nullable="true" comment="Message Returned from V Logic"/>
+    </table>
+</schema>

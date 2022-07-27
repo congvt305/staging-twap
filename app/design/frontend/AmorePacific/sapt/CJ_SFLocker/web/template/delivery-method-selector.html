@@ -1,0 +1,20 @@
+<div id="delivery-method-selector" afterRender="isShippingMethodNull()" class="step-content">
+    <button
+        class="action action-select-shipping"
+        css="'selected': isHomeDeliverySelected()"
+        click="selectShipping"
+        translate="'HomeDelivery'"
+    ></button>
+    <button
+        class="action action-select-store-pickup"
+        css="'selected': isStorePickupSfSelected()"
+        click="selectStorePickupSf"
+        translate="'SFLocker'"
+    ></button>
+    <button
+        class="action action-select-store-pickup"
+        css="'selected': isStorePickupSelected()"
+        click="selectStorePickup"
+        translate="'StorePickup'"
+    ></button>
+</div>

@@ -8,9 +8,21 @@
 
 namespace Eguana\Directory\Plugin\Checkout;
 
+use Magento\Store\Model\StoreManagerInterface;
+
 class BillingAddressLayoutProcessor
 {
+    const MY_SWS_STORE_CODE = 'my_sulwhasoo';
+    /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
     private $result;
+
+    public function __construct(StoreManagerInterface $storeManager)
+    {
+        $this->storeManager = $storeManager;
+    }
 
     /**
      * @param \Magento\Checkout\Block\Checkout\LayoutProcessor $subject
@@ -66,6 +78,14 @@ class BillingAddressLayoutProcessor
      */
     private function addField($paymentMethodForm, $paymentMethodCode)
     {
+        if ($this->storeManager->getStore()->getCode() == self::MY_SWS_STORE_CODE) {
+            if (!isset($this->result['components']['checkout']['children']['steps']['children']['billing-step']['children']
+                ['payment']['children']['payments-list']['children'][$paymentMethodForm]['children']
+                ['form-fields']['children']['city_id'])) {
+                return $this;
+            }
+        }
+
         $cityIdPassed = $this->result['components']['checkout']['children']['steps']['children']['billing-step']['children']
         ['payment']['children']['payments-list']['children'][$paymentMethodForm]['children']
         ['form-fields']['children']['city_id'];
