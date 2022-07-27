@@ -208,7 +208,7 @@ class CreateShipment
      * @param \Magento\Sales\Model\Order $order
      * @return array
      */
-    public function payloadSendToNinjaVan($order): array
+    public function payloadSendToNinjaVan($order, $trackingNum): array
     {
         $merchantOrderNumber = $order->getIncrementId();
         $storeId = $order->getStoreId();
@@ -254,6 +254,7 @@ class CreateShipment
         $data = [
             'service_type' => 'Parcel',
             'service_level' => 'Standard',
+            'requested_tracking_number' => $trackingNum,
             'reference' => [
                 'merchant_order_number' => $merchantOrderNumber,
             ],
