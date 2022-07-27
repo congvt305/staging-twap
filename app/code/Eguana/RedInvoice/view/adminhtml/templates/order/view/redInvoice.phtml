@@ -32,8 +32,12 @@ $redInvoiceDetails = $viewModel->getRedInvoice();
             <span><?= $block->escapeHtml(__($redInvoiceDetails['state'])); ?></span><br>
         <strong class="title"><?= $block->escapeHtml(__('City:')); ?></strong>
         <span><?= $block->escapeHtml(__($redInvoiceDetails['city'])); ?></span><br>
+        <strong class="title"><?= $block->escapeHtml(__('Ward:')); ?></strong>
+            <span><?= $block->escapeHtml(__($redInvoiceDetails['ward'])); ?></span><br>
         <strong class="title"><?= $block->escapeHtml(__('Road Name:')); ?></strong>
             <span><?= $block->escapeHtml(__($redInvoiceDetails['road_name'])); ?></span><br>
+        <strong class="title"><?= $block->escapeHtml(__('Email:')); ?></strong>
+            <span><?= $block->escapeHtml(__($redInvoiceDetails['email'])); ?></span><br>
     </div>
 </div>
 <?php endif ;?>
