@@ -178,11 +178,11 @@ return [
                     'type' => 'server_side_compilation'
                 ],
                 'template' => [
-                    'minify_html' => '0'
+                    'minify_html' => '1'
                 ],
                 'js' => [
                     'merge_files' => '0',
-                    'minify_files' => '0',
+                    'minify_files' => '1',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/',
                         'cardinal_commerce' => '/v1/songbird',
@@ -195,7 +195,8 @@ return [
                     'enable_js_bundling' => '0'
                 ],
                 'css' => [
-                    'minify_files' => '0',
+                    'merge_css_files' => '1',
+                    'minify_files' => '1',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/'
                     ],
