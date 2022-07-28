@@ -1,0 +1,74 @@
+<div id="home-delivery-selector" data-bind="blockLoader: $parent.isLoading">
+    <div id="checkout-step-store-selector" class="step-content" data-role="content">
+        <div class="home-delivery-form">
+            <div class="shipping-tab-cont">
+                <ul>
+                    <li class="shipping-cont-list">
+                        <form class="form form-shipping-address" id="home-delivery-co-shipping-form"
+                              data-bind="attr: {'data-hasrequired': $t('* Required Fields')}"
+                              data-hasrequired="* Required Fields" style="display: block;">
+                            <div id="home-delivery-shipping-new-address-form" class="fieldset address">
+                                <fieldset class="field home-delivery-street street admin__control-fields _required">
+                                    <label class="label">
+                                        <span translate="'Street Address'"></span></label>
+                                    <div class="control">
+                                        <div class="field _required" name="shippingAddress.street.0">
+                                            <div class="control">
+                                                <input class="input-text home-delivery-street-input" type="text"
+                                                       name="home_delivery_street[0]"
+                                                       placeholder="" aria-required="true" aria-invalid="false"
+                                                       id="home_delivery_street[0]"
+                                                       >
+                                            </div>
+                                        </div>
+                                        <div class="field additional" name="shippingAddress.street.1">
+                                            <div class="control">
+                                                <input class="input-text home-delivery-street-input" type="text"
+                                                       name="home_delivery_street[1]"
+                                                       placeholder="" aria-invalid="false" id="home_delivery_street[1]"
+                                                       >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="field region _required">
+                                    <label class="label">
+                                        <span translate="'State/Province'"></span></label>
+                                    <div class="control">
+                                        <div class="region-select-box">
+                                            <select class="select"
+                                                    name="home_delivery_region_id"
+                                                    id="home_delivery_region_id"
+                                                    aria-invalid="false"
+                                                    data-bind="options: homeDeliveryRegion(),optionsCode: 'code', optionsText: 'default_name', optionsValue: 'region_id', event: { change: regionUpdater()}">
+                                            </select>
+                                        </div>
+                                        <span class="note">
+                                              <span
+                                                  translate="'This delivery service only available in hongkong and macao.'"></span>
+                                            </span>
+                                    </div>
+                                </div>
+                                <div class="field _required" name="shippingAddress.home_delivery_city_id">
+                                    <label class="label" for="home_delivery_city_id">
+                                        <span translate="'City and District'"></span>
+                                    </label>
+                                    <div class="control">
+                                        <div class="select-box">
+                                            <select class="select"
+                                                    name="home_delivery_city_id"
+                                                    id="home_delivery_city_id"
+                                                    aria-invalid="false"
+                                                    data-bind="options: homeDeliveryCity(), optionsText: 'default_name', optionsValue: 'city_id'">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

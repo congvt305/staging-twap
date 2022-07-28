@@ -39,37 +39,6 @@
          data-role="content"
          data-bind="mageInit: {'checkoutCollapsibleSteps': {}}">
         <div class="amcheckout-wrapper">
-            <!-- ko ifnot: isFormInline -->
-                <div class="pickup-information-options">
-                    <p class="select-address-tit">运输信息</p>
-                    <div class="select-address-menu">
-                        <div class="rdo-set"
-                             css="'active': isSamePerson()"
-                             click= "chooseSamePersonAddressType" >
-                            <input type="radio"
-                                   id="address-type-1"
-                                   name="address-type"
-                                   class="input-rdo"
-                                   checked="true"
-                                   value="0"
-                            >
-                            <label for="address-type-1"><span>使用会员地址</span></label>
-                        </div>
-                        <div class="rdo-set"
-                             css="'active': isDifferentPerson()"
-                             click= "chooseDifferentPersonAddressType" >
-                            <input
-                                type="radio"
-                                id="address-type-2"
-                                name="address-type"
-                                class="input-rdo"
-                                value="1"
-                            >
-                            <label for="address-type-2"><span>输入收货地址</span></label>
-                        </div>
-                    </div>
-                </div>
-            <!-- /ko -->
 
             <!-- ko fastForEach: getRegion('address-list-additional-addresses') -->
             <!-- ko template: getTemplate() --><!-- /ko -->
