@@ -1,0 +1,44 @@
+.amstars-rating-container {
+    background: none;
+
+    &.-small {
+        background: none;
+        height: 20px;
+
+        .amstars-stars {
+            background-repeat-y: no-repeat;
+        }
+    }
+}
+
+.amreview-submit-form {
+    background: transparent;
+
+    .field {
+        > .label {
+            display: block !important;
+            width: auto;
+        }
+
+        label {
+            float: left;
+        }
+    }
+
+    .review-control-vote.control {
+        & {
+            display: flex !important;
+        }
+
+        &:hover:before {
+            color: inherit!important;
+        }
+    }
+
+    .review-control-vote label {
+        cursor: pointer;
+        display: block !important;
+        position: absolute !important;
+        top: 2px;
+    }
+}
