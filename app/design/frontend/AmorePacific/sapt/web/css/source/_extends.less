@@ -1977,3 +1977,28 @@
         }
     }
 }
+
+.abs-action-link(@underline-color) {
+    position: relative;
+    display: inline-block;
+
+    &:before {
+        background: @underline-color;
+        bottom: 0;
+        content: '';
+        display: inline-block;
+        width: 0;
+        height: 1px;
+        -webkit-transition: width .3s ease-in-out;
+        -o-transition: width .3s ease-in-out;
+        transition: width .3s ease-in-out;
+        position: absolute;
+    }
+
+    &:focus,
+    &:hover {
+        &:before {
+            width: 100%;
+        }
+    }
+}
