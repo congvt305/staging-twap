@@ -3,7 +3,7 @@
  * See COPYING.txt for license details.
  */
 
- define([
+define([
     'jquery',
     'ko',
     'uiComponent',
@@ -12,26 +12,20 @@
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/model/shipping-address/form-popup-state',
     'Magento_Checkout/js/checkout-data',
-    'Magento_Customer/js/customer-data',
-    'mage/translate',
-], function ($, ko, Component, _, selectShippingAddressAction, quote, formPopUpState, checkoutData, customerData, $t) {
+    'Magento_Customer/js/customer-data'
+], function ($, ko, Component, _, selectShippingAddressAction, quote, formPopUpState, checkoutData, customerData) {
     'use strict';
 
     var countryData = customerData.get('directory-data');
 
     return Component.extend({
         defaults: {
-            template: 'Magento_Checkout/shipping-address/address-renderer/default',
-            isPickupMethod: ko.observable(false),
-            enableMacau: ko.observable(parseInt(window.checkoutConfig.enable_macau))
+            template: 'Magento_Checkout/shipping-address/address-renderer/default'
         },
 
         /** @inheritdoc */
         initObservable: function () {
             this._super();
-            if (quote.shippingMethod()) {
-                this.isPickupMethod(quote.shippingMethod().method_code === 'pickup');
-            }
             this.isSelected = ko.computed(function () {
                 var isSelected = false,
                     shippingAddress = quote.shippingAddress();
@@ -92,12 +86,7 @@
         editAddress: function () {
             formPopUpState.isVisible(true);
             this.showPopup();
-            $('#shipping-new-address-form div[name="shippingAddress.telephone"]').hide();
-            $('#shipping-new-address-form div[name="shippingAddress.firstname"]').hide();
-            $('#shipping-new-address-form div[name="shippingAddress.lastname"]').hide();
-            if ($('#shipping-new-address-form div[name="shippingAddress.country_id"] .note').length === 0) {
-                $('#shipping-new-address-form div[name="shippingAddress.country_id"]').append('<span class="note"><span>' + $t('This delivery service only available in hongkong and macao.') + '</span></span>');
-            }
+
         },
 
         /**
@@ -115,14 +104,5 @@
                 return 0;
             }
         },
-
-        /**
-         *
-         * @param address
-         * @returns {boolean}
-         */
-        allowSelectMacauAddress(address) {
-            return !(!this.enableMacau() && address().region == 'Macau');
-        }
     });
 });

@@ -11,10 +11,6 @@ var config = {
     ],
 	config: {
 		mixins: {
-			'Magento_Checkout/js/view/shipping': {
-				'Eguana_OrderDeliveryMessage/js/shipping-validation-mixin': false,
-				'Eguana_OrderDeliveryMessage/js/shipping-validation-mixin-overriden': true
-			},
             'mage/collapsible': {
                 'js/mage/collapsible-mixin': true
             }
