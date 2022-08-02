@@ -1,4 +1,4 @@
-"Please select a city or district.","Vui lòng chọn quận/huyện"
+"Please select a city or district.","Chọn quận/huyện"
 "* Required Fields","* Phần bắt buộc"
 "Contact Information","Thông tin liên lạc"
 Company,Công ty
@@ -23,5 +23,5 @@ City,City
 "Allow to Choose City if It is Optional for Country","Cho phép chọn thành phố nếu nó là tùy chọn cho quốc gia"
 City/District,Quận/Huyện
 Ward Name,Xã/ Phường
-"Please select a ward","Vui lòng chọn xã/phường"
+"Please select a ward","Chọn phường/xã"
 "The shipping address is missing. Please edit the address and try again.","Địa chỉ giao hàng bị thiếu thông tin. Vui lòng chỉnh sữa địa chỉ và thử lại."
