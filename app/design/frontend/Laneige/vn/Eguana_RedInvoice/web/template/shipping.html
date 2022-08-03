@@ -1,9 +1,3 @@
-<!--
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <li id="shipping" class="checkout-shipping-address" data-bind="fadeVisible: visible()">
     <div class="step-title" translate="'Shipping Address'" data-role="title" />
     <div id="checkout-step-shipping"
@@ -43,7 +37,7 @@
     role="presentation">
     <div class="checkout-shipping-method">
         <div class="step-title"
-             translate="'Please check the following items to confirm'"
+             translate="'Remind you to confirm the following again'"
              data-role="title" />
 
         <each args="getRegion('before-shipping-method-form')" render="" />
@@ -69,11 +63,6 @@
                     <each args="getRegion('shippingAdditional')" render="" />
                 </div>
                 <div class="actions-toolbar" id="shipping-method-buttons-container">
-                    <div class="primary">
-                        <button data-role="opc-previous" type="button" class="button action previous primary" click="goBack">
-                            <span translate="'Previous'" />
-                        </button>
-                    </div>
                     <div class="primary">
                         <button data-role="opc-continue" type="submit" class="button action continue primary">
                             <span translate="'Next'" />
