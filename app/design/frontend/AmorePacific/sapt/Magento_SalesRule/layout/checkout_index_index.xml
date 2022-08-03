@@ -28,6 +28,26 @@
                                                                 </item>
                                                             </item>
                                                         </item>
+
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                                <item name="sidebar" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="summary" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="totals" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="coupon_amount" xsi:type="array">
+                                                            <item name="component" xsi:type="string">Amasty_Coupons/js/view/summary/coupon</item>
+                                                            <item name="sortOrder" xsi:type="string">21</item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="amasty_coupon_amount" xsi:type="array"/>
+                                                            </item>
+                                                        </item>
                                                     </item>
                                                 </item>
                                             </item>

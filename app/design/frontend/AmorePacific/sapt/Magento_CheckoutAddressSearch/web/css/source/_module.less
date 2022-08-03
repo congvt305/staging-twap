@@ -34,47 +34,29 @@
         .checkout-shipping-address,
         .checkout-payment-method {
             div.new-address-popup {
-                margin: 0 0 20px 0;
+                padding: 24px 0;
                 position: relative;
-            }
-
-            div.change-address-popup,
-            div.edit-address-popup {
-                > .action {
-                    &:extend(.abs-action-button-as-link all);
-                    display: block;
-                    position: absolute;
-                    right: @indent__s;
-                    bottom: @indent__s;
-
-                    .lib-link(
-                        @_link-color: @active__color,
-                        @_link-text-decoration: underline,
-                        @_link-color-visited: @active__color,
-                        @_link-text-decoration-visited: underline,
-                        @_link-color-hover: @theme__color__primary-alt,
-                        @_link-text-decoration-hover: underline,
-                        @_link-color-active: @theme__color__primary-alt,
-                        @_link-text-decoration-active: underline
-                    );
-                }
+                text-align: center;
             }
 
             div.change-address-popup {
-                > .action {
-                    left: @indent__base;
-                    right: auto;
-                }
+                margin: 5px 0 -5px 0;
+            }
+
+            div.edit-address-popup {
+                float: left;
+                margin: 5px 35px -5px 0;
             }
 
             div.shipping-address-item.selected,
             .checkout-billing-address {
-                border-left: 0;
+                margin: 0;
+                padding-left: 0;
             }
 
             .new-billing-address-button {
                 display: block;
-                margin: 20px 0 0 0;
+                margin: 20px 35px 0 20px;
                 position: relative;
             }
         }
@@ -91,6 +73,15 @@
     .billing-address-modal {
 
         .modal-inner-wrap {
+
+            h1.modal-title {
+                border: none;
+            }
+
+            .admin__action-multiselect-search {
+                width: 250px;
+            }
+
             .block.block-search {
                 left: 20px;
                 position: absolute;
@@ -98,89 +89,92 @@
             }
 
             .admin__action-select-shipping-addressmultiselect-search-count {
-                border-bottom: 1px solid @form-element-input__border-color;
-                padding: @indent__s 0;
+                border-bottom: 1px solid @color-grey;
+                font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 13px;
+                margin: 5px -30px 10px -30px;
+                padding: 0 0 5px 30px;
             }
 
             .admin__action-multiselect-empty-area {
+                font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
                 padding-top: 5px;
             }
 
             .admin__action-multiselect-menu-inner ._root {
-                border-bottom: 1px solid @border-color__base;
+                border-bottom: 1px solid @color-grey;
                 clear: both;
                 float: left;
-                margin-bottom: @indent__base;
-                padding-bottom: @indent__base;
+                margin-bottom: 10px;
+                padding-bottom: 15px;
                 position: relative;
                 width: 100%;
+
+                .address-details {
+                    float: left;
+                }
 
                 .edit-address,
                 .ship-here,
                 .select-address,
                 .address-selected {
                     float: right;
-                    margin-right: 0;
-                    margin-top: 22px;
+                    margin-right: 20px;
+                    margin-top: 20px;
 
                     button {
-                        .lib-button-primary();
+                        background: @button-background-color;
+                        border: 1px solid @button-border-color;
+                        box-shadow: none;
+                        color: @color-white;
+                        outline: 0;
                     }
                 }
 
                 .address-selected button {
-                    .lib-button-reset();
-                    .lib-link(
-                        @_link-color: @active__color,
-                        @_link-text-decoration: none,
-                        @_link-color-visited: @active__color,
-                        @_link-text-decoration-visited: none,
-                        @_link-color-hover: @active__color,
-                        @_link-text-decoration-hover: none,
-                        @_link-color-active: @active__color,
-                        @_link-text-decoration-active: none
-                    );
+                    background-color: @color-light-grey;
+                    border: none;
+                    box-shadow: none;
+                    color: @color-dark-grey;
+
+                    &:hover {
+                        cursor: auto;
+                        background-color: @color-light-grey;
+                        border: none;
+                        box-shadow: none;
+                        color: @color-dark-grey;
+                    }
                 }
 
                 .default-address,
                 .edit-address {
                     float: right;
-                    margin-right: @indent__base;
-                    margin-top: 22px;
+                    margin-right: 20px;
+                    margin-top: 20px;
 
                     button {
-                        .lib-button-reset();
-                        .lib-link();
-                    }
-                }
-
-                .ship-here {
-                    & + .default-address,
-                    & + .edit-address {
-                        margin-top: 29px;
+                        background-color: Transparent;
+                        border: none;
+                        box-shadow: none;
                     }
                 }
 
                 .default-address button.action-primary {
-                    .lib-link(
-                        @_link-color: @link__color,
-                        @_link-text-decoration: none,
-                        @_link-color-visited: @link__color,
-                        @_link-text-decoration-visited: none,
-                        @_link-color-hover: @link__color,
-                        @_link-text-decoration-hover: none,
-                        @_link-color-active: @link__color,
-                        @_link-text-decoration-active: none
-                    );
+                    color: @color-dark-grey;
+                    text-transform: uppercase;
 
                     &:hover {
                         cursor: auto;
                     }
                 }
+
+                .edit-address button.action-primary {
+                    color: @button-border-color;
+                }
             }
 
             .admin__action-multiselect-menu-inner {
-                margin-top: @indent__base;
+                margin-top: 10px;
                 overflow-y: auto;
             }
 
@@ -240,49 +234,30 @@
 
     .shipping-address-modal,
     .billing-address-modal {
+
         .modal-inner-wrap {
+            min-height: 400px;
+
+            h1.modal-title {
+                border: none;
+            }
+
             .admin__action-multiselect-menu-inner ._root {
                 .edit-address,
                 .ship-here,
-                .select-address {
+                .select-address,
+                .address-selected {
                     clear: left;
                     float: left;
                     margin-top: 5px;
                     position: relative;
                     top: 5px;
-                    width: 100%;
-                }
-
-                .address-selected {
-                    display: inline-block;
-                    float: none;
-                    margin-top: @indent__xs;
-
-                    & + .edit-address {
-                        display: inline-block;
-                        float: none;
-                        margin-top: 0 !important;
-                        width: auto;
-                        vertical-align: top;
-                    }
-                }
-
-                .edit-address {
-                    text-align: center;
-                    margin-top: 15px !important;
-                }
-
-                .ship-here {
-                    button {
-                        width: 100%;
-                    }
                 }
 
                 .default-address {
-                    margin-top: 0 !important;
-                    margin-right: 0;
+                    margin-top: 5px;
                     position: absolute;
-                    right: 0;
+                    right: 1rem;
                     top: 0;
                 }
             }
@@ -305,15 +280,14 @@
 
         .modal-inner-wrap {
             min-height: 620px;
+            width: 700px;
+
+            .modal-popup .modal-title {
+                border: none;
+            }
 
             .admin__action-multiselect-menu-inner {
                 max-height: 438px;
-            }
-
-            .admin__action-multiselect-menu-inner ._root {
-                .address-details {
-                    float: left;
-                }
             }
         }
     }
