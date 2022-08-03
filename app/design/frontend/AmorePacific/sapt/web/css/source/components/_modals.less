@@ -18,8 +18,7 @@
 
 @modal-popup__indent-vertical: 5rem;
 @modal-popup__padding: 3rem;
-@modal-popup__width: 400px;
-@modal-popup__width-mobile: 88%;
+@modal-popup__width: 75%;
 @modal-popup__z-index: @modal__z-index;
 
 @modal-slide__first__indent-left: 14.8rem;
@@ -116,6 +115,7 @@
 
     .modal-inner-wrap {
         .lib-css(margin, @modal-popup__indent-vertical auto);
+        .lib-css(width, @modal-popup__width);
         .lib-vendor-prefix-display(flex);
         .lib-vendor-prefix-flex-direction(column);
         box-sizing: border-box;
@@ -139,13 +139,13 @@
     body {
         &._has-modal {
             height: 100%;
+            overflow: hidden;
             width: 100%;
         }
     }
 
     //  Modals overlay
     .modals-overlay {
-        &:extend(.abs-modal-overlay all);
         .lib-css(z-index, @overlay__z-index);
     }
 
@@ -154,34 +154,18 @@
         .lib-modal();
     }
 
-    .modal-slide {
-        &._inner-scroll {
-            .modal-inner-wrap {
-                overflow-y: visible;
-                .lib-vendor-prefix-display(flex);
-                .lib-vendor-prefix-flex-direction(column);
-            }
-
-            .modal-header,
-            .modal-footer {
-                .lib-vendor-prefix-flex-grow(0);
-                .lib-vendor-prefix-flex-shrink(0);
-            }
-
-            .modal-content {
-                overflow-y: auto;
-            }
-
-            .modal-footer {
-                margin-top: auto;
-            }
-        }
-    }
-
     .modal-popup {
         .lib-modal-popup();
 
-        //  If applied, switching outer popup scroll to inner
+        .modal-content {
+            padding: 24px 100px 44px 100px;
+            word-break: break-word;
+
+            .fieldset:last-child {
+                margin-bottom: 0;
+            }
+        }
+
         &._inner-scroll {
             overflow-y: visible;
 
@@ -190,6 +174,7 @@
             }
 
             .modal-inner-wrap {
+                max-height: 90%;
 
                 .ie11 & {
                     max-height: none;
@@ -202,175 +187,20 @@
         }
 
         .modal-header,
-        .modal-content,
-        .modal-footer {
-            .lib-css(padding-left, @modal-popup__padding);
-            .lib-css(padding-right, @modal-popup__padding);
-        }
-
-        .modal-header,
         .modal-footer {
             .lib-vendor-prefix-flex-grow(0);
             .lib-vendor-prefix-flex-shrink(0);
         }
 
         .modal-header {
-            .lib-css(padding-top, @modal-popup__padding);
-        }
-
-        .modal-footer {
-            margin-top: auto;
-            .lib-css(padding-bottom, @modal-popup__padding);
-            .lib-css(padding-top, @indent__base);
+            .lib-css(padding-bottom, 0);
+            .lib-css(padding-top, 28px);
+            padding-left: 0;
+            padding-right: 0;
         }
 
         .modal-footer-actions {
             text-align: right;
-        }
-
-        .modal-footer button {
-            width: 48.8%;
-
-            &.action-primary,
-            &.primary {
-                .lib-button-primary();
-            }
-        }
-
-        &:not(.popup-reorder-quote) {
-            .actions-toolbar > div {
-                button {
-                    width: 100% !important;
-                }
-            }
-        }
-
-        .actions-toolbar > div {
-            margin-bottom: 0;
-            width: 48.8%;
-
-            button {
-                padding: 0;
-            }
-        }
-
-        &:not(.agreements-modal) .modal-footer button,
-        &:not(.agreements-modal) .actions-toolbar > div {
-            &.action-secondary,
-            &.secondary {
-                clear: left;
-                float: left;
-            }
-
-            &.action-primary,
-            &.primary {
-                float: right;
-            }
-        }
-
-        .fieldset {
-            margin-bottom: 0;
-
-            & + .actions-toolbar {
-                margin-top: @indent__base;
-            }
-        }
-
-        .actions-toolbar {
-            .primary .action {
-                margin-right: 0;
-            }
-        }
-    }
-}
-
-//
-//  Mobile
-//  _____________________________________________
-
-.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-    .modal-popup {
-        &.modal-slide:not(.popup-reorder-quote):not(.popup-request-quote):not(.bankinfo_popup) {
-            .modal-inner-wrap {
-                margin: 0 auto;
-                max-height: none;
-            }
-        }
-
-        .company-index-index & {
-            &.modal-slide:not(._inner-scroll) {
-                .modal-inner-wrap {
-                    margin: 5rem auto;
-                }
-            }
-        }
-
-        .modal-inner-wrap {
-            .lib-css(width, @modal-popup__width-mobile);
-        }
-
-        &:not(.confirm):not(.agreements-modal) .modal-header {
-            padding-bottom: 15px;
-        }
-
-        &.agreements-modal {
-            .modal-title {
-                margin-bottom: 15px;
-            }
-
-            .modal-footer button {
-                &.secondary {
-                    width: 100%;
-                }
-            }
-        }
-
-        &.confirm {
-            .modal-title {
-                margin-bottom: 15px;
-            }
-        }
-
-        .checkout-index-index &,
-        .company-users-index &.modal-slide,
-        .company-index-index &.modal-slide._inner-scroll {
-            .modal-inner-wrap {
-                width: 100%;
-            }
-        }
-    }
-}
-
-//
-//  Desktop
-//  _____________________________________________
-
-.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    .modal-popup {
-        .modal-inner-wrap {
-            .lib-css(width, @modal-popup__width);
-        }
-
-        &:not(.confirm):not(.agreements-modal) .modal-header {
-            padding-bottom: @indent__base;
-        }
-
-        &.confirm {
-            .modal-title {
-                margin-bottom: @indent__base;
-            }
-        }
-
-        &.agreements-modal {
-            .modal-title {
-                margin-bottom: @indent__base;
-            }
-
-            .modal-footer button {
-                &.secondary {
-                    float: right;
-                }
-            }
         }
     }
 }
