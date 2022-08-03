@@ -440,7 +440,7 @@ class SaveSuccess implements ObserverInterface
                 $customer->getCustomAttribute('partner_id')->getValue() : '';
             $parameters['statusCD'] = '01';
             $store = $this->storeManager->getStore($customer->getStoreId());
-            if ($store->getCode() == 'my_laneige') {
+            if (in_array($store->getCode(),['my_laneige','my_sulwhasoo'])) {
                 $parameters['race'] = $customer->getCustomAttribute('race') ? $customer->getCustomAttribute('race')->getValue() : '';
             }
 
