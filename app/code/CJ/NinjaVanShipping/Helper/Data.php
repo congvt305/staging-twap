@@ -36,6 +36,10 @@ class Data extends AbstractHelper
 
     const XML_PATH_NINJAVAN_ALLOWS_ORDER_STATUS_CAN_CANCEL = 'ninjavan/cancel_order_with_nv/allows_order_status_can_cacel';
 
+    public function getValue($path, $scope, $scopeId)
+    {
+        return $this->scopeConfig->getValue($path, $scope, $scopeId);
+    }
     public function isNinjaVanEnabled($storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_NINJAVAN_ENABLE, ScopeInterface::SCOPE_STORE, $storeId);
