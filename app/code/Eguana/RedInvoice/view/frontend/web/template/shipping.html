@@ -70,16 +70,16 @@
                 <div id="onepage-checkout-shipping-method-additional-load">
                     <each args="getRegion('shippingAdditional')" render="" />
                 </div>
-                <div class="actions-toolbar" id="shipping-method-buttons-container">
+                <div class="actions-toolbar two-buttons" id="shipping-method-buttons-container">
+                    <div class="primary">
+                        <button data-role="opc-previous" type="button" class="button action previous primary" click="goBack">
+                            <span translate="'Previous'" />
+                        </button>
+                    </div>
                     <div class="primary">
                         <button data-role="opc-continue" type="submit" class="button action continue primary">
                             <span translate="'Next'" />
                         </button>
-                    </div>
-                    <div class="secondary">
-                        <a class="action viewcart" data-bind="attr: { 'href': checkout.shoppingCartUrl }">
-                            <span translate="'Previous'"/>
-                        </a>
                     </div>
                 </div>
             </form>
