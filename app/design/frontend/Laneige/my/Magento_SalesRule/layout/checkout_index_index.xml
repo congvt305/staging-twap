@@ -29,7 +29,7 @@
                                                             </item>
                                                         </item>
                                                         <item name="discount" xsi:type="array">
-                                                            <item name="component" xsi:type="string">CJ_Coupons/js/view/payment/discount</item>
+                                                            <item name="component" xsi:type="string">CJ_CouponCustomer/js/view/payment/discount</item>
                                                             <item name="displayArea" xsi:type="string">beforeMethods</item>
                                                             <item name="children" xsi:type="array">
                                                                 <item name="errors" xsi:type="array">

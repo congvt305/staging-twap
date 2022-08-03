@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11848e05d20d78d49d00ab29bb14a475",
+    "content-hash": "928c4942bb2a885626524d515591fe65",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -217,6 +217,31 @@
                 "Commercial"
             ],
             "description": "Amasty Base"
+        },
+        {
+            "name": "amasty/coupons",
+            "version": "1.4.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/coupons-1.4.3-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.10.9",
+                "php": "7.0.2|7.0.4|~7.0.6|^7.1.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Coupons\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Multiple Coupons by Amasty"
         },
         {
             "name": "amasty/cron-schedule-list",
@@ -25891,6 +25916,7 @@
                     "type": "tidelift"
                 }
             ],
+            "abandoned": "symfony/error-handler",
             "time": "2021-09-24T13:30:14+00:00"
         },
         {
@@ -29467,5 +29493,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
