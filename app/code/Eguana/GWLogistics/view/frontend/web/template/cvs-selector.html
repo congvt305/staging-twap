@@ -16,7 +16,18 @@
                   data-role="cvs-map-load-form"
                   submit="setPickupInformation">
                 <render args="cvsAddressFormTemplate"/>
-                <div class="actions-toolbar">
+                <div class="actions-toolbar two-buttons">
+                    <div class="primary">
+                        <button data-role="opc-previous"
+                                type="button"
+                                class="button action previous primary"
+                                click="goBack"
+                        >
+                        <span>
+                            <translate args="'Previous'"/>
+                        </span>
+                        </button>
+                    </div>
                     <div class="primary">
                         <button data-role="opc-continue"
                                 type="submit"
@@ -30,7 +41,6 @@
                         </span>
                         </button>
                     </div>
-                </div>
             </form>
         </div>
     </div>
