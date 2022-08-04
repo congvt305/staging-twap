@@ -5,7 +5,7 @@ $couponListViewModel = $block->getData('couponListViewModel');
 ?>
 <div class="block discount"
      id="block-discount"
-     data-mage-init='{"collapsible":{"openedState": "active", "saveState": false}}'>
+     data-mage-init='{"collapsible":{"openedState": "active", "saveState": true}}'>
     <div class="title" data-role="title">
         <strong id="block-discount-heading" role="heading" aria-level="2"><?= $block->escapeHtml(__('Apply Discount Code')) ?></strong>
     </div>
@@ -32,8 +32,8 @@ $couponListViewModel = $block->getData('couponListViewModel');
                     </div>
                 </div>
                 <div class="actions-toolbar">
-                    <div class="secondary">
-                        <button class="action coupon-wallet secondary" type="button" value="<?= $block->escapeHtml(__('view my coupon')) ?>">
+                    <div class="primary">
+                        <button class="action coupon-wallet primary" type="button" value="<?= $block->escapeHtml(__('view my coupon')) ?>">
                             <span><?= /* @escapeNotVerified */  $block->escapeHtml(__('view my coupon')) ?></span>
                         </button>
                     </div>
@@ -85,7 +85,7 @@ $couponListViewModel = $block->getData('couponListViewModel');
                                 ?>
                                 <div class="coupon-applied">
                                     <?php foreach ($coupons as $coupon) : ?>
-
+                                        <?php /** @var \Magento\SalesRule\Model\Rule $coupon */?>
                                         <!-- start card -->
                                         <div class="discount-card">
                                             <div class="discount-bar lng-coupon-popup-color"></div>
@@ -101,7 +101,14 @@ $couponListViewModel = $block->getData('couponListViewModel');
                                                 <div class="discount-content">
                                                     <div class="discount-title-percent"><?=$block->escapeHtml($coupon['name']);?></div>
                                                     <div class="discount-percent">
-                                                        <span><?=$block->escapeHtml(__('Total discount for activities:'))?></span> <span style="color: red"><?=$couponListViewModel->getCurrencyCode().floatval($coupon['discount_amount'])?></span>
+                                                        <span><?= $block->escapeHtml(__('Total discount for activities:')) ?></span>
+                                                        <span class="highlight">
+                                                            <?php if ($coupon->getSimpleAction() == 'by_percent'): ?>
+                                                                <?= floatval($coupon['discount_amount']) ?>%
+                                                            <?php else: ?>
+                                                                <?= $couponListViewModel->getCurrencyCode() . floatval($coupon['discount_amount']) ?>
+                                                            <?php endif; ?>
+                                                        </span>
                                                     </div>
                                                     <div class="discount-percent">
                                                         <span><?=$block->escapeHtml(__('Expiration date:'))?></span> <span style="color: red"><?= $coupon['to_date'] == null ? '' : $coupon['to_date']; ?></span>

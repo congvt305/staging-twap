@@ -7,8 +7,18 @@
        .coupon .actions-toolbar {
            display: flex;
            justify-content: space-between;
+           > .primary {
+               width: calc(45%);
+           }
+           .action.primary {
+               padding: 11px 0;
+               width: 100%;
+           }
        }
    }
+    .checkout-cart-index .highlight {
+        color: red;
+    }
 }
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__xl) {
 
