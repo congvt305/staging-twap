@@ -46,8 +46,17 @@
         }
     }
 
-    .product-items.slick-slider .slick-slide .product-item {
-        max-width: none !important;
+    .product-items.slick-slider {
+        .slick-slide {
+            vertical-align: top;
+            .product-item {
+                max-width: none !important;
+                .product-image-photo {
+                    margin-top: 0px;
+                }
+            }
+        }
+
     }
     [data-content-type='products'][data-appearance='carousel'] {
         .slick-prev:before {
