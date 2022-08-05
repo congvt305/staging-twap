@@ -22,9 +22,13 @@
             display: flex;
             justify-content: space-between;
 
-            .secondary, .apply {
-                width: 140px;
-            }
+           > .primary {
+               width: calc(45%);
+               > button {
+                   width: 100%;
+                   padding: 0;
+               }
+           }
         }
     }
 
@@ -55,6 +59,9 @@
     }
 
     /* End Style popup coupon list */
+    .checkout-cart-index .highlight {
+        color: red;
+    }
 }
 
 & when (@media-target = 'desktop'), (@media-target = 'all') {
