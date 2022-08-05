@@ -36,7 +36,7 @@ $urlForm = $block->getReviewsUrl() . '#review-form';
                         $block->escapeHtml(__('Reviews')) ?>
                 </span>
             </a>
-            <a class="action add add-review" href="<?= $block->escapeUrl($urlForm) ?>">
+            <a class="action add add-review" href="<?= $block->escapeUrl($url) ?>">
                 <?= $block->escapeHtml(__('Add Your Review')) ?>
             </a>
         </div>
@@ -44,39 +44,9 @@ $urlForm = $block->getReviewsUrl() . '#review-form';
 <?php elseif ($block->isReviewEnabled() && $block->getDisplayIfEmpty()): ?>
     <div class="product-reviews-summary empty">
         <div class="reviews-actions">
-            <a class="action add add-review" href="<?= $block->escapeUrl($urlForm) ?>">
+            <a class="action add add-review" href="<?= $block->escapeUrl($url) ?>">
                 <?= $block->escapeHtml(__('Be the first to review this product')) ?>
             </a>
         </div>
     </div>
 <?php endif; ?>
-
-<div id="review-mpdal" style="display: none">
-    <?php echo $block->getLayout()->createBlock("Magento\Review\Block\Form")->setTemplate("Magento_Review::form.phtml")->toHtml(); ?>
-</div>
-
-<script type="text/javascript">
-    require(['jquery','Magento_Ui/js/modal/modal'],function($, modal) {
-        'use strict';
-        var options = {
-            'type': 'popup',
-            'title': '',
-            'modalClass': 'review_form_modal',
-            'responsive': true,
-            'innerScroll': true,
-            'buttons': [{
-                text: $.mage.__('Back'),
-                class: 'back_button_class',
-                click: function () {
-                    this.closeModal();
-                }
-            }]
-        };
-
-        var popup = modal(options, $('#review-mpdal'));
-        $(".add-review").on('click',function(){
-            $("#review-mpdal").modal("openModal");
-        });
-
-    });
-</script>
