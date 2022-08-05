@@ -422,4 +422,14 @@ class Data extends AbstractHelper
         );
         return $baseURL.$memberInfoURL;
     }
+
+    public function getCountryList()
+    {
+        return [
+            'HK' => 'Hongkong 852',
+            'MO' => 'Macao 853',
+            'CN' => 'China 86'
+        ];
+    }
+
 }
