@@ -239,9 +239,9 @@ $directoryHelper = $this->helper(\Eguana\Directory\Helper\Data::class);
                     <div class="control">
                         <?php //phpcs:disable ?>
                         <?php if ($autofilledFlag): ?>
-                        <input type="text" readonly placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
+                        <input type="text" readonly placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text validate-digits-range digits-range-0-99999 validate-length validate-number <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
                         <?php else: ?>
-                        <input type="text" placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
+                        <input type="text" placeholder="<?= $block->escapeHtml(__('Zip Code')) ?>" name="dm_zipcode" value="<?= $block->escapeHtmlAttr($block->getFormData()->getDmZipcode()) ?>" title="<?= $block->escapeHtml(__('Zip Code')) ?>" class="input-text validate-digits-range digits-range-0-99999 validate-length validate-number <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('dm_zipcode')) ?>" id="dm_zipcode">
                         <?php endif; ?>
                         <?php //phpcs:enable ?>
                     </div>
