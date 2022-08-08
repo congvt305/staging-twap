@@ -143,54 +143,68 @@ class CreateShipment
             $client = new \GuzzleHttp\Client($headers);
             $response = $client->post($url, ['json' => $data]);
             $contents = $this->json->unserialize($response->getBody()->getContents());
-            if (isset($contents['error'])
-                && ($response->getStatusCode() == 401 || isset($contents['error']['code']))
-            ) {
-                if ($contents['error']['code'] == self::INVALID_TOKEN_CODE) {
-                    $this->logger->addError('Error when creating order in Ninjavan: ' .
-                        $this->json->serialize($contents)
-                    );
-                    try {
-                        if ($tokenData && $tokenData->getDataByKey('token_id')) {
-                            $tokenDataFactory = $this->tokenDataFactory->create()->load($tokenData->getDataByKey('token_id'));
-                            $tokenDataFactory->setStatus(0);
-                            $tokenDataFactory->save();
+            if (isset($contents['error'])) {
+                if ($response->getStatusCode() == 401 || isset($contents['error']['code'])) {
+                    if ($contents['error']['code'] == self::INVALID_TOKEN_CODE) {
+                        $this->logger->addError('Error when creating order in Ninjavan: ' .
+                            $this->json->serialize($contents)
+                        );
+                        try {
+                            if ($tokenData && $tokenData->getDataByKey('token_id')) {
+                                $tokenDataFactory = $this->tokenDataFactory->create()->load($tokenData->getDataByKey('token_id'));
+                                $tokenDataFactory->setStatus(0);
+                                $tokenDataFactory->save();
+                            }
+                        } catch (\Exception $exception) {
+                            $this->logger->addError('Error when disable access token: ' . $exception->getMessage());
                         }
-                    } catch (\Exception $exception) {
-                        $this->logger->addError('Error when disable access token: ' . $exception->getMessage());
+
+                        $numOfRetry = $this->ninjavanHelper->getNinjaVanNumberRetry() ?? 4;
+                        while ($this->retryCount < $numOfRetry) {
+                            $this->retryCount++;
+                            $this->logger->info(__("Retry to make create Order #{$order->getIncrementId()} request {$this->retryCount} time(s)"));
+
+                            $auth = $this->authToken->requestAuthToken('array', $order->getStoreId());
+                            $this->logger->addInfo('retry to get request token: ', $auth);
+                            if (empty($auth['access_token'])) {
+                                throw new \Exception('Cannot get access token from NinjaVan.');
+                            }
+
+                            $headers[RequestOptions::HEADERS] = ['Authorization' => 'Bearer ' . $auth['access_token']];
+                            $this->logger->info('ninjavan | request header: ' . $this->json->serialize($headers));
+
+                            $client = new \GuzzleHttp\Client($headers);
+                            $response = $client->post($url, ['json' => $data]);
+                            $contentsRetry = $this->json->unserialize($response->getBody()->getContents());
+
+                            if (isset($contentsRetry['error'])) {
+                                $this->logger->addError('Error when retrying to create NV Order: ' . $this->json->serialize($contentsRetry['error']));
+                                continue;
+                            }
+                            $contents = $contentsRetry;
+                            break;
+                        }
                     }
 
+                    if (isset($contents['error'], $contents['error']['code']) && $contents['error']['code'] == self::DUPLICATE_TRACKING_CODE) {
+                        $this->logger->addError('Error when creating order in Ninjavan: ' .
+                            $this->json->serialize($contents)
+                        );
+                    }
+                } else {
+                    // Server error
                     $numOfRetry = $this->ninjavanHelper->getNinjaVanNumberRetry() ?? 4;
                     while ($this->retryCount < $numOfRetry) {
                         $this->retryCount++;
-                        $this->logger->info(__("Retry to make create Order request {$this->retryCount} time(s)"));
+                        $this->logger->info(__("Retry to make create Order #{$order->getIncrementId()} request {$this->retryCount} time(s)"));
 
-                        $auth = $this->authToken->requestAuthToken('array', $order->getStoreId());
-                        $this->logger->addInfo('retry to get request token: ', $auth);
-                        if (empty($auth['access_token'])) {
-                            throw new \Exception('Cannot get access token from NinjaVan.');
+                        sleep(10);
+                        $contents = $this->requestCreateOrder($data, $order);
+                        if (!isset($contents['error'])) {
+                            break;
                         }
-
-                        $headers[RequestOptions::HEADERS] = ['Authorization' => 'Bearer ' . $auth['access_token']];
-                        $this->logger->info('ninjavan | request header: ' . $this->json->serialize($headers));
-
-                        $client = new \GuzzleHttp\Client($headers);
-                        $response = $client->post($url, ['json' => $data]);
-                        $contentsRetry = $this->json->unserialize($response->getBody()->getContents());
-
-                        if (isset($contentsRetry['error'])) {
-                            $this->logger->addError('Error when retrying to create NV Order: ' . $this->json->serialize($contentsRetry['error']));
-                            continue;
-                        }
-                        $contents = $contentsRetry;
-                        break;
+                        $this->logger->info(__("Retry to make create Order #{$order->getIncrementId()} request successfully."));
                     }
-                }
-
-                if (isset($contents['error'], $contents['error']['code']) && $contents['error']['code'] == self::DUPLICATE_TRACKING_CODE) {
-                    $this->logger->addError('Error when creating order in Ninjavan: ' .
-                        $this->json->serialize($contents)
-                    );
                 }
             }
             if (isset($contents['messages'])) {
