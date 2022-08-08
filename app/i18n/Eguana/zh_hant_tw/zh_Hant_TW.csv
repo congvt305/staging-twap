@@ -3228,7 +3228,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "We can't update the shopping cart.","我們無法更新購物車 ",module,Magento_Checkout
 "One-page checkout is turned off.","一頁的結帳關掉了。",module,Magento_Checkout
 "Guest checkout is disabled.","客人退房被禁用。",module,Magento_Checkout
-"Checkout","我的購物車",module,Magento_Checkout
+"Checkout","結帳",module,Magento_Checkout
 "Page not found.","找不到頁面。",module,Magento_Checkout
 "Please agree to all the terms and conditions before placing the order.","請在提交訂單之前同意所有條款及條件。",module,Magento_Checkout
 "Something went wrong while processing your order. Please try again later.","在處理你的訂單時出了問題。 請稍後再試。",module,Magento_Checkout
@@ -3316,7 +3316,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Update","更新資料",module,Magento_Checkout
 "Cancel","取消",module,Magento_Checkout
 "Save in address book","保存在通訊錄中",module,Magento_Checkout
-"Estimated Total","估計總數",module,Magento_Checkout
+"Estimated Total","本次訂單金額",module,Magento_Checkout
 "You can create an account after checkout.","您可以在結帳後創建一個帳戶。",module,Magento_Checkout
 "You already have an account with us. Sign in or continue as guest.","登入會員累積會員點數",module,Magento_Checkout
 "Login","登入",module,Magento_Checkout
@@ -9976,7 +9976,7 @@ or more. <a href=""https://financing.paypal.com/ppfinportal/content/forrester"" 
 "Medium","介質",module,Magento_Paypal
 "Large","Large",module,Magento_Paypal
 "Responsive","Responsive",module,Magento_Paypal
-"Checkout","我的購物車",module,Magento_Paypal
+"Checkout","結帳",module,Magento_Paypal
 "Pay","Pay",module,Magento_Paypal
 "Buy Now","Buy Now",module,Magento_Paypal
 "PayPal","PayPal",module,Magento_Paypal
@@ -16474,3 +16474,4 @@ Multiple,多重
 sample,樣本
 "Select all","全選"
 "Unselect all","全部取消選擇"
+"If you want to change the shipping method, please select your HD address. If you want to stay with CVS service, please select the CVS store again.<br>Note. Once you select the Shipping method, please stay in your current page in case of the address data missing. Thank you","如欲更改配送方式，請勾選宅配地址選項。若希望繼續使用超商服務，請重新選擇取件門市。<br>注意: 選擇取貨方式後，請不要離開當前頁面，避免資料遺失，謝謝"

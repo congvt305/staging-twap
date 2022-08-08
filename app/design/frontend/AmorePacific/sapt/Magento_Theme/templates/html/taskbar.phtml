@@ -1,0 +1,59 @@
+<div class="taskbar">
+    <ul>
+        <li>
+            <a class="icon-home" href="/">Home</a>
+        </li>
+        <li>
+            <span data-action="toggle-nav" class="action nav-toggle"><span><?= $block->escapeHtml(__('Toggle Nav')) ?></span></span>
+        </li>
+        <li class="shop-link">
+            <a class="icon-shop" href="<?php echo $block->getBaseUrl();?>brand-belief.html">Shop</a>
+        </li>
+        <li>
+            <a class="icon-account" href="<?php echo $block->getBaseUrl();?>customer/account/">Account</a>
+        </li>
+        <li>
+            <a class="icon-gift" href="<?php echo $block->getBaseUrl();?>events">Gift</a>
+        </li>
+    </ul>
+</div>
+
+<script>
+    require(['jquery'], function($) {
+        var lastScrollTop = 0, delta = 5;
+        if ($(window).width() < 768) {
+            $(window).scroll(function(){
+                var nowScrollTop = $(this).scrollTop();
+                if(Math.abs(lastScrollTop - nowScrollTop) >= delta){
+                    if (nowScrollTop > lastScrollTop){
+                        $('.taskbar').slideUp('')
+                        $('header.page-header').css('top',"0")
+                        $('.categories_slide_wrapprer').css('top',"0")
+                    } else {
+                        $('.taskbar').slideDown('')
+                        $('header.page-header').css('top',"-100%")
+                        $('.categories_slide_wrapprer').css('top',"-100%")
+                    }
+                    lastScrollTop = nowScrollTop;
+                }
+                if ($(window).scrollTop() >= 77) {
+                    $('header.page-header').addClass('has_sticky');
+                    $('.categories_slide_wrapprer').addClass('has_sticky');
+                }
+                else {
+                    $('header.page-header').removeClass('has_sticky');
+                    $('.categories_slide_wrapprer').removeClass('has_sticky');
+                    $('header.page-header').css('top','0')
+                    $('.categories_slide_wrapprer').css('top','61px')
+                }
+            });
+            var inputs = $('input[type="password"],input[type="text"],input[type="number"],input[type="email"]');
+            inputs.on('focus', () => {
+                $('.taskbar').hide();
+            });
+            inputs.on('blur', () => {
+                $('.taskbar').show();
+            });
+        }
+    });
+</script>

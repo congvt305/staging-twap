@@ -31,12 +31,32 @@
             <thead>
             <tr>
                 <th class="col item" scope="col"><span><?= $block->escapeHtml(__('Cart Item')) ?></span></th>
-                <th class="col price" scope="col"><span><?= $block->escapeHtml(__('Price')) ?></span></th>
-                <th class="col qty" scope="col"><span><?= $block->escapeHtml(__('Qty')) ?></span></th>
                 <th class="col subtotal" scope="col"><span><?= $block->escapeHtml(__('Subtotal')) ?></span></th>
             </tr>
             </thead>
+            <?php
+            $giftItems = [];
+            $items = array_reverse($block->getItems());
+            /** @var $_item \Magento\Quote\Model\Quote\Item */
+            foreach ($items as $_item) {
+                $options = $_item->getBuyRequest()->getData('options');
+                if (isset($options['ampromo_rule_id'])) {
+                    $giftItems[] = $_item;
+                } else {
+                    $_item->setGiftItems($giftItems);
+                    $giftItems = [];
+                }
+            }
+            ?>
             <?php foreach ($block->getItems() as $_item): ?>
+                <?php
+                $options = $_item->getBuyRequest()->getData('options');
+                if (isset($options['ampromo_rule_id'])) { continue; }
+                if (!empty($giftItems)) {
+                    $_item->setGiftItems($giftItems);
+                    $giftItems = [];
+                }
+                ?>
                 <?= $block->getItemHtml($_item) ?>
             <?php endforeach ?>
         </table>

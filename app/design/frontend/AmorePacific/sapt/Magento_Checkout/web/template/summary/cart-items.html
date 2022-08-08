@@ -4,12 +4,12 @@
  * See COPYING.txt for license details.
  */
 -->
-<div class="block items-in-cart" data-bind="mageInit: {'collapsible':{'openedState': 'active', 'animate': 300, 'active': isItemsBlockExpanded()}}">
+<div class="block items-in-cart" data-bind="mageInit: {'collapsible':{'openedState': 'open', 'active': false}}">
     <div class="title" data-role="title">
         <strong role="heading" aria-level="1">
             <translate args="maxCartItemsToDisplay" if="maxCartItemsToDisplay < getCartLineItemsCount()"/>
             <translate args="'of'" if="maxCartItemsToDisplay < getCartLineItemsCount()"/>
-            <span data-bind="text: getCartLineItemsCount()"></span>
+            <span data-bind="text: getCartSummaryItemsCount()"></span>
             <translate args="'Item in Cart'" if="getCartLineItemsCount() === 1"/>
             <translate args="'Items in Cart'" if="getCartLineItemsCount() > 1"/>
         </strong>

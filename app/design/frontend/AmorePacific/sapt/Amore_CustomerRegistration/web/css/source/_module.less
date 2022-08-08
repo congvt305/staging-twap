@@ -52,12 +52,12 @@
                 .countdown,
                 .ba-code-message {
                     display: block;
-                    text-align: right;
+                    text-align: left;
                 }
 
                 .code-send-message,
                 .ba-code-message {
-                    color: #5f5f5f;
+                    color: #767676;
                 }
 
                 .verification-message,
@@ -72,6 +72,18 @@
                 display: none;
                 position: relative;
                 vertical-align: middle;
+            }
+            &.verification-code {
+                position: relative;
+                .note.countdown {
+                    position: absolute;
+                    right: 190px;
+                    width: auto;
+                    top: 7px;
+                    z-index: 10;
+                    color: #222;
+                    font-size: 14px;
+                }
             }
         }
     }
@@ -230,10 +242,6 @@
                 .control .mage-error{
                     width: 59%;
                 }
-            }
-
-            &.last_name {
-                padding-top: @indent__base;
             }
         }
     }

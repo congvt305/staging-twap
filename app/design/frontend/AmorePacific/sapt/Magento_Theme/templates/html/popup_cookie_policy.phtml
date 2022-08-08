@@ -1,0 +1,24 @@
+<div id="popup_cookie_policy" class="cookie_policy">
+    <span class="close_btn"></span>
+    <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('hk_sulhwasoo_cookie_policy_content')->toHtml();?>
+</div>
+<script>
+    require(
+        [
+            'jquery'
+        ],
+        function(
+            $
+        ) {
+            if (localStorage.getItem("popup_cookie_policy") === null || localStorage.getItem("popup_cookie_policy") === 'true' ) {
+                $('#popup_cookie_policy').show('');
+                localStorage.setItem('popup_cookie_policy', true);
+            }
+            $(".close_btn").click(function(){
+                $('#popup_cookie_policy').hide('');
+                localStorage.setItem('popup_cookie_policy', false);
+            });
+        }
+    );
+
+</script>

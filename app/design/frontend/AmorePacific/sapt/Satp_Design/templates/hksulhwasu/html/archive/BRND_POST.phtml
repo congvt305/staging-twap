@@ -1,0 +1,413 @@
+<!--<title>Sulwhasoo Post - Sulwhasoo Post | 雪花秀 中國香港</title>-->
+<!--<meta name="description" content="一目了然地觀看完整的雪花秀體驗檔案清單  | 雪花秀 中國香港">-->
+<!--<meta property="og:title" content="Sulwhasoo Post - Sulwhasoo Post | 雪花秀 中國香港">-->
+<!--<meta property="og:description" content="一目了然地觀看完整的雪花秀體驗檔案清單  | 雪花秀 中國香港">-->
+<!--<meta property="twitter:title" content="Sulwhasoo Post - Sulwhasoo Post | 雪花秀 中國香港">-->
+<!--<meta property="twitter:description" content="一目了然地觀看完整的雪花秀體驗檔案清單  | 雪花秀 中國香港">-->
+<!--<title>資訊, 雪花秀檔案館 - Sulwhasoo EXPERIENCE | 雪花秀</title>-->
+<!--<meta name="description" content="通過2013年2月起的視頻片段和照片，一目了然地觀看完整的雪花秀體驗檔案清單 | Sulwhasoo Hong Kong 中國香港">-->
+<!--<meta property="og:title" content="資訊, 雪花秀檔案館 - Sulwhasoo EXPERIENCE | 雪花秀">-->
+<!--<meta property="og:description" content="通過2013年2月起的視頻片段和照片，一目了然地觀看完整的雪花秀體驗檔案清單 | Sulwhasoo Hong Kong 中國香港">-->
+<!--<meta property="twitter:title" content="資訊, 雪花秀檔案館 - Sulwhasoo EXPERIENCE | 雪花秀">-->
+<!--<meta property="twitter:description" content="通過2013年2月起的視頻片段和照片，一目了然地觀看完整的雪花秀體驗檔案清單 | Sulwhasoo Hong Kong 中國香港">-->
+
+<section class="content renewal-archive-list">
+    <h1 class="blind">Archive</h1>
+    <div class="l-wrap">
+        <!-- S : Best Archive -->
+        <div class="archive-group best">
+            <h2 class="archive-group-tit">BEST</h2>
+            <ul class="archive-list">
+
+            </ul>
+
+            <div class="btn-more-wrap">
+                <button type="button" class="btn-more" id="btn-more-best">
+                    <span class="btn-more-txt">See More</span>
+                </button>
+            </div>
+        </div>
+        <!-- E : Best Archive -->
+
+        <!-- S : Sorting -->
+        <div class="sort-area">
+            <div class="selectbox" role="dialog" id="sel1">
+                <div class="selector"><span id="selector-year" class="selector-text" role="button">Year</span><i class="icon-arr-down"></i><i class="icon-arr-up"></i></div>
+                <ul class="selectbox-option">
+                    <li><a href="/design/html/view?template=archive/BRND_POST?year=2022">2022</a></li>
+                    <li><a href="/design/html/view?template=archive/BRND_POST?year=2021">2021</a></li>
+                    <li><a href="/design/html/view?template=archive/BRND_POST?year=2020">2020</a></li>
+                    <li><a href="/design/html/view?template=archive/BRND_POST?year=2019">2019</a></li>
+                </ul>
+            </div>
+            <div class="selectbox" role="dialog" id="sel2">
+                <div class="selector"><span id="selector-cate" class="selector-text" role="button">Category</span><i class="icon-arr-down"></i><i class="icon-arr-up"></i></div>
+                <ul class="selectbox-option">
+                    <li><a href="/hk/zh/experience/archive/Film/index.html">Film</a></li>
+                    <li><a href="/hk/zh/experience/archive/Print/index.html">Print</a></li>
+                    <li><a href="/hk/zh/experience/archive/beauty_ritual/index.html">Beauty Ritual</a></li>
+                    <li><a href="/hk/zh/experience/archive/season_curation/index.html">Season Curation</a></li>
+                    <li><a href="/hk/zh/experience/archive/news/index.html">News</a></li>
+                    <li><a href="/hk/zh/experience/archive/event/index.html">Event</a></li>
+                    <li><a href="/hk/zh/experience/archive/etc/index.html">Etc</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- E : Sorting -->
+        <!-- S : Season Archive -->
+        <!-- E : Season Archive -->
+        <div class="btn-more-wrap">
+            <button type="button" class="btn-more" id="btn-more-quarter">
+                <span class="btn-more-txt">See More</span>
+            </button>
+        </div>
+    </div>
+</section>
+<script src="https://www.sulwhasoo.com/hk/zh/resource/js/iScript.js"></script>
+<script>
+    require([
+        'jquery'
+    ], function ($) {
+
+        let bestList;		//베스트 리스트
+        let articleList; 	//아티클 리스트
+
+        let sortedList;
+
+        let bestMore = 0;	// 더보기 클릭 카운트
+        let qMore = 0;		// 분기 더보기 클릭 카운트
+
+        $(function() {
+            let quarterList;
+
+            let paramYear = ion.getParameter("year");
+            let cateType = ion.getParameter("cateType");
+            let searchKey = "";
+
+            getQuarterJson();
+            getBestJson();
+            getArticleJson();
+
+            console.log(paramYear + ', ' + searchKey);
+
+            if (searchKey) { // 하단 메뉴 진입 시
+                $('#selector-cate').text(searchKey);
+
+                var yearTag = $("<li>");
+                var catTag = $("<li>");
+
+                if (paramYear) {
+                    $('#selector-year').text(paramYear);
+
+                    catTag.append($("<a href='/design/html/view?template=archive/BRND_POST?year="+paramYear+"'>View All</a>"))
+
+                    if (paramYear === 'all') {
+                        $('#selector-year').text("View All");
+                    } else {
+                        $('#selector-year').text(paramYear);
+                    }
+
+                    $.each($("#sel2 .selectbox-option li a"),function(i,v){
+                        v.href += "?year="+paramYear;
+                    });
+
+                } else {
+                    catTag.append($("<a href='/design/html/view?template=archive/BRND_POST?year=all'>View All</a>"))
+                }
+
+                yearTag.append($("<a href='/design/html/view?template=archive/BRND_POST?year=all'>View All</a>"))
+
+                $("#sel1 .selectbox-option").prepend(yearTag);
+                $("#sel2 .selectbox-option").prepend(catTag);
+            }
+            else {
+                if (paramYear) {
+                    $('#selector-year').text(paramYear);
+
+                    var yearTag = $("<li>");
+                    yearTag.append($("<a href='/design/html/view?template=archive/BRND_POST?year=all'>View All</a>"));
+                    $("#sel1 .selectbox-option").prepend(yearTag);
+
+                    if (paramYear === 'all') {
+                        $('#selector-year').text("View All");
+                    } else {
+                        $('#selector-year').text(paramYear);
+                    }
+
+                    $.each($("#sel2 .selectbox-option li a"),function(i,v){
+                        v.href += "?year="+paramYear;
+                    });
+                }
+            }
+
+            if (!Object.entries)
+                Object.entries = function( obj ) {
+                    var ownProps = Object.keys( obj ),
+                        i = ownProps.length,
+                        resArray = new Array(i); // preallocate the Array
+                    while (i--)
+                        resArray[i] = [ownProps[i], obj[ownProps[i]]];
+
+                    return resArray;
+                };
+
+            /**
+             * 리스트 나누기
+             * arr  : 나눌 리스트
+             * size : 범위
+             */
+            function chunk(arr, size) {
+                let i, j, temparray = [], chunk = size;
+                for (i = 0, j = arr.length; i < j; i += chunk) {
+                    temparray.push(arr.slice(i, i + chunk));
+                }
+                return temparray
+            }
+
+            function groupBy(data, key) {
+                return data.reduce(function (carry, el) {
+                    let group = el[key];
+
+                    if (carry[group] === undefined) {
+                        carry[group] = []
+                    }
+
+                    carry[group].push(el)
+                    return carry
+                }, {});
+            }
+
+            function getQuarterNm(code) {
+                if (!quarterList) {
+                    return quarterList;
+                } else {
+                    let quarterNm = '';
+
+                    for (let i=0; i<quarterList.length; i++) {
+                        if (quarterList[i].quarterCd === code) {
+                            quarterNm = quarterList[i].quarterNm;
+                        }
+                    }
+
+                    return quarterNm;
+                }
+            }
+
+            function getQuarterJson() {
+                $.ajax({
+                    url: "/media/html/layout/archive/quarter.json",
+                    dataType: "json",
+                    success: function(result) {
+                        quarterList = result;
+                    },
+                    error: function(request, status, error) {
+                        //console.log("code:" + request.status + "\n" + "error:" + error);
+                    }
+                });
+            }
+
+            function getBestJson() {
+                $.ajax({
+                    url: "/media/html/experience/archive/best/best.json",
+                    dataType: "json",
+                    success: function(result) {
+                        if (result.length > 0) {
+                            let tmp = result;
+
+                            /*if (paramYear && paramYear!=='all') {
+                                // tmp = tmp.filter(b => b.year === paramYear);
+                                tmp = tmp.filter(function(tmp) {
+                                    return tmp.year === paramYear;
+                                });
+                            }
+
+                            if (searchKey) {
+                                // tmp = tmp.filter(b => b.type === searchKey);
+                                tmp = tmp.filter(function(tmp) {
+                                    return tmp.type === searchKey;
+                                });
+                            }*/
+
+                            bestList = chunk(tmp, 3);
+                            setBestList(bestMore);
+                        }
+                    },
+                    error: function(request, status, error) {
+                        //console.log("code:" + request.status + "\n" + "error:" + error);
+                    }
+                });
+            }
+
+            function getArticleJson() {
+                $.ajax({
+                    url: "/media/html/experience/archive/archive.json",
+                    dataType: "json",
+                    success: function(result) {
+                        if (result.length > 0) {
+                            articleList = result;
+                            setArticleList();
+                            addArticleList();
+                        }
+                    },
+                    error: function(request, status, error) {
+                        //console.log("code:" + request.status + "\n" + "error:" + error);
+                    }
+                });
+
+            }
+
+            // 베스트 리스트 3개씩 append
+            function setBestList(idx) {
+                let el = '';
+
+                for (let i = 0; i < bestList[idx].length; i++) {
+                    el += '<li><a href="'+bestList[idx][i].url+'" class="thumb" ap-click-area="Contents" ap-click-name="Click - Contents"';
+                    el += ' ap-click-data="Sulwhasoo Post Best_'+bestList[idx][i].title +'">';
+                    if (bestList[idx][i].type === 'Film') {
+                        el += '<div class="thumb-frame media"><img src="'+bestList[idx][i].thumb+'" alt="'+bestList[idx][i].thumbAlt+'">';
+                        el += '<i class="icon-play"><span class="blind">영상보기</span></i>';
+                    } else {
+                        el += '<div class="thumb-frame"><img src="'+bestList[idx][i].thumb+'" alt="'+bestList[idx][i].thumbAlt+'">';
+                    }
+                    el += '</div><div class="archive-cont">';
+                    el += '<h3 class="archive-name">'+bestList[idx][i].title +'</h3>';
+                    if (bestList[idx][i].desc !== '') {
+                        el += '<p class="archive-desc">'+bestList[idx][i].desc +'</p>'
+                    } else {
+                        el += '<p class="archive-desc">'+bestList[idx][i].html +'</p>'
+                    }
+                    el += '<span class="type">'+bestList[idx][i].type +'</span>';
+                    el += '<span class="date">'+bestList[idx][i].date +'</span></div>';
+                    el += '</a></li>'
+                }
+
+                $(".archive-group.best > ul").append(el);
+
+                let count = 0;
+                for (let j= 0; j < bestList.length; j++) {
+                    count += bestList[j].length;
+                }
+
+                if ($(".archive-group.best > ul > li").length === count) {
+                    $(".archive-group.best").find(".btn-more-wrap").hide();
+                }
+
+            }
+
+            function drawArticles(list) {
+                let qCd = getQuarterNm(list[0]) === undefined ? '' : getQuarterNm(list[0]);
+                // let qCd = list[0];
+                let qList = list[1];
+                let el = '';
+
+                // for (let i=0; i< len; i++) {
+                el += '<div class="archive-group season">';
+                el += '<h2 class="archive-group-tit">'+qCd+'</h2>';
+                el += '<ul class="archive-list">';
+                for (let i=0; i< qList.length; i++) {
+                    el += '<li>';
+                    el += '<a href="'+qList[i].url+'" class="thumb" ap-click-area="Contents" ap-click-name="Click - Contents"';
+                    el += ' ap-click-data="'+qCd+'_' +qList[i].title +'">';
+                    if (qList[i].type === 'Film') {
+                        el += '<div class="thumb-frame media">';
+                        el += '<img src="'+qList[i].thumb+'" alt="'+qList[i].thumbAlt+'">';
+                        el += '<i class="icon-play"><span class="blind">영상보기</span></i>';
+                    } else {
+                        el += '<div class="thumb-frame">';
+                        el += '<img src="'+qList[i].thumb+'" alt="'+qList[i].thumbAlt+'">';
+                    }
+                    el += '</div><div class="archive-cont">';
+                    el += '<h3 class="archive-name">'+qList[i].title+'</h3>';
+
+                    el += '<p class="archive-desc">'+qList[i].desc +'</p>'
+                    // if (qList[i].desc !== '') {
+                    // 	el += '<p class="archive-desc">'+qList[i].desc +'</p>'
+                    // } else {
+                    // 	el += qList[i].html;
+                    // }
+                    el += '<span class="type">'+qList[i].type +'</span>';
+                    el += '<span class="date">'+qList[i].date +'</span></div>';
+                    el += '</a></li>'
+                }
+                el += '</ul></div>'
+                // }
+
+                return el;
+
+            }
+
+            function addArticleList() {
+                //더보기
+                if (sortedList[qMore + 1] === null || sortedList[qMore + 1] === undefined) {
+                    return false;
+                }
+                qMore++;
+                $('.archive-group.season:last').after(drawArticles(sortedList[qMore]));
+
+                if (sortedList.length === $('.archive-group.season').length) {
+                    $("#btn-more-quarter").parent().hide();
+                }
+            }
+
+            function setArticleList() {
+
+                if (paramYear && paramYear!=='all') {
+                    // articleList = articleList.filter(a => a.year === paramYear);
+                    articleList = articleList.filter(function(articleList) {
+                        return articleList.year === paramYear;
+                    });
+                }
+
+                if (searchKey) {
+                    // articleList = articleList.filter(a => a.type === searchKey);
+                    articleList = articleList.filter(function(articleList) {
+                        return articleList.type === searchKey;
+                    });
+                }
+
+                // articleList = articleList.filter(a => a.quarterCd !== "");
+                articleList = articleList.filter(function(articleList) {
+                    return articleList.quarterCd !== "";
+                });
+
+                let obj = groupBy(articleList, 'quarterCd');
+                sortedList = Object.entries(obj).sort(function(a, b) {
+                    return b[0] - a[0];
+                });
+
+                if (sortedList.length > 0) {
+                    $('.archive-group.season').remove();
+                    $('.sort-area').after(drawArticles(sortedList[0]));
+
+                    if (sortedList.length === $('.archive-group.season').length) {
+                        $("#btn-more-quarter").parent().hide();
+                    }
+                }else{
+                    $("#btn-more-quarter").parent().hide();
+                }
+            }
+
+            // 베스트 영역 더보기 버튼 이벤트
+            $('#btn-more-best').click(function(e) {
+                e.preventDefault();
+
+                let lastIdx = bestList.length -1;
+
+                if (bestMore >= lastIdx) {
+                    return false;
+                } else {
+                    bestMore++;
+                    setBestList(bestMore);
+                }
+            });
+
+            // 분기 영역 더보기 버튼 이벤트
+            $('#btn-more-quarter').click(function(e) {
+                e.preventDefault();
+                addArticleList();
+            });
+
+        });
+
+    });
+</script>

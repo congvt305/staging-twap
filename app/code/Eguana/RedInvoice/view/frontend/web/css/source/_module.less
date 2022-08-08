@@ -58,4 +58,29 @@
             }
         }
     }
+
+    .actions-toolbar.two-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        max-width: 580px;
+        margin: 0 auto;
+        > .primary {
+            width: calc(45%);
+        }
+    }
 }
+
+@media screen and (max-width: 767px) {
+    .checkout-shipping-method {
+        .actions-toolbar.two-buttons {
+            [data-role="opc-previous"] {
+                bottom: 55px !important;
+                background: #4477be;
+                border: 1px solid #4477be;
+                color: #ffffff;
+            }
+        }
+    }
+}
+

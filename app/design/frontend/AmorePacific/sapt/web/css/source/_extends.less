@@ -337,13 +337,11 @@
 
 & when (@media-common = true) {
     .abs-block-title {
-        border-bottom: 1px solid @primary__color__light;
-        color: @primary__color__lighter;
-        font-family: 'buri', @font-family__sans-serif;
+        color: @theme__color__primary-alt;
         margin: 0 0 @indent__base 0;
         padding: 0 0 @indent__s 0;
-        text-transform: uppercase;
-        .lib-font-size(20);
+        text-transform: capitalize;
+        .lib-font-size(18);
 
         > * {
             font-weight: @font-weight__semibold;
@@ -371,10 +369,10 @@
             margin: 0 0 @indent__xs;
 
             > * {
-                .lib-font-size(18);
-                color: @primary__color__lighter;
-                font-weight: @font-weight__regular;
-                line-height: @checkout-billing-address-details__line-height;
+                font-size: 18px;
+                color: @black__color;
+                font-weight: @font-weight__heavier;
+                line-height: 24px;
             }
 
             > .action {
@@ -394,10 +392,10 @@
         }
 
         .box-content {
-            color: @secondary__color;
+            color: @black__color;
 
             > * {
-                color: @secondary__color;
+                color: @black__color;
             }
         }
 
@@ -417,7 +415,7 @@
                 );
 
                 &:not(:first-child) {
-                    margin-left: @indent__s;
+                    margin-left: 16px;
                 }
             }
         }
@@ -1324,8 +1322,7 @@
     .abs-sidebar-summary {
         &:extend(.abs-add-box-sizing all);
         box-sizing: border-box;
-        .lib-css(background, @sidebar__background-color);
-        padding: @indent__l;
+        padding: 0;
 
         > .title {
             border-bottom: 1px solid @primary__color;
@@ -1977,6 +1974,31 @@
                 content: '';
                 clear: both;
             }
+        }
+    }
+}
+
+.abs-action-link(@underline-color) {
+    position: relative;
+    display: inline-block;
+
+    &:before {
+        background: @underline-color;
+        bottom: 0;
+        content: '';
+        display: inline-block;
+        width: 0;
+        height: 1px;
+        -webkit-transition: width .3s ease-in-out;
+        -o-transition: width .3s ease-in-out;
+        transition: width .3s ease-in-out;
+        position: absolute;
+    }
+
+    &:focus,
+    &:hover {
+        &:before {
+            width: 100%;
         }
     }
 }

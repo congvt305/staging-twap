@@ -28,5 +28,18 @@
         <referenceBlock name="authorization-link" remove="true"/>
         <move element="register-link" destination="header.links" before="-"/>
         <move element="top.links" destination="customer"/>
+
+        <referenceBlock name="register-link">
+            <arguments>
+                <argument name="label" xsi:type="string" translate="true">Sign up</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="authorization-link-login">
+            <arguments>
+                <argument name="label" xsi:type="string" translate="true">Login</argument>
+            </arguments>
+        </referenceBlock>
+        <move element="register-link" destination="header.links" after="authorization-link-login"/>
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
     </body>
 </page>

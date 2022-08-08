@@ -8,22 +8,12 @@
 
 /** @var \Magento\Sales\Block\Order\Items $block */
 ?>
-<div class="table-wrapper order-items">
-    <table class="data table table-order-items" id="my-orders-table" summary="<?= $block->escapeHtmlAttr(__('Items Ordered')) ?>">
-        <caption class="table-caption"><?= $block->escapeHtml(__('Items Ordered')) ?></caption>
+<div class="table-wrapper cart">
+    <table class="cart data table items" id="my-orders-table" summary="<?= $block->escapeHtmlAttr(__('Items Ordered')) ?>">
         <thead>
-            <?php if ($block->isPagerDisplayed()) : ?>
-                <tr>
-                    <td colspan="4" data-block="order-items-pager-top" class="order-pager-wrapper order-pager-wrapper-top">
-                        <?= $block->getPagerHtml() ?>
-                    </td>
-                </tr>
-            <?php endif ?>
             <tr>
-                <th class="col name"><?= $block->escapeHtml(__('Product Name')) ?></th>
-                <th class="col price"><?= $block->escapeHtml(__('Price')) ?></th>
-                <th class="col qty"><?= $block->escapeHtml(__('Qty')) ?></th>
-                <th class="col subtotal"><?= $block->escapeHtml(__('Subtotal')) ?></th>
+                <th class="col item"><?= $block->escapeHtml(__('Product Name')) ?></th>
+                <th class="col actions"><?= $block->escapeHtml(__('Actions')) ?></th>
             </tr>
         </thead>
         <?php $items = $block->getItems(); ?>

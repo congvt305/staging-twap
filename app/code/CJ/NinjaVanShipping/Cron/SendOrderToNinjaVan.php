@@ -18,6 +18,7 @@ use Magento\Sales\Model\Order\Shipment\TrackFactory as ShipmentTrackFactory;
 
 class SendOrderToNinjaVan
 {
+    const TRACKING_NUMBER_FREFIX = 'MYL';
     /**
      * @var OrderCollectionFactory
      */
@@ -142,9 +143,9 @@ class SendOrderToNinjaVan
                         __('You can\'t create an shipment.')
                     );
                 }
-
+                $trackNumber = $this->generateTrackNumber($order);
                 // Send the order's information to NinjaVan to create new delivery order
-                $data = $this->createShipment->payloadSendToNinjaVan($order);
+                $data = $this->createShipment->payloadSendToNinjaVan($order, $trackNumber);
                 $this->logger->info('request body to create delivery order: ');
                 $this->logger->info($this->json->serialize($data));
                 $response = $this->createShipment->requestCreateOrder($data, $order);
@@ -189,7 +190,15 @@ class SendOrderToNinjaVan
         }
         $this->logger->info('=====End cron send order to NinjaVan=====');
     }
-
+    /**
+     * @param $order
+     * @return string
+     */
+    protected function generateTrackNumber($order): string
+    {
+        $orderPrefix = self::TRACKING_NUMBER_FREFIX;
+        return $orderPrefix.substr($order->getIncrementId(), -6);
+    }
     /**
      * @param $order
      * @param string $trackingNum

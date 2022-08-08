@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var \Magento\Customer\Block\Account\AuthorizationLink $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$dataPostParam = '';
+if ($block->isLoggedIn()) {
+    $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
+}
+?>
+<li class="link authorization-link" data-label="<?= $escaper->escapeHtml(__('or')) ?>">
+    <a <?= /* @noEscape */ $block->getLinkAttributes() ?>
+        <?= /* @noEscape */ $dataPostParam ?>>
+        <?php if ($block->isLoggedIn()) { ?>
+            <?= $escaper->escapeHtml($block->getLabel()) ?>
+        <?php } else { ?>
+            <?= $escaper->escapeHtml(__('Log in / Sign up')) ?>
+        <?php } ?>
+    </a>
+</li>
+<li class="link account_link"><a href="<?php echo $this->getUrl('customer/account/dashboard') ?>"></a></li>

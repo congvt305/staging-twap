@@ -13,6 +13,7 @@ use Magento\Framework\App\Action\Action;
  * Product list template
  *
  * @var $block \Magento\Catalog\Block\Product\ListProduct
+ * @var \Magento\Framework\Escaper $escaper
  * @var $getDefault \Eguana\CustomCatalog\ViewModel\GetDefaultCategory
  */
 ?>
@@ -26,6 +27,7 @@ $getDefault = $block->getData('view_model');
 ?>
 <?php if (!$_productCollection->count()): ?>
     <div class="message info empty"><div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div></div>
+    <?= $block->getChildHtml('category.description') ?>
 <?php else: ?>
     <?= $block->getToolbarHtml() ?>
     <?= $block->getAdditionalHtml() ?>
@@ -34,7 +36,7 @@ $getDefault = $block->getData('view_model');
         $viewMode = 'grid';
         $imageDisplayArea = 'category_page_grid';
         $showDescription = false;
-        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
     } else {
         $viewMode = 'list';
         $imageDisplayArea = 'category_page_list';
@@ -44,7 +46,7 @@ $getDefault = $block->getData('view_model');
     /**
      * Position for actions regarding image size changing in vde if needed
      */
-    $pos = $block->getPositioned();
+    $pos = $block->getPositioned() ? $block->getPositioned() : '';
     $i = 0;
     ?>
     <div class="products wrapper <?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>" data-mage-init='{"listProducts":{}}'>
@@ -73,15 +75,39 @@ $getDefault = $block->getData('view_model');
                             }
                             ?>
                             <?php // Product Image ?>
-                            <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
-                               class="product photo product-item-photo"
-                               tabindex="-1"
-                               ap-click-area="prds-<?= /* @noEscape */ $getDefault->getDefaultCategory($currentCategory->getEntityId())->getName() ?>"
-                               ap-click-name="prd click"
-                               ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
-                                <?= $productImage->toHtml() ?>
-                            </a>
+                            <div class="product_box_photo">
+                                <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
+                                   class="product photo product-item-photo"
+                                   tabindex="-1"
+                                   ap-click-area="prds-<?= /* @noEscape */ $getDefault->getDefaultCategory($currentCategory->getEntityId())->getName() ?>"
+                                   ap-click-name="prd click"
+                                   ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                                    <?= $productImage->toHtml() ?>
+                                </a>
+                                <div class="product-item-inner">
+                                    <div class="product actions product-item-actions"<?= strpos($pos, $viewMode . '-actions') ? $block->escapeHtmlAttr($position) : '' ?>>
+                                        <?php if(!$_product->getData('offline')):?>
+                                            <div data-role="add-to-links" class="actions-secondary"<?= strpos($pos, $viewMode . '-secondary') ? $block->escapeHtmlAttr($position) : '' ?>>
+                                                <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
+                                                    <?= $addToBlock->setProduct($_product)->getChildHtml('wishlist') ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif;?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <?php if ($_product->getProductLabels()): ?>
+                                <div class="product_labels">
+                                    <?php echo $_helper->productAttribute($_product, $_product->getProductLabels(), 'product_labels') ?>
+                                </div>
+                            <?php endif;?>
                             <div class="product details product-item-details">
+                                <div class="product_tags">
+                                <?php if ($_product->getProductTags()): ?>
+                                    <?php echo $_helper->productAttribute($_product, $_product->getProductTags(), 'product_tags') ?>
+                                <?php endif;?>
+                                </div>
                                 <?php
                                 $_productNameStripped = $block->stripTags($_product->getName(), null, true);
                                 ?>
@@ -103,8 +129,11 @@ $getDefault = $block->getData('view_model');
 
                                 <?= /* @escapeNotVerified */ $block->getProductPrice($_product) ?>
 
-                                <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
+                                <?= $block->getReviewsSummaryHtml($_product, $templateType, true) ?>
 
+                                <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
+                                    <?= $addToBlock->setProduct($_product)->getChildHtml('compare') ?>
+                                <?php endif; ?>
                                 <div class="product-item-inner">
                                     <div class="product actions product-item-actions"<?= strpos($pos, $viewMode . '-actions') ? $block->escapeHtmlAttr($position) : '' ?>>
                                         <div class="actions-primary"<?= strpos($pos, $viewMode . '-primary') ? $block->escapeHtmlAttr($position) : '' ?>>
@@ -121,6 +150,12 @@ $getDefault = $block->getData('view_model');
                                             <?php if ($_product->isSaleable()): ?>
                                                 <?php $postParams = $block->getAddToCartPostParams($_product); ?>
                                                 <form data-role="tocart-form" data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>" action="<?= $block->escapeUrl($postParams['action']) ?>" method="post">
+                                                    <?php $optionsData = $block->getData('viewModel')->getOptionsData($_product); ?>
+                                                    <?php foreach ($optionsData as $optionItem): ?>
+                                                        <input type="hidden"
+                                                               name="<?= $escaper->escapeHtml($optionItem['name']) ?>"
+                                                               value="<?= $escaper->escapeHtml($optionItem['value']) ?>">
+                                                    <?php endforeach; ?>
                                                     <input type="hidden" name="product" value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
                                                     <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
                                                     <?= $block->getBlockHtml('formkey') ?>
@@ -130,15 +165,15 @@ $getDefault = $block->getData('view_model');
                                                         <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
                                                     </button>
                                                 </form>
+                                            <?php else: ?>
+                                                <button type="button"
+                                                        title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                                                        class="action tocart primary disabled"
+                                                        disabled>
+                                                    <span><?= $block->escapeHtml(__('Sold out')) ?></span>
+                                                </button>
                                             <?php endif; ?>
                                         </div>
-                                        <?php if(!$_product->getData('offline')):?>
-                                        <div data-role="add-to-links" class="actions-secondary"<?= strpos($pos, $viewMode . '-secondary') ? $block->escapeHtmlAttr($position) : '' ?>>
-                                            <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
-                                                <?= $addToBlock->setProduct($_product)->getChildHtml() ?>
-                                            <?php endif; ?>
-                                        </div>
-                                        <?php endif;?>
                                     </div>
                                 </div>
                             </div>
@@ -167,4 +202,5 @@ $getDefault = $block->getData('view_model');
         }
         </script>
     <?php endif; ?>
+    <?= $block->getChildHtml('category.description') ?>
 <?php endif; ?>

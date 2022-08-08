@@ -7,7 +7,8 @@ var config = {
 	config: {
 		mixins: {
 			'Magento_Checkout/js/view/shipping': {
-				'Eguana_OrderDeliveryMessage/js/shipping-validation-mixin': true
+				'Eguana_OrderDeliveryMessage/js/shipping-validation-mixin': true,
+				'Eguana_OrderDeliveryMessage/js/button-previous-mixin': true
 			},
 			'Magento_Checkout/js/model/shipping-save-processor/payload-extender': {
 				'Eguana_OrderDeliveryMessage/js/payload-extender-mixin': true

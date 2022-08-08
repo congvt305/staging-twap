@@ -55,6 +55,9 @@
             input[type=file] {
                 margin: @indent__xs 0;
             }
+            .note {
+                font-size: 16px;
+            }
         }
     }
 
@@ -67,10 +70,12 @@
     input[type="datetime"],
     input[type="email"],
     textarea {
-        &:active,
-        &:focus,
-        &:hover {
-            border-color: @primary__color__dark
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        &:focus {
+            border-bottom-color: #000;
+            box-shadow: none;
         }
 
         &[disabled=disabled],
@@ -106,7 +111,7 @@
                 display: none;
             }
         }
-        
+
         &.date {
             .control {
                 &:extend(.abs-add-box-sizing all);
@@ -147,7 +152,7 @@
             }
 
             &.note {
-                .lib-font-size(12);
+                .lib-font-size(16);
                 color: @secondary__color;
                 margin-bottom: @indent__s;
             }
@@ -194,7 +199,6 @@
         background-size: @indent__m;
         text-indent: .01em;
         text-overflow: '';
-
         &::-ms-expand {
             display: none;
         }
@@ -202,14 +206,15 @@
 
     select {
         .select-styling();
-        border-left: none;
-        border-right: none;
-        border-top: none;
-
-        &:focus {
-            border-left: none;
-            border-right: none;
-            border-top: none;
+        border-width: 1px;
+        border-color: @light__gray__color;
+        padding: 0 26px 0 10px;
+        &:not([disabled]):focus {
+            box-shadow: none;
+        }
+        &:focus , &:focus-visible {
+            outline: 0;
+            border-color: @black__color;
         }
     }
 
@@ -237,8 +242,8 @@
     }
 
     input[type="checkbox"]:checked{
-        background: @theme__color__secondary;
-        border-color: @theme__color__secondary;
+        background: @black__color;
+        border-color: @black__color;
 
         .lib-icon-font(
                 @icon-checkmark,
@@ -251,6 +256,9 @@
 
         &:after {
             width: 18px;
+            margin: 0 0 0 1px;
+        }
+        + .label {
         }
     }
 
@@ -286,9 +294,8 @@
         }
 
         &:checked {
-            background-color: @theme__color__secondary;
-            border-color: @theme__color__secondary;
-            box-shadow: 0 0 0 1px @theme__color__secondary;
+            background-color: #222;
+            border-color: #222;
 
             .lib-icon-font(
                     @icon-checkmark,
@@ -305,8 +312,26 @@
 
             &:after {
                 cursor: default;
+                content: "";
+                height: 8px;
+                width: 8px;
+                background: #fff;
+                border-radius: 100%;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
             }
         }
+    }
+
+    div.mage-error {
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.33;
+        color: #CC0000;
+        margin-top: 4px;
+        text-align: left;
     }
 
     ._has-datepicker {

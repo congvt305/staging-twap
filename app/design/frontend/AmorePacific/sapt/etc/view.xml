@@ -9,24 +9,28 @@
     <media>
         <images module="Magento_Catalog">
             <image id="bundled_product_customization_page" type="thumbnail">
-                <width>275</width>
-                <height>275</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="cart_cross_sell_products" type="small_image">
-                <width>275</width>
-                <height>275</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="cart_page_product_thumbnail" type="small_image">
                 <width>120</width>
                 <height>120</height>
             </image>
             <image id="category_page_grid" type="small_image">
-                <width>275</width>
-                <height>275</height>
+                <width>330</width>
+                <height>330</height>
+            </image>
+            <image id="product_freebies" type="small_image">
+                <width>62</width>
+                <height>62</height>
             </image>
             <image id="category_page_list" type="small_image">
-                <width>230</width>
-                <height>230</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="customer_account_my_tags_tag_view" type="small_image">
                 <width>100</width>
@@ -53,54 +57,58 @@
                 <height>80</height>
             </image>
             <image id="new_products_content_widget_grid" type="small_image">
-                <width>290</width>
-                <height>290</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="new_products_content_widget_list" type="small_image">
-                <width>270</width>
-                <height>270</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="new_products_images_only_widget" type="small_image">
                 <width>78</width>
                 <height>78</height>
             </image>
             <image id="product_base_image" type="image">
-                <width>265</width>
-                <height>265</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="product_comparison_list" type="small_image">
-                <width>290</width>
-                <height>290</height>
+                <width>330</width>
+                <height>330</height>
             </image>
-            <image id="product_page_image_large" type="image"/>
+            <image id="product_page_image_large" type="image">
+                <width>600</width>
+                <height>600</height>
+            </image>
             <image id="product_page_image_medium" type="image">
-                <width>580</width>
-                <height>580</height>
+                <width>600</width>
+                <height>600</height>
+                <frame>false</frame>
             </image>
             <image id="product_page_image_small" type="thumbnail">
-                <width>90</width>
-                <height>90</height>
+                <width>72</width>
+                <height>72</height>
             </image>
             <image id="product_swatch_image_large" type="image"/>
             <image id="product_swatch_image_medium" type="image">
-                <width>290</width>
-                <height>290</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="product_swatch_image_small" type="thumbnail">
                 <width>88</width>
                 <height>110</height>
             </image>
             <image id="product_page_main_image" type="image">
-                <width>580</width>
-                <height>580</height>
+                <width>600</width>
+                <height>600</height>
             </image>
             <image id="product_page_main_image_default" type="image">
-                <width>580</width>
-                <height>580</height>
+                <width>600</width>
+                <height>600</height>
             </image>
             <image id="product_page_more_views" type="thumbnail">
-                <width>90</width>
-                <height>90</height>
+                <width>72</width>
+                <height>72</height>
             </image>
             <image id="product_stock_alert_email_product_image" type="small_image">
                 <width>76</width>
@@ -111,12 +119,12 @@
                 <height>135</height>
             </image>
             <image id="product_thumbnail_image" type="thumbnail">
-                <width>75</width>
-                <height>75</height>
+                <width>72</width>
+                <height>72</height>
             </image>
             <image id="recently_compared_products_grid_content_widget" type="small_image">
-                <width>290</width>
-                <height>290</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="recently_compared_products_images_names_widget" type="thumbnail">
                 <width>75</width>
@@ -131,8 +139,8 @@
                 <height>207</height>
             </image>
             <image id="recently_viewed_products_grid_content_widget" type="small_image">
-                <width>290</width>
-                <height>290</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="recently_viewed_products_images_names_widget" type="small_image">
                 <width>75</width>
@@ -143,16 +151,16 @@
                 <height>76</height>
             </image>
             <image id="recently_viewed_products_list_content_widget" type="small_image">
-                <width>270</width>
-                <height>270</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="related_products_list" type="small_image">
-                <width>220</width>
-                <height>220</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="review_page_product_image" type="small_image">
-                <width>290</width>
-                <height>290</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="rss_thumbnail" type="thumbnail">
                 <width>75</width>
@@ -171,8 +179,8 @@
                 <height>90</height>
             </image>
             <image id="upsell_products_list" type="small_image">
-                <width>220</width>
-                <height>220</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="wishlist_sidebar_block" type="thumbnail">
                 <width>75</width>
@@ -183,8 +191,8 @@
                 <height>113</height>
             </image>
             <image id="wishlist_thumbnail" type="small_image">
-                <width>290</width>
-                <height>290</height>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="category_products_content_widget_grid" type="small_image">
                 <width>420</width>
@@ -196,13 +204,13 @@
 
         <!-- Gallery and magnifier theme settings. Start -->
         <var name="gallery">
-            <var name="nav">dots</var> <!-- Gallery navigation style (false/thumbs/dots) -->
+            <var name="nav">thumbs</var> <!-- Gallery navigation style (false/thumbs/dots) -->
             <var name="loop">true</var> <!-- Gallery navigation loop (true/false) -->
             <var name="keyboard">true</var> <!-- Turn on/off keyboard arrows navigation (true/false) -->
-            <var name="arrows">false</var> <!-- Turn on/off arrows on the sides preview (true/false) -->
+            <var name="arrows">true</var> <!-- Turn on/off arrows on the sides preview (true/false) -->
             <var name="caption">false</var> <!-- Display alt text as image title (true/false) -->
             <var name="allowfullscreen">false</var> <!-- Turn on/off fullscreen (true/false) -->
-            <var name="navdir">horizontal</var> <!-- Sliding direction of thumbnails (horizontal/vertical) -->
+            <var name="navdir">vertical</var> <!-- Sliding direction of thumbnails (horizontal/vertical) -->
             <var name="navarrows">true</var> <!-- Turn on/off on the thumbs navigation sides arrows(true/false) -->
             <var name="navtype">slides</var> <!-- Sliding type of thumbnails (slides/thumbs) -->
             <var name="transition">
@@ -214,7 +222,7 @@
                 <var name="loop">true</var> <!-- Fullscreen navigation loop (true/false/null) -->
                 <var name="arrows">false</var> <!-- Turn on/off arrows on the sides preview in fullscreen (true/false/null) -->
                 <var name="caption">false</var> <!-- Display alt text as image title in fullscreen(true/false) -->
-                <var name="navdir">horizontal</var> <!--Sliding direction of thumbnails in fullscreen(horizontal/vertical)  -->
+                <var name="navdir">vertical</var> <!--Sliding direction of thumbnails in fullscreen(horizontal/vertical)  -->
                 <var name="navtype">slides</var> <!-- Sliding type of thumbnails (slides/thumbs) -->
                 <var name="transition">
                     <var name="effect">dissolve</var> <!-- Sets transition effect for slides changing (slide/crossfade/dissolve) -->
@@ -230,7 +238,7 @@
             <var name="width">450</var> <!-- Width of magnifier block -->
             <var name="height">450</var> <!-- Height of magnifier block -->
             <var name="eventType">hover</var> <!-- Action that atcivates zoom (hover/click) -->
-            <var name="enabled">true</var> <!-- Turn on/off magnifier (true/false) -->
+            <var name="enabled">false</var> <!-- Turn on/off magnifier (true/false) -->
         </var>
 
         <var name="breakpoints">
@@ -259,6 +267,7 @@
     <vars module="Magento_Bundle">
         <var name="product_summary_image_size">58</var>         <!-- New Product image size used for summary block-->
     </vars>
+
     <vars module="Js_Bundle">
         <var name="bundle_size">1MB</var>
     </vars>

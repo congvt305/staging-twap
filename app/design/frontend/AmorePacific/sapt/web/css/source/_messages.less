@@ -9,15 +9,29 @@
 
 & when (@media-common = true) {
     .page.messages {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        z-index: 20;
-
+        .message-visible.has_message .messages {
+            width: 100%;
+            z-index: 999;
+            background-color: rgba(51, 51, 51, 0.55);
+            bottom: 0;
+            left: 0;
+            position: fixed;
+            right: 0;
+            top: 0;
+        }
         .message {
             box-shadow: 0 3px 6px rgba(100,100,100,.5);
-            margin: 0;
+            background: #fff;
+            z-index: 999;
+            position: fixed;
+            color: #000;
+            left: 0;
+            right: 0;
+            max-width: 50rem;
+            margin: 0 auto;
+            top: 50%;
+            bottom: initial;
+            transform: translateY(-50%);
 
             > *:first-child {
                 padding: 0;
@@ -27,6 +41,9 @@
                 text-align: center;
                 box-sizing: border-box;
                 line-height: 1.5;
+            }
+             a {
+                color: #000;
             }
         }
 
@@ -41,22 +58,20 @@
                 @_icon-font: @icon-font,
                 @_icon-font-size: 20px,
                 @_icon-font-line-height: 20px,
-                @_icon-font-color: @color-white,
-                @_icon-font-color-hover: @color-white,
-                @_icon-font-color-active: @color-white,
                 @_icon-font-margin: 0,
                 @_icon-font-vertical-align: middle,
                 @_icon-font-position: before,
                 @_icon-font-display: none
             );
             position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translate(-50%, -50%);
+            top: 5px;
+            right: 7px;
             cursor: pointer;
 
             &:before {
                 transform: rotate(45deg);
+                color: @black__color;
+                font-size: 21px;
             }
         }
     }
@@ -97,7 +112,7 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .page.messages {
         .message {
-            padding: 20px 30px;
+            padding: 30px 20px;
         }
     }
 }
@@ -109,7 +124,7 @@
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
     .page.messages {
         .message {
-            padding: 30px 0;
+            padding: 50px 30px;
 
             > *:first-child {
                 padding: 0 55px;
@@ -117,10 +132,8 @@
         }
 
         .remove {
-            transform: translate(-100%, -50%);
-
             &:before {
-                font-size: 28px;
+                font-size: 21px;
                 line-height: 28px;
             }
         }

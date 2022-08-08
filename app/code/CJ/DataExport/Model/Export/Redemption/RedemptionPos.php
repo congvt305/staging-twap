@@ -53,7 +53,12 @@ class RedemptionPos
         [
             'main_table',
             'customer_name',
-            'name'
+            'first_name'
+        ],
+        [
+            'main_table',
+            'last_name',
+            'last_name'
         ],
         [
             'main_table',

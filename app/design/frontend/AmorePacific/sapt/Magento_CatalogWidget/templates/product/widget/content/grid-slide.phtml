@@ -15,6 +15,7 @@ use Magento\Framework\App\Action\Action;
 ?>
 <?php if ($exist = ($block->getProductCollection() && $block->getProductCollection()->getSize())): ?>
     <?php
+    $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
     $type = 'widget-product-grid';
 
     $mode = 'grid';
@@ -34,10 +35,10 @@ use Magento\Framework\App\Action\Action;
                 <strong><?= $block->escapeHtml(__($block->getTitle())) ?></strong>
             </div>
         <?php endif ?>
-        <div class="block-content">
+        <div class="block-content vfvv">
             <?= /* @noEscape */ '<!-- ' . $image . '-->' ?>
             <div class="products-<?= /* @noEscape */ $mode ?> <?= /* @noEscape */ $mode ?>">
-                <ol class="product-items <?= /* @noEscape */ $type ?>">
+                <ol class="product-items products list items <?= /* @noEscape */ $type ?>">
                     <?php $iterator = 1; ?>
                     <?php
                     foreach ($items as $_item) :
@@ -53,7 +54,17 @@ use Magento\Framework\App\Action\Action;
                                    ap-click-data="<?= $block->escapeHtmlAttr($block->getProductDefaultName($productSku) . '/' . $productSku); ?>">
                                     <?= $block->getImage($_item, $image)->toHtml() ?>
                                 </a>
+                                <?php if ($_item->getProductLabels()): ?>
+                                    <div class="product_labels">
+                                        <?php echo $_helper->productAttribute($_item, $_item->getProductLabels(), 'product_labels') ?>
+                                    </div>
+                                <?php endif;?>
                                 <div class="product-item-details">
+                                    <div class="product_tags">
+                                        <?php if ($_item->getProductTags()): ?>
+                                            <?php echo $_helper->productAttribute($_item, $_item->getProductTags(), 'product_tags') ?>
+                                        <?php endif;?>
+                                    </div>
                                     <?php if($_item->getData('new')):?>
                                         <span class="product-item-flag"><?= $block->escapeHtml($_item->getResource()->getAttribute('new')->getStoreLabel());?></span>
                                     <?php endif;?>
@@ -77,7 +88,17 @@ use Magento\Framework\App\Action\Action;
                                     <?= $block->getProductPriceHtml($_item, $type) ?>
 
                                     <?php if ($templateType): ?>
-                                        <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
+                                        <?php if($block->getReviewsSummaryHtml($_item, $templateType)): ?>
+                                            <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
+                                        <?php else: ?>
+                                            <div class="product-reviews-summary empty">
+                                                <div class="reviews-actions">
+                                                    <a class="action add" href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>#review-form">
+                                                        <?= __('Be the First to Review'); ?>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        <?php endif ?>
                                     <?php endif; ?>
 
                                     <div class="product-item-inner">
@@ -96,6 +117,12 @@ use Magento\Framework\App\Action\Action;
                                                                 <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
                                                             </button>
                                                         </form>
+                                                    <?php else: ?>
+                                                        <button class="action tocart primary disabled"
+                                                                type="button" disabled
+                                                                title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
+                                                            <span><?= $block->escapeHtml(__('Sold out')) ?></span>
+                                                        </button>
                                                     <?php endif; ?>
                                                 <?php endif?>
                                             </div>
@@ -111,9 +138,14 @@ use Magento\Framework\App\Action\Action;
                                                             <?php endif; ?>
                                                             <?php if ($block->getAddToCompareUrl() && $showCompare): ?>
                                                                 <?php $compareHelper = $this->helper(Magento\Catalog\Helper\Product\Compare::class);?>
-                                                                <a href="#" class="action tocompare" data-post='<?= /* @noEscape */ $compareHelper->getPostDataParams($_item) ?>' title="<?= $block->escapeHtmlAttr(__('Add to Compare')) ?>">
+                                                                <!-- ko scope: 'compareAction' -->
+                                                                <a href="#" class="action tocompare"
+                                                                   data-bind="css:{ compared: isAddedToCompare('<?= $_item->getId() ?>') }"
+                                                                   data-post='<?= /* @noEscape */ $compareHelper->getPostDataParams($_item) ?>'
+                                                                   title="<?= $block->escapeHtmlAttr(__('Add to Compare')) ?>">
                                                                     <span><?= $block->escapeHtml(__('Add to Compare')) ?></span>
                                                                 </a>
+                                                                <!-- /ko  -->
                                                             <?php endif; ?>
                                                         </div>
                                                     <?php endif; ?>
