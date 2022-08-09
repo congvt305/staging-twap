@@ -876,8 +876,8 @@ return [
         'Vertex_RequestLoggingApi' => 0,
         'Vertex_RequestLogging' => 0,
         'Vertex_AddressValidation' => 0,
-        'Vertex_TaxStaging' => 1,
-        'Yotpo_Yotpo' => 1
+        'Vertex_TaxStaging' => 0,
+        'Yotpo_Yotpo' => 0
     ],
     'admin_user' => [
         'locale' => [
