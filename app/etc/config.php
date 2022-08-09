@@ -802,6 +802,7 @@ return [
         'CJ_PromotionManager' => 1,
         'CJ_ReviewsImportExport' => 1,
         'CJ_Seo' => 1,
+        'CJ_SKUValidation' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
         'Dotdigitalgroup_Enterprise' => 1,
