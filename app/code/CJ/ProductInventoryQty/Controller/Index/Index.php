@@ -9,6 +9,7 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\LocalizedException;
+use Psr\Log\LoggerInterface as PsrLoggerInterface;
 
 /**
  * Class Index
@@ -30,6 +31,10 @@ class Index extends Action
      * @var ProductTypeFactory
      */
     protected ProductTypeFactory $productTypeFactory;
+    /**
+     * @var PsrLoggerInterface
+     */
+    protected PsrLoggerInterface $logger;
 
     /**
      * @param Context $context
@@ -40,11 +45,13 @@ class Index extends Action
         Context $context,
         JsonFactory $resultJsonFactory,
         Data $helper,
-        ProductTypeFactory $productTypeFactory
+        ProductTypeFactory $productTypeFactory,
+        PsrLoggerInterface $logger
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
         $this->helper = $helper;
         $this->productTypeFactory = $productTypeFactory;
+        $this->logger = $logger;
         parent::__construct($context);
     }
 
@@ -69,9 +76,8 @@ class Index extends Action
                 ];
             }
         } catch (LocalizedException $exception) {
-            $data = [
-                'error' => $exception->getMessage()
-            ];
+            $this->messageManager->addErrorMessage(__('Something went wrong with product inventory!'));
+            $this->logger->error($exception);
         }
         $result->setData($data);
 
