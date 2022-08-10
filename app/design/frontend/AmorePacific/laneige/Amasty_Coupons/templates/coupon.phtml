@@ -141,8 +141,9 @@ $helper = $this->helper(\CJ\CouponCustomer\Helper\Data::class);
         'jquery',
         'mage/translate',
         'Magento_Checkout/js/model/quote',
+        'text!CJ_CouponCustomer/template/modal/modal-popup.html',
         'Magento_Ui/js/modal/modal'
-    ], function (ko,$,$t, quote, modal) {
+    ], function (ko,$,$t, quote, popupTpl, modal) {
         $(function () {
             'use strict';
             //define coupon popup
@@ -151,6 +152,7 @@ $helper = $this->helper(\CJ\CouponCustomer\Helper\Data::class);
                 responsive: true,
                 title: $t('Coupon List'),
                 innerScroll: true,
+                popupTpl: popupTpl,
                 buttons: [
                     {
                         text: $.mage.__('Ok'),
