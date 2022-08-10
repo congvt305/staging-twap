@@ -24,10 +24,10 @@
 
     .nav-toggle {
         .lib-icon-font(
-        @icon-menu,
-        @_icon-font-size: 22px,
-        @_icon-font-color: @header-icons-color,
-        @_icon-font-color-hover: @header-icons-color-hover
+            @icon-menu,
+            @_icon-font-size: 22px,
+            @_icon-font-color: @header-icons-color,
+            @_icon-font-color-hover: @header-icons-color-hover
         );
         .lib-icon-text-hide();
         cursor: pointer;
@@ -52,24 +52,26 @@
             .level-top {
                 position: relative;
                 .lib-icon-font(
-                @_icon-font-content: @icon-expand,
-                @_icon-font-size: 16px,
-                @_icon-font-color: @primary__color__lighter,
-                @_icon-font-color-hover: @primary__color__lighter,
-                @_icon-font-color-active: @primary__color__lighter,
-                @_icon-font-position: after,
-                @_icon-font-display: block
+                    @_icon-font-content: @icon-expand,
+                    @_icon-font-size: 16px,
+                    @_icon-font-color: @primary__color__lighter,
+                    @_icon-font-color-hover: @primary__color__lighter,
+                    @_icon-font-color-active: @primary__color__lighter,
+                    @_icon-font-position: after,
+                    @_icon-font-display: block
                 );
 
                 &:after {
                     position: absolute;
-                    right: 15px;
+                    right: 5px;
+                    color: #222;
+                    font-size: 18px;
                 }
 
                 &.ui-state-active {
                     .lib-icon-font-symbol(
-                    @_icon-font-content: @icon-collapse,
-                    @_icon-font-position: after
+                        @_icon-font-content: @icon-collapse,
+                        @_icon-font-position: after
                     );
                 }
             }
@@ -81,13 +83,11 @@
         -webkit-overflow-scrolling: touch;
         .lib-css(transition, left .3s, 1);
         height: 100%;
-        left: -80%;
-        left: calc(~'-1 * (100% - @{active-nav-indent})');
+        left: -100%;
         overflow: auto;
         position: fixed;
         top: 0;
-        width: 80%;
-        width: calc(~'100% - @{active-nav-indent}');
+        width: 100%;
 
         .switcher {
             display: none;
@@ -97,10 +97,10 @@
             strong {
                 position: relative;
                 .lib-icon-font(
-                @_icon-font-content: @icon-down,
-                @_icon-font-size: 42px,
-                @_icon-font-position: after,
-                @_icon-font-display: block
+                    @_icon-font-content: @icon-down,
+                    @_icon-font-size: 42px,
+                    @_icon-font-position: after,
+                    @_icon-font-display: block
                 );
 
                 &:after {
@@ -112,8 +112,8 @@
 
             &.active strong {
                 .lib-icon-font-symbol(
-                @_icon-font-content: @icon-up,
-                @_icon-font-position: after
+                    @_icon-font-content: @icon-up,
+                    @_icon-font-position: after
                 );
             }
         }
@@ -361,7 +361,6 @@
             }
 
             .submenu {
-                padding-left: @indent__xs !important;
 
                 > li {
                     a {
@@ -385,7 +384,6 @@
     .nav-sections {
         .lib-vendor-prefix-flex-shrink(0);
         .lib-vendor-prefix-flex-basis(auto);
-        margin-bottom: @indent__base;
     }
 
     .nav-sections-item-title {
@@ -454,7 +452,7 @@
             .submenu {
                 .lib-list-inline();
 
-                .active {
+                .level1.active {
                     > a {
                         color: @navigation-desktop-level0-item__active__color;
                     }
