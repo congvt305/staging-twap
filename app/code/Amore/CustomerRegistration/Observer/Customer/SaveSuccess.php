@@ -259,7 +259,7 @@ class SaveSuccess implements ObserverInterface
 
             if (!$oldDataHaveSequenceNumber && $newDataHaveSequenceNumber) {
                 $APIParameters = $this->getAPIParameters($newCustomerData, 'register');
-                $this->POSSystem->syncMember($APIParameters);
+                $this->POSSystem->syncMember($APIParameters, $newCustomerData->getStoreId());
                 $this->eventManager->dispatch(
                     "gcrm_customer_data_export",
                     [
@@ -271,7 +271,7 @@ class SaveSuccess implements ObserverInterface
                 $oldDataAPIParameters = $this->getAPIParameters($oldCustomerData, 'update');
                 $newDataAPIParameters = $this->getAPIParameters($newCustomerData, 'update');
                 if ($this->APIValuesChanged($oldDataAPIParameters, $newDataAPIParameters)) {
-                    $this->POSSystem->syncMember($newDataAPIParameters);
+                    $this->POSSystem->syncMember($newDataAPIParameters, $newCustomerData->getStoreId());
                     $this->eventManager->dispatch(
                         "gcrm_customer_data_export",
                         [
