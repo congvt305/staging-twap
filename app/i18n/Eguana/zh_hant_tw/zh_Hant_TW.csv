@@ -11113,7 +11113,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "You saved the rating.","You saved the rating.",module,Magento_Review
 "My Product Reviews","我的產品評論",module,Magento_Review
 "Cannot initialize product","Cannot initialize product",module,Magento_Review
-"You submitted your review for moderation.","您已提交審核以進行審核。",module,Magento_Review
+"You submitted your review for moderation.","已提交使用心得進行審核。",module,Magento_Review
 "We can't post your review right now.","We can't post your review right now.",module,Magento_Review
 "Storage key was not set","Storage key was not set",module,Magento_Review
 "Approved","已批准",module,Magento_Review
