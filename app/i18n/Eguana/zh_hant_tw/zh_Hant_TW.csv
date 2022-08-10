@@ -11113,7 +11113,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "You saved the rating.","You saved the rating.",module,Magento_Review
 "My Product Reviews","我的產品評論",module,Magento_Review
 "Cannot initialize product","Cannot initialize product",module,Magento_Review
-"You submitted your review for moderation.","您已提交審核以進行審核。",module,Magento_Review
+"You submitted your review for moderation.","已提交使用心得進行審核。",module,Magento_Review
 "We can't post your review right now.","We can't post your review right now.",module,Magento_Review
 "Storage key was not set","Storage key was not set",module,Magento_Review
 "Approved","已批准",module,Magento_Review
@@ -11142,7 +11142,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Be the first to review this product","成為第一個評論該產品",module,Magento_Review
 "Write Your Own Review","Write Your Own Review",module,Magento_Review
 "* Required Fields","* 為必填項",module,Magento_Review
-"You're reviewing:","您正在審查:",module,Magento_Review
+"You're reviewing:","",module,Magento_Review
 "Your Rating","Your Rating",module,Magento_Review
 "%1 %2","%1 %2",module,Magento_Review
 "Summary","概要",module,Magento_Review
