@@ -2,6 +2,8 @@
 /** @var \Amasty\Coupons\Block\Coupon $block */
 /** @var \CJ\Coupons\ViewModel\CouponList $couponListViewModel */
 $couponListViewModel = $block->getData('couponListViewModel');
+/** @var \CJ\CouponCustomer\Helper\Data $helper */
+$helper = $this->helper(\CJ\CouponCustomer\Helper\Data::class);
 ?>
 <div class="block discount"
      id="block-discount"
@@ -103,11 +105,7 @@ $couponListViewModel = $block->getData('couponListViewModel');
                                                     <div class="discount-percent">
                                                         <span><?= $block->escapeHtml(__('Total discount for activities:')) ?></span>
                                                         <span class="highlight">
-                                                            <?php if ($coupon->getSimpleAction() == 'by_percent'): ?>
-                                                                <?= floatval($coupon['discount_amount']) ?>%
-                                                            <?php else: ?>
-                                                                <?= $couponListViewModel->getCurrencyCode() . floatval($coupon['discount_amount']) ?>
-                                                            <?php endif; ?>
+                                                             <?=$helper->convertActionCouponToText($coupon['simple_action'], $coupon['discount_amount'])?>
                                                         </span>
                                                     </div>
                                                     <div class="discount-percent">
