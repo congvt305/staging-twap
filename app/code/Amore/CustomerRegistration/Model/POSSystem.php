@@ -125,9 +125,9 @@ class POSSystem extends BaseRequest
         $this->cityHelper = $cityHelper;
     }
 
-    public function getMemberInfo($firstName, $lastName, $mobileNumber)
+    public function getMemberInfo($firstName, $lastName, $mobileNumber, $storeId = null)
     {
-        $posData = $this->callPOSInfoAPI(trim($firstName), trim($lastName), trim($mobileNumber));
+        $posData = $this->callPOSInfoAPI(trim($firstName), trim($lastName), trim($mobileNumber), $storeId);
         if (isset($posData['birthDay'])) {
             $posData['birthDay'] = substr_replace($posData['birthDay'], '/', 4, 0);
             $posData['birthDay'] = substr_replace($posData['birthDay'], '/', 7, 0);
@@ -148,15 +148,13 @@ class POSSystem extends BaseRequest
         return $storeId;
     }
 
-    private function callPOSInfoAPI($firstName, $lastName, $mobileNumber)
+    private function callPOSInfoAPI($firstName, $lastName, $mobileNumber, $storeId = null)
     {
         $result = [];
         $response = [];
         $url = $this->config->getMemberInfoURL();
-        try {
-            $storeId = $this->storeManager->getStore()->getId();
-        } catch (NoSuchEntityException $e) {
-            $storeId = $this->storeManager->getDefaultStoreView()->getId();
+        if (!$storeId) {
+            $storeId = $this->getStoreId();
         }
         $callSuccess = 1;
         $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
@@ -360,11 +358,12 @@ class POSSystem extends BaseRequest
      * Whenever customer will update or register this function will call and it will sync with the POS system
      *
      * @param Array $parameters
+     * @param $storeId
      */
-    public function syncMember($parameters)
+    public function syncMember($parameters, $storeId = null)
     {
         try {
-            $response = $this->callJoinAPI($parameters);
+            $response = $this->callJoinAPI($parameters, $storeId);
             //$this->savePOSSyncReport($parameters, $response);
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
@@ -372,12 +371,14 @@ class POSSystem extends BaseRequest
         }
     }
 
-    private function callJoinAPI($parameters)
+    private function callJoinAPI($parameters, $storeId = null)
     {
         $result = [];
         $callSuccess = 1;
         $response = [];
-        $storeId = $this->getStoreId();
+        if (!$storeId) {
+            $storeId = $this->getStoreId();
+        }
         $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
         try {
             $url = $this->config->getMemberJoinURL();
