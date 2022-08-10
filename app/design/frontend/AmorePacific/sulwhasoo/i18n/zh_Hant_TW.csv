@@ -151,7 +151,7 @@ Events,最新活動
 "Sulwhasoo Product Line","系列"
 "Rating","評分"
 "Write Your Own Review","撰寫使用心得"
-"Your Rating","評分"
+"Your Rating","必填欄位"
 "Summary","心得摘要"
 "Review","使用心得"
 "Submit Review","提交"
@@ -167,7 +167,7 @@ Events,最新活動
 "Share your thoughts with other customers","分享使用心得，幫助其他人選擇合適商品"
 "Write a review","分享使用心得"
 "of customers recommend this product","顧客推薦這項商品"
-"reviews","使用心得"
+"reviews","則使用心得"
 "Top customer reviews","熱門評論"
 "Recommended","推薦"
 "Rating","評分"
@@ -179,3 +179,4 @@ Events,最新活動
 "%1 people found this helpful","%1 人認為很有幫助"
 "No reviews","沒有評論"
 "Add your photo","添加您的照片"
+"Reviews %1","則評論 %1",module,Magento_Review
