@@ -34,8 +34,11 @@ define(
 
         var template = 'CJ_Coupons/payment/discount';
 
+        var modalClass = 'lng-coupons-modal';
+
         if(websiteCode == 'base') {
-            template = 'CJ_Coupons/payment/sws/discount'
+            template = 'CJ_Coupons/payment/sws/discount';
+            modalClass = 'sws-coupons-modal';
         }
 
         //define coupon popup
@@ -43,6 +46,7 @@ define(
             type: 'popup',
             responsive: true,
             title: $t('Coupon List'),
+            modalClass: modalClass,
             innerScroll: true,
             popupTpl: popupTpl,
             buttons: [{

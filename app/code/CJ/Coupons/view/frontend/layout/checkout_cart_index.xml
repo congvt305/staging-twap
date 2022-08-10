@@ -1,9 +1,42 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="checkout.cart.coupon2">
+        <referenceBlock name="checkout.cart.coupon2" template="Amasty_Coupons::coupon.phtml">
             <arguments>
-                <argument name="couponListViewModel" xsi:type="object">CJ\Coupons\ViewModel\CouponList</argument>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="types" xsi:type="array">
+                        <item name="form.input" xsi:type="array">
+                            <item name="component" xsi:type="string">Magento_Ui/js/form/element/abstract</item>
+                            <item name="config" xsi:type="array">
+                                <item name="provider" xsi:type="string">checkoutProvider</item>
+                                <item name="deps" xsi:type="array">
+                                    <item name="0" xsi:type="string">checkoutProvider</item>
+                                </item>
+                                <item name="template" xsi:type="string">ui/form/field</item>
+                                <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                            </item>
+                        </item>
+                    </item>
+                    <item name="components" xsi:type="array">
+                        <item name="discount" xsi:type="array">
+                            <item name="component" xsi:type="string">CJ_Coupons/js/view/payment/discount</item>
+                            <item name="displayArea" xsi:type="string">beforeMethods</item>
+                            <item name="children" xsi:type="array">
+                                <item name="errors" xsi:type="array">
+                                    <item name="sortOrder" xsi:type="string">0</item>
+                                    <item name="component" xsi:type="string">Magento_SalesRule/js/view/payment/discount-messages</item>
+                                    <item name="displayArea" xsi:type="string">messages</item>
+                                </item>
+                                <item name="captcha" xsi:type="array">
+                                    <item name="component" xsi:type="string">Magento_SalesRule/js/view/payment/captcha</item>
+                                    <item name="displayArea" xsi:type="string">captcha</item>
+                                    <item name="formId" xsi:type="string">sales_rule_coupon_request</item>
+                                    <item name="configSource" xsi:type="string">checkoutConfig</item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
             </arguments>
         </referenceBlock>
         <move element="checkout.cart.coupon2" destination="sidebar.additional" before="-"/>
