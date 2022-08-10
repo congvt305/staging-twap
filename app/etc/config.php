@@ -182,7 +182,7 @@ return [
                 ],
                 'js' => [
                     'merge_files' => '0',
-                    'minify_files' => '0',
+                    'minify_files' => '1',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/',
                         'cardinal_commerce' => '/v1/songbird',
@@ -801,7 +801,7 @@ return [
         'Vertex_RequestLogging' => 0,
         'Vertex_AddressValidation' => 0,
         'Vertex_TaxStaging' => 0,
-        'Yotpo_Yotpo' => 1
+        'Yotpo_Yotpo' => 0
     ],
     'admin_user' => [
         'locale' => [

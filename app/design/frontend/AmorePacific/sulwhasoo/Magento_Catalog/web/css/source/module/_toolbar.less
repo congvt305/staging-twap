@@ -119,6 +119,49 @@
     }
 }
 
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .sorter {
+        &-options {
+            float: right;
+            width: 48.5%;
+            top: 0;
+            right: 0;
+            position: absolute;
+            z-index: 2;
+
+            .filter-no-options ~ .toolbar & {
+                width: 100%;
+            }
+        }
+    }
+
+    .toolbar-amount {
+        margin-top: @indent__s;
+    }
+
+    .toolbar {
+        &.toolbar-products {
+            .pages {
+                .products.wrapper ~ & {
+                    margin-top: 60px;
+                }
+            }
+        }
+
+        &.wishlist-toolbar {
+            .pages {
+                padding-top: 52px;
+                padding-bottom: @indent__base;
+            }
+        }
+    }
+}
+
 //
 //  Desktop
 //  _____________________________________________

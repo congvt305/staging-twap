@@ -5,7 +5,7 @@
  * See COPYING.txt for license details.
  */
 -->
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="search_result_list">
             <action method="setTemplate">
@@ -13,11 +13,5 @@
             </action>
         </referenceBlock>
         <referenceBlock name="catalogsearch.product.addto.compare" remove="true"/>
-        <referenceContainer name="columns">
-            <container name="div.sidebar.main" htmlTag="div" htmlClass="sidebar sidebar-main" after="main">
-                <container name="sidebar.main" as="sidebar_main" label="Sidebar Main">
-                </container>
-            </container>
-        </referenceContainer>
     </body>
 </page>
