@@ -11142,7 +11142,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Be the first to review this product","成為第一個評論該產品",module,Magento_Review
 "Write Your Own Review","Write Your Own Review",module,Magento_Review
 "* Required Fields","* 為必填項",module,Magento_Review
-"You're reviewing:","您正在審查:",module,Magento_Review
+"You're reviewing:","",module,Magento_Review
 "Your Rating","Your Rating",module,Magento_Review
 "%1 %2","%1 %2",module,Magento_Review
 "Summary","概要",module,Magento_Review
