@@ -8,21 +8,11 @@
         <span class="action" id="block-discount-heading" role="heading" aria-level="2">
             <!-- ko text: $t('Apply Discount Code')--><!-- /ko -->
         </span>
-        <!-- ko if: isEnableCouponPopup -->
-        <div class="coupon-wallet">
-            <i id = "coupon-wallet" data-bind="'value': $t('view my coupon'), click: showPopup"> <!-- ko i18n: 'view my coupon'--><!-- /ko -->
-                <p class="icon"> >> </p>
-            </i>
-        </div>
-        <!-- /ko -->
     </div>
     <div class="payment-option-content" data-role="content">
         <form class="form form-discount" id="discount-form" data-bind="blockLoader: isLoading">
             <div class="payment-option-inner">
                 <div class="field">
-                    <label class="label" for="discount-code">
-                        <span data-bind="text: $t('Enter promo code')"></span>
-                    </label>
                     <div class="control">
                         <input class="input-text"
                                type="text"
@@ -41,6 +31,11 @@
             </div>
 
             <div class="actions-toolbar">
+                <div class="primary">
+                    <button class="action action-view" type="button" data-bind="'value': $t('view my coupon'), click: showPopup">
+                        <span><!-- ko text: $t('view my coupon')--><!-- /ko --></span>
+                    </button>
+                </div>
                 <div class="primary">
                     <button class="action action-apply" type="submit" data-bind="'value': $t('Apply'), click: apply">
                         <span><!-- ko text: $t('Apply')--><!-- /ko --></span>
@@ -66,7 +61,7 @@
         <!-- /ko -->
     </div>
     <!-- ko if: isEnableCouponPopup -->
-    <div id="modal">
+    <div id="modal" style="display: none;">
         <div class="modal-body-content">
             <div class="coupon-popup coupon-container">
                 <div class="coupon-wrap">
