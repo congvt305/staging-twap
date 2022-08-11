@@ -10,12 +10,8 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Locale\ResolverInterface;
 use Magento\Sales\Model\ResourceModel\Report\Bestsellers\CollectionFactory as BestSellerCollectionFactory;
 use CJ\CatalogProduct\Model\Entity\Attribute\Source;
-use CJ\CatalogProduct\Helper\Logger;
+use CJ\CatalogProduct\Logger\Logger;
 
-/**
- * Class UpdateProductRanking
- * @package CJ\CatalogProduct\Cron
- */
 class UpdateProductRanking
 {
     /**
@@ -95,7 +91,7 @@ class UpdateProductRanking
                 $this->localeResolver->emulate($storeId);
                 $currentDate = $this->localeDate->date();
                 $yesterday = $currentDate->sub(new \DateInterval('PT25H'))->format('Y-m-d');
-                $beforeYesterDay = strftime("%Y-%m-%d", strtotime($yesterday . " -1 day"));
+                $beforeYesterDay = strftime("%Y-%m-%d", strtotime($yesterday .  " -1 day"));
                 $this->localeResolver->revert();
 
                 $connection = $this->resourceConnection->getConnection();
@@ -105,12 +101,12 @@ class UpdateProductRanking
 
                 if (count($productIds)) {
                     $collection = $this->createProductCollection($storeId);
-                    foreach ($collection as $item) {
-                        $ranking = array_search($item->getId(), $productIds);
-                        if ($ranking || $ranking == 0) {
+                    foreach ($collection as $item){
+                        if (in_array($item->getId(), $productIds)){
+                            $ranking = array_search($item->getId(), $productIds);
                             $ranking++;
-                        } else {
-                            $ranking = 0;
+                        }else{
+                            $ranking = 9999999;
                         }
                         /**
                          * get rank status for product (compare the qty ordered of yesterday and before yesterday)
@@ -120,8 +116,8 @@ class UpdateProductRanking
                         $this->action->updateAttributes([$item->getId()], ['ranking' => $ranking, 'ranking_status' => $rankingStatus], $storeId);
                     }
                 }
-            } catch (\Exception $exception) {
-                $this->logger->logException($exception, __('Cron Update Ranking'));
+            }catch (\Exception $exception){
+                $this->logger->info(__('Cron Update Ranking: %1',$exception->getMessage()));
             }
         }
     }
@@ -147,15 +143,15 @@ class UpdateProductRanking
         $qtyYesterday = $this->getQtyOrdered($yesterday, $storeId, $productId);
         $qtyBeforeYesterDay = $this->getQtyOrdered($beforeYesterDay, $storeId, $productId);
 
-        if ($qtyYesterday && $qtyBeforeYesterDay) {
-            if ($qtyYesterday > $qtyBeforeYesterDay) {
+        if ($qtyYesterday && $qtyBeforeYesterDay){
+            if ($qtyYesterday > $qtyBeforeYesterDay){
                 return Source::VALUE_UP;
-            } elseif ($qtyYesterday < $qtyBeforeYesterDay) {
+            }elseif ($qtyYesterday < $qtyBeforeYesterDay){
                 return Source::VALUE_DOWN;
             }
-        } elseif (!$qtyYesterday && $qtyBeforeYesterDay) {
+        }elseif (!$qtyYesterday && $qtyBeforeYesterDay){
             return Source::VALUE_DOWN;
-        } elseif ($qtyYesterday && !$qtyBeforeYesterDay) {
+        }elseif ($qtyYesterday && !$qtyBeforeYesterDay){
             return Source::VALUE_UP;
         }
 
@@ -171,9 +167,10 @@ class UpdateProductRanking
     public function getQtyOrdered($day, $storeId, $productId)
     {
         return $this->bestSellerCollectionFactory->create()
-            ->setPeriod('daily')
-            ->addFieldToFilter('period', ['eq' => $day])
-            ->addStoreFilter($storeId)->addFieldToFilter('product_id', ['eq' => $productId])
-            ->getFirstItem()->getData('qty_ordered');
+                    ->setPeriod('daily')
+                    ->addFieldToFilter('period', ['eq' => $day])
+                    ->addStoreFilter($storeId)->addFieldToFilter('product_id', ['eq' => $productId])
+                    ->getFirstItem()->getData('qty_ordered');
     }
+
 }

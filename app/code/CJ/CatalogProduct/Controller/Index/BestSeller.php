@@ -3,7 +3,7 @@
 namespace CJ\CatalogProduct\Controller\Index;
 
 use CJ\CatalogProduct\Helper\Data as HelperData;
-use CJ\CatalogProduct\Helper\Logger;
+use CJ\CatalogProduct\Logger\Logger;
 use CJ\CatalogProduct\Model\Source\Config\ProductSalesSource;
 use Exception;
 use Magento\Catalog\Model\Product;
@@ -11,7 +11,6 @@ use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Directory\Model\CurrencyFactory;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -19,13 +18,8 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Review\Model\Review;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Catalog\Api\Data\ProductInterface;
 
-/**
- * Class BestSeller
- * @package CJ\CatalogProduct\Controller\Index
- */
-class BestSeller extends Action implements HttpGetActionInterface
+class BestSeller extends Action
 {
     /**
      * @var StoreManagerInterface
@@ -57,7 +51,6 @@ class BestSeller extends Action implements HttpGetActionInterface
     protected $review;
 
     /**
-     * BestSeller constructor.
      * @param Context $context
      * @param StoreManagerInterface $storeManager
      * @param JsonFactory $resultJsonFactory
@@ -68,14 +61,14 @@ class BestSeller extends Action implements HttpGetActionInterface
      * @param Review $review
      */
     public function __construct(
-        Context $context,
+        Context               $context,
         StoreManagerInterface $storeManager,
-        JsonFactory $resultJsonFactory,
-        CollectionFactory $collectionFactory,
-        Logger $logger,
-        HelperData $helperData,
-        CurrencyFactory $currencyFactory,
-        Review $review
+        JsonFactory           $resultJsonFactory,
+        CollectionFactory     $collectionFactory,
+        Logger                $logger,
+        HelperData            $helperData,
+        CurrencyFactory       $currencyFactory,
+        Review                $review
     )
     {
         parent::__construct($context);
@@ -96,7 +89,7 @@ class BestSeller extends Action implements HttpGetActionInterface
     {
         $store = $this->storeManager->getStore();
         $storeId = $store->getId();
-        if (!$storeId) {
+        if (!$storeId){
             $storeId = $this->getRequest()->getParam('store_id');
         }
         $products['data'] = [];
@@ -105,26 +98,27 @@ class BestSeller extends Action implements HttpGetActionInterface
                 $limitProduct = $this->helperData->getLimitProducts($storeId);
                 $useProductSale = $this->helperData->getDataUseProductSale($storeId);
 
-                $productCollection = $this->collectionFactory->create()
-                    ->addStoreFilter($storeId)
-                    ->addAttributeToSelect($this->getProductAttributes())
-                    ->addFieldToFilter(HelperData::RANKING_ATTRIBUTE_CODE, ['gteq' => 1])
-                    ->addFinalPrice()
-                    ->setOrder(HelperData::RANKING_ATTRIBUTE_CODE, 'ASC')
-                    ->setPageSize($limitProduct);
+                $productColelction = $this->collectionFactory->create()
+                                            ->addStoreFilter($storeId)
+                                            ->addAttributeToSelect($this->getProductAttributes())
+                                            ->addFieldToFilter(HelperData::RANKING_ATTRIBUTE_CODE, ['gteq' => 1])
+                                            ->addFieldToFilter(HelperData::RANKING_ATTRIBUTE_CODE, ['neq' => 9999999])
+                                            ->addFinalPrice()
+                                            ->setOrder(HelperData::RANKING_ATTRIBUTE_CODE, 'ASC')
+                                            ->setPageSize($limitProduct);
 
                 if ($useProductSale == ProductSalesSource::USE_ATTRIBUTE_ON_SALE) {
-                    $productCollection->addFieldToFilter(HelperData::ON_SALES_ATTRIBUTE_CODE, 1);
+                    $productColelction->addFieldToFilter(HelperData::ON_SALES_ATTRIBUTE_CODE, 1);
                 } elseif ($useProductSale == ProductSalesSource::AUTOMATIC) {
-                    $productCollection->getSelect()->where('price_index.final_price < price_index.price');
+                    $productColelction->getSelect()->where('price_index.final_price < price_index.price');
                 }
 
-                if ($pageSize = $productCollection->getSize()) {
+                if ($pageSize = $productColelction->getSize()) {
                     $currencyCode = $store->getCurrentCurrencyCode();
                     $currency = $this->currencyFactory->create()->load($currencyCode);
                     $currencySymbol = $currency->getCurrencySymbol();
 
-                    foreach ($productCollection as $product) {
+                    foreach ($productColelction as $product) {
                         /**
                          * @var Product $product
                          */
@@ -147,9 +141,10 @@ class BestSeller extends Action implements HttpGetActionInterface
                         ];
                     }
                 }
+
             } catch (Exception $exception) {
                 $this->messageManager->addErrorMessage(__('Something went wrong with block best seller!'));
-                $this->logger->logException($exception, __("Best Seller"));
+                $this->logger->info(__("Best Seller : %1", $exception->getMessage()));
             }
         }
 
@@ -157,11 +152,8 @@ class BestSeller extends Action implements HttpGetActionInterface
         return $resultJson->setData($products);
     }
 
-    /**
-     * @return array
-     */
     public function getProductAttributes()
     {
-        return [ProductInterface::NAME, HelperData::ON_SALES_ATTRIBUTE_CODE, HelperData::RANKING_ATTRIBUTE_CODE, HelperData::RANKING_STATUS_ATTRIBUTE_CODE];
+        return ['name', HelperData::ON_SALES_ATTRIBUTE_CODE, HelperData::RANKING_ATTRIBUTE_CODE, HelperData::RANKING_STATUS_ATTRIBUTE_CODE];
     }
 }
