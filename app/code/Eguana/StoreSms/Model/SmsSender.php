@@ -9,10 +9,11 @@ use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Math\Random;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Psr\Log\LoggerInterface;
+use Eguana\StoreSms\Logger\Logger;
 use Magento\Email\Model\ResourceModel\TemplateFactory as ResourceModelFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Customer\Model\ResourceModel\Customer\Collection;
+use Magento\Framework\Serialize\Serializer\Json;
 
 /**
  * This class is responsible for sending verification code on telephone number
@@ -47,7 +48,7 @@ class SmsSender implements SmsInterface
     private $storeManager;
 
     /**
-     * @var LoggerInterface
+     * @var Logger
      */
     private $logger;
 
@@ -67,25 +68,32 @@ class SmsSender implements SmsInterface
     private $resourceModelFactory;
 
     /**
+     * @var Json
+     */
+    private $json;
+
+    /**
      * SmsSender constructor.
      * @param SessionManagerInterface $sessionManager
      * @param Curl $curl
      * @param Data $data
      * @param StoreManagerInterface $storeManager
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @param TemplateFactory $templateFactory
      * @param CollectionFactory $collectionFactory
      * @param ResourceModelFactory $resourceModelFactory
+     * @param Json $json
      */
     public function __construct(
         SessionManagerInterface $sessionManager,
         Curl $curl,
         Data $data,
         StoreManagerInterface $storeManager,
-        LoggerInterface $logger,
+        Logger $logger,
         TemplateFactory $templateFactory,
         CollectionFactory $collectionFactory,
-        ResourceModelFactory $resourceModelFactory
+        ResourceModelFactory $resourceModelFactory,
+        Json $json
     ) {
         $this->sessionManager = $sessionManager;
         $this->curl = $curl;
@@ -95,6 +103,7 @@ class SmsSender implements SmsInterface
         $this->templateFactory = $templateFactory;
         $this->collectionFactory = $collectionFactory;
         $this->resourceModelFactory = $resourceModelFactory;
+        $this->json = $json;
     }
 
     /**
@@ -221,8 +230,11 @@ class SmsSender implements SmsInterface
             $this->curl->setOption(CURLOPT_HEADER, false);
             $this->curl->setOption(CURLOPT_POST, true);
             $this->curl->setOption(CURLOPT_POSTFIELDS, json_encode($param));
+            $this->logger->info("====START SENDING SMS====");
+            $this->logger->info(__("Send request: %1", $this->json->serialize($param)));
             $this->curl->post($apiUrl, $param);
             $status = $this->curl->getStatus();
+            $this->logger->info(__("Send response: %1", $this->curl->getBody()));
 
             if ($status != 200) {
                 return false;
