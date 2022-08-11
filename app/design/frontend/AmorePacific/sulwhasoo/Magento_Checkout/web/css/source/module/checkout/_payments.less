@@ -26,6 +26,26 @@
             &:extend(.abs-visually-hidden all);
         }
 
+        .sws-payment {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            > .primary {
+                width: calc(45%);
+                font-size: 1.8rem;
+                line-height: 2.2rem;
+                padding: 14px 17px;
+
+                button {
+                    width: 100%;
+                    box-sizing: border-box;
+                    margin: 0;
+                    line-height: 5.4rem;
+                }
+            }
+        }
+
         .payment-method {
             &:first-child {
                 .payment-method-title {
@@ -224,6 +244,13 @@
 
             .action-cancel {
                 margin-top: @indent__s;
+            }
+        }
+        .sws-payment {
+            > .primary {
+                button {
+                    line-height: 4rem;
+                }
             }
         }
     }

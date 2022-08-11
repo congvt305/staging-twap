@@ -13,10 +13,6 @@ use Magento\Framework\Setup\Patch\PatchVersionInterface;
 use Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend;
 use CJ\CatalogProduct\Helper\Data;
 
-/**
- * Class AddProductAttributes
- * @package CJ\CatalogProduct\Setup\Patch\Data
- */
 class AddProductAttributes implements DataPatchInterface, PatchVersionInterface
 {
     /**
@@ -30,13 +26,12 @@ class AddProductAttributes implements DataPatchInterface, PatchVersionInterface
     private $eavSetupFactory;
 
     /**
-     * AddProductAttributes constructor.
+     * PatchInitial constructor.
      * @param ModuleDataSetupInterface $moduleDataSetup
-     * @param EavSetupFactory $eavSetupFactory
      */
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
-        EavSetupFactory $eavSetupFactory
+        EavSetupFactory          $eavSetupFactory
     )
     {
         $this->moduleDataSetup = $moduleDataSetup;
@@ -87,7 +82,7 @@ class AddProductAttributes implements DataPatchInterface, PatchVersionInterface
                 'type' => 'int',
                 'input' => 'text',
                 'class' => '',
-                'default' => 0,
+                'default' => 9999999,
                 'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
                 'visible' => true,
                 'required' => false,

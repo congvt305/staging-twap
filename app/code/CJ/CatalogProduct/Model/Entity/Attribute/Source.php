@@ -1,20 +1,23 @@
 <?php
-
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 namespace CJ\CatalogProduct\Model\Entity\Attribute;
 
 /**
- * Class Source
- * @package CJ\CatalogProduct\Model\Entity\Attribute
+ * @api
+ * @since 100.0.2
  */
 class Source extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
 {
+    /**
+     * Option values
+     */
     const VALUE_STABLE = 0;
     const VALUE_UP = 1;
     const VALUE_DOWN = 2;
 
-    /**
-     * @return array[]
-     */
     public function getAllOptions()
     {
         $_options = [

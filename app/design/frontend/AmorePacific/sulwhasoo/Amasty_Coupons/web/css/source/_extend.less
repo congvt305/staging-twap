@@ -1,84 +1,47 @@
 & when (@media-common = true) {
-    /* Style component coupon input */
-
-    #block-discount-heading {
-        font-size: 2.5rem;
-        font-weight: 600;
-        line-height: 27.5px;
-    }
-
-    #block-discount {
-        margin-bottom: 30px;
-    }
-
-    /* END Style component coupon input */
-
-    #discount-coupon-form {
-        .label {
-            display: none;
+    .checkout-cart-index {
+        .cart-summary {
+            div {
+                font-size: 16px;
+            }
+            .payment-option-title.field.choice {
+                font-size: 18px;
+            }
         }
-
-        .coupon .actions-toolbar {
-            display: flex;
-            justify-content: space-between;
-
-           > .primary {
-               width: calc(45%);
-               > button {
-                   width: 100%;
-                   padding: 0;
-               }
-           }
+        .cart-summary .block {
+            & > .title {
+                &:after {
+                    display: none;
+                }
+                span {
+                    font-size: 2.5rem;
+                    color: #191919;
+                    font-weight: 600;
+                }
+            }
+            & > .content {
+                display: block;
+                .actions-toolbar {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    margin: 10px 0;
+                    .primary {
+                        width: calc(45%);
+                        .action {
+                            width: 100%;
+                            padding: 11px 0;
+                            line-height: unset;
+                        }
+                    }
+                }
+            }
         }
-    }
-
-    /* End Style component coupon input */
-
-    /* Style popup coupon list */
-
-    .sulwhasoo {
-        .modal-header {
-            background: #FF9224;
-            font-weight: bold;
-            margin: 0;
-            text-transform: uppercase;
-            font-size: 28px;
-            line-height: 33px;
-            color: #FFFFFF;
-            padding: 15px 10px 0 30px;
-            padding-bottom: 0 !important;
-        }
-
-        .modal-title {
-            font-size: 28px;
-            line-height: 33px;
-            color: #FFFFFF;
-            font-weight: bold;
-            border-bottom: 0;
-        }
-    }
-
-    /* End Style popup coupon list */
-    .checkout-cart-index .highlight {
-        color: red;
     }
 }
 
 & when (@media-target = 'desktop'), (@media-target = 'all') {
     @media only screen and (min-width: @screen__m) and (max-width: (@screen__l - 1)) {
-        #discount-coupon-form {
-            .coupon .actions-toolbar {
-                flex-direction: column;
 
-                .secondary, .apply {
-                    width: 100%;
-                    line-height: 5.4rem;
-                }
-
-                .secondary {
-                    margin-bottom: 10px;
-                }
-            }
-        }
     }
 }
