@@ -24,6 +24,7 @@ use Magento\Sales\Model\Order\Shipment\TrackFactory as ShipmentTrackFactory;
 
 class CreateShipmentAutomatically implements ObserverInterface
 {
+    const TRACKING_NUMBER_FREFIX = 'MYL';
     /**
      * @var NinjaVanShippingLogger
      */
@@ -189,7 +190,8 @@ class CreateShipmentAutomatically implements ObserverInterface
 
         try {
             // Send the order's information to NinjaVan to create new delivery order
-            $data = $this->createShipment->payloadSendToNinjaVan($order);
+            $trackNumber = $this->generateTrackNumber($order);
+            $data = $this->createShipment->payloadSendToNinjaVan($order, $trackNumber);
             $this->logger->info('request body to create delivery order: ');
             $this->logger->info($this->json->serialize($data));
             $response = $this->createShipment->requestCreateOrder($data, $order);
@@ -232,7 +234,15 @@ class CreateShipmentAutomatically implements ObserverInterface
             return $exception->getMessage();
         }
     }
-
+    /**
+     * @param $order
+     * @return string
+     */
+    protected function generateTrackNumber($order): string
+    {
+        $orderPrefix = self::TRACKING_NUMBER_FREFIX;
+        return $orderPrefix.substr($order->getIncrementId(), -6);
+    }
     /**
      * @param $order \Magento\Sales\Model\Order
      */

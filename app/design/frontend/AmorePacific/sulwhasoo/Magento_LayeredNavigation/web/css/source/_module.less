@@ -10,7 +10,7 @@
 & when (@media-common = true) {
 
     .block.filter {
-        margin-bottom: @indent__xl;
+        margin-bottom: 22px;
 
         .filter-title {
             display: none;
@@ -76,7 +76,6 @@
 
     .filter-options {
         margin: 0;
-        text-align: right;
 
         &:after {
             display: block;
@@ -99,18 +98,15 @@
                     color: @primary__color;
 
                     .text {
-                        padding-left: 10px;
+                        padding-left: 0;
                     }
                 }
 
                 .filter-options-content {
-                    visibility: visible;
+                    display: block;
                 }
             }
 
-            &:focus {
-                box-shadow: 0 0 3px 1px #68a8e0;
-            }
         }
 
         .filter-options-title {
@@ -118,16 +114,17 @@
                 @_icon-font-content: @icon-down,
                 @_icon-font-position: after
             );
-            padding: 7px 0 10px;
+            padding: 27px 0 12px;
             width: 100%;
-            height: 14px;
-            border-bottom: 2px solid @primary__color;
-            color: #aaaaaa;
-            font-size: 14px;
-            font-weight: @font-weight__regular;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+            color: #222;
+            font-size: 18px;
             line-height: 1.4;
             cursor: pointer;
             word-break: break-all;
+            font-family: 'buri', sans-serif;
+            text-transform: capitalize;
 
             &:hover {
                 color: @primary__color;
@@ -137,6 +134,8 @@
                 float: right;
                 margin-right: @indent__xs;
                 font-weight: @font-weight__bold;
+                font-size: 14px;
+                padding: 6px 0 0;
             }
 
             .text {
@@ -150,20 +149,14 @@
         }
 
         .filter-options-content {
-            position: absolute;
-            visibility: hidden;
             width: 100%;
-            margin: -2px 0 0 0;
-            padding: 0;
-            border: 1px solid @primary__color__lighter;
-            border-top-width: 2px;
+            margin: 0;
+            padding: 20px 0;
             background-color: @color-white;
-            color: @primary__color__light;
+            color: black;
             z-index: 5;
             box-sizing: border-box;
-            -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.3);
-            -moz-box-shadow: 0 5px 10px rgba(0,0,0,.3);
-            box-shadow: 0 5px 10px rgba(0,0,0,.3);
+            display: none;
 
             .item {
                 margin-bottom: 0;
@@ -171,20 +164,21 @@
                 a {
                     display: block;
                     line-height: 1.4;
-                    padding: 7px 5px 5px 10px;
+                    padding: 7px 0 5px 0;
                     vertical-align: middle;
-                    letter-spacing: -0.4px;
+                    letter-spacing: 0;
                     white-space: nowrap;
                     text-decoration: none;
+                    text-transform: capitalize;
 
                     &,
                     .price {
-                        font-size: 14px;
-                        color: @primary__color__light;
+                        font-size: 16px;
+                        color: black;
+                        font-weight: 500;
                     }
 
                     &:hover {
-                        background-color: @secondary__color__light;
                         text-decoration: none;
 
                         &,
@@ -192,12 +186,16 @@
                             color: @primary__color__darker;
                         }
                     }
+                    .count {
+                        // display: none;
+                    }
                 }
             }
         }
-
+        .items[class*='category_ids']:not(.items-children) > .item > a {
+            font-weight: 500;
+        }
         .count {
-            .lib-css(color, @text__color__muted);
 
             &:before {
                 content: '(';

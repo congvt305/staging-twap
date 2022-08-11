@@ -7,6 +7,11 @@
 -->
 <page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <referenceBlock name="page.main.title">
+            <arguments>
+                <argument name="category_desc_view_model" xsi:type="object">CJ\Catalog\ViewModel\CategoryDescription</argument>
+            </arguments>
+        </referenceBlock>
         <referenceBlock name="header" remove="true"/>
         <referenceContainer name="header.panel">
             <block class="Magento\Framework\View\Element\Html\Links" name="header.links">

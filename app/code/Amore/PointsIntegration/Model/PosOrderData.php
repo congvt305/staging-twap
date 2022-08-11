@@ -32,6 +32,8 @@ use Amore\PointsIntegration\Logger\Logger;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Store\Model\ScopeInterface;
 use Eguana\RedInvoice\Model\ResourceModel\RedInvoice\CollectionFactory as RedInvoiceCollectionFactory;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Sales\Api\OrderStatusHistoryRepositoryInterface;
 
 class PosOrderData
 {
@@ -98,9 +100,19 @@ class PosOrderData
     private $redInvoiceCollectionFactory;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * @var Data
      */
     private $middlewareConfig;
+
+    /**
+     * @var OrderStatusHistoryRepositoryInterface
+     */
+    private $orderStatusHistoryRepository;
 
     /**
      * @param RedInvoiceCollectionFactory $redInvoiceCollectionFactory
@@ -116,7 +128,9 @@ class PosOrderData
      * @param ResourceConnection $resourceConnection
      * @param CollectionFactory $orderCollectionFactory
      * @param Logger $pointsIntegrationLogger
+     * @param StoreManagerInterface $storeManager
      * @param Data $middlewareConfig
+     * @param OrderStatusHistoryRepositoryInterface $orderStatusHistoryRepository
      */
     public function __construct(
         RedInvoiceCollectionFactory    $redInvoiceCollectionFactory,
@@ -132,7 +146,9 @@ class PosOrderData
         ResourceConnection             $resourceConnection,
         CollectionFactory              $orderCollectionFactory,
         Logger                         $pointsIntegrationLogger,
-        Data                           $middlewareConfig
+        StoreManagerInterface          $storeManager,
+        Data                           $middlewareConfig,
+        OrderStatusHistoryRepositoryInterface $orderStatusHistoryRepository
     )
     {
         $this->redInvoiceCollectionFactory = $redInvoiceCollectionFactory;
@@ -148,7 +164,9 @@ class PosOrderData
         $this->resourceConnection = $resourceConnection;
         $this->orderCollectionFactory = $orderCollectionFactory;
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
+        $this->storeManager = $storeManager;
         $this->middlewareConfig = $middlewareConfig;
+        $this->orderStatusHistoryRepository = $orderStatusHistoryRepository;
     }
 
     /**
@@ -592,11 +610,16 @@ class PosOrderData
     public function updatePosPaidOrderSendFlag(Order $order)
     {
         try {
-            $order->setData('pos_order_paid_sent', true);
-            $order->setData('pos_order_paid_send', false);
-            $comment = __('Send paid info to POS successfully');
-            $order->addCommentToStatusHistory($comment);
-            $this->orderRepository->save($order);
+            $connection = $this->resourceConnection->getConnection();
+            $table = $connection->getTableName('sales_order');
+            $detail = [
+                'pos_order_paid_sent' => true,
+                'pos_order_paid_send' => false
+            ];
+            $condition = ['entity_id = ?' => $order->getId()];
+            $connection->update($table, $detail, $condition);
+            $comment = $order->addCommentToStatusHistory(__('Send paid info to POS successfully'));
+            $this->orderStatusHistoryRepository->save($comment);
         } catch (\Exception $exception) {
             $this->pointsIntegrationLogger->err($exception->getMessage());
         }
@@ -630,10 +653,18 @@ class PosOrderData
     public function getPaidOrdersToPOS($storeId): array
     {
         $orderCollection = $this->orderCollectionFactory->create();
-        $orderCollection
-            ->addFieldToFilter('store_id', $storeId)
-            ->addFieldToFilter('pos_order_paid_send', true);
 
+        $store = $this->storeManager->getStore($storeId);
+        if ($store->getCode() == self::VN_LANEIGE) {
+            $orderCollection
+                ->addFieldToFilter('store_id', $storeId)
+                ->addFieldToFilter('pos_order_paid_send', true)
+                ->addFieldToFilter('state', Order::STATE_COMPLETE);
+        } else {
+            $orderCollection
+                ->addFieldToFilter('store_id', $storeId)
+                ->addFieldToFilter('pos_order_paid_send', true);
+        }
         return $orderCollection->getItems();
     }
 

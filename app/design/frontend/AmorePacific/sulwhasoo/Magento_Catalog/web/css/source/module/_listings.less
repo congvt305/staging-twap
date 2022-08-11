@@ -446,6 +446,127 @@
             table-layout: fixed;
         }
     }
+    .block.filter {
+        margin-bottom: 20px;
+        display: inline-block;
+        float: left;
+        width: 110px;
+        text-align: center;
+        .filter-title {
+            display: block;
+            margin-bottom: 0;
+            strong {
+                font-size: 14px;
+                text-transform: uppercase;
+                display: inline-block;
+                border: 1px solid #222;
+                height: 40px;
+                width: 100%;
+                padding: 0px 20px 0 40px;
+                cursor: pointer;
+                background: url(../Magento_LayeredNavigation/images/icon_filter.svg) 15px center no-repeat;
+                background-size: 24px;
+                box-sizing: border-box;
+                line-height: 40px;
+                margin-top:12px;
+            }
+        }
+        .filter-content {
+            display: none;
+        }
+        .filter-options {
+            .filter-options-title {
+                padding: 16px 0 14px;
+            }
+            .filter-option {
+                margin-bottom: 0;
+            }
+        }
+        .amshopby-fromto-wrap.am-filter-items-price  {
+            width: 100%;
+        }
+        .block-actions.filter-actions {
+            text-align: left;
+        }
+        .amshopby-filter-current {
+            .amshopby-items {
+                padding: 0;
+            }
+            .amshopby-filter-value {
+                text-align: left;
+            }
+        }
+        &.active {
+            position: fixed;
+            z-index: 99;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: auto;
+            background: #fff;
+            padding-top: 49px;
+            width: 100%;
+            margin-bottom: 0;
+            .filter-content {
+                display: block;
+                padding: 0 20px;
+            }
+            .block-title.filter-title {
+                position: fixed;
+                right: 20px;
+                top: 15px;
+                strong {
+                    border: 0;
+                    padding: 0;
+                    text-indent: -999em;
+                    width: 25px;
+                    height: 25px;
+                    position: relative;
+                    z-index: 19;
+                    background: none;
+                }
+                &::after {
+                    content: "\e616";
+                    font-family: 'icons';
+                    position: absolute;
+                    left: 4px;
+                    top: 2px;
+                    font-size: 16px;
+                    z-index: 8;
+                }
+            }
+        }
+    }
+    .filter-active {
+        overflow: hidden;
+        .page-header, .taskbar {
+            z-index: 1;
+        }
+    }
+
+    .block.filter + .block.block-compare {
+        display: inline-block;
+        margin: 0 0 0 10px;
+        width: calc(~"100% - 120px");
+        .block-title {
+            margin: 0;
+            padding: 0;
+            #block-compare-heading {
+                border: 1px solid #ddd;
+                display: block;
+                line-height: 40px;
+                text-align: center;
+                font-size: 14px;
+                text-transform: uppercase;
+                margin-top:12px;
+            }
+        }
+        .block-content, #compare-clear-all, .empty {
+            display: none;
+        }
+    }
+
 }
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__s) {
@@ -951,6 +1072,13 @@
             .product-item {
                 width: 100%/4;
             }
+        }
+    }
+
+    // display 3 products per row 2 columns left
+    .page-products.page-layout-2columns-left {
+        .products-grid .product-item {
+            width: 30%;
         }
     }
 

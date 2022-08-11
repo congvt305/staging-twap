@@ -193,12 +193,12 @@ class SaveSuccess implements ObserverInterface
 
             if (!$oldDataHaveSequenceNumber && $newDataHaveSequenceNumber) {
                 $APIParameters = $this->getAPIParameters($newCustomerData, 'register');
-                $this->POSSystem->syncMember($APIParameters);
+                $this->POSSystem->syncMember($APIParameters, $newCustomerData->getStoreId());
             } elseif ($oldDataHaveSequenceNumber && $newDataHaveSequenceNumber) {
                 $oldDataAPIParameters = $this->getAPIParameters($oldCustomerData, 'update');
                 $newDataAPIParameters = $this->getAPIParameters($newCustomerData, 'update');
                 if ($this->APIValuesChanged($oldDataAPIParameters, $newDataAPIParameters)) {
-                    $this->POSSystem->syncMember($newDataAPIParameters);
+                    $this->POSSystem->syncMember($newDataAPIParameters, $newCustomerData->getStoreId());
                 }
             }
         } catch (\Exception $e) {

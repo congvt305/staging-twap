@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="product.info.details">
+            <block class="Eguana\Faq\Block\Faq" name="faq_list" template="Eguana_Faq::catalog/faq_list.phtml"
+                   before="reviews.tab" group="detailed_info">
+                <arguments>
+                    <argument name="faq_view_model" xsi:type="object">Eguana\Faq\ViewModel\Faq</argument>
+                    <argument name="data" xsi:type="array">
+                        <item name="alias" xsi:type="string">faq</item>
+                    </argument>
+                    <argument name="sort_order" xsi:type="string">20</argument>
+                    <argument name="title" translate="true" xsi:type="string"><![CDATA[Q&A]]></argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

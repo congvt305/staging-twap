@@ -1699,6 +1699,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "CAPTCHA for ""Create user"" and ""Forgot password"" forms is always enabled if chosen.","如果選擇了“創建用戶”和“忘記密碼”表單，一律啟用驗證碼。",module,Magento_Captcha
 "Please enter the letters from the image","請從圖像，輸入字母",module,Magento_Captcha
 "Please type the letters below","請鍵入下面的字母",module,Magento_Captcha
+"Position","預設",module,Magento_Catalog
 "Root","根",module,Magento_Catalog
 "Delete","刪除",module,Magento_Catalog
 "Save","儲存",module,Magento_Catalog
@@ -1710,7 +1711,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Visibility","可見度",module,Magento_Catalog
 "Status","狀態",module,Magento_Catalog
 "Price","價格",module,Magento_Catalog
-"Position","位置",module,Magento_Catalog
+"Position","預設",module,Magento_Catalog
 "Add Subcategory","添加子類別",module,Magento_Catalog
 "Add Root Category","添加根類別",module,Magento_Catalog
 "Day","日",module,Magento_Catalog
@@ -2285,7 +2286,7 @@ and the product descriptor can be up to 18, 14, or 9 characters respectively (wi
 "Buy %1 for %2 each and <strong class=""benefit"">save<span class=""percent tier-%3"">&nbsp;%4</span>%</strong>","每個購買 %2 附送 %1並且<strong class =“benefit”>保存<span class =“percent tier-<span class=""percent tier-%3"">&nbsp;%4 </span>％</strong>",module,Magento_Catalog
 "Buy %1 for %2 each","Buy %1 for %2 each",module,Magento_Catalog
 "Shop By","Shop By",module,Magento_Catalog
-"Shopping Options","Shopping Options",module,Magento_Catalog
+"Shopping Options","商品篩選",module,Magento_Catalog
 "Compare Products","比較產品",module,Magento_Catalog
 "Print This Page","打印此頁",module,Magento_Catalog
 "Remove Product","刪除该商品",module,Magento_Catalog
@@ -7440,7 +7441,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Quantity","數量",module,Magento_GroupedProduct
 "AttributeSetText","AttributeSetText",module,Magento_GroupedProduct
 "StatusText","StatusText",module,Magento_GroupedProduct
-"Position","位置",module,Magento_GroupedProduct
+"Position","預設",module,Magento_GroupedProduct
 """model"" value should be specified","""model"" value should be specified",module,Magento_GroupedProductGraphQl
 "Select...","選擇… ",module,Magento_GroupedProductStaging
 "Status","狀態",module,Magento_GroupedProductStaging
@@ -7962,7 +7963,7 @@ e.g. var/export, var/import, var/export/some/dir",module,Magento_ImportExport
 "Can be used only with catalog input type Dropdown, Multiple Select and Price","Can be used only with catalog input type Dropdown, Multiple Select and Price",module,Magento_LayeredNavigation
 "Can be used only with catalog input type Dropdown, Multiple Select and Price.","Can be used only with catalog input type Dropdown, Multiple Select and Price.",module,Magento_LayeredNavigation
 "Use in Search Results Layered Navigation","Use in Search Results Layered Navigation",module,Magento_LayeredNavigation
-"Position","位置",module,Magento_LayeredNavigation
+"Position","預設",module,Magento_LayeredNavigation
 "Position in Layered Navigation","Position in Layered Navigation",module,Magento_LayeredNavigation
 "Position of attribute in layered navigation block.","Position of attribute in layered navigation block.",module,Magento_LayeredNavigation
 "item","item",module,Magento_LayeredNavigation
@@ -7971,9 +7972,9 @@ e.g. var/export, var/import, var/export/some/dir",module,Magento_ImportExport
 "Previous","上一頁",module,Magento_LayeredNavigation
 "Remove","移除",module,Magento_LayeredNavigation
 "Remove This Item","移除此物品",module,Magento_LayeredNavigation
-"Shop By","Shop By",module,Magento_LayeredNavigation
+"Shop By","分類",module,Magento_LayeredNavigation
 "Clear All","全部清除",module,Magento_LayeredNavigation
-"Shopping Options","Shopping Options",module,Magento_LayeredNavigation
+"Shopping Options","商品篩選",module,Magento_LayeredNavigation
 "Layered Navigation","Layered Navigation",module,Magento_LayeredNavigation
 "Display Product Count","Display Product Count",module,Magento_LayeredNavigation
 "Price Navigation Step Calculation","Price Navigation Step Calculation",module,Magento_LayeredNavigation
@@ -9750,7 +9751,7 @@ or more. <a href=""https:/financing.paypal.com/ppfinportal/content/forrester"" t
 "Get Publisher ID from PayPal","Get Publisher ID from PayPal",module,Magento_Paypal
 "Home Page","Home Page",module,Magento_Paypal
 "Display","Display",module,Magento_Paypal
-"Position","位置",module,Magento_Paypal
+"Position","預設",module,Magento_Paypal
 "Size","Size",module,Magento_Paypal
 "Catalog Category Page","Catalog Category Page",module,Magento_Paypal
 "Catalog Product Page","Catalog Product Page",module,Magento_Paypal
@@ -11112,7 +11113,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "You saved the rating.","You saved the rating.",module,Magento_Review
 "My Product Reviews","我的產品評論",module,Magento_Review
 "Cannot initialize product","Cannot initialize product",module,Magento_Review
-"You submitted your review for moderation.","您已提交審核以進行審核。",module,Magento_Review
+"You submitted your review for moderation.","已提交使用心得進行審核。",module,Magento_Review
 "We can't post your review right now.","We can't post your review right now.",module,Magento_Review
 "Storage key was not set","Storage key was not set",module,Magento_Review
 "Approved","已批准",module,Magento_Review
@@ -11141,7 +11142,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Be the first to review this product","成為第一個評論該產品",module,Magento_Review
 "Write Your Own Review","Write Your Own Review",module,Magento_Review
 "* Required Fields","* 為必填項",module,Magento_Review
-"You're reviewing:","您正在審查:",module,Magento_Review
+"You're reviewing:","",module,Magento_Review
 "Your Rating","Your Rating",module,Magento_Review
 "%1 %2","%1 %2",module,Magento_Review
 "Summary","概要",module,Magento_Review
@@ -15786,7 +15787,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "The CMS node with the ""%1"" ID doesn't exist.","The CMS node with the ""%1"" ID doesn't exist.",module,Magento_VersionsCms
 "Search All Products","Search All Products",module,Magento_VisualMerchandiser
 "Add Product by SKU","Add Product by SKU",module,Magento_VisualMerchandiser
-"Position","位置",module,Magento_VisualMerchandiser
+"Position","預設",module,Magento_VisualMerchandiser
 "Action","操作",module,Magento_VisualMerchandiser
 "Unassign","Unassign",module,Magento_VisualMerchandiser
 "Top","Top",module,Magento_VisualMerchandiser
@@ -16258,13 +16259,13 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Menu","Menu",theme,frontend\Magento\blank
 "Account","Account",theme,frontend\Magento\blank
 "Settings","設定",theme,frontend\Magento\blank
-"Now Shopping by","Now Shopping by",theme,frontend\Magento\luma
+"Now Shopping by","分類",theme,frontend\Magento\luma
 "Previous","上一頁",theme,frontend\Magento\luma
 "Remove","移除",theme,frontend\Magento\luma
 "Remove This Item","移除此物品",theme,frontend\Magento\luma
-"Shop By","Shop By",theme,frontend\Magento\luma
+"Shop By","分類",theme,frontend\Magento\luma
 "Clear All","全部清除",theme,frontend\Magento\luma
-"Shopping Options","Shopping Options",theme,frontend\Magento\luma
+"Shopping Options","商品篩選",theme,frontend\Magento\luma
 "Welcome to %store_name","歡迎來到%store_name",theme,frontend\Magento\luma
 "%name,","%name,",theme,frontend\Magento\luma
 "Welcome to %store_name.","歡迎來到%store_name.",theme,frontend\Magento\luma
@@ -16455,3 +16456,23 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "The password can't be the same as the email address. Create a new password and try again.","密碼不能與電子郵件地址相同。 創建一個新密碼，然後重試。",lib,web
 "Enter your destination to get a shipping estimate.","輸入目的地以獲取運輸估算。"
 "Welcome to %store_name. To sign in to our site, use these credentials during checkout or on the <a href=""%customer_url"">My Account</a> page:","歡迎成為%store_name會員！以下為您的會員帳戶／中心<a href=""%customer_url"">我的帳戶</a> :",module,Magento_Customer
+"Please update Amasty Base module. Re-upload it and replace all the files.","請更新 Amasty Base module。 重新上載並更換所有文件。"
+"Add to cart","加到購物車"
+"Free Items","免費的贈品序號"
+"Free gift <strong>%1</strong> was added to your shopping cart","贈品 <strong>%1</strong> 已加入至您的購物車"
+"We apologize, but requested quantity of free gift <strong>%1</strong> is not available at the moment","我們表示歉意,但要求提供免費贈品 <strong>%1</strong> 暫時無法提供"
+"We apologize, but products of type <strong>%1</strong> are not supported","我們道歉,但 <strong>%1</strong> 類型產品不支持"
+"We apologize, but your free gift <strong>%1</strong> is not available at the moment","我們道歉,但您的免費贈品 <strong>%1</strong> 暫時無法使用"
+"Subtotal Before Discounts","折扣前小計"
+"Subtotal After Discounts","折扣後小計"
+No,否
+"Yes, free products only","是的,只限免費商品"
+"Yes, discounted and free products","是的,折扣和免費的產品。"
+"One By One","一個一個地"
+Multiple,多重
+"Could not migrate banners data. Exception message: %1. For details see exception log.","無法遷移橫幅數據。 例外消息: %1. 詳情請參閱例外日誌。"
+sample,樣本
+"Select all","全選"
+"Unselect all","全部取消選擇"
+"with %1 stars | ", "｛%1｝顆星 | "
+"Show All", "所有評論"

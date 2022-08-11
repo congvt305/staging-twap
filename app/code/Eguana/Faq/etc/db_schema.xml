@@ -26,6 +26,8 @@
                 comment="Updated At"/>
         <column xsi:type="smallint" name="is_active" nullable="false" default="1"
                 comment="Is active"/>
+        <column xsi:type="smallint" name="is_use_in_catalog" nullable="false" default="0"
+                comment="Is Use in PDP PLP"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
         </constraint>

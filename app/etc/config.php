@@ -165,6 +165,11 @@ return [
                     'code' => 'en_US'
                 ]
             ],
+            'advanced' => [
+                'modules_disable_output' => [
+                    'Magento_Banner' => '1'
+                ]
+            ],
             'dev' => [
                 'static' => [
                     'sign' => '1'
@@ -173,7 +178,7 @@ return [
                     'type' => 'server_side_compilation'
                 ],
                 'template' => [
-                    'minify_html' => '0'
+                    'minify_html' => '1'
                 ],
                 'js' => [
                     'merge_files' => '0',
@@ -190,7 +195,8 @@ return [
                     'enable_js_bundling' => '0'
                 ],
                 'css' => [
-                    'minify_files' => '0',
+                    'merge_css_files' => '1',
+                    'minify_files' => '1',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/'
                     ],
@@ -661,7 +667,7 @@ return [
         'Magento_GoogleTagManager' => 1,
         'Magento_ThemeGraphQl' => 1,
         'Magento_Translation' => 1,
-        'Magento_TwoFactorAuth' => 0,
+        'Magento_TwoFactorAuth' => 1,
         'Magento_ElasticsearchCatalogPermissions' => 1,
         'Magento_Ups' => 1,
         'Magento_CatalogUrlRewriteDataExporter' => 1,
@@ -694,6 +700,7 @@ return [
         'Adyen_Payment' => 0,
         'Amasty_BannersLite' => 1,
         'Amasty_Base' => 1,
+        'Amasty_Coupons' => 1,
         'Amasty_Conditions' => 1,
         'Amasty_Promo' => 1,
         'Amasty_Rgrid' => 1,
@@ -722,6 +729,7 @@ return [
         'CJ_Checkout' => 1,
         'CJ_CouponCustomer' => 1,
         'CJ_CustomCookie' => 1,
+        'CJ_Coupons' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
@@ -793,7 +801,7 @@ return [
         'Vertex_RequestLogging' => 0,
         'Vertex_AddressValidation' => 0,
         'Vertex_TaxStaging' => 0,
-        'Yotpo_Yotpo' => 1
+        'Yotpo_Yotpo' => 0
     ],
     'admin_user' => [
         'locale' => [

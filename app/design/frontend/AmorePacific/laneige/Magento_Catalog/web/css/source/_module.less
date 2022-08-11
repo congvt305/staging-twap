@@ -47,6 +47,56 @@
     //  Category view
     //  ---------------------------------------------
 
+    .catalog-category-view {
+        &.page-layout-1column {
+            &[class*="categorypath-homme"], &[class*="categorypath-make-up"], &[class*="categorypath-skincare"] {
+                .column.main {
+                    display: flex;
+                    flex-flow: column;
+                }
+
+                .message.info.empty {
+                    order: 0;
+                }
+
+                .page-title-wrapper {
+                    order: 1;
+                    margin-top: 30px;
+
+                    .page-title {
+                        float: left;
+                        font-size: 32px;
+                        &+p {
+                            float: left;
+                            text-align: left;
+                            width: 100%;
+                        }
+                    }
+                }
+
+                .products-grid {
+                    order: 2;
+                }
+
+                .toolbar-products {
+                    order: 3;
+                }
+
+                .faqs-page {
+                    order: 4;
+                    width: 100%;
+                }
+
+                .product-item-description {
+                    font-style: italic;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+
     .prices-tier {
         .price-container {
             .price-including-tax {

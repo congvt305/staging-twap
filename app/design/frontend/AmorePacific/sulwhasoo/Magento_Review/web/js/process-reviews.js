@@ -48,11 +48,11 @@ define([
 
                 if (anchor == "reviews") {
                     $('html, body').animate({
-                        scrollTop: $('.product-reviews-wrapper').offset().top
+                        scrollTop: $('.product.info.detailed').offset().top
                     }, 300);
                 } else {
                     $('html, body').animate({
-                        scrollTop: $('.product-reviews-wrapper #' + anchor).offset().top
+                        scrollTop: $('.product.info.detailed #' + anchor).offset().top
                     }, 300);
                 }
             });
