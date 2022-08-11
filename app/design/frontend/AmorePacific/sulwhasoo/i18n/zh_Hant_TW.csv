@@ -179,4 +179,4 @@ Events,最新活動
 "%1 people found this helpful","%1 人認為很有幫助"
 "No reviews","沒有評論"
 "Add your photo","添加您的照片"
-"Reviews %1","則評論 %1",module,Magento_Review
+"Reviews %1","評論",module,Magento_Review
