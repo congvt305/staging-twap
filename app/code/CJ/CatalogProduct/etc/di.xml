@@ -29,4 +29,5 @@
     <type name="Magento\Catalog\Model\Config">
         <plugin name="custom_catalog_model_config" type="CJ\CatalogProduct\Plugin\Catalog\Model\Config"/>
     </type>
+    <preference for="Magento\Catalog\Block\Product\ProductList\Toolbar" type="CJ\CatalogProduct\Rewrite\Catalog\Block\Product\ProductList\Toolbar" />
 </config>

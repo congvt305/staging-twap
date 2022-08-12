@@ -41,24 +41,4 @@ class Toolbar
         }
         return $result;
     }
-    
-    public function aroundSetCollection(\Magento\Catalog\Block\Product\ProductList\Toolbar $subject, \Closure $proceed, $collection)
-    {
-        $store = $this->storeManager->getStore();
-        $result = $proceed($collection);
-        if ($store->getCode() == 'my_sulwhasoo'){
-            $currentOrder = $subject->getCurrentOrder();
-            if($currentOrder) {
-                if($currentOrder == 'high_to_low') {
-                    $subject->getCollection()->getSelect()->order('price_index.price desc');
-                } elseif ($currentOrder == 'low_to_high') {
-                    $subject->getCollection()->getSelect()->order('price_index.price asc');
-                }elseif ($this->data->getEnableFilterOnSale($store->getId()) && $subject->getRequest()->getParam('on_sale')){
-                    $subject->getCollection()->getSelect()->where('price_index.final_price < price_index.price');
-                }
-            }
-        }
-
-        return $result;
-    }
 }
