@@ -904,6 +904,11 @@ class SapOrderReturnData extends AbstractSapOrder
 
                         $catalogRuleDiscount += $catalogRuledPriceRatio * $rmaItem->getQtyRequested() * $qtyPerBundle;
                     }
+                } else {
+                    foreach ($orderItem->getChildrenItems() as $bundleChild) {
+                        $catalogRuledPriceRatio = $bundleChild->getOriginalPrice() - $bundleChild->getPrice();
+                        $catalogRuleDiscount += $catalogRuledPriceRatio * $bundleChild->getQtyOrdered();
+                    }
                 }
             }
         }
