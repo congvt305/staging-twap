@@ -39,5 +39,11 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    // your code
+    .checkout-shipping-method {
+        .actions-toolbar {
+            > .primary {
+                display: block;
+            }
+        }
+    }
 }
