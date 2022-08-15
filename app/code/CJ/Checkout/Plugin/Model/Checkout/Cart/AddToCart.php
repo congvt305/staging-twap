@@ -1,17 +1,16 @@
 <?php
 
-namespace CJ\Checkout\Observer;
+namespace CJ\Checkout\Plugin\Model\Checkout\Cart;
 
-use Magento\Checkout\Helper\Data as CheckoutHelper;
-use Magento\Checkout\Model\Cart;
 use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Checkout\Helper\Data as CheckoutHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
-class RemoveSimpleProductInCart implements ObserverInterface
+
+class AddToCart
 {
     const VN_LNG_WEBSITE = 'vn_laneige_website';
     /**
@@ -30,48 +29,27 @@ class RemoveSimpleProductInCart implements ObserverInterface
     private StoreManagerInterface $storeManager;
 
     /**
-     * @var Cart
+     * @var LoggerInterface
      */
-    private Cart $cart;
+    private $logger;
 
     /**
      * @param CustomerSession $customerSession
      * @param ScopeConfigInterface $scopeConfig
-     * @param MessageManagerInterface $messageManager
-     * @param Json $jsonSerializer
-     * @param UrlInterface $url
-     * @param ActionFlag $actionFlag
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         CustomerSession $customerSession,
         ScopeConfigInterface $scopeConfig,
         StoreManagerInterface $storeManager,
-        Cart $cart
+        LoggerInterface $logger
     ) {
         $this->customerSession = $customerSession;
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
-        $this->cart = $cart;
+        $this->logger = $logger;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function execute(Observer $observer)
-    {
-        if (!$this->customerSession->isLoggedIn() && !$this->isAllowedGuestCheckout() && $this->storeManager->getWebsite()->getCode() == self::VN_LNG_WEBSITE ) {
-
-            //remove simple item from minicart
-            $items = $this->cart->getItems();
-            foreach ($items as $item) {
-                if ($item->getProductType() == 'simple' ) {
-                    $this->cart->getQuote()->removeAllItems();
-                }
-            }
-
-            return $this;
-        }
-    }
 
     /**
      * @return bool
@@ -84,4 +62,26 @@ class RemoveSimpleProductInCart implements ObserverInterface
         );
     }
 
+
+    /**
+     * Plugin remove simple product when add to cart VN LNG
+     *
+     * @param $subject
+     * @param $productInfo
+     * @param $requestInfo
+     * @return array|null
+     */
+    public function aroundAddProduct(\Magento\Checkout\Model\Cart $subject, callable $proceed, $productInfo, $requestInfo = null)
+    {
+        try {
+            if (!$this->customerSession->isLoggedIn() && !$this->isAllowedGuestCheckout() && $this->storeManager->getWebsite()->getCode() == self::VN_LNG_WEBSITE) {
+                if ($productInfo->getTypeId() == 'simple') {
+                    return;
+                }
+            }
+            $proceed($productInfo, $requestInfo);
+        } catch (\Exception $e) {
+            $this->logger->info($e->getMessage());
+        }
+    }
 }

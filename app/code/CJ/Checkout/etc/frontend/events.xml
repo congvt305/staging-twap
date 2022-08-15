@@ -8,8 +8,4 @@
         <observer name="CJ_Checkout::controller_action_predispatch_checkout_cart_add"
                   instance="CJ\Checkout\Observer\ValidateLoggedInCustomer"/>
     </event>
-    <event name="checkout_cart_product_add_after">
-        <observer name="CJ_Checkout::checkout_cart_product_add_after"
-                  instance="CJ\Checkout\Observer\RemoveSimpleProductInCart"/>
-    </event>
 </config>
