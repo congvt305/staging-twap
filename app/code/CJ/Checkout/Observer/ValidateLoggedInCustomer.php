@@ -14,12 +14,14 @@ use Magento\Framework\Message\ManagerInterface as MessageManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\UrlInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class ValidateLoggedInCustomer
  */
 class ValidateLoggedInCustomer implements ObserverInterface
 {
+    const VN_LNG_WEBSITE = 'vn_laneige_website';
     /**
      * @var CustomerSession
      */
@@ -51,6 +53,11 @@ class ValidateLoggedInCustomer implements ObserverInterface
     private ActionFlag $actionFlag;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private StoreManagerInterface $storeManager;
+
+    /**
      * @param CustomerSession $customerSession
      * @param ScopeConfigInterface $scopeConfig
      * @param MessageManagerInterface $messageManager
@@ -64,7 +71,8 @@ class ValidateLoggedInCustomer implements ObserverInterface
         MessageManagerInterface $messageManager,
         Json $jsonSerializer,
         UrlInterface $url,
-        ActionFlag $actionFlag
+        ActionFlag $actionFlag,
+        StoreManagerInterface $storeManager
     ) {
         $this->customerSession = $customerSession;
         $this->scopeConfig = $scopeConfig;
@@ -72,6 +80,7 @@ class ValidateLoggedInCustomer implements ObserverInterface
         $this->jsonSerializer = $jsonSerializer;
         $this->url = $url;
         $this->actionFlag = $actionFlag;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -79,7 +88,7 @@ class ValidateLoggedInCustomer implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        if (!$this->customerSession->isLoggedIn() && !$this->isAllowedGuestCheckout()) {
+        if (!$this->customerSession->isLoggedIn() && !$this->isAllowedGuestCheckout() && $this->storeManager->getWebsite()->getCode() == self::VN_LNG_WEBSITE) {
             $warningMessage = __('You need to register for Laneige membership before making a purchase');
             $controller = $observer->getControllerAction();
             $redirectionUrl = $this->url->getUrl('customer/account/login');
