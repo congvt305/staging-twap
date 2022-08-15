@@ -7,6 +7,9 @@
 /** This changes need to valid applying filters and configuration before search process is started. */
 $productList = $block->getProductListHtml();
 ?>
+<h1 class="page_title_custom">
+    <?php echo $block->getSearchQueryContentTitle(); ?>
+</h1>
 <?php if ($block->getResultCount()) : ?>
     <?= /* @noEscape */ $block->getChildHtml('tagged_product_list_rss_link') ?>
 <div class="search results">
@@ -19,20 +22,49 @@ $productList = $block->getProductListHtml();
         </div>
     </div>
     <?php endif; ?>
-    <?= /* @noEscape */ $block->getChildHtml('catalogsearch.leftnav') ?>
     <?= /* @noEscape */ $productList ?>
 </div>
 <?php else : ?>
-
-<div class="message notice">
-    <div>
-        <?= $block->escapeHtml($block->getNoResultText() ? $block->getNoResultText() : __('Your search returned no results.')) ?>
-        <?= /* @noEscape */ $block->getAdditionalHtml() ?>
-        <?php if ($messages = $block->getNoteMessages()) : ?>
-            <?php foreach ($messages as $message) : ?>
-                <br /><?= /* @noEscape */ $message ?>
-            <?php endforeach; ?>
-        <?php endif; ?>
+    <div class="cart-empty-content">
+        <p class="message-cart-empty">
+            <?= $block->escapeHtml($block->getNoResultText() ? $block->getNoResultText() : __('No exact matches found')) ?>
+            <?= /* @noEscape */ $block->getAdditionalHtml() ?>
+            <?php if ($messages = $block->getNoteMessages()) : ?>
+                <?php foreach ($messages as $message) : ?>
+                    <br /><?= /* @noEscape */ $message ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </p>
     </div>
-</div>
+    <div class="search_recommendation">
+        <?php echo $this->getLayout()
+            ->createBlock('Magento\Cms\Block\Block')
+            ->setBlockId('hk_sulhwasoo_search_recommendation_product')
+            ->toHtml();
+        ?>
+    </div>
+
 <?php endif; ?>
+
+<div class="block sidebar-search-result" style="display: none;">
+    <h3><?= $block->escapeHtml($block->getBlockTitle()) ?></h3>
+    <!--
+    <ul>
+        <li class="search-result-product active"><a href="#"><?= $block->escapeHtml($block->getProductCountText()) ?></a></li>
+        <li class="search-result-post"><a href="#"><?= $block->escapeHtml($block->getBlogCountText()) ?></a></li>
+    </ul>
+    -->
+</div>
+
+<script>
+    require(['jquery'], function($) {
+        $(document).ready(function() {
+            if (!$('.sidebar.sidebar-main').find('.sidebar-search-result').length) {
+                $('.block.sidebar-search-result').appendTo($('.sidebar.sidebar-main'));
+                $('.block.sidebar-search-result').show();
+            }
+        });
+
+        $(".search_recommendation").appendTo(".catalogsearch-result-index .page-bottom");
+    });
+</script>

@@ -7148,7 +7148,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "Street Address","Địa chỉ đường",module,Magento_GiftRegistry
 "Street Address %1","Địa chỉ đường phố %1",module,Magento_GiftRegistry
 "City","Quận/ Huyện",module,Magento_GiftRegistry
-"Please select a region, state or province.","Vui lòng chọn khu vực tỉnh/thành phố",module,Magento_GiftRegistry
+"Please select a region, state or province.","Chọn tỉnh/thành phố",module,Magento_GiftRegistry
 "Zip/Postal Code","Mã bưu chính",module,Magento_GiftRegistry
 "Country","Quốc gia",module,Magento_GiftRegistry
 "Phone Number","Số Điện thoại",module,Magento_GiftRegistry
@@ -16259,7 +16259,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Billing Info","Thông tin thanh toán",theme,frontend/Magento/luma
 "Shipping Info","Thông tin vận chuyển",theme,frontend/Magento/luma
 "Payment Method","Phương thức thanh toán",theme,frontend/Magento/luma
-"Shipping Method","Phương thức vận chuyển",theme,frontend/Magento/luma
+"Shipping Method","Phí vận chuyển",theme,frontend/Magento/luma
 "Update to your %store_name credit memo","Cập nhật các bản ghi nhớ tín dụng %store_name của bạn",theme,frontend/Magento/luma
 "Your order #%increment_id has been updated with a status of <strong>%order_status</strong>.","Đơn đặt hàng của bạn #%increment_id đã được cập nhật với trạng thái <strong>%order_status</strong>.",theme,frontend/Magento/luma
 "Invoice for your %store_name order","Các hóa đơn cho các đơn đặt hàng %store_name",theme,frontend/Magento/luma

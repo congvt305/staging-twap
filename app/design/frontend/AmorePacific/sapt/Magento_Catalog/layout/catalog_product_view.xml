@@ -19,6 +19,18 @@
                                 </action>
                             </block>
                         </container>
+                        <block class="Magento\Catalog\Block\Product\View\Description"
+                               name="product.info.howtouse_desktop" as="howtouse_desktop"
+                               template="Magento_Catalog::product/view/attribute.phtml"
+                               group="detailed_info" after="-">
+                            <arguments>
+                                <argument name="at_call" xsi:type="string">getHowToUse</argument>
+                                <argument name="at_code" xsi:type="string">how_to_use</argument>
+                                <argument name="css_class" xsi:type="string">howtouse</argument>
+                                <argument name="at_label" xsi:type="string">default</argument>
+                                <argument name="title" translate="true" xsi:type="string">How to Use</argument>
+                            </arguments>
+                        </block>
                     </container>
                     <container name="product.info.main.wrapper" htmlTag="div" htmlClass="product-info-main-wrapper"  after="product.info.meida.wrapper">
                         <container name="product.info.main.attribute" htmlTag="div" htmlClass="product-info-main-attribute"  before="-">
@@ -27,6 +39,18 @@
                             </container>
                         </container>
                     </container>
+                    <block class="Magento\Catalog\Block\Product\View\Description"
+                           name="product.info.howtouse" as="howtouse"
+                           template="Magento_Catalog::product/view/attribute.phtml"
+                           group="detailed_info" after="-">
+                        <arguments>
+                            <argument name="at_call" xsi:type="string">getHowToUse</argument>
+                            <argument name="at_code" xsi:type="string">how_to_use</argument>
+                            <argument name="css_class" xsi:type="string">howtouse</argument>
+                            <argument name="at_label" xsi:type="string">default</argument>
+                            <argument name="title" translate="true" xsi:type="string">How to Use</argument>
+                        </arguments>
+                    </block>
                 </container>
             </container>
             <container name="product.config.items" htmlTag="div" htmlClass="product-config-items" after="-" />
@@ -57,8 +81,9 @@
         <move element="product.info.media" destination="product.info.meida.wrapper" after="-" />
         <move element="product.info.social" destination="product.info.main" before="-" />
         <move element="product.info.addto" destination="product.info.main" after="product.info" />
-        <move element="product.info.review" destination="product.info.content" after="page.main.title" />
         <move element="content.aside" destination="product.config.items" after="-" />
+
+        <referenceBlock name="product.info.review" remove="true" />
 
         <referenceBlock name="page.main.title">
             <block class="Magento\Catalog\Block\Product\View\Description" name="product.default.name"
@@ -85,6 +110,15 @@
                     <argument name="at_label" xsi:type="string">default</argument>
                     <argument name="title" translate="true" xsi:type="string">Ingredients</argument>
                     <argument name="sort_order" xsi:type="string">40</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Wishlist\Block\Catalog\Product\View\AddTo\Wishlist" name="view.addto.wishlist.sticky"
+                   template="Satp_AjaxWishlist::catalog/product/view/addto/wishlist.phtml">
+                <arguments>
+                    <argument
+                        name="moduleStatusViewModel"
+                        xsi:type="object">Satp\AjaxWishlist\ViewModel\AjaxWishlistStatus
+                    </argument>
                 </arguments>
             </block>
         </referenceContainer>
@@ -136,7 +170,7 @@
                 <container name="product.info.content.price.title" htmlTag="p" htmlClass="price-title" before="-">
                     <block class="Magento\Framework\View\Element\Text" name="product.info.price.label">
                         <action method="setText">
-                            <argument name="text" translate="true" xsi:type="string">Price</argument>
+                            <argument name="text" translate="true" xsi:type="string">Total Price</argument>
                         </action>
                     </block>
                 </container>
@@ -181,19 +215,6 @@
                     <argument name="sort_order" xsi:type="string">60</argument>
                 </arguments>
             </block>
-            <block class="Magento\Catalog\Block\Product\View\Description"
-                   name="product.info.howtouse" as="howtouse"
-                   template="Magento_Catalog::product/view/attribute.phtml"
-                   group="detailed_info" after="product.info.color.shades">
-                <arguments>
-                    <argument name="at_call" xsi:type="string">getHowToUse</argument>
-                    <argument name="at_code" xsi:type="string">how_to_use</argument>
-                    <argument name="css_class" xsi:type="string">howtouse</argument>
-                    <argument name="at_label" xsi:type="string">default</argument>
-                    <argument name="title" translate="true" xsi:type="string">How to Use</argument>
-                    <argument name="sort_order" xsi:type="string">80</argument>
-                </arguments>
-            </block>
         </referenceBlock>
         <referenceContainer name="product.info.media">
             <block class="Magento\Framework\View\Element\Text" name="product.media.caption">
@@ -220,5 +241,137 @@
                 </arguments>
             </block>
         </referenceContainer>
+        <referenceContainer name="product.info.content">
+            <block class="Magento\Catalog\Block\Product\View\Description"
+                   name="product.info.product.labels" as="product_labels"
+                   template="Magento_Catalog::product/view/productlabels.phtml" before="-" />
+            <container name="product.info.content.share" htmlTag="div" htmlClass="product-info-content-share" before="-" />
+
+            <block class="Magento\Catalog\Block\Product\View\Description"
+                   name="product.info.shortdescription" as="short_description"
+                   template="Magento_Catalog::product/view/short_description.phtml" after="-" />
+
+            <block class="Magento\Catalog\Block\Product\View\Description"
+                   name="product.info.producttags" as="product_tags"
+                   template="Magento_Catalog::product/view/producttags.phtml" after="product.info.shortdescription" />
+        </referenceContainer>
+
+        <referenceContainer name="product.info.main.attribute">
+            <block class="Magento\Catalog\Block\Product\View\Description"
+                   name="product.info.discount.coupon" as="discount_coupon"
+                   template="Magento_Catalog::product/view/attribute_new.phtml" before="-">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getDiscountCoupon</argument>
+                    <argument name="at_code" xsi:type="string">discount_coupon</argument>
+                    <argument name="css_class" xsi:type="string">discount_coupon</argument>
+                    <argument name="at_label" xsi:type="string">default</argument>
+                    <argument name="title" translate="true" xsi:type="string">DISCOUNT COUPON</argument>
+                    <argument name="sort_order" xsi:type="string">0</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Catalog\Block\Product\View\Description"
+                   name="product.info.purachase.benefits" as="purchase_benefits"
+                   template="Magento_Catalog::product/view/attribute_new.phtml" after ="product.info.discount.coupon">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getPurchaseBenefits</argument>
+                    <argument name="at_code" xsi:type="string">purchase_benefits</argument>
+                    <argument name="css_class" xsi:type="string">purchase_benefits</argument>
+                    <argument name="at_label" xsi:type="string">default</argument>
+                    <argument name="title" translate="true" xsi:type="string">PURCHASE BENEFITS</argument>
+                    <argument name="sort_order" xsi:type="string">10</argument>
+                </arguments>
+            </block>
+
+            <block class="Magento\Catalog\Block\Product\View\Details" name="product.info.details.tab2"
+                   template="Magento_Catalog::product/view/details_tabs.phtml" after="-">
+                <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.set.includes"
+                       as="setincludes" template="Magento_Catalog::product/view/attribute_new.phtml"
+                       group="detailed_info_tab">
+                    <arguments>
+                        <argument name="at_call" xsi:type="string">getSetIncludes</argument>
+                        <argument name="at_code" xsi:type="string">set_includes</argument>
+                        <argument name="css_class" xsi:type="string">set_includes</argument>
+                        <argument name="at_label" xsi:type="string">none</argument>
+                        <argument name="title" translate="true" xsi:type="string">SET INCLUDES</argument>
+                        <argument name="sort_order" xsi:type="string">20</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.ingredients.tab"
+                       as="ingredientstab" template="Magento_Catalog::product/view/attribute_new.phtml"
+                       group="detailed_info_tab">
+                    <arguments>
+                        <argument name="at_call" xsi:type="string">getIngredients</argument>
+                        <argument name="at_code" xsi:type="string">ingredients</argument>
+                        <argument name="css_class" xsi:type="string">ingredients</argument>
+                        <argument name="at_label" xsi:type="string">none</argument>
+                        <argument name="title" translate="true" xsi:type="string">INGREDIENTS</argument>
+                        <argument name="sort_order" xsi:type="string">30</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.product.shippings"
+                       as="productshipping" template="Magento_Catalog::product/view/attribute_new.phtml"
+                       group="detailed_info_tab">
+                    <arguments>
+                        <argument name="at_call" xsi:type="string">getProductShipping</argument>
+                        <argument name="at_code" xsi:type="string">product_shipping</argument>
+                        <argument name="css_class" xsi:type="string">product_shipping</argument>
+                        <argument name="at_label" xsi:type="string">none</argument>
+                        <argument name="title" translate="true" xsi:type="string">SHIPPING</argument>
+                        <argument name="sort_order" xsi:type="string">40</argument>
+                    </arguments>
+                </block>
+            </block>
+            <block class="Satp\Catalog\Block\Freebies"
+                   name="product.info.freebies" as="freebies"
+                   template="Magento_Catalog::product/view/freebies.phtml" after="-"/>
+            <block class="Satp\Review\Block\Product\OneLine"
+                   name="product.review.oneline" as="one.line.review"
+                   template="Satp_Review::product/oneline.phtml"
+                   ifconfig="catalog/review/active" after="-"/>
+        </referenceContainer>
+
+        <referenceContainer name="product.info.main">
+            <block class="Magento\Catalog\Block\Product\View" name="product_sticky" template="Magento_Catalog::product/view/product_sticky.phtml" before="-"/>
+        </referenceContainer>
+
+        <referenceBlock name="product.info.details">
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.description" as="description" template="Magento_Catalog::product/view/attribute.phtml" group="detailed_info">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getDescription</argument>
+                    <argument name="at_code" xsi:type="string">description</argument>
+                    <argument name="css_class" xsi:type="string">description</argument>
+                    <argument name="at_label" xsi:type="string">none</argument>
+                    <argument name="title" translate="true" xsi:type="string">Details</argument>
+                    <argument name="sort_order" xsi:type="string">10</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.product.faq"
+                   as="product_detail_faq" template="Magento_Catalog::product/view/content_faq.phtml"
+                   group="detailed_info">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getProductDetailFaq</argument>
+                    <argument name="at_code" xsi:type="string">product_detail_faq</argument>
+                    <argument name="css_class" xsi:type="string">product_detail_faq</argument>
+                    <argument name="at_label" xsi:type="string">none</argument>
+                    <argument name="title" translate="true" xsi:type="string">FAQ</argument>
+                    <argument name="sort_order" xsi:type="string">30</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <move element="product.info.content" destination="product.info.main.wrapper" before="-" />
+        <move element="product.info.social" destination="product.info.content.share" before="-" />
+        <move element="product.info.overview" destination="product.info.main" before="-" />
+        <move element="product.info.addto" destination="product.info.content.share" before="-" />
+        <move element="product.info.content.price" destination="product.info.addtocart" before="-" />
+        <move element="product.info.howtouse" destination="product.info.wrapper" after="product.info.main.wrapper" />
+        <move element="product.info.howtouse_desktop" destination="product.info.meida.wrapper" after="-" />
+        <referenceBlock name="product.see.info" remove="true" />
+        <referenceBlock name="product.info.attribute.social" remove="true" />
+        <referenceBlock name="product.info.ingredient" remove="true" />
+        <referenceBlock name="product.media.caption" remove="true" />
+        <referenceBlock name="product.info.product.background" remove="true" />
+        <referenceBlock name="product.info.attribute.size" remove="true" />
+        <referenceBlock name="product.info.price" remove="true" />
     </body>
 </page>

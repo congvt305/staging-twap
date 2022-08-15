@@ -8,9 +8,10 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <move element="customer.new" destination="customer_form_login"/>
+        <move element="page.main.title" destination="customer_form_login"/>
         <referenceBlock name="page.main.title">
             <action method="setPageTitle">
-                <argument translate="true" name="title" xsi:type="string">Customer Login</argument>
+                <argument translate="true" name="title" xsi:type="string">Login</argument>
             </action>
         </referenceBlock>
         <referenceBlock name="breadcrumbs">
@@ -30,6 +31,23 @@
                 </argument>
             </action>
         </referenceBlock>
+
+        <referenceBlock name="customer_form_login">
+            <block class="Magento\Cms\Block\Block" name="hk_sulwhasoo_login_benefit">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">hk_sulwhasoo_login_benefit</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <referenceContainer name="customer.login.container">
+            <block class="Magento\Cms\Block\Block" name="hk_sulwhasoo_login_coupon">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">hk_sulwhasoo_login_coupon</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
     </body>
     <head>
         <link rel="canonical" src="{{baseUrl}}customer/account/login" src_type="url"/>

@@ -8,6 +8,10 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="search-term-popular-link" remove="true"/>
-        <move element="top.search" destination="header.panel" after="minicart"/>
+        <move element="top.search" destination="header.container" before="-"/>
+        <referenceContainer name="header.panel">
+            <block class="Magento\Framework\View\Element\Template" name="top.search.link"
+                   template="Magento_Search::search-link.phtml" after="minicart"/>
+        </referenceContainer>
     </body>
 </page>

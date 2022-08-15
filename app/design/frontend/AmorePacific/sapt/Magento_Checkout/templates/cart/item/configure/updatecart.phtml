@@ -18,7 +18,7 @@
                     <div class="field qty">
                         <label class="label" for="qty"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
                         <div class="control">
-                            <button onclick="var qty_el = document.getElementById('qty'); var qty = qty_el.value; if( !isNaN( qty ) &amp;&amp; qty > 1 ) qty_el.value--; return false;" class="qty-decrease" >
+                            <button onclick="var qty_el = document.getElementById('qty'); var qty = qty_el.value; if( !isNaN( qty ) &amp;&amp; qty > 1 ) qty_el.value--; return false;" class="qty-decrease disable" >
                                 <span class="icon"><?= $block->escapeHtml(__('collapse')) ?></span>
                             </button>
                             <input type="number"
@@ -32,6 +32,20 @@
                             <button onclick="var qty_el = document.getElementById('qty'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;return false;" class="qty-increase">
                                 <span class="icon"><?= $block->escapeHtml(__('expand')) ?></span>
                             </button>
+                            <script type="text/javascript">
+                                require([
+                                    "jquery"
+                                ],function($) {
+                                    $('input.qty').on('change', function(e){
+                                        console.log($(this).val());
+                                        if ($(this).val() == 1) {
+                                            $('button.qty-decrease').addClass('disable');
+                                        } else {
+                                            $('button.qty-decrease').removeClass('disable');
+                                        }
+                                    })
+                                })
+                            </script>
                         </div>
                     </div>
                 </div>

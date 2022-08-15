@@ -31,12 +31,12 @@ $helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
             'include_container' => true
         ]); ?>
         <?php if ($minimalPrice < $minimalRegularPrice): ?>
-          
+
             <?php if($discountedPrice = $helper->getDiscountPrice($minimalRegularPrice->getValue(), $minimalPrice->getValue())):?>
                 <span class="discount-label">
                         <?= $discountedPrice ?>%
                 </span>
-            <?php endif;?> 
+            <?php endif;?>
             <span class="old-price">
                 <?php /* @escapeNotVerified */ echo $block->renderAmount($minimalRegularPrice, [
                     'display_label'     => $block->escapeHtml(__('Regular Price')),
@@ -103,6 +103,10 @@ $helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
                     <?= $discountedPrice?>%
                 </span>
             <?php endif;?>
+            <?php /* @escapeNotVerified */ echo $block->renderAmount($minimalPrice, [
+                'price_id'          => $block->getPriceId('product-price-'),
+                'include_container' => true
+            ]); ?>
             <span class="old-price">
                 <?php /* @escapeNotVerified */ echo $block->renderAmount($minimalRegularPrice, [
                     'display_label'     => $block->escapeHtml(__('Regular Price')),
@@ -111,11 +115,12 @@ $helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
                     'skip_adjustments'  => true
                 ]); ?>
             </span>
+        <?php else: ?>
+            <?php /* @escapeNotVerified */ echo $block->renderAmount($minimalPrice, [
+                'price_id'          => $block->getPriceId('product-price-'),
+                'include_container' => true
+            ]); ?>
         <?php endif ?>
-        <?php /* @escapeNotVerified */ echo $block->renderAmount($minimalPrice, [
-            'price_id'          => $block->getPriceId('product-price-'),
-            'include_container' => true
-        ]); ?>
     <?php endif ?>
     </p>
 <?php endif ?>

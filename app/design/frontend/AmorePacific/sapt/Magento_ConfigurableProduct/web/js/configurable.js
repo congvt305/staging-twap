@@ -27,9 +27,9 @@ define([
             state: {},
             priceFormat: {},
             optionTemplate: '<%- data.label %>' +
-            '<% if (typeof data.finalPrice.value !== "undefined") { %>' +
-            ' <%- data.finalPrice.formatted %>' +
-            '<% } %>',
+                '<% if (typeof data.finalPrice.value !== "undefined") { %>' +
+                ' <%- data.finalPrice.formatted %>' +
+                '<% } %>',
             mediaGallerySelector: '[data-gallery-role=gallery-placeholder]',
             mediaGalleryInitial: null,
             slyOldPriceSelector: '.sly-old-price',
@@ -661,6 +661,11 @@ define([
             });
             config = _.first(config);
 
+            $('.option-stock').css('display', 'none');
+            if (config && config.allowedProducts) {
+                $('#option-stock-' + config.allowedProducts).toggle();
+            }
+
             return _.isEmpty(config) ?
                 undefined :
                 _.first(config.allowedProducts);
@@ -681,8 +686,8 @@ define([
             //         shouldBeShown = false;
             //     }
             // });
-          
-            if (shouldBeShown &&
+
+            if (shouldBeShown && typeof this.options.spConfig.optionPrices[optionId] != 'undefined' &&
                 this.options.spConfig.optionPrices[optionId].oldPrice.amount !==
                 this.options.spConfig.optionPrices[optionId].finalPrice.amount
             ) {

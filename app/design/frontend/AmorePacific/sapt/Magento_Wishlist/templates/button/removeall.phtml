@@ -1,0 +1,16 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Magento\Wishlist\Block\Customer\Wishlist\Button $block */
+?>
+
+<?php if ($block->getWishlist()->getItemsCount()): ?>
+    <button type="button" data-role="all-remove" title="<?= $block->escapeHtmlAttr(__('Remove all')) ?>" class="action removeall">
+        <span><?= $block->escapeHtml(__('Remove all')) ?></span>
+    </button>
+<?php endif;?>

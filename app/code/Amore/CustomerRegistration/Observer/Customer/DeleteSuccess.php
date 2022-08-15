@@ -69,7 +69,7 @@ class DeleteSuccess implements ObserverInterface
                 }
             }
             $APIParameters = $this->posSyncAPI->getAPIParameters($customer, $customerDefaultBillingAddress, 'delete');
-            $this->POSSystem->syncMember($APIParameters);
+            $this->POSSystem->syncMember($APIParameters, $customer->getStoreId());
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
         }

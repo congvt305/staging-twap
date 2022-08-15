@@ -28,6 +28,11 @@
     direction: ltr;
     position: relative;
     z-index: 0;
+    padding-left: 56px;
+    .fotorama__stage {
+        box-sizing: border-box;
+        max-height: 600px;
+    }
 }
 
 .fotorama__wrap--rtl {
@@ -402,36 +407,60 @@
 
 .fotorama__arr {
     &:extend(.fotorama-border-box);
-    bottom: 0;
     position: absolute;
-    top: 0;
-    width: @fotorama-arw-size;
+    top: 50%;
+    width: 64px;
+    height: 64px;
+    margin-top: -32px;
     .fotorama__arr__arr {
         &:extend(.fotorama-sprite);
         .fotorama-abs-center();
-        height: @size-fotorama-block;
-        width: @size-fotorama-block;
+        width: 64px;
+        height: 64px;
+        text-align: center;
+        line-height: 64px;
+        @media all and (max-width: 768px) {
+            line-height: 40px;
+        }
     }
 }
 
 .fotorama__arr--prev {
     left: 0;
     .fotorama__arr__arr {
-        background-position: -@size-fotorama-block -@size-fotorama-block;
+        background: none;
+        &::before {
+            content: "\e909";
+            font-family: 'icons';
+            text-align: center;
+            font-size: 24px;
+            @media all and (max-width: 768px) {
+                font-size: 18px;
+            }
+        }
     }
 }
 
 .fotorama__arr--next {
     right: 0;
     .fotorama__arr__arr {
-        background-position: (-@size-fotorama-block*2) (-@size-fotorama-block);
+        background: none;
+        &::before {
+            content: "\e905";
+            font-family: 'icons';
+            text-align: center;
+            font-size: 24px;
+            @media all and (max-width: 768px) {
+                font-size: 18px;
+            }
+        }
     }
 }
 
 .fotorama__arr--disabled {
     *display: none;
     cursor: default;
-    opacity: 0.1;
+    opacity: 0;
     pointer-events: none;
 }
 
@@ -810,9 +839,32 @@
         display: inline-block;
         left: 0;
         position: absolute;
-        top: 0;
+        top: 50%;
+        bottom: 0;
+        transform: translateY(-50%);
+        margin-top: -4px;
     }
-
+    .fotorama__nav--thumbs {
+        overflow: visible;
+        &::before {
+            content: "";
+            height: 100%;
+            top: -100%;
+            background: #fff;
+            width: 100%;
+            z-index: 999;
+            left: 0;
+        }
+        &::after {
+            content: "";
+            height: 100%;
+            top: 101%;
+            background: #fff;
+            width: 100%;
+            z-index: 999;
+            right: 0;
+        }
+    }
     .fotorama__nav__shaft {
         background-color: white;
         width: 100%;
@@ -898,22 +950,50 @@
     .fotorama__thumb__arr--left,
     .fotorama__thumb__arr--right {
         cursor: pointer;
-        height: @fotorama-thumb-arrow;
+        height: 20px;
         left: 0;
         position: absolute;
         right: 0;
         z-index: @z-index-10;
+        background: none !important;
         .fotorama__thumb--icon {
-            .fotorama-rotate(90deg);
             margin: auto;
             width: @fotorama-thumb-arrow;
+            background: none;
+            position: relative;
         }
     }
     .fotorama__thumb__arr--left {
-        top: 0;
+        top: -28px;
+        .fotorama__thumb--icon {
+            &::before {
+                content: "\e90a";
+                font-family: 'icons';
+                font-size: 14px;
+                color: #000;
+                display: inline-block;
+                height: auto;
+                width: 100%;
+                line-height: 20px;
+                text-align: center;
+            }
+        }
     }
     .fotorama__thumb__arr--right {
-        bottom: 0;
+        bottom: -36px;
+        .fotorama__thumb--icon {
+            &::before {
+                content: "\e90b";
+                font-family: 'icons';
+                font-size: 14px;
+                color: #000;
+                display: inline-block;
+                height: auto;
+                width: 100%;
+                line-height: 20px;
+                text-align: center;
+            }
+        }
     }
 }
 

@@ -23,8 +23,12 @@
 
 & when (@media-common = true) {
     .checkout-payment-method {
+        #co-payment-form {
+            hr {
+                display: none;
+            }
+        }
         .payment-methods {
-            border-top: 1px solid @border-color__base;
             padding-top: @indent__base;
             padding-bottom: @indent__base;
         }
@@ -283,7 +287,7 @@
             margin-top: @indent__xl;
         }
 
-        .payment-method-content {
+        .payment-method-content, .step-content {
             .fieldset {
                 > .field {
                     &.choice {
@@ -319,9 +323,18 @@
                     .action {
                         width: 100%;
                     }
+
+                    .btn-previous {
+                        padding: 15px 10px;
+                        margin-bottom: 40px;
+                        box-sizing: border-box;
+                        line-height: 23px;
+                    }
                 }
             }
         }
+
+
 
         .checkout-billing-address {
             .billing-address-details {

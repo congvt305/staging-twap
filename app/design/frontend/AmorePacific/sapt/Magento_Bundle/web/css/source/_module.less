@@ -34,10 +34,18 @@
 
     .bundle-options-container {
         clear: both;
-
+        .bundle-options-wrapper, .product-options-wrapper {
+            height: auto;
+            width: auto;
+            position: static;
+        }
         .legend.title {
             .lib-heading(h2);
             display: none;
+        }
+
+        select {
+            height: 48px;
         }
 
         .fieldset-bundle-options {
@@ -110,6 +118,7 @@
 
             .bundle-summary {
                 margin-top: @indent__s;
+                font-size: 14px;
 
                 &.empty {
                     display: none;
@@ -177,6 +186,9 @@
                 }
 
                 .lib-css(margin-top, 0);
+                height: 0;
+                width: 0;
+                visibility: hidden;
             }
         }
 
@@ -247,7 +259,7 @@
 
     .bundle-options-container {
         .bundle-options-wrapper {
-            margin-bottom: @indent__m;
+            margin-bottom: 0;
         }
 
         .legend.title {
@@ -257,7 +269,6 @@
 
         .block-bundle-summary {
             .box-tocart {
-                .field-wrapper,
                 .actions {
                     width: 100%;
                     padding: 0;
@@ -278,6 +289,10 @@
 
         .nested {
             margin-top: @indent__base;
+        }
+        select {
+            height: 40px;
+            font-size: 13px;
         }
     }
 
@@ -349,7 +364,7 @@
 
         .bundle-options-wrapper,
         .product-options-wrapper {
-            margin-bottom: @indent__l;
+            margin-bottom: 0;
         }
 
         .block-bundle-summary {
@@ -373,7 +388,7 @@
 
         .nested {
             width: 50%;
-            margin-top: @indent__base;
+            margin-top: 0;
             box-sizing: border-box;
 
             &.options-list {

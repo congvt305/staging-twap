@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<page layout="2columns-left" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Satp\Customer\Block\History" template="Magento_Catalog::product/list/items.phtml" name="customer_account_history_product" cacheable="false">
+                <arguments>
+                    <argument name="type" xsi:type="string">history</argument>
+                    <argument name="view_model_get_default_name" xsi:type="object">Eguana\CustomCatalog\ViewModel\GetDefaultCategory</argument>
+                </arguments>
+                <block class="Magento\Catalog\Block\Product\ProductList\Item\Container" name="related.product.addto" as="addto">
+                    <block class="Magento\Catalog\Block\Product\ProductList\Item\AddTo\Compare"
+                           name="related.product.addto.compare" as="compare"
+                           template="Magento_Catalog::product/list/addto/compare.phtml"/>
+                    <block class="Magento\Wishlist\Block\Catalog\Product\ProductList\Item\AddTo\Wishlist"
+                           name="related.product.addto.wishlist" as="wishlist" before="compare"
+                           template="Magento_Wishlist::catalog/product/list/addto/wishlist.phtml"/>
+                </block>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="related.product.addto.wishlist">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Satp_AjaxWishlist::catalog/product/list/addto/wishlist.phtml
+                </argument>
+            </action>
+            <arguments>
+                <argument
+                    name="moduleStatusViewModel"
+                    xsi:type="object">Satp\AjaxWishlist\ViewModel\AjaxWishlistStatus
+                </argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceContainer name="page.top">
+            <referenceBlock name="breadcrumbs">
+                <action method="addCrumb">
+                    <argument name="crumbName" xsi:type="string">Home</argument>
+                    <argument name="crumbInfo" xsi:type="array">
+                        <item name="title" xsi:type="string">Home</item>
+                        <item name="label" xsi:type="string" translate="true">Home</item>
+                        <item name="link" xsi:type="string">{{baseUrl}}</item>
+                    </argument>
+                </action>
+                <action method="addCrumb">
+                    <argument name="crumbName" xsi:type="string">My Page</argument>
+                    <argument name="crumbInfo" xsi:type="array">
+                        <item name="title" xsi:type="string">My Page</item>
+                        <item name="label" xsi:type="string" translate="true">My Page</item>
+                        <item name="link" xsi:type="string">{{baseUrl}}customer/account/dashboard</item>
+                    </argument>
+                </action>
+                <action method="addCrumb">
+                    <argument name="crumbName" xsi:type="string">My History</argument>
+                    <argument name="crumbInfo" xsi:type="array">
+                        <item name="title" xsi:type="string">My History</item>
+                        <item name="label" xsi:type="string" translate="true">My History</item>
+                    </argument>
+                </action>
+            </referenceBlock>
+            <block class="Satp\Customer\Block\Membership" name="customer.membership" template="Satp_Customer::membership.phtml" after="breadcrumbs"/>
+        </referenceContainer>
+
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">My History</argument>
+            </action>
+        </referenceBlock>
+
+        <move element="page.main.title" destination="content" before="-"/>
+    </body>
+</page>

@@ -52,8 +52,15 @@
             }
         }
 
-        thead,
-        tbody {
+        &.totals {
+            tbody {
+                > tr > td {
+                    border-top: none;
+                }
+            }
+        }
+
+        thead {
             > tr {
                 > th,
                 > td {
@@ -173,5 +180,17 @@
 
     .hidden-print {
         display: none !important;
+    }
+
+    .box_chat,
+    .taskbar{
+        display: none;
+    }
+
+    .col.actions,
+    actions-toolbar{
+        * {
+            display: none;
+        }
     }
 }

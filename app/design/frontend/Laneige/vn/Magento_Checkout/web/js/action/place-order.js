@@ -11,8 +11,9 @@ define([
     'Magento_Checkout/js/model/url-builder',
     'Magento_Customer/js/model/customer',
     'Magento_Checkout/js/model/place-order',
-    'jquery'
-], function (quote, urlBuilder, customer, placeOrderService, $) {
+    'jquery',
+    'Amasty_CheckoutCore/js/model/statistic'
+], function (quote, urlBuilder, customer, placeOrderService, $, statistic) {
     'use strict';
 
     return function (paymentData, messageContainer) {
@@ -63,6 +64,7 @@ define([
             });
             payload.email = quote.guestEmail;
         }
+        statistic.saveStatistic();
 
         return placeOrderService(serviceUrl, payload, messageContainer);
     };

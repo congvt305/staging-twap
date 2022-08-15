@@ -193,7 +193,7 @@ class SapOrderReturnData extends AbstractSapOrder
             $slamt  = $order->getData('sap_slamt');
         } else {
             $paymtd = $order->getPayment()->getMethod() == 'ecpay_ecpaypayment' ? 'P' : 'S';
-            $nsamt  = abs($this->roundingPrice($this->getRmaSubtotalInclTax($rma), $isDecimalFormat));
+            $nsamt  = abs($this->roundingPrice($this->getRmaSubtotalInclTax($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma), $isDecimalFormat));
             $dcamt  = abs($this->roundingPrice($this->getRmaDiscountAmount($rma), $isDecimalFormat));
             $slamt = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
                 abs($this->roundingPrice($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed), $isDecimalFormat));
@@ -377,8 +377,11 @@ class SapOrderReturnData extends AbstractSapOrder
                 $bundlePriceType = $bundleProduct->getPriceType();
                 foreach ($orderItem->getChildrenItems() as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
-                    $bundleChildItemPrice = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getPrice());
-
+                    if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
+                        $bundleChildItemPrice = $this->productRepository->get($bundleChildrenItem->getSku(), false, $order->getStoreId())->getPrice();
+                    } else {
+                        $bundleChildItemPrice = $bundleChildrenItem->getOriginalPrice();
+                    }
                     $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
                         $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getDiscountAmount()) :
                         $bundleChildrenItem->getDiscountAmount();
@@ -396,8 +399,14 @@ class SapOrderReturnData extends AbstractSapOrder
                     $product = $this->productRepository->get($bundleChildrenItem->getSku(), false, $rma->getStoreId());
                     $meins = $product->getData('meins');
                     $qtyPerBundle = $bundleChildrenItem->getQtyOrdered() / $orderItem->getQtyOrdered();
-                    $itemDiscountAmountPerQty = $bundleChildDiscountAmount / $qtyPerBundle;
-                    $itemDiscountAmount = abs($this->roundingPrice($itemDiscountAmountPerQty * $rmaItem->getQtyRequested(), $isDecimalFormat));
+                    $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getOriginalPrice()) / $qtyPerBundle;
+                    $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $qtyPerBundle;
+
+                    $itemDiscountAmount = abs($this->roundingPrice(
+                        $bundleChildDiscountAmount +
+                        (($product->getPrice() - $childPriceRatio) * $bundleChildrenItem->getQtyOrdered()) +
+                        $catalogRuledPriceRatio * $bundleChildrenItem->getQtyOrdered(), $isDecimalFormat)
+                    );
                     $itemSubtotal = abs($this->roundingPrice($bundleChildItemPrice * $rmaItem->getQtyRequested() * $qtyPerBundle, $isDecimalFormat));
                     $itemTaxAmount = abs($this->roundingPrice(
                         $this->getRateAmount($bundleChildrenItem->getTaxAmount(), $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested() * $qtyPerBundle),
@@ -459,7 +468,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 }
             }
         }
-        $orderSubtotal = $this->roundingPrice($this->getRmaSubtotalInclTax($rma), $isDecimalFormat);
+        $orderSubtotal = $this->roundingPrice($this->getRmaSubtotalInclTax($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma), $isDecimalFormat);
         $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->roundingPrice($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed), $isDecimalFormat);
         $orderDiscountAmount = $this->roundingPrice($this->getRmaDiscountAmount($rma), $isDecimalFormat);
 
@@ -842,23 +851,8 @@ class SapOrderReturnData extends AbstractSapOrder
      */
     public function getRmaDiscountAmount($rma)
     {
-        $discountAmount = 0;
-        $rmaItems = $rma->getItems();
-        foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
-            if ($orderItem->getProductType() == 'bundle') {
-                $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
-                $bundlePriceType = $bundleProduct->getPriceType();
-                foreach ($orderItem->getChildrenItems() as $bundleChild) {
-                    $qtyPerBundle = $bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered();
-                    $bundleChildDiscountAmount = $this->getDiscountAmountForBundleChild($bundlePriceType, $orderItem, $bundleChild);
-                    $discountAmount += ($bundleChildDiscountAmount * $rmaItem->getQtyRequested() * $qtyPerBundle / $this->getNetQty($bundleChild));
-                }
-            } else {
-                $discountAmount += ($orderItem->getDiscountAmount() * $rmaItem->getQtyRequested() / $this->getNetQty($orderItem));
-            }
-        }
-        return $discountAmount;
+        $order = $rma->getOrder();
+        return abs($order->getDiscountAmount()) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma);
     }
 
     /**
@@ -909,6 +903,11 @@ class SapOrderReturnData extends AbstractSapOrder
                         $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $qtyPerBundle;
 
                         $catalogRuleDiscount += $catalogRuledPriceRatio * $rmaItem->getQtyRequested() * $qtyPerBundle;
+                    }
+                } else {
+                    foreach ($orderItem->getChildrenItems() as $bundleChild) {
+                        $catalogRuledPriceRatio = $bundleChild->getOriginalPrice() - $bundleChild->getPrice();
+                        $catalogRuleDiscount += $catalogRuledPriceRatio * $bundleChild->getQtyOrdered();
                     }
                 }
             }
@@ -1028,5 +1027,38 @@ class SapOrderReturnData extends AbstractSapOrder
     {
         $precision = $isDecimal ? 2 : 0;
         return round($price, $precision);
+    }
+
+    /**
+     * get bundle extra amount
+     *
+     * @param $rma
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    public function getBundleExtraAmount($rma)
+    {
+        $priceDifferences = 0;
+        $rmaItems = $rma->getItems();
+        $order = $rma->getOrder();
+        foreach ($rmaItems as $rmaItem) {
+            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
+            if ($orderItem->getProductType() == 'bundle') {
+                /** @var \Magento\Catalog\Model\Product $bundleProduct */
+                $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
+                $bundlePriceType = $bundleProduct->getPriceType();
+
+                if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
+                    foreach ($orderItem->getChildrenItems() as $bundleChild) {
+                        $qtyProductPerBundle = $bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered();
+                        $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $qtyProductPerBundle;
+                        $originItemPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
+
+                        $priceDifferences += (($originItemPrice - $childPriceRatio) * $bundleChild->getQtyOrdered());
+                    }
+                }
+            }
+        }
+        return $priceDifferences;
     }
 }

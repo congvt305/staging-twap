@@ -11,10 +11,10 @@
     @_type: @form-element-input-type,
     @_background: ~"@{@{_type}__background}",
     @_border: ~"@{@{_type}__border}",
-    @_border-radius: ~"@{@{_type}__border-radius}",
-    @_height: ~"@{@{_type}__height}",
+    @_border-radius: 0,
+    @_height: 40px,
     @_width: ~"@{@{_type}__width}",
-    @_padding: ~"@{@{_type}__padding}",
+    @_padding: 0,
     @_margin: ~"@{@{_type}__margin}",
     @_vertical-align: ~"@{@{_type}__vertical-align}",
     @_background-clip: ~"@{@{_type}__background-clip}",
@@ -43,10 +43,11 @@
     .lib-css(background, @_background);
     .lib-css(background-clip, @_background-clip);
     .lib-css(border, @_border);
+    border-bottom: 1px solid @light__gray__color;
     .lib-css(border-radius, @_border-radius);
     .lib-css(color, @_color);
     .lib-css(font-family, @_font-family);
-    .lib-css(font-size, @_font-size);
+    .lib-css(font-size, @font__size16);
     .lib-css(font-style, @_font-style);
     .lib-css(font-weight, @_font-weight);
     .lib-css(height, @_height);
@@ -56,17 +57,6 @@
     .lib-css(vertical-align, @_vertical-align);
     .lib-css(width, @_width);
     box-sizing: border-box;
-
-    ._lib-form-element-focus(
-        @_background,
-        @_focus-background,
-        @_border,
-        @_focus-border,
-        @_color,
-        @_focus-color,
-        @_font-style,
-        @_focus-font-style
-    );
 
     ._lib-form-element-disabled(
         @_background,

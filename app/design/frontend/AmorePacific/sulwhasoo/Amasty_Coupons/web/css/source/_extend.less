@@ -1,0 +1,47 @@
+& when (@media-common = true) {
+    .checkout-cart-index {
+        .cart-summary {
+            div {
+                font-size: 16px;
+            }
+            .payment-option-title.field.choice {
+                font-size: 18px;
+            }
+        }
+        .cart-summary .block {
+            & > .title {
+                &:after {
+                    display: none;
+                }
+                span {
+                    font-size: 2.5rem;
+                    color: #191919;
+                    font-weight: 600;
+                }
+            }
+            & > .content {
+                display: block;
+                .actions-toolbar {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    margin: 10px 0;
+                    .primary {
+                        width: calc(45%);
+                        .action {
+                            width: 100%;
+                            padding: 11px 0;
+                            line-height: unset;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+& when (@media-target = 'desktop'), (@media-target = 'all') {
+    @media only screen and (min-width: @screen__m) and (max-width: (@screen__l - 1)) {
+
+    }
+}

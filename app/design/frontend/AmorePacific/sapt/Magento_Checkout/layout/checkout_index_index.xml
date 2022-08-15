@@ -40,10 +40,10 @@
                                         <item name="summary" xsi:type="array">
                                             <item name="children" xsi:type="array">
                                                 <item name="totals" xsi:type="array">
-                                                    <item name="sortOrder" xsi:type="string">2</item>
+                                                    <item name="sortOrder" xsi:type="string">99</item>
                                                 </item>
                                                 <item name="cart_items" xsi:type="array">
-                                                    <item name="sortOrder" xsi:type="string">1</item>
+                                                    <item name="sortOrder" xsi:type="string">0</item>
                                                 </item>
                                             </item>
                                         </item>
@@ -54,6 +54,27 @@
                                         <item name="shipping-step" xsi:type="array">
                                             <item name="children" xsi:type="array">
                                                 <item name="shippingAddress" xsi:type="array">
+                                                    <item name="config" xsi:type="array">
+                                                        <item name="popUpForm" xsi:type="array">
+                                                            <item name="options" xsi:type="array">
+                                                                <item name="type" xsi:type="string">popup</item>
+                                                                <item name="responsive" xsi:type="boolean">true</item>
+                                                                <item name="innerScroll" xsi:type="boolean">true</item>
+                                                                <item name="title" xsi:type="string" translate="true">New Address</item>
+                                                                <item name="trigger" xsi:type="string">opc-new-shipping-address</item>
+                                                                <item name="buttons" xsi:type="array">
+                                                                    <item name="save" xsi:type="array">
+                                                                        <item name="text" xsi:type="string" translate="true">Posted here</item>
+                                                                        <item name="class" xsi:type="string">action primary action-save-address</item>
+                                                                    </item>
+                                                                    <item name="cancel" xsi:type="array">
+                                                                        <item name="text" xsi:type="string" translate="true">Cancel</item>
+                                                                        <item name="class" xsi:type="string">action secondary action-hide-popup</item>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
                                                     <item name="children" xsi:type="array">
                                                         <item name="shipping-address-fieldset" xsi:type="array">
                                                             <item name="children" xsi:type="array">

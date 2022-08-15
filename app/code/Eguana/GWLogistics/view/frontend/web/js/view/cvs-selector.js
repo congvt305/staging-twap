@@ -182,5 +182,9 @@ define([
             return /(iPhone|iPod|iPad|Android).*AppleWebKit.*Line/i.test(navigator.userAgent);
         },
 
+        goBack: function() {
+            window.location.href = window.checkoutConfig.cartUrl;
+        }
+
     });
 });

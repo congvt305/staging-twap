@@ -1,0 +1,57 @@
+<?php
+/** @var \Satp\Ajaxcart\Block\Ajax $block */
+$helper = $block->getAjaxHelper();
+$resultItem = $block->getItem();
+$product = $resultItem->getProduct();
+$resultPrice = $resultItem->getPrice();
+?>
+<div class="popup">
+    <div class="block">
+        <div class="header"><strong><?php echo $block->escapeHtml(__('Shopping Cart')); ?></strong></div>
+        <p class="message">
+            <?php
+            $link = '<a href="' . $block->escapeUrl($product->getProductUrl()) . '" title="' . $block->escapeHtml($resultItem->getName()) . '">' . $block->escapeHtml($resultItem->getName()) . '</a>';
+            echo __('Added to your cart.',$link);
+            ?>
+        </p>
+        <div class="box_link">
+            <a class="action secondary" href="javascript:window.location.reload(true)"><?php echo $block->escapeHtml(__('Continue shopping')); ?></a>
+            <a class="action primary" href="<?php echo $this->getUrl('checkout/cart') ?>"><?php echo $block->escapeHtml(__('Go to Cart')); ?></a>
+        </div>
+        <div class="ajaxcart-wrapper-main">
+            <?=  $block->getChildHtml('catalog.product.related') ?>
+        </div>
+    </div>
+</div>
+
+<script>
+    require([
+        'jquery',
+        'swiper'
+    ],function ($,Swiper) {
+        if ($('.products-ajaxcartrelated .product-items .item').length < 3) {
+            $('.block.ajaxcartrelated .content, .products-ajaxcartrelated .product-items').addClass('align-items');
+        } else {
+            var swiper = new Swiper(".products-ajaxcartrelated", {
+                slidesPerView: 3,
+                freeMode: false,
+                autoHeight: true,
+                direction: 'horizontal',
+                loop: true,
+                threshold: 30,
+                spaceBetween: 32,
+                breakpoints: {
+                    768: {
+                        slidesPerView: 2.5,
+                        spaceBetween: 24,
+                    }
+                },
+                navigation: {
+                    nextEl: '.block.ajaxcartrelated .swiper-button-next',
+                    prevEl: '.block.ajaxcartrelated .swiper-button-prev'
+                }
+            });
+        }
+
+    });
+</script>

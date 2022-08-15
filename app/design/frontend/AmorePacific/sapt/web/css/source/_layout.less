@@ -3,7 +3,7 @@
 //  * See COPYING.txt for license details.
 //  */
 
-@layout-column-main__sidebar-offset: 5%;
+@layout-column-main__sidebar-offset: 40px;
 @layout-column__additional-sidebar-offset: @layout-column-main__sidebar-offset;
 
 //
@@ -75,14 +75,23 @@
     body:not(.catalog-product-view) .page-main,
     .catalog-product-view .product-info-wrapper,
     .catalog-product-view .product-config-items,
-    .product.info.detailed,
     .product-reviews-container {
         box-sizing: border-box;
         margin-left: auto;
         margin-right: auto;
         max-width: @layout__max-width;
-        padding-left: @layout-indent__width;
-        padding-right: @layout-indent__width;
+        padding-left: 30px;
+        padding-right: 30px;
+        width: auto;
+    }
+
+    .product.info.detailed {
+        box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1160px;
+        padding-left: 30px;
+        padding-right: 30px;
         width: auto;
     }
 
@@ -128,6 +137,12 @@
             float: left;
             padding-left: 0;
             padding-right: @layout-column__additional-sidebar-offset;
+        }
+        .column.main {
+            width: 74.637%;
+        }
+        .sidebar-main {
+            width: 25.363%;
         }
     }
 }

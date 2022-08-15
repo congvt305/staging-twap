@@ -1,0 +1,31 @@
+<div class="my-page-dropdown">
+    <ul class="my-page-menu">
+        <li class="title">
+            <strong><?= __('My Order') ?></strong>
+            <ul class="my-page-submenu">
+                <li><a href="#"><?= __('Order/Refund') ?></a></li>
+                <li><a href="<?= $block->getUrl('review/customer'); ?>"><?= __('Review') ?></a></li>
+            </ul>
+        </li>
+        <li class="title">
+            <strong><?= __('My Account') ?></strong>
+            <ul class="my-page-submenu">
+                <li><a href="<?= $block->getUrl('wishlist'); ?>"><?= __('Wishlist') ?></a></li>
+                <li><a href="#"><?= __('My History') ?></a></li>
+            </ul>
+        </li>
+        <li class="title">
+            <strong><?= __('My Profile') ?></strong>
+            <ul class="my-page-submenu">
+                <li><a href="<?= $block->getUrl('customer/account/edit'); ?>"><?= __('Personal Information') ?></a></li>
+                <li><a href="#"><?= __('Address') ?></a></li>
+            </ul>
+        </li>
+        <li class="title">
+            <strong><?= __('My Membership') ?></strong>
+            <ul class="my-page-submenu">
+                <li><a href="#"><?= __('Coupon/Point') ?></a></li>
+            </ul>
+        </li>
+    </ul>
+</div>

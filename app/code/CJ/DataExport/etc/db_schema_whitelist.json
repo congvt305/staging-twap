@@ -1,0 +1,7 @@
+{
+    "eguana_redemption_user": {
+        "column": {
+            "last_name": true
+        }
+    }
+}

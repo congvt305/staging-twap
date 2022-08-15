@@ -22,10 +22,10 @@ if ($defaultCountry != null) {
     $apiKeyAndRegion = $apiKeyAndRegion . '&region=' . $defaultCountry;
 }
 ?>
+<h1 style="text-indent:-9999px;"><?= __('Location'); ?></h1>
 <div class="stores stw-stores-locator mian-content">
     <div class="main-store-block">
         <div class="store_list_left">
-            <?= $block->getChildHtml('page.main.title') ?>
             <form action="" target="_self" id="filter-form" method="get" class="store-locator-form">
                 <fieldset class="fieldset store-fields">
                     <div class="field note"><?= $block->escapeHtml($country) ?></div>
@@ -45,7 +45,7 @@ if ($defaultCountry != null) {
                         <div class="control">
                             <input type="text" class="input-text store-search-input" id="store-search" name="search"
                                    value="<?= $block->escapeHtmlAttr($selectedSearch ? $selectedSearch : '') ?>"
-                                   placeholder="<?= $block->escapeHtml(__('Please enter the address or counter name')) ?>"/>
+                                   placeholder="<?= $block->escapeHtml(__('Enter a search term')) ?>"/>
                             <input type="hidden" id="page-number" name="p" value=""/>
                         </div>
                         <div class="actions search-btn-action">
@@ -78,7 +78,7 @@ if ($defaultCountry != null) {
                 <?php endif; ?>
                 <?php if ($storeSize > 0): ?>
                     <ul class="stores-listing-ul store-lists items"
-                        id="content" style="height: 540px; overflow-y: scroll;">
+                        id="content" style="overflow-y: scroll;">
                         <?php $count = 0; ?>
                         <?php foreach ($storesCollection as $storeItem):?>
                             <?php
@@ -120,26 +120,8 @@ if ($defaultCountry != null) {
                                         <p class="address"><?= $block->escapeHtml(__($storeItem['address'])); ?></p>
                                         <?php if ($block->escapeHtml($storeItem['telephone']) !== ''): ?>
                                             <p class="telephone">
-                                                <?= $block->escapeHtml(__('Tel'))?>:
                                                 <?= $block->escapeHtml($storeItem['telephone']); ?>
                                             </p>
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="store-secondary-info" style="display: none;">
-                                        <?php if ($storeItem['email']): ?>
-                                            <p class="email">
-                                                <?= $block->escapeHtml(__('Email'))?>:
-                                                <?= $block->escapeHtml($storeItem['email']); ?>
-                                            </p>
-                                        <?php endif;?>
-                                        <?php if ($storeItem['timing']): ?>
-                                            <?php $timings = explode("\n", $storeItem['timing'])?>
-                                            <p><?= $block->escapeHtml(__('Timing')) ?></p>
-                                            <?php foreach ($timings as $timing):?>
-                                                <p class="hours">
-                                                    <?= $block->escapeHtml(__($timing)); ?>
-                                                </p>
-                                            <?php endforeach; ?>
                                         <?php endif; ?>
                                     </div>
                                 </div>
