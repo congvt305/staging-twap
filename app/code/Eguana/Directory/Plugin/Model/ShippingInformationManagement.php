@@ -48,10 +48,7 @@ class ShippingInformationManagement
         }
         if (!$address->getLastname() || !$address->getFirstname() || !$address->getStreet() || !$address->getTelephone()) {
             throw new InputException(
-                __("If you want to change the shipping method, please select your HD address. If you want to stay with CVS service, please select the CVS store again." .
-                    "<br>" .
-                    "Note. Once you select the Shipping method, please stay in your current page in case of the address data missing. Thank you"
-                )
+                __("Please select delivery method : home delivery / cvs delivery. Thanks")
             );
         }
     }
