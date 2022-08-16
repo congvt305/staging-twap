@@ -5,6 +5,7 @@ namespace CJ\Checkout\Plugin\Model\Checkout\Cart;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Checkout\Helper\Data as CheckoutHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -12,7 +13,7 @@ use Psr\Log\LoggerInterface;
 
 class AddToCart
 {
-    const VN_LNG_WEBSITE = 'vn_laneige_website';
+    const VN_LNG_WEBSITE = ['vn_laneige_website'];
     /**
      * @var CustomerSession
      */
@@ -71,17 +72,15 @@ class AddToCart
      * @param $requestInfo
      * @return array|null
      */
-    public function aroundAddProduct(\Magento\Checkout\Model\Cart $subject, callable $proceed, $productInfo, $requestInfo = null)
+    public function beforeAddProduct(\Magento\Checkout\Model\Cart $subject, $productInfo, $requestInfo = null)
     {
-        try {
-            if (!$this->customerSession->isLoggedIn() && !$this->isAllowedGuestCheckout() && $this->storeManager->getWebsite()->getCode() == self::VN_LNG_WEBSITE) {
-                if ($productInfo->getTypeId() == 'simple') {
-                    return;
-                }
-            }
-            $proceed($productInfo, $requestInfo);
-        } catch (\Exception $e) {
-            $this->logger->info($e->getMessage());
+        if (!$this->customerSession->isLoggedIn()
+            && !$this->isAllowedGuestCheckout()
+            && in_array($this->storeManager->getWebsite()->getCode(), self::VN_LNG_WEBSITE)
+        ) {
+            throw new LocalizedException(__("You need to register for Laneige membership before making a purchase"));
         }
+        return [$productInfo, $requestInfo];
+
     }
 }

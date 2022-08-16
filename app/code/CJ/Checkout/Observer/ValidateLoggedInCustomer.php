@@ -21,7 +21,7 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class ValidateLoggedInCustomer implements ObserverInterface
 {
-    const VN_LNG_WEBSITE = 'vn_laneige_website';
+    const VN_LNG_WEBSITE = ['vn_laneige_website'];
     /**
      * @var CustomerSession
      */
@@ -88,7 +88,10 @@ class ValidateLoggedInCustomer implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        if (!$this->customerSession->isLoggedIn() && !$this->isAllowedGuestCheckout() && $this->storeManager->getWebsite()->getCode() == self::VN_LNG_WEBSITE) {
+        if (!$this->customerSession->isLoggedIn()
+            && !$this->isAllowedGuestCheckout()
+            && in_array($this->storeManager->getWebsite()->getCode(), self::VN_LNG_WEBSITE)
+        ) {
             $warningMessage = __('You need to register for Laneige membership before making a purchase');
             $controller = $observer->getControllerAction();
             $redirectionUrl = $this->url->getUrl('customer/account/login');
