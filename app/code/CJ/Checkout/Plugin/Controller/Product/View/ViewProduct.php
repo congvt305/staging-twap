@@ -1,17 +1,19 @@
 <?php
 
-namespace CJ\Checkout\Plugin\Model\Checkout\Cart;
+namespace CJ\Checkout\Plugin\Controller\Product\View;
 
+use Magento\Catalog\Controller\Product\View;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Checkout\Helper\Data as CheckoutHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Message\ManagerInterface;
 
 
-class AddToCart
+class ViewProduct
 {
     const VN_LNG_WEBSITE = ['vn_laneige_website'];
     /**
@@ -35,6 +37,13 @@ class AddToCart
     private $logger;
 
     /**
+     * @var RedirectFactory
+     */
+    private $resultRedirectFactory;
+
+    private $messageManager;
+
+    /**
      * @param CustomerSession $customerSession
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
@@ -43,14 +52,31 @@ class AddToCart
         CustomerSession $customerSession,
         ScopeConfigInterface $scopeConfig,
         StoreManagerInterface $storeManager,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        RedirectFactory $redirectFactory,
+        ManagerInterface $messageManager
     ) {
         $this->customerSession = $customerSession;
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
         $this->logger = $logger;
+        $this->resultRedirectFactory = $redirectFactory;
+        $this->messageManager = $messageManager;
     }
 
+    public function aroundExecute(View $subject, callable $proceed) {
+            $redirect = $this->resultRedirectFactory->create();
+            if (!$this->customerSession->isLoggedIn()
+                && !$this->isAllowedGuestCheckout()
+                && in_array($this->storeManager->getWebsite()->getCode(), self::VN_LNG_WEBSITE)
+            ) {
+                $this->messageManager->addWarningMessage(__('You need to register for Laneige membership before making a purchase'));
+                $redirect->setPath('customer/account/login');
+                return $redirect;
+
+            }
+        return $proceed();
+    }
 
     /**
      * @return bool
@@ -63,24 +89,4 @@ class AddToCart
         );
     }
 
-
-    /**
-     * Plugin remove simple product when add to cart VN LNG
-     *
-     * @param $subject
-     * @param $productInfo
-     * @param $requestInfo
-     * @return array|null
-     */
-    public function beforeAddProduct(\Magento\Checkout\Model\Cart $subject, $productInfo, $requestInfo = null)
-    {
-        if (!$this->customerSession->isLoggedIn()
-            && !$this->isAllowedGuestCheckout()
-            && in_array($this->storeManager->getWebsite()->getCode(), self::VN_LNG_WEBSITE)
-        ) {
-            throw new LocalizedException(__("You need to register for Laneige membership before making a purchase adasdasdas"));
-        }
-        return [$productInfo, $requestInfo];
-
-    }
 }
