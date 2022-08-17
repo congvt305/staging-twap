@@ -124,9 +124,6 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
             $statusPaymentSuccess = $this->config->getPaymentSuccessStatus();
             if ((string)$status === (string)$statusPaymentSuccess) {
                 $order->setState($status);
-                $message = 'Payoo Transaction Complete';
-            } else {
-                $message = 'Payoo Transaction Cancel';
             }
             $order->setStatus($status)->save();
         } catch (\Exception $exception) {

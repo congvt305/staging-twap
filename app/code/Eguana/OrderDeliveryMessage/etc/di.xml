@@ -17,4 +17,10 @@
         <plugin name="after_place_order_operation"
                 type="Eguana\OrderDeliveryMessage\Plugin\Sales\Api\OrderManagement"/>
     </type>
+    <type name="Magento\Checkout\Api\PaymentInformationManagementInterface">
+        <plugin name="add_delivery_message_one_page_checkout_plugin" type="Eguana\OrderDeliveryMessage\Plugin\Checkout\Model\AddDataDeliveryMessage" sortOrder="2"/>
+    </type>
+    <type name="Magento\Checkout\Api\GuestPaymentInformationManagementInterface">
+        <plugin name="add_delivery_message_one_page_guest_checkout_plugin" type="Eguana\OrderDeliveryMessage\Plugin\Checkout\Model\GuestAddDataDeliveryMessage" sortOrder="2"/>
+    </type>
 </config>

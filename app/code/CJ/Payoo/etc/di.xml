@@ -3,4 +3,27 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Payoo\PayNow\Controller\Payment\Status" type="CJ\Payoo\Controller\Payment\Status"/>
     <preference for="Payoo\PayNow\Controller\Notification\Index" type="CJ\Payoo\Controller\Notification\Index"/>
+    <preference for="Payoo\PayNow\Gateway\Http\Client\PaynowClient" type="CJ\Payoo\Gateway\Http\Client\PaynowClient"/>
+    <type name="Magento\Quote\Model\PaymentMethodManagement">
+        <plugin name="change_logic_import_data" type="CJ\Payoo\Plugin\Model\IgnoreImportDataQuote" sortOrder="1"/>
+    </type>
+    <type name="Magento\Checkout\Api\PaymentInformationManagementInterface">
+        <plugin name="add_payment_current_method" type="CJ\Payoo\Plugin\Checkout\Model\AddPaymentCurrentMethod" sortOrder="2"/>
+    </type>
+    <type name="Magento\Checkout\Api\GuestPaymentInformationManagementInterface">
+        <plugin name="add_guest_payment_current_method" type="CJ\Payoo\Plugin\Checkout\Model\GuestAddPaymentCurrentMethod" sortOrder="2"/>
+    </type>
+    <type name="CJ\Payoo\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="CJ\Payoo\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">payooLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">CJ\Payoo\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

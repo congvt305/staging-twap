@@ -7,9 +7,9 @@
  * Time: 10:10 AM
  */-->
 <div class="red-invoice-form control">
-    <div id="show-red-invoice-button" class="step-title" for="red_invoice">
-        <button data-bind="i18n: 'Request for redinvoice', click: showRedInvoiceForm"></button>
-    </div>
+    <span class="message-title" data-bind="i18n: 'Note: VAT will export at the time place order'"></span>
+    <button class="checkout-button" data-bind="i18n: 'Request for redinvoice', click: showRedInvoiceForm"></button>
+    <div class="line-through clearfix"></div>
     <div id="red-invoice-form" class="control">
         <table class="red-invoice-form-table">
             <tbody>
