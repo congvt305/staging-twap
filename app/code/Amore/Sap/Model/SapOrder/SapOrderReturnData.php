@@ -441,7 +441,7 @@ class SapOrderReturnData extends AbstractSapOrder
                         'itemSlamt' => $itemSlamt,
                         'itemMiamt' => $mileagePerItem,
                         // 상품이 무상제공인 경우 Y 아니면 N
-                        'itemFgflg' => $product->getPrice() == 0 ? 'Y' : 'N',
+                        'itemFgflg' => $itemSlamt == 0 ? 'Y' : 'N',
                         'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                         'itemAuart' => self::RETURN_ORDER,
                         'itemAugru' => self::AUGRU_RETURN_CODE,
