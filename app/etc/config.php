@@ -730,6 +730,7 @@ return [
         'CJ_CouponCustomer' => 1,
         'CJ_CustomCookie' => 1,
         'CJ_Coupons' => 1,
+        'CJ_SKUValidation' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
