@@ -78,7 +78,7 @@ class AddToCart
             && !$this->isAllowedGuestCheckout()
             && in_array($this->storeManager->getWebsite()->getCode(), self::VN_LNG_WEBSITE)
         ) {
-            throw new LocalizedException(__("You need to register for Laneige membership before making a purchase adasdasdas"));
+            throw new LocalizedException(__("You need to register for Laneige membership before making a purchase"));
         }
         return [$productInfo, $requestInfo];
 
