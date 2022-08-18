@@ -879,6 +879,130 @@
             "description": "Google Page Speed Optimizer by Amasty"
         },
         {
+            "name": "amasty/module-single-step-checkout",
+            "version": "4.1.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-single-step-checkout-4.1.1-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "amasty/geoip": ">=1.3.6",
+                "amasty/module-checkout-delivery-date": "*",
+                "amasty/module-checkout-gift-wrap": "*",
+                "amasty/module-checkout-layout-builder": "*",
+                "amasty/module-checkout-style-switcher": "*",
+                "amasty/module-checkout-thank-you-page": "*",
+                "amasty/module-google-address-autocomplete": "*",
+                "amasty/module-one-step-checkout-core": "*",
+                "php": ">=7.3.0"
+            },
+            "suggest": {
+                "amasty/module-single-step-checkout-mftf-2": "Install module-single-step-checkout-mftf-2 module to be able to run One Step Checkout MFTF tests for Magento 2.3.5+ version.",
+                "amasty/module-single-step-checkout-mftf-3": "Install module-single-step-checkout-mftf-3 module to be able to run One Step Checkout MFTF tests for Magento 2.4.0+ version."
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Checkout\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "One Step Checkout by Amasty"
+        },
+        {
+            "name": "amasty/module-thank-you-page",
+            "version": "1.2.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-thank-you-page-1.2.2-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.6.3",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ThankYouPage\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Thank You Page by Amasty"
+        },
+        {
+            "name": "amasty/orderattr",
+            "version": "3.7.9",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/orderattr-3.7.9-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "php": ">=7.3"
+            },
+            "suggest": {
+                "amasty/module-orderattr-mftf-2": "Install module-orderattr-mftf-2 module to be able to run Order Attribute MFTF tests for Magento 2.3.5+ version.",
+                "amasty/module-orderattr-mftf-3": "Install module-orderattr-mftf-3 module to be able to run Order Attribute MFTF tests for Magento 2.4.0+ version."
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Orderattr\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Order Attributes by Amasty"
+        },
+        {
+            "name": "amasty/social-login",
+            "version": "1.10.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/social-login-1.10.1-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "hybridauth/hybridauth": "~3.8.0",
+                "php": ">=7.3.0"
+            },
+            "suggest": {
+                "amasty/aminvisiblecaptcha": "*",
+                "amasty/module-social-login-recaptcha": "Install amasty/module-social-login-recaptcha module to activate Google ReCaptcha and Social Login integration.",
+                "amasty/module-social-to-builder": "Install Amasty_SocialToBuilder module to activate the integration with Custom Reports Builder extension and create valuable reports about your Social Networks.",
+                "amasty/social-login-graphql": "Install amasty/social-login-graphql module to activate Graphql and Social Login integration."
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\SocialLogin\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Social Login by Amasty"
+        },
+
+        {
             "name": "amasty/module-page-speed-tools",
             "version": "1.0.5",
             "dist": {
