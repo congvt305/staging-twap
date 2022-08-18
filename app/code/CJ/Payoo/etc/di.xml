@@ -13,17 +13,4 @@
     <type name="Magento\Checkout\Api\GuestPaymentInformationManagementInterface">
         <plugin name="add_guest_payment_current_method" type="CJ\Payoo\Plugin\Checkout\Model\GuestAddPaymentCurrentMethod" sortOrder="2"/>
     </type>
-    <type name="CJ\Payoo\Logger\Handler">
-        <arguments>
-            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
-        </arguments>
-    </type>
-    <type name="CJ\Payoo\Logger\Logger">
-        <arguments>
-            <argument name="name" xsi:type="string">payooLogger</argument>
-            <argument name="handlers"  xsi:type="array">
-                <item name="system" xsi:type="object">CJ\Payoo\Logger\Handler</item>
-            </argument>
-        </arguments>
-    </type>
 </config>
