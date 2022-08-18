@@ -32,9 +32,11 @@ use Magento\Sales\Api\OrderAddressRepositoryInterface;
 use Magento\Sales\Model\OrderFactory;
 use Magento\Sales\Model\ResourceModel\Order\Grid\CollectionFactory;
 use Magento\SalesRule\Api\RuleRepositoryInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Ui\Component\MassAction\Filter;
 use Psr\Log\LoggerInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 /**
  * This class is used for Orders Reports
@@ -134,6 +136,11 @@ class MassReport extends Action
     private $orderRepository;
 
     /**
+     * @var TimezoneInterface
+     */
+    private $timezone;
+
+    /**
      * MassReport constructor.
      *
      * @param Context $context
@@ -154,6 +161,7 @@ class MassReport extends Action
      * @param Data $customerRegistrationHelper
      * @param OrderAddressRepositoryInterface $orderAddressRepository
      * @param CustomerRepositoryInterface $customerRepository
+     * @param TimezoneInterface $timezone
      * @throws \Magento\Framework\Exception\FileSystemException
      */
     public function __construct(
@@ -175,7 +183,8 @@ class MassReport extends Action
         Data $customerRegistrationHelper,
         OrderAddressRepositoryInterface $orderAddressRepository,
         CustomerRepositoryInterface $customerRepository,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        TimezoneInterface $timezone
     ) {
         $this->logger = $logger;
         $this->dateTimeFactory = $dateTimeFactory;
@@ -195,6 +204,7 @@ class MassReport extends Action
         $this->orderAddressRepository = $orderAddressRepository;
         $this->customerRepository = $customerRepository;
         $this->orderRepository = $orderRepository;
+        $this->timezone = $timezone;
         parent::__construct($context);
     }
 
@@ -244,7 +254,7 @@ class MassReport extends Action
                 $itemData = [];
                 $itemData[] = $order->getData('increment_id');
                 $itemData[] = str_replace("\n", " ", $order->getData('store_name'));
-                $itemData[] = $this->getDateByFormat($order->getData('created_at'));
+                $itemData[] = $this->formatDateForStore($order->getData('created_at'), $order->getData('store_id'));
                 $itemData[] = $this->getCustomerMobile($order->getCustomerId());
                 $itemData[] = $this->getShippingAddressMobile($order->getShippingAddressId());
                 $itemData[] = $order->getData('billing_name');
@@ -449,5 +459,17 @@ class MassReport extends Action
             $this->logger->error($e->getMessage());
         }
         return $mobileNo;
+    }
+
+
+
+    private function formatDateForStore($dateTime, $storeId) {
+        $defaultTimeZone = $this->timezone->getConfigTimezone(ScopeInterface::SCOPE_STORE, $storeId);
+        return $this->timezone->formatDate(
+            $dateTime,
+            \IntlDateFormatter::MEDIUM,
+            true,
+            $defaultTimeZone
+        );
     }
 }
