@@ -61,30 +61,6 @@ class CategoryDescription implements \Magento\Framework\View\Element\Block\Argum
     }
 
     /**
-     * Get catalog helper
-     *
-     * @return \Magento\Catalog\Helper\Output
-     */
-    public function getCatalogHelper(): \Magento\Catalog\Helper\Output
-    {
-        return $this->catalogHelper;
-    }
-
-    /**
-     * Check if the config shows the category description below the title is enabled
-     *
-     * @return bool
-     */
-    public function descriptionBelowTitleEnabled(): bool
-    {
-        try {
-            return $this->configHelper->getDescriptionBelowTitleEnabled('store', (int)$this->getStoreId());
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    /**
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @return int
      */
