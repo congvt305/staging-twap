@@ -21,8 +21,6 @@ if (trim($block->getPageHeading())) {
 }
 /** @var \CJ\Catalog\ViewModel\CategoryDescription $viewModel */
 $viewModel = $block->getCategoryDescViewModel();
-/** @var \CJ\PageBuilder\Helper\Data $helper */
-$helper = $this->helper(\CJ\PageBuilder\Helper\Data::class);
 ?>
 <?php if ($titleHtml) : ?>
     <div class="page-title-wrapper<?= $block->escapeHtmlAttr($cssClass) ?>">
