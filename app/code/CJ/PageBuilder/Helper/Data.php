@@ -65,18 +65,4 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             return false;
         }
     }
-
-    /**
-     * Get config display description below title
-     *
-     * @return bool
-     */
-    public function getConfigDescriptionBelowTitleEnabled(): bool
-    {
-        try {
-            return $this->config->getDescriptionBelowTitleEnabled('store', $this->getStoreId());
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
 }
