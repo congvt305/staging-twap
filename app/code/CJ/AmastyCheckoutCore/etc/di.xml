@@ -6,5 +6,7 @@
     </type>
     <type name="Amasty\LazyLoad\Model\Output\LazyLoadProcessor">
         <plugin name="CJ\AmastyCheckoutCore\Plugin\Model\Output\LazyLoadProcessor" type="CJ\AmastyCheckoutCore\Plugin\Model\Output\LazyLoadProcessor" sortOrder="20"/>
+    <type name="\Amasty\CheckoutCore\Model\QuoteManagement">
+        <plugin name="set_data_custom_attribute" type="CJ\AmastyCheckoutCore\Plugin\Model\SetCustomAttribute" />
     </type>
 </config>
