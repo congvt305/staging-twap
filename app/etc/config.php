@@ -762,7 +762,7 @@ return [
         'Amasty_ReviewsImportExport' => 1,
         'Amasty_Rgrid' => 1,
         'Amasty_SalesRuleWizard' => 1,
-        'Amasty_SocialLogin' => 1,
+        'Amasty_SocialLogin' => 0,
         'Amasty_ThankYouPage' => 1,
         'Amazon_Core' => 0,
         'Amazon_Login' => 0,
