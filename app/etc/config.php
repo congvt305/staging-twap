@@ -755,7 +755,7 @@ return [
         'Amasty_LazyLoad' => 1,
         'Amasty_LazyLoadUi' => 1,
         'Amasty_LegacyTemplates' => 1,
-        'Amasty_Orderattr' => 1,
+        'Amasty_Orderattr' => 0,
         'Amasty_PageSpeedOptimizer' => 1,
         'Amasty_PageSpeedTools' => 1,
         'Amasty_Promo' => 1,
