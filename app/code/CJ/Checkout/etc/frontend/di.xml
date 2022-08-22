@@ -4,8 +4,12 @@
         <plugin name="cj_checkout_add_to_cart"
                 type="CJ\Checkout\Plugin\Model\Checkout\Cart\AddToCart"/>
     </type>
-    <type name="\Magento\Catalog\Controller\Product\View">
-        <plugin name="cj_checkout_view_product"
-                type="CJ\Checkout\Plugin\Controller\Product\View\ViewProduct"/>
-    </type>
+<!--    <type name="\Magento\Catalog\Controller\Product\View">-->
+<!--        <plugin name="cj_checkout_view_product"-->
+<!--                type="CJ\Checkout\Plugin\Controller\Product\View\ViewProduct"/>-->
+<!--    </type>-->
+<!--    <type name="\Magento\Checkout\Controller\Cart\Add">-->
+<!--        <plugin name="cj_checkout_view_product"-->
+<!--                type="CJ\Checkout\Plugin\Controller\Cart\AddToCart"/>-->
+<!--    </type>-->
 </config>
