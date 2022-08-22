@@ -25,6 +25,16 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Get config model
+     *
+     * @return \CJ\Catalog\Model\Config
+     */
+    public function getConfigHelper(): \CJ\Catalog\Model\Config
+    {
+        return $this->config;
+    }
+
+    /**
      * @param string $str
      * @return array
      */
