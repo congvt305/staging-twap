@@ -213,13 +213,17 @@ class QuoteManagement extends \Amasty\CheckoutCore\Model\QuoteManagement
         if ($newCustomerBillingAddress === null) {
             /** @var AddressInterface $newCustomerBillingAddress */
             $newCustomerBillingAddress = $this->billingAddressManagement->get($cartId);
-            $newCustomerBillingAddress->addData($billingAddress);
+            if (!$newCustomerBillingAddress->getRegion() || !$newCustomerBillingAddress->getCity()) {
+                $newCustomerBillingAddress->addData($billingAddress);
+            }
         }
 
         if ($shippingAddressFromData === null) {
             /** @var AddressInterface $shippingAddressFromData */
             $shippingAddressFromData = $this->shippingAddressManagement->get($cartId);
-            $shippingAddressFromData->addData($shippingAddress);
+            if (!$shippingAddressFromData->getRegion() || !$shippingAddressFromData->getCity()) {
+                $shippingAddressFromData->addData($shippingAddress);
+            }
         }
 
         return [$shippingAddressFromData, $newCustomerBillingAddress];
