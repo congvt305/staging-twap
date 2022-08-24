@@ -1,0 +1,64 @@
+From 62c9e5a7856f1020db2a34cd9460b369238354c7 Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Tue, 23 Aug 2022 04:49:56 -0400
+Subject: [PATCH] VNMGDC-730 Add log to trace issue block catalog.leftnav can
+ not be rendered
+
+---
+ vendor/magento/framework/View/Element/ExceptionHandlerBlock.php | 29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
+
+diff --git a/vendor/magento/framework/View/Element/ExceptionHandlerBlock.php b/vendor/magento/framework/View/Element/ExceptionHandlerBlock.php
+index 101eea5..fbeb162 100644
+--- a/vendor/magento/framework/View/Element/ExceptionHandlerBlock.php
++++ b/vendor/magento/framework/View/Element/ExceptionHandlerBlock.php
+@@ -25,11 +25,21 @@ class ExceptionHandlerBlock implements BlockInterface
+      */
+     protected $blockName;
+
++    /**
++     * Request
++     *
++     * @var \Magento\Framework\App\RequestInterface
++     */
++    protected $request;
++
+     /**
+      * @param string $blockName
+      */
+-    public function __construct($blockName = '')
+-    {
++    public function __construct(
++        \Magento\Framework\App\RequestInterface $request,
++        $blockName = ''
++    ) {
++        $this->request = $request;
+         $this->blockName = $blockName;
+     }
+
+@@ -56,8 +66,21 @@ class ExceptionHandlerBlock implements BlockInterface
+      */
+     public function toHtml()
+     {
+-        throw new LocalizedException(
++        $e = new LocalizedException(
+             new Phrase('The "%1" block threw an exception, and it can\'t be rendered.', [$this->blockName])
+         );
++        if ($this->blockName == 'catalog.leftnav') {
++            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-error-VNMGDC-730.log');
++            $logger = new \Zend_Log();
++            $logger->addWriter($writer);
++            $logger->info('The "catalog.leftnav" block threw an exception, and it can\'t be rendered.');
++            $logger->info('Stack Trace:');
++            $logger->info($e->getTraceAsString());
++            $logger->info('Action Name:');
++            $logger->info($this->request->getActionName());
++            $logger->info('Server Request URI:');
++            $logger->info($_SERVER['REQUEST_URI']);
++        }
++        throw $e;
+     }
+ }
+--
+2.25.1
+
