@@ -58,4 +58,32 @@
 </form>
 <?= $block->getChildHtml('checkout.cart.order.actions') ?>
 <?= $block->getChildHtml('shopping.cart.table.after') ?>
-
+<?php if ($block->getQuote()->getErrorItems()):?>
+    <?php $productName = [];
+    $productIds = [];
+    ?>
+    <?php foreach($block->getQuote()->getErrorItems() as $errorItem):?>
+        <?php
+        $itemName[] = $errorItem->getName();
+        $itemIds[] = $errorItem->getItemId();
+        ?>
+    <?php endforeach;?>
+    <div id="popup-modal-delete">
+        <p>
+            <?=
+            __('There are some out of stock product < %1 >', implode(',', $itemName)) . "<br>" .
+            __('You cannot purchase this product now. You have to delete the product') . "<br>" .
+            __('If you want to delete the products right now. Please click confirm button')?>
+        </p>
+    </div>
+    <script type="text/x-magento-init">
+    {
+        "#popup-modal-delete": {
+            "CJ_Checkout/js/cart/popup-delete" : {
+                  "quote_id":"<?= $block->getQuote()->getId() ?>",
+                  "item_id":<?= json_encode($itemIds) ?>
+            }
+        }
+    }
+    </script>
+<?php endif;?>
