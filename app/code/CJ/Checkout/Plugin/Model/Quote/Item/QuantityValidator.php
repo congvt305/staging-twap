@@ -12,30 +12,18 @@ use Magento\Store\Model\StoreManagerInterface;
  * Class QuantityValidator
  */
 class QuantityValidator {
-
-    const STORE_TW_SULWHASOO_CODE = 'default';
-
-    const STORE_TW_LANEIGE_CODE = 'tw_laneige';
     /**
      * @var \Amasty\Promo\Helper\Item
      */
     protected $promoItemHelper;
 
     /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
-
-    /**
      * @param \Amasty\Promo\Helper\Item $promoItemHelper
-     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        \Amasty\Promo\Helper\Item $promoItemHelper,
-        StoreManagerInterface $storeManager
+        \Amasty\Promo\Helper\Item $promoItemHelper
     ) {
         $this->promoItemHelper = $promoItemHelper;
-        $this->storeManager = $storeManager;
     }
 
     /**
@@ -49,11 +37,7 @@ class QuantityValidator {
     public function afterValidate(QuantityValidatorAlias $subject, $result, Observer $observer)
     {
         $quoteItem = $observer->getEvent()->getItem();
-        $storeCode = $this->storeManager->getStore()->getCode();
-        if (($storeCode == self::STORE_TW_LANEIGE_CODE || $storeCode == self::STORE_TW_SULWHASOO_CODE) &&
-            ($quoteItem->getHasError() && !$quoteItem->getParentItem() && $this->promoItemHelper->isPromoItem($quoteItem))
-        ) {
-
+        if ($quoteItem->getHasError() && !$quoteItem->getParentItem() && $this->promoItemHelper->isPromoItem($quoteItem)) {
             $quote = $quoteItem->getQuote();
             $errorItem = $quote->getErrorItems();
             if (!$errorItem || !is_array($errorItem)) {
