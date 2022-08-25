@@ -19,6 +19,11 @@
                     <label>Enabled Sync POS Customer Grade</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="member_only" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Open for member only</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[If this setting is yes, the button view coupon will be not open for guest.]]><![CDATA[<br>]]><![CDATA[If this setting is no, the "view coupon" button will be open for everyone.]]></comment>
+                </field>
             </group>
             <group id="cron" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Cronjob</label>

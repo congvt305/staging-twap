@@ -9,7 +9,7 @@ define(
         'mage/translate',
         'uiComponent',
         'Magento_Checkout/js/model/quote',
-        'Magento_Ui/js/model/messageList',
+        'Magento_SalesRule/js/model/payment/discount-messages',
         'Amasty_Coupons/js/action/set-coupon-code',
         'Magento_SalesRule/js/action/cancel-coupon',
         'Magento_SalesRule/js/model/coupon',
@@ -17,7 +17,7 @@ define(
         'text!CJ_Coupons/template/modal/modal-popup.html',
         'domReady!'
     ],
-    function ($, ko, _, $t, Component, quote, messageList, setCouponCodeAction, cancelCouponAction,couponAction, modal, popupTpl) {
+    function ($, ko, _, $t, Component, quote, messageContainer, setCouponCodeAction, cancelCouponAction,couponAction, modal, popupTpl) {
         'use strict';
 
         var totals = quote.getTotals(),
@@ -28,7 +28,11 @@ define(
 
         var isEnableCouponPopup = window.checkoutConfig.cj_couponcustomer.active_popup;
 
+        var canViewCouponList = window.checkoutConfig.cj_couponcustomer.can_view_coupon_list;
+
         var websiteCode = window.checkoutConfig.cj_couponcustomer.website_code;
+
+        var registerUrl = window.checkoutConfig.registerUrl;
 
         var appliedCouponList = [];
 
@@ -58,13 +62,34 @@ define(
             }]
         };
 
-        var popup = null;
+        //define coupon welcome guest
+        var opt_welcome = {
+            type: 'popup',
+            responsive: true,
+            title: $t('Coupon List Test'),
+            modalClass: 'welcome-guest',
+            innerScroll: true,
+            buttons: [{
+                text: $.mage.__('Registration'),
+                class: '',
+                click: function () {
+                    window.location.href = registerUrl;
+                }
+                }, {
+                text: $.mage.__('Ok'),
+                class: '',
+                click: function () {
+                    this.closeModal();
+                }
+            }]
+        }
+
+        var popup, popup2 = null;
 
         var delayInMilliseconds = 3000; // 3 second
         setTimeout(function() {
-            if(isEnableCouponPopup) {
-                popup = modal(options, $('#modal'));
-            }
+            popup = modal(options, $('#modal'));
+            popup2 = modal(opt_welcome, $('#modal-welcome-guest'));
         }, delayInMilliseconds);
 
         if (totals()['coupon_code']) {
@@ -103,6 +128,11 @@ define(
              * Is enable coupon popup
              */
             isEnableCouponPopup: ko.observable(isEnableCouponPopup),
+
+            /**
+             * check should show couponlist
+             */
+            canViewCouponList: ko.observable(canViewCouponList),
 
             createPopupWebsite: function() {
                 if (websiteCode == 'tw_lageige_website') {
@@ -146,6 +176,10 @@ define(
                 popup.openModal();
             },
 
+            showPopupWelcomeGuest: function() {
+                popup2.openModal();
+            },
+
             removeSelected : function (coupon) {
                 var currentCodeList = this.couponCode().split(',');
                 var index = currentCodeList.indexOf(coupon);
@@ -158,7 +192,7 @@ define(
                     setCouponCodeAction(currentCodeList.join(','), isApplied, true).done(function (response) {
                         $('.totals.discount .title').removeClass('negative');
                         this.couponCode(response);
-                        messageList.addSuccessMessage({'message': messageDelete});
+                        messageContainer.addSuccessMessage({'message': messageDelete});
                         this.fakeCouponCode('');
                         var index = appliedCouponList.indexOf(coupon);
                         if (index > -1) {
@@ -195,9 +229,9 @@ define(
 
                         var newCode = this.fakeCouponCode().split(',');
                         if (_.difference(newCode, codeList).length) {
-                            messageList.addErrorMessage({'message': messageError});
+                            messageContainer.addErrorMessage({'message': messageError});
                         } else{
-                            messageList.addSuccessMessage({'message': message});
+                            messageContainer.addSuccessMessage({'message': message});
                         }
                         this.fakeCouponCode('');
                     }.bind(this)).always(function(){
@@ -247,14 +281,14 @@ define(
                             couponCode(response);
                             var newCode = code.split(',');
                             if (_.difference(newCode, codeList).length) {
-                                messageList.addErrorMessage({'message': messageError});
+                                messageContainer.addErrorMessage({'message': messageError});
                                 // remove new code
                                 var index = appliedCouponList.indexOf(newCodePopup);
                                 if (index > -1) {
                                     appliedCouponList.splice(index, 1);
                                 }
                             } else {
-                                messageList.addSuccessMessage({'message': message});
+                                messageContainer.addSuccessMessage({'message': message});
                             }
                         }.bind(this)).always(function () {
                             isLoading(false);
@@ -271,7 +305,7 @@ define(
                     if( appliedCouponList.length > 0 ){
                         setCouponCodeAction(appliedCouponList.join(','), isApplied, true).done(function (response) {
 
-                            messageList.addSuccessMessage({'message': messageDelete});
+                            messageContainer.addSuccessMessage({'message': messageDelete});
                             var codeList =  response.split(',');
                             couponCode(response);
                         }.bind(this)).always(function(){

@@ -12,9 +12,12 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Message\ManagerInterface as MessageManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Setup\Exception;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class ValidateLoggedInCustomer
@@ -58,6 +61,17 @@ class ValidateLoggedInCustomer implements ObserverInterface
     private StoreManagerInterface $storeManager;
 
     /**
+     * @var ProductRepositoryInterface
+     */
+    private $productRepository;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+
+    /**
      * @param CustomerSession $customerSession
      * @param ScopeConfigInterface $scopeConfig
      * @param MessageManagerInterface $messageManager
@@ -72,7 +86,9 @@ class ValidateLoggedInCustomer implements ObserverInterface
         Json $jsonSerializer,
         UrlInterface $url,
         ActionFlag $actionFlag,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        ProductRepositoryInterface $productRepository,
+        LoggerInterface $logger
     ) {
         $this->customerSession = $customerSession;
         $this->scopeConfig = $scopeConfig;
@@ -81,6 +97,8 @@ class ValidateLoggedInCustomer implements ObserverInterface
         $this->url = $url;
         $this->actionFlag = $actionFlag;
         $this->storeManager = $storeManager;
+        $this->productRepository = $productRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -88,6 +106,22 @@ class ValidateLoggedInCustomer implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+        $productId = $observer->getRequest()->getParam('product');
+        try {
+            $productType = $this->productRepository->getById($productId)->getTypeId();
+        } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
+        }
+
+        $qty = $observer->getRequest()->getParam('qty');
+        // if add to cart from category page => qty param = null
+        if (!isset($qty)
+            && $productType == 'configurable'
+            && in_array($this->storeManager->getWebsite()->getCode(), self::VN_LNG_WEBSITE)
+        ) {
+            return $this;
+        }
+
         if (!$this->customerSession->isLoggedIn()
             && !$this->isAllowedGuestCheckout()
             && in_array($this->storeManager->getWebsite()->getCode(), self::VN_LNG_WEBSITE)
