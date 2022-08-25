@@ -5,6 +5,7 @@ namespace CJ\Checkout\Plugin\Model\Checkout\Cart;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Checkout\Helper\Data as CheckoutHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -43,12 +44,14 @@ class AddToCart
         CustomerSession $customerSession,
         ScopeConfigInterface $scopeConfig,
         StoreManagerInterface $storeManager,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Http $request
     ) {
         $this->customerSession = $customerSession;
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
         $this->logger = $logger;
+        $this->request = $request;
     }
 
 
@@ -65,7 +68,7 @@ class AddToCart
 
 
     /**
-     * Plugin remove simple product when add to cart VN LNG
+     * Plugin can not add product when customer does not login in  VN LNG
      *
      * @param $subject
      * @param $productInfo
@@ -74,6 +77,16 @@ class AddToCart
      */
     public function beforeAddProduct(\Magento\Checkout\Model\Cart $subject, $productInfo, $requestInfo = null)
     {
+        $productType = $productInfo->getTypeId();
+        $qty = $this->request->getParam('qty');
+        // if add to cart from category page => qty param = null
+        if (!isset($qty)
+            && $productType == 'configurable'
+            && in_array($this->storeManager->getWebsite()->getCode(), self::VN_LNG_WEBSITE)
+        ) {
+            return [$productInfo, $requestInfo];
+        }
+
         if (!$this->customerSession->isLoggedIn()
             && !$this->isAllowedGuestCheckout()
             && in_array($this->storeManager->getWebsite()->getCode(), self::VN_LNG_WEBSITE)
