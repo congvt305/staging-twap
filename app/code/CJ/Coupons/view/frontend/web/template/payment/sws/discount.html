@@ -37,9 +37,16 @@
                     </div>
                     <div class="actions-toolbar">
                         <div class="primary">
+                            <!--ko if: canViewCouponList()  -->
                             <button class="action action-view" type="button" data-bind="'value': $t('view my coupon'), click: showPopup">
                                 <span><!-- ko text: $t('view my coupon')--><!-- /ko --></span>
                             </button>
+                            <!-- /ko -->
+                            <!--ko ifnot: canViewCouponList() -->
+                            <button class="action action-view" type="button" data-bind="'value': $t('view my coupon'), click: showPopupWelcomeGuest">
+                                <span><!-- ko text: $t('view my coupon')--><!-- /ko --></span>
+                            </button>
+                            <!-- /ko -->
                         </div>
                         <div class="primary">
                             <button class="action primary action-apply" type="submit" data-bind="'value': $t('Apply'), click: apply">
@@ -112,6 +119,11 @@
                 </div>
             </div>
         </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: canViewCouponList() -->
+    <div id="modal-welcome-guest" style="display: none;">
+        <!-- ko i18n: 'This is only open for registered member. Register as Brand member to enjoy more benefit.'--><!-- /ko -->
     </div>
     <!-- /ko -->
 </div>
