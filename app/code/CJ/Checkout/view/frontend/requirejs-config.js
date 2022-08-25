@@ -6,6 +6,9 @@ var config = {
             },
             'Magento_Checkout/js/view/payment': {
                 'CJ_Checkout/js/view/payment-mixin': true
+            },
+            'Magento_Ui/js/lib/validation/validator': {
+                'CJ_Checkout/js/validator-mixin': true
             }
         }
     }
