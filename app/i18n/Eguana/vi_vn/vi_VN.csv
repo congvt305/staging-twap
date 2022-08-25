@@ -16464,3 +16464,4 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "I confirm to delete","Xác nhận"
 "Items has been deleted","Sản phẩm xóa khỏi giỏ hàng thành công"
 "Items cannot be deleted. Please try again","Sản phẩm xóa khỏi giỏ hàng không thành công, xin vui lòng thử lại"
+"Please enter exactly proper mobile number. Start with 0 and 10 digit.","Vui lòng nhập chính xác số điện thoại di động. Bắt đầu với chữ số 0 và 10 số"
