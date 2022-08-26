@@ -25,6 +25,8 @@ use Psr\Log\LoggerInterface;
 class ValidateLoggedInCustomer implements ObserverInterface
 {
     const VN_LNG_WEBSITE = ['vn_laneige_website'];
+
+    const  CHECKOUT_CART_ADD_CONTROLLER = 'controller_action_postdispatch_checkout_cart_add';
     /**
      * @var CustomerSession
      */
@@ -106,20 +108,23 @@ class ValidateLoggedInCustomer implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $productId = $observer->getRequest()->getParam('product');
-        try {
-            $productType = $this->productRepository->getById($productId)->getTypeId();
-        } catch (\Exception $exception) {
-            $this->logger->error($exception->getMessage());
-        }
 
-        $qty = $observer->getRequest()->getParam('qty');
-        // if add to cart from category page => qty param = null
-        if (!isset($qty)
-            && $productType == 'configurable'
+        if ($observer->getEvent()->getName() == self::CHECKOUT_CART_ADD_CONTROLLER
             && in_array($this->storeManager->getWebsite()->getCode(), self::VN_LNG_WEBSITE)
         ) {
-            return $this;
+            $productType = '';
+            $productId = $observer->getRequest()->getParam('product');
+            try {
+                $productType = $this->productRepository->getById($productId)->getTypeId();
+            } catch (\Exception $exception) {
+                $this->logger->error($exception->getMessage());
+            }
+
+            $qty = $observer->getRequest()->getParam('qty');
+            // if add to cart from category page => qty param = null
+            if (!isset($qty) && $productType == 'configurable') {
+                return $this;
+            }
         }
 
         if (!$this->customerSession->isLoggedIn()
