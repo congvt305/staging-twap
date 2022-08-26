@@ -54,7 +54,7 @@ define(
             innerScroll: true,
             popupTpl: popupTpl,
             buttons: [{
-                text: $.mage.__('Ok'),
+                text: $t('Ok'),
                 class: '',
                 click: function () {
                     this.closeModal();
@@ -66,17 +66,17 @@ define(
         var opt_welcome = {
             type: 'popup',
             responsive: true,
-            title: $t('Coupon List Test'),
+            title: $t('Coupon List'),
             modalClass: 'welcome-guest',
             innerScroll: true,
             buttons: [{
-                text: $.mage.__('Registration'),
+                text: $t('Registration link'),
                 class: '',
                 click: function () {
                     window.location.href = registerUrl;
                 }
                 }, {
-                text: $.mage.__('Ok'),
+                text: $t('Ok'),
                 class: '',
                 click: function () {
                     this.closeModal();
