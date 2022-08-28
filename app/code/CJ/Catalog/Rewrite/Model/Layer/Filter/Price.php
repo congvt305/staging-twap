@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace CJ\Catalog\Rewrite\Model\Layer\Filter;
 
-
 class Price extends \Magento\CatalogSearch\Model\Layer\Filter\Price
 {
     /**
@@ -45,8 +44,8 @@ class Price extends \Magento\CatalogSearch\Model\Layer\Filter\Price
         \Magento\Framework\Pricing\PriceCurrencyInterface             $priceCurrency,
         \Magento\Catalog\Model\Layer\Filter\Dynamic\AlgorithmFactory  $algorithmFactory,
         \Magento\Catalog\Model\Layer\Filter\DataProvider\PriceFactory $dataProviderFactory,
-        array                                                         $data = [])
-    {
+        array                                                         $data = []
+    ) {
         $this->priceCurrency = $priceCurrency;
         parent::__construct(
             $filterItemFactory,
@@ -83,7 +82,6 @@ class Price extends \Magento\CatalogSearch\Model\Layer\Filter\Price
             if ($fromPrice != $toPrice) {
                 $toPrice -= .01;
             }
-
             return __('%1 - %2', $formattedFromPrice, $this->priceCurrency->format($toPrice));
         }
     }
