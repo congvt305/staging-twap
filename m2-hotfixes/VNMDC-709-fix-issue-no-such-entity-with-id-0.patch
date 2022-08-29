@@ -1,0 +1,31 @@
+From dd10e987d65c517ebcde1c806a417ef7d50ee129 Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Mon, 29 Aug 2022 05:33:08 -0400
+Subject: [PATCH] Fix issue No such entity with id = 0
+
+---
+ vendor/magento/module-catalog/Plugin/Block/Topmenu.php | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/vendor/magento/module-catalog/Plugin/Block/Topmenu.php b/vendor/magento/module-catalog/Plugin/Block/Topmenu.php
+index b4aa5bd..d665e67 100644
+--- a/vendor/magento/module-catalog/Plugin/Block/Topmenu.php
++++ b/vendor/magento/module-catalog/Plugin/Block/Topmenu.php
+@@ -207,9 +207,11 @@ class Topmenu
+      */
+     public function afterGetCacheKeyInfo(\Magento\Theme\Block\Html\Topmenu $subject, array $result)
+     {
+-        $activeCategory = $this->getCurrentCategory();
+-        if ($activeCategory) {
+-            $result[] = Category::CACHE_TAG . '_' . $activeCategory->getId();
++        if ($this->storeManager->getStore()->getRootCategoryId() != 0) {
++            $activeCategory = $this->getCurrentCategory();
++            if ($activeCategory) {
++                $result[] = Category::CACHE_TAG . '_' . $activeCategory->getId();
++            }
+         }
+
+         return $result;
+--
+2.25.1
+
