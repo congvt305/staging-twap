@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Amasty\AdvancedReview\Block\Review\Product\View\ListView">
+        <plugin name="CJ_Amasty_Review_AfterListView"
+                type="CJ\AmastyReview\Plugin\Block\Review\Product\View\AfterListView"
+                sortOrder="10"/>
+    </type>
+</config>
