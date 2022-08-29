@@ -71,10 +71,10 @@ class Price extends \Magento\CatalogSearch\Model\Layer\Filter\Price
     protected function _renderRangeLabel($fromPrice, $toPrice, $isLast = false)
     {
         $fromPrice = empty($fromPrice) ? 0 : $fromPrice * $this->getCurrencyRate();
-        $toPrice = empty($toPrice) ? 0 : $toPrice * $this->getCurrencyRate();
+        $toPrice = empty($toPrice) ? $toPrice : $toPrice * $this->getCurrencyRate();
 
         $formattedFromPrice = $this->priceCurrency->format($fromPrice);
-        if ($isLast) {
+        if ($isLast || $toPrice === '') {
             return __('%1 and above', $formattedFromPrice);
         } elseif ($fromPrice == $toPrice && $this->dataProvider->getOnePriceIntervalValue()) {
             return $formattedFromPrice;
