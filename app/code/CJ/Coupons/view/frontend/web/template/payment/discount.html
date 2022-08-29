@@ -77,6 +77,7 @@
                 <div class="coupon-wrap">
                     <div class="other-promo">
                         <div class="coupon-content">
+                            <!-- ko if: (couponList().length > 0) -->
                             <div class="coupon-applied" data-bind="foreach:couponList">
                                 <!-- start card -->
                                 <div class="discount-card">
@@ -110,6 +111,12 @@
                                 </div>
                                 <!-- and card -->
                             </div>
+                            <!-- /ko -->
+                            <!-- ko ifnot: (couponList().length > 0) -->
+                            <div class="not-found">
+                                <!-- ko i18n: 'There is no coupon available.' --><!-- /ko -->
+                            </div>
+                            <!-- /ko -->
                         </div>
                     </div>
                 </div>
@@ -117,11 +124,9 @@
         </div>
     </div>
     <!-- /ko -->
-    <!-- ko ifnot: canViewCouponList() -->
     <div id="modal-welcome-guest" style="display: none;">
         <!-- ko i18n: 'This is only open for registered member. Register as Brand member to enjoy more benefit.'--><!-- /ko -->
     </div>
-    <!-- /ko -->
 </div>
 
 
