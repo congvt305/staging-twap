@@ -1,8 +1,21 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <section id="web">
-            <group id="cookie">
+        <section id="cj_cookie_popup" translate="label" type="text" sortOrder="75" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Cookie Popup Settings</label>
+            <tab>eguana_extensions_tab</tab>
+            <resource>CJ_CustomCookie::configuration</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Cookie Popup</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="cookie_lifetime" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Cookie Lifetime</label>
+                    <comment>Hours cookie alive</comment>
+                    <validate>required-entry validate-number validate-digits validate-not-negative-number no-whitespace</validate>
+                </field>
                 <field id="cookie_cms_block_id" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Cookie Template Block</label>
                     <source_model>CJ\CustomCookie\Model\Config\Source\CmsBlocks</source_model>
