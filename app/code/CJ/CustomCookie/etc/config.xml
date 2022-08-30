@@ -8,4 +8,22 @@
             </general>
         </cj_cookie_popup>
     </default>
+    <websites>
+        <tw_lageige_website>
+            <cj_cookie_popup>
+                <general>
+                    <active>1</active>
+                    <cookie_lifetime>24</cookie_lifetime>
+                </general>
+            </cj_cookie_popup>
+        </tw_lageige_website>
+        <base>
+            <cj_cookie_popup>
+                <general>
+                    <active>1</active>
+                    <cookie_lifetime>24</cookie_lifetime>
+                </general>
+            </cj_cookie_popup>
+        </base>
+    </websites>
 </config>
