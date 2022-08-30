@@ -10,10 +10,13 @@ use Magento\Framework\Stdlib\CookieManagerInterface;
 
 class Data extends AbstractHelper
 {
-    /**
-     * constant cms block id for cookie template
-     */
-    const COOKIE_TEMPLATE_CMS_BLOCK_ID = 'web/cookie/cookie_cms_block_id';
+    const USER_CLOSED_COOKIE_POPUP = 'user_close_cookie_popup';
+
+    const XML_PATH_COOKIE_TEMPLATE_CMS_BLOCK_ID = 'cj_cookie_popup/general/cookie_cms_block_id';
+
+    const XML_PATH_COOKIE_LIFETIME = 'cj_cookie_popup/general/cookie_lifetime';
+
+    const XML_PATH_IS_ENABLE_COOKIE_POPUP = 'cj_cookie_popup/general/active';
     /**
      * @var CookieManagerInterface
      */
@@ -36,23 +39,41 @@ class Data extends AbstractHelper
      *
      * @return mixed
      */
-    public function getCookieTemplateBlockId()
+    public function getCookieTemplateBlockId($storeId)
     {
         return $this->scopeConfig->getValue(
-            self::COOKIE_TEMPLATE_CMS_BLOCK_ID,
-            ScopeInterface::SCOPE_WEBSITE
+            self::XML_PATH_COOKIE_TEMPLATE_CMS_BLOCK_ID,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
         );
     }
 
     /**
-     * Is Enabled Cookie on Browser
+     * Get cookie lifetime
      *
-     * @return bool
+     * @return int
      */
-    public function isEnabledCookieBrowser()
+    public function getCookieLifeTime($storeId)
     {
-        return !empty($this->cookieManager->getCookie(\Magento\Cookie\Helper\Cookie::IS_USER_ALLOWED_SAVE_COOKIE));
+        return (int)$this->scopeConfig->getValue(
+            self::XML_PATH_COOKIE_LIFETIME,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
     }
 
-
+    /**
+     * Is enabled cookie popup
+     *
+     * @param $storeId
+     * @return int
+     */
+    public function isEnabledCookiePopup($storeId)
+    {
+        return (int)$this->scopeConfig->getValue(
+            self::XML_PATH_IS_ENABLE_COOKIE_POPUP,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
 }

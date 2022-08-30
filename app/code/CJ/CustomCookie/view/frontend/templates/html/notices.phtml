@@ -3,75 +3,41 @@
 /** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
 ?>
 <?php
-/** @var \Magento\Cookie\Helper\Cookie $cookieHelper */
-$cookieHelper = $block->getData('cookieHelper');
 $cookieIdentifier = $block->getCookieTemplateIdentifier();
-$isSetCookieBrowser = $block->isEnabledCookieBrowser();
-if ($cookieHelper->isCookieRestrictionModeEnabled()): ?>
-    <?php if (!$cookieIdentifier): ?>
-        <div role="alertdialog"
-             tabindex="-1"
-             class="message global cookie"
-             id="notice-cookie-block">
-            <div role="document" class="content" tabindex="0">
-                <p>
-                    <strong><?= $block->escapeHtml(__('We use cookies to make your experience better.')) ?></strong>
-                    <span><?= $block->escapeHtml(__(
-                            'To comply with the new e-Privacy directive, we need to ask for your consent to set the cookies.'
-                        )) ?>
-                </span>
-                    <?= $block->escapeHtml(__('<a href="%1">Learn more</a>.', $block->getPrivacyPolicyLink()), ['a']) ?>
-                </p>
-                <div class="actions">
-                    <button id="btn-cookie-allow" class="action allow primary">
-                        <span><?= $block->escapeHtml(__('Allow Cookies')) ?></span>
-                    </button>
-                </div>
-            </div>
+$isEnabledCookiePopup = $block->isEnabledCookiePopup();
+$cookieLifeTime = $block->getCookieLifeTime();
+?>
+<?php if($isEnabledCookiePopup): ?>
+<div id="modal" style="display: none">
+    <div role="alertdialog"
+         tabindex="-1"
+         class=""
+         id="notice-cookie-block-popup">
+        <div role="document" class="cookie-content" tabindex="0">
+            <?= $this->getLayout()
+                ->createBlock('Magento\Cms\Block\Block')
+                ->setBlockId($cookieIdentifier)
+                ->toHtml();
+            ?>
         </div>
+        <div class="custom-allow-cookie">
+            <button id="btn-cookie-close" class="custom-btn-cookie">
+                <span><?= $block->escapeHtml(__('Close')) ?></span>
+            </button>
         </div>
-    <?php else: ?>
-        <div id="modal">
-            <div role="alertdialog"
-                 tabindex="-1"
-                 class=""
-                 id="notice-cookie-block">
-                <div role="document" class="cookie-content" tabindex="0">
-                        <?= $this->getLayout()
-                            ->createBlock('Magento\Cms\Block\Block')
-                            ->setBlockId($cookieIdentifier)
-                            ->toHtml();
-                        ?>
-                </div>
-                <div class="custom-allow-cookie">
-                    <button id="btn-cookie-allow" class="custom-btn-cookie">
-                        <span><?= $block->escapeHtml(__('Allow Cookies')) ?></span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <script type="text/x-magento-init">
+    </div>
+</div>
+<script type="text/x-magento-init">
             {
                 "*": {
                         "popupCookie":{
-                            "isEnabledCookieBrowser": "<?= /* @noEscape */ $isSetCookieBrowser ?>"
+                            "cookieClosePopup": "#btn-cookie-close",
+                            "cookieName": "<?= /* @noEscape */\CJ\CustomCookie\Helper\Data::USER_CLOSED_COOKIE_POPUP ?>",
+                            "cookieValue": <?= /* @noEscape */$block->getWebsiteId() ?>,
+                            "cookieLifetime": <?= /* @noEscape */$cookieLifeTime ?>,
+                            "websiteId": <?= $block->getWebsiteId() ?>
                         }
                     }
             }
-        </script>
-    <?php endif; ?>
-    <?= /* @noEscape */ $secureRenderer->renderStyleAsTag("display: none;", 'div#notice-cookie-block') ?>
-    <script type="text/x-magento-init">
-        {
-            "#notice-cookie-block": {
-                "cookieNotices": {
-                    "cookieAllowButtonSelector": "#btn-cookie-allow",
-                    "cookieName": "<?= /* @noEscape */ \Magento\Cookie\Helper\Cookie::IS_USER_ALLOWED_SAVE_COOKIE ?>",
-                    "cookieValue": <?= /* @noEscape */ $cookieHelper->getAcceptedSaveCookiesWebsiteIds() ?>,
-                    "cookieLifetime": <?= /* @noEscape */ $cookieHelper->getCookieRestrictionLifetime() ?>,
-                    "noCookiesUrl": "<?= $block->escapeJs($block->getUrl('cookie/index/noCookies')) ?>"
-                }
-            }
-        }
-    </script>
+</script>
 <?php endif; ?>
