@@ -1,14 +1,14 @@
-From 594d72c0757a1a05a4c24a11814ba925d7e902b4 Mon Sep 17 00:00:00 2001
+From 617a2204588c77ff9f8bb02e55d619f4a13b0c23 Mon Sep 17 00:00:00 2001
 From: Hoang Phan <hoangphan@amorepacific.com>
-Date: Mon, 29 Aug 2022 22:01:24 -0400
+Date: Tue, 30 Aug 2022 23:50:08 -0400
 Subject: [PATCH] Fix issue No such entity with id = 0
 
 ---
- vendor/magento/module-catalog/Plugin/Block/Topmenu.php | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ vendor/magento/module-catalog/Plugin/Block/Topmenu.php | 31 ++++++++++++++++++++++++++++---
+ 1 file changed, 28 insertions(+), 3 deletions(-)
 
 diff --git a/vendor/magento/module-catalog/Plugin/Block/Topmenu.php b/vendor/magento/module-catalog/Plugin/Block/Topmenu.php
-index b4aa5bd..d3f3cd1 100644
+index b4aa5bd..178febf 100644
 --- a/vendor/magento/module-catalog/Plugin/Block/Topmenu.php
 +++ b/vendor/magento/module-catalog/Plugin/Block/Topmenu.php
 @@ -38,24 +38,32 @@ class Topmenu
@@ -44,14 +44,15 @@ index b4aa5bd..d3f3cd1 100644
      }
 
      /**
-@@ -207,9 +215,20 @@ class Topmenu
+@@ -207,9 +215,26 @@ class Topmenu
       */
      public function afterGetCacheKeyInfo(\Magento\Theme\Block\Html\Topmenu $subject, array $result)
      {
 -        $activeCategory = $this->getCurrentCategory();
 -        if ($activeCategory) {
 -            $result[] = Category::CACHE_TAG . '_' . $activeCategory->getId();
-+        if ($this->storeManager->getStore()->getRootCategoryId() != 0) {
++        $rootId = $this->storeManager->getStore()->getRootCategoryId();
++        if ($rootId != 0) {
 +            $activeCategory = $this->getCurrentCategory();
 +            if ($activeCategory) {
 +                $result[] = Category::CACHE_TAG . '_' . $activeCategory->getId();
@@ -63,8 +64,13 @@ index b4aa5bd..d3f3cd1 100644
 +            $logger->info('No such entity with id = 0');
 +            $logger->info('Action Name');
 +            $logger->info($this->request->getActionName());
-+            $logger->info('SERVER URL');
-+            $logger->info($_SERVER['REQUEST_URI']);
++            $logger->info('--SERVER INFORMATION--');
++            $keys = ['HTTP_REFERER', 'HTTP_HOST', 'MAGE_RUN_CODE', 'MAGE_RUN_TYPE', 'REQUEST_TIME', 'REQUEST_METHOD', 'REQUEST_URI'];
++            $data = [];
++            foreach ($keys as $item) {
++                $data[$item] = $_SERVER[$item];
++            }
++            $logger->info(json_encode($data));
          }
 
          return $result;
