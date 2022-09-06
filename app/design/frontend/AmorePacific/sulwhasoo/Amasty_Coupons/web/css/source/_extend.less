@@ -8,26 +8,30 @@
                 font-size: 18px;
             }
         }
+        .column.main .cart-summary .block > .title span {
+            font-size: 2.5rem;
+            color: #191919;
+            font-weight: 600;
+        }
         .cart-summary .block {
             & > .title {
                 &:after {
                     display: none;
                 }
-                span {
-                    font-size: 2.5rem;
-                    color: #191919;
-                    font-weight: 600;
-                }
             }
             & > .content {
                 display: block;
                 .actions-toolbar {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
+                    display: block;
                     margin: 10px 0;
                     .primary {
-                        width: calc(45%);
+                        width: calc(48%);
+                        &:nth-child(1) {
+                            float: left;
+                        }
+                        &:nth-child(2) {
+                            float: right;
+                        }
                         .action {
                             width: 100%;
                             padding: 11px 0;
@@ -38,10 +42,19 @@
             }
         }
     }
+    @media (max-width: 767px){
+        .checkout-cart-index .column.main .cart-summary .block > .title span {
+            font-size: 2.2rem;
+        }
+    }
 }
-
-& when (@media-target = 'desktop'), (@media-target = 'all') {
-    @media only screen and (min-width: @screen__m) and (max-width: (@screen__l - 1)) {
-
+// Mobile
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .checkout-cart-index {
+        .couponContainer {
+            .actions-toolbar {
+                min-height: 46px;
+            }
+        }
     }
 }
