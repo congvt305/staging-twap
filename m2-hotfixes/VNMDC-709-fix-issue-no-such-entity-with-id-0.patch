@@ -1,35 +1,17 @@
-From 617a2204588c77ff9f8bb02e55d619f4a13b0c23 Mon Sep 17 00:00:00 2001
+From 0cb6fc69e482f253cbd11da14dd9884e89e2caab Mon Sep 17 00:00:00 2001
 From: Hoang Phan <hoangphan@amorepacific.com>
-Date: Tue, 30 Aug 2022 23:50:08 -0400
-Subject: [PATCH] Fix issue No such entity with id = 0
+Date: Mon, 5 Sep 2022 05:38:35 -0400
+Subject: [PATCH] Fix issue No such entity id=0
 
 ---
- vendor/magento/module-catalog/Plugin/Block/Topmenu.php | 31 ++++++++++++++++++++++++++++---
- 1 file changed, 28 insertions(+), 3 deletions(-)
+ vendor/magento/module-catalog/Plugin/Block/Topmenu.php | 33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
 
 diff --git a/vendor/magento/module-catalog/Plugin/Block/Topmenu.php b/vendor/magento/module-catalog/Plugin/Block/Topmenu.php
-index b4aa5bd..178febf 100644
+index b4aa5bd..c6d553d 100644
 --- a/vendor/magento/module-catalog/Plugin/Block/Topmenu.php
 +++ b/vendor/magento/module-catalog/Plugin/Block/Topmenu.php
-@@ -38,24 +38,32 @@ class Topmenu
-      */
-     private $layerResolver;
-
-+    /**
-+     * @var \Magento\Framework\App\RequestInterface
-+     */
-+    protected $request;
-+
-     /**
-      * Initialize dependencies.
-      *
-      * @param \Magento\Catalog\Helper\Category $catalogCategory
-      * @param \Magento\Catalog\Model\ResourceModel\Category\StateDependentCollectionFactory $categoryCollectionFactory
-      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-+     * @param \Magento\Framework\App\RequestInterface $request
-      * @param \Magento\Catalog\Model\Layer\Resolver $layerResolver
-      */
-     public function __construct(
+@@ -50,12 +50,14 @@ class Topmenu
          \Magento\Catalog\Helper\Category $catalogCategory,
          \Magento\Catalog\Model\ResourceModel\Category\StateDependentCollectionFactory $categoryCollectionFactory,
          \Magento\Store\Model\StoreManagerInterface $storeManager,
@@ -44,36 +26,52 @@ index b4aa5bd..178febf 100644
      }
 
      /**
-@@ -207,9 +215,26 @@ class Topmenu
+@@ -145,7 +147,11 @@ class Topmenu
+             return null;
+         }
+
+-        return $catalogLayer->getCurrentCategory();
++         try {
++            return $catalogLayer->getCurrentCategory();
++        } catch(\Exception $exception) {
++            return null;
++        }
+     }
+
+     /**
+@@ -207,11 +213,28 @@ class Topmenu
       */
      public function afterGetCacheKeyInfo(\Magento\Theme\Block\Html\Topmenu $subject, array $result)
      {
 -        $activeCategory = $this->getCurrentCategory();
 -        if ($activeCategory) {
 -            $result[] = Category::CACHE_TAG . '_' . $activeCategory->getId();
-+        $rootId = $this->storeManager->getStore()->getRootCategoryId();
-+        if ($rootId != 0) {
++        try {
 +            $activeCategory = $this->getCurrentCategory();
 +            if ($activeCategory) {
 +                $result[] = Category::CACHE_TAG . '_' . $activeCategory->getId();
 +            }
-+        } else {
++        } catch (\Exception $e) {
 +            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-for-ticket-VNMGDC-709.log');
 +            $logger = new \Zend_Log();
 +            $logger->addWriter($writer);
 +            $logger->info('No such entity with id = 0');
 +            $logger->info('Action Name');
-+            $logger->info($this->request->getActionName());
++            $logger->info($this->request->getFullActionName());
 +            $logger->info('--SERVER INFORMATION--');
 +            $keys = ['HTTP_REFERER', 'HTTP_HOST', 'MAGE_RUN_CODE', 'MAGE_RUN_TYPE', 'REQUEST_TIME', 'REQUEST_METHOD', 'REQUEST_URI'];
 +            $data = [];
 +            foreach ($keys as $item) {
-+                $data[$item] = $_SERVER[$item];
++                if (isset($_SERVER[$item])) {
++                    $data[$item] = $_SERVER[$item];
++                }
 +            }
 +            $logger->info(json_encode($data));
          }
-
+-
          return $result;
+     }
+ }
 --
 2.25.1
 
