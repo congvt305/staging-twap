@@ -8,15 +8,15 @@
                 font-size: 18px;
             }
         }
+        .column.main .cart-summary .block > .title span {
+            font-size: 2.5rem;
+            color: #191919;
+            font-weight: 600;
+        }
         .cart-summary .block {
             & > .title {
                 &:after {
                     display: none;
-                }
-                span {
-                    font-size: 2.5rem;
-                    color: #191919;
-                    font-weight: 600;
                 }
             }
             & > .content {
@@ -42,13 +42,13 @@
             }
         }
     }
-}
-
-& when (@media-target = 'desktop'), (@media-target = 'all') {
-    @media only screen and (min-width: @screen__m) and (max-width: (@screen__l - 1)) {
-
+    @media (max-width: 767px){
+        .checkout-cart-index .column.main .cart-summary .block > .title span {
+            font-size: 2.2rem;
+        }
     }
 }
+// Mobile
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
     .checkout-cart-index {
         .couponContainer {
