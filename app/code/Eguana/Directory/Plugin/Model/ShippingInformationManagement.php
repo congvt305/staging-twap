@@ -1,6 +1,7 @@
 <?php
 namespace Eguana\Directory\Plugin\Model;
 
+use Amasty\CheckoutCore\Model\Config;
 use Magento\Checkout\Api\Data\ShippingInformationInterface;
 use Magento\Framework\Exception\StateException;
 use Magento\Quote\Api\Data\AddressInterface;
@@ -19,13 +20,20 @@ class ShippingInformationManagement
     protected $storeCode = 'vn_laneige';
 
     /**
-     * ShippingInformationManagement constructor.
+     * @var Config
+     */
+    private $amastyConfig;
+
+    /**
      * @param StoreManagerInterface $storeManager
+     * @param Config $amastyConfig
      */
     public function __construct(
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        Config $amastyConfig
     ) {
         $this->storeManager = $storeManager;
+        $this->amastyConfig = $amastyConfig;
     }
 
     /**
@@ -40,9 +48,13 @@ class ShippingInformationManagement
         \Magento\Checkout\Model\ShippingInformationManagement $subject, $cartId,ShippingInformationInterface $addressInformation
     ) {
         $storeCode = $this->storeManager->getStore()->getCode();
+        $address = $addressInformation->getShippingAddress();
         if ($storeCode === $this->storeCode) {
-            $address = $addressInformation->getShippingAddress();
-            $this->validateAddress($address);
+            if ($this->amastyConfig->isEnabled()) {
+                $this->addAddressForAmastyOnePageCheckout($addressInformation);
+            } else {
+                $this->validateAddress($address);
+            }
         }
     }
 
@@ -57,6 +69,37 @@ class ShippingInformationManagement
     {
         if (!$address || !$address->getWard() || !$address->getWardId() || !$address->getCityId() ) {
             throw new StateException(__('The shipping address is missing. Please edit the address and try again.'));
+        }
+    }
+
+    /**
+     * add data to shipping address to validate it when click place order for onepage checkout
+     *
+     * @param ShippingInformationInterface|null $address
+     * @return void
+     * @throws StateException
+     */
+    private function addAddressForAmastyOnePageCheckout(?ShippingInformationInterface $addressInformation): void
+    {
+        $address = $addressInformation->getShippingAddress();
+        if (!$address->getWard()) {
+            $address->setCustomAttribute('ward', null);
+        }
+        if (!$address->getWardId()) {
+            $address->setCustomAttribute('ward_id', null);
+        }
+        if (!$address->getCityId()) {
+            $address->setCustomAttribute('city_id', null);
+        }
+        $billingAddress = $addressInformation->getBillingAddress();
+        if (!$billingAddress->getWard()) {
+            $billingAddress->setCustomAttribute('ward', null);
+        }
+        if (!$billingAddress->getWardId()) {
+            $billingAddress->setCustomAttribute('ward_id', null);
+        }
+        if (!$billingAddress->getCityId()) {
+            $billingAddress->setCustomAttribute('city_id', null);
         }
     }
 }
