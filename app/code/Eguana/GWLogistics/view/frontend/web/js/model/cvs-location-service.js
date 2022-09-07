@@ -120,6 +120,8 @@ define([
             this.selectedLocation(location);
             selectShippingAddressAction(address);
             checkoutData.setSelectedShippingAddress(address.getKey());
+            checkoutData.setStoreName(location.CVSStoreName);
+            checkoutData.setCVSAddress(location.CVSAddress);
         },
 
         selectForShippingMobile: function (location) {

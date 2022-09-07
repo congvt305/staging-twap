@@ -67,11 +67,6 @@ define([
             }, this);
             this.convertAddressType(quote.shippingAddress());
 
-            this.isCvsPickupSelected.subscribe(function () {
-                this.preselectLocation();
-            }, this);
-            this.preselectLocation();
-
             this.syncWithShipping();
         },
 
@@ -129,6 +124,12 @@ define([
                 this.isVisible(this.isAvailable && isShippingVisible);
             }, this);
             this.isVisible(this.isAvailable && shippingStep.isVisible());
+            this.isCvsPickupSelected.subscribe(function () {
+                if (shippingStep.isVisible()) {
+                    //set select shipping null for cvs to avoid miss data when change back home delivery tab
+                    pickupLocationsService.selectForShipping({});
+                }
+            }, this);
         },
 
         /**
@@ -170,10 +171,13 @@ define([
          * @param {Object} shippingMethod
          */
         selectShippingMethod: function (shippingMethod) {
-            selectShippingMethodAction(shippingMethod);
-            checkoutData.setSelectedShippingAddress(
-                quote.shippingAddress().getKey()
-            );
+            if (!stepNavigator.isProcessed('shipping')) {
+                this.shippingMethod = quote.shippingMethod();
+                selectShippingMethodAction(shippingMethod);
+                checkoutData.setSelectedShippingAddress(
+                    quote.shippingAddress().getKey()
+                );
+            }
         },
 
         /**
