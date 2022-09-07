@@ -184,8 +184,10 @@ class PosOrderData
         $orderItemData = $this->getItemData($order);
         $couponCode = $order->getCouponCode();
         $invoice = $this->getInvoice($order->getEntityId());
+        $saleDate = $this->dateFormat($order->getCreatedAt());
         $redInvoiceData = [];
         if ($order->getStore()->getCode() == self::VN_LANEIGE) {
+            $saleDate = $this->dateFormat('now');
             $redInvoice = $this->getDataRedInvoice($order->getEntityId());
             if($redInvoice->getId()) {
                 $redInvoiceData = [
@@ -207,7 +209,7 @@ class PosOrderData
         $orderData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
-            'saledate' => $this->dateFormat($order->getCreatedAt()),
+            'saledate' => $saleDate,
             'orderID' => $order->getIncrementId(),
             'rcptNO' => 'I' . $invoice->getIncrementId(),
             'cstmIntgSeq' => $posIntegrationNumber,

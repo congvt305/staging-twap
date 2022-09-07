@@ -3,6 +3,8 @@ namespace Eguana\Directory\Plugin\Model;
 
 use Amasty\CheckoutCore\Model\Config;
 use Magento\Checkout\Api\Data\ShippingInformationInterface;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\StateException;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -55,6 +57,11 @@ class ShippingInformationManagement
             } else {
                 $this->validateAddress($address);
             }
+        }
+        if (!$address->getLastname() || !$address->getFirstname() || !$address->getStreet() || !$address->getTelephone()) {
+            throw new InputException(
+                __("Please select delivery method : home delivery / cvs delivery. Thanks")
+            );
         }
     }
 
