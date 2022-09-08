@@ -52,7 +52,6 @@ define([
             },
             defaultCountry: window.checkoutConfig.defaultCountryId,
             rates: shippingService.getShippingRates(),
-            shippingMethod : null,
         },
 
         /**
@@ -147,7 +146,6 @@ define([
                 this
             );
             $('#delivery_message').val('');
-            pickupLocationsService.selectedLocation(ko.observable({}));
             this.selectShippingMethod(pickupShippingMethod);
         },
 
@@ -156,7 +154,6 @@ define([
          */
         selectShippingMethod: function (shippingMethod) {
             if (!stepNavigator.isProcessed('shipping')) {
-                this.shippingMethod = quote.shippingMethod();
                 selectShippingMethodAction(shippingMethod);
                 checkoutData.setSelectedShippingAddress(
                     quote.shippingAddress().getKey()
