@@ -172,7 +172,6 @@ define([
          */
         selectShippingMethod: function (shippingMethod) {
             if (!stepNavigator.isProcessed('shipping')) {
-                this.shippingMethod = quote.shippingMethod();
                 selectShippingMethodAction(shippingMethod);
                 checkoutData.setSelectedShippingAddress(
                     quote.shippingAddress().getKey()
