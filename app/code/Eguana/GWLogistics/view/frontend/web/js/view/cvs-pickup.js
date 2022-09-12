@@ -92,24 +92,6 @@ define([
             return this;
         },
 
-        preselectLocation: function () {
-            var selectedLocation = pickupLocationsService.selectedLocation();
-            if (this.isCvsPickupSelected()) {
-                if (selectedLocation) {
-                    pickupLocationsService.selectForShipping(selectedLocation);
-                }
-                pickupLocationsService.getLocation()
-                    .then(function (location) {
-                        if (!location.CVSAddress) {
-                            return;
-                        }
-                        pickupLocationsService.selectForShipping(location);
-                    });
-            }
-
-        },
-
-
         /**
          * Synchronize store pickup visibility with shipping step.
          *
@@ -164,6 +146,7 @@ define([
                 this
             );
             $('#delivery_message').val('');
+            pickupLocationsService.selectedLocation(ko.observable({}));
             this.selectShippingMethod(pickupShippingMethod);
         },
 
