@@ -67,12 +67,13 @@ define([
             }, this);
             this.convertAddressType(quote.shippingAddress());
 
-            this.isCvsPickupSelected.subscribe(function () {
-                this.preselectLocation();
-            }, this);
-            this.preselectLocation();
-
             this.syncWithShipping();
+            this.isCvsPickupSelected.subscribe(function () {
+                if (!stepNavigator.isProcessed('shipping')) {
+                    //set select shipping null for cvs to avoid miss data when change back home delivery tab
+                    pickupLocationsService.selectForShipping({});
+                }
+            }, this);
         },
 
         /**
@@ -96,24 +97,6 @@ define([
 
             return this;
         },
-
-        preselectLocation: function () {
-            var selectedLocation = pickupLocationsService.selectedLocation();
-            if (this.isCvsPickupSelected()) {
-                if (selectedLocation) {
-                    pickupLocationsService.selectForShipping(selectedLocation);
-                }
-                pickupLocationsService.getLocation()
-                    .then(function (location) {
-                        if (!location.CVSAddress) {
-                            return;
-                        }
-                        pickupLocationsService.selectForShipping(location);
-                    });
-            }
-
-        },
-
 
         /**
          * Synchronize store pickup visibility with shipping step.
@@ -163,6 +146,7 @@ define([
                 this
             );
             $('#delivery_message').val('');
+            pickupLocationsService.selectedLocation(ko.observable({}));
             this.selectShippingMethod(pickupShippingMethod);
         },
 
@@ -170,10 +154,21 @@ define([
          * @param {Object} shippingMethod
          */
         selectShippingMethod: function (shippingMethod) {
-            selectShippingMethodAction(shippingMethod);
-            checkoutData.setSelectedShippingAddress(
-                quote.shippingAddress().getKey()
-            );
+            if (!stepNavigator.isProcessed('shipping')) {
+                this.shippingMethod = quote.shippingMethod();
+                selectShippingMethodAction(shippingMethod);
+                //reset data when change shipping method
+                if (typeof shippingMethod === 'object' &&
+                    typeof this.shippingMethod === 'object' &&
+                    this.shippingMethod['carrier_code'] !== shippingMethod['carrier_code']) {
+                    quote.shippingAddress().firstname = null;
+                    quote.shippingAddress().lastname = null;
+                    quote.shippingAddress().street = null;
+                }
+                checkoutData.setSelectedShippingAddress(
+                    quote.shippingAddress().getKey()
+                );
+            }
         },
 
         /**
