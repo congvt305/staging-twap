@@ -16459,6 +16459,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Pay with bank","Thanh toán qua thẻ nội địa"
 "Pay with wallet","Thanh toán qua ví điện tử"
 "Pay with visa","Thanh toán qua thẻ quốc tế"
+"Please enter exactly proper mobile number. Start with 0 and 10 digit.","Vui lòng nhập chính xác số điện thoại di động. Bắt đầu với chữ số 0 và 10 số"
 "There are some out of stock product < %1 >","Sản phẩm ( %1 ) đã hết hàng"
 "You cannot purchase this product now. You have to delete the product <br> If you want to delete the products right now. Please click confirm button","Để tiếp tục mua hàng, xin vui lòng click xác nhận để xóa sản phẩm này ra khỏi giỏ hàng"
 "I confirm to delete","Xác nhận"

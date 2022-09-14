@@ -1,0 +1,76 @@
+From 0cb6fc69e482f253cbd11da14dd9884e89e2caab Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Mon, 5 Sep 2022 05:38:35 -0400
+Subject: [PATCH] Fix issue No such entity id=0
+
+---
+ vendor/magento/module-catalog/Plugin/Block/Topmenu.php | 33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
+
+diff --git a/vendor/magento/module-catalog/Plugin/Block/Topmenu.php b/vendor/magento/module-catalog/Plugin/Block/Topmenu.php
+index b4aa5bd..c6d553d 100644
+--- a/vendor/magento/module-catalog/Plugin/Block/Topmenu.php
++++ b/vendor/magento/module-catalog/Plugin/Block/Topmenu.php
+@@ -50,12 +50,14 @@ class Topmenu
+         \Magento\Catalog\Helper\Category $catalogCategory,
+         \Magento\Catalog\Model\ResourceModel\Category\StateDependentCollectionFactory $categoryCollectionFactory,
+         \Magento\Store\Model\StoreManagerInterface $storeManager,
++        \Magento\Framework\App\RequestInterface $request,
+         \Magento\Catalog\Model\Layer\Resolver $layerResolver
+     ) {
+         $this->catalogCategory = $catalogCategory;
+         $this->collectionFactory = $categoryCollectionFactory;
+         $this->storeManager = $storeManager;
+         $this->layerResolver = $layerResolver;
++        $this->request = $request;
+     }
+
+     /**
+@@ -145,7 +147,11 @@ class Topmenu
+             return null;
+         }
+
+-        return $catalogLayer->getCurrentCategory();
++         try {
++            return $catalogLayer->getCurrentCategory();
++        } catch(\Exception $exception) {
++            return null;
++        }
+     }
+
+     /**
+@@ -207,11 +213,28 @@ class Topmenu
+      */
+     public function afterGetCacheKeyInfo(\Magento\Theme\Block\Html\Topmenu $subject, array $result)
+     {
+-        $activeCategory = $this->getCurrentCategory();
+-        if ($activeCategory) {
+-            $result[] = Category::CACHE_TAG . '_' . $activeCategory->getId();
++        try {
++            $activeCategory = $this->getCurrentCategory();
++            if ($activeCategory) {
++                $result[] = Category::CACHE_TAG . '_' . $activeCategory->getId();
++            }
++        } catch (\Exception $e) {
++            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-for-ticket-VNMGDC-709.log');
++            $logger = new \Zend_Log();
++            $logger->addWriter($writer);
++            $logger->info('No such entity with id = 0');
++            $logger->info('Action Name');
++            $logger->info($this->request->getFullActionName());
++            $logger->info('--SERVER INFORMATION--');
++            $keys = ['HTTP_REFERER', 'HTTP_HOST', 'MAGE_RUN_CODE', 'MAGE_RUN_TYPE', 'REQUEST_TIME', 'REQUEST_METHOD', 'REQUEST_URI'];
++            $data = [];
++            foreach ($keys as $item) {
++                if (isset($_SERVER[$item])) {
++                    $data[$item] = $_SERVER[$item];
++                }
++            }
++            $logger->info(json_encode($data));
+         }
+-
+         return $result;
+     }
+ }
+--
+2.25.1

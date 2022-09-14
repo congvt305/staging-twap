@@ -76,6 +76,27 @@ define([
                 });
             }
         },
+
+        setPreviewShipping: function() {
+            var cvsFormSelector = '#checkout-step-cvs-selector form[data-role=cvs-map-load-form]',
+                cvsStoreName = $(cvsFormSelector + ' input[name=CVSStoreName]').val(),
+                cvsStoreAddress = $(cvsFormSelector + ' input[name=CVSAddress]').val(),
+                firstname = $(cvsFormSelector + ' input[name=firstname]').val(),
+                lastname = $(cvsFormSelector + ' input[name=lastname]').val(),
+                mobile = $(cvsFormSelector + ' input[name=mobile_number]').val(),
+                isApplyPreviewShipping = (window.checkoutConfig.websiteCode == "tw_lageige_website" || window.checkoutConfig.websiteCode == "base");
+            if (isApplyPreviewShipping && cvsStoreName && cvsStoreAddress && firstname && lastname && mobile) {
+                var address = {
+                    'firstname': firstname,
+                    'lastname': lastname,
+                    'mobileNumber': mobile,
+                    'CVSStoreName': cvsStoreName,
+                    'CVSAddress': cvsStoreAddress
+                }
+                pickupLocationService.selectForShipping(address);
+            }
+        },
+
         selectCvsAddressForShipping: function () {
             var address = this.selectedLocation();
 
@@ -181,6 +202,10 @@ define([
         isLineAppBrowser: function () {
             return /(iPhone|iPod|iPad|Android).*AppleWebKit.*Line/i.test(navigator.userAgent);
         },
+
+        goBack: function() {
+            window.location.href = window.checkoutConfig.cartUrl;
+        }
 
     });
 });

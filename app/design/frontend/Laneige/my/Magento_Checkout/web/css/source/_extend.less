@@ -1,0 +1,49 @@
+//
+//  Common (styles-m.css)
+//  _____________________________________________
+& when (@media-common = true) {
+    .block-minicart {
+        .block-content {
+            > .actions {
+                > .primary {
+                    float: right;
+                    width: 48.5%;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile (styles-m.css)
+//  _____________________________________________
+& when (@media-target = 'mobile'), (@media-target = 'all') {
+    @media screen and (max-width: 375px) {
+        // styles for custom breakpoint below <= 375px mobile screen
+    }
+}
+
+//
+//  Tablet
+//  _____________________________________________
+
+// This will add styles for tablet devices. When using native media-queries, we recommend wrapping your media-queries with media-width mixins or media-target
+& when (@media-target = 'desktop'), (@media-target = 'all') {
+    @media only screen and (min-width: @screen__m) and (max-width: (@screen__l - 1)) {
+        // styles for breakpoint >= 768px and < 1024px
+    }
+}
+
+//
+//  Desktop (style-l.css)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .checkout-shipping-method {
+        .actions-toolbar {
+            > .primary {
+                display: block;
+            }
+        }
+    }
+}

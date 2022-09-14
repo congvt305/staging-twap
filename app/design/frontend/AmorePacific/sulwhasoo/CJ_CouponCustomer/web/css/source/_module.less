@@ -186,7 +186,13 @@
 }
 
 & when (@media-common = true) {
-    .checkout-index-index {
+    .sws-coupons-modal .modal-content {
+        padding: 0;
+    }
+    .modal-popup.welcome-guest.modal-slide:not(.agreements-modal):not(.popup-reorder-quote) .modal-footer {
+        border-top: 0;
+    }
+    .checkout-cart-index {
         .coupon {
             &-wrap {
                 background: #F8F8F8;
@@ -417,10 +423,6 @@
             width: 155px;
             height: 45px;
             object-fit: contain;
-        }
-
-        .modal-popup .modal-content {
-            padding: 0px;
         }
 
         .action-show-coupon {

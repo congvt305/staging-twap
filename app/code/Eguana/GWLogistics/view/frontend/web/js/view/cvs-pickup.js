@@ -67,11 +67,6 @@ define([
             }, this);
             this.convertAddressType(quote.shippingAddress());
 
-            this.isCvsPickupSelected.subscribe(function () {
-                this.preselectLocation();
-            }, this);
-            this.preselectLocation();
-
             this.syncWithShipping();
         },
 
@@ -97,22 +92,6 @@ define([
             return this;
         },
 
-        preselectLocation: function () {
-            var selectedLocation = pickupLocationsService.selectedLocation();
-
-            if (selectedLocation) {
-                pickupLocationsService.selectForShipping(selectedLocation);
-            }
-            pickupLocationsService.getLocation()
-                .then(function (location) {
-                    if (!location.CVSAddress) {
-                        return;
-                    }
-                    pickupLocationsService.selectForShipping(location);
-                });
-        },
-
-
         /**
          * Synchronize store pickup visibility with shipping step.
          *
@@ -127,6 +106,12 @@ define([
                 this.isVisible(this.isAvailable && isShippingVisible);
             }, this);
             this.isVisible(this.isAvailable && shippingStep.isVisible());
+            this.isCvsPickupSelected.subscribe(function () {
+                if (shippingStep.isVisible()) {
+                    //set select shipping null for cvs to avoid miss data when change back home delivery tab
+                    pickupLocationsService.selectForShipping({});
+                }
+            }, this);
         },
 
         /**
@@ -161,6 +146,7 @@ define([
                 this
             );
             $('#delivery_message').val('');
+            pickupLocationsService.selectedLocation(ko.observable({}));
             this.selectShippingMethod(pickupShippingMethod);
         },
 
@@ -168,10 +154,12 @@ define([
          * @param {Object} shippingMethod
          */
         selectShippingMethod: function (shippingMethod) {
-            selectShippingMethodAction(shippingMethod);
-            checkoutData.setSelectedShippingAddress(
-                quote.shippingAddress().getKey()
-            );
+            if (!stepNavigator.isProcessed('shipping')) {
+                selectShippingMethodAction(shippingMethod);
+                checkoutData.setSelectedShippingAddress(
+                    quote.shippingAddress().getKey()
+                );
+            }
         },
 
         /**

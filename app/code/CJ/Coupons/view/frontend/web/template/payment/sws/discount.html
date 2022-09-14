@@ -10,13 +10,6 @@
             <strong id="block-discount-heading">
                 <!-- ko i18n: 'Apply Discount Code'--><!-- /ko -->
             </strong>
-            <!-- ko if: isEnableCouponPopup -->
-            <div class="coupon-wallet">
-                <i id = "coupon-wallet" data-bind="'value': $t('view my coupon'), click: showPopup"> <!-- ko i18n: 'view my coupon'--><!-- /ko -->
-                    <span class="icon"> >> </span>
-                </i>
-            </div>
-            <!-- /ko -->
         </div>
         <div class="payment-option-content content" data-role="content">
             <!-- ko foreach: getRegion('messages') -->
@@ -44,6 +37,18 @@
                     </div>
                     <div class="actions-toolbar">
                         <div class="primary">
+                            <!--ko if: canViewCouponList()  -->
+                            <button class="action action-view" type="button" data-bind="'value': $t('view my coupon'), click: showPopup">
+                                <span><!-- ko text: $t('view my coupon')--><!-- /ko --></span>
+                            </button>
+                            <!-- /ko -->
+                            <!--ko ifnot: canViewCouponList() -->
+                            <button class="action action-view" type="button" data-bind="'value': $t('view my coupon'), click: showPopupWelcomeGuest">
+                                <span><!-- ko text: $t('view my coupon')--><!-- /ko --></span>
+                            </button>
+                            <!-- /ko -->
+                        </div>
+                        <div class="primary">
                             <button class="action primary action-apply" type="submit" data-bind="'value': $t('Apply'), click: apply">
                                 <span><!-- ko i18n: 'Apply'--><!-- /ko --></span>
                             </button>
@@ -70,12 +75,13 @@
     <!-- /ko -->
     <!-- /ko -->
     <!-- ko if: isEnableCouponPopup -->
-    <div id="modal">
+    <div id="modal" style="display: none;">
         <div class="modal-body-content">
             <div class="coupon-popup coupon-container">
                 <div class="coupon-wrap">
                     <div class="other-promo">
                         <div class="coupon-content">
+                            <!-- ko if: (couponList().length > 0) -->
                             <div class="coupon-applied" data-bind="foreach:couponList">
                                 <!-- start card -->
                                 <div class="discount-card">
@@ -109,6 +115,12 @@
                                 </div>
                                 <!-- and card -->
                             </div>
+                            <!-- /ko -->
+                            <!-- ko ifnot: (couponList().length > 0) -->
+                            <div class="not-found">
+                                <!-- ko i18n: 'There is no coupon available.' --><!-- /ko -->
+                            </div>
+                            <!-- /ko -->
                         </div>
                     </div>
                 </div>
@@ -116,4 +128,7 @@
         </div>
     </div>
     <!-- /ko -->
+    <div id="modal-welcome-guest" style="display: none;">
+        <!-- ko i18n: 'This is only open for registered member. Register as Brand member to enjoy more benefit.'--><!-- /ko -->
+    </div>
 </div>

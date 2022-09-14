@@ -11,7 +11,8 @@ var config = {
 	config: {
 		mixins: {
             'Magento_Checkout/js/view/shipping': {
-                'Eguana_RedInvoice/js/shipping-validation-mixin': true
+                'Eguana_RedInvoice/js/shipping-validation-mixin': true,
+                'Eguana_RedInvoice/js/previous-button-mixin': true
             },
 			'Magento_Checkout/js/model/shipping-save-processor/payload-extender': {
 				'Eguana_RedInvoice/js/payload-extender-mixin': true

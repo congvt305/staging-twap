@@ -37,7 +37,7 @@
     <tr class="totals shipping incl">
         <th class="mark" scope="row">
             <span class="label" data-bind="i18n: title"></span>
-            <shipping.html!-- ko if: haveToShowCoupon() -->
+            <!-- ko if: haveToShowCoupon() -->
                 <span class="label description" data-bind="text: getCouponDescription()"></span>
             <!-- /ko -->
             <span class="value" data-bind="text: getShippingMethodTitle()"></span>

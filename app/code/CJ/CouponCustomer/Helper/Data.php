@@ -32,6 +32,11 @@ class Data extends AbstractHelper
     const XML_PATH_SYNC_POS_CUSTOMER_GRADE_ENABLE = 'coupon_wallet/general/sync_pos_customer_grade';
 
     /**
+     * xml path open for member only
+     */
+    const XML_PATH_OPEN_FOR_MEMBER_ONLY = 'coupon_wallet/general/member_only';
+
+    /**
      * @var RuleCollection
      */
     private $ruleCollection;
@@ -96,6 +101,9 @@ class Data extends AbstractHelper
         $rules = $this->ruleCollection->create();
         $customer = $this->getCustomer();
         $websiteId = $customer->getWebsiteId();
+        if (!$websiteId) {
+            $websiteId = $this->storeManager->getStore()->getWebsiteId();
+        }
         $rules->addWebsiteGroupDateFilter($websiteId, $customer->getGroupId())
             ->addFieldToFilter('coupon_type', \Magento\SalesRule\Model\Rule::COUPON_TYPE_SPECIFIC)
             ->addFieldToFilter('is_active', 1)
@@ -286,5 +294,12 @@ class Data extends AbstractHelper
         return !empty($customerGradeCode) ? substr($customerGradeCode, 0 , 3) : '';
     }
 
-
+    /**
+     * Is enabled member only
+     *
+     * @return bool
+     */
+    public function isMemberOnlyEnabled() {
+        return (bool)$this->scopeConfig->getValue(self::XML_PATH_OPEN_FOR_MEMBER_ONLY, ScopeInterface::SCOPE_WEBSITE);
+    }
 }

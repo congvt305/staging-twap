@@ -4,6 +4,7 @@
         <coupon_wallet>
             <general>
                 <sync_pos_customer_grade>0</sync_pos_customer_grade>
+                <member_only>0</member_only>
             </general>
             <cron>
                 <active>0</active>
