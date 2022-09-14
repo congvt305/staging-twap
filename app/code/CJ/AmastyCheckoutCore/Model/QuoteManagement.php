@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace CJ\AmastyCheckoutCore\Model;
 
+use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Customer\Model\Address;
 use Magento\Customer\Model\Session;
 use Magento\Framework\ObjectManagerInterface;
@@ -58,6 +59,11 @@ class QuoteManagement extends \Amasty\CheckoutCore\Model\QuoteManagement
     private $amazonSession = null;
 
     /**
+     * @var AddressRepositoryInterface
+     */
+    private $addressRepository;
+
+    /**
      * @param LoggerInterface $logger
      * @param CartRepositoryInterface $quoteRepository
      * @param ShippingAddressManagementInterface $shippingAddressManagement
@@ -65,6 +71,7 @@ class QuoteManagement extends \Amasty\CheckoutCore\Model\QuoteManagement
      * @param ResourceAddress $address
      * @param Session $session
      * @param ObjectManagerInterface $objectManager
+     * @param AddressRepositoryInterface $addressRepository
      */
     public function __construct(
         LoggerInterface $logger,
@@ -72,7 +79,8 @@ class QuoteManagement extends \Amasty\CheckoutCore\Model\QuoteManagement
         ShippingAddressManagementInterface $shippingAddressManagement,
         BillingAddressManagementInterface $billingAddressManagement,
         ResourceAddress $address, Session $session,
-        ObjectManagerInterface $objectManager
+        ObjectManagerInterface $objectManager,
+        AddressRepositoryInterface $addressRepository
     ) {
         $this->logger = $logger;
         $this->quoteRepository = $quoteRepository;
@@ -80,6 +88,7 @@ class QuoteManagement extends \Amasty\CheckoutCore\Model\QuoteManagement
         $this->billingAddressManagement = $billingAddressManagement;
         $this->address = $address;
         $this->session = $session;
+        $this->addressRepository = $addressRepository;
         parent::__construct(
             $logger,
             $quoteRepository,
@@ -245,6 +254,19 @@ class QuoteManagement extends \Amasty\CheckoutCore\Model\QuoteManagement
     ) {
         try {
             if ($shippingAddressFromData) {
+                //customize save shipping address when set config same as billing for one page checkout amasty
+                //if shipping is the same as billing new address cannot save in default magento when use onepage checkout
+                if ($shippingAddressFromData->getSaveInAddressBook()) {
+                    $shippingAddressData = $shippingAddressFromData->exportCustomerAddress();
+                    //save here new customer address
+                    $quote = $this->quoteRepository->getActive($cartId);
+                    $shippingAddressData->setCustomerId($quote->getCustomerId());
+                    $this->addressRepository->save($shippingAddressData);
+                    $quote->addCustomerAddress($shippingAddressData);
+                    $shippingAddressFromData->setCustomerAddressData($shippingAddressData);
+                    $shippingAddressFromData->setCustomerAddressId($shippingAddressData->getId());
+                }
+                //end customize
                 $this->shippingAddressManagement->assign($cartId, $shippingAddressFromData);
             }
 
