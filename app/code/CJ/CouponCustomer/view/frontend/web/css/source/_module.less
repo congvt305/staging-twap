@@ -208,7 +208,37 @@
     }
 }
 & when (@media-common = true) {
-.checkout-index-index {
+.checkout-cart-index, .checkout-index-index {
+    .lng-coupons-modal {
+        .modal-content {
+            padding: 0;
+        }
+    }
+    .couponContainer {
+        .not-found {
+            text-align: center;
+            margin-right: 50px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .payment-option-title {
+            margin-bottom: 10px;
+        }
+        .actions-toolbar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin: 10px 0;
+            .primary {
+                width: calc(45%);
+                .action {
+                    width: 100%;
+                    padding: 11px 0;
+                }
+            }
+        }
+    }
     .coupon {
         &-wrap {
             background: #F8F8F8;
@@ -441,9 +471,9 @@
         object-fit: contain;
     }
 
-    .modal-popup .modal-content {
-        padding: 0px;
-    }
+    //.modal-popup .modal-content {
+    //    padding: 0px;
+    //}
 
     .action-show-coupon {
         /*margin-top: 5px;*/

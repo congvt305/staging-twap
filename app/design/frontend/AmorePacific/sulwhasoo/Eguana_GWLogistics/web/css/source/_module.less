@@ -31,6 +31,11 @@
         }
 
         &.selected-cvs-pickup {
+            #shipping-method-buttons-container {
+                display: flex;
+                flex-direction: row !important;
+                justify-content: space-between;
+            }
             ~ #shipping,
             ~ #opc-shipping_method {
                 visibility: hidden;
@@ -40,6 +45,13 @@
 
             .form-continue .actions-toolbar {
                 margin-top: @indent__l;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+
+                .primary {
+                    width: calc(45%);
+                }
             }
         }
 
@@ -162,6 +174,18 @@
         }
     }
 }
+//
+//  Mobile (styles-m.css)
+//  _____________________________________________
+& when (@media-target = 'mobile'), (@media-target = 'all') {
+    @media screen and (max-width: 375px) {
+        #shipping-method-buttons-container {
+            display: flex;
+            flex-direction: row !important;
+            justify-content: space-between;
+        }
+    }
+}
 
 //
 //  Desktop
@@ -171,7 +195,7 @@
     .opc-wrapper {
         .selected-cvs-pickup {
             .form-continue .actions-toolbar {
-                max-width: 300px;
+                //max-width: 300px;
                 margin-left: auto;
             }
         }
