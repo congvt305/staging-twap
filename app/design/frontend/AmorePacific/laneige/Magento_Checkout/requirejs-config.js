@@ -6,6 +6,7 @@ var config = {
     "map": {
         "*": {
             'CartQtyUpdate': "Magento_Checkout/js/cart/ajax-qty-update",
+            'popupDelete': "CJ_Checkout/js/cart/popup-delete"
         },
     },
     'config': {
