@@ -3,11 +3,6 @@
  * See COPYING.txt for license details.
  */
 var config = {
-    "map": {
-        "*": {
-            'CartQtyUpdate': "Magento_Checkout/js/cart/ajax-qty-update",
-        },
-    },
     'config': {
         'mixins': {
             'Magento_Checkout/js/view/shipping-information': {

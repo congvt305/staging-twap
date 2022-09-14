@@ -6,14 +6,17 @@ use Amasty\CheckoutCore\Model\Config;
 use Magento\Checkout\Api\PaymentInformationManagementInterface;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\StateException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\PaymentInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Staging\Model\VersionManager;
+use Magento\Store\Model\StoreManagerInterface;
 
 class PaymentInformationManagementPlugin extends \Magento\CheckoutStaging\Plugin\PaymentInformationManagementPlugin
 {
+    const STORE_VN_CODE = 'vn_laneige';
     /**
      * @var VersionManager
      */
@@ -35,23 +38,29 @@ class PaymentInformationManagementPlugin extends \Magento\CheckoutStaging\Plugin
     private $amastyConfig;
 
     /**
-     * PaymentInformationManagement constructor
-     *
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * @param VersionManager $versionManager
      * @param CartRepositoryInterface $quoteRepository
      * @param AddressRepositoryInterface $addressRepository
      * @param Config $amastyConfig
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         VersionManager $versionManager,
         CartRepositoryInterface $quoteRepository,
         AddressRepositoryInterface $addressRepository,
-        Config $amastyConfig
+        Config $amastyConfig,
+        StoreManagerInterface $storeManager
     ) {
         $this->versionManager = $versionManager;
         $this->quoteRepository = $quoteRepository;
         $this->addressRepository = $addressRepository;
         $this->amastyConfig = $amastyConfig;
+        $this->storeManager = $storeManager;
         parent::__construct($versionManager, $quoteRepository, $addressRepository);
     }
 
@@ -79,6 +88,12 @@ class PaymentInformationManagementPlugin extends \Magento\CheckoutStaging\Plugin
         /** @var Quote $quote */
         $quote = $this->quoteRepository->getActive($cartId);
         $shippingAddress = $quote->getShippingAddress();
+        $storeCode = $this->storeManager->getStore()->getCode();
+        if ($storeCode == self::STORE_VN_CODE && $this->amastyConfig->isEnabled()) {
+            if (!$shippingAddress->getWard() || !$shippingAddress->getWardId() || !$shippingAddress->getCityId() ) {
+                throw new StateException(__('The shipping address is missing. Please edit the address and try again.'));
+            }
+        }
 
         $shippingMethod = $shippingAddress->getShippingMethod();
         if ($shippingMethod != 'gwlogistics_CVS') {

@@ -3,10 +3,12 @@
 namespace CJ\CustomCookie\Block\Html;
 
 
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\View\Element\Template;
 use Magento\Cookie\Helper\Cookie as CookieHelper;
 use CJ\CustomCookie\Helper\Data as HelperData;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * @api
@@ -20,31 +22,34 @@ class Notices extends \Magento\Framework\View\Element\Template
     public $helperData;
 
     /**
+     * @var StoreManagerInterface
+     */
+    public $storeManager;
+
+    /**
+     * @var ScopeConfigInterface
+     */
+    protected $scopeConfig;
+
+
+    /**
      * @param Template\Context $context
      * @param HelperData $helperData
+     * @param StoreManagerInterface $storeManager
+     * @param ScopeConfigInterface $scopeConfig
      * @param array $data
-     * @param CookieHelper|null $cookieHelper
      */
     public function __construct(
         Template\Context $context,
         HelperData $helperData,
-        array $data = [],
-        ?CookieHelper $cookieHelper = null
+        StoreManagerInterface $storeManager,
+        ScopeConfigInterface $scopeConfig,
+        array $data = []
     ) {
         $this->helperData = $helperData;
-        $data['cookieHelper'] = $cookieHelper ?? ObjectManager::getInstance()->get(CookieHelper::class);
+        $this->storeManager = $storeManager;
+        $this->scopeConfig =  $scopeConfig;
         parent::__construct($context, $data);
-    }
-
-    /**
-     * Get Link to cookie restriction privacy policy page
-     *
-     * @return string
-     * @codeCoverageIgnore
-     */
-    public function getPrivacyPolicyLink()
-    {
-        return $this->_urlBuilder->getUrl('privacy-policy-cookie-restriction-mode');
     }
 
     /**
@@ -55,16 +60,45 @@ class Notices extends \Magento\Framework\View\Element\Template
      */
     public function getCookieTemplateIdentifier()
     {
-        return $this->helperData->getCookieTemplateBlockId();
+        return $this->helperData->getCookieTemplateBlockId($this->getStoreId());
+    }
+    /**
+     * Get current store id
+     */
+    public function getStoreId()
+    {
+        return $this->storeManager->getStore()->getId();
     }
 
     /**
-     * Is enabled cookie on browser
+     * Get current website Id
      *
-     * @return bool
+     * @return int
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function isEnabledCookieBrowser()
+    public function getWebsiteId()
     {
-        return $this->helperData->isEnabledCookieBrowser();
+        return $this->storeManager->getStore()->getWebsiteId();
     }
+
+    /**
+     * Is enabled cookie popup
+     *
+     * @return int
+     */
+    public function isEnabledCookiePopup()
+    {
+        return $this->helperData->isEnabledCookiePopup($this->getStoreId());
+    }
+
+    /**
+     * Get cookie Lifetime
+     *
+     * @return int
+     */
+    public function getCookieLifeTime()
+    {
+        return $this->helperData->getCookieLifeTime($this->getStoreId());
+    }
+
 }
