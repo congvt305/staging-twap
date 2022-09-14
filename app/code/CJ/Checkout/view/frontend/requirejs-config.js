@@ -9,12 +9,6 @@ var config = {
             },
             'Magento_Checkout/js/checkout-data': {
                 'CJ_Checkout/js/checkout-data-mixin': true
-            },
-            'Magento_Checkout/js/view/minicart' : {
-                'CJ_Checkout/js/minicart-content-mixin': true
-            },
-            'Magento_Checkout/js/view/payment': {
-                'CJ_Checkout/js/view/payment-mixin': true
             }
         }
     }
