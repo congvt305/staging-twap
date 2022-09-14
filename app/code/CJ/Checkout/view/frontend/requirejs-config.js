@@ -1,6 +1,9 @@
 var config = {
     config: {
         mixins: {
+            'Magento_Ui/js/lib/validation/validator': {
+                'CJ_Checkout/js/validator-mixin': true
+            },
             'Magento_Checkout/js/view/minicart' : {
                 'CJ_Checkout/js/minicart-content-mixin': true
             },
