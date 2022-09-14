@@ -33,7 +33,7 @@ define([
             // console.log(quote.shippingMethod()['carrier_code'] + '_' + quote.shippingMethod()['method_code']);
             // console.log(this.template);
             var addressTemplate = 'Eguana_GWLogistics/checkout/shipping-information/address-renderer/cvs-address';
-           return quote.shippingMethod()['carrier_code'] + '_' + quote.shippingMethod()['method_code'] === 'gwlogistics_CVS' ? addressTemplate : this.template;
+           return (quote.shippingMethod() && quote.shippingMethod()['carrier_code'] + '_' + quote.shippingMethod()['method_code'] === 'gwlogistics_CVS') ? addressTemplate : this.template;
         },
         getSelectedCvsLocation: function () {
             return this.cvsLocation();
