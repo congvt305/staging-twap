@@ -2,7 +2,8 @@ define([
    "jquery",
    "Magento_Ui/js/modal/modal",
    "text!CJ_CustomCookie/template/modal/modal-popup.html",
-    "domReady!"
+    "domReady!",
+    'mage/cookies'
 ],function($, modal, popupTpl) {
     'use strict';
     return function (config) {
@@ -13,12 +14,23 @@ define([
             clickableOverlay: false
         };
 
-        var popup = modal(optionsPopup, $('#modal'));
-        if (!config.isEnabledCookieBrowser) {
+        let cookieValue = $.parseJSON($.mage.cookies.get(config.cookieName));
+        if(cookieValue == null) {
+            var popup = modal(optionsPopup, $('#modal'));
             $('#modal').modal('openModal');
         }
-        $('#btn-cookie-allow').click(function () {
+        else {
+            if(cookieValue != config.websiteId) {
+                var popup = modal(optionsPopup, $('#modal'));
+                $('#modal').modal('openModal');
+            };
+        }
+        $(config.cookieClosePopup).on('click', $.proxy(function () {
+            var cookieExpires = new Date(new Date().getTime() + (config.cookieLifetime*60*60*1000));
+            $.mage.cookies.set(config.cookieName, JSON.stringify(config.cookieValue), {
+                expires: cookieExpires
+            });
             $('#modal').modal('closeModal');
-        });
+        }, this));
     }
 });
