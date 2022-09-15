@@ -140,9 +140,9 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                         $eventArgs['item'] = $child;
                         $this->eventManager->dispatch('sales_quote_address_discount_item', $eventArgs);
                         $this->aggregateItemDiscount($child, $total);
+                        // Calculate odd Total
+                        $oddTotal += $child->getOddDiscountAmount();
                     }
-                    // Calculate odd Total
-                    $oddTotal += $item->getOddDiscountAmount();
                 } else {
                     $this->calculator->process($item);
                     $this->aggregateItemDiscount($item, $total);
@@ -159,9 +159,6 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             if ($oddTotal > 0) {
                 foreach ($items as $item) {
                     // to determine the child item discount, we calculate the parent
-                    if ($item->getParentItem()) {
-                        continue;
-                    }
                     if ($item->getDiscountAmount() > 0) {
                         $item->setDiscountAmount($item->getDiscountAmount() + $oddTotal);
                         $item->setBaseDiscountAmount($item->getBaseDiscountAmount() + $oddTotal);
