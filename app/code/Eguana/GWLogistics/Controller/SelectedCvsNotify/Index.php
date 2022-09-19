@@ -84,7 +84,7 @@ class Index extends Action implements CsrfAwareActionInterface
             $this->logger->error('gwlogistics | cvs store data for a map selection', [$e->getMessage()]);
         }
 
-        $resultRedirect->setPath($redirectUrl);
+        $resultRedirect->setPath($redirectUrl, ['updatecvs' => true]);
         return $resultRedirect;
     }
 
