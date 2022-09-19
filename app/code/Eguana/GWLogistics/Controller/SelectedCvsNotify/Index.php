@@ -39,12 +39,33 @@ class Index extends Action implements CsrfAwareActionInterface
      */
     private $header;
 
+    /**
+     * @var \Magento\Framework\Stdlib\CookieManagerInterface
+     */
+    private $cookieManager;
+
+    /**
+     * @var \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory
+     */
+    private $cookieMetadataFactory;
+
+    /**
+     * @param \Magento\Framework\HTTP\Header $header
+     * @param \Eguana\GWLogistics\Model\Service\SaveQuoteCvsLocation $saveQuoteCvsLocation
+     * @param LoggerInterface $logger
+     * @param RawFactory $rawFactory
+     * @param Context $context
+     * @param \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager
+     * @param \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory
+     */
     public function __construct(
         \Magento\Framework\HTTP\Header $header,
         \Eguana\GWLogistics\Model\Service\SaveQuoteCvsLocation $saveQuoteCvsLocation, //todo move business logic to here.
         LoggerInterface $logger,
         RawFactory $rawFactory,
-        Context $context
+        Context $context,
+        \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager,
+        \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory
     ) {
         parent::__construct($context);
 
@@ -52,6 +73,8 @@ class Index extends Action implements CsrfAwareActionInterface
         $this->logger = $logger;
         $this->rawFactory = $rawFactory;
         $this->header = $header;
+        $this->cookieManager = $cookieManager;
+        $this->cookieMetadataFactory = $cookieMetadataFactory;
     }
 
     public function execute()
@@ -83,8 +106,16 @@ class Index extends Action implements CsrfAwareActionInterface
         } catch (\Exception $e) {
             $this->logger->error('gwlogistics | cvs store data for a map selection', [$e->getMessage()]);
         }
-
-        $resultRedirect->setPath($redirectUrl, ['updatecvs' => true]);
+        $publicCookieMetadata = $this->cookieMetadataFactory->createPublicCookieMetadata();
+        $publicCookieMetadata->setDuration(20);
+        $publicCookieMetadata->setPath('/');
+        $publicCookieMetadata->setHttpOnly(false);
+        $this->cookieManager->setPublicCookie(
+            'updatecvs',
+            'true',
+            $publicCookieMetadata
+        );
+        $resultRedirect->setPath($redirectUrl);
         return $resultRedirect;
     }
 

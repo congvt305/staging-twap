@@ -100,18 +100,25 @@ define([
         syncWithShipping: function () {
             var shippingStep = _.findWhere(stepNavigator.steps(), {
                 code: 'shipping'
-            });
+            }),
+                isUpdateCvs = $.cookieStorage.get('updatecvs'); //check if is select cvs address data so apply cvs address data
 
             shippingStep.isVisible.subscribe(function (isShippingVisible) {
                 this.isVisible(this.isAvailable && isShippingVisible);
             }, this);
             this.isVisible(this.isAvailable && shippingStep.isVisible());
+            if (isUpdateCvs) {
+                this.preselectLocation();
+            }
             this.isCvsPickupSelected.subscribe(function () {
-                if (shippingStep.isVisible() && !this.getUrlParameter('updatecvs')) {
-                    //set select shipping null for cvs to avoid miss data when change back home delivery tab
-                    pickupLocationsService.selectForShipping({});
-                } else {
+                var isUpdateCvs = $.cookieStorage.get('updatecvs');
+                if (isUpdateCvs) {
                     this.preselectLocation();
+                } else {
+                    if (shippingStep.isVisible()) {
+                        //set select shipping null for cvs to avoid miss data when change back home delivery tab
+                        pickupLocationsService.selectForShipping({});
+                    }
                 }
             }, this);
         },
