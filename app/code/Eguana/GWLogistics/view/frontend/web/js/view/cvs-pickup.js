@@ -107,11 +107,48 @@ define([
             }, this);
             this.isVisible(this.isAvailable && shippingStep.isVisible());
             this.isCvsPickupSelected.subscribe(function () {
-                if (shippingStep.isVisible()) {
+                if (shippingStep.isVisible() && !this.getUrlParameter('updatecvs')) {
                     //set select shipping null for cvs to avoid miss data when change back home delivery tab
                     pickupLocationsService.selectForShipping({});
+                } else {
+                    this.preselectLocation();
                 }
             }, this);
+        },
+
+        preselectLocation: function () {
+            var selectedLocation = pickupLocationsService.selectedLocation();
+            if (this.isCvsPickupSelected()) {
+                if (selectedLocation) {
+                    pickupLocationsService.selectForShipping(selectedLocation);
+                }
+                pickupLocationsService.getLocation()
+                    .then(function (location) {
+                        if (!location.CVSAddress) {
+                            return;
+                        }
+                        pickupLocationsService.selectForShipping(location);
+                    });
+            }
+
+    },
+
+        /**
+         * Get url param to make sure it redirect by mobile to decide should reset cvs or not
+         *
+         * @returns void
+         */
+        getUrlParameter : function getUrlParameter(sParam) {
+            var sPageURL = window.location.pathname,
+                sURLVariables = sPageURL.split('/'),
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                if (sURLVariables[i] === sParam) {
+                    return true;
+                }
+            }
+            return false;
         },
 
         /**
