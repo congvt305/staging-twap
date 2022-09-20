@@ -27,32 +27,52 @@ class RefundOfflineManagement implements \Eguana\CustomerRefund\Api\RefundOfflin
      */
     private $messageManager;
 
+    /**
+     * @var Refund
+     */
+    private $customerRefund;
+
+    /**
+     * @param \Eguana\CustomerRefund\Api\BankInfoRepositoryInterface $bankInfoRepository
+     * @param \Eguana\CustomerRefund\Api\Data\BankInfoDataInterfaceFactory $bankInfoDataFactory
+     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param Refund $customerRefund
+     */
     public function __construct(
         \Eguana\CustomerRefund\Api\BankInfoRepositoryInterface $bankInfoRepository,
         \Eguana\CustomerRefund\Api\Data\BankInfoDataInterfaceFactory $bankInfoDataFactory,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
-        \Magento\Framework\Message\ManagerInterface $messageManager
-    )
-    {
-
+        \Magento\Framework\Message\ManagerInterface $messageManager,
+        Refund $customerRefund
+    ) {
         $this->bankInfoRepository = $bankInfoRepository;
         $this->bankInfoDataFactory = $bankInfoDataFactory;
         $this->orderRepository = $orderRepository;
         $this->messageManager = $messageManager;
+        $this->customerRefund = $customerRefund;
     }
 
     /**
+     * Process refund order offline
+     *
      * @param \Eguana\CustomerRefund\Api\Data\BankInfoDataInterface $bankInfoData
      * @return bool
      */
     public function process(\Eguana\CustomerRefund\Api\Data\BankInfoDataInterface $bankInfoData): bool
     {
         try {
-            $this->saveBankInfo($bankInfoData);
             $order = $this->orderRepository->get($bankInfoData->getOrderId());
-            //cannot cancel logistics...??
-            $this->hold($order);
-            $this->messageManager->addSuccessMessage(__('You requested to refund.'));
+            if ($this->customerRefund->canRefundOffline($order)) {
+                $this->saveBankInfo($bankInfoData);
+                //cannot cancel logistics...??
+                $this->hold($order);
+                $this->messageManager->addSuccessMessage(__('You requested to refund.'));
+            } else {
+                $this->messageManager->addErrorMessage(__('The order cannot be cancelled at this time because the system has already arranged for shipment. If you need to cancel your order, please use the return process, thank you!'));
+                return false;
+            }
+
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
             return false;
@@ -61,6 +81,12 @@ class RefundOfflineManagement implements \Eguana\CustomerRefund\Api\RefundOfflin
         return true;
     }
 
+    /**
+     * Save data bank info
+     *
+     * @param $bankInfoData
+     * @return void
+     */
     private function saveBankInfo($bankInfoData)
     {
         $bankInfo = $this->bankInfoDataFactory->create();
@@ -72,6 +98,8 @@ class RefundOfflineManagement implements \Eguana\CustomerRefund\Api\RefundOfflin
     }
 
     /**
+     * Hold order
+     *
      * @param \Magento\Sales\Api\Data\OrderInterface $order
      */
     private function hold($order)
