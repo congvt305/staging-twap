@@ -56,7 +56,19 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
      * @var \Magento\Framework\Message\ManagerInterface
      */
     private $messageManager;
+    private Refund $customerRefund;
 
+    /**
+     * @param OrderRepositoryInterface $orderRepository
+     * @param InvoiceRepositoryInterface $invoiceRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param CreditmemoItemCreationInterfaceFactory $creditmemoItemFactory
+     * @param RefundInvoiceInterface $refundInvoice
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param RefundOrderInterface $refundOrder
+     * @param LoggerInterface $logger
+     * @param Refund $customerRefund
+     */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         InvoiceRepositoryInterface $invoiceRepository,
@@ -65,7 +77,8 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
         RefundInvoiceInterface $refundInvoice,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         RefundOrderInterface $refundOrder, // for offline creditmemo like checkmo todo: remove after test
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Refund $customerRefund
     ) {
         $this->orderRepository = $orderRepository;
         $this->refundInvoice = $refundInvoice;
@@ -75,10 +88,13 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->creditmemoItemFactory = $creditmemoItemFactory;
         $this->messageManager = $messageManager;
+        $this->customerRefund = $customerRefund;
     }
 
 
     /**
+     * Process refund online
+     *
      * @param string $orderId
      * @return bool
      * @throws CouldNotSaveException
@@ -87,8 +103,14 @@ class RefundOnlineManagement implements RefundOnlineManagementInterface
     {
         try {
             $order = $this->orderRepository->get($orderId);
-            $this->refund($order);
-            $this->messageManager->addSuccessMessage(__('You Refunded the order'));
+            if ($this->customerRefund->canRefundOnline($order)) {
+                $this->refund($order);
+                $this->messageManager->addSuccessMessage(__('You Refunded the order'));
+            } else {
+                $this->messageManager->addErrorMessage(__('The order cannot be cancelled at this time because the system has already arranged for shipment. If you need to cancel your order, please use the return process, thank you!'));
+                return false;
+            }
+
         } catch (\Exception $e) {
             $this->logger->info('customerRefund | something went wrong ', [$e->getMessage()]);
             $this->messageManager->addErrorMessage(__('Something is wrong with refund. Please contact our customer service.'));

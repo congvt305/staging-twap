@@ -16482,3 +16482,5 @@ sample,樣本
 "I confirm to delete","確認刪除"
 "Items has been deleted","已成功刪除缺貨商品"
 "Items cannot be deleted. Please try again","無法刪除缺貨商品，請重新再試一次**"
+"The order cannot be cancelled at this time because the system has already arranged for shipment. If you need to cancel your order, please use the return process, thank you!","因系統已安排出貨，目前無法取消訂單。
+                                                                                                                                                                                如有需要取消訂單請使用退貨流程，謝謝!"
