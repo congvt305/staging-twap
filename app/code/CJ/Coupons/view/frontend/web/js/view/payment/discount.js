@@ -234,6 +234,7 @@ define(
                             messageContainer.addSuccessMessage({'message': message});
                         }
                         this.fakeCouponCode('');
+                        window.location.reload();
                     }.bind(this)).always(function(){
                         isLoading(false);
                     });
