@@ -28,8 +28,6 @@ define([
                 this.saveUrl = urlBuilder.createUrl('/checkout/:cartId/saveInsertedInfo', {cartId: this.quoteId});
             }
 
-            $(window).on('beforeunload', this.saveStatistic.bind(this));
-
             return this;
         },
 
