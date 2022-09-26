@@ -37,6 +37,7 @@ define([
         var email_value = $(email_identifier).val();
         var ward_value = $(ward_identifier).val();
         var delivery_message_value = $(delivery_message_identifier).val();
+        statistic.saveStatistic();
 
         payload = {
             cartId: quote.getQuoteId(),
@@ -64,7 +65,6 @@ define([
             });
             payload.email = quote.guestEmail;
         }
-        statistic.saveStatistic();
 
         return placeOrderService(serviceUrl, payload, messageContainer);
     };
