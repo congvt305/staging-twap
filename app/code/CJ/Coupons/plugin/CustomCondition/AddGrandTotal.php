@@ -18,8 +18,8 @@ class AddGrandTotal
         callable $proceed
     ): \Magento\SalesRule\Model\Rule\Condition\Address {
         $attributes = [
-            'grand_total' => __('Subtotal with discount amount'),
-            'base_subtotal_with_discount' => __('Subtotal (Excl. Tax)'),
+            'grand_total' => __('Grand Total'),
+            'base_subtotal_with_discount' => __('Subtotal with discount amount'),
             'base_subtotal_total_incl_tax' => __('Subtotal (Incl. Tax)'),
             'base_subtotal' => __('Subtotal'),
             'total_qty' => __('Total Items Quantity'),
