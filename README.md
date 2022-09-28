@@ -30,7 +30,7 @@ To add authentication keys using an environment variable:
     {
        "http-basic": {
           "repo.magento.com": {
-          "username": "<public-key>",
+          "username": "<public-key>", 
           "password": "<private-key>"
         }
       }
