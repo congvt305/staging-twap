@@ -28,12 +28,17 @@ define([
             if (isLoggedIn()) {
                 if (Object.keys(customerData).length) {
                     addressLength = Object.keys(customerData.addresses).length
+                    var maxId = 0;
                     $.each(customerData.addresses, function (key, item) {
-                        if (item.default_shipping || i === addressLength) {
+                        if (item.default_shipping) {
                             items.push(new Address(item));
+                        } else {
+                            if (maxId <= key) {
+                                maxId = key;
+                            }
                         }
-                        i++;
                     });
+                    items.push(new Address(customerData.addresses[maxId]));
                 }
             }
 
