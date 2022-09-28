@@ -27,6 +27,13 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class Discount extends \Magento\SalesRule\Model\Quote\Discount
 {
+    const PAYNOW_VISA = 'paynow-visa';
+
+    const PAYNOW_WALLET = 'paynow-wallet';
+
+    const PAYNOW = 'paynow';
+
+
     /**
      * @var RuleDiscountInterfaceFactory
      */
@@ -86,6 +93,10 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
 
             if ($quote->currentPaymentWasSet()) {
                 $address->setPaymentMethod($quote->getPayment()->getMethod());
+            }
+            //set temp to calculate paynow-visa and paynow-wallet as paynow payment
+            if ($quote->getPayment()->getMethod() == self::PAYNOW_WALLET || $quote->getPayment()->getMethod() == self::PAYNOW_VISA) {
+                $address->setPaymentMethod(self::PAYNOW);
             }
 
             $this->calculator->reset($address);
@@ -177,6 +188,10 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             $address->setDiscountAmount($total->getDiscountAmount());
             $address->setBaseDiscountAmount($total->getBaseDiscountAmount());
 
+            //set back current payment method after calculate
+            if ($quote->getPayment()->getMethod() == self::PAYNOW_WALLET || $quote->getPayment()->getMethod() == self::PAYNOW_VISA) {
+                $address->setPaymentMethod($quote->getPayment()->getMethod());
+            }
             return $this;
         } else {
             parent::collect($quote, $shippingAssignment, $total);
