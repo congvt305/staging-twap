@@ -5,6 +5,12 @@
             <date>
                 <update_ninjavan_order_to_delivery_complete_days>5</update_ninjavan_order_to_delivery_complete_days>
             </date>
+            <order_status_delivery_complete_cron_for_blackcat>
+                <active>1</active>
+                <url>s-cce3c755c30441c9a.server.transfer.ap-southeast-1.amazonaws.com</url>
+                <username>magento</username>
+                <password>Magento@!02!*</password>
+            </order_status_delivery_complete_cron_for_blackcat>
         </change_status>
     </default>
 </config>
