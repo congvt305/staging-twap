@@ -24,6 +24,14 @@ class Config
 
     const CHANGE_DELIVERY_COMPLETE_STATUS_ACTIVE = 'change_status/order_status_delivery_complete_cron/active';
 
+    const CHANGE_DELIVERY_COMPLETE_STATUS_FOR_BLACKCAT_ACTIVE = 'change_status/order_status_delivery_complete_cron_for_blackcat/active';
+
+    const CHANGE_DELIVERY_COMPLETE_STATUS_FOR_BLACKCAT_URL = 'change_status/order_status_delivery_complete_cron_for_blackcat/url';
+
+    const CHANGE_DELIVERY_COMPLETE_STATUS_FOR_BLACKCAT_USERNAME = 'change_status/order_status_delivery_complete_cron_for_blackcat/username';
+
+    const CHANGE_DELIVERY_COMPLETE_STATUS_FOR_BLACKCAT_PASSWORD = 'change_status/order_status_delivery_complete_cron_for_blackcat/password';
+
     const UPDATE_NINJAVAN_ORDER_TO_DELIVERY_COMPLETE_AFTER_DAYS = 'change_status/date/update_ninjavan_order_to_delivery_complete_days';
 
     /**
@@ -81,6 +89,57 @@ class Config
         );
     }
 
+    /**
+     * Get Change Order To Delivery Complete Active Value For Black Cat ( use only for global)
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getChangeOrderToDeliveryCompleteForTWBlackCatActive()
+    {
+        return $this->scopeConfig->getValue(
+            self::CHANGE_DELIVERY_COMPLETE_STATUS_FOR_BLACKCAT_ACTIVE
+        );
+    }
+
+    /**
+     * Get Change Order To Delivery Complete Url Value For Black Cat
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getChangeOrderToDeliveryCompleteForBlackCatUrl()
+    {
+        return $this->scopeConfig->getValue(
+            self::CHANGE_DELIVERY_COMPLETE_STATUS_FOR_BLACKCAT_URL
+        );
+    }
+
+    /**
+     * Get Change Order To Delivery Complete Username Value For Black Cat
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getChangeOrderToDeliveryCompleteForBlackCatUsername()
+    {
+        return $this->scopeConfig->getValue(
+            self::CHANGE_DELIVERY_COMPLETE_STATUS_FOR_BLACKCAT_USERNAME
+        );
+    }
+
+    /**
+     * Get Change Order To Delivery Complete password Value For Black Cat
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getChangeOrderToDeliveryCompleteForBlackCatPassword()
+    {
+        return $this->scopeConfig->getValue(
+            self::CHANGE_DELIVERY_COMPLETE_STATUS_FOR_BLACKCAT_PASSWORD
+        );
+    }
     /**
      * @param $storeId
      * @return mixed

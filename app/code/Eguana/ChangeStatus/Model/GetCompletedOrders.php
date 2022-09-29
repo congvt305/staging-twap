@@ -26,6 +26,13 @@ use Psr\Log\LoggerInterface;
 
 class GetCompletedOrders
 {
+    const BLACK_CAT_ORDER_ARRIVED_STATUS = '00003';
+
+    const TW_STORE_CODE = [
+        'default',
+        'tw_laneige'
+    ];
+
     /**
      * @var SearchCriteriaBuilder
      */
@@ -90,7 +97,16 @@ class GetCompletedOrders
     private $statusNotificationCollection;
 
     /**
-     * GetCompletedOrders constructor.
+     * @var \Magento\Framework\Filesystem\Io\Sftp
+     */
+    private $sftp;
+
+    /**
+     * @var \Magento\Sales\Model\OrderFactory
+     */
+    private $orderFactory;
+
+    /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
      * @param DateTime $dateTime
@@ -106,6 +122,8 @@ class GetCompletedOrders
      * @param Logger $pointsIntegrationLogger
      * @param OrderCollectionFactory $orderCollectionFactory
      * @param NotificationCollectionFactory $statusNotificationCollection
+     * @param \Magento\Framework\Filesystem\Io\Sftp $sftp
+     * @param \Magento\Sales\Model\OrderFactory $orderFactory
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -122,7 +140,9 @@ class GetCompletedOrders
         \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig,
         Logger $pointsIntegrationLogger,
         OrderCollectionFactory $orderCollectionFactory,
-        NotificationCollectionFactory $statusNotificationCollection
+        NotificationCollectionFactory $statusNotificationCollection,
+        \Magento\Framework\Filesystem\Io\Sftp $sftp,
+        \Magento\Sales\Model\OrderFactory $orderFactory
     ) {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
@@ -139,6 +159,8 @@ class GetCompletedOrders
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
         $this->orderCollectionFactory = $orderCollectionFactory;
         $this->statusNotificationCollection = $statusNotificationCollection;
+        $this->sftp = $sftp;
+        $this->orderFactory = $orderFactory;
     }
 
     public function getCompletedOrder($storeId)
@@ -147,17 +169,24 @@ class GetCompletedOrders
         $gmtDate = $this->dateTime->gmtDate();
         $timezone = $this->timezone->getConfigTimezone('store', $storeId);
         $storeTime = $this->timezone->formatDateTime($gmtDate, 3, 3, null, $timezone);
+        $isCronChangeOrderStatusForBlackCat = $this->config->getChangeOrderToDeliveryCompleteForTWBlackCatActive();
+        $store = $this->storeManagerInterface->getStore($storeId);
         $currentTimezoneDate = date('Y-m-d H:i:s', strtotime($storeTime));
         $settledTimezoneDate = date('Y-m-d H:i:s', strtotime($currentTimezoneDate . "-" . $toBeCompletedDays . ' days'));
 
         $coveredDate = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -' . $toBeCompletedDays . ' days'));
 
-        $searchCriteria = $this->searchCriteriaBuilder
+        $this->searchCriteriaBuilder
             ->addFilter('status', 'shipment_processing', 'eq')
             ->addFilter('updated_at', $coveredDate, 'lteq')
-            ->addFilter('store_id', $storeId, 'eq')
-            ->addFilter('shipping_method', ['blackcat_homedelivery', 'eguanadhl_tablerate', 'ninjavan_tablerate'], 'in')
-            ->create();
+            ->addFilter('store_id', $storeId, 'eq');
+        if ($isCronChangeOrderStatusForBlackCat && in_array($store->getCode(), self::TW_STORE_CODE)) {
+            $this->searchCriteriaBuilder->addFilter('shipping_method', ['eguanadhl_tablerate', 'ninjavan_tablerate'], 'in');
+        } else {
+            $this->searchCriteriaBuilder->addFilter('shipping_method', ['blackcat_homedelivery', 'eguanadhl_tablerate', 'ninjavan_tablerate'], 'in');
+
+        }
+        $searchCriteria = $this->searchCriteriaBuilder->create();
 
         $orderList = $this->orderRepository->getList($searchCriteria);
 
@@ -265,11 +294,19 @@ class GetCompletedOrders
     {
         $completeOrderList = [];
         try {
+            $isCronChangeOrderStatusForBlackCat = $this->config->getChangeOrderToDeliveryCompleteForTWBlackCatActive();
+            $store = $this->storeManagerInterface->getStore($storeId);
             $orderCollection = $this->orderCollectionFactory->create();
             $orderCollection->addFieldToFilter('status', ['eq' => 'shipment_processing']);
             $orderCollection->addFieldToFilter('store_id', ['eq' => $storeId]);
-            $orderCollection->getSelect()
-                ->where('shipping_method IN (?)', ['blackcat_homedelivery', 'gwlogistics_CVS', 'eguanadhl_tablerate', 'ninjavan_tablerate']);
+            if ($isCronChangeOrderStatusForBlackCat && in_array($store->getCode(), self::TW_STORE_CODE)) {
+                $orderCollection->getSelect()
+                    ->where('shipping_method IN (?)', ['gwlogistics_CVS', 'eguanadhl_tablerate', 'ninjavan_tablerate']);
+            } else {
+                $orderCollection->getSelect()
+                    ->where('shipping_method IN (?)', ['blackcat_homedelivery', 'gwlogistics_CVS', 'eguanadhl_tablerate', 'ninjavan_tablerate']);
+            }
+
             $orderList       = $orderCollection->getItems();
             $updateAfterDays = (int)$this->config->getDaysUpdateNinjaVanOrderToDeliveryComplete($storeId);
             foreach ($orderList as $order) {
@@ -333,5 +370,78 @@ class GetCompletedOrders
             }
         }
         return $result;
+    }
+
+
+    /**
+     * Change order status to "Delivery Complete" from "Shipment Processing" for black cat by call API
+     *
+     * @return array
+     */
+    public function getOrderNeedToChangeStatusToDeliveryCompleteForBlackCat()
+    {
+        $orderNeedToCheck = [];
+        $dataToUpdate = [];
+        try {
+            $this->sftp->open(
+                [
+                    'host' => $this->config->getChangeOrderToDeliveryCompleteForBlackCatUrl(),
+                    'username' => $this->config->getChangeOrderToDeliveryCompleteForBlackCatUsername(),
+                    'password' => $this->config->getChangeOrderToDeliveryCompleteForBlackCatPassword(),
+                ]
+            );
+        } catch (\Exception $e) {
+            $this->logger->debug("ERROR WHEN CONNECT TO SERVER SFTP FOR BLACK CAT : " . $e->getMessage());
+        }
+
+        $gmtDate = $this->dateTime->gmtDate();
+        //because it just use for TW so get TW SWS or TW LNG is the same
+        $storeId = $this->storeManagerInterface->getStore('default')->getId();
+        $timezone = $this->timezone->getConfigTimezone('store', $storeId);
+        $storeTime = $this->timezone->formatDateTime($gmtDate, \IntlDateFormatter::SHORT, \IntlDateFormatter::SHORT, null, $timezone);
+        $content = $this->sftp->read('focus' . date('mdH', strtotime($storeTime. ' -1 hours')) . '.SOD');
+        if ($content) {
+            $dataEachLine = explode(PHP_EOL, $content);
+            foreach ($dataEachLine as $eachLineArr) {
+                $dataToUpdate[] = explode('|', $eachLineArr);
+            }
+            foreach ($dataToUpdate as $data) {
+                if (isset($data[5]) && $data[5] == self::BLACK_CAT_ORDER_ARRIVED_STATUS) {
+                    $orderNeedToCheck[] = $data;
+                }
+            }
+        }
+        return $orderNeedToCheck;
+    }
+
+    /**
+     * Change order status to delivery for black cat
+     *
+     * @return bool
+     */
+    public function changeStatusToDeliveryCompleteForBlackCat()
+    {
+        $isChangeOrderActive = $this->config->getChangeOrderToDeliveryCompleteForTWBlackCatActive();
+        $host = $this->config->getChangeOrderToDeliveryCompleteForBlackCatUrl();
+        $username = $this->config->getChangeOrderToDeliveryCompleteForBlackCatUsername();
+        $password =  $this->config->getChangeOrderToDeliveryCompleteForBlackCatPassword();
+        if ($isChangeOrderActive && $host && $username && $password) {
+            $orderNeedToCheck = $this->getOrderNeedToChangeStatusToDeliveryCompleteForBlackCat();
+            foreach ($orderNeedToCheck as $orderData) {
+                try {
+                    $orderModel = $this->orderFactory->create();
+                    $order = $orderModel->loadByIncrementId($orderData[1]);
+                    if ($order->getStatus() == 'shipment_processing') {
+                        $order->setStatus('delivery_complete');
+                        $order->setState('delivery_complete');
+                        $this->orderRepository->save($order);
+                    }
+                } catch (\Exception $e) {
+                    $this->logger->debug('ERROR WHEN UPDATED STATUS FOR TW ORDER: ' . $orderData[1] . ' ERROR: ' . $e->getMessage());
+                    continue;
+                }
+            }
+            return true;
+        }
     }
 }
