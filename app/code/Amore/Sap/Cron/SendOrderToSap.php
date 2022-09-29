@@ -227,54 +227,59 @@ class SendOrderToSap
 
                 if ($result && is_array($result)) {
                     if ($result['success']) {
-                        $outdata = $result['data']['response']['output']['outdata'];
-                        $ordersSucceeded = [];
-                        $orderFailed = [];
-                        foreach ($outdata as $data) {
-                            if ($data['retcod'] == 'S') {
-                                $ordersSucceeded[] = $this->orderMassSend->getOriginOrderIncrementId($data);
-                                $succeededOrderObject = $this->sapOrderConfirmData->getOrderInfo($data['odrno']);
-                                $orderSendCheck = $succeededOrderObject->getData('sap_order_send_check');
-                                $succeededOrderObject->setStatus('sap_processing');
+                        if (isset($result['data']['response']['output']['outdata'])) {
+                            $outdata = $result['data']['response']['output']['outdata'];
+                            $ordersSucceeded = [];
+                            $orderFailed = [];
+                            foreach ($outdata as $data) {
+                                if ($data['retcod'] == 'S') {
+                                    $ordersSucceeded[] = $this->orderMassSend->getOriginOrderIncrementId($data);
+                                    $succeededOrderObject = $this->sapOrderConfirmData->getOrderInfo($data['odrno']);
+                                    $orderSendCheck = $succeededOrderObject->getData('sap_order_send_check');
+                                    $succeededOrderObject->setStatus('sap_processing');
 
-                                if ($orderSendCheck == 0 || $orderSendCheck == 2) {
-                                    $succeededOrderObject->setData('sap_order_send_check', SapOrderConfirmData::ORDER_RESENT_TO_SAP_SUCCESS);
+                                    if ($orderSendCheck == 0 || $orderSendCheck == 2) {
+                                        $succeededOrderObject->setData('sap_order_send_check', SapOrderConfirmData::ORDER_RESENT_TO_SAP_SUCCESS);
+                                    } else {
+                                        $succeededOrderObject->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                                    }
+
+                                    $this->orderRepository->save($succeededOrderObject);
                                 } else {
-                                    $succeededOrderObject->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_SUCCESS);
+                                    $error = ['increment_id' => $data['odrno'], 'code' => $data['ugcod'], 'error_code' => $data['ugtxt']];
+                                    array_push($orderFailed, $error);
+                                    $this->orderMassSend->changeOrderSendCheckValue($data, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL, "sap_fail");
+                                    $this->logger->error(
+                                        __(
+                                            'Error returned from SAP for order %1. Error code : %2. Message : %3',
+                                            $data['odrno'],
+                                            $data['ugcod'],
+                                            $data['ugtxt']
+                                        )
+                                    );
                                 }
+                            }
+                            $countOrderSucceeded = count($ordersSucceeded);
+                            if ($countOrderSucceeded > 0) {
+                                $this->logger->info(__('%1 orders sent to SAP Successfully.', $countOrderSucceeded));
+                            }
 
-                                $this->orderRepository->save($succeededOrderObject);
-                            } else {
-                                $error = ['increment_id' => $data['odrno'], 'code' => $data['ugcod'], 'error_code' => $data['ugtxt']];
-                                array_push($orderFailed, $error);
-                                $this->orderMassSend->changeOrderSendCheckValue($data, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL, "sap_fail");
-                                $this->logger->error(
-                                    __(
-                                        'Error returned from SAP for order %1. Error code : %2. Message : %3',
-                                        $data['odrno'],
-                                        $data['ugcod'],
-                                        $data['ugtxt']
-                                    )
+                            if (count($orderFailed)) {
+                                $this->logOperation(
+                                    $this->json->serialize($sendData),
+                                    empty($orderStatusError) ? 1 : 0,
+                                    $this->json->serialize($orderFailed)
                                 );
                             }
                         }
-                        $countOrderSucceeded = count($ordersSucceeded);
-                        if ($countOrderSucceeded > 0) {
-                            $this->logger->info(__('%1 orders sent to SAP Successfully.', $countOrderSucceeded));
+                    } else {
+                        if (isset($result['data']['response']['output']['outdata'])) {
+                            $outdata = $result['data']['response']['output']['outdata'];
+                            foreach ($outdata as $data) {
+                                $this->orderMassSend->changeOrderSendCheckValue($data, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL, "sap_fail");
+                            }
                         }
 
-                        if (count($orderFailed)) {
-                            $this->logOperation(
-                                $this->json->serialize($sendData),
-                                empty($orderStatusError) ? 1 : 0,
-                                $this->json->serialize($orderFailed)
-                            );
-                        }
-                    } else {
-                        $outdata = $result['data']['response']['output']['outdata'];
-                        foreach ($outdata as $data) {
-                            $this->orderMassSend->changeOrderSendCheckValue($data, SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL, "sap_fail");
-                        }
                         $this->logger->error(
                             __(
                                 'Error returned from SAP for order %1. Error code : %2. Message : %3',
