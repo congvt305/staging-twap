@@ -4,4 +4,7 @@
     <type name="Magento\SalesRule\Model\Rule\Condition\Address">
         <plugin name="addGrandTotalType" type="CJ\Coupons\plugin\CustomCondition\AddGrandTotal"/>
     </type>
+    <type name="Magento\AdvancedSalesRule\Model\Rule\Condition\Address">
+        <plugin name="customSubtotalWithDiscount" type="CJ\Coupons\plugin\SalesRule\CustomValidateSubtotalWithDiscount"/>
+    </type>
 </config>
