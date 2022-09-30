@@ -81,11 +81,14 @@ class Register extends Action
     public function execute()
     {
         $counterId = $this->getRequest()->getParam('counter_id');
+        if (!$counterId) {
+            $counterId = $this->getRequest()->getParam('counter-id');
+        }
         $token = $this->getRequest()->getParam('token');
         if (isset($counterId)) {
             $counter = $this->counterRepository->getById($counterId);
             if (empty($counter->getData())) {
-                $this->managerInterface->addErrorMessage(__('No counter exsit with ' . $counterId . ' id'));
+                $this->managerInterface->addErrorMessage(__('No counter exist with ' . $counterId . ' id'));
                 $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
                 $resultRedirect->setUrl('/');
                 return $resultRedirect;

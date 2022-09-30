@@ -327,7 +327,7 @@ class RedemptionDetail implements ArgumentInterface
      */
     private function getCounterId()
     {
-        return $this->request->getParam('counter_id');
+        return $this->request->getParam('counter_id') ?: $this->request->getParam('counter-id');
     }
 
     /**
