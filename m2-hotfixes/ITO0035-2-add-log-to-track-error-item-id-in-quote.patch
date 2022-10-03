@@ -4,14 +4,15 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/vendor/magento/module-checkout/Model/DefaultConfigProvider.php b/vendor/magento/module-checkout/Model/DefaultConfigProvider.php
---- a/vendor/magento/module-checkout/Model/DefaultConfigProvider.php	(revision 35f162a65d7c771368632aa0da52d86a5a085ed6)
-+++ b/vendor/magento/module-checkout/Model/DefaultConfigProvider.php	(date 1663916126933)
-@@ -722,6 +722,17 @@
+--- a/vendor/magento/module-checkout/Model/DefaultConfigProvider.php	(revision 30b5c6ddfddcf08d0db0e6b867f3f9ec9f88a1ad)
++++ b/vendor/magento/module-checkout/Model/DefaultConfigProvider.php	(date 1664786712854)
+@@ -722,6 +722,18 @@
          $quoteItemsMessages = [];
          if ($quoteItemData) {
              foreach ($quoteItemData as $item) {
 +                if (!isset($item['item_id'])) {
 +                    $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++                    $backTrace = '';
 +                    foreach ($debugBackTrace as $item) {
 +                        $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . "\n";
 +                    }
