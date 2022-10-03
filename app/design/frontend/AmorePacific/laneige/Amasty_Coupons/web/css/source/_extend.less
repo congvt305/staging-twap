@@ -1,4 +1,20 @@
 & when (@media-common = true) {
+    .table-wrapper {
+        tr[class=totals] {
+            .title {
+                &:after {
+                    content: '' !important;
+                }
+            }
+        }
+    }
+    .totals.discount {
+        .title {
+            &:after {
+                content: '' !important;
+            }
+        }
+    }
    .checkout-cart-index .sws-coupons-modal .modal-popup .modal-content {
        padding: unset;
    }
