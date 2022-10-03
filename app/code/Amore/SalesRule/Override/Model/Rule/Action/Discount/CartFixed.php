@@ -37,6 +37,11 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
     private $storeManager;
 
     /**
+     * @var \Amasty\Promo\Helper\Item
+     */
+    protected $promoItemHelper;
+
+    /**
      * @param Validator $validator
      * @param DataFactory $discountDataFactory
      * @param PriceCurrencyInterface $priceCurrency
@@ -50,6 +55,7 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
         PriceCurrencyInterface $priceCurrency,
         DeltaPriceRound $deltaPriceRound,
         StoreManagerInterface $storeManager,
+        \Amasty\Promo\Helper\Item $promoItemHelper,
         ?CartFixedDiscount $cartFixedDiscount = null
     ) {
         $this->deltaPriceRound = $deltaPriceRound;
@@ -63,6 +69,7 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
             $deltaPriceRound,
             $cartFixedDiscount
         );
+        $this->promoItemHelper = $promoItemHelper;
     }
 
     /**
@@ -136,6 +143,15 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
                             $address,
                             $baseRuleTotals
                         ) : $baseRuleTotals;
+
+                if (!$this->promoItemHelper->isPromoItem($item)) {
+                    foreach ($address->getAllVisibleItems() as $_item) {
+                        if ($this->promoItemHelper->isPromoItem($_item)) {
+                            $baseRuleTotals -= $_item->getRowTotal();
+                        }
+                    }
+                }
+
                 $maximumItemDiscount =$this->cartFixedDiscountHelper
                     ->getDiscountAmount(
                         $ruleDiscount,
