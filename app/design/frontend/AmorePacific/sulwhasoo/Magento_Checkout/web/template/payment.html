@@ -44,6 +44,17 @@
                     <span translate="'Previous'" />
                 </button>
             </div>
+            <div class="primary">
+                <button class="action primary checkout"
+                        id="place-order-button"
+                        type="submit"
+                        data-bind="
+                        click:checkoutPlaceOrder,
+                        attr: {title: $t('Place Order')},
+                        'disable': isDisableButtonCheckoutPlaceOrder()">
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
+            </div>
         </div>
     </div>
 </li>
