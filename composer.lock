@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "304e0d4944d39a04edf8861a2fd9c732",
+    "content-hash": "69b660d8f1e2739fb7862d3c956e25e3",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -224,10 +224,10 @@
         },
         {
             "name": "amasty/base",
-            "version": "1.13.2",
+            "version": "1.13.5",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/base-1.13.2-ee.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/base-1.13.5.zip"
             },
             "require": {
                 "php": ">=7.3"
@@ -298,14 +298,14 @@
         },
         {
             "name": "amasty/feed",
-            "version": "2.6.20",
+            "version": "2.6.22",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/feed-2.6.20-ee.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/feed-2.6.22.zip"
             },
             "require": {
-                "amasty/base": ">=1.13.2",
-                "amasty/cron-schedule-list": ">=1.0.5",
+                "amasty/base": ">=1.13.5",
+                "amasty/cron-schedule-list": ">=1.0.1",
                 "php": ">=7.3"
             },
             "type": "magento2-module",
@@ -30227,5 +30227,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
