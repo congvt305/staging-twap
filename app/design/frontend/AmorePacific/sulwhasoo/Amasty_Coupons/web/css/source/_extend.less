@@ -1,4 +1,13 @@
 & when (@media-common = true) {
+    .table-wrapper {
+        tr[class=totals] {
+            .title {
+                &:after {
+                    content: '' !important;
+                }
+            }
+        }
+    }
     .checkout-cart-index {
         .cart-summary {
             div {
