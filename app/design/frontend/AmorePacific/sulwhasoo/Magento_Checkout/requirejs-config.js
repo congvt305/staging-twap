@@ -11,6 +11,9 @@ var config = {
             },
             'Magento_Checkout/js/view/shipping': {
                 'Magento_Checkout/js/view/shipping-mixin': true
+            },
+            'Magento_Checkout/js/view/payment/default': {
+                'Magento_Checkout/js/view/payment/default-mixin': true
             }
         }
     }
