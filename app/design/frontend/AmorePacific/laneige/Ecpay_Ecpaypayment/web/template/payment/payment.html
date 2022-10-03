@@ -101,19 +101,5 @@
                 </div>
             </fieldset>
         </form>
-
-        <div class="actions-toolbar" data-bind="if: isPaymentAvailable()">
-            <div class="primary">
-                <button class="button action primary checkout"
-                        type="submit"
-                        data-role="review-save"
-                        data-bind="
-                        click: checkoutToEcpay,
-                        attr: {title: $t('Place Order')}
-                        ">
-                    <span data-bind="i18n: 'Place Order'"></span>
-                </button>
-            </div>
-        </div>
     </div>
 </div>
