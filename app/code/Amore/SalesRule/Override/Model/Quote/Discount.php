@@ -44,6 +44,11 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
      */
     private $discountDataInterfaceFactory;
 
+    /**
+     * @var \Amasty\Promo\Helper\Item
+     */
+    protected $promoItemHelper;
+
     protected $stores = [
         'tw_laneige',
         'vn_laneige',
@@ -57,6 +62,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         StoreManagerInterface $storeManager,
         Validator $validator,
         PriceCurrencyInterface $priceCurrency,
+        \Amasty\Promo\Helper\Item $promoItemHelper,
         RuleDiscountInterfaceFactory $discountInterfaceFactory = null,
         DiscountDataInterfaceFactory $discountDataInterfaceFactory = null
     ) {
@@ -66,6 +72,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             ?: ObjectManager::getInstance()->get(RuleDiscountInterfaceFactory::class);
         $this->discountDataInterfaceFactory = $discountDataInterfaceFactory
             ?: ObjectManager::getInstance()->get(DiscountDataInterfaceFactory::class);
+        $this->promoItemHelper = $promoItemHelper;
     }
 
     /**
@@ -100,7 +107,8 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             }
 
             $this->calculator->reset($address);
-
+            $address->setDiscountAmount(0);
+            $address->setBaseDiscountAmount(0);
             $items = $shippingAssignment->getItems();
 
             if (!count($items)) {
@@ -113,6 +121,20 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                 'coupon_code' => $quote->getCouponCode(),
             ];
 
+            foreach ($items as $item) {
+                if (!$this->promoItemHelper->isPromoItem($item)) {
+                    $item->setDiscountAmount(0);
+                    $item->setBaseDiscountAmount(0);
+
+                    // ensure my children are zeroed out
+                    if ($item->getHasChildren() && $item->isChildrenCalculated()) {
+                        foreach ($item->getChildren() as $child) {
+                            $child->setDiscountAmount(0);
+                            $child->setBaseDiscountAmount(0);
+                        }
+                    }
+                }
+            }
             $this->calculator->init($store->getWebsiteId(), $quote->getCustomerGroupId(), $quote->getCouponCode());
             $this->calculator->initTotals($items, $address);
 
