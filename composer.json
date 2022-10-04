@@ -47,6 +47,7 @@
         "amasty/promo": "^2.11",
         "amasty/reviews_import_export": "^1.0",
         "amasty/rgrid": ">=1.0.7",
+        "amasty/special-occasion-coupons": "^1.0",
         "magento/magento-cloud-metapackage": ">=2.4.3 <2.4.4",
         "magento/module-page-builder-product-recommendations": "^1.1",
         "magento/module-visual-product-recommendations": "^1.1",
