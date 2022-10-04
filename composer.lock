@@ -1027,6 +1027,32 @@
             "description": "Social Login by Amasty"
         },
         {
+            "name": "amasty/special-occasion-coupons",
+            "version": "1.0.8",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/special-occasion-coupons-1.0.8.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "amasty/cron-schedule-list": "*",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Birth\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Special Occasion Coupons by Amasty"
+        },
+        {
             "name": "amzn/amazon-pay-and-login-magento-2-module",
             "version": "4.2.2",
             "dist": {
