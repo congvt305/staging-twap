@@ -81,22 +81,26 @@ class Register extends Action
     public function execute()
     {
         $counterId = $this->getRequest()->getParam('counter_id');
+        if (!$counterId) {
+            $counterId = $this->getRequest()->getParam('counter-id');
+        }
         $token = $this->getRequest()->getParam('token');
         if (isset($counterId)) {
-            $counter = $this->counterRepository->getById($counterId);
-            if (empty($counter->getData())) {
-                $this->managerInterface->addErrorMessage(__('No counter exsit with ' . $counterId . ' id'));
+            try {
+                $counter = $this->counterRepository->getById($counterId);
+                if ($token === $counter->getToken()) {
+                    return $this->resultPageFactory->create();
+                } else {
+                    $this->messageManager->addErrorMessage(__('You are not authorized for this redemption.'));
+                    $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
+                    return $resultRedirect->setUrl('/');
+                }
+            } catch (\Exception $e) {
+                $this->managerInterface->addErrorMessage(__('No counter exist with ' . $counterId . ' id'));
                 $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
                 $resultRedirect->setUrl('/');
                 return $resultRedirect;
             }
-        }
-        if ($token === $this->counterRepository->getById($counterId)->getToken()) {
-            return $this->resultPageFactory->create();
-        } else {
-            $this->messageManager->addErrorMessage(__('You are not authorized for this redemption.'));
-            $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
-            return $resultRedirect->setUrl('/');
         }
         return $this->resultPageFactory->create();
     }
