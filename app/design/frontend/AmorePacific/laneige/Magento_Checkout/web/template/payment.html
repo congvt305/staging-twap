@@ -38,10 +38,21 @@
             </fieldset>
         </form>
         <div class="checkout-message" data-bind="html: window.checkoutConfig.cms_block"></div>
-        <div class="actions-toolbar">
+        <div class="actions-toolbar two-buttons">
             <div class="primary">
                 <button class="action primary btn-previous" type="button" data-bind="attr: { title: $t('Previous') }, click: goBack">
                     <span translate="'Previous'" />
+                </button>
+            </div>
+            <div class="primary">
+                <button class="action primary btn-place-order"
+                        id="place-order-button"
+                        type="submit"
+                        data-bind="
+                        click:checkoutPlaceOrder,
+                        attr: {title: $t('Place Order')},
+                        'disable': isDisableButtonCheckoutPlaceOrder()">
+                    <span data-bind="i18n: 'Place Order'"></span>
                 </button>
             </div>
         </div>
