@@ -39,7 +39,7 @@ class EInvoice extends \Magento\Framework\View\Element\Template
         $payment = $order->getPayment();
         $additionalData = $payment->getAdditionalData();
 
-        if (json_decode($additionalData, true)["RtnCode"] == 1) {
+        if (isset(json_decode($additionalData, true)["RtnCode"]) && json_decode($additionalData, true)["RtnCode"] == 1) {
             return json_decode($additionalData, true);
         } else {
             return null;
