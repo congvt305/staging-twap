@@ -17,20 +17,16 @@ index e9f164c..f800501 100644
                  . " block's name: '{$this->getNameInLayout()}'";
 +
 +            if ($this->getModuleName() == 'Magento_Cms') {
-+                try {
-+                    throw new LocalizedException(__($errorMessage));
-+                } catch (\Exception $exception) {
-+                    $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-for-ticket-ITO0035-14.log');
-+                    $logger = new \Zend_Log();
-+                    $logger->addWriter($writer);
-+                    $logger->info($errorMessage);
-+                    $logger->info('filename: '. $fileName);
-+                    $logger->info('full action name: '. $this->getRequest()->getFullActionName());
-+                    $logger->info('request uri: ' . $_SERVER['REQUEST_URI']);
-+                    $logger->info('block data: ' . json_encode($this->getData()));
-+                    $logger->info('==================== Error Trace ====================');
-+                    $logger->info($exception->getTraceAsString());
-+                }
++               $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-for-ticket-ITO0035-14.log');
++               $logger = new \Zend_Log();
++               $logger->addWriter($writer);
++               $logger->info($errorMessage);
++               $logger->info('filename: '. $fileName);
++               $logger->info('full action name: '. $this->getRequest()->getFullActionName());
++               $logger->info('request uri: ' . $_SERVER['REQUEST_URI']);
++               $logger->info('block data: ' . json_encode($this->getData()));
++               $logger->info('==================== Error Trace ====================');
++               $logger->info($exception->getTraceAsString());
 +            }
 +
              if ($this->_appState->getMode() === \Magento\Framework\App\State::MODE_DEVELOPER) {
