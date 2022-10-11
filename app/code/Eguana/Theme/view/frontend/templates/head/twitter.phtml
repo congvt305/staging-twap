@@ -2,7 +2,7 @@
 <meta property="twitter:title"
       content="<?= /* @noEscape */ $block->stripTags($block->getMetaTitle()) ?>" />
 <meta property="twitter:image"
-      content="<?= $block->escapeUrl($block->getViewFileUrl('Eguana_Theme::images/og.jpg')) ?>" />
+      content="<?= /* @noEscape  */ $block->escapeUrl($block->getImageViewUrl($block->getImage())) ?>" />
 <meta property="twitter:description"
       content="<?= /* @noEscape */ $block->stripTags($block->getDescription()) ?>" />
 <meta property="twitter:url" content="<?= $block->escapeUrl($block->getCurrentUrl()) ?>" />
