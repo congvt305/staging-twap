@@ -102,6 +102,17 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
 
         if ($availableDiscountAmount > 0) {
             $store = $quote->getStore();
+            //no need to set discount for promo item - it will be set in observer salesrule_validator_process
+            if ($this->promoItemHelper->isPromoItem($item)) {
+                $discountData->setAmount(0);
+                $discountData->setBaseAmount(0);
+                $discountData->setOriginalAmount(0);
+                $discountData->setBaseOriginalAmount(0);
+                $quote->setCartFixedRules($cartRules);
+
+                return $discountData;
+            }
+
             if ($ruleTotals['items_count'] <= 1) {
                 $baseRuleTotals = $shippingMethod ?
                     $this->cartFixedDiscountHelper
