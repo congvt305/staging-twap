@@ -11,7 +11,7 @@ diff --git a/vendor/fastly/magento2/etc/vcl_snippets/fetch.vcl b/vendor/fastly/m
      # images, css and js are cacheable by default so we have to remove cookie also
      if (beresp.ttl > 0s && (req.request == "GET" || req.request == "HEAD") && !req.http.x-pass ) {
 -        unset beresp.http.set-cookie;
-+        if (req.url !~ "lineshopping" || req.url !~ "utm_") {
++        if (req.url !~ "lineshopping" || req.url !~ "utm") {
 +          unset beresp.http.set-cookie;
 +        }
 
