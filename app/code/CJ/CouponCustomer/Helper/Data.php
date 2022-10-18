@@ -2,6 +2,7 @@
 
 namespace CJ\CouponCustomer\Helper;
 
+use Magento\Customer\Model\Group;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -104,7 +105,13 @@ class Data extends AbstractHelper
         if (!$websiteId) {
             $websiteId = $this->storeManager->getStore()->getWebsiteId();
         }
-        $rules->addWebsiteGroupDateFilter($websiteId, $customer->getGroupId())
+        if ($customer->getId()) {
+            $customerGroupId = $customer->getGroupId();
+        } else {
+            $customerGroupId = Group::NOT_LOGGED_IN_ID;
+        }
+
+        $rules->addWebsiteGroupDateFilter($websiteId, $customerGroupId)
             ->addFieldToFilter('coupon_type', \Magento\SalesRule\Model\Rule::COUPON_TYPE_SPECIFIC)
             ->addFieldToFilter('is_active', 1)
             ->addFieldToFilter('is_active_wallet', 1)
