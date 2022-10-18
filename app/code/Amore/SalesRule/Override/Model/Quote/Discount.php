@@ -50,11 +50,18 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
     protected $promoItemHelper;
 
     protected $stores = [
-        'tw_laneige',
-        'vn_laneige',
-        'vn_sulwhasoo',
-        'default'
+        self::TW_LNG,
+        self::MY_LNG,
+        self::VN_LNG,
+        self::VN_SWS,
+        self::TW_SWS
     ];
+
+    const VN_LNG = 'vn_laneige';
+    const VN_SWS = 'vn_sulwhasoo';
+    const TW_LNG = 'tw_laneige';
+    const TW_SWS = 'default';
+    const MY_LNG = 'my_laneige';
 
 
     public function __construct(
@@ -102,8 +109,10 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                 $address->setPaymentMethod($quote->getPayment()->getMethod());
             }
             //set temp to calculate paynow-visa and paynow-wallet as paynow payment
-            if ($quote->getPayment()->getMethod() == self::PAYNOW_WALLET || $quote->getPayment()->getMethod() == self::PAYNOW_VISA) {
-                $address->setPaymentMethod(self::PAYNOW);
+            if (in_array($store, [self::VN_SWS, self::VN_LNG])) {
+                if ($quote->getPayment()->getMethod() == self::PAYNOW_WALLET || $quote->getPayment()->getMethod() == self::PAYNOW_VISA) {
+                    $address->setPaymentMethod(self::PAYNOW);
+                }
             }
 
             $this->calculator->reset($address);
@@ -187,6 +196,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                     $this->aggregateDiscountPerRule($item, $address, $addressDiscountAggregator);
                 }
             }
+
             // Custom for add odd number to first Item
             $oddTotal = round($oddTotal); // Should round or int
             if ($oddTotal > 0) {
@@ -203,6 +213,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             }
             // end custom
 
+
             $this->calculator->prepareDescription($address);
             $total->setDiscountDescription($address->getDiscountDescription());
             $total->setSubtotalWithDiscount($total->getSubtotal() + $total->getDiscountAmount());
@@ -211,9 +222,12 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             $address->setBaseDiscountAmount($total->getBaseDiscountAmount());
 
             //set back current payment method after calculate
-            if ($quote->getPayment()->getMethod() == self::PAYNOW_WALLET || $quote->getPayment()->getMethod() == self::PAYNOW_VISA) {
-                $address->setPaymentMethod($quote->getPayment()->getMethod());
+            if (in_array($store, [self::VN_SWS, self::VN_LNG])) {
+                if ($quote->getPayment()->getMethod() == self::PAYNOW_WALLET || $quote->getPayment()->getMethod() == self::PAYNOW_VISA) {
+                    $address->setPaymentMethod($quote->getPayment()->getMethod());
+                }
             }
+
             return $this;
         } else {
             parent::collect($quote, $shippingAssignment, $total);
