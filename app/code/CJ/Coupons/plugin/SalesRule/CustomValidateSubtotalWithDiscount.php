@@ -21,7 +21,7 @@ class CustomValidateSubtotalWithDiscount
                 if ($item->getDiscountAmount() > 0) {
                     $totalDiscount += $item->getDiscountAmount();
                 } elseif ($item->getDiscountPercent() > 0) {
-                    $totalDiscount += ($item->getDiscountPercent() * $item->getPrice());
+                    $totalDiscount += ($item->getDiscountPercent() / 100 * $item->getPrice());
                 }
             }
             $model->setBaseSubtotalWithDiscount($model->getBaseSubtotal() - $totalDiscount);
