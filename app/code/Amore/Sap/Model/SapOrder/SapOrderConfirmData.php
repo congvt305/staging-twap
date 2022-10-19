@@ -645,6 +645,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
                         $sku = str_replace($skuPrefix, '', $bundleChild->getSku());
                         $item = $this->searchOrderItem($orderAllItems, $bundleChild->getSku(), $itemId);
+                        $itemSaleAmount = $itemSubtotal - $itemTotalDiscount - abs($this->roundingPrice($mileagePerItem, $isDecimalFormat));
 
                         $orderItemData[] = [
                             'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
@@ -657,10 +658,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemMeins' => $this->getMeins($meins),
                             'itemNsamt' => $itemSubtotal,
                             'itemDcamt' => $itemTotalDiscount,
-                            'itemSlamt' => $itemSubtotal - $itemTotalDiscount - abs($this->roundingPrice($mileagePerItem, $isDecimalFormat)),
+                            'itemSlamt' => $itemSaleAmount,
                             'itemMiamt' => abs($this->roundingPrice($mileagePerItem, $isDecimalFormat)),
                             // 상품이 무상제공인 경우 Y 아니면 N
-                            'itemFgflg' => $product->getPrice() == 0 ? 'Y' : 'N',
+                            'itemFgflg' => $itemSaleAmount == 0 ? 'Y' : 'N',
                             'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
                             'itemAuart' => self::NORMAL_ORDER,
                             'itemAugru' => '',
@@ -767,6 +768,11 @@ class SapOrderConfirmData extends AbstractSapOrder
                        $qtyPerBundle = $bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered();
                        $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $qtyPerBundle;
 
+                       $catalogRuleDiscount += $catalogRuledPriceRatio * $bundleChild->getQtyOrdered();
+                   }
+               } else {
+                   foreach ($orderItem->getChildrenItems() as $bundleChild) {
+                       $catalogRuledPriceRatio = $bundleChild->getOriginalPrice() - $bundleChild->getPrice();
                        $catalogRuleDiscount += $catalogRuledPriceRatio * $bundleChild->getQtyOrdered();
                    }
                }
