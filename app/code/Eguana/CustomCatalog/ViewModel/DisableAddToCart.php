@@ -54,13 +54,19 @@ class DisableAddToCart implements ArgumentInterface
             $typeInstance = $product->getTypeInstance();
             $optionIds = $typeInstance->getOptionsIds($product);
             $selectionCollection = $typeInstance->getSelectionsCollection($optionIds, $product);
+            $salableQuantityArr = [];
             foreach ($selectionCollection as $item) {
                 $sku = $item->getSku();
                 $salable = $this->getSalableQuantityDataBySku->execute($sku);
-                $salableQuantity = 0;
-                foreach ($salable as $stock) {
-                    $salableQuantity += $stock['qty'];
+                if (isset($salableQuantityArr[$item->getOptionId()])) {
+                    $salableQuantityArr[$item->getOptionId()] = 0;
                 }
+                foreach ($salable as $stock) {
+                    $salableQuantityArr[$item->getOptionId()] += $stock['qty'];
+                }
+            }
+
+            foreach($salableQuantityArr as $salableQuantity) {
                 if ($salableQuantity <= 0) {
                     return true;
                 }
