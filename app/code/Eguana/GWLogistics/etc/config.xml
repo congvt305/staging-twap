@@ -42,6 +42,9 @@
             </gwlogistics>
         </carriers>
         <eguana_gwlogistics>
+            <general>
+                <guest_cvs_shipping_method_enabled>0</guest_cvs_shipping_method_enabled>
+            </general>
             <cron_settings>
                 <enable_cron>0</enable_cron>
                 <order_status_to_create_shipment>processing</order_status_to_create_shipment>

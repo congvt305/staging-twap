@@ -34,6 +34,7 @@ class ConfigProvider implements ConfigProviderInterface
                 self::CODE => [
                     'isActive' => $isActive,
                     'shipping_message' => $this->helper->getCarrierShippingMessage(),
+                    'guest_cvs_shipping_method_enabled' => $this->helper->isGuestCVSShippingMethodEnabled()
                 ],
         ];
     }

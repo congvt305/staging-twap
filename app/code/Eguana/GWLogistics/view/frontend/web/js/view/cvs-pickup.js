@@ -251,6 +251,18 @@ define([
             return customer.isLoggedIn();
         },
 
+        shouldVisible: function() {
+            if (customer.isLoggedIn()) {
+                return true;
+            }
+
+            if (typeof window.checkoutConfig.gwlogistics.guest_cvs_shipping_method_enabled !== 'undefined') {
+                return window.checkoutConfig.gwlogistics.guest_cvs_shipping_method_enabled;
+            } else {
+                return false;
+            }
+        },
+
         isVnWebsite: function () {
             let websiteId = window.checkout.websiteId;
             if (websiteId == 8) {
