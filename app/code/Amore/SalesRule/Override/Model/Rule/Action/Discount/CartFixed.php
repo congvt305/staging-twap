@@ -110,7 +110,9 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
                 $discountData->setOriginalAmount(0);
                 $discountData->setBaseOriginalAmount(0);
                 $quote->setCartFixedRules($cartRules);
-
+                if ($ruleTotals['items_count'] > 1) {
+                    $this->validator->decrementRuleItemTotalsCount($rule->getId());
+                }
                 return $discountData;
             }
 
