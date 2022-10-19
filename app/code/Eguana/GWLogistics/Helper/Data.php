@@ -49,6 +49,7 @@ class Data extends AbstractHelper
     const XML_PATH_ORDER_STATUS_TO_CREATE_SHIPMENT = 'eguana_gwlogistics/cron_settings/order_status_to_create_shipment';
     const XML_PATH_LAST_ORDER_ID = 'eguana_gwlogistics/cron_settings/last_order_id';
     const XML_PATH_CREATE_SHIPMENT_CRON_SCHEDULE = 'eguana_gwlogistics/cron_settings/create_shipment_cron_schedule';
+    const XML_PATH_GUEST_CVS_SHIPPING_METHOD_ENABLED = 'eguana_gwlogistics/general/guest_cvs_shipping_method_enabled';
 
     private $productionMode = null;
     /**
@@ -369,6 +370,19 @@ class Data extends AbstractHelper
     public function getLastOrderId()
     {
         return $this->scopeConfig->getValue(self::XML_PATH_LAST_ORDER_ID);
+    }
+
+    /**
+     * @param $storeId
+     * @return bool
+     */
+    public function isGuestCVSShippingMethodEnabled($storeId = null)
+    {
+        return (bool) $this->scopeConfig->getValue(
+            self::XML_PATH_GUEST_CVS_SHIPPING_METHOD_ENABLED,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
     }
 }
 
