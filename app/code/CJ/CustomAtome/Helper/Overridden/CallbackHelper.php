@@ -387,7 +387,8 @@ class CallbackHelper extends \Atome\MagentoPayment\Helper\CallbackHelper
             $this->commonHelper->debug("applyOrderPayment debug trace: " . json_encode($e->getTrace()));
             $this->commonHelper->logError("applyOrderPayment failed: " . get_class($e) . ', message: ' . $e->getMessage() . ', code: ' . $e->getCode() . ', file: ' . $e->getFile() . ', line: ' . $e->getLine());
              // custom to return coupon usage
-            $this->_eventManager->dispatch('order_cancel_after', ['order' => $ctx->orderCreated]);
+            $orderCreated = $this->orderRepository->get($orderId);
+            $this->_eventManager->dispatch('order_cancel_after', ['order' => $orderCreated]);
             // end custom
             $connection->rollBack();
             throw $e;
