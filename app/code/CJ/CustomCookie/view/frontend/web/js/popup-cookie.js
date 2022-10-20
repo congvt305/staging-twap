@@ -16,13 +16,13 @@ define([
 
         let cookieValue = $.parseJSON($.mage.cookies.get(config.cookieName));
         if(cookieValue == null) {
-            var popup = modal(optionsPopup, $('#modal'));
-            $('#modal').modal('openModal');
+            var popup = modal(optionsPopup, $('#modal-cookie'));
+            $('#modal-cookie').modal('openModal');
         }
         else {
             if(cookieValue != config.websiteId) {
-                var popup = modal(optionsPopup, $('#modal'));
-                $('#modal').modal('openModal');
+                var popup = modal(optionsPopup, $('#modal-cookie'));
+                $('#modal-cookie').modal('openModal');
             };
         }
         $(config.cookieClosePopup).on('click', $.proxy(function () {
@@ -30,7 +30,7 @@ define([
             $.mage.cookies.set(config.cookieName, JSON.stringify(config.cookieValue), {
                 expires: cookieExpires
             });
-            $('#modal').modal('closeModal');
+            $('#modal-cookie').modal('closeModal');
         }, this));
     }
 });
