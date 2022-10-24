@@ -71,7 +71,7 @@ class UpdateCouponUsage extends \Amasty\Coupons\Observer\UpdateCouponUsage
         $placeBefore = $observer->getEvent()->getName() === 'sales_order_place_before';
         $customerId = $order->getCustomerId();
         $coupons = $this->couponRenderer->parseCoupon($order->getCouponCode());
-        if (is_array($coupons) && count($coupons) > 0) {
+        if (is_array($coupons) && count($coupons) > 1) {
             foreach ($coupons as $coupon) {
                 if ($this->isUsed($coupon, $placeBefore)) {
                     continue;

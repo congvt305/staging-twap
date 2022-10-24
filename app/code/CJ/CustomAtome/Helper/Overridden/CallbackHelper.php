@@ -25,7 +25,10 @@ use Magento\Sales\Model\OrderRepository;
 
 class CallbackHelper extends \Atome\MagentoPayment\Helper\CallbackHelper
 {
-    protected $_eventManager;
+    /**
+     * @var \CJ\CustomAtome\Model\CouponUsage
+     */
+    protected $couponUsage;
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -45,9 +48,9 @@ class CallbackHelper extends \Atome\MagentoPayment\Helper\CallbackHelper
         QuoteValidator $quoteValidator,
         QuoteRepository $quoteRepository,
         PaymentApi $paymentApi,
-        \Magento\Framework\Event\ManagerInterface $eventManager
+        \CJ\CustomAtome\Model\CouponUsage $couponUsage
     ) {
-        $this->_eventManager = $eventManager;
+        $this->couponUsage = $couponUsage;
         parent::__construct(
             $context,
             $resourceConnection,
@@ -386,11 +389,9 @@ class CallbackHelper extends \Atome\MagentoPayment\Helper\CallbackHelper
         } catch (\Exception $e) {
             $this->commonHelper->debug("applyOrderPayment debug trace: " . json_encode($e->getTrace()));
             $this->commonHelper->logError("applyOrderPayment failed: " . get_class($e) . ', message: ' . $e->getMessage() . ', code: ' . $e->getCode() . ', file: ' . $e->getFile() . ', line: ' . $e->getLine());
-             // custom to return coupon usage
-            $orderCreated = $this->orderRepository->get($orderId);
+            $tempOrder = $this->orderRepository->get($orderId);
             $connection->rollBack();
-            $this->_eventManager->dispatch('order_cancel_after', ['order' => $orderCreated]);
-            // end custom
+            $this->couponUsage->refundUsedTime($tempOrder);
             throw $e;
         }
         if ($ctx->orderCreated && $ctx->quote) {
