@@ -33,6 +33,11 @@ class CouponUsage
     protected $couponUsage;
 
     /**
+     * @var \Magento\SalesRule\Model\Rule\CustomerFactory
+     */
+    protected $customerFactory;
+
+    /**
      * @param CouponRenderer $couponRenderer
      * @param CouponFactory $couponFactory
      * @param Coupon $coupon
@@ -42,11 +47,13 @@ class CouponUsage
         \Amasty\Coupons\Model\CouponRenderer $couponRenderer,
         \Magento\SalesRule\Model\CouponFactory $couponFactory,
         \Magento\SalesRule\Model\ResourceModel\Coupon $coupon,
-        \Magento\SalesRule\Model\ResourceModel\Coupon\Usage $couponUsage
+        \Magento\SalesRule\Model\ResourceModel\Coupon\Usage $couponUsage,
+        \Magento\SalesRule\Model\Rule\CustomerFactory $customerFactory
     ) {
         $this->coupon = $coupon;
         $this->couponRenderer = $couponRenderer;
         $this->couponFactory = $couponFactory;
+        $this->customerFactory = $customerFactory;
         $this->couponUsage = $couponUsage;
     }
 
@@ -71,6 +78,10 @@ class CouponUsage
                         $couponEntity->getId(),
                         false
                     );
+                    $ruleId = $couponEntity->getRuleId();
+                    $ruleCustomer = $this->customerFactory->create();
+                    $ruleCustomer->loadByCustomerRule($customerId, $ruleId);
+                    $ruleCustomer->setTimesUsed($ruleCustomer->getTimesUsed() - 1);
                 }
             }
         }
