@@ -30,7 +30,17 @@
             <argument name="filterPool" xsi:type="object" shared="false">TicketGridFilterPool</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Eguana\CustomerBulletin\Model\ResourceModel\Ticket\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+    <type name="Eguana\CustomerBulletin\Model\ResourceModel\Ticket\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">eguana_ticket</argument>
+            <argument name="resourceModel" xsi:type="string">Eguana\CustomerBulletin\Model\ResourceModel\Ticket</argument>
+            <argument name="eventPrefix" xsi:type="string">eguana_customer_bulletin_ticket_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">eguana_customer_bulletin_ticket_grid_collection</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Eguana\CustomerBulletin\Model\ResourceModel\Ticket\Grid\CollectionData"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">eguana_ticket</argument>
             <argument name="resourceModel" xsi:type="string">Eguana\CustomerBulletin\Model\ResourceModel\Ticket</argument>
@@ -39,7 +49,9 @@
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="ticket_data_grid_data_source" xsi:type="string">Eguana\CustomerBulletin\Model\ResourceModel\Ticket\Grid\Collection</item>
+                <item name="ticket_data_grid_data_source" xsi:type="string">
+                    Eguana\CustomerBulletin\Model\ResourceModel\Ticket\Grid\CollectionData
+                </item>
             </argument>
         </arguments>
     </type>
