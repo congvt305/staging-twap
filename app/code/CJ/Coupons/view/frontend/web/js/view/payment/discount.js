@@ -290,7 +290,13 @@ define(
                             } else {
                                 messageContainer.addSuccessMessage({'message': message});
                             }
-                        }.bind(this)).always(function () {
+                        }.bind(this)).fail(function (response){
+                            // remove new code
+                            var index = appliedCouponList.indexOf(newCodePopup);
+                            if (index > -1) {
+                                appliedCouponList.splice(index, 1);
+                            }
+                        }).always(function () {
                             isLoading(false);
                         });
                     }
