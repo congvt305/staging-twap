@@ -1,0 +1,125 @@
+Index: vendor/magento/module-quote/Model/ShippingAddressManagement.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/module-quote/Model/ShippingAddressManagement.php b/vendor/magento/module-quote/Model/ShippingAddressManagement.php
+--- a/vendor/magento/module-quote/Model/ShippingAddressManagement.php	(revision 64b60dd8d3ee87536895d411a2a86207c5860251)
++++ b/vendor/magento/module-quote/Model/ShippingAddressManagement.php	(date 1666773280628)
+@@ -7,6 +7,7 @@
+ namespace Magento\Quote\Model;
+
+ use Magento\Framework\App\ObjectManager;
++use Magento\Framework\App\RequestInterface;
+ use Magento\Framework\Exception\InputException;
+ use Magento\Framework\Exception\NoSuchEntityException;
+ use Psr\Log\LoggerInterface as Logger;
+@@ -68,7 +69,8 @@
+         Logger $logger,
+         \Magento\Customer\Api\AddressRepositoryInterface $addressRepository,
+         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+-        \Magento\Quote\Model\Quote\TotalsCollector $totalsCollector
++        \Magento\Quote\Model\Quote\TotalsCollector $totalsCollector,
++        RequestInterface $request
+     ) {
+         $this->quoteRepository = $quoteRepository;
+         $this->addressValidator = $addressValidator;
+@@ -76,6 +78,7 @@
+         $this->addressRepository = $addressRepository;
+         $this->scopeConfig = $scopeConfig;
+         $this->totalsCollector = $totalsCollector;
++        $this->request = $request;
+     }
+
+     /**
+@@ -99,6 +102,19 @@
+         $quote->setShippingAddress($address);
+         $address = $quote->getShippingAddress();
+
++        $uriString = $this->request->getUriString();
++        $isFromCheckout = preg_match('/shipping-information/', $uriString);
++        if ($isFromCheckout && (!$address->getFirstname() || !$address->getLastname() || !$address->getStreet())) {
++            $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++            $backTrace = '';
++            foreach ($debugBackTrace as $item) {
++                $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . " | ";
++            }
++            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-ITO0017-39.log');
++            $logger = new \Zend_Log();
++            $logger->addWriter($writer);
++            $logger->crit('Missing data shipping address when assign shipping address for quote ' . $quote->getId() . ' : ' . $backTrace);
++        }
+
+         if ($customerAddressId === null) {
+             $address->setCustomerAddressId(null);
+Index: vendor/magento/module-quote/Model/QuoteManagement.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/module-quote/Model/QuoteManagement.php b/vendor/magento/module-quote/Model/QuoteManagement.php
+--- a/vendor/magento/module-quote/Model/QuoteManagement.php	(revision 64b60dd8d3ee87536895d411a2a86207c5860251)
++++ b/vendor/magento/module-quote/Model/QuoteManagement.php	(date 1666774496841)
+@@ -527,6 +527,17 @@
+                     'email' => $quote->getCustomerEmail()
+                 ]
+             );
++            if (!$shippingAddress->getFirstname() || !$shippingAddress->getLastname() || !$shippingAddress->getStreet()) {
++                $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++                $backTrace = '';
++                foreach ($debugBackTrace as $item) {
++                    $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . " | ";
++                }
++                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-ITO0017-39.log');
++                $logger = new \Zend_Log();
++                $logger->addWriter($writer);
++                $logger->crit('Missing data shipping address when submit quote ' . $quote->getId() . ' : ' . $backTrace);
++            }
+
+             $shippingAddress->setData('quote_address_id', $quote->getShippingAddress()->getId());
+             $addresses[] = $shippingAddress;
+Index: vendor/magento/module-checkout/Model/ShippingInformationManagement.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/module-checkout/Model/ShippingInformationManagement.php b/vendor/magento/module-checkout/Model/ShippingInformationManagement.php
+--- a/vendor/magento/module-checkout/Model/ShippingInformationManagement.php	(revision 64b60dd8d3ee87536895d411a2a86207c5860251)
++++ b/vendor/magento/module-checkout/Model/ShippingInformationManagement.php	(date 1666773280620)
+@@ -125,6 +125,7 @@
+         AddressRepositoryInterface $addressRepository,
+         ScopeConfigInterface $scopeConfig,
+         TotalsCollector $totalsCollector,
++        RequestInterface $request,
+         CartExtensionFactory $cartExtensionFactory = null,
+         ShippingAssignmentFactory $shippingAssignmentFactory = null,
+         ShippingFactory $shippingFactory = null
+@@ -138,6 +139,7 @@
+         $this->addressRepository = $addressRepository;
+         $this->scopeConfig = $scopeConfig;
+         $this->totalsCollector = $totalsCollector;
++        $this->request = $request;
+         $this->cartExtensionFactory = $cartExtensionFactory ?: ObjectManager::getInstance()
+             ->get(CartExtensionFactory::class);
+         $this->shippingAssignmentFactory = $shippingAssignmentFactory ?: ObjectManager::getInstance()
+@@ -171,6 +173,20 @@
+             $address->setCustomerAddressId(null);
+         }
+
++        $uriString = $this->request->getUriString();
++        $isFromCheckout = preg_match('/shipping-information/', $uriString);
++        if ($isFromCheckout && (!$address->getFirstname() || !$address->getLastname() || !$address->getStreet())) {
++            $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++            $backTrace = '';
++            foreach ($debugBackTrace as $item) {
++                $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . " | ";
++            }
++            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-ITO0017-39.log');
++            $logger = new \Zend_Log();
++            $logger->addWriter($writer);
++            $logger->crit('Missing data shipping address when save shipping information for quote ' . $quote->getid() . ' : ' . $backTrace);
++        }
++
+         try {
+             $billingAddress = $addressInformation->getBillingAddress();
+             if ($billingAddress) {
