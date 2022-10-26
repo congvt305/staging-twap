@@ -4,7 +4,7 @@
  * See COPYING.txt for license details.
  */
 -->
-<div id="delivery-method-selector" class="step-content" data-bind="visible: isLoggedIn()">
+<div id="delivery-method-selector" class="step-content" data-bind="visible: shouldVisible()">
     <button
             class="action action-select-shipping"
             css="'selected': !isCvsPickupSelected()"

@@ -1,0 +1,40 @@
+From ed8f30e50446a8e957aff6ba47eb9972ca70dd5c Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Wed, 19 Oct 2022 03:50:52 -0400
+Subject: [PATCH] HOTFIX: Fix issue extension attribute can not be converted to
+ a string when comparing shipping address and billing address.
+
+---
+ vendor/magento/module-checkout-staging/Plugin/GuestPaymentInformationManagementPlugin.php | 2 +-
+ vendor/magento/module-checkout-staging/Plugin/PaymentInformationManagementPlugin.php      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/vendor/magento/module-checkout-staging/Plugin/GuestPaymentInformationManagementPlugin.php b/vendor/magento/module-checkout-staging/Plugin/GuestPaymentInformationManagementPlugin.php
+index 2728b16..ee8afac 100644
+--- a/vendor/magento/module-checkout-staging/Plugin/GuestPaymentInformationManagementPlugin.php
++++ b/vendor/magento/module-checkout-staging/Plugin/GuestPaymentInformationManagementPlugin.php
+@@ -101,7 +101,7 @@ class GuestPaymentInformationManagementPlugin
+         $billingData = $this->convertAddressValueToFlatArray($billingAddress->getData());
+         $billingKeys = array_flip(array_keys($billingData));
+         $shippingData = array_intersect_key($quoteShippingAddressData, $billingKeys);
+-        $removeKeys = ['region_code', 'save_in_address_book'];
++        $removeKeys = ['region_code', 'save_in_address_book', 'extension_attributes'];
+         $billingData = array_diff_key($billingData, array_flip($removeKeys));
+         $difference = array_diff($billingData,$shippingData);
+         return empty($difference);
+diff --git a/vendor/magento/module-checkout-staging/Plugin/PaymentInformationManagementPlugin.php b/vendor/magento/module-checkout-staging/Plugin/PaymentInformationManagementPlugin.php
+index 7f0de54..c8444df 100644
+--- a/vendor/magento/module-checkout-staging/Plugin/PaymentInformationManagementPlugin.php
++++ b/vendor/magento/module-checkout-staging/Plugin/PaymentInformationManagementPlugin.php
+@@ -117,7 +117,7 @@ class PaymentInformationManagementPlugin
+                 $billingData = $this->convertAddressValueToFlatArray($billingAddressData);
+                 $billingKeys = array_flip(array_keys($billingData));
+                 $shippingData = array_intersect_key($quoteShippingAddressData, $billingKeys);
+-                $removeKeys = ['region_code', 'save_in_address_book'];
++                $removeKeys = ['region_code', 'save_in_address_book', 'extension_attributes'];
+                 $billingData = array_diff_key($billingData, array_flip($removeKeys));
+                 $difference = array_diff($billingData, $shippingData);
+                 $sameAsBillingFlag = empty($difference);
+--
+2.25.1
+
