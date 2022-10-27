@@ -109,7 +109,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                 $address->setPaymentMethod($quote->getPayment()->getMethod());
             }
             //set temp to calculate paynow-visa and paynow-wallet as paynow payment
-            if (in_array($store, [self::VN_SWS, self::VN_LNG])) {
+            if ($storeCode == self::VN_LNG) {
                 if ($quote->getPayment()->getMethod() == self::PAYNOW_WALLET || $quote->getPayment()->getMethod() == self::PAYNOW_VISA) {
                     $address->setPaymentMethod(self::PAYNOW);
                 }
@@ -222,7 +222,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             $address->setBaseDiscountAmount($total->getBaseDiscountAmount());
 
             //set back current payment method after calculate
-            if (in_array($store, [self::VN_SWS, self::VN_LNG])) {
+            if ($storeCode == self::VN_LNG) {
                 if ($quote->getPayment()->getMethod() == self::PAYNOW_WALLET || $quote->getPayment()->getMethod() == self::PAYNOW_VISA) {
                     $address->setPaymentMethod($quote->getPayment()->getMethod());
                 }
