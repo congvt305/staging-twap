@@ -9,6 +9,7 @@
  */
 namespace Amore\GcrmDataExport\Model\Export\Adapter;
 
+use Amore\GcrmDataExport\Model\Export\Order\SalesOrder;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\ImportExport\Model\Export\Adapter\AbstractAdapter;
 use Magento\ImportExport\Model\Export\Adapter\Csv;
@@ -215,7 +216,9 @@ class OrderCsv extends AbstractAdapter
         unset($rowData['store_name']);
         $headersData = [];
         foreach ($rowData as $key => $data) {
-            $headersData[] = $key;
+            if (!in_array($key, SalesOrder::IGNORE_COMLUMNS)) {
+                $headersData[] = $key;
+            }
         }
         $this->_fileHandler->writeCsv(
             array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
