@@ -69,8 +69,9 @@ class CouponUsage
         foreach ($coupons as $coupon) {
             $couponEntity = $this->couponFactory->create();
             $this->coupon->load($couponEntity, $coupon, 'code');
-            if ($couponEntity->getId() && $couponEntity->getTimesUsed()>= 1) {
-                $couponEntity->setTimesUsed($couponEntity->getTimesUsed() - 1);
+            if ($couponEntity->getId()) {
+                $couponTimesUsed = ($couponEntity->getTimesUsed() - 1) >= 0 ? $couponEntity->getTimesUsed() : 0;
+                $couponEntity->setTimesUsed($couponTimesUsed);
                 $this->coupon->save($couponEntity);
                 if ($customerId) {
                     $this->couponUsage->updateCustomerCouponTimesUsed(
@@ -81,7 +82,8 @@ class CouponUsage
                     $ruleId = $couponEntity->getRuleId();
                     $ruleCustomer = $this->customerFactory->create();
                     $ruleCustomer->loadByCustomerRule($customerId, $ruleId);
-                    $ruleCustomer->setTimesUsed($ruleCustomer->getTimesUsed() - 1);
+                    $ruleCustomerTimesUsed = ($ruleCustomer->getTimesUsed() >= 1) ? $ruleCustomer->getTimesUsed() - 1 : 0;
+                    $ruleCustomer->setTimesUsed($ruleCustomerTimesUsed);
                 }
             }
         }
