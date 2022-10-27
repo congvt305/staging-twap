@@ -135,6 +135,20 @@ class Checkout
 
         $this->_quote = $this->checkoutSession->getQuote();
         $this->_quote->collectTotals();
+
+        $shippingAddress =  $this->_quote->getShippingAddress();
+        if (!$shippingAddress->getFirstname() || !$shippingAddress->getLastname() || !$shippingAddress->getStreet()) {
+            $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+            $backTrace = '';
+            foreach ($debugBackTrace as $item) {
+                $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . " | ";
+            }
+            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-ITO0017-39.log');
+            $logger = new \Zend_Log();
+            $logger->addWriter($writer);
+            $logger->crit('Missing data shipping address when place order with linepay mobile ' . $this->_quote->getId() . ' : ' . $backTrace);
+        }
+
         $order = $this->quoteManagement->submit($this->_quote);
         if (!$order) {
             return;
