@@ -32,8 +32,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/vendor/magento/module-quote/Model/ShippingAddressManagement.php b/vendor/magento/module-quote/Model/ShippingAddressManagement.php
---- a/vendor/magento/module-quote/Model/ShippingAddressManagement.php	(revision 713b4c54858270a402fab9cf6f56e49b36a21884)
-+++ b/vendor/magento/module-quote/Model/ShippingAddressManagement.php	(date 1666838459233)
+--- a/vendor/magento/module-quote/Model/ShippingAddressManagement.php	(revision 64b60dd8d3ee87536895d411a2a86207c5860251)
++++ b/vendor/magento/module-quote/Model/ShippingAddressManagement.php	(date 1666773280628)
 @@ -7,6 +7,7 @@
  namespace Magento\Quote\Model;
 
