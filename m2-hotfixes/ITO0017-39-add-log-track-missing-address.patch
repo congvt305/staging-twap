@@ -4,8 +4,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/vendor/magento/module-quote/Model/ShippingAddressManagement.php b/vendor/magento/module-quote/Model/ShippingAddressManagement.php
---- a/vendor/magento/module-quote/Model/ShippingAddressManagement.php	(revision 64b60dd8d3ee87536895d411a2a86207c5860251)
-+++ b/vendor/magento/module-quote/Model/ShippingAddressManagement.php	(date 1666773280628)
+--- a/vendor/magento/module-quote/Model/ShippingAddressManagement.php	(revision a7161d7b05ee4607edd16542faf6ea4ac8ac217e)
++++ b/vendor/magento/module-quote/Model/ShippingAddressManagement.php	(date 1666835533911)
 @@ -7,6 +7,7 @@
  namespace Magento\Quote\Model;
 
@@ -58,12 +58,12 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/vendor/magento/module-quote/Model/QuoteManagement.php b/vendor/magento/module-quote/Model/QuoteManagement.php
---- a/vendor/magento/module-quote/Model/QuoteManagement.php	(revision 64b60dd8d3ee87536895d411a2a86207c5860251)
-+++ b/vendor/magento/module-quote/Model/QuoteManagement.php	(date 1666774496841)
-@@ -527,6 +527,17 @@
-                     'email' => $quote->getCustomerEmail()
+--- a/vendor/magento/module-quote/Model/QuoteManagement.php	(revision a7161d7b05ee4607edd16542faf6ea4ac8ac217e)
++++ b/vendor/magento/module-quote/Model/QuoteManagement.php	(date 1666835683173)
+@@ -528,6 +528,18 @@
                  ]
              );
+
 +            if (!$shippingAddress->getFirstname() || !$shippingAddress->getLastname() || !$shippingAddress->getStreet()) {
 +                $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 +                $backTrace = '';
@@ -75,18 +75,28 @@ diff --git a/vendor/magento/module-quote/Model/QuoteManagement.php b/vendor/mage
 +                $logger->addWriter($writer);
 +                $logger->crit('Missing data shipping address when submit quote ' . $quote->getId() . ' : ' . $backTrace);
 +            }
-
++
              $shippingAddress->setData('quote_address_id', $quote->getShippingAddress()->getId());
              $addresses[] = $shippingAddress;
+             $order->setShippingAddress($shippingAddress);
 Index: vendor/magento/module-checkout/Model/ShippingInformationManagement.php
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/vendor/magento/module-checkout/Model/ShippingInformationManagement.php b/vendor/magento/module-checkout/Model/ShippingInformationManagement.php
---- a/vendor/magento/module-checkout/Model/ShippingInformationManagement.php	(revision 64b60dd8d3ee87536895d411a2a86207c5860251)
-+++ b/vendor/magento/module-checkout/Model/ShippingInformationManagement.php	(date 1666773280620)
-@@ -125,6 +125,7 @@
+--- a/vendor/magento/module-checkout/Model/ShippingInformationManagement.php	(revision a7161d7b05ee4607edd16542faf6ea4ac8ac217e)
++++ b/vendor/magento/module-checkout/Model/ShippingInformationManagement.php	(date 1666835683177)
+@@ -100,6 +100,8 @@
+      */
+     private $shippingFactory;
+
++    private $request;
++
+     /**
+      * @param PaymentMethodManagementInterface $paymentMethodManagement
+      * @param PaymentDetailsFactory $paymentDetailsFactory
+@@ -125,6 +127,7 @@
          AddressRepositoryInterface $addressRepository,
          ScopeConfigInterface $scopeConfig,
          TotalsCollector $totalsCollector,
@@ -94,7 +104,7 @@ diff --git a/vendor/magento/module-checkout/Model/ShippingInformationManagement.
          CartExtensionFactory $cartExtensionFactory = null,
          ShippingAssignmentFactory $shippingAssignmentFactory = null,
          ShippingFactory $shippingFactory = null
-@@ -138,6 +139,7 @@
+@@ -138,6 +141,7 @@
          $this->addressRepository = $addressRepository;
          $this->scopeConfig = $scopeConfig;
          $this->totalsCollector = $totalsCollector;
@@ -102,7 +112,7 @@ diff --git a/vendor/magento/module-checkout/Model/ShippingInformationManagement.
          $this->cartExtensionFactory = $cartExtensionFactory ?: ObjectManager::getInstance()
              ->get(CartExtensionFactory::class);
          $this->shippingAssignmentFactory = $shippingAssignmentFactory ?: ObjectManager::getInstance()
-@@ -171,6 +173,20 @@
+@@ -171,6 +175,20 @@
              $address->setCustomerAddressId(null);
          }
 
