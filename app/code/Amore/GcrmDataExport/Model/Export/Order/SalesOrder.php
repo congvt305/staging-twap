@@ -41,6 +41,14 @@ use Magento\Framework\Data\Collection as DataCollection;
  */
 class SalesOrder extends AbstractEntity implements OrderColumnsInterface
 {
+    const IGNORE_COMLUMNS = [
+        'pos_customer_grade',
+        'line_utm_content',
+        'line_utm_term',
+        'sent_to_ninjavan',
+        'ninjavan_shipment_cancel'
+    ];
+
     /**#@+
      * Constants for Order Attributes.
      */
@@ -399,8 +407,10 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
                 if ($index == 0) {
                     unset($singleOrder['store_name']);
                     foreach (array_keys($singleOrder) as $key) {
-                        $headersData[] = $key;
-                        $index += 1;
+                        if (!in_array($key, self::IGNORE_COMLUMNS)) {
+                            $headersData[] = $key;
+                            $index += 1;
+                        }
                     }
                     $writer->setHeaderCols($headersData);
                 }
