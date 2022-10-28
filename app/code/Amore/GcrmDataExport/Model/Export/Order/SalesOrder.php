@@ -41,10 +41,11 @@ use Magento\Framework\Data\Collection as DataCollection;
  */
 class SalesOrder extends AbstractEntity implements OrderColumnsInterface
 {
+    const XML_PATH_ACTIVE_EXTENSION = 'amore_gcrm/general/active';
     /**#@+
      * Constants for Order Attributes.
      */
-    protected $headColumnNames = [
+    const HEAD_COLUMNS_NAME = [
         self::ORDER_ENTITY_ID => 'entity_id',
         self::ORDER_STATE => 'state',
         self::ORDER_STATUS => 'status',
@@ -254,13 +255,11 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
         self::ORDER_ECPAY_PAYMENT_METHOD => 'ecpay_payment_method',
         self::ORDER_SAP_RESPONSE => 'sap_response',
         self::ORDER_RMA_VALID_DATE => 'rma_valid_date',
-        self::ORDER_PAYPAL_ORDER_SUBTOTAL => 'paypal_subtotal',
-        self::ORDER_PAYPAL_GRAND_TOTAL => 'paypal_grand_total',
-        self::ORDER_PAYPAL_TAX_AMOUNT => 'paypal_tax_amount',
-        self::ORDER_PAYPAL_SHIPPING_AMOUNT => 'paypal_shipping_amount',
-        self::ORDER_PAYPAL_DISCOUNT_AMOUNT => 'paypal_discount_amount',
-        self::ORDER_PAYPAL_RATE => 'paypal_rate',
-        self::ORDER_PAYPAL_CURRENCY_CODE => 'paypal_currency_code',
+        self::RELATION_CHILD_REAL_ID => 'relation_child_real_id',
+        self::POS_ORDER_PAID_SENT => 'pos_order_paid_sent',
+        self::POS_ORDER_PAID_SEND => 'pos_order_paid_send',
+        self::POS_ORDER_CANCEL_SENT => 'pos_order_cancel_sent',
+        self::POS_ORDER_CANCEL_SEND => 'pos_order_cancel_send',
         self::ORDER_POS_ORDER_SEND_CHECK => 'pos_order_send_check',
         self::ORDER_CUSTOMER_BA_CODE => 'customer_ba_code',
         self::ORDER_ADYEN_RESULTURL_EVENT_CODE => 'adyen_resulturl_event_code',
@@ -324,10 +323,19 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
     protected $dataHelper;
 
     /**
-     * SalesOrder constructor.
+     * @var \Amore\GcrmDataExport\Model\Config\Config
+     */
+    private $gcrmConfig;
+
+    /**
+     * @var OrderRepositoryInterface
+     */
+    private $orderRepository;
+
+    /**
      * @param ExportCollection $ExportCollectionFactory
      * @param OrderRepositoryInterface $orderRepository
-     * @param AttributeCollectionProvider $attributeCollectionProvider
+     * @param \Amore\GcrmDataExport\Model\Export\Order\AttributeCollectionProvider $attributeCollectionProvider
      * @param CollectionFactory $orderColFactory
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
@@ -338,6 +346,7 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
      * @param ManagerInterface $messageManager
      * @param TimezoneInterface $timezone
      * @param Data $dataHelper
+     * @param \Amore\GcrmDataExport\Model\Config\Config $gcrmConfig
      * @param array $data
      */
     public function __construct(
@@ -354,6 +363,7 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
         ManagerInterface $messageManager,
         TimezoneInterface $timezone,
         Data $dataHelper,
+        \Amore\GcrmDataExport\Model\Config\Config $gcrmConfig,
         array $data = []
     ) {
         parent::__construct(
@@ -372,6 +382,7 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
         $this->messageManager = $messageManager;
         $this->timezone = $timezone;
         $this->dataHelper = $dataHelper;
+        $this->gcrmConfig = $gcrmConfig;
     }
 
     /**
@@ -393,16 +404,12 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
         }
 
         $index = 0;
-        $headersData = [];
         foreach ($ordersData as $orders) {
             foreach ($orders as $singleOrder) {
                 if ($index == 0) {
                     unset($singleOrder['store_name']);
-                    foreach (array_keys($singleOrder) as $key) {
-                        $headersData[] = $key;
-                        $index += 1;
-                    }
-                    $writer->setHeaderCols($headersData);
+                    $writer->setHeaderCols($this->_getHeaderColumns());
+                    $index += 1;
                 }
                 $writer->writeSourceRowWithCustomColumns($singleOrder);
             }
@@ -458,7 +465,7 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
     protected function _getHeaderColumns()
     {
         $header = [];
-        foreach ($this->headColumnNames as $englishColumn) {
+        foreach (self::HEAD_COLUMNS_NAME as $englishColumn) {
             $header[] = $englishColumn;
         }
         return $header;
@@ -493,6 +500,12 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
     public function joinedItemCollection()
     {
         try {
+            $storeEnable = [];
+            foreach ($this->_storeManager->getStores() as $store) {
+                if ($this->gcrmConfig->getConfigValue(self::XML_PATH_ACTIVE_EXTENSION, $store->getId())) {
+                    $storeEnable[] = $store->getId();
+                }
+            }
             $customExportData = $this->ExportCollectionFactory->create()
                 ->addFieldToFilter('entity_code', ['eq' => 'order'])->getFirstItem();
             $exportDate = $customExportData->getData('updated_at');
@@ -504,7 +517,8 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
                 $collection = $this->orderColFactory->create();
                 $collection->addFieldToFilter('updated_at', ['gteq' => $exportDate]);
             }
-        } catch (Exception $e) {
+            $collection->addFieldToFilter('store_id', ['in' => $storeEnable]);
+        } catch (\Exception $e) {
             $e->getMessage();
         }
         return $collection;

@@ -242,4 +242,9 @@ interface OrderColumnsInterface
     const ORDER_SAP_NSAMT = 'sap_nsamt';
     const ORDER_SAP_DCAMT = 'sap_dcamt';
     const ORDER_SAP_SLAMT = 'sap_slamt';
+    const RELATION_CHILD_REAL_ID = 'relation_child_real_id';
+    const POS_ORDER_PAID_SENT = 'pos_order_paid_sent';
+    const POS_ORDER_PAID_SEND = 'pos_order_paid_send';
+    const POS_ORDER_CANCEL_SENT = 'pos_order_cancel_sent';
+    const POS_ORDER_CANCEL_SEND = 'pos_order_cancel_send';
 }

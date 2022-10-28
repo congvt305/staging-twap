@@ -9,6 +9,7 @@
  */
 namespace Amore\GcrmDataExport\Model\Export\Adapter;
 
+use Amore\GcrmDataExport\Model\Export\Order\SalesOrder;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\ImportExport\Model\Export\Adapter\AbstractAdapter;
 use Magento\ImportExport\Model\Export\Adapter\Csv;
@@ -213,12 +214,8 @@ class OrderCsv extends AbstractAdapter
     public function writeSourceRowWithCustomColumns(array $rowData)
     {
         unset($rowData['store_name']);
-        $headersData = [];
-        foreach ($rowData as $key => $data) {
-            $headersData[] = $key;
-        }
         $this->_fileHandler->writeCsv(
-            array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
+            array_merge(array_intersect_key($rowData, $this->getArrayValue(SalesOrder::HEAD_COLUMNS_NAME))),
             $this->_delimiter,
             $this->_enclosure
         );
