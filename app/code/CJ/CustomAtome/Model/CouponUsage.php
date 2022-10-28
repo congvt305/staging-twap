@@ -64,28 +64,33 @@ class CouponUsage
      */
     public function refundUsedTime($order)
     {
+        $increment = false;
         $customerId = $order->getCustomerId();
         $coupons = $this->couponRenderer->parseCoupon($order->getCouponCode());
         foreach ($coupons as $coupon) {
             $couponEntity = $this->couponFactory->create();
             $this->coupon->load($couponEntity, $coupon, 'code');
             if ($couponEntity->getId()) {
-                $couponTimesUsed = ($couponEntity->getTimesUsed() - 1) >= 0 ? $couponEntity->getTimesUsed() : 0;
-                $couponEntity->setTimesUsed($couponTimesUsed);
+                $couponEntity->setTimesUsed($this->getResultTimesUsed($couponEntity) + ($increment ? 1 : -1));
                 $this->coupon->save($couponEntity);
                 if ($customerId) {
                     $this->couponUsage->updateCustomerCouponTimesUsed(
                         $customerId,
                         $couponEntity->getId(),
-                        false
+                        $increment
                     );
-                    $ruleId = $couponEntity->getRuleId();
-                    $ruleCustomer = $this->customerFactory->create();
-                    $ruleCustomer->loadByCustomerRule($customerId, $ruleId);
-                    $ruleCustomerTimesUsed = ($ruleCustomer->getTimesUsed() >= 1) ? $ruleCustomer->getTimesUsed() - 1 : 0;
-                    $ruleCustomer->setTimesUsed($ruleCustomerTimesUsed);
                 }
             }
         }
+    }
+
+    private function getResultTimesUsed($couponEntity)
+    {
+        if(isset($this->timesUsed['coupon_times_used'][$couponEntity->getId()])) {
+            return $couponEntity->getTimesUsed() === $this->timesUsed['coupon_times_used'][$couponEntity->getId()]
+                ? $couponEntity->getTimesUsed()
+                : $this->timesUsed['coupon_times_used'][$couponEntity->getId()];
+        }
+        return $couponEntity->getTimesUsed();
     }
 }
