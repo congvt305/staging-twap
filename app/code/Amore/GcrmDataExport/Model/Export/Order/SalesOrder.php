@@ -408,7 +408,8 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
             foreach ($orders as $singleOrder) {
                 if ($index == 0) {
                     unset($singleOrder['store_name']);
-                    $writer->setHeaderCols($this->_getHeaderColumns());
+                    $data = array_intersect_key($singleOrder, $this->getArrayValue(SalesOrder::HEAD_COLUMNS_NAME));
+                    $writer->setHeaderCols(array_keys($data));
                     $index += 1;
                 }
                 $writer->writeSourceRowWithCustomColumns($singleOrder);
@@ -548,5 +549,22 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
     {
         $this->orderWriter = $orderWriter;
         return $this;
+    }
+
+    /**
+     * Get Values of header columns
+     *
+     * @param array $originCols
+     * @return array
+     */
+    private function getArrayValue(array $originCols)
+    {
+        $originColumn = [];
+        if ($originCols) {
+            foreach ($originCols as $columnName) {
+                $originColumn[$columnName] = false;
+            }
+        }
+        return $originColumn;
     }
 }
