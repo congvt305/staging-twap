@@ -47,7 +47,15 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-
+    .navigation {
+        ul {
+            li.ui-menu-item {
+                .location {
+                    display: none;
+                }
+            }
+        }
+    }
     body {
         .lib-css(background-color, @page__background-color);
     }
@@ -568,15 +576,20 @@
             margin-bottom: @indent__s;
         }
     }
-    li {
-        .location {
-            color: #d5d5d5;
-            font-size: 1.6rem;
-            border-top: 1px solid #414141;
-            font-weight: 700;
-            padding: 12px 40px 12px 15px;
-            text-transform: uppercase;
-            word-wrap: break-word;
+    .navigation {
+        ul {
+            li.ui-menu-item{
+                .location {
+                    color: #d5d5d5;
+                    font-size: 1.6rem;
+                    border-top: 1px solid #414141;
+                    font-weight: 700;
+                    padding: 12px 40px 12px 15px;
+                    text-transform: uppercase;
+                    word-wrap: break-word;
+                    display: block;
+                }
+            }
         }
     }
 }
