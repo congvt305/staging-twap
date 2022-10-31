@@ -1,0 +1,18 @@
+Index: vendor/magento/module-checkout/Model/DefaultConfigProvider.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/module-checkout/Model/DefaultConfigProvider.php b/vendor/magento/module-checkout/Model/DefaultConfigProvider.php
+--- a/vendor/magento/module-checkout/Model/DefaultConfigProvider.php	(revision cd3644979b91d3a8b9ade901a466444ddc039bfb)
++++ b/vendor/magento/module-checkout/Model/DefaultConfigProvider.php	(date 1667207286774)
+@@ -722,6 +722,9 @@
+         $quoteItemsMessages = [];
+         if ($quoteItemData) {
+             foreach ($quoteItemData as $item) {
++                if (!isset($item['item_id'])) {
++                    continue;
++                }
+                 $quoteItemsMessages[$item['item_id']] = $item['message'];
+             }
+         }
