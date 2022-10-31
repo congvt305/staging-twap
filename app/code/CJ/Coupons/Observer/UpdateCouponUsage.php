@@ -78,24 +78,19 @@ class UpdateCouponUsage extends \Amasty\Coupons\Observer\UpdateCouponUsage
         $placeBefore = $observer->getEvent()->getName() === 'sales_order_place_before';
         $customerId = $order->getCustomerId();
         $coupons = $this->couponRenderer->parseCoupon($order->getCouponCode());
-        if (is_array($coupons) && count($coupons) > 0) {
+        if (is_array($coupons) && count($coupons) > 1) {
             foreach ($coupons as $coupon) {
-                $this->logger->info("before executing function isUsed",
-                    ['coupon' => $coupon, 'placeBefore' => $placeBefore]);
                 if ($this->isUsed($coupon, $placeBefore)) {
                     continue;
                 }
-                $this->logger->info("after executing function isUsed");
                 /** @var CouponModel $couponEntity */
                 $couponEntity = $this->couponFactory->create();
                 $this->coupon->load($couponEntity, $coupon, 'code');
-                $this->logger->info("CouponEntity", [$couponEntity->getData()]);
 
                 if ($couponEntity->getId()) {
                     if (!$placeBefore) {
                         $couponEntity->setTimesUsed($this->getResultTimesUsed($couponEntity) + ($increment ? 1 : -1));
                         $this->coupon->save($couponEntity);
-                        $this->logger->info("after executing function save coupon", ['couponEntity' => $couponEntity->getData()]);
                         if ($customerId) {
                             $this->couponUsage->updateCustomerCouponTimesUsed(
                                 $customerId,
@@ -103,10 +98,6 @@ class UpdateCouponUsage extends \Amasty\Coupons\Observer\UpdateCouponUsage
                                 $increment
                             );
                         }
-                        $this->logger->info("after executing function updateCustomerCouponTimesUsed", [
-                            'customerId' => $customerId,
-                            'increment' => $increment
-                        ]);
                     } else {
                         $this->timesUsed['coupon_times_used'][$couponEntity->getId()] = $couponEntity->getTimesUsed();
                     }
