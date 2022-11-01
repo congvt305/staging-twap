@@ -97,6 +97,7 @@ class UpdateCouponUsage extends \Amasty\Coupons\Observer\UpdateCouponUsage
                                 $couponEntity->getId(),
                                 $increment
                             );
+
                         }
                     } else {
                         $this->timesUsed['coupon_times_used'][$couponEntity->getId()] = $couponEntity->getTimesUsed();
