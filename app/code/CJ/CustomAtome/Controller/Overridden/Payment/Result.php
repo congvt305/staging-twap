@@ -19,14 +19,9 @@ use Magento\SalesRule\Model\Coupon\Usage\Processor as CouponUsageProcessor;
 class Result extends \Atome\MagentoPayment\Controller\Payment\Result
 {
     /**
-     * @var CouponUsageProcessor
+     * @var \Magento\SalesRule\Model\Coupon\UpdateCouponUsages
      */
-    protected $couponUsageProcessor;
-
-    /**
-     * @var \Magento\SalesRule\Model\Coupon\Usage\UpdateInfoFactory
-     */
-    protected $updateInfoFactory;
+    protected $updateCouponUsages;
 
     /**
      * @param Context $context
@@ -45,11 +40,9 @@ class Result extends \Atome\MagentoPayment\Controller\Payment\Result
         PaymentGatewayConfig $paymentGatewayConfig,
         CallbackHelper $callbackHelper,
         PaymentApi $paymentApi,
-        CouponUsageProcessor $couponUsageProcessor,
-        \Magento\SalesRule\Model\Coupon\Usage\UpdateInfoFactory $updateInfoFactory
+        \Magento\SalesRule\Model\Coupon\UpdateCouponUsages $updateCouponUsages
     ) {
-        $this->couponUsageProcessor = $couponUsageProcessor;
-        $this->updateInfoFactory = $updateInfoFactory;
+        $this->updateCouponUsages = $updateCouponUsages;
         parent::__construct($context, $checkoutSession, $commonHelper, $paymentGatewayConfig, $callbackHelper,
             $paymentApi);
     }
@@ -95,7 +88,7 @@ class Result extends \Atome\MagentoPayment\Controller\Payment\Result
                 if ($order) {
                     $order->cancel();
                     $order->save();
-                    $this->_refundCoupon($order);
+                    $this->updateCouponUsages->execute($order, false);
                     if ($type == 'cancel' && $this->paymentGatewayConfig->getDeleteOrdersWithoutPaying()) {
                         $registry = $this->_objectManager->get('Magento\Framework\Registry');
                         $registry->register('isSecureArea', true, true);
@@ -133,26 +126,4 @@ class Result extends \Atome\MagentoPayment\Controller\Payment\Result
         $this->_redirect($redirect);
     }
 
-    /**
-     * push request about coupon used time to queue
-     * later, cron will trigger the consumer to retrieve the request from queue to process decrease the used time
-     *
-     * @param $order
-     * @return void
-     */
-    protected function _refundCoupon($order) {
-        $couponCodes = $order->getCouponCode();
-        if ($couponCodes) {
-            $coupons = array_unique(explode(',', $couponCodes));
-            if (count($coupons) == 1) {
-                $coupon = reset($coupons);
-                $coupon = trim($coupon);
-                $updateInfo = $this->updateInfoFactory->create();
-                $updateInfo->setCouponCode($coupon);
-                $updateInfo->setCustomerId($order->getCustomerId());
-                $updateInfo->setIsIncrement(false);
-                $this->couponUsageProcessor->process($updateInfo);
-            }
-        }
-    }
 }
