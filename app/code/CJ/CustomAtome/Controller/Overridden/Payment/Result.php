@@ -24,7 +24,7 @@ class Result extends \Atome\MagentoPayment\Controller\Payment\Result
     protected $couponUsageProcessor;
 
     /**
-     * @var UpdateInfoFactory
+     * @var \Magento\SalesRule\Model\Coupon\Usage\UpdateInfoFactory
      */
     protected $updateInfoFactory;
 
@@ -36,7 +36,7 @@ class Result extends \Atome\MagentoPayment\Controller\Payment\Result
      * @param CallbackHelper $callbackHelper
      * @param PaymentApi $paymentApi
      * @param CouponUsageProcessor $couponUsageProcessor
-     * @param UpdateInfoFactory $updateInfoFactory
+     * @param \Magento\SalesRule\Model\Coupon\Usage\UpdateInfoFactory $updateInfoFactory
      */
     public function __construct(
         Context $context,
@@ -46,7 +46,7 @@ class Result extends \Atome\MagentoPayment\Controller\Payment\Result
         CallbackHelper $callbackHelper,
         PaymentApi $paymentApi,
         CouponUsageProcessor $couponUsageProcessor,
-        UpdateInfoFactory $updateInfoFactory
+        \Magento\SalesRule\Model\Coupon\Usage\UpdateInfoFactory $updateInfoFactory
     ) {
         $this->couponUsageProcessor = $couponUsageProcessor;
         $this->updateInfoFactory = $updateInfoFactory;
