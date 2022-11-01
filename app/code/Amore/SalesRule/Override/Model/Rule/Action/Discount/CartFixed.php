@@ -12,7 +12,6 @@ use Magento\SalesRule\Model\Rule;
 use Magento\SalesRule\Model\Rule\Action\Discount\Data;
 use Magento\SalesRule\Model\Rule\Action\Discount\DataFactory;
 use Magento\SalesRule\Model\Validator;
-use Magento\Store\Model\StoreManagerInterface;
 
 class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
 {
@@ -32,11 +31,6 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
     private $cartFixedDiscountHelper;
 
     /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
-
-    /**
      * @var \Amasty\Promo\Helper\Item
      */
     protected $promoItemHelper;
@@ -46,7 +40,6 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
      * @param DataFactory $discountDataFactory
      * @param PriceCurrencyInterface $priceCurrency
      * @param DeltaPriceRound $deltaPriceRound
-     * @param StoreManagerInterface $storeManager
      * @param CartFixedDiscount|null $cartFixedDiscount
      */
     public function __construct(
@@ -54,12 +47,10 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
         DataFactory $discountDataFactory,
         PriceCurrencyInterface $priceCurrency,
         DeltaPriceRound $deltaPriceRound,
-        StoreManagerInterface $storeManager,
         \Amasty\Promo\Helper\Item $promoItemHelper,
         ?CartFixedDiscount $cartFixedDiscount = null
     ) {
         $this->deltaPriceRound = $deltaPriceRound;
-        $this->storeManager = $storeManager;
         $this->cartFixedDiscountHelper = $cartFixedDiscount ?:
             ObjectManager::getInstance()->get(CartFixedDiscount::class);
         parent::__construct(
@@ -112,6 +103,19 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
 
         if ($availableDiscountAmount > 0) {
             $store = $quote->getStore();
+            //no need to set discount for promo item - it will be set in observer salesrule_validator_process
+            if ($this->promoItemHelper->isPromoItem($item)) {
+                $discountData->setAmount(0);
+                $discountData->setBaseAmount(0);
+                $discountData->setOriginalAmount(0);
+                $discountData->setBaseOriginalAmount(0);
+                $quote->setCartFixedRules($cartRules);
+                if ($ruleTotals['items_count'] > 1) {
+                    $this->validator->decrementRuleItemTotalsCount($rule->getId());
+                }
+                return $discountData;
+            }
+
             if ($ruleTotals['items_count'] <= 1) {
                 $baseRuleTotals = $shippingMethod ?
                     $this->cartFixedDiscountHelper
@@ -198,9 +202,8 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
             }
 
             //Customize here to fix the diffirent discount for last item (do not equal with discount amount)
-            $storeCode = $this->storeManager->getStore()->getCode();
-            if ($storeCode == 'my_laneige' &&
-                ($cartRules[$rule->getId()] < 0.0 || ($cartRules[$rule->getId()] < 0.1 && $cartRules[$rule->getId()] > 0.0 ))) {
+            $itemCount = $quote->getItemsCount();
+            if ($item->getId() == $quote->getAllVisibleItems()[$itemCount - 1]->getId()) {
                 $baseDiscountAmount += $cartRules[$rule->getId()];
                 $quoteAmount += $cartRules[$rule->getId()];
             }
