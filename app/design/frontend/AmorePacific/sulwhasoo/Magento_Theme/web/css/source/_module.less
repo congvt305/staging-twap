@@ -47,15 +47,6 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-    .navigation {
-        ul {
-            li.ui-menu-item {
-                .location {
-                    display: none;
-                }
-            }
-        }
-    }
     body {
         .lib-css(background-color, @page__background-color);
     }
@@ -574,6 +565,15 @@
     .page-title-wrapper .page-title {
         &+p {
             margin-bottom: @indent__s;
+        }
+    }
+    .nav-sections-item-content {
+        ul.header.links {
+            li {
+                .location {
+                    display: none !important;
+                }
+            }
         }
     }
     .navigation {
