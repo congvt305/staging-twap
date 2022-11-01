@@ -60,6 +60,7 @@ $notAllowedChar = $viewModel->getNotAllowedCharList();
                     <span><?= $block->escapeHtml(__('Verify')) ?></span>
                 </a>
                 <span class="note verification-message" style="display: none"><?= $block->escapeHtml(__('Code has been verified please move to the next step')); ?></span>
+                <span class="note warning-verification-message"><?=$viewModel->getWarningMessgeVerficationMobile()?></span>
                 <span class="note countdown"></span>
                 <?php //phpcs:enable ?>
             </div>
