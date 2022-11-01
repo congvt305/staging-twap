@@ -8,10 +8,9 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "composer/package-versions-deprecated": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
             "laminas/laminas-dependency-plugin": true,
-            "magento/magento-composer-installer": true,
-            "magento/inventory-composer-installer": true
+            "magento/*": true
         }
     },
     "repositories": {
@@ -36,20 +35,21 @@
         "adyen/module-payment": "^7.0",
         "adyen/php-api-library": "^10.0",
         "amasty/advanced-review": "^1.15",
-        "amasty/base": ">=1.13.2",
+        "amasty/base": "1.13.6",
         "amasty/coupons": "1.4.3",
         "amasty/cron-schedule-list": ">=1.0.5",
-        "amasty/feed": ">=2.6.19",
+        "amasty/feed": "^2.7.0",
         "amasty/module-advanced-conditions": ">=1.5.3",
         "amasty/module-banners-lite": ">=1.0.19",
         "amasty/module-one-step-checkout-premium-package": "^2.0",
+        "amasty/module-page-speed-optimizer": "^2.2",
         "amasty/module-salesrulewizard": ">=1.0.3",
         "amasty/promo": "^2.11",
         "amasty/reviews_import_export": "^1.0",
         "amasty/rgrid": ">=1.0.7",
-        "amasty/module-page-speed-optimizer": "^2.2",
         "amasty/special-occasion-coupons": "^1.0",
-        "magento/magento-cloud-metapackage": ">=2.4.3 <2.4.4",
+        "magento/composer-root-update-plugin": "^2.0.2",
+        "magento/magento-cloud-metapackage": ">=2.4.5 <2.4.6",
         "magento/module-page-builder-product-recommendations": "^1.1",
         "magento/module-visual-product-recommendations": "^1.1",
         "magento/product-recommendations": "^3.1",
