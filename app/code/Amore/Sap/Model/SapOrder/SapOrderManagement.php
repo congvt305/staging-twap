@@ -343,7 +343,10 @@ class SapOrderManagement implements SapOrderManagementInterface
                         $result = $this->createEInvoice($order, $orderStatusData, $result);
                     }
                     $shipmentCheck = $order->hasShipments();
-
+                    $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-ITO0016-75.log');
+                    $logger = new \Zend_Log();
+                    $logger->addWriter($writer);
+                    $logger->crit('Update data for order: '. $order->getIncrementId() . ' have current status: ' . $order->getStatus());
                     if (!$shipmentCheck) {
                         if ($order->getShippingMethod() == "blackcat_homedelivery") {
                             try {
