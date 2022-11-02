@@ -99,7 +99,7 @@ define(
         var isApplied = ko.observable(couponCode() != null);
         var isLoading = ko.observable(false);
         var message = $t('Your coupon was successfully applied'),
-            messageError = $t('Coupon code is not valid'),
+            messageError = $t('Your coupon code is not valid'),
             messageDelete = $t('Coupon code was removed');
         return Component.extend({
 

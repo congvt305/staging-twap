@@ -94,7 +94,9 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>If disabled then verification code will be 1234 at registration</comment>
                 </field>
-
+                <field id="warning_message_verification_mobile" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1">
+                    <label>Warning Message For Verification Mobile</label>
+                </field>
                 <field id="ba_code_enable" translate="label comment" type="select" sortOrder="130" showInDefault="1" showInWebsite="1">
                     <label>BA Code Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

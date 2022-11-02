@@ -129,4 +129,15 @@ class POS implements ArgumentInterface
     {
         return $this->configHelper->getNotAllowedCharList();
     }
+
+    /**
+     * Get warning message
+     *
+     * @return null|int
+     */
+    public function getWarningMessgeVerficationMobile()
+    {
+        return $this->configHelper->getWarningMessageVerficationMobile();
+    }
+
 }
