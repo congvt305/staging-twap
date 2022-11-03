@@ -62,7 +62,6 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
             $deltaPriceRound,
             $cartFixedDiscount
         );
-        $this->promoItemHelper = $promoItemHelper;
     }
 
     /**
