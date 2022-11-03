@@ -127,7 +127,7 @@ class Status extends \Payoo\PayNow\Controller\Payment\Status
             }
             $order->setStatus($status)->save();
         } catch (\Exception $exception) {
-            $this->payooLogger->addError(PayooLogger::TYPE_LOG_CREATE, ['request_status' => $exception->getMessage()]);
+            $this->payooLogger->error(PayooLogger::TYPE_LOG_CREATE, ['request_status' => $exception->getMessage()]);
         }
     }
 }
