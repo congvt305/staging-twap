@@ -24,6 +24,7 @@ use Magento\ImportExport\Model\Export\Entity\Factory as FactoryAlias;
 use Magento\ImportExport\Model\Export\ConfigInterface;
 use Magento\Framework\Filesystem;
 use Magento\Framework\App\Request\DataPersistorInterface;
+use Magento\Framework\Locale\ResolverInterface;
 use Psr\Log\LoggerInterface;
 use Amore\GcrmDataExport\Model\ResourceModel\CustomImportExport\CollectionFactory;
 
@@ -99,7 +100,11 @@ class Export extends ExportAlias
      * @param ConfigInterface $exportConfig
      * @param FactoryAlias $entityFactory
      * @param Factory $exportAdapterFac
+     * @param RedirectFactory $resultRedirectFactory
      * @param DateTime $coreDate
+     * @param ResolverInterface $localeResolver
+     * @param DataPersistorInterface $dataPersistor
+     * @param CollectionFactory $collectionFactory
      * @param array $data
      */
     public function __construct(
@@ -113,6 +118,7 @@ class Export extends ExportAlias
         Factory $exportAdapterFac,
         RedirectFactory $resultRedirectFactory,
         DateTime $coreDate,
+        ResolverInterface $localeResolver,
         DataPersistorInterface $dataPersistor,
         CollectionFactory $collectionFactory,
         array $data = []
@@ -124,6 +130,7 @@ class Export extends ExportAlias
             $entityFactory,
             $exportAdapterFac,
             $coreDate,
+            $localeResolver,
             $data
         );
         $this->eventManager = $eventManager;

@@ -188,7 +188,7 @@ class Data extends \Magento\Directory\Helper\Data
             $this->scopeConfig->getValue(
                 self::XML_PATH_CITIES_REQUIRED,
                 ScopeInterface::SCOPE_STORE
-            )
+            ) ?? ''
         );
         $countryList = preg_split('/\,/', $value, 0, PREG_SPLIT_NO_EMPTY);
         if ($asJson) {
