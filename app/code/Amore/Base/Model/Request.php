@@ -43,7 +43,7 @@ class Request extends BaseRequestAbstract
         $url,
         $requestData,
         $scope = 'store',
-        $websiteId,
+        $websiteId = null,
         $type = 'confirm'
     ): string
     {
