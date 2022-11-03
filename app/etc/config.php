@@ -756,7 +756,6 @@ return [
         'CJ_Cms' => 1,
         'CJ_CouponCustomer' => 1,
         'CJ_Coupons' => 1,
-        'CJ_CustomAtome' => 1,
         'CJ_CustomCookie' => 1,
         'CJ_DataExport' => 1,
         'CJ_GAEnhanced' => 1,
