@@ -1,0 +1,200 @@
+//
+//  Advanced Review Email Styles
+//  ____________________________________________
+
+//
+//  Variables
+//  --------------------------------------------
+
+@amreview-email-color__light: #fff;
+@amreview-email-button__background-color: #1979c3;
+@amreview-email-button__background-color__active: #004483;
+@amreview-email-link__color: #006bb4;
+@amreview-email-text__color: #333;
+@amreview-product-name__line-height: 16px;
+
+//
+//  Common
+//  --------------------------------------------
+
+.amreview-button-box {
+    & {
+        text-align: right;
+    }
+
+    .amreview-button {
+        & {
+            border-radius: 40px;
+            box-shadow: 0 4px 15px #ccc;
+            color: @amreview-email-color__light;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 21px;
+            margin: 30px;
+            padding: 20px 51px;
+            text-align: center;
+            word-break: normal;
+        }
+
+        &.blue {
+            background-color: #159ce4;
+        }
+
+        &.orange {
+            background-color: #ff9416;
+        }
+
+        &.red-orange {
+            background-color: #eb5757;
+        }
+
+        &.red-pink {
+            background-color: #ff164e;
+        }
+
+        &.green {
+            background-color: #15b355;
+        }
+
+        &.red {
+            background-color: #d43f3f;
+        }
+    }
+}
+
+.amreview-item {
+    vertical-align: middle;
+}
+
+.amreview-link {
+    & {
+        color: @amreview-email-link__color;
+    }
+
+    &:hover,
+    &:focus,
+    &:visited,
+    &:active {
+        color: @amreview-email-link__color !important; // Override magento styles
+    }
+}
+
+.amreview-email-content {
+    & {
+        margin: 5px;
+    }
+
+    &,
+    p,
+    .amreview-text {
+        color: @amreview-email-text__color;
+        font-size: 16px;
+        line-height: 22px;
+        font-family: Calibri,'Microsoft Jhenghei'
+
+    }
+
+    > .amreview-text.greeting {
+        font-size: 24px;
+        line-height: 33px;
+        margin-bottom: 30px;
+    }
+
+    .amreview-name {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: @amreview-product-name__line-height;
+        max-height: @amreview-product-name__line-height * 2;
+        min-height: @amreview-product-name__line-height * 2;
+        overflow: hidden;
+    }
+
+    .amreview-img-block {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .amreview-img {
+        display: block;
+        margin: 0 auto 20px;
+    }
+
+    .amreview-button {
+        & {
+            background: @amreview-email-button__background-color;
+            border: none;
+            border-radius: 3px;
+            color: @amreview-email-color__light;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 22px;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            transition: all .2s ease-in-out;
+        }
+
+        &:hover,
+        &:focus,
+        &:visited,
+        &:active {
+            background: @amreview-email-button__background-color__active;
+            color: @amreview-email-color__light !important; // Override magento styles
+            text-decoration: none !important; // Override magento styles
+        }
+
+        &:focus {
+            outline: 2px solid @amreview-email-button__background-color__active;
+        }
+    }
+}
+
+.amreview-email-footer {
+    & {
+        color: #666;
+        font-size: 12px;
+        font-weight: 400;
+        text-align: center;
+    }
+
+    .amreview-unsubscribe {
+        color: @amreview-email-link__color;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 19px;
+        margin-top: 7px;
+    }
+}
+
+.amreview-container {
+    & {
+        max-width: 600px;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    &.amreview-grid-container {
+        box-sizing: border-box;
+        margin: 25px -5px;
+        max-width: 610px;
+        overflow: inherit;
+        padding: 0;
+        width: ~'calc(100% + 10px)';
+    }
+
+    &.amreview-grid-container > .amreview-item {
+        background: @amreview-email-color__light;
+        border-radius: 5px;
+        box-shadow: 0 8px 16px rgba(181, 183, 186, .15);
+        box-sizing: border-box;
+        display: inline-block;
+        margin: 7px 5px;
+        padding: 15px;
+        width: ~'calc(100% / 3 - 13px)';
+    }
+}
