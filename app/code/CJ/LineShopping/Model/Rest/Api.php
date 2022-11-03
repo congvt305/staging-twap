@@ -117,12 +117,12 @@ class Api
                 ]);
             return $result;
         } catch (Exception $exception) {
-            $this->logger->addError(Logger::ORDER_POST_BACK,
+            $this->logger->error(Logger::ORDER_POST_BACK,
                 [
                     'error' => $exception->getMessage()
                 ]);
         } catch (GuzzleException $exception) {
-            $this->logger->addError(Logger::ORDER_POST_BACK,
+            $this->logger->error(Logger::ORDER_POST_BACK,
                 [
                     'error' => $exception->getMessage()
                 ]);
@@ -159,12 +159,12 @@ class Api
                 ]);
             return $result;
         } catch (\Exception $exception) {
-            $this->logger->addError(Logger::FEE_POST_BACK,
+            $this->logger->error(Logger::FEE_POST_BACK,
                 [
                     'error' => $exception->getMessage()
                 ]);
         } catch (GuzzleException $exception) {
-            $this->logger->addError(Logger::FEE_POST_BACK,
+            $this->logger->error(Logger::FEE_POST_BACK,
                 [
                     'error' => $exception->getMessage()
                 ]);
