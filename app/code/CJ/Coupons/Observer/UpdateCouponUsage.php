@@ -48,16 +48,30 @@ class UpdateCouponUsage extends \Amasty\Coupons\Observer\UpdateCouponUsage
      */
     private $timesUsed = [];
 
+    /**
+     * @var \CJ\Coupons\Logger\Logger
+     */
+    protected $logger;
+
+    /**
+     * @var RuleFactory
+     */
+    protected $ruleCustomerFactory;
+
     public function __construct(
         Coupon $coupon,
         Usage $couponUsage,
         CouponRenderer $couponRenderer,
-        CouponFactory $couponFactory
+        \CJ\Coupons\Logger\Logger $logger,
+        CouponFactory $couponFactory,
+        \Magento\SalesRule\Model\Rule\CustomerFactory $ruleCustomerFactory
     ) {
         $this->coupon = $coupon;
         $this->couponUsage = $couponUsage;
         $this->couponRenderer = $couponRenderer;
         $this->couponFactory = $couponFactory;
+        $this->logger = $logger;
+        $this->ruleCustomerFactory = $ruleCustomerFactory;
     }
     public function execute(Observer $observer)
     {
@@ -76,7 +90,6 @@ class UpdateCouponUsage extends \Amasty\Coupons\Observer\UpdateCouponUsage
                 if ($this->isUsed($coupon, $placeBefore)) {
                     continue;
                 }
-
                 /** @var CouponModel $couponEntity */
                 $couponEntity = $this->couponFactory->create();
                 $this->coupon->load($couponEntity, $coupon, 'code');
@@ -91,6 +104,8 @@ class UpdateCouponUsage extends \Amasty\Coupons\Observer\UpdateCouponUsage
                                 $couponEntity->getId(),
                                 $increment
                             );
+                            // Update rule customer
+                            $this->updateCustomerRuleUsages($increment, (int)$couponEntity->getRuleId(), $customerId);
                         }
                     } else {
                         $this->timesUsed['coupon_times_used'][$couponEntity->getId()] = $couponEntity->getTimesUsed();
@@ -136,5 +151,19 @@ class UpdateCouponUsage extends \Amasty\Coupons\Observer\UpdateCouponUsage
                 : $this->timesUsed['coupon_times_used'][$couponEntity->getId()];
         }
         return $couponEntity->getTimesUsed();
+    }
+
+    protected function updateCustomerRuleUsages(bool $isIncrement, int $ruleId, int $customerId): void
+    {
+        $ruleCustomer = $this->ruleCustomerFactory->create();
+        $ruleCustomer->loadByCustomerRule($customerId, $ruleId);
+        if ($ruleCustomer->getId()) {
+            if ($isIncrement || $ruleCustomer->getTimesUsed() > 0) {
+                $ruleCustomer->setTimesUsed($ruleCustomer->getTimesUsed() + ($isIncrement ? 1 : -1));
+            }
+        } elseif ($isIncrement) {
+            $ruleCustomer->setCustomerId($customerId)->setRuleId($ruleId)->setTimesUsed(1);
+        }
+        $ruleCustomer->save();
     }
 }
