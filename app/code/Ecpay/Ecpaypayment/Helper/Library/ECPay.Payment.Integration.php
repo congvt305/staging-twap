@@ -600,8 +600,10 @@ abstract class ECPay_Aio
         return $rs;
     }
 
-    protected static function HtmlEncode($target = "_self", $arParameters, $ServiceURL, $szCheckMacValue, $paymentButton = '') {
-
+    protected static function HtmlEncode($target, $arParameters, $ServiceURL, $szCheckMacValue, $paymentButton = '') {
+        if (empty($target)) {
+            $target = "_self";
+        }
         //生成表單，自動送出
         $szHtml =  '<!DOCTYPE html>';
         $szHtml .= '<html>';

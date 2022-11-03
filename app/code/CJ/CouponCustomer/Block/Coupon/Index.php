@@ -53,13 +53,13 @@ class Index extends Template
      */
     public function __construct(
         Template\Context      $context,
-        array                 $data = [],
         RuleCollection        $ruleCollection,
         Session               $customerSession,
         StoreManagerInterface $storeManager,
         Logo                  $logo,
         Currency $currency,
-        Data $helperData
+        Data $helperData,
+        array                 $data = []
 
     ) {
         parent::__construct($context, $data);

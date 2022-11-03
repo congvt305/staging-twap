@@ -43,9 +43,9 @@ class ShippingMethod extends \Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\General\S
         DataAlias1 $rmaData,
         ShippingFactory $shippingFactory,
         PriceCurrencyInterface $priceCurrency,
-        array $data = [],
+        Data $helper,
         Json $json = null,
-        Data $helper
+        array $data = []
     ) {
         parent::__construct(
             $context,

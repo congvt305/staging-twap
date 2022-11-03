@@ -49,7 +49,7 @@ class CancelShipment
      * @return array|bool|float|int|mixed|string|null
      * @throws \Exception
      */
-    public function requestCancelShipment(string $trackingId = '', $order)
+    public function requestCancelShipment(string $trackingId, $order)
     {
         $storeId = $order->getStoreId();
         $tokenData = $this->authToken->getToken($storeId);
@@ -105,7 +105,7 @@ class CancelShipment
                         $tokenData->setStatus(0)->save();
                     }
                 } catch (\Exception $exception) {
-                    $this->logger->addError('Error when disable access token: ' . $exception->getMessage());
+                    $this->logger->error('Error when disable access token: ' . $exception->getMessage());
                 }
 
                 $numOfRetry = $this->ninjavanHelper->getNinjaVanNumberRetry() ?? 4;
@@ -114,7 +114,7 @@ class CancelShipment
                     $this->logger->info(__("Retry to make cancel Order request {$this->numberOfRetry} time(s)"));
 
                     $auth = $this->authToken->requestAuthToken('array', $order->getStoreId());
-                    $this->logger->addInfo('retry to get request token: ', $auth);
+                    $this->logger->info('retry to get request token: ', $auth);
                     if (empty($auth['access_token'])) {
                         throw new \Exception('Cannot get access token from NinjaVan.');
                     }
@@ -132,7 +132,7 @@ class CancelShipment
                     $contentsRetry = $this->json->unserialize($jsonContents);
 
                     if (isset($contentsRetry['code']) && $contentsRetry['code'] == self::INVALID_TOKEN_CODE) {
-                        $this->logger->addError('Error when retrying to cancel NV Order: ' . $this->json->serialize($contentsRetry['error']));
+                        $this->logger->error('Error when retrying to cancel NV Order: ' . $this->json->serialize($contentsRetry['error']));
                         continue;
                     }
                     $contents = $contentsRetry;
