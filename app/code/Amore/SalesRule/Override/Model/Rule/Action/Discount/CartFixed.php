@@ -40,6 +40,7 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
      * @param DataFactory $discountDataFactory
      * @param PriceCurrencyInterface $priceCurrency
      * @param DeltaPriceRound $deltaPriceRound
+     * @param \Amasty\Promo\Helper\Item $promoItemHelper
      * @param CartFixedDiscount|null $cartFixedDiscount
      */
     public function __construct(
@@ -53,6 +54,7 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
         $this->deltaPriceRound = $deltaPriceRound;
         $this->cartFixedDiscountHelper = $cartFixedDiscount ?:
             ObjectManager::getInstance()->get(CartFixedDiscount::class);
+        $this->promoItemHelper = $promoItemHelper;
         parent::__construct(
             $validator,
             $discountDataFactory,

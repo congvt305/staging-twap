@@ -1,0 +1,21 @@
+diff --git a/vendor/amasty/feed/Model/Export/RowCustomizer/Price.php b/vendor/amasty/feed/Model/Export/RowCustomizer/Price.php
+index b5b2e18bb2ee1bb6a6f110c7d3ba253635c9f23b..e0ea10f07438ed8695a716c57d5590a609f58789 100644
+--- a/vendor/amasty/feed/Model/Export/RowCustomizer/Price.php
++++ b/vendor/amasty/feed/Model/Export/RowCustomizer/Price.php
+@@ -112,9 +112,13 @@ class Price implements RowCustomizerInterface
+         // in case of bundle product we must recalculate some prices manually
+         if ($item->getTypeId() === BundleProductType::TYPE_CODE) {
+             if ($item['price']) {//fixed price
+-                $percentage = $priceInfo->getPrice(CatalogSpecialPrice::PRICE_CODE)->getDiscountPercent();
+-                $finalPrice = $regularPriceAmount->getBaseAmount() * $percentage / 100;
+-                $finalTaxPrice = $specialPrice = $regularPriceAmount->getValue() * $percentage / 100;
++                if ($priceInfo->getPrice(CatalogSpecialPrice::PRICE_CODE)->getDiscountPercent()) {
++                    $percentage = $priceInfo->getPrice(CatalogSpecialPrice::PRICE_CODE)->getDiscountPercent();
++                    $finalPrice = $regularPriceAmount->getBaseAmount() * $percentage / 100;
++                    $finalTaxPrice = $specialPrice = $regularPriceAmount->getValue() * $percentage / 100;
++                } else {
++                    $finalPrice = $finalPriceInfo->getMinimalPrice()->getBaseAmount();
++                }
+             } elseif ($specialPrice < 0.0001) {//dynamic price
+                 $specialPrice = $finalPriceInfo->getMinimalPrice()->getValue();
+                 $finalPrice = $finalPriceInfo->getMinimalPrice()->getBaseAmount();
