@@ -104,7 +104,7 @@ class AddLineInfoToCookiePlugin
                 );
             }
         } catch (Exception $exception) {
-            $this->logger->addError(Logger::LINE_COOKIE,
+            $this->logger->error(Logger::LINE_COOKIE,
                 [
                     'ecidCookie' => $params['ecid'],
                     'message' => $exception->$exception()

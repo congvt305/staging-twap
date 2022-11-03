@@ -201,7 +201,7 @@ class GenerateWaybill implements GenerateWaybillInterface
                 $tokenDataFactory->setStatus(0)->save();
             }
         } catch (\Exception $exception) {
-            $this->logger->addError('Error when disabling access token: ' . $exception->getMessage());
+            $this->logger->error('Error when disabling access token: ' . $exception->getMessage());
         }
     }
 }

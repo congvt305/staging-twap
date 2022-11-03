@@ -268,7 +268,7 @@ class Rma extends \Magento\Rma\Model\Rma
      * @param string $status
      * @return bool
      */
-    private function isStatusNeedsAuthEmail($status): bool
+    public function isStatusNeedsAuthEmail($status): bool
     {
         $statusesNeedsEmail = [
             Status::STATE_AUTHORIZED,

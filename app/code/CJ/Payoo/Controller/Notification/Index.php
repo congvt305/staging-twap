@@ -139,7 +139,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
                 echo "<h3>Listening....</h3>";
             }
         } else {
-            $this->payooLogger->addError(PayooLogger::TYPE_LOG_CREATE, ['Payoo Response:' => $response]);
+            $this->payooLogger->error(PayooLogger::TYPE_LOG_CREATE, ['Payoo Response:' => $response]);
         }
     }
 
@@ -184,7 +184,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
                 ->setIsCustomerNotified(true)
                 ->save();
         } catch (\Exception $exception) {
-            $this->payooLogger->addError(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => $exception->getMessage()]);
+            $this->payooLogger->error(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => $exception->getMessage()]);
         }
     }
 }

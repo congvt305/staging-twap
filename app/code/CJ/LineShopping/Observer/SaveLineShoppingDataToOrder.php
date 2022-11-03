@@ -82,7 +82,7 @@ class SaveLineShoppingDataToOrder implements ObserverInterface
 
             return $this;
         } catch (Exception $exception) {
-            $this->logger->addError(Logger::ORDER_POST_BACK,
+            $this->logger->error(Logger::ORDER_POST_BACK,
                 [
                     'message' => $exception->getMessage()
                 ]

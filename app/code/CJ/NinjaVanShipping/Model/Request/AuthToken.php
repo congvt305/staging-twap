@@ -67,8 +67,11 @@ class AuthToken
         $this->tokenDataFactory = $tokenDataFactory;
     }
 
-    public function requestAuthToken($format = 'json', $storeId)
+    public function requestAuthToken($format, $storeId)
     {
+        if (empty($format)) {
+            $format = 'json';
+        }
         $sandbox = (bool)$this->ninjavanHelper->isNinjaVanSandboxModeEnabled($storeId);
         if ($sandbox === false) {
             $countryCode = $this->ninjavanHelper->getNinjaVanCountryCode($storeId);
@@ -114,12 +117,12 @@ class AuthToken
                         $token->save();
                         sleep(1);
                     } catch (\Exception $exception) {
-                        $this->logger->addError('Error when save access token: ' . $exception->getMessage());
+                        $this->logger->error('Error when save access token: ' . $exception->getMessage());
                     }
                 }
             }
         } catch (GuzzleException $exception) {
-            $this->logger->addError('Error when get access token: ' . $exception->getMessage());
+            $this->logger->error('Error when get access token: ' . $exception->getMessage());
         }
         return $response;
     }

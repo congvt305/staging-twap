@@ -14,7 +14,7 @@
             class="image-uploader-preview-link"
             attr="href: $parent.getFilePreview($file)"
             target="_blank">
-            <div class="file-uploader-spinner image-uploader-spinner" />
+            <div class="file-uploader-spinner image-uploader-spinner" ></div>
             <img
                 alt="image"
                 class="preview-image"
@@ -33,13 +33,13 @@
                 data-role="delete-button"
                 attr="title: $t('Delete image')"
                 click="$parent.removeFile.bind($parent, $file)">
-                <span translate="'Delete image'"/>
+                <span translate="'Delete image'"></span>
             </button>
         </div>
     </div>
-    <div class="file-uploader-filename" text="$file.name"/>
+    <div class="file-uploader-filename" text="$file.name"></div>
     <div class="file-uploader-meta">
-        <text args="$file.previewWidth"/>x<text args="$file.previewHeight"/>,
-        <text args="$parent.formatSize($file.size)"/>
+        <text args="$file.previewWidth"></text>x<text args="$file.previewHeight"></text>,
+        <text args="$parent.formatSize($file.size)"></text>
     </div>
 </div>
