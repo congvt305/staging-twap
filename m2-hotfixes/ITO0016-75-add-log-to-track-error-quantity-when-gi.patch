@@ -1,0 +1,19 @@
+Index: vendor/magento/module-inventory-source-deduction-api/Model/SourceDeductionService.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/module-inventory-source-deduction-api/Model/SourceDeductionService.php b/vendor/magento/module-inventory-source-deduction-api/Model/SourceDeductionService.php
+--- a/vendor/magento/module-inventory-source-deduction-api/Model/SourceDeductionService.php	(revision 0c425e745575f114fa4c0026e6a9f7d5a0c771fb)
++++ b/vendor/magento/module-inventory-source-deduction-api/Model/SourceDeductionService.php	(date 1667380346390)
+@@ -97,6 +97,10 @@
+                     'qty_to_decrement' => $qty
+                 ];
+             } else {
++                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-ITO0016-75.log');
++                $logger = new \Zend_Log();
++                $logger->addWriter($writer);
++                $logger->crit('Do not enough qty for sku: ' . $itemSku . ' with quantity: ' . $qty . ' and data stock:' . json_encode($sourceItem->getData()));
+                 throw new LocalizedException(
+                     __('Not all of your products are available in the requested quantity.')
+                 );
