@@ -57,7 +57,7 @@ $apProductPosition = "";
     /**
      * Position for actions regarding image size changing in vde if needed
      */
-    $pos = $block->getPositioned();
+    $pos = $block->getPositioned() ?? 1;
     $i = 0;
     ?>
     <div class="products wrapper <?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>" data-mage-init='{"listProducts":{}}'>
