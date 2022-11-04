@@ -148,22 +148,27 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             $address->setCartFixedRules([]);
             $quote->setCartFixedRules([]);
             foreach ($items as $item) {
-                $this->rulesApplier->setAppliedRuleIds($item, []);
-                if ($item->getExtensionAttributes()) {
-                    $item->getExtensionAttributes()->setDiscounts(null);
-                }
-                $item->setDiscountAmount(0);
-                $item->setBaseDiscountAmount(0);
-                $item->setDiscountPercent(0);
-                if ($item->getChildren() && $item->isChildrenCalculated()) {
-                    foreach ($item->getChildren() as $child) {
-                        $child->setDiscountAmount(0);
-                        $child->setBaseDiscountAmount(0);
-                        $child->setDiscountPercent(0);
+                if (!$this->promoItemHelper->isPromoItem($item)) {
+                    $this->rulesApplier->setAppliedRuleIds($item, []);
+                    if ($item->getExtensionAttributes()) {
+                        $item->getExtensionAttributes()->setDiscounts(null);
+                    }
+                    $item->setDiscountAmount(0);
+                    $item->setBaseDiscountAmount(0);
+                    $item->setDiscountPercent(0);
+                    if ($item->getChildren() && $item->isChildrenCalculated()) {
+                        foreach ($item->getChildren() as $child) {
+                            $child->setDiscountAmount(0);
+                            $child->setBaseDiscountAmount(0);
+                            $child->setDiscountPercent(0);
+                        }
                     }
                 }
             }
             $this->calculator->init($store->getWebsiteId(), $quote->getCustomerGroupId(), $quote->getCouponCode());
+            $address->setBaseSubtotalWithDiscount($address->getQuote()->getBaseSubtotal() + $address->getQuote()->getDiscountAmount());
+            $address->setSubtotalWithDiscount($address->getQuote()->getSubtotal() + $address->getQuote()->getDiscountAmount());
+
             $this->calculator->initTotals($items, $address);
             $items = $this->calculator->sortItemsByPriority($items, $address);
             $rules = $this->calculator->getRules($address);
