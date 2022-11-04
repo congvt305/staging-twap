@@ -8,6 +8,7 @@ use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote\Address;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 use Magento\Quote\Model\Quote\Item;
@@ -17,6 +18,8 @@ use Magento\SalesRule\Api\Data\DiscountDataInterfaceFactory;
 use Magento\SalesRule\Api\Data\RuleDiscountInterfaceFactory;
 use Magento\SalesRule\Model\Data\RuleDiscount;
 use Magento\SalesRule\Model\Discount\PostProcessorFactory;
+use Magento\SalesRule\Model\Rule;
+use Magento\SalesRule\Model\RulesApplier;
 use Magento\SalesRule\Model\Validator;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -71,14 +74,17 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         PriceCurrencyInterface $priceCurrency,
         \Amasty\Promo\Helper\Item $promoItemHelper,
         RuleDiscountInterfaceFactory $discountInterfaceFactory = null,
-        DiscountDataInterfaceFactory $discountDataInterfaceFactory = null
+        DiscountDataInterfaceFactory $discountDataInterfaceFactory = null,
+        RulesApplier $rulesApplier = null
     ) {
-        parent::__construct($eventManager, $storeManager, $validator, $priceCurrency, $discountInterfaceFactory, $discountDataInterfaceFactory);
+        parent::__construct($eventManager, $storeManager, $validator, $priceCurrency, $discountInterfaceFactory, $discountDataInterfaceFactory, $rulesApplier);
         $this->storeManager = $storeManager;
         $this->discountInterfaceFactory = $discountInterfaceFactory
             ?: ObjectManager::getInstance()->get(RuleDiscountInterfaceFactory::class);
         $this->discountDataInterfaceFactory = $discountDataInterfaceFactory
             ?: ObjectManager::getInstance()->get(DiscountDataInterfaceFactory::class);
+        $this->rulesApplier = $rulesApplier
+            ?: ObjectManager::getInstance()->get(RulesApplier::class);
         $this->promoItemHelper = $promoItemHelper;
     }
 
@@ -116,11 +122,18 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             }
 
             $this->calculator->reset($address);
-            $address->setDiscountAmount(0);
-            $address->setBaseDiscountAmount(0);
-            $items = $shippingAssignment->getItems();
-
-            if (!count($items)) {
+            $itemsAggregate = [];
+            foreach ($shippingAssignment->getItems() as $item) {
+                $itemId = $item->getId();
+                $itemsAggregate[$itemId] = $item;
+            }
+            $items = [];
+            foreach ($quote->getAllAddresses() as $quoteAddress) {
+                foreach ($quoteAddress->getAllItems() as $item) {
+                    $items[] = $item;
+                }
+            }
+            if (!$items || !$itemsAggregate) {
                 return $this;
             }
 
@@ -129,55 +142,61 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                 'customer_group_id' => $quote->getCustomerGroupId(),
                 'coupon_code' => $quote->getCouponCode(),
             ];
-
+            $address->setDiscountDescription([]);
+            $address->getExtensionAttributes()->setDiscounts([]);
+            $this->addressDiscountAggregator = [];
+            $address->setCartFixedRules([]);
+            $quote->setCartFixedRules([]);
             foreach ($items as $item) {
                 if (!$this->promoItemHelper->isPromoItem($item)) {
+                    $this->rulesApplier->setAppliedRuleIds($item, []);
+                    if ($item->getExtensionAttributes()) {
+                        $item->getExtensionAttributes()->setDiscounts(null);
+                    }
                     $item->setDiscountAmount(0);
                     $item->setBaseDiscountAmount(0);
-
-                    // ensure my children are zeroed out
-                    if ($item->getHasChildren() && $item->isChildrenCalculated()) {
+                    $item->setDiscountPercent(0);
+                    if ($item->getChildren() && $item->isChildrenCalculated()) {
                         foreach ($item->getChildren() as $child) {
                             $child->setDiscountAmount(0);
                             $child->setBaseDiscountAmount(0);
+                            $child->setDiscountPercent(0);
                         }
                     }
                 }
             }
             $this->calculator->init($store->getWebsiteId(), $quote->getCustomerGroupId(), $quote->getCouponCode());
+            $address->setBaseSubtotalWithDiscount($address->getQuote()->getBaseSubtotal() + $address->getQuote()->getDiscountAmount());
+            $address->setSubtotalWithDiscount($address->getQuote()->getSubtotal() + $address->getQuote()->getDiscountAmount());
+
             $this->calculator->initTotals($items, $address);
-
-            $address->setDiscountDescription([]);
             $items = $this->calculator->sortItemsByPriority($items, $address);
-            $address->getExtensionAttributes()->setDiscounts([]);
-            $addressDiscountAggregator = [];
-
-            $oddTotal = 0;
-            /** @var Item $item */
-            foreach ($items as $item) {
-                if ($item->getNoDiscount() || !$this->calculator->canApplyDiscount($item)) {
-                    $item->setDiscountAmount(0);
-                    $item->setBaseDiscountAmount(0);
-
-                    // ensure my children are zeroed out
-                    if ($item->getHasChildren() && $item->isChildrenCalculated()) {
-                        foreach ($item->getChildren() as $child) {
-                            $child->setDiscountAmount(0);
-                            $child->setBaseDiscountAmount(0);
-                        }
+            $rules = $this->calculator->getRules($address);
+            /** @var Rule $rule */
+            foreach ($rules as $rule) {
+                /** @var Item $item */
+                foreach ($items as $item) {
+                    if ($item->getNoDiscount() || !$this->calculator->canApplyDiscount($item) || $item->getParentItem()) {
+                        continue;
                     }
+                    $eventArgs['item'] = $item;
+                    $this->eventManager->dispatch('sales_quote_address_discount_item', $eventArgs);
+                    $this->calculator->process($item, $rule);
+                }
+                $appliedRuleIds = $quote->getAppliedRuleIds() ? explode(',', $quote->getAppliedRuleIds()) : [];
+                if ($rule->getStopRulesProcessing() && in_array($rule->getId(), $appliedRuleIds)) {
+                    break;
+                }
+                $this->calculator->initTotals($items, $address);
+            }
+            $oddTotal = 0;
+            foreach ($items as $item) {
+                if (!isset($itemsAggregate[$item->getId()])) {
                     continue;
                 }
-                // to determine the child item discount, we calculate the parent
                 if ($item->getParentItem()) {
                     continue;
-                }
-
-                $eventArgs['item'] = $item;
-                $this->eventManager->dispatch('sales_quote_address_discount_item', $eventArgs);
-
-                if ($item->getHasChildren() && $item->isChildrenCalculated()) {
-                    $this->calculator->process($item);
+                } elseif ($item->getHasChildren() && $item->isChildrenCalculated()) {
                     foreach ($item->getChildren() as $child) {
                         $eventArgs['item'] = $child;
                         $this->eventManager->dispatch('sales_quote_address_discount_item', $eventArgs);
@@ -185,18 +204,15 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                         // Calculate odd Total
                         $oddTotal += $child->getOddDiscountAmount();
                     }
-                } else {
-                    $this->calculator->process($item);
-                    $this->aggregateItemDiscount($item, $total);
-                    // Calculate odd Total
-                    $oddTotal += $item->getOddDiscountAmount();
                 }
+                $this->aggregateItemDiscount($item, $total);
+                // Calculate odd Total
+                $oddTotal += $item->getOddDiscountAmount();
 
                 if ($item->getExtensionAttributes()) {
-                    $this->aggregateDiscountPerRule($item, $address, $addressDiscountAggregator);
+                    $this->aggregateDiscountPerRule($item, $address);
                 }
             }
-
             // Custom for add odd number to first Item
             $oddTotal = round($oddTotal); // Should round or int
             if ($oddTotal > 0) {
@@ -213,7 +229,6 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             }
             // end custom
 
-
             $this->calculator->prepareDescription($address);
             $total->setDiscountDescription($address->getDiscountDescription());
             $total->setSubtotalWithDiscount($total->getSubtotal() + $total->getDiscountAmount());
@@ -227,7 +242,6 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                     $address->setPaymentMethod($quote->getPayment()->getMethod());
                 }
             }
-
             return $this;
         } else {
             parent::collect($quote, $shippingAssignment, $total);
@@ -239,13 +253,11 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
      *
      * @param AbstractItem $item
      * @param AddressInterface $address
-     * @param array $addressDiscountAggregator
      * @return void
      */
     private function aggregateDiscountPerRule(
         AbstractItem $item,
-        AddressInterface $address,
-        array &$addressDiscountAggregator
+        AddressInterface $address
     ) {
         $discountBreakdown = $item->getExtensionAttributes()->getDiscounts();
         if ($discountBreakdown) {
@@ -254,15 +266,17 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                 $discount = $value->getDiscountData();
                 $ruleLabel = $value->getRuleLabel();
                 $ruleID = $value->getRuleID();
-                if (isset($addressDiscountAggregator[$ruleID])) {
+                if (isset($this->addressDiscountAggregator[$ruleID])) {
                     /** @var RuleDiscount $cartDiscount */
-                    $cartDiscount = $addressDiscountAggregator[$ruleID];
+                    $cartDiscount = $this->addressDiscountAggregator[$ruleID];
                     $discountData = $cartDiscount->getDiscountData();
-                    $discountData->setBaseAmount($discountData->getBaseAmount()+$discount->getBaseAmount());
-                    $discountData->setAmount($discountData->getAmount()+$discount->getAmount());
-                    $discountData->setOriginalAmount($discountData->getOriginalAmount()+$discount->getOriginalAmount());
+                    $discountData->setBaseAmount($discountData->getBaseAmount() + $discount->getBaseAmount());
+                    $discountData->setAmount($discountData->getAmount() + $discount->getAmount());
+                    $discountData->setOriginalAmount(
+                        $discountData->getOriginalAmount() + $discount->getOriginalAmount()
+                    );
                     $discountData->setBaseOriginalAmount(
-                        $discountData->getBaseOriginalAmount()+$discount->getBaseOriginalAmount()
+                        $discountData->getBaseOriginalAmount() + $discount->getBaseOriginalAmount()
                     );
                 } else {
                     $data = [
@@ -279,10 +293,10 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                     ];
                     /** @var RuleDiscount $cartDiscount */
                     $cartDiscount = $this->discountInterfaceFactory->create(['data' => $data]);
-                    $addressDiscountAggregator[$ruleID] = $cartDiscount;
+                    $this->addressDiscountAggregator[$ruleID] = $cartDiscount;
                 }
             }
         }
-        $address->getExtensionAttributes()->setDiscounts(array_values($addressDiscountAggregator));
+        $address->getExtensionAttributes()->setDiscounts(array_values($this->addressDiscountAggregator));
     }
 }
