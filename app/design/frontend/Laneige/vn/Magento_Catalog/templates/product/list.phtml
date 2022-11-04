@@ -40,7 +40,7 @@ $getDefault = $block->getData('view_model');
     /**
      * Position for actions regarding image size changing in vde if needed
      */
-    $pos = $block->getPositioned();
+    $pos = $block->getPositioned() ?? 1;
     ?>
     <div class="products wrapper <?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>">
         <ol class="products list items product-items">
