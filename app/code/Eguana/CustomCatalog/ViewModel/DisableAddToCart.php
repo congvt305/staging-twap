@@ -62,7 +62,9 @@ class DisableAddToCart implements ArgumentInterface
                     $salableQuantityArr[$item->getOptionId()] = 0;
                 }
                 foreach ($salable as $stock) {
-                    $salableQuantityArr[$item->getOptionId()] += $stock['qty'];
+                    if (isset($salableQuantityArr[$item->getOptionId()])) {
+                        $salableQuantityArr[$item->getOptionId()] += $stock['qty'];
+                    }
                 }
             }
 
