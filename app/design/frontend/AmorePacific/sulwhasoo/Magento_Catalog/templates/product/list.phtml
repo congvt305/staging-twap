@@ -109,7 +109,7 @@ $apProductPosition = "";
                                     ap-prd-brand="<?= $apProductBrand ?>"
                                     ap-prd-position="<?= $apProductPosition ?>"
                                     ap-prd-list="<?= $categoryName ?>"
-                                <? endif; ?>
+                                <?php endif; ?>
                             >
                                 <?= $productImage->toHtml() ?>
                             </a>
@@ -131,7 +131,7 @@ $apProductPosition = "";
                                             ap-prd-brand="<?= $apProductBrand ?>"
                                             ap-prd-position="<?= $apProductPosition ?>"
                                             ap-prd-list="<?= $categoryName ?>"
-                                        <? endif; ?>
+                                        <?php endif; ?>
                                     >
                                         <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                                     </a>
@@ -168,7 +168,7 @@ $apProductPosition = "";
                                                         ap-prd-brand="<?= $apProductBrand ?>"
                                                         ap-prd-position="<?= $apProductPosition ?>"
                                                         ap-prd-list="<?= $categoryName ?>"
-                                                    <? endif; ?>
+                                                    <?php endif; ?>
                                                 >
                                                     <span><?= $block->escapeHtml(__('Detail')) ?></span>
                                                 </a>
