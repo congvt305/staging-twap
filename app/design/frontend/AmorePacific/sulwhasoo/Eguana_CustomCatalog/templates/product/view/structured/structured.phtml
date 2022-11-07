@@ -25,7 +25,9 @@ $shortDescription = $this->helper(Magento\Catalog\Helper\Output::class)->product
     $block->getProduct()->getShortDescription(),
     'short_description'
 );
-$shortDescription = trim(preg_replace('/\s\s+/',' ', $shortDescription));
+if ($shortDescription) {
+    $shortDescription = trim(preg_replace('/\s\s+/',' ', $shortDescription));
+}
 ?>
 <script type="application/ld+json">
     {
