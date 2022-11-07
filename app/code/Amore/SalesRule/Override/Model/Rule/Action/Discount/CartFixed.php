@@ -132,6 +132,11 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
                         $baseRuleTotals,
                         $shippingPrice
                     ) : $baseRuleTotals;
+            foreach ($address->getAllVisibleItems() as $_item) {
+                if ($this->promoItemHelper->isPromoItem($_item)) {
+                    $baseRuleTotals -= $_item->getRowTotal();
+                }
+            }
             if ($isAppliedToShipping) {
                 $baseDiscountAmount = $this->cartFixedDiscountHelper
                     ->getDiscountAmount(
