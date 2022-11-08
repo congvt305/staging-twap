@@ -5,15 +5,15 @@
  */
 -->
 <if args="visible()">
-    <strong><text args="address().prefix"/> <text args="address().lastname"/> <text args="address().middlename"/>
-    <text args="address().firstname"/> <text args="address().telephone"/></strong><br/>
-    <text args="address().postcode"/>
+    <strong><text args="address().prefix"></text> <text args="address().lastname"></text> <text args="address().middlename"></text>
+        <text args="address().firstname"></text> <text args="address().telephone"></text></strong><br/>
+    <text args="address().postcode"></text>
     <span text="address().region"></span>
-    <text args="address().city "/>
-    <text args="_.values(address().street).join(', ')"/><br/>
+    <text args="address().city "></text>
+    <text args="_.values(address().street).join(', ')"></text><br/>
 
     <each args="data: address().customAttributes, as: 'element'">
-        <text args="$parent.getCustomAttributeLabel(element)"/>
+        <text args="$parent.getCustomAttributeLabel(element)"></text>
         <br/>
     </each>
 </if>
