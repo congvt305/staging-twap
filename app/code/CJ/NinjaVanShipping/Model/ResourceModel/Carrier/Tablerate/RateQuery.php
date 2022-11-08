@@ -131,10 +131,10 @@ class RateQuery
      */
     private function getDestPostcodePrefix()
     {
-        if (!preg_match("/^(.+)-(.+)$/", $this->request->getDestPostcode(), $zipParts)) {
+        if ($this->request->getDestPostcode() && !preg_match("/^(.+)-(.+)$/", $this->request->getDestPostcode(), $zipParts)) {
             return $this->request->getDestPostcode();
         }
 
-        return $zipParts[1];
+        return isset($zipParts[1]) ?: null;
     }
 }
