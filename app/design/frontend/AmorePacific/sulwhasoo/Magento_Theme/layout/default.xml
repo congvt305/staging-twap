@@ -57,6 +57,16 @@
                 </arguments>
             </block>
         </referenceBlock>
+        <referenceBlock name="catalog.topnav">
+            <block class="Magento\Framework\View\Element\Html\Link" name="store-locator-link-menu">
+                <arguments>
+                    <argument name="class" xsi:type="string">no-display location</argument>
+                    <argument name="path" xsi:type="string">stores/info/list</argument>
+                    <argument name="label" xsi:type="string" translate="true">Store Locator</argument>
+                    <argument name="sortOrder" xsi:type="number">120</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
         <container name="sidebar.additional" label="Sidebar Additional" htmlTag="div"/>
         <referenceContainer name="sidebar.additional" remove="true"/>
     </body>
