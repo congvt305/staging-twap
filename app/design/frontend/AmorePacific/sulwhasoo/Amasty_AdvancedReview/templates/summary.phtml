@@ -1,0 +1,37 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+ * @package Advanced Product Reviews Base for Magento 2
+ */
+?>
+<?php
+// phpcs:ignoreFile
+/**
+ * @var \Amasty\AdvancedReview\Block\Summary $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$rating = $block->getRatingSummary();
+$count = $block->getReviewsCount();
+?>
+
+<div class="amreview-summary-info" data-mage-init='{"amSummaryInfo": {}}'>
+    <p class="amreview-summary"><?= $escaper->escapeHtml($block->getRatingSummaryValue()) ?></p>
+    <div class="amreview-rating-wrapper">
+        <div class="amstars-rating-container"
+            <?php $stars = $block->getRatingSummaryValue(); ?>
+             title="<?= $escaper->escapeHtml($stars > 1 ? __('%1 stars', $stars) : __('%1 star', $stars)) ?>">
+            <p class="amstars-stars" style="width:<?= $rating ? $escaper->escapeHtml($rating) : 0 ?>%">
+                <span class="hidden"><?= $escaper->escapeHtml($rating); ?>%</span>
+            </p>
+        </div>
+        <p class="amreview-count"><?= /* @noEscape */ $count; ?> <?= $escaper->escapeHtml(__('reviews'));?></p>
+    </div>
+    <?php if ($block->shouldShowRecommended()): ?>
+        <p class="amreview-percent-block" data-amreview-js="percent">
+            <span class="amreview-value"><?= $escaper->escapeHtml($block->getRecomendedPercent());?>%</span>
+            <span class="amreview-desc"><?= $escaper->escapeHtml(__('of customers recommend this product'));?></span>
+        </p>
+    <?php endif; ?>
+</div>
