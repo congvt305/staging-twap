@@ -748,6 +748,7 @@ return [
         'Amasty_Checkout' => 1,
         'Amasty_GoogleAddressAutocomplete' => 1,
         'Amasty_ImageOptimizer' => 1,
+        'Amasty_Groupcat' => 1,
         'Amasty_ImageOptimizerUi' => 1,
         'Amasty_InvisibleCaptcha' => 0,
         'Amasty_LazyLoad' => 1,
