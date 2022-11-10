@@ -56,7 +56,7 @@ You must have an `auth.json` file that contains your Magento Commerce authorizat
       "http-basic": {
         "repo.magento.com": {
           "username": "<public-key>",
-          "password": "<private-key>"
+          "password": "<private-key>" 
         }
       }
     }
