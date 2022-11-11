@@ -39,7 +39,6 @@
         "amasty/coupons": "2.1.1",
         "amasty/cron-schedule-list": ">=1.0.5",
         "amasty/feed": "^2.7.0",
-        "amasty/groupcat": "^1.8",
         "amasty/module-advanced-conditions": ">=1.5.3",
         "amasty/module-banners-lite": ">=1.0.19",
         "amasty/module-one-step-checkout-premium-package": "^2.0",
