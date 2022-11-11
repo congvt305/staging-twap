@@ -114,7 +114,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
         $checksum = $this->scopeConfig->getValue(self::PAYOO_PAYMENT_CHECK_SUM_KEY_URL, $storeScope);
         $ipRequest = $this->scopeConfig->getValue(self::PAYOO_PAYMENT_ENVIRONMENT_URL, $storeScope);
         $response = $this->json->unserialize(base64_decode($message), true);
-        $this->payooLogger->addInfo(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => $this->request->getParams()]);
+        $this->payooLogger->info(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => $this->request->getParams()]);
         if(isset($response['ResponseData']) && ($checksum . $response['ResponseData'] . $ipRequest !== null) && isset($response['Signature'])) {
             if (strtoupper(hash('sha512', $checksum . $response['ResponseData'] . $ipRequest)) == strtoupper($response['Signature'])) {
                 $order_code = '';
@@ -155,7 +155,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
             $order = $this->orderFactory->create()->loadByIncrementId($order_no);
             $statusPaymentSuccess = $this->config->getPaymentSuccessStatus();
             if ((string)$status === (string)$statusPaymentSuccess) {
-                $this->payooLogger->addInfo(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => 'Start Create Invoice']);
+                $this->payooLogger->info(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => 'Start Create Invoice']);
                 if(!$order->hasInvoices()) {
                     $invoice = $this->invoiceService->prepareInvoice($order);
                     $invoice->setTransactionId($order_no);
@@ -169,7 +169,7 @@ class Index extends \Payoo\PayNow\Controller\Notification\Index
                     );
                     $transactionSave->save();
                     $this->payment->createTransaction($order, $order_no, Transaction::TYPE_CAPTURE, $response);
-                    $this->payooLogger->addInfo(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => 'Create Invoice Success']);
+                    $this->payooLogger->info(PayooLogger::TYPE_LOG_CREATE, ['request_notification' => 'Create Invoice Success']);
                 }
                 $order->setState($status);
                 $message = 'Payoo Transaction Complete';

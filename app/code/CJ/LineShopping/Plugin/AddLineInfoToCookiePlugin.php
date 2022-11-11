@@ -96,7 +96,7 @@ class AddLineInfoToCookiePlugin
 
             if ($this->config->isEnable() && isset($params['ecid'])) {
                 $this->cookieLineInformation->setCookie(CookieLineInformation::LINE_SHOPPING_ECID_COOKIE_NAME, $params['ecid'] , $duration);
-                $this->logger->addInfo(Logger::LINE_COOKIE,
+                $this->logger->info(Logger::LINE_COOKIE,
                     [
                         'ecidCookie' => $params['ecid'],
                         'dataInfoCookie' => $dataLine

@@ -48,7 +48,7 @@ class RefundClient implements ClientInterface
         $this->curl->post($data['refund_url'], json_encode($params));
         $response = $this->curl->getBody();
         $responseFormat = json_decode($response, true);
-        $this->logger->addInfo(PayooLogger::TYPE_LOG_REFUND,
+        $this->logger->info(PayooLogger::TYPE_LOG_REFUND,
             [
                 'request' => $data,
                 'response' => $responseFormat
