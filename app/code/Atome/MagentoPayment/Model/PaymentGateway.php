@@ -209,12 +209,14 @@ class PaymentGateway extends \Magento\Payment\Model\Method\AbstractMethod
     public function canUseForProducts($products)
     {
         $excludedCategoriesString = $this->paymentGatewayConfig->getExcludedCategories();
-        $excludedCategoriesArray = explode(",", $excludedCategoriesString);
-        foreach ($products as $product) {
-            $categoryIds = $product->getCategoryIds();
-            foreach ($categoryIds as $k) {
-                if (in_array($k, $excludedCategoriesArray)) {
-                    return false;
+        if ($excludedCategoriesString) {
+            $excludedCategoriesArray = explode(",", $excludedCategoriesString);
+            foreach ($products as $product) {
+                $categoryIds = $product->getCategoryIds();
+                foreach ($categoryIds as $k) {
+                    if (in_array($k, $excludedCategoriesArray)) {
+                        return false;
+                    }
                 }
             }
         }
