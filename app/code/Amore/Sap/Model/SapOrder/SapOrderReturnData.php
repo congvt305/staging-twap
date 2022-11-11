@@ -464,7 +464,7 @@ class SapOrderReturnData extends AbstractSapOrder
         }
         $orderSubtotal = $this->roundingPrice($this->getRmaSubtotalInclTax($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma), $isDecimalFormat);
         $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->roundingPrice($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed), $isDecimalFormat);
-        $orderDiscountAmount = $this->roundingPrice($this->getRmaDiscountAmount($rma), $isDecimalFormat);
+        $orderDiscountAmount = $this->roundingPrice($this->getRmaDiscountAmount($rma, $isDecimalFormat), $isDecimalFormat);
 
         if ($websiteCode != 'vn_laneige_website') {
             $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'itemNsamt', $isDecimalFormat);
