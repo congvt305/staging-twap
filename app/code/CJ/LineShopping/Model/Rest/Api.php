@@ -110,7 +110,7 @@ class Api
 
             $result = $response->getBody()->getContents();
 
-            $this->logger->addInfo(Logger::ORDER_POST_BACK,
+            $this->logger->info(Logger::ORDER_POST_BACK,
                 [
                     'request_data' => $postData,
                     'result' => $result
@@ -152,7 +152,7 @@ class Api
 
             $result = $response->getBody()->getContents();
 
-            $this->logger->addInfo(Logger::FEE_POST_BACK,
+            $this->logger->info(Logger::FEE_POST_BACK,
                 [
                     'request_data' => $postData,
                     'result' => $result
