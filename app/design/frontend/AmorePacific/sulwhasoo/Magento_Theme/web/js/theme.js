@@ -6,10 +6,11 @@
 define([
     'jquery',
     'mage/smart-keyboard-handler',
+    'matchMedia',
     'mage/mage',
     'mage/ie-class-fixer',
     'domReady!'
-], function ($, keyboardHandler) {
+], function ($, keyboardHandler, mediaCheck) {
     'use strict';
 
     if ($('body').hasClass('checkout-cart-index')) {
@@ -30,6 +31,27 @@ define([
     $('.footer.content > .links').clone().appendTo('#store\\.menu');
     $('.footer.content > .copyright').clone().appendTo('#store\\.menu');
 
+    var stickyNav = function () {
+        if ($('.catalog-product-view').offset()) {
+            mediaCheck({
+                media: '(max-width: 768px)',
+                entry: function () {
+                    $('.box-tocart .actions').removeClass('sticky');
+                    if($('.box-tocart .actions').length > 0) {
+                        var scrollTop = $(window).scrollTop();
+                        var stickyNavTop = $('.box-tocart .actions').offset().top;
+                        if (scrollTop > stickyNavTop) {
+                            $('.box-tocart .actions').addClass('sticky');
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    $(window).scroll(function () {
+        stickyNav();
+    });
 
     keyboardHandler.apply();
 });
