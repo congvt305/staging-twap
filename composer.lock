@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d7294c002fc324201a2d94c34477cfad",
+    "content-hash": "6b6971d5a536e0bb6fd94028d50286d6",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -309,31 +309,6 @@
             "description": "Cron Schedule List by Amasty"
         },
         {
-            "name": "amasty/customer-group-assign",
-            "version": "1.0.8",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/customer-group-assign-1.0.8.zip"
-            },
-            "require": {
-                "amasty/base": ">=1.13.5",
-                "php": ">=7.3"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\GroupAssign\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Customer Group Auto Assign by Amasty"
-        },
-        {
             "name": "amasty/feed",
             "version": "2.7.0",
             "dist": {
@@ -383,36 +358,6 @@
                 "Commercial"
             ],
             "description": "Amasty Geoip Data"
-        },
-        {
-            "name": "amasty/groupcat",
-            "version": "1.8.6",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/groupcat-1.8.6.zip"
-            },
-            "require": {
-                "amasty/base": ">=1.13.6",
-                "amasty/customer-group-assign": "*",
-                "amasty/reindex-from-admin": "*",
-                "php": ">=7.3"
-            },
-            "suggest": {
-                "amasty/groupcat-mftf-3": "Install groupcat-mftf-3 module to be able to run Customer Group Catalog MFTF tests for Magento ee2.4.2+ version."
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\Groupcat\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Amasty Customer Group Catalog"
         },
         {
             "name": "amasty/module-advanced-conditions",
@@ -992,31 +937,6 @@
                 "Commercial"
             ],
             "description": "Free Gift by Amasty"
-        },
-        {
-            "name": "amasty/reindex-from-admin",
-            "version": "1.1.2",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/reindex-from-admin-1.1.2-ee.zip"
-            },
-            "require": {
-                "amasty/base": ">=1.13.2",
-                "php": ">=7.3"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\Reindex\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Indexer Reindex In Admin Panel by Amasty"
         },
         {
             "name": "amasty/reviews_import_export",
@@ -23859,120 +23779,6 @@
                 "source": "https://github.com/magento/zf1/tree/1.15.1"
             },
             "time": "2022-06-21T01:22:39+00:00"
-        },
-        {
-            "name": "magepal/magento2-core",
-            "version": "1.1.12",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/magepal/magento2-core.git",
-                "reference": "83fbffc0d540f82f55e0623719e08ecacc9c7e18"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/magepal/magento2-core/zipball/83fbffc0d540f82f55e0623719e08ecacc9c7e18",
-                "reference": "83fbffc0d540f82f55e0623719e08ecacc9c7e18",
-                "shasum": ""
-            },
-            "require": {
-                "magento/framework": "*"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "MagePal\\Core\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "proprietary"
-            ],
-            "authors": [
-                {
-                    "name": "Renon Stewart",
-                    "email": "renon@magepal.com",
-                    "homepage": "https://www.magepal.com/",
-                    "role": "Leader"
-                }
-            ],
-            "description": "MagePal core extension",
-            "homepage": "https://www.magepal.com/",
-            "keywords": [
-                "magento 2",
-                "magepal core extension"
-            ],
-            "support": {
-                "email": "support@magepal.com",
-                "issues": "https://github.com/magepal/magento2-core/issues/",
-                "source": "https://github.com/magepal/magento2-core/tree/1.1.12"
-            },
-            "time": "2021-05-29T19:47:51+00:00"
-        },
-        {
-            "name": "magepal/magento2-reindex",
-            "version": "1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/magepal/magento2-reindex.git",
-                "reference": "f5635196db2fc272b6f3251fbc03cd0ad194925f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/magepal/magento2-reindex/zipball/f5635196db2fc272b6f3251fbc03cd0ad194925f",
-                "reference": "f5635196db2fc272b6f3251fbc03cd0ad194925f",
-                "shasum": ""
-            },
-            "require": {
-                "magento/framework": "100.0.*|100.1.*|101.0.*|102.0.*|103.0.*",
-                "magento/module-backend": "100.0.*|100.1.*|100.2.*|101.0.*|102.0.*",
-                "magepal/magento2-core": ">1.1.8",
-                "php": "~7.1.0|~7.1.3|~7.2.0|~7.3.0|~7.4.0|~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "MagePal\\Reindex\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "proprietary"
-            ],
-            "authors": [
-                {
-                    "name": "Renon Stewart",
-                    "email": "renon@magepal.com",
-                    "homepage": "https://www.magepal.com/",
-                    "role": "Leader"
-                }
-            ],
-            "description": "Reindex your Magento2 store quickly and easily from backend/admin, instead of command line.",
-            "homepage": "https://www.magepal.com/",
-            "keywords": [
-                "admin reindex",
-                "backend reindex",
-                "magento 2",
-                "magento2",
-                "reindex"
-            ],
-            "support": {
-                "email": "support@magepal.com",
-                "issues": "https://github.com/magepal/magento2-reindex/issues/",
-                "source": "https://github.com/magepal/magento2-reindex/tree/1.1.1"
-            },
-            "funding": [
-                {
-                    "url": "https://www.magepal.com/reindex.html?utm_source=reindex&utm_medium=github%20sponsor",
-                    "type": "custom"
-                }
-            ],
-            "time": "2022-04-12T18:34:42+00:00"
         },
         {
             "name": "markbaker/complex",
