@@ -26,7 +26,7 @@ class Data extends AbstractHelper
      */
     public function fixLineBreak($value = ''): string
     {
-        return str_replace(["\r", "\n", "<br>", "<br/>"], '', $value);
+        return $value ? str_replace(["\r", "\n", "<br>", "<br/>"], '', $value) : '';
     }
 
     /**
@@ -39,7 +39,7 @@ class Data extends AbstractHelper
     {
         foreach ($itemData as $columnName => $value) {
             if (!is_array($value) && !is_object($value)) {
-                $itemData[$columnName] = $this->fixLineBreak($value);
+                $itemData[$columnName] = $value ? $this->fixLineBreak($value) : $value;
             }
         }
 

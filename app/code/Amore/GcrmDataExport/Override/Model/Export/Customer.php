@@ -18,6 +18,7 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\ImportExport\Model\Export\Factory;
+use Magento\ImportExport\Model\Import;
 use Magento\ImportExport\Model\ResourceModel\CollectionByPagesIteratorFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -29,6 +30,53 @@ use Psr\Log\LoggerInterface;
  */
 class Customer extends MainCustomer
 {
+    const HEADER_COMLUMNS = [
+        'entity_id',
+        'is_active',
+        'increment_id',
+        'email',
+        '_website',
+        '_store',
+        'ba_code',
+        'call_subscription_status',
+        'confirmation',
+        'created_at',
+        'created_in',
+        'disable_auto_group_change',
+        'dm_subscription_status',
+        'dob',
+        'failures_num',
+        'firstname',
+        'first_failure',
+        'gender',
+        'group_id',
+        'imported_from_pos',
+        'integration_number',
+        'lastname',
+        'line_id',
+        'line_message_agreement',
+        'lock_expires',
+        'middlename',
+        'mobile_number',
+        'partner_id',
+        'password_hash',
+        'prefix',
+        'referrer_code',
+        'reward_update_notification',
+        'reward_warning_notification',
+        'rp_token',
+        'rp_token_created_at',
+        'sales_office_code',
+        'sales_organization_code',
+        'status_code',
+        'store_id',
+        'suffix',
+        'taxvat',
+        'terms_and_services_policy',
+        'updated_at',
+        'website_id'
+    ];
+
     /**
      * Columns to include in exported file
      *
@@ -101,16 +149,7 @@ class Customer extends MainCustomer
      */
     protected function _getHeaderColumns()
     {
-        $validAttributeCodes = $this->_getExportAttributeCodes();
-        if ($this->dataPersistor->get('gcrm_export_check')) {
-            array_splice(
-                $this->_permanentAttributes,
-                0,
-                0,
-                $this->includeColumns
-            );
-        }
-        return array_merge($this->_permanentAttributes, $validAttributeCodes);
+        return self::HEADER_COMLUMNS;
     }
 
     /**
@@ -139,5 +178,67 @@ class Customer extends MainCustomer
         } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());
         }
+    }
+
+    /**
+     * Fill row with attributes values
+     *
+     * @param \Magento\Framework\Model\AbstractModel $item export entity
+     * @param array $row data row
+     * @return array
+     */
+    protected function _addAttributeValuesToRow(\Magento\Framework\Model\AbstractModel $item, array $row = [])
+    {
+        $validAttributeCodes = $this->_getExportAttributeCodes();
+        // go through all valid attribute codes
+        foreach ($validAttributeCodes as $attributeCode) {
+            $attributeValue = $item->getData($attributeCode);
+
+            if ($this->isMultiselect($attributeCode)) {
+                $values = [];
+                //Customize here
+                if (!$attributeValue) {
+                    continue;
+                }
+                $attributeValue = explode(Import::DEFAULT_GLOBAL_MULTI_VALUE_SEPARATOR, $attributeValue);
+                foreach ($attributeValue as $value) {
+                    $values[] = $this->getAttributeValueById($attributeCode, $value);
+                }
+                $row[$attributeCode] = implode(Import::DEFAULT_GLOBAL_MULTI_VALUE_SEPARATOR, $values);
+            } else {
+                $row[$attributeCode] = $this->getAttributeValueById($attributeCode, $attributeValue);
+            }
+        }
+
+        return $row;
+    }
+    /**
+     * Checks that attribute is multiselect type by attribute code
+     *
+     * @param string $attributeCode An attribute code
+     * @return bool Returns true if attribute is multiselect type
+     */
+    private function isMultiselect($attributeCode)
+    {
+        return isset($this->attributeTypes[$attributeCode])
+            && $this->attributeTypes[$attributeCode] === 'multiselect';
+    }
+
+    /**
+     * Returns attribute value by id
+     *
+     * @param string $attributeCode An attribute code
+     * @param int|string $valueId
+     * @return mixed
+     */
+    private function getAttributeValueById($attributeCode, $valueId)
+    {
+        if (isset($this->_attributeValues[$attributeCode])
+            && isset($this->_attributeValues[$attributeCode][$valueId])
+        ) {
+            return $this->_attributeValues[$attributeCode][$valueId];
+        }
+
+        return $valueId;
     }
 }
