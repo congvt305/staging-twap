@@ -16,8 +16,10 @@ use Amore\GcrmDataExport\Model\Export\Order\AttributeCollectionProvider;
 use Amore\GcrmDataExport\Model\OrderColumnsInterface;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\DB\Select;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\ImportExport\Model\Export\AbstractEntity;
+use Magento\ImportExport\Model\Import;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Sales\Model\ResourceModel\Order\Collection;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -511,11 +513,13 @@ class SalesOrder extends AbstractEntity implements OrderColumnsInterface
                 ->addFieldToFilter('entity_code', ['eq' => 'order'])->getFirstItem();
             $exportDate = $customExportData->getData('updated_at');
             if ($exportDate == "NULL") {
-                /** @var CollectionFactory $collection */
+                /** @var Collection $collection */
                 $collection = $this->orderColFactory->create();
+                $collection->getSelect()->reset(Select::COLUMNS)->columns(self::HEAD_COLUMNS_NAME);
             } else {
-                /** @var CollectionFactory $collection */
+                /** @var Collection $collection */
                 $collection = $this->orderColFactory->create();
+                $collection->getSelect()->reset(Select::COLUMNS)->columns(self::HEAD_COLUMNS_NAME);
                 $collection->addFieldToFilter('updated_at', ['gteq' => $exportDate]);
             }
             $collection->addFieldToFilter('store_id', ['in' => $storeEnable]);
