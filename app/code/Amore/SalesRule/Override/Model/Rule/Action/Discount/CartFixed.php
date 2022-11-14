@@ -35,7 +35,6 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
      */
     protected $promoItemHelper;
 
-    private $lastItemId = null;
     /**
      * @param Validator $validator
      * @param DataFactory $discountDataFactory
