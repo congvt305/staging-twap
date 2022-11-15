@@ -147,6 +147,7 @@ class Checkout
             $logger = new \Zend_Log();
             $logger->addWriter($writer);
             $logger->crit('Missing data shipping address when place order with linepay mobile ' . $this->_quote->getId() . ' : ' . $backTrace);
+            $logger->info('Shipping when place order data: ' . json_encode($shippingAddress->getData()));
         }
 
         $order = $this->quoteManagement->submit($this->_quote);
