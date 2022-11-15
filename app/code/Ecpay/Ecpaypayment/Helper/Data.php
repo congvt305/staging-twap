@@ -142,6 +142,12 @@ class Data extends AbstractHelper
             // Validate choose payment
             $choosenPayment = $this->getChoosenPayment();
             $paymentName = $this->getPaymentTranslation($choosenPayment);
+            if (!$choosenPayment) {
+                return [
+                    'status' => 'Success'
+                ];
+            }
+
             if ($this->_ecpayPaymentModel->isValidPayment($choosenPayment) === false) {
                 return $this->setFailureStauts($this->getErrorMessage('invalidPayment', $paymentName), $order);
             }
