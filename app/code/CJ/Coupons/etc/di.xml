@@ -1,4 +1,10 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Amasty\Coupons\Observer\UpdateCouponUsage" type="CJ\Coupons\Observer\UpdateCouponUsage"/>
+    <type name="Magento\SalesRule\Model\Rule\Condition\Address">
+        <plugin name="addGrandTotalType" type="CJ\Coupons\plugin\CustomCondition\AddGrandTotal"/>
+    </type>
+    <type name="Magento\AdvancedSalesRule\Model\Rule\Condition\Address">
+        <plugin name="customSubtotalWithDiscount" type="CJ\Coupons\plugin\SalesRule\CustomValidateSubtotalWithDiscount"/>
+    </type>
 </config>

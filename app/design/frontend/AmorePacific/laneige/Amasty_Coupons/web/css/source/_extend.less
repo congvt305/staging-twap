@@ -24,3 +24,12 @@
         padding-left: 2.5%;
     }
 }
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .checkout-cart-index {
+        .couponContainer {
+            .actions-toolbar {
+                min-height: 40px;
+            }
+        }
+    }
+}
