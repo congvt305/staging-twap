@@ -179,10 +179,10 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
             }
 
             //Customize here to fix the diffirent discount for last item (do not equal with discount amount)
-            $itemCount = $quote->getItemsCount();
-            if ($item->getId() == $quote->getAllVisibleItems()[$itemCount - 1]->getId()) {
+            if ($cartRules[$rule->getId()] < 0.0 || ($cartRules[$rule->getId()] <= 0.1 && $cartRules[$rule->getId()] > 0.0 )) {
                 $baseDiscountAmount += $cartRules[$rule->getId()];
                 $quoteAmount += $cartRules[$rule->getId()];
+                $cartRules[$rule->getId()] = 0;
             }
 
             $discountData->setAmount($this->priceCurrency->roundPrice(min($itemPrice * $qty, $quoteAmount)));
