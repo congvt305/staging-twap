@@ -39,6 +39,109 @@ use Psr\Log\LoggerInterface;
  */
 class Product extends MainProduct
 {
+    const HEADER_COLUMNS = [
+        'entity_id',
+        'sku',
+        'store_view_code',
+        'attribute_set_code',
+        'product_type',
+        'categories',
+        'product_websites',
+        'name',
+        'weight',
+        'product_online',
+        'tax_class_name',
+        'visibility',
+        'price',
+        'special_price',
+        'special_price_from_date',
+        'special_price_to_date',
+        'url_key',
+        'meta_title',
+        'meta_keywords',
+        'meta_description',
+        'base_image',
+        'small_image',
+        'thumbnail_image',
+        'swatch_image',
+        'swatch_image_label',
+        'created_at',
+        'updated_at',
+        'new_from_date',
+        'new_to_date',
+        'display_product_options_in',
+        'map_price',
+        'msrp_price',
+        'map_enabled',
+        'gift_message_available',
+        'custom_design',
+        'custom_design_from',
+        'custom_design_to',
+        'custom_layout_update',
+        'page_layout',
+        'product_options_container',
+        'msrp_display_actual_price_type',
+        'country_of_manufacture',
+        'additional_attributes',
+        'qty',
+        'out_of_stock_qty',
+        'use_config_min_qty',
+        'is_qty_decimal',
+        'allow_backorders',
+        'use_config_backorders',
+        'min_cart_qty',
+        'use_config_min_sale_qty',
+        'max_cart_qty',
+        'use_config_max_sale_qty',
+        'is_in_stock',
+        'notify_on_stock_below',
+        'use_config_notify_stock_qty',
+        'manage_stock',
+        'use_config_manage_stock',
+        'use_config_qty_increments',
+        'qty_increments',
+        'use_config_enable_qty_inc',
+        'enable_qty_increments',
+        'is_decimal_divided',
+        'website_id',
+        'deferred_stock_update',
+        'use_config_deferred_stock_update',
+        'related_skus',
+        'related_position',
+        'crosssell_skus',
+        'crosssell_position',
+        'upsell_skus',
+        'upsell_position',
+        'additional_images',
+        'additional_image_labels',
+        'hide_from_product_page',
+        'custom_options',
+        'bundle_price_type',
+        'bundle_sku_type',
+        'bundle_price_view',
+        'bundle_weight_type',
+        'bundle_values',
+        'bundle_shipment_type',
+        'configurable_variations',
+        'configurable_variation_labels',
+        'giftcard_type',
+        'giftcard_allow_open_amount',
+        'giftcard_open_amount_min',
+        'giftcard_open_amount_max',
+        'giftcard_amount',
+        'use_config_is_redeemable',
+        'giftcard_is_redeemable',
+        'use_config_lifetime',
+        'giftcard_lifetime',
+        'use_config_allow_message',
+        'giftcard_allow_message',
+        'use_config_email_template',
+        'giftcard_email_template',
+        'associated_skus',
+        'downloadable_links',
+        'downloadable_samples'
+        ];
+
     /**
      * Attributes defined by user
      *
@@ -160,71 +263,6 @@ class Product extends MainProduct
     }
 
     /**
-     * Set headers columns
-     *
-     * @param array $customOptionsData
-     * @param array $stockItemRows
-     * @return void
-     * @deprecated 100.2.0 Logic will be moved to _getHeaderColumns in future release
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    protected function setHeaderColumns($customOptionsData, $stockItemRows)
-    {
-        $exportAttributes = (
-            array_key_exists("skip_attr", $this->_parameters) && count($this->_parameters["skip_attr"])
-        ) ?
-            array_intersect(
-                $this->_getExportMainAttrCodes(),
-                array_merge(
-                    $this->_customHeadersMapping($this->_getExportAttrCodes()),
-                    $this->getNonSystemAttributes()
-                )
-            ) :
-            $this->_getExportMainAttrCodes();
-
-        if (!$this->_headerColumns) {
-            $this->_headerColumns = array_merge(
-                [
-                    self::COL_SKU,
-                    self::COL_STORE,
-                    self::COL_ATTR_SET,
-                    self::COL_TYPE,
-                    self::COL_CATEGORY,
-                    self::COL_PRODUCT_WEBSITES,
-                ],
-                $exportAttributes,
-                reset($stockItemRows) ? array_keys(end($stockItemRows)) : [],
-                [
-                    'related_skus',
-                    'related_position',
-                    'crosssell_skus',
-                    'crosssell_position',
-                    'upsell_skus',
-                    'upsell_position',
-                    'additional_images',
-                    'additional_image_labels',
-                    'hide_from_product_page',
-                    'custom_options'
-                ]
-            );
-
-            if ($this->dataPersistor->get('gcrm_export_check')) {
-                $this->_headerColumns = array_diff(
-                    $this->_headerColumns,
-                    $this->_excludeHeadColumns
-                );
-                array_splice(
-                    $this->_headerColumns,
-                    0,
-                    0,
-                    [self::ENTITY_ID]
-                );
-            }
-        }
-    }
-
-    /**
      * Export process
      *
      * @return string
@@ -261,6 +299,11 @@ class Product extends MainProduct
         return $writer->getContents();
     }
 
+    public function _getHeaderColumns()
+    {
+        return self::HEADER_COLUMNS;
+    }
+
     /**
      * Get export data for collection
      *
@@ -284,8 +327,6 @@ class Product extends MainProduct
                 $this->_prepareEntityCollection($this->_entityCollectionFactory->create()),
                 $productIds
             );
-
-            $this->setHeaderColumns($multirawData['customOptionsData'], $stockItemRows);
 
             foreach ($rawData as $productId => $productData) {
                 foreach ($productData as $storeId => $dataRow) {
