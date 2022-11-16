@@ -95,8 +95,34 @@ class Quote
             $origReserveId = $this->checkoutSession->getQuote()->getReservedOrderId();
             $reserveId = $origReserveId.$timestamp;
             $currentQuote = $this->quoteRepository->get($this->checkoutSession->getQuote()->getId());
+            $shippingAddress = $currentQuote->getShippingAddress();
+            if (!$shippingAddress->getFirstname() || !$shippingAddress->getLastname() || !$shippingAddress->getStreet()) {
+                $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+                $backTrace = '';
+                foreach ($debugBackTrace as $item) {
+                    $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . " | ";
+                }
+                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-ITO0017-39.log');
+                $logger = new \Zend_Log();
+                $logger->addWriter($writer);
+                $logger->crit('Missing data shipping address when get reserved order before save quote ' . $currentQuote->getId() . ' : ' . $backTrace);
+                $logger->info('Shipping when get reserved order before save data: ' . json_encode($shippingAddress->getData()));
+            }
             $currentQuote->setData('reserved_order_id', $origReserveId);
             $this->quoteRepository->save($currentQuote);
+            $shippingAddress = $currentQuote->getShippingAddress();
+            if (!$shippingAddress->getFirstname() || !$shippingAddress->getLastname() || !$shippingAddress->getStreet()) {
+                $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+                $backTrace = '';
+                foreach ($debugBackTrace as $item) {
+                    $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . " | ";
+                }
+                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-ITO0017-39.log');
+                $logger = new \Zend_Log();
+                $logger->addWriter($writer);
+                $logger->crit('Missing data shipping address when get reserved order after save quote ' . $currentQuote->getId() . ' : ' . $backTrace);
+                $logger->info('Shipping when get reserved order after save data: ' . json_encode($shippingAddress->getData()));
+            }
             return $reserveId;
         } catch (\Exception $e) {
             $this->logger->error('Linepay-Error: ' . $e->getMessage());
