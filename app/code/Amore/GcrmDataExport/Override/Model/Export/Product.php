@@ -27,6 +27,7 @@ use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\ImportExport\Model\Export\ConfigInterface;
+use Magento\ImportExport\Model\Export\Entity\AbstractEntity;
 use Magento\ImportExport\Model\Import;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
@@ -39,6 +40,8 @@ use Psr\Log\LoggerInterface;
  */
 class Product extends MainProduct
 {
+    const XML_PATH_ACTIVE_EXTENSION = 'amore_gcrm/general/active';
+
     const HEADER_COLUMNS = [
         'entity_id',
         'sku',
@@ -179,6 +182,11 @@ class Product extends MainProduct
     protected $dataHelper;
 
     /**
+     * @var \Amore\GcrmDataExport\Model\Config\Config
+     */
+    private $gcrmConfig;
+
+    /**
      * @param TimezoneInterface $localeDate
      * @param Config $config
      * @param ResourceConnection $resource
@@ -197,6 +205,7 @@ class Product extends MainProduct
      * @param RowCustomizerInterface $rowCustomizer
      * @param DataPersistorInterface $dataPersistor
      * @param Data $dataHelper
+     * @param \Amore\GcrmDataExport\Model\Config\Config $gcrmConfig
      * @param array $dateAttrCodes
      * @param ProductFilterInterface|null $filter
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -220,9 +229,11 @@ class Product extends MainProduct
         RowCustomizerInterface $rowCustomizer,
         DataPersistorInterface $dataPersistor,
         Data $dataHelper,
+        \Amore\GcrmDataExport\Model\Config\Config $gcrmConfig,
         array $dateAttrCodes = [],
         ?ProductFilterInterface $filter = null
     ) {
+        $this->gcrmConfig = $gcrmConfig;
         parent::__construct(
             $localeDate,
             $config,
@@ -262,6 +273,27 @@ class Product extends MainProduct
         return array_diff($this->_getExportMainAttrCodes(), $this->_customHeadersMapping($attrKeys));
     }
 
+
+    /**
+     * Initialize stores hash.
+     *
+     * @return $this
+     */
+    protected function _initStores()
+    {
+        foreach ($this->_storeManager->getStores(true) as $store) {
+            //Customize get follow store config
+            if ($this->gcrmConfig->getConfigValue(self::XML_PATH_ACTIVE_EXTENSION, $store->getId())) {
+                // phpstan:ignore "Access to an undefined property"
+                $this->_storeIdToCode[$store->getId()] = $store->getCode();
+            }
+        }
+        // phpstan:ignore "Access to an undefined property"
+        ksort($this->_storeIdToCode);
+        // to ensure that 'admin' store (ID is zero) goes first
+
+        return $this;
+    }
     /**
      * Export process
      *
@@ -330,7 +362,7 @@ class Product extends MainProduct
 
             foreach ($rawData as $productId => $productData) {
                 foreach ($productData as $storeId => $dataRow) {
-                    if ($storeId == Store::DEFAULT_STORE_ID && isset($stockItemRows[$productId])) {
+                    if (isset($stockItemRows[$productId])) {
                         // phpcs:ignore Magento2.Performance.ForeachArrayMerge
                         $dataRow = array_merge($dataRow, $stockItemRows[$productId]);
                     }
