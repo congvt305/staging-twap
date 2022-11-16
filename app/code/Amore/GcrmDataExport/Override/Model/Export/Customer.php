@@ -14,6 +14,7 @@ use Magento\Customer\Model\Customer as CustomerModel;
 use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory;
 use Magento\CustomerImportExport\Model\Export\Customer as MainCustomer;
 use Magento\Eav\Model\Config;
+use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
@@ -30,6 +31,8 @@ use Psr\Log\LoggerInterface;
  */
 class Customer extends MainCustomer
 {
+    const XML_PATH_ACTIVE_EXTENSION = 'amore_gcrm/general/active';
+
     const HEADER_COMLUMNS = [
         'entity_id',
         'is_active',
@@ -104,6 +107,11 @@ class Customer extends MainCustomer
     private $logger;
 
     /**
+     * @var \Amore\GcrmDataExport\Model\Config\Config
+     */
+    private $gcrmConfig;
+
+    /**
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
      * @param Factory $collectionFactory
@@ -114,6 +122,7 @@ class Customer extends MainCustomer
      * @param DataPersistorInterface $dataPersistor
      * @param Data $dataHelper
      * @param LoggerInterface $logger
+     * @param \Amore\GcrmDataExport\Model\Config\Config $gcrmConfig
      * @param array $data
      */
     public function __construct(
@@ -127,6 +136,7 @@ class Customer extends MainCustomer
         DataPersistorInterface $dataPersistor,
         Data $dataHelper,
         LoggerInterface $logger,
+        \Amore\GcrmDataExport\Model\Config\Config $gcrmConfig,
         array $data = []
     ) {
         parent::__construct(
@@ -142,6 +152,7 @@ class Customer extends MainCustomer
         $this->logger           = $logger;
         $this->dataHelper       = $dataHelper;
         $this->dataPersistor    = $dataPersistor;
+        $this->gcrmConfig = $gcrmConfig;
     }
 
     /**
@@ -179,7 +190,25 @@ class Customer extends MainCustomer
             $this->logger->error($exception->getMessage());
         }
     }
-
+    /**
+     * Apply filter to collection and add not skipped attributes to select
+     *
+     * @param AbstractCollection $collection
+     * @return AbstractCollection
+     */
+    protected function _prepareEntityCollection(AbstractCollection $collection)
+    {
+        $this->filterEntityCollection($collection);
+        $this->_addAttributesToCollection($collection);
+        $storeEnable = [];
+        foreach ($this->_storeManager->getStores() as $store) {
+            if ($this->gcrmConfig->getConfigValue(self::XML_PATH_ACTIVE_EXTENSION, $store->getId())) {
+                $storeEnable[] = $store->getId();
+            }
+        }
+        $collection->addFieldToFilter('store_id', ['in' => $storeEnable]);
+        return $collection;
+    }
     /**
      * Fill row with attributes values
      *
