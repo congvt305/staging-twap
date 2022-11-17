@@ -186,6 +186,7 @@ class Product extends MainProduct
      */
     private $gcrmConfig;
 
+    private $websiteCode = [];
     /**
      * @param TimezoneInterface $localeDate
      * @param Config $config
@@ -282,10 +283,12 @@ class Product extends MainProduct
     protected function _initStores()
     {
         foreach ($this->_storeManager->getStores(true) as $store) {
+            // phpstan:ignore "Access to an undefined property"
+            $this->_storeIdToCode[$store->getId()] = $store->getCode();
             //Customize get follow store config
             if ($this->gcrmConfig->getConfigValue(self::XML_PATH_ACTIVE_EXTENSION, $store->getId())) {
-                // phpstan:ignore "Access to an undefined property"
-                $this->_storeIdToCode[$store->getId()] = $store->getCode();
+               $websiteId = $this->_storeManager->getStore( $store->getId())->getWebsiteId();
+               $this->websiteCode[] = $this->_storeManager->getWebsite($websiteId)->getCode();
             }
         }
         // phpstan:ignore "Access to an undefined property"
@@ -311,6 +314,7 @@ class Product extends MainProduct
             ++$page;
             $entityCollection = $this->_getEntityCollection(true);
             $entityCollection->setOrder('entity_id', 'asc');
+            $entityCollection->setStoreId(Store::DEFAULT_STORE_ID);
             $this->_prepareEntityCollection($entityCollection);
             $this->paginateCollection($page, $this->getItemsPerPage());
             if ($entityCollection->count() == 0) {
@@ -366,7 +370,7 @@ class Product extends MainProduct
                         $dataRow = array_merge($dataRow, $stockItemRows[$productId]);
                     }
                     $this->appendMultirowData($dataRow, $multirawData);
-                    if ($dataRow) {
+                    if ($dataRow && isset($dataRow['_product_websites']) && in_array($dataRow['_product_websites'], $this->websiteCode)) {
                         $exportData[] = $dataRow;
                     }
                 }
@@ -375,32 +379,6 @@ class Product extends MainProduct
             $this->_logger->critical($e);
         }
         return $exportData;
-    }
-
-    /**
-     * Customize clear all item collection and set store for collection
-     *
-     * @return array Keys are product IDs, values arrays with keys as store IDs
-     *               and values as store-specific versions of Product entity.
-     * @since 100.2.1
-     */
-    protected function loadCollection(): array
-    {
-        $data = [];
-        $collection = $this->_getEntityCollection();
-        $collection->clear();
-        foreach (array_keys($this->_storeIdToCode) as $storeId) {
-
-            $collection->setOrder('entity_id', 'asc');
-            $collection->addStoreFilter($storeId);
-            $collection->load();
-            foreach ($collection as $itemId => $item) {
-                $data[$itemId][$storeId] = $item;
-            }
-            $collection->clear();
-        }
-
-        return $data;
     }
 
     /**
@@ -422,23 +400,21 @@ class Product extends MainProduct
          */
         foreach ($items as $itemId => $itemByStore) {
             foreach ($this->_storeIdToCode as $storeId => $storeCode) {
-                if (isset($itemByStore[$storeId])) {
-                    $item = $itemByStore[$storeId];
-                    $additionalAttributes = [];
-                    $productLinkId = $item->getData($this->getProductEntityLinkField());
+                $item = $itemByStore[$storeId];
+                $additionalAttributes = [];
+                $productLinkId = $item->getData($this->getProductEntityLinkField());
 
-                    $attrSetId = $item->getAttributeSetId();
-                    if ($this->dataPersistor->get('gcrm_export_check')) {
-                        $data[$itemId][$storeId][self::ENTITY_ID] = $item->getId();
-                    }
-                    $data[$itemId][$storeId][self::COL_STORE] = $storeCode;
-                    $data[$itemId][$storeId][self::COL_ATTR_SET] = $this->_attrSetIdToName[$attrSetId];
-                    $data[$itemId][$storeId][self::COL_TYPE] = $item->getTypeId();
-                    $data[$itemId][$storeId][self::COL_SKU] = htmlspecialchars_decode($item->getSku());
-                    $data[$itemId][$storeId]['store_id'] = $storeId;
-                    $data[$itemId][$storeId]['product_id'] = $itemId;
-                    $data[$itemId][$storeId]['product_link_id'] = $productLinkId;
+                $attrSetId = $item->getAttributeSetId();
+                if ($this->dataPersistor->get('gcrm_export_check')) {
+                    $data[$itemId][$storeId][self::ENTITY_ID] = $item->getId();
                 }
+                $data[$itemId][$storeId][self::COL_STORE] = $storeCode;
+                $data[$itemId][$storeId][self::COL_ATTR_SET] = $this->_attrSetIdToName[$attrSetId];
+                $data[$itemId][$storeId][self::COL_TYPE] = $item->getTypeId();
+                $data[$itemId][$storeId][self::COL_SKU] = htmlspecialchars_decode($item->getSku());
+                $data[$itemId][$storeId]['store_id'] = $storeId;
+                $data[$itemId][$storeId]['product_id'] = $itemId;
+                $data[$itemId][$storeId]['product_link_id'] = $productLinkId;
             }
         }
 
