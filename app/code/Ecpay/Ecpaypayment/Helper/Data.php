@@ -144,6 +144,12 @@ class Data extends AbstractHelper
             $paymentName = $this->getPaymentTranslation($choosenPayment);
             $isPaymentMethod = $this->_ecpayPaymentModel->isValidPayment($choosenPayment);
             $this->logger->error('EcPay Valid Payment: ' . $isPaymentMethod);
+            if (!$choosenPayment) {
+                return [
+                    'status' => 'Success'
+                ];
+            }
+
             if ($this->_ecpayPaymentModel->isValidPayment($choosenPayment) === false) {
                 return $this->setFailureStauts($this->getErrorMessage('invalidPayment', $paymentName), $order);
             }
