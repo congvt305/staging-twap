@@ -10,7 +10,6 @@ diff --git a/vendor/magento/framework/View/Element/Template.php b/vendor/magento
              $templatePath = $fileName ?: $this->getTemplate();
              $errorMessage = "Invalid template file: '{$templatePath}' in module: '{$this->getModuleName()}'"
                  . " block's name: '{$this->getNameInLayout()}'";
--
 +            if ($this->getModuleName() == 'Magento_Cms') {
 +                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-for-ticket-ITO0035-14.log');
 +                $logger = new \Zend_Log();
