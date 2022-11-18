@@ -146,7 +146,7 @@ class PaymentInformationManagementPlugin extends \Magento\CheckoutStaging\Plugin
                 $billingData = $this->convertAddressValueToFlatArray($billingAddressData);
                 $billingKeys = array_flip(array_keys($billingData));
                 $shippingData = array_intersect_key($quoteShippingAddressData, $billingKeys);
-                $removeKeys = ['region_code', 'save_in_address_book'];
+                $removeKeys = ['region_code', 'save_in_address_book', 'extension_attributes'];
                 $billingData = array_diff_key($billingData, array_flip($removeKeys));
                 $difference = array_diff($billingData, $shippingData);
                 $sameAsBillingFlag = empty($difference);
