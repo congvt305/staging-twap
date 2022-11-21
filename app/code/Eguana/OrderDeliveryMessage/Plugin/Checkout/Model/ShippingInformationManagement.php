@@ -65,7 +65,7 @@ class ShippingInformationManagement
          * In core files they are also using it. For example at
          * vendor/magento/module-catalog/Model/Product/Option/Type/File.php Line 407
          */
-        $deliveryMessage = $this->escaper->escapeHtml(strip_tags($deliveryMessage));
+        $deliveryMessage = $deliveryMessage ? $this->escaper->escapeHtml(strip_tags($deliveryMessage)) : $deliveryMessage;
         $quote = $this->quoteRepository->getActive($cartId);
         $quote->setDeliveryMessage($deliveryMessage);
         $this->quoteRepository->save($quote);

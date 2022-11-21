@@ -861,6 +861,7 @@ return [
         'Eguana_VideoBoard' => 1,
         'Fastly_Cdn' => 1,
         'Ipay88_Payment' => 1,
+        'CJ_CustomIpay88' => 1,
         'Klarna_Core' => 0,
         'Klarna_Ordermanagement' => 0,
         'Klarna_Kp' => 0,

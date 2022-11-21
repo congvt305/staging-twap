@@ -27,6 +27,7 @@ use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\ImportExport\Model\Export\ConfigInterface;
+use Magento\ImportExport\Model\Export\Entity\AbstractEntity;
 use Magento\ImportExport\Model\Import;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
@@ -39,6 +40,111 @@ use Psr\Log\LoggerInterface;
  */
 class Product extends MainProduct
 {
+    const XML_PATH_ACTIVE_EXTENSION = 'amore_gcrm/general/active';
+
+    const HEADER_COLUMNS = [
+        'entity_id',
+        'sku',
+        'store_view_code',
+        'attribute_set_code',
+        'product_type',
+        'categories',
+        'product_websites',
+        'name',
+        'weight',
+        'product_online',
+        'tax_class_name',
+        'visibility',
+        'price',
+        'special_price',
+        'special_price_from_date',
+        'special_price_to_date',
+        'url_key',
+        'meta_title',
+        'meta_keywords',
+        'meta_description',
+        'base_image',
+        'small_image',
+        'thumbnail_image',
+        'swatch_image',
+        'swatch_image_label',
+        'created_at',
+        'updated_at',
+        'new_from_date',
+        'new_to_date',
+        'display_product_options_in',
+        'map_price',
+        'msrp_price',
+        'map_enabled',
+        'gift_message_available',
+        'custom_design',
+        'custom_design_from',
+        'custom_design_to',
+        'custom_layout_update',
+        'page_layout',
+        'product_options_container',
+        'msrp_display_actual_price_type',
+        'country_of_manufacture',
+        'additional_attributes',
+        'qty',
+        'out_of_stock_qty',
+        'use_config_min_qty',
+        'is_qty_decimal',
+        'allow_backorders',
+        'use_config_backorders',
+        'min_cart_qty',
+        'use_config_min_sale_qty',
+        'max_cart_qty',
+        'use_config_max_sale_qty',
+        'is_in_stock',
+        'notify_on_stock_below',
+        'use_config_notify_stock_qty',
+        'manage_stock',
+        'use_config_manage_stock',
+        'use_config_qty_increments',
+        'qty_increments',
+        'use_config_enable_qty_inc',
+        'enable_qty_increments',
+        'is_decimal_divided',
+        'website_id',
+        'deferred_stock_update',
+        'use_config_deferred_stock_update',
+        'related_skus',
+        'related_position',
+        'crosssell_skus',
+        'crosssell_position',
+        'upsell_skus',
+        'upsell_position',
+        'additional_images',
+        'additional_image_labels',
+        'hide_from_product_page',
+        'custom_options',
+        'bundle_price_type',
+        'bundle_sku_type',
+        'bundle_price_view',
+        'bundle_weight_type',
+        'bundle_values',
+        'bundle_shipment_type',
+        'configurable_variations',
+        'configurable_variation_labels',
+        'giftcard_type',
+        'giftcard_allow_open_amount',
+        'giftcard_open_amount_min',
+        'giftcard_open_amount_max',
+        'giftcard_amount',
+        'use_config_is_redeemable',
+        'giftcard_is_redeemable',
+        'use_config_lifetime',
+        'giftcard_lifetime',
+        'use_config_allow_message',
+        'giftcard_allow_message',
+        'use_config_email_template',
+        'giftcard_email_template',
+        'associated_skus',
+        'downloadable_links',
+        'downloadable_samples'
+        ];
+
     /**
      * Attributes defined by user
      *
@@ -76,6 +182,12 @@ class Product extends MainProduct
     protected $dataHelper;
 
     /**
+     * @var \Amore\GcrmDataExport\Model\Config\Config
+     */
+    private $gcrmConfig;
+
+    private $websiteCode = [];
+    /**
      * @param TimezoneInterface $localeDate
      * @param Config $config
      * @param ResourceConnection $resource
@@ -94,6 +206,7 @@ class Product extends MainProduct
      * @param RowCustomizerInterface $rowCustomizer
      * @param DataPersistorInterface $dataPersistor
      * @param Data $dataHelper
+     * @param \Amore\GcrmDataExport\Model\Config\Config $gcrmConfig
      * @param array $dateAttrCodes
      * @param ProductFilterInterface|null $filter
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -117,9 +230,11 @@ class Product extends MainProduct
         RowCustomizerInterface $rowCustomizer,
         DataPersistorInterface $dataPersistor,
         Data $dataHelper,
+        \Amore\GcrmDataExport\Model\Config\Config $gcrmConfig,
         array $dateAttrCodes = [],
         ?ProductFilterInterface $filter = null
     ) {
+        $this->gcrmConfig = $gcrmConfig;
         parent::__construct(
             $localeDate,
             $config,
@@ -159,71 +274,29 @@ class Product extends MainProduct
         return array_diff($this->_getExportMainAttrCodes(), $this->_customHeadersMapping($attrKeys));
     }
 
+
     /**
-     * Set headers columns
+     * Initialize stores hash.
      *
-     * @param array $customOptionsData
-     * @param array $stockItemRows
-     * @return void
-     * @deprecated 100.2.0 Logic will be moved to _getHeaderColumns in future release
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @return $this
      */
-    protected function setHeaderColumns($customOptionsData, $stockItemRows)
+    protected function _initStores()
     {
-        $exportAttributes = (
-            array_key_exists("skip_attr", $this->_parameters) && count($this->_parameters["skip_attr"])
-        ) ?
-            array_intersect(
-                $this->_getExportMainAttrCodes(),
-                array_merge(
-                    $this->_customHeadersMapping($this->_getExportAttrCodes()),
-                    $this->getNonSystemAttributes()
-                )
-            ) :
-            $this->_getExportMainAttrCodes();
-
-        if (!$this->_headerColumns) {
-            $this->_headerColumns = array_merge(
-                [
-                    self::COL_SKU,
-                    self::COL_STORE,
-                    self::COL_ATTR_SET,
-                    self::COL_TYPE,
-                    self::COL_CATEGORY,
-                    self::COL_PRODUCT_WEBSITES,
-                ],
-                $exportAttributes,
-                reset($stockItemRows) ? array_keys(end($stockItemRows)) : [],
-                [
-                    'related_skus',
-                    'related_position',
-                    'crosssell_skus',
-                    'crosssell_position',
-                    'upsell_skus',
-                    'upsell_position',
-                    'additional_images',
-                    'additional_image_labels',
-                    'hide_from_product_page',
-                    'custom_options'
-                ]
-            );
-
-            if ($this->dataPersistor->get('gcrm_export_check')) {
-                $this->_headerColumns = array_diff(
-                    $this->_headerColumns,
-                    $this->_excludeHeadColumns
-                );
-                array_splice(
-                    $this->_headerColumns,
-                    0,
-                    0,
-                    [self::ENTITY_ID]
-                );
+        foreach ($this->_storeManager->getStores(true) as $store) {
+            // phpstan:ignore "Access to an undefined property"
+            $this->_storeIdToCode[$store->getId()] = $store->getCode();
+            //Customize get follow store config
+            if ($this->gcrmConfig->getConfigValue(self::XML_PATH_ACTIVE_EXTENSION, $store->getId())) {
+               $websiteId = $this->_storeManager->getStore( $store->getId())->getWebsiteId();
+               $this->websiteCode[] = $this->_storeManager->getWebsite($websiteId)->getCode();
             }
         }
-    }
+        // phpstan:ignore "Access to an undefined property"
+        ksort($this->_storeIdToCode);
+        // to ensure that 'admin' store (ID is zero) goes first
 
+        return $this;
+    }
     /**
      * Export process
      *
@@ -261,6 +334,11 @@ class Product extends MainProduct
         return $writer->getContents();
     }
 
+    public function _getHeaderColumns()
+    {
+        return self::HEADER_COLUMNS;
+    }
+
     /**
      * Get export data for collection
      *
@@ -284,17 +362,15 @@ class Product extends MainProduct
                 $this->_prepareEntityCollection($this->_entityCollectionFactory->create()),
                 $productIds
             );
-
-            $this->setHeaderColumns($multirawData['customOptionsData'], $stockItemRows);
-
+            ksort($rawData);
             foreach ($rawData as $productId => $productData) {
                 foreach ($productData as $storeId => $dataRow) {
-                    if ($storeId == Store::DEFAULT_STORE_ID && isset($stockItemRows[$productId])) {
+                    if (isset($stockItemRows[$productId])) {
                         // phpcs:ignore Magento2.Performance.ForeachArrayMerge
                         $dataRow = array_merge($dataRow, $stockItemRows[$productId]);
                     }
                     $this->appendMultirowData($dataRow, $multirawData);
-                    if ($dataRow) {
+                    if ($dataRow && isset($dataRow['_product_websites']) && in_array($dataRow['_product_websites'], $this->websiteCode)) {
                         $exportData[] = $dataRow;
                     }
                 }

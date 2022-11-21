@@ -120,9 +120,9 @@ class History extends HistoryAlias
         RmaRepositoryInterface $rmaRepositoryInterface,
         RmaAttributesManagementInterface $metadataService,
         AddressRenderer $addressRenderer,
+        Http $request,
         AbstractResourceAlias $resource = null,
         AbstractDbAlias $resourceCollection = null,
-        Http $request,
         array $data = []
     ) {
         parent::__construct(
