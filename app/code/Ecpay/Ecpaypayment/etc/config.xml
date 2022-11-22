@@ -30,6 +30,7 @@
         <tw_lageige_website>
             <payment>
                 <ecpay_ecpaypayment>
+                    <ecpay_enable_send_mail_when_state_error>1</ecpay_enable_send_mail_when_state_error>
                     <ecpay_receiver_admin_email>maggieliu@tw.amorepacific.com, eddiegao@tw.amorepacific.com</ecpay_receiver_admin_email>
                 </ecpay_ecpaypayment>
             </payment>
@@ -37,6 +38,7 @@
         <base>
             <payment>
                 <ecpay_ecpaypayment>
+                    <ecpay_enable_send_mail_when_state_error>1</ecpay_enable_send_mail_when_state_error>
                     <ecpay_receiver_admin_email>maggieliu@tw.amorepacific.com, taviatsai@tw.amorepacific.com</ecpay_receiver_admin_email>
                 </ecpay_ecpaypayment>
             </payment>
