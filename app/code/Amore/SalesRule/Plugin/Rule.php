@@ -46,7 +46,7 @@ class Rule
      */
     public function beforeSave(SalesRule $subject)
     {
-        if (in_array($subject->getSimpleAction(), \Amasty\Promo\Observer\Salesrule\Discount::PROMO_RULES)) {
+        if (in_array($subject->getSimpleAction(), \Amasty\Promo\Observer\Salesrule\Discount::PROMO_RULES) && $subject->getSimpleAction() != \Amasty\Promo\Model\Rule::SAME_PRODUCT) {
             $subject->setData(\Magento\SalesRule\Model\Data\Rule::KEY_SIMPLE_FREE_SHIPPING, 0);
             //validate input promo items before save to make sure when apply rule in front end do got get error
             if ($subject->getExtensionAttributes() && isset($subject->getExtensionAttributes()['ampromo_rule']['sku'])) {
