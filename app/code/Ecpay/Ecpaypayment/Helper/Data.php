@@ -327,15 +327,7 @@ class Data extends AbstractHelper
 
                         unset($status, $pattern, $comment);
                         break;
-                    case 6: // Simulate Paid
-                        $status = $orderStatus;
-                        $comment = __('Simulate paid, update the note only.');
-
-                        $this->setOrderCommentForBack($order, $comment, $status, EcpayOrderModel::NOTIFY_SIMULATE_PAID);
-
-                        unset($status, $pattern, $comment);
-                        break;
-                    default:
+                    case 5:
                         try {
                             $storeId = $order->getStoreId();
                             $isEnableSendMail = $this->_ecpayPaymentModel->getEcpayConfigFromStore(self::XML_PATH_ENABLE_SEND_MAIL_WHEN_STATE_ERROR, $storeId);
@@ -372,6 +364,15 @@ class Data extends AbstractHelper
                             $this->logger->info($e->getMessage());
                         }
                         break;
+                    case 6: // Simulate Paid
+                        $status = $orderStatus;
+                        $comment = __('Simulate paid, update the note only.');
+
+                        $this->setOrderCommentForBack($order, $comment, $status, EcpayOrderModel::NOTIFY_SIMULATE_PAID);
+
+                        unset($status, $pattern, $comment);
+                        break;
+                    default:
                 }
             }
         } catch (\Magento\Framework\Exception\AlreadyExistsException $e) {
