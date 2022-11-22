@@ -38,7 +38,9 @@ define([
                             }
                         }
                     });
-                    items.push(new Address(customerData.addresses[maxId]));
+                    if (addressLength > 1) {
+                        items.push(new Address(customerData.addresses[maxId]));
+                    }
                 }
             }
 
