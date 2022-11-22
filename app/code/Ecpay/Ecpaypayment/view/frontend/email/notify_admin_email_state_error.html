@@ -1,0 +1,15 @@
+
+<!--@subject {{trans "Notify order have state error"}} @-->
+<!--@vars {
+"var order_increment_id":"Order Increment Id",
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<p>Dear Admin,</p>
+<br>
+<p>{{trans "There is an order which has canceled before payment with ECPAY success"}}</p>
+<p>{{trans "Order Id: "}}<strong>{{trans "%order_increment_id" order_increment_id=$order_increment_id}}</strong></p>
+<p>Please contact technical (GDC team) to modify order status</p>
+<br>
+<p>Thank you and regards.</p>
+{{template config_path="design/email/footer_template"}}
