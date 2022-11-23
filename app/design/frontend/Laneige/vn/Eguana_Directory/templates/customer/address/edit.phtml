@@ -41,7 +41,7 @@ $autofilledFlag = $directoryHelper->isZipCodeAutofilled();
                 ?>required<?php endif; ?>">
                 <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
                 <div class="control">
-                    <input type="text" placeholder="<?= $block->escapeHtml(__('Phone Number')) ?>" name="telephone" value="<?= $block->escapeHtmlAttr($block->getAddress()->getTelephone()) ?>" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" class="input-text <?= /* @noEscape */ $addressHelper->getAttributeValidationClass('telephone') ?>" id="telephone"/>
+                    <input type="text" placeholder="<?= $block->escapeHtml(__('Phone Number')) ?>" name="telephone" value="<?= $block->escapeHtmlAttr($block->getAddress()->getTelephone()) ?>" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" class="input-text validate-vn-address-mobile-number <?= /* @noEscape */ $addressHelper->getAttributeValidationClass('telephone') ?>" id="telephone"/>
                 </div>
             </div>
         <?php endif; ?>
