@@ -27,5 +27,12 @@ define(['jquery'], function($) {
             },
             $.mage.__('Please enter exactly proper mobile number. Start with 09 and 10 digit.')
         );
+        $.validator.addMethod(
+            'validate-vn-address-mobile-number',
+            function(value, element) {
+                return /^[0]{1}\d{9}$/.test(value);
+            },
+            $.mage.__('Please enter exactly proper mobile number. Start with 0 and 10 digit.')
+        );
     }
 });
