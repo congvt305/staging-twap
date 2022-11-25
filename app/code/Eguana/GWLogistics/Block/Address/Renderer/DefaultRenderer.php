@@ -69,7 +69,6 @@ class DefaultRenderer extends AbstractBlock implements RendererInterface
         $this->_addressMetadataService = $metadataService;
         $this->addressMapper = $addressMapper;
         parent::__construct($context, $data);
-        $this->_isScopePrivate = true;
     }
 
     /**
