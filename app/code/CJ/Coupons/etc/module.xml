@@ -3,6 +3,7 @@
     <module name="CJ_Coupons">
         <sequence>
             <module name="Amasty_Coupons"/>
+            <module name="CJ_AmastyCheckoutCore"/>
         </sequence>
     </module>
 </config>
