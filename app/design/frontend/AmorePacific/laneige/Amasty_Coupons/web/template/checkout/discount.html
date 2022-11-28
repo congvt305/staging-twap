@@ -1,3 +1,9 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
 <div class="payment-option opc-payment-additional discount-code">
     <div class="payment-option-title field choice" data-role="title">
         <span class="action action-toggle" id="block-discount-heading" role="heading" aria-level="2">
@@ -5,8 +11,11 @@
         </span>
     </div>
     <div class="amcoupons-main-container payment-option-content" data-role="content" aria-labelledby="block-discount-heading">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
         <form class="form form-discount" id="discount-form" data-bind="blockLoader: isLoading">
-            <!-- ko foreach: { data: couponsArray, as: 'code', beforeRemove: onCouponRemove, afterAdd: onCouponAdd } -->
+         <!-- ko foreach: { data: couponsArray, as: 'code', beforeRemove: onCouponRemove, afterAdd: onCouponAdd } -->
             <div class="amcoupons-applied-coupon">
                 <!--ko text: code--><!--/ko-->
                 <a href="#"
@@ -18,36 +27,30 @@
                 <span class="amcoupons-message" data-amcoupons-js="message"></span>
             </div>
             <!-- /ko -->
-
-            <!-- ko foreach: getRegion('messages') -->
-            <!-- ko template: getTemplate() --><!-- /ko -->
-            <!-- /ko -->
-
             <div class="payment-option-inner">
                 <div class="field">
+                    <label class="label" for="discount-code">
+                        <span data-bind="i18n: 'Enter discount code'"></span>
+                    </label>
                     <div class="control">
                         <input class="input-text"
                                type="text"
                                id="discount-code"
                                name="discount_code"
                                data-validate="{'required-entry':true}"
-                               data-bind="value: inputCode, attr:{placeholder: $t('Enter Your discount code')}" />
+                               data-bind="value: inputCode, attr:{placeholder: $t('Enter discount code')} " />
                     </div>
                 </div>
                 <div class="actions-toolbar">
-                    <button class="amcoupons-apply action primary"
-                            type="submit"
-                            data-bind="'value': $t('Apply Discount'), click: apply">
-                        <!-- ko i18n: 'Apply Discount'--><!-- /ko -->
+                    <button class="amcoupons-apply action primary" type="submit" data-bind="'value': $t('Apply'), click: apply">
+                        <span><!-- ko i18n: 'Apply'--><!-- /ko --></span>
                     </button>
                 </div>
+                <!-- ko foreach: getRegion('captcha') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- /ko -->
             </div>
 
-            <!-- ko foreach: getRegion('captcha') -->
-            <!-- ko template: getTemplate() --><!-- /ko -->
-            <!-- /ko -->
         </form>
     </div>
 </div>
-
-
