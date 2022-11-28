@@ -1,10 +1,3 @@
-<?xml version="1.0"?>
-<!--
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="checkout.root">
@@ -16,19 +9,23 @@
                                 <item name="steps" xsi:type="array">
                                     <item name="children" xsi:type="array">
                                         <item name="billing-step" xsi:type="array">
+                                            <item name="component" xsi:type="string">uiComponent</item>
                                             <item name="children" xsi:type="array">
                                                 <item name="payment" xsi:type="array">
                                                     <item name="children" xsi:type="array">
                                                         <item name="afterMethods" xsi:type="array">
                                                             <item name="children" xsi:type="array">
                                                                 <item name="discount" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Amasty_Coupons/js/view/checkout/discount</item>
+                                                                    <item name="template" xsi:type="string">Amasty_Coupons/checkout/discount</item>
                                                                     <item name="config" xsi:type="array">
-                                                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                                        <item name="successMessage" xsi:type="string" translate="true">Coupon was successfully applied.</item>
+                                                                        <item name="errorMessage" xsi:type="string" translate="true">Coupon code is not valid.</item>
+                                                                        <item name="cancelMessage" xsi:type="string" translate="true">Coupon code was removed.</item>
                                                                     </item>
                                                                 </item>
                                                             </item>
                                                         </item>
-
                                                     </item>
                                                 </item>
                                             </item>
